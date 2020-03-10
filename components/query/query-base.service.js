@@ -153,9 +153,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         me.data.customFeatures = [];
       }
       const invisiblePopup = me.getInvisiblePopup();
-      invisiblePopup.contentDocument.body.innerHTML = '';
-      invisiblePopup.style.height = 0;
-      invisiblePopup.style.width = 0;
+      if(invisiblePopup) {
+        invisiblePopup.contentDocument.body.innerHTML = '';
+        invisiblePopup.style.height = 0;
+        invisiblePopup.style.width = 0;
+      }
       me.dataCleared = true;
     };
 

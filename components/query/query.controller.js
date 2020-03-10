@@ -2,8 +2,8 @@ import Popup from 'ol-popup';
 import 'ol-popup/src/ol-popup.css';
 import { remove } from 'lodash';
 
-export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', 'hs.layout.service',
-    function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config, layoutService) {
+export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.baseService', 'hs.query.wmsService', 'hs.query.vectorService', 'Core', 'config', 'hs.layout.service', '$injector',
+    function ($scope, $rootScope, $timeout, OlMap, Base, WMS, Vector, Core, config, layoutService, $injector) {
         var popup = new Popup();
 
         OlMap.loaded().then(map => {
@@ -12,6 +12,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
 
         try {
             var $mdDialog = $injector.get('$mdDialog');
+            var $mdToast = $injector.get('$mdToast');
 
             $scope.showQueryDialog = function (ev) {
                 $mdDialog.show({
@@ -42,7 +43,7 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                 );
             }
         } catch (ex) {
-
+            debugger;
         }
 
         $scope.data = Base.data;
@@ -51,10 +52,10 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
         var deregisterQueryStatusChanged = $rootScope.$on('queryStatusChanged', function () {
             if (Base.queryActive) {
                 $scope.deregisterVectorQuery = $scope.$on('mapQueryStarted', function (e) {
-                    if (config.design === 'md' && $scope.data.groups.length === 0) {
+                    if (config.design === 'md' && $scope.data.features.length === 0) {
                         $scope.showNoImagesWarning();
                     }
-                    if (config.design === 'md' && $scope.data.groups.length > 0) {
+                    if (config.design === 'md' && $scope.data.features.length > 0) {
                         $scope.showQueryDialog(e);
                     } else {
                         popup.hide();
