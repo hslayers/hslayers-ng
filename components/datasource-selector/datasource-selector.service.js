@@ -281,6 +281,8 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
                 }
                 extentLayer.setVisible(panelVisible());
             });
+            if(angular.isUndefined(config.allowAddExternalDatasets)) 
+                config.allowAddExternalDatasets = true;
         }
 
         OlMap.loaded().then(init)
