@@ -257,22 +257,6 @@ export default {
                         else { return false }
                     }
                 },
-                /**
-                 * @function toggleMetaPanel
-                 * @memberOf hs.layermanager.controller
-                 * @description Toggles Additional information panel for current
-                 * layer.                 * 
-                 * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-                 */
-                toggleMetaPanel(layer) {
-                    if (layer.layer.get("metapanelActive")) {
-                        layer.layer.set("metapanelActive", false);
-                    }
-                    else {
-                        layer.layer.set("metapanelActive", true);
-                    };
-                },
-
 
                 /**
                 * @function minResolution
