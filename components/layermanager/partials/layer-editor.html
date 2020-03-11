@@ -1,122 +1,123 @@
 <div class="card panel-default">
     <div class="card-body">
-        <form>
-            <!-- Metadata/Copyright -->
-            <div class="form-group" ng-if="$ctrl.currentLayer.layer.get('metapanelActive')">
-                <!-- Metadata -->
-                <div ng-if="hasMetadata($ctrl.currentLayer)" class="pt-2" >
-                    <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
-                        href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
-                        <span ng-show="metadata.type">
-                            Metadata of layer in {{::metadata.type}}
-                        </span>
-                        <span ng-hide="metadata.type">
-                            Metadata of service
-                        </span>
-                    </a>
-                </div>
-                <!-- Copyright -->
-                <div ng-if="hasCopyright($ctrl.currentLayer)">
-                    <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}" target="_blank"
-                        title="Copyright">
-                        Copyright</a>
-                </div>
+        <!-- Sublayers-->
+        <div ng-show="$ctrl.currentLayer.sublayers" class="form-group">
+            <div ng-repeat="subLayer in ::getSubLayers()">
+                <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
             </div>
-            <!-- Sublayers-->
-            <div ng-show="hasSubLayers()" class="form-group">
-                <div ng-repeat="subLayer in ::getSubLayers()">
-                    <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
-                </div>
-            </div>
-
-            <!-- Time slider -->
-            <div class="form-group" ng-show="layerIsWmsT()">
-                <label translate>Date</label>
-                <input type="range" step="{{$ctrl.currentLayer.time_step}}" min="{{$ctrl.currentLayer.min_time}}"
-                    max="{{$ctrl.currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;"
-                    ng-model="dateIncrement" ng-change="setLayerTime($ctrl.currentLayer, dateIncrement)" />
-                <div class="row">
-                    <div class="col-md-4">
-                        <small>{{dateToNonUtc($ctrl.currentLayer.date_from) | date : $ctrl.currentLayer.date_format}}</small>
+        </div>
+        <div  ng-if="$ctrl.currentLayer.settings">
+            <form>
+                <!-- Metadata/Copyright -->
+                <div class="form-group">
+                    <!-- Metadata -->
+                    <div ng-if="hasMetadata($ctrl.currentLayer)" class="pt-2" >
+                        <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
+                            href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
+                            <span ng-show="metadata.type">
+                                Metadata of layer in {{::metadata.type}}
+                            </span>
+                            <span ng-hide="metadata.type">
+                                Metadata of service
+                            </span>
+                        </a>
                     </div>
-                    <div class="col-md-4">
-                        <small><b>{{dateToNonUtc($ctrl.currentLayer.time) | date : $ctrl.currentLayer.date_format}}</small></b>
-                    </div>
-                    <div class="col-md-4">
-                        <small>{{dateToNonUtc($ctrl.currentLayer.date_till) | date : $ctrl.currentLayer.date_format}}</small>
+                    <!-- Copyright -->
+                    <div ng-if="hasCopyright($ctrl.currentLayer)">
+                        <a class="card-href" href="{{$ctrl.currentLayer.layer.get('Attribution').OnlineResource}}" target="_blank"
+                            title="Copyright">
+                            Copyright</a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Dimensions -->
-            <div ng-show="isLayerWithDimensions()">
-                <label translate>Dimensions</label>
-                <div class="form-group" ng-repeat="(key, dimension) in dimensions()">
-                    <label class="control-label">{{dimension.label || key}}:</label>
-
-                    <select class="form-control" ng-model="dimension.value" ng-if="typeof dimension.type == 'undefined'" ng-change="dimensionChanged(dimension)">
-                        <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">
-                            {{dimension_value}}</option>
-                    </select>
-                    <input type="datetime-local" ng-if="dimension.type == 'datetime'" ng-model="dimension.value" ng-change="dimensionChanged(dimension)">
+                <!-- Time slider -->
+                <div class="form-group" ng-show="layerIsWmsT()">
+                    <label translate>Date</label>
+                    <input type="range" step="{{$ctrl.currentLayer.time_step}}" min="{{$ctrl.currentLayer.min_time}}"
+                        max="{{$ctrl.currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;"
+                        ng-model="dateIncrement" ng-change="setLayerTime($ctrl.currentLayer, dateIncrement)" />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <small>{{dateToNonUtc($ctrl.currentLayer.date_from) | date : $ctrl.currentLayer.date_format}}</small>
+                        </div>
+                        <div class="col-md-4">
+                            <small><b>{{dateToNonUtc($ctrl.currentLayer.time) | date : $ctrl.currentLayer.date_format}}</small></b>
+                        </div>
+                        <div class="col-md-4">
+                            <small>{{dateToNonUtc($ctrl.currentLayer.date_till) | date : $ctrl.currentLayer.date_format}}</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Abstract -->
-            <div class="form-group" ng-show="abstract()">
-                <label translate>Abstract</label>
-                <p>
-                    {{abstract()}}
-                </p>
-            </div>
-
-            <!-- Scale -->
-            <div class="form-group" ng-show="isScaleVisible()">
-                <label translate>Scale</label>
-                <span ng-if="minResolutionValid()"><span translate>from</span> 1:{{minResolution()}}</span>
-                <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
-            </div>
-            <!-- Declutter checkbox  -->
-            <div ng-hide="$ctrl.currentLayer.layer.get('cluster')"
-                ng-if="isVectorLayer()"
-                class="form-check">
-                <input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" />
-                <label translate>Declutter</label>
-            </div>
-            <!-- Cluster features checkbox  -->
-            <div ng-hide="$ctrl.currentLayer.layer.get('declutter')">
-                <div ng-if="isVectorLayer()"
+    
+                <!-- Dimensions -->
+                <div ng-show="isLayerWithDimensions()">
+                    <label translate>Dimensions</label>
+                    <div class="form-group" ng-repeat="(key, dimension) in dimensions()">
+                        <label class="control-label">{{dimension.label || key}}:</label>
+    
+                        <select class="form-control" ng-model="dimension.value" ng-if="typeof dimension.type == 'undefined'" ng-change="dimensionChanged(dimension)">
+                            <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">
+                                {{dimension_value}}</option>
+                        </select>
+                        <input type="datetime-local" ng-if="dimension.type == 'datetime'" ng-model="dimension.value" ng-change="dimensionChanged(dimension)">
+                    </div>
+                </div>
+    
+                <!-- Abstract -->
+                <div class="form-group" ng-show="abstract()">
+                    <label translate>Abstract</label>
+                    <p>
+                        {{abstract()}}
+                    </p>
+                </div>
+    
+                <!-- Scale -->
+                <div class="form-group" ng-show="isScaleVisible()">
+                    <label translate>Scale</label>
+                    <span ng-if="minResolutionValid()"><span translate>from</span> 1:{{minResolution()}}</span>
+                    <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
+                </div>
+                <!-- Declutter checkbox  -->
+                <div ng-hide="$ctrl.currentLayer.layer.get('cluster')"
+                    ng-if="isVectorLayer()"
                     class="form-check">
-                    <input type="checkbox" ng-model="cluster" ng-model-options="{ getterSetter:  true}" />
-                    <label translate>Cluster</label>
+                    <input type="checkbox" ng-model="declutter" ng-model-options="{ getterSetter:  true}" />
+                    <label translate>Declutter</label>
                 </div>
-                <div class="form-group" ng-if="$ctrl.currentLayer.layer.get('cluster')">
-                    <label>Cluster distance</label>
-                    <input type="range" min="0" max="100" step="1" ng-model="distance.value"
-                        ng-change="changeDistance()" class="form-control" style="width: 100%;height: 21px;">
-                </div>
-            </div>
-
-            <!-- Legends -->
-            <div ng-if="olLayer()">
-                <div ng-repeat="layer in legendDescriptors">
-                    <div class="form-group" ng-if="legendService.isLegendable(layer)">
-                        <label translate>Legend</label>
-                        <hs.legend.layer-directive layer="layer"></hs.legend.layer-directive>
+                <!-- Cluster features checkbox  -->
+                <div ng-hide="$ctrl.currentLayer.layer.get('declutter')">
+                    <div ng-if="isVectorLayer()"
+                        class="form-check">
+                        <input type="checkbox" ng-model="cluster" ng-model-options="{ getterSetter:  true}" />
+                        <label translate>Cluster</label>
+                    </div>
+                    <div class="form-group" ng-if="$ctrl.currentLayer.layer.get('cluster')">
+                        <label>Cluster distance</label>
+                        <input type="range" min="0" max="100" step="1" ng-model="distance.value"
+                            ng-change="changeDistance()" class="form-control" style="width: 100%;height: 21px;">
                     </div>
                 </div>
-            </div>
-            <!-- Opacity slider -->
-            <div class="form-group">
-                <label translate>Opacity</label>
-                <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;"
-                    ng-model="opacity" ng-model-options="{ getterSetter: true }" />
-            </div>
-
-            <!-- Footer -->
-        </form>
+    
+                <!-- Legends -->
+                <div ng-if="olLayer()">
+                    <div ng-repeat="layer in legendDescriptors">
+                        <div class="form-group" ng-if="legendService.isLegendable(layer)">
+                            <label translate>Legend</label>
+                            <hs.legend.layer-directive layer="layer"></hs.legend.layer-directive>
+                        </div>
+                    </div>
+                </div>
+                <!-- Opacity slider -->
+                <div class="form-group">
+                    <label translate>Opacity</label>
+                    <input type="range" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;"
+                        ng-model="opacity" ng-model-options="{ getterSetter: true }" />
+                </div>
+    
+                <!-- Footer -->
+            </form>
+        </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer" ng-if="$ctrl.currentLayer.settings">
         <div class="form-group" ng-show="layer_renamer_visible">
             <label translate>Title</label>
             <input type="text" class="form-control" ng-model="title" ng-model-options="{ getterSetter: true }">
@@ -152,4 +153,5 @@
         <button class="btn btn-danger" ng-click="removeLayer()" ng-if="isLayerRemovable()" data-toggle="tooltip"
              title="{{'Remove layer' | translate}}"><i class="icon-trash"></i></button>
     </div>
+
 </div>
