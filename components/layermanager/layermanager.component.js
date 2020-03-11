@@ -111,10 +111,11 @@ export default {
 
             $scope.toggleCurrentLayer = function (layer) {
                 if (LayMan.currentLayer == layer) {
+                    layer.sublayers = false;
+                    layer.settings = false;
                     LayMan.currentLayer = null;
                 } else {
                     $scope.setCurrentLayer(layer);
-                    LayMan.fillMetadata(layer);
                     return false;
                 }
             }
@@ -165,20 +166,40 @@ export default {
             }
 
             /**
-             * @function toggleMetaPanel
+             * @function toggleLayerEditor
              * @memberOf hs.layermanager.controller
-             * @description Toggles Additional information panel for current
-             * layer.                 * 
+             * @description Toggles Additional information panel for current layer.
              * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
              */
-            $scope.toggleMetaPanel = function (layer) {
-                if (layer.layer.get("metapanelActive")) {
-                    layer.layer.set("metapanelActive", false);
+            $scope.toggleLayerEditor = function (layer) {
+                if (LayMan.currentLayer != layer){
+                    $scope.toggleCurrentLayer(layer);
+                    layer.settings = true;    
                 }
                 else {
-                    layer.layer.set("metapanelActive", true);
+                    if (layer.sublayers && layer.settings || layer.settings && !layer.sublayers ){
+                        $scope.toggleCurrentLayer(layer);
+                    }
+                    else {
+                        layer.settings = !layer.settings;
+                    }
                 };
             };
+            $scope.toggleSublayers = function (layer){
+                if (LayMan.currentLayer != layer){
+                    $scope.toggleCurrentLayer(layer);
+                    layer.sublayers = true;    
+                }
+                else {
+                    if (layer.sublayers && layer.settings || layer.sublayers && !layer.settings ){
+                        $scope.toggleCurrentLayer(layer);
+                    }
+                    else {
+                        layer.sublayers = !layer.sublayers;
+                    }                   
+                };
+            }
+
             $scope.hasMetadata = function (layer) {
                 if (!LayMan.currentLayer) return;
                 else {
