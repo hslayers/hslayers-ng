@@ -286,11 +286,11 @@ export default ['config', '$rootScope', '$window',
         }
         me.mainpanel = which;
         /**
-                * @ngdoc event
-                * @name Core#core.mainpanel_changed
-                * @eventType broadcast on $rootScope
-                * @description Fires when current mainpanel change - toggle, change of opened panel
-                */
+        * @ngdoc event
+        * @name Core#core.mainpanel_changed
+        * @eventType broadcast on $rootScope
+        * @description Fires when current mainpanel change - toggle, change of opened panel
+        */
         $rootScope.$broadcast('core.mainpanel_changed');
       },
       /**
