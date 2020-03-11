@@ -2,7 +2,7 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
     return {
         template: require('components/layermanager/partials/layerlist.html'),
         controller: ['$scope', function ($scope) {
-            $scope.toggleSublayers = function () {
+            $scope.toggleSublayersVisibility = function () {
                 if (subLayerService.hasSubLayers()) {
                     Object.keys(subLayerService.checkedSubLayers).forEach(function (key) {
                         subLayerService.checkedSubLayers[key] = LayMan.currentLayer.visible;
@@ -14,7 +14,6 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
                         Object.keys(subLayerService.withChildren).forEach(function (key) {
                             subLayerService.withChildren[key] = LayMan.currentLayer.visible;
                         })
-
                 }
             };
         }
@@ -68,7 +67,7 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
                 * @ngdoc property
                 * @name hs.layermanager.layerlistDirective#filtered_layers
                 * @public
-                * @type {Array} 
+                * @type {Array}
                 * @description List of layers which belong to folder hierarchy level of directive instance
                 */
                 scope.filtered_layers = filterLayers();
