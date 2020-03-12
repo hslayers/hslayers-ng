@@ -101,8 +101,10 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core', '$timeout', 'hs.
               me.stopTracking();
             }
           } else {
-            OlMap.map.getView().setCenter(me.geolocation.getPosition());
-            me.centering = true;
+            if(me.geolocation.getPosition()){
+              OlMap.map.getView().setCenter(me.geolocation.getPosition());
+              me.centering = true;
+            }
           }
 
           //clean up
