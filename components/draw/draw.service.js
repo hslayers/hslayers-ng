@@ -14,7 +14,8 @@ export default [
   'hs.query.baseService',
   '$rootScope',
   'hs.utils.layerUtilsService',
-  function(Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope, layerUtilsService) {
+  'gettext',
+  function(Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope, layerUtilsService, gettext) {
     const me = this;
     angular.extend(me, {
       draw: null,
@@ -47,15 +48,22 @@ export default [
       },
 
       addDrawLayer() {
+        let tmpTitle = gettext('Draw layer');
+        let i = 1;
+        while(hsMap.findLayerByTitle(tmpTitle)){
+          tmpTitle = `${gettext('Draw layer')} ${i++}`;
+        }
         const drawLayer = new VectorLayer({
-          title: 'Draw layer',
+          title: tmpTitle,
           source: new Vector(),
           show_in_manager: true,
           visible: true,
           removable: true,
-          editable: true
+          editable: true,
+          path: config.defaultDrawLayerPath || gettext('User generated')
         });
         hsMap.map.addLayer(drawLayer);
+        me.selectedLayer = drawLayer;
       },
 
       drawableLayers() {
