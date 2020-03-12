@@ -416,6 +416,19 @@ button.but-title-sm {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
+@media only screen and (max-width: 767px){
+	.ol-attribution.ol-uncollapsible, .ol-attribution.ol-collapsible {
+		left: auto;
+		right: 50px;
+		bottom: 0.2em;
+	}
+	.hs-ol-map .ol-zoom {
+		bottom: 0.2em;
+		top: auto;
+		right: 5px;
+		left: auto;
+	}
+}
 
 .ol-attribution {
 	left: auto;
