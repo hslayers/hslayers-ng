@@ -46,11 +46,11 @@ body {
     z-index: 999;
 }
 
-.mobile #toolbar.show {
+.mobile .hs-toolbar.show {
     display: inline-block;
 }
 
-.mobile #toolbar {
+.mobile .hs-toolbar {
     display: none;
     bottom: 4.5em;
     top: initial;
@@ -60,7 +60,7 @@ body {
     pointer-events: none;
 }
 
-.mobile.hs-sb-left #toolbar, .mobile.hs-sb-right #toolbar {
+.mobile.hs-sb-left .hs-toolbar, .mobile.hs-sb-right .hs-toolbar {
     margin-left: 0;
     margin-right: 0;
 }
@@ -224,24 +224,24 @@ body {
     height: 100%;
 }
 
-.mobile #toolbar .input-group.hs-search-address {
+.mobile .hs-toolbar .input-group.hs-search-address {
     pointer-events: all;
     height: 3em;
     bottom: 0;
 }
 
-.mobile #toolbar .input-group-btn {
+.mobile .hs-toolbar .input-group-btn {
     display: none;
 }
 
-.mobile #toolbar div {
+.mobile .hs-toolbar div {
     position: absolute;
     height: 100%;
     width: 100%;
     pointer-events: none;
 }
 
-.mobile #toolbar div#searchresults {
+.mobile .hs-toolbar div#searchresults {
     bottom: 3em;
     top: initial;
     width: 100%;
@@ -294,7 +294,7 @@ body {
     display: none;
 }
 
-.mobile .hs-ol-map, .mobile #menu, .mobile #toolbar, .mobile .hs-panelspace {
+.mobile .hs-ol-map, .mobile #menu, .mobile .hs-toolbar, .mobile .hs-panelspace {
     transition: transform 0.5s;
 }
 

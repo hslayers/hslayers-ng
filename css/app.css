@@ -292,7 +292,7 @@ hr {
 .hs-search-address {
 	z-index: 2;
 }
-#toolbar #hs-search-address {
+.hs-toolbar #hs-search-address {
 	max-width: 125px;
 }
 #searchresults {
@@ -703,19 +703,19 @@ a.sidebar-main {
 /** TOOLBAR **/
 /*************/
 
-#toolbar {
+.hs-toolbar {
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	max-width: 450px;
+	max-width: 550px;
 	display: inline-block;
 }
 
-.hs-sb-left.hs-open #toolbar {
+.hs-sb-left.hs-open .hs-toolbar {
 	margin-left: 410px;
 }
 
-.hs-sb-left #toolbar {
+.hs-sb-left .hs-toolbar {
 	margin-left: 60px;
 }
 
@@ -970,7 +970,7 @@ div.hs-info-composition-edited {
 		overflow-y: visible;
 		font-size: x-large;
 	}
-	.hs-sb-left #toolbar, .hs-sb-left #toolbar{
+	.hs-sb-left .hs-toolbar, .hs-sb-left .hs-toolbar{
 		margin-left: 0 !important	;
 	}
 
@@ -1020,7 +1020,7 @@ div.hs-info-composition-edited {
 		line-height: 1.5;
 		font-size: large;
 	}
-	/* .hs-sb-left.hs-open #toolbar {
+	/* .hs-sb-left.hs-open .hs-toolbar {
        margin-left: 310px;
     }*/
 	.hs-minisidebar .hs-sidebar-list {
