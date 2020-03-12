@@ -142,6 +142,7 @@ export default [
 				 * added to the layer and layer can't be retrieved from the
 				 * feature, so they don't appear in Info panel */
         $timeout(() => {
+          layoutService.setMainPanel('info');
           queryVectorService.selector.getFeatures().push(e.feature);
           queryVectorService.createFeatureAttributeList();
         });
