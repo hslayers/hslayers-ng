@@ -77,13 +77,13 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
             me.sensorIdsSelected = [sensor.sensor_id]
         },
         toggleSensor(sensor) {
-            if(sensor.checked) {
+            if (sensor.checked) {
                 me.sensorsSelected.push(sensor);
                 me.sensorIdsSelected.push(sensor.sensor_id);
             } else {
                 me.sensorsSelected.splice(me.sensorsSelected.indexOf(sensor), 1);
                 me.sensorIdsSelected.splice(me.sensorIdsSelected.indexOf(sensor.sensor_id), 1);
-            }   
+            }
         },
         selectUnit(unit) {
             me.unit = unit;
@@ -107,6 +107,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 ).then(_ => me.createChart(me.unit))
 
             }, 0)
+            hsMap.map.getView().fit(unit.feature.getGeometry(), {maxZoom: 16});
         },
         createLayer() {
             me.layer = new VectorLayer({
@@ -146,30 +147,31 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                         })
                         feature.set('name', unit.description);
                         feature.set('unit_id', unit.unit_id);
+                        unit.feature = feature;
                         return feature
                     })
                 me.layer.getSource().addFeatures(features);
                 me.fillLastObservations();
                 me.units.forEach(unit => {
                     unit.sensorTypes = unit.sensors.map(s => {
-                        return {name: s.sensor_type}
+                        return { name: s.sensor_type }
                     });
                     unit.sensorTypes = utils.removeDuplicates(unit.sensorTypes, 'name');
-                    unit.sensorTypes.map(st => 
+                    unit.sensorTypes.map(st =>
                         st.sensors = unit.sensors.filter(
                             s => s.sensor_type == st.name
                         )
                     )
                 });
                 setInterval(me.fillLastObservations, 60000);
-                
+
             },
                 function (err) {
 
                 });
         },
 
-        fillLastObservations(){
+        fillLastObservations() {
             $http.get(utils.proxify(`${endpoint.url}/senslog1/SensorService`), {
                 params: {
                     Operation: 'GetLastObservations',
@@ -180,14 +182,14 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
                 var sensorValues = {};
                 response.data.forEach(sv => {
                     sensorValues[sv.sensorId] = {
-                        value: sv.observedValue, 
+                        value: sv.observedValue,
                         timestamp: moment(sv.timeStamp).format('DD.MM.YYYY HH:mm')
                     };
                 });
                 me.units.forEach(unit => {
                     unit.sensors.forEach(sensor => {
                         me.sensorById[sensor.sensor_id] = sensor;
-                        if(sensorValues[sensor.sensor_id]){
+                        if (sensorValues[sensor.sensor_id]) {
                             sensor.lastObservationValue = sensorValues[sensor.sensor_id].value;
                             sensor.lastObservationTimestamp = sensorValues[sensor.sensor_id].timestamp;
                         }
