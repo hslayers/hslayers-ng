@@ -412,7 +412,6 @@ button.but-title-sm {
 	display: inline-block;
 	word-break: break-all;
 }
-
 .thumbnail {
 	margin-top: 3px;
 	margin-bottom: 3px;
@@ -421,11 +420,11 @@ button.but-title-sm {
 .ol-attribution {
 	left: auto;
 	right: 5px;
-	bottom: 6.8em;
+	bottom: 0.2em;
 }
 .hs-ol-map .ol-scale-line {
-	right: 0.5em;
-	left: auto;
+	right: auto;
+	left: 0.5em;
 }
 *[hs\.widgets\.object-directive] dd {
 	padding-left: 10px;
