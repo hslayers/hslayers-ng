@@ -43,7 +43,6 @@ export default ['$scope', '$rootScope', '$timeout', 'hs.map.service', 'hs.query.
                 );
             }
         } catch (ex) {
-            debugger;
         }
 
         $scope.data = Base.data;

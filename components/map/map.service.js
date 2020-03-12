@@ -17,7 +17,7 @@ import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 
 
-export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service', '$timeout', function (config, $rootScope, utils, layoutService, $timeout) {
+export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service', '$timeout', 'gettext', function (config, $rootScope, utils, layoutService, $timeout, gettext) {
 
   /**
    * This is a workaround.
@@ -224,6 +224,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service',
 
   const element = document.createElement('div');
   element.className = 'hs-defaultView ol-unselectable ol-control';
+  element.title = gettext('Zoom to initial window');
 
   button.appendChild(icon);
   element.appendChild(button);
