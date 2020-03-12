@@ -23,6 +23,7 @@ export default [
       type: null,
       selectedFeatures: new Collection(),
       selectedLayer: null,
+      drawActive: false,
       highlighted_style(feature, resolution) {
         return [
           new Style({
@@ -118,10 +119,16 @@ export default [
           me.draw.on(
             'drawstart',
             (e) => {
+              me.drawActive = true;
               me.modify.setActive(false);
               if (onDrawStart) {
                 onDrawStart(e);
               }
+              document.addEventListener('keyup', function(event){
+                if(event.keyCode === 27){
+                  me.removeLastPoint()
+                 }
+               });
             },
             this
           );
@@ -130,6 +137,7 @@ export default [
             'drawend',
             (e) => {
               me.draw.setActive(false);
+              me.drawActive = false;
               queryBaseService.activateQueries();
               if (changeStyle) {
                 e.feature.setStyle(changeStyle());
@@ -141,6 +149,10 @@ export default [
             this
           );
         });
+      },
+
+      removeLastPoint(){
+        me.draw.removeLastPoint();
       },
 
       /**

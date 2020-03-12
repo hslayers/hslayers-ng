@@ -27,6 +27,12 @@
         <button class="btn btn-light rounded-0 btn-outline-secondary" ng-class="{active: service.type=='LineString' }"
             ng-if="drawToolbarExpanded" ng-click="setType('LineString')" translate data-toggle="tooltip" title="{{'Line' | translate}}">
             <i class="icon-line"></i></button>
+        <button class="btn btn-light rounded-0 btn-outline-secondary"
+            ng-if="service.drawActive" ng-click="removeLastPoint()" translate data-toggle="tooltip" title="{{'Remove last point' | translate}}">
+            <i class="icon-remove-circle"></i></button>
+        <button class="btn btn-light rounded-0 btn-outline-secondary"
+            ng-if="service.drawActive" ng-click="finishDrawing()" translate data-toggle="tooltip" title="{{'Finish feature' | translate}}">
+            <i class="icon-check"></i></button>
     </div>
 </div>
 <!-- ng-style="{position: 'absolute', right: ( (layoutService.sidebarRight ? layoutService.panelSpaceWidth() : 0) + 5) + 'px', bottom: '6em'}" -->

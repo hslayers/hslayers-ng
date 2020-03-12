@@ -62,6 +62,12 @@ export default [
           true //Activate drawing immediately
         );
       },
+      finishDrawing(){
+        drawService.draw.finishDrawing();
+      },
+      removeLastPoint(){
+        drawService.removeLastPoint();
+      },
       selectLayer(layer) {
         drawService.selectedLayer = layer;
         $scope.layersExpanded = false;
