@@ -33,16 +33,19 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
     this.request = function (query) {
       let url = null;
       let providers = [];
+      if(angular.isDefined(config.search_provider) && angular.isUndefined(config.searchProvider)) 
+        config.searchProvider = config.search_provider;
 
-      if (angular.isUndefined(config.search_provider)) {
+      if (angular.isUndefined(config.searchProvider)) {
         providers = ['geonames'];
-      } else if (typeof config.search_provider == 'string') {
-        providers = [config.search_provider];
-      } else if (angular.isObject(config.search_provider)) {
-        providers = config.search_provider;
+      } else if (typeof config.searchProvider == 'string' || angular.isFunction(config.searchProvider)) {
+        providers = [config.searchProvider];
+      } else if (angular.isObject(config.searchProvider)) {
+        providers = config.searchProvider;
       }
       me.cleanResults();
       angular.forEach(providers, (provider) => {
+        let providerId = provider;
         if (provider == 'geonames') {
           if (me.geonamesUser) {
             url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${me.geonamesUser}`;
@@ -55,16 +58,22 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
           }
         } else if (provider == 'sdi4apps_openapi') {
           url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
+        } else if (angular.isFunction(provider)) {
+          url = provider(query);
+          if(provider.name == 'searchProvider') //Anonymous function?
+            providerId = 'geonames'
+          else
+            providerId = provider.name;
         }
         //url = utils.proxify(url);
-        if (angular.isDefined(me.canceler[provider])) {
-          me.canceler[provider].resolve();
-          delete me.canceler[provider];
+        if (angular.isDefined(me.canceler[providerId])) {
+          me.canceler[providerId].resolve();
+          delete me.canceler[providerId];
         }
-        me.canceler[provider] = $q.defer();
+        me.canceler[providerId] = $q.defer();
 
-        $http.get(url, {timeout: me.canceler[provider].promise}).then((response) => {
-          me.searchResultsReceived(response.data, provider);
+        $http.get(url, {timeout: me.canceler[providerId].promise}).then((response) => {
+          me.searchResultsReceived(response.data, providerId);
         }, (err) => { });
       });
     };
@@ -81,10 +90,12 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         me.data.providers[providerName] = {results: [], name: providerName};
       }
       const provider = me.data.providers[providerName];
-      if (providerName == 'geonames') {
+      if (providerName.indexOf('geonames') > -1) {
         parseGeonamesResults(response, provider);
       } else if (providerName == 'sdi4apps_openapi') {
         parseOpenApiResults(response, provider);
+      } else {
+        parseGeonamesResults(response, provider);
       }
       $rootScope.$broadcast('search.resultsReceived', {layer: me.searchResultsLayer, providers: me.data.providers});
     };
@@ -148,7 +159,7 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
      * @description Parse coordinate of selected result
      */
     function getResultCoordinate(result) {
-      if (result.provider_name == 'geonames') {
+      if (result.provider_name.indexOf('geonames')>-1 || result.provider_name == 'searchFunctionsearchProvider') {
         return transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', OlMap.map.getView().getProjection());
       } else if (result.provider_name == 'sdi4apps_openapi') {
         const g_feature = formatWKT.readFeature(result.FullGeom.toUpperCase());
