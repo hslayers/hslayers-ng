@@ -230,6 +230,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                     }
                 });
 
+                //experimental
                 $rootScope.$on('map.featureURI_selected', function(event, uri){
                   console.log('filter knows uri: ' + uri);
                   $rootScope.$emit('map.featureURI_selected2', uri);
