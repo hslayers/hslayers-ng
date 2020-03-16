@@ -25,7 +25,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service#data
                             * @public
-                            * @type {Object} 
+                            * @type {Object}
                             * @description Containg object for all properties which are shared with controllers.
                             */
                             me.data = {};
@@ -34,9 +34,9 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service.data#folders
                             * @public
-                            * @type {Object} 
+                            * @type {Object}
                             * @description Folders object for structure of layers. Each level contain 5 properties:
-                            * hsl_path {String}: Worded path to folder position in folders hiearchy. 
+                            * hsl_path {String}: Worded path to folder position in folders hiearchy.
                             * coded_path {String}: Path encoded in numbers
                             * layers {Array}: List of layers for current folder
                             * sub_folders {Array}: List of subfolders for current folder
@@ -56,7 +56,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service.data#layers
                             * @public
-                            * @type {Array} 
+                            * @type {Array}
                             * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
                             */
                             me.data.layers = [];
@@ -64,7 +64,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service.data#baselayers
                             * @public
-                            * @type {Array} 
+                            * @type {Array}
                             * @description List of all baselayers loaded in layer manager.
                             */
                             me.data.baselayers = [];
@@ -72,7 +72,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service.data#terrainlayers
                             * @public
-                            * @type {Array} 
+                            * @type {Array}
                             * @description List of all cesium terrain layers loaded in layer manager.
                             */
                             me.data.terrainlayers = [];
@@ -80,7 +80,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             * @ngdoc property
                             * @name hs.layermanager.service.data#baselayersVisible
                             * @public
-                            * @type {Boolean} 
+                            * @type {Boolean}
                             * @description Store if baselayers are visible (more precisely one of baselayers)
                             */
                             me.data.baselayersVisible = true;
@@ -154,7 +154,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                 * @ngdoc property
                                 * @name hs.layermanager.service#layer
                                 * @private
-                                * @type {Object} 
+                                * @type {Object}
                                 * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
                                 */
                                 var new_layer = {
@@ -164,10 +164,13 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     visible: layer.getVisible(),
                                     position: layer.get('position'),
                                     hsFilters: layer.get('hsFilters'),
-                                    uid: utils.generateUuid()
+                                    uid: utils.generateUuid(),
+                                    featureURI: layer.get('featureURI'),
+                                    //selectedFeature: 'none'
+                                    //selectedFeature: $scope.selectedFeature
                                 };
 
-                                
+
 
                                 if (WMST.layerIsWmsT(new_layer)) {
                                     var dimensions_time = new_layer.layer.get('dimensions_time') || new_layer.layer.dimensions_time;
@@ -241,6 +244,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                                     return 'Void';
                                 }
                             }
+
 
                             /**
                              * @ngdoc method
@@ -335,7 +339,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @public
                              * @param {Object}
                              * @returns {Boolean}
-                             * @description 
+                             * @description
                              */
                             function layerRemoved(e) {
                                 cleanFolders(e.element);
@@ -367,7 +371,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @public
                              * @param {Object}
                              * @returns {Boolean}
-                             * @description 
+                             * @description
                              */
                             function boxLayersInit() {
                                 if (angular.isDefined(config.box_layers)) {
@@ -387,7 +391,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             /**
                              * @function changeLayerVisibility
                              * @memberOf hs.layermanager.service
-                             * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible 
+                             * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
                              * @param {Boolean} visibility Visibility layer should have
                              * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
                              */
@@ -407,7 +411,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             /**
                              * @function changeBaseLayerVisibility
                              * @memberOf hs.layermanager.service
-                             * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+                             * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
                              * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
                              * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
                              */
@@ -467,7 +471,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             /**
                              * @function changeBaseLayerVisibility
                              * @memberOf hs.layermanager.service
-                             * @description Change visibility (on/off) of baselayers, only one baselayer may be visible 
+                             * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
                              * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
                              * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
                              */
@@ -482,7 +486,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             /**
                              * Update "position" property of layers, so layers could be correctly ordered in GUI
                              * @function updateLayerOrder
-                             * @memberOf hs.layermanager.service            
+                             * @memberOf hs.layermanager.service
                              */
                             /**
                              * @ngdoc method
@@ -490,7 +494,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @public
                              * @param {Object}
                              * @returns {Boolean}
-                             * @description 
+                             * @description
                              */
                             me.updateLayerOrder = function () {
                                 angular.forEach(me.data.layers, function (my_layer) {
@@ -502,7 +506,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * (PRIVATE) Get position of selected layer in map layer order
                              * @function getMyLayerPosition
                              * @memberOf hs.layermanager.service
-                             * @param {Ol.layer} layer Selected layer 
+                             * @param {Ol.layer} layer Selected layer
                              */
                             /**
                              * @ngdoc method
@@ -510,7 +514,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @public
                              * @param {Object}
                              * @returns {Boolean}
-                             * @description 
+                             * @description
                              */
                             function getMyLayerPosition(layer) {
                                 var pos = null;
@@ -524,10 +528,10 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                             }
 
                             /**
-                                 * (PRIVATE) 
+                                 * (PRIVATE)
                                  * @function removeAllLayers
                                  * @memberOf hs.layermanager.service
-                                 * @description Remove all layers from map 
+                                 * @description Remove all layers from map
                                  */
                             me.removeAllLayers = function () {
                                 var to_be_removed = [];
@@ -637,7 +641,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * @function isLayerInResolutionInterval
                              * @memberOf hs.layermanager.service
                              * @param {Ol.layer} lyr Selected layer
-                             * @description Test if layer (WMS) resolution is within map interval 
+                             * @description Test if layer (WMS) resolution is within map interval
                              */
                             me.isLayerInResolutionInterval = function (lyr) {
                                 var src = lyr.getSource();
@@ -663,7 +667,7 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
                              * (PRIVATE)
                              * @function init
                              * @memberOf hs.layermanager.service
-                             * @description Initialization of needed controllers, run when map object is available 
+                             * @description Initialization of needed controllers, run when map object is available
                              */
                             function init() {
                                 map = OlMap.map;
@@ -687,6 +691,8 @@ define(['angular', 'ol', 'hs.source.SparqlJson', 'angular-socialshare', 'map', '
 
                                 map.getLayers().on("add", layerAdded);
                                 map.getLayers().on("remove", layerRemoved);
+
+                                
                             }
 
                             if (angular.isDefined(OlMap.map)) {

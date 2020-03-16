@@ -2,10 +2,10 @@
  * @namespace hs.permalink
  * @memberOf hs
  */
-define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'compositions'],
+define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'compositions', 'layermanager'],
 
     function (angular) {
-        var module = angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.status_creator', 'hs.compositions']);
+        var module = angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.status_creator', 'hs.compositions', 'hs.layermanager']);
 
         module.config(['$locationProvider', function ($locationProvider) {
             $locationProvider.html5Mode({
@@ -20,8 +20,8 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
          * @membeof hs.permalink
          * @description Service responsible for creating permalink URLs. Mantain parameters information about map
          */
-        module.service("hs.permalink.urlService", ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config',
-            function ($rootScope, $http, $location, $window, OlMap, Core, utils, status, compositions, config) {
+        module.service("hs.permalink.urlService", ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.status_creator.service', 'hs.compositions.service_parser', 'config', 'hs.layermanager.service',
+            function ($rootScope, $http, $location, $window, OlMap, Core, utils, status, compositions, config, LayMan) {
 
                 var url_generation = true;
                 //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -68,12 +68,38 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         me.push('hs_x', view.getCenter()[0]);
                         me.push('hs_y', view.getCenter()[1]);
                         me.push('hs_z', view.getZoom());
+                        var currentLayer = LayMan.currentLayer;
+                        var featureURI = currentLayer.featureURI;
+                        console.log(currentLayer);
+                        console.log(currentLayer.selectedFeature);
+                        //console.log(currentLayer.filteredFeatures);
+                        console.log(currentLayer.hsFilters);
+                        console.log(currentLayer.position);
+                        //console.log(currentLayer.selectedFeature.get(featureURI));
+                        console.log(featureURI);
+
+                        /*
+                          až bude z linku získaný feature:
+                          feature = getFeatureByUri(featureURI)
+                          feature_filter.controller.toggleFeatureDetails(feature, true)
+
+                        */
+                        if(! angular.isUndefined(currentLayer.selectedFeature)){
+                          console.log('not undefined');
+                        }
+                        else {console.log('is undefined');}
+                        if(! angular.isUndefined(currentLayer.selectedFeature)){
+                          console.log('not undefined');
+                          me.push('selected', currentLayer.selectedFeature.get(featureURI));
+                        }
+                        else {me.push('selected', 'none')};
                         if (Core.language) me.push('lang', Core.language);
                         me.push('visible_layers', visible_layers.join(";"));
                         if (Core.puremapApp) me.push('puremap', "true");
                         for (var cP in me.customParams) {
                             me.push(cP, me.customParams[cP]);
                         }
+
                         $location.search(me.params);
                         if (!$rootScope.$$phase) $rootScope.$digest();
                     },
@@ -173,6 +199,15 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             });
                     },
 
+                    parseUri: function (uri){
+                      console.log('parsing uri ' + uri);
+                      var currentLayer = LayMan.currentLayer;
+                      var featureURI = currentLayer.featureURI;
+                      console.log(currentLayer);
+                      console.log(currentLayer.filteredFeatures);
+                      //console.log(currentLayer.filteredFeatures);
+                    },
+
                     /**
                     * @function stringify
                     * @memberof hs.permalink.urlService
@@ -250,6 +285,10 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                     if (url_generation) {
                         var timer = null;
                         $rootScope.$on('map.extent_changed', function (event, data, b) {
+                            me.update()
+                            $rootScope.$broadcast('browserurl.updated');
+                        });
+                        $rootScope.$on('map.selection_changed', function (feature) {
                             me.update()
                             $rootScope.$broadcast('browserurl.updated');
                         });
@@ -358,7 +397,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                      * @function shareOnSocial
                      * @public
                      * @params {String} provider Social share provider (twitter/facebook/google)
-                     * @params {Boolean} newShare If new share record on server should be created 
+                     * @params {Boolean} newShare If new share record on server should be created
                      * @description Share map on social network
                      */
                     shareOnSocial: function (provider, newShare) {
@@ -535,7 +574,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
         /**
          * @name hs.permalink
          * @membeof hs.permalink
-         * @description 
+         * @description
          */
         module.component('hs.permalink', {
             templateUrl: ['config', function (config) {
@@ -574,7 +613,7 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                      * @function setShareType
                      * @memberof hs.permalink.controller
                      * @returns {String} type
-                     * @description 
+                     * @description
                      */
                     setShareType: function (type) {
                         ShareService.setShareType(type);

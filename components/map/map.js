@@ -141,7 +141,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
              * @ngdoc property
              * @name hs.map.service#interactions
              * @public
-             * @type {Object} 
+             * @type {Object}
              * @description Set of default map interactions used in HSLayers ({@link http://openlayers.org/en/latest/apidoc/ol.interaction.DoubleClickZoom.html DoubleClickZoom},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardPan.html KeyboardPan}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.KeyboardZoom.html KeyboardZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.MouseWheelZoom.html MouseWheelZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchRotate.html PinchRotate} , {@link http://openlayers.org/en/latest/apidoc/ol.interaction.PinchZoom.html PinchZoom}, {@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragPan.html DragPan},{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragZoom.html DragZoom} ,{@link http://openlayers.org/en/latest/apidoc/ol.interaction.DragRotate.html DragRotate} )
              */
             this.interactions = {
@@ -200,19 +200,19 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                 var s_existing = existing.getSource();
                 var s_new = lyr.getSource();
                 return existing.get("title") == lyr.get("title") &&
-                    typeof s_existing == typeof s_new && 
+                    typeof s_existing == typeof s_new &&
                     (angular.isUndefined(s_existing.getParams) || s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
                     (angular.isUndefined(s_existing.getUrl) || s_existing.getUrl() == s_new.getUrl()) &&
                     (angular.isUndefined(s_existing.getUrls) || s_existing.getUrls()  == s_new.getUrls())
             }
 
             this.layerDuplicate = function(lyr){
-                return me.map.getLayers().getArray().filter(function(existing){ 
+                return me.map.getLayers().getArray().filter(function(existing){
                     layersEqual(existing, lyr)}).length > 0;
             }
 
             this.removeDuplicate = function(lyr){
-                me.map.getLayers().getArray().filter(function(existing){ 
+                me.map.getLayers().getArray().filter(function(existing){
                     layersEqual(existing, lyr)}).forEach(function(to_remove){me.map.getLayers().remove(to_remove)});
             }
 
@@ -226,7 +226,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
              * @ngdoc method
              * @name hs.map.service#repopulateLayers
              * @public
-             * @param {object} visible_layers List of layers, which should be visible. 
+             * @param {object} visible_layers List of layers, which should be visible.
              * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
              */
             this.repopulateLayers = function (visible_layers) {
@@ -327,7 +327,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
              * @ngdoc method
              * @name hs.map.service#resetView
              * @public
-             * @description Reset map view to view configured in app config 
+             * @description Reset map view to view configured in app config
              */
             this.resetView = function () {
                 me.map.setView(cloneView(config.default_view));
@@ -410,7 +410,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
 
             /**
             * @ngdoc method
-            
+
             * @public
             * @param {number} x X coordinate of new center
             * @param {number} y Y coordinate of new center
@@ -460,8 +460,8 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
          * @ngdoc controller
          * @description Main controller of default HSLayers map, initialize map service when default HSLayers template is used
          */
-        .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService', 'Core', '$rootScope',
-            function ($scope, OlMap, config, permalink, Core, $rootScope) {
+        .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService', 'Core', '$rootScope', 'hs.layermanager.service', 'hs.feature_filter.service', //'hs.feature_list.controller',
+            function ($scope, OlMap, config, permalink, Core, $rootScope, LayMan, feature_list, feature_filter) {
 
                 var map = OlMap.map;
 
@@ -471,7 +471,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                  * @public
                  * @description Sets div element of the map
                  * @param {string} div_id ID pf the container element
-                 * @returns {ol.Map} 
+                 * @returns {ol.Map}
                  */
                 $scope.setTargetDiv = function (div_id) {
                     OlMap.map.setTarget(div_id);
@@ -483,7 +483,7 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                  * @public
                  * @param {string} title Title of the layer (from layer creation)
                  * @returns {Ol.layer} Ol.layer object
-                 * @description Find layer object by title of layer 
+                 * @description Find layer object by title of layer
                  */
                 $scope.findLayerByTitle = OlMap.findLayerByTitle;
 
@@ -518,6 +518,27 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
                     if (permalink.getParamValue("puremap")) {
                         Core.puremapApp = true;
                         OlMap.puremap();
+                    }
+                    if (permalink.getParamValue('selected')){
+                      permalink.parseUri(permalink.getParamValue('selected'));
+                      var uri = permalink.getParamValue('selected');
+                      if (uri === 'none'){
+                        console.log('no, nothing was selected');
+                      }
+                      console.log('yes, st. was selected: '+ uri);
+                      $rootScope.$broadcast('map.featureURI_selected', uri);
+                      console.log('we did a uri broadcast');
+                      /*var layer = LayMan.currentLayer;
+                      console.log(layer);
+                      console.log(layer.featureURI);
+                      var source = LayMan.currentLayer.layer.getSource();//.getFeatures();//.getFeatures();
+                      console.log(source);
+                      console.log(source.getProperties());*/
+                      //feature_filter.applyFilters(layer);
+                      //console.log(feature in LayMan.currentLayer.filteredFeatures);
+                      //feature_filter.
+                      //getFeatureByUri(uri);
+                      //$scope.toggleFeatureDetails(feature, false);
                     }
                 }
 
