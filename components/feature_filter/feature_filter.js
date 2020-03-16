@@ -94,7 +94,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                         }
 
                         var source = layer.layer.getSource();
-                        console.log(source);
+                        //console.log(source);
 
                         if (!('hsFilters' in layer)) return source.getFeatures();
                         if (!layer.hsFilters) return source.getFeatures();
@@ -232,7 +232,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 
                 //experimental
                 $rootScope.$on('map.featureURI_selected', function(event, uri){
-                  console.log('filter knows uri: ' + uri);
+                  //console.log('filter knows uri: ' + uri);
                   $rootScope.$emit('map.featureURI_selected2', uri);
                   $rootScope.$broadcast('map.featureURI_selected2', uri);
                   $scope.$emit('map.featureURI_selected2', uri);
@@ -397,7 +397,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 
                         $scope.toggleFeatureDetails(feature, false);
 
-                        console.log('selector on');
+                        //console.log('selector on');
 
                         if (!$scope.$$phase) $scope.$digest();
                     });
@@ -409,8 +409,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                     $scope.toggleFeatureDetails = function(feature, handleFeature) {
                         Core.updateMapSize();
                         $scope.displayDetails = !$scope.displayDetails;
-                        console.log('handle: ' + handleFeature);
-                        console.log(feature);
+                        //console.log('handle: ' + handleFeature);
+                        //console.log(feature);
                         $scope.LayMan.currentLayer.selectedFeature = feature;
 
                         if (feature === undefined) {
@@ -463,28 +463,30 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                         //$scope.LayMan.currentLayer.selectedFeature = $scope.selectedFeature;
                     };
 
+                    //experimental
                     $scope.getFeatureByUri = function(uri){
-                      console.log('fc get Feature');
-                      console.log(uri);
+                      //console.log(uri);
                       var tempuri = 'bp060-fasal-wood';
                       //var layer = $scope.LayMan.currentLayer;
                       var layer = LayMan.currentLayer;
                       var features = $scope.applyFilters();
-                      console.log(tempuri);
+                      /*console.log(tempuri);
                       console.log(layer);
                       console.log(layer.filteredFeatures);
-                      console.log(features);
+                      console.log(features);*/
                     };
 
+                    //experimental
                     $rootScope.$on('map.featureURI_selected2', function(event, uri){
                       console.log('controller from $rootScope');
                     });
 
+                    //experimental
                     $scope.$on('map.featureURI_selected2', function(event, uri){
                       console.log('controller from $scope');
                     });
 
-                    console.log('done');
+
                     $scope.getFeatureByUri('X');
                     $scope.$emit('scope_loaded', "featureList");
 
