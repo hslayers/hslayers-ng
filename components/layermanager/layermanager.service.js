@@ -137,7 +137,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
         me.data.layers.push(new_layer);
         $timeout(() => {
-          console.log('metadata for', layer)
           me.fillMetadata(layer);
         }, 0);
       } else {
@@ -714,7 +713,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                   }
                   return layer;
                 }
-                if (service_layer.MetadataURL == false) {
+                if (angular.isUndefined(service_layer.MetadataURL)) {
                   layer.set('MetadataURL', service);
                 }
               }
