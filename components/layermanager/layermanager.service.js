@@ -136,9 +136,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
           new_layer.legends = layer.get('legends');
         }
         me.data.layers.push(new_layer);
-        $timeout(() => {
-          me.fillMetadata(layer);
-        }, 0);
+        if (layer.get('queryCapabilities') != false){
+          $timeout(() => {
+            me.fillMetadata(layer);
+          }, 0);  
+        }
       } else {
         new_layer.active = layer.getVisible();
         new_layer.thumbnail = getImage(layer),
@@ -672,13 +674,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
      * @function fillMetadata
      * @memberOf hs.layermanager.service
      * @param {Ol.layer} layer Selected layer
-     * @description Add getCapabilities response metadata to layer object
+     * @description Add getCapabilities response metadata to layer object, adds hasSublayers parameter if true
      */
     me.fillMetadata = function (layer) {
       me.queryMetadata(layer).then(()=>{
         const subLayers = layer.get('Layer');
         if (angular.isDefined(subLayers) && subLayers.length > 0) {
-          layer.subLayers = true;
+          layer.hasSublayers = true;
         }
       });
     };

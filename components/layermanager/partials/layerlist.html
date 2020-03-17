@@ -11,14 +11,15 @@
                         ng-class="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
-                    ng-click="layer.layer.subLayers && toggleSublayers(layer)">
+                    ng-click="toggleLayerEditorTool(layer)">
                     {{layer.title}}
                 </div>
-                <div class="p-0 mr-1" ng-if="layer.layer.subLayers" style="font-size: x-small;">
+                <div class="p-0 mr-1" ng-if="layer.layer.hasSublayers" style="font-size: x-small;" ng-click="toggleLayerEditorTool(layer)">
                     <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
                         ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
-                        ng-hide="!layerLoaded(layer.layer)"></span> </div>
+                        ng-hide="!layerLoaded(layer.layer)"></span> 
+                </div>
                 <div class="p-0 info_btn">
                     <span class="icon-settingsthree-gears text-secondary" ng-click="toggleLayerEditor(layer)"
                         title="{{'Additional informations'|translate}}" data-toggle="tooltip" data-container="body"

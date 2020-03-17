@@ -185,6 +185,14 @@ export default {
                     }
                 };
             };
+            $scope.toggleLayerEditorTool = function (layer){
+                if (layer.layer.hasSublayers){
+                    $scope.toggleSublayers(layer)
+                }
+                else {
+                    $scope.toggleLayerEditor(layer)
+                }
+            };
             $scope.toggleSublayers = function (layer){
                 if (LayMan.currentLayer != layer){
                     $scope.toggleCurrentLayer(layer);
