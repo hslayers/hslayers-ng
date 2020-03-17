@@ -185,7 +185,7 @@ export default {
                     }
                 };
             };
-            $scope.toggleLayerEditorTool = function (layer){
+            $scope.toggleLayerEditorTools = function (layer){
                 if (layer.layer.hasSublayers){
                     $scope.toggleSublayers(layer)
                 }

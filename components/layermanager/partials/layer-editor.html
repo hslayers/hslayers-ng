@@ -100,7 +100,7 @@
                 <!-- Legends -->
                 <div ng-if="olLayer()">
                     <div ng-repeat="layer in legendDescriptors">
-                        <div class="form-group" ng-if="legendService.isLegendable(layer)">
+                        <div class="form-group" ng-if="legendService.isLegendable(layer) && layer.lyr.get('inlineLegend')">
                             <label translate>Legend</label>
                             <hs.legend.layer-directive layer="layer"></hs.legend.layer-directive>
                         </div>

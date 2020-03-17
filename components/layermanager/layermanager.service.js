@@ -710,9 +710,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 }
                 if (layer.get('Metadata')) {
                   layer.set('MetadataURL', metadata);
-                  if (!$rootScope.$$phase) {
-                    $rootScope.$digest();
-                  }
                   return layer;
                 }
                 if (angular.isUndefined(service_layer.MetadataURL)) {
@@ -721,9 +718,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
               }
             });
 
-            if (!$rootScope.$$phase) {
-              $rootScope.$digest();
-            }
             return true;
           })
           .catch((e) => {
@@ -748,9 +742,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
             if (layer.get('Metadata')) {
               layer.set('MetadataURL', metadata);
             }
-            if (!$rootScope.$$phase) {
-              $rootScope.$digest();
-            }
             return true;
           })
           .catch((error) => {
@@ -770,9 +761,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
                 layer.set('Attribution', {'OnlineResource': layer.get('Copyright')});
               } else {
                 layer.set('Attribution', {'OnlineResource': el[0].getAttribute('xlink:href')});
-              }
-              if (!$rootScope.$$phase) {
-                $rootScope.$digest();
               }
               return true;
 
