@@ -14,12 +14,6 @@
                     ng-click="toggleLayerEditorTools(layer)">
                     {{layer.title}}
                 </div>
-                <div class="p-0 mr-1" ng-if="layer.layer.hasSublayers" style="font-size: x-small;" ng-click="toggleLayerEditorTools(layer)">
-                    <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
-                    <span class="mr-1"
-                        ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
-                        ng-hide="!layerLoaded(layer.layer)"></span> 
-                </div>
 
                 <div class="p-0 " ng-hide="layerValid(layer.layer)">
                     <i class="icon-warning-sign hs-lm-warning-scale"
@@ -28,7 +22,7 @@
                         ng-click="$event.stopPropagation()"></i>
                 </div>
                 <div class="p-0" ng-show="layerValid(layer.layer)">
-                    <i class="icon-warning-sign alert-danger btn btn-sm hs-lm-warning-error"
+                    <i class="icon-warning-sign alert-danger bg-white    hs-lm-warning-error"
                         title="{{'This layer is not available'|translate}}" data-toggle="tooltip" data-container="body"
                         data-placement="auto" ng-click="$event.stopPropagation()"></i>
                 </div>
@@ -39,6 +33,12 @@
                 <div class="p-0" ng-show="isLayerQueryable(layer)">
                     <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}"
                         ng-click="$event.stopPropagation()"></i>
+                </div>
+                <div class="p-0 mr-1" ng-if="layer.layer.hasSublayers" style="font-size: x-small;" ng-click="toggleLayerEditorTools(layer)">
+                    <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
+                    <span class="mr-1"
+                        ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
+                        ng-hide="!layerLoaded(layer.layer)"></span> 
                 </div>
                 <div class="pl-1 info_btn">
                     <span class="icon-settingsthree-gears text-secondary" ng-click="toggleLayerEditor(layer)"
