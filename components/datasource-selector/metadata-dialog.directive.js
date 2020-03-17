@@ -1,8 +1,8 @@
-export default ['config', function (config) {
-    return {
-        template: require('components/datasource-selector/partials/dialog_metadata.html'),
-        link: function (scope, element, attrs) {
-            scope.metadataModalVisible = true;
-        }
-    };
-}]
+export default [function () {
+  return {
+    template: require('../datasource-selector/partials/dialog_metadata.html'),
+    link: function (scope) {
+      scope.metadataModalVisible = true;
+    }
+  };
+}];
