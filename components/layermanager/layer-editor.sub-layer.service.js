@@ -7,9 +7,6 @@ export default ['hs.layermanager.service',
     me.populatedLayers = [];
 
     me.hasSubLayers = function() {
-      if (LayMan.currentLayer == null) {
-        return;
-      }
       const subLayers = LayMan.currentLayer.layer.get('Layer');
       return angular.isDefined(subLayers) && subLayers.length > 0;
     };

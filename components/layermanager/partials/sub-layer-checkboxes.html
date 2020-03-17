@@ -6,17 +6,17 @@
         <label class="form-check-label">{{::subLayer}}</label>
     </div>
     <!-- object -->
-    <div ng-if="::!subLayerIsString(subLayer)" class="w-100">
+    <div ng-if="!subLayerIsString(subLayer)" class="w-100">
         <div class="d-flex">
             <div class="p-0 form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" ng-model="checkedSubLayers[subLayer.Name]"
                     ng-change="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])"
-                    ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="::!subLayer.Layer" />
+                    ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="!subLayer.Layer" />
                 <input class="form-check-input" type="checkbox" ng-model="withChildren[subLayer.Name]"
                     ng-change="subLayerSelected(subLayer, withChildren[subLayer.Name])"
-                    ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="::subLayer.Layer" />
+                    ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="subLayer.Layer" />
 
-                <div class="p-0" ng-if="::subLayer.Layer" ng-click="toggleExpanded()">
+                <div class="p-0" ng-if="subLayer.Layer" ng-click="toggleExpanded()">
                     <button type="button" class="btn btn-sm p-0"><i
                             ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i></button>
                             <label class="m-0">{{subLayer.Title || subLayer.Name}}</label>

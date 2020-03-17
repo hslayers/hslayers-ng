@@ -2,20 +2,27 @@ export default ['$compile', 'config', '$rootScope', 'hs.layermanager.service', '
     return {
         template: require('components/layermanager/partials/layerlist.html'),
         controller: ['$scope', function ($scope) {
-            $scope.toggleSublayersVisibility = function () {
-                if (subLayerService.hasSubLayers()) {
+            $scope.toggleSublayersVisibility = function (layer) {
+                if (LayMan.currentLayer == null) {
                     Object.keys(subLayerService.checkedSubLayers).forEach(function (key) {
-                        subLayerService.checkedSubLayers[key] = LayMan.currentLayer.visible;
+                        subLayerService.checkedSubLayers[key] = layer.visible;
                     })
-                    if (Object.keys(subLayerService.withChildren).length === 0) {
-                        return
-                    }
-                    else {
-                        Object.keys(subLayerService.withChildren).forEach(function (key) {
-                            subLayerService.withChildren[key] = LayMan.currentLayer.visible;
+                  }
+                else {
+                    if (subLayerService.hasSubLayers()) {
+                        Object.keys(subLayerService.checkedSubLayers).forEach(function (key) {
+                            subLayerService.checkedSubLayers[key] = LayMan.currentLayer.visible;
                         })
+                        if (Object.keys(subLayerService.withChildren).length === 0) {
+                            return
+                        }
+                        else {
+                            Object.keys(subLayerService.withChildren).forEach(function (key) {
+                                subLayerService.withChildren[key] = LayMan.currentLayer.visible;
+                            })
+                    }
+                };
                 }
-            };
         }
         }],
         compile: function compile(element) {
