@@ -117,10 +117,10 @@ export default ['config', '$http', function (config, $http) {
             return {};
 
         return str.trim().split('&').reduce(function (ret, param) {
+            if (param == false) return {}
             var parts = param.replace(/\+/g, ' ').split('=');
             var key = parts[0];
             var val = parts[1];
-
             key = decodeURIComponent(key);
             // missing `=` should be `null`:
             // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
@@ -133,7 +133,6 @@ export default ['config', '$http', function (config, $http) {
             } else {
                 ret[key] = [ret[key], val];
             }
-
             return ret;
         }, {});
     };
