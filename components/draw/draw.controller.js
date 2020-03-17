@@ -3,15 +3,13 @@ import { getVectorContext } from 'ol/render';
 
 export default [
   '$scope',
-  'hs.map.service',
   'hs.draw.service',
   'hs.utils.layerUtilsService',
   'hs.query.vectorService',
   '$timeout',
   'hs.layout.service',
   'gettext',
-  function($scope, OlMap, drawService, layerUtilsService, queryVectorService, $timeout, layoutService, gettext) {
-    let map;
+  function($scope, drawService, layerUtilsService, queryVectorService, $timeout, layoutService, gettext) {
     angular.extend($scope, {
       layoutService,
       service: drawService,
@@ -62,10 +60,10 @@ export default [
           true //Activate drawing immediately
         );
       },
-      finishDrawing(){
+      finishDrawing() {
         drawService.draw.finishDrawing();
       },
-      removeLastPoint(){
+      removeLastPoint() {
         drawService.removeLastPoint();
       },
       selectLayer(layer) {
@@ -98,11 +96,12 @@ export default [
       },
       /**
 			 * @function changeStyle
-			 * @memberOf hs.draw.controller
+			 * @memberOf HsDrawController
 			 * @param {Event} e optional parameter passed when changeStyle is called
 			 * for 'ondrawend' event features
 			 * @description Dynamically create draw feature style according to parameters selected in
 			 * hs.styler.colorDirective
+       * @returns {Array} Array of style definitions
 			 */
       changeStyle(e = null) {
         return [
@@ -154,17 +153,6 @@ export default [
         });
       }
     });
-
-    /**
-		 * @memberof hs.draw.shapeToolbar
-		 * @function init
-		 * @description Init function
-		 */
-    function init() {
-      map = OlMap.map;
-    }
-
-    OlMap.loaded().then(init);
 
     $scope.$emit('scope_loaded', 'DrawToolbar');
   }

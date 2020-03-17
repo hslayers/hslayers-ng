@@ -1,6 +1,6 @@
-import "utils.module";
+import 'utils.module';
 
 export default {
-	template: require("./partials/shape-toolbar.html"),
-	controller: "hs.draw.controller",
+  template: require('./partials/shape-toolbar.html'),
+  controller: 'HsDrawController'
 };

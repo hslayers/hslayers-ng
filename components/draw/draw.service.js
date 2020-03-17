@@ -1,7 +1,6 @@
-import {Draw, Select, Modify} from 'ol/interaction';
-import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
+import {Draw, Modify} from 'ol/interaction';
 import Collection from 'ol/Collection';
-import {Style, Icon, Stroke, Fill, Circle} from 'ol/style';
+import {Style, Stroke, Fill, Circle} from 'ol/style';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 
@@ -15,7 +14,9 @@ export default [
   '$rootScope',
   'hs.utils.layerUtilsService',
   'gettext',
-  function(Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope, layerUtilsService, gettext) {
+  '$log',
+  '$document',
+  function(Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope, layerUtilsService, gettext, $log, $document) {
     const me = this;
     angular.extend(me, {
       draw: null,
@@ -51,7 +52,7 @@ export default [
       addDrawLayer() {
         let tmpTitle = gettext('Draw layer');
         let i = 1;
-        while(hsMap.findLayerByTitle(tmpTitle)){
+        while (hsMap.findLayerByTitle(tmpTitle)) {
           tmpTitle = `${gettext('Draw layer')} ${i++}`;
         }
         const drawLayer = new VectorLayer({
@@ -95,6 +96,10 @@ export default [
       /**
 			 * @function activateDrawing
 			 * @memberOf hs.draw.service
+       * @param {function} onDrawStart Callback function called when drawing is started
+       * @param {function} onDrawEnd Callback function called when drawing is finished
+       * @param {function} onSelected Callback function called when feature is selected for modification
+       * @param {function} onDeselected Callback function called when feature is deselected
 			 * @param {function} changeStyle controller callback function which set style
 			 * dynamically according to selected parameters
 			 * @param {Boolean} drawState Should drawing be set active when
@@ -102,6 +107,8 @@ export default [
 			 * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
 			 */
       activateDrawing(onDrawStart, onDrawEnd, onSelected, onDeselected, changeStyle, drawState) {
+        me.onDeselected = onDeselected;
+        me.onSelected = onSelected;
         me.deactivateDrawing().then(() => {
           queryBaseService.deactivateQueries();
           me.draw = new Draw({
@@ -116,6 +123,12 @@ export default [
             map.addInteraction(me.draw);
           });
 
+          function keyUp (event) {
+            if (event.keyCode === 27) {
+              me.removeLastPoint();
+            }
+          }
+
           me.draw.on(
             'drawstart',
             (e) => {
@@ -124,11 +137,7 @@ export default [
               if (onDrawStart) {
                 onDrawStart(e);
               }
-              document.addEventListener('keyup', function(event){
-                if(event.keyCode === 27){
-                  me.removeLastPoint()
-                 }
-               });
+              $document[0].addEventListener('keyup', keyUp);
             },
             this
           );
@@ -145,19 +154,21 @@ export default [
               if (onDrawEnd) {
                 onDrawEnd(e);
               }
+              $document[0].removeEventListener('keyup', keyUp);
             },
             this
           );
         });
       },
 
-      removeLastPoint(){
+      removeLastPoint() {
         me.draw.removeLastPoint();
       },
 
       /**
 			 * @function deactivateDrawing
-			 * @memberOf hs.draw.controller
+			 * @memberOf hs.draw.service
+       * @return {Promise}
 			 * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
 			 */
       deactivateDrawing() {
@@ -173,14 +184,16 @@ export default [
       },
 
       stopDrawing() {
-        if (angular.isUndefined(me.draw) || me.draw == null) {
+        if (angular.isUndefined(me.draw) || me.draw === null) {
           return;
         }
         try {
           if (me.draw.getActive()) {
             me.draw.finishDrawing();
           }
-        } catch (ex) {}
+        } catch (ex) {
+          $log.warn(ex);
+        }
         me.draw.setActive(false);
         me.modify.setActive(false);
       },
@@ -190,7 +203,9 @@ export default [
           if (me.draw.getActive()) {
             me.draw.finishDrawing();
           }
-        } catch (ex) {}
+        } catch (ex) {
+          $log.warn(ex);
+        }
         me.draw.setActive(true);
       }
     });
@@ -215,12 +230,13 @@ export default [
       }
     });
 
-    $rootScope.$on('vectorQuery.featureSelected', (e, feature) => {
+    const unregisterFeatureSelected = $rootScope.$on('vectorQuery.featureSelected', (e, feature) => {
       me.selectedFeatures.push(feature);
     });
 
-    $rootScope.$on('vectorQuery.featureDelected', (e, feature) => {
+    const unregisterFeatureDeselected = $rootScope.$on('vectorQuery.featureDelected', (e, feature) => {
       me.selectedFeatures.remove(feature);
     });
+    return me;
   }
 ];

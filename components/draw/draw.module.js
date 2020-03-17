@@ -1,12 +1,11 @@
-import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
-import 'components/map/map.module';
-import 'core'
-import 'components/utils/utils.module'
-import 'geolocation';
+import '../map/map.module';
+import '../core/core';
+import '../utils/utils.module';
+import '../geolocation/geolocation';
 import drawService from './draw.service';
 import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 import drawController from './draw.controller';
-import drawDirective from './draw.directive'
+import drawDirective from './draw.directive';
 
 /**
 * @namespace hs.draw
@@ -14,14 +13,14 @@ import drawDirective from './draw.directive'
 */
 
 angular.module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
-    .service('hs.draw.service', drawService)
+  .factory('hs.draw.service', drawService)
 
-    /**
-     * @memberof hs.draw
-     * @ngdoc component
-     * @name hs.draw.shapeToolbar
-     * @description Buttons in the corner for controlling drawing
-     */
-    .component('hs.draw.shapeToolbar', drawShapeToolbarComponent)
-    .controller('hs.draw.controller', drawController)
-    .directive('hs.draw.directive', drawDirective)
+/**
+ * @memberof hs.draw
+ * @ngdoc component
+ * @name hs.draw.shapeToolbar
+ * @description Buttons in the corner for controlling drawing
+ */
+  .component('hs.draw.shapeToolbar', drawShapeToolbarComponent)
+  .controller('HsDrawController', drawController)
+  .directive('hs.draw.directive', drawDirective);
