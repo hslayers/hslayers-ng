@@ -23,7 +23,7 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-stats": "^1.0.1",
     "extract-loader": "^5.0.1",
-    "file-loader": "^5.0.2",
+    "file-loader": "^6.0.0",
     "grunt": "^1.0.4",
     "grunt-angular-gettext": "^2.5.1",
     "grunt-jsdoc": "^2.4.1",
