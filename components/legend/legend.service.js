@@ -167,6 +167,7 @@ export default ['hs.utils.service', function (utils) {
          * @param {string} layer_name Name of layer for which legend is requested
          */
         getLayerLegendDescriptor: function (layer) {
+            if (layer.get('base')) return 
             if (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS)) {
                 var subLayerLegends = layer.getSource().getParams().LAYERS.split(",");
                 for (var i = 0; i < subLayerLegends.length; i++) {
