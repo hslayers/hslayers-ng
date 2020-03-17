@@ -17,35 +17,35 @@ import nestedLayersTableDirective from './nested-layers-table.directive';
  * @memberOf hs
  */
 export const AddLayersModule = angular.module('hs.addLayers', ['hs.map', 'hs.addLayersWms', 'hs.addLayersArcgis', 'hs.addLayersWfs', 'hs.addLayersWmts', 'hs.addLayersVector', 'hs.addLayersShp', 'ngCookies', 'hs.historyList', 'hs.getCapabilities'])
-    /**
-    * @memberof hs.addLayers
-    * @ngdoc directive
-    * @name compile
-    * @description Directive which compiles a template and includes it in the dom.
-    * Previously done with ng-bind-html which escaped variables and child directives
-    */
-    .directive('compile', compileDirective)
+/**
+* @memberof hs.addLayers
+* @ngdoc directive
+* @name compile
+* @description Directive which compiles a template and includes it in the dom.
+* Previously done with ng-bind-html which escaped variables and child directives
+*/
+  .directive('compile', compileDirective)
 
-    /**
-    * @memberof hs.addLayers
-    * @ngdoc directive
-    * @name hs.addLayersUrl
-    */
-    .directive('hs.addLayersUrl', addLayersUrlDirective)
+/**
+* @memberof hs.addLayers
+* @ngdoc directive
+* @name hs.addLayersUrl
+*/
+  .directive('hs.addLayersUrl', addLayersUrlDirective)
 
 
-    /**
-    * @memberof hs.addLayers
-    * @ngdoc directive
-    * @name hs.addLayersUrl
-    */
-    .directive('hs.nestedLayersTable', nestedLayersTableDirective )
+/**
+* @memberof hs.addLayers
+* @ngdoc directive
+* @name hs.addLayersUrl
+*/
+  .directive('hs.nestedLayersTable', nestedLayersTableDirective)
 
-    /**
-    * @memberof hs.addLayers
-    * @ngdoc component
-    * @name hs.addLayers
-    */
-    .component('hs.addLayers', addLayersComponent);
+/**
+* @memberof hs.addLayers
+* @ngdoc component
+* @name hs.addLayers
+*/
+  .component('hs.addLayers', addLayersComponent);
 
 

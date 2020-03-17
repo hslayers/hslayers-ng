@@ -1,6 +1,9 @@
 import addLayersVectorService from './add-layers-vector.service';
 
-
+/**
+ * @namespace hs.addLayersVector
+ * @memberOf hs
+ */
 angular.module('hs.addLayersVector', ['hs.styles'])
 /**
 * @memberof hs.ows
