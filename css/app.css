@@ -154,7 +154,7 @@ li.hs-lm-item.hovering {
 .hs-lm-list li .info_btn {
 	cursor: pointer;
 }
-.hs-lm-list li .info_btn .icon-squarei:hover::before {
+.hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
 	color: #4495eb;
 }
 
