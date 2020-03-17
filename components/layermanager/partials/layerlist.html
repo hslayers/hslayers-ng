@@ -1,4 +1,4 @@
-<div class="list-group-item hs-lm-list" ng-if="obj.layers.length>0">
+<div class="list-group-item hs-lm-list pb-1" ng-if="obj.layers.length>0">
     <ul class="list-group row" dnd-list="layer_titles" dnd-drop="dragged(event, index, item, type, external)">
         <li ng-repeat="layer in filtered_layers | orderBy:order() | filter:query track by layer.layer.ol_uid + ' ' + layer.position"
             id="{{layer.idString()}}" dnd-draggable="layer.title" dnd-effect-allowed="move"
