@@ -40,13 +40,13 @@
             <div class="main-content">
                 <h2><span ng-if="featureDetails.region">{{ featureDetails.region }}, </span>{{ featureDetails.country }}</h2>
                 <p class="content-info" ng-repeat="url in featureDetails.website.split(',')" ng-if="featureDetails.website"><a target="_blank" ng-href="{{url}}">{{ url }}</a></p>
-        
+
                 <h3 ng-if="featureDetails.biomass_source" class="heading">Biomass source</h3>
                 <p class="content-info" ng-if="featureDetails.biomass_source">{{ featureDetails.biomass_source }}</p>
-        
+
                 <h3 ng-if="featureDetails.product" class="heading">Product</h3>
                 <p class="content-info" ng-if="featureDetails.product">{{ featureDetails.product }}</p>
-    
+
                 <h3 ng-if="featureDetails.contact" class="heading">Contact</h3>
                 <p class="content-info" ng-if="featureDetails.contact" ng-bind-html="featureDetails.contact"></p>
 
