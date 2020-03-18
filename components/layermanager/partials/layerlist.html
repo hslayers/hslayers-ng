@@ -34,7 +34,7 @@
                     <i class="icon-info-sign hs-lm-queryable" title="{{'This layer is queryable'|translate}}"
                         ng-click="$event.stopPropagation()"></i>
                 </div>
-                <div class="p-0 mr-1 info_btn" ng-if="layer.layer.hasSublayers" style="font-size: x-small;" ng-click="toggleLayerEditorTools(layer)">
+                <div class="p-0 mr-1 ml-1 info_btn" ng-if="layer.layer.hasSublayers" style="font-size: x-small;" ng-click="toggleLayerEditorTools(layer)">
                     <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
                         ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
