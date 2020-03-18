@@ -1,5 +1,5 @@
-export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'gettextCatalog', 'config', '$templateCache', '$timeout', '$interval', 'hs.layout.service',
-  function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, gettextCatalog, config, $templateCache, $timeout, $interval, layoutService) {
+export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.service', 'hs.geolocation.service', 'hs.layermanager.service', 'config', '$timeout', 'hs.layout.service', '$log', '$document',
+  function ($scope, $injector, $rootScope, $window, Core, OlMap, Geolocation, LayerManager, config, $timeout, layoutService, $log, $document) {
     if (config.design == 'md') {
       require(['angular-material-bottom-sheet-collapsible/bottomSheetCollapsible']);
     }
@@ -22,7 +22,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
     $scope.defaultFab = {
       primary: {
         clickAction: function () {
-          console.log('Primary clicked.');
+          $log.log('Primary clicked.');
         },
         classes: '',
         icon: {
@@ -38,7 +38,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       secondary: [
         {
           clickAction: function () {
-            console.log('Secondary 1 clicked.');
+            $log.log('Secondary 1 clicked.');
           },
           classes: '',
           icon: {
@@ -53,7 +53,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         },
         {
           clickAction: function () {
-            console.log('Secondary 2 clicked.');
+            $log.log('Secondary 2 clicked.');
           },
           classes: '',
           icon: {
@@ -68,7 +68,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
         },
         {
           clickAction: function () {
-            console.log('Secondary 3 clicked.');
+            $log.log('Secondary 3 clicked.');
           },
           classes: '',
           icon: {
@@ -126,43 +126,60 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       $scope.fab.unset();
     });
 
+    /**
+     * Remove loading logo which is used in cordova applications
+     */
     function removeLoadingLogo() {
-      const el = document.getElementById('hs-loading-logo');
+      const el = $document[0].getElementById('hs-loading-logo');
       if (el) {
         el.parentElement.removeChild(el);
       }
     }
 
-    $rootScope.$on('$viewContentLoaded', removeLoadingLogo);
+    const unregisterViewContentLoaded =
+      $rootScope.$on('$viewContentLoaded', removeLoadingLogo);
+
     $timeout(removeLoadingLogo, 100);
 
     $scope.leftSidenavOpen = false;
 
-    $rootScope.$on('geolocation.started', () => {
-      $scope.location.status.icon = 'my_location';
-      $scope.location.status.class = 'searching';
-    });
+    const unregisterGeolocationStarted =
+      $rootScope.$on('geolocation.started', () => {
+        $scope.location.status.icon = 'my_location';
+        $scope.location.status.class = 'searching';
+      });
 
-    $rootScope.$on('geolocation.updated', () => {
-      $scope.location.status.icon = 'my_location';
-      $scope.location.status.class = 'on';
-    });
+    const unregisterGeolocationUpdated =
+      $rootScope.$on('geolocation.updated', () => {
+        $scope.location.status.icon = 'my_location';
+        $scope.location.status.class = 'on';
+      });
 
-    $rootScope.$on('geolocation.stopped', () => {
-      $scope.location.status.icon = 'location_searching';
-      $scope.location.status.class = 'off';
-    });
+    const unregisterGeolocationStoped =
+      $rootScope.$on('geolocation.stopped', () => {
+        $scope.location.status.icon = 'location_searching';
+        $scope.location.status.class = 'off';
+      });
 
-    $rootScope.$on('geolocation.failed', () => {
-      $scope.location.status.icon = 'location_disabled';
-      $scope.location.status.class = 'off';
+    const unregisterGeolocationFailed =
+      $rootScope.$on('geolocation.failed', () => {
+        $scope.location.status.icon = 'location_disabled';
+        $scope.location.status.class = 'off';
+      });
+
+    $scope.$on('$destroy', () => {
+      unregisterGeolocationStarted();
+      unregisterGeolocationUpdated();
+      unregisterGeolocationStoped();
+      unregisterGeolocationFailed();
+      unregisterViewContentLoaded();
     });
 
     let $mdMedia;
     try {
       $mdMedia = $injector.get('$mdMedia');
     } catch (ex) {
-
+      //Disregard exception
     }
     $scope.openPanel = function (panel) {
       layoutService.setMainPanel(panel.name);
@@ -183,20 +200,6 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
     // $scope.bottomSheetState = "halfway";
     // $scope.bottomSheetSwitchStateIcon = "expand_more";
-
-    function resolveScrollPosition(raw) {
-      if ($scope.getBottomSheetState === 'expanded' && raw.scrollHeight > raw.clientHeight) {
-        raw.style['touch-action'] = 'pan-y';
-        if (raw.scrollTop + raw.offsetHeight > raw.scrollHeight) {
-          raw.style['touch-action'] = 'pan-up';
-        }
-        if (raw.scrollTop == 0) {
-          raw.style['touch-action'] = 'pan-down';
-        }
-      } else {
-        raw.style['touch-action'] = 'none';
-      }
-    }
 
     $scope.openBottomSheet = function (panel) {
       try {
@@ -232,14 +235,14 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
             // }
           }
         }).then((e) => {
-          console.log('Bottom sheet closed', Date.now());
+          $log.log('Bottom sheet closed', Date.now());
           $scope.unsetBottomSheet();
         }).catch((e) => {
-          console.log('Bottom sheet canceled', Date.now());
+          $log.log('Bottom sheet canceled', Date.now());
           $scope.unsetBottomSheet();
         });
       } catch (e) {
-        console.log('Injector does not have mdBottomSheetCollapsible service!');
+        $log.log('Injector does not have mdBottomSheetCollapsible service!');
       }
 
       // $scope.$watch(function() {
@@ -282,7 +285,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
             $scope.leftSidenavOpen = false;
           });
 
-          Hammer(document.getElementsByClassName('md-sidenav-left')[0]).on('swipeleft', () => {
+          Hammer($document[0].getElementsByClassName('md-sidenav-left')[0]).on('swipeleft', () => {
             $scope.closeLeftSidenav();
           });
 
@@ -308,7 +311,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
           });
         });
       } catch (ex) {
-        console.error('$mdSidenav missing');
+        $log.error('$mdSidenav missing');
       }
 
       try {
@@ -330,7 +333,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
           });
         };
       } catch (ex) {
-
+        //Ignore error
       }
     }
 
@@ -338,14 +341,12 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
     $scope.defaultBaselayerThumbnail = require('../../img/default.png');
     $scope.defaultTerrainlayerThumbnail = require('../../img/default.png');
 
-    let baselayersPanelRef;
-
     $scope.removeLayer = function (layer) {
       const active = layer.active;
       OlMap.map.removeLayer(layer.layer);
       if (active) {
-        if (LM.data.baselayers.length > 0) {
-          LM.changeBaseLayerVisibility(true, LM.data.baselayers[0]);
+        if (LayerManager.data.baselayers.length > 0) {
+          LayerManager.changeBaseLayerVisibility(true, LayerManager.data.baselayers[0]);
         }
       }
     };
@@ -407,7 +408,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
 
         $mdPanel.open(config)
           .then((result) => {
-            baselayersPanelRef = result;
+
           });
 
 
@@ -419,7 +420,7 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
       };
 
     } catch (ex) {
-      
+      //Ignore error
     }
 
     $scope.panelSpaceWidth = layoutService.panelSpaceWidth;
@@ -447,30 +448,30 @@ export default ['$scope', '$injector', '$rootScope', '$window', 'Core', 'hs.map.
     };
 
     $scope.mapStyle = () => {
-        const fullscreen = typeof config.sizeMode == 'undefined' || config.sizeMode == 'fullscreen';
-        let height = layoutService.layoutElement.clientHeight;
-        let width = layoutService.layoutElement.clientWidth;
-        let marginLeft = 0;
+      const fullscreen = angular.isUndefined(config.sizeMode) || config.sizeMode == 'fullscreen';
+      let height = layoutService.layoutElement.clientHeight;
+      let width = layoutService.layoutElement.clientWidth;
+      let marginLeft = 0;
 
-        OlMap.map.updateSize();
+      OlMap.map.updateSize();
 
-        if (!layoutService.sidebarBottom() || !fullscreen) {
-            marginLeft += layoutService.sidebarRight ? 0 : layoutService.panelSpaceWidth();
-            width -= layoutService.panelSpaceWidth();
-        }
+      if (!layoutService.sidebarBottom() || !fullscreen) {
+        marginLeft += layoutService.sidebarRight ? 0 : layoutService.panelSpaceWidth();
+        width -= layoutService.panelSpaceWidth();
+      }
 
-        if (layoutService.sidebarBottom() && (fullscreen || $window.innerWidth <= 767)) {
-            height -= layoutService.panelSpaceHeight();
-            width = layoutService.panelSpaceWidth();
-        }
+      if (layoutService.sidebarBottom() && (fullscreen || $window.innerWidth <= 767)) {
+        height -= layoutService.panelSpaceHeight();
+        width = layoutService.panelSpaceWidth();
+      }
 
-        height -= layoutService.mdToolbarHeight();
+      height -= layoutService.mdToolbarHeight();
 
-        return {
-            height: `${height}px`,
-            width: `${width}px`,
-            ...marginLeft > 0 && { marginLeft: `${marginLeft}px` }
-        }
+      return {
+        height: `${height}px`,
+        width: `${width}px`,
+        ...marginLeft > 0 && {marginLeft: `${marginLeft}px`}
+      };
     };
 
     $scope.onlyEnabled = function (item) {
