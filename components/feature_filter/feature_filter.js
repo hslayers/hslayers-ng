@@ -1,20 +1,20 @@
 /**
 * @namespace hs.feature_filter
-* @memberOf hs  
+* @memberOf hs
 * @desc Module is used to filter certain features on vector layers based on attribute values.
 * It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.
-* 
-* must provide layers to be fillterable in app.js parametrs:         
+*
+* must provide layers to be fillterable in app.js parametrs:
 *      module.value('crossfilterable_layers', [{
         layer_ix: 1,
         attributes: ["http://gis.zcu.cz/poi#category_osm"]
-    }]); 
+    }]);
 */
-define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
+define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 
     function(angular, ol) {
         var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'ngMaterial', 'hs.layermanager'])
-        
+
             /**
             * @memberof hs.feature_filter
             * @ngdoc directive
@@ -29,7 +29,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     }
                 };
             }])
-        
+
             /**
             * @memberof hs.feature_list
             * @ngdoc directive
@@ -45,7 +45,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     }
                 };
             }])
-        
+
             /**
             * @memberof hs.feature_filter
             * @ngdoc directive
@@ -78,7 +78,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     // templateUrl: config.hsl_path + 'components/feature_filter/partials/{{filter.type}}md.html',
                 };
             }])
-        
+
             /**
             * @memberof hs.feature_filter
             * @ngdoc service
@@ -94,7 +94,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         }
 
                         var source = layer.layer.getSource();
-                        
+
                         if (!('hsFilters' in layer)) return source.getFeatures();
                         if (!layer.hsFilters) return source.getFeatures();
 
@@ -104,7 +104,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         source.forEachFeature(function (feature) {
                             feature.setStyle(null);
                         });
-                        
+
                         for (var i in filters) {
                             var filter = filters[i];
                             var displayFeature;
@@ -173,7 +173,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                         if ('hsFilters' in layer) {
                             for (var i in layer.hsFilters) {
                                 var filter = layer.hsFilters[i];
-    
+
                                 if (filter.gatherValues) {
                                     switch (filter.type.type) {
                                         case 'fieldset': case 'dictionary':
@@ -183,7 +183,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                                     filter.values.push(feature.getProperties()[filter.valueField]);
                                                 }
                                             });
-                                            
+
                                             filter.values.sort(function(a, b) {
                                                 return (a.replace("the ","").replace("The ","") > b.replace("the ","").replace("The ","")) * 2 - 1;
                                             });
@@ -192,7 +192,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                         case 'dateExtent':
                                             // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
                                             // if (filter.range === undefined) filter.range = [];
-    
+
                                             // var source = layer.layer.getSource();
                                             // source.forEachFeature(function (feature) {
                                             //     if (feature.getProperties()[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
@@ -205,12 +205,23 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                             break;
                                     }
                                 }
-    
+
                                 if (filter.type.type === "fieldset" && filter.selected === undefined && filter.values.length > 0) {
                                     filter.selected = filter.values.slice(0);
                                 }
                             }
                         }
+                    },
+
+                    getFeatureByUri: function(features, uri, uriname){
+                      var selected;
+                      features.forEach((feature, i) => {
+                        if (feature.getProperties()[uriname] == uri){
+                          selected = feature;
+                        }
+                      });
+
+                      $rootScope.$broadcast('map.selectedFeatureDetected', selected);
                     }
                 };
 
@@ -224,14 +235,22 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                 ol.Observable.unByKey(listenerKey);
                                 me.prepLayerFilter(layer);
                                 me.applyFilters(layer);
+                                if ($rootScope.uri && $rootScope.uri != 'none') {
+                                  me.getFeatureByUri(layer.filteredFeatures, $rootScope.uri, layer.featureURI);
+                                }
+
                             }
                         });
                     }
+
+
+
                 });
+
 
                 return me;
             }])
-            
+
             /**
             * @memberof hs.feature_filter
             * @ngdoc controller
@@ -246,7 +265,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     $scope.LayMan = LayMan;
 
                     $scope.applyFilters = service.applyFilters;
-                    
+
                     $scope.allSelected = function(filter) {
                         return filter.selected ? filter.selected.length === filter.values.length : false;
                     };
@@ -300,23 +319,25 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     // });
                 }
             ])
-            
+
             /**
             * @memberof hs.feature_filter
             * @ngdoc controller
             * @name hs.featureList.controller
             * @description TODO
             */
-            .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
-                function($scope, $timeout, OlMap, Core, service, LayMan, config) {
+            .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config', '$rootScope',
+                function($scope, $timeout, OlMap, Core, service, LayMan, config, $rootScope, feature_filter, map) {
                     const POPUP = new ol.Overlay.Popup();
 
-                    if (OlMap.map) 
+                    if (OlMap.map)
                         OlMap.map.addOverlay(POPUP);
                     else
                         $rootScope.$on('map.loaded', function () {
                             OlMap.map.addOverlay(POPUP);
+                            alert('map_loaded');
                         });
+
 
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
@@ -380,10 +401,13 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     });
 
                     $scope.map.addInteraction($scope.selector);
+
                     $scope.selector.on('select', function(e) {
                         let feature = e.target.getFeatures().array_[0];
 
                         $scope.toggleFeatureDetails(feature, false);
+
+                        //console.log('selector on');
 
                         if (!$scope.$$phase) $scope.$digest();
                     });
@@ -395,12 +419,18 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                     $scope.toggleFeatureDetails = function(feature, handleFeature) {
                         Core.updateMapSize();
                         $scope.displayDetails = !$scope.displayDetails;
+                        //console.log('handle: ' + handleFeature);
+                        //console.log(feature);
+                        $scope.LayMan.currentLayer.selectedFeature = feature;
+
+                        $scope.LayMan.currentLayer.selectedFeature = feature;
 
                         if (feature === undefined) {
                             $scope.displayDetails = false;
                         }
 
                         if ($scope.selectedFeature) {
+
                             if (feature && feature !== $scope.selectedFeature) $scope.displayDetails = true;
 
                             $scope.selectedFeature.setStyle(null);
@@ -439,9 +469,16 @@ define(['angular', 'ol', 'angular-material', 'map', 'layermanager'],
                                 });
                             }
                         }
-
+                        $rootScope.$broadcast('map.selection_changed', feature);
                         if (!$scope.$$phase) $scope.$digest();
+                        $rootScope.$broadcast('map.selection_changed', feature);
+                        //$scope.LayMan.currentLayer.selectedFeature = $scope.selectedFeature;
                     };
+
+                    $rootScope.$on('map.selectedFeatureDetected', function(e, f){
+                      $scope.highlightFeature(f, true);
+                      $scope.toggleFeatureDetails(f, false);
+                    });
 
                     $scope.$emit('scope_loaded', "featureList");
 
