@@ -15,6 +15,7 @@ import layermanagerGalleryDirective from './layermanager-gallery.directive';
 import layerEditorSubLayerCheckboxesDirective from './layer-editor.sub-layer-checkboxes.directive';
 import layerEditorSubLayerService from './layer-editor.sub-layer.service';
 import layerEditorVectorLayerService from './layer-editor-vector-layer.service';
+import layermanagerMetadataService from './layermanager-metadata.service';
 
 /**
  * @ngdoc module
@@ -79,6 +80,14 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      * manager when layer is added or removed from map.
      */
     .service("hs.layermanager.service", layermanagerService)
+
+    /**
+     * @module hs.layermanager
+     * @name hs.layermanager.WMSTservice
+     * @ngdoc service
+     * @description Manage layer´s metadata through getCapabilities request calls and responses 
+     */
+    .service( "hs.layermanager.metadata", layermanagerMetadataService)
 
     /**
      * @module hs.layermanager
