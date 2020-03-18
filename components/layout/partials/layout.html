@@ -10,7 +10,7 @@
 
             <div class="hs-gui-overlay" ng-if="!Core.puremapApp">
 
-                <!-- <div ng-style="{'width':'239px'}" ng-controller="hs.search.controller" ng-if="!Core.exists('hs.toolbar') && Core.exists('hs.search.controller') && layoutService.sidebarVisible()">
+                <!-- <div ng-style="{'width':'239px'}" ng-controller="HsSearchController" ng-if="!Core.exists('hs.toolbar') && Core.exists('HsSearchController') && layoutService.sidebarVisible()">
                     <div>
                         <div hs.search.directive_searchinput></div>
                         <div hs.search.directive_searchresults></div>
@@ -40,7 +40,7 @@
                             <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
                             <hs.vgi-draw                            hs.draggable ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
                             <hs.sensors.panel                       hs.draggable ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
-                            <div hs.search.directive                hs.draggable ng-controller="hs.search.controller" ng-if="Core.exists('hs.search.controller') && panelVisible('search')" ng-show="panelVisible('search', this)"></div>
+                            <div hs.search.directive                hs.draggable ng-controller="HsSearchController" ng-if="Core.exists('HsSearchController') && panelVisible('search')" ng-show="panelVisible('search', this)"></div>
                             <div hs.sidebar.directive             class="hs-minisidebar"  hs.draggable ng-controller="hs.sidebar.controller" ng-if="Core.exists('hs.sidebar') && layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
                             <div hs.draw.directive                  hs.draggable ng-if="Core.exists('hs.draw') " ng-show="panelVisible('draw', this)"></div>
                             <div hs.customhtml.directive                                                            ng-if="Core.exists('hs.customhtml')"></div>

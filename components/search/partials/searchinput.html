@@ -1,4 +1,4 @@
-<div class="input-group search_address">
+<div class="input-group">
     <div class="input-group-prepend">
         <button ng-show="layoutService.smallWidth && !layoutService.panelEnabled('search')"
             ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
@@ -6,7 +6,7 @@
     </div>
     <input ng-model="query"
         ng-show="!layoutService.panelEnabled('search') && (!layoutService.smallWidth || searchInputVisible)"
-        class="form-control" id="search_address" placeholder="{{'Search:'|translate}}" ng-change="queryChanged()" />
+        class="form-control" class="hs-search-address-input" placeholder="{{'Search:'|translate}}" ng-change="queryChanged()" />
     <div class="input-group-append">
         <button class="btn btn-light btn-outline-secondary"
             ng-if="clearvisible && !layoutService.panelEnabled('search')" ng-click="clear()"><span aria-hidden="true"

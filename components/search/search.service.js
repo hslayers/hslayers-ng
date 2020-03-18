@@ -7,6 +7,7 @@ import {transform} from 'ol/proj';
 
 export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', 'hs.styles.service', '$rootScope',
   function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
+    const me = this;
     this.data = {};
     this.geonamesUser = null;
 
@@ -22,19 +23,19 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
     });
 
     this.canceler = {};
-    const me = this;
     /**
      * @memberof hs.search.service
      * @function request
      * @public
-     * @params {String} query
+     * @param {String} query Place name or part of it
      * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
      */
     this.request = function (query) {
       let url = null;
       let providers = [];
-      if(angular.isDefined(config.search_provider) && angular.isUndefined(config.searchProvider)) 
+      if (angular.isDefined(config.search_provider) && angular.isUndefined(config.searchProvider)) {
         config.searchProvider = config.search_provider;
+      }
 
       if (angular.isUndefined(config.searchProvider)) {
         providers = ['geonames'];
@@ -60,10 +61,12 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
           url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
         } else if (angular.isFunction(provider)) {
           url = provider(query);
-          if(provider.name == 'searchProvider') //Anonymous function?
-            providerId = 'geonames'
-          else
+          if (provider.name == 'searchProvider') //Anonymous function?
+          {
+            providerId = 'geonames';
+          } else {
             providerId = provider.name;
+          }
         }
         //url = utils.proxify(url);
         if (angular.isDefined(me.canceler[providerId])) {
@@ -81,8 +84,8 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
      * @memberof hs.search.service
      * @function searchResultsReceived
      * @public
-     * @params {Object} response Response object of Geolocation request
-     * @params {String} providerName Name of request provider
+     * @param {Object} response Response object of Geolocation request
+     * @param {String} providerName Name of request provider
      * @description Maintain inner results object and parse response with correct provider parser
      */
     this.searchResultsReceived = function (response, providerName) {
@@ -137,8 +140,8 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
      * @memberof hs.search.service
      * @function selectResult
      * @public
-     * @params {Object} result Entity of selected result
-     * @params {String} zoomLevel Zoom level to zoom on
+     * @param {Object} result Entity of selected result
+     * @param {String} zoomLevel Zoom level to zoom on
      * @description Move map and zoom on selected search result
      */
     this.selectResult = function (result, zoomLevel) {
@@ -154,12 +157,12 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
      * @memberof hs.search.service
      * @function getResultCoordinate
      * @public
-     * @params {Object} result Entity of selected result
+     * @param {Object} result Entity of selected result
      * @return {Object} Ol.coordinate of selected result
      * @description Parse coordinate of selected result
      */
     function getResultCoordinate(result) {
-      if (result.provider_name.indexOf('geonames')>-1 || result.provider_name == 'searchFunctionsearchProvider') {
+      if (result.provider_name.indexOf('geonames') > -1 || result.provider_name == 'searchFunctionsearchProvider') {
         return transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', OlMap.map.getView().getProjection());
       } else if (result.provider_name == 'sdi4apps_openapi') {
         const g_feature = formatWKT.readFeature(result.FullGeom.toUpperCase());
@@ -216,5 +219,6 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         result.feature = feature;
       });
     }
+    return me;
   }
 ];
