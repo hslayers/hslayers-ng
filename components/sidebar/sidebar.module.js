@@ -1,7 +1,7 @@
 import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
-import 'core';
+import '../core/core.module';
 import sidebarService from './sidebar.service';
 import sidebarMiniDirective from './sidebar-mini.directive';
 import sidebarDirective from './sidebar.directive';

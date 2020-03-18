@@ -1,5 +1,5 @@
 import '../map/map.module';
-import '../core/core';
+import '../core/core.module';
 import '../permalink/permalink.module';
 import toolbarComponent from './toolbar.component';
 
@@ -7,7 +7,7 @@ import toolbarComponent from './toolbar.component';
  * @namespace hs.toolbar
  * @memberOf hs
  */
-var module = angular.module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout']);
+angular.module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout'])
 
 /**
  * @memberof hs.toolbar
@@ -15,4 +15,4 @@ var module = angular.module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout']);
  * @name hs.toolbar
  * @description Add toolbar to map (search field, full map button and measure button)
  */
-module.component('hs.toolbar', toolbarComponent);
+  .component('hs.toolbar', toolbarComponent);

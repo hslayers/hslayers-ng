@@ -4,7 +4,7 @@ import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 import { Polygon, LineString, GeometryType } from 'ol/geom';
 import s4a from 's4a';
 import dc from 'dc';
-import 'core';
+import '../core/core.module';
 import Feature from 'ol/Feature';
 
 /**

@@ -1,5 +1,5 @@
 import '../map/map.module';
-import '../core/core';
+import '../core/core.module';
 import '../utils/utils.module';
 import '../geolocation/geolocation';
 import drawService from './draw.service';

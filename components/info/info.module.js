@@ -1,5 +1,5 @@
 import '../map/map.module';
-import '../core/core';
+import '../core/core.module';
 import infoComponent from './info.component';
 
 /**

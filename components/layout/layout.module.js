@@ -1,12 +1,8 @@
-/**
- * @namespace hs.layout
- * @memberOf hs
- */
 import angular from 'angular';
-import core from 'core';
+import '../core/core.module';
 import '../map/map.module';
-import geolocation from 'geolocation';
-import layermanager from '../layermanager/layermanager.module';
+import '../geolocation/geolocation';
+import '../layermanager/layermanager.module';
 import mdSidenavDirective from './md-sidenav.directive';
 import mdRightPanelDirective from './md-right-panel.directive';
 import mdBottomsheetScrollDirective from './md-bottomsheet-scroll.directive';
@@ -19,10 +15,12 @@ import mdSwipeAreaDirective from './md-swipe-area.directive';
 import layoutService from './layout.service';
 import layoutPanelHeaderDirective from './layout-panel-header.directive';
 import '../print/print.module';
+/**
+ * @namespace hs.layout
+ * @memberOf hs
+ */
 
-// 'material.components.bottomSheetCollapsible'
-angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])
-
+angular.module('hs.layout', ['hs.core', 'hs.map', 'hs.geolocation', 'hs.layermanager', 'hs.print'])// 'material.components.bottomSheetCollapsible'
     /**
     * @memberof hs.layout
     * @ngdoc directive
