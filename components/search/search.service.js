@@ -61,8 +61,7 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
           url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
         } else if (angular.isFunction(provider)) {
           url = provider(query);
-          if (provider.name == 'searchProvider') //Anonymous function?
-          {
+          if (provider.name == 'searchProvider') { //Anonymous function?
             providerId = 'geonames';
           } else {
             providerId = provider.name;

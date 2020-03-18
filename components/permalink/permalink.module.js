@@ -1,22 +1,22 @@
-import 'components/compositions/compositions.module';
+import '../compositions/compositions.module';
 import permalinkUrlService from './permalink-url.service';
 import permalinkShareService from './permalink-share.service';
 import permalinkComponent from './permalink.component';
-import 'language.module';
+import '../language/language.module';
 
 /**
  * @namespace hs.permalink
  * @memberOf hs
  */
 
-var module = angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.save-map', 'hs.compositions', 'hs.language']);
+angular.module('hs.permalink', ['720kb.socialshare', 'hs.core', 'hs.map', 'hs.save-map', 'hs.compositions', 'hs.language'])
 
-module.config(['$locationProvider', function ($locationProvider) {
+  .config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
+      enabled: true,
+      requireBase: false
     });
-}]);
+  }])
 
 /**
  * @ngdoc service
@@ -24,7 +24,7 @@ module.config(['$locationProvider', function ($locationProvider) {
  * @membeof hs.permalink
  * @description Service responsible for creating permalink URLs. Mantain parameters information about map
  */
-module.service("hs.permalink.urlService", permalinkUrlService);
+  .factory('hs.permalink.urlService', permalinkUrlService)
 
 /**
  * @ngdoc service
@@ -32,12 +32,12 @@ module.service("hs.permalink.urlService", permalinkUrlService);
  * @membeof hs.permalink
  * @description Service responsible for sharing background. Mantain correct sharing links on the fly
  */
-module.service('hs.permalink.shareService', permalinkShareService);
+  .factory('hs.permalink.shareService', permalinkShareService)
 
 
 /**
  * @name hs.permalink
  * @membeof hs.permalink
- * @description 
+ * @description
  */
-module.component('hs.permalink', permalinkComponent);
+  .component('hs.permalink', permalinkComponent);
