@@ -137,9 +137,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
         me.data.layers.push(new_layer);
         if (layer.get('queryCapabilities') != false){
-          $timeout(() => {
-            me.fillMetadata(layer);
-          }, 0);  
+          me.fillMetadata(layer);
         }
       } else {
         new_layer.active = layer.getVisible();
@@ -674,7 +672,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
      * @function fillMetadata
      * @memberOf hs.layermanager.service
      * @param {Ol.layer} layer Selected layer
-     * @description Add getCapabilities response metadata to layer object, adds hasSublayers parameter if true
+     * @description Async adds hasSublayers parameter if true
      */
     me.fillMetadata = function (layer) {
       me.queryMetadata(layer).then(()=>{
@@ -684,6 +682,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
       });
     };
+    /**
+     * @function queryMetadata
+     * @memberOf hs.layermanager.service
+     * @param {Ol.layer} layer Selected layer
+     * @description Callback function, adds getCapabilities response metadata to layer object
+     */
     me.queryMetadata = async function (layer) {
       const url = layerUtils.getURL(layer);
       const metadata = {
@@ -691,7 +695,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       };
       //WMS
       if (layerUtils.isLayerWMS(layer)) {
-        const capabilities = await WMSgetCapabilitiesService.requestGetCapabilities(url)
+        const capabilities = WMSgetCapabilitiesService.requestGetCapabilities(url)
           .then((capabilities_xml) => {
             const parser = new WMSCapabilities();
             const caps = parser.read(capabilities_xml);
@@ -729,7 +733,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       }
       //WMTS
       else if (layerUtils.isLayerWMTS(layer)) {
-        const capabilities = await WMTSgetCapabilitiesService.requestGetCapabilities(url)
+        const capabilities = WMTSgetCapabilitiesService.requestGetCapabilities(url)
           .then((capabilities_xml) => {
             const parser = new WMTSCapabilities();
             const caps = parser.read(capabilities_xml.data);
@@ -752,7 +756,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       //WFS and vector
       else if (layerUtils.isLayerVectorLayer(layer)) {
         if (url) {
-          const capabilities = await WFSgetCapabilitiesService.requestGetCapabilities(url)
+          const capabilities = WFSgetCapabilitiesService.requestGetCapabilities(url)
             .then((capabilities_xml) => {
               const parser = new DOMParser();
               const caps = parser.parseFromString(capabilities_xml.data, 'application/xml');
