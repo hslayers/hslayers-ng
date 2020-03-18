@@ -1,5 +1,5 @@
 export default ['config', function (config) {
-    return {
-        template: require('components/layout/partials/swipe-area.html')
-    };
-}]
+  return {
+    template: require('./partials/swipe-area.html')
+  };
+}];

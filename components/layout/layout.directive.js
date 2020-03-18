@@ -1,5 +1,5 @@
-export default ['hs.map.service', 'Core', '$timeout', 'config', '$compile', '$injector', 'hs.layout.service',
-    function (OlMap, Core, $timeout, config, $compile, $injector, layoutService) {
+export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
+    function (Core, $timeout, config, $compile, layoutService) {
         return {
             template: config.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
             link: function (scope, element) {

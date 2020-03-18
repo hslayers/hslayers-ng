@@ -1,5 +1,5 @@
 export default ['config', function (config) {
-    return {
-        template: require('components/layout/partials/sidenav.html')
-    };
-}]
+  return {
+    template: require('./partials/sidenav.html')
+  };
+}];
