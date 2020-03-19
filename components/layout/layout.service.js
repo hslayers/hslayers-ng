@@ -316,18 +316,16 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout',
         Object.assign(panelWidths, config.panelWidths);
         let tmp = panelWidths[me.mainpanel] || panelWidths.default;
 
-        if (!config.sidebarToggleable && layoutWidth >= 767) {
-          me.sidebarToggleable = false;
-          return tmp;
-        }
-
         if (layoutWidth <= 767 && $window.innerWidth <= 767) {
           tmp = layoutWidth;
           me.sidebarToggleable = false;
 
           return tmp;
         } else {
-          me.sidebarToggleable = true;
+          me.sidebarToggleable = angular.isDefined(config.sidebarToggleable) ? config.sidebarToggleable : true;
+          if (!me.sidebarToggleable) {
+            return tmp;
+          }
         }
         if (me.sidebarExpanded && me.sidebarVisible()) {
           if (panelWidths[me.mainpanel]) {
