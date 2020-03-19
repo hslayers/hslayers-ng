@@ -53,7 +53,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
             * @description TODO
             */
             .directive('hs.featureFilter.element.directive', ['config', '$compile', function(config, $compile) {
-                // console.log($state);
                 return {
                     // templateUrl: `${config.hsl_path}components/feature_filter/partials/${$state.type}${config.design || ''}.html`,
                     template: '<ng-include src="getTemplateUrl()"/>',
@@ -335,7 +334,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                     else
                         $rootScope.$on('map.loaded', function () {
                             OlMap.map.addOverlay(POPUP);
-                            alert('map_loaded');
                         });
 
 
@@ -407,8 +405,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 
                         $scope.toggleFeatureDetails(feature, false);
 
-                        //console.log('selector on');
-
                         if (!$scope.$$phase) $scope.$digest();
                     });
 
@@ -419,10 +415,6 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                     $scope.toggleFeatureDetails = function(feature, handleFeature) {
                         Core.updateMapSize();
                         $scope.displayDetails = !$scope.displayDetails;
-                        //console.log('handle: ' + handleFeature);
-                        //console.log(feature);
-                        $scope.LayMan.currentLayer.selectedFeature = feature;
-
                         $scope.LayMan.currentLayer.selectedFeature = feature;
 
                         if (feature === undefined) {

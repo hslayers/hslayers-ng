@@ -460,8 +460,8 @@ define(['angular', 'permalink', 'ol'], function (angular, permalink, ol) {
          * @ngdoc controller
          * @description Main controller of default HSLayers map, initialize map service when default HSLayers template is used
          */
-        .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService', 'Core', '$rootScope', 'hs.layermanager.service', 'hs.feature_filter.service', //'hs.feature_list.controller',
-            function ($scope, OlMap, config, permalink, Core, $rootScope, LayMan, feature_list, feature_filter) {
+        .controller('hs.map.controller', ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService', 'Core', '$rootScope', 'hs.layermanager.service', 
+            function ($scope, OlMap, config, permalink, Core, $rootScope, LayMan) {
 
                 var map = OlMap.map;
 

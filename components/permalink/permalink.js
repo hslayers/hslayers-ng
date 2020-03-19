@@ -79,15 +79,18 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             me.push(cP, me.customParams[cP]);
                         }
 
-                        if(! angular.isUndefined(currentLayer.selectedFeature)){
-                          me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
-                        }
-                        else {
-                          if (me.hashtagParam()) {
-                              me.removeHash();
-                          }
-                          $location.search(me.params);
-                        }
+						if (angular.isUndefined(currentLayer.featureURI)) {
+							$location.search(me.params);
+						} else {
+							if(! angular.isUndefined(currentLayer.selectedFeature)){
+							  me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
+							}
+							else {
+							  if (me.hashtagParam()) {
+								  history.pushState("", document.title, window.location.pathname + window.location.search);
+							  }
+							}
+						}
 
                         if (!$rootScope.$$phase) $rootScope.$digest();
                     },
@@ -187,15 +190,6 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                             });
                     },
 
-                    parseUri: function (uri){
-                      console.log('parsing uri ' + uri);
-                      var currentLayer = LayMan.currentLayer;
-                      var featureURI = currentLayer.featureURI;
-                      console.log(currentLayer);
-                      console.log(currentLayer.filteredFeatures);
-                      //console.log(currentLayer.filteredFeatures);
-                    },
-
                     /**
                     * @function stringify
                     * @memberof hs.permalink.urlService
@@ -259,29 +253,6 @@ define(['angular', 'angular-socialshare', 'map', 'core', 'status_creator', 'comp
                         return false;
                       }
                       return location.hash.substring(1);
-                    },
-
-                    /**
-                    * @function removeHash
-                    * @memberof hs.permalink.urlService
-                    * Removes hash parameter from url.
-                    * obtained from https://stackoverflow.com/questions/4508574/remove-hash-from-url/4508751
-                    */
-                    removeHash: function() {
-                      var scrollV, scrollH, loc = window.location;
-                      if ("pushState" in history)
-                      history.pushState("", document.title, loc.pathname + loc.search);
-                      else {
-                        // Prevent scrolling by storing the page's current scroll offset
-                        scrollV = document.body.scrollTop;
-                        scrollH = document.body.scrollLeft;
-
-                        loc.hash = "";
-
-                        // Restore the scroll offset, should be flicker free
-                        document.body.scrollTop = scrollV;
-                        document.body.scrollLeft = scrollH;
-                      }
                     },
 
                     /**
