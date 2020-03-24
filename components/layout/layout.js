@@ -404,6 +404,17 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         $scope.bottomSheet = undefined;
                     }
 
+                    $scope.showAcknowledgement = function(ev) {
+                        $mdDialog.show({
+                            scope: this,
+                            preserveScope: true,
+                            templateUrl: config.acknowledgement_template || `${config.hsl_path}components/layout/partials/acknowledgement${config.design || ''}.html`,
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            clickOutsideToClose: true
+                        });
+                    };
+
                     $scope.showHelpDialog = function(ev) {
                         $mdDialog.show({
                             scope: this,
@@ -415,7 +426,7 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         });
                     };
 
-                    $scope.cancelHelpDialog = function() {
+                    $scope.cancelDialog = function() {
                         $mdDialog.cancel();
                     };
 
