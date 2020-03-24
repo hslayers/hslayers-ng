@@ -16,10 +16,17 @@
                     ng-change="subLayerSelected(subLayer, withChildren[subLayer.Name])"
                     ng-attr-id="hs-sublayers-{{subLayer.Name}}" ng-if="subLayer.Layer" />
 
-                <div class="p-0" ng-if="subLayer.Layer" ng-click="toggleExpanded()">
-                    <button type="button" class="btn btn-sm p-0"><i
-                            ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i></button>
-                            <label class="m-0">{{subLayer.Title || subLayer.Name}}</label>
+                <div class="p-0 d-inline-flex flex-grow" ng-if="subLayer.Layer" >
+                    <label class="form-check-label m-0" ng-class="{'hs-checkmark':withChildren[subLayer.Name],'hs-uncheckmark':!withChildren[subLayer.Name]}"
+                    ng-attr-for="hs-sublayers-{{subLayer.Name}}"></label>
+                    <div ng-click="toggleExpanded()" ng-style="{'cursor':'pointer'}">
+                        {{subLayer.Title || subLayer.Name}}
+                        <button type="button" class="btn btn-sm p-0" ng-style="{'font-size':'x-small'}">
+                            <i ng-class="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i>
+                        </button>
+                    </div>
+                    <!-- <label class="m-0">{{subLayer.Title || subLayer.Name}}</label> -->
+
                 </div>
                 <div ng-if="!subLayer.Layer">
                     <label class="form-check-label m-0" ng-class="{'hs-checkmark':checkedSubLayers[subLayer.Name],'hs-uncheckmark':!checkedSubLayers[subLayer.Name]}"
