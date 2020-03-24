@@ -57,7 +57,7 @@ export default ['$rootScope', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapab
     me.queryMetadata = async function (layer) {
       const url = layerUtils.getURL(layer);
       const metadata = {
-        metainfo: {'OnlineResource': layer.get('Mtadata')}
+        metainfo: {'OnlineResource': layer.get('Metadata')}
       };
       //WMS
       if (layerUtils.isLayerWMS(layer)) {
@@ -75,7 +75,7 @@ export default ['$rootScope', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapab
             if (layerObject) {
               layer.setProperties(layerObject);
               if (layer.get('Copyright')) {
-                layer.set('Attribution', {'OnlineResource': layer.get('Cpyright')});
+                layer.set('Attribution', {'OnlineResource': layer.get('Copyright')});
               }
               if (layer.get('Metadata')) {
                 layer.set('MetadataURL', metadata);
@@ -102,9 +102,9 @@ export default ['$rootScope', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapab
             const caps = parser.read(capabilities_xml.data);
             layer.setProperties(caps);
             if (layer.get('Copyright')) {
-              layer.set('Attribution', {'OnlineResource': layer.get('Cpyright')});
+              layer.set('Attribution', {'OnlineResource': layer.get('Copyright')});
             } else {
-              layer.set('Attribution', {'OnlineResource': caps.Servicerovider.ProviderSite});
+              layer.set('Attribution', {'OnlineResource': caps.ServiceProvider.ProviderSite});
             }
             if (layer.get('Metadata')) {
               layer.set('MetadataURL', metadata);
@@ -125,9 +125,9 @@ export default ['$rootScope', 'hs.wmts.getCapabilitiesService', 'hs.wfs.getCapab
               const caps = parser.parseFromString(capabilities_xml.data, 'application/xml');
               const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
               if (layer.get('Copyright')) {
-                layer.set('Attribution', {'OnlineResource': layer.get('Cpyright')});
+                layer.set('Attribution', {'OnlineResource': layer.get('Copyright')});
               } else {
-                layer.set('Attribution', {'OnlineResource': el[0].getAttibute('xlink:href')});
+                layer.set('Attribution', {'OnlineResource': el[0].getAttribute('xlink:href')});
               }
               return true;
 
