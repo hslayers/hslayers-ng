@@ -12,9 +12,9 @@ export default {
   controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
     'hs.utils.layerUtilsService', 'config', 'hs.map.service',
     'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
-    'hs.legend.service', 'hs.layout.service',
+    'hs.legend.service', 'hs.layout.service', 'hs.layerEditor.sublayerService',
     function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-      LayMan, $rootScope, WMST, legendService, layoutService) {
+      LayMan, $rootScope, WMST, legendService, layoutService, subLayerService) {
       $scope.LayMan = LayMan;
       $scope.data = LayMan.data;
       $scope.Core = Core;
@@ -107,6 +107,14 @@ export default {
 
       $scope.setCurrentLayer = function (layer) {
         LayMan.currentLayer = layer;
+
+        if (!layer.checkedSubLayers) {
+          layer.checkedSubLayers = {};
+          layer.withChildren = {};
+        }
+        subLayerService.checkedSubLayers = layer.checkedSubLayers;
+        subLayerService.withChildren = layer.withChildren;
+
         if (WMST.layerIsWmsT(layer)) {
           LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
           LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
