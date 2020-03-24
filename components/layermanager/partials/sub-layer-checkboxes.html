@@ -35,7 +35,7 @@
                         ng-attr-id="hs-sublayers-{{subLayer}}">
                     <label class="form-check-label" ng-attr-for="hs-sublayers-{{subLayer}}">{{::subLayer}}</label>
                 </div>
-                <hs.layer-editor.sublayer-checkbox ng-if="::!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
+                <hs.layer-editor.sublayer-checkbox ng-if="!subLayerIsString(subLayer)"></hs.layer-editor.sublayer-checkbox>
             </div>
         </div>
 
