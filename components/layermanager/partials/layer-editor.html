@@ -2,7 +2,7 @@
     <div class="card-body">
         <!-- Sublayers-->
         <div ng-show="$ctrl.currentLayer.sublayers" class="form-group">
-            <div ng-repeat="subLayer in ::getSubLayers()">
+            <div ng-repeat="subLayer in getSubLayers()">
                 <hs.layer-editor.sublayer-checkbox></hs.layer-editor.sublayer-checkbox>
             </div>
         </div>
