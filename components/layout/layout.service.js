@@ -260,6 +260,10 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout',
         }
       },
 
+      componentEnabled(which) {
+        return angular.isUndefined(config.componentsEnabled[which]) || config.componentsEnabled[which];
+      },
+
       /**
         * @ngdoc method
         * @name hs.layout.service#setMainPanel
@@ -347,6 +351,9 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout',
       },
 
       sidebarVisible(state) {
+        if (!me.componentEnabled('sidebar')) {
+          return false;
+        }
         if (angular.isDefined(state)) {
           me._sidebarVisible = state;
         }

@@ -70,7 +70,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service',
   };
 
   //timer variable for extent change event
-  var timer;
+  let timer;
   /**
    * @ngdoc method
    * @name hs.map.service#init
@@ -528,23 +528,26 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service',
   };
 
   //map.addControl(mousePositionControl);
-  /**
-   * @ngdoc method
-   * @name hs.map.service#puremap
-   * @public
-   * @description Clean interactions and zoom from map to get pure map
-   */
-  this.puremap = function () {
-    const interactions = me.map.getInteractions();
-    const controls = me.map.getControls();
-    angular.forEach(interactions, (interaction) => {
-      me.map.removeInteraction(interaction);
-    });
-    angular.forEach(controls, (control) => {
-      me.map.removeControl(control);
-    });
-    $timeout(me.puremap, 1000);
-  };
+
+  $rootScope.$watch(() => {
+    return config.mapInteractionsEnabled
+  }, (value) => {
+    if(angular.isDefined(value) && !value) {
+      angular.forEach( me.map.getInteractions(), (interaction) => {
+        me.map.removeInteraction(interaction);
+      });
+    }
+  });
+
+  $rootScope.$watch(() => {
+    return config.mapControlsEnabled
+  }, (value) => {
+    if(angular.isDefined(value) && !value) {
+      angular.forEach( me.map.getControls(), (control) => {
+        me.map.removeControl(control);
+      });
+    }
+  });
 
   /**
    * @ngdoc method

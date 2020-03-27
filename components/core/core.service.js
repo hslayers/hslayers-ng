@@ -326,6 +326,14 @@ export default ['$rootScope', '$controller', '$injector', '$window', 'hs.map.ser
       set: function (value) {
         _puremapApp = value;
         if (value) {
+          if (angular.isUndefined(config.componentsEnabled)) {
+            config.componentsEnabled = {};
+          }
+          config.componentsEnabled.toolbar = false;
+          config.componentsEnabled.sidebar = false;
+          config.mapInteractionsEnabled = false;
+          config.mapControlsEnabled = false;
+          config.golocationButton = false;
           layoutService.sidebarVisible(false);
         }
       }

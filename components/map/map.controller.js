@@ -55,6 +55,8 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
 
             if (permalink.getParamValue("puremap") || config.pureMap == true) {
                 Core.puremapApp = true;
+                config.mapInteractionsEnabled = false;
+                config.mapControlsEnabled = false;
                 OlMap.puremap();
             }
         }

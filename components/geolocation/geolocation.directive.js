@@ -3,7 +3,7 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'h
     return {
       template: require('./partials/geolocation.html'),
       link: function link(scope, element, attrs) {
-        if (!Core.puremapApp) {
+        if (layoutService.componentEnabled('golocationButton')) {
           hsMap.loaded().then(_ => {
             layoutService.contentWrapper.querySelector('.ol-overlaycontainer-stopevent').appendChild(element[0]);
           });
