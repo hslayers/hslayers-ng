@@ -178,7 +178,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             $http({
                 method: 'POST',
                 url: statusManagerService.endpointUrl(),
-                data: JSON.stringify({
+                data: angular.toJson({
                     request: 'socialShare',
                     id: shareId,
                     url: encodeURIComponent(compositionUrl),

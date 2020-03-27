@@ -271,7 +271,7 @@ var me = {
 
     createTileProvider(ol_lyr) {
         var src = ol_lyr.getSource();
-        var params = JSON.parse(JSON.stringify(src.getParams()));
+        var params = JSON.parse(angular.toJson(src.getParams()));
         params.VERSION = params.VERSION || '1.1.1';
         if (params.VERSION.indexOf('1.1.') == 0) params.CRS = 'EPSG:4326';
         if (params.VERSION.indexOf('1.3.') == 0) params.SRS = 'EPSG:4326';

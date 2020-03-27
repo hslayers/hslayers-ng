@@ -153,7 +153,7 @@ export default ['hs.map.service', '$rootScope', '$log', 'Core', '$timeout', 'hs.
       * @description Function which determines whether map is centered on current postion or not
       */
       isCentered: function () {
-        return JSON.stringify(OlMap.map.getView().getCenter()) === JSON.stringify(me.positionFeature.getGeometry().getCoordinates());
+        return angular.toJson(OlMap.map.getView().getCenter()) === angular.toJson(me.positionFeature.getGeometry().getCoordinates());
 
       },
       /**

@@ -852,7 +852,7 @@ export default {
           const media = olf.get('media');
 
           if (!angular.equals(attributes, {})) {
-            fd.append('attributes', JSON.stringify(attributes));
+            fd.append('attributes', angular.toJson(attributes));
           }
           if (angular.isDefined(olf.get('sync_pending')) && olf.get('sync_pending') && angular.isDefined(olf.get('obs_vgi_id'))) {
             fd.append('obs_vgi_id', olf.get('obs_vgi_id'));

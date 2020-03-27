@@ -27,7 +27,7 @@ export default ['$cookies', function ($cookies) {
         if (angular.isUndefined(me.items[forWhat])) me.items[forWhat] = [];
         if (me.items[forWhat].indexOf(url) == -1) {
             me.items[forWhat].push(url);
-            $cookies.put(`last${forWhat}Sources`, JSON.stringify(me.items[forWhat]));
+            $cookies.put(`last${forWhat}Sources`, angular.toJson(me.items[forWhat]));
         }
     }
 
