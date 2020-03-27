@@ -1,23 +1,17 @@
 <div class="input-group">
     <div class="input-group-prepend">
-        <button ng-show="layoutService.smallWidth && !layoutService.panelEnabled('search')"
+        <button ng-show="layoutService.smallWidth"
             ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
                 class="glyphicon icon-search" title="{{'Search'|translate}}"></i></button>
     </div>
     <input ng-model="query"
-        ng-show="!layoutService.panelEnabled('search') && (!layoutService.smallWidth || searchInputVisible)"
+        ng-show="(!layoutService.smallWidth || searchInputVisible)"
         class="form-control" class="hs-search-address-input" placeholder="{{'Search:'|translate}}" ng-change="queryChanged()" />
     <div class="input-group-append">
         <button class="btn btn-light btn-outline-secondary"
-            ng-if="clearvisible && !layoutService.panelEnabled('search')" ng-click="clear()"><span aria-hidden="true"
+            ng-if="clearvisible" ng-click="clear()"><span aria-hidden="true"
                 class="close">×</span><span class="sr-only">
                 <translate>Clear</translate>
             </span></button>
-        <hs.draw.shape-toolbar ng-if="!layoutService.panelEnabled('draw')" style="height:2.4em"></hs.draw.shape-toolbar>
-
-        <button class="btn btn-light btn-outline-secondary" title="{{'Measure lines and polygon'|translate}}"
-            ng-if="Core.exists('hs.measure') && config.panelsEnabled.measure != true" ng-click="measureButtonClicked()">
-            <i class="icon-design"></i>
-        </button>
     </div>
 </div>
