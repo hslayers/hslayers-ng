@@ -1,5 +1,5 @@
-export default ['config', '$rootScope', '$window', '$document', '$timeout',
-  function (config, $rootScope, $window, $document, $timeout) {
+export default ['config', '$rootScope', '$window', '$document', '$timeout', '$log',
+  function (config, $rootScope, $window, $document, $timeout, $log) {
     const me = this;
 
     me.data = {
@@ -445,9 +445,12 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout',
     angular.forEach(config.panelsEnabled, (value, key) => {
       me.panelEnabled(key, value);
     });
-    if (angular.isDefined(config.locationButtonVisible) &&
-            angular.isUndefined(config.componentsEnabled.geolocationButton)) {
-      config.componentsEnabled.geolocationButton = config.locationButtonVisible;
+    // For backwards-compatibility
+    if (angular.isDefined(config.locationButtonVisible)) {
+      $log.warn('config.locationButtonVisible parameter is deprecated. Use config.panelsEnabled.geolocationButton instead');
+      if (angular.isUndefined(config.componentsEnabled.geolocationButton)) {
+        config.componentsEnabled.geolocationButton = config.locationButtonVisible;
+      }
     }
 
     return me;
