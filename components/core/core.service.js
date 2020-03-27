@@ -331,9 +331,9 @@ export default ['$rootScope', '$controller', '$injector', '$window', 'hs.map.ser
           }
           config.componentsEnabled.toolbar = false;
           config.componentsEnabled.sidebar = false;
+          config.componentsEnabled.geolocationButton = false;
           config.mapInteractionsEnabled = false;
           config.mapControlsEnabled = false;
-          config.golocationButton = false;
           layoutService.sidebarVisible(false);
         }
       }

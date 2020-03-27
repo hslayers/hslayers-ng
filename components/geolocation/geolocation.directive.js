@@ -3,7 +3,7 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'h
     return {
       template: require('./partials/geolocation.html'),
       link: function link(scope, element, attrs) {
-        if (layoutService.componentEnabled('golocationButton')) {
+        if (layoutService.componentEnabled('geolocationButton')) {
           hsMap.loaded().then(_ => {
             layoutService.contentWrapper.querySelector('.ol-overlaycontainer-stopevent').appendChild(element[0]);
           });
@@ -14,10 +14,7 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'h
         $scope.collapsed = true;
 
         $scope.geolocationVisible = function () {
-          return (angular.isUndefined(config.locationButtonVisible)
-                        || config.locationButtonVisible) &&
-                        (angular.isUndefined(Core.puremapApp) ||
-                            Core.puremapApp === false);
+          return layoutService.componentEnabled('geolocationButton');
         };
       }]
 
