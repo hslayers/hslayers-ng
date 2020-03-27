@@ -438,13 +438,17 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout',
 
     angular.forEach(panelsEnabledDefaults, (value, key) => {
       if (angular.isUndefined(config.panelsEnabled) ||
-               angular.isUndefined(config.panelsEnabled[key])) {
+              angular.isUndefined(config.panelsEnabled[key])) {
         me.panelEnabled(key, value);
       }
     });
     angular.forEach(config.panelsEnabled, (value, key) => {
       me.panelEnabled(key, value);
     });
+    if (angular.isDefined(config.locationButtonVisible) &&
+            angular.isUndefined(config.componentsEnabled.geolocationButton)) {
+      config.componentsEnabled.geolocationButton = config.locationButtonVisible;
+    }
 
     return me;
   }
