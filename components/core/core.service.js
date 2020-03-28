@@ -308,6 +308,11 @@ export default ['$rootScope', '$controller', '$injector', '$window', 'hs.map.ser
         } else {
           return '';
         }
+      },
+      createComponentsEnabledConfigIfNeeded() {
+        if (angular.isUndefined(config.componentsEnabled)) {
+          config.componentsEnabled = {};
+        }
       }
     };
 
@@ -326,14 +331,12 @@ export default ['$rootScope', '$controller', '$injector', '$window', 'hs.map.ser
       set: function (value) {
         _puremapApp = value;
         if (value) {
-          if (angular.isUndefined(config.componentsEnabled)) {
-            config.componentsEnabled = {};
-          }
+          me.createComponentsEnabledConfigIfNeeded();
           config.componentsEnabled.toolbar = false;
           config.componentsEnabled.sidebar = false;
           config.componentsEnabled.geolocationButton = false;
           config.mapInteractionsEnabled = false;
-          config.mapControlsEnabled = false;
+          config.componentsEnabled.mapControls = false;
           layoutService.sidebarVisible(false);
         }
       }
