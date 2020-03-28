@@ -540,7 +540,8 @@ export default ['config', '$rootScope', 'hs.utils.service', 'hs.layout.service',
   });
 
   $rootScope.$watch(() => {
-    return config.mapControlsEnabled
+    if (angular.isUndefined(config.componentsEnabled)) return true;
+    return config.componentsEnabled.mapControls;
   }, (value) => {
     if(angular.isDefined(value) && !value) {
       angular.forEach( me.map.getControls(), (control) => {
