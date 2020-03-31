@@ -261,7 +261,7 @@ export default ['config', '$rootScope', '$window', '$document', '$timeout', '$lo
       },
 
       componentEnabled(which) {
-        return angular.isUndefined(config.componentsEnabled[which]) || config.componentsEnabled[which];
+        return angular.isUndefined(config.componentsEnabled) || angular.isUndefined(config.componentsEnabled[which]) || config.componentsEnabled[which];
       },
 
       /**
