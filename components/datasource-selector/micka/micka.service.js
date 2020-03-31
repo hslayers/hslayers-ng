@@ -3,8 +3,8 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 export default ['hs.map.service', 'Core', 'config', '$http', '$q',
-  'hs.utils.service', 'hs.mickaFiltersService', 'hs.addLayersVector.service',
-  function (OlMap, Core, config, $http, $q, utils, mickaFilterService, addLayersVectorService) {
+  'hs.utils.service', 'hs.mickaFiltersService', 'hs.addLayersVector.service', '$log',
+  function (OlMap, Core, config, $http, $q, utils, mickaFilterService, addLayersVectorService, $log) {
     const me = this;
     angular.extend(me, {
       /**
@@ -172,10 +172,33 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
       },
 
       /**
+        * @function getLayerLink
+        * @memberOf hs.mickaBrowserService
+        * @param {Object} layer Micka layer for which to get metadata
+        * @description Get first link from records links array or link 
+        * property of record in older Micka versions
+        * in a common format for use in add-layers component
+        * @return {String} Url of service or resource
+        */
+      getLayerLink(layer) {
+        if (layer.links && layer.links.length > 0) {
+          if (angular.isDefined(layer.links[0].url)) {
+            return layer.links[0].url;
+          } else {
+            return layer.links[0];
+          }
+        }
+        if (layer.link) {
+          return layer.link;
+        }
+        $log.warn('Layer didnt contain any links or link properties');
+      },
+
+      /**
         * @function describeWhatToAdd
         * @memberOf hs.mickaBrowserService
         * @param {Object} ds Configuration of selected datasource (from app config)
-        * @param {Object} layer Micka service for which to get metadata
+        * @param {Object} layer Micka layer for which to get metadata
         * @description Gets layer metadata and returns promise which describes layer
         * in a common format for use in add-layers component
         * @return {Promise} promise which describes layer
@@ -183,20 +206,21 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         */
       describeWhatToAdd(ds, layer) {
         let whatToAdd = {type: 'none'};
+        const type = layer.type || layer.trida;
         return new Promise((resolve, reject) => {
-          if (layer.trida == 'service') {
+          if (type == 'service') {
             if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
               whatToAdd.type = 'WMS';
-              whatToAdd.link = layer.link;
-            } else if ((layer.link.toLowerCase()).indexOf('sparql') > -1) {
-              addLayersVectorService.add('sparql', layer.link, layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
+              whatToAdd.link = me.getLayerLink(layer);
+            } else if ((me.getLayerLink(layer).toLowerCase()).indexOf('sparql') > -1) {
+              addLayersVectorService.add('sparql', me.getLayerLink(layer), layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
             } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
               whatToAdd.type = 'WFS';
-              whatToAdd.link = layer.link;
+              whatToAdd.link = me.getLayerLink(layer);
             } else if (layer.formats && ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) > -1) {
               whatToAdd = {
                 type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
-                link: layer.link,
+                link: me.getLayerLink(layer),
                 title: layer.title || 'Layer',
                 abstract: layer.abstract || 'Layer',
                 projection: 'EPSG:4326',
@@ -207,11 +231,11 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
               reject();
               return;
             }
-          } else if (layer.trida == 'dataset') {
+          } else if (type == 'dataset') {
             if (['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) > -1) {
               whatToAdd = {
                 type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
-                link: layer.link,
+                link: me.getLayerLink(layer),
                 title: layer.title || 'Layer',
                 abstract: layer.abstract || 'Layer',
                 projection: 'EPSG:4326',
@@ -221,7 +245,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
               reject(); return;
             }
           } else {
-            alert('Datasource type "' + layer.trida + '" not supported.');
+            alert(`Datasource type "${type}" not supported.`);
             reject();
             return;
           }
