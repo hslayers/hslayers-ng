@@ -197,8 +197,9 @@ export default ['config', '$http', '$window', '$document', '$timeout', function 
         context.timeout = null;
       };
       const callNow = immediate && !context.timeout;
-      $timeout.cancel(context.timeout);
-      context.timeout = $timeout(later, wait);
+      clearTimeout(context.timeout);
+      // eslint-disable-next-line angular/timeout-service
+      context.timeout = setTimeout(later, wait);
       if (callNow) {
         func.apply(context, args);
       }
