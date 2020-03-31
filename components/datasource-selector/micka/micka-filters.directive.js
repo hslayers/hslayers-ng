@@ -6,6 +6,7 @@ export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService
         scope.mickaFilterService = mickaFilterService;
         scope.query = datasourceBrowserService.data.query;
         scope.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
+        scope.queryCatalogs = datasourceBrowserService.queryCatalogs;
 
         /**
         * @function openMickaAdvancedSearch
