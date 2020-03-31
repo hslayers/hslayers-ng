@@ -139,7 +139,12 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
       if (angular.isUndefined(bbox)) {
         return;
       }
-      const b = bbox.split(' ');
+      let b = null;
+      if (angular.isString(bbox)) {
+        b = bbox.split(' ');
+      } else if (angular.isArray(bbox)) {
+        b = bbox;
+      }
       let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
       let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
       first_pair = transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());

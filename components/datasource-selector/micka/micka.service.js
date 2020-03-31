@@ -137,7 +137,12 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
           hs_notqueryable: true,
           highlighted: false
         };
-        const b = record.bbox.split(' ');
+        let b = null;
+        if (angular.isString(record.bbox)) {
+          b = record.bbox.split(' ');
+        } else if (angular.isArray(record.bbox)) {
+          b = record.bbox;
+        }
         let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
         let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
         const mapProjectionExtent = OlMap.map.getView().getProjection().getExtent();
