@@ -63,7 +63,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         $rootScope.$broadcast('mapQueryStarted', evt);
       });
-      const changeHandler = utils.debounce((e) => {
+
+      function changeHandler(e) {
         if (e.dragging) {
           return;
         }
@@ -96,8 +97,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
             me.featuresUnderMouse = [];
           }
         }, 0);
-      }, 200, false, me);
-      map.on('pointermove', changeHandler);
+
+      }
+      map.on('pointermove', utils.debounce(changeHandler, 500, false, me));
 
     }
 
@@ -153,7 +155,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         me.data.customFeatures = [];
       }
       const invisiblePopup = me.getInvisiblePopup();
-      if(invisiblePopup) {
+      if (invisiblePopup) {
         invisiblePopup.contentDocument.body.innerHTML = '';
         invisiblePopup.style.height = 0;
         invisiblePopup.style.width = 0;

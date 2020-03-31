@@ -108,7 +108,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     this.clearDatasetFeatures = function (dataset, extentLayer) {
       angular.forEach(dataset.layers, (val) => {
         try {
-          if (angular.isDefined(val.feature) && val.feature !== null) {
+          if (angular.isDefined(val.feature) && val.feature) {
             extentLayer.getSource().removeFeature(val.feature);
           }
         } catch (ex) {
@@ -265,21 +265,25 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     function init(map) {
       map.on('pointermove', (evt) => {
         const features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+        let somethingChanged = false;
         angular.forEach(extentLayer.getSource().getFeatures(), (feature) => {
           if (feature.get('record').highlighted) {
-            $timeout(() => {
-              feature.get('record').highlighted = false;
-            }, 0);
+            feature.get('record').highlighted = false;
+            somethingChanged = true;
           }
         });
         if (features.length) {
           angular.forEach(features, (feature) => {
             if (!feature.get('record').highlighted) {
-              $timeout(() => {
-                feature.get('record').highlighted = true;
-              }, 0);
+              feature.get('record').highlighted = true;
+              somethingChanged = true;
             }
           });
+        }
+        if (somethingChanged) {
+          $timeout(() => {
+
+          }, 0);
         }
       });
       $rootScope.$on('map.extent_changed', (e) => {

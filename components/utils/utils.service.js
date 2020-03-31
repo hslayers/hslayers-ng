@@ -191,13 +191,13 @@ export default ['config', '$http', '$window', '$document', '$timeout', function 
     return function () {
       const args = arguments;
       const later = function () {
-        context.timeout = null;
         if (!immediate) {
           func.apply(context, args);
         }
+        context.timeout = null;
       };
       const callNow = immediate && !context.timeout;
-      clearTimeout(context.timeout);
+      $timeout.cancel(context.timeout);
       context.timeout = $timeout(later, wait);
       if (callNow) {
         func.apply(context, args);
