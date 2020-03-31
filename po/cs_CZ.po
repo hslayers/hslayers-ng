@@ -104,7 +104,7 @@ msgid "Add to map"
 msgstr "Přidat do mapy"
 
 #: components/layermanager/partials/layerlist.html:30
-msgid "Additional informations"
+msgid "Additional information"
 msgstr "Další informace"
 
 #: components/compositions/partials/compositions.html:20
