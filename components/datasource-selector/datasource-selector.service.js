@@ -78,7 +78,8 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
           mickaService.queryCatalog(catalog,
             me.data.query,
             me.data.paging,
-            me.addExtentFeature);
+            me.addExtentFeature,
+            me.data.textField);
           break;
         case 'layman':
         default:

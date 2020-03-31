@@ -14,12 +14,13 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         * @param {Object} query Container for all query filter values
         * @param {Number} pageLimit Item count per page
         * @param {Function} extentFeatureCreated Function which gets called
+        * @param {String} textField Name of the field to search in
         * extent feature is created. Has one parameter: feature
         * @description Loads datasets metadata from selected source (CSW server).
         * Currently supports only "Micka" type of source.
         * Use all query params (search text, bbox, params.., sorting, paging, start)
         */
-      queryCatalog(dataset, query, pageLimit, extentFeatureCreated) {
+      queryCatalog(dataset, query, pageLimit, extentFeatureCreated, textField) {
         const b = transformExtent(
           OlMap.map.getView().calculateExtent(OlMap.map.getSize()),
           OlMap.map.getView().getProjection(),
@@ -29,7 +30,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         const text = angular.isDefined(query.textFilter) &&
                     query.textFilter.length > 0 ? query.textFilter : query.title;
         const sql = [
-          (text != '' ? me.data.textField + ' like \'*' + text + '*\'' : ''),
+          (text != '' ? `${textField} like '*${text}*'` : ''),
           bbox,
           //param2Query('type'),
           me.param2Query('ServiceType', query),
