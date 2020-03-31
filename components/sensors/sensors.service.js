@@ -72,6 +72,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
     sensorsSelected: [],
     sensorIdsSelected: [],
     sensorById: {},
+    layer: null,
     selectSensor(sensor) {
       me.sensorsSelected.forEach(s => s.checked = false);
       sensor.checked = true;
