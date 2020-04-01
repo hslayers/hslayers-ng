@@ -13,7 +13,7 @@ import '../../common/widgets/widgets.module';
  * @namespace hs.datasource_selector
  * @memberOf hs
  */
-angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets', 'hs.layout'])
+angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets', 'hs.layout', 'hs.permalink'])
 /**
  * @ngdoc directive
  * @name hs.datasourceSelector.metadataDialogDirective

@@ -73,7 +73,7 @@
                 <th translate>Read</th>
                 <th translate>Write</th>
             </tr>
-            <tr ng-repeat="g in statusData.groups">
+            <tr ng-repeat="g in saveMapManagerService.statusData.groups">
                 <td>{{g.roleTitle || g.roleName}}:</td>
                 <td><input type="checkbox" class="form-control" ng-model="g.r" /></td>
                 <td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
@@ -84,56 +84,56 @@
 
         <label class="form-group">
             <translate>Person</translate>
-            <input type="text" class="form-control" ng-model="userData.name" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.name" />
         </label>
 
         <label class="form-group">
             <translate>Organization</translate>
-            <input type="text" class="form-control" ng-model="userData.organization" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.organization" />
         </label>
 
         <label class="form-group">
             <translate>Position</translate>
-            <input type="text" class="form-control" ng-model="userData.position" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.position" />
         </label>
 
         <label class="form-group">
             <translate>Address</translate>
-            <input type="text" class="form-control" ng-model="userData.address" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.address" />
         </label>
 
         <label class="form-group">
             <translate>City</translate>
-            <input type="text" class="form-control" ng-model="userData.city" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.city" />
         </label>
 
         <label class="form-group">
             <translate>State</translate>
-            <input type="text" class="form-control" ng-model="userData.state" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.state" />
         </label>
 
         <label class="form-group">
             <translate>Postal code</translate>
-            <input type="text" class="form-control" ng-model="userData.postalcode" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.postalcode" />
         </label>
 
         <label class="form-group">
             <translate>Country</translate>
-            <input type="text" class="form-control" ng-model="userData.country" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.country" />
         </label>
 
         <label class="form-group">
             <translate>Phone</translate>
-            <input type="text" class="form-control" ng-model="userData.phone" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.phone" />
         </label>
 
         <label class="form-group">
             <translate>E-mail</translate>
-            <input type="text" class="form-control" ng-model="userData.email" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.email" />
         </label>
 
         <label class="form-group">WWW
-            <input type="text" class="form-control" ng-model="userData.url" />
+            <input type="text" class="form-control" ng-model="saveMapManagerService.userData.url" />
         </label>
 
     </div>

@@ -7,17 +7,15 @@ export default {
     }
   }],
   controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
-    '$timeout', 'hs.layout.service',
-    function ($scope, OlMap, Core, saveMap, config, $compile, StatusManager, $timeout, layoutService) {
+    '$timeout', 'hs.layout.service', 'hs.common.laymanService',
+    function ($scope, OlMap, Core, saveMapService, config, $compile, saveMapManagerService, $timeout, layoutService, commonLaymanService) {
       angular.extend($scope, {
-        compoData: StatusManager.compoData,
-        statusData: StatusManager.statusData,
-        userData: StatusManager.userData,
+        compoData: saveMapManagerService.compoData,
         config: config,
-        endpoint: StatusManager.endpoints[0],
-        endpoints: StatusManager.endpoints,
+        endpoint: null,
+        saveMapManagerService,
         step: 'start',
-        selectDeselectAllLayers: StatusManager.selectDeselectAllLayers,
+        selectDeselectAllLayers: saveMapManagerService.selectDeselectAllLayers,
 
         /**
          * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
@@ -30,7 +28,7 @@ export default {
           } else if ($scope.step == 'access') {
             $scope.step = 'author';
           } else if ($scope.step == 'author') {
-            $scope.downloadableData = 'text/json;charset=utf-8,' + encodeURIComponent(angular.toJson(saveMap.map2json(OlMap.map, $scope.compoData, $scope.userData, $scope.statusData)));
+            $scope.downloadableData = 'text/json;charset=utf-8,' + encodeURIComponent(angular.toJson(saveMapService.map2json(OlMap.map, $scope.compoData, saveMapManagerService.userData, saveMapManagerService.statusData)));
             $scope.step = 'end';
           }
         },
@@ -70,11 +68,11 @@ export default {
          * @memberof hs.save-map
          */
         confirmSave() {
-          StatusManager.confirmSave();
+          saveMapManagerService.confirmSave();
         },
 
         save(saveAsNew) {
-          StatusManager.save(saveAsNew, $scope.endpoint);
+          saveMapManagerService.save(saveAsNew, $scope.endpoint);
         },
 
         /**
@@ -101,7 +99,7 @@ export default {
         },
 
         getCurrentExtent () {
-          $scope.compoData.bbox = StatusManager.getCurrentExtent();
+          $scope.compoData.bbox = saveMapManagerService.getCurrentExtent();
         },
 
         isAllowed() {
@@ -141,8 +139,30 @@ export default {
       $scope.$on('StatusCreator.open', (e, composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
-          $scope.endpoint = StatusManager.endpoints
+          $scope.endpoint = saveMapManagerService.endpoints
             .filter((ep) => ep.type == openedType)[0];
+        }
+      });
+
+      $scope.endpointChanged = function() {
+        if ($scope.endpoint.type == 'layman') {
+          commonLaymanService.getCurrentUser($scope.endpoint);
+        }
+      };
+
+      $scope.$watch(() => {
+        return saveMapManagerService.endpoints;
+      }, (value) => {
+        if (value && $scope.endpoint === null && value.length > 0) {
+          const laymans = value.filter(ep => ep.type == 'layman');
+          if (laymans.length > 0) {
+            $scope.endpoint = laymans[0];
+          } else {
+            $scope.endpoint = value[0];
+          }
+          if ($scope.endpoint && $scope.endpoint.type == 'layman') {
+            commonLaymanService.getCurrentUser($scope.endpoint);
+          }
         }
       });
 

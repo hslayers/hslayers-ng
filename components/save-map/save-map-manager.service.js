@@ -247,26 +247,38 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
 
       resetCompoData() {
         me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition = '';
+      },
+
+      fillEndpointArray() {
+        me.endpoints = [
+          {
+            type: 'statusmanager',
+            name: 'Status manager',
+            url: config.status_manager_url
+          }
+        ];
+
+        (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
+          ds => {
+            me.endpoints.push({
+              type: 'layman',
+              name: 'Layman',
+              url: ds.url,
+              user: ds.user
+            });
+          });
       }
     });
 
-    me.endpoints = [
-      {
-        type: 'statusmanager',
-        name: 'Status manager',
-        url: status
-      }
-    ];
+    me.fillEndpointArray();
 
-    (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
-      ds => {
-        me.endpoints.push({
-          type: 'layman',
-          name: 'Layman',
-          url: ds.url,
-          user: ds.user
-        });
+    $rootScope.$on('datasource-selector.layman_auth', (e, endpoint) => {
+      me.endpoints.forEach(i => {
+        if (i.url == endpoint.url) {
+          i.user = endpoint.user;
+        }
       });
+    });
 
     $rootScope.$on('StatusCreator.open', (e, composition) => {
       me.open();

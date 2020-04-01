@@ -8,7 +8,10 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
         angular.extend(me, {
             data: {
             },
-            loadList(ds, params, bbox, extentLayer) {
+            async loadList(ds, params, bbox, extentLayer) {
+                if (angular.isUndefined(ds.user) || ['anonymous', 'browser'].indexOf(ds.user) > -1) {
+                    await commonLaymanService.getCurrentUser(ds);
+                }
                 ds.loaded = false;
                 if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
                 return new Promise((resolve, reject) => {

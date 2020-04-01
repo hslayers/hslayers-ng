@@ -21,7 +21,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     this.data.paging = config.dsPaging || 10;
     this.data.textField = 'AnyText';
     this.data.selectedLayer = null;
-    this.data.datasets = undefined;
     this.data.datasources = config.datasources || [];
     this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
@@ -46,19 +45,13 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     /**
     * @function queryCatalogs
     * @memberOf hs.datasourceBrowserService
-    * @param {Object} datasources List of datasources i.e config to connect
-    * to catalogue service
     * @description Queries all configured catalogs for datasources (layers)
     */
-    this.queryCatalogs = function (datasources) {
-      if (angular.isUndefined(datasources)) {
-        datasources = me.data.datasources;
-      }
-      me.data.datasets = datasources;
+    this.queryCatalogs = function () {
       extentLayer.getSource().clear();
-      for (const ds in me.data.datasets) {
-        me.data.datasets[ds].start = 0;
-        me.queryCatalog(me.data.datasets[ds]);
+      for (const ds in me.data.datasources) {
+        me.data.datasources[ds].start = 0;
+        me.queryCatalog(me.data.datasources[ds]);
       }
     };
 

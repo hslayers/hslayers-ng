@@ -1,32 +1,35 @@
 export default ['hs.map.service', 'Core', 'config', '$http', '$q',
-  'hs.utils.service', 'hs.mickaFiltersService',
-  function (OlMap, Core, config, $http, $q, utils, mickaFilterService) {
+  'hs.utils.service', 'hs.mickaFiltersService', '$rootScope', 'hs.common.laymanService',
+  function (OlMap, Core, config, $http, $q, utils, mickaFilterService, $rootScope, commonLaymanService) {
     const me = this;
     angular.extend(me, {
       /*
         * @function queryCatalog
         * @memberOf hs.laymanBrowserService
-        * @param {Object} dataset Configuration of selected datasource (from app config)
+        * @param {Object} endpoint Configuration of selected datasource (from app config)
         * extent feature is created. Has one parameter: feature
         * @description Loads datasets metadata from Layman
         */
-      queryCatalog(dataset) {
-        let url = `${dataset.url}/rest/${dataset.user}/layers`;
-        url = utils.proxify(url);
-        dataset.loaded = false;
-        if (angular.isDefined(dataset.canceler)) {
-          dataset.canceler.resolve();
-          delete dataset.canceler;
+      async queryCatalog(endpoint) {
+        if (angular.isUndefined(endpoint.user) || ['anonymous', 'browser'].indexOf(endpoint.user) > -1) {
+          await commonLaymanService.getCurrentUser(endpoint);
         }
-        dataset.canceler = $q.defer();
+        let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
+        url = utils.proxify(url);
+        endpoint.loaded = false;
+        if (angular.isDefined(endpoint.canceler)) {
+          endpoint.canceler.resolve();
+          delete endpoint.canceler;
+        }
+        endpoint.canceler = $q.defer();
         $http.get(url, {
-          timeout: dataset.canceler.promise,
-          dataset
+          timeout: endpoint.canceler.promise,
+          dataset: endpoint
         })
           .then(
             me.datasetsReceived,
             (e) => {
-              dataset.loaded = true;
+              endpoint.loaded = true;
             });
       },
 

@@ -13,7 +13,7 @@
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" ng-class="{'hs-tab-single-datasources': !data.wms_connecting}"
-                ng-repeat="ds in data.datasets">
+                ng-repeat="ds in data.datasources">
                 <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
                     {{ds.title}}
@@ -35,6 +35,7 @@
                         <div ng-if="ds.type == 'micka'">
                             <hs.micka-filters-directive micka-dataset-config="{url: ds.url}"></hs.micka-filters-directive>
                         </div>
+                        <a class="btn btn-block btn-secondary" href="{{ds.authUrl}}" ng-show="ds.type == 'layman' && ds.user == 'anonymous'" translate>Log in</a>
                         <ul class="list-group">
                             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
                             <li ng-repeat="layer in ds.layers" class="clearfix"

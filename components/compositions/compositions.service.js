@@ -297,5 +297,13 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             }
         });
 
+        $rootScope.$on('datasource-selector.layman_auth', (e, endpoint) => {
+            me.data.endpoints.forEach(i => {
+              if (i.url == endpoint.url) {
+                i.user = endpoint.user;
+              }
+            });
+          });
+
         return me;
     }]

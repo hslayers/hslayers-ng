@@ -6,12 +6,13 @@ import statusManagerService from './status-manager.service';
 import laymanService from './layman.service';
 import layerSynchronizerService from './layer-synchronizer.service';
 import '../../common/widgets/widgets.module';
+import '../../common/layman/layman.module';
 
 /**
  * @namespace hs.save-map
  * @memberOf hs
  */
-angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets'])
+angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', 'hs.common.layman'])
 /**
      * @ngdoc directive
      * @name hs.save-map.directive
