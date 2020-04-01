@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
+            -item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
                 ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}">
                 <div class="d-flex ">
                     <div class="p-0">
@@ -86,7 +86,7 @@
             </li>
             <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
                 <li class="list-group-item active">
-                    <span ng-bind-html="value.name"></span>
+                    <span ng-bind-html="value.name | translate"></span>
                 </li>
                 <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
                 <li hs.layermanager.layerlist_directive></li>
