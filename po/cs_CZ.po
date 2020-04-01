@@ -461,7 +461,7 @@ msgstr "Filtrovat podle"
 
 #: components/compositions/partials/compositionsmd.html:22
 msgid "Filter by map extent"
-msgstr "Filtrovat podle rozsahu mapy"
+msgstr "Podle rozsahu mapy"
 
 #: components/feature_crossfilter/partials/f_crossfilter.html:2
 #: components/layermanager/partials/layermanagermd.html:47
