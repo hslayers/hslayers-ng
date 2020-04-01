@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </li>
-            -item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
+            <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
                 ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}">
                 <div class="d-flex ">
                     <div class="p-0">
