@@ -8,13 +8,14 @@
                 </div>
             </div>
             <hs.draw.shape-toolbar class="nav-item"
-                ng-if="!layoutService.panelEnabled('draw') && layoutService.componentEnabled('drawToolbar')"
-                style="height:2.4em"></hs.draw.shape-toolbar>
+                ng-if="layoutService.componentEnabled('drawToolbar')"
+                style="height:2.45em"></hs.draw.shape-toolbar>
             <div class="input-group-append nav-item" ng-if="Core.exists('hs.measure') && layoutService.panelEnabled('measure') && layoutService.componentEnabled('measureToolbar')">
                 <div class="btn-group">
                     <button class="btn btn-light btn-outline-secondary"
                         title="{{'Measure lines and polygon'|translate}}"
-                        ng-click="measureButtonClicked()">
+                        ng-click="measureButtonClicked()"
+                        style="height:2.45em">
                         <i class="icon-design"></i>
                     </button>
                 </div>
