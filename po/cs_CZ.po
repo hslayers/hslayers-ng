@@ -98,7 +98,7 @@ msgstr "Přidat"
 msgid "Add draw layer"
 msgstr "Přdat kreslíci vrstvu"
 
-#: components/datasource-selector/partials/datasource_selector.html:59
+#: components/datasource-selector/partials/datasource_selector.html:58
 #: components/datasource-selector/partials/dialog_metadata.html:19
 msgid "Add to map"
 msgstr "Přidat do mapy"
@@ -279,7 +279,7 @@ msgstr "Kontext"
 msgid "Continue without saving"
 msgstr "Pokračovat bez uložení"
 
-#: components/query/query-base.service.js:196
+#: components/query/query-base.service.js:200
 msgid "Coordinates"
 msgstr "Souřadnice"
 
@@ -361,11 +361,12 @@ msgstr "Chcete odstranit mapu"
 msgid "Do you want to delete map {{compositionToDelete.title}}"
 msgstr "Chcete odstranit mapu {{compositionToDelete.title}}"
 
-#: components/datasource-selector/partials/datasource_selector.html:51
+#: components/datasource-selector/partials/datasource_selector.html:50
 #: components/save-map/partials/panel.html:23
 msgid "Download"
 msgstr "Ke stažení"
 
+#: components/draw/partials/toolbar_button_directive.html:4
 #: components/draw/partials/vgi-draw.html:2
 #: components/layout/partials/sidenav.html:25
 msgid "Draw new features"
@@ -395,7 +396,7 @@ msgstr "Rozšířené parametry vyhledávání pro Micku"
 msgid "Extent"
 msgstr "Rozsah"
 
-#: components/datasource-selector/partials/datasource_selector.html:26
+#: components/datasource-selector/partials/datasource_selector.html:25
 msgid "External data"
 msgstr "Externí data"
 
@@ -460,7 +461,7 @@ msgstr "Filtrovat podle"
 
 #: components/compositions/partials/compositionsmd.html:22
 msgid "Filter by map extent"
-msgstr "Filtrovat podle rozsahu mapy"
+msgstr "Podle rozsahu mapy"
 
 #: components/feature_crossfilter/partials/f_crossfilter.html:2
 #: components/layermanager/partials/layermanagermd.html:47
@@ -636,7 +637,7 @@ msgstr "Projekce mapy a projekce vrstev se neshodují. Chcete přidat vrstvu k m
 msgid "Measure distance or area at map"
 msgstr "Změřte vzdálenost nebo plochu na mapě"
 
-#: components/search/partials/searchinput.html:18
+#: components/search/partials/searchinput.html:16
 msgid "Measure lines and polygon"
 msgstr "Měření délky a plochy"
 
@@ -712,7 +713,7 @@ msgid "No"
 msgstr "Ne"
 
 #: components/datasource-selector/micka/micka-suggestions-dialog.html:18
-#: components/datasource-selector/partials/datasource_selector.html:40
+#: components/datasource-selector/partials/datasource_selector.html:39
 msgid "No results"
 msgstr "Žádné výsledky"
 
@@ -883,7 +884,7 @@ msgstr "Odstranit všechny vrstvy"
 msgid "Remove layer"
 msgstr "Odstranit vrstvu"
 
-#: components/layermanager/partials/layer-editor.html:151
+#: components/layermanager/partials/layer-editor.html:152
 msgid "Rename layer"
 msgstr "Přejmenovat vrstvu"
 
@@ -980,7 +981,7 @@ msgid "Saving to status manager"
 msgstr "Ukládání do status manageru"
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:90
-#: components/layermanager/partials/layer-editor.html:125
+#: components/layermanager/partials/layer-editor.html:126
 #: components/layermanager/partials/layer-editor.html:75
 msgid "Scale"
 msgstr "Měřítko"
@@ -1021,7 +1022,7 @@ msgstr "Odesílam na Layman"
 
 #: components/sensors/partials/unit-dialog.html:8
 msgid "Sensor unit {{$ctrl.unit.description}}"
-msgstr "Jednotka senzoru {{$ctrl.unit.description}}"
+msgstr "Senzorová jednotka {{$ctrl.unit.description}}"
 
 #: components/sensors/partials/panel.html:10
 #: components/sensors/partials/panel.html:2
@@ -1126,6 +1127,7 @@ msgid "Style"
 msgstr "Styl"
 
 #: components/styles/partials/styler.html:3
+#: components/layermanager/partials/layer-editor.html:150
 msgid "Style layer"
 msgstr "Stylovat vrstvu"
 
@@ -1149,15 +1151,15 @@ msgstr "Při analýzě odezvy schopností z dané adresy URL došlo k chybě."
 msgid "This is required!"
 msgstr "Tohle je nutné!"
 
-#: components/layermanager/partials/layerlist.html:41
+#: components/layermanager/partials/layerlist.html:26
 msgid "This layer is not available"
 msgstr "Tato vrstva není k dispozici"
 
-#: components/layermanager/partials/layerlist.html:35
+#: components/layermanager/partials/layerlist.html:20
 msgid "This layer is not available in this scale"
 msgstr "Tato vrstva není v tomto měřítku k dispozici."
 
-#: components/layermanager/partials/layerlist.html:50
+#: components/layermanager/partials/layerlist.html:34
 msgid "This layer is queryable"
 msgstr "Tato vrstva je dotazovatelná"
 
@@ -1330,7 +1332,7 @@ msgstr "Podrobnosti"
 msgid "embed/"
 msgstr "vložit/"
 
-#: components/layermanager/partials/layer-editor.html:129
+#: components/layermanager/partials/layer-editor.html:130
 #: components/layermanager/partials/layer-editor.html:76
 msgid "from"
 msgstr "Z"
@@ -1347,7 +1349,7 @@ msgstr "více tvaru"
 msgid "social share"
 msgstr "sdílení"
 
-#: components/layermanager/partials/layer-editor.html:138
+#: components/layermanager/partials/layer-editor.html:139
 #: components/layermanager/partials/layer-editor.html:77
 msgid "to"
 msgstr "do"
@@ -1395,7 +1397,8 @@ msgstr "Zdroje dat"
 msgid "Draw"
 msgstr "Kreslení"
 
-#: components/draw/draw.service.js:52
+#: components/draw/draw.service.js:53
+#: components/draw/draw.service.js:56
 msgid "Draw layer"
 msgstr "Kreslicí vrstva"
 
@@ -1438,4 +1441,39 @@ msgstr "Barva"
 #: components/draw/draw.controller.js:73
 msgid "Select layer"
 msgstr "Vybrat vrstvu"
+
+#: components/sidebar/partials/sidebar.html:20
+msgid "Expand/collapse"
+msgstr "Rozbalit/Sbalit"
+
+#: components/draw/partials/shape-toolbar.html:34
+msgid "Finish feature"
+msgstr "Ukončit prvek"
+
+#: components/geolocation/partials/geolocation.html:3
+#: components/geolocation/partials/geolocation.html:8
+msgid "Locate me"
+msgstr "Najdi mě"
+
+#: components/draw/partials/shape-toolbar.html:31
+msgid "Remove last point"
+msgstr "Odstranit poslední bod"
+
+#: components/draw/draw.service.js:65
+#: components/layermanager/partials/layermanager.html:89
+msgid "User generated"
+msgstr "Uživatelské"
+
+#: components/map/map.service.js:227
+msgid "Zoom to initial window"
+msgstr "Priblížit na počáteční okno"
+
+
+#: components/add-layers/shp/add-shp-layer.directive.html:60
+msgid "{{vm.errorMessage}}"
+msgstr "{{vm.errorMessage}}"
+
+#: components/compositions/partials/compositions.html:49
+msgid "Sort"
+msgstr "Seřadit"
 

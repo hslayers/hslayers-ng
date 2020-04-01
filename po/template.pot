@@ -17,10 +17,14 @@ msgid ""
 "<div class=\"container-fluid\">\r\n"
 "                    <div class=\"row\">\r\n"
 "                        <div class=\"col-12\">\r\n"
-"                            <div id=\"chartplace\" style=\"min-width: 400px; min-height:50px\"></div>\r\n"
+"                            <div class=\"hs-chartplace\" style=\"min-width: 400px; min-height:50px\"></div>\r\n"
 "                        </div>\r\n"
 "                    </div>\r\n"
 "                </div>"
+msgstr ""
+
+#: components/draw/partials/shape-toolbar.html:33
+msgid "<i class=\"icon-check\"></i>"
 msgstr ""
 
 #: components/draw/partials/shape-toolbar.html:27
@@ -40,6 +44,10 @@ msgstr ""
 #: components/draw/partials/shape-toolbar.html:24
 #: components/draw/partials/vgi-draw.html:28
 msgid "<i class=\"icon-polygonlasso\"></i>"
+msgstr ""
+
+#: components/draw/partials/shape-toolbar.html:30
+msgid "<i class=\"icon-remove-circle\"></i>"
 msgstr ""
 
 #: components/draw/partials/shape-toolbar.html:3
@@ -96,12 +104,12 @@ msgstr ""
 msgid "Add layers"
 msgstr ""
 
-#: components/datasource-selector/partials/datasource_selector.html:59
+#: components/datasource-selector/partials/datasource_selector.html:58
 #: components/datasource-selector/partials/dialog_metadata.html:19
 msgid "Add to map"
 msgstr ""
 
-#: components/layermanager/partials/layerlist.html:30
+#: components/layermanager/partials/layerlist.html:45
 msgid "Additional information"
 msgstr ""
 
@@ -289,7 +297,7 @@ msgstr ""
 msgid "Continue without saving"
 msgstr ""
 
-#: components/query/query-base.service.js:196
+#: components/query/query-base.service.js:200
 msgid "Coordinates"
 msgstr ""
 
@@ -375,7 +383,7 @@ msgstr ""
 msgid "Do you want to delete map {{compositionToDelete.title}}"
 msgstr ""
 
-#: components/datasource-selector/partials/datasource_selector.html:51
+#: components/datasource-selector/partials/datasource_selector.html:50
 #: components/save-map/partials/panel.html:23
 msgid "Download"
 msgstr ""
@@ -386,6 +394,12 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
+#: components/draw/draw.service.js:53
+#: components/draw/draw.service.js:56
+msgid "Draw layer"
+msgstr ""
+
+#: components/draw/partials/toolbar_button_directive.html:4
 #: components/draw/partials/vgi-draw.html:2
 #: components/layout/partials/sidenav.html:25
 #: components/sidebar/sidebar.service.js:37
@@ -405,6 +419,10 @@ msgstr ""
 msgid "Embed code"
 msgstr ""
 
+#: components/sidebar/partials/sidebar.html:20
+msgid "Expand/collapse"
+msgstr ""
+
 #: components/datasource-selector/micka/advanced-micka-dialog.html:6
 msgid "Extended search parameters for Micka"
 msgstr ""
@@ -416,7 +434,7 @@ msgstr ""
 msgid "Extent"
 msgstr ""
 
-#: components/datasource-selector/partials/datasource_selector.html:26
+#: components/datasource-selector/partials/datasource_selector.html:25
 msgid "External data"
 msgstr ""
 
@@ -483,6 +501,10 @@ msgstr ""
 #: components/layermanager/partials/layermanagermd.html:47
 #: components/sidebar/sidebar.service.js:26
 msgid "Filter features"
+msgstr ""
+
+#: components/draw/partials/shape-toolbar.html:34
+msgid "Finish feature"
 msgstr ""
 
 #: components/add-layers/arcgis/add-arcgis-layer.directive.html:41
@@ -631,6 +653,11 @@ msgstr ""
 msgid "Loading:"
 msgstr ""
 
+#: components/geolocation/partials/geolocation.html:3
+#: components/geolocation/partials/geolocation.html:8
+msgid "Locate me"
+msgstr ""
+
 #: components/save-map/partials/panelmd.html:28
 #: components/save-map/partials/simpleform.html:22
 msgid "Make public"
@@ -672,7 +699,7 @@ msgstr ""
 msgid "Measure distance or area at map"
 msgstr ""
 
-#: components/search/partials/searchinput.html:18
+#: components/toolbar/partials/toolbar.html:16
 msgid "Measure lines and polygon"
 msgstr ""
 
@@ -699,7 +726,6 @@ msgid "Metadata for {{selectedLayer.title}}"
 msgstr ""
 
 #: components/datasource-selector/micka/micka-filters.html:7
-#: components/sidebar/partials/sidebar.html:20
 msgid "More"
 msgstr ""
 
@@ -752,7 +778,7 @@ msgid "No"
 msgstr ""
 
 #: components/datasource-selector/micka/micka-suggestions-dialog.html:18
-#: components/datasource-selector/partials/datasource_selector.html:40
+#: components/datasource-selector/partials/datasource_selector.html:39
 msgid "No results"
 msgstr ""
 
@@ -812,10 +838,6 @@ msgstr ""
 
 #: components/save-map/partials/form.html:86
 msgid "Person"
-msgstr ""
-
-#: components/sensors/partials/panel.html:16
-msgid "Phenomena"
 msgstr ""
 
 #: components/save-map/partials/form.html:126
@@ -919,12 +941,16 @@ msgstr ""
 msgid "Remove all layers"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:153
+#: components/draw/partials/shape-toolbar.html:31
+msgid "Remove last point"
+msgstr ""
+
+#: components/layermanager/partials/layer-editor.html:154
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:151
+#: components/layermanager/partials/layer-editor.html:152
 msgid "Rename layer"
 msgstr ""
 
@@ -1021,7 +1047,7 @@ msgid "Saving to status manager"
 msgstr ""
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:90
-#: components/layermanager/partials/layer-editor.html:125
+#: components/layermanager/partials/layer-editor.html:126
 #: components/layermanager/partials/layer-editor.html:75
 msgid "Scale"
 msgstr ""
@@ -1052,7 +1078,7 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/draw.controller.js:73
+#: components/draw/draw.controller.js:77
 msgid "Select layer"
 msgstr ""
 
@@ -1060,15 +1086,14 @@ msgstr ""
 msgid "Select new name for map."
 msgstr ""
 
-#: components/layermanager/partials/layerlist.html:46
+#: components/layermanager/partials/layerlist.html:30
 msgid "Sending to layman"
 msgstr ""
 
 #: components/sensors/partials/unit-dialog.html:8
-msgid "Sensor unit {{$ctrl.unit.description}}"
+msgid "Sensor unit {{sensorsService.unit.description}}"
 msgstr ""
 
-#: components/sensors/partials/panel.html:10
 #: components/sensors/partials/panel.html:2
 #: components/sidebar/sidebar.service.js:27
 msgid "Sensors"
@@ -1122,6 +1147,10 @@ msgstr ""
 msgid "Some error happened or input missing"
 msgstr ""
 
+#: components/compositions/partials/compositions.html:49
+msgid "Sort"
+msgstr ""
+
 #: components/compositions/partials/compositionsmd.html:12
 msgid "Sort by"
 msgstr ""
@@ -1170,6 +1199,7 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
+#: components/layermanager/partials/layer-editor.html:150
 #: components/styles/partials/styler.html:3
 msgid "Style layer"
 msgstr ""
@@ -1194,15 +1224,15 @@ msgstr ""
 msgid "This is required!"
 msgstr ""
 
-#: components/layermanager/partials/layerlist.html:41
+#: components/layermanager/partials/layerlist.html:26
 msgid "This layer is not available"
 msgstr ""
 
-#: components/layermanager/partials/layerlist.html:35
+#: components/layermanager/partials/layerlist.html:20
 msgid "This layer is not available in this scale"
 msgstr ""
 
-#: components/layermanager/partials/layerlist.html:50
+#: components/layermanager/partials/layerlist.html:34
 msgid "This layer is queryable"
 msgstr ""
 
@@ -1226,7 +1256,7 @@ msgstr ""
 #: components/compositions/partials/compositionsmd.html:15
 #: components/datasource-selector/micka/advanced-micka-dialog.html:108
 #: components/language/partials/languagemd.html:8
-#: components/layermanager/partials/layer-editor.html:121
+#: components/layermanager/partials/layer-editor.html:122
 #: components/print/partials/printdialog.html:6
 #: components/print/partials/printdialogmd.html:8
 #: components/save-map/partials/form.html:20
@@ -1292,6 +1322,10 @@ msgstr ""
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:29
 #: components/add-layers/wms/add-wms-layer.md.directive.html:29
 msgid "Use tiles"
+msgstr ""
+
+#: components/draw/draw.service.js:65
+msgid "User generated"
 msgstr ""
 
 #: components/info/partials/info.html:8
@@ -1363,7 +1397,11 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:147
+#: components/map/map.service.js:227
+msgid "Zoom to initial window"
+msgstr ""
+
+#: components/layermanager/partials/layer-editor.html:148
 msgid "Zoom to layer"
 msgstr ""
 
@@ -1375,7 +1413,7 @@ msgstr ""
 msgid "embed/"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:129
+#: components/layermanager/partials/layer-editor.html:130
 #: components/layermanager/partials/layer-editor.html:76
 msgid "from"
 msgstr ""
@@ -1392,7 +1430,7 @@ msgstr ""
 msgid "social share"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:138
+#: components/layermanager/partials/layer-editor.html:139
 #: components/layermanager/partials/layer-editor.html:77
 msgid "to"
 msgstr ""
@@ -1405,10 +1443,10 @@ msgstr ""
 msgid "{{but.title}}"
 msgstr ""
 
-#: components/add-layers/shp/add-shp-layer.directive.html:60
-msgid "{{errorMessage}}"
-msgstr ""
-
 #: components/layout/partials/sidenav.html:8
 msgid "{{panel.title}}"
+msgstr ""
+
+#: components/add-layers/shp/add-shp-layer.directive.html:60
+msgid "{{vm.errorMessage}}"
 msgstr ""
