@@ -10,10 +10,8 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         * extent feature is created. Has one parameter: feature
         * @description Loads datasets metadata from Layman
         */
-      async queryCatalog(endpoint) {
-        if (angular.isUndefined(endpoint.user) || ['anonymous', 'browser'].indexOf(endpoint.user) > -1) {
-          await commonLaymanService.getCurrentUser(endpoint);
-        }
+      queryCatalog(endpoint) {
+        endpoint.getCurrentUserIfNeeded();
         let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
         url = utils.proxify(url);
         endpoint.loaded = false;

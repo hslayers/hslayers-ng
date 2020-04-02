@@ -88,6 +88,7 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
                 ds.start = 0;
                 ds.next = me.data.limit
             }
-        })
+        });
+        return me;
     }]
 

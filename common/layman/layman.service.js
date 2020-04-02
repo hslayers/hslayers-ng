@@ -17,6 +17,12 @@ export default ['$http', '$rootScope', function ($http, $rootScope) {
               reject(e);
             });
       });
+    },
+    async getCurrentUserIfNeeded() {
+      const endpoint = this;
+      if (angular.isUndefined(endpoint.user) || ['anonymous', 'browser'].indexOf(endpoint.user) > -1) {
+        await me.getCurrentUser(endpoint);
+      }
     }
   });
   return me;

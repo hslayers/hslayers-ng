@@ -9,7 +9,7 @@
                     <span class="input-group-text control-label" translate>Save to</span>
                 </div>
                 <select class="form-control" ng-model="endpoint" ng-change="endpointChanged()">
-                    <option ng-repeat="endpoint in saveMapManagerService.endpoints" ng-value="endpoint">{{endpoint.name}}</option>
+                    <option ng-repeat="endpoint in endpointsService.endpoints" ng-value="endpoint">{{endpoint.title}}</option>
                 </select>
             </div>
         </div>

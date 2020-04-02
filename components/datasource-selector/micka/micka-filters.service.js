@@ -1,5 +1,5 @@
-export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service',
-  function ($rootScope, OlMap, Core, config, $http, $q, utils) {
+export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.common.endpointsService',
+  function ($rootScope, OlMap, Core, config, $http, $q, utils, endpointsService) {
     const me = this;
     this.suggestionConfig = {};
     this.suggestions = [];
@@ -20,26 +20,29 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
     }
 
     /**
-        * @function fillCodesets
-        * @memberOf hs.datasourceBrowserService
-        * @param {Object} datasets Input datasources
-        * Download codelists for all "micka" type datasources from Url specified in app config.
-        */
-    me.fillCodesets = function (datasets) {
-      for (const ds in datasets) {
-        me.fillCodeset(datasets[ds]);
-      }
+    * @function fillCodesets
+    * @memberOf hs.datasourceBrowserService
+    * @param {Object} datasets Input datasources
+    * Download codelists for all "micka" type datasources from Url specified in app config.
+    */
+    me.fillCodesets = function () {
+      endpointsService.endpoints
+        .filter(ep => ep.type == 'micka')
+        .forEach(ep => me.fillCodeset(ep));
     };
 
     /**
-        * @function fillCodeset
-        * @memberOf hs.datasourceBrowserService
-        * @param {Object} ds Single datasource
-        * Download code-list for micka type source from Url specifiead in app config.
-        */
+    * @function fillCodeset
+    * @memberOf hs.datasourceBrowserService
+    * @param {Object} ds Single datasource
+    * Download code-list for micka type source from Url specifiead in app config.
+    */
     me.fillCodeset = function (ds) {
       if (ds.type == 'micka') {
         let url = ds.code_list_url;
+        if (angular.isUndefined(url)) {
+          return;
+        }
         url = utils.proxify(url);
         if (angular.isUndefined(ds.code_lists)) {
           ds.code_lists = {

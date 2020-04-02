@@ -8,6 +8,8 @@ import mickaFiltersDirective from './micka/micka-filters.directive';
 import mickaService from './micka/micka.service';
 import laymanService from './layman/layman.service';
 import '../../common/widgets/widgets.module';
+import '../../common/endpoints/endpoints.module';
+import forDatasourceBrowserFiter from './for-datasource-browser.fiter';
 
 /**
  * @namespace hs.datasource_selector
@@ -88,5 +90,6 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets', 'hs.layout', '
  * @name hs.datasourceSelector
  * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas.
  */
-  .component('hs.datasourceSelector', datasourceSelectorComponent);
+  .component('hs.datasourceSelector', datasourceSelectorComponent)
 
+  .filter('forDatasourceBrowser', forDatasourceBrowserFiter);

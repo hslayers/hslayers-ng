@@ -2,16 +2,14 @@ import { fromExtent as polygonFromExtent } from 'ol/geom/Polygon';
 import Feature from 'ol/Feature';
 
 export default ['$rootScope', 'hs.compositions.service_parser', 'config', 
-    '$q', '$http', 'hs.map.service', 'hs.utils.service',
-    function ($rootScope, compositionParser, config, $q, $http, hsMap, utils) {
+    '$q', '$http', 'hs.map.service', 'hs.utils.service', 'hs.common.laymanService',
+    function ($rootScope, compositionParser, config, $q, $http, hsMap, utils, commonLaymanService) {
         var me = this;
         angular.extend(me, {
             data: {
             },
-            async loadList(ds, params, bbox, extentLayer) {
-                if (angular.isUndefined(ds.user) || ['anonymous', 'browser'].indexOf(ds.user) > -1) {
-                    await commonLaymanService.getCurrentUser(ds);
-                }
+            loadList(ds, params, bbox, extentLayer) {
+                ds.getCurrentUserIfNeeded();
                 ds.loaded = false;
                 if (angular.isUndefined(params.sortBy)) params.sortBy = 'bbox';
                 return new Promise((resolve, reject) => {
@@ -46,5 +44,6 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
                 ds.next = me.data.limit
             }
         })
+        return me;
     }]
 

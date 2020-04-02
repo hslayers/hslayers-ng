@@ -5,8 +5,8 @@ import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
 export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
-  'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService', 'hs.layout.service', '$log',
-  function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService, laymanService, layoutService, $log) {
+  'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService',
+  function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService, laymanService, layoutService, $log, endpointsService) {
     const me = this;
 
     this.data = {};
@@ -21,7 +21,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     this.data.paging = config.dsPaging || 10;
     this.data.textField = 'AnyText';
     this.data.selectedLayer = null;
-    this.data.datasources = config.datasources || [];
     this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
 
@@ -49,10 +48,10 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     */
     this.queryCatalogs = function () {
       extentLayer.getSource().clear();
-      for (const ds in me.data.datasources) {
-        me.data.datasources[ds].start = 0;
-        me.queryCatalog(me.data.datasources[ds]);
-      }
+      endpointsService.endpoints.forEach(ds => {
+        ds.start = 0;
+        me.queryCatalog(ds);
+      });
     };
 
     /**
@@ -75,8 +74,9 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
             me.data.textField);
           break;
         case 'layman':
-        default:
           laymanService.queryCatalog(catalog);
+          break;
+        default:
           break;
       }
     };
@@ -249,7 +249,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     };
 
     function dataSourceExistsAndEmpty() {
-      return me.data.datasources.length > 0 && angular.isUndefined(me.data.datasources[0].loaded);
+      return endpointsService.endpoints.filter(ep => angular.isUndefined(ep.loaded)).length > 0;
     }
 
     function panelVisible() {
@@ -285,18 +285,18 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
           return;
         }
         if (mickaFilterService.filterByExtent) {
-          me.queryCatalogs(me.data.datasources);
+          me.queryCatalogs();
         }
       });
       map.addLayer(extentLayer);
       if (dataSourceExistsAndEmpty() && panelVisible()) {
-        me.queryCatalogs(me.data.datasources);
-        mickaFilterService.fillCodesets(me.data.datasources);
+        me.queryCatalogs();
+        mickaFilterService.fillCodesets();
       }
       $rootScope.$on('core.mainpanel_changed', (event) => {
         if (dataSourceExistsAndEmpty() && panelVisible()) {
-          me.queryCatalogs(me.data.datasources);
-          mickaFilterService.fillCodesets(me.data.datasources);
+          me.queryCatalogs();
+          mickaFilterService.fillCodesets();
         }
         extentLayer.setVisible(panelVisible());
       });

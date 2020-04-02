@@ -3,14 +3,15 @@ import './layman/layman.service';
 export default {
   template: require('./partials/datasource_selector.html'),
   controller:
-    ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService', 'hs.layout.service', '$injector',
-      function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService, layoutService, $injector) {
+    ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService', 'hs.layout.service', '$injector', 'hs.common.endpointsService',
+      function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService, layoutService, $injector, endpointsService) {
         $scope.Core = Core;
         $scope.data = datasourceSelectorService.data;
         $scope.DS = datasourceSelectorService;
         datasourceSelectorService.paging = $scope.data.paging;
         $scope.config = config;
         $scope.advancedSearch = false;
+        $scope.endpointsService = endpointsService;
 
         $scope.$on('ows.wms_connecting', () => {
           $scope.data.wms_connecting = true;

@@ -73,7 +73,7 @@
             </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" ng-repeat="ds in data.endpoints">
+            <li class="nav-item" ng-repeat="ds in endpointsService.endpoints | forCompositions">
                 <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#"
                     data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab"
                     ng-click="datasetSelect('ds'+$index)">
@@ -86,7 +86,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 ng-class="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}"
-                ng-repeat="ds in data.endpoints">
+                ng-repeat="ds in endpointsService.endpoints">
                 <div class="card">
                     <div class="card-body">
                         <ul class="hs-comp-list list-group">

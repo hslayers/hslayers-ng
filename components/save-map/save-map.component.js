@@ -7,8 +7,8 @@ export default {
     }
   }],
   controller: ['$scope', 'hs.map.service', 'Core', 'hs.save-map.service', 'config', '$compile', 'hs.saveMapManagerService',
-    '$timeout', 'hs.layout.service', 'hs.common.laymanService',
-    function ($scope, OlMap, Core, saveMapService, config, $compile, saveMapManagerService, $timeout, layoutService, commonLaymanService) {
+    '$timeout', 'hs.layout.service', 'hs.common.laymanService', 'hs.common.endpointsService',
+    function ($scope, OlMap, Core, saveMapService, config, $compile, saveMapManagerService, $timeout, layoutService, commonLaymanService, endpointsService) {
       angular.extend($scope, {
         compoData: saveMapManagerService.compoData,
         config: config,
@@ -16,6 +16,7 @@ export default {
         saveMapManagerService,
         step: 'start',
         selectDeselectAllLayers: saveMapManagerService.selectDeselectAllLayers,
+        endpointsService,
 
         /**
          * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
@@ -139,19 +140,17 @@ export default {
       $scope.$on('StatusCreator.open', (e, composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
-          $scope.endpoint = saveMapManagerService.endpoints
+          $scope.endpoint = endpointsService.endpoints
             .filter((ep) => ep.type == openedType)[0];
         }
       });
 
       $scope.endpointChanged = function() {
-        if ($scope.endpoint.type == 'layman') {
-          commonLaymanService.getCurrentUser($scope.endpoint);
-        }
+        $scope.endpoint.getCurrentUserIfNeeded();
       };
 
       $scope.$watch(() => {
-        return saveMapManagerService.endpoints;
+        return endpointsService.endpoints;
       }, (value) => {
         if (value && $scope.endpoint === null && value.length > 0) {
           const laymans = value.filter(ep => ep.type == 'layman');

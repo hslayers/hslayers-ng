@@ -10,6 +10,7 @@ import deleteDialogDirective from './delete-dialog.directive';
 import shareDialogDirective from './share-dialog.directive';
 import infoDialogDirective from './info-dialog.directive';
 import './endpoints/compositions-endpoints.module';
+import '../../common/endpoints/endpoints.module';
 
 /**
  * @ngdoc module
@@ -18,7 +19,7 @@ import './endpoints/compositions-endpoints.module';
  * @description Test composition module
  */
 var module = angular.module('hs.compositions', ['720kb.socialshare', 'hs.map', 
-     'hs.core', 'hs.compositions.layerParser', 'hs.compositions.endpoints'])   
+     'hs.core', 'hs.compositions.layerParser', 'hs.compositions.endpoints', 'hs.common.endpoints'])   
     /**
      * @module hs.compositions
      * @name hs.compositions.overwriteDialogDirective

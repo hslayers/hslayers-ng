@@ -68,7 +68,8 @@ export default ['hs.statusManagerService', 'config', 'hs.utils.service', '$q', '
 
                 })
             }
-        })
+        });
+        return me;
     }]
 
 function getStatusSortAttr(sortBy) {

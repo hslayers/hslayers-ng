@@ -19,16 +19,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
         var extentLayer;
         me.data = {
-            endpoints: (config.datasources || []).map(ds => {
-                return {
-                    url: ds.url,
-                    type: ds.type,
-                    title: ds.title,
-                    start: 0,
-                    limit: 20,
-                    user: ds.user
-                }
-            })
+            
         }
 
         extentLayer = new VectorLayer({
@@ -73,7 +64,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         }
 
         me.resetCompositionCounter = function () {
-            me.data.endpoints.forEach(ds => {
+            endpointsService.endpoints.forEach(ds => {
                 if (ds.type == 'micka')
                     mickaEndpointService.resetCompositionCounter(ds)
             })
@@ -296,14 +287,6 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 else extentLayer.setVisible(false);
             }
         });
-
-        $rootScope.$on('datasource-selector.layman_auth', (e, endpoint) => {
-            me.data.endpoints.forEach(i => {
-              if (i.url == endpoint.url) {
-                i.user = endpoint.user;
-              }
-            });
-          });
 
         return me;
     }]

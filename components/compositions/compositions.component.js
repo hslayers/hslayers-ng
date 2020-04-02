@@ -9,14 +9,15 @@ export default {
     }],
     controller: ['$scope', 'Core', 'hs.map.service', 'hs.compositions.service',
         'hs.compositions.service_parser', '$window', 'config', '$compile',
-        'hs.compositions.mickaService', '$rootScope', 'hs.layout.service',
+        'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService',
         function ($scope, Core, hsMap, Composition, compositionParser, $window, config,
-            $compile, mickaEndpointService, $rootScope, layoutService) {
+            $compile, mickaEndpointService, $rootScope, layoutService, endpointsService) {
             $scope.CS = Composition;
             $scope.data = Composition.data;
             $scope.config = config;
             $scope.mickaEndpointService = mickaEndpointService;
-            Composition.data.endpoints.forEach(ds => ds.next = ds.limit)
+            $scope.endpointsService = endpointsService;
+            endpointsService.endpoints.forEach(ep => ep.next = ep.limit);
             /**
             * @ngdoc property
             * @name hs.compositions.controller#keywords
@@ -139,8 +140,8 @@ export default {
                         if (panel) listHeight = panel.clientHeight;
                     }
                 } catch (ex) { }
-                Composition.data.endpoints.forEach(ds => {
-                    ds.limit = Math.round((listHeight - 180) / 60)
+                endpointsService.endpoints.forEach(ds => {
+                    ds.limit = Math.round((listHeight - 180) / 60);
                 })
             }
 
@@ -152,7 +153,7 @@ export default {
              */
             $scope.filterChanged = function () {
                 Composition.resetCompositionCounter();
-                Composition.data.endpoints.forEach(ds => {
+                endpointsService.endpoints.forEach(ds => {
                     ds.start = 0;
                     ds.next = ds.limit;
                     $scope.loadCompositions(ds);
@@ -327,7 +328,7 @@ export default {
             });
 
             function loadCompositionsForAllEndpoints() {
-                Composition.data.endpoints.forEach(ds => {
+                endpointsService.endpoints.forEach(ds => {
                     $scope.loadCompositions(ds);
                 });
             }
