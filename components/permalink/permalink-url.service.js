@@ -214,10 +214,10 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
       if (url_generation) {
         let timer = null;
         // eslint-disable-next-line angular/on-watch
-        $rootScope.$on('map.extent_changed', (event, data, b) => {
+        $rootScope.$on('map.extent_changed', utils.debounce((event, data, b) => {
           me.update();
           $rootScope.$broadcast('browserurl.updated');
-        });
+        }, 200, false, me));
         map.getLayers().on('add', (e) => {
           const layer = e.element;
           if (layer.get('show_in_manager') !== null

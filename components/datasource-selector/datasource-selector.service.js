@@ -5,8 +5,10 @@ import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
 export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
-  'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService', 'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService',
-  function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService, laymanService, layoutService, $log, endpointsService) {
+  'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
+  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service',
+  function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService,
+    laymanService, layoutService, $log, endpointsService, utils) {
     const me = this;
 
     this.data = {};
@@ -280,14 +282,14 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
           }, 0);
         }
       });
-      $rootScope.$on('map.extent_changed', (e) => {
+      $rootScope.$on('map.extent_changed', utils.debounce((e) => {
         if (!panelVisible()) {
           return;
         }
         if (mickaFilterService.filterByExtent) {
           me.queryCatalogs();
         }
-      });
+      }, 500, false, me));
       map.addLayer(extentLayer);
       if (dataSourceExistsAndEmpty() && panelVisible()) {
         me.queryCatalogs();

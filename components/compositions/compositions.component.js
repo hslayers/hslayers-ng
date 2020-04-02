@@ -10,9 +10,9 @@ export default {
   }],
   controller: ['$scope', 'Core', 'hs.map.service', 'hs.compositions.service',
     'hs.compositions.service_parser', '$window', 'config', '$compile',
-    'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService',
+    'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService', 'hs.utils.service',
     function ($scope, Core, hsMap, Composition, compositionParser, $window, config,
-      $compile, mickaEndpointService, $rootScope, layoutService, endpointsService) {
+      $compile, mickaEndpointService, $rootScope, layoutService, endpointsService, utils) {
       $scope.CS = Composition;
       $scope.data = Composition.data;
       $scope.config = config;
@@ -329,14 +329,15 @@ export default {
         Composition.highlightComposition(composition, state);
       };
 
-      $scope.$on('map.extent_changed', (event, data, b) => {
+      const extendChangeDebouncer = {};
+      $scope.$on('map.extent_changed', utils.debounce((event, data, b) => {
         if (layoutService.mainpanel != 'composition_browser' && layoutService.mainpanel != 'composition') {
           return;
         }
         if ($scope.filterByExtent) {
           loadCompositionsForAllEndpoints();
         }
-      });
+      }, 400, false, extendChangeDebouncer));
 
       function loadCompositionsForAllEndpoints() {
         endpointsService.endpoints.forEach(ds => {
