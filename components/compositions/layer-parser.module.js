@@ -6,7 +6,7 @@ import 'angular-socialshare';
  * @module hs.compositions.layerParser
  * @name hs.compositions.layerParser
  */
-var module = angular.module('hs.compositions.layerParser', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.addLayersVector']);
+angular.module('hs.compositions.layerParser', ['720kb.socialshare', 'hs.map', 'hs.core', 'hs.addLayersVector']);
 
 /**
 * @module hs.compositions.layerParserService
@@ -14,4 +14,4 @@ var module = angular.module('hs.compositions.layerParser', ['720kb.socialshare',
 * @name hs.compositions.layerParserService
 * @description Service for parsing object definition which are invalid for direct use as layers
 */
-module.service('hs.compositions.layerParserService', configParsersService)
+.factory('hs.compositions.layerParserService', configParsersService)
