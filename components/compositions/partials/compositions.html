@@ -86,7 +86,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 ng-class="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}"
-                ng-repeat="ds in endpointsService.endpoints">
+                ng-repeat="ds in endpointsService.endpoints | forCompositions">
                 <div class="card">
                     <div class="card-body">
                         <ul class="hs-comp-list list-group">

@@ -136,7 +136,8 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         const attributes = {
           record: record,
           hs_notqueryable: true,
-          highlighted: false
+          highlighted: false,
+          title: record.title || record.name
         };
         let b = null;
         if (angular.isString(record.bbox)) {
