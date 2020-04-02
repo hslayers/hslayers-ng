@@ -1,4 +1,6 @@
 import laymanService from './layman.service';
+import laymanCurrentUserComponent from './layman-current-user.component';
+import laymanLoginComponent from './layman-login.component';
 
 angular.module('hs.common.layman', [])
 
@@ -8,4 +10,8 @@ angular.module('hs.common.layman', [])
   * @memberOf hs.common.layman
   * @description Service for common Layman functions
   */
-  .factory('hs.common.laymanService', laymanService);
+  .factory('hs.common.laymanService', laymanService)
+
+  .component('hs.layman.currentUser', laymanCurrentUserComponent)
+
+  .component('hs.laymanLogin', laymanLoginComponent);

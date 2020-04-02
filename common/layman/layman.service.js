@@ -7,9 +7,13 @@ export default ['$http', '$rootScope', function ($http, $rootScope) {
         $http.get(url)
           .then(
             (res) => {
-              if (res.data.username && endpoint.user != res.data.username) {
-                endpoint.user = res.data.username;
-                $rootScope.$broadcast ('datasource-selector.layman_auth', endpoint);
+              if (res.data.username) {
+                if (endpoint.user != res.data.username) {
+                  endpoint.user = res.data.username;
+                  $rootScope.$broadcast ('datasource-selector.layman_auth', endpoint);
+                }
+              } else {
+                endpoint.user = endpoint.originalConfiguredUser;
               }
               resolve();
             },

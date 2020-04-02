@@ -35,7 +35,7 @@
                         <div ng-if="ds.type == 'micka'">
                             <hs.micka-filters-directive micka-dataset-config="{url: ds.url}"></hs.micka-filters-directive>
                         </div>
-                        <a class="btn btn-block btn-secondary" href="{{ds.authUrl}}" ng-show="ds.type == 'layman' && ds.user == 'anonymous'" translate>Log in</a>
+                        <hs.layman.current-user endpoint="ds"></hs.layman.current-user>
                         <ul class="list-group">
                             <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
                             <li ng-repeat="layer in ds.layers" class="clearfix"

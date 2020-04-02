@@ -15,6 +15,7 @@ export default ['config', 'hs.common.laymanService', function (config, laymanSer
           start: 0,
           limit: 20,
           user: ds.user,
+          originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: laymanService.getCurrentUserIfNeeded
         };
       })
