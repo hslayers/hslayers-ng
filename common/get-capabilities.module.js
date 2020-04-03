@@ -10,44 +10,44 @@ import dimensionService from './dimension.service';
 */
 angular.module('hs.getCapabilities', [])
 
-    /**
+/**
     * @name hs.wfs.getCapabilitiesService
     * @ngdoc service
     * @memberOf hs.getCapabilities
     * @description Service for GetCapabilities requests to WFS
     */
-    .service("hs.wfs.getCapabilitiesService", wfsGetCapabilitiesService)
+  .factory('hs.wfs.getCapabilitiesService', wfsGetCapabilitiesService)
 
-    /**
+/**
      * @class hs.wms.getCapabilitiesService
      * @ngdoc service
      * @memberOf hs.getCapabilities
      * @description Service for GetCapabilities requests to WMS
      */
-    .service("hs.wms.getCapabilitiesService", wmsGetCapabilitiesService)
+  .factory('hs.wms.getCapabilitiesService', wmsGetCapabilitiesService)
 
 
-    /**
+/**
      * @class hs.arcgis.getCapabilitiesService
      * @ngdoc service
      * @memberOf hs.getCapabilities
      * @description Service for GetCapabilities requests to WMS
      */
-    .service("hs.arcgis.getCapabilitiesService", arcgisGetCapabilitiesService)
+  .factory('hs.arcgis.getCapabilitiesService', arcgisGetCapabilitiesService)
 
 
-    /**
+/**
      * @class hs.dimensionService
      * @ngdoc service
      * @memberOf hs.getCapabilities
      * @description Service for filling dimension values such as time
      */
-    .service("hs.dimensionService", dimensionService)
+  .factory('hs.dimensionService', dimensionService)
 
-    /**
+/**
      * @name hs.wmts.getCapabilitiesService
      * @ngdoc service
      * @memberOf hs.getCapabilities
      * @description Service for GetCapabilities requests to WMTS
      */
-    .service("hs.wmts.getCapabilitiesService", wmtsGetCapabilities)
+  .factory('hs.wmts.getCapabilitiesService', wmtsGetCapabilities);
