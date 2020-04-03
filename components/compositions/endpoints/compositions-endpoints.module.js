@@ -1,7 +1,7 @@
 import mickaService from './compositions-micka.service';
 import statusManagerService from './compositions-status-manager.service';
 import compositionsLaymanService from './compositions-layman.service';
-import forCompositionFiter from './for-composition.fiter';
+import forCompositionFilter from './for-composition.filter';
 
 /**
  * @ngdoc module
@@ -35,4 +35,4 @@ Links together with mickaService to make micka compositions editable.
 */
   .factory('hs.compositions.statusManagerService', statusManagerService)
 
-  .filter('forCompositions', forCompositionFiter);
+  .filter('forCompositions', forCompositionFilter);

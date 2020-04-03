@@ -88,7 +88,7 @@ msgid "Add"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:12
-msgid "Add combosition by address"
+msgid "Add composition by address"
 msgstr ""
 
 #: components/draw/partials/draw.directive.html:12

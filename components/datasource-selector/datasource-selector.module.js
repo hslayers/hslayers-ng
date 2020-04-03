@@ -9,7 +9,7 @@ import mickaService from './micka/micka.service';
 import laymanService from './layman/layman.service';
 import '../../common/widgets/widgets.module';
 import '../../common/endpoints/endpoints.module';
-import forDatasourceBrowserFiter from './for-datasource-browser.fiter';
+import forDatasourceBrowserFilter from './for-datasource-browser.filter';
 
 /**
  * @namespace hs.datasource_selector
@@ -92,4 +92,4 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets', 'hs.layout', '
  */
   .component('hs.datasourceSelector', datasourceSelectorComponent)
 
-  .filter('forDatasourceBrowser', forDatasourceBrowserFiter);
+  .filter('forDatasourceBrowser', forDatasourceBrowserFilter);

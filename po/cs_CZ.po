@@ -1423,7 +1423,7 @@ msgid "Import composition from a file on device"
 msgstr "Importujt kompozic ze souboru na zařízení"
 
 #: components/compositions/partials/compositions.html:12
-msgid "Add combosition by address"
+msgid "Add composition by address"
 msgstr "Přidejte kompozici podle adresy (URL)"
 
 #: components/permalink/partials/directive.html:58
