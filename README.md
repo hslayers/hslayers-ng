@@ -145,8 +145,13 @@ module.controller('Main', ['$scope', 'Core', 'hs.compositions.service_parser', '
 For webpack bundling instructions see: https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack
 
 ### Proxy
+To overcome CORS issues when adding external datasources, querying feature info or searching, we use a proxy. 
+Hslayers-ng bundles two proxy solutions inside its lib directory. We recommend Nodejs based solution which is based on [cors-anywhere](https://github.com/Rob--W/cors-anywhere).
+To start it run: 
 
-For providing proxy functionality we use a simple cgi script, which you have to copy from `lib/hsproxy.cgi` 
+```npm explore hslayers-ng -- npm run start-hsl-proxy```
+
+Another possibility is to use a python cgi script, which you have to copy from `lib/hsproxy.cgi` 
 to your cgi-bin directory. It might be located in /usr/lib/ if you use Apache.
 
 ```

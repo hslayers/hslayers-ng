@@ -67,7 +67,8 @@
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --fix-dry-run ./",
     "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./",
-    "generate-glyphs-subset": "sh scripts/subset-font.sh"
+    "generate-glyphs-subset": "sh scripts/subset-font.sh",
+    "start-hsl-proxy": "node lib/proxy.js"
   },
   "dependencies": {
     "angular": "^1.7.9",
