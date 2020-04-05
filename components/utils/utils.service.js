@@ -71,15 +71,15 @@ export default ['config', '$http', '$window', '$document', '$timeout', function 
   /**
     * @ngdoc method
     * @name hs.utils.service#getPortFromUrl
-    * @private
     * @param {String} url Url for which to determine port number
     * @returns {String} Port number
     */
-  function getPortFromUrl(url) {
+  this.getPortFromUrl = function(url) {
     const link = $document[0].createElement('a');
     link.setAttribute('href', url);
     return link.port;
-  }
+  };
+
   /**
     * @ngdoc method
     * @name hs.utils.service#getParamsFromUrl

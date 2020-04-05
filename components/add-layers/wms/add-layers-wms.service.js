@@ -10,8 +10,8 @@ import {addAnchors} from '../../../common/attribution-utils';
 import 'angular-cookies';
 
 export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
-  'Core', 'hs.dimensionService', '$timeout', 'hs.layout.service',
-  function ($rootScope, OlMap, WmsCapsService, Core, dimensionService, $timeout, layoutService) {
+  'Core', 'hs.dimensionService', '$timeout', 'hs.layout.service', 'hs.utils.service', 'config',
+  function ($rootScope, OlMap, WmsCapsService, Core, dimensionService, $timeout, layoutService, utils, config) {
     const me = this;
 
     this.data = {
@@ -71,7 +71,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
 
         dimensionService.fillDimensionValues(caps.Capability.Layer);
 
-        me.data.getMapUrl = caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource;
+        me.data.getMapUrl = removePortIfProxified(caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource);
         me.data.image_format = getPreferedFormat(me.data.image_formats, ['image/png; mode=8bit', 'image/png', 'image/gif', 'image/jpeg']);
         me.data.query_format = getPreferedFormat(me.data.query_formats, ['application/vnd.esri.wms_featureinfo_xml', 'application/vnd.ogc.gml', 'application/vnd.ogc.wms_xml', 'text/plain', 'text/html']);
         $rootScope.$broadcast('wmsCapsParsed');
@@ -79,6 +79,27 @@ export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
         $rootScope.$broadcast('wmsCapsParseError', e);
       }
     };
+
+    /**
+     * removePortIfProxified
+     * @description Removes extra port which is added to the getMap request when
+     * GetCapabilities is queried through proxy. <GetMap><DCPType><HTTP><Get>
+     * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/>
+     * then becomes <GetMap><DCPType><HTTP><Get>
+     * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz:8085/cgi-bin/mapserv?map=/home/maps"/>
+     * which is wrong.
+     * @param {String} url Url for which to remove port but only when proxified
+     * with port in proxy path.
+     * @private
+     * @returns {String} Url without proxy services port added to it.
+     */
+    function removePortIfProxified(url) {
+      const proxyPort = parseInt(utils.getPortFromUrl(config.proxyPrefix));
+      if (proxyPort > 0) {
+        return url.replace(':' + proxyPort.toString(), '');
+      }
+      return url;
+    }
 
     function selectLayerByName(layerToSelect) {
       if (layerToSelect) {
