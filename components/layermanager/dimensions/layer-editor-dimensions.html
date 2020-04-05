@@ -3,10 +3,10 @@
     <div class="form-group" ng-repeat="(key, dimension) in $ctrl.dimensions()">
         <label class="control-label">{{dimension.label || key}}:</label>
 
-        <select class="form-control" ng-model="dimension.value" ng-show="$ctrl.dimensionType(dimension) == null" ng-change="$ctrl.dimensionChanged(dimension)">
+        <select class="form-control" ng-model="dimension.value" ng-if="$ctrl.dimensionType(dimension) == null" ng-change="$ctrl.dimensionChanged(dimension)">
             <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">
                 {{dimension_value}}</option>
         </select>
-        <input type="datetime-local" ng-show="$ctrl.dimensionType(dimension) == 'datetime'" ng-model="dimension.value" ng-change="$ctrl.dimensionChanged(dimension)">
+        <input type="datetime-local" ng-if="$ctrl.dimensionType(dimension) == 'datetime'" ng-model="dimension.value" ng-change="$ctrl.dimensionChanged(dimension)">
     </div>
 </div>
