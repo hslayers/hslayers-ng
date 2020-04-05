@@ -14,9 +14,12 @@ export default {
     controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
         'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice',
         'hs.legend.service', 'hs.styler.service', 'hs.map.service',
-        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope', '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService', 'hs.layerEditorVectorLayer.service',
-        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService, styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope, $timeout, layoutService,
-            subLayerService, vectorLayerService) {
+        'hs.layermanager.service', 'hs.wms.getCapabilitiesService', '$rootScope',
+        '$timeout', 'hs.layout.service', 'hs.layerEditor.sublayerService',
+        'hs.layerEditorVectorLayer.service',
+        function ($scope, Core, $compile, utils, layerUtils, config, WMST, legendService,
+            styler, hsMap, LayMan, WMSgetCapabilitiesService, $rootScope,
+            $timeout, layoutService, subLayerService, vectorLayerService) {
             $scope.distance = {
                 value: 40
             };
@@ -336,31 +339,6 @@ export default {
                     if (angular.isUndefined(layer)) return false;
                     return angular.isDefined(layer.getMaxResolution())
                         && layer.getMaxResolution() != Infinity
-                },
-
-                /**
-                * @function isLayerWithDimensions
-                * @memberOf hs.layermanager.controller
-                * @description Test if layer has dimensions
-                */
-                isLayerWithDimensions() {
-                    let layer = $scope.olLayer();
-                    if (angular.isUndefined(layer)) return false;
-                    if (angular.isUndefined(layer.get('dimensions'))) return false;
-                    return Object.keys(layer.get('dimensions')).length > 0
-                },
-               
-                dimensionChanged(dimension) {
-                    $scope.$emit('layermanager.dimension_changed', {
-                        layer: $scope.olLayer(),
-                        dimension
-                    });
-                },
-
-                dimensions() {
-                    let layer = $scope.olLayer();
-                    if (angular.isUndefined(layer)) return [];
-                    return layer.get('dimensions');
                 },
 
                 /**

@@ -62,6 +62,19 @@ export default ['$log', function ($log) {
       return tmp;
     },
 
+    dimensionType(dimension) {
+      if (angular.isUndefined(dimension.type)) {
+        return null;
+      }
+      return dimension.type;
+    },
+
+    /**
+     * fillDimensionValues
+     * @param {ol/Layer} layer Layer to fill the dimension values
+     * @description A recursive function with goes through layers
+     * children and sets the possible dimension values used in dropdown.
+     */
     fillDimensionValues(layer) {
       angular.forEach(layer.Layer, (layer) => {
         if (me.hasNestedLayers(layer)) {

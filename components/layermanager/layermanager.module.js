@@ -16,6 +16,7 @@ import layerEditorSubLayerCheckboxesDirective from './layer-editor.sub-layer-che
 import layerEditorSubLayerService from './layer-editor.sub-layer.service';
 import layerEditorVectorLayerService from './layer-editor-vector-layer.service';
 import layermanagerMetadataService from './layermanager-metadata.service';
+import layerEditorDimensionsComponent from './dimensions/layer-editor-dimensions.component';
 
 /**
  * @ngdoc module
@@ -141,6 +142,7 @@ angular.module('hs.layermanager', ['hs.map', 'hs.utils', 'dndLists', 'hs.save-ma
      */
     .directive('hs.layerEditor.sublayerCheckbox', layerEditorSubLayerCheckboxesDirective)
     .service('hs.layerEditor.sublayerService',layerEditorSubLayerService)
+    .component('hs.layerEditorDimensions', layerEditorDimensionsComponent)
     ;
 
 
