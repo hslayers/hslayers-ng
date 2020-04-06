@@ -10,6 +10,7 @@ import laymanService from './layman/layman.service';
 import '../../common/widgets/widgets.module';
 import '../../common/endpoints/endpoints.module';
 import forDatasourceBrowserFilter from './for-datasource-browser.filter';
+import datasourceSelectorMapService from './datasource-selector.map-service';
 
 /**
  * @namespace hs.datasource_selector
@@ -58,6 +59,14 @@ angular.module('hs.datasource_selector', ['hs.map', 'hs.widgets', 'hs.layout', '
  * initiating adding to map, downloading, storing layer extents
  */
   .factory('hs.datasourceBrowserService', datasourceSelectorService)
+
+  /**
+ * @module hs.datasource_selector
+ * @name hs.datasourceSelector.mapService
+ * @ngdoc controller
+ * @description Service of composition module which deal ith Openlayers map objects
+ */
+  .factory('hs.datasourceSelector.mapService', datasourceSelectorMapService)
 
 /**
  * @ngdoc service

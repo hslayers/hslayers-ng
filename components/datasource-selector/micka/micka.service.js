@@ -176,7 +176,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         * @function getLayerLink
         * @memberOf hs.mickaBrowserService
         * @param {Object} layer Micka layer for which to get metadata
-        * @description Get first link from records links array or link 
+        * @description Get first link from records links array or link
         * property of record in older Micka versions
         * in a common format for use in add-layers component
         * @return {String} Url of service or resource

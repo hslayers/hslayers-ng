@@ -1,14 +1,9 @@
 /* eslint-disable angular/on-watch */
-import {Style, Stroke, Fill} from 'ol/style';
-import VectorLayer from 'ol/layer/Vector';
-import {Vector} from 'ol/source';
-import {transform} from 'ol/proj';
-
 export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
   'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
-  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service',
+  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service', 'hs.datasourceSelector.mapService',
   function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService,
-    laymanService, layoutService, $log, endpointsService, utils) {
+    laymanService, layoutService, $log, endpointsService, utils, mapService) {
     const me = this;
 
     this.data = {};
@@ -26,30 +21,13 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
 
-    const extentLayer = new VectorLayer({
-      title: 'Datasources extents',
-      show_in_manager: false,
-      source: new Vector(),
-      style: function (feature, resolution) {
-        return [new Style({
-          stroke: new Stroke({
-            color: '#005CB6',
-            width: feature.get('highlighted') ? 4 : 1
-          }),
-          fill: new Fill({
-            color: 'rgba(0, 0, 255, 0.01)'
-          })
-        })];
-      }
-    });
-
     /**
     * @function queryCatalogs
     * @memberOf hs.datasourceBrowserService
     * @description Queries all configured catalogs for datasources (layers)
     */
     this.queryCatalogs = function () {
-      extentLayer.getSource().clear();
+      mapService.clearExtentLayer();
       endpointsService.endpoints.forEach(ds => {
         ds.start = 0;
         me.queryCatalog(ds);
@@ -66,13 +44,13 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     * Use all query params (search text, bbox, params.., sorting, paging, start)
     */
     this.queryCatalog = function (catalog) {
-      me.clearDatasetFeatures(catalog, extentLayer);
+      mapService.clearDatasetFeatures(catalog);
       switch (catalog.type) {
         case 'micka':
           mickaService.queryCatalog(catalog,
             me.data.query,
             me.data.paging,
-            me.addExtentFeature,
+            mapService.addExtentFeature,
             me.data.textField);
           break;
         case 'layman':
@@ -81,75 +59,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
         default:
           break;
       }
-    };
-
-    /**
-    * @function addExtentFeature
-    * @memberOf hs.datasourceBrowserService
-    * @param {ol/Feature} extentFeature Openlayers Feature
-    * @description  Callback function which gets executed when extent feature
-    * is created. It should add the feature to vector layer source
-    */
-    this.addExtentFeature = function (extentFeature) {
-      extentLayer.getSource().addFeatures([extentFeature]);
-    };
-
-    /**
-    * @function clearDatasetFeatures
-    * @memberOf hs.datasourceBrowserService
-    * @param {Object} dataset Configuration of selected datasource (from app config)
-    * @param {ol/layer/Vector} extentLayer
-    * (PRIVATE) Remove layer extent features from map
-    */
-    this.clearDatasetFeatures = function (dataset, extentLayer) {
-      angular.forEach(dataset.layers, (val) => {
-        try {
-          if (angular.isDefined(val.feature) && val.feature) {
-            extentLayer.getSource().removeFeature(val.feature);
-          }
-        } catch (ex) {
-          $log.warn(ex);
-        }
-      });
-    };
-
-    /**
-     * @function isZoomable
-     * @memberOf hs.datasourceBrowserService
-     * @param {unknown} layer TODO
-     * @return {boolean} Returns if bbox is specified and thus layer is zoomable
-     * Test if it possible to zoom to layer overview (bbox has to be defined
-     * in metadata of selected layer)
-     */
-    this.isZoomable = function (layer) {
-      return angular.isDefined(layer.bbox);
-    };
-
-    /**
-     * @function zoomTo
-     * @memberOf hs.datasource_selector
-     * @param {String} bbox Bounding box of selected layer
-     * ZoomTo / MoveTo to selected layer overview
-     */
-    this.zoomTo = function (bbox) {
-      if (angular.isUndefined(bbox)) {
-        return;
-      }
-      let b = null;
-      if (angular.isString(bbox)) {
-        b = bbox.split(' ');
-      } else if (angular.isArray(bbox)) {
-        b = bbox;
-      }
-      let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-      let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-      first_pair = transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-      second_pair = transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-      if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) {
-        return;
-      }
-      const extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-      OlMap.map.getView().fit(extent, OlMap.map.getSize());
     };
 
     /**
@@ -178,7 +87,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
      * Get URL for RDF-DCAT record of selected layer
      */
     this.layerRDF = function (ds, layer) {
-      return ds.url + '?request=GetRecordById&id=' + layer.id + '&outputschema=http://www.w3.org/ns/dcat%23';
+      return `${ds.url}?request=GetRecordById&id=${layer.id}&outputschema=http://www.w3.org/ns/dcat%23`;
     };
 
     /**
@@ -222,21 +131,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     };
 
     /**
-     * @function highlightComposition
-     * @memberOf hs.datasourceBrowserService
-     * @param {Object} composition Composition record to highlight by drawing its extent in different color or border width
-     * @param {Boolean} state Desired visual state of composition
-     * (True = highlighted, False = normal)
-     * @description Change visual apperance of composition overview in map
-     * between highlighted and normal
-     */
-    this.highlightComposition = function (composition, state) {
-      if (angular.isDefined(composition.feature)) {
-        composition.feature.set('highlighted', state);
-      }
-    };
-
-    /**
      * @function clear
      * @memberOf hs.datasourceBrowserService
      * Clear query variable
@@ -251,63 +145,42 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     };
 
     function dataSourceExistsAndEmpty() {
-      return endpointsService.endpoints.filter(ep => angular.isUndefined(ep.loaded)).length > 0;
+      return endpointsService.endpoints.filter(ep =>
+        angular.isUndefined(ep.loaded)
+      ).length > 0;
     }
 
     function panelVisible() {
-      return layoutService.panelVisible('datasource_selector') || layoutService.panelVisible('datasourceBrowser');
+      return layoutService.panelVisible('datasource_selector') ||
+      layoutService.panelVisible('datasourceBrowser');
     }
 
-    function init(map) {
-      map.on('pointermove', (evt) => {
-        const features = extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
-        let somethingChanged = false;
-        angular.forEach(extentLayer.getSource().getFeatures(), (feature) => {
-          if (feature.get('record').highlighted) {
-            feature.get('record').highlighted = false;
-            somethingChanged = true;
-          }
-        });
-        if (features.length) {
-          angular.forEach(features, (feature) => {
-            if (!feature.get('record').highlighted) {
-              feature.get('record').highlighted = true;
-              somethingChanged = true;
-            }
-          });
-        }
-        if (somethingChanged) {
-          $timeout(() => {
+    if (dataSourceExistsAndEmpty() && panelVisible()) {
+      me.queryCatalogs();
+      mickaFilterService.fillCodesets();
+    }
 
-          }, 0);
-        }
-      });
-      $rootScope.$on('map.extent_changed', utils.debounce((e) => {
-        if (!panelVisible()) {
-          return;
-        }
-        if (mickaFilterService.filterByExtent) {
-          me.queryCatalogs();
-        }
-      }, 500, false, me));
-      map.addLayer(extentLayer);
+    if (angular.isUndefined(config.allowAddExternalDatasets)) {
+      config.allowAddExternalDatasets = true;
+    }
+
+    $rootScope.$on('map.extent_changed', utils.debounce((e) => {
+      if (!panelVisible()) {
+        return;
+      }
+      if (mickaFilterService.filterByExtent) {
+        me.queryCatalogs();
+      }
+    }, 500, false, me));
+
+
+    $rootScope.$on('core.mainpanel_changed', (event) => {
       if (dataSourceExistsAndEmpty() && panelVisible()) {
         me.queryCatalogs();
         mickaFilterService.fillCodesets();
       }
-      $rootScope.$on('core.mainpanel_changed', (event) => {
-        if (dataSourceExistsAndEmpty() && panelVisible()) {
-          me.queryCatalogs();
-          mickaFilterService.fillCodesets();
-        }
-        extentLayer.setVisible(panelVisible());
-      });
-      if (angular.isUndefined(config.allowAddExternalDatasets)) {
-        config.allowAddExternalDatasets = true;
-      }
-    }
-
-    OlMap.loaded().then(init);
+      mapService.extentLayer.setVisible(panelVisible());
+    });
 
     return me;
   }];

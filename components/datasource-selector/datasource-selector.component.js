@@ -3,11 +3,12 @@ import './layman/layman.service';
 export default {
   template: require('./partials/datasource_selector.html'),
   controller:
-    ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService', 'hs.layout.service', '$injector', 'hs.common.endpointsService',
-      function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService, layoutService, $injector, endpointsService) {
+    ['$scope', 'Core', '$compile', 'hs.utils.service', '$http', 'hs.datasourceBrowserService', 'config', 'hs.laymanBrowserService', 'hs.layout.service', '$injector', 'hs.common.endpointsService', 'hs.datasourceSelector.mapService',
+      function ($scope, Core, $compile, utils, $http, datasourceSelectorService, config, laymanService, layoutService, $injector, endpointsService, mapService) {
         $scope.Core = Core;
         $scope.data = datasourceSelectorService.data;
         $scope.DS = datasourceSelectorService;
+        $scope.mapService = mapService;
         datasourceSelectorService.paging = $scope.data.paging;
         $scope.config = config;
         $scope.advancedSearch = false;
