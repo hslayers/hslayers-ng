@@ -9,7 +9,6 @@ export default {
         $scope.data = datasourceSelectorService.data;
         $scope.DS = datasourceSelectorService;
         $scope.mapService = mapService;
-        datasourceSelectorService.paging = $scope.data.paging;
         $scope.config = config;
         $scope.advancedSearch = false;
         $scope.endpointsService = endpointsService;
@@ -21,54 +20,57 @@ export default {
         /**
          * @function getPreviousRecords
          * @memberOf hs.datasource_selector
-         * @param {Object} ds Selected datasource
+         * @param {Object} endpoint Selected datasource
          * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
          */
-        $scope.getPreviousRecords = function (ds) {
-          if (ds.start - datasourceSelectorService.paging < 0) {
-            ds.start = 0;
-            ds.next = datasourceSelectorService.paging;
+        $scope.getPreviousRecords = function (endpoint) {
+          const paging = endpoint.datasourcePaging;
+          const itemsPerPage = endpoint.paging.itemsPerPage;
+          if (paging.start - itemsPerPage < 0) {
+            paging.start = 0;
+            paging.next = itemsPerPage;
           } else {
-            ds.start -= datasourceSelectorService.paging;
-            ds.next = ds.start + datasourceSelectorService.paging;
+            paging.start -= itemsPerPage;
+            paging.next = paging.start + itemsPerPage;
           }
-          datasourceSelectorService.queryCatalog(ds);
+          datasourceSelectorService.queryCatalog(endpoint);
         };
 
         /**
          * @function getNextRecords
          * @memberOf hs.datasource_selector
-         * @param {Object} ds Selected datasource
+         * @param {Object} endpoint Selected datasource
          * Loads next records of datasets from selected datasource (based on number of results per page and current start)
          */
-        $scope.getNextRecords = function (ds) {
-          if (ds.next != 0) {
-            ds.start = Math.floor(ds.next / datasourceSelectorService.paging) * datasourceSelectorService.paging;
-
-            if (ds.next + datasourceSelectorService.paging > ds.matched) {
-              ds.next = ds.matched;
+        $scope.getNextRecords = function (endpoint) {
+          const paging = endpoint.datasourcePaging;
+          const itemsPerPage = endpoint.paging.itemsPerPage;
+          if (paging.next != 0) {
+            paging.start = Math.floor(paging.next / itemsPerPage) * itemsPerPage;
+            if (paging.next + itemsPerPage > paging.matched) {
+              paging.next = paging.matched;
             } else {
-              ds.next += datasourceSelectorService.paging;
+              paging.next += itemsPerPage;
             }
-            datasourceSelectorService.queryCatalog(ds);
+            datasourceSelectorService.queryCatalog(endpoint);
           }
         };
 
         /**
          * @function showMetadata
          * @memberOf hs.datasource_selector
-         * @param {Object} ds Datasource of selected layer
+         * @param {Object} endpoint Datasource of selected layer
          * @param {Object} layer Metadata record of selected layer
          * @param {Object} e
          * Show metadata record dialog window for selected layer.
          */
-        $scope.showMetadata = function (ds, layer) {
+        $scope.showMetadata = function (endpoint, layer) {
           $scope.selected_layer = layer;
-          $scope.selected_ds = ds;
+          $scope.selected_ds = endpoint;
           let filler = Promise.resolve();
 
-          if (ds.type == 'layman') {
-            filler = laymanService.fillLayerMetadata(ds, layer);
+          if (endpoint.type == 'layman') {
+            filler = laymanService.fillLayerMetadata(endpoint, layer);
           }
           filler.then(() => {
             $scope.metadata = decomposeMetadata(layer);

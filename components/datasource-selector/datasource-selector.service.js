@@ -1,9 +1,9 @@
 /* eslint-disable angular/on-watch */
 export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
   'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
-  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service', 'hs.datasourceSelector.mapService',
+  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service', 'hs.datasourceSelector.mapService', 'forDatasourceBrowserFilter',
   function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService,
-    laymanService, layoutService, $log, endpointsService, utils, mapService) {
+    laymanService, layoutService, $log, endpointsService, utils, mapService, forDatasourceBrowserFilter) {
     const me = this;
 
     this.data = {};
@@ -15,7 +15,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
       Subject: ''
     };
 
-    this.data.paging = config.dsPaging || 10;
     this.data.textField = 'AnyText';
     this.data.selectedLayer = null;
     this.data.wms_connecting = false;
@@ -41,7 +40,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     * @description Loads datasets metadata from selected source (CSW server).
     * Uses pagination set by 'start' attribute of 'dataset' param.
     * Currently supports only "Micka" type of source.
-    * Use all query params (search text, bbox, params.., sorting, paging, start)
+    * Use all query params (search text, bbox, params.., sorting, start)
     */
     this.queryCatalog = function (catalog) {
       mapService.clearDatasetFeatures(catalog);
@@ -49,7 +48,6 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
         case 'micka':
           mickaService.queryCatalog(catalog,
             me.data.query,
-            me.data.paging,
             mapService.addExtentFeature,
             me.data.textField);
           break;
@@ -145,8 +143,8 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     };
 
     function dataSourceExistsAndEmpty() {
-      return endpointsService.endpoints.filter(ep =>
-        angular.isUndefined(ep.loaded)
+      return forDatasourceBrowserFilter(endpointsService.endpoints).filter(ep =>
+        angular.isUndefined(ep.datasourcePaging.loaded)
       ).length > 0;
     }
 

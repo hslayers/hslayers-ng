@@ -13,12 +13,12 @@
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" ng-class="{'hs-tab-single-datasources': !data.wms_connecting}"
-                ng-repeat="ds in endpointsService.endpoints | forDatasourceBrowser">
+                ng-repeat="endpoint in endpointsService.endpoints | forDatasourceBrowser">
                 <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" ng-click="datasetSelect('ds'+$index)">
-                    {{ds.title}}
-                    <span ng-show='ds.matched>0'>({{ds.matched}})</span>
-                    <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
+                    {{endpoint.title}}
+                    <span ng-show='endpoint.datasourcePaging.matched>0'>({{endpoint.datasourcePaging.matched}})</span>
+                    <span class="glyphicon icon-refresh icon-spin" ng-show="endpoint.datasourcePaging.loaded == false"></span>
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources" ng-if="Core.exists('hs.addLayers') && config.allowAddExternalDatasets">
@@ -29,52 +29,55 @@
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 ng-class="{'active': 'ds'+$index == data.id_selected && !data.wms_connecting}"
-                id="{{'ds'+$index}}" ng-repeat="ds in endpointsService.endpoints | forDatasourceBrowser">
+                id="{{'ds'+$index}}" ng-repeat="endpoint in endpointsService.endpoints | forDatasourceBrowser">
                 <div class="card">
                     <div class="card-body">
-                        <div ng-if="ds.type == 'micka'">
-                            <hs.micka-filters-directive micka-dataset-config="{url: ds.url}"></hs.micka-filters-directive>
+                        <div ng-if="endpoint.type == 'micka'">
+                            <hs.micka-filters-directive micka-dataset-config="{url: endpoint.url}"></hs.micka-filters-directive>
                         </div>
-                        <hs.layman.current-user endpoint="ds"></hs.layman.current-user>
+                        <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
                         <ul class="list-group">
-                            <li ng-show='ds.layers.length == 0' class='list-group-item' translate>No results</li>
-                            <li ng-repeat="layer in ds.layers" class="clearfix"
+                            <li ng-show='endpoint.layers.length == 0' class='list-group-item' translate>No results</li>
+                            <li ng-repeat="layer in endpoint.layers" class="clearfix"
                                 ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')"
                                 ng-mouseover="DS.highlightComposition(layer, true)"
                                 ng-mouseleave="DS.highlightComposition(layer, false)">
                                 <span class="datasources_item">
                                     <b><a href="#" data-toggle="tooltip" title="{{layer.description}}"
-                                            ng-click="showMetadata(ds, layer)">{{layer.title || layer.description}}</a></b>
+                                            ng-click="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></b>
                                 </span>
                                 <span class="float-right">
-                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerDownload(ds, layer)}}'
+                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerDownload(endpoint, layer)}}'
                                         data-toggle="tooltip" title="{{'Download'|translate}}"
-                                        ng-show='DS.layerDownload(ds,layer) != "#"'><i
+                                        ng-show='DS.layerDownload(endpoint,layer) != "#"'><i
                                             class="glyphicon icon-download"></i></a>
-                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerRDF(ds, layer)}}'
+                                    <a class="btn btn-sm btn-secondary" ng-href='{{DS.layerRDF(endpoint, layer)}}'
                                         data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
-                                        ng-show='ds.type=="micka" && DS.layerRDF(ds, layer) != "#"'><i class="hs-icon-rdf"></i></a>
+                                        ng-show='endpoint.type=="micka" && DS.layerRDF(endpoint, layer) != "#"'><i class="hs-icon-rdf"></i></a>
                                     <button type="button" class="btn btn-sm btn-primary"
-                                        ng-click="addLayerToMap(ds, layer)" ng-hide='config.dss_disallow_add == true'
+                                        ng-click="addLayerToMap(endpoint, layer)" ng-hide='config.dss_disallow_add == true'
                                         data-toggle="tooltip" title="{{'Add to map'|translate}}"><i
                                             class="icon-plus"></i></button>
                                 </span>
                             </li>
                         </ul>
                     </div>
-                    <div class="card-footer" ng-show="ds.matched>0 && ds.type == 'micka'">
+                    <div class="card-footer" ng-show="endpoint.datasourcePaging.matched>0 && endpoint.type == 'micka'">
                         <nav>
                             <ul class="pagination d-flex justify-content-center" >
-                                <li class="page-item" ng-class="{'disabled': ds.start == 0 }">
-                                    <a href="#" class="page-link" ng-click='getPreviousRecords(ds)'><span
+                                <li class="page-item" ng-class="{'disabled': endpoint.datasourcePaging.start == 0 }">
+                                    <a href="#" class="page-link" ng-click='getPreviousRecords(endpoint)'><span
                                             aria-hidden="true">&laquo;</span></a>
                                 </li>
-                                <li class="page-item" ng-if="ds.next != 0"><span class="page-link"> Results
-                                        {{ds.start + 1}} - {{ds.next}}</span></li>
-                                <li class="page-item" ng-if="ds.next == 0"><span class="page-link"> Results
-                                        {{ds.start + 1}} - {{ds.matched}}</span></li>
-                                <li class="page-item" ng-class="{'disabled': ds.next == 0 }">
-                                    <a href="#" class="page-link" ng-click='getNextRecords(ds)'><span
+                                <li class="page-item" ng-if="endpoint.datasourcePaging.next != 0"><span class="page-link"> Results
+                                        {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.next}}</span></li>
+                                <li class="page-item" ng-if="endpoint.datasourcePaging.next == 0"><span class="page-link"> Results
+                                        {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.matched}}</span>
+                                    </li>
+                                <li class="page-item" ng-show="endpoint.datasourcePaging.loaded == false">
+                                    <span class="page-link"><span class="glyphicon icon-refresh icon-spin" ></span></span></li>    
+                                <li class="page-item" ng-class="{'disabled': endpoint.datasourcePaging.next == 0 }">
+                                    <a href="#" class="page-link" ng-click='getNextRecords(endpoint)'><span
                                             aria-hidden="true">&raquo;</span></a>
                                 </li>
                             </ul>

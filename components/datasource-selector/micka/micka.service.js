@@ -12,15 +12,14 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         * @memberOf hs.mickaBrowserService
         * @param {Object} dataset Configuration of selected datasource (from app config)
         * @param {Object} query Container for all query filter values
-        * @param {Number} pageLimit Item count per page
         * @param {Function} extentFeatureCreated Function which gets called
         * @param {String} textField Name of the field to search in
         * extent feature is created. Has one parameter: feature
         * @description Loads datasets metadata from selected source (CSW server).
         * Currently supports only "Micka" type of source.
-        * Use all query params (search text, bbox, params.., sorting, paging, start)
+        * Use all query params (search text, bbox, params.., sorting, start)
         */
-      queryCatalog(dataset, query, pageLimit, extentFeatureCreated, textField) {
+      queryCatalog(dataset, query, extentFeatureCreated, textField) {
         const b = transformExtent(
           OlMap.map.getView().calculateExtent(OlMap.map.getSize()),
           OlMap.map.getView().getProjection(),
@@ -51,11 +50,11 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
             query.sortby
             : 'bbox'
           ),
-          limit: pageLimit,
-          start: dataset.start
+          limit: dataset.paging.itemsPerPage,
+          start: dataset.datasourcePaging.start
         });
         url = utils.proxify(url);
-        dataset.loaded = false;
+        dataset.datasourcePaging.loaded = false;
         if (angular.isDefined(dataset.canceler)) {
           dataset.canceler.resolve();
           delete dataset.canceler;
@@ -69,7 +68,7 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
           .then(
             me.datasetsReceived,
             (e) => {
-              dataset.loaded = true;
+              dataset.datasourcePaging.loaded = true;
             });
       },
 
@@ -84,13 +83,13 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         const extentFeatureCreated = j.config.extentFeatureCreated;
         dataset.loading = false;
         dataset.layers = [];
-        dataset.loaded = true;
+        dataset.datasourcePaging.loaded = true;
         if (j.data === null) {
-          dataset.matched == 0;
+          dataset.datasourcePaging.matched == 0;
         } else {
           j = j.data;
-          dataset.matched = j.matched;
-          dataset.next = j.next;
+          dataset.datasourcePaging.matched = j.matched;
+          dataset.datasourcePaging.next = j.next;
           for (const lyr in j.records) {
             if (j.records[lyr]) {
               const obj = j.records[lyr];

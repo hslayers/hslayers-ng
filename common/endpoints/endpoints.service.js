@@ -1,5 +1,11 @@
 export default ['config', 'hs.common.laymanService', function (config, laymanService) {
   const me = this;
+
+  function getItemsPerPageConfig(ds) {
+    return angular.isDefined(ds.paging) && angular.isDefined(ds.paging.itemsPerPage) ?
+      ds.paging.itemsPerPage : config.dsPaging || 20;
+  }
+
   angular.extend(me, {
     endpoints: [
       {
@@ -12,8 +18,18 @@ export default ['config', 'hs.common.laymanService', function (config, laymanSer
           url: ds.url,
           type: ds.type,
           title: ds.title,
-          start: 0,
-          limit: 20,
+          datasourcePaging: {
+            start: 0,
+            limit: getItemsPerPageConfig(ds),
+            loaded: false
+          },
+          compositionsPaging: {
+            start: 0,
+            limit: getItemsPerPageConfig(ds)
+          },
+          paging: {
+            itemsPerPage: getItemsPerPageConfig(ds)
+          },
           user: ds.user,
           originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: laymanService.getCurrentUserIfNeeded
@@ -23,3 +39,5 @@ export default ['config', 'hs.common.laymanService', function (config, laymanSer
   });
   return me;
 }];
+
+

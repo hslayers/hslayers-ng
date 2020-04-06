@@ -43,10 +43,10 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         dataset.layers = [];
         dataset.loaded = true;
         if (j.data === null) {
-          dataset.matched == 0;
+          dataset.datasourcePaging.matched == 0;
         } else {
           j = j.data;
-          dataset.matched = j.length;
+          dataset.datasourcePaging.matched = j.length;
           for (const lyr in j) {
             if (j[lyr]) {
               const obj = {
