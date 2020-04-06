@@ -27,9 +27,9 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     */
     this.queryCatalogs = function () {
       mapService.clearExtentLayer();
-      endpointsService.endpoints.forEach(ds => {
-        ds.start = 0;
-        me.queryCatalog(ds);
+      endpointsService.endpoints.forEach(endpoint => {
+        endpoint.datasourcePaging.start = 0;
+        me.queryCatalog(endpoint);
       });
     };
 
