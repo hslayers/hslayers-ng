@@ -1,8 +1,7 @@
-import compositionsService from 'compositions.service';
-import parserService from 'compositions-parser.service';
-import compositionsComponent from 'compositions.component';
-import SparqlJson from 'hs.source.SparqlJson';
-import 'components/utils/utils.module';
+import compositionsService from './compositions.service';
+import parserService from './compositions-parser.service';
+import compositionsComponent from './compositions.component';
+import '../utils/utils.module';
 import 'angular-socialshare';
 import './layer-parser.module';
 import overwriteDialogDirective from './overwrite-dialog.directive';

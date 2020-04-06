@@ -1,6 +1,5 @@
 import {Vector} from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
-import SparqlJson from 'hs.source.SparqlJson';
 import {Style, Stroke, Fill} from 'ol/style';
 
 /* eslint-disable angular/on-watch */
