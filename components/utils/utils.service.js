@@ -17,7 +17,7 @@ export default ['config', '$http', '$window', '$document', '$timeout', function 
     const windowUrlPosition = url.indexOf($window.location.origin);
     if (
       ((windowUrlPosition == -1 || windowUrlPosition > 7)
-      ) || getPortFromUrl(url) != $window.location.port) {
+      ) || me.getPortFromUrl(url) != $window.location.port) {
       if (angular.isUndefined(config.useProxy) || config.useProxy === true) {
         outUrl = config.proxyPrefix || '/cgi-bin/hsproxy.cgi?';
         if (outUrl.indexOf('hsproxy.cgi') > -1) {
