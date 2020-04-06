@@ -11,6 +11,7 @@ import shareDialogDirective from './share-dialog.directive';
 import infoDialogDirective from './info-dialog.directive';
 import './endpoints/compositions-endpoints.module';
 import '../../common/endpoints/endpoints.module';
+import compositionsMapService from './compositions-map.service';
 
 /**
  * @ngdoc module
@@ -59,6 +60,16 @@ angular.module('hs.compositions', ['720kb.socialshare', 'hs.map',
  * @description Service of composition module
  */
   .factory('hs.compositions.service', compositionsService)
+
+
+/**
+ * @module hs.compositions
+ * @name hs.compositions.mapService
+ * @ngdoc controller
+ * @description Service of composition module which deal ith Openlayers map objects
+ */
+  .factory('hs.compositions.mapService', compositionsMapService)
+
 
 /**
  * @module hs.compositions

@@ -1,41 +1,19 @@
 /* eslint-disable angular/on-watch */
 import 'angular';
-import { Vector } from 'ol/source';
-import VectorLayer from 'ol/layer/Vector';
-import SparqlJson from 'hs.source.SparqlJson';
-import social from 'angular-socialshare';
 import './layer-parser.module';
-import { Style, Stroke, Fill } from 'ol/style';
 
 export default ['$rootScope', '$location', '$http', 'hs.map.service',
   'Core', 'hs.compositions.service_parser',
-  'config', 'hs.permalink.urlService', '$compile', '$cookies',
+  'config', 'hs.permalink.urlService', '$cookies',
   'hs.utils.service', 'hs.statusManagerService',
   'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
-  'hs.compositions.laymanService', 'hs.layout.service', '$log', '$timeout', '$window', 'hs.common.endpointsService',
+  'hs.compositions.laymanService', '$log', '$window', 'hs.common.endpointsService', 'hs.compositions.mapService',
   function ($rootScope, $location, $http, OlMap, Core, compositionParser,
-    config, permalink, $compile, $cookies, utils, statusManagerService,
-    mickaEndpointService, statusManagerEndpointService, laymanEndpointService, layoutService, $log, $timeout, $window, endpointsService) {
+    config, permalink, $cookies, utils, statusManagerService,
+    mickaEndpointService, statusManagerEndpointService, laymanEndpointService, $log, $window, endpointsService, mapService) {
     const me = this;
     angular.extend(me, {
       data: {},
-      extentLayer: new VectorLayer({
-        title: 'Composition extents',
-        show_in_manager: false,
-        source: new Vector(),
-        removable: false,
-        style: function (feature, resolution) {
-          return [new Style({
-            stroke: new Stroke({
-              color: '#005CB6',
-              width: feature.get('highlighted') ? 4 : 1
-            }),
-            fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.01)'
-            })
-          })];
-        }
-      }),
 
       datasetSelect(id_selected) {
         me.data.id_selected = id_selected;
@@ -43,18 +21,18 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
       loadCompositions(ds, params) {
         return new Promise((resolve, reject) => {
-          me.extentLayer.getSource().clear();
+          mapService.clearExtentLayer();
           const bbox = OlMap.getMapExtentInEpsg4326();
           switch (ds.type) {
             case 'micka':
-              mickaEndpointService.loadList(ds, params, bbox, me.extentLayer)
+              mickaEndpointService.loadList(ds, params, bbox, mapService.extentLayer)
                 .then(() => {
                   statusManagerEndpointService.loadList(ds, params, bbox);
                   resolve();
                 });
               break;
             case 'layman':
-              laymanEndpointService.loadList(ds, params, bbox, me.extentLayer).then(_ => resolve());
+              laymanEndpointService.loadList(ds, params, bbox, mapService.extentLayer).then(_ => resolve());
               break;
             default:
               $log.warn(`Endpoint type '${ds.type} not supported`);
@@ -87,18 +65,12 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             $log.warn(`Endpoint type '${endpoint.type} not supported`);
         }
         url = utils.proxify(url);
-        $http({ url, method }).
+        $http({url, method}).
           then((response) => {
             $rootScope.$broadcast('compositions.composition_deleted', composition);
           }, (err) => {
 
           });
-      },
-
-      highlightComposition(composition, state) {
-        if (angular.isDefined(composition.feature)) {
-          composition.feature.set('highlighted', state);
-        }
       },
 
       shareComposition(record) {
@@ -192,7 +164,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
       */
       parsePermalinkLayers() {
         const layersUrl = utils.proxify(permalink.getParamValue('permalink'));
-        $http({ url: layersUrl }).
+        $http({url: layersUrl}).
           then((response) => {
             if (response.data.success == true) {
               const data = {};
@@ -213,32 +185,12 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
 
           });
       },
+
       loadComposition(url, overwrite) {
         return compositionParser.loadUrl(url, overwrite);
       }
     });
 
-    function mapPointerMoved(evt) {
-      const features = me.extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
-      let somethingDone = false;
-      angular.forEach(me.extentLayer.getSource().getFeatures(), (feature) => {
-        if (feature.get('record').highlighted) {
-          feature.get('record').highlighted = false;
-          somethingDone = true;
-        }
-      });
-      if (features.length) {
-        angular.forEach(features, (feature) => {
-          if (!feature.get('record').highlighted) {
-            feature.get('record').highlighted = true;
-            somethingDone = true;
-          }
-        });
-      }
-      if (somethingDone) {
-        $timeout(() => { }, 0);
-      }
-    }
 
     function tryParseCompositionFromCookie() {
       if (angular.isDefined($cookies.get('hs_layers')) && $window.permalinkApp != true) {
@@ -261,31 +213,15 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
       }
     }
 
-    function init(map) {
-      map.on('pointermove', mapPointerMoved);
-      tryParseCompositionFromCookie();
-      tryParseCompositionFromUrlParam();
-      map.addLayer(me.extentLayer);
-      if (permalink.getParamValue('permalink')) {
-        permalink.parsePermalinkLayers();
-      }
+    tryParseCompositionFromCookie();
+    tryParseCompositionFromUrlParam();
+    if (permalink.getParamValue('permalink')) {
+      permalink.parsePermalinkLayers();
     }
-
-    OlMap.loaded().then(init);
 
     $rootScope.$on('core.map_reset', (event, data) => {
       compositionParser.composition_loaded = null;
       compositionParser.composition_edited = false;
-    });
-
-    $rootScope.$on('core.mainpanel_changed', (event) => {
-      if (angular.isDefined(me.extentLayer)) {
-        if (layoutService.mainpanel === 'composition_browser' || layoutService.mainpanel === 'composition') {
-          me.extentLayer.setVisible(true);
-        } else {
-          me.extentLayer.setVisible(false);
-        }
-      }
     });
 
     $rootScope.$on('compositions.composition_edited', (event) => {
@@ -293,15 +229,13 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     });
 
     $rootScope.$on('compositions.load_composition', (event, id) => {
-      id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
+      id = `${statusManagerService.endpointUrl()}?request=load&id=${id}`;
       compositionParser.loadUrl(id);
     });
 
     $rootScope.$on('infopanel.feature_selected', (event, feature, selector) => {
-      if (angular.isDefined(feature.get('is_hs_composition_extent')) && angular.isDefined(feature.get('record'))) {
-        const record = feature.get('record');
-        feature.set('highlighted', false);
-        selector.getFeatures().clear();
+      const record = mapService.getFeatureRecordAndUnhighlight(feature, selector);
+      if (record) {
         me.loadComposition(record.link);
       }
     });
