@@ -1,6 +1,6 @@
 import 'ol-popup/src/ol-popup.css';
 import Popup from 'ol-popup';
-import { remove } from 'lodash';
+import {remove} from 'lodash';
 
 export default [
   '$scope',
@@ -27,15 +27,15 @@ export default [
     layoutService,
     $injector
   ) {
-    let popup = new Popup();
+    const popup = new Popup();
 
     OlMap.loaded().then((map) => {
       map.addOverlay(popup);
     });
 
     try {
-      var $mdDialog = $injector.get('$mdDialog');
-      var $mdToast = $injector.get('$mdToast');
+      const $mdDialog = $injector.get('$mdDialog');
+      const $mdToast = $injector.get('$mdToast');
 
       $scope.showQueryDialog = function (ev) {
         $mdDialog
@@ -48,12 +48,13 @@ export default [
             clickOutsideToClose: true,
           })
           .then(
-            function () {
+            () => {
               console.log('Closed.');
             },
             () => {
-                        console.log("Cancelled.");
-                    });
+              console.log('Cancelled.');
+            }
+          );
       };
 
       $scope.cancelQueryDialog = function () {
@@ -71,60 +72,89 @@ export default [
 
     $scope.data = Base.data;
 
-    var deregisterQueryStatusChanged = $rootScope.$on(
+    const deregisterQueryStatusChanged = $rootScope.$on(
       'queryStatusChanged',
       () => {
-            if (Base.queryActive) {
-                $scope.deregisterVectorQuery = $scope.$on('mapQueryStarted', function (e) {
-                    if (config.design === 'md' && $scope.data.features.length === 0) {
-                        $scope.showNoImagesWarning();
-                    }
-                    if (config.design === 'md' && $scope.data.features.length > 0) {
-                        $scope.showQueryDialog(e);
-                    } else {
-                        popup.hide();
-                        if (Base.currentPanelQueryable()) layoutService.setMainPanel('info');
-                    }
-                });
-
-                $scope.deregisterWmsQuery = $scope.$on('queryWmsResult', function (e, coordinate) {
-                    $timeout(function () {
-                        var invisiblePopup = Base.getInvisiblePopup();
-                        if (invisiblePopup.contentDocument.body.children.length > 0) { //TODO: dont count style, title, meta towards length
-                            if (Base.popupClassname.length > 0) popup.getElement().className = Base.popupClassname;
-                            else popup.getElement().className = "ol-popup";
-                            popup.show(coordinate, invisiblePopup.contentDocument.body.innerHTML);
-                            $rootScope.$broadcast('popupOpened', 'hs.query');
-                        }
-                    })
-                });
-            } else {
-                if ($scope.deregisterVectorQuery) $scope.deregisterVectorQuery();
-                if ($scope.deregisterWmsQuery) $scope.deregisterWmsQuery();
+        if (Base.queryActive) {
+          $scope.deregisterVectorQuery = $scope.$on('mapQueryStarted', (e) => {
+            if (config.design === 'md' && $scope.data.features.length === 0) {
+              $scope.showNoImagesWarning();
             }
-        });
+            if (config.design === 'md' && $scope.data.features.length > 0) {
+              $scope.showQueryDialog(e);
+            } else {
+              popup.hide();
+              if (Base.currentPanelQueryable()) {
+                layoutService.setMainPanel('info');
+              }
+            }
+          });
+
+          $scope.deregisterWmsQuery = $scope.$on(
+            'queryWmsResult',
+            (e, coordinate) => {
+              $timeout(() => {
+                const invisiblePopup = Base.getInvisiblePopup();
+                if (invisiblePopup.contentDocument.body.children.length > 0) {
+                  //TODO: dont count style, title, meta towards length
+                  if (Base.popupClassname.length > 0) {
+                    popup.getElement().className = Base.popupClassname;
+                  } else {
+                    popup.getElement().className = 'ol-popup';
+                  }
+                  popup.show(
+                    coordinate,
+                    invisiblePopup.contentDocument.body.innerHTML
+                  );
+                  $rootScope.$broadcast('popupOpened', 'hs.query');
+                }
+              });
+            }
+          );
+        } else {
+          if ($scope.deregisterVectorQuery) {
+            $scope.deregisterVectorQuery();
+          }
+          if ($scope.deregisterWmsQuery) {
+            $scope.deregisterWmsQuery();
+          }
+        }
+      }
     );
     $scope.$on('$destroy', () => {
-            if (deregisterQueryStatusChanged) deregisterQueryStatusChanged();
-        });
+      if (deregisterQueryStatusChanged) {
+        deregisterQueryStatusChanged();
+      }
+    });
 
     $scope.$on('queryVectorResult', () => {
-            if (!$scope.$$phase) $scope.$digest();
-        });
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    });
 
     //add current panel queriable - activate/deactivate
     $scope.$on('core.mainpanel_changed', (event, closed) => {
-            if (Base.currentPanelQueryable()) {
-                if (!Base.queryActive) Base.activateQueries();
-            }
-            else {
-                if (Base.queryActive) Base.deactivateQueries();
-            }
-        });
+      if (Base.currentPanelQueryable()) {
+        if (!Base.queryActive) {
+          Base.activateQueries();
+        }
+      } else {
+        if (Base.queryActive) {
+          Base.deactivateQueries();
+        }
+      }
+    });
 
     $scope.$on('popupOpened', (e, source) => {
-            if (angular.isDefined(source) && source != "hs.query" && angular.isDefined(popup)) popup.hide();
-        });
+      if (
+        angular.isDefined(source) &&
+        source != 'hs.query' &&
+        angular.isDefined(popup)
+      ) {
+        popup.hide();
+      }
+    });
 
     $scope.$on('infopanel.featureRemoved', (e, feature) => {
       remove($scope.data.features, feature);
