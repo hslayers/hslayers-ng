@@ -138,6 +138,5 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
       }
     });
 
-    hsMap.loaded().then(me.init);
     return me;
   }];

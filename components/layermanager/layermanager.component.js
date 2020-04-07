@@ -13,8 +13,9 @@ export default {
     'hs.utils.layerUtilsService', 'config', 'hs.map.service',
     'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
     'hs.legend.service', 'hs.layout.service', 'hs.layerEditor.sublayerService',
+    'hs.layerSynchronizerService',
     function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-      LayMan, $rootScope, WMST, legendService, layoutService, subLayerService) {
+      LayMan, $rootScope, WMST, legendService, layoutService, subLayerService, layerSynchronizerService) {
       $scope.LayMan = LayMan;
       $scope.data = LayMan.data;
       $scope.Core = Core;
@@ -322,8 +323,9 @@ export default {
         });
       });
 
-      function init() {
+      function init(m) {
         map = OlMap.map;
+        layerSynchronizerService.init(map);
       }
 
       OlMap.loaded().then(init);
