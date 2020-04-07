@@ -1,16 +1,46 @@
 /* eslint-disable angular/on-watch */
-import 'angular';
 import './layer-parser.module';
+import 'angular';
 
-export default ['$rootScope', '$location', '$http', 'hs.map.service',
-  'Core', 'hs.compositions.service_parser',
-  'config', 'hs.permalink.urlService', '$cookies',
-  'hs.utils.service', 'hs.statusManagerService',
-  'hs.compositions.mickaService', 'hs.compositions.statusManagerService',
-  'hs.compositions.laymanService', '$log', '$window', 'hs.common.endpointsService', 'hs.compositions.mapService',
-  function ($rootScope, $location, $http, OlMap, Core, compositionParser,
-    config, permalink, $cookies, utils, statusManagerService,
-    mickaEndpointService, statusManagerEndpointService, laymanEndpointService, $log, $window, endpointsService, mapService) {
+export default [
+  '$rootScope',
+  '$location',
+  '$http',
+  'hs.map.service',
+  'Core',
+  'hs.compositions.service_parser',
+  'config',
+  'hs.permalink.urlService',
+  '$cookies',
+  'hs.utils.service',
+  'hs.statusManagerService',
+  'hs.compositions.mickaService',
+  'hs.compositions.statusManagerService',
+  'hs.compositions.laymanService',
+  '$log',
+  '$window',
+  'hs.common.endpointsService',
+  'hs.compositions.mapService',
+  function (
+    $rootScope,
+    $location,
+    $http,
+    OlMap,
+    Core,
+    compositionParser,
+    config,
+    permalink,
+    $cookies,
+    utils,
+    statusManagerService,
+    mickaEndpointService,
+    statusManagerEndpointService,
+    laymanEndpointService,
+    $log,
+    $window,
+    endpointsService,
+    mapService
+  ) {
     const me = this;
     angular.extend(me, {
       data: {},
@@ -25,14 +55,17 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
           const bbox = OlMap.getMapExtentInEpsg4326();
           switch (ds.type) {
             case 'micka':
-              mickaEndpointService.loadList(ds, params, bbox, mapService.extentLayer)
+              mickaEndpointService
+                .loadList(ds, params, bbox, mapService.extentLayer)
                 .then(() => {
                   statusManagerEndpointService.loadList(ds, params, bbox);
                   resolve();
                 });
               break;
             case 'layman':
-              laymanEndpointService.loadList(ds, params, bbox, mapService.extentLayer).then(_ => resolve());
+              laymanEndpointService
+                .loadList(ds, params, bbox, mapService.extentLayer)
+                .then((_) => resolve());
               break;
             default:
               $log.warn(`Endpoint type '${ds.type} not supported`);
@@ -41,7 +74,7 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
       },
 
       resetCompositionCounter() {
-        endpointsService.endpoints.forEach(ds => {
+        endpointsService.endpoints.forEach((ds) => {
           if (ds.type == 'micka') {
             mickaEndpointService.resetCompositionCounter(ds);
           }
@@ -54,7 +87,12 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
         let method;
         switch (endpoint.type) {
           case 'micka':
-            url = statusManagerService.endpointUrl() + '?request=delete&id=' + composition.id + '&project=' + encodeURIComponent(config.project_name);
+            url =
+              statusManagerService.endpointUrl() +
+              '?request=delete&id=' +
+              composition.id +
+              '&project=' +
+              encodeURIComponent(config.project_name);
             method = 'GET';
             break;
           case 'layman':
@@ -65,16 +103,28 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             $log.warn(`Endpoint type '${endpoint.type} not supported`);
         }
         url = utils.proxify(url);
-        $http({url, method}).
-          then((response) => {
-            $rootScope.$broadcast('compositions.composition_deleted', composition);
-          }, (err) => {
-
-          });
+        $http({url, method}).then(
+          (response) => {
+            $rootScope.$broadcast(
+              'compositions.composition_deleted',
+              composition
+            );
+          },
+          (err) => {}
+        );
       },
 
       shareComposition(record) {
-        const compositionUrl = (Core.isMobile() && config.permalinkLocation ? (config.permalinkLocation.origin + config.permalinkLocation.pathname) : ($location.protocol() + '://' + location.host + location.pathname)) + '?composition=' + encodeURIComponent(record.link);
+        const compositionUrl =
+          (Core.isMobile() && config.permalinkLocation
+            ? config.permalinkLocation.origin +
+              config.permalinkLocation.pathname
+            : $location.protocol() +
+              '://' +
+              location.host +
+              location.pathname) +
+          '?composition=' +
+          encodeURIComponent(record.link);
         const shareId = utils.generateUuid();
         $http({
           method: 'POST',
@@ -85,23 +135,35 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             url: encodeURIComponent(compositionUrl),
             title: record.title,
             description: record.abstract,
-            image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg'
-          })
-        }).then((response) => {
-          utils.shortUrl(statusManagerService.endpointUrl() + '?request=socialshare&id=' + shareId)
-            .then((shortUrl) => {
-              me.data.shareUrl = shortUrl;
-            }).catch(() => {
-              $log.log('Error creating short Url');
-            });
-          me.data.shareTitle = record.title;
-          if (config.social_hashtag && me.data.shareTitle.indexOf(config.social_hashtag) <= 0) {
-            me.data.shareTitle += ' ' + config.social_hashtag;
-          }
+            image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
+          }),
+        }).then(
+          (response) => {
+            utils
+              .shortUrl(
+                statusManagerService.endpointUrl() +
+                  '?request=socialshare&id=' +
+                  shareId
+              )
+              .then((shortUrl) => {
+                me.data.shareUrl = shortUrl;
+              })
+              .catch(() => {
+                $log.log('Error creating short Url');
+              });
+            me.data.shareTitle = record.title;
+            if (
+              config.social_hashtag &&
+              me.data.shareTitle.indexOf(config.social_hashtag) <= 0
+            ) {
+              me.data.shareTitle += ' ' + config.social_hashtag;
+            }
 
-          me.data.shareDescription = record.abstract;
-          $rootScope.$broadcast('composition.shareCreated', me.data);
-        }, (err) => { });
+            me.data.shareDescription = record.abstract;
+            $rootScope.$broadcast('composition.shareCreated', me.data);
+          },
+          (err) => {}
+        );
       },
 
       getCompositionInfo(composition, cb) {
@@ -114,7 +176,9 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
             url = composition.endpoint.url + composition.url;
             break;
           default:
-            $log.warn(`Endpoint type '${composition.endpoint.type} not supported`);
+            $log.warn(
+              `Endpoint type '${composition.endpoint.type} not supported`
+            );
         }
         compositionParser.loadInfo(url, (info) => {
           me.data.info = info;
@@ -123,11 +187,14 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
               me.data.info.thumbnail = composition.thumbnail;
               break;
             case 'layman':
-              me.data.info.thumbnail = composition.endpoint.url + info.thumbnail.url;
+              me.data.info.thumbnail =
+                composition.endpoint.url + info.thumbnail.url;
               me.data.info.abstract = info.description;
               break;
             default:
-              $log.warn(`Endpoint type '${composition.endpoint.type} not supported`);
+              $log.warn(
+                `Endpoint type '${composition.endpoint.type} not supported`
+              );
           }
           cb(me.data.info);
         });
@@ -158,14 +225,14 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
       },
 
       /**
-      * @function parsePermalinkLayers
-      * @memberof hs.compositions.service
-      * Load layers received through permalink to map
-      */
+       * @function parsePermalinkLayers
+       * @memberof hs.compositions.service
+       * Load layers received through permalink to map
+       */
       parsePermalinkLayers() {
         const layersUrl = utils.proxify(permalink.getParamValue('permalink'));
-        $http({url: layersUrl}).
-          then((response) => {
+        $http({url: layersUrl}).then(
+          (response) => {
             if (response.data.success == true) {
               const data = {};
               data.data = {};
@@ -181,19 +248,21 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
                 $log.log('Error loading permalink layers');
               }
             }
-          }, (err) => {
-
-          });
+          },
+          (err) => {}
+        );
       },
 
       loadComposition(url, overwrite) {
         return compositionParser.loadUrl(url, overwrite);
-      }
+      },
     });
 
-
     function tryParseCompositionFromCookie() {
-      if (angular.isDefined($cookies.get('hs_layers')) && $window.permalinkApp != true) {
+      if (
+        angular.isDefined($cookies.get('hs_layers')) &&
+        $window.permalinkApp != true
+      ) {
         const data = $cookies.get('hs_layers');
         const layers = compositionParser.jsonToLayers(angular.fromJson(data));
         for (let i = 0; i < layers.length; i++) {
@@ -206,7 +275,10 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     function tryParseCompositionFromUrlParam() {
       if (permalink.getParamValue('composition')) {
         let id = permalink.getParamValue('composition');
-        if (id.indexOf('http') == -1 && id.indexOf(config.status_manager_url) == -1) {
+        if (
+          id.indexOf('http') == -1 &&
+          id.indexOf(config.status_manager_url) == -1
+        ) {
           id = statusManagerService.endpointUrl() + '?request=load&id=' + id;
         }
         compositionParser.loadUrl(id);
@@ -234,11 +306,15 @@ export default ['$rootScope', '$location', '$http', 'hs.map.service',
     });
 
     $rootScope.$on('infopanel.feature_selected', (event, feature, selector) => {
-      const record = mapService.getFeatureRecordAndUnhighlight(feature, selector);
+      const record = mapService.getFeatureRecordAndUnhighlight(
+        feature,
+        selector
+      );
       if (record) {
         me.loadComposition(record.link);
       }
     });
 
     return me;
-  }];
+  },
+];

@@ -1,6 +1,11 @@
 export default {
   template: require('./partials/toolbar.html'),
-  controller: ['$scope', 'Core', '$timeout', 'hs.layout.service', '$document',
+  controller: [
+    '$scope',
+    'Core',
+    '$timeout',
+    'hs.layout.service',
+    '$document',
     function ($scope, Core, $timeout, layoutService, $document) {
       let collapsed = false;
 
@@ -61,17 +66,16 @@ export default {
           if (!layoutService.sidebarBottom()) {
             if (!layoutService.sidebarRight) {
               return {
-                marginLeft: layoutService.panelSpaceWidth() + 'px'
+                marginLeft: layoutService.panelSpaceWidth() + 'px',
               };
             } else {
               return {
-                marginRight: layoutService.panelSpaceWidth() + 'px'
+                marginRight: layoutService.panelSpaceWidth() + 'px',
               };
             }
           }
-        }
+        },
       });
-
 
       $scope.$on('core.map_reset', (event) => {
         $timeout(() => {
@@ -81,5 +85,6 @@ export default {
       });
 
       $scope.$emit('scope_loaded', 'Toolbar');
-    }]
+    },
+  ],
 };

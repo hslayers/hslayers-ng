@@ -1,9 +1,29 @@
 /* eslint-disable angular/on-watch */
 import {transform} from 'ol/proj';
 
-export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
-  'config', '$http', 'hs.statusManagerService', 'hs.laymanService', 'hs.layout.service', 'hs.utils.service',
-  function ($rootScope, OlMap, Core, saveMap, config, $http, statusManagerService, laymanService, layoutService, utils) {
+export default [
+  '$rootScope',
+  'hs.map.service',
+  'Core',
+  'hs.save-map.service',
+  'config',
+  '$http',
+  'hs.statusManagerService',
+  'hs.laymanService',
+  'hs.layout.service',
+  'hs.utils.service',
+  function (
+    $rootScope,
+    OlMap,
+    Core,
+    saveMap,
+    config,
+    $http,
+    statusManagerService,
+    laymanService,
+    layoutService,
+    utils
+  ) {
     const me = this;
     angular.extend(me, {
       btnSelectDeseletClicked: true,
@@ -16,7 +36,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         thumbnail: undefined,
         bbox: undefined,
         currentCompositionTitle: '',
-        currentComposition: undefined
+        currentComposition: undefined,
       },
       userData: {
         email: '',
@@ -26,14 +46,14 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         country: '',
         postalCode: '',
         city: '',
-        organization: ''
+        organization: '',
       },
       statusData: {
         titleFree: undefined,
         hasPermission: undefined,
         success: undefined,
         changeTitle: undefined,
-        groups: []
+        groups: [],
       },
 
       /**
@@ -43,7 +63,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
        */
       selectDeselectAllLayers() {
         me.btnSelectDeseletClicked = !me.btnSelectDeseletClicked;
-        me.compoData.layers.forEach(layer => layer.checked = me.btnSelectDeseletClicked);
+        me.compoData.layers.forEach(
+          (layer) => (layer.checked = me.btnSelectDeseletClicked)
+        );
       },
 
       confirmSave() {
@@ -53,10 +75,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
           data: angular.toJson({
             project: config.project_name,
             title: me.compoData.title,
-            request: 'rightToSave'
-          })
-        }).
-          then((response) => {
+            request: 'rightToSave',
+          }),
+        }).then(
+          (response) => {
             const j = response.data;
             me.statusData.hasPermission = j.results.hasPermission;
             me.statusData.titleFree = j.results.titleFree;
@@ -71,30 +93,42 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             } else {
               $rootScope.$broadcast('StatusManager.saveResult', 'saveConfirm');
             }
-          }, (err) => {
+          },
+          (err) => {
             me.statusData.success = false;
-            $rootScope.$broadcast('StatusManager.saveResult', 'saveResult', 'error');
-          });
+            $rootScope.$broadcast(
+              'StatusManager.saveResult',
+              'saveResult',
+              'error'
+            );
+          }
+        );
       },
 
       save(saveAsNew, endpoint) {
         if (saveAsNew || me.compoData.id == '') {
           me.compoData.id = saveMap.generateUuid();
         }
-        const compositionJson = saveMap.map2json(OlMap.map, me.compoData, me.userData, me.statusData);
+        const compositionJson = saveMap.map2json(
+          OlMap.map,
+          me.compoData,
+          me.userData,
+          me.statusData
+        );
         let saver = statusManagerService;
         if (endpoint.type == 'layman') {
           saver = laymanService;
         }
-        saver.save(compositionJson, endpoint, me.compoData)
-          .then(response => {
+        saver
+          .save(compositionJson, endpoint, me.compoData)
+          .then((response) => {
             const compInfo = {};
             const j = response.data;
             compInfo.id = me.compoData.id;
             compInfo.title = me.compoData.title;
             compInfo.abstract = me.compoData.abstract || '';
             if (endpoint.type == 'statusmanager') {
-              me.status = angular.isDefined(j.saved) && (j.saved !== false);
+              me.status = angular.isDefined(j.saved) && j.saved !== false;
             }
             if (endpoint.type == 'layman') {
               me.status = j.length == 1 && angular.isDefined(j[0].uuid);
@@ -103,16 +137,22 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             $rootScope.$broadcast('compositions.composition_loaded', compInfo);
             const saveStatus = me.status ? 'ok' : 'not-saved';
             me.statusData.success = me.status;
-            $rootScope.$broadcast('StatusManager.saveResult',
-              'saveResult', saveStatus);
-          }).catch(e => {
+            $rootScope.$broadcast(
+              'StatusManager.saveResult',
+              'saveResult',
+              saveStatus
+            );
+          })
+          .catch((e) => {
             //e contains the json responses data object from api
             me.statusData.success = false;
-            $rootScope.$broadcast('StatusManager.saveResult',
-              'saveResult', 'error', e);
+            $rootScope.$broadcast(
+              'StatusManager.saveResult',
+              'saveResult',
+              'error',
+              e
+            );
           });
-
-
       },
 
       /**
@@ -129,11 +169,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         me.compoData.layers = [];
         me.compoData.bbox = me.getCurrentExtent();
         OlMap.map.getLayers().forEach((lyr) => {
-          if ((angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) && (lyr.get('base') != true)) {
+          if (
+            (angular.isUndefined(lyr.get('show_in_manager')) ||
+              lyr.get('show_in_manager') == true) &&
+            lyr.get('base') != true
+          ) {
             me.compoData.layers.push({
               title: lyr.get('title'),
               checked: true,
-              layer: lyr
+              layer: lyr,
             });
           }
         });
@@ -145,12 +189,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             roleTitle: 'Public',
             roleName: 'guest',
             w: false,
-            r: false
+            r: false,
           });
           const cc = me.compoData.currentComposition;
           if (angular.isDefined(me.compoData.currentComposition) && cc != '') {
             angular.forEach(me.statusData.groups, (g) => {
-              if (angular.isDefined(cc.groups) && angular.isDefined(cc.groups[g.roleName])) {
+              if (
+                angular.isDefined(cc.groups) &&
+                angular.isDefined(cc.groups[g.roleName])
+              ) {
                 g.w = cc.groups[g.roleName].indexOf('w') > -1;
                 g.r = cc.groups[g.roleName].indexOf('r') > -1;
               }
@@ -161,11 +208,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
       },
 
       /**
-      * Send getGroups request to status manager server and process response
-      * @function fillGroups
-      * @param {Function} cb Callback function
-      * @memberof hs.saveMapManagerService
-      */
+       * Send getGroups request to status manager server and process response
+       * @function fillGroups
+       * @param {Function} cb Callback function
+       * @memberof hs.saveMapManagerService
+       */
       fillGroups(cb) {
         me.statusData.groups = [];
         if (config.advancedForm) {
@@ -173,10 +220,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
             url: statusManagerService.endpointUrl(),
             method: 'GET',
             data: {
-              request: 'getGroups'
-            }
-          }).
-            then((response) => {
+              request: 'getGroups',
+            },
+          }).then(
+            (response) => {
               const j = response.data;
               if (j.success) {
                 me.statusData.groups = j.result;
@@ -186,9 +233,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
                 });
               }
               cb();
-            }, (err) => {
-
-            });
+            },
+            (err) => {}
+          );
         } else {
           cb();
         }
@@ -200,8 +247,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
        * @memberof hs.saveMapManagerService
        */
       loadUserDetails() {
-        $http({url: statusManagerService.endpointUrl() + '?request=getuserinfo'}).
-          then(me.setUserDetails, (err) => { });
+        $http({
+          url: statusManagerService.endpointUrl() + '?request=getuserinfo',
+        }).then(me.setUserDetails, (err) => {});
       },
 
       /**
@@ -217,7 +265,8 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
           if (user.userInfo) {
             me.userData.email = user.userInfo.email;
             me.userData.phone = user.userInfo.phone;
-            me.userData.name = user.userInfo.firstName + ' ' + user.userInfo.lastName;
+            me.userData.name =
+              user.userInfo.firstName + ' ' + user.userInfo.lastName;
           }
           if (user.userInfo && user.userInfo.org) {
             me.userData.address = user.userInfo.org.street;
@@ -242,12 +291,18 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
         const cur_proj = OlMap.map.getView().getProjection().getCode();
         pair1 = transform(pair1, cur_proj, 'EPSG:4326');
         pair2 = transform(pair2, cur_proj, 'EPSG:4326');
-        return [pair1[0].toFixed(2), pair1[1].toFixed(2), pair2[0].toFixed(2), pair2[1].toFixed(2)];
+        return [
+          pair1[0].toFixed(2),
+          pair1[1].toFixed(2),
+          pair2[0].toFixed(2),
+          pair2[1].toFixed(2),
+        ];
       },
 
       resetCompoData() {
-        me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition = '';
-      }
+        me.compoData.id = me.compoData.abstract = me.compoData.title = me.compoData.currentCompositionTitle = me.compoData.keywords = me.compoData.currentComposition =
+          '';
+      },
     });
 
     $rootScope.$on('StatusCreator.open', (e, composition) => {
@@ -279,16 +334,34 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.save-map.service',
     });
 
     $rootScope.$on('core.mainpanel_changed', (event) => {
-      if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'statusCreator') {
+      if (
+        layoutService.mainpanel == 'saveMap' ||
+        layoutService.mainpanel == 'statusCreator'
+      ) {
         me.refresh();
-        saveMap.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'), me.compoData);
+        saveMap.generateThumbnail(
+          layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+          me.compoData
+        );
       }
     });
 
-    OlMap.map.on('postcompose', utils.debounce(() => {
-      me.compoData.bbox = me.getCurrentExtent();
-      saveMap.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'), me.compoData);
-    }, 300, false, me));
+    OlMap.map.on(
+      'postcompose',
+      utils.debounce(
+        () => {
+          me.compoData.bbox = me.getCurrentExtent();
+          saveMap.generateThumbnail(
+            layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+            me.compoData
+          );
+        },
+        300,
+        false,
+        me
+      )
+    );
 
     return me;
-  }];
+  },
+];

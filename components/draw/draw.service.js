@@ -1,8 +1,8 @@
-import {Draw, Modify} from 'ol/interaction';
 import Collection from 'ol/Collection';
-import {Style, Stroke, Fill, Circle} from 'ol/style';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
+import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Draw, Modify} from 'ol/interaction';
 
 export default [
   'Core',
@@ -16,7 +16,19 @@ export default [
   'gettext',
   '$log',
   '$document',
-  function(Core, utils, config, hsMap, laymanService, queryBaseService, $rootScope, layerUtilsService, gettext, $log, $document) {
+  function (
+    Core,
+    utils,
+    config,
+    hsMap,
+    laymanService,
+    queryBaseService,
+    $rootScope,
+    layerUtilsService,
+    gettext,
+    $log,
+    $document
+  ) {
     const me = this;
     angular.extend(me, {
       draw: null,
@@ -29,23 +41,23 @@ export default [
         return [
           new Style({
             fill: new Fill({
-              color: 'rgba(255, 255, 255, 0.4)'
+              color: 'rgba(255, 255, 255, 0.4)',
             }),
             stroke: new Stroke({
               color: '#d00504',
-              width: 2
+              width: 2,
             }),
             image: new Circle({
               radius: 5,
               fill: new Fill({
-                color: '#d11514'
+                color: '#d11514',
               }),
               stroke: new Stroke({
                 color: '#d00504',
-                width: 2
-              })
-            })
-          })
+                width: 2,
+              }),
+            }),
+          }),
         ];
       },
 
@@ -62,7 +74,7 @@ export default [
           visible: true,
           removable: true,
           editable: true,
-          path: config.defaultDrawLayerPath || gettext('User generated')
+          path: config.defaultDrawLayerPath || gettext('User generated'),
         });
         hsMap.map.addLayer(drawLayer);
         me.selectedLayer = drawLayer;
@@ -83,30 +95,37 @@ export default [
         }
       },
       /**
-			 * @function updateStyle
-			 * @memberOf hs.draw.service
-			 * @param {function} changeStyle controller callback function
-			 * @description Update draw style without neccessity to reactivate drawing interaction
-			 */
+       * @function updateStyle
+       * @memberOf hs.draw.service
+       * @param {function} changeStyle controller callback function
+       * @description Update draw style without neccessity to reactivate drawing interaction
+       */
       updateStyle(changeStyle) {
         if (me.draw) {
           me.draw.getOverlay().setStyle(changeStyle());
         }
       },
       /**
-			 * @function activateDrawing
-			 * @memberOf hs.draw.service
+       * @function activateDrawing
+       * @memberOf hs.draw.service
        * @param {function} onDrawStart Callback function called when drawing is started
        * @param {function} onDrawEnd Callback function called when drawing is finished
        * @param {function} onSelected Callback function called when feature is selected for modification
        * @param {function} onDeselected Callback function called when feature is deselected
-			 * @param {function} changeStyle controller callback function which set style
-			 * dynamically according to selected parameters
-			 * @param {Boolean} drawState Should drawing be set active when
-			 * creating the interactions
-			 * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
-			 */
-      activateDrawing(onDrawStart, onDrawEnd, onSelected, onDeselected, changeStyle, drawState) {
+       * @param {function} changeStyle controller callback function which set style
+       * dynamically according to selected parameters
+       * @param {Boolean} drawState Should drawing be set active when
+       * creating the interactions
+       * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
+       */
+      activateDrawing(
+        onDrawStart,
+        onDrawEnd,
+        onSelected,
+        onDeselected,
+        changeStyle,
+        drawState
+      ) {
         me.onDeselected = onDeselected;
         me.onSelected = onSelected;
         me.deactivateDrawing().then(() => {
@@ -114,16 +133,16 @@ export default [
           me.draw = new Draw({
             source: me.source,
             type: /** @type {ol.geom.GeometryType} */ (me.type),
-            style: changeStyle ? changeStyle() : undefined
+            style: changeStyle ? changeStyle() : undefined,
           });
 
           me.draw.setActive(drawState);
 
-          hsMap.loaded().then(map => {
+          hsMap.loaded().then((map) => {
             map.addInteraction(me.draw);
           });
 
-          function keyUp (event) {
+          function keyUp(event) {
             if (event.keyCode === 27) {
               me.removeLastPoint();
             }
@@ -166,14 +185,14 @@ export default [
       },
 
       /**
-			 * @function deactivateDrawing
-			 * @memberOf hs.draw.service
+       * @function deactivateDrawing
+       * @memberOf hs.draw.service
        * @return {Promise}
-			 * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
-			 */
+       * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
+       */
       deactivateDrawing() {
         return new Promise((resolve, reject) => {
-          hsMap.loaded().then(map => {
+          hsMap.loaded().then((map) => {
             if (me.draw) {
               map.removeInteraction(me.draw);
               me.draw = null;
@@ -207,36 +226,42 @@ export default [
           $log.warn(ex);
         }
         me.draw.setActive(true);
-      }
+      },
     });
 
-    hsMap.loaded().then(map => {
+    hsMap.loaded().then((map) => {
       me.modify = new Modify({
-        features: me.selectedFeatures
+        features: me.selectedFeatures,
       });
       map.addInteraction(me.modify);
     });
 
-    me.selectedFeatures.on('add', e => {
+    me.selectedFeatures.on('add', (e) => {
       if (me.onSelected) {
         me.onSelected(e);
       }
       me.modify.setActive(true);
     });
 
-    me.selectedFeatures.on('remove', e => {
+    me.selectedFeatures.on('remove', (e) => {
       if (me.onDeselected) {
         me.onDeselected(e);
       }
     });
 
-    const unregisterFeatureSelected = $rootScope.$on('vectorQuery.featureSelected', (e, feature) => {
-      me.selectedFeatures.push(feature);
-    });
+    const unregisterFeatureSelected = $rootScope.$on(
+      'vectorQuery.featureSelected',
+      (e, feature) => {
+        me.selectedFeatures.push(feature);
+      }
+    );
 
-    const unregisterFeatureDeselected = $rootScope.$on('vectorQuery.featureDelected', (e, feature) => {
-      me.selectedFeatures.remove(feature);
-    });
+    const unregisterFeatureDeselected = $rootScope.$on(
+      'vectorQuery.featureDelected',
+      (e, feature) => {
+        me.selectedFeatures.remove(feature);
+      }
+    );
     return me;
-  }
+  },
 ];

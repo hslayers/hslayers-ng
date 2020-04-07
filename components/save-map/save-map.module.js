@@ -1,29 +1,39 @@
-import 'angular-cookies';
-import saveMapComponent from './save-map.component';
-import saveMapService from './save-map.service';
-import saveMapManagerService from './save-map-manager.service';
-import statusManagerService from './status-manager.service';
-import laymanService from './layman.service';
-import layerSynchronizerService from './layer-synchronizer.service';
-import '../../common/widgets/widgets.module';
 import '../../common/layman/layman.module';
+import '../../common/widgets/widgets.module';
+import 'angular-cookies';
+import layerSynchronizerService from './layer-synchronizer.service';
+import laymanService from './layman.service';
+import saveMapComponent from './save-map.component';
+import saveMapManagerService from './save-map-manager.service';
+import saveMapService from './save-map.service';
+import statusManagerService from './status-manager.service';
 
 /**
  * @namespace hs.save-map
  * @memberOf hs
  */
-angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', 'hs.common.layman'])
-/**
-     * @ngdoc directive
-     * @name hs.save-map.directive
-     * @memberof hs.save-map
-     * @description Display Save map (composition) dialog
-     */
-  .directive('hs.save-map.directive', ['config', function (config) {
-    return {
-      template: require('./partials/dialog.html')
-    };
-  }])
+angular
+  .module('hs.save-map', [
+    'hs.map',
+    'hs.core',
+    'ngCookies',
+    'hs.widgets',
+    'hs.common.layman',
+  ])
+  /**
+   * @ngdoc directive
+   * @name hs.save-map.directive
+   * @memberof hs.save-map
+   * @description Display Save map (composition) dialog
+   */
+  .directive('hs.save-map.directive', [
+    'config',
+    function (config) {
+      return {
+        template: require('./partials/dialog.html'),
+      };
+    },
+  ])
 
   /**
    * @ngdoc directive
@@ -31,11 +41,14 @@ angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', '
    * @memberof hs.save-map
    * @description Display advanced form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveForm', ['config', function (config) {
-    return {
-      template: require('./partials/form.html')
-    };
-  }])
+  .directive('hs.saveMap.directiveForm', [
+    'config',
+    function (config) {
+      return {
+        template: require('./partials/form.html'),
+      };
+    },
+  ])
 
   /**
    * @ngdoc directive
@@ -43,11 +56,14 @@ angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', '
    * @memberof hs.save-map
    * @description Display simple form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveSimpleform', ['config', function (config) {
-    return {
-      template: require('./partials/simpleform.html')
-    };
-  }])
+  .directive('hs.saveMap.directiveSimpleform', [
+    'config',
+    function (config) {
+      return {
+        template: require('./partials/simpleform.html'),
+      };
+    },
+  ])
 
   /**
    * @ngdoc directive
@@ -55,14 +71,17 @@ angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', '
    * @memberof hs.save-map
    * @description Display dialog about result of saving to status manager operation
    */
-  .directive('hs.saveMap.resultDialogDirective', ['config', function (config) {
-    return {
-      template: require('./partials/dialog_result.html'),
-      link: function (scope, element, attrs) {
-        scope.resultModalVisible = true;
-      }
-    };
-  }])
+  .directive('hs.saveMap.resultDialogDirective', [
+    'config',
+    function (config) {
+      return {
+        template: require('./partials/dialog_result.html'),
+        link: function (scope, element, attrs) {
+          scope.resultModalVisible = true;
+        },
+      };
+    },
+  ])
 
   /**
    * @ngdoc directive
@@ -70,14 +89,17 @@ angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', '
    * @memberof hs.save-map
    * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
    */
-  .directive('hs.saveMap.saveDialogDirective', ['config', function (config) {
-    return {
-      template: require('./partials/dialog_save.html'),
-      link: function (scope, element, attrs) {
-        scope.saveCompositionModalVisible = true;
-      }
-    };
-  }])
+  .directive('hs.saveMap.saveDialogDirective', [
+    'config',
+    function (config) {
+      return {
+        template: require('./partials/dialog_save.html'),
+        link: function (scope, element, attrs) {
+          scope.saveCompositionModalVisible = true;
+        },
+      };
+    },
+  ])
 
   /**
    * @ngdoc directive
@@ -85,20 +107,24 @@ angular.module('hs.save-map', ['hs.map', 'hs.core', 'ngCookies', 'hs.widgets', '
    * @memberof hs.save-map
    * @description UNUSED?
    */
-  .directive('hs.saveMap.focusName', ['timeout', '$log', ($timeout, $log) => {
-    return {
-      link: function (scope, element, attrs) {
-        scope.$watch(attrs.focusName, (value) => {
-          if (value === true) {
-            $log.log('value=', value);
-            element[0].focus();
-            scope[attrs.focusName] = false;
-            //});
-          }
-        });
-      }
-    };
-  }])
+  .directive('hs.saveMap.focusName', [
+    'timeout',
+    '$log',
+    ($timeout, $log) => {
+      return {
+        link: function (scope, element, attrs) {
+          scope.$watch(attrs.focusName, (value) => {
+            if (value === true) {
+              $log.log('value=', value);
+              element[0].focus();
+              scope[attrs.focusName] = false;
+              //});
+            }
+          });
+        },
+      };
+    },
+  ])
 
   /**
    * @ngdoc service

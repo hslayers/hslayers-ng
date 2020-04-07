@@ -1,13 +1,14 @@
 import sensorsComponent from './sensors.component';
 import sensorsService from './sensors.service';
-import sensorsUnitListItemComponent from './sensors-unit-list-item.component';
 import sensorsUnitDialogComponent from './sensors-unit-dialog.component';
+import sensorsUnitListItemComponent from './sensors-unit-list-item.component';
 
 /**
  * @namespace hs.sensors
  * @memberOf hs
  */
-angular.module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout'])
+angular
+  .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout'])
 
   /**
    * @memberof hs.sensors.service

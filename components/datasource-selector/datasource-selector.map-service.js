@@ -1,15 +1,22 @@
-import {Vector} from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
-import {Style, Stroke, Fill} from 'ol/style';
+import {Fill, Stroke, Style} from 'ol/style';
+import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
 /* eslint-disable angular/on-watch */
-export default ['$timeout', '$rootScope', 'hs.map.service', 'hs.layout.service', '$log',
+export default [
+  '$timeout',
+  '$rootScope',
+  'hs.map.service',
+  'hs.layout.service',
+  '$log',
   function ($timeout, $rootScope, hsMap, layoutService, $log) {
     const me = this;
 
     function mapPointerMoved(evt) {
-      const features = me.extentLayer.getSource().getFeaturesAtCoordinate(evt.coordinate);
+      const features = me.extentLayer
+        .getSource()
+        .getFeaturesAtCoordinate(evt.coordinate);
       let somethingChanged = false;
       angular.forEach(me.extentLayer.getSource().getFeatures(), (feature) => {
         if (feature.get('record').highlighted) {
@@ -26,9 +33,7 @@ export default ['$timeout', '$rootScope', 'hs.map.service', 'hs.layout.service',
         });
       }
       if (somethingChanged) {
-        $timeout(() => {
-
-        }, 0);
+        $timeout(() => {}, 0);
       }
     }
 
@@ -43,16 +48,18 @@ export default ['$timeout', '$rootScope', 'hs.map.service', 'hs.layout.service',
         show_in_manager: false,
         source: new Vector(),
         style: function (feature, resolution) {
-          return [new Style({
-            stroke: new Stroke({
-              color: '#005CB6',
-              width: feature.get('highlighted') ? 4 : 1
+          return [
+            new Style({
+              stroke: new Stroke({
+                color: '#005CB6',
+                width: feature.get('highlighted') ? 4 : 1,
+              }),
+              fill: new Fill({
+                color: 'rgba(0, 0, 255, 0.01)',
+              }),
             }),
-            fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.01)'
-            })
-          })];
-        }
+          ];
+        },
       }),
 
       clearExtentLayer() {
@@ -85,18 +92,18 @@ export default ['$timeout', '$rootScope', 'hs.map.service', 'hs.layout.service',
        * Test if it possible to zoom to layer overview (bbox has to be defined
        * in metadata of selected layer)
        */
-      isZoomable (layer) {
+      isZoomable(layer) {
         return angular.isDefined(layer.bbox);
       },
 
       /**
-      * @function addExtentFeature
-      * @memberOf hs.datasourceSelector.mapService
-      * @param {ol/Feature} extentFeature Openlayers Feature
-      * @description  Callback function which gets executed when extent feature
-      * is created. It should add the feature to vector layer source
-      */
-      addExtentFeature (extentFeature) {
+       * @function addExtentFeature
+       * @memberOf hs.datasourceSelector.mapService
+       * @param {ol/Feature} extentFeature Openlayers Feature
+       * @description  Callback function which gets executed when extent feature
+       * is created. It should add the feature to vector layer source
+       */
+      addExtentFeature(extentFeature) {
         me.extentLayer.getSource().addFeatures([extentFeature]);
       },
 
@@ -124,18 +131,35 @@ export default ['$timeout', '$rootScope', 'hs.map.service', 'hs.layout.service',
         }
         let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
         let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-        first_pair = transform(first_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
-        second_pair = transform(second_pair, 'EPSG:4326', hsMap.map.getView().getProjection());
-        if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) {
+        first_pair = transform(
+          first_pair,
+          'EPSG:4326',
+          hsMap.map.getView().getProjection()
+        );
+        second_pair = transform(
+          second_pair,
+          'EPSG:4326',
+          hsMap.map.getView().getProjection()
+        );
+        if (
+          isNaN(first_pair[0]) ||
+          isNaN(first_pair[1]) ||
+          isNaN(second_pair[0]) ||
+          isNaN(second_pair[1])
+        ) {
           return;
         }
-        const extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+        const extent = [
+          first_pair[0],
+          first_pair[1],
+          second_pair[0],
+          second_pair[1],
+        ];
         hsMap.map.getView().fit(extent, hsMap.map.getSize());
-      }
+      },
     });
-
 
     hsMap.loaded().then(init);
     return me;
-  }
+  },
 ];

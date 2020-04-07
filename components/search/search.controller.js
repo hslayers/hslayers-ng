@@ -1,5 +1,20 @@
-export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService', 'hs.layout.service', 'config', '$timeout',
-  function ($scope, Core, SearchService, permalink, layoutService, config, $timeout) {
+export default [
+  '$scope',
+  'Core',
+  'hs.search.service',
+  'hs.permalink.urlService',
+  'hs.layout.service',
+  'config',
+  '$timeout',
+  function (
+    $scope,
+    Core,
+    SearchService,
+    permalink,
+    layoutService,
+    config,
+    $timeout
+  ) {
     $scope.data = SearchService.data;
     $scope.layoutService = layoutService;
     $scope.config = config;
@@ -48,10 +63,13 @@ export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService'
         'AIRF': 13,
         'HTL': 17,
         'STM': 14,
-        'LK': 13
+        'LK': 13,
       };
       let zoom_level = 10;
-      if (angular.isDefined(result.fcode) && angular.isDefined($scope.fcode_zoom_map[result.fcode])) {
+      if (
+        angular.isDefined(result.fcode) &&
+        angular.isDefined($scope.fcode_zoom_map[result.fcode])
+      ) {
         zoom_level = $scope.fcode_zoom_map[result.fcode];
       }
       SearchService.selectResult(result, zoom_level);
@@ -100,13 +118,18 @@ export default ['$scope', 'Core', 'hs.search.service', 'hs.permalink.urlService'
       $scope.searchResultsReceived(r);
     });
 
-    $scope.$watch('layoutService.panelVisible("search")', (newValue, oldValue) => {
-      if (newValue !== oldValue && newValue) {
-        $timeout(() => {
-          layoutService.contentWrapper.querySelector('.hs-search-address-input').focus();
-        }, 500);
+    $scope.$watch(
+      'layoutService.panelVisible("search")',
+      (newValue, oldValue) => {
+        if (newValue !== oldValue && newValue) {
+          $timeout(() => {
+            layoutService.contentWrapper
+              .querySelector('.hs-search-address-input')
+              .focus();
+          }, 500);
+        }
       }
-    });
+    );
     $scope.$emit('scope_loaded', 'Search');
-  }
+  },
 ];

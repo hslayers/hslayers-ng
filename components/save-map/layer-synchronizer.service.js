@@ -2,7 +2,12 @@ import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 const debounceInterval = 1000;
 
-export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laymanService',
+export default [
+  'Core',
+  'hs.utils.service',
+  'config',
+  'hs.map.service',
+  'hs.laymanService',
   function (Core, utils, config, hsMap, laymanService) {
     const me = this;
     angular.extend(me, {
@@ -15,9 +20,9 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
         map.getLayers().on('remove', (e) => {
           me.removeLayer(e.element);
         });
-        map.getLayers().forEach(lyr => {
+        map.getLayers().forEach((lyr) => {
           layerAdded({
-            element: lyr
+            element: lyr,
           });
         });
         me.crs = map.getView().getProjection().getCode();
@@ -45,8 +50,10 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
        * @returns {Boolean} If layer is synchronizable
        */
       startMonitoring(layer) {
-        if (utils.instOf(layer.getSource(), VectorSource) &&
-                    layer.get('synchronize') === true) {
+        if (
+          utils.instOf(layer.getSource(), VectorSource) &&
+          layer.get('synchronize') === true
+        ) {
           const layerSource = layer.getSource();
           me.pull(layer, layerSource);
           return true;
@@ -62,11 +69,13 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
        * @param {Ol.source} source Openlayers VectorSource to store features in
        */
       pull(layer, source) {
-        (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
-          ds => {
+        (config.datasources || [])
+          .filter((ds) => ds.type == 'layman')
+          .forEach((ds) => {
             layer.set('hs-layman-synchronizing', true);
-            laymanService.pullVectorSource(ds, me.getLayerName(layer))
-              .then(response => {
+            laymanService
+              .pullVectorSource(ds, me.getLayerName(layer))
+              .then((response) => {
                 let featureString;
                 if (response) {
                   featureString = response.data;
@@ -75,28 +84,47 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
                 if (featureString) {
                   source.loading = true;
                   const format = new WFS();
-                  featureString = featureString.replaceAll('urn:x-ogc:def:crs:EPSG:3857', 'EPSG:3857');
-                  source.addFeatures(
-                    format.readFeatures(featureString)
+                  featureString = featureString.replaceAll(
+                    'urn:x-ogc:def:crs:EPSG:3857',
+                    'EPSG:3857'
                   );
+                  source.addFeatures(format.readFeatures(featureString));
                   source.loading = false;
                 }
                 function handleFeatureChange(e) {
                   sync([], [e.target || e], []);
                 }
                 function sync(inserted, updated, deleted) {
-                  (config.datasources || []).filter(ds => ds.type == 'layman').forEach(
-                    ds => {
+                  (config.datasources || [])
+                    .filter((ds) => ds.type == 'layman')
+                    .forEach((ds) => {
                       layer.set('hs-layman-synchronizing', true);
-                      laymanService.createWfsTransaction(ds, inserted, updated, deleted, me.getLayerName(layer), layer).then(response => {
-                        layer.set('hs-layman-synchronizing', false);
-                      });
+                      laymanService
+                        .createWfsTransaction(
+                          ds,
+                          inserted,
+                          updated,
+                          deleted,
+                          me.getLayerName(layer),
+                          layer
+                        )
+                        .then((response) => {
+                          layer.set('hs-layman-synchronizing', false);
+                        });
                     });
                 }
                 function observeFeature(f) {
-                  f.getGeometry().on('change', utils.debounce((geom) => {
-                    handleFeatureChange(f);
-                  }, debounceInterval, false, me));
+                  f.getGeometry().on(
+                    'change',
+                    utils.debounce(
+                      (geom) => {
+                        handleFeatureChange(f);
+                      },
+                      debounceInterval,
+                      false,
+                      me
+                    )
+                  );
                   f.on('propertychange', handleFeatureChange);
                 }
                 source.forEachFeature(observeFeature);
@@ -127,7 +155,7 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
        * @memberof hs.layerSynchronizerService
        * @function removeLayer
        * @param {Ol.layer} layer Layer to remove from legend
-      */
+       */
       removeLayer: function (layer) {
         for (let i = 0; i < me.syncedLayers.length; i++) {
           if (me.syncedLayers[i] == layer) {
@@ -135,8 +163,9 @@ export default ['Core', 'hs.utils.service', 'config', 'hs.map.service', 'hs.laym
             break;
           }
         }
-      }
+      },
     });
 
     return me;
-  }];
+  },
+];

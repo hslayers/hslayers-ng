@@ -6,7 +6,8 @@ import printService from './print.service';
  * @memberOf hs
  */
 
-angular.module('hs.print', [])
+angular
+  .module('hs.print', [])
   /**
    * @memberof hs.print
    * @ngdoc component
@@ -20,4 +21,3 @@ angular.module('hs.print', [])
    * @name hs.print.service
    */
   .factory('hs.print.service', printService);
-

@@ -1,11 +1,18 @@
-import {WKT} from 'ol/format';
-import VectorLayer from 'ol/layer/Vector';
-import {Vector} from 'ol/source';
 import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
 import {Point} from 'ol/geom';
+import {Vector} from 'ol/source';
+import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
 
-export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', 'hs.styles.service', '$rootScope',
+export default [
+  '$http',
+  '$q',
+  'hs.utils.service',
+  'config',
+  'hs.map.service',
+  'hs.styles.service',
+  '$rootScope',
   function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
     const me = this;
     this.data = {};
@@ -19,7 +26,7 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
       title: 'Search results',
       source: new Vector({}),
       style: Styles.pin_white_blue_highlight,
-      show_in_manager: false
+      show_in_manager: false,
     });
 
     this.canceler = {};
@@ -33,13 +40,19 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
     this.request = function (query) {
       let url = null;
       let providers = [];
-      if (angular.isDefined(config.search_provider) && angular.isUndefined(config.searchProvider)) {
+      if (
+        angular.isDefined(config.search_provider) &&
+        angular.isUndefined(config.searchProvider)
+      ) {
         config.searchProvider = config.search_provider;
       }
 
       if (angular.isUndefined(config.searchProvider)) {
         providers = ['geonames'];
-      } else if (typeof config.searchProvider == 'string' || angular.isFunction(config.searchProvider)) {
+      } else if (
+        typeof config.searchProvider == 'string' ||
+        angular.isFunction(config.searchProvider)
+      ) {
         providers = [config.searchProvider];
       } else if (angular.isObject(config.searchProvider)) {
         providers = config.searchProvider;
@@ -52,7 +65,9 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
             url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${me.geonamesUser}`;
           } else {
             //Username will have to be set in proxy
-            url = utils.proxify(`http://api.geonames.org/searchJSON?&name_startsWith=${query}`);
+            url = utils.proxify(
+              `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
+            );
           }
           if (location.protocol == 'https:') {
             url = utils.proxify(url);
@@ -61,7 +76,8 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
           url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
         } else if (angular.isFunction(provider)) {
           url = provider(query);
-          if (provider.name == 'searchProvider') { //Anonymous function?
+          if (provider.name == 'searchProvider') {
+            //Anonymous function?
             providerId = 'geonames';
           } else {
             providerId = provider.name;
@@ -74,9 +90,12 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         }
         me.canceler[providerId] = $q.defer();
 
-        $http.get(url, {timeout: me.canceler[providerId].promise}).then((response) => {
-          me.searchResultsReceived(response.data, providerId);
-        }, (err) => { });
+        $http.get(url, {timeout: me.canceler[providerId].promise}).then(
+          (response) => {
+            me.searchResultsReceived(response.data, providerId);
+          },
+          (err) => {}
+        );
       });
     };
     /**
@@ -99,7 +118,10 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
       } else {
         parseGeonamesResults(response, provider);
       }
-      $rootScope.$broadcast('search.resultsReceived', {layer: me.searchResultsLayer, providers: me.data.providers});
+      $rootScope.$broadcast('search.resultsReceived', {
+        layer: me.searchResultsLayer,
+        providers: me.data.providers,
+      });
     };
     /**
      * @memberof hs.search.service
@@ -150,7 +172,14 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         zoomLevel = 10;
       }
       OlMap.map.getView().setZoom(zoomLevel);
-      $rootScope.$broadcast('search.zoom_to_center', {coordinate: transform(coordinate, OlMap.map.getView().getProjection(), 'EPSG:4326'), zoom: zoomLevel});
+      $rootScope.$broadcast('search.zoom_to_center', {
+        coordinate: transform(
+          coordinate,
+          OlMap.map.getView().getProjection(),
+          'EPSG:4326'
+        ),
+        zoom: zoomLevel,
+      });
     };
     /**
      * @memberof hs.search.service
@@ -161,11 +190,21 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
      * @description Parse coordinate of selected result
      */
     function getResultCoordinate(result) {
-      if (result.provider_name.indexOf('geonames') > -1 || result.provider_name == 'searchFunctionsearchProvider') {
-        return transform([parseFloat(result.lng), parseFloat(result.lat)], 'EPSG:4326', OlMap.map.getView().getProjection());
+      if (
+        result.provider_name.indexOf('geonames') > -1 ||
+        result.provider_name == 'searchFunctionsearchProvider'
+      ) {
+        return transform(
+          [parseFloat(result.lng), parseFloat(result.lat)],
+          'EPSG:4326',
+          OlMap.map.getView().getProjection()
+        );
       } else if (result.provider_name == 'sdi4apps_openapi') {
         const g_feature = formatWKT.readFeature(result.FullGeom.toUpperCase());
-        return (g_feature.getGeometry().transform('EPSG:4326', OlMap.map.getView().getProjection())).getCoordinates();
+        return g_feature
+          .getGeometry()
+          .transform('EPSG:4326', OlMap.map.getView().getProjection())
+          .getCoordinates();
       }
     }
 
@@ -187,7 +226,7 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         result.provider_name = provider.name;
         const feature = new Feature({
           geometry: new Point(getResultCoordinate(result)),
-          record: result
+          record: result,
         });
         src.addFeature(feature);
         result.feature = feature;
@@ -212,12 +251,12 @@ export default ['$http', '$q', 'hs.utils.service', 'config', 'hs.map.service', '
         result.provider_name = provider.name;
         const feature = new Feature({
           geometry: new Point(getResultCoordinate(result)),
-          record: result
+          record: result,
         });
         src.addFeature(feature);
         result.feature = feature;
       });
     }
     return me;
-  }
+  },
 ];

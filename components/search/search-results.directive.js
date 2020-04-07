@@ -1,9 +1,10 @@
-export default ['config', function (config) {
-  return {
-    template: require('./partials/searchresults.html'),
-    replace: true,
-    link: function (scope, element) {
-
-    }
-  };
-}];
+export default [
+  'config',
+  function (config) {
+    return {
+      template: require('./partials/searchresults.html'),
+      replace: true,
+      link: function (scope, element) {},
+    };
+  },
+];

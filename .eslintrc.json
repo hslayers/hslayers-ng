@@ -10,9 +10,7 @@
     "define": "readonly",
     "angular": "readonly",
     "stmPath": "readonly",
-    "hslMin": "readonly",
-    "gitsha": "readonly",
-    "hsl_path": "readonly"
+    "hslMin": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": 2018

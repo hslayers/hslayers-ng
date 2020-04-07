@@ -1,5 +1,5 @@
 export default () => {
   return (endpoints) => {
-    return endpoints.filter(ep => ep.type != 'statusmanager');
+    return endpoints.filter((ep) => ep.type != 'statusmanager');
   };
 };

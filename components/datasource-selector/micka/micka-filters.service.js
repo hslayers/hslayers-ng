@@ -1,5 +1,22 @@
-export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q', 'hs.utils.service', 'hs.common.endpointsService',
-  function ($rootScope, OlMap, Core, config, $http, $q, utils, endpointsService) {
+export default [
+  '$rootScope',
+  'hs.map.service',
+  'Core',
+  'config',
+  '$http',
+  '$q',
+  'hs.utils.service',
+  'hs.common.endpointsService',
+  function (
+    $rootScope,
+    OlMap,
+    Core,
+    config,
+    $http,
+    $q,
+    utils,
+    endpointsService
+  ) {
     const me = this;
     this.suggestionConfig = {};
     this.suggestions = [];
@@ -7,10 +24,16 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
     this.filterByExtent = true;
     me.otnKeywords = [];
 
-    if (config.datasources && config.datasources.filter(ds => ds.url.indexOf('opentnet.eu') > -1).length > 0) {
+    if (
+      config.datasources &&
+      config.datasources.filter((ds) => ds.url.indexOf('opentnet.eu') > -1)
+        .length > 0
+    ) {
       $http({
         method: 'GET',
-        url: utils.proxify('http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66')
+        url: utils.proxify(
+          'http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66'
+        ),
       }).then((response) => {
         me.otnKeywords = [{title: '-'}];
         angular.forEach(response.data.result.tags, (tag) => {
@@ -20,23 +43,23 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
     }
 
     /**
-    * @function fillCodesets
-    * @memberOf hs.datasourceBrowserService
-    * @param {Object} datasets Input datasources
-    * Download codelists for all "micka" type datasources from Url specified in app config.
-    */
+     * @function fillCodesets
+     * @memberOf hs.datasourceBrowserService
+     * @param {Object} datasets Input datasources
+     * Download codelists for all "micka" type datasources from Url specified in app config.
+     */
     me.fillCodesets = function () {
       endpointsService.endpoints
-        .filter(ep => ep.type == 'micka')
-        .forEach(ep => me.fillCodeset(ep));
+        .filter((ep) => ep.type == 'micka')
+        .forEach((ep) => me.fillCodeset(ep));
     };
 
     /**
-    * @function fillCodeset
-    * @memberOf hs.datasourceBrowserService
-    * @param {Object} ds Single datasource
-    * Download code-list for micka type source from Url specifiead in app config.
-    */
+     * @function fillCodeset
+     * @memberOf hs.datasourceBrowserService
+     * @param {Object} ds Single datasource
+     * Download code-list for micka type source from Url specifiead in app config.
+     */
     me.fillCodeset = function (ds) {
       if (ds.type == 'micka') {
         let url = ds.code_list_url;
@@ -49,7 +72,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             serviceType: [],
             applicationType: [],
             dataType: [],
-            topicCategory: []
+            topicCategory: [],
           };
         }
         if (angular.isDefined(ds.canceler)) {
@@ -65,34 +88,37 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
             doc.querySelectorAll('map serviceType value').forEach((type) => {
               ds.code_lists.serviceType.push({
                 value: type.attributes.name.value,
-                name: type.innerHTML
+                name: type.innerHTML,
               });
             });
-            doc.querySelectorAll('map applicationType value').forEach((type) => {
-              ds.code_lists.applicationType.push({
-                value: type.attributes.name.value,
-                name: type.innerHTML
+            doc
+              .querySelectorAll('map applicationType value')
+              .forEach((type) => {
+                ds.code_lists.applicationType.push({
+                  value: type.attributes.name.value,
+                  name: type.innerHTML,
+                });
               });
-            });
             doc.querySelectorAll('map topicCategory value').forEach((type) => {
               ds.code_lists.topicCategory.push({
                 value: type.attributes.name.value,
-                name: type.innerHTML
+                name: type.innerHTML,
               });
             });
             me.advancedMickaTypeChanged(ds, 'service');
-          }, (err) => { }
+          },
+          (err) => {}
         );
       }
     };
 
     /**
-    * @function advancedMickaTypeChanged
-    * @memberOf hs.datasourceBrowserService
-    * @param {Object} mickaDS Micka dataset definition
-    * @param {String} type Micka query type
-    * Sets Micka source level types according to current query type (service/appilication). Deprecated?
-    */
+     * @function advancedMickaTypeChanged
+     * @memberOf hs.datasourceBrowserService
+     * @param {Object} mickaDS Micka dataset definition
+     * @param {String} type Micka query type
+     * Sets Micka source level types according to current query type (service/appilication). Deprecated?
+     */
     me.advancedMickaTypeChanged = function (mickaDS, type) {
       if (angular.isUndefined(mickaDS.code_lists)) {
         return;
@@ -112,27 +138,30 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
       me.suggestionConfig = {
         input: input,
         param: param,
-        field: field
+        field: field,
       };
     };
 
     /**
-    * @function suggestionFilterChanged
-    * @memberOf hs.datasourceBrowserService
-    * @param {object} mickaDS Micka catalogue config passed here from directive
-    * Send suggestion request to Micka CSW server and parse response
-    */
+     * @function suggestionFilterChanged
+     * @memberOf hs.datasourceBrowserService
+     * @param {object} mickaDS Micka catalogue config passed here from directive
+     * Send suggestion request to Micka CSW server and parse response
+     */
     me.suggestionFilterChanged = function (mickaDS) {
-      let url = mickaDS.url + '../util/suggest.php?' + utils.paramsToURL({
-        type: me.suggestionConfig.param,
-        query: me.suggestionFilter
-      });
+      let url =
+        mickaDS.url +
+        '../util/suggest.php?' +
+        utils.paramsToURL({
+          type: me.suggestionConfig.param,
+          query: me.suggestionFilter,
+        });
       url = utils.proxify(url);
       me.suggestionsLoaded = false;
       me.suggestions = [];
       $http({
         method: 'GET',
-        url: url
+        url: url,
       }).then((response) => {
         const j = response.data;
         me.suggestionsLoaded = true;
@@ -140,5 +169,5 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'config', '$http', '$q',
       });
     };
     return me;
-  }
+  },
 ];

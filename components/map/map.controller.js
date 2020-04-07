@@ -1,6 +1,12 @@
 import {transform} from 'ol/proj';
 
-export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService', 'Core', '$rootScope',
+export default [
+  '$scope',
+  'hs.map.service',
+  'config',
+  'hs.permalink.urlService',
+  'Core',
+  '$rootScope',
   function ($scope, OlMap, config, permalink, Core, $rootScope) {
     angular.extend($scope, {
       /**
@@ -10,7 +16,7 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
        * @description Sets div element of the map
        * @param {string} div ID of the container element or element itself
        */
-      setTargetDiv (div) {
+      setTargetDiv(div) {
         OlMap.map.setTarget(div);
       },
 
@@ -33,14 +39,27 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
        */
       init() {
         if (permalink.getParamValue('visible_layers')) {
-          OlMap.visible_layers = permalink.getParamValue('visible_layers').split(';');
+          OlMap.visible_layers = permalink
+            .getParamValue('visible_layers')
+            .split(';');
         }
         OlMap.init();
         const hs_x = permalink.getParamValue('hs_x');
         const hs_y = permalink.getParamValue('hs_y');
         const hs_z = permalink.getParamValue('hs_z');
-        if (hs_x && hs_x != 'NaN' && hs_y && hs_y != 'NaN' && hs_z && hs_z != 'NaN') {
-          OlMap.moveToAndZoom(parseFloat(hs_x), parseFloat(hs_y), parseInt(hs_z));
+        if (
+          hs_x &&
+          hs_x != 'NaN' &&
+          hs_y &&
+          hs_y != 'NaN' &&
+          hs_z &&
+          hs_z != 'NaN'
+        ) {
+          OlMap.moveToAndZoom(
+            parseFloat(hs_x),
+            parseFloat(hs_y),
+            parseInt(hs_z)
+          );
         }
 
         if (permalink.getParamValue('puremap') || config.pureMap == true) {
@@ -50,8 +69,8 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
           config.componentsEnabled.mapControls = false;
           OlMap.puremap();
         }
-      }});
-
+      },
+    });
 
     /**
      * @ngdoc method
@@ -68,10 +87,17 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
       }
       const toProj = OlMap.map.getView().getProjection();
       const transformed = transform([data[0], data[1]], 'EPSG:4326', toProj);
-      OlMap.moveToAndZoom(transformed[0], transformed[1], zoomForResolution(data[2]));
+      OlMap.moveToAndZoom(
+        transformed[0],
+        transformed[1],
+        zoomForResolution(data[2])
+      );
     }
 
-    const unregisterMapSyncCenterHandler = $rootScope.$on('map.sync_center', onCenterSync);
+    const unregisterMapSyncCenterHandler = $rootScope.$on(
+      'map.sync_center',
+      onCenterSync
+    );
     $scope.$on('$destroy', () => {
       if (unregisterMapSyncCenterHandler) {
         unregisterMapSyncCenterHandler();
@@ -84,7 +110,7 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
      * @private
      * @param {number} resolution Resolution
      * @description Calculates zoom level for a given resolution
-     * @returns {Number} Zoom level for resolution. If resolution 
+     * @returns {Number} Zoom level for resolution. If resolution
      * was greater than 156543.03390625 return 0
      */
     function zoomForResolution(resolution) {
@@ -103,5 +129,5 @@ export default ['$scope', 'hs.map.service', 'config', 'hs.permalink.urlService',
     }
 
     $scope.$emit('scope_loaded', 'Map');
-  }
+  },
 ];

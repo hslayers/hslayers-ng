@@ -1,9 +1,37 @@
 /* eslint-disable angular/on-watch */
-export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
-  'hs.addLayersVector.service', 'hs.mickaFiltersService', 'hs.mickaBrowserService',
-  'hs.laymanBrowserService', 'hs.layout.service', '$log', 'hs.common.endpointsService', 'hs.utils.service', 'hs.datasourceSelector.mapService', 'forDatasourceBrowserFilter',
-  function ($rootScope, $timeout, OlMap, Core, config, addLayersVectorService, mickaFilterService, mickaService,
-    laymanService, layoutService, $log, endpointsService, utils, mapService, forDatasourceBrowserFilter) {
+export default [
+  '$rootScope',
+  '$timeout',
+  'hs.map.service',
+  'Core',
+  'config',
+  'hs.addLayersVector.service',
+  'hs.mickaFiltersService',
+  'hs.mickaBrowserService',
+  'hs.laymanBrowserService',
+  'hs.layout.service',
+  '$log',
+  'hs.common.endpointsService',
+  'hs.utils.service',
+  'hs.datasourceSelector.mapService',
+  'forDatasourceBrowserFilter',
+  function (
+    $rootScope,
+    $timeout,
+    OlMap,
+    Core,
+    config,
+    addLayersVectorService,
+    mickaFilterService,
+    mickaService,
+    laymanService,
+    layoutService,
+    $log,
+    endpointsService,
+    utils,
+    mapService,
+    forDatasourceBrowserFilter
+  ) {
     const me = this;
 
     this.data = {};
@@ -12,7 +40,7 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
       textFilter: '',
       title: '',
       type: 'service',
-      Subject: ''
+      Subject: '',
     };
 
     this.data.textField = 'AnyText';
@@ -21,35 +49,37 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     this.data.id_selected = 'OWS';
 
     /**
-    * @function queryCatalogs
-    * @memberOf hs.datasourceBrowserService
-    * @description Queries all configured catalogs for datasources (layers)
-    */
+     * @function queryCatalogs
+     * @memberOf hs.datasourceBrowserService
+     * @description Queries all configured catalogs for datasources (layers)
+     */
     this.queryCatalogs = function () {
       mapService.clearExtentLayer();
-      endpointsService.endpoints.forEach(endpoint => {
+      endpointsService.endpoints.forEach((endpoint) => {
         endpoint.datasourcePaging.start = 0;
         me.queryCatalog(endpoint);
       });
     };
 
     /**
-    * @function queryCatalog
-    * @memberOf hs.datasourceBrowserService
-    * @param {Object} catalog Configuration of selected datasource (from app config)
-    * @description Loads datasets metadata from selected source (CSW server).
-    * Uses pagination set by 'start' attribute of 'dataset' param.
-    * Currently supports only "Micka" type of source.
-    * Use all query params (search text, bbox, params.., sorting, start)
-    */
+     * @function queryCatalog
+     * @memberOf hs.datasourceBrowserService
+     * @param {Object} catalog Configuration of selected datasource (from app config)
+     * @description Loads datasets metadata from selected source (CSW server).
+     * Uses pagination set by 'start' attribute of 'dataset' param.
+     * Currently supports only "Micka" type of source.
+     * Use all query params (search text, bbox, params.., sorting, start)
+     */
     this.queryCatalog = function (catalog) {
       mapService.clearDatasetFeatures(catalog);
       switch (catalog.type) {
         case 'micka':
-          mickaService.queryCatalog(catalog,
+          mickaService.queryCatalog(
+            catalog,
             me.data.query,
             mapService.addExtentFeature,
-            me.data.textField);
+            me.data.textField
+          );
           break;
         case 'layman':
           laymanService.queryCatalog(catalog);
@@ -69,7 +99,11 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
      */
     this.layerDownload = function (ds, layer) {
       if (ds.download == true) {
-        if (['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) > -1 && layer.url.length > 0) {
+        if (
+          ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) >
+            -1 &&
+          layer.url.length > 0
+        ) {
           return layer.url;
         }
       }
@@ -103,24 +137,30 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
       } else if (ds.type == 'layman') {
         describer = laymanService.describeWhatToAdd(ds, layer);
       }
-      describer.then(whatToAdd => {
+      describer.then((whatToAdd) => {
         if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
           me.datasetSelect('OWS');
           $timeout(() => {
-            $rootScope.$broadcast('ows.filling',
+            $rootScope.$broadcast(
+              'ows.filling',
               whatToAdd.type.toLowerCase(),
               decodeURIComponent(whatToAdd.link),
-              whatToAdd.layer);
+              whatToAdd.layer
+            );
           });
         } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-          addLayersVectorService.add(whatToAdd.type.toLowerCase(), whatToAdd.link,
-            whatToAdd.title, whatToAdd.abstract,
-            whatToAdd.extractStyles, whatToAdd.projection);
+          addLayersVectorService.add(
+            whatToAdd.type.toLowerCase(),
+            whatToAdd.link,
+            whatToAdd.title,
+            whatToAdd.abstract,
+            whatToAdd.extractStyles,
+            whatToAdd.projection
+          );
         } else {
           layoutService.setMainPanel('layermanager');
         }
       });
-
     };
 
     me.datasetSelect = function (id_selected) {
@@ -143,14 +183,18 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     };
 
     function dataSourceExistsAndEmpty() {
-      return forDatasourceBrowserFilter(endpointsService.endpoints).filter(ep =>
-        angular.isUndefined(ep.datasourcePaging.loaded)
-      ).length > 0;
+      return (
+        forDatasourceBrowserFilter(endpointsService.endpoints).filter((ep) =>
+          angular.isUndefined(ep.datasourcePaging.loaded)
+        ).length > 0
+      );
     }
 
     function panelVisible() {
-      return layoutService.panelVisible('datasource_selector') ||
-      layoutService.panelVisible('datasourceBrowser');
+      return (
+        layoutService.panelVisible('datasource_selector') ||
+        layoutService.panelVisible('datasourceBrowser')
+      );
     }
 
     if (dataSourceExistsAndEmpty() && panelVisible()) {
@@ -162,15 +206,22 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
       config.allowAddExternalDatasets = true;
     }
 
-    $rootScope.$on('map.extent_changed', utils.debounce((e) => {
-      if (!panelVisible()) {
-        return;
-      }
-      if (mickaFilterService.filterByExtent) {
-        me.queryCatalogs();
-      }
-    }, 500, false, me));
-
+    $rootScope.$on(
+      'map.extent_changed',
+      utils.debounce(
+        (e) => {
+          if (!panelVisible()) {
+            return;
+          }
+          if (mickaFilterService.filterByExtent) {
+            me.queryCatalogs();
+          }
+        },
+        500,
+        false,
+        me
+      )
+    );
 
     $rootScope.$on('core.mainpanel_changed', (event) => {
       if (dataSourceExistsAndEmpty() && panelVisible()) {
@@ -181,4 +232,5 @@ export default ['$rootScope', '$timeout', 'hs.map.service', 'Core', 'config',
     });
 
     return me;
-  }];
+  },
+];

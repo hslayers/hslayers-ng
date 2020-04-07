@@ -1,8 +1,11 @@
-export default ['config', function (config) {
-  return {
-    template: require('./partials/dialog_delete.html'),
-    link: function (scope, element, attrs) {
-      scope.deleteModalVisible = true;
-    }
-  };
-}];
+export default [
+  'config',
+  function (config) {
+    return {
+      template: require('./partials/dialog_delete.html'),
+      link: function (scope, element, attrs) {
+        scope.deleteModalVisible = true;
+      },
+    };
+  },
+];

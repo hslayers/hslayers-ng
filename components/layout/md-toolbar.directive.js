@@ -1,5 +1,8 @@
-export default ['config', function (config) {
-  return {
-    template: require('./partials/toolbar.html')
-  };
-}];
+export default [
+  'config',
+  function (config) {
+    return {
+      template: require('./partials/toolbar.html'),
+    };
+  },
+];

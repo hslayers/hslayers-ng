@@ -1,241 +1,317 @@
-import {TileWMS, XYZ} from 'ol/source';
-import {ImageWMS} from 'ol/source';
-import {Image as ImageLayer} from 'ol/layer';
-import VectorLayer from 'ol/layer/Vector';
-import {Icon, Circle} from 'ol/style';
 import Static from 'ol/source/ImageStatic';
+import VectorLayer from 'ol/layer/Vector';
+import {Circle, Icon} from 'ol/style';
+import {Image as ImageLayer} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
+import {TileWMS, XYZ} from 'ol/source';
 
-export default ['hs.utils.service', function (utils) {
-  const me = {};
-  return angular.extend(me, {
-
-    /**
-     * Test if layer is visible and has supported type (conditions for displaying legend)
-     * @memberof hs.legend.service
-     * @function isLegendable
-     * @param {object} layer Layer to test
-     * @return {Boolean} Return if legend might exists for layer
-     */
-    isLegendable: function (layer) {
-      if (['vector', 'wms', 'static'].indexOf(layer.type) > -1 && layer.lyr.getVisible()) {
-        return true;
-      }
-      return false;
-    },
-
-    /**
-    * Get vector layer feature geometries
-    * @memberof hs.legend.service
-    * @function getVectorFeatureGeometry
-    * @param {ol/Layer} currentLayer Layer of interest
-    * @return {Array} Array of simplified lowercase names of geometry types encountered in layer
-    */
-    getVectorFeatureGeometry: function (currentLayer) {
-      if (angular.isUndefined(currentLayer)) {
-        return;
-      }
-      let foundPoint = false;
-      let foundLine = false;
-      let foundPolygon = false;
-      angular.forEach(currentLayer.getSource().getFeatures(), (feature) => {
-        if (feature.getGeometry()) {
-          const type = feature.getGeometry().getType();
-          switch (type) {
-            case 'LineString' || 'MultiLineString':
-              foundLine = true;
-              break;
-            case 'Polygon' || 'MultiPolygon':
-              foundPolygon = true;
-              break;
-            case 'Point' || 'MultiPoint':
-              foundPoint = true;
-              break;
-            default:
-          }
+export default [
+  'hs.utils.service',
+  function (utils) {
+    const me = {};
+    return angular.extend(me, {
+      /**
+       * Test if layer is visible and has supported type (conditions for displaying legend)
+       * @memberof hs.legend.service
+       * @function isLegendable
+       * @param {object} layer Layer to test
+       * @return {Boolean} Return if legend might exists for layer
+       */
+      isLegendable: function (layer) {
+        if (
+          ['vector', 'wms', 'static'].indexOf(layer.type) > -1 &&
+          layer.lyr.getVisible()
+        ) {
+          return true;
         }
-      });
-      const tmp = [];
-      if (foundLine) {
-        tmp.push('line');
-      }
-      if (foundPolygon) {
-        tmp.push('polygon');
-      }
-      if (foundPoint) {
-        tmp.push('point');
-      }
-      return tmp;
-    },
+        return false;
+      },
 
-    /**
-     * Get vector layer styles for first 100 features
-     * @memberof hs.legend.service
-     * @function getStyleVectorLayer
-     * @param {ol/Layer} currentLayer Layer of interest
-     * @return {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
-     */
-    getStyleVectorLayer: function (currentLayer) {
-      if (angular.isUndefined(currentLayer)) {
-        return;
-      }
-      let styleArray = [];
-      const layerStyle = currentLayer.getStyle();
-      if (!angular.isFunction(layerStyle)) {
-        styleArray.push(layerStyle);
-      } else {
-        if (currentLayer.getSource().getFeatures().length > 0) {
-          let featureStyle = currentLayer.getSource().getFeatures().map(feature => currentLayer.getStyle()(feature));
-          if (featureStyle.length > 1000) {
-            featureStyle = featureStyle.slice(0, 100);
-          }
-          if (featureStyle[0].length) {
-            featureStyle = [].concat.apply([], featureStyle);
-          }
-          styleArray = styleArray.concat(featureStyle);
+      /**
+       * Get vector layer feature geometries
+       * @memberof hs.legend.service
+       * @function getVectorFeatureGeometry
+       * @param {ol/Layer} currentLayer Layer of interest
+       * @return {Array} Array of simplified lowercase names of geometry types encountered in layer
+       */
+      getVectorFeatureGeometry: function (currentLayer) {
+        if (angular.isUndefined(currentLayer)) {
+          return;
         }
-      }
-      const filtered = styleArray.filter(style => angular.isUndefined(style.getText) || !style.getText());
-      let serializedStyles = filtered.map(style => me.serializeStyle(style));
-      serializedStyles = utils.removeDuplicates(serializedStyles, 'hashcode');
-      return serializedStyles;
-    },
-
-    /**
-    * Serialize styles
-    * @memberof hs.legend.service
-    * @function serializeStyle
-    * @param {ol/Style} style Openlayers style
-    * @return {Object} Simplified description of style used by template to draw legend
-    */
-    serializeStyle(style) {
-      const image = style.getImage();
-      const stroke = style.getStroke();
-      const fill = style.getFill();
-      const genStyle = me.setUpLegendStyle(fill, stroke, image);
-      return genStyle;
-
-    },
-
-    /**
-    * Create object of parameters used for creation of svg content for legend using retreived styles
-    * @memberof hs.legend.service
-    * @function setUpLegendStyle
-    * @param {ol/style/Fill} fill Fill description
-    * @param {ol/style/Stroke} stroke Stroke description
-    * @param {ol/style/Image~ImageStyle} image Image description
-    * @return {Object} Simplified description of style used by template to draw legend
-    */
-    setUpLegendStyle(fill, stroke, image) {
-      const row = {};
-      row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
-      if (image && utils.instOf(image, Icon)) {
-        row.icon = {type: 'icon', src: image.getSrc()};
-      } else if (image && utils.instOf(image, Circle)) {
-        if (image.getStroke() && image.getFill()) {
-          row.customCircle = {type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: image.getFill().getColor(), stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth()};
-        } else if (image.getStroke()) {
-          row.customCircle = {type: 'circle', cx: '17.5px', cy: '17.5px', r: '15px', fill: 'blue', stroke: image.getStroke().getColor(), strokeWidth: image.getStroke().getWidth()};
+        let foundPoint = false;
+        let foundLine = false;
+        let foundPolygon = false;
+        angular.forEach(currentLayer.getSource().getFeatures(), (feature) => {
+          if (feature.getGeometry()) {
+            const type = feature.getGeometry().getType();
+            switch (type) {
+              case 'LineString' || 'MultiLineString':
+                foundLine = true;
+                break;
+              case 'Polygon' || 'MultiPolygon':
+                foundPolygon = true;
+                break;
+              case 'Point' || 'MultiPoint':
+                foundPoint = true;
+                break;
+              default:
+            }
+          }
+        });
+        const tmp = [];
+        if (foundLine) {
+          tmp.push('line');
         }
-      } else {
-        row.defaultCircle = {fill: 'blue', cx: '17.5px', cy: '17.5px', r: '15px'};
-      }
-      if (!stroke && !fill) {
-        row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
-        row.defaultPolygon = {type: 'polygon', fill: 'blue', stroke: 'purple', strokeWidth: '1'};
-      } else if (stroke && fill) {
-        row.fullPolygon = {type: 'polygon', stroke: stroke.getColor(), strokeWidth: stroke.getWidth() / 2, fill: fill.getColor()};
-        row.line = {type: 'line', stroke: stroke.getColor(), strokeWidth: stroke.getWidth() / 2};
-      } else {
-        if (fill) {
-          row.polygon = {type: 'polygon', fill: fill.getColor()};
-          row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
+        if (foundPolygon) {
+          tmp.push('polygon');
+        }
+        if (foundPoint) {
+          tmp.push('point');
+        }
+        return tmp;
+      },
+
+      /**
+       * Get vector layer styles for first 100 features
+       * @memberof hs.legend.service
+       * @function getStyleVectorLayer
+       * @param {ol/Layer} currentLayer Layer of interest
+       * @return {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
+       */
+      getStyleVectorLayer: function (currentLayer) {
+        if (angular.isUndefined(currentLayer)) {
+          return;
+        }
+        let styleArray = [];
+        const layerStyle = currentLayer.getStyle();
+        if (!angular.isFunction(layerStyle)) {
+          styleArray.push(layerStyle);
         } else {
-          row.line = {type: 'line', stroke: stroke.getColor(), strokeWidth: stroke.getWidth() / 2};
-          row.defaultPolygon = {type: 'polygon', fill: 'blue', stroke: 'purple', strokeWidth: '1'};
+          if (currentLayer.getSource().getFeatures().length > 0) {
+            let featureStyle = currentLayer
+              .getSource()
+              .getFeatures()
+              .map((feature) => currentLayer.getStyle()(feature));
+            if (featureStyle.length > 1000) {
+              featureStyle = featureStyle.slice(0, 100);
+            }
+            if (featureStyle[0].length) {
+              featureStyle = [].concat.apply([], featureStyle);
+            }
+            styleArray = styleArray.concat(featureStyle);
+          }
         }
-      }
-      row.hashcode = angular.toJson(row).hashCode();
-      return row;
-    },
+        const filtered = styleArray.filter(
+          (style) => angular.isUndefined(style.getText) || !style.getText()
+        );
+        let serializedStyles = filtered.map((style) =>
+          me.serializeStyle(style)
+        );
+        serializedStyles = utils.removeDuplicates(serializedStyles, 'hashcode');
+        return serializedStyles;
+      },
 
-    /**
-     * Generate url for GetLegendGraphic request of WMS service for selected layer
-     * @memberof hs.legend.service
-     * @function getLegendUrl
-     * @param {ol.source.Source} source Source of wms layer
-     * @param {String} layer_name Name of layer for which legend is requested
-     * @return {String} Url of the legend graphics
-     */
-    getLegendUrl: function (source, layer_name) {
-      let source_url = '';
-      if (utils.instOf(source, TileWMS)) {
-        source_url = source.getUrls()[0];
-      } else if (utils.instOf(source, ImageWMS)) {
-        source_url = source.getUrl();
-      } else {
-        return '';
-      }
-      if (source_url.indexOf('proxy4ows') > -1) {
-        const params = utils.getParamsFromUrl(source_url);
-        source_url = params.OWSURL;
-      }
-      let version = '1.3.0';
-      if (source.getParams().VERSION) {
-        version = source.getParams().VERSION;
-      }
-      source_url += (source_url.indexOf('?') > 0 ? '' : '?') + '&version=' + version + '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' + layer_name + '&format=image%2Fpng';
-      source_url = utils.proxify(source_url, false);
-      return source_url;
-    },
+      /**
+       * Serialize styles
+       * @memberof hs.legend.service
+       * @function serializeStyle
+       * @param {ol/Style} style Openlayers style
+       * @return {Object} Simplified description of style used by template to draw legend
+       */
+      serializeStyle(style) {
+        const image = style.getImage();
+        const stroke = style.getStroke();
+        const fill = style.getFill();
+        const genStyle = me.setUpLegendStyle(fill, stroke, image);
+        return genStyle;
+      },
 
-    /**
-     * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
-     * @memberof hs.legend.service
-     * @function getLegendUrl
-     * @return {Object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
-     * @param {ol/Layer} layer Openlayers layer
-     */
-    getLayerLegendDescriptor: function (layer) {
-      if (layer.get('base')) {
-        return;
-      }
-      if (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS)) {
-        const subLayerLegends = layer.getSource().getParams().LAYERS.split(',');
-        for (let i = 0; i < subLayerLegends.length; i++) {
-          subLayerLegends[i] = me.getLegendUrl(layer.getSource(), subLayerLegends[i]);
+      /**
+       * Create object of parameters used for creation of svg content for legend using retreived styles
+       * @memberof hs.legend.service
+       * @function setUpLegendStyle
+       * @param {ol/style/Fill} fill Fill description
+       * @param {ol/style/Stroke} stroke Stroke description
+       * @param {ol/style/Image~ImageStyle} image Image description
+       * @return {Object} Simplified description of style used by template to draw legend
+       */
+      setUpLegendStyle(fill, stroke, image) {
+        const row = {};
+        row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
+        if (image && utils.instOf(image, Icon)) {
+          row.icon = {type: 'icon', src: image.getSrc()};
+        } else if (image && utils.instOf(image, Circle)) {
+          if (image.getStroke() && image.getFill()) {
+            row.customCircle = {
+              type: 'circle',
+              cx: '17.5px',
+              cy: '17.5px',
+              r: '15px',
+              fill: image.getFill().getColor(),
+              stroke: image.getStroke().getColor(),
+              strokeWidth: image.getStroke().getWidth(),
+            };
+          } else if (image.getStroke()) {
+            row.customCircle = {
+              type: 'circle',
+              cx: '17.5px',
+              cy: '17.5px',
+              r: '15px',
+              fill: 'blue',
+              stroke: image.getStroke().getColor(),
+              strokeWidth: image.getStroke().getWidth(),
+            };
+          }
+        } else {
+          row.defaultCircle = {
+            fill: 'blue',
+            cx: '17.5px',
+            cy: '17.5px',
+            r: '15px',
+          };
         }
-        return {
-          title: layer.get('title'),
-          lyr: layer,
-          type: 'wms',
-          subLayerLegends: subLayerLegends,
-          visible: layer.getVisible()
-        };
-      } else if (utils.instOf(layer, VectorLayer) && (angular.isUndefined(layer.get('show_in_manager')) || layer.get('show_in_manager') == true)) {
-        return {
-          title: layer.get('title'),
-          lyr: layer,
-          type: 'vector',
-          visible: layer.getVisible()
-        };
-      } else if (utils.instOf(layer, ImageLayer) && utils.instOf(layer.getSource(), Static)) {
-        return {
-          title: layer.get('title'),
-          lyr: layer,
-          type: 'static',
-          visible: layer.getVisible()
-        };
-      } else if (utils.instOf(layer.getSource(), XYZ)) {
-        return {
-          title: layer.get('title'),
-          lyr: layer,
-          type: 'static',
-          visible: layer.getVisible()
-        };
-      } else {
-        return undefined;
-      }
-    }
-  });
-}];
+        if (!stroke && !fill) {
+          row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
+          row.defaultPolygon = {
+            type: 'polygon',
+            fill: 'blue',
+            stroke: 'purple',
+            strokeWidth: '1',
+          };
+        } else if (stroke && fill) {
+          row.fullPolygon = {
+            type: 'polygon',
+            stroke: stroke.getColor(),
+            strokeWidth: stroke.getWidth() / 2,
+            fill: fill.getColor(),
+          };
+          row.line = {
+            type: 'line',
+            stroke: stroke.getColor(),
+            strokeWidth: stroke.getWidth() / 2,
+          };
+        } else {
+          if (fill) {
+            row.polygon = {type: 'polygon', fill: fill.getColor()};
+            row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
+          } else {
+            row.line = {
+              type: 'line',
+              stroke: stroke.getColor(),
+              strokeWidth: stroke.getWidth() / 2,
+            };
+            row.defaultPolygon = {
+              type: 'polygon',
+              fill: 'blue',
+              stroke: 'purple',
+              strokeWidth: '1',
+            };
+          }
+        }
+        row.hashcode = angular.toJson(row).hashCode();
+        return row;
+      },
 
+      /**
+       * Generate url for GetLegendGraphic request of WMS service for selected layer
+       * @memberof hs.legend.service
+       * @function getLegendUrl
+       * @param {ol.source.Source} source Source of wms layer
+       * @param {String} layer_name Name of layer for which legend is requested
+       * @return {String} Url of the legend graphics
+       */
+      getLegendUrl: function (source, layer_name) {
+        let source_url = '';
+        if (utils.instOf(source, TileWMS)) {
+          source_url = source.getUrls()[0];
+        } else if (utils.instOf(source, ImageWMS)) {
+          source_url = source.getUrl();
+        } else {
+          return '';
+        }
+        if (source_url.indexOf('proxy4ows') > -1) {
+          const params = utils.getParamsFromUrl(source_url);
+          source_url = params.OWSURL;
+        }
+        let version = '1.3.0';
+        if (source.getParams().VERSION) {
+          version = source.getParams().VERSION;
+        }
+        source_url +=
+          (source_url.indexOf('?') > 0 ? '' : '?') +
+          '&version=' +
+          version +
+          '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' +
+          layer_name +
+          '&format=image%2Fpng';
+        source_url = utils.proxify(source_url, false);
+        return source_url;
+      },
+
+      /**
+       * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
+       * @memberof hs.legend.service
+       * @function getLegendUrl
+       * @return {Object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
+       * @param {ol/Layer} layer Openlayers layer
+       */
+      getLayerLegendDescriptor: function (layer) {
+        if (layer.get('base')) {
+          return;
+        }
+        if (
+          utils.instOf(layer.getSource(), TileWMS) ||
+          utils.instOf(layer.getSource(), ImageWMS)
+        ) {
+          const subLayerLegends = layer
+            .getSource()
+            .getParams()
+            .LAYERS.split(',');
+          for (let i = 0; i < subLayerLegends.length; i++) {
+            subLayerLegends[i] = me.getLegendUrl(
+              layer.getSource(),
+              subLayerLegends[i]
+            );
+          }
+          return {
+            title: layer.get('title'),
+            lyr: layer,
+            type: 'wms',
+            subLayerLegends: subLayerLegends,
+            visible: layer.getVisible(),
+          };
+        } else if (
+          utils.instOf(layer, VectorLayer) &&
+          (angular.isUndefined(layer.get('show_in_manager')) ||
+            layer.get('show_in_manager') == true)
+        ) {
+          return {
+            title: layer.get('title'),
+            lyr: layer,
+            type: 'vector',
+            visible: layer.getVisible(),
+          };
+        } else if (
+          utils.instOf(layer, ImageLayer) &&
+          utils.instOf(layer.getSource(), Static)
+        ) {
+          return {
+            title: layer.get('title'),
+            lyr: layer,
+            type: 'static',
+            visible: layer.getVisible(),
+          };
+        } else if (utils.instOf(layer.getSource(), XYZ)) {
+          return {
+            title: layer.get('title'),
+            lyr: layer,
+            type: 'static',
+            visible: layer.getVisible(),
+          };
+        } else {
+          return undefined;
+        }
+      },
+    });
+  },
+];

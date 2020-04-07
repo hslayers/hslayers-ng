@@ -1,35 +1,57 @@
-import {transform, transformExtent} from 'ol/proj';
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
+import {transform, transformExtent} from 'ol/proj';
 
-export default ['hs.map.service', 'Core', 'config', '$http', '$q',
-  'hs.utils.service', 'hs.mickaFiltersService', 'hs.addLayersVector.service', '$log',
-  function (OlMap, Core, config, $http, $q, utils, mickaFilterService, addLayersVectorService, $log) {
+export default [
+  'hs.map.service',
+  'Core',
+  'config',
+  '$http',
+  '$q',
+  'hs.utils.service',
+  'hs.mickaFiltersService',
+  'hs.addLayersVector.service',
+  '$log',
+  function (
+    OlMap,
+    Core,
+    config,
+    $http,
+    $q,
+    utils,
+    mickaFilterService,
+    addLayersVectorService,
+    $log
+  ) {
     const me = this;
     angular.extend(me, {
       /**
-        * @function queryCatalog
-        * @memberOf hs.mickaBrowserService
-        * @param {Object} dataset Configuration of selected datasource (from app config)
-        * @param {Object} query Container for all query filter values
-        * @param {Function} extentFeatureCreated Function which gets called
-        * @param {String} textField Name of the field to search in
-        * extent feature is created. Has one parameter: feature
-        * @description Loads datasets metadata from selected source (CSW server).
-        * Currently supports only "Micka" type of source.
-        * Use all query params (search text, bbox, params.., sorting, start)
-        */
+       * @function queryCatalog
+       * @memberOf hs.mickaBrowserService
+       * @param {Object} dataset Configuration of selected datasource (from app config)
+       * @param {Object} query Container for all query filter values
+       * @param {Function} extentFeatureCreated Function which gets called
+       * @param {String} textField Name of the field to search in
+       * extent feature is created. Has one parameter: feature
+       * @description Loads datasets metadata from selected source (CSW server).
+       * Currently supports only "Micka" type of source.
+       * Use all query params (search text, bbox, params.., sorting, start)
+       */
       queryCatalog(dataset, query, extentFeatureCreated, textField) {
         const b = transformExtent(
           OlMap.map.getView().calculateExtent(OlMap.map.getSize()),
           OlMap.map.getView().getProjection(),
           'EPSG:4326'
         );
-        const bbox = mickaFilterService.filterByExtent ? 'BBOX=\'' + b.join(' ') + '\'' : '';
-        const text = angular.isDefined(query.textFilter) &&
-                    query.textFilter.length > 0 ? query.textFilter : query.title;
+        const bbox = mickaFilterService.filterByExtent
+          ? "BBOX='" + b.join(' ') + "'"
+          : '';
+        const text =
+          angular.isDefined(query.textFilter) && query.textFilter.length > 0
+            ? query.textFilter
+            : query.title;
         const sql = [
-          (text != '' ? `${textField} like '*${text}*'` : ''),
+          text != '' ? `${textField} like '*${text}*'` : '',
           bbox,
           //param2Query('type'),
           me.param2Query('ServiceType', query),
@@ -37,22 +59,27 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
           me.param2Query('Subject', query),
           me.param2Query('Denominator', query),
           me.param2Query('OrganisationName', query),
-          me.param2Query('keywords', query)
-        ].filter((n) => {
-          return n != '';
-        }).join(' AND ');
-        let url = dataset.url + '?' + utils.paramsToURL({
-          request: 'GetRecords',
-          format: 'application/json',
-          language: dataset.language,
-          query: sql,
-          sortby: (angular.isDefined(query.sortby) && query.sortby != '' ?
-            query.sortby
-            : 'bbox'
-          ),
-          limit: dataset.paging.itemsPerPage,
-          start: dataset.datasourcePaging.start
-        });
+          me.param2Query('keywords', query),
+        ]
+          .filter((n) => {
+            return n != '';
+          })
+          .join(' AND ');
+        let url =
+          dataset.url +
+          '?' +
+          utils.paramsToURL({
+            request: 'GetRecords',
+            format: 'application/json',
+            language: dataset.language,
+            query: sql,
+            sortby:
+              angular.isDefined(query.sortby) && query.sortby != ''
+                ? query.sortby
+                : 'bbox',
+            limit: dataset.paging.itemsPerPage,
+            start: dataset.datasourcePaging.start,
+          });
         url = utils.proxify(url);
         dataset.datasourcePaging.loaded = false;
         if (angular.isDefined(dataset.canceler)) {
@@ -60,24 +87,23 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
           delete dataset.canceler;
         }
         dataset.canceler = $q.defer();
-        $http.get(url, {
-          timeout: dataset.canceler.promise,
-          dataset,
-          extentFeatureCreated
-        })
-          .then(
-            me.datasetsReceived,
-            (e) => {
-              dataset.datasourcePaging.loaded = true;
-            });
+        $http
+          .get(url, {
+            timeout: dataset.canceler.promise,
+            dataset,
+            extentFeatureCreated,
+          })
+          .then(me.datasetsReceived, (e) => {
+            dataset.datasourcePaging.loaded = true;
+          });
       },
 
       /*
-        * @function datasetsReceived
-        * @memberOf hs.mickaBrowserService
-        * @param {Object} j HTTP response containing all the layers
-        * (PRIVATE) Callback for catalogue http query
-        */
+       * @function datasetsReceived
+       * @memberOf hs.mickaBrowserService
+       * @param {Object} j HTTP response containing all the layers
+       * (PRIVATE) Callback for catalogue http query
+       */
       datasetsReceived(j) {
         const dataset = j.config.dataset;
         const extentFeatureCreated = j.config.extentFeatureCreated;
@@ -103,18 +129,18 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
       },
 
       /*
-        * @function param2Query
-        * @memberOf hs.mickaBrowserService
-        * @param {String} which Parameter name to parse
-        * (PRIVATE) Parse query parameter into encoded key value pair.
-        */
+       * @function param2Query
+       * @memberOf hs.mickaBrowserService
+       * @param {String} which Parameter name to parse
+       * (PRIVATE) Parse query parameter into encoded key value pair.
+       */
       param2Query(which, query) {
         if (angular.isDefined(query[which])) {
           if (which == 'type' && query[which] == 'data') {
             //Special case for type 'data' because it can contain many things
-            return '(type=\'dataset\' OR type=\'nonGeographicDataset\' OR type=\'series\' OR type=\'tile\')';
+            return "(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')";
           }
-          return (query[which] != '' ? which + '=\'' + query[which] + '\'' : '');
+          return query[which] != '' ? which + "='" + query[which] + "'" : '';
         } else {
           if (which == 'ServiceType') {
             return '(ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS)';
@@ -125,18 +151,18 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
       },
 
       /*
-        * @function addExtentFeature
-        * @memberOf hs.mickaBrowserService
-        * @param {Object} record Record of one dataset from Get Records response
-        * @param {ol/layer/Vector} extentLayer
-        * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
-        */
+       * @function addExtentFeature
+       * @memberOf hs.mickaBrowserService
+       * @param {Object} record Record of one dataset from Get Records response
+       * @param {ol/layer/Vector} extentLayer
+       * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
+       */
       addExtentFeature(record) {
         const attributes = {
           record: record,
           hs_notqueryable: true,
           highlighted: false,
-          title: record.title || record.name
+          title: record.title || record.name,
         };
         let b = null;
         if (angular.isString(record.bbox)) {
@@ -146,9 +172,20 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         }
         let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
         let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-        const mapProjectionExtent = OlMap.map.getView().getProjection().getExtent();
-        first_pair = transform(first_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
-        second_pair = transform(second_pair, 'EPSG:4326', OlMap.map.getView().getProjection());
+        const mapProjectionExtent = OlMap.map
+          .getView()
+          .getProjection()
+          .getExtent();
+        first_pair = transform(
+          first_pair,
+          'EPSG:4326',
+          OlMap.map.getView().getProjection()
+        );
+        second_pair = transform(
+          second_pair,
+          'EPSG:4326',
+          OlMap.map.getView().getProjection()
+        );
         if (!isFinite(first_pair[0])) {
           first_pair[0] = mapProjectionExtent[0];
         }
@@ -161,10 +198,20 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
         if (!isFinite(second_pair[1])) {
           second_pair[1] = mapProjectionExtent[3];
         }
-        if (isNaN(first_pair[0]) || isNaN(first_pair[1]) || isNaN(second_pair[0]) || isNaN(second_pair[1])) {
+        if (
+          isNaN(first_pair[0]) ||
+          isNaN(first_pair[1]) ||
+          isNaN(second_pair[0]) ||
+          isNaN(second_pair[1])
+        ) {
           return;
         }
-        const extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+        const extent = [
+          first_pair[0],
+          first_pair[1],
+          second_pair[0],
+          second_pair[1],
+        ];
         attributes.geometry = polygonFromExtent(extent);
         const new_feature = new Feature(attributes);
         record.feature = new_feature;
@@ -172,14 +219,14 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
       },
 
       /**
-        * @function getLayerLink
-        * @memberOf hs.mickaBrowserService
-        * @param {Object} layer Micka layer for which to get metadata
-        * @description Get first link from records links array or link
-        * property of record in older Micka versions
-        * in a common format for use in add-layers component
-        * @return {String} Url of service or resource
-        */
+       * @function getLayerLink
+       * @memberOf hs.mickaBrowserService
+       * @param {Object} layer Micka layer for which to get metadata
+       * @description Get first link from records links array or link
+       * property of record in older Micka versions
+       * in a common format for use in add-layers component
+       * @return {String} Url of service or resource
+       */
       getLayerLink(layer) {
         if (layer.links && layer.links.length > 0) {
           if (angular.isDefined(layer.links[0].url)) {
@@ -195,36 +242,59 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
       },
 
       /**
-        * @function describeWhatToAdd
-        * @memberOf hs.mickaBrowserService
-        * @param {Object} ds Configuration of selected datasource (from app config)
-        * @param {Object} layer Micka layer for which to get metadata
-        * @description Gets layer metadata and returns promise which describes layer
-        * in a common format for use in add-layers component
-        * @return {Promise} promise which describes layer
-        * in a common format for use in add-layers component
-        */
+       * @function describeWhatToAdd
+       * @memberOf hs.mickaBrowserService
+       * @param {Object} ds Configuration of selected datasource (from app config)
+       * @param {Object} layer Micka layer for which to get metadata
+       * @description Gets layer metadata and returns promise which describes layer
+       * in a common format for use in add-layers component
+       * @return {Promise} promise which describes layer
+       * in a common format for use in add-layers component
+       */
       describeWhatToAdd(ds, layer) {
         let whatToAdd = {type: 'none'};
         const type = layer.type || layer.trida;
         return new Promise((resolve, reject) => {
           if (type == 'service') {
-            if (layer.serviceType == 'WMS' || layer.serviceType == 'OGC:WMS' || layer.serviceType == 'view') {
+            if (
+              layer.serviceType == 'WMS' ||
+              layer.serviceType == 'OGC:WMS' ||
+              layer.serviceType == 'view'
+            ) {
               whatToAdd.type = 'WMS';
               whatToAdd.link = me.getLayerLink(layer);
-            } else if ((me.getLayerLink(layer).toLowerCase()).indexOf('sparql') > -1) {
-              addLayersVectorService.add('sparql', me.getLayerLink(layer), layer.title || 'Layer', layer.abstract, true, 'EPSG:4326');
-            } else if (layer.serviceType == 'WFS' || layer.serviceType == 'OGC:WFS' || layer.serviceType == 'download') {
+            } else if (
+              me.getLayerLink(layer).toLowerCase().indexOf('sparql') > -1
+            ) {
+              addLayersVectorService.add(
+                'sparql',
+                me.getLayerLink(layer),
+                layer.title || 'Layer',
+                layer.abstract,
+                true,
+                'EPSG:4326'
+              );
+            } else if (
+              layer.serviceType == 'WFS' ||
+              layer.serviceType == 'OGC:WFS' ||
+              layer.serviceType == 'download'
+            ) {
               whatToAdd.type = 'WFS';
               whatToAdd.link = me.getLayerLink(layer);
-            } else if (layer.formats && ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) > -1) {
+            } else if (
+              layer.formats &&
+              ['kml', 'geojson', 'json'].indexOf(
+                layer.formats[0].toLowerCase()
+              ) > -1
+            ) {
               whatToAdd = {
-                type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
+                type:
+                  layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
                 link: me.getLayerLink(layer),
                 title: layer.title || 'Layer',
                 abstract: layer.abstract || 'Layer',
                 projection: 'EPSG:4326',
-                extractStyles: layer.formats[0].toLowerCase() == 'kml'
+                extractStyles: layer.formats[0].toLowerCase() == 'kml',
               };
             } else {
               alert('Service type "' + layer.serviceType + '" not supported.');
@@ -232,17 +302,23 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
               return;
             }
           } else if (type == 'dataset') {
-            if (['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) > -1) {
+            if (
+              ['kml', 'geojson', 'json'].indexOf(
+                layer.formats[0].toLowerCase()
+              ) > -1
+            ) {
               whatToAdd = {
-                type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
+                type:
+                  layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
                 link: me.getLayerLink(layer),
                 title: layer.title || 'Layer',
                 abstract: layer.abstract || 'Layer',
                 projection: 'EPSG:4326',
-                extractStyles: layer.formats[0].toLowerCase() == 'kml'
+                extractStyles: layer.formats[0].toLowerCase() == 'kml',
               };
             } else {
-              reject(); return;
+              reject();
+              return;
             }
           } else {
             alert(`Datasource type "${type}" not supported.`);
@@ -251,8 +327,8 @@ export default ['hs.map.service', 'Core', 'config', '$http', '$q',
           }
           resolve(whatToAdd);
         });
-      }
+      },
     });
     return me;
-  }
+  },
 ];

@@ -1,5 +1,16 @@
-export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService', '$compile', 'hs.layout.service',
-  function (config, mickaFilterService, datasourceBrowserService, $compile, layoutService) {
+export default [
+  'config',
+  'hs.mickaFiltersService',
+  'hs.datasourceBrowserService',
+  '$compile',
+  'hs.layout.service',
+  function (
+    config,
+    mickaFilterService,
+    datasourceBrowserService,
+    $compile,
+    layoutService
+  ) {
     return {
       template: require('./advanced-micka-dialog.html'),
       link: function (scope, element, attrs) {
@@ -21,33 +32,51 @@ export default ['config', 'hs.mickaFiltersService', 'hs.datasourceBrowserService
         scope.showSuggestions = function (input, param, field) {
           mickaFilterService.changeSuggestionConfig(input, param, field);
           if (config.design === 'md') {
-            mickaFilterService.suggestionFilter = datasourceBrowserService.data.query[input];
-            mickaFilterService.suggestionFilterChanged(scope.mickaDatasetConfig);
+            mickaFilterService.suggestionFilter =
+              datasourceBrowserService.data.query[input];
+            mickaFilterService.suggestionFilterChanged(
+              scope.mickaDatasetConfig
+            );
           } else {
-            if (layoutService.contentWrapper.querySelector('.hs-ds-suggestions-micka') === null) {
-              const el = angular.element('<div hs.micka-suggestions-dialog></span>');
-              layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+            if (
+              layoutService.contentWrapper.querySelector(
+                '.hs-ds-suggestions-micka'
+              ) === null
+            ) {
+              const el = angular.element(
+                '<div hs.micka-suggestions-dialog></span>'
+              );
+              layoutService.contentWrapper
+                .querySelector('.hs-dialog-area')
+                .appendChild(el[0]);
               $compile(el)(scope);
             } else {
               scope.suggestionsModalVisible = true;
-              const filterElement = layoutService.contentWrapper.querySelector('.hs-ds-sug-filter');
+              const filterElement = layoutService.contentWrapper.querySelector(
+                '.hs-ds-sug-filter'
+              );
               mickaFilterService.suggestionFilter = scope.data.query[input];
               filterElement.focus();
             }
-            mickaFilterService.suggestionFilterChanged(scope.mickaDatasetConfig);
+            mickaFilterService.suggestionFilterChanged(
+              scope.mickaDatasetConfig
+            );
           }
         };
 
         /**
-        * @function addSuggestion
-        * @memberOf hs.datasourceBrowserService
-        * @param {String} text Selected property value from suggestions
-        * Save suggestion into Query object
-        */
+         * @function addSuggestion
+         * @memberOf hs.datasourceBrowserService
+         * @param {String} text Selected property value from suggestions
+         * Save suggestion into Query object
+         */
         scope.addSuggestion = function (text) {
-          datasourceBrowserService.data.query[mickaFilterService.suggestionConfig.input] = text;
+          datasourceBrowserService.data.query[
+            mickaFilterService.suggestionConfig.input
+          ] = text;
           scope.suggestionsModalVisible = false;
         };
-      }
+      },
     };
-  }];
+  },
+];
