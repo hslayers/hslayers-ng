@@ -96,7 +96,7 @@ export default ['hs.utils.service', '$http', 'config', 'hs.map.service', 'hs.lay
         const dir = 'hs.sensors.unit-dialog';
         const html = `<${dir} unit="sensorsService.unit"></${dir}>`;
         const element = angular.element(html)[0];
-        layoutService.contentWrapper.querySelector('.hs-gui-overlay').appendChild(element);
+        layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(element);
         $compile(element)($rootScope.$new());
       } else {
         me.unitDialogVisible = true;

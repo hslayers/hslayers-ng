@@ -54,7 +54,7 @@ export default {
                     unit="sensorsService.unit"W
                     ></${dir}>`;
         const element = angular.element(html)[0];
-        layoutService.contentWrapper.querySelector('.hs-gui-overlay').appendChild(element);
+        layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(element);
         $compile(element)($scope);
       } else {
         sensorsService.unitDialogVisible = true;
