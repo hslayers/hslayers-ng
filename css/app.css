@@ -1621,3 +1621,4 @@ li.hs-lm-header {
 label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
+.hs-hover-popup{max-height: 20em; overflow-y: scroll; visibility: visible;}
