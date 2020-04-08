@@ -100,7 +100,7 @@ export default [
      */
     this.init = function () {
       if (angular.isDefined(me.map)) {
-        me.map.getLayers().clear();
+        me.removeAllLayers();
       }
       me.map = new Map({
         controls: me.controls,
@@ -511,13 +511,7 @@ export default [
      * @description Reset map to state configured in app config (reload all layers and set default view)
      */
     this.reset = function () {
-      const to_be_removed = [];
-      me.map.getLayers().forEach((lyr) => {
-        to_be_removed.push(lyr);
-      });
-      while (to_be_removed.length > 0) {
-        me.map.removeLayer(to_be_removed.shift());
-      }
+      me.removeAllLayers();
       me.repopulateLayers(null);
       me.resetView();
     };
@@ -674,6 +668,16 @@ export default [
      */
     this.getMap = function () {
       return OlMap.map;
+    };
+
+    this.removeAllLayers = function () {
+      const to_be_removed = [];
+      me.map.getLayers().forEach((lyr) => {
+        to_be_removed.push(lyr);
+      });
+      while (to_be_removed.length > 0) {
+        me.map.removeLayer(to_be_removed.shift());
+      }
     };
   },
 ];

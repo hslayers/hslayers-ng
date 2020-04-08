@@ -346,21 +346,23 @@ export default [
       }
     });
 
-    OlMap.map.on(
-      'postcompose',
-      utils.debounce(
-        () => {
-          me.compoData.bbox = me.getCurrentExtent();
-          saveMap.generateThumbnail(
-            layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
-            me.compoData
-          );
-        },
-        300,
-        false,
-        me
-      )
-    );
+    $rootScope.$on('map.loaded', (e) => {
+      OlMap.map.on(
+        'postcompose',
+        utils.debounce(
+          () => {
+            me.compoData.bbox = me.getCurrentExtent();
+            saveMap.generateThumbnail(
+              layoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+              me.compoData
+            );
+          },
+          300,
+          false,
+          me
+        )
+      );
+    });
 
     return me;
   },

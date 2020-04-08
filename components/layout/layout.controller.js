@@ -506,6 +506,9 @@ export default [
     };
 
     $scope.mapStyle = () => {
+      if (!OlMap.map) {
+        return {};
+      }
       const fullscreen =
         angular.isUndefined(config.sizeMode) || config.sizeMode == 'fullscreen';
       let height = layoutService.layoutElement.clientHeight;

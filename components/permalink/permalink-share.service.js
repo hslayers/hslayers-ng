@@ -1,9 +1,37 @@
 /* eslint-disable angular/on-watch */
-export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlService', 'Socialshare', 'hs.utils.service', 'hs.map.service', '$q', 'hs.statusManagerService', 'hs.layout.service', '$log', '$timeout', '$document',
-  function ($rootScope, $http, Core, config, serviceURL, socialshare, utils, OlMap, $q, statusManagerService, layoutService, $log, $timeout, $document) {
+export default [
+  '$rootScope',
+  '$http',
+  'Core',
+  'config',
+  'hs.permalink.urlService',
+  'Socialshare',
+  'hs.utils.service',
+  'hs.map.service',
+  '$q',
+  'hs.statusManagerService',
+  'hs.layout.service',
+  '$log',
+  '$timeout',
+  '$document',
+  function (
+    $rootScope,
+    $http,
+    Core,
+    config,
+    serviceURL,
+    socialshare,
+    utils,
+    OlMap,
+    $q,
+    statusManagerService,
+    layoutService,
+    $log,
+    $timeout,
+    $document
+  ) {
     const me = {};
     angular.extend(me, {
-
       /**
        * @memberof permalink.shareService
        * @property data
@@ -17,7 +45,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
         embedCode: '',
         shareUrlValid: false,
         title: '',
-        abstract: ''
+        abstract: '',
       },
 
       /**
@@ -28,7 +56,10 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
        * @return {String} embeddable iframe html code
        */
       getEmbedCode: function () {
-        me.data.embedCode = '<iframe src="' + me.getShareUrl() + '" width="1000" height="700"></iframe>';
+        me.data.embedCode =
+          '<iframe src="' +
+          me.getShareUrl() +
+          '" width="1000" height="700"></iframe>';
         return me.data.embedCode;
       },
 
@@ -79,29 +110,35 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
               url: encodeURIComponent(me.getShareUrl()),
               title: me.data.title,
               description: me.data.abstract,
-              image: me.data.thumbnail
-            })
-          }).then((response) => {
-            utils.shortUrl(statusManagerService.endpointUrl() + '?request=socialshare&id=' + serviceURL.shareId)
-              .then((shortUrl) => {
-                const shareUrl = shortUrl;
-                socialshare.share({
-                  'provider': provider,
-                  'attrs': {
-                    'socialshareText': me.data.title,
-                    'socialshareUrl': shareUrl,
-                    'socialsharePopupHeight': 600,
-                    'socialsharePopupWidth': 500
-                  }
+              image: me.data.thumbnail,
+            }),
+          }).then(
+            (response) => {
+              utils
+                .shortUrl(
+                  statusManagerService.endpointUrl() +
+                    '?request=socialshare&id=' +
+                    serviceURL.shareId
+                )
+                .then((shortUrl) => {
+                  const shareUrl = shortUrl;
+                  socialshare.share({
+                    'provider': provider,
+                    'attrs': {
+                      'socialshareText': me.data.title,
+                      'socialshareUrl': shareUrl,
+                      'socialsharePopupHeight': 600,
+                      'socialsharePopupWidth': 500,
+                    },
+                  });
+                  me.data.shareUrlValid = true;
+                })
+                .catch(() => {
+                  $log.log('Error creating short Url');
                 });
-                me.data.shareUrlValid = true;
-              }).catch(() => {
-                $log.log('Error creating short Url');
-              });
-
-          }, (err) => {
-
-          });
+            },
+            (err) => {}
+          );
         } else {
           socialshare.share({
             'provider': provider,
@@ -109,8 +146,8 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
               'socialshareText': me.data.title,
               'socialshareUrl': me.getShareUrl(),
               'socialsharePopupHeight': 600,
-              'socialsharePopupWidth': 500
-            }
+              'socialsharePopupWidth': 500,
+            },
           });
         }
       },
@@ -128,7 +165,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
           const canvas = OlMap.getCanvas();
           const canvas2 = $document[0].createElement('canvas');
           const width = 256,
-              height = 256;
+            height = 256;
           canvas2.width = width;
           canvas2.height = height;
 
@@ -139,18 +176,35 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
           ctx2.webkitImageSmoothingEnabled = false;
           ctx2.msImageSmoothingEnabled = false;
           ctx2.imageSmoothingEnabled = false;
-          ctx2.drawImage(canvas, canvas.width / 2 - width / 2, canvas.height / 2 - height / 2, width, height, 0, 0, width, height);
+          ctx2.drawImage(
+            canvas,
+            canvas.width / 2 - width / 2,
+            canvas.height / 2 - height / 2,
+            width,
+            height,
+            0,
+            0,
+            width,
+            height
+          );
           try {
             $element.setAttribute('src', canvas2.toDataURL('image/png'));
             me.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.85);
           } catch (e) {
             $log.warn(e);
-            $element.setAttribute('src', require('../save-map/notAvailable.png'));
+            $element.setAttribute(
+              'src',
+              require('../save-map/notAvailable.png')
+            );
           }
           $element.style.width = width + 'px';
           $element.style.height = height + 'px';
         }
-        if (layoutService.mainpanel == 'saveMap' || layoutService.mainpanel == 'permalink' || layoutService.mainpanel == 'shareMap') {
+        if (
+          layoutService.mainpanel == 'saveMap' ||
+          layoutService.mainpanel == 'permalink' ||
+          layoutService.mainpanel == 'shareMap'
+        ) {
           if ($element === null) {
             return;
           }
@@ -163,7 +217,7 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
             rendered();
           }
         }
-      }
+      },
     });
 
     // eslint-disable-next-line angular/on-watch
@@ -180,15 +234,18 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
               permalink: true,
               id: serviceURL.id,
               project: config.project_name,
-              request: 'save'
-            })
-          }).then((response) => {
-            serviceURL.permalinkLayers = status_url + '?request=load&id=' + serviceURL.id;
-            $rootScope.$broadcast('browserurl.updated');
-
-          }, (err) => {
-            $log.log('Error saving permalink layers.');
-          });
+              request: 'save',
+            }),
+          }).then(
+            (response) => {
+              serviceURL.permalinkLayers =
+                status_url + '?request=load&id=' + serviceURL.id;
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            (err) => {
+              $log.log('Error saving permalink layers.');
+            }
+          );
         } else {
           $rootScope.$broadcast('browserurl.updated');
         }
@@ -196,44 +253,65 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
     });
 
     $rootScope.$on('browserurl.updated', () => {
-      if (layoutService.mainpanel == 'permalink' || layoutService.mainpanel == 'shareMap') {
-
+      if (
+        layoutService.mainpanel == 'permalink' ||
+        layoutService.mainpanel == 'shareMap'
+      ) {
         me.data.shareUrlValid = false;
 
         $q.all([
-          utils.shortUrl(serviceURL.getPureMapUrl())
+          utils
+            .shortUrl(serviceURL.getPureMapUrl())
             .then((shortUrl) => {
               me.data.pureMapUrl = shortUrl;
-            }).catch(() => {
+            })
+            .catch(() => {
               $log.log('Error creating short Url');
               me.data.pureMapUrl = serviceURL.getPureMapUrl();
             }),
 
-          utils.shortUrl(serviceURL.getPermalinkUrl())
+          utils
+            .shortUrl(serviceURL.getPermalinkUrl())
             .then((shortUrl) => {
               me.data.permalinkUrl = shortUrl;
-            }).catch(() => {
+            })
+            .catch(() => {
               $log.log('Error creating short Url');
               me.data.permalinkUrl = serviceURL.getPermalinkUrl();
-            })
+            }),
         ]).then(() => {
           $timeout(() => {
             me.getEmbedCode();
           }, 0);
         });
-
       }
     });
 
     $rootScope.$on('core.mainpanel_changed', (event) => {
       if (layoutService.mainpanel == 'permalink') {
-        me.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-permalink-thumbnail'));
+        me.generateThumbnail(
+          layoutService.contentWrapper.querySelector('.hs-permalink-thumbnail')
+        );
       }
     });
 
-    OlMap.map.on('postcompose', utils.debounce(() => {
-      me.generateThumbnail(layoutService.contentWrapper.querySelector('.hs-permalink-thumbnail'));
-    }, 300, false, me));
+    $rootScope.$on('map.loaded', (e) => {
+      OlMap.map.on(
+        'postcompose',
+        utils.debounce(
+          () => {
+            me.generateThumbnail(
+              layoutService.contentWrapper.querySelector(
+                '.hs-permalink-thumbnail'
+              )
+            );
+          },
+          300,
+          false,
+          me
+        )
+      );
+    });
 
     $rootScope.$on('compositions.composition_loaded', (event, data) => {
       if (angular.isDefined(data.data)) {
@@ -247,4 +325,5 @@ export default ['$rootScope', '$http', 'Core', 'config', 'hs.permalink.urlServic
     });
 
     return me;
-  }];
+  },
+];

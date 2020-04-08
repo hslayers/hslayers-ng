@@ -1,16 +1,26 @@
-import {Select} from 'ol/interaction';
-import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
 import * as extent from 'ol/extent';
-import {toLonLat} from 'ol/proj.js';
+import {Select} from 'ol/interaction';
 import {WKT} from 'ol/format';
+import {altKeyOnly, click, pointerMove} from 'ol/events/condition.js';
+import {toLonLat} from 'ol/proj.js';
 
-export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 'config', 'hs.utils.service', '$window',
+export default [
+  '$rootScope',
+  'hs.query.baseService',
+  '$sce',
+  'hs.map.service',
+  'config',
+  'hs.utils.service',
+  '$window',
   function ($rootScope, Base, $sce, OlMap, Config, utils, $window) {
     const me = this;
 
     this.selector = new Select({
       condition: click,
-      multi: (angular.isDefined(Config.query) && Config.query.multi) ? Config.query.multi : false,
+      multi:
+        angular.isDefined(Config.query) && Config.query.multi
+          ? Config.query.multi
+          : false,
       filter: function (feature, layer) {
         if (layer === null) {
           return;
@@ -20,11 +30,13 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         } else {
           return true;
         }
-      }
+      },
     });
     $rootScope.$broadcast('vectorSelectorCreated', me.selector);
 
-    OlMap.map.addInteraction(me.selector);
+    $rootScope.$on('map.loaded', (e) => {
+      OlMap.map.addInteraction(me.selector);
+    });
 
     $rootScope.$on('queryStatusChanged', () => {
       /*if (Base.queryActive) OlMap.map.addInteraction(me.selector);
@@ -32,9 +44,17 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
     });
 
     me.selector.getFeatures().on('add', (e) => {
-      $rootScope.$broadcast('vectorQuery.featureSelected', e.element, me.selector);
+      $rootScope.$broadcast(
+        'vectorQuery.featureSelected',
+        e.element,
+        me.selector
+      );
       //deprecated
-      $rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
+      $rootScope.$broadcast(
+        'infopanel.feature_selected',
+        e.element,
+        me.selector
+      );
     });
 
     me.selector.getFeatures().on('remove', (e) => {
@@ -78,7 +98,11 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
     };
     function getFeatureLayerName(feature) {
       const layer = feature.getLayer(OlMap.map);
-      if (angular.isUndefined(layer) || angular.isDefined(layer.get('show_in_manager')) && layer.get('show_in_manager') === false) {
+      if (
+        angular.isUndefined(layer) ||
+        (angular.isDefined(layer.get('show_in_manager')) &&
+          layer.get('show_in_manager') === false)
+      ) {
         return '';
       }
       const layerName = layer.get('title') || layer.get('name');
@@ -92,11 +116,11 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
       return center;
     }
     /**
-        * @function getFeatureAttributes
-        * @memberOf hs.query.controller
-        * @params {Object} feature Selected feature from map
-        * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
-        */
+     * @function getFeatureAttributes
+     * @memberOf hs.query.controller
+     * @params {Object} feature Selected feature from map
+     * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
+     */
     function getFeatureAttributes(feature) {
       const attributes = [];
       let tmp = [];
@@ -119,19 +143,21 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
           if ((typeof feature.get(key)).toLowerCase() == 'string') {
             obj = {
               name: key,
-              value: $sce.trustAsHtml(feature.get(key))
+              value: $sce.trustAsHtml(feature.get(key)),
             };
           } else {
             obj = {
               name: key,
-              value: feature.get(key)
+              value: feature.get(key),
             };
           }
           attributes.push(obj);
         }
       });
       if (feature.getLayer(OlMap.map).get('customInfoTemplate')) {
-        customInfoTemplate = feature.getLayer(OlMap.map).get('customInfoTemplate');
+        customInfoTemplate = feature
+          .getLayer(OlMap.map)
+          .get('customInfoTemplate');
       }
 
       const featureDescription = {
@@ -141,9 +167,10 @@ export default ['$rootScope', 'hs.query.baseService', '$sce', 'hs.map.service', 
         stats: [{name: 'center', value: toLonLat(getCentroid(feature))}],
         hstemplate,
         feature,
-        customInfoTemplate: $sce.trustAsHtml(customInfoTemplate)
+        customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
       };
       tmp.push(featureDescription);
       return tmp;
     }
-  }];
+  },
+];
