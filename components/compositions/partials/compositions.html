@@ -89,6 +89,7 @@
                 ng-repeat="ds in endpointsService.endpoints | forCompositions">
                 <div class="card">
                     <div class="card-body">
+                        <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
                         <ul class="hs-comp-list list-group">
                             <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item"
                                 style="cursor: pointer" ng-class="composition.highlighted ?  'active' : ''"
