@@ -1,31 +1,60 @@
 import compositionsService from './compositions.service';
 
 export default {
-  template: ['config', (config) => {
-    if (config.design == 'md') {
-      return require('./partials/compositionsmd.html');
-    } else {
-      return require('./partials/compositions.html');
-    }
-  }],
-  controller: ['$scope', 'Core', 'hs.map.service', 'hs.compositions.service',
-    'hs.compositions.service_parser', '$window', 'config', '$compile',
-    'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService', 'hs.utils.service', 'hs.compositions.mapService',
-    function ($scope, Core, hsMap, Composition, compositionParser, $window, config,
-      $compile, mickaEndpointService, $rootScope, layoutService, endpointsService, utils, mapService) {
+  template: [
+    'config',
+    (config) => {
+      if (config.design == 'md') {
+        return require('./partials/compositionsmd.html');
+      } else {
+        return require('./partials/compositions.html');
+      }
+    },
+  ],
+  controller: [
+    '$scope',
+    'Core',
+    'hs.map.service',
+    'hs.compositions.service',
+    'hs.compositions.service_parser',
+    '$window',
+    'config',
+    '$compile',
+    'hs.compositions.mickaService',
+    '$rootScope',
+    'hs.layout.service',
+    'hs.common.endpointsService',
+    'hs.utils.service',
+    'hs.compositions.mapService',
+    function (
+      $scope,
+      Core,
+      hsMap,
+      Composition,
+      compositionParser,
+      $window,
+      config,
+      $compile,
+      mickaEndpointService,
+      $rootScope,
+      layoutService,
+      endpointsService,
+      utils,
+      mapService
+    ) {
       $scope.CS = Composition;
       $scope.data = Composition.data;
       $scope.config = config;
       $scope.mickaEndpointService = mickaEndpointService;
       $scope.endpointsService = endpointsService;
-      endpointsService.endpoints.forEach(ep => ep.next = ep.limit);
+      endpointsService.endpoints.forEach((ep) => (ep.next = ep.limit));
       /**
-      * @ngdoc property
-      * @name hs.compositions.controller#keywords
-      * @public
-      * @type {Object}
-      * @description List of keywords (currently hard-coded selection), with their selection status (Boolean value) which sets if keyword will be applied in compositions lookup
-      */
+       * @ngdoc property
+       * @name hs.compositions.controller#keywords
+       * @public
+       * @type {Object}
+       * @description List of keywords (currently hard-coded selection), with their selection status (Boolean value) which sets if keyword will be applied in compositions lookup
+       */
       $scope.keywords = {
         'Basemap': false,
         'Borders': false,
@@ -43,27 +72,27 @@ export default {
         'Infrastructure': false,
         'RealEstate': false,
         'Planning': false,
-        'ComplexInformation': false
+        'ComplexInformation': false,
       };
       $scope.addCompositionUrlVisible = false;
-      $scope.changeUrlButtonVisible = function() {
+      $scope.changeUrlButtonVisible = function () {
         $scope.addCompositionUrlVisible = !$scope.addCompositionUrlVisible;
       };
       /**
-            * @ngdoc property
-            * @name hs.compositions.controller#sortBy
-            * @public
-            * @type {string} bbox
-            * @description Store current rule for sorting compositions in composition list (supported values: bbox, title, date)
-            */
+       * @ngdoc property
+       * @name hs.compositions.controller#sortBy
+       * @public
+       * @type {string} bbox
+       * @description Store current rule for sorting compositions in composition list (supported values: bbox, title, date)
+       */
       $scope.sortBy = 'bbox';
       /**
-            * @ngdoc property
-            * @name hs.compositions.controller#filterByExtent
-            * @public
-            * @type {Boolean} true
-            * @description Store whether filter compositions by current window extent during composition search
-            */
+       * @ngdoc property
+       * @name hs.compositions.controller#filterByExtent
+       * @public
+       * @type {Boolean} true
+       * @description Store whether filter compositions by current window extent during composition search
+       */
       $scope.filterByExtent = true;
       /**
        * @ngdoc method
@@ -109,15 +138,15 @@ export default {
        */
       $scope.loadCompositions = function (ds) {
         return new Promise((resolve, reject) => {
-          hsMap.loaded().then(map => {
+          hsMap.loaded().then((map) => {
             Composition.loadCompositions(ds, {
               query: $scope.query,
               sortBy: $scope.sortBy,
               filterExtent: $scope.filterByExtent,
               keywords: $scope.keywords,
               start: ds.start,
-              limit: ds.limit
-            }).then(_ => {
+              limit: ds.limit,
+            }).then((_) => {
               resolve();
             });
           });
@@ -131,7 +160,10 @@ export default {
        * DEPRECATED?
        */
       $scope.mineFilterChanged = function () {
-        if (angular.isDefined($scope.query.editable) && $scope.query.editable == false) {
+        if (
+          angular.isDefined($scope.query.editable) &&
+          $scope.query.editable == false
+        ) {
           delete $scope.query.editable;
         }
       };
@@ -146,8 +178,8 @@ export default {
               listHeight = panel.clientHeight;
             }
           }
-        } catch (ex) { }
-        endpointsService.endpoints.forEach(ds => {
+        } catch (ex) {}
+        endpointsService.endpoints.forEach((ds) => {
           ds.limit = Math.round((listHeight - 180) / 60);
         });
       };
@@ -160,7 +192,7 @@ export default {
        */
       $scope.filterChanged = function () {
         Composition.resetCompositionCounter();
-        endpointsService.endpoints.forEach(ds => {
+        endpointsService.endpoints.forEach((ds) => {
           ds.start = 0;
           ds.next = ds.limit;
           $scope.loadCompositions(ds);
@@ -168,12 +200,12 @@ export default {
       };
 
       /**
-      * @ngdoc method
-      * @name hs.compositions.controller#confirmDelete
-      * @public
-      * @param {object} composition Composition selected for deletion
-      * @description Display delete dialog of composition
-      */
+       * @ngdoc method
+       * @name hs.compositions.controller#confirmDelete
+       * @public
+       * @param {object} composition Composition selected for deletion
+       * @description Display delete dialog of composition
+       */
       $scope.confirmDelete = function (composition) {
         $scope.compositionToDelete = composition;
         if (config.design === 'md') {
@@ -184,12 +216,18 @@ export default {
       };
 
       function deleteDialogBootstrap(ev) {
-        const previousDialog = layoutService.contentWrapper.querySelector('.hs-composition-delete-dialog');
+        const previousDialog = layoutService.contentWrapper.querySelector(
+          '.hs-composition-delete-dialog'
+        );
         if (previousDialog) {
           previousDialog.parentNode.removeChild(previousDialog);
         }
-        const el = angular.element('<div hs.compositions.delete_dialog_directive></div>');
-        layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+        const el = angular.element(
+          '<div hs.compositions.delete_dialog_directive></div>'
+        );
+        layoutService.contentWrapper
+          .querySelector('.hs-dialog-area')
+          .appendChild(el[0]);
         $compile(el)($scope);
       }
 
@@ -209,7 +247,7 @@ export default {
               $scope.closeDialog = function () {
                 $mdDialog.hide();
               };
-            }
+            },
           });
         };
 
@@ -226,7 +264,7 @@ export default {
               $scope.closeDialog = function () {
                 $mdDialog.hide();
               };
-            }
+            },
           });
         };
 
@@ -238,33 +276,33 @@ export default {
             clickOutsideToClose: true,
             escapeToClose: true,
             template:
-                            '<md-dialog aria-label="List dialog">' +
-                            '  <md-dialog-content layout="column" layout-padding>' +
-                            '    <md-list>' +
-                            '    <div layout="row">' +
-                            '       <span flex="30">Abstract</span><span flex="70">{{info.abstract}}</span>' +
-                            '    </div>' +
-                            '    <div layout="row">' +
-                            '       <span flex="30">Thumbnail</span><span flex="70">{{info.thumbnail}}</span>' +
-                            '    </div>' +
-                            '    <div layout="row">' +
-                            '       <span flex="30">Extent</span><span flex="70">{{info.extent}}</span>' +
-                            '    </div>' +
-                            '    <div layout="row" ng-repeat="layer in info.layers">' +
-                            '       <span flex="30">Layer</span><span flex="70">{{layer.title}}</span>' +
-                            '    </div>' +
-                            '    </md-list>' +
-                            '  </md-dialog-content>' +
-                            '  <md-dialog-actions>' +
-                            '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                            '      Close' +
-                            '    </md-button>' +
-                            '  </md-dialog-actions>' +
-                            '</md-dialog>',
+              '<md-dialog aria-label="List dialog">' +
+              '  <md-dialog-content layout="column" layout-padding>' +
+              '    <md-list>' +
+              '    <div layout="row">' +
+              '       <span flex="30">Abstract</span><span flex="70">{{info.abstract}}</span>' +
+              '    </div>' +
+              '    <div layout="row">' +
+              '       <span flex="30">Thumbnail</span><span flex="70">{{info.thumbnail}}</span>' +
+              '    </div>' +
+              '    <div layout="row">' +
+              '       <span flex="30">Extent</span><span flex="70">{{info.extent}}</span>' +
+              '    </div>' +
+              '    <div layout="row" ng-repeat="layer in info.layers">' +
+              '       <span flex="30">Layer</span><span flex="70">{{layer.title}}</span>' +
+              '    </div>' +
+              '    </md-list>' +
+              '  </md-dialog-content>' +
+              '  <md-dialog-actions>' +
+              '    <md-button ng-click="closeDialog()" class="md-primary">' +
+              '      Close' +
+              '    </md-button>' +
+              '  </md-dialog-actions>' +
+              '</md-dialog>',
             locals: {
-              info: $scope.info
+              info: $scope.info,
             },
-            controller: DialogController
+            controller: DialogController,
           });
 
           function DialogController($scope, $mdDialog, info) {
@@ -287,10 +325,10 @@ export default {
               $scope.closeDialog = function () {
                 $mdDialog.hide();
               };
-            }
+            },
           });
         };
-      } catch (ex) { }
+      } catch (ex) {}
 
       /**
        * @ngdoc method
@@ -310,11 +348,11 @@ export default {
        * @param {object} composition Selected composition
        */
       $scope.edit = function (composition) {
-        Composition.loadCompositionParser(composition).then(() => {
-          $rootScope.$broadcast('StatusCreator.open', composition);
-        }).catch(() => {
-
-        });
+        Composition.loadCompositionParser(composition)
+          .then(() => {
+            $rootScope.$broadcast('StatusCreator.open', composition);
+          })
+          .catch(() => {});
       };
 
       /**
@@ -330,17 +368,28 @@ export default {
       };
 
       const extendChangeDebouncer = {};
-      $scope.$on('map.extent_changed', utils.debounce((event, data, b) => {
-        if (layoutService.mainpanel != 'composition_browser' && layoutService.mainpanel != 'composition') {
-          return;
-        }
-        if ($scope.filterByExtent) {
-          loadCompositionsForAllEndpoints();
-        }
-      }, 400, false, extendChangeDebouncer));
+      $scope.$on(
+        'map.extent_changed',
+        utils.debounce(
+          (event, data, b) => {
+            if (
+              layoutService.mainpanel != 'composition_browser' &&
+              layoutService.mainpanel != 'composition'
+            ) {
+              return;
+            }
+            if ($scope.filterByExtent) {
+              loadCompositionsForAllEndpoints();
+            }
+          },
+          400,
+          false,
+          extendChangeDebouncer
+        )
+      );
 
       function loadCompositionsForAllEndpoints() {
-        endpointsService.endpoints.forEach(ds => {
+        endpointsService.endpoints.forEach((ds) => {
           $scope.loadCompositions(ds);
         });
       }
@@ -362,13 +411,19 @@ export default {
       };
 
       function shareDialogBootstrap($event) {
-        const previousDialog = layoutService.contentWrapper.querySelector('.composition-share-dialog');
+        const previousDialog = layoutService.contentWrapper.querySelector(
+          '.composition-share-dialog'
+        );
         if (previousDialog) {
           previousDialog.parentNode.removeChild(previousDialog);
         }
-        const el = angular.element('<div hs.compositions.share_dialog_directive></div>');
+        const el = angular.element(
+          '<div hs.compositions.share_dialog_directive></div>'
+        );
         $compile(el)($scope);
-        layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+        layoutService.contentWrapper
+          .querySelector('.hs-dialog-area')
+          .appendChild(el[0]);
       }
 
       /**
@@ -390,12 +445,18 @@ export default {
       };
 
       function infoDialogBootstrap() {
-        const previousDialog = layoutService.contentWrapper.querySelector('.hs-composition-info-dialog');
+        const previousDialog = layoutService.contentWrapper.querySelector(
+          '.hs-composition-info-dialog'
+        );
         if (previousDialog) {
           previousDialog.parentNode.removeChild(previousDialog);
         }
-        const el = angular.element('<div hs.compositions.info_dialog_directive></div>');
-        layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+        const el = angular.element(
+          '<div hs.compositions.info_dialog_directive></div>'
+        );
+        layoutService.contentWrapper
+          .querySelector('.hs-dialog-area')
+          .appendChild(el[0]);
         $compile(el)($scope);
       }
 
@@ -407,9 +468,9 @@ export default {
        * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
        */
       $scope.startLoadComposition = function (record) {
-        Composition.loadCompositionParser(record).then(_ => { }).catch(_ => {
-
-        });
+        Composition.loadCompositionParser(record)
+          .then((_) => {})
+          .catch((_) => {});
       };
 
       /**
@@ -434,11 +495,11 @@ export default {
         $scope.overwriteModalVisible = false;
       };
 
-      $scope.addCompositionUrl = function(url) {
+      $scope.addCompositionUrl = function (url) {
         if (compositionParser.composition_edited == true) {
           $rootScope.$broadcast('loadComposition.notSaved', url);
         } else {
-          compositionsService.loadComposition(url, true).then(_ => {
+          compositionsService.loadComposition(url, true).then((_) => {
             $scope.addCompositionUrlVisible = false;
           });
         }
@@ -458,7 +519,7 @@ export default {
 
       $scope.handleFileSelect = function (evt) {
         const files = evt.target.files; // FileList object
-        for (var i = 0, f; f = files[i]; i++) {
+        for (var i = 0, f; (f = files[i]); i++) {
           if (!f.type.match('application/json')) {
             continue;
           }
@@ -474,7 +535,9 @@ export default {
       $scope.datasetSelect = Composition.datasetSelect;
 
       $scope.$on('compositions.composition_deleted', (event, composition) => {
-        const deleteDialog = layoutService.contentWrapper.querySelector('.hs-composition-delete-dialog');
+        const deleteDialog = layoutService.contentWrapper.querySelector(
+          '.hs-composition-delete-dialog'
+        );
         if (deleteDialog) {
           deleteDialog.parentNode.remove(deleteDialog);
         }
@@ -493,9 +556,15 @@ export default {
       function loadUnsavedDialogBootstrap(url, title) {
         const dialog_id = 'hs-composition-overwrite-dialog';
         $scope.composition_name_to_be_loaded = title;
-        if (layoutService.contentWrapper.querySelector('.' + dialog_id) == null) {
-          const el = angular.element('<div hs.compositions.overwrite_dialog_directive></span>');
-          layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+        if (
+          layoutService.contentWrapper.querySelector('.' + dialog_id) == null
+        ) {
+          const el = angular.element(
+            '<div hs.compositions.overwrite_dialog_directive></span>'
+          );
+          layoutService.contentWrapper
+            .querySelector('.hs-dialog-area')
+            .appendChild(el[0]);
           $compile(el)($scope);
         } else {
           $scope.overwriteModalVisible = true;
@@ -512,7 +581,10 @@ export default {
       };
 
       $scope.$on('core.mainpanel_changed', (event) => {
-        if (layoutService.mainpanel === 'composition_browser' || layoutService.mainpanel === 'composition') {
+        if (
+          layoutService.mainpanel === 'composition_browser' ||
+          layoutService.mainpanel === 'composition'
+        ) {
           loadCompositionsForAllEndpoints();
         }
       });
@@ -539,7 +611,6 @@ export default {
       }
 
       $scope.$emit('scope_loaded', 'Compositions');
-    }
-  ]
+    },
+  ],
 };
-
