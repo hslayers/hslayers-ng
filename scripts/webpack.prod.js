@@ -22,7 +22,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: false,
+  devtool: 'source-map',
   output: {
     // Add a chunkhash to file name so it will not be cached by browsers when content changed
     filename: 'hslayers-ng.js',
@@ -38,6 +38,7 @@ module.exports = merge(common, {
       // JS minifier/uglifier
       new TerserPlugin({
         parallel: true,
+        sourceMap: true,
         // Remove comments as well
         terserOptions: { output: { comments: false } }
       }),
