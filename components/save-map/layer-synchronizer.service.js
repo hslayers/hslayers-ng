@@ -8,7 +8,8 @@ export default [
   'config',
   'hs.map.service',
   'hs.laymanService',
-  function (Core, utils, config, hsMap, laymanService) {
+  'hs.common.endpointsService',
+  function (Core, utils, config, hsMap, laymanService, endpointsService) {
     const me = this;
     angular.extend(me, {
       syncedLayers: [],
@@ -26,6 +27,7 @@ export default [
           });
         });
         me.crs = map.getView().getProjection().getCode();
+        laymanService.crs = me.crs;
       },
 
       /**
@@ -64,12 +66,12 @@ export default [
        * Get features from Layman endpoint as WFS string, parse and add
        * them to Openlayers VectorSource
        * @memberof hs.layerSynchronizerService
-       * @function getLayerName
+       * @function pull
        * @param {Ol.layer} layer Layer to get Layman friendly name for
        * @param {Ol.source} source Openlayers VectorSource to store features in
        */
       pull(layer, source) {
-        (config.datasources || [])
+        (endpointsService.endpoints || [])
           .filter((ds) => ds.type == 'layman')
           .forEach((ds) => {
             layer.set('hs-layman-synchronizing', true);
@@ -95,7 +97,7 @@ export default [
                   sync([], [e.target || e], []);
                 }
                 function sync(inserted, updated, deleted) {
-                  (config.datasources || [])
+                  (endpointsService.endpoints || [])
                     .filter((ds) => ds.type == 'layman')
                     .forEach((ds) => {
                       layer.set('hs-layman-synchronizing', true);

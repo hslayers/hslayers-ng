@@ -6,7 +6,8 @@ export default [
   'hs.map.service',
   '$timeout',
   '$log',
-  function (utils, $http, config, hsMap, $timeout, $log) {
+  'hs.common.endpointsService',
+  function (utils, $http, config, hsMap, $timeout, $log, endpointsService) {
     const me = this;
     angular.extend(me, {
       /**
@@ -100,10 +101,14 @@ export default [
         });
       },
 
+      getLayerName(layer) {
+        return layer.get('title').toLowerCase().replaceAll(' ', '');
+      },
+
       /**
        * Send all features to Layman endpoint as WFS string
        * @memberof hs.layerSynchronizerService
-       * @function getLayerName
+       * @function push
        * @param {Ol.layer} layer Layer to get Layman friendly name for
        * get features
        */
@@ -113,7 +118,7 @@ export default [
         }
         const f = new GeoJSON();
         const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
-        (config.datasources || [])
+        (endpointsService.endpoints || [])
           .filter((ds) => ds.type == 'layman')
           .forEach((ds) => {
             layer.set('hs-layman-synchronizing', true);

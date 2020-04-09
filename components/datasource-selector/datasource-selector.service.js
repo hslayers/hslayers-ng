@@ -56,7 +56,9 @@ export default [
     this.queryCatalogs = function () {
       mapService.clearExtentLayer();
       endpointsService.endpoints.forEach((endpoint) => {
-        endpoint.datasourcePaging.start = 0;
+        if (endpoint.datasourcePaging) {
+          endpoint.datasourcePaging.start = 0;
+        }
         me.queryCatalog(endpoint);
       });
     };

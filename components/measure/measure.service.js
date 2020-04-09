@@ -109,12 +109,14 @@ export default [
      * @description Stop measuring interaction in app
      */
     this.deactivateMeasuring = function () {
-      map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
-      map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
-      map.getViewport().removeEventListener('touchend', mouseMoveHandler);
+      OlMap.loaded().then((m) => {
+        map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
+        map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
+        map.getViewport().removeEventListener('touchend', mouseMoveHandler);
 
-      map.removeInteraction(me.draw);
-      map.removeLayer(me.measureVector);
+        map.removeInteraction(me.draw);
+        map.removeLayer(me.measureVector);
+      });
     };
 
     /**
