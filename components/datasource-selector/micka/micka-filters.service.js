@@ -25,8 +25,8 @@ export default [
     me.otnKeywords = [];
 
     if (
-      config.datasources &&
-      config.datasources.filter((ds) => ds.url.indexOf('opentnet.eu') > -1)
+      endpointsService.endpoints &&
+      endpointsService.endpoints.filter((ds) => ds.url.indexOf('opentnet.eu') > -1)
         .length > 0
     ) {
       $http({
