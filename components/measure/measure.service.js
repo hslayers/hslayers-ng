@@ -109,7 +109,7 @@ export default [
      * @description Stop measuring interaction in app
      */
     this.deactivateMeasuring = function () {
-      OlMap.loaded().then((m) => {
+      OlMap.loaded().then((map) => {
         map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
         map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
         map.getViewport().removeEventListener('touchend', mouseMoveHandler);
