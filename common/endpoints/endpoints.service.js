@@ -31,6 +31,7 @@ export default ['config', 'hs.common.laymanService', function (config, laymanSer
             itemsPerPage: getItemsPerPageConfig(ds)
           },
           user: ds.user,
+          liferayProtocol: ds.liferayProtocol,
           originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: laymanService.getCurrentUserIfNeeded
         };

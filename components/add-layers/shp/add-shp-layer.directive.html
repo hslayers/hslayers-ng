@@ -6,7 +6,7 @@
                 <span class="input-group-text control-label" translate>Save to</span>
             </div>
             <select class="form-control" ng-model="vm.endpoint">
-                <option ng-repeat="endpoint in vm.endpoints" ng-value="endpoint">{{endpoint.name}}</option>
+                <option ng-repeat="endpoint in vm.endpointsService.endpoints | forShapeFileUpload" ng-value="endpoint">{{endpoint.title}}</option>
             </select>
         </div>
     </div>

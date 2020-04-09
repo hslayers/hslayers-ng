@@ -1,12 +1,14 @@
 import '../../styles/styles.module';
 import '../../save-map/save-map.module';
+import '../../../common/endpoints/endpoints.module';
 import addLayersShpService from './add-layers-shp.service';
+import forShapefileUploadFilter from './for-shapefile-upload.filter';
 
 /**
  * @namespace hs.addLayersShp
  * @memberOf hs
  */
-angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs.addLayersWms'])
+angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs.addLayersWms', 'hs.common.endpoints'])
 /**
     * @memberof hs.ows
     * @ngdoc directive
@@ -60,8 +62,8 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
     * @ngdoc controller
     * @name HsAddLayersShpController
     */
-  .controller('HsAddLayersShpController', ['hs.addLayersShp.service', 'hs.layout.service', 'config', 'hs.laymanService', 'hs.addLayersWms.addLayerService', '$timeout',
-    function (service, layoutService, config, laymanService, addLayerService, $timeout) {
+  .controller('HsAddLayersShpController', ['hs.addLayersShp.service', 'hs.layout.service', 'config', 'hs.laymanService', 'hs.addLayersWms.addLayerService', '$timeout', 'hs.common.endpointsService', '$scope',
+    function (service, layoutService, config, laymanService, addLayerService, $timeout, endpointsService, $scope) {
       const vm = this;
       vm.srs = 'EPSG:4326';
       vm.title = '';
@@ -69,21 +71,29 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
       vm.files = null;
       vm.sld = null;
       vm.errorDetails = {};
+      vm.endpoint = null;
       vm.loaderImage = require('../../../img/ajax-loader.gif');
 
-      vm.endpoints = (config.datasources || []).filter(ds => ds.type == 'layman').map(
-        ds => {
-          return {
-            type: 'layman',
-            name: 'Layman',
-            url: ds.url,
-            user: ds.user
-          };
-        });
+      vm.endpointsService = endpointsService;
 
-      if (vm.endpoints.length > 0) {
-        vm.endpoint = vm.endpoints[0];
-      }
+      $scope.$watch(
+        () => {
+          return endpointsService.endpoints;
+        },
+        (value) => {
+          if (value && vm.endpoint === null && value.length > 0) {
+            const laymans = value.filter((ep) => ep.type == 'layman');
+            if (laymans.length > 0) {
+              vm.endpoint = laymans[0];
+            } else {
+              vm.endpoint = value[0];
+            }
+            if (vm.endpoint && vm.endpoint.type == 'layman') {
+              vm.endpoint.getCurrentUserIfNeeded();
+            }
+          }
+        }
+      );
 
       function describeNewLayer(endpoint, layerName) {
         return new Promise((resolve, reject) => {
@@ -125,4 +135,8 @@ angular.module('hs.addLayersShp', ['hs.styles', 'hs.widgets', 'hs.save-map', 'hs
         });
       };
     }
-  ]);
+  ])
+  
+  
+  .filter('forShapeFileUpload', forShapefileUploadFilter);
+;
