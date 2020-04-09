@@ -163,20 +163,22 @@ export default [
             options.innerElement.replace('#', '')
           );
         }
+        OlMap.loaded().then((map) => {
+          if (angular.isDefined(options.parent)) {
+            me.sizeOptions.selector = element.parent();
+            me.initSizeListeners();
+            me.updateElementSize();
+          } else if (angular.isDefined(options.element)) {
+            me.sizeOptions.selector = options.element;
+            me.initSizeListeners();
+            me.updateElementSize();
+          } else {
+            me.initSizeListeners();
+            me.updateMapSize();
+          }
 
-        if (angular.isDefined(options.parent)) {
-          me.sizeOptions.selector = element.parent();
-          me.initSizeListeners();
-          me.updateElementSize();
-        } else if (angular.isDefined(options.element)) {
-          me.sizeOptions.selector = options.element;
-          me.initSizeListeners();
-          me.updateElementSize();
-        } else {
-          me.initSizeListeners();
-          me.updateMapSize();
-        }
-        me.initCalled = true;
+          me.initCalled = true;
+        });
       },
       /**
        * @ngdoc method
@@ -338,11 +340,9 @@ export default [
           angular.isUndefined($window.getLRUser) &&
           angular.isUndefined(me.missingLRFunctionsWarned)
         ) {
-          if (console) {
-            $log.warn(
-              'window.getLRUser function needs to be defined, which usually comes from liferay.'
-            );
-          }
+          $log.warn(
+            'window.getLRUser function needs to be defined, which usually comes from liferay.'
+          );
           me.missingLRFunctionsWarned = true;
         }
         if (
