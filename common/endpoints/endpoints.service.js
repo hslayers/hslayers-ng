@@ -13,11 +13,13 @@ export default [
 
     angular.extend(me, {
       endpoints: [
-        {
-          type: 'statusmanager',
-          title: 'Status manager',
-          url: config.status_manager_url,
-        },
+        ...(config.status_manager_url
+          ? {
+              type: 'statusmanager',
+              title: 'Status manager',
+              url: config.status_manager_url,
+            }
+          : []),
         ...(config.datasources || []).map((ds) => {
           return {
             url: ds.url,
