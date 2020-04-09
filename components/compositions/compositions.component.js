@@ -10,9 +10,9 @@ export default {
   }],
   controller: ['$scope', 'Core', 'hs.map.service', 'hs.compositions.service',
     'hs.compositions.service_parser', '$window', 'config', '$compile',
-    'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService', 'hs.utils.service',
+    'hs.compositions.mickaService', '$rootScope', 'hs.layout.service', 'hs.common.endpointsService', 'hs.utils.service', 'hs.compositions.mapService',
     function ($scope, Core, hsMap, Composition, compositionParser, $window, config,
-      $compile, mickaEndpointService, $rootScope, layoutService, endpointsService, utils) {
+      $compile, mickaEndpointService, $rootScope, layoutService, endpointsService, utils, mapService) {
       $scope.CS = Composition;
       $scope.data = Composition.data;
       $scope.config = config;
@@ -326,7 +326,7 @@ export default {
        * @description Highlight (or dim) composition, toogle visual state of composition extent on map
        */
       $scope.highlightComposition = function (composition, state) {
-        Composition.highlightComposition(composition, state);
+        mapService.highlightComposition(composition, state);
       };
 
       const extendChangeDebouncer = {};
