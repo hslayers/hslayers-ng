@@ -154,6 +154,9 @@ export default {
         },
 
         isAllowed() {
+          if ($scope.endpoint === null) {
+            return false;
+          }
           if ($scope.endpoint.type == 'statusmanager') {
             return !Core.isAuthorized();
           } else if ($scope.endpoint.type == 'layman') {
