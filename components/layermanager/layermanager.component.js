@@ -2,20 +2,47 @@ import VectorLayer from 'ol/layer/Vector';
 import {Vector} from 'ol/source';
 
 export default {
-  template: ['config', (config) => {
-    if (config.design == 'md') {
-      return require('components/layermanager/partials/layermanagermd.html');
-    } else {
-      return require('components/layermanager/partials/layermanager.html');
-    }
-  }],
-  controller: ['$scope', 'Core', '$compile', 'hs.utils.service',
-    'hs.utils.layerUtilsService', 'config', 'hs.map.service',
-    'hs.layermanager.service', '$rootScope', 'hs.layermanager.WMSTservice',
-    'hs.legend.service', 'hs.layout.service', 'hs.layerEditor.sublayerService',
+  template: [
+    'config',
+    (config) => {
+      if (config.design == 'md') {
+        return require('components/layermanager/partials/layermanagermd.html');
+      } else {
+        return require('components/layermanager/partials/layermanager.html');
+      }
+    },
+  ],
+  controller: [
+    '$scope',
+    'Core',
+    '$compile',
+    'hs.utils.service',
+    'hs.utils.layerUtilsService',
+    'config',
+    'hs.map.service',
+    'hs.layermanager.service',
+    '$rootScope',
+    'hs.layermanager.WMSTservice',
+    'hs.legend.service',
+    'hs.layout.service',
+    'hs.layerEditor.sublayerService',
     'hs.layerSynchronizerService',
-    function ($scope, Core, $compile, utils, layerUtils, config, OlMap,
-      LayMan, $rootScope, WMST, legendService, layoutService, subLayerService, layerSynchronizerService) {
+    function (
+      $scope,
+      Core,
+      $compile,
+      utils,
+      layerUtils,
+      config,
+      OlMap,
+      LayMan,
+      $rootScope,
+      WMST,
+      legendService,
+      layoutService,
+      subLayerService,
+      layerSynchronizerService
+    ) {
       $scope.LayMan = LayMan;
       $scope.data = LayMan.data;
       $scope.Core = Core;
@@ -35,7 +62,8 @@ export default {
         const index = layer.layer.get('position');
         const layers = OlMap.map.getLayers();
         let toIndex = index;
-        if (direction) {// upwards
+        if (direction) {
+          // upwards
           const max = layers.getLength() - 1;
           if (index < max) {
             if ($event.shiftKey) {
@@ -44,7 +72,8 @@ export default {
               toIndex = index + 1;
             }
           }
-        } else {//downwards
+        } else {
+          //downwards
           let min;
           for (let i = 0; i < layers.getLength(); i++) {
             if (layers.item(i).get('base') != true) {
@@ -94,17 +123,65 @@ export default {
         setLayerStyle(layer);
       };
 
-      $scope.icons = ['bag1.svg', 'banking4.svg', 'bar.svg', 'beach17.svg', 'bicycles.svg', 'building103.svg', 'bus4.svg', 'cabinet9.svg', 'camping13.svg', 'caravan.svg', 'church15.svg', 'church1.svg', 'coffee-shop1.svg', 'disabled.svg', 'favourite28.svg', 'football1.svg', 'footprint.svg', 'gift-shop.svg', 'gps40.svg', 'gps41.svg', 'gps42.svg', 'gps43.svg', 'gps5.svg', 'hospital.svg', 'hot-air-balloon2.svg', 'information78.svg', 'library21.svg', 'location6.svg', 'luggage13.svg', 'monument1.svg', 'mountain42.svg', 'museum35.svg', 'park11.svg', 'parking28.svg', 'pharmacy17.svg', 'port2.svg', 'restaurant52.svg', 'road-sign1.svg', 'sailing-boat2.svg', 'ski1.svg', 'swimming26.svg', 'telephone119.svg', 'toilets2.svg', 'train-station.svg', 'university2.svg', 'warning.svg', 'wifi8.svg'];
+      $scope.icons = [
+        'bag1.svg',
+        'banking4.svg',
+        'bar.svg',
+        'beach17.svg',
+        'bicycles.svg',
+        'building103.svg',
+        'bus4.svg',
+        'cabinet9.svg',
+        'camping13.svg',
+        'caravan.svg',
+        'church15.svg',
+        'church1.svg',
+        'coffee-shop1.svg',
+        'disabled.svg',
+        'favourite28.svg',
+        'football1.svg',
+        'footprint.svg',
+        'gift-shop.svg',
+        'gps40.svg',
+        'gps41.svg',
+        'gps42.svg',
+        'gps43.svg',
+        'gps5.svg',
+        'hospital.svg',
+        'hot-air-balloon2.svg',
+        'information78.svg',
+        'library21.svg',
+        'location6.svg',
+        'luggage13.svg',
+        'monument1.svg',
+        'mountain42.svg',
+        'museum35.svg',
+        'park11.svg',
+        'parking28.svg',
+        'pharmacy17.svg',
+        'port2.svg',
+        'restaurant52.svg',
+        'road-sign1.svg',
+        'sailing-boat2.svg',
+        'ski1.svg',
+        'swimming26.svg',
+        'telephone119.svg',
+        'toilets2.svg',
+        'train-station.svg',
+        'university2.svg',
+        'warning.svg',
+        'wifi8.svg',
+      ];
 
       $scope.activateTheme = LayMan.activateTheme;
 
       /**
-             * @function toggleCurrentLayer
-             * @memberOf hs.layermanager.controller
-             * @description Opens detailed panel for manipulating selected layer and viewing metadata
-             * @param {object} layer Selected layer to edit or view - Wrapped layer object
-             * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
-             */
+       * @function toggleCurrentLayer
+       * @memberOf hs.layermanager.controller
+       * @description Opens detailed panel for manipulating selected layer and viewing metadata
+       * @param {object} layer Selected layer to edit or view - Wrapped layer object
+       * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
+       */
 
       $scope.setCurrentLayer = function (layer) {
         LayMan.currentLayer = layer;
@@ -117,10 +194,14 @@ export default {
         subLayerService.withChildren = layer.withChildren;
 
         if (WMST.layerIsWmsT(layer)) {
-          LayMan.currentLayer.time = new Date(layer.layer.getSource().getParams().TIME);
+          LayMan.currentLayer.time = new Date(
+            layer.layer.getSource().getParams().TIME
+          );
           LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
         }
-        const layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
+        const layerPanel = layoutService.contentWrapper.querySelector(
+          '.hs-layerpanel'
+        );
         const layerNode = document.getElementById(layer.idString());
         utils.insertAfter(layerPanel, layerNode);
         return false;
@@ -137,27 +218,35 @@ export default {
         }
       };
       /**
-           * @function removeLayer
-           * @memberOf hs.layermanager.controller
-           * @description Removes layer from map object
-           * @param {Ol.layer} layer Layer to remove
-           */
+       * @function removeLayer
+       * @memberOf hs.layermanager.controller
+       * @description Removes layer from map object
+       * @param {Ol.layer} layer Layer to remove
+       */
       $scope.removeLayer = function (layer) {
         map.removeLayer(layer);
       };
 
       /**
-             * @function removeAllLayers
-             * @memberOf hs.layermanager.controller
-             * @description Removes all layers which don't have 'removable' attribute set to false. If removal wasn´t confirmed display dialog first. Might reload composition again
-             * @param {Boolean} confirmed Whether removing was confirmed (by user/code), (true for confirmed, left undefined for not)
-             * @param {Boolean} loadComp Whether composition should be loaded again (true = reload composition, false = remove without reloading)
-             */
+       * @function removeAllLayers
+       * @memberOf hs.layermanager.controller
+       * @description Removes all layers which don't have 'removable' attribute set to false. If removal wasn´t confirmed display dialog first. Might reload composition again
+       * @param {Boolean} confirmed Whether removing was confirmed (by user/code), (true for confirmed, left undefined for not)
+       * @param {Boolean} loadComp Whether composition should be loaded again (true = reload composition, false = remove without reloading)
+       */
       $scope.removeAllLayers = function (confirmed, loadComp) {
         if (typeof confirmed == 'undefined') {
-          if (layoutService.contentWrapper.querySelector('.hs-remove-all-dialog') == null) {
-            const el = angular.element('<div hs.layermanager.remove_all_dialog_directive></div>');
-            layoutService.contentWrapper.querySelector('.hs-dialog-area').appendChild(el[0]);
+          if (
+            layoutService.contentWrapper.querySelector(
+              '.hs-remove-all-dialog'
+            ) == null
+          ) {
+            const el = angular.element(
+              '<div hs.layermanager.remove_all_dialog_directive></div>'
+            );
+            layoutService.contentWrapper
+              .querySelector('.hs-dialog-area')
+              .appendChild(el[0]);
             $compile(el)($scope);
           } else {
             $scope.removeAllModalVisible = true;
@@ -168,32 +257,38 @@ export default {
         LayMan.removeAllLayers();
 
         if (loadComp == true) {
-          $rootScope.$broadcast('compositions.load_composition', $scope.composition_id);
+          $rootScope.$broadcast(
+            'compositions.load_composition',
+            $scope.composition_id
+          );
         }
       };
 
       /**
-             * @function isLayerQueryable
-             * @memberOf hs.layermanager.controller
-             * @param {object} layer_container Selected layer - wrapped in layer object
-             * @description Test if layer is queryable (WMS layer with Info format)
-             */
+       * @function isLayerQueryable
+       * @memberOf hs.layermanager.controller
+       * @param {object} layer_container Selected layer - wrapped in layer object
+       * @description Test if layer is queryable (WMS layer with Info format)
+       */
       $scope.isLayerQueryable = function (layer_container) {
         layerUtils.isLayerQueryable(layer_container.layer);
       };
 
       /**
-             * @function toggleLayerEditor
-             * @memberOf hs.layermanager.controller
-             * @description Toggles Additional information panel for current layer.
-             * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-             */
+       * @function toggleLayerEditor
+       * @memberOf hs.layermanager.controller
+       * @description Toggles Additional information panel for current layer.
+       * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+       */
       $scope.toggleLayerEditor = function (layer) {
         if (LayMan.currentLayer != layer) {
           $scope.toggleCurrentLayer(layer);
           layer.settings = true;
         } else {
-          if (layer.sublayers && layer.settings || layer.settings && !layer.sublayers) {
+          if (
+            (layer.sublayers && layer.settings) ||
+            (layer.settings && !layer.sublayers)
+          ) {
             $scope.toggleCurrentLayer(layer);
           } else {
             layer.settings = !layer.settings;
@@ -212,7 +307,10 @@ export default {
           $scope.toggleCurrentLayer(layer);
           layer.sublayers = true;
         } else {
-          if (layer.sublayers && layer.settings || layer.sublayers && !layer.settings) {
+          if (
+            (layer.sublayers && layer.settings) ||
+            (layer.sublayers && !layer.settings)
+          ) {
             $scope.toggleCurrentLayer(layer);
           } else {
             layer.sublayers = !layer.sublayers;
@@ -228,30 +326,29 @@ export default {
         }
       };
       /**
-             * @function hasCopyright
-             * @memberOf hs.layermanager.controller
-             * @description Determines if layer has copyright information avaliable *
-             * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-             */
-      $scope.hasCopyright = function(layer) {
+       * @function hasCopyright
+       * @memberOf hs.layermanager.controller
+       * @description Determines if layer has copyright information avaliable *
+       * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+       */
+      $scope.hasCopyright = function (layer) {
         if (!LayMan.currentLayer) {
           return;
         } else {
           if (layer.layer.get('Attribution')) {
             const attr = layer.layer.get('Attribution');
-            return (attr.OnlineResource) ? true : false;
+            return attr.OnlineResource ? true : false;
           } else {
             return false;
           }
         }
       };
 
-
       /**
-             * @function hasBoxLayers
-             * @memberOf hs.layermanager.controller
-             * @description Test if box layers are loaded
-             */
+       * @function hasBoxLayers
+       * @memberOf hs.layermanager.controller
+       * @description Test if box layers are loaded
+       */
       $scope.hasBoxImages = function () {
         if (angular.isDefined($scope.data.box_layers)) {
           for (let i = 0; i < $scope.data.box_layers.length; i++) {
@@ -264,36 +361,42 @@ export default {
       };
 
       /**
-             * @function isLayerInResolutionInterval
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} lyr Selected layer
-             * @description Test if layer (WMS) resolution is within map resolution interval
-             */
+       * @function isLayerInResolutionInterval
+       * @memberOf hs.layermanager.controller
+       * @param {Ol.layer} lyr Selected layer
+       * @description Test if layer (WMS) resolution is within map resolution interval
+       */
       $scope.isLayerInResolutionInterval = LayMan.isLayerInResolutionInterval;
 
       /**
-             * @function layerLoaded
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Test if selected layer is loaded in map
-             */
+       * @function layerLoaded
+       * @memberOf hs.layermanager.controller
+       * @param {Ol.layer} layer Selected layer
+       * @description Test if selected layer is loaded in map
+       */
       $scope.layerLoaded = layerUtils.layerLoaded;
 
       /**
-             * @function layerValid
-             * @memberOf hs.layermanager.controller
-             * @param {Ol.layer} layer Selected layer
-             * @description Test if selected layer is valid (true for invalid)
-             */
+       * @function layerValid
+       * @memberOf hs.layermanager.controller
+       * @param {Ol.layer} layer Selected layer
+       * @description Test if selected layer is valid (true for invalid)
+       */
       $scope.layerValid = layerUtils.layerInvalid;
-
 
       $scope.setLayerTime = WMST.setLayerTime;
 
       $scope.$on('layer.removed', (event, layer) => {
-        if (angular.isObject(LayMan.currentLayer) && (LayMan.currentLayer.layer == layer)) {
-          const layerPanel = layoutService.contentWrapper.querySelector('.hs-layerpanel');
-          const layerNode = document.getElementsByClassName('hs-lm-mapcontentlist')[0];
+        if (
+          angular.isObject(LayMan.currentLayer) &&
+          LayMan.currentLayer.layer == layer
+        ) {
+          const layerPanel = layoutService.contentWrapper.querySelector(
+            '.hs-layerpanel'
+          );
+          const layerNode = document.getElementsByClassName(
+            'hs-lm-mapcontentlist'
+          )[0];
           utils.insertAfter(layerPanel, layerNode);
           LayMan.currentLayer = null;
         }
@@ -331,6 +434,6 @@ export default {
       OlMap.loaded().then(init);
 
       $scope.$emit('scope_loaded', 'LayerManager');
-    }
-  ]
+    },
+  ],
 };

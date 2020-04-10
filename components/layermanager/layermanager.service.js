@@ -1,104 +1,129 @@
-import {Tile, Group} from 'ol/layer';
-import ImageLayer from 'ol/layer/Image';
-import VectorLayer from 'ol/layer/Vector';
-import SparqlJson from 'hs.source.SparqlJson';
 import 'angular-socialshare';
-import {TileWMS, WMTS} from 'ol/source';
-import {ImageWMS, ImageArcGISRest} from 'ol/source';
-import {METERS_PER_UNIT} from 'ol/proj';
-import layermanagerComponent from './layermanager.component';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+import ImageLayer from 'ol/layer/Image';
+import SparqlJson from 'hs.source.SparqlJson';
+import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format';
+import layermanagerComponent from './layermanager.component';
+import {Group, Tile} from 'ol/layer';
+import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {METERS_PER_UNIT} from 'ol/proj';
+import {TileWMS, WMTS} from 'ol/source';
+import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
-
-export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.utils.layerUtilsService', 'config', 'hs.layermanager.WMSTservice', 'hs.layerEditorVectorLayer.service', 'hs.layermanager.metadata',
-  function ($rootScope, OlMap, Core, utils, layerUtils, config, WMST, vectorLayerService, metadata) {
+export default [
+  '$rootScope',
+  'hs.map.service',
+  'Core',
+  'hs.utils.service',
+  'hs.utils.layerUtilsService',
+  'config',
+  'hs.layermanager.WMSTservice',
+  'hs.layerEditorVectorLayer.service',
+  'hs.layermanager.metadata',
+  function (
+    $rootScope,
+    OlMap,
+    Core,
+    utils,
+    layerUtils,
+    config,
+    WMST,
+    vectorLayerService,
+    metadata
+  ) {
     const me = {};
 
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service#data
-        * @public
-        * @type {Object}
-        * @description Containg object for all properties which are shared with controllers.
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service#data
+     * @public
+     * @type {Object}
+     * @description Containg object for all properties which are shared with controllers.
+     */
     me.data = {};
 
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service.data#folders
-        * @public
-        * @type {Object}
-        * @description Folders object for structure of layers. Each level contain 5 properties:
-        * hsl_path {String}: Worded path to folder position in folders hiearchy.
-        * coded_path {String}: Path encoded in numbers
-        * layers {Array}: List of layers for current folder
-        * sub_folders {Array}: List of subfolders for current folder
-        * indent {Number}: Hiearchy level for current folder
-        * name {String}: Optional - only from indent 1, base folder is not named
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service.data#folders
+     * @public
+     * @type {Object}
+     * @description Folders object for structure of layers. Each level contain 5 properties:
+     * hsl_path {String}: Worded path to folder position in folders hiearchy.
+     * coded_path {String}: Path encoded in numbers
+     * layers {Array}: List of layers for current folder
+     * sub_folders {Array}: List of subfolders for current folder
+     * indent {Number}: Hiearchy level for current folder
+     * name {String}: Optional - only from indent 1, base folder is not named
+     */
     me.data.folders = {
       //TODO: need to describe how hsl_path works here
       hsl_path: '',
       coded_path: '0-',
       layers: [],
       sub_folders: [],
-      indent: 0
+      indent: 0,
     };
 
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service.data#layers
-        * @public
-        * @type {Array}
-        * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service.data#layers
+     * @public
+     * @type {Array}
+     * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
+     */
     me.data.layers = [];
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service.data#baselayers
-        * @public
-        * @type {Array}
-        * @description List of all baselayers loaded in layer manager.
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service.data#baselayers
+     * @public
+     * @type {Array}
+     * @description List of all baselayers loaded in layer manager.
+     */
     me.data.baselayers = [];
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service.data#terrainlayers
-        * @public
-        * @type {Array}
-        * @description List of all cesium terrain layers loaded in layer manager.
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service.data#terrainlayers
+     * @public
+     * @type {Array}
+     * @description List of all cesium terrain layers loaded in layer manager.
+     */
     me.data.terrainlayers = [];
     /**
-        * @ngdoc property
-        * @name hs.layermanager.service.data#baselayersVisible
-        * @public
-        * @type {Boolean}
-        * @description Store if baselayers are visible (more precisely one of baselayers)
-        */
+     * @ngdoc property
+     * @name hs.layermanager.service.data#baselayersVisible
+     * @public
+     * @type {Boolean}
+     * @description Store if baselayers are visible (more precisely one of baselayers)
+     */
     me.data.baselayersVisible = true;
 
     //Property for pointer to main map object
     let map;
 
     /**
-         * @ngdoc method
-         * @name hs.layermanager.service#layerAdded
-         * @private
-         * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
-         * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
-         */
+     * @ngdoc method
+     * @name hs.layermanager.service#layerAdded
+     * @private
+     * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
+     * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
+     */
     function layerAdded(e) {
       const layer = e.element;
       checkLayerHealth(layer);
-      if (layer.get('show_in_manager') != null && layer.get('show_in_manager') == false) {
+      if (
+        layer.get('show_in_manager') != null &&
+        layer.get('show_in_manager') == false
+      ) {
         return;
       }
       //WMST.layerIsWmsT(layer);
       loadingEvents(layer);
       layer.on('change:visible', layerVisibilityChanged);
-      if (layerUtils.isLayerVectorLayer(layer) && layer.get('cluster') && layer.get('declutter')) {
+      if (
+        layerUtils.isLayerVectorLayer(layer) &&
+        layer.get('cluster') &&
+        layer.get('declutter')
+      ) {
         layer.set('declutter', false);
       }
       if (layerUtils.isLayerVectorLayer(layer) && layer.get('cluster')) {
@@ -108,12 +133,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         layer.set('position', getMyLayerPosition(layer));
       }
       /**
-            * @ngdoc property
-            * @name hs.layermanager.service#layer
-            * @private
-            * @type {Object}
-            * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
-            */
+       * @ngdoc property
+       * @name hs.layermanager.service#layer
+       * @private
+       * @type {Object}
+       * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
+       */
       const new_layer = {
         title: layerUtils.getLayerTitle(layer),
         layer: layer,
@@ -124,7 +149,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         uid: utils.generateUuid(),
         idString() {
           return 'layer' + (this.coded_path || '') + (this.uid || '');
-        }
+        },
       };
 
       WMST.setupTimeLayerIfNeeded(new_layer);
@@ -135,13 +160,13 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
           new_layer.legends = layer.get('legends');
         }
         me.data.layers.push(new_layer);
-        if (layer.get('queryCapabilities') != false){
+        if (layer.get('queryCapabilities') != false) {
           metadata.fillMetadata(layer);
         }
       } else {
         new_layer.active = layer.getVisible();
-        new_layer.thumbnail = getImage(layer),
-        me.data.baselayers.push(new_layer);
+        (new_layer.thumbnail = getImage(layer)),
+          me.data.baselayers.push(new_layer);
       }
 
       if (layer.getVisible() && layer.get('base')) {
@@ -154,11 +179,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getImage
-         * @param {layer} layer Base layer added to map
-         * @description Function for adding baselayer thumbnail visible in basemap gallery.
-         */
+     * @ngdoc method
+     * @name hs.layermanager.service#getImage
+     * @param {layer} layer Base layer added to map
+     * @description Function for adding baselayer thumbnail visible in basemap gallery.
+     */
     function getImage(layer) {
       const thumbnail = layer.get('thumbnail');
       if (thumbnail) {
@@ -167,7 +192,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         } else {
           return require('img/' + thumbnail);
         }
-
       } else {
         return require('img/default.png');
       }
@@ -200,13 +224,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       }
     }
 
-
     /**
-         * (PRIVATE) Get layer by its title
-         * @function getLayerByTitle
-         * @memberOf hs.layermanager.service
-         * @param {Object} Hslayers layer
-         */
+     * (PRIVATE) Get layer by its title
+     * @function getLayerByTitle
+     * @memberOf hs.layermanager.service
+     * @param {Object} Hslayers layer
+     */
     function getLayerByTitle(title) {
       let tmp;
       angular.forEach(me.data.layers, (layer) => {
@@ -220,15 +243,15 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     me.getLayerByTitle = getLayerByTitle;
 
     /**
-         * @ngdoc method
-         * @name hs.layermanager.service#getLayerDescriptorForOlLayer
-         * @private
-         * @param {Ol.layer} Layer to get layer title
-         * @returns {Object} Layer container which is used in layer-list directive
-         * @description Get layer container object for OL layer
-         */
+     * @ngdoc method
+     * @name hs.layermanager.service#getLayerDescriptorForOlLayer
+     * @private
+     * @param {Ol.layer} Layer to get layer title
+     * @returns {Object} Layer container which is used in layer-list directive
+     * @description Get layer container object for OL layer
+     */
     me.getLayerDescriptorForOlLayer = function (layer) {
-      const tmp = me.data.layers.filter(l => l.layer == layer);
+      const tmp = me.data.layers.filter((l) => l.layer == layer);
       if (tmp.length > 0) {
         return tmp[0];
       }
@@ -236,14 +259,17 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     };
 
     /**
-         * @ngdoc method
-         * @name hs.layermanager.service#populateFolders
-         * @private
-         * @param {Object} lyr Layer to add into folder structure
-         * @description Place layer into layer manager folder structure based on path property hsl-path of layer
-         */
+     * @ngdoc method
+     * @name hs.layermanager.service#populateFolders
+     * @private
+     * @param {Object} lyr Layer to add into folder structure
+     * @description Place layer into layer manager folder structure based on path property hsl-path of layer
+     */
     function populateFolders(lyr) {
-      if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
+      if (
+        angular.isDefined(lyr.get('path')) &&
+        lyr.get('path') !== 'undefined'
+      ) {
         const path = lyr.get('path') || '';
         const parts = path.split('/');
         let curfolder = me.data.folders;
@@ -261,8 +287,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
               indent: i,
               layers: [],
               name: parts[i],
-              hsl_path: curfolder.hsl_path + (curfolder.hsl_path != '' ? '/' : '') + parts[i],
-              coded_path: curfolder.coded_path + curfolder.sub_folders.length + '-'
+              hsl_path:
+                curfolder.hsl_path +
+                (curfolder.hsl_path != '' ? '/' : '') +
+                parts[i],
+              coded_path:
+                curfolder.coded_path + curfolder.sub_folders.length + '-',
             };
             curfolder.sub_folders.push(new_folder);
             curfolder = new_folder;
@@ -281,14 +311,17 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-         * @ngdoc method
-         * @name hs.layermanager.service#cleanFolders
-         * @private
-         * @param {ol.Layer} lyr Layer to remove from layer folder
-         * @description Remove layer from layer folder structure a clean empty folder
-         */
+     * @ngdoc method
+     * @name hs.layermanager.service#cleanFolders
+     * @private
+     * @param {ol.Layer} lyr Layer to remove from layer folder
+     * @description Remove layer from layer folder structure a clean empty folder
+     */
     function cleanFolders(lyr) {
-      if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
+      if (
+        angular.isDefined(lyr.get('path')) &&
+        lyr.get('path') !== 'undefined'
+      ) {
         const path = lyr.get('path');
         const parts = path.split('/');
         let curfolder = me.data.folders;
@@ -302,7 +335,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
 
         curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
         for (var i = parts.length; i > 0; i--) {
-          if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
+          if (
+            curfolder.layers.length == 0 &&
+            curfolder.sub_folders.length == 0
+          ) {
             var newfolder = me.data.folders;
             if (i > 1) {
               for (var j = 0; j < i - 1; j++) {
@@ -331,12 +367,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-         * (PRIVATE)
-         * @function layerRemoved
-         * @memberOf hs.layermanager.service
-         * @description Callback function for removing layer. Clean layers variables
-         * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
-         */
+     * (PRIVATE)
+     * @function layerRemoved
+     * @memberOf hs.layermanager.service
+     * @description Callback function for removing layer. Clean layers variables
+     * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+     */
     function layerRemoved(e) {
       cleanFolders(e.element);
       for (var i = 0; i < me.data.layers.length; i++) {
@@ -357,11 +393,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-         * (PRIVATE)
-         * @function boxLayersInit
-         * @memberOf hs.layermanager.service
-         * @description Initilaze box layers and their starting active state
-         */
+     * (PRIVATE)
+     * @function boxLayersInit
+     * @memberOf hs.layermanager.service
+     * @description Initilaze box layers and their starting active state
+     */
     function boxLayersInit() {
       if (angular.isDefined(config.box_layers)) {
         me.data.box_layers = config.box_layers;
@@ -381,19 +417,22 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-         * @function changeLayerVisibility
-         * @memberOf hs.layermanager.service
-         * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
-         * @param {Boolean} visibility Visibility layer should have
-         * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
-         */
+     * @function changeLayerVisibility
+     * @memberOf hs.layermanager.service
+     * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
+     * @param {Boolean} visibility Visibility layer should have
+     * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
+     */
     me.changeLayerVisibility = function (visibility, layer) {
       layer.layer.setVisible(visibility);
       layer.visible = visibility;
       //Set the other layers in the same folder invisible
       if (visibility && layer.layer.get('exclusive') == true) {
         angular.forEach(me.data.layers, (other_layer) => {
-          if (other_layer.layer.get('path') == layer.layer.get('path') && other_layer != layer) {
+          if (
+            other_layer.layer.get('path') == layer.layer.get('path') &&
+            other_layer != layer
+          ) {
             other_layer.layer.setVisible(false);
             other_layer.visible = false;
           }
@@ -401,12 +440,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       }
     };
     /**
-         * @function changeBaseLayerVisibility
-         * @memberOf hs.layermanager.service
-         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
-         * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
-         * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
-         */
+     * @function changeBaseLayerVisibility
+     * @memberOf hs.layermanager.service
+     * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
+     * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
+     * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+     */
     me.changeBaseLayerVisibility = function ($event, layer) {
       if (angular.isUndefined(layer) || angular.isDefined(layer.layer)) {
         if (me.data.baselayersVisible == true) {
@@ -422,7 +461,10 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
               }
             }
             for (var i = 0; i < me.data.baselayers.length; i++) {
-              if (me.data.baselayers[i].layer && me.data.baselayers[i] == layer) {
+              if (
+                me.data.baselayers[i].layer &&
+                me.data.baselayers[i] == layer
+              ) {
                 me.data.baselayers[i].layer.setVisible(true);
                 me.data.baselayers[i].visible = true;
                 me.data.baselayers[i].active = true;
@@ -457,8 +499,12 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
       } else {
         for (var i = 0; i < me.data.baselayers.length; i++) {
-          if (angular.isDefined(me.data.baselayers[i].type) && me.data.baselayers[i].type == 'terrain') {
-            me.data.baselayers[i].active = me.data.baselayers[i].visible = (me.data.baselayers[i] == layer);
+          if (
+            angular.isDefined(me.data.baselayers[i].type) &&
+            me.data.baselayers[i].type == 'terrain'
+          ) {
+            me.data.baselayers[i].active = me.data.baselayers[i].visible =
+              me.data.baselayers[i] == layer;
           }
         }
       }
@@ -466,26 +512,30 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     };
 
     /**
-         * @function changeTerrainLayerVisibility
-         * @memberOf hs.layermanager.service
-         * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
-         * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
-         * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
-         */
+     * @function changeTerrainLayerVisibility
+     * @memberOf hs.layermanager.service
+     * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
+     * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
+     * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+     */
     me.changeTerrainLayerVisibility = function ($event, layer) {
       for (let i = 0; i < me.data.terrainlayers.length; i++) {
-        if (angular.isDefined(me.data.terrainlayers[i].type) && me.data.terrainlayers[i].type == 'terrain') {
-          me.data.terrainlayers[i].active = me.data.terrainlayers[i].visible = (me.data.terrainlayers[i] == layer);
+        if (
+          angular.isDefined(me.data.terrainlayers[i].type) &&
+          me.data.terrainlayers[i].type == 'terrain'
+        ) {
+          me.data.terrainlayers[i].active = me.data.terrainlayers[i].visible =
+            me.data.terrainlayers[i] == layer;
         }
       }
       $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
     };
 
     /**
-         * Update "position" property of layers, so layers could be correctly ordered in GUI
-         * @function updateLayerOrder
-         * @memberOf hs.layermanager.service
-         */
+     * Update "position" property of layers, so layers could be correctly ordered in GUI
+     * @function updateLayerOrder
+     * @memberOf hs.layermanager.service
+     */
     me.updateLayerOrder = function () {
       angular.forEach(me.data.layers, (my_layer) => {
         my_layer.layer.set('position', getMyLayerPosition(my_layer.layer));
@@ -493,11 +543,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
       });
     };
     /**
-         * (PRIVATE) Get position of selected layer in map layer order
-         * @function getMyLayerPosition
-         * @memberOf hs.layermanager.service
-         * @param {Ol.layer} layer Selected layer
-         */
+     * (PRIVATE) Get position of selected layer in map layer order
+     * @function getMyLayerPosition
+     * @memberOf hs.layermanager.service
+     * @param {Ol.layer} layer Selected layer
+     */
     function getMyLayerPosition(layer) {
       let pos = null;
       for (let i = 0; i < OlMap.map.getLayers().getLength(); i++) {
@@ -510,17 +560,26 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     /**
-             * (PRIVATE)
-             * @function removeAllLayers
-             * @memberOf hs.layermanager.service
-             * @description Remove all layers from map
-             */
+     * (PRIVATE)
+     * @function removeAllLayers
+     * @memberOf hs.layermanager.service
+     * @description Remove all layers from map
+     */
     me.removeAllLayers = function () {
       const to_be_removed = [];
       OlMap.map.getLayers().forEach((lyr) => {
-        if (angular.isUndefined(lyr.get('removable')) || lyr.get('removable') == true) {
-          if (angular.isUndefined(lyr.get('base')) || lyr.get('base') == false) {
-            if (angular.isUndefined(lyr.get('show_in_manager')) || lyr.get('show_in_manager') == true) {
+        if (
+          angular.isUndefined(lyr.get('removable')) ||
+          lyr.get('removable') == true
+        ) {
+          if (
+            angular.isUndefined(lyr.get('base')) ||
+            lyr.get('base') == false
+          ) {
+            if (
+              angular.isUndefined(lyr.get('show_in_manager')) ||
+              lyr.get('show_in_manager') == true
+            ) {
               to_be_removed.push(lyr);
             }
           }
@@ -532,11 +591,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     };
 
     /**
-         * @function activateTheme
-         * @memberOf hs.layermanager.service
-         * @description Show all layers of particular layer group (when groups are defined)
-         * @param {ol.layer.Group} theme Group layer to activate
-         */
+     * @function activateTheme
+     * @memberOf hs.layermanager.service
+     * @description Show all layers of particular layer group (when groups are defined)
+     * @param {ol.layer.Group} theme Group layer to activate
+     */
     me.activateTheme = function (theme) {
       let switchOn = true;
       if (theme.get('active') == true) {
@@ -558,11 +617,11 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     };
 
     /**
-         * @function loadingEvents
-         * @memberOf hs.layermanager.service
-         * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
-         * @param {ol.layer} layer Layer which is being added
-         */
+     * @function loadingEvents
+     * @memberOf hs.layermanager.service
+     * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
+     * @param {ol.layer} layer Layer which is being added
+     */
     function loadingEvents(layer) {
       const source = layer.getSource();
       source.loadCounter = 0;
@@ -606,7 +665,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
               $rootScope.$digest();
             }
           }
-
         });
         source.on('tileloadend', (event) => {
           source.loadCounter -= 1;
@@ -638,15 +696,18 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     }
 
     me.isWms = function (layer) {
-      return (utils.instOf(layer.getSource(), TileWMS) || utils.instOf(layer.getSource(), ImageWMS));
+      return (
+        utils.instOf(layer.getSource(), TileWMS) ||
+        utils.instOf(layer.getSource(), ImageWMS)
+      );
     };
 
     /**
-         * @function isLayerInResolutionInterval
-         * @memberOf hs.layermanager.service
-         * @param {Ol.layer} lyr Selected layer
-         * @description Test if layer (WMS) resolution is within map resolution interval
-         */
+     * @function isLayerInResolutionInterval
+     * @memberOf hs.layermanager.service
+     * @param {Ol.layer} lyr Selected layer
+     * @description Test if layer (WMS) resolution is within map resolution interval
+     */
     me.isLayerInResolutionInterval = function (lyr) {
       const src = lyr.getSource();
       if (me.isWms(lyr)) {
@@ -656,26 +717,29 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         const dpi = 25.4 / 0.28;
         const mpu = METERS_PER_UNIT[units];
         var cur_res = resolution * mpu * 39.37 * dpi;
-        return (lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution());
+        return (
+          lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution()
+        );
       } else {
         var cur_res = OlMap.map.getView().getResolution();
-        return lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution();
-
+        return (
+          lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
+        );
       }
     };
 
     let timer;
     /**
-         * (PRIVATE)
-         * @function init
-         * @memberOf hs.layermanager.service
-         * @description Initialization of needed controllers, run when map object is available
-         */
+     * (PRIVATE)
+     * @function init
+     * @memberOf hs.layermanager.service
+     * @description Initialization of needed controllers, run when map object is available
+     */
     function init() {
       map = OlMap.map;
       OlMap.map.getLayers().forEach((lyr) => {
         layerAdded({
-          element: lyr
+          element: lyr,
         });
       });
 
@@ -687,7 +751,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
         }
         timer = setTimeout(() => {
           for (let i = 0; i < me.data.layers.length; i++) {
-            me.data.layers[i].grayed = me.isLayerInResolutionInterval(me.data.layers[i].layer);
+            me.data.layers[i].grayed = me.isLayerInResolutionInterval(
+              me.data.layers[i].layer
+            );
           }
           if (!$rootScope.$$phase) {
             $rootScope.$digest();
@@ -702,5 +768,5 @@ export default ['$rootScope', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.
     OlMap.loaded().then(init);
 
     return me;
-  }
+  },
 ];
