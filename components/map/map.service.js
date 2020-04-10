@@ -24,7 +24,7 @@ import {
   ScaleLine,
   defaults as controlDefaults,
 } from 'ol/control';
-import {TileWMS, WMTS} from 'ol/source';
+import {TileWMS, XYZ} from 'ol/source';
 import {
   always as alwaysCondition,
   platformModifierKeyOnly as platformModifierKeyOnlyCondition,
@@ -420,43 +420,37 @@ export default [
       if (angular.isDefined(config.box_layers)) {
         angular.forEach(config.box_layers, (box) => {
           angular.forEach(box.get('layers'), (lyr) => {
-            if (!me.layerDuplicate(lyr)) {
-              lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
-              lyr.manuallyAdded = false;
-              if (utils.instOf(lyr.getSource(), ImageWMS)) {
-                me.proxifyLayerLoader(lyr, false);
-              }
-              if (utils.instOf(lyr.getSource(), TileWMS)) {
-                me.proxifyLayerLoader(lyr, true);
-              }
-              if (utils.instOf(lyr.getSource(), Vector)) {
-                me.getVectorType(lyr);
-              }
-              me.map.addLayer(lyr);
-            }
+            repopulateLayer(lyr);
           });
         });
       }
 
       if (angular.isDefined(config.default_layers)) {
         angular.forEach(config.default_layers, (lyr) => {
-          if (!me.layerDuplicate(lyr)) {
-            lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
-            lyr.manuallyAdded = false;
-            if (utils.instOf(lyr.getSource(), ImageWMS)) {
-              me.proxifyLayerLoader(lyr, false);
-            }
-            if (utils.instOf(lyr.getSource(), TileWMS)) {
-              me.proxifyLayerLoader(lyr, true);
-            }
-            if (utils.instOf(lyr.getSource(), Vector)) {
-              me.getVectorType(lyr);
-            }
-            me.map.addLayer(lyr);
-          }
+          repopulateLayer(lyr);
         });
       }
     };
+
+    function repopulateLayer(lyr) {
+      if (!me.layerDuplicate(lyr)) {
+        lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
+        lyr.manuallyAdded = false;
+        if (utils.instOf(lyr.getSource(), ImageWMS)) {
+          me.proxifyLayerLoader(lyr, false);
+        }
+        if (utils.instOf(lyr.getSource(), TileWMS)) {
+          me.proxifyLayerLoader(lyr, true);
+        }
+        if (utils.instOf(lyr.getSource(), XYZ)) {
+          me.proxifyLayerLoader(lyr, true);
+        }
+        if (utils.instOf(lyr.getSource(), Vector)) {
+          me.getVectorType(lyr);
+        }
+        me.map.addLayer(lyr);
+      }
+    }
 
     this.getVectorType = function (layer) {
       let src = [];
@@ -579,7 +573,13 @@ export default [
         const tile_url_function =
           src.getTileUrlFunction() || src.tileUrlFunction();
         src.setTileUrlFunction((b, c, d) => {
-          const url = tile_url_function.call(src, b, c, d);
+          let url = tile_url_function.call(src, b, c, d);
+          if (lyr.get('dimensions')) {
+            const dimensions = lyr.get('dimensions');
+            Object.keys(dimensions).forEach((dimension) => {
+              url = url.replace(`{${dimension}}`, dimensions[dimension].value);
+            });
+          }
           if (url.indexOf(config.proxyPrefix) == 0) {
             return url;
           } else {

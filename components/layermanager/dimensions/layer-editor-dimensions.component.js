@@ -1,3 +1,4 @@
+import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 export default {
   template: require('./layer-editor-dimensions.html'),
   bindings: {
@@ -6,7 +7,8 @@ export default {
   controller: [
     '$scope',
     'hs.dimensionService',
-    function ($scope, dimensionService) {
+    'hs.utils.service',
+    function ($scope, dimensionService, utils) {
       const vm = this;
       angular.extend(vm, {
         dimensionType: dimensionService.dimensionType,
@@ -30,9 +32,13 @@ export default {
 
         dimensionChanged(dimension) {
           const src = vm.olLayer.getSource();
-          const params = src.getParams();
-          params[dimension.name] = dimension.value;
-          src.updateParams(params);
+          if (utils.instOf(src, TileWMS) || utils.instOf(src, ImageWMS)) {
+            const params = src.getParams();
+            params[dimension.name] = dimension.value;
+            src.updateParams(params);
+          } else if (utils.instOf(src, XYZ)) {
+            src.refresh();
+          }
           $scope.$emit('layermanager.dimension_changed', {
             layer: vm.olLayer,
             dimension,
