@@ -14,10 +14,10 @@
                     <div ng-if="hasMetadata($ctrl.currentLayer)" class="pt-2" >
                         <a class="card-href" ng-repeat="metadata in $ctrl.currentLayer.layer.get('MetadataURL')"
                             href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
-                            <span ng-show="metadata.type">
+                            <span ng-show="metadata.type" translate>
                                 Metadata of layer in {{::metadata.type}}
                             </span>
-                            <span ng-hide="metadata.type">
+                            <span ng-hide="metadata.type" translate>
                                 Metadata of service
                             </span>
                         </a>

@@ -6,7 +6,7 @@
             ng-class="{'active': layer.active}">{{::layer.title}}</button>
         <button type="button" ng-if="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
         ng-click="changeBaseLayerVisibility()"
-        ng-class="{'active': !data.baselayersVisible}">No Basemap</button>
+        ng-class="{'active': !data.baselayersVisible}" translate>No basemap</button>
 
         <div class="btn-group btn-group-sm" role="group" ng-if="!fitsInContainer()">
             <button type="button" ng-click="$parent.baseLayersExpanded=!$parent.baseLayersExpanded"
@@ -38,7 +38,7 @@
                 <div ng-click="closeGallery();changeBaseLayerVisibility()">
                     <div ng-style="{'height':'4em', 'width': '100%'}" ng-class="{'active': !data.baselayersVisible}"
                         alt=""></div>
-                    <a class="dropdown-item" href="#" ng-class="{'active': !data.baselayersVisible}">No basemap</a>
+                    <a class="dropdown-item" href="#" ng-class="{'active': !data.baselayersVisible}" translate>No basemap</a>
                 </div>
             </div>
         </div>
