@@ -75,6 +75,7 @@ msgstr "O vrstvě"
 #: components/compositions/partials/dialog_info.html:12
 #: components/compositions/partials/dialog_share.html:12
 #: components/compositions/partials/dialog_sharemd.html:14
+#: components/layermanager/partials/layer-editor.html:55
 #: components/layermanager/partials/layer-editor.html:67
 #: components/permalink/partials/directive.html:50
 #: components/permalink/partials/directivemd.html:27
@@ -98,7 +99,7 @@ msgstr "Přidat"
 msgid "Add draw layer"
 msgstr "Přdat kreslíci vrstvu"
 
-#: components/datasource-selector/partials/datasource_selector.html:58
+#: components/datasource-selector/partials/datasource_selector.html:59
 #: components/datasource-selector/partials/dialog_metadata.html:19
 msgid "Add to map"
 msgstr "Přidat do mapy"
@@ -219,7 +220,7 @@ msgstr "Kliknutím do mapy proveďte identifikaci"
 msgid "Close"
 msgstr "Zavřít"
 
-#: components/layermanager/partials/layer-editor.html:91
+#: components/layermanager/partials/layer-editor.html:79
 msgid "Cluster"
 msgstr "Cluster"
 
@@ -308,7 +309,7 @@ msgstr "Dataset"
 msgid "Date"
 msgstr "Datum"
 
-#: components/layermanager/partials/layer-editor.html:84
+#: components/layermanager/partials/layer-editor.html:72
 msgid "Declutter"
 msgstr "Declutter"
 
@@ -332,7 +333,7 @@ msgstr "Odstranit kompozici {{compositionToDelete.title}}"
 msgid "Description"
 msgstr "Popis"
 
-#: components/layermanager/partials/layer-editor.html:53
+#: components/layermanager/dimensions/layer-editor-dimensions.html:2
 msgid "Dimensions"
 msgstr "Dimenze"
 
@@ -361,7 +362,7 @@ msgstr "Chcete odstranit mapu"
 msgid "Do you want to delete map {{compositionToDelete.title}}"
 msgstr "Chcete odstranit mapu {{compositionToDelete.title}}"
 
-#: components/datasource-selector/partials/datasource_selector.html:50
+#: components/datasource-selector/partials/datasource_selector.html:51
 #: components/save-map/partials/panel.html:23
 msgid "Download"
 msgstr "Ke stažení"
@@ -561,7 +562,7 @@ msgstr "Možnosti vrstvy"
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: components/layermanager/partials/layer-editor.html:104
+#: components/layermanager/partials/layer-editor.html:92
 #: components/legend/partials/legend.html:2
 #: components/sidebar/sidebar.service.js:22
 msgid "Legend"
@@ -713,7 +714,7 @@ msgid "No"
 msgstr "Ne"
 
 #: components/datasource-selector/micka/micka-suggestions-dialog.html:18
-#: components/datasource-selector/partials/datasource_selector.html:39
+#: components/datasource-selector/partials/datasource_selector.html:40
 msgid "No results"
 msgstr "Žádné výsledky"
 
@@ -734,7 +735,7 @@ msgstr "Ok"
 msgid "Only mine"
 msgstr "Pouze moje"
 
-#: components/layermanager/partials/layer-editor.html:111
+#: components/layermanager/partials/layer-editor.html:99
 msgid "Opacity"
 msgstr "Průhlednost"
 
@@ -880,11 +881,11 @@ msgid "Remove all layers"
 msgstr "Odstranit všechny vrstvy"
 
 #: components/layermanager/partials/layermanagermd.html:51
-#: components/layermanager/partials/layer-editor.html:153
+#: components/layermanager/partials/layer-editor.html:142
 msgid "Remove layer"
 msgstr "Odstranit vrstvu"
 
-#: components/layermanager/partials/layer-editor.html:152
+#: components/layermanager/partials/layer-editor.html:140
 msgid "Rename layer"
 msgstr "Přejmenovat vrstvu"
 
@@ -981,8 +982,8 @@ msgid "Saving to status manager"
 msgstr "Ukládání do status manageru"
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:90
-#: components/layermanager/partials/layer-editor.html:126
-#: components/layermanager/partials/layer-editor.html:75
+#: components/layermanager/partials/layer-editor.html:114
+#: components/layermanager/partials/layer-editor.html:63
 msgid "Scale"
 msgstr "Měřítko"
 
@@ -1127,7 +1128,7 @@ msgid "Style"
 msgstr "Styl"
 
 #: components/styles/partials/styler.html:3
-#: components/layermanager/partials/layer-editor.html:150
+#: components/layermanager/partials/layer-editor.html:138
 msgid "Style layer"
 msgstr "Stylovat vrstvu"
 
@@ -1183,7 +1184,7 @@ msgstr "Velikost dlaždice"
 #: components/compositions/partials/compositionsmd.html:15
 #: components/datasource-selector/micka/advanced-micka-dialog.html:108
 #: components/language/partials/languagemd.html:8
-#: components/layermanager/partials/layer-editor.html:121
+#: components/layermanager/partials/layer-editor.html:110
 #: components/print/partials/printdialog.html:6
 #: components/print/partials/printdialogmd.html:8
 #: components/save-map/partials/form.html:20
@@ -1320,7 +1321,7 @@ msgstr "Máte neuložené změny!"
 msgid "Zoom to"
 msgstr "Přiblížení"
 
-#: components/layermanager/partials/layer-editor.html:147
+#: components/layermanager/partials/layer-editor.html:136
 msgid "Zoom to layer"
 msgstr "Přiblížení na vrstvu"
 
@@ -1332,8 +1333,8 @@ msgstr "Podrobnosti"
 msgid "embed/"
 msgstr "vložit/"
 
-#: components/layermanager/partials/layer-editor.html:130
-#: components/layermanager/partials/layer-editor.html:76
+#: components/layermanager/partials/layer-editor.html:118
+#: components/layermanager/partials/layer-editor.html:64
 msgid "from"
 msgstr "Z"
 
@@ -1349,8 +1350,8 @@ msgstr "více tvaru"
 msgid "social share"
 msgstr "sdílení"
 
-#: components/layermanager/partials/layer-editor.html:139
-#: components/layermanager/partials/layer-editor.html:77
+#: components/layermanager/partials/layer-editor.html:127
+#: components/layermanager/partials/layer-editor.html:65
 msgid "to"
 msgstr "do"
 
@@ -1397,8 +1398,8 @@ msgstr "Zdroje dat"
 msgid "Draw"
 msgstr "Kreslení"
 
-#: components/draw/draw.service.js:53
-#: components/draw/draw.service.js:56
+#: components/draw/draw.service.js:65
+#: components/draw/draw.service.js:68
 msgid "Draw layer"
 msgstr "Kreslicí vrstva"
 
@@ -1438,7 +1439,7 @@ msgstr "Individuální styl prvku"
 msgid "Color"
 msgstr "Barva"
 
-#: components/draw/draw.controller.js:73
+#: components/draw/draw.controller.js:91
 msgid "Select layer"
 msgstr "Vybrat vrstvu"
 
@@ -1459,12 +1460,12 @@ msgstr "Najdi mě"
 msgid "Remove last point"
 msgstr "Odstranit poslední bod"
 
-#: components/draw/draw.service.js:65
+#: components/draw/draw.service.js:77
 #: components/layermanager/partials/layermanager.html:89
 msgid "User generated"
 msgstr "Uživatelské"
 
-#: components/map/map.service.js:227
+#: components/map/map.service.js:273
 msgid "Zoom to initial window"
 msgstr "Priblížit na počáteční okno"
 
@@ -1477,3 +1478,19 @@ msgstr "{{vm.errorMessage}}"
 msgid "Sort"
 msgstr "Seřadit"
 
+#: components/layermanager/partials/layer-editor.html:17
+msgid "Metadata of layer in {{::metadata.type}}"
+msgstr "Metadata vrstvy v {{::metadata.type}} "
+
+#: components/layermanager/partials/layer-editor.html:20
+msgid "Metadata of service"
+msgstr "Metadata služby"
+
+#: components/layermanager/partials/basemap-gallery.html:41
+#: components/layermanager/partials/basemap-gallery.html:7
+msgid "No basemap"
+msgstr "Bez podkladu"
+
+#: components/permalink/partials/directive.html:24
+msgid "Pure map"
+msgstr "Jen mapa"
