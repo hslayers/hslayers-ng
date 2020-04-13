@@ -18,6 +18,9 @@ export default [
        * @return {Boolean} Return if legend might exists for layer
        */
       isLegendable: function (layer) {
+        if (angular.isUndefined(layer) || angular.isUndefined(layer.type)) {
+          return false;
+        }
         if (
           ['vector', 'wms', 'static'].indexOf(layer.type) > -1 &&
           layer.lyr.getVisible()

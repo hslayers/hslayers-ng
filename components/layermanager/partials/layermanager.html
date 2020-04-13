@@ -34,7 +34,7 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
-                ng-click="changeBaseLayerVisibility($event, layer)" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}">
+                ng-click="changeBaseLayerVisibility($event, layer); toggleLayerEditor(layer)" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
                 <div class="d-flex ">
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
@@ -47,6 +47,7 @@
                     </div>
 
                 </div>
+                <hs.layer-editor-dimensions ol-layer="olLayer()"></hs.layer-editor-dimensions>
             </li>
         </ul>
 
