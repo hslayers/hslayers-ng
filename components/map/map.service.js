@@ -5,7 +5,7 @@ import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import proj4 from 'proj4';
-import {Cluster, Vector} from 'ol/source';
+import {Cluster, OSM, Vector} from 'ol/source';
 import {
   DoubleClickZoom,
   DragPan,
@@ -442,7 +442,10 @@ export default [
         if (utils.instOf(lyr.getSource(), TileWMS)) {
           me.proxifyLayerLoader(lyr, true);
         }
-        if (utils.instOf(lyr.getSource(), XYZ)) {
+        if (
+          utils.instOf(lyr.getSource(), XYZ) &&
+          !utils.instOf(lyr.getSource(), OSM)
+        ) {
           me.proxifyLayerLoader(lyr, true);
         }
         if (utils.instOf(lyr.getSource(), Vector)) {
