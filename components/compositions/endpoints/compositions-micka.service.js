@@ -12,9 +12,6 @@ export default [
   function ($rootScope, compositionParser, config, $q, $http, hsMap, utils) {
     const me = this;
     angular.extend(me, {
-      data: {
-        limit: 15,
-      },
       getCompositionsQueryUrl(endpoint, params, bbox) {
         const query = params.query;
         const bboxDelimiter =
@@ -141,7 +138,7 @@ export default [
 
       resetCompositionCounter(endpoint) {
         endpoint.compositionsPaging.start = 0;
-        endpoint.compositionsPaging.next = me.data.limit;
+        endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
       },
     });
     return me;
