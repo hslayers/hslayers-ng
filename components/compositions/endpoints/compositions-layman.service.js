@@ -20,9 +20,9 @@ export default [
     const me = this;
     angular.extend(me, {
       data: {},
-      loadList(ds, params, bbox, extentLayer) {
-        ds.getCurrentUserIfNeeded();
-        ds.loaded = false;
+      loadList(endpoint, params, bbox, extentLayer) {
+        endpoint.getCurrentUserIfNeeded();
+        endpoint.compositionsPaging.loaded = false;
         if (angular.isUndefined(params.sortBy)) {
           params.sortBy = 'bbox';
         }
@@ -33,22 +33,23 @@ export default [
           }
           me.canceler = $q.defer();
           $http
-            .get(`${ds.url}/rest/${ds.user}/maps`, {
+            .get(`${endpoint.url}/rest/${endpoint.user}/maps`, {
               timeout: me.canceler.promise,
             })
             .then(
               (response) => {
-                ds.loaded = true;
+                endpoint.compositionsPaging.loaded = true;
                 response = response.data;
-                ds.compositions = response;
+                endpoint.compositions = response;
                 if (response && response.length > 0) {
-                  ds.compositionsCount = response.length;
+                  endpoint.compositionsPaging.compositionsCount =
+                    response.length;
                 } else {
-                  ds.compositionsCount = 0;
+                  endpoint.compositionsPaging.compositionsCount = 0;
                 }
-                angular.forEach(ds.compositions, (record) => {
+                angular.forEach(endpoint.compositions, (record) => {
                   record.editable = true;
-                  record.endpoint = ds;
+                  record.endpoint = endpoint;
                 });
                 $rootScope.$broadcast('CompositionsLoaded');
                 resolve();
@@ -58,9 +59,9 @@ export default [
         });
       },
 
-      resetCompositionCounter(ds) {
-        ds.start = 0;
-        ds.next = me.data.limit;
+      resetCompositionCounter(endpoint) {
+        endpoint.compositionsPaging.start = 0;
+        endpoint.compositionsPaging.next = me.data.limit;
       },
     });
     return me;

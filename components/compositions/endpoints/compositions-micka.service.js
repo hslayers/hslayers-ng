@@ -9,15 +9,15 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
       data: {
         limit: 15
       },
-      getCompositionsQueryUrl(ds, params, bbox) {
+      getCompositionsQueryUrl(endpoint, params, bbox) {
         const query = params.query;
-        const bboxDelimiter = ds.url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
-        const serviceName = angular.isDefined(ds.serviceName) ? 'serviceName=&' + ds.serviceName : '';
+        const bboxDelimiter = endpoint.url.indexOf('cswClientRun.php') > 0 ? ',' : ' ';
+        const serviceName = angular.isDefined(endpoint.serviceName) ? 'serviceName=&' + endpoint.serviceName : '';
         bbox = (params.filterExtent ? encodeURIComponent(' and BBOX=\'' + bbox.join(bboxDelimiter) + '\'') : '');
         const textFilter = query && angular.isDefined(query.title) && query.title != '' ? encodeURIComponent(' AND title like \'*' + query.title + '*\' OR abstract like \'*' + query.title + '*\'') : '';
         const selected = [];
         let keywordFilter = '';
-        let tmp = ds.url;
+        let tmp = endpoint.url;
         angular.forEach(params.keywords, (value, key) => {
           if (value) {
             selected.push('subject=\'' + key + '\'');
@@ -32,16 +32,16 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
         return tmp;
       },
 
-      loadList(ds, params, bbox, extentLayer) {
-        ds.loaded = false;
+      loadList(endpoint, params, bbox, extentLayer) {
+        endpoint.compositionsPaging.loaded = false;
         if (angular.isUndefined(params.sortBy)) {
           params.sortBy = 'bbox';
         }
         if (angular.isUndefined(params.start)) {
-          params.start = ds.start;
+          params.start = endpoint.compositionsPaging.start;
         }
         if (angular.isUndefined(params.limit) || isNaN(params.limit)) {
-          params.limit = me.data.limit;
+          params.limit = endpoints.compositionsPaging.limit;
         }
         return new Promise((resolve, reject) => {
           if (angular.isDefined(me.canceler)) {
@@ -49,20 +49,20 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
             delete me.canceler;
           }
           me.canceler = $q.defer();
-          $http.get(me.getCompositionsQueryUrl(ds, params, bbox),
+          $http.get(me.getCompositionsQueryUrl(endpoint, params, bbox),
             {timeout: me.canceler.promise}).then((response) => {
-            ds.loaded = true;
+            endpoint.compositionsPaging.loaded = true;
             response = response.data;
-            ds.compositions = response.records;
+            endpoint.compositions = response.records;
             if (response.records && response.records.length > 0) {
-              ds.compositionsCount = response.matched;
+              endpoint.compositionsPaging.compositionsCount = response.matched;
             } else {
-              ds.compositionsCount = 0;
+              endpoint.compositionsPaging.compositionsCount = 0;
             }
             //TODO: Needs refactoring
-            ds.next = response.next;
+            endpoint.compositionsPaging.next = response.next;
             const mapExtent = hsMap.getMapExtent();
-            angular.forEach(ds.compositions, (record) => {
+            angular.forEach(endpoint.compositions, (record) => {
               const attributes = {
                 record: record,
                 hs_notqueryable: true,
@@ -70,9 +70,9 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
                 title: record.title || record.name
               };
               record.editable = false;
-              record.endpoint = ds;
+              record.endpoint = endpoint;
               if (angular.isUndefined(record.thumbnail)) {
-                record.thumbnail = ds.url + '?request=loadthumb&id=' + record.id;
+                record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
               }
               const extent = compositionParser.parseExtent(record.bbox);
               //Check if height or Width covers the whole screen
@@ -94,9 +94,9 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
         });
       },
 
-      resetCompositionCounter(ds) {
-        ds.start = 0;
-        ds.next = me.data.limit;
+      resetCompositionCounter(endpoint) {
+        endpoint.compositionsPaging.start = 0;
+        endpoint.compositionsPaging.next = me.data.limit;
       }
     });
     return me;
