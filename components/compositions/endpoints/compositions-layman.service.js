@@ -1,10 +1,25 @@
-export default ['$rootScope', 'hs.compositions.service_parser', 'config',
-  '$q', '$http', 'hs.map.service', 'hs.utils.service', 'hs.common.laymanService',
-  function ($rootScope, compositionParser, config, $q, $http, hsMap, utils, commonLaymanService) {
+export default [
+  '$rootScope',
+  'hs.compositions.service_parser',
+  'config',
+  '$q',
+  '$http',
+  'hs.map.service',
+  'hs.utils.service',
+  'hs.common.laymanService',
+  function (
+    $rootScope,
+    compositionParser,
+    config,
+    $q,
+    $http,
+    hsMap,
+    utils,
+    commonLaymanService
+  ) {
     const me = this;
     angular.extend(me, {
-      data: {
-      },
+      data: {},
       loadList(ds, params, bbox, extentLayer) {
         ds.getCurrentUserIfNeeded();
         ds.loaded = false;
@@ -17,32 +32,37 @@ export default ['$rootScope', 'hs.compositions.service_parser', 'config',
             delete me.canceler;
           }
           me.canceler = $q.defer();
-          $http.get(`${ds.url}/rest/${ds.user}/maps`,
-            {timeout: me.canceler.promise}).then((response) => {
-            ds.loaded = true;
-            response = response.data;
-            ds.compositions = response;
-            if (response && response.length > 0) {
-              ds.compositionsCount = response.length;
-            } else {
-              ds.compositionsCount = 0;
-            }
-            angular.forEach(ds.compositions, (record) => {
-              record.editable = true;
-              record.endpoint = ds;
-            });
-            $rootScope.$broadcast('CompositionsLoaded');
-            resolve();
-          }, (err) => { }
-          );
+          $http
+            .get(`${ds.url}/rest/${ds.user}/maps`, {
+              timeout: me.canceler.promise,
+            })
+            .then(
+              (response) => {
+                ds.loaded = true;
+                response = response.data;
+                ds.compositions = response;
+                if (response && response.length > 0) {
+                  ds.compositionsCount = response.length;
+                } else {
+                  ds.compositionsCount = 0;
+                }
+                angular.forEach(ds.compositions, (record) => {
+                  record.editable = true;
+                  record.endpoint = ds;
+                });
+                $rootScope.$broadcast('CompositionsLoaded');
+                resolve();
+              },
+              (err) => {}
+            );
         });
       },
 
       resetCompositionCounter(ds) {
         ds.start = 0;
         ds.next = me.data.limit;
-      }
+      },
     });
     return me;
-  }];
-
+  },
+];
