@@ -9,18 +9,23 @@ export default [
         return new Promise((resolve, reject) => {
           $http.get(url).then(
             (res) => {
+              let somethingChanged = false;
               if (res.data.username) {
                 if (endpoint.user != res.data.username) {
                   endpoint.user = res.data.username;
+                  somethingChanged = true;
                   $rootScope.$broadcast(
                     'datasource-selector.layman_auth',
                     endpoint
                   );
                 }
               } else {
+                if (endpoint.user != endpoint.originalConfiguredUser) {
+                  somethingChanged = true;
+                }
                 endpoint.user = endpoint.originalConfiguredUser;
               }
-              resolve();
+              resolve(somethingChanged);
             },
             (e) => {
               reject(e);

@@ -1,3 +1,4 @@
+/* eslint-disable angular/timeout-service */
 export default {
   template: require('./layman-current-user.html'),
   bindings: {
@@ -19,6 +20,10 @@ export default {
       laymanService
     ) {
       const vm = this;
+      let monitorTries = 0;
+      const DEFAULT_TIMER_INTERVAL = 2000;
+      const MAX_MONITOR_TRIES = 20;
+      let timerInterval = DEFAULT_TIMER_INTERVAL;
       angular.extend(vm, {
         isAuthorized() {
           return (
@@ -39,13 +44,29 @@ export default {
           return vm.endpoint.url + '/authn/oauth2-liferay/login';
         },
         monitorUser() {
-          if (vm.getCurrentUserTime) {
-            clearInterval(vm.getCurrentUserTime);
+          if (vm.getCurrentUserTimer) {
+            clearTimeout(vm.getCurrentUserTimer);
           }
+          monitorTries = 0;
+          timerInterval = DEFAULT_TIMER_INTERVAL;
           // eslint-disable-next-line angular/interval-service
-          vm.getCurrentUserTimer = setInterval(() => {
-            laymanService.getCurrentUser(vm.endpoint);
-          }, 2000);
+          function poll() {
+            laymanService
+              .getCurrentUser(vm.endpoint)
+              .then((somethingChanged) => {
+                if (somethingChanged && vm.getCurrentUserTimer) {
+                  clearTimeout(vm.getCurrentUserTimer);
+                  monitorTries = MAX_MONITOR_TRIES;
+                }
+              });
+            monitorTries++;
+            if (monitorTries > MAX_MONITOR_TRIES) {
+              clearTimeout(vm.getCurrentUserTimer);
+            }
+            timerInterval += 500;
+            vm.getCurrentUserTimer = setTimeout(poll, timerInterval);
+          }
+          vm.getCurrentUserTimer = setTimeout(poll, timerInterval);
         },
         login() {
           vm.monitorUser();
