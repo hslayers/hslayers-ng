@@ -73,25 +73,25 @@
             </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" ng-repeat="ds in endpointsService.endpoints | forCompositions">
+            <li class="nav-item" ng-repeat="endpoint in endpointsService.endpoints | forCompositions">
                 <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#"
                     data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab"
                     ng-click="datasetSelect('ds'+$index)">
-                    {{ds.title}}
-                    <span ng-show='ds.compositionsCount>0'>({{ds.compositionsCount}})</span>
-                    <span class="glyphicon icon-refresh icon-spin" ng-show="ds.loaded == false"></span>
+                    {{endpoint.title}}
+                    <span ng-show='endpoint.compositionsPaging.compositionsCount>0'>({{endpoint.compositionsPaging.compositionsCount}})</span>
+                    <span class="glyphicon icon-refresh icon-spin" ng-show="endpoint.compositionsPaging.loaded == false"></span>
                 </a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 ng-class="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}"
-                ng-repeat="ds in endpointsService.endpoints | forCompositions">
+                ng-repeat="endpoint in endpointsService.endpoints | forCompositions">
                 <div class="card">
                     <div class="card-body">
                         <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
                         <ul class="hs-comp-list list-group">
-                            <li ng-repeat="composition in ds.compositions" class="list-group-item hs-comp-item"
+                            <li ng-repeat="composition in endpoint.compositions" class="list-group-item hs-comp-item"
                                 style="cursor: pointer" ng-class="composition.highlighted ?  'active' : ''"
                                 ng-mouseover="highlightComposition(composition, true)"
                                 ng-mouseleave="highlightComposition(composition, false)"
@@ -122,19 +122,19 @@
                     </div>
 
 
-                    <div class="card-footer" ng-show='ds.compositionsCount>0'>
+                    <div class="card-footer" ng-show='endpoint.compositionsCount>0'>
                         <nav>
                             <ul class="pagination d-flex justify-content-center">
                                 <li class="page-item" ng-class="{'disabled': compStart == 0 }">
-                                    <a href="#" class="page-link" ng-click='getPreviousCompositions(ds)'><span
+                                    <a href="#" class="page-link" ng-click='getPreviousCompositions(endpoint)'><span
                                             aria-hidden="true">&laquo;</span></a>
                                 </li>
-                                <li class="page-item" ng-if="ds.next!= 0"><span class="page-link"> Results
-                                        {{ds.start + 1}} - {{ds.next}}</span></li>
-                                <li class="page-item" ng-if="ds.next == 0"><span class="page-link"> Results
-                                        {{ds.start + 1}} - {{ds.compositionsCount}}</span></li>
-                                <li class="page-item" ng-class="{'disabled': ds.next == 0 }">
-                                    <a href="#" class="page-link" ng-click='getNextCompositions(ds)'><span
+                                <li class="page-item" ng-if="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
+                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
+                                <li class="page-item" ng-if="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
+                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.compositionsCount}}</span></li>
+                                <li class="page-item" ng-class="{'disabled': endpoint.compositionsPaging.next == 0 }">
+                                    <a href="#" class="page-link" ng-click='getNextCompositions(endpoint)'><span
                                             aria-hidden="true">&raquo;</span></a>
                                 </li>
                             </ul>
