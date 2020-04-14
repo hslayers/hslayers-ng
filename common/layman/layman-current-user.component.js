@@ -1,23 +1,36 @@
 export default {
   template: require('./layman-current-user.html'),
   bindings: {
-    endpoint: '='
+    endpoint: '=',
   },
-  controller: ['$http', '$scope', 'hs.layout.service', '$compile', '$location', 'hs.common.laymanService',
-    function ($http, $scope, layoutService, $compile, $location, laymanService) {
+  controller: [
+    '$http',
+    '$scope',
+    'hs.layout.service',
+    '$compile',
+    '$location',
+    'hs.common.laymanService',
+    function (
+      $http,
+      $scope,
+      layoutService,
+      $compile,
+      $location,
+      laymanService
+    ) {
       const vm = this;
       angular.extend(vm, {
         isAuthorized() {
-          return vm.endpoint.user == 'anonymous' || vm.endpoint.user == 'browser';
+          return (
+            vm.endpoint.user == 'anonymous' || vm.endpoint.user == 'browser'
+          );
         },
         logout() {
           const url = `${vm.endpoint.url}/authn/logout`;
           vm.monitorUser();
-          $http.get(url)
-            .then(
-              (res) => {
-                vm.endpoint.user = 'anonymous';
-              });
+          $http.get(url).then((res) => {
+            vm.endpoint.user = 'anonymous';
+          });
         },
         protocolsMatch() {
           return $location.protocol() == vm.endpoint.liferayProtocol;
@@ -30,7 +43,7 @@ export default {
             clearInterval(vm.getCurrentUserTime);
           }
           // eslint-disable-next-line angular/interval-service
-          vm.getCurrentUserTimer = setInterval(()=> {
+          vm.getCurrentUserTimer = setInterval(() => {
             laymanService.getCurrentUser(vm.endpoint);
           }, 2000);
         },
@@ -39,12 +52,15 @@ export default {
           if (!vm.protocolsMatch()) {
             return;
           }
-          const el = angular.element('<hs.layman-login url="$ctrl.authUrl()"></hs.layman-login>');
-          layoutService.contentWrapper.querySelector('.hs-dialog-area')
+          const el = angular.element(
+            '<hs.layman-login url="$ctrl.authUrl()"></hs.layman-login>'
+          );
+          layoutService.contentWrapper
+            .querySelector('.hs-dialog-area')
             .appendChild(el[0]);
           $compile(el)($scope);
-        }
+        },
       });
-    }
-  ]
+    },
+  ],
 };

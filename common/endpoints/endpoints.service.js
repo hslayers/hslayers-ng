@@ -35,6 +35,7 @@ export default [
             compositionsPaging: {
               start: 0,
               limit: getItemsPerPageConfig(ds),
+              loaded: false,
             },
             paging: {
               itemsPerPage: getItemsPerPageConfig(ds),
