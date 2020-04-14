@@ -72,7 +72,7 @@ export default [
           params.start = endpoint.compositionsPaging.start;
         }
         if (angular.isUndefined(params.limit) || isNaN(params.limit)) {
-          params.limit = endpoints.compositionsPaging.limit;
+          params.limit = endpoint.compositionsPaging.limit;
         }
         return new Promise((resolve, reject) => {
           if (angular.isDefined(me.canceler)) {
