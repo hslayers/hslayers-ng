@@ -106,53 +106,75 @@ export default [
       },
 
       save(saveAsNew, endpoint) {
-        if (saveAsNew || me.compoData.id == '') {
-          me.compoData.id = saveMap.generateUuid();
-        }
-        const compositionJson = saveMap.map2json(
-          OlMap.map,
-          me.compoData,
-          me.userData,
-          me.statusData
-        );
-        let saver = statusManagerService;
-        if (endpoint.type == 'layman') {
-          saver = laymanService;
-        }
-        saver
-          .save(compositionJson, endpoint, me.compoData)
-          .then((response) => {
-            const compInfo = {};
-            const j = response.data;
-            compInfo.id = me.compoData.id;
-            compInfo.title = me.compoData.title;
-            compInfo.abstract = me.compoData.abstract || '';
-            if (endpoint.type == 'statusmanager') {
-              me.status = angular.isDefined(j.saved) && j.saved !== false;
-            }
-            if (endpoint.type == 'layman') {
-              me.status = j.length == 1 && angular.isDefined(j[0].uuid);
-            }
-            $rootScope.$broadcast('compositions.composition_loading', compInfo);
-            $rootScope.$broadcast('compositions.composition_loaded', compInfo);
-            const saveStatus = me.status ? 'ok' : 'not-saved';
-            me.statusData.success = me.status;
-            $rootScope.$broadcast(
-              'StatusManager.saveResult',
-              'saveResult',
-              saveStatus
-            );
-          })
-          .catch((e) => {
-            //e contains the json responses data object from api
-            me.statusData.success = false;
-            $rootScope.$broadcast(
-              'StatusManager.saveResult',
-              'saveResult',
-              'error',
-              e
-            );
-          });
+        return new Promise((resolve, reject) => {
+          const compositionJson = saveMap.map2json(
+            OlMap.map,
+            me.compoData,
+            me.userData,
+            me.statusData
+          );
+          let saver = statusManagerService;
+          if (endpoint.type == 'layman') {
+            saver = laymanService;
+          }
+          saver
+            .save(compositionJson, endpoint, me.compoData, saveAsNew)
+            .then((response) => {
+              const compInfo = {};
+              const j = response.data;
+              let status = false;
+              if (endpoint.type == 'statusmanager') {
+                status = angular.isDefined(j.saved) && j.saved !== false;
+              }
+              if (endpoint.type == 'layman') {
+                status = j.length == 1 && angular.isDefined(j[0].uuid);
+              }
+              if (!status) {
+                if (endpoint.type == 'layman' && j.status == 'CONFLICT') {
+                  compInfo.id = j[0].uuid;
+                  compInfo.name = j[0].name;
+                }
+                if (endpoint.type == 'statusmanager') {
+                  compInfo.id = j.id;
+                  compInfo.title = j.title;
+                  compInfo.abstract = j.abstract || '';
+                }
+              } else {
+                $rootScope.$broadcast(
+                  'compositions.composition_loading',
+                  compInfo
+                );
+                $rootScope.$broadcast(
+                  'compositions.composition_loaded',
+                  compInfo
+                );
+              }
+              //const saveStatus = me.status ? 'ok' : 'not-saved';
+              //me.statusData.success = me.status;
+              resolve({
+                status,
+              });
+              /*               $rootScope.$broadcast(
+                'StatusManager.saveResult',
+                'saveResult',
+                saveStatus
+              ); */
+            })
+            .catch((e) => {
+              //e contains the json responses data object from api
+              //me.statusData.success = false;
+              reject({
+                status: false,
+                error: e,
+              });
+              /* $rootScope.$broadcast(
+                'StatusManager.saveResult',
+                'saveResult',
+                'error',
+                e
+              ); */
+            });
+        });
       },
 
       /**

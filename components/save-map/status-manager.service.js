@@ -1,7 +1,8 @@
 export default [
   '$http',
   'config',
-  function ($http, config) {
+  'hs.utils.service',
+  function ($http, config, utils) {
     const me = this;
     angular.extend(me, {
       endpointUrl() {
@@ -32,7 +33,10 @@ export default [
           );
         }
       },
-      save(compositionJson, endpoint, compoData) {
+      save(compositionJson, endpoint, compoData, saveAsNew) {
+        if (saveAsNew || compoData.id == '') {
+          compoData.id = utils.generateUuid();
+        }
         return new Promise((resolve, reject) => {
           $http({
             url: me.endpointUrl(),

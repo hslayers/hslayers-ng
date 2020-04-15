@@ -18,11 +18,12 @@ export default [
        * @param {String} compositionJson Json with composition definition
        * @param {Object} endpoint Endpoint description
        * @param {String} compoData Additional fields for composition such
+       * @param {Boolean} saveAsNew Save as new composition
        * as title, name
        * @returns {Promise<Boolean>} Promise result of POST
        * @description Save composition to Layman
        */
-      save(compositionJson, endpoint, compoData) {
+      save(compositionJson, endpoint, compoData, saveAsNew) {
         return new Promise((resolve, reject) => {
           const formdata = new FormData();
           formdata.append(
@@ -36,8 +37,12 @@ export default [
           formdata.append('title', compoData.title);
           formdata.append('abstract', compoData.abstract);
           $http({
-            url: `${endpoint.url}/rest/${endpoint.user}/maps?${Math.random()}`,
-            method: 'POST',
+            url: `${endpoint.url}/rest/${endpoint.user}/maps${
+              saveAsNew
+                ? `?${Math.random()}`
+                : '/' + me.urlFriendly(compoData.title)
+            }`,
+            method: saveAsNew ? 'POST' : 'PATCH',
             data: formdata,
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},
@@ -50,6 +55,10 @@ export default [
             }
           );
         });
+      },
+
+      urlFriendly(text) {
+        return text.replaceAll(' ', '').toLowerCase();
       },
 
       /**

@@ -42,6 +42,7 @@ export default {
         step: 'start',
         selectDeselectAllLayers: saveMapManagerService.selectDeselectAllLayers,
         endpointsService,
+        overwrite: false,
 
         /**
          * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
@@ -119,11 +120,39 @@ export default {
          * @memberof hs.save-map
          */
         confirmSave() {
-          saveMapManagerService.confirmSave();
+          saveMapManagerService.confirmSave().then(() => {
+            $scope.showSaveDialog();
+          });
         },
 
         save(saveAsNew) {
-          saveMapManagerService.save(saveAsNew, $scope.endpoint);
+          saveMapManagerService
+            .save(saveAsNew, $scope.endpoint)
+            .then($scope.processSaveCallback)
+            .catch($scope.processSaveCallback);
+        },
+
+        processSaveCallback(response) {
+          saveMapManagerService.statusData.status = response.status;
+          if (!response.status) {
+            saveMapManagerService.statusData.resultCode = response.error
+              ? 'error'
+              : 'not-saved';
+            if (response.error.code == 24) {
+              $scope.overwrite = true;
+            }
+            saveMapManagerService.statusData.error = response.error;
+          } else {
+            $scope.step = 'start';
+            layoutService.setMainPanel('layermanager', true);
+          }
+          $timeout((_) => {
+            $scope.showResultDialog();
+          }, 0);
+        },
+
+        titleChanged() {
+          $scope.overwrite = false;
         },
 
         /**
@@ -132,7 +161,8 @@ export default {
          * @memberof hs.save-map
          */
         selectNewTitle() {
-          $scope.compoData.title = $scope.statusData.guessedTitle;
+          $scope.compoData.title =
+            saveMapManagerService.statusData.guessedTitle;
           $scope.changeTitle = true;
         },
 
@@ -141,8 +171,9 @@ export default {
          * @memberof hs.save-map
          */
         focusTitle() {
-          if ($scope.statusData.guessedTitle) {
-            $scope.compoData.title = $scope.statusData.guessedTitle;
+          if (saveMapManagerService.statusData.guessedTitle) {
+            $scope.compoData.title =
+              saveMapManagerService.statusData.guessedTitle;
           }
           $timeout(() => {
             layoutService.contentWrapper.querySelector('.hs-stc-title').focus();
@@ -163,20 +194,6 @@ export default {
             return true;
           }
         },
-      });
-
-      $scope.$on('StatusManager.saveResult', (e, step, result, details) => {
-        $scope.resultCode = result;
-        $scope.details = details;
-        if (step === 'saveResult') {
-          $scope.showResultDialog();
-          $scope.step = 'start';
-          layoutService.setMainPanel('layermanager', true);
-        } else if (step === 'saveConfirm') {
-          $scope.showSaveDialog();
-        } else if (step === 'saveResult') {
-          $scope.showResultDialog();
-        }
       });
 
       $scope.$on('core.map_reset', (event, data) => {
