@@ -133,9 +133,9 @@ export default [
             hsMap.map.getSize()
           );
         const layers = me.jsonToLayers(obj);
-        for (let i = 0; i < layers.length; i++) {
-          hsMap.addLayer(layers[i]);
-        }
+        layers.forEach((lyr) => {
+          hsMap.repopulateLayer(lyr);
+        });
 
         if (angular.isObject(obj.current_base_layer)) {
           hsMap.map.getLayers().forEach((lyr) => {
@@ -277,6 +277,8 @@ export default [
             return layerParserService.createArcGISLayer(lyr_def);
           case 'XYZ':
             return layerParserService.createXYZLayer(lyr_def);
+          case 'StaticImage':
+            return layerParserService.createStaticImageLayer(lyr_def);
           case 'OpenLayers.Layer.Vector':
             return layerParserService.createVectorLayer(lyr_def);
         }

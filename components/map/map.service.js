@@ -365,6 +365,12 @@ export default [
     };
 
     function layersEqual(existing, lyr) {
+      if (angular.isUndefined(existing.getSource)) {
+        return false;
+      }
+      if (angular.isUndefined(lyr.getSource)) {
+        return false;
+      }
       const s_existing = existing.getSource();
       const s_new = lyr.getSource();
       return (
@@ -454,6 +460,8 @@ export default [
         me.map.addLayer(lyr);
       }
     }
+
+    this.repopulateLayer = repopulateLayer;
 
     this.getVectorType = function (layer) {
       let src = [];
