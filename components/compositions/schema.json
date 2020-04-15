@@ -15,7 +15,7 @@
     "abstract": {
       "$id": "#/properties/abstract",
       "type": "string",
-      "title": "Abstract",
+      "title": "The Abstract Schema",
       "default": "",
       "examples": [
         "Na mapě jsou zobrazené třídy ochrany půdy v Libereckém kraji"
@@ -35,7 +35,7 @@
     "title": {
       "$id": "#/properties/title",
       "type": "string",
-      "title": "Title",
+      "title": "The Title Schema",
       "default": "",
       "examples": [
         "Třídy ochrany půdy"
@@ -49,7 +49,7 @@
       "items": {
         "$id": "#/properties/extent/items",
         "type": "string",
-        "title": "Items",
+        "title": "The Items Schema",
         "default": "",
         "examples": [
           "14.62",
@@ -63,7 +63,7 @@
     "user": {
       "$id": "#/properties/user",
       "type": "object",
-      "title": "User",
+      "title": "The User Schema",
       "description": "Used in status manager but not in hslayers",
       "required": [
         "email",
@@ -73,7 +73,7 @@
         "email": {
           "$id": "#/properties/user/properties/email",
           "type": "string",
-          "title": "Email",
+          "title": "The Email Schema",
           "default": "",
           "examples": [
             "dmitrii@seznam.cz"
@@ -83,7 +83,7 @@
         "name": {
           "$id": "#/properties/user/properties/name",
           "type": "string",
-          "title": "Name",
+          "title": "The Name Schema",
           "default": "",
           "examples": [
             "Dmitrij Kožuch"
@@ -95,7 +95,7 @@
     "groups": {
       "$id": "#/properties/groups",
       "type": "object",
-      "title": "Groups",
+      "title": "The Groups Schema",
       "description": "Used in status manager but not in hslayers",
       "required": [
         "guest"
@@ -104,7 +104,7 @@
         "guest": {
           "$id": "#/properties/groups/properties/guest",
           "type": "string",
-          "title": "Guest",
+          "title": "The Guest Schema",
           "default": "",
           "examples": [
             "r"
@@ -117,7 +117,7 @@
       "$id": "#/properties/scale",
       "type": "number",
       "description": "Currently not supported in HsLayers",
-      "title": "Scale",
+      "title": "The Scale Schema",
       "default": 0,
       "examples": [
         1
@@ -126,7 +126,7 @@
     "projection": {
       "$id": "#/properties/projection",
       "type": "string",
-      "title": "Projection",
+      "title": "The Projection Schema",
       "default": "",
       "examples": [
         "epsg:3857",
@@ -142,7 +142,7 @@
       "items": {
         "$id": "#/properties/center/items",
         "type": "number",
-        "title": "Items",
+        "title": "The Items Schema",
         "default": 0,
         "examples": [
           1672068,
@@ -153,7 +153,7 @@
     "units": {
       "$id": "#/properties/units",
       "type": "string",
-      "title": "Units",
+      "title": "The Units Schema",
       "description": "Currently not supported in HsLayers",
       "default": "",
       "examples": [
@@ -168,11 +168,11 @@
     "layers": {
       "$id": "#/properties/layers",
       "type": "array",
-      "title": "Layers",
+      "title": "The Layers Schema",
       "items": {
         "$id": "#/properties/layers/items",
         "type": "object",
-        "title": "Items",
+        "title": "The Items Schema",
         "required": [
           "metadata",
           "visibility",
@@ -183,7 +183,7 @@
           "metadata": {
             "$id": "#/properties/layers/items/properties/metadata",
             "type": "object",
-            "title": "Metadata"
+            "title": "The Metadata Schema"
           },
           "visibility": {
             "$id": "#/properties/layers/items/properties/visibility",
@@ -241,7 +241,7 @@
             "$id": "#/properties/layers/items/properties/className",
             "type": "string",
             "title": "Classname",
-            "description": "Type of layer. Vector layers are subdivided by protocol property",
+            "description": "Big type of layer. Currently all raster layers are wms layers and Vector layers are subdivided by protocol property",
             "default": "",
             "enum": [
               "HSLayers.Layer.WMS",
@@ -250,7 +250,8 @@
               "WFS",
               "Vector",
               "XYZ",
-              "ArcGISRest"
+              "ArcGISRest",
+              "StaticImage"
             ],
             "examples": [
               "HSLayers.Layer.WMS"
@@ -289,14 +290,14 @@
           "legends": {
             "$id": "#/properties/layers/items/properties/legends",
             "type": "array",
-            "title": "Legends",
+            "title": "The Legends Schema",
             "items": {
               "$id": "#/properties/layers/items/properties/legends/items",
               "type": "string",
-              "title": "Items",
+              "title": "The Items Schema",
               "default": "",
               "examples": [
-                "https%3A%2F%2Fgeoportal.kraj-lbc.cz%2Fcgi-bin%2Fmapserv%3Fmap%3D%2Fdata%2Fgis%2FMapServer%2Fprojects%2Fwms%2Fatlas%2Fpuda.map%26version%3D1.3.0%26service%3DWMS%26request%3DGetLegendGraphic%26sld_version%3D1.1.0%26layer%3Dtridyochrany%26format%3Dimage%2Fpng%26STYLE%3Ddefault"
+                ["https%3A%2F%2Fgeoportal.kraj-lbc.cz%2Fcgi-bin%2Fmapserv%3Fmap%3D%2Fdata%2Fgis%2FMapServer%2Fprojects%2Fwms%2Fatlas%2Fpuda.map%26version%3D1.3.0%26service%3DWMS%26request%3DGetLegendGraphic%26sld_version%3D1.1.0%26layer%3Dtridyochrany%26format%3Dimage%2Fpng%26STYLE%3Ddefault"]
               ],
               "pattern": "^(.*)$"
             }
@@ -304,7 +305,7 @@
           "protocol": {
             "$id": "#/properties/layers/items/properties/protocol",
             "type": "object",
-            "title": "Protocol",
+            "title": "The Protocol Schema",
             "properties": {
               "format": {
                 "$id": "#/properties/layers/items/properties/protocol/properties/format",
@@ -359,7 +360,7 @@
               "number",
               "null"
             ],
-            "title": "Maxresolution",
+            "title": "The Maxresolution Schema",
             "default": "Number.Infinity",
             "examples": [
               8000
@@ -371,7 +372,7 @@
               "number",
               "null"
             ],
-            "title": "Minresolution",
+            "title": "The Minresolution Schema",
             "default": 0,
             "examples": [
               0
@@ -388,18 +389,25 @@
             ],
             "pattern": "^(.*)$"
           },
+          "urls": {
+            "$id": "#/properties/layers/items/properties/urls",
+            "type": "array",
+            "title": "Urls array of ArcGISRest service",
+            "description": "Urls array of ArcGISRest service.",
+            "default": "",
+            "examples": [
+              ["https://example.com/arcgis/rest/services/map_pub/MapServer"]
+            ]
+          },
           "params": {
             "$id": "#/properties/layers/items/properties/params",
             "type": "object",
-            "title": "Params",
-            "required": [
-              "LAYERS"
-            ],
+            "title": "The Params Schema",
             "properties": {
               "LAYERS": {
                 "$id": "#/properties/layers/items/properties/params/properties/LAYERS",
                 "type": "string",
-                "title": "WMS Layer",
+                "title": "WMS Layer. LAYERS parameter is mandatory for WMS services.",
                 "default": "",
                 "examples": [
                   "tridyochrany"
@@ -429,7 +437,7 @@
               "VERSION": {
                 "$id": "#/properties/layers/items/properties/params/properties/VERSION",
                 "type": "string",
-                "title": "Version",
+                "title": "The Version Schema",
                 "default": "1.3.0",
                 "examples": [
                   "1.3.0"

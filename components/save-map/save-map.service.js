@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {ImageArcGISRest, TileArcGISRest, TileWMS} from 'ol/source';
+import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
@@ -327,6 +327,10 @@ export default [
           ) {
             json.className = 'ArcGISRest';
             json.singleTile = utils.instOf(src, ImageArcGISRest);
+          }
+          if (utils.instOf(src, ImageStatic)) {
+            json.className = 'StaticImage';
+            json.extent = src.getImageExtent();
           }
           if (utils.instOf(src, ImageWMS) || utils.instOf(src, TileWMS)) {
             json.className = 'HSLayers.Layer.WMS';
