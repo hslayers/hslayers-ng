@@ -7,7 +7,7 @@ import {Attribution} from 'ol/control.js';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {Group, Tile} from 'ol/layer';
-import {ImageArcGISRest, TileArcGISRest, TileWMS} from 'ol/source';
+import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Vector} from 'ol/source';
 import {get as getProj, transform} from 'ol/proj';
@@ -102,7 +102,9 @@ export default [
         const layer_class = lyr_def.singleTile ? ImageLayer : Tile;
         const params = lyr_def.params;
         const legends = [];
-        delete params.REQUEST;
+        if (angular.isDefined(params)) {
+          delete params.REQUEST;
+        }
         //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
         if (angular.isDefined(lyr_def.legends)) {
           for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
@@ -154,19 +156,16 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.compositions.config_parsers.service#createArcGISLayer
+       * @name hs.compositions.config_parsers.service#createXYZLayer
        * @public
        * @param {Object} lyr_def Layer definition object
        * @returns {Object} Ol Image or Tile layer
-       * @description Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
+       * @description Parse definition object to create XYZ Ol.layer
        */
       createXYZLayer: function (lyr_def) {
         const source_class = XYZ;
         const layer_class = Tile;
-        const params = lyr_def.params;
         const legends = [];
-        delete params.REQUEST;
-        //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
         if (angular.isDefined(lyr_def.legends)) {
           for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
             legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
@@ -213,6 +212,65 @@ export default [
         new_layer.setVisible(lyr_def.visibility);
         //TODO Proxify
         //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
+        return new_layer;
+      },
+      /**
+       * @ngdoc method
+       * @name hs.compositions.config_parsers.service#createStaticImageLayer
+       * @public
+       * @param {Object} lyr_def Layer definition object
+       * @returns {Object} Ol Image or Tile layer
+       * @description Parse definition object to create ImageStatic Ol.layer
+       */
+      createStaticImageLayer: function (lyr_def) {
+        const source_class = ImageStatic;
+        const layer_class = ImageLayer;
+        const legends = [];
+        if (angular.isDefined(lyr_def.legends)) {
+          for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
+            legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
+          }
+        }
+        const source = new source_class({
+          url: decodeURIComponent(lyr_def.url),
+          attributions: lyr_def.attribution
+            ? [
+                new Attribution({
+                  html:
+                    '<a href="' +
+                    lyr_def.attribution.OnlineResource +
+                    '">' +
+                    lyr_def.attribution.Title +
+                    '</a>',
+                }),
+              ]
+            : undefined,
+          imageExtent: lyr_def.extent,
+          crossOrigin: 'anonymous',
+          projection: lyr_def.projection,
+          wrapX: lyr_def.wrapX,
+          //TODO Add the rest of parameters and describe in the composition schema
+        });
+        const new_layer = new layer_class({
+          title: lyr_def.title,
+          from_composition: true,
+          maxResolution: lyr_def.maxResolution || Number.Infinity,
+          minResolution: lyr_def.minResolution || 0,
+          minScale: lyr_def.minScale || Number.Infinity,
+          maxScale: lyr_def.maxScale || 0,
+          show_in_manager: lyr_def.displayInLayerSwitcher,
+          abstract: lyr_def.name || lyr_def.abstract,
+          base: lyr_def.base,
+          metadata: lyr_def.metadata,
+          dimensions: lyr_def.dimensions,
+          legends: legends,
+          saveState: true,
+          path: lyr_def.path,
+          opacity: lyr_def.opacity || 1,
+          source,
+        });
+
+        new_layer.setVisible(lyr_def.visibility);
         return new_layer;
       },
       /**
