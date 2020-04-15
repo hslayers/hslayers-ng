@@ -127,7 +127,11 @@ export default [
                 status = angular.isDefined(j.saved) && j.saved !== false;
               }
               if (endpoint.type == 'layman') {
-                status = j.length == 1 && angular.isDefined(j[0].uuid);
+                if (saveAsNew) {
+                  status = j.length == 1 && angular.isDefined(j[0].uuid);
+                } else {
+                  status = angular.isDefined(j.uuid);
+                }
               }
               if (!status) {
                 if (endpoint.type == 'layman' && j.status == 'CONFLICT') {
