@@ -208,7 +208,9 @@ export default [
               url = record.link;
               break;
             case 'layman':
-              url = record.endpoint.url + record.url + '/file';
+              url =
+                record.url.replace('http://', $location.protocol() + '://') +
+                '/file';
               break;
             default:
               $log.warn(`Endpoint type '${record.endpoint.type} not supported`);
