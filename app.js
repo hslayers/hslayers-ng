@@ -61,6 +61,7 @@ import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
 import {Vector} from 'ol/source';
+import {Style, Fill, Stroke, Circle} from 'ol/style';
 import {register} from 'ol/proj/proj4';
 
 window.ol = {
@@ -68,7 +69,7 @@ window.ol = {
     Tile,
     Group,
     Image: ImageLayer,
-    Vector: VectorLayer,
+    Vector: VectorLayer
   },
   source: {
     OSM,
@@ -79,13 +80,19 @@ window.ol = {
     TileArcGISRest,
     BingMaps,
     ImageWMS,
-    ImageArcGISRest,
+    ImageArcGISRest
   },
   format: {
-    GeoJSON,
+    GeoJSON
+  },
+  style: {
+    Style,
+    Fill,
+    Stroke,
+    Circle
   },
   View,
-  proj,
+  proj
 };
 
 if (window.hslayersNgConfig) {
