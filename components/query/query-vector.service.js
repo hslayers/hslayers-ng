@@ -125,27 +125,25 @@ export default function (
     return center;
   }
   /**
+   * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
+   *
    * @function getFeatureAttributes
    * @memberOf HsQueryController
-   * @params {Object} feature Selected feature from map
-   * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
-   * @param feature
+   * @param feature Selected feature from map
    */
   function getFeatureAttributes(feature) {
     const attributes = [];
     let tmp = [];
-    let hstemplate = null;
+    const hstemplate = feature.get('hstemplate')
+      ? feature.get('hstemplate')
+      : null;
     let customInfoTemplate = null;
     feature.getKeys().forEach((key) => {
       if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) {
         return;
       }
-      if (feature.get('hstemplate')) {
-        hstemplate = feature.get('hstemplate');
-      }
       if (key == 'features') {
-        for (const ixSubFeature in feature.get('features')) {
-          const subFeature = feature.get('features')[ixSubFeature];
+        for (const subFeature of feature.get('features')) {
           tmp = tmp.concat(getFeatureAttributes(subFeature));
         }
       } else {
