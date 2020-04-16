@@ -93,7 +93,7 @@ export default function (
     /**
      * @param e
      */
-    function changeHandler(e) {
+    function showPopUp(e) {
       if (e.dragging) {
         return;
       }
@@ -124,11 +124,11 @@ export default function (
             };
           });
           me.featuresUnderMouse.forEach((feature) => {
-            serializeFeatureAtributes(feature);
+            serializeFeatureAttributes(feature);
             if (feature.get('features')) {
               feature
                 .get('features')
-                .forEach((subfeature) => serializeFeatureAtributes(subfeature));
+                .forEach((subfeature) => serializeFeatureAttributes(subfeature));
             }
           });
           const pixel = e.pixel;
@@ -142,43 +142,69 @@ export default function (
     }
     map.on(
       'pointermove',
-      HsUtilsService.debounce(changeHandler, 500, false, me)
+      HsUtilsService.debounce(showPopUp, 500, false, me)
     );
   }
 
   /**
    * @param feature
    */
-  function serializeFeatureAtributes(feature) {
+  function serializeFeatureAttributes(feature) {
     if (angular.isUndefined(feature.getLayer)) {
       return;
     }
     const layer = feature.getLayer(HsMapService.map);
-    const allowedKeys = layer.get('hoveredKeys');
-    if (angular.isUndefined(allowedKeys)) {
-      return [];
+    let attrsConfig = [];
+    if (angular.isDefined(layer.get('popUp')) && angular.isDefined(layer.get('popUp').attributes)) {
+      //must be an array
+      attrsConfig = layer.get('popUp').attributes;
+    } else if (angular.isDefined(layer.get('hoveredKeys'))) {
+      //only for backwards-compatibility with HSLayers 1.10 .. 1.15
+      //should be dropped in future releases
+      //expected to be an array
+      attrsConfig = layer.get('hoveredKeys');
+      if (angular.isDefined(layer.get('hoveredKeysTranslations'))) {
+        //expected to be an object
+        for (const [key, val] of Object.entries(layer.get('hoveredKeysTranslations'))) {
+          const index = attrsConfig.indexOf(key);
+          if (index > -1) {
+            attrsConfig[index] = {
+              'attribute': key,
+              'label': val
+            };
+          }
+        }
+      }
+    } else {
+      return;
     }
-    feature.attributesForHover = feature
-      .getKeys()
-      .filter((key) => allowedKeys.indexOf(key) > -1)
-      .map((key) => {
-        return {key: tryTranslate(key, layer), value: feature.get(key)};
-      });
-  }
-
-  /**
-   * @param key
-   * @param layer
-   */
-  function tryTranslate(key, layer) {
-    const translations = layer.get('hoveredKeysTranslations');
-    if (angular.isUndefined(translations)) {
-      return key;
+    feature.attributesForHover = [];
+    for (const attr of attrsConfig) {
+      let attrName, attrLabel;
+      let attrFunction = x => x;
+      if (typeof attr === 'string' || attr instanceof String) {
+        //simple case when only attribute name is provided in the layer config
+        attrName = attr;
+        attrLabel = attr;
+      } else {
+        if (angular.isUndefined(attr.attribute)) {
+          //implies malformed layer config - 'attribute' is obligatory in this case
+          continue;
+        }
+        attrName = attr.attribute;
+        attrLabel = angular.isDefined(attr.label) ? attr.label : attr.attribute;
+        if (angular.isDefined(attr.displayFunction)) {
+          attrFunction = attr.displayFunction;
+        }
+      }
+      if (angular.isDefined(feature.get(attrName))) {
+        feature.attributesForHover.push({
+          key: attrLabel,
+          value: feature.get(attrName),
+          displayFunction: attrFunction
+        });
+      }
     }
-    if (angular.isUndefined(translations[key])) {
-      return key;
-    }
-    return translations[key];
   }
 
   HsMapService.loaded().then(init);
