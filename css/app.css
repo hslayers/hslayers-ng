@@ -358,7 +358,7 @@ hr {
 }
 .ol-rotate.hidden {
 	visibility: hidden;
-	opacity: 0%;	
+	opacity: 0%;
 }
 .ol-rotate button:not(.active) {
 	background-color: rgba(133, 135, 136, 0.7);
@@ -1620,6 +1620,6 @@ li.hs-lm-header {
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
-.hs-hover-popup{max-height: 20em; overflow-y: scroll; visibility: visible;}
+.hs-hover-popup{max-height: 20em; max-width: 30em; overflow-y: scroll; visibility: visible;}
 
 .hs-toolbar-button{height: 2.4em}
