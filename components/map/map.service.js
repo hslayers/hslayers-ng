@@ -72,7 +72,7 @@ export default [
           }
         }
       };
-      map.getLayers().forEach((layer) => {
+      me.map.getLayers().forEach((layer) => {
         if (utils.instOf(layer, Group)) {
           layer.getLayers().forEach(check);
         } else {
