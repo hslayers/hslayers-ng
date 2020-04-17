@@ -16,6 +16,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
     this.queryPoint = new Point([0, 0]);
     this.queryLayer = new VectorLayer({
       title: 'Point clicked',
+      queryable: false,
       source: new Vector({
         features: [new Feature({
           geometry: me.queryPoint
