@@ -66,7 +66,7 @@ export default [
     me.queryMetadata = async function (layer) {
       const url = layerUtils.getURL(layer);
       const metadata = {
-        metainfo: {'OnlineResource': layer.get('Metadata')},
+        metainfo: {'OnlineResource': layer.get('Metadata')}
       };
       //WMS
       if (layerUtils.isLayerWMS(layer)) {
@@ -76,31 +76,64 @@ export default [
           .then((capabilities_xml) => {
             const parser = new WMSCapabilities();
             const caps = parser.read(capabilities_xml);
-            const layer_name = layer.getSource().getParams().LAYERS;
+            let layer_name = layer.getSource().getParams().LAYERS;
+            const layerObject = []; //array of layer objects representing added layer
 
-            const layerObject = me.identifyLayerObject(
-              layer_name,
-              caps.Capability.Layer
-            );
-            const service = {
-              '0': caps.Service,
-            };
+            if (layer_name.includes(',')) {
+              // array of sublayers
+              const layers = [];
+              // array of legendURLs
+              const legends = [];
+              layer_name = layer_name.split(',');
+              //loop over layers from layer.LAYERS
+              for (let i = 0; i < layer_name.length; i++) {
+                layerObject[i] = me.identifyLayerObject(layer_name[i], caps.Capability.Layer);
+                if (layerObject[i].Style) {
+                  legends.push(layerObject[i].Style[0].LegendURL[0].OnlineResource);
+                }
+                if (angular.isDefined(layerObject[i].Layer)) {
+                  //loop over sublayers of layer from layer.LAYERS
+                  for (let j = 0; j < layerObject[i].Layer.length; j++) {
+                    layers.push(layerObject[i].Layer[j]); //merge sublayers
+                  }
+                }
+              }
+              layer.setProperties(layerObject[0]);
+              layer.set('Layer', layers);
+              layer.set('Legends', legends);
+              layer.set('MetadataURL', { //use service metadata for layers with multiple layer.LAYERS inputs
+                '0': caps.Service
+              });
 
-            if (layerObject) {
-              layer.setProperties(layerObject);
-              if (layer.get('Copyright')) {
-                layer.set('Attribution', {
-                  'OnlineResource': layer.get('Copyright'),
-                });
-              }
-              if (layer.get('Metadata')) {
-                layer.set('MetadataURL', metadata);
-                return layer;
-              }
-              if (angular.isUndefined(layerObject.MetadataURL)) {
-                layer.set('MetadataURL', service);
+            } else {
+              layerObject[0] = me.identifyLayerObject(
+                layer_name,
+                caps.Capability.Layer
+              );
+              layer.setProperties(layerObject[0]);
+              if (layerObject[0].Style) {
+                layer.set('Legends', layerObject[0].Style[0].LegendURL[0].OnlineResource);
               }
             }
+
+            //prioritize config values
+            if (layer.get('Copyright')) {
+              layer.set('Attribution', {
+                'OnlineResource': layer.get('Copyright')
+              });
+            }
+            if (layer.get('Metadata')) {
+              layer.set('MetadataURL', metadata);
+              return layer;
+            }
+            if (angular.isUndefined(layerObject[0].MetadataURL)) {
+              layer.set('MetadataURL', {
+                '0': caps.Service
+              });
+            }
+            // $timeout(() => {
+            //   legend.getWMSLegendDescriptor(layer);
+            // }, 0);
 
             return true;
           })
@@ -121,11 +154,11 @@ export default [
             layer.setProperties(caps);
             if (layer.get('Copyright')) {
               layer.set('Attribution', {
-                'OnlineResource': layer.get('Copyright'),
+                'OnlineResource': layer.get('Copyright')
               });
             } else {
               layer.set('Attribution', {
-                'OnlineResource': caps.ServiceProvider.ProviderSite,
+                'OnlineResource': caps.ServiceProvider.ProviderSite
               });
             }
             if (layer.get('Metadata')) {
@@ -153,11 +186,11 @@ export default [
               const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
               if (layer.get('Copyright')) {
                 layer.set('Attribution', {
-                  'OnlineResource': layer.get('Copyright'),
+                  'OnlineResource': layer.get('Copyright')
                 });
               } else {
                 layer.set('Attribution', {
-                  'OnlineResource': el[0].getAttribute('xlink:href'),
+                  'OnlineResource': el[0].getAttribute('xlink:href')
                 });
               }
               return true;
@@ -171,5 +204,5 @@ export default [
     };
 
     return me;
-  },
+  }
 ];
