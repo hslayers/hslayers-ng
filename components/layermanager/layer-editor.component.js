@@ -59,6 +59,7 @@ export default {
         layer_renamer_visible: false,
         legendService,
         legendDescriptors: [],
+        layoutService,
         layerIsWmsT() {
           return WMST.layerIsWmsT($scope.$ctrl.currentLayer);
         },
