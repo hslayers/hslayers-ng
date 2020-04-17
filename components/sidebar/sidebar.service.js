@@ -26,7 +26,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             { panel: 'feature_crossfilter', module: 'hs.feature_crossfilter.controller', order: 5, title: gettext('Filter features'), description: gettext('Crossfilter'), icon: 'icon-analytics-piechart' },
             { panel: 'sensors', module: 'hs.sensors', order: 6, title: gettext('Sensors'), description: gettext(''), icon: 'icon-weightscale' },
             { panel: 'measure', module: 'hs.measure', order: 2, title: gettext('Measurements'), description: gettext('Measure distance or area at map'), icon: 'icon-design', condition: true },
-            { panel: 'routing', module: 'hs.routing.controller', order: 8, title: gettext('Routing'), description: gettext(''), icon: 'icon-road' },
+            { panel: 'routing', module: 'HsRoutingController', order: 8, title: gettext('Routing'), description: gettext(''), icon: 'icon-road' },
             { panel: 'tracking', module: 'hs.tracking.controller', order: 9, title: gettext('Tracking'), description: gettext(''), icon: 'icon-screenshot' },
             { panel: 'print', module: 'hs.print', order: 10, title: gettext('Print'), description: gettext('Print map'), icon: 'icon-print' },
             { panel: 'permalink', module: 'hs.permalink', order: 11, title: gettext('Share map'), description: gettext('Share map'), icon: 'icon-share-alt' },

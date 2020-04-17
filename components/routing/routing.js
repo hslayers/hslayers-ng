@@ -16,7 +16,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
       'config',
       function (config) {
         return {
-          template: require('components/routing/partials/routing.html'),
+          template: require('./partials/routing.html'),
         };
       },
     ])
@@ -24,9 +24,9 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
     /**
      * @memberof hs.routing
      * @ngdoc controller
-     * @name hs.routing.controller
+     * @name HsRoutingController
      */
-    .controller('hs.routing.controller', [
+    .controller('HsRoutingController', [
       '$scope',
       'hs.map.service',
       'Core',
@@ -81,7 +81,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Utility function to transform forward/inverse between 4326 - 3857
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function trans
          * @param {ol.coordinate} coordinate Coordinate to transform
          * @param {Boolean} inverse Direction of transformation (true = 3857 -> 4326, false = 4326 -> 3857)
@@ -111,7 +111,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Set the default operation (Shortest route)
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function setDefaultOperation
          */
         const setDefaultOperation = function () {
@@ -126,7 +126,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Set routing operation and remove previous results and waypoints
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function setOperation
          * @param {String} operation Selected operation
          */
@@ -142,7 +142,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Clear route's vector source
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function clearAll
          */
         $scope.clearAll = function () {
@@ -152,7 +152,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Clear drawn waypoints
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function clearWayPoints
          */
         $scope.clearWayPoints = function () {
@@ -165,7 +165,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Clear current search results
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function clearSearchResults
          */
         $scope.clearSearchResults = function () {
@@ -174,7 +174,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Click handler for clicks, call handler by operation
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function clickHandler
          * @param {ol.click.event} evt
          */
@@ -190,7 +190,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Handler to be invoked when the shortest route operation is activated
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function shortestRouteClickHandler
          * @param {ol.ClickEvent} evt
          */
@@ -204,7 +204,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Handler to be invoked when the optimal route operation is activated
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function optimalRouteClickHandler
          * @param {ol.ClickEvent} evt
          */
@@ -214,7 +214,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Optimaze route for waypoints
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function optimizeRoute
          */
         $scope.optimizeRoute = function () {
@@ -253,7 +253,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
             /**
              * Move selected waypoint up in order
-             * @memberof hs.routing.controller
+             * @memberof HsRoutingController
              * @function moveUp
              * @param {Number} from Current position of waypoint in order
              */
@@ -266,7 +266,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
             /**
              * Move selected waypoint down in order
-             * @memberof hs.routing.controller
+             * @memberof HsRoutingController
              * @function moveDown
              * @param {Number} from Current position of waypoint in order
              */
@@ -300,7 +300,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Handler to be invoked when the reachable area operation is activated
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function reachableAreaClickHandler
          * @param {ol.ClickEvent} evt
          */
@@ -316,7 +316,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Add a way point to the list (computes Route for Shortest route operation)
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function addWayPoint
          * @param {ol.coordinate} coordinate
          */
@@ -352,7 +352,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Get route description as street list with their lengths
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function getRouteDescription
          * @param {GeoJSON} geoJsonFeatures
          * @returns {array} description List of streetnames and distances
@@ -395,7 +395,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Calculate the shortest route
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function getShortestRoute
          * @param {Number} fromNode - Identifier of from node
          * @param {Number} toNode - Identifier of to node
@@ -424,7 +424,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * (PRIVATE) Calculate reachable area
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function getReachableArea
          * @param {Number} fromNode Node to compute area
          * @param {Number} distance Maximum distance of area
@@ -442,7 +442,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Activate route layer and routing interaction
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function activate
          */
         $scope.activate = function () {
@@ -452,7 +452,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
 
         /**
          * Deactivate route layer and routing interaction, clear data
-         * @memberof hs.routing.controller
+         * @memberof HsRoutingController
          * @function deactivate
          */
         $scope.deactivate = function () {

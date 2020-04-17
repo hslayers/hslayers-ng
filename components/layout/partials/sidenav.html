@@ -10,7 +10,7 @@
                 <div panel-creator="panel.controller" directive="panel.directive" ng-if="(Core.exists(panel.controller) || Core.exists(panel.directive))" ng-show="layoutService.panelVisible(panel.name)" hide-xs hide-sm></div>
             </div>
 
-            <md-list-item ng-if="Core.exists('hs.routing.controller')" ng-click="openPanel('routing')">
+            <md-list-item ng-if="Core.exists('HsRoutingController')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
                 <p translate>Routing</p>
             </md-list-item>

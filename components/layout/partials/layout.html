@@ -35,7 +35,7 @@
                             <div hs.query.directive_infopanel_md    hs.draggable ng-controller="hs.query.controller" class="hs-infopanel" ng-if="Core.exists('hs.query.controller') && config.design == 'md'" ng-show="panelVisible('info', this)"></div>
                             <hs.save-map                            hs.draggable  ng-if="Core.exists('hs.save-map')" ng-show="panelVisible('saveMap', this)"></hs.save-map>
                             <div hs.language.directive              hs.draggable ng-controller="hs.language.controller" ng-if="Core.exists('hs.language.controller')" ng-show="panelVisible('language', this)"></div>
-                            <div hs.routing.directive               hs.draggable ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="panelVisible('routing', this)"></div>
+                            <div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-if="Core.exists('HsRoutingController')" ng-show="panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
                             <hs.vgi-draw                            hs.draggable ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
                             <hs.sensors.panel                       hs.draggable ng-if="Core.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>

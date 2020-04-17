@@ -23,7 +23,7 @@
 	<hs.permalink				ng-if="Core.exists('hs.permalink')" ng-show="panelVisible('permalink', this)"></hs.permalink>
 	<div hs.query.directive_infopanel       ng-controller="hs.query.controller" ng-if="Core.exists('hs.query.controller')" ng-show="panelVisible('info', this)"></div>
 	<hs.save-map				ng-controller="hs.save-map" ng-if="Core.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></hs.save-map>>
-	<div hs.routing.directive               ng-controller="hs.routing.controller" ng-if="Core.exists('hs.routing.controller')" ng-show="panelVisible('routing', this)"></div>
+	<div hs.routing.directive               ng-controller="HsRoutingController" ng-if="Core.exists('HsRoutingController')" ng-show="panelVisible('routing', this)"></div>
 	<div hs.tracking.directive              ng-controller="hs.tracking.controller" ng-if="Core.exists('hs.tracking.controller')" ng-show="panelVisible('tracking', this)"></div>
 	<hs.vgi-draw                ng-if="Core.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
 	<hs.customhtml				ng-if="Core.exists('hs.customhtml')"></hs.customhtml>
