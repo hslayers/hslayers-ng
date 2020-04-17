@@ -58,9 +58,6 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
         me.dataCleared = false;
         me.currentQuery = (Math.random() + 1).toString(36).substring(7);
         me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
-        if (!$rootScope.$$phase) {
-          $rootScope.$digest();
-        }
         me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
         $rootScope.$broadcast('mapQueryStarted', evt);
       });

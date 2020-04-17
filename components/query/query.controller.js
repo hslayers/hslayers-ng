@@ -128,9 +128,7 @@ export default [
     });
 
     $scope.$on('queryVectorResult', () => {
-      if (!$scope.$$phase) {
-        $scope.$digest();
-      }
+      $timeout(() => {}, 0);
     });
 
     //add current panel queriable - activate/deactivate
