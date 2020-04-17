@@ -10,7 +10,8 @@ export default [
   '$rootScope',
   'hs.map.service',
   'hs.utils.service',
-  function ($rootScope, OlMap, utils) {
+  '$timeout',
+  function ($rootScope, OlMap, utils, $timeout) {
     const me = this;
 
     let map;
@@ -139,13 +140,12 @@ export default [
           }
         }
 
-        me.data.measurements[me.currentMeasurement] = output;
-        if (me.data.measurements[me.currentMeasurement]) {
-          me.data.measurements[me.currentMeasurement].geom = me.sketch;
-        }
-        if (!$rootScope.$$phase) {
-          $rootScope.$digest();
-        }
+        $timeout(() => {
+          me.data.measurements[me.currentMeasurement] = output;
+          if (me.data.measurements[me.currentMeasurement]) {
+            me.data.measurements[me.currentMeasurement].geom = me.sketch;
+          }
+        }, 0);
       }
     };
 

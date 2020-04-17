@@ -20,6 +20,7 @@ export default [
   'hs.layermanager.WMSTservice',
   'hs.layerEditorVectorLayer.service',
   'hs.layermanager.metadata',
+  '$timeout',
   function (
     $rootScope,
     OlMap,
@@ -29,7 +30,8 @@ export default [
     config,
     WMST,
     vectorLayerService,
-    metadata
+    metadata,
+    $timeout
   ) {
     const me = {};
 
@@ -633,25 +635,16 @@ export default [
           source.loaded = false;
           source.loadCounter += 1;
           $rootScope.$broadcast('layermanager.layer_loading', layer);
-          if (!$rootScope.$$phase) {
-            $rootScope.$digest();
-          }
         });
         source.on('imageloadend', (event) => {
           source.loaded = true;
           source.loadCounter -= 1;
           $rootScope.$broadcast('layermanager.layer_loaded', layer);
-          if (!$rootScope.$$phase) {
-            $rootScope.$digest();
-          }
         });
         source.on('imageloaderror', (event) => {
           source.loaded = true;
           source.error = true;
           $rootScope.$broadcast('layermanager.layer_loaded', layer);
-          if (!$rootScope.$$phase) {
-            $rootScope.$digest();
-          }
         });
       } else if (utils.instOf(layer, Tile)) {
         source.on('tileloadstart', (event) => {
@@ -661,9 +654,6 @@ export default [
             source.loaded = false;
             source.set('loaded', false);
             $rootScope.$broadcast('layermanager.layer_loading', layer);
-            if (!$rootScope.$$phase) {
-              $rootScope.$digest();
-            }
           }
         });
         source.on('tileloadend', (event) => {
@@ -672,9 +662,6 @@ export default [
             source.loaded = true;
             source.set('loaded', true);
             $rootScope.$broadcast('layermanager.layer_loaded', layer);
-            if (!$rootScope.$$phase) {
-              $rootScope.$digest();
-            }
           }
         });
         source.on('tileloaderror', (event) => {
@@ -687,9 +674,6 @@ export default [
             source.loaded = true;
             source.set('loaded', true);
             $rootScope.$broadcast('layermanager.layer_loaded', layer);
-            if (!$rootScope.$$phase) {
-              $rootScope.$digest();
-            }
           }
         });
       }
@@ -728,7 +712,7 @@ export default [
       }
     };
 
-    let timer;
+    let timer = null;
     /**
      * (PRIVATE)
      * @function init
@@ -750,14 +734,20 @@ export default [
           clearTimeout(timer);
         }
         timer = setTimeout(() => {
+          let somethingChanged = false;
           for (let i = 0; i < me.data.layers.length; i++) {
-            me.data.layers[i].grayed = me.isLayerInResolutionInterval(
+            const tmp = me.isLayerInResolutionInterval(
               me.data.layers[i].layer
             );
+            if(me.data.layers[i].grayed != tmp) {
+              me.data.layers[i].grayed = tmp;
+              somethingChanged = true;
+            }
+            if(somethingChanged){
+              $timeout(()=>{}, 0);
+            }
           }
-          if (!$rootScope.$$phase) {
-            $rootScope.$digest();
-          }
+          timer = null;
         }, 500);
       });
 

@@ -14,16 +14,16 @@ export default {
     'hs.map.service',
     'hs.layout.service',
     'hs.measure.service',
-    function ($scope, OlMap, layoutService, Measure) {
+    '$timeout',
+    function ($scope, OlMap, layoutService, Measure, $timeout) {
       $scope.data = Measure.data;
 
       document.addEventListener('keyup', (e) => {
         if (e.keyCode == 17) {
           //ControlLeft
-          Measure.switchMultipleMode();
-          if (!$scope.$$phase) {
-            $scope.$digest();
-          }
+          $timeout(() => {
+            Measure.switchMultipleMode();
+          }, 0);
         }
       });
 
@@ -48,9 +48,6 @@ export default {
       $scope.setType = function (type) {
         $scope.type = type;
         Measure.switchMeasureType(type);
-        if (!$scope.$$phase) {
-          $scope.$digest();
-        }
       };
 
       /**
@@ -63,9 +60,6 @@ export default {
        */
       $scope.clearAll = function () {
         Measure.clearMeasurement();
-        if (!$scope.$$phase) {
-          $scope.$digest();
-        }
       };
 
       $scope.$watch('type', () => {

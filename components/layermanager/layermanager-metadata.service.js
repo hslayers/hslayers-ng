@@ -48,18 +48,14 @@ export default [
      * @param {Ol.layer} layer Selected layer
      * @description Async adds hasSublayers parameter if true
      */
-    me.fillMetadata = function (layer) {
-      me.queryMetadata(layer).then(() => {
-        const subLayers = layer.get('Layer');
-        if (angular.isDefined(subLayers) && subLayers.length > 0) {
-          layer.hasSublayers = true;
+    me.fillMetadata = async function (layer) {
+      await me.queryMetadata(layer);
+      const subLayers = layer.get('Layer');
+      if (angular.isDefined(subLayers) && subLayers.length > 0) {
+        if (!layer.hasSublayers) {
+          $timeout(() => (layer.hasSublayers = true), 0);
         }
-        $timeout(() => {
-          if (!$rootScope.$$phase) {
-            $rootScope.$digest();
-          }
-        }, 0);
-      });
+      }
     };
     /**
      * @function queryMetadata

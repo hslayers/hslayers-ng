@@ -87,26 +87,39 @@ export default {
       });
 
       $scope.$on('layermanager.layer_loading', (event, layer) => {
-        $timeout(() => {
-          if (!(layer.get('title') in $scope.layer_loading)) {
-            $scope.layer_loading.push(layer.get('title'));
-          }
-          $scope.composition_loaded = false;
-        });
+        let somethingChanged = false;
+        if (!(layer.get('title') in $scope.layer_loading)) {
+          $scope.layer_loading.push(layer.get('title'));
+          somethingChanged = true;
+        }
+        $scope.composition_loaded = false;
+        if (somethingChanged) {
+          forceRedraw();
+        }
       });
 
-      $scope.$on('layermanager.layer_loaded', (event, layer) => {
-        $timeout(() => {
-          for (let i = 0; i < $scope.layer_loading.length; i++) {
-            if ($scope.layer_loading[i] == layer.get('title')) {
-              $scope.layer_loading.splice(i, 1);
-            }
-          }
+      function forceRedraw() {
+        $timeout(() => {}, 0);
+      }
 
-          if ($scope.layer_loading.length == 0) {
-            $scope.composition_loaded = true;
+      $scope.$on('layermanager.layer_loaded', (event, layer) => {
+        let somethingChanged = false;
+        for (let i = 0; i < $scope.layer_loading.length; i++) {
+          if ($scope.layer_loading[i] == layer.get('title')) {
+            $scope.layer_loading.splice(i, 1);
+            somethingChanged = true;
           }
-        });
+        }
+
+        if ($scope.layer_loading.length == 0) {
+          if (!$scope.composition_loaded) {
+            $scope.composition_loaded = true;
+            somethingChanged = true;
+          }
+        }
+        if (somethingChanged) {
+          forceRedraw();
+        }
       });
 
       $scope.$on('compositions.composition_deleted', (event, composition) => {
