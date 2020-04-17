@@ -1,14 +1,11 @@
-import VectorLayer from 'ol/layer/Vector';
-import {Vector} from 'ol/source';
-
 export default {
   template: [
     'config',
     (config) => {
       if (config.design == 'md') {
-        return require('components/layermanager/partials/layermanagermd.html');
+        return require('./partials/layermanagermd.html');
       } else {
-        return require('components/layermanager/partials/layermanager.html');
+        return require('./partials/layermanager.html');
       }
     },
   ],

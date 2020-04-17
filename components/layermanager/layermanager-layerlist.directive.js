@@ -20,7 +20,7 @@ export default [
     layoutService
   ) {
     return {
-      template: require('components/layermanager/partials/layerlist.html'),
+      template: require('./partials/layerlist.html'),
       controller: [
         '$scope',
         function ($scope) {

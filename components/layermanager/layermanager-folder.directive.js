@@ -3,7 +3,7 @@ export default [
   'config',
   function ($compile, config) {
     return {
-      template: require('components/layermanager/partials/folder.html'),
+      template: require('./partials/folder.html'),
       compile: function compile(element) {
         const contents = element.contents().remove();
         let contentsLinker;
@@ -28,7 +28,7 @@ export default [
            * @type {Object}
            * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
            */
-          if (scope.value == null) {
+          if (scope.value === null) {
             scope.obj = '-';
           } else {
             scope.obj = scope.value;

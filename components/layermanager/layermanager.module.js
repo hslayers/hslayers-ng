@@ -1,9 +1,9 @@
+import '../../common/get-capabilities.module';
+import '../legend/legend.module';
+import '../save-map/save-map.module';
+import '../styles/styles.module';
+import '../utils/utils.module';
 import 'angular-drag-and-drop-lists';
-import 'common/get-capabilities.module';
-import 'components/legend/legend.module';
-import 'components/save-map/save-map.module';
-import 'components/styles/styles.module';
-import 'components/utils/utils.module';
 import folderDirective from './layermanager-folder.directive';
 import layerEditorComponent from './layer-editor.component';
 import layerEditorDimensionsComponent from './dimensions/layer-editor-dimensions.component';
@@ -81,7 +81,7 @@ angular
    * @ngdoc service
    * @description Service for management of time (WMS) layers
    */
-  .service('hs.layermanager.WMSTservice', layermanagerWmstService)
+  .factory('hs.layermanager.WMSTservice', layermanagerWmstService)
 
   /**
    * @module hs.layermanager
@@ -91,7 +91,7 @@ angular
    * structures and connect layer manager with map.Automatically update
    * manager when layer is added or removed from map.
    */
-  .service('hs.layermanager.service', layermanagerService)
+  .factory('hs.layermanager.service', layermanagerService)
 
   /**
    * @module hs.layermanager
@@ -99,7 +99,7 @@ angular
    * @ngdoc service
    * @description Manage layer´s metadata through getCapabilities request calls and responses
    */
-  .service('hs.layermanager.metadata', layermanagerMetadataService)
+  .factory('hs.layermanager.metadata', layermanagerMetadataService)
 
   /**
    * @module hs.layermanager
@@ -135,7 +135,7 @@ angular
    * @description Service for layer editor management.
    * manages layer clustering and decluttering
    */
-  .service('hs.layerEditorVectorLayer.service', layerEditorVectorLayerService)
+  .factory('hs.layerEditorVectorLayer.service', layerEditorVectorLayerService)
 
   /**
    * @module hs.layermanager
@@ -155,5 +155,5 @@ angular
     'hs.layerEditor.sublayerCheckbox',
     layerEditorSubLayerCheckboxesDirective
   )
-  .service('hs.layerEditor.sublayerService', layerEditorSubLayerService)
+  .factory('hs.layerEditor.sublayerService', layerEditorSubLayerService)
   .component('hs.layerEditorDimensions', layerEditorDimensionsComponent);

@@ -1,14 +1,10 @@
+import '../layers/hs.source.SparqlJson';
 import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
-import SparqlJson from 'hs.source.SparqlJson';
-import VectorLayer from 'ol/layer/Vector';
-import WFS from 'ol/format';
-import layermanagerComponent from './layermanager.component';
-import {Group, Tile} from 'ol/layer';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {ImageWMS} from 'ol/source';
 import {METERS_PER_UNIT} from 'ol/proj';
-import {TileWMS, WMTS} from 'ol/source';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+import {Tile} from 'ol/layer';
+import {TileWMS} from 'ol/source';
 
 export default [
   '$rootScope',
@@ -275,8 +271,8 @@ export default [
         const path = lyr.get('path') || '';
         const parts = path.split('/');
         let curfolder = me.data.folders;
-        for (var i = 0; i < parts.length; i++) {
-          var found = null;
+        for (let i = 0; i < parts.length; i++) {
+          let found = null;
           angular.forEach(curfolder.sub_folders, (folder) => {
             if (folder.name == parts[i]) {
               found = folder;
@@ -736,15 +732,13 @@ export default [
         timer = setTimeout(() => {
           let somethingChanged = false;
           for (let i = 0; i < me.data.layers.length; i++) {
-            const tmp = me.isLayerInResolutionInterval(
-              me.data.layers[i].layer
-            );
-            if(me.data.layers[i].grayed != tmp) {
+            const tmp = me.isLayerInResolutionInterval(me.data.layers[i].layer);
+            if (me.data.layers[i].grayed != tmp) {
               me.data.layers[i].grayed = tmp;
               somethingChanged = true;
             }
-            if(somethingChanged){
-              $timeout(()=>{}, 0);
+            if (somethingChanged) {
+              $timeout(() => {}, 0);
             }
           }
           timer = null;
