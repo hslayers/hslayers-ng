@@ -231,28 +231,25 @@ export default [
        * @memberof hs.compositions.service
        * Load layers received through permalink to map
        */
-      parsePermalinkLayers() {
+      async parsePermalinkLayers() {
+        await OlMap.loaded();
         const layersUrl = utils.proxify(permalink.getParamValue('permalink'));
-        $http({url: layersUrl}).then(
-          (response) => {
-            if (response.data.success == true) {
-              const data = {};
-              data.data = {};
-              data.data.layers = response.data.data;
-              compositionParser.removeCompositionLayers();
-              response.layers = response.data.data;
-              const layers = compositionParser.jsonToLayers(data);
-              for (let i = 0; i < layers.length; i++) {
-                OlMap.addLayer(layers[i]);
-              }
-            } else {
-              if (console) {
-                $log.log('Error loading permalink layers');
-              }
-            }
-          },
-          (err) => {}
-        );
+        const response = await $http({url: layersUrl});
+        if (response.data.success == true) {
+          const data = {};
+          data.data = {};
+          data.data.layers = response.data.data;
+          compositionParser.removeCompositionLayers();
+          response.layers = response.data.data;
+          const layers = compositionParser.jsonToLayers(data);
+          for (let i = 0; i < layers.length; i++) {
+            OlMap.addLayer(layers[i]);
+          }
+        } else {
+          if (console) {
+            $log.log('Error loading permalink layers');
+          }
+        }
       },
 
       loadComposition(url, overwrite) {
@@ -265,12 +262,14 @@ export default [
         angular.isDefined($cookies.get('hs_layers')) &&
         $window.permalinkApp != true
       ) {
-        const data = $cookies.get('hs_layers');
-        const layers = compositionParser.jsonToLayers(angular.fromJson(data));
-        for (let i = 0; i < layers.length; i++) {
-          OlMap.addLayer(layers[i]);
-        }
-        $cookies.remove('hs_layers');
+        OlMap.loaded().then(() => {
+          const data = $cookies.get('hs_layers');
+          const layers = compositionParser.jsonToLayers(angular.fromJson(data));
+          for (let i = 0; i < layers.length; i++) {
+            OlMap.addLayer(layers[i]);
+          }
+          $cookies.remove('hs_layers');
+        });
       }
     }
 
