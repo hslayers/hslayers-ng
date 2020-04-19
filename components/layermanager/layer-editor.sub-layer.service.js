@@ -6,6 +6,9 @@ export default [
     me.withChildren = {};
     me.populatedLayers = [];
 
+    me.checkedSubLayersTmp = {};
+    me.withChildrenTmp = {};
+
     me.hasSubLayers = function () {
       const subLayers = LayMan.currentLayer.layer.get('Layer');
       return angular.isDefined(subLayers) && subLayers.length > 0;

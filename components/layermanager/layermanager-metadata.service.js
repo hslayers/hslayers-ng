@@ -131,9 +131,8 @@ export default [
                 '0': caps.Service
               });
             }
-            // $timeout(() => {
-            //   legend.getWMSLegendDescriptor(layer);
-            // }, 0);
+
+            console.log(layer)
 
             return true;
           })
