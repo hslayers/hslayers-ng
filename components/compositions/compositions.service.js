@@ -257,19 +257,18 @@ export default [
       },
     });
 
-    function tryParseCompositionFromCookie() {
+    async function tryParseCompositionFromCookie() {
       if (
         angular.isDefined($cookies.get('hs_layers')) &&
         $window.permalinkApp != true
       ) {
-        OlMap.loaded().then(() => {
-          const data = $cookies.get('hs_layers');
-          const layers = compositionParser.jsonToLayers(angular.fromJson(data));
-          for (let i = 0; i < layers.length; i++) {
-            OlMap.addLayer(layers[i]);
-          }
-          $cookies.remove('hs_layers');
-        });
+        await OlMap.loaded();
+        const data = $cookies.get('hs_layers');
+        const layers = compositionParser.jsonToLayers(angular.fromJson(data));
+        for (let i = 0; i < layers.length; i++) {
+          OlMap.addLayer(layers[i]);
+        }
+        $cookies.remove('hs_layers');
       }
     }
 
