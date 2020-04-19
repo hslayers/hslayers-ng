@@ -25,26 +25,51 @@ export default [
         '$scope',
         function ($scope) {
           $scope.toggleSublayersVisibility = function (layer) {
-            if (LayMan.currentLayer == null) {
+            if (LayMan.currentLayer === null) {
               Object.keys(subLayerService.checkedSubLayers).forEach((key) => {
                 subLayerService.checkedSubLayers[key] = layer.visible;
               });
               Object.keys(subLayerService.withChildren).forEach((key) => {
                 subLayerService.withChildren[key] = layer.visible;
               });
-            } else {
-              if (subLayerService.hasSubLayers()) {
-                Object.keys(subLayerService.checkedSubLayers).forEach((key) => {
-                  subLayerService.checkedSubLayers[key] =
-                    LayMan.currentLayer.visible;
-                });
-                if (Object.keys(subLayerService.withChildren).length === 0) {
-                  return;
-                } else {
-                  Object.keys(subLayerService.withChildren).forEach((key) => {
-                    subLayerService.withChildren[key] =
-                      LayMan.currentLayer.visible;
-                  });
+            } else if (LayMan.currentLayer == layer) {
+              if (layer.visible == true) {
+                if (subLayerService.hasSubLayers()) {
+                  Object.keys(subLayerService.checkedSubLayers).forEach(
+                    (key) => {
+                      subLayerService.checkedSubLayers[key] =
+                        subLayerService.checkedSubLayersTmp[key];
+                    }
+                  );
+                  if (Object.keys(subLayerService.withChildren).length === 0) {
+                    return;
+                  } else {
+                    Object.keys(subLayerService.withChildren).forEach((key) => {
+                      subLayerService.withChildren[key] =
+                        subLayerService.withChildrenTmp[key];
+                    });
+                  }
+                }
+              } else {
+                if (subLayerService.hasSubLayers()) {
+                  Object.keys(subLayerService.checkedSubLayers).forEach(
+                    (key) => {
+                      subLayerService.checkedSubLayersTmp[key] =
+                        subLayerService.checkedSubLayers[key];
+                      subLayerService.checkedSubLayers[key] =
+                        LayMan.currentLayer.visible;
+                    }
+                  );
+                  if (Object.keys(subLayerService.withChildren).length === 0) {
+                    return;
+                  } else {
+                    Object.keys(subLayerService.withChildren).forEach((key) => {
+                      subLayerService.withChildrenTmp[key] =
+                        subLayerService.withChildren[key];
+                      subLayerService.withChildren[key] =
+                        LayMan.currentLayer.visible;
+                    });
+                  }
                 }
               }
             }
