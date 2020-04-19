@@ -1,3 +1,4 @@
+import '../utils/utils.module';
 import 'angular-sanitize';
 import 'language.module';
 import attributeRowComponent from './attribute-row.component';
@@ -22,6 +23,7 @@ angular
     'ngSanitize',
     'hs.language',
     'hs.layout',
+    'hs.utils'
   ])
   /**
    * @ngdoc directive
