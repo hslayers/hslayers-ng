@@ -11,8 +11,9 @@ export default [
   'hs.map.service',
   'config',
   'hs.utils.service',
+  'hs.utils.layerUtilsService',
   '$window',
-  function ($rootScope, Base, $sce, OlMap, Config, utils, $window) {
+  function ($rootScope, Base, $sce, OlMap, Config, utils, layerUtils, $window) {
     const me = this;
 
     this.selector = new Select({
@@ -96,18 +97,12 @@ export default [
         return;
       }
     };
+
     function getFeatureLayerName(feature) {
       const layer = feature.getLayer(OlMap.map);
-      if (
-        angular.isUndefined(layer) ||
-        (angular.isDefined(layer.get('show_in_manager')) &&
-          layer.get('show_in_manager') === false)
-      ) {
-        return '';
-      }
-      const layerName = layer.get('title') || layer.get('name');
-      return layerName;
+      return layerUtils.getLayerName(layer);
     }
+
     function getCentroid(feature) {
       if (angular.isUndefined(feature)) {
         return;

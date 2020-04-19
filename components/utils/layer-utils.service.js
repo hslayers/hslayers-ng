@@ -211,6 +211,18 @@ export default [
         return editorConfig.editable;
       },
 
+      getLayerName(layer) {
+        if (
+          angular.isUndefined(layer) ||
+          (angular.isDefined(layer.get('show_in_manager')) &&
+            layer.get('show_in_manager') === false)
+        ) {
+          return '';
+        }
+        const layerName = layer.get('title') || layer.get('name');
+        return layerName;
+      },
+
       /**
        * @ngdoc method
        * @name hs.utils.layerUtilsService#isLayerDrawable
