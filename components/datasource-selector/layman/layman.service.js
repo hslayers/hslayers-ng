@@ -32,7 +32,7 @@ export default [
         endpoint.getCurrentUserIfNeeded();
         let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
         url = utils.proxify(url);
-        endpoint.loaded = false;
+        endpoint.datasourcePaging.loaded = false;
         if (angular.isDefined(endpoint.canceler)) {
           endpoint.canceler.resolve();
           delete endpoint.canceler;
@@ -44,7 +44,7 @@ export default [
             dataset: endpoint,
           })
           .then(me.datasetsReceived, (e) => {
-            endpoint.loaded = true;
+            endpoint.datasourcePaging.loaded = true;
           });
       },
 
@@ -58,7 +58,7 @@ export default [
         const dataset = j.config.dataset;
         dataset.loading = false;
         dataset.layers = [];
-        dataset.loaded = true;
+        dataset.datasourcePaging.loaded = true;
         if (j.data === null) {
           dataset.datasourcePaging.matched == 0;
         } else {
