@@ -21,6 +21,7 @@ export default {
     'hs.layout.service',
     'hs.common.laymanService',
     'hs.common.endpointsService',
+    'gettext',
     function (
       $scope,
       OlMap,
@@ -32,17 +33,20 @@ export default {
       $timeout,
       layoutService,
       commonLaymanService,
-      endpointsService
+      endpointsService,
+      gettext
     ) {
       angular.extend($scope, {
         compoData: saveMapManagerService.compoData,
         config: config,
         endpoint: null,
         saveMapManagerService,
-        step: 'start',
+        step: 'context',
         selectDeselectAllLayers: saveMapManagerService.selectDeselectAllLayers,
         endpointsService,
         overwrite: false,
+        gettext,
+        steps: ['context', 'access', 'author'],
 
         /**
          * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
@@ -50,11 +54,11 @@ export default {
          * @memberof hs.save-map
          */
         next() {
-          if ($scope.step == 'start') {
-            $scope.step = 'access';
-          } else if ($scope.step == 'access') {
-            $scope.step = 'author';
-          } else if ($scope.step == 'author') {
+          const ixCurrent = $scope.steps.indexOf($scope.step);
+          if ($scope.steps.length > ixCurrent + 1) {
+            $scope.step = $scope.steps[ixCurrent + 1];
+          } else {
+            $scope.step = 'end';
             $scope.downloadableData =
               'text/json;charset=utf-8,' +
               encodeURIComponent(
@@ -67,7 +71,6 @@ export default {
                   )
                 )
               );
-            $scope.step = 'end';
           }
         },
 
@@ -143,7 +146,7 @@ export default {
             }
             saveMapManagerService.statusData.error = response.error;
           } else {
-            $scope.step = 'start';
+            $scope.step = 'context';
             layoutService.setMainPanel('layermanager', true);
           }
           $timeout((_) => {
@@ -197,12 +200,12 @@ export default {
       });
 
       $scope.$on('core.map_reset', (event, data) => {
-        $scope.step = 'start';
+        $scope.step = 'context';
       });
 
       $scope.$on('core.mainpanel_changed', (event) => {
         if (layoutService.mainpanel == 'saveMap') {
-          $scope.step = 'start';
+          $scope.step = 'context';
         }
       });
 
@@ -217,6 +220,13 @@ export default {
 
       $scope.endpointChanged = function () {
         $scope.endpoint.getCurrentUserIfNeeded();
+        switch ($scope.endpoint.type) {
+          case 'layman':
+            $scope.steps = ['context', 'author'];
+            break;
+          default:
+            $scope.steps = ['context', 'access', 'author'];
+        }
       };
 
       $scope.$watch(
@@ -228,8 +238,10 @@ export default {
             const laymans = value.filter((ep) => ep.type == 'layman');
             if (laymans.length > 0) {
               $scope.endpoint = laymans[0];
+              $scope.endpointChanged();
             } else {
               $scope.endpoint = value[0];
+              $scope.endpointChanged();
             }
             if ($scope.endpoint && $scope.endpoint.type == 'layman') {
               commonLaymanService.getCurrentUser($scope.endpoint);

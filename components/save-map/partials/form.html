@@ -1,20 +1,12 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
-    <li role="presentation" class="nav-item">
-        <a href="#hs-context" class="nav-link" ng-class="{'btn-primary': step == 'start'}" aria-controls="hs-context"
-            role="tab" data-toggle="tab" ng-click="setStep('start')" translate>Context</a>
-    </li>
-    <li role="presentation" class="nav-item">
-        <a href="#hs-access" class="nav-link" ng-click="setStep('access')" ng-class="{'btn-primary': step == 'access'}"
-            aria-controls="hs-access" role="tab" data-toggle="tab" translate>Access</a>
-    </li>
-    <li role="presentation" class="nav-item">
-        <a href="#hs-author" class="nav-link" ng-class="{'btn-primary': step == 'author'}" ng-click="setStep('author')"
-            aria-controls="hs-author" role="tab" data-toggle="tab" translate>Author</a>
+    <li role="presentation" class="nav-item" ng-repeat="s in steps">
+        <a href="#hs-{{s}}" class="nav-link" ng-class="{'btn-primary': step == s}" aria-controls="hs-{{s}}"
+            role="tab" data-toggle="tab" ng-click="setStep(s)">{{gettext(s.capitalizeFirstLetter())}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='start'}" id="hs-context">
+    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='context'}" id="hs-context">
         <form>
             <label class="form-group">
                 <translate>Title</translate> *
@@ -51,11 +43,15 @@
                     translate="">Use current map extent</button>
             </div>
             <div class="form-group">
-                <button type="button" class="mt-1 btn btn-secondary btn-sm right" ng-click="selectDeselectAllLayers()"
-                    translate>Toggle all</button>
-                <label for="stc-layerlist" class="form-group" translate="">Layers</label>
                 <ul class="list-group" id="stc-layerlist">
-                    <li ng-repeat="layer in compoData.layers | filter:query" id="layer-{{$index}}"
+                    <li class="list-group-item" style="padding: 3px">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" checked ng-click="selectDeselectAllLayers()">
+                            <label class="form-check-label"></label>
+                          </div>
+                    </li>
+
+                    <li ng-repeat="layer in compoData.layers | filter:query" style="padding: 3px"
                         class="list-group-item">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" ng-model="layer.checked" />
