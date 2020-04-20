@@ -96,49 +96,45 @@ export default [
        * @param {Boolean} newShare If new share record on server should be created
        * @description Share map on social network
        */
-      shareOnSocial: function (provider, newShare) {
+      async shareOnSocial(provider, newShare) {
         if (!me.data.shareUrlValid) {
           if (serviceURL.shareId === null || newShare) {
             serviceURL.shareId = utils.generateUuid();
           }
-          $http({
-            url: statusManagerService.endpointUrl(),
-            method: 'POST',
-            data: angular.toJson({
-              request: 'socialShare',
-              id: serviceURL.shareId,
-              url: encodeURIComponent(me.getShareUrl()),
-              title: me.data.title,
-              description: me.data.abstract,
-              image: me.data.thumbnail,
-            }),
-          }).then(
-            (response) => {
-              utils
-                .shortUrl(
-                  statusManagerService.endpointUrl() +
-                    '?request=socialshare&id=' +
-                    serviceURL.shareId
-                )
-                .then((shortUrl) => {
-                  const shareUrl = shortUrl;
-                  socialshare.share({
-                    'provider': provider,
-                    'attrs': {
-                      'socialshareText': me.data.title,
-                      'socialshareUrl': shareUrl,
-                      'socialsharePopupHeight': 600,
-                      'socialsharePopupWidth': 500,
-                    },
-                  });
-                  me.data.shareUrlValid = true;
-                })
-                .catch(() => {
-                  $log.log('Error creating short Url');
-                });
-            },
-            (err) => {}
-          );
+          try {
+            await $http({
+              url: statusManagerService.endpointUrl(),
+              method: 'POST',
+              data: angular.toJson({
+                request: 'socialShare',
+                id: serviceURL.shareId,
+                url: encodeURIComponent(me.getShareUrl()),
+                title: me.data.title,
+                description: me.data.abstract,
+                image: me.data.thumbnail,
+              }),
+            });
+
+            const shortUrl = await utils.shortUrl(
+              statusManagerService.endpointUrl() +
+                '?request=socialshare&id=' +
+                serviceURL.shareId
+            );
+
+            const shareUrl = shortUrl;
+            socialshare.share({
+              'provider': provider,
+              'attrs': {
+                'socialshareText': me.data.title,
+                'socialshareUrl': shareUrl,
+                'socialsharePopupHeight': 600,
+                'socialsharePopupWidth': 500,
+              },
+            });
+            me.data.shareUrlValid = true;
+          } catch (ex) {
+            $log.log('Error creating short Url');
+          }
         } else {
           socialshare.share({
             'provider': provider,
@@ -221,69 +217,52 @@ export default [
     });
 
     // eslint-disable-next-line angular/on-watch
-    $rootScope.$on('core.mainpanel_changed', (event) => {
+    $rootScope.$on('core.mainpanel_changed', async (event) => {
       if (layoutService.mainpanel == 'permalink') {
         serviceURL.update();
         const status_url = statusManagerService.endpointUrl();
         if (serviceURL.added_layers.length > 0) {
-          $http({
-            url: status_url,
-            method: 'POST',
-            data: angular.toJson({
-              data: serviceURL.added_layers,
-              permalink: true,
-              id: serviceURL.id,
-              project: config.project_name,
-              request: 'save',
-            }),
-          }).then(
-            (response) => {
-              serviceURL.permalinkLayers =
-                status_url + '?request=load&id=' + serviceURL.id;
-              $rootScope.$broadcast('browserurl.updated');
-            },
-            (err) => {
-              $log.log('Error saving permalink layers.');
-            }
-          );
+          try {
+            await $http({
+              url: status_url,
+              method: 'POST',
+              data: angular.toJson({
+                data: serviceURL.added_layers,
+                permalink: true,
+                id: serviceURL.id,
+                project: config.project_name,
+                request: 'save',
+              }),
+            });
+            serviceURL.permalinkLayers =
+              status_url + '?request=load&id=' + serviceURL.id;
+            $rootScope.$broadcast('browserurl.updated');
+          } catch (ex) {
+            $log.log('Error saving permalink layers.');
+          }
         } else {
           $rootScope.$broadcast('browserurl.updated');
         }
       }
     });
 
-    $rootScope.$on('browserurl.updated', () => {
+    $rootScope.$on('browserurl.updated', async () => {
       if (
         layoutService.mainpanel == 'permalink' ||
         layoutService.mainpanel == 'shareMap'
       ) {
         me.data.shareUrlValid = false;
-
-        $q.all([
-          utils
-            .shortUrl(serviceURL.getPureMapUrl())
-            .then((shortUrl) => {
-              me.data.pureMapUrl = shortUrl;
-            })
-            .catch(() => {
-              $log.log('Error creating short Url');
-              me.data.pureMapUrl = serviceURL.getPureMapUrl();
-            }),
-
-          utils
-            .shortUrl(serviceURL.getPermalinkUrl())
-            .then((shortUrl) => {
-              me.data.permalinkUrl = shortUrl;
-            })
-            .catch(() => {
-              $log.log('Error creating short Url');
-              me.data.permalinkUrl = serviceURL.getPermalinkUrl();
-            }),
-        ]).then(() => {
-          $timeout(() => {
-            me.getEmbedCode();
-          }, 0);
-        });
+        try {
+          me.data.pureMapUrl = await utils.shortUrl(serviceURL.getPureMapUrl());
+          me.data.permalinkUrl = await utils.shortUrl(
+            serviceURL.getPermalinkUrl()
+          );
+          me.getEmbedCode();
+        } catch (ex) {
+          $log.log('Error creating short Url');
+          me.data.pureMapUrl = serviceURL.getPureMapUrl();
+          me.data.permalinkUrl = serviceURL.getPermalinkUrl();
+        }
       }
     });
 
