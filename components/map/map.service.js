@@ -1,3 +1,4 @@
+/* eslint-disable angular/timeout-service */
 import '../permalink/permalink.module';
 import Control from 'ol/control/Control';
 import Feature from 'ol/Feature';
@@ -115,7 +116,7 @@ export default [
         if (timer !== null) {
           clearTimeout(timer);
         }
-        timer = $timeout(() => {
+        timer = setTimeout(() => {
           /**
            * @ngdoc event
            * @name hs.map.service#map.extent_changed

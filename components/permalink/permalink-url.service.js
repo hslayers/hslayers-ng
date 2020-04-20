@@ -1,3 +1,4 @@
+/* eslint-disable angular/timeout-service */
 export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service', 'Core', 'hs.utils.service', 'hs.save-map.service', 'config', 'hs.language.service', 'hs.layout.service', '$timeout',
   function ($rootScope, $http, $location, $window, OlMap, Core, utils, saveMap, config, languageService, layoutService, $timeout) {
 
@@ -196,7 +197,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
         if (paramTimer !== null) {
           clearTimeout(paramTimer);
         }
-        paramTimer = $timeout(() => {
+        paramTimer = setTimeout(() => {
           me.update();
         }, 1000);
       }
@@ -228,7 +229,7 @@ export default ['$rootScope', '$http', '$location', '$window', 'hs.map.service',
             if (timer !== null) {
               clearTimeout(timer);
             }
-            timer = $timeout(() => {
+            timer = setTimeout(() => {
               me.update();
               $rootScope.$broadcast('browserurl.updated');
             }, 1000);
