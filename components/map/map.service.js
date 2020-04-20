@@ -577,7 +577,7 @@ export default [
       const src = lyr.getSource();
       if (
         angular.isDefined(lyr.get('enableProxy')) &&
-        lyr.get('enable_proxy') == false
+        lyr.get('enableProxy') == false
       ) {
         return;
       }
