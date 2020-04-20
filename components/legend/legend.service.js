@@ -221,9 +221,10 @@ export default [
        * @function getLegendUrl
        * @param {ol.source.Source} source Source of wms layer
        * @param {String} layer_name Name of layer for which legend is requested
+       * @param {ol/Layer} layer Layer to get legend for
        * @return {String} Url of the legend graphics
        */
-      getLegendUrl: function (source, layer_name) {
+      getLegendUrl: function (source, layer_name, layer) {
         let source_url = '';
         if (utils.instOf(source, TileWMS)) {
           source_url = source.getUrls()[0];
@@ -247,7 +248,12 @@ export default [
           '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' +
           layer_name +
           '&format=image%2Fpng';
-        source_url = utils.proxify(source_url, false);
+        if (
+          angular.isUndefined(layer.get('enableProxy')) ||
+          layer.get('enableProxy') == true
+        ) {
+          source_url = utils.proxify(source_url, false);
+        }
         return source_url;
       },
 
@@ -273,7 +279,8 @@ export default [
           for (let i = 0; i < subLayerLegends.length; i++) {
             subLayerLegends[i] = me.getLegendUrl(
               layer.getSource(),
-              subLayerLegends[i]
+              subLayerLegends[i],
+              layer
             );
           }
           return {
