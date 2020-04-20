@@ -575,11 +575,12 @@ export default [
      */
     this.proxifyLayerLoader = function (lyr, tiled) {
       const src = lyr.getSource();
-      me.map.getLayers().forEach((l) => {
-        if (l.get('source') == src) {
-          return;
-        }
-      });
+      if (
+        angular.isDefined(lyr.get('enableProxy')) &&
+        lyr.get('enable_proxy') == false
+      ) {
+        return;
+      }
       if (tiled) {
         const tile_url_function =
           src.getTileUrlFunction() || src.tileUrlFunction();
