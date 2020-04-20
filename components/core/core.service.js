@@ -21,7 +21,7 @@ export default [
     layoutService,
     $log,
     $document,
-    utilsService
+    utilsService,
   ) {
     const me = {
       hslayersNgTemplate: require('../../hslayers.html'),
@@ -60,7 +60,7 @@ export default [
       sizeOptions: {
         element: undefined,
         windowedMap: undefined,
-        selector: undefined,
+        selector: undefined
       },
       language: 'en',
       setMainPanel: function (which, by_gui) {
@@ -229,6 +229,14 @@ export default [
             }
             const vh = w.innerHeight * 0.01;
             $document[0].documentElement.style.setProperty('--vh', `${vh}px`);
+
+            if (w.matchMedia('(orientation: portrait)').matches) {
+              document.getElementsByTagName('html')[0].style.height = '100vh';             
+              $timeout(() => {
+                document.getElementsByTagName('html')[0].style.height = '100%';
+              }, 500);
+
+            }
           },
           150,
           false,
@@ -387,7 +395,7 @@ export default [
         if (angular.isUndefined(config.componentsEnabled)) {
           config.componentsEnabled = {};
         }
-      },
+      }
     };
 
     let _puremapApp = false;
@@ -413,7 +421,7 @@ export default [
           config.componentsEnabled.mapControls = false;
           layoutService.sidebarVisible(false);
         }
-      },
+      }
     });
 
     if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
@@ -440,5 +448,5 @@ export default [
             */
 
     return me;
-  },
+  }
 ];
