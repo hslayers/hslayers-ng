@@ -99,6 +99,9 @@ export default [
     };
 
     function getFeatureLayerName(feature) {
+      if (angular.isUndefined(feature.getLayer)) {
+        return '';
+      }
       const layer = feature.getLayer(OlMap.map);
       return layerUtils.getLayerName(layer);
     }
@@ -149,7 +152,7 @@ export default [
           attributes.push(obj);
         }
       });
-      if (feature.getLayer(OlMap.map).get('customInfoTemplate')) {
+      if (feature.getLayer && feature.getLayer(OlMap.map).get('customInfoTemplate')) {
         customInfoTemplate = feature
           .getLayer(OlMap.map)
           .get('customInfoTemplate');

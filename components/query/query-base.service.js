@@ -71,7 +71,7 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
           me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
           if (me.featuresUnderMouse !== null) {
             me.featuresUnderMouse = me.featuresUnderMouse.filter(feature => {
-              return feature.getLayer(map) && feature.getLayer(map).get('title').length > 0;
+              return feature.getLayer && feature.getLayer(map) && feature.getLayer(map).get('title').length > 0;
             });
             me.featureLayersUnderMouse = me.featuresUnderMouse.map(f => f.getLayer(OlMap.map));
             me.featureLayersUnderMouse = utils.removeDuplicates(me.featureLayersUnderMouse, 'title');
@@ -102,6 +102,9 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
     }
 
     function serializeFeatureAtributes(feature) {
+      if (angular.isUndefined(feature.getLayer)) {
+        return;
+      }
       const layer = feature.getLayer(OlMap.map);
       const allowedKeys = layer.get('hoveredKeys');
       if (angular.isUndefined(allowedKeys)) {
