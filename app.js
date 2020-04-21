@@ -1,21 +1,23 @@
 'use strict';
 
-import 'add-layers.module';
-import 'datasource-selector.module';
-import 'info.module';
-import 'measure.module';
-import 'permalink.module';
-import 'print.module';
-import 'query.module';
-import 'search.module';
-import 'sidebar.module';
-import 'styles.module';
-import 'toolbar.module';
+import './components/add-layers/add-layers.module';
+import './components/datasource-selector/datasource-selector.module';
+import './components/draw/draw.module';
+import './components/info/info.module';
+import './components/measure/measure.module';
+import './components/permalink/permalink.module';
+import './components/print/print.module';
+import './components/query/query.module';
+import './components/search/search.module';
+import './components/sidebar/sidebar.module';
+import './components/styles/styles.module';
+import './components/toolbar/toolbar.module';
 
 const mainModuleBs = angular.module('hs', [
   'hs.sidebar',
   'hs.toolbar',
   'hs.layermanager',
+  'hs.draw',
   'hs.map',
   'hs.query',
   'hs.search',
