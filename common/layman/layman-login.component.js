@@ -1,11 +1,16 @@
 export default {
   template: require('./layman-login.html'),
   bindings: {
-    url: '='
+    url: '=',
   },
-  controller: ['$http', '$scope', 'hs.layout.service', '$compile',
-    function ($http, $scope, layoutService, $compile) {
+  controller: [
+    '$http',
+    '$scope',
+    function ($http, $scope) {
       this.modalVisible = true;
-    }
-  ]
+      $scope.$on('datasource-selector.layman_auth', () => {
+        this.modalVisible = false;
+      });
+    },
+  ],
 };
