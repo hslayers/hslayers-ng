@@ -21,7 +21,7 @@ export default [
           }
         }
         if (
-          config.status_manager_url &&
+          angular.isDefined(config.status_manager_url) &&
           config.status_manager_url.indexOf('://') > -1
         ) {
           //Full url specified

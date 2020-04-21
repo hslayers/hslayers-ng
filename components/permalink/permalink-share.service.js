@@ -102,8 +102,9 @@ export default [
             serviceURL.shareId = utils.generateUuid();
           }
           try {
+            const endpointUrl = statusManagerService.endpointUrl();
             await $http({
-              url: statusManagerService.endpointUrl(),
+              url: endpointUrl,
               method: 'POST',
               data: angular.toJson({
                 request: 'socialShare',
@@ -116,9 +117,7 @@ export default [
             });
 
             const shortUrl = await utils.shortUrl(
-              statusManagerService.endpointUrl() +
-                '?request=socialshare&id=' +
-                serviceURL.shareId
+              endpointUrl + '?request=socialshare&id=' + serviceURL.shareId
             );
 
             const shareUrl = shortUrl;
