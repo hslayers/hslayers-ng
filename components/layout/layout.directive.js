@@ -40,11 +40,7 @@ export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
                         import('angular-material/angular-material.css');
                         import('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
                     } else {
-                        if (config.useIsolatedBootstrap) {
-                            import('bootstrap/dist/css/bootstrap.isolated.css')
-                        } else {
-                            import('bootstrap/dist/css/bootstrap.css')
-                        }
+                        import('bootstrap/dist/css/bootstrap.isolated.css');
                         $timeout(_ => {
                             if(window.innerWidth < 600){
                                 var viewport = document.querySelector('meta[name="viewport"]');

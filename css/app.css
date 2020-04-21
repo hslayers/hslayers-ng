@@ -448,6 +448,7 @@ button.but-title-sm {
 
 .hs-content-wrapper {
 	position: relative;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 .basemapGallery {
 	display: flex;
@@ -1328,10 +1329,12 @@ button.hs_draw_new_extended {
 	z-index: 2;
 }
 
+
 /**************/
 /** MATERIAL **/
 /**************/
-
+/*
+//Cant override css for whole page
 html,
 body {
 	margin: 0;
@@ -1345,7 +1348,8 @@ body {
 .app {
 	height: 100%;
 }
-
+//Bust have mo speccific slector. hs-app maybe
+*/
 .swipe-overlay {
 	/*pointer-events: none;*/
 	overflow: hidden;
@@ -1618,7 +1622,7 @@ li.hs-lm-header {
 .hs-lm-map-content-header {
 	height: 2.36em;
 }
-label.form-group { display: block; }
+.hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
 .hs-hover-popup{max-height: 20em; overflow-y: scroll; visibility: visible;}
