@@ -471,6 +471,9 @@ export default [
       $log.warn(
         'config.locationButtonVisible parameter is deprecated. Use config.panelsEnabled.geolocationButton instead'
       );
+      if (angular.isUndefined(config.componentsEnabled)) {
+        config.componentsEnabled = {};
+      }
       if (angular.isUndefined(config.componentsEnabled.geolocationButton)) {
         config.componentsEnabled.geolocationButton =
           config.locationButtonVisible;
