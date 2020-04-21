@@ -31,6 +31,7 @@ export default [
         Core.searchVisible(true);
         $scope.queryChanged();
       }
+      window.innerWidth < 767 ? $scope.searchInputVisible = false : $scope.searchInputVisible = true;
     };
 
     /**
