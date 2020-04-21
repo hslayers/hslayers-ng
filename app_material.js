@@ -11,7 +11,7 @@ import 'datasource-selector.module';
 import 'sidebar.module';
 import 'add-layers.module';
 
-var module = angular.module('hs', [
+const mainModuleMd = angular.module('hs', [
     'hs.sidebar',
     'hs.toolbar',
     'hs.layermanager',
@@ -27,7 +27,7 @@ var module = angular.module('hs', [
     'hs.info'
 ]);
 
-module.directive('hs', ['config', 'Core', function (config, Core) {
+mainModuleMd.directive('hs', ['config', 'Core', function (config, Core) {
     return {
         template: require('hslayers.html'),
         link: function (scope, element, attrs) {
@@ -36,9 +36,9 @@ module.directive('hs', ['config', 'Core', function (config, Core) {
     };
 }]);
 
-if (window.hslayersNgConfig) module.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
+if (window.hslayersNgConfig) mainModuleMd.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
 
-module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
+mainModuleMd.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
     function ($scope, Core, srv_producer, composition_parser, config, layoutService) {
         $scope.Core = Core;
         layoutService.sidebarRight = false;

@@ -19,7 +19,7 @@ import featureFilterDirective from './feature-filter.directive';
     attributes: ["http://gis.zcu.cz/poi#category_osm"]
 }]); 
 */
-var module = angular.module('hs.featureFilter', ['hs.map', 'hs.core', 'hs.layermanager']);
+angular.module('hs.featureFilter', ['hs.map', 'hs.core', 'hs.layermanager'])
 
 /**
 * @memberof hs.featureFilter
@@ -27,7 +27,7 @@ var module = angular.module('hs.featureFilter', ['hs.map', 'hs.core', 'hs.layerm
 * @name hs.featureFilter.directive
 * @description TODO
 */
-module.directive('hs.featureFilter.directive', featureFilterDirective);
+.directive('hs.featureFilter.directive', featureFilterDirective)
 
 /**
 * @memberof hs.feature_list
@@ -35,7 +35,7 @@ module.directive('hs.featureFilter.directive', featureFilterDirective);
 * @name hs.featureList.directive
 * @description TODO
 */
-module.directive('hs.featureList.directive', featureListDirective);
+.directive('hs.featureList.directive', featureListDirective)
 
 /**
 * @memberof hs.featureFilter
@@ -43,7 +43,7 @@ module.directive('hs.featureList.directive', featureListDirective);
 * @name hs.featureFilter.element.directive
 * @description TODO
 */
-module.directive('hs.featureFilter.element.directive', featureFilterElementDirective);
+.directive('hs.featureFilter.element.directive', featureFilterElementDirective)
 
 /**
 * @memberof hs.featureFilter
@@ -51,7 +51,7 @@ module.directive('hs.featureFilter.element.directive', featureFilterElementDirec
 * @name hs.featureFilter.service
 * @description TODO
 */
-module.service('hs.featureFilter.service', featureFilterService);
+.service('hs.featureFilter.service', featureFilterService)
 
 /**
 * @memberof hs.featureFilter
@@ -59,7 +59,7 @@ module.service('hs.featureFilter.service', featureFilterService);
 * @name hs.featureFilter.controller
 * @description TODO
 */
-module.controller('hs.featureFilter.controller', featureFilterController);
+.controller('hs.featureFilter.controller', featureFilterController)
 
 /**
 * @memberof hs.featureFilter
@@ -67,5 +67,5 @@ module.controller('hs.featureFilter.controller', featureFilterController);
 * @name hs.featureList.controller
 * @description TODO
 */
-module.controller('hs.feature_list.controller', featureListController);
+.controller('hs.feature_list.controller', featureListController);
 

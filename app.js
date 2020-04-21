@@ -12,7 +12,7 @@ import 'sidebar.module';
 import 'styles.module';
 import 'toolbar.module';
 
-const module = angular.module('hs', [
+const mainModuleBs = angular.module('hs', [
   'hs.sidebar',
   'hs.toolbar',
   'hs.layermanager',
@@ -34,7 +34,7 @@ const module = angular.module('hs', [
   'hs.styles',
 ]);
 
-module.directive('hs', [
+mainModuleBs.directive('hs', [
   'config',
   'Core',
   function (config, Core) {
@@ -90,10 +90,10 @@ window.ol = {
 };
 
 if (window.hslayersNgConfig) {
-  module.value('config', window.hslayersNgConfig(window.ol));
+  mainModuleBs.value('config', window.hslayersNgConfig(window.ol));
 }
 
-module.controller('Main', [
+mainModuleBs.controller('Main', [
   '$scope',
   'Core',
   'config',
