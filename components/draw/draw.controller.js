@@ -28,6 +28,7 @@ export default [
       useIndividualStyle: true,
       opacity: 0.2,
       linewidth: 1,
+      $scope,
       fillcolor: {'background-color': 'rgba(0, 153, 255, 1)'},
       defaultStyle: new Style({
         stroke: new Stroke({

@@ -16,7 +16,7 @@
             </div>
         </div>
         <button class="btn btn-light  btn-outline-secondary" ng-if="drawToolbarExpanded"
-            ng-click="service.addDrawLayer()" translate data-toggle="tooltip" title="{{'Add draw layer' | translate}}"><i
+            ng-click="service.addDrawLayer($scope)" translate data-toggle="tooltip" title="{{'Add draw layer' | translate}}"><i
                 class="icon-plus"></i></button>
         <button class="btn btn-light  btn-outline-secondary" ng-class="{active: service.type=='Point' }"
             ng-if="drawToolbarExpanded" ng-click="setType('Point')" translate data-toggle="tooltip" title="{{'Point' | translate}}"><i

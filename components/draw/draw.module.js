@@ -4,6 +4,7 @@ import '../map/map.module';
 import '../utils/utils.module';
 import drawController from './draw.controller';
 import drawDirective from './draw.directive';
+import drawLayerMetadataComponent from './draw-layer-metadata.component';
 import drawService from './draw.service';
 import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 
@@ -23,5 +24,6 @@ angular
    * @description Buttons in the corner for controlling drawing
    */
   .component('hs.draw.shapeToolbar', drawShapeToolbarComponent)
+  .component('hs.drawLayerMetadata', drawLayerMetadataComponent)
   .controller('HsDrawController', drawController)
   .directive('hs.draw.directive', drawDirective);

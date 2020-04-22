@@ -8,7 +8,7 @@
                 aria-expanded="{{layersExpanded}}">
                 {{selectedLayerString() | translate}}
             </button>
-            <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer()" data-toggle="tooltip"
+            <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer($scope)" data-toggle="tooltip"
                 title="{{'Add draw layer' | translate}}">
                 <i class="icon-plus"></i>
             </button>
