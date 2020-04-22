@@ -43,8 +43,8 @@ export default {
                         var getDuplicates = $scope.$ctrl.feature.attributes.filter(duplicate => duplicate.name == attributeName);
                         if (getDuplicates.length == 0) {
                             var obj = { name: attributeName, value: attributeValue };
-                            feature.set(
-                                $scope.$ctrl.feature.attributes.push(obj));
+                            $scope.$ctrl.feature.attributes.push(obj);
+                            feature.set(attributeName, attributeValue);
                         }
                     }
                     $scope.$ctrl.newAttribVisible = !$scope.$ctrl.newAttribVisible;
