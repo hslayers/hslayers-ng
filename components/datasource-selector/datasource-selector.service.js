@@ -168,6 +168,7 @@ export default [
     me.datasetSelect = function (id_selected) {
       me.data.wms_connecting = false;
       me.data.id_selected = id_selected;
+      me.calcEntentLayerVisibility();
     };
 
     /**
@@ -230,8 +231,12 @@ export default [
         me.queryCatalogs();
         mickaFilterService.fillCodesets();
       }
-      mapService.extentLayer.setVisible(panelVisible());
+      me.calcEntentLayerVisibility();
     });
+
+    me.calcEntentLayerVisibility = function () {
+      mapService.extentLayer.setVisible(panelVisible() && me.data.id_selected != 'OWS');
+    };
 
     return me;
   },
