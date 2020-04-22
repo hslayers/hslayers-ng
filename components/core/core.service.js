@@ -21,7 +21,7 @@ export default [
     layoutService,
     $log,
     $document,
-    utilsService,
+    utilsService
   ) {
     const me = {
       hslayersNgTemplate: require('../../hslayers.html'),
@@ -231,7 +231,7 @@ export default [
             $document[0].documentElement.style.setProperty('--vh', `${vh}px`);
 
             if (w.matchMedia('(orientation: portrait)').matches) {
-              document.getElementsByTagName('html')[0].style.height = '100vh';             
+              document.getElementsByTagName('html')[0].style.height = '100vh';
               $timeout(() => {
                 document.getElementsByTagName('html')[0].style.height = '100%';
               }, 500);
