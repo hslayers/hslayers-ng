@@ -229,7 +229,7 @@ ul.hs-comp-list {
 	overflow-y: auto;
 }
 
-.modal.in {
+.bootstrap-iso .modal.in {
 	display: block;
 }
 
@@ -708,7 +708,7 @@ a.sidebar-main {
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	max-width: 550px;
+	max-width: 636px;
 	display: inline-block;
 }
 
