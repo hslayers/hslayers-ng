@@ -1626,3 +1626,5 @@ li.hs-lm-header {
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
 .hs-hover-popup{max-height: 20em; overflow-y: scroll; visibility: visible;}
+
+.hs-toolbar-button{height: 2.4em}

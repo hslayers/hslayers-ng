@@ -3,12 +3,12 @@
 
     <div class="dropdown">
         <div class="btn-group w-100" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'" c>
-            <button type="button" class="btn rounded-0 btn-light btn-outline-primary btn-secondary dropdown-toggle"
+            <button type="button" class="btn rounded-0 btn-light hs-toolbar-button btn-outline-primary btn-secondary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
                 aria-expanded="{{layersExpanded}}">
                 {{selectedLayerString() | translate}}
             </button>
-            <button class="btn btn-primary rounded-0" ng-click="service.addDrawLayer($scope)" data-toggle="tooltip"
+            <button class="btn btn-primary rounded-0 hs-toolbar-button" ng-click="service.addDrawLayer($scope)" data-toggle="tooltip"
                 title="{{'Add draw layer' | translate}}">
                 <i class="icon-plus"></i>
             </button>
@@ -19,20 +19,20 @@
                 ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
         </div>
     </div>
-    <div class="btn-group btn-block rounded-0" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+    <div class="btn-group btn-block rounded-0 hs-toolbar-button" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light rounded-0 btn-outline-primary" ng-class="{active: service.type=='Point' }"
             ng-click="setType('Point')" data-toggle="tooltip" title="{{'Point' | translate}}">
             <i class="icon-pin"></i>
         </button>
-        <button class="btn btn-light  btn-outline-primary" ng-class="{active: service.type=='Polygon' }"
+        <button class="btn btn-light hs-toolbar-button btn-outline-primary" ng-class="{active: service.type=='Polygon' }"
             ng-click="setType('Polygon')" data-toggle="tooltip" title="{{'Polygon' | translate }}">
             <i class="icon-polygonlasso"></i>
         </button>
-        <button class="btn btn-light btn-outline-primary" ng-class="{active: service.type=='LineString' }"
+        <button class="btn btn-light hs-toolbar-button btn-outline-primary" ng-class="{active: service.type=='LineString' }"
             ng-click="setType('LineString')" data-toggle="tooltip" title="{{'Line' | translate}}">
             <i class="icon-line"></i>
         </button>
-        <button class="btn btn-light rounded-0 btn-outline-primary" ng-class="{active: service.type=='Circle' }"
+        <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-primary" ng-class="{active: service.type=='Circle' }"
             ng-click="setType('Circle')" data-toggle="tooltip" title="{{'Circle' | translate }}">
             <i class="icon-circleloaderfull"></i>
         </button>

@@ -1,12 +1,11 @@
 <div class="input-group">
     <div class="input-group-prepend">
-        <button ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary"><i
+        <button ng-click="searchInputVisible = !searchInputVisible" class="btn btn-light btn-outline-secondary rounded-0 hs-toolbar-button"><i
                 class="glyphicon icon-search" title="{{'Search'|translate}}"></i></button>
     </div>
-    <input ng-model="query" ng-show="searchInputVisible" class="form-control"
-        class="hs-search-address-input" placeholder="{{'Search:'|translate}}" ng-change="queryChanged()" />
-    <div class="input-group-append">
-        <button class="btn btn-light btn-outline-secondary" ng-if="clearvisible" ng-click="clear()"><span
+    <input ng-model="query" ng-show="searchInputVisible" class="form-control hs-search-address-input rounded-0 hs-toolbar-button" placeholder="{{'Search:'|translate}}" ng-change="queryChanged()" />
+    <div class="input-group-append" ng-if="clearvisible">
+        <button class="btn btn-light btn-outline-secondary" ng-click="clear()"><span
                 aria-hidden="true" class="close">×</span><span class="sr-only">
                 <translate>Clear</translate>
             </span></button>
