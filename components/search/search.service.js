@@ -16,7 +16,6 @@ export default [
   function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
     const me = this;
     this.data = {};
-    this.geonamesUser = null;
 
     this.data.providers = {};
 
@@ -61,8 +60,8 @@ export default [
       angular.forEach(providers, (provider) => {
         let providerId = provider;
         if (provider == 'geonames') {
-          if (me.geonamesUser) {
-            url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${me.geonamesUser}`;
+          if (angular.isDefined(config.geonamesUser)) {
+            url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${config.geonamesUser}`;
           } else {
             //Username will have to be set in proxy
             url = utils.proxify(
