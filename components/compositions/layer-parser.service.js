@@ -9,7 +9,7 @@ import {GeoJSON} from 'ol/format';
 import {Group, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
-import {Vector} from 'ol/source';
+import {Vector as VectorSource} from 'ol/source';
 import {get as getProj, transform} from 'ol/proj';
 
 export default [
@@ -391,7 +391,6 @@ export default [
           options.style = me.parseStyle(lyr_def.style);
           extractStyles = false;
         }
-
         switch (format) {
           case 'ol.format.KML':
             return nonWmsService.add(
@@ -424,12 +423,25 @@ export default [
               lyr_def.projection.toUpperCase(),
               options
             );
+          case 'hs.format.LaymanWfs':
+            return new VectorLayer({
+              title: lyr_def.title,
+              name: lyr_def.title,
+              visibility: lyr_def.visibility,
+              synchronize: true,
+              editor: {
+                editable: true,
+                defaultAttributes: {},
+              },
+              saveState: true,
+              source: new VectorSource({}),
+            });
           case 'hs.format.Sparql':
             return me.createSparqlLayer(lyr_def);
           default:
             if (angular.isDefined(lyr_def.features)) {
               const format = new GeoJSON();
-              const src = new Vector({
+              const src = new VectorSource({
                 features: format.readFeatures(lyr_def.features),
                 projection: getProj(lyr_def.projection),
               });

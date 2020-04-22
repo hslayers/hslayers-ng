@@ -377,6 +377,10 @@ export default [
               //Do nothing
             }
           }
+          if (layer.get('synchronize')) {
+            json.protocol = {format: 'hs.format.LaymanWfs'};
+            delete json.features;
+          }
           if (angular.isDefined(src.defOptions)) {
             json.defOptions = src.defOptions;
           }

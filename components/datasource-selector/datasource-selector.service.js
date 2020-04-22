@@ -132,7 +132,7 @@ export default [
      * Add selected layer to map (into layer manager) if possible
      * (supported formats: WMS, WFS, Sparql, kml, geojson, json)
      */
-    this.addLayerToMap = function (ds, layer) {
+    this.addLayerToMap = function (ds, layer, type) {
       let describer = Promise.resolve({type: 'none'});
       if (ds.type == 'micka') {
         describer = mickaService.describeWhatToAdd(ds, layer);
@@ -140,7 +140,10 @@ export default [
         describer = laymanService.describeWhatToAdd(ds, layer);
       }
       describer.then((whatToAdd) => {
-        if (['WMS', 'WFS'].indexOf(whatToAdd.type) > -1) {
+        if (angular.isDefined(type)) {
+          whatToAdd.type = type;
+        }
+        if (whatToAdd.type == 'WMS') {
           me.datasetSelect('OWS');
           $timeout(() => {
             $rootScope.$broadcast(
@@ -150,6 +153,15 @@ export default [
               whatToAdd.layer
             );
           });
+        } else if (whatToAdd.type == 'WFS') {
+          addLayersVectorService.add(
+            'wfs',
+            whatToAdd.link,
+            whatToAdd.title,
+            whatToAdd.abstract,
+            whatToAdd.extractStyles,
+            whatToAdd.projection
+          );
         } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
           addLayersVectorService.add(
             whatToAdd.type.toLowerCase(),
@@ -235,7 +247,9 @@ export default [
     });
 
     me.calcEntentLayerVisibility = function () {
-      mapService.extentLayer.setVisible(panelVisible() && me.data.id_selected != 'OWS');
+      mapService.extentLayer.setVisible(
+        panelVisible() && me.data.id_selected != 'OWS'
+      );
     };
 
     return me;

@@ -68,6 +68,7 @@ export default [
             if (j[lyr]) {
               const obj = {
                 title: j[lyr].name,
+                type: ['WMS', 'WFS'],
                 name: j[lyr].name,
               };
               dataset.layers.push(obj);
@@ -119,9 +120,10 @@ export default [
         return new Promise((resolve, reject) => {
           me.fillLayerMetadata(ds, layer).then(() => {
             resolve({
-              type: 'WMS',
+              type: layer.type,
               link: layer.wms.url,
               layer: layer.name,
+              title: layer.name,
             });
           });
         });

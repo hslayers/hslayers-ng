@@ -204,8 +204,8 @@ export default {
        * @param {Object} layer Metadata record of selected layer
        * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
        */
-      $scope.addLayerToMap = function (ds, layer) {
-        datasourceSelectorService.addLayerToMap(ds, layer);
+      $scope.addLayerToMap = function (ds, layer, type) {
+        datasourceSelectorService.addLayerToMap(ds, layer, type);
         $scope.metadataModalVisible = false;
       };
 

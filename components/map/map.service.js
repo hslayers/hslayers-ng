@@ -41,7 +41,8 @@ export default [
   'hs.layout.service',
   '$timeout',
   'gettext',
-  function (config, $rootScope, utils, layoutService, $timeout, gettext) {
+  '$log',
+  function (config, $rootScope, utils, layoutService, $timeout, gettext, $log) {
     /**
      * This is a workaround.
      * Returns the associated layer.
@@ -366,6 +367,12 @@ export default [
     };
 
     function layersEqual(existing, lyr) {
+      if (angular.isUndefined(lyr)) {
+        $log.warn(
+          'Checking duplicity for undefined layer. Why are we doing this?'
+        );
+        return true;
+      }
       if (angular.isUndefined(existing.getSource)) {
         return false;
       }

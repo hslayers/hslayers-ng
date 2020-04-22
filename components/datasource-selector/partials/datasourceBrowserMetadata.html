@@ -24,8 +24,8 @@
             <md-button class="md-raised md-secondary md-hue-2" translate ng-show="DS.isZoomable(selectedLayer)" ng-click="mapService.zoomTo(selectedLayer.bbox)">
                 Zoom to
             </md-button>
-            <md-button class="md-raised md-primary" ng-click="addLayerToMap(selectedDS, selectedLayer)" ng-hide='config.dss_disallow_add == true'>
-                Add to map
+            <md-button class="md-raised md-primary" ng=repeat="type in selectedLayer.type" ng-click="addLayerToMap(selectedDS, selectedLayer, type)" ng-hide='config.dss_disallow_add == true'>
+                Add to map as {{type}}
             </md-button>
         </md-dialog-actions>
     </form>
