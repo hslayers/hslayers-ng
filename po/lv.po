@@ -144,7 +144,7 @@ msgid "Context"
 msgstr ""
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
-msgid "Continue without saving"
+msgid "Continue"
 msgstr ""
 
 #: components/save-map/partials/form.html:83

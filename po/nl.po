@@ -149,8 +149,8 @@ msgid "Context"
 msgstr "Context"
 
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
-msgid "Continue without saving"
-msgstr "Verdergaan zonder bewaren"
+msgid "Continue"
+msgstr "Verdergaan"
 
 #: components/save-map/partials/form.html:83
 msgid "Country"

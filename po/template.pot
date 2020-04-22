@@ -294,7 +294,7 @@ msgstr ""
 #: components/compositions/partials/compositionLoadUnsavedDialog.html:27
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
 #: components/compositions/partials/dialog_overwriteconfirmmd.html:27
-msgid "Continue without saving"
+msgid "Continue"
 msgstr ""
 
 #: components/query/query-base.service.js:200

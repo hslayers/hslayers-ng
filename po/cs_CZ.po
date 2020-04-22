@@ -277,8 +277,8 @@ msgstr "Kontext"
 #: components/compositions/partials/compositionLoadUnsavedDialog.html:27
 #: components/compositions/partials/dialog_overwriteconfirm.html:14
 #: components/compositions/partials/dialog_overwriteconfirmmd.html:27
-msgid "Continue without saving"
-msgstr "Pokračovat bez uložení"
+msgid "Continue"
+msgstr "Pokračovat"
 
 #: components/query/query-base.service.js:200
 msgid "Coordinates"
