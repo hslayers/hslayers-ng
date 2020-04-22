@@ -150,6 +150,10 @@ export default [
         },
       };
 
+      layer.on('propertychange', (event) => {
+        new_layer.title = layerUtils.getLayerTitle(layer);
+      });
+
       WMST.setupTimeLayerIfNeeded(new_layer);
 
       if (layer.get('base') != true) {
