@@ -4,7 +4,8 @@ import SparqlJson from '../../layers/hs.source.SparqlJson';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import WfsSource from '../../layers/hs.source.Wfs';
-import {DragAndDrop} from 'ol/interaction';
+import {unByKey} from 'ol/Observable';
+
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format';
 import {Vector} from 'ol/source';
 import {get as getProj} from 'ol/proj';
@@ -16,10 +17,9 @@ export default [
   'hs.styles.service',
   'hs.utils.service',
   '$http',
-  'hs.statusManagerService',
+
   'hs.permalink.urlService',
   'hs.layout.service',
-  '$log',
   function (
     config,
     Core,
@@ -28,10 +28,8 @@ export default [
     styles,
     utils,
     $http,
-    statusManagerService,
     permalink,
-    layoutService,
-    $log
+    layoutService
   ) {
     const me = this;
 
@@ -280,16 +278,19 @@ export default [
     /**
      * (PRIVATE) Zoom to selected vector layer
      * @memberof hs.addLayers
-     * @function zoomToVectorLayer
+     * @function zoomToVectorLayerAfterLoad
      * @param {ol.Layer} lyr New layer
      */
-    function zoomToVectorLayer(lyr) {
+    function zoomToVectorLayerAfterLoad(lyr) {
       layoutService.setMainPanel('layermanager');
-      lyr.getSource().on('change', () => {
+      const listenerKey = lyr.getSource().on('change', () => {
         //Event needed because features are loaded asynchronously
         const extent = lyr.getSource().getExtent();
         if (extent !== null) {
           OlMap.map.getView().fit(extent, OlMap.map.getSize());
+        }
+        if (lyr.getSource().getState() == 'ready') {
+          unByKey(listenerKey);
         }
       });
     }
@@ -309,85 +310,20 @@ export default [
           type = 'kml';
         }
         const lyr = me.add(type, url, title, abstract, false, 'EPSG:4326');
-        zoomToVectorLayer(lyr);
+        zoomToVectorLayerAfterLoad(lyr);
       }
 
       if (permalink.getParamValue('kml_to_connect')) {
         const url = permalink.getParamValue('kml_to_connect');
         const lyr = me.add('kml', url, title, abstract, true, 'EPSG:4326');
-        zoomToVectorLayer(lyr);
+        zoomToVectorLayerAfterLoad(lyr);
       }
     };
 
-    const dragAndDrop = new DragAndDrop({
-      formatConstructors: [GPX, GeoJSON, IGC, KML, TopoJSON],
-    });
-
     OlMap.loaded().then((map) => {
-      map.addInteraction(dragAndDrop);
       me.checkUrlParamsAndAdd();
     });
 
-    dragAndDrop.on('addfeatures', (event) => {
-      if (event.features.length > 0) {
-        const f = new GeoJSON();
-        //TODO Saving to statusmanager should probably be done with statusmanager component throught events
-        let url = '';
-        try {
-          url = statusManagerService.endpointUrl();
-        } catch (ex) {
-          //Disregard error
-        }
-        const options = {};
-        options.features = event.features;
-
-        $http({
-          url: url,
-          method: 'POST',
-          data: angular.toJson({
-            project: config.project_name,
-            title: event.file.name,
-            request: 'saveData',
-            dataType: 'json',
-            data: f.writeFeatures(event.features, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: OlMap.map.getView().getProjection().getCode(),
-            }),
-          }),
-        }).then(
-          (response) => {
-            const data = {};
-            data.url = url + '?request=loadData&id=' + response.data.id;
-            data.title = event.file.name;
-            data.projection = event.projection;
-            me.add(
-              'geojson',
-              decodeURIComponent(data.url),
-              data.title || 'Layer',
-              '',
-              true,
-              data.projection,
-              options
-            );
-          },
-          (e) => {
-            $log.warn(e);
-            const data = {};
-            data.title = event.file.name;
-            data.projection = event.projection;
-            me.add(
-              'geojson',
-              undefined,
-              data.title || 'Layer',
-              '',
-              true,
-              data.projection,
-              options
-            );
-          }
-        );
-      }
-    });
     return me;
   },
 ];

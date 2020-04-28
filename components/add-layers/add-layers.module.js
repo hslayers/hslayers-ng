@@ -10,6 +10,7 @@ import './wmts/add-layers-wmts.module';
 import addLayersComponent from './add-layers.component';
 import addLayersUrlDirective from './add-layers-url.directive';
 import compileDirective from '../../common/compile.directive';
+import dragDropLayerService from './drag-drop-layer.service';
 import nestedLayersTableDirective from './nested-layers-table.directive';
 
 /**
@@ -57,4 +58,6 @@ export const AddLayersModule = angular
    * @ngdoc component
    * @name hs.addLayers
    */
-  .component('hs.addLayers', addLayersComponent);
+  .component('hs.addLayers', addLayersComponent)
+
+  .factory('HsDragDropLayerService', dragDropLayerService);
