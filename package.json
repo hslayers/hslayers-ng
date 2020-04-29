@@ -60,7 +60,7 @@
     "start": "http-server -a localhost -p 8000",
     "pretest": "npm install",
     "test": "karma start test/karma.conf.js",
-    "test-single-run": "karma start test/karma.conf.js",
+    "test-watch": "karma start test/karma.conf.js --auto-watch=true --single-run=false",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "release": "npm run-script build && release-it",
