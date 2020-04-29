@@ -443,24 +443,14 @@ export default [
             break;
           default:
             if (angular.isDefined(lyr_def.features)) {
-              const format = new GeoJSON();
-              const src = new VectorSource({
-                features: format.readFeatures(lyr_def.features),
-                projection: getProj(lyr_def.projection),
-              });
-              let style = undefined;
-              if (angular.isDefined(lyr_def.style)) {
-                style = me.parseStyle(lyr_def.style);
-              }
-              const lyr = new VectorLayer({
-                from_composition: true,
-                source: src,
-                opacity: lyr_def.opacity || 1,
-                title: lyr_def.title,
-                style: style,
-              });
-              lyr.setVisible(lyr_def.visibility);
-              layer = lyr;
+              layer = nonWmsService.createVectorLayer(
+                '',
+                undefined,
+                lyr_def.title || 'Layer',
+                lyr_def.abstract,
+                lyr_def.projection.toUpperCase(),
+                lyr_def
+              );
             }
         }
         return layer;

@@ -23,7 +23,14 @@ export default [
     me.addVectorLayer = function (type, url, title, abstract, srs, options) {
       return new Promise((resolve, reject) => {
         try {
-          const lyr = me.createVectorLayer(type, url, title, abstract, srs, options);
+          const lyr = me.createVectorLayer(
+            type,
+            url,
+            title,
+            abstract,
+            srs,
+            options
+          );
           if (hsMap.map) {
             hsMap.map.addLayer(lyr);
           }
@@ -62,20 +69,21 @@ export default [
         type = me.tryGuessTypeFromUrl(url);
       }
 
+      let mapProjection;
+      if (hsMap.map) {
+        mapProjection = hsMap.map.getView().getProjection().getCode();
+      }
+
       const descriptor = new VectorLayerDescriptor(
         type,
         title,
         abstract,
         url,
         srs,
-        options
+        options,
+        mapProjection
       );
-      if (hsMap.map) {
-        descriptor.mapProjection = hsMap.map
-          .getView()
-          .getProjection()
-          .getCode();
-      }
+
       const src = new descriptor.sourceClass(descriptor);
       descriptor.layerParams.source = src;
       const lyr = new VectorLayer(descriptor.layerParams);

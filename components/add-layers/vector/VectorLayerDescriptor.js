@@ -5,12 +5,14 @@ import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 
 export default class {
-  constructor(type, title, abstract, url, srs, options) {
+  constructor(type, title, abstract, url, srs, options, mapProjection) {
     /**
      * Artificial object which is used when layer is saved to composition.
      * It describes format (ol.format.KML, )
      */
     const definition = {};
+
+    this.mapProjection = mapProjection;
 
     this.layerParams = {
       abstract,
@@ -79,9 +81,18 @@ export default class {
       default:
         if (angular.isDefined(options.features)) {
           this.sourceClass = VectorSourceFromFeatures;
+          const format = new GeoJSON();
+          let features = options.features;
+          if (angular.isString(features)) {
+            features = format.readFeatures(options.features, {
+              dataProjection: srs,
+              featureProjection: this.mapProjection,
+            });
+          }
           this.sourceParams = {
             srs,
             options,
+            features,
           };
         } else {
           console.warn(`${type} not supported by hslayers`);

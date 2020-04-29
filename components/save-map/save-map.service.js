@@ -365,10 +365,14 @@ export default [
         if (utils.instOf(layer, VectorLayer)) {
           const src = layer.getSource();
           json.className = 'OpenLayers.Layer.Vector';
-          if (angular.isDefined(layer.get('definition'))) {
+          const definition = layer.get('definition');
+          if (
+            angular.isDefined(definition) &&
+            angular.isDefined(definition.url)
+          ) {
             json.protocol = {
-              url: encodeURIComponent(layer.get('definition').url),
-              format: layer.get('definition').format,
+              url: encodeURIComponent(definition.url),
+              format: definition.format,
             };
           } else {
             try {
@@ -403,7 +407,10 @@ export default [
        */
       serializeFeatures: function (features) {
         const f = new GeoJSON();
-        return f.writeFeatures(features);
+        return f.writeFeatures(features, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: OlMap.map.getView().getProjection().getCode(),
+        });
       },
 
       /**
@@ -483,7 +490,7 @@ export default [
         }
       });
       data.layers = layers;
-      $cookies.put('hs_layers', angular.toJson(data));
+      localStorage.setItem('hs_layers', angular.toJson(data));
     });
     return me;
   },

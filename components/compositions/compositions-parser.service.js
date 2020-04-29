@@ -11,6 +11,7 @@ export default [
   'hs.utils.service',
   'hs.compositions.layerParserService',
   'hs.layout.service',
+  '$log',
   function (
     hsMap,
     config,
@@ -19,7 +20,8 @@ export default [
     $http,
     utils,
     layerParserService,
-    layoutService
+    layoutService,
+    $log
   ) {
     const me = {
       /**
@@ -256,7 +258,12 @@ export default [
         }
         for (let i = 0; i < j.layers.length; i++) {
           const lyr_def = j.layers[i];
-          layers.push(me.jsonToLayer(lyr_def));
+          const layer = me.jsonToLayer(lyr_def);
+          if (angular.isUndefined(layer)) {
+            $log.warn('Was not able to parse layer from composition', lyr_def);
+          } else {
+            layers.push(layer);
+          }
         }
         return layers;
       },

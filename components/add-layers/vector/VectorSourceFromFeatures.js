@@ -4,7 +4,7 @@ export class VectorSourceFromFeatures extends VectorSource {
   constructor(params) {
     super({
       projection: params.sourceParams.srs,
-      features: params.sourceParams.options.features,
+      features: params.sourceParams.features,
     });
 
     this.hasLine = false;
