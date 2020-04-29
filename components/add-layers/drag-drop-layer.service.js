@@ -25,7 +25,6 @@ export default [
     hsMap.loaded().then((map) => {
       map.addInteraction(dragAndDrop);
     });
-
     dragAndDrop.on('addfeatures', async (event) => {
       if (event.features.length > 0) {
         const f = new GeoJSON();
@@ -76,7 +75,7 @@ export default [
           data.title = event.file.name;
           data.projection = event.projection;
           const layer = await addLayersVectorService.addVectorLayer(
-            'geojson',
+            '',
             undefined,
             data.title || 'Layer',
             '',

@@ -3,8 +3,8 @@ import VectorSource from 'ol/source/Vector';
 export class VectorSourceFromFeatures extends VectorSource {
   constructor(params) {
     super({
-      projection: params.srs,
-      features: params.options.features,
+      projection: params.sourceParams.srs,
+      features: params.sourceParams.options.features,
     });
 
     this.hasLine = false;

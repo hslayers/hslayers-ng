@@ -17,6 +17,7 @@ export default {
     '$rootScope',
     '$timeout',
     'hs.layout.service',
+    'HsDragDropLayerService',
     function (
       $scope,
       permalink,
@@ -24,7 +25,8 @@ export default {
       config,
       $rootScope,
       $timeout,
-      layoutService
+      layoutService,
+      HsDragDropLayerService
     ) {
       $scope.Core = Core;
       if (angular.isArray(config.connectTypes)) {

@@ -27,7 +27,7 @@ export default class {
       srs,
     };
 
-    switch (type.toLowerCase()) {
+    switch (type ? type.toLowerCase() : '') {
       case 'kml':
         definition.format = 'ol.format.KML';
         definition.url = url;
