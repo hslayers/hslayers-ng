@@ -1,11 +1,12 @@
 export default {
-  template: require('components/info/partials/info.html'),
+  template: require('./partials/info.html'),
   controller: [
     '$rootScope',
     '$scope',
     '$timeout',
     'Core',
-    function ($rootScope, $scope, $timeout, Core) {
+    'hs.utils.service',
+    function ($rootScope, $scope, $timeout, Core, utils) {
       $scope.Core = Core;
       /**
        * @ngdoc property
@@ -86,6 +87,8 @@ export default {
         $scope.composition_edited = false;
       });
 
+      const layerLoadingContext = {};
+
       $scope.$on('layermanager.layer_loading', (event, layer) => {
         let somethingChanged = false;
         if (!(layer.get('title') in $scope.layer_loading)) {
@@ -94,7 +97,14 @@ export default {
         }
         $scope.composition_loaded = false;
         if (somethingChanged) {
-          forceRedraw();
+          utils.debounce(
+            () => {
+              forceRedraw();
+            },
+            300,
+            false,
+            layerLoadingContext
+          );
         }
       });
 

@@ -1,6 +1,7 @@
 import '../layers/hs.source.SparqlJson';
 import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
+import VectorLayer from 'ol/layer/Vector';
 import {ImageWMS} from 'ol/source';
 import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile} from 'ol/layer';
@@ -630,7 +631,17 @@ export default [
       source.loadTotal = 0;
       source.loadError = 0;
       source.loaded = true;
-      if (utils.instOf(layer, ImageLayer)) {
+      if (utils.instOf(layer, VectorLayer)) {
+        layer.getSource().on('propertychange', (event) => {
+          if (event.key == 'loaded') {
+            if (event.oldValue == false) {
+              $rootScope.$broadcast('layermanager.layer_loaded', layer);
+            } else {
+              $rootScope.$broadcast('layermanager.layer_loading', layer);
+            }
+          }
+        });
+      } else if (utils.instOf(layer, ImageLayer)) {
         source.on('imageloadstart', (event) => {
           source.loaded = false;
           source.loadCounter += 1;

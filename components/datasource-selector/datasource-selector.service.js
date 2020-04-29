@@ -129,52 +129,53 @@ export default [
      * @memberOf hs.datasource_selector
      * @param {Object} ds Datasource of selected layer
      * @param {Object} layer Metadata record of selected layer
+     * @param {String} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
      * Add selected layer to map (into layer manager) if possible
-     * (supported formats: WMS, WFS, Sparql, kml, geojson, json)
      */
-    this.addLayerToMap = function (ds, layer, type) {
+    this.addLayerToMap = async function (ds, layer, type) {
       let describer = Promise.resolve({type: 'none'});
       if (ds.type == 'micka') {
         describer = mickaService.describeWhatToAdd(ds, layer);
       } else if (ds.type == 'layman') {
         describer = laymanService.describeWhatToAdd(ds, layer);
       }
-      describer.then((whatToAdd) => {
-        if (angular.isDefined(type)) {
-          whatToAdd.type = type;
-        }
-        if (whatToAdd.type == 'WMS') {
-          me.datasetSelect('OWS');
-          $timeout(() => {
-            $rootScope.$broadcast(
-              'ows.filling',
-              whatToAdd.type.toLowerCase(),
-              decodeURIComponent(whatToAdd.link),
-              whatToAdd.layer
-            );
-          });
-        } else if (whatToAdd.type == 'WFS') {
-          addLayersVectorService.add(
-            'wfs',
-            whatToAdd.link,
-            whatToAdd.title,
-            whatToAdd.abstract,
-            whatToAdd.extractStyles,
-            whatToAdd.projection
-          );
-        } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-          addLayersVectorService.add(
+      const whatToAdd = await describer();
+      if (angular.isDefined(type)) {
+        whatToAdd.type = type;
+      }
+      if (whatToAdd.type == 'WMS') {
+        me.datasetSelect('OWS');
+        $timeout(() => {
+          $rootScope.$broadcast(
+            'ows.filling',
             whatToAdd.type.toLowerCase(),
-            whatToAdd.link,
-            whatToAdd.title,
-            whatToAdd.abstract,
-            whatToAdd.extractStyles,
-            whatToAdd.projection
+            decodeURIComponent(whatToAdd.link),
+            whatToAdd.layer
           );
-        } else {
-          layoutService.setMainPanel('layermanager');
-        }
-      });
+        });
+      } else if (whatToAdd.type == 'WFS') {
+        const layer = await addLayersVectorService.addVectorLayer(
+          'wfs',
+          whatToAdd.link,
+          whatToAdd.title,
+          whatToAdd.abstract,
+          whatToAdd.projection,
+          {extractStyles: whatToAdd.extractStyles}
+        );
+        addLayersVectorService.fitExtent(layer);
+      } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
+        const layer = await addLayersVectorService.addVectorLayer(
+          whatToAdd.type.toLowerCase(),
+          whatToAdd.link,
+          whatToAdd.title,
+          whatToAdd.abstract,
+          whatToAdd.projection,
+          {extractStyles: whatToAdd.extractStyles}
+        );
+        addLayersVectorService.fitExtent(layer);
+      } else {
+        layoutService.setMainPanel('layermanager');
+      }
     };
 
     me.datasetSelect = function (id_selected) {

@@ -281,6 +281,8 @@ export default [
             return layerParserService.createStaticImageLayer(lyr_def);
           case 'OpenLayers.Layer.Vector':
             return layerParserService.createVectorLayer(lyr_def);
+          default:
+            return;
         }
       },
     };

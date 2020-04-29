@@ -266,14 +266,13 @@ export default [
             } else if (
               me.getLayerLink(layer).toLowerCase().indexOf('sparql') > -1
             ) {
-              addLayersVectorService.add(
-                'sparql',
-                me.getLayerLink(layer),
-                layer.title || 'Layer',
-                layer.abstract,
-                true,
-                'EPSG:4326'
-              );
+              whatToAdd = {
+                type: 'sparql',
+                link: me.getLayerLink(layer),
+                title: layer.title || 'Layer',
+                abstract: layer.abstract || 'Layer',
+                projection: 'EPSG:4326',
+              };
             } else if (
               layer.serviceType == 'WFS' ||
               layer.serviceType == 'OGC:WFS' ||

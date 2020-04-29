@@ -391,40 +391,41 @@ export default [
           options.style = me.parseStyle(lyr_def.style);
           extractStyles = false;
         }
+        let layer;
         switch (format) {
           case 'ol.format.KML':
-            return nonWmsService.add(
+            layer = nonWmsService.createVectorLayer(
               'kml',
               decodeURIComponent(lyr_def.protocol.url),
               lyr_def.title || 'Layer',
               lyr_def.abstract,
-              extractStyles,
               lyr_def.projection.toUpperCase(),
-              options
+              Object.assign(options, {extractStyles})
             );
+            break;
           case 'ol.format.GeoJSON':
-            return nonWmsService.add(
+            layer = nonWmsService.createVectorLayer(
               'geojson',
               decodeURIComponent(lyr_def.protocol.url),
               lyr_def.title || 'Layer',
               lyr_def.abstract,
-              extractStyles,
               lyr_def.projection.toUpperCase(),
               options
             );
+            break;
           case 'hs.format.WFS':
             options.defOptions = lyr_def.defOptions;
-            return nonWmsService.add(
+            layer = nonWmsService.createVectorLayer(
               'wfs',
               decodeURIComponent(lyr_def.protocol.url),
               lyr_def.title || 'Layer',
               lyr_def.abstract,
-              extractStyles,
               lyr_def.projection.toUpperCase(),
               options
             );
+            break;
           case 'hs.format.LaymanWfs':
-            return new VectorLayer({
+            layer = new VectorLayer({
               title: lyr_def.title,
               name: lyr_def.title,
               visibility: lyr_def.visibility,
@@ -436,8 +437,10 @@ export default [
               saveState: true,
               source: new VectorSource({}),
             });
+            break;
           case 'hs.format.Sparql':
-            return me.createSparqlLayer(lyr_def);
+            layer = me.createSparqlLayer(lyr_def);
+            break;
           default:
             if (angular.isDefined(lyr_def.features)) {
               const format = new GeoJSON();
@@ -457,9 +460,10 @@ export default [
                 style: style,
               });
               lyr.setVisible(lyr_def.visibility);
-              return lyr;
+              layer = lyr;
             }
         }
+        return layer;
       },
     };
     return me;

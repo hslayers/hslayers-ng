@@ -26,7 +26,7 @@ export default [
       map.addInteraction(dragAndDrop);
     });
 
-    dragAndDrop.on('addfeatures', (event) => {
+    dragAndDrop.on('addfeatures', async (event) => {
       if (event.features.length > 0) {
         const f = new GeoJSON();
         //TODO Saving to statusmanager should probably be done with statusmanager component throught events
@@ -38,52 +38,53 @@ export default [
         }
         const options = {};
         options.features = event.features;
-
-        $http({
-          url: url,
-          method: 'POST',
-          data: angular.toJson({
-            project: config.project_name,
-            title: event.file.name,
-            request: 'saveData',
-            dataType: 'json',
-            data: f.writeFeatures(event.features, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: hsMap.map.getView().getProjection().getCode(),
+        try {
+          const response = await $http({
+            url: url,
+            method: 'POST',
+            data: angular.toJson({
+              project: config.project_name,
+              title: event.file.name,
+              request: 'saveData',
+              dataType: 'json',
+              data: f.writeFeatures(event.features, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: hsMap.map
+                  .getView()
+                  .getProjection()
+                  .getCode(),
+              }),
             }),
-          }),
-        }).then(
-          (response) => {
-            const data = {};
-            data.url = url + '?request=loadData&id=' + response.data.id;
-            data.title = event.file.name;
-            data.projection = event.projection;
-            addLayersVectorService.add(
-              'geojson',
-              decodeURIComponent(data.url),
-              data.title || 'Layer',
-              '',
-              true,
-              data.projection,
-              options
-            );
-          },
-          (e) => {
-            $log.warn(e);
-            const data = {};
-            data.title = event.file.name;
-            data.projection = event.projection;
-            addLayersVectorService.add(
-              'geojson',
-              undefined,
-              data.title || 'Layer',
-              '',
-              true,
-              data.projection,
-              options
-            );
-          }
-        );
+          });
+
+          const data = {};
+          data.url = url + '?request=loadData&id=' + response.data.id;
+          data.title = event.file.name;
+          data.projection = event.projection;
+          const layer = await addLayersVectorService.addVectorLayer(
+            'geojson',
+            decodeURIComponent(data.url),
+            data.title || 'Layer',
+            '',
+            data.projection,
+            options
+          );
+          addLayersVectorService.fitExtent(layer);
+        } catch (e) {
+          $log.warn(e);
+          const data = {};
+          data.title = event.file.name;
+          data.projection = event.projection;
+          const layer = await addLayersVectorService.addVectorLayer(
+            'geojson',
+            undefined,
+            data.title || 'Layer',
+            '',
+            data.projection,
+            options
+          );
+          addLayersVectorService.fitExtent(layer);
+        }
       }
     });
     return me;
