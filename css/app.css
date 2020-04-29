@@ -112,6 +112,9 @@ ul.hs-lm-mapcontentlist {
 	margin-bottom: 0;
 	border-bottom: 1px solid #ddd;
 }
+ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
+	padding: 0.3em;
+}
 
 .hs-save-comp-advanced-panel {
 	margin-top: 10px;

@@ -9,7 +9,7 @@
             </button>
         </extra-buttons>
     </hs.layout.panel-header>
-    <div class="card-body hs-lm-panel">
+    <div class="card-body hs-lm-panel"></div>
         <div class="nav nav-pills" ng-show="hasBoxImages()">
             <div ng-repeat="box in data.box_layers" class="col-xs-2 col-md-2 active"
                 style="padding-right: 2px; padding-left: 2px;">
@@ -82,17 +82,24 @@
         </ul>
 
         <ul class="list-group hs-lm-mapcontentlist">
-            <li ng-if="::!layoutService.panelVisible('gallery')" class="list-group-item hs-lm-header hs-lm-item active hs-lm-map-content-header">
+            <li ng-if="::!layoutService.panelVisible('gallery')"
+                class="list-group-item hs-lm-header hs-lm-item active hs-lm-map-content-header" style="margin-bottom: 0.2em;">
                 <span translate class="align-middle" style="line-height: 2em;">Map Content</span>
             </li>
             <ul class="list-group hs-lm-layerlist" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
-                <li class="list-group-item active">
+                <li class="list-group-item hs-lm-layerlist-header active">
                     <span ng-bind-html="value.name | translate"></span>
                 </li>
                 <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
                 <li hs.layermanager.layerlist_directive></li>
             </ul>
-            <div hs.layermanager.layerlist_directive></div>
+            <ul class="list-group hs-lm-layerlist">
+                <li ng-if="data.folders.sub_folders.length > 0 && data.folders.layers.length != 0"
+                    class="list-group-item active hs-lm-layerlist-header">
+                    <span translate class="align-middle">Other </span>
+                </li>
+                <div hs.layermanager.layerlist_directive></div>
+            </ul>
             <!--
         <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-secondary active">
