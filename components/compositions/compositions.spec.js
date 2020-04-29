@@ -1,3 +1,4 @@
+/* eslint-disable angular/di */
 'use strict';
 describe('compositions', () => {
   var scope, $state, createController, q;
