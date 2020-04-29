@@ -259,16 +259,16 @@ export default [
 
     async function tryParseCompositionFromCookie() {
       if (
-        angular.isDefined($cookies.get('hs_layers')) &&
+        angular.isDefined(localStorage.getItem('hs_layers')) &&
         $window.permalinkApp != true
       ) {
         await OlMap.loaded();
-        const data = $cookies.get('hs_layers');
+        const data = localStorage.getItem('hs_layers');
         const layers = compositionParser.jsonToLayers(angular.fromJson(data));
         for (let i = 0; i < layers.length; i++) {
           OlMap.addLayer(layers[i]);
         }
-        $cookies.remove('hs_layers');
+        localStorage.removeItem('hs_layers');
       }
     }
 
