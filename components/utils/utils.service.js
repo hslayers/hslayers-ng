@@ -18,6 +18,9 @@ export default [
      * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
      */
     this.proxify = function (url, toEncoding) {
+      if (url.startsWith(config.proxyPrefix)) {
+        return url;
+      }
       toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
       let outUrl = url;
       const windowUrlPosition = url.indexOf($window.location.origin);
