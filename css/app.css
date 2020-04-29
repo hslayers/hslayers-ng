@@ -652,7 +652,7 @@ a.sidebar-main {
 	display: none;
 }
 
-.sublayerContainer input[type="checkbox"] {
+.sublayerContainer input[type="checkbox"].form-check-input {
 	position: absolute;
 	left: -9999px;
 }
