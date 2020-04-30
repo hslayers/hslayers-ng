@@ -183,12 +183,12 @@ export default {
       $scope.setCurrentLayer = function (layer) {
         LayMan.currentLayer = layer;
 
-        if (!layer.checkedSubLayers) {
-          layer.checkedSubLayers = {};
-          layer.withChildren = {};
+        if (!layer.layer.checkedSubLayers) {
+          layer.layer.checkedSubLayers = {};
+          layer.layer.withChildren = {};
         }
-        subLayerService.checkedSubLayers = layer.checkedSubLayers;
-        subLayerService.withChildren = layer.withChildren;
+        subLayerService.checkedSubLayers = layer.layer.checkedSubLayers;
+        subLayerService.withChildren = layer.layer.withChildren;
 
         if (WMST.layerIsWmsT(layer)) {
           LayMan.currentLayer.time = new Date(

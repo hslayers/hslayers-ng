@@ -27,14 +27,14 @@ export default [
           $scope.toggleSublayersVisibility = function (layer) {
             if (LayMan.currentLayer === layer) {
               if (subLayerService.hasSubLayers()) {
-                Object.keys(layer.checkedSubLayers).forEach((key) => {
-                  layer.checkedSubLayers[key] = LayMan.currentLayer.visible;
+                Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
+                  layer.layer.checkedSubLayers[key] = LayMan.currentLayer.visible;
                 });
-                if (Object.keys(layer.withChildren).length === 0) {
+                if (Object.keys(layer.layer.withChildren).length === 0) {
                   return;
                 } else {
-                  Object.keys(layer.withChildren).forEach((key) => {
-                    layer.withChildren[key] = LayMan.currentLayer.visible;
+                  Object.keys(layer.layer.withChildren).forEach((key) => {
+                    layer.layer.withChildren[key] = LayMan.currentLayer.visible;
                   });
                 }
               }
@@ -45,14 +45,14 @@ export default [
                 src.updateParams(params);
               }
             } else {
-              if (layer.checkedSubLayers) {
-                Object.keys(layer.checkedSubLayers).forEach((key) => {
-                  layer.checkedSubLayers[key] = layer.visible;
+              if (layer.layer.checkedSubLayers) {
+                Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
+                  layer.layer.checkedSubLayers[key] = layer.visible;
                 });
               }
-              if (layer.withChildren) {
-                Object.keys(layer.withChildren).forEach((key) => {
-                  layer.withChildren[key] = layer.visible;
+              if (layer.layer.withChildren) {
+                Object.keys(layer.layer.withChildren).forEach((key) => {
+                  layer.layer.withChildren[key] = layer.visible;
                 });
               }
             }

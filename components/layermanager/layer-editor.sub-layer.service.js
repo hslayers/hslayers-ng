@@ -30,22 +30,22 @@ export default [
         me.populatedLayers.push(LayMan.currentLayer.layer.ol_uid);
         angular.forEach(sublayers, (layer) => {
           if (layer.Layer) {
-            angular.extend(LayMan.currentLayer.withChildren, {
+            angular.extend(LayMan.currentLayer.layer.withChildren, {
               [layer.Name]: LayMan.currentLayer.layer.getVisible(),
             });
             angular.forEach(layer.Layer, (sublayer) => {
-              angular.extend(LayMan.currentLayer.checkedSubLayers, {
+              angular.extend(LayMan.currentLayer.layer.checkedSubLayers, {
                 [sublayer.Name]: LayMan.currentLayer.layer.getVisible(),
               });
             });
           } else {
-            angular.extend(LayMan.currentLayer.checkedSubLayers, {
+            angular.extend(LayMan.currentLayer.layer.checkedSubLayers, {
               [layer.Name]: LayMan.currentLayer.layer.getVisible(),
             });
           }
         });
-        me.checkedSubLayers = LayMan.currentLayer.checkedSubLayers;
-        me.withChildren = LayMan.currentLayer.withChildren;
+        me.checkedSubLayers = LayMan.currentLayer.layer.checkedSubLayers;
+        me.withChildren = LayMan.currentLayer.layer.withChildren;
         LayMan.currentLayer.layer.baseParams = LayMan.currentLayer.layer
           .getSource()
           .getParams().LAYERS;
