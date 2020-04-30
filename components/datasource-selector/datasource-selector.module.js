@@ -11,6 +11,7 @@ import mickaFilterService from './micka/micka-filters.service';
 import mickaFiltersDirective from './micka/micka-filters.directive';
 import mickaService from './micka/micka.service';
 import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
+import selectTypeToAddLayerDialogComponent from './select-type-to-add-layer-dialog.component';
 
 /**
  * @namespace hs.datasource_selector
@@ -109,5 +110,10 @@ angular
    * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas.
    */
   .component('hs.datasourceSelector', datasourceSelectorComponent)
+
+  .component(
+    'hsSelectTypeToAddLayerDialog',
+    selectTypeToAddLayerDialogComponent
+  )
 
   .filter('forDatasourceBrowser', forDatasourceBrowserFilter);

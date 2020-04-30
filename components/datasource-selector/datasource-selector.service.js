@@ -15,6 +15,7 @@ export default [
   'hs.utils.service',
   'hs.datasourceSelector.mapService',
   'forDatasourceBrowserFilter',
+  '$compile',
   function (
     $rootScope,
     $timeout,
@@ -30,7 +31,8 @@ export default [
     endpointsService,
     utils,
     mapService,
-    forDatasourceBrowserFilter
+    forDatasourceBrowserFilter,
+    $compile
   ) {
     const me = this;
 
@@ -139,43 +141,60 @@ export default [
       } else if (ds.type == 'layman') {
         describer = laymanService.describeWhatToAdd(ds, layer);
       }
-      const whatToAdd = await describer();
-      if (angular.isDefined(type)) {
-        whatToAdd.type = type;
-      }
-      if (whatToAdd.type == 'WMS') {
-        me.datasetSelect('OWS');
-        $timeout(() => {
-          $rootScope.$broadcast(
-            'ows.filling',
-            whatToAdd.type.toLowerCase(),
-            decodeURIComponent(whatToAdd.link),
-            whatToAdd.layer
+      describer.then(async (whatToAdd) => {
+        if (angular.isDefined(type)) {
+          whatToAdd.type = type;
+        }
+        if (angular.isArray(whatToAdd.type)) {
+          const scope = $rootScope.$new();
+          Object.assign(scope, {
+            types: whatToAdd.type,
+            layer,
+            endpoint: ds,
+          });
+          const el = angular.element(
+            '<hs-select-type-to-add-layer-dialog layer="layer" endpoint="endpoint" types="types"></hs-select-type-to-add-layer-dialog>'
           );
-        });
-      } else if (whatToAdd.type == 'WFS') {
-        const layer = await addLayersVectorService.addVectorLayer(
-          'wfs',
-          whatToAdd.link,
-          whatToAdd.title,
-          whatToAdd.abstract,
-          whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles}
-        );
-        addLayersVectorService.fitExtent(layer);
-      } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-        const layer = await addLayersVectorService.addVectorLayer(
-          whatToAdd.type.toLowerCase(),
-          whatToAdd.link,
-          whatToAdd.title,
-          whatToAdd.abstract,
-          whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles}
-        );
-        addLayersVectorService.fitExtent(layer);
-      } else {
-        layoutService.setMainPanel('layermanager');
-      }
+          layoutService.contentWrapper
+            .querySelector('.hs-dialog-area')
+            .appendChild(el[0]);
+          $compile(el)(scope);
+          return;
+        }
+        if (whatToAdd.type == 'WMS') {
+          me.datasetSelect('OWS');
+          $timeout(() => {
+            $rootScope.$broadcast(
+              'ows.filling',
+              whatToAdd.type.toLowerCase(),
+              decodeURIComponent(whatToAdd.link),
+              whatToAdd.layer
+            );
+          });
+        } else if (whatToAdd.type == 'WFS') {
+          const layer = await addLayersVectorService.addVectorLayer(
+            'wfs',
+            whatToAdd.link,
+            whatToAdd.title,
+            whatToAdd.abstract,
+            whatToAdd.projection,
+            {extractStyles: whatToAdd.extractStyles}
+          );
+          addLayersVectorService.fitExtent(layer);
+        } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
+          const layer = await addLayersVectorService.addVectorLayer(
+            whatToAdd.type.toLowerCase(),
+            whatToAdd.link,
+            whatToAdd.title,
+            whatToAdd.abstract,
+            whatToAdd.projection,
+            {extractStyles: whatToAdd.extractStyles}
+          );
+          addLayersVectorService.fitExtent(layer);
+        } else {
+          layoutService.setMainPanel('layermanager');
+        }
+      });
     };
 
     me.datasetSelect = function (id_selected) {
