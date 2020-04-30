@@ -89,8 +89,7 @@
             <ul class="list-group hs-lm-layerlist mb-1" ng-repeat="value in data.folders.sub_folders | orderBy:'name' ">
                 <li class="list-group-item hs-lm-layerlist-header active" ng-click="value.visible = !value.visible">
                     <span ng-bind-html="value.name | translate"></span>
-                    <span class="mr-1" style="float: right;"
-                    ng-class="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
+                    <span class="glyphicon" ng-class="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
                 </li>
                 <div ng-show="value.visible">
                     <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
@@ -102,8 +101,7 @@
                     class="list-group-item active hs-lm-layerlist-header"
                     ng-click="layerlistVisible = !layerlistVisible">
                     <span translate class="align-middle">Other </span>
-                    <span class="mr-1" style="float: right;"
-                    ng-class="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
+                    <span class="glyphicon" ng-class="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
                 </li>
                 <div ng-init="layerlistVisible = true" ng-show="layerlistVisible" hs.layermanager.layerlist_directive></div>
             </ul>
