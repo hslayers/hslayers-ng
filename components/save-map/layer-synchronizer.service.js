@@ -3,13 +3,20 @@ import {WFS} from 'ol/format';
 const debounceInterval = 1000;
 
 export default [
-  'Core',
   'hs.utils.service',
-  'config',
-  'hs.map.service',
   'hs.laymanService',
   'hs.common.endpointsService',
-  function (Core, utils, config, hsMap, laymanService, endpointsService) {
+  '$compile',
+  '$rootScope',
+  'hs.layout.service',
+  function (
+    utils,
+    laymanService,
+    endpointsService,
+    $compile,
+    $rootScope,
+    layoutService
+  ) {
     const me = this;
     angular.extend(me, {
       syncedLayers: [],
@@ -111,6 +118,9 @@ export default [
                           layer
                         )
                         .then((response) => {
+                          if (response.data.indexOf('Exception') > -1) {
+                            me.displaySyncErrorDialog(response.data);
+                          }
                           layer.set('hs-layman-synchronizing', false);
                         });
                     });
@@ -138,6 +148,20 @@ export default [
                 });
               });
           });
+      },
+
+      displaySyncErrorDialog(error) {
+        const scope = $rootScope.$new();
+        Object.assign(scope, {
+          error,
+        });
+        const el = angular.element(
+          '<hs-sync-error-dialog exception="error"></hs-sync-error-dialog>'
+        );
+        layoutService.contentWrapper
+          .querySelector('.hs-dialog-area')
+          .appendChild(el[0]);
+        $compile(el)(scope);
       },
 
       /**

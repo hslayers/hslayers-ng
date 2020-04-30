@@ -7,6 +7,7 @@ import saveMapComponent from './save-map.component';
 import saveMapManagerService from './save-map-manager.service';
 import saveMapService from './save-map.service';
 import statusManagerService from './status-manager.service';
+import syncErrorDialogComponent from './sync-error-dialog.component';
 
 /**
  * @namespace hs.save-map
@@ -176,4 +177,6 @@ angular
    * @memberof hs.save-map
    * @description Save map panel
    */
-  .component('hs.saveMap', saveMapComponent);
+  .component('hs.saveMap', saveMapComponent)
+
+  .component('hsSyncErrorDialog', syncErrorDialogComponent);

@@ -1,9 +1,9 @@
 export default {
   template: require('./select-type-to-add-layer-dialog.html'),
   bindings: {
-    layer: '=',
-    types: '=',
-    endpoint: '=',
+    layer: '<',
+    types: '<',
+    endpoint: '<',
   },
   controller: [
     '$http',
