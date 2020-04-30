@@ -11,10 +11,10 @@
                         ng-class="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
-                    ng-click="toggleLayerEditorTools(layer)" style="word-break:break-all">
+                    ng-click="toggleLayerEditor(layer,'sublayers', 'settings')" style="word-break:break-all">
                     {{layer.title}}
                 </div>
-                <div class="p-0 mr-1 ml-1 info_btn" ng-if="layer.layer.hasSublayers" style="font-size: x-small; flex-grow: 20;" ng-click="toggleLayerEditorTools(layer)">
+                <div class="p-0 mr-1 ml-1 info_btn" ng-if="layer.layer.hasSublayers" style="font-size: x-small; flex-grow: 20;" ng-click="toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
                         ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
@@ -41,7 +41,7 @@
                         ng-click="$event.stopPropagation()"></i>
                 </div>
                 <div class="pl-1 info_btn">
-                    <span class="icon-settingsthree-gears text-secondary" ng-click="toggleLayerEditor(layer)"
+                    <span class="icon-settingsthree-gears text-secondary" ng-click="toggleLayerEditor(layer,'settings','sublayers')"
                         title="{{'Additional information'|translate}}" data-toggle="tooltip" data-container="body"
                         data-placement="auto"></span>
                 </div>

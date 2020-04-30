@@ -1,3 +1,5 @@
+import {coordinateRelationship} from 'ol/extent';
+
 export default [
   'hs.layermanager.service',
   function (LayMan) {
@@ -5,9 +7,6 @@ export default [
     me.checkedSubLayers = {};
     me.withChildren = {};
     me.populatedLayers = [];
-
-    me.checkedSubLayersTmp = {};
-    me.withChildrenTmp = {};
 
     me.hasSubLayers = function () {
       const subLayers = LayMan.currentLayer.layer.get('Layer');
@@ -31,20 +30,25 @@ export default [
         me.populatedLayers.push(LayMan.currentLayer.layer.ol_uid);
         angular.forEach(sublayers, (layer) => {
           if (layer.Layer) {
-            angular.extend(me.withChildren, {
+            angular.extend(LayMan.currentLayer.withChildren, {
               [layer.Name]: LayMan.currentLayer.layer.getVisible(),
             });
             angular.forEach(layer.Layer, (sublayer) => {
-              angular.extend(me.checkedSubLayers, {
+              angular.extend(LayMan.currentLayer.checkedSubLayers, {
                 [sublayer.Name]: LayMan.currentLayer.layer.getVisible(),
               });
             });
           } else {
-            angular.extend(me.checkedSubLayers, {
+            angular.extend(LayMan.currentLayer.checkedSubLayers, {
               [layer.Name]: LayMan.currentLayer.layer.getVisible(),
             });
           }
         });
+        me.checkedSubLayers = LayMan.currentLayer.checkedSubLayers;
+        me.withChildren = LayMan.currentLayer.withChildren;
+        LayMan.currentLayer.layer.baseParams = LayMan.currentLayer.layer
+          .getSource()
+          .getParams().LAYERS;
       }
     };
 

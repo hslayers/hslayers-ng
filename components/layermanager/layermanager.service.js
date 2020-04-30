@@ -312,7 +312,6 @@ export default [
       } else {
         me.data.folders.layers.push(lyr);
       }
-      console.log( me.data.folders)
     }
 
     /**
