@@ -23,36 +23,55 @@ export default [
       template: require('./partials/layerlist.html'),
       controller: [
         '$scope',
+        /**
+         * @function toggleSublayersVisibility
+         * @memberOf hs.layermanager.layerlist
+         * @description Controls state of layer´s sublayers checkboxes with layer visibility changes. 
+         * @param {object} layer Selected layer
+         * @param {boolean} state State to be assigned 
+         */
         function ($scope) {
+          $scope.changeSublayerVisibilityState = function (layer, state) {
+            if (layer.layer.checkedSubLayers) {
+              Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
+                layer.layer.checkedSubLayers[key] = state;
+              });
+            }
+            if (layer.layer.withChildren) {
+              Object.keys(layer.layer.withChildren).forEach((key) => {
+                layer.layer.withChildren[key] = state;
+              });
+            }
+          };
+          /**
+           * @function toggleSublayersVisibility
+           * @memberOf hs.layermanager.layerlist
+           * @description Controls state of layer´s sublayers checkboxes with layer visibility changes
+           * @param {object} layer Selected layer
+           */
           $scope.toggleSublayersVisibility = function (layer) {
-            if (LayMan.currentLayer === layer) {
-              if (subLayerService.hasSubLayers()) {
-                Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
-                  layer.layer.checkedSubLayers[key] = LayMan.currentLayer.visible;
-                });
-                if (Object.keys(layer.layer.withChildren).length === 0) {
-                  return;
-                } else {
-                  Object.keys(layer.layer.withChildren).forEach((key) => {
-                    layer.layer.withChildren[key] = LayMan.currentLayer.visible;
-                  });
+            if (!layer.visible) {
+              if (LayMan.currentLayer === layer) {
+                if (subLayerService.hasSubLayers()) {
+                  $scope.changeSublayerVisibilityState(
+                    layer,
+                    LayMan.currentLayer.visible
+                  );
                 }
-              }
-              if(layer.visible){
-                const src = layer.layer.getSource();
-                let params = src.getParams();
-                params.LAYERS = layer.layer.baseParams;
-                src.updateParams(params);
+              } else {
+                $scope.changeSublayerVisibilityState(layer, layer.visible);
               }
             } else {
               if (layer.layer.checkedSubLayers) {
                 Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
-                  layer.layer.checkedSubLayers[key] = layer.visible;
+                  layer.layer.checkedSubLayers[key] =
+                    layer.layer.checkedSubLayersTmp[key];
                 });
               }
               if (layer.layer.withChildren) {
                 Object.keys(layer.layer.withChildren).forEach((key) => {
-                  layer.layer.withChildren[key] = layer.visible;
+                  layer.layer.withChildren[key] =
+                    layer.layer.withChildrenTmp[key];
                 });
               }
             }

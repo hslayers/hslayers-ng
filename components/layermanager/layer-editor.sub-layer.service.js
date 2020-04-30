@@ -46,9 +46,9 @@ export default [
         });
         me.checkedSubLayers = LayMan.currentLayer.layer.checkedSubLayers;
         me.withChildren = LayMan.currentLayer.layer.withChildren;
-        LayMan.currentLayer.layer.baseParams = LayMan.currentLayer.layer
-          .getSource()
-          .getParams().LAYERS;
+
+        LayMan.currentLayer.layer.checkedSubLayersTmp = me.checkedSubLayersTmp = Object.assign({}, me.checkedSubLayers);
+        LayMan.currentLayer.layer.withChildrenTmp = me.withChildrenTmp = Object.assign({}, me.withChildren);
       }
     };
 

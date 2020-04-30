@@ -182,7 +182,6 @@ export default {
 
       $scope.setCurrentLayer = function (layer) {
         LayMan.currentLayer = layer;
-
         if (!layer.layer.checkedSubLayers) {
           layer.layer.checkedSubLayers = {};
           layer.layer.withChildren = {};
