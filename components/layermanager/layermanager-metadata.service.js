@@ -142,8 +142,6 @@ export default [
               });
             }
 
-            console.log(layer);
-
             return true;
           })
           .catch((e) => {
