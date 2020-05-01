@@ -12,7 +12,7 @@ export default [
     $compile,
     config,
     $rootScope,
-    LayMan,
+    LayerManager,
     hsMap,
     utils,
     $timeout,
@@ -51,11 +51,11 @@ export default [
            */
           $scope.toggleSublayersVisibility = function (layer) {
             if (!layer.visible) {
-              if (LayMan.currentLayer === layer) {
+              if (LayerManager.currentLayer === layer) {
                 if (subLayerService.hasSubLayers()) {
                   $scope.changeSublayerVisibilityState(
                     layer,
-                    LayMan.currentLayer.visible
+                    LayerManager.currentLayer.visible
                   );
                 }
               } else {
@@ -251,8 +251,8 @@ export default [
             const item_layer = layers.item(item_index);
             hsMap.map.getLayers().removeAt(item_index);
             hsMap.map.getLayers().insertAt(to_index, item_layer);
-            LayMan.updateLayerOrder();
-            const layerDesc = LayMan.getLayerDescriptorForOlLayer(item_layer);
+            LayerManager.updateLayerOrder();
+            const layerDesc = LayerManager.getLayerDescriptorForOlLayer(item_layer);
             $timeout((_) => {
               layerNode = document.getElementById(layerDesc.idString());
               utils.insertAfter(layerPanel, layerNode);
