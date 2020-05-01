@@ -1,8 +1,8 @@
 <div class="basemapGallery" ng-style="galleryStyle()">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
         <button type="button" ng-if="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
-            ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
-            ng-click="LayMan.changeBaseLayerVisibility($event, layer)"
+            ng-repeat="layer in LayerManager.data.baselayers | orderBy: 'title'"
+            ng-click="LayerManager.changeBaseLayerVisibility($event, layer)"
             ng-class="{'active': layer.active}">{{::layer.title}}</button>
         <button type="button" ng-if="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
         ng-click="changeBaseLayerVisibility()"
@@ -15,8 +15,8 @@
                 <i class="glyphicon icon-map x-large p-0"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right p-0" ng-class="{'show': $parent.baseLayersExpanded}">
-                <div ng-repeat="layer in LayMan.data.baselayers | orderBy: 'title'"
-                    ng-click="closeGallery(layer);LayMan.changeBaseLayerVisibility($event, layer)" ng-style="{'position':'relative'}">
+                <div ng-repeat="layer in LayerManager.data.baselayers | orderBy: 'title'"
+                    ng-click="closeGallery(layer);LayerManager.changeBaseLayerVisibility($event, layer)" ng-style="{'position':'relative'}">
                     <div style="position:absolute;top:5px; right:5px;z-index:5"
                     ng-style="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}"
                         ng-if="layer.active" ng-click="toggleMiniMenu(layer)">
