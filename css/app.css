@@ -112,6 +112,12 @@ ul.hs-lm-mapcontentlist {
 	margin-bottom: 0;
 	border-bottom: 1px solid #ddd;
 }
+ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
+	padding: 0.3em;
+}
+ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
+	font-size: x-small;
+}
 
 .hs-save-comp-advanced-panel {
 	margin-top: 10px;
@@ -175,7 +181,7 @@ li.hs-dr-item {
 	vertical-align: top;
 }
 
-div.hs-lm-item-title {
+div ul.hs-lm-baselayerlist  .hs-lm-item-title, div.hs-lm-item-title.hover {
 	cursor: pointer;
 }
 
@@ -183,7 +189,7 @@ div.hs-lm-item-title {
 	margin-top: -0.42em;
 }
 
-div.hs-lm-item-title:hover {
+div ul.hs-lm-baselayerlist  .hs-lm-item-title:hover, div.hs-lm-item-title.hover:hover  {
 	text-decoration: underline;
 }
 
@@ -652,7 +658,7 @@ a.sidebar-main {
 	display: none;
 }
 
-.sublayerContainer input[type="checkbox"] {
+.sublayerContainer input[type="checkbox"].form-check-input {
 	position: absolute;
 	left: -9999px;
 }
@@ -1061,6 +1067,10 @@ div.hs-info-composition-edited {
 	.panel-footer {
 		padding: 5px;
 	}
+	ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
+		font-size: small;
+	}
+
 	.hs-styler-colorbox {
 		width: 30px;
 		height: 30px;

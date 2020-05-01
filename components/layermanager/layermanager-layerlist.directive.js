@@ -12,7 +12,7 @@ export default [
     $compile,
     config,
     $rootScope,
-    LayMan,
+    LayerManager,
     hsMap,
     utils,
     $timeout,
@@ -23,29 +23,56 @@ export default [
       template: require('./partials/layerlist.html'),
       controller: [
         '$scope',
+        /**
+         * @function toggleSublayersVisibility
+         * @memberOf hs.layermanager.layerlist
+         * @description Controls state of layer´s sublayers checkboxes with layer visibility changes. 
+         * @param {object} layer Selected layer
+         * @param {boolean} state State to be assigned 
+         */
         function ($scope) {
+          $scope.changeSublayerVisibilityState = function (layer, state) {
+            if (layer.layer.checkedSubLayers) {
+              Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
+                layer.layer.checkedSubLayers[key] = state;
+              });
+            }
+            if (layer.layer.withChildren) {
+              Object.keys(layer.layer.withChildren).forEach((key) => {
+                layer.layer.withChildren[key] = state;
+              });
+            }
+          };
+          /**
+           * @function toggleSublayersVisibility
+           * @memberOf hs.layermanager.layerlist
+           * @description Controls state of layer´s sublayers checkboxes with layer visibility changes
+           * @param {object} layer Selected layer
+           */
           $scope.toggleSublayersVisibility = function (layer) {
-            if (LayMan.currentLayer == null) {
-              Object.keys(subLayerService.checkedSubLayers).forEach((key) => {
-                subLayerService.checkedSubLayers[key] = layer.visible;
-              });
-              Object.keys(subLayerService.withChildren).forEach((key) => {
-                subLayerService.withChildren[key] = layer.visible;
-              });
-            } else {
-              if (subLayerService.hasSubLayers()) {
-                Object.keys(subLayerService.checkedSubLayers).forEach((key) => {
-                  subLayerService.checkedSubLayers[key] =
-                    LayMan.currentLayer.visible;
-                });
-                if (Object.keys(subLayerService.withChildren).length === 0) {
-                  return;
-                } else {
-                  Object.keys(subLayerService.withChildren).forEach((key) => {
-                    subLayerService.withChildren[key] =
-                      LayMan.currentLayer.visible;
-                  });
+            if (!layer.visible) {
+              if (LayerManager.currentLayer === layer) {
+                if (subLayerService.hasSubLayers()) {
+                  $scope.changeSublayerVisibilityState(
+                    layer,
+                    LayerManager.currentLayer.visible
+                  );
                 }
+              } else {
+                $scope.changeSublayerVisibilityState(layer, layer.visible);
+              }
+            } else {
+              if (layer.layer.checkedSubLayers) {
+                Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
+                  layer.layer.checkedSubLayers[key] =
+                    layer.layer.checkedSubLayersTmp[key];
+                });
+              }
+              if (layer.layer.withChildren) {
+                Object.keys(layer.layer.withChildren).forEach((key) => {
+                  layer.layer.withChildren[key] =
+                    layer.layer.withChildrenTmp[key];
+                });
               }
             }
           };
@@ -224,8 +251,8 @@ export default [
             const item_layer = layers.item(item_index);
             hsMap.map.getLayers().removeAt(item_index);
             hsMap.map.getLayers().insertAt(to_index, item_layer);
-            LayMan.updateLayerOrder();
-            const layerDesc = LayMan.getLayerDescriptorForOlLayer(item_layer);
+            LayerManager.updateLayerOrder();
+            const layerDesc = LayerManager.getLayerDescriptorForOlLayer(item_layer);
             $timeout((_) => {
               layerNode = document.getElementById(layerDesc.idString());
               utils.insertAfter(layerPanel, layerNode);

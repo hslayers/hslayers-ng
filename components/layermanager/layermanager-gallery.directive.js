@@ -4,16 +4,16 @@ export default [
   'hs.layermanager.service',
   '$window',
   '$timeout',
-  function (config, layoutService, LayMan, $window, $timeout) {
+  function (config, layoutService, LayerManager, $window, $timeout) {
     return {
       template: require('./partials/basemap-gallery.html'),
 
       controller: [
         '$scope',
         function ($scope) {
-          $scope.LayMan = LayMan;
-          $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
-          $scope.data = LayMan.data;
+          $scope.LayerManager = LayerManager;
+          $scope.changeBaseLayerVisibility = LayerManager.changeBaseLayerVisibility;
+          $scope.data = LayerManager.data;
           $scope.toggleMiniMenu = function (layer) {
             if (layer.galleryMiniMenu) {
               layer.galleryMiniMenu = !layer.galleryMiniMenu;
@@ -44,7 +44,7 @@ export default [
 
           $scope.fitsInContainer = () => {
             return (
-              (LayMan.data.baselayers.length + 1) * 150 <
+              (LayerManager.data.baselayers.length + 1) * 150 <
               layoutService.layoutElement.clientWidth -
                 layoutService.panelSpaceWidth() -
                 450

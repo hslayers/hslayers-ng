@@ -296,6 +296,7 @@ export default [
                 parts[i],
               coded_path:
                 curfolder.coded_path + curfolder.sub_folders.length + '-',
+              visible: true
             };
             curfolder.sub_folders.push(new_folder);
             curfolder = new_folder;

@@ -53,7 +53,10 @@ export default [
       const subLayers = layer.get('Layer');
       if (angular.isDefined(subLayers) && subLayers.length > 0) {
         if (!layer.hasSublayers) {
-          $timeout(() => (layer.hasSublayers = true), 0);
+          $timeout(() => {
+            layer.hasSublayers = true;
+            //ADD config values
+          }, 0);
         }
       }
     };
@@ -76,30 +79,67 @@ export default [
           .then((capabilities_xml) => {
             const parser = new WMSCapabilities();
             const caps = parser.read(capabilities_xml);
-            const layer_name = layer.getSource().getParams().LAYERS;
+            let layer_name = layer.getSource().getParams().LAYERS;
+            const layerObject = []; //array of layer objects representing added layer
 
-            const layerObject = me.identifyLayerObject(
-              layer_name,
-              caps.Capability.Layer
-            );
-            const service = {
-              '0': caps.Service,
-            };
+            if (layer_name.includes(',')) {
+              const layers = [];
+              const legends = [];
 
-            if (layerObject) {
-              layer.setProperties(layerObject);
-              if (layer.get('Copyright')) {
-                layer.set('Attribution', {
-                  'OnlineResource': layer.get('Copyright'),
-                });
+              layer_name = layer_name.split(',');
+              //loop over layers from layer.LAYERS
+              for (let i = 0; i < layer_name.length; i++) {
+                layerObject[i] = me.identifyLayerObject(
+                  layer_name[i],
+                  caps.Capability.Layer
+                );
+                if (layerObject[i].Style) {
+                  legends.push(
+                    layerObject[i].Style[0].LegendURL[0].OnlineResource
+                  );
+                }
+                if (angular.isDefined(layerObject[i].Layer)) {
+                  //loop over sublayers of layer from layer.LAYERS
+                  for (let j = 0; j < layerObject[i].Layer.length; j++) {
+                    layers.push(layerObject[i].Layer[j]); //merge sublayers
+                  }
+                }
               }
-              if (layer.get('Metadata')) {
-                layer.set('MetadataURL', metadata);
-                return layer;
+              layer.setProperties(layerObject[0]);
+              layer.set('Layer', layers);
+              layer.set('Legends', legends);
+              layer.set('MetadataURL', {
+                //use service metadata for layers with multiple layer.LAYERS inputs
+                '0': caps.Service,
+              });
+            } else {
+              layerObject[0] = me.identifyLayerObject(
+                layer_name,
+                caps.Capability.Layer
+              );
+              layer.setProperties(layerObject[0]);
+              if (layerObject[0].Style) {
+                layer.set(
+                  'Legends',
+                  layerObject[0].Style[0].LegendURL[0].OnlineResource
+                );
               }
-              if (angular.isUndefined(layerObject.MetadataURL)) {
-                layer.set('MetadataURL', service);
-              }
+            }
+
+            //prioritize config values
+            if (layer.get('Copyright')) {
+              layer.set('Attribution', {
+                'OnlineResource': layer.get('Copyright'),
+              });
+            }
+            if (layer.get('Metadata')) {
+              layer.set('MetadataURL', metadata);
+              return layer;
+            }
+            if (angular.isUndefined(layerObject[0].MetadataURL)) {
+              layer.set('MetadataURL', {
+                '0': caps.Service,
+              });
             }
 
             return true;

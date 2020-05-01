@@ -35,7 +35,6 @@ export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
                 }
 
                 if (angular.isUndefined(config.importCss) || config.importCss) {
-                    import('ol/ol.css');
                     if (config.design == 'md') {
                         import('angular-material/angular-material.css');
                         import('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
@@ -48,6 +47,7 @@ export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
                             }
                         }, 500);
                     }
+                    import('ol/ol.css');
                     import('css/app.css');
                     if (!!window.cordova) {
                         import('css/mobile.css')
