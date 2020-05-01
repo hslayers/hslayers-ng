@@ -181,7 +181,7 @@ li.hs-dr-item {
 	vertical-align: top;
 }
 
-div.hs-lm-item-title {
+div ul.hs-lm-baselayerlist  .hs-lm-item-title, div.hs-lm-item-title.hover {
 	cursor: pointer;
 }
 
@@ -189,7 +189,7 @@ div.hs-lm-item-title {
 	margin-top: -0.42em;
 }
 
-div.hs-lm-item-title:hover {
+div ul.hs-lm-baselayerlist  .hs-lm-item-title:hover, div.hs-lm-item-title.hover:hover  {
 	text-decoration: underline;
 }
 
