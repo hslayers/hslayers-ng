@@ -49,6 +49,11 @@ export default [
 
         LayerManager.currentLayer.layer.checkedSubLayersTmp = me.checkedSubLayersTmp = Object.assign({}, me.checkedSubLayers);
         LayerManager.currentLayer.layer.withChildrenTmp = me.withChildrenTmp = Object.assign({}, me.withChildren);
+        
+        if(!LayerManager.currentLayer.visible){
+          Object.keys(me.checkedSubLayersTmp).forEach(v => me.checkedSubLayersTmp[v] = true);
+          Object.keys(me.withChildrenTmp).forEach(v => me.withChildrenTmp[v] = true)
+        }
       }
     };
 
