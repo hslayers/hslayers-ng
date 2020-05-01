@@ -32,7 +32,7 @@ export default {
       layerUtils,
       config,
       OlMap,
-      LayMan,
+      LayerManager,
       $rootScope,
       WMST,
       legendService,
@@ -40,16 +40,16 @@ export default {
       subLayerService,
       layerSynchronizerService
     ) {
-      $scope.LayMan = LayMan;
-      $scope.data = LayMan.data;
+      $scope.LayerManager = LayerManager;
+      $scope.data = LayerManager.data;
       $scope.Core = Core;
       $scope.utils = utils;
       $scope.layoutService = layoutService;
       let map;
       $scope.shiftDown = false;
-      $scope.changeLayerVisibility = LayMan.changeLayerVisibility;
-      $scope.changeBaseLayerVisibility = LayMan.changeBaseLayerVisibility;
-      $scope.changeTerrainLayerVisibility = LayMan.changeTerrainLayerVisibility;
+      $scope.changeLayerVisibility = LayerManager.changeLayerVisibility;
+      $scope.changeBaseLayerVisibility = LayerManager.changeBaseLayerVisibility;
+      $scope.changeTerrainLayerVisibility = LayerManager.changeTerrainLayerVisibility;
 
       $scope.layerOrder = function (layer) {
         return layer.layer.get('position');
@@ -89,14 +89,14 @@ export default {
         const moveLayer = layers.item(index);
         layers.removeAt(index);
         layers.insertAt(toIndex, moveLayer);
-        LayMan.updateLayerOrder();
+        LayerManager.updateLayerOrder();
         $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
       };
 
       $scope.isLayerType = function (layer, type) {
         switch (type) {
           case 'wms':
-            return LayMan.isWms(layer);
+            return LayerManager.isWms(layer);
           case 'point':
             return layer.getSource().hasPoint;
           case 'line':
@@ -170,7 +170,7 @@ export default {
         'wifi8.svg',
       ];
 
-      $scope.activateTheme = LayMan.activateTheme;
+      $scope.activateTheme = LayerManager.activateTheme;
 
       /**
        * @function toggleCurrentLayer
@@ -181,7 +181,7 @@ export default {
        */
 
       $scope.setCurrentLayer = function (layer) {
-        LayMan.currentLayer = layer;
+        LayerManager.currentLayer = layer;
         if (!layer.layer.checkedSubLayers) {
           layer.layer.checkedSubLayers = {};
           layer.layer.withChildren = {};
@@ -190,10 +190,10 @@ export default {
         subLayerService.withChildren = layer.layer.withChildren;
 
         if (WMST.layerIsWmsT(layer)) {
-          LayMan.currentLayer.time = new Date(
+          LayerManager.currentLayer.time = new Date(
             layer.layer.getSource().getParams().TIME
           );
-          LayMan.currentLayer.date_increment = LayMan.currentLayer.time.getTime();
+          LayerManager.currentLayer.date_increment = LayerManager.currentLayer.time.getTime();
         }
         const layerPanel = layoutService.contentWrapper.querySelector(
           '.hs-layerpanel'
@@ -204,10 +204,10 @@ export default {
       };
 
       $scope.toggleCurrentLayer = function (layer) {
-        if (LayMan.currentLayer == layer) {
+        if (LayerManager.currentLayer == layer) {
           layer.sublayers = false;
           layer.settings = false;
-          LayMan.currentLayer = null;
+          LayerManager.currentLayer = null;
 
           subLayerService.checkedSubLayers = {};
           subLayerService.withChildren = {};
@@ -253,7 +253,7 @@ export default {
           return;
         }
 
-        LayMan.removeAllLayers();
+        LayerManager.removeAllLayers();
 
         if (loadComp == true) {
           $rootScope.$broadcast(
@@ -277,14 +277,14 @@ export default {
        * @function toggleLayerEditor
        * @memberOf hs.layermanager.controller
        * @description Toggles Additional information panel for current layer.
-       * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+       * @param {Ol.layer} layer Selected layer (LayerManager.currentLayer)
        * * @param {Ol.layer} toToggle Part of layer editor to be toggled
        * * @param {Ol.layer} control Part of layer editor to be controled for state. 
        * Determines whether only toggled part or whole layereditor would be closed
        */
       $scope.toggleLayerEditor = function (layer, toToggle, control) {
         if (toToggle == 'sublayers' && layer.layer.hasSublayers != true ) {return};
-        if (LayMan.currentLayer != layer) {
+        if (LayerManager.currentLayer != layer) {
           $scope.toggleCurrentLayer(layer);
           layer[toToggle] = true;
         } else {
@@ -295,7 +295,7 @@ export default {
         }
       };
       $scope.hasMetadata = function (layer) {
-        if (!LayMan.currentLayer) {
+        if (!LayerManager.currentLayer) {
           return;
         } else {
           return layer.layer.get('MetadataURL') ? true : false;
@@ -305,10 +305,10 @@ export default {
        * @function hasCopyright
        * @memberOf hs.layermanager.controller
        * @description Determines if layer has copyright information avaliable *
-       * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+       * @param {Ol.layer} layer Selected layer (LayerManager.currentLayer)
        */
       $scope.hasCopyright = function (layer) {
-        if (!LayMan.currentLayer) {
+        if (!LayerManager.currentLayer) {
           return;
         } else {
           if (layer.layer.get('Attribution')) {
@@ -342,7 +342,7 @@ export default {
        * @param {Ol.layer} lyr Selected layer
        * @description Test if layer (WMS) resolution is within map resolution interval
        */
-      $scope.isLayerInResolutionInterval = LayMan.isLayerInResolutionInterval;
+      $scope.isLayerInResolutionInterval = LayerManager.isLayerInResolutionInterval;
 
       /**
        * @function layerLoaded
@@ -364,8 +364,8 @@ export default {
 
       $scope.$on('layer.removed', (event, layer) => {
         if (
-          angular.isObject(LayMan.currentLayer) &&
-          LayMan.currentLayer.layer == layer
+          angular.isObject(LayerManager.currentLayer) &&
+          LayerManager.currentLayer.layer == layer
         ) {
           const layerPanel = layoutService.contentWrapper.querySelector(
             '.hs-layerpanel'
@@ -374,7 +374,7 @@ export default {
             'hs-lm-mapcontentlist'
           )[0];
           utils.insertAfter(layerPanel, layerNode);
-          LayMan.currentLayer = null;
+          LayerManager.currentLayer = null;
         }
       });
 
