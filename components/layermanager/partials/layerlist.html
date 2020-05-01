@@ -18,7 +18,7 @@
                 <div class="p-0 mr-1 ml-1 info_btn" ng-if="layer.layer.hasSublayers" style="font-size: x-small; flex-grow: 20;" ng-click="toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" ng-hide="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
-                        ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayMan.currentLayer == layer]"
+                        ng-class="{true:'icon-chevron-right', false:'icon-chevron-down'}[LayerManager.currentLayer == layer]"
                         ng-hide="!layerLoaded(layer.layer)"></span> 
                 </div>
 
