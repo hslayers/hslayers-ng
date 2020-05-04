@@ -65,7 +65,7 @@ export default [
         ];
       },
 
-      addDrawLayer($scope) {
+      initiateAddDrawLayer($scope){
         let tmpTitle = gettext('Draw layer');
         let i = 1;
         while (hsMap.findLayerByTitle(tmpTitle)) {
@@ -81,7 +81,6 @@ export default [
           synchronize: true,
           path: config.defaultDrawLayerPath || gettext('User generated'),
         });
-        hsMap.map.addLayer(drawLayer);
         me.selectedLayer = drawLayer;
         const el = angular.element(
           '<hs.draw-layer-metadata layer="service.selectedLayer"></draw-layer-metadata>'
@@ -90,6 +89,10 @@ export default [
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
         $compile(el)($scope);
+      },
+
+      addDrawLayer(layer) {
+        hsMap.map.addLayer(layer);
       },
 
       drawableLayers() {
