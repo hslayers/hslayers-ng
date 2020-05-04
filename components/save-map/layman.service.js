@@ -322,7 +322,7 @@ export default [
        * exists in Layman
        * @description Try getting layer description from layman. If it
        * succeeds, that means that layer is there and can be updated
-       * instead of postign a new one
+       * instead of posting a new one
        */
       checkIfLayerExists(endpoint, layerName, layerDesc) {
         return new Promise((resolve, reject) => {
