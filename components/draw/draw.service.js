@@ -31,7 +31,7 @@ export default [
     $log,
     $document,
     layoutService,
-    $compile,
+    $compile
   ) {
     const me = this;
     angular.extend(me, {
@@ -65,7 +65,7 @@ export default [
         ];
       },
 
-      initiateAddDrawLayer($scope){
+      initiateAddDrawLayer($scope) {
         let tmpTitle = gettext('Draw layer');
         let i = 1;
         while (hsMap.findLayerByTitle(tmpTitle)) {
@@ -179,9 +179,6 @@ export default [
           me.draw.on(
             'drawend',
             (e) => {
-              me.draw.setActive(false);
-              me.drawActive = false;
-              queryBaseService.activateQueries();
               if (changeStyle) {
                 e.feature.setStyle(changeStyle());
               }
@@ -193,6 +190,17 @@ export default [
             this
           );
         });
+      },
+
+      /**
+       * Re-enables getFeatureInfo info and cleans up after drawing
+       */
+      afterDrawEnd() {
+        if (me.draw) {
+          me.draw.setActive(false);
+        }
+        me.drawActive = false;
+        queryBaseService.activateQueries();
       },
 
       removeLastPoint() {
@@ -208,6 +216,7 @@ export default [
       deactivateDrawing() {
         return new Promise((resolve, reject) => {
           hsMap.loaded().then((map) => {
+            me.afterDrawEnd();
             if (me.draw) {
               map.removeInteraction(me.draw);
               me.draw = null;

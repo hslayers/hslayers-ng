@@ -50,6 +50,11 @@ export default [
         }),
       }),
       setType(what) {
+        if (drawService.type == what) {
+          drawService.type = null;
+          drawService.deactivateDrawing();
+          return;
+        }
         drawService.type = what;
         drawService.source = angular.isDefined(
           drawService.selectedLayer.getSource().getSource
