@@ -14,4 +14,3 @@ po/*.mo
 dist
 dependencygraph.svg
 .tern-project
-.vscode/
