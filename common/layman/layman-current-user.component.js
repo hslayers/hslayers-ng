@@ -22,7 +22,7 @@ export default {
       const vm = this;
       let monitorTries = 0;
       const DEFAULT_TIMER_INTERVAL = 2000;
-      const MAX_MONITOR_TRIES = 20;
+      const MAX_MONITOR_TRIES = 100;
       let timerInterval = DEFAULT_TIMER_INTERVAL;
       angular.extend(vm, {
         isAuthorized() {
@@ -63,7 +63,6 @@ export default {
             if (monitorTries > MAX_MONITOR_TRIES) {
               clearTimeout(vm.getCurrentUserTimer);
             }
-            timerInterval += 500;
             vm.getCurrentUserTimer = setTimeout(poll, timerInterval);
           }
           vm.getCurrentUserTimer = setTimeout(poll, timerInterval);
