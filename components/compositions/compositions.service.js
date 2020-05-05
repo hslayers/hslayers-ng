@@ -194,9 +194,13 @@ export default [
         if (response.data.success == true) {
           const data = {};
           data.data = {};
-          data.data.layers = response.data.data;
+          if (angular.isDefined(response.data.data.layers)) {
+            data.data.layers = response.data.data.layers;
+          } else {
+            //Some old structure, where layers are stored in data
+            data.data.layers = response.data.data;
+          }
           compositionParser.removeCompositionLayers();
-          response.layers = response.data.data;
           const layers = compositionParser.jsonToLayers(data);
           for (let i = 0; i < layers.length; i++) {
             OlMap.addLayer(layers[i]);

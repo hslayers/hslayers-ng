@@ -34,7 +34,7 @@ export default [
     angular.extend(me, {
       shareId: null,
       current_url: '',
-      permalinkLayers: '',
+      permalinkRequestUrl: '',
       //TODO remove keeping track of added layers, because perlalink should also be generated on other cases like remove layer, visibility change etc.
       added_layers: [],
       params: {},
@@ -100,8 +100,6 @@ export default [
        * Create permalink Url to map
        */
       getPermalinkUrl: function () {
-        let stringLayers = angular.toJson(me.permalinkLayers);
-        stringLayers = stringLayers.substring(1, stringLayers.length - 1);
         if (Core.isMobile() && config.permalinkLocation) {
           return (
             config.permalinkLocation.origin +
@@ -110,7 +108,7 @@ export default [
               config.permalinkLocation.pathname
             ) +
             '&permalink=' +
-            encodeURIComponent(stringLayers)
+            encodeURIComponent(me.permalinkRequestUrl)
           ).replace(
             $window.location.pathname,
             config.permalinkLocation.pathname
@@ -120,7 +118,7 @@ export default [
             $window.location.origin +
             me.current_url +
             '&permalink=' +
-            encodeURIComponent(stringLayers)
+            encodeURIComponent(me.permalinkRequestUrl)
           );
         }
       },

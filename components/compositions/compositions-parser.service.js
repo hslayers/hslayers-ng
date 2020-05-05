@@ -247,7 +247,7 @@ export default [
        * @ngdoc method
        * @name hs.compositions.service_parser#jsonToLayers
        * @public
-       * @param {Object} composition Composition object with Layers
+       * @param {Object} j Composition object with Layers
        * @returns {Array} Array of created layers
        * @description Parse composition object to extract individual layers and add them to map
        */

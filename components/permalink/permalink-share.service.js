@@ -14,6 +14,7 @@ export default [
   '$log',
   '$timeout',
   '$document',
+  'hs.save-map.service',
   function (
     $rootScope,
     $http,
@@ -28,7 +29,8 @@ export default [
     layoutService,
     $log,
     $timeout,
-    $document
+    $document,
+    saveMap
   ) {
     const me = {};
     angular.extend(me, {
@@ -225,14 +227,14 @@ export default [
             url: status_url,
             method: 'POST',
             data: angular.toJson({
-              data: serviceURL.added_layers,
+              data: saveMap.map2json(OlMap.map, {}, {}, {}),
               permalink: true,
               id: serviceURL.id,
               project: config.project_name,
               request: 'save',
             }),
           });
-          serviceURL.permalinkLayers =
+          serviceURL.permalinkRequestUrl =
             status_url + '?request=load&id=' + serviceURL.id;
           $rootScope.$broadcast('browserurl.updated');
         } catch (ex) {
