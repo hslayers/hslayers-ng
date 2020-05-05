@@ -28,6 +28,7 @@ import {
 import {TileWMS, XYZ} from 'ol/source';
 import {
   always as alwaysCondition,
+  never as neverCondition,
   platformModifierKeyOnly as platformModifierKeyOnlyCondition,
 } from 'ol/events/condition';
 import {createStringXY} from 'ol/coordinate';
@@ -272,6 +273,10 @@ export default [
 
     const element = document.createElement('div');
     element.className = 'hs-defaultView ol-unselectable ol-control';
+    element.setAttribute(
+      'ng-if',
+      "layoutService.componentEnabled('defaultViewButton')"
+    );
     element.title = gettext('Zoom to initial window');
 
     button.appendChild(icon);
@@ -322,9 +327,17 @@ export default [
         duration: this.duration,
       }),
       'MouseWheelZoom': new MouseWheelZoom({
-        condition: angular.isDefined(config.zoomWithModifierKeyOnly)
-          ? platformModifierKeyOnlyCondition
-          : alwaysCondition,
+        condition: (e) => {
+          if (
+            config.componentsEnabled &&
+            config.componentsEnabled.mapControls == false
+          ) {
+            return neverCondition(e);
+          }
+          return angular.isDefined(config.zoomWithModifierKeyOnly)
+            ? platformModifierKeyOnlyCondition(e)
+            : alwaysCondition(e);
+        },
         duration: this.duration,
       }),
       'PinchRotate': new PinchRotate(),

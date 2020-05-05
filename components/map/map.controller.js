@@ -7,8 +7,22 @@ export default [
   'hs.permalink.urlService',
   'Core',
   '$rootScope',
-  function ($scope, OlMap, config, permalink, Core, $rootScope) {
+  '$compile',
+  '$timeout',
+  'hs.layout.service',
+  function (
+    $scope,
+    OlMap,
+    config,
+    permalink,
+    Core,
+    $rootScope,
+    $compile,
+    $timeout,
+    layoutService
+  ) {
     angular.extend($scope, {
+      layoutService,
       /**
        * @ngdoc method
        * @name hs.map.controller#setTargetDiv
@@ -67,8 +81,16 @@ export default [
           config.mapInteractionsEnabled = false;
           Core.createComponentsEnabledConfigIfNeeded();
           config.componentsEnabled.mapControls = false;
-          OlMap.puremap();
+          config.componentsEnabled.geolocationButton = false;
+          config.componentsEnabled.defaultViewButton = false;
+          if (OlMap.puremap) {
+            OlMap.puremap();
+          }
         }
+        const defaultViewElement = layoutService.contentWrapper.querySelector(
+          '.hs-defaultView'
+        );
+        $compile(defaultViewElement, $scope);
       },
     });
 
