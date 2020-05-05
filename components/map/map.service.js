@@ -327,16 +327,16 @@ export default [
         duration: this.duration,
       }),
       'MouseWheelZoom': new MouseWheelZoom({
-        condition: (e) => {
+        condition: (browserEvent) => {
           if (
             config.componentsEnabled &&
             config.componentsEnabled.mapControls == false
           ) {
-            return neverCondition(e);
+            return neverCondition;
           }
           return angular.isDefined(config.zoomWithModifierKeyOnly)
-            ? platformModifierKeyOnlyCondition(e)
-            : alwaysCondition(e);
+            ? platformModifierKeyOnlyCondition(browserEvent)
+            : alwaysCondition;
         },
         duration: this.duration,
       }),
