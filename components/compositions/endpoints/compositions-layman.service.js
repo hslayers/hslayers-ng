@@ -1,22 +1,10 @@
 export default [
   '$rootScope',
-  'hs.compositions.service_parser',
-  'config',
   '$q',
   '$http',
-  'hs.map.service',
   'hs.utils.service',
-  'hs.common.laymanService',
-  function (
-    $rootScope,
-    compositionParser,
-    config,
-    $q,
-    $http,
-    hsMap,
-    utils,
-    commonLaymanService
-  ) {
+  'hs.compositions.service_parser',
+  function ($rootScope, $q, $http, utils, compositionParser) {
     const me = this;
     angular.extend(me, {
       data: {},
@@ -26,36 +14,62 @@ export default [
         if (angular.isUndefined(params.sortBy)) {
           params.sortBy = 'bbox';
         }
-        return new Promise((resolve, reject) => {
-          if (angular.isDefined(me.canceler)) {
-            me.canceler.resolve();
-            delete me.canceler;
-          }
-          me.canceler = $q.defer();
-          $http
-            .get(`${endpoint.url}/rest/${endpoint.user}/maps`, {
-              timeout: me.canceler.promise,
-            })
-            .then(
-              (response) => {
-                endpoint.compositionsPaging.loaded = true;
-                response = response.data;
-                endpoint.compositions = response;
-                if (response && response.length > 0) {
-                  endpoint.compositionsPaging.compositionsCount =
-                    response.length;
-                } else {
-                  endpoint.compositionsPaging.compositionsCount = 0;
-                }
-                angular.forEach(endpoint.compositions, (record) => {
-                  record.editable = true;
-                  record.endpoint = endpoint;
-                });
-                $rootScope.$broadcast('CompositionsLoaded');
-                resolve();
-              },
-              (err) => {}
+        return new Promise(async (resolve, reject) => {
+          try {
+            if (angular.isDefined(me.canceler)) {
+              me.canceler.resolve();
+              delete me.canceler;
+            }
+            me.canceler = $q.defer();
+            let response = await $http.get(
+              `${endpoint.url}/rest/${endpoint.user}/maps`,
+              {
+                timeout: me.canceler.promise,
+              }
             );
+
+            endpoint.compositionsPaging.loaded = true;
+            response = response.data;
+            endpoint.compositions = response;
+            if (response && response.length > 0) {
+              endpoint.compositionsPaging.compositionsCount = response.length;
+            } else {
+              endpoint.compositionsPaging.compositionsCount = 0;
+            }
+            angular.forEach(endpoint.compositions, (record) => {
+              record.editable = true;
+              record.endpoint = endpoint;
+            });
+            $rootScope.$broadcast('CompositionsLoaded');
+            resolve();
+          } catch (ex) {
+            reject(ex);
+          }
+        });
+      },
+
+      async delete(endpoint, composition) {
+        let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+        const method = 'DELETE';
+        url = utils.proxify(url);
+        await $http({url, method});
+        $rootScope.$broadcast('compositions.composition_deleted', composition);
+      },
+
+      getInfo(composition) {
+        return new Promise((resolve, reject) => {
+          const endpoint = composition.endpoint;
+          const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+          compositionParser.loadInfo(url, (info) => {
+            if (
+              angular.isDefined(info.thumbnail.status) &&
+              info.thumbnail.status == 'NOT_AVAILABLE'
+            ) {
+              delete info.thumbnail;
+            }
+            info.abstract = info.description;
+            resolve(info);
+          });
         });
       },
 

@@ -15,7 +15,7 @@ export default [
   'hs.utils.service',
   'hs.statusManagerService',
   'hs.compositions.mickaService',
-  'hs.compositions.statusManagerService',
+  'hs.compositions.statusManagerMickaJointService',
   'hs.compositions.laymanService',
   '$log',
   '$window',
@@ -34,7 +34,7 @@ export default [
     utils,
     statusManagerService,
     mickaEndpointService,
-    statusManagerEndpointService,
+    statusManagerMickaJointService,
     laymanEndpointService,
     $log,
     $window,
@@ -53,23 +53,11 @@ export default [
         return new Promise((resolve, reject) => {
           mapService.clearExtentLayer();
           const bbox = OlMap.getMapExtentInEpsg4326();
-          switch (ds.type) {
-            case 'micka':
-              mickaEndpointService
-                .loadList(ds, params, bbox, mapService.extentLayer)
-                .then(() => {
-                  statusManagerEndpointService.loadList(ds, params, bbox);
-                  resolve();
-                });
-              break;
-            case 'layman':
-              laymanEndpointService
-                .loadList(ds, params, bbox, mapService.extentLayer)
-                .then((_) => resolve());
-              break;
-            default:
-              $log.warn(`Endpoint type '${ds.type} not supported`);
-          }
+          me.managerByType(ds)
+            .loadList(ds, params, bbox, mapService.extentLayer)
+            .then((_) => {
+              resolve();
+            });
         });
       },
 
@@ -81,37 +69,20 @@ export default [
         });
       },
 
-      deleteComposition(composition) {
-        const endpoint = composition.endpoint;
-        let url;
-        let method;
+      managerByType(endpoint) {
         switch (endpoint.type) {
           case 'micka':
-            url =
-              statusManagerService.endpointUrl() +
-              '?request=delete&id=' +
-              composition.id +
-              '&project=' +
-              encodeURIComponent(config.project_name);
-            method = 'GET';
-            break;
+            return statusManagerMickaJointService;
           case 'layman':
-            url = endpoint.url + composition.url;
-            method = 'DELETE';
-            break;
+            return laymanEndpointService;
           default:
             $log.warn(`Endpoint type '${endpoint.type} not supported`);
         }
-        url = utils.proxify(url);
-        $http({url, method}).then(
-          (response) => {
-            $rootScope.$broadcast(
-              'compositions.composition_deleted',
-              composition
-            );
-          },
-          (err) => {}
-        );
+      },
+
+      deleteComposition(composition) {
+        const endpoint = composition.endpoint;
+        me.managerByType(endpoint).delete(endpoint, composition);
       },
 
       shareComposition(record) {
@@ -167,37 +138,12 @@ export default [
       },
 
       getCompositionInfo(composition, cb) {
-        let url;
-        switch (composition.endpoint.type) {
-          case 'micka':
-            url = composition.link;
-            break;
-          case 'layman':
-            url = composition.endpoint.url + composition.url;
-            break;
-          default:
-            $log.warn(
-              `Endpoint type '${composition.endpoint.type} not supported`
-            );
-        }
-        compositionParser.loadInfo(url, (info) => {
-          me.data.info = info;
-          switch (composition.endpoint.type) {
-            case 'micka':
-              me.data.info.thumbnail = composition.thumbnail;
-              break;
-            case 'layman':
-              me.data.info.thumbnail =
-                composition.endpoint.url + info.thumbnail.url;
-              me.data.info.abstract = info.description;
-              break;
-            default:
-              $log.warn(
-                `Endpoint type '${composition.endpoint.type} not supported`
-              );
-          }
-          cb(me.data.info);
-        });
+        me.managerByType(composition.endpoint)
+          .getInfo(composition)
+          .then((info) => {
+            me.data.info = info;
+            cb(info);
+          });
       },
 
       loadCompositionParser(record) {
