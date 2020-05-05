@@ -26,6 +26,7 @@ export default {
     'hs.common.endpointsService',
     'hs.utils.service',
     'hs.compositions.mapService',
+    'forCompositionsFilter',
     function (
       $scope,
       Core,
@@ -40,7 +41,8 @@ export default {
       layoutService,
       endpointsService,
       utils,
-      mapService
+      mapService,
+      forCompositionsFilter
     ) {
       $scope.CS = Composition;
       $scope.data = Composition.data;
@@ -192,7 +194,7 @@ export default {
        */
       $scope.filterChanged = function () {
         Composition.resetCompositionCounter();
-        endpointsService.endpoints.forEach((ds) => {
+        forCompositionsFilter(endpointsService.endpoints).forEach((ds) => {
           ds.start = 0;
           ds.next = ds.limit;
           $scope.loadCompositions(ds);
@@ -389,9 +391,10 @@ export default {
       );
 
       function loadCompositionsForAllEndpoints() {
-        endpointsService.endpoints.forEach((ds) => {
-          $scope.loadCompositions(ds);
-        });
+        forCompositionsFilter(endpointsService.endpoints)
+          .forEach((ds) => {
+            $scope.loadCompositions(ds);
+          });
       }
 
       /**
