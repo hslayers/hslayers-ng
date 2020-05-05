@@ -256,6 +256,7 @@ export default [
           me.data.permalinkUrl = await utils.shortUrl(
             serviceURL.getPermalinkUrl()
           );
+          $timeout(() => {}, 0);
           me.getEmbedCode();
         } catch (ex) {
           $log.log('Error creating short Url');
