@@ -95,7 +95,7 @@ export default [
               location.host +
               location.pathname) +
           '?composition=' +
-          encodeURIComponent(record.link);
+          encodeURIComponent(me.getRecordLink(record));
         const shareId = utils.generateUuid();
         $http({
           method: 'POST',
@@ -146,18 +146,22 @@ export default [
           });
       },
 
+      getRecordLink(record) {
+        let url;
+        if (angular.isDefined(record.link)) {
+          url = record.link;
+        } else if (angular.isDefined(record.links)) {
+          url = record.links.filter((l) => l.url.indexOf('/file') > -1)[0].url;
+        }
+        return url;
+      },
+
       loadCompositionParser(record) {
         return new Promise((resolve, reject) => {
           let url;
           switch (record.endpoint.type) {
             case 'micka':
-              if (angular.isDefined(record.link)) {
-                url = record.link;
-              } else if (angular.isDefined(record.links)) {
-                url = record.links.filter((link) =>
-                  link.url.contains('/file')
-                )[0].url;
-              }
+              url = me.getRecordLink(record);
               break;
             case 'layman':
               url =
@@ -240,7 +244,7 @@ export default [
     tryParseCompositionFromCookie();
     tryParseCompositionFromUrlParam();
     if (permalink.getParamValue('permalink')) {
-      permalink.parsePermalinkLayers();
+      me.parsePermalinkLayers();
     }
 
     $rootScope.$on('core.map_reset', (event, data) => {
@@ -263,7 +267,7 @@ export default [
         selector
       );
       if (record) {
-        me.loadComposition(record.link);
+        me.loadComposition(me.getRecordLink(record));
       }
     });
 
