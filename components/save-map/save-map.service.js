@@ -93,8 +93,12 @@ export default [
         //json.sphericalMercator = map.sphericalMercator;
 
         // Layers properties
-        const layers = map.getLayers().getArray();
-
+        let layers = map.getLayers().getArray();
+        layers = layers.filter(
+          (l) =>
+            angular.isUndefined(l.get('show_in_manager')) ||
+            l.get('show_in_manager')
+        );
         json.layers = me.layers2json(layers, compoData.layers);
         json.current_base_layer = me.getCurrentBaseLayer(map);
         return json;
