@@ -383,7 +383,7 @@ export default [
               me.compoData
             );
           },
-          300,
+          1000,
           false,
           me
         )
