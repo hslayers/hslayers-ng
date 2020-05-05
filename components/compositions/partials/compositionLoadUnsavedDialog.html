@@ -2,7 +2,7 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2><translate>Open composition {{compositionToLoad.title}}</translate></h2>
+        <h2><translate>Open composition {{CS.compositionToLoad.title}}</translate></h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="closeDialog()">
           <md-icon>close</md-icon>
@@ -11,7 +11,7 @@
     </md-toolbar>
     <md-dialog-content layout-padding layout="column" style="max-width:800px;max-height:810px; ">
       <p class="md-body-2" translate>
-          You are opening map <b>{{compositionToLoad.title}}</b>. There are currently unsaved changes in compositions.
+          You are opening map <b>{{CS.compositionToLoad.title}}</b>. There are currently unsaved changes in compositions.
       </p>
       <p ng-show="!Core.isAuthorized()" class="md-body-2" translate>
               You are not loaded as user. You can't save composition now. Log in for saving.

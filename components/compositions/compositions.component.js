@@ -483,7 +483,7 @@ export default {
        * @description Load new composition without saving old composition
        */
       $scope.overwrite = function () {
-        Composition.loadComposition($scope.compositionToLoad.url, true);
+        Composition.loadComposition(Composition.compositionToLoad.url, true);
         $scope.overwriteModalVisible = false;
       };
 
@@ -494,7 +494,7 @@ export default {
        * @description Load new composition (with service_parser Load function) and merge it with old composition
        */
       $scope.add = function () {
-        Composition.loadComposition($scope.compositionToLoad.url, false);
+        Composition.loadComposition(Composition.compositionToLoad.url, false);
         $scope.overwriteModalVisible = false;
       };
 
@@ -548,7 +548,7 @@ export default {
       });
 
       $scope.$on('loadComposition.notSaved', (event, url, title) => {
-        $scope.compositionToLoad = {url, title};
+        Composition.compositionToLoad = {url, title};
         if (config.design === 'md') {
           $scope.loadUnsavedDialogMD();
         } else {

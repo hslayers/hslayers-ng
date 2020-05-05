@@ -151,7 +151,13 @@ export default [
           let url;
           switch (record.endpoint.type) {
             case 'micka':
-              url = record.link;
+              if (angular.isDefined(record.link)) {
+                url = record.link;
+              } else if (angular.isDefined(record.links)) {
+                url = record.links.filter((link) =>
+                  link.url.contains('/file')
+                )[0].url;
+              }
               break;
             case 'layman':
               url =
