@@ -220,27 +220,23 @@ export default [
       if (layoutService.mainpanel == 'permalink') {
         serviceURL.update();
         const status_url = statusManagerService.endpointUrl();
-        if (serviceURL.added_layers.length > 0) {
-          try {
-            await $http({
-              url: status_url,
-              method: 'POST',
-              data: angular.toJson({
-                data: serviceURL.added_layers,
-                permalink: true,
-                id: serviceURL.id,
-                project: config.project_name,
-                request: 'save',
-              }),
-            });
-            serviceURL.permalinkLayers =
-              status_url + '?request=load&id=' + serviceURL.id;
-            $rootScope.$broadcast('browserurl.updated');
-          } catch (ex) {
-            $log.log('Error saving permalink layers.');
-          }
-        } else {
+        try {
+          await $http({
+            url: status_url,
+            method: 'POST',
+            data: angular.toJson({
+              data: serviceURL.added_layers,
+              permalink: true,
+              id: serviceURL.id,
+              project: config.project_name,
+              request: 'save',
+            }),
+          });
+          serviceURL.permalinkLayers =
+            status_url + '?request=load&id=' + serviceURL.id;
           $rootScope.$broadcast('browserurl.updated');
+        } catch (ex) {
+          $log.log('Error saving permalink layers.');
         }
       }
     });

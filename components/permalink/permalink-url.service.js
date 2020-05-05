@@ -35,6 +35,7 @@ export default [
       shareId: null,
       current_url: '',
       permalinkLayers: '',
+      //TODO remove keeping track of added layers, because perlalink should also be generated on other cases like remove layer, visibility change etc.
       added_layers: [],
       params: {},
       customParams: {},
