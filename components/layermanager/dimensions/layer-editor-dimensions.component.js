@@ -8,7 +8,8 @@ export default {
     '$scope',
     'hs.dimensionService',
     'hs.utils.service',
-    function ($scope, dimensionService, utils) {
+    'hs.map.service',
+    function ($scope, dimensionService, utils, hsMap) {
       const vm = this;
       angular.extend(vm, {
         dimensionType: dimensionService.dimensionType,
@@ -31,17 +32,29 @@ export default {
         },
 
         dimensionChanged(dimension) {
-          const src = vm.olLayer.getSource();
-          if (utils.instOf(src, TileWMS) || utils.instOf(src, ImageWMS)) {
-            const params = src.getParams();
-            params[dimension.name] = dimension.value;
-            src.updateParams(params);
-          } else if (utils.instOf(src, XYZ)) {
-            src.refresh();
-          }
-          $scope.$emit('layermanager.dimension_changed', {
-            layer: vm.olLayer,
-            dimension,
+          //Dimension can be linked to multiple layers
+          hsMap.map.getLayers().forEach((layer) => {
+            const iteratedDimensions = layer.get('dimensions');
+            if (
+              iteratedDimensions &&
+              Object.keys(iteratedDimensions).filter(
+                (dimensionIterator) =>
+                  iteratedDimensions[dimensionIterator] == dimension
+              ).length > 0 //Dimension also linked to this layer?
+            ) {
+              const src = layer.getSource();
+              if (utils.instOf(src, TileWMS) || utils.instOf(src, ImageWMS)) {
+                const params = src.getParams();
+                params[dimension.name] = dimension.value;
+                src.updateParams(params);
+              } else if (utils.instOf(src, XYZ)) {
+                src.refresh();
+              }
+              $scope.$emit('layermanager.dimension_changed', {
+                layer: layer,
+                dimension,
+              });
+            }
           });
         },
 
