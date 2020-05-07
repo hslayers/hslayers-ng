@@ -65,8 +65,8 @@
     "update-webdriver": "webdriver-manager update",
     "release": "npm run-script build && release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
-    "lint": "eslint --fix-dry-run ./",
-    "lint-stats": "eslint --format node_modules/eslint-stats/byError.js ./",
+    "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
+    "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byError.js ./",
     "generate-glyphs-subset": "sh scripts/subset-font.sh",
     "start-hsl-proxy": "node lib/proxy.js"
   },
