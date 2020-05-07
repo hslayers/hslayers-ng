@@ -86,7 +86,7 @@ div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 }
 
 .hs-layerpanel {
-	max-height: 21.875em;
+	max-height: 27.875em;
 	overflow-y: auto;
 	border: 0;
 	margin-bottom: 0;
@@ -114,6 +114,11 @@ ul.hs-lm-mapcontentlist {
 }
 ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
 	padding: 0.3em;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	cursor: pointer;
+	margin-left: -2px;
+	margin-right: -2px;
 }
 ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	font-size: x-small;
@@ -136,7 +141,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	padding: 3px 6px;
 }
 
-.hs-lm-header:first-child,
+.bootstrap-iso .hs-lm-header:first-child,
 .hs-lm-list:first-child,
 .hs-lm-item:first-child,
 .hs-comp-header:first-child,
@@ -146,7 +151,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	border-top-right-radius: 0;
 }
 
-.hs-lm-list:last-child,
+.bootstrap-iso .hs-lm-list:last-child,
 .hs-lm-item:last-child,
 .hs-comp-list:last-child,
 .hs-comp-item:last-child {
