@@ -21,6 +21,7 @@
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-angular": "^4.0.1",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsdoc": "^24.0.6",
     "eslint-stats": "^1.0.1",
     "extract-loader": "^5.0.1",
     "file-loader": "^6.0.0",
@@ -66,7 +67,7 @@
     "release": "npm run-script build && release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
-    "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byError.js ./",
+    "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
     "generate-glyphs-subset": "sh scripts/subset-font.sh",
     "start-hsl-proxy": "node lib/proxy.js"
   },
