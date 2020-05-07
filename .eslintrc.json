@@ -3,7 +3,7 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["openlayers", "angular"],
+  "extends": ["openlayers", "angular", "plugin:jsdoc/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
@@ -40,7 +40,8 @@
     "angular/typecheck-function": "off",
     "angular/typecheck-number": "off",
     "angular/typecheck-object": "off",
-    "angular/typecheck-string": "off"
+    "angular/typecheck-string": "off",
+    "valid-jsdoc": "off"
   }
   /*"settings": {
     "import/resolver": "webpack"
