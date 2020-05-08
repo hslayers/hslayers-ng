@@ -219,13 +219,17 @@ export default {
       });
 
       $scope.endpointChanged = function () {
-        $scope.endpoint.getCurrentUserIfNeeded();
-        switch ($scope.endpoint.type) {
-          case 'layman':
-            $scope.steps = ['context', 'author'];
-            break;
-          default:
-            $scope.steps = ['context', 'access', 'author'];
+        if ($scope.endpoint) {
+          if ($scope.endpoint.getCurrentUserIfNeeded) {
+            $scope.endpoint.getCurrentUserIfNeeded();
+          }
+          switch ($scope.endpoint.type) {
+            case 'layman':
+              $scope.steps = ['context', 'author'];
+              break;
+            default:
+              $scope.steps = ['context', 'access', 'author'];
+          }
         }
       };
 
