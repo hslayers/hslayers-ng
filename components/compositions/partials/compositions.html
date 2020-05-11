@@ -79,7 +79,7 @@
                     ng-click="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
                     <span ng-show='endpoint.compositionsPaging.compositionsCount>0'>({{endpoint.compositionsPaging.compositionsCount}})</span>
-                    <span class="glyphicon icon-refresh icon-spin" ng-show="endpoint.compositionsPaging.loaded == false"></span>
+                    <i class="icon-refresh icon-spin" ng-show="endpoint.compositionsPaging.loaded == false"></i>
                 </a>
             </li>
         </ul><!-- Tab panes -->
