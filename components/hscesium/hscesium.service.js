@@ -69,7 +69,7 @@ export default [
         mapStyle: Cesium.BingMapsStyle.AERIAL,
       });
       viewer = new Cesium.Viewer(
-        layoutService.contentWrapper.querySelector('hs-cesium-container'),
+        layoutService.contentWrapper.querySelector('.hs-cesium-container'),
         {
           timeline: angular.isDefined(config.cesiumTimeline)
             ? config.cesiumTimeline
@@ -301,7 +301,7 @@ export default [
         return;
       }
       layoutService.contentWrapper.querySelector(
-        'hs-cesium-container'
+        '.hs-cesium-container'
       ).style.height = size.height + 'px';
       if (document.querySelector('.cesium-viewer-timelineContainer')) {
         document.querySelector('.cesium-viewer-timelineContainer').style.right =

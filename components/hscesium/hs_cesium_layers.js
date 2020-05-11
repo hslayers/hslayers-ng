@@ -302,7 +302,7 @@ var me = {
   convertOlToCesiumProvider(ol_lyr) {
     if (utils.instOf(ol_lyr.getSource(), OSM)) {
       return new Cesium.ImageryLayer(
-        Cesium.createOpenStreetMapImageryProvider(),
+        new Cesium.OpenStreetMapImageryProvider(),
         {
           show: ol_lyr.getVisible(),
           minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15,
