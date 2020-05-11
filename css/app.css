@@ -2,11 +2,9 @@
 .icon-spin {
 	-webkit-animation: spin 1000ms infinite linear;
 	animation: spin 1000ms infinite linear;
-
 	position: relative;
 	top: 1px;
 	display: inline-block;
-	font-family: "Glyphicons Halflings";
 	font-style: normal;
 	font-weight: 400;
 	line-height: 1;
