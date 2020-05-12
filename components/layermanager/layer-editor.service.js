@@ -48,23 +48,22 @@ export default [
               if (angular.isArray(caps.Capability.Layer.Layer)) {
                 angular.forEach(caps.Capability.Layer.Layer, (layer_def) => {
                   if (layer_def.Name == layer.getSource().getParams().LAYERS) {
-                    layer.set('BoundingBox', layer_def.BoundingBox);
+                    extent =
+                      layer_def.EX_GeographicBoundingBox ||
+                      layer_def.BoundingBox;
+                    fitIfExtentSet(transformToCurrentProj(extent), layer);
                   }
                 });
-              }
-              if (angular.isObject(caps.Capability.Layer)) {
-                layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
-                extent = getExtentFromBoundingBoxAttribute(layer);
-                if (extent !== null) {
-                  hsMap.map.getView().fit(extent, hsMap.map.getSize());
-                }
+              } else if (angular.isObject(caps.Capability.Layer)) {
+                extent =
+                  caps.Capability.Layer.EX_GeographicBoundingBox ||
+                  caps.Capability.Layer.BoundingBox;
+                fitIfExtentSet(transformToCurrentProj(extent), layer);
               }
             }
           );
         }
-        if (extent !== null) {
-          hsMap.map.getView().fit(extent, hsMap.map.getSize());
-        }
+        fitIfExtentSet(extent, layer);
       },
 
       /**
@@ -111,7 +110,30 @@ export default [
     };
 
     /**
+     * @param {ol/extent} extent Extent in EPSG:4326
+     * @param {ol/layer} layer
+     */
+    function fitIfExtentSet(extent, layer) {
+      if (extent !== null) {
+        layer.set('BoundingBox', extent);
+        hsMap.map.getView().fit(extent, hsMap.map.getSize());
+      }
+    }
+
+    /**
+     * @param extent
+     */
+    function transformToCurrentProj(extent) {
+      return transformExtent(
+        extent,
+        'EPSG:4326',
+        hsMap.map.getView().getProjection()
+      );
+    }
+
+    /**
      * (PRIVATE) Get transformated extent from layer "BoundingBox" property
+     *
      * @function getExtentFromBoundingBoxAttribute
      * @memberOf hs.layermanager.controller
      * @param {Ol.layer} layer Selected layer
@@ -121,11 +143,7 @@ export default [
       let extent = null;
       const bbox = layer.get('BoundingBox');
       if (angular.isArray(bbox) && bbox.length == 4) {
-        extent = transformExtent(
-          bbox,
-          'EPSG:4326',
-          hsMap.map.getView().getProjection()
-        );
+        extent = transformToCurrentProj(bbox);
       } else {
         for (let ix = 0; ix < bbox.length; ix++) {
           if (
