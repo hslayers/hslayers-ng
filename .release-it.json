@@ -1,0 +1,7 @@
+{
+  "github": {
+    "release": true,
+    "releaseName": "${version}",
+    "assets": ["dist/*.js", "dist/*.map"]
+  }
+}
