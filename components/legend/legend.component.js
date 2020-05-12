@@ -22,6 +22,7 @@ export default {
         /**
          * Add selected layer to the list of layers in legend (with event listener
          * to display/hide legend item when layer visibility change)
+         *
          * @memberof hs.legend.controller
          * @function addLayerToLegends
          * @param {object} layer Layer to add legend for
@@ -31,13 +32,15 @@ export default {
           if (descriptor) {
             $scope.layerDescriptors.push(descriptor);
             layer.on('change:visible', layerVisibilityChanged);
+            layer.getSource().on('change', layerSourcePropChanged);
           }
         },
 
         /**
          * Check if there is any visible layer
+         *
          * @memberof hs.legend.controller
-         * @return {Boolea} Returns true if no layers with legend exist
+         * @returns {boolean} Returns true if no layers with legend exist
          * @function noLayerExists
          */
         noLayerExists: function () {
@@ -49,6 +52,7 @@ export default {
 
         /**
          * Remove selected layer from legend items
+         *
          * @memberof hs.legend.controller
          * @function removeLayerFromLegends
          * @param {Ol.layer} layer Layer to remove from legend
@@ -64,6 +68,7 @@ export default {
 
         /**
          * Refresh event listeners UNUSED
+         *
          * @memberof hs.legend.controller
          * @function refresh
          */
@@ -72,6 +77,9 @@ export default {
         isLegendable: service.isLegendable,
       });
 
+      /**
+       *
+       */
       function init() {
         map = OlMap.map;
         map.getLayers().on('add', layerAdded);
@@ -87,20 +95,68 @@ export default {
 
       /**
        * (PRIVATE) Callback function for adding layer to map, add layers legend
+       *
        * @memberof hs.legend.controller
        * @function layerAdded
-       * @param {Object} e Event object, should have element property
+       * @param {object} e Event object, should have element property
        */
       function layerAdded(e) {
         $scope.addLayerToLegends(e.element);
       }
 
+      /**
+       * @param e event description
+       */
       function layerVisibilityChanged(e) {
-        for (let i = 0; i < $scope.layerDescriptors.length; i++) {
-          if ($scope.layerDescriptors[i].lyr == e.target) {
-            $scope.layerDescriptors[i].visible = e.target.getVisible();
-            break;
+        const descriptor = findLayerDescriptor(e.target);
+        if (descriptor) {
+          descriptor.visible = e.target.getVisible();
+        }
+      }
+
+      /**
+       * @param e event description
+       */
+      function layerSourcePropChanged(e) {
+        const descriptor = findLayerDescriptorBySource(e.target);
+        if (descriptor) {
+          const newDescriptor = service.getLayerLegendDescriptor(
+            descriptor.lyr
+          );
+
+          if (
+            newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
+            newDescriptor.title != descriptor.title
+          ) {
+            $scope.layerDescriptors[
+              $scope.layerDescriptors.indexOf(descriptor)
+            ] = newDescriptor;
           }
+        }
+      }
+
+      /**
+       * Finds layer descriptor for openlayers layer
+       *
+       * @returns {object} Object describing the legend
+       * @param {ol/layer} layer OpenLayers layer
+       */
+      function findLayerDescriptor(layer) {
+        const found = $scope.layerDescriptors.filter((ld) => ld.lyr == layer);
+        if (found.length > 0) {
+          return found[0];
+        }
+      }
+
+      /**
+       * @param source
+       */
+      function findLayerDescriptorBySource(source) {
+        const found = $scope.layerDescriptors.filter(
+          (ld) => ld.lyr.getSource() == source
+        );
+        if (found.length > 0) {
+          return found[0];
         }
       }
 
