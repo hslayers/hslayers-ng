@@ -45,9 +45,9 @@ export default [
               //debugger;
               const parser = new WMSCapabilities();
               const caps = parser.read(capabilities_xml);
-              if (angular.isArray(caps.Capability.Layer)) {
-                angular.forEach(caps.Capability.Layer, (layer_def) => {
-                  if (layer_def.Name == layer.params.LAYERS) {
+              if (angular.isArray(caps.Capability.Layer.Layer)) {
+                angular.forEach(caps.Capability.Layer.Layer, (layer_def) => {
+                  if (layer_def.Name == layer.getSource().getParams().LAYERS) {
                     layer.set('BoundingBox', layer_def.BoundingBox);
                   }
                 });
