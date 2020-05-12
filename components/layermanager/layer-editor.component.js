@@ -2,13 +2,6 @@ import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format';
 import {Circle, Fill, RegularShape, Stroke, Style, Text} from 'ol/style';
 import {Cluster, Vector as VectorSource} from 'ol/source';
-import {
-  METERS_PER_UNIT,
-  get as getProj,
-  transform,
-  transformExtent,
-} from 'ol/proj';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 export default {
   template: require('./partials/layer-editor.html'),
@@ -17,8 +10,6 @@ export default {
   },
   controller: [
     '$scope',
-    'Core',
-    '$compile',
     'hs.utils.service',
     'hs.utils.layerUtilsService',
     'config',
@@ -27,16 +18,12 @@ export default {
     'hs.styler.service',
     'hs.map.service',
     'hs.layermanager.service',
-    'hs.wms.getCapabilitiesService',
     '$rootScope',
-    '$timeout',
     'hs.layout.service',
     'hs.layerEditor.sublayerService',
-    'hs.layerEditorVectorLayer.service',
+    'hs.layerEditor.service',
     function (
       $scope,
-      Core,
-      $compile,
       utils,
       layerUtils,
       config,
@@ -45,12 +32,10 @@ export default {
       styler,
       hsMap,
       LayMan,
-      WMSgetCapabilitiesService,
       $rootScope,
-      $timeout,
       layoutService,
       subLayerService,
-      vectorLayerService
+      layerEditorService
     ) {
       $scope.distance = {
         value: 40,
@@ -68,6 +53,7 @@ export default {
          * @memberOf hs.layermanager.controller
          * @param {Ol.layer} layer Selected layer
          * @description Test if layer is WMS layer
+         * @deprecated TODO
          */
         isLayerWMS: layerUtils.isLayerWMS,
         /**
@@ -78,48 +64,7 @@ export default {
          * BoundingBox property of GetCapabalities request (for WMS layer)
          */
         zoomToLayer() {
-          const layer = $scope.olLayer();
-          let extent = null;
-          if (layer.get('BoundingBox')) {
-            extent = $scope.getExtentFromBoundingBoxAttribute(layer);
-          } else if (angular.isDefined(layer.getSource().getExtent)) {
-            extent = layer.getSource().getExtent();
-          }
-          if (extent == null && $scope.isLayerWMS(layer)) {
-            let url = null;
-            if (layer.getSource().getUrls) {
-              //Multi tile
-              url = layer.getSource().getUrls()[0];
-            }
-            if (layer.getSource().getUrl) {
-              //Single tile
-              url = layer.getSource().getUrl();
-            }
-            WMSgetCapabilitiesService.requestGetCapabilities(url).then(
-              (capabilities_xml) => {
-                //debugger;
-                const parser = new WMSCapabilities();
-                const caps = parser.read(capabilities_xml);
-                if (angular.isArray(caps.Capability.Layer)) {
-                  angular.forEach(caps.Capability.Layer, (layer_def) => {
-                    if (layer_def.Name == layer.params.LAYERS) {
-                      layer.set('BoundingBox', layer_def.BoundingBox);
-                    }
-                  });
-                }
-                if (angular.isObject(caps.Capability.Layer)) {
-                  layer.set('BoundingBox', caps.Capability.Layer.BoundingBox);
-                  extent = $scope.getExtentFromBoundingBoxAttribute(layer);
-                  if (extent != null) {
-                    hsMap.map.getView().fit(extent, hsMap.map.getSize());
-                  }
-                }
-              }
-            );
-          }
-          if (extent != null) {
-            hsMap.map.getView().fit(extent, hsMap.map.getSize());
-          }
+          layerEditorService.zoomToLayer($scope.olLayer());
         },
 
         /**
@@ -157,57 +102,37 @@ export default {
             return true;
           }
         },
-        /**
-         * @function isOptionsDefined
-         * @memberOf hs.layermanager.controller
-         * @param {Ol.layer} layer Selected layer
-         * @description Test if layers cluster or declutter is defined
-         */
 
         /**
          * @function Declutter
          * @memberOf hs.layermanager.controller
-         * @description Set declutter of features;
+         * @param {boolean} newValue To declutter or not to declutter
+         * @description Set decluttering of features
+         * @returns {boolean} Current declutter state
          */
         declutter(newValue) {
           if (!$scope.$ctrl.currentLayer) {
             return;
           }
-          const layer = $scope.olLayer();
-          if (arguments.length) {
-            if (!angular.isUndefined(layer) && !angular.isUndefined(newValue)) {
-              layer.set('declutter', newValue);
-              vectorLayerService.declutter(newValue, layer);
-              $scope.$emit('compositions.composition_edited');
-            }
-          } else {
-            return layer.get('declutter');
-          }
+          return layerEditorService.declutter($scope.olLayer(), newValue);
         },
 
         /**
          * @function cluster
          * @memberOf hs.layermanager.controller
-         * @description Set cluster for layer;
+         * @description Set cluster for layer
+         * @param {boolean} newValue To cluster or not to cluster
+         * @returns {boolean} Current cluster state
          */
         cluster(newValue) {
           if (!$scope.$ctrl.currentLayer) {
             return;
           }
-          const layer = $scope.olLayer();
-          if (arguments.length) {
-            layer.set('cluster', newValue);
-            if (!angular.isUndefined(layer) && !angular.isUndefined(newValue)) {
-              vectorLayerService.cluster(
-                newValue,
-                layer,
-                $scope.distance.value
-              );
-              $scope.$emit('compositions.composition_edited');
-            }
-          } else {
-            return layer.get('cluster');
-          }
+          return layerEditorService.cluster(
+            $scope.olLayer(),
+            newValue,
+            $scope.distance.value
+          );
         },
         /**
          * @function changeDistance
@@ -432,7 +357,9 @@ export default {
         /**
          * @function title
          * @memberOf hs.layermanager.controller
+         * @param {string} newTitle New title to set
          * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
+         * @returns {string} Title
          */
         title(newTitle) {
           const layer = $scope.olLayer();
@@ -481,7 +408,7 @@ export default {
         },
 
         hasSubLayers() {
-          if ($scope.$ctrl.currentLayer == null) {
+          if ($scope.$ctrl.currentLayer === null) {
             return;
           }
           const subLayers = $scope.$ctrl.currentLayer.layer.get('Layer');
@@ -507,6 +434,7 @@ export default {
          * @memberOf hs.layermanager.controller
          * @param {Date} d Date to convert
          * @description Convert date to non Utc format
+         * @returns {date} Date with timezone added
          */
         dateToNonUtc(d) {
           if (angular.isUndefined(d)) {
@@ -515,172 +443,126 @@ export default {
           const noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
           return noutc;
         },
-      }),
-        function setLayerStyle(wrapper) {
-          //debugger;
-          const layer = wrapper.layer;
-          const source = layer.getSource();
-          const style = wrapper.style.style;
-          if (source.hasPoly) {
-            style.setFill(
-              new Fill({
-                color: wrapper.style.fillColor,
-              })
-            );
-          }
-          if (source.hasLine || source.hasPoly) {
-            style.setStroke(
-              new Stroke({
-                color: wrapper.style.lineColor,
-                width: wrapper.style.lineWidth,
-              })
-            );
-          }
-          if (source.hasPoint) {
-            let image;
-            const stroke = new Stroke({
-              color: wrapper.style.pointStroke,
-              width: wrapper.style.pointWidth,
+      });
+
+      function setLayerStyle(wrapper) {
+        //debugger;
+        const layer = wrapper.layer;
+        const source = layer.getSource();
+        const style = wrapper.style.style;
+        if (source.hasPoly) {
+          style.setFill(
+            new Fill({
+              color: wrapper.style.fillColor,
+            })
+          );
+        }
+        if (source.hasLine || source.hasPoly) {
+          style.setStroke(
+            new Stroke({
+              color: wrapper.style.lineColor,
+              width: wrapper.style.lineWidth,
+            })
+          );
+        }
+        if (source.hasPoint) {
+          let image;
+          const stroke = new Stroke({
+            color: wrapper.style.pointStroke,
+            width: wrapper.style.pointWidth,
+          });
+          const fill = new Fill({
+            color: wrapper.style.pointFill,
+          });
+          if (wrapper.style.pointType === 'Circle') {
+            image = new Circle({
+              stroke: stroke,
+              fill: fill,
+              radius: wrapper.style.radius,
+              rotation: wrapper.style.rotation,
             });
-            const fill = new Fill({
-              color: wrapper.style.pointFill,
+          }
+          if (wrapper.style.pointType === 'Polygon') {
+            image = new RegularShape({
+              stroke: stroke,
+              fill: fill,
+              radius: wrapper.style.radius,
+              points: wrapper.style.pointPoints,
+              rotation: wrapper.style.rotation,
             });
-            if (wrapper.style.pointType === 'Circle') {
-              image = new Circle({
-                stroke: stroke,
-                fill: fill,
-                radius: wrapper.style.radius,
-                rotation: wrapper.style.rotation,
-              });
-            }
-            if (wrapper.style.pointType === 'Polygon') {
-              image = new RegularShape({
-                stroke: stroke,
-                fill: fill,
-                radius: wrapper.style.radius,
-                points: wrapper.style.pointPoints,
-                rotation: wrapper.style.rotation,
-              });
-            }
-            if (wrapper.style.pointType === 'Star') {
-              image = new RegularShape({
-                stroke: stroke,
-                fill: fill,
-                radius1: wrapper.style.radius,
-                radius2: wrapper.style.radius2,
-                points: wrapper.style.pointPoints,
-                rotation: wrapper.style.rotation,
-              });
-            }
-            style.setImage(image);
           }
-          layer.setStyle(style);
-        },
-        /**
-         * (PRIVATE) Get transformated extent from layer "BoundingBox" property
-         * @function getExtentFromBoundingBoxAttribute
-         * @memberOf hs.layermanager.controller
-         * @param {Ol.layer} layer Selected layer
-         */
-        ($scope.getExtentFromBoundingBoxAttribute = function (layer) {
-          let extent = null;
-          const bbox = layer.get('BoundingBox');
-          if (angular.isArray(bbox) && bbox.length == 4) {
-            extent = transformExtent(
-              bbox,
-              'EPSG:4326',
-              hsMap.map.getView().getProjection()
-            );
-          } else {
-            for (let ix = 0; ix < bbox.length; ix++) {
-              if (
-                angular.isDefined(getProj(bbox[ix].crs)) ||
-                angular.isDefined(layer.getSource().getParams().FROMCRS)
-              ) {
-                const crs =
-                  bbox[ix].crs || layer.getSource().getParams().FROMCRS;
-                const b = bbox[ix].extent;
-                let first_pair = [b[0], b[1]];
-                let second_pair = [b[2], b[3]];
-                first_pair = transform(
-                  first_pair,
-                  crs,
-                  hsMap.map.getView().getProjection()
-                );
-                second_pair = transform(
-                  second_pair,
-                  crs,
-                  hsMap.map.getView().getProjection()
-                );
-                extent = [
-                  first_pair[0],
-                  first_pair[1],
-                  second_pair[0],
-                  second_pair[1],
-                ];
-                break;
-              }
+          if (wrapper.style.pointType === 'Star') {
+            image = new RegularShape({
+              stroke: stroke,
+              fill: fill,
+              radius1: wrapper.style.radius,
+              radius2: wrapper.style.radius2,
+              points: wrapper.style.pointPoints,
+              rotation: wrapper.style.rotation,
+            });
+          }
+          style.setImage(image);
+        }
+        layer.setStyle(style);
+      }
+
+      $scope.getLayerStyle = function (wrapper) {
+        const layer = wrapper.layer;
+        const source = layer.getSource();
+        wrapper.style = {};
+        if (angular.isUndefined(layer.getStyle)) {
+          return;
+        }
+        let style = layer.getStyle();
+        if (typeof style == 'function') {
+          style = style(source.getFeatures()[0]);
+        }
+        if (typeof style == 'object') {
+          style = style[0];
+        }
+        style = style.clone();
+        if (source.hasPoly) {
+          wrapper.style.fillColor = style.getFill().getColor();
+        }
+        if (source.hasLine || source.hasPoly) {
+          wrapper.style.lineColor = style.getStroke().getColor();
+          wrapper.style.lineWidth = style.getStroke().getColor();
+        }
+        if (source.hasPoint) {
+          const image = style.getImage();
+          if (utils.instOf(image, Circle)) {
+            wrapper.style.pointType = 'Circle';
+          } else if (utils.instOf(image, RegularShape)) {
+            wrapper.style.pointPoints = image.getPoints();
+            wrapper.style.rotation = image.getRotation();
+            if (angular.isUndefined(image.getRadius2())) {
+              wrapper.style.pointType = 'Polygon';
+            } else {
+              wrapper.style.pointType = 'Star';
+              wrapper.style.radius2 = image.getRadius2();
             }
           }
-          return extent;
-        }),
-        ($scope.getLayerStyle = function (wrapper) {
-          const layer = wrapper.layer;
-          const source = layer.getSource();
-          wrapper.style = {};
-          if (angular.isUndefined(layer.getStyle)) {
-            return;
+          if (
+            utils.instOf(image, Circle) ||
+            utils.instOf(image, RegularShape)
+          ) {
+            wrapper.style.radius = image.getRadius();
+            wrapper.style.pointFill = image.getFill().getColor();
+            wrapper.style.pointStroke = image.getStroke().getColor();
+            wrapper.style.pointWidth = image.getStroke().getWidth();
           }
-          let style = layer.getStyle();
-          if (typeof style == 'function') {
-            style = style(source.getFeatures()[0]);
+          if (angular.isUndefined(wrapper.style.radius2)) {
+            wrapper.style.radius2 = wrapper.style.radius / 2;
           }
-          if (typeof style == 'object') {
-            style = style[0];
+          if (angular.isUndefined(wrapper.style.pointPoints)) {
+            wrapper.style.pointPoints = 4;
           }
-          style = style.clone();
-          if (source.hasPoly) {
-            wrapper.style.fillColor = style.getFill().getColor();
+          if (angular.isUndefined(wrapper.style.rotation)) {
+            wrapper.style.rotation = Math.PI / 4;
           }
-          if (source.hasLine || source.hasPoly) {
-            wrapper.style.lineColor = style.getStroke().getColor();
-            wrapper.style.lineWidth = style.getStroke().getColor();
-          }
-          if (source.hasPoint) {
-            const image = style.getImage();
-            if (utils.instOf(image, Circle)) {
-              wrapper.style.pointType = 'Circle';
-            } else if (utils.instOf(image, RegularShape)) {
-              wrapper.style.pointPoints = image.getPoints();
-              wrapper.style.rotation = image.getRotation();
-              if (angular.isUndefined(image.getRadius2())) {
-                wrapper.style.pointType = 'Polygon';
-              } else {
-                wrapper.style.pointType = 'Star';
-                wrapper.style.radius2 = image.getRadius2();
-              }
-            }
-            if (
-              utils.instOf(image, Circle) ||
-              utils.instOf(image, RegularShape)
-            ) {
-              wrapper.style.radius = image.getRadius();
-              wrapper.style.pointFill = image.getFill().getColor();
-              wrapper.style.pointStroke = image.getStroke().getColor();
-              wrapper.style.pointWidth = image.getStroke().getWidth();
-            }
-            if (angular.isUndefined(wrapper.style.radius2)) {
-              wrapper.style.radius2 = wrapper.style.radius / 2;
-            }
-            if (angular.isUndefined(wrapper.style.pointPoints)) {
-              wrapper.style.pointPoints = 4;
-            }
-            if (angular.isUndefined(wrapper.style.rotation)) {
-              wrapper.style.rotation = Math.PI / 4;
-            }
-          }
-          wrapper.style.style = style;
-        });
+        }
+        wrapper.style.style = style;
+      };
 
       $scope.$watch('$ctrl.currentLayer', () => {
         if (!$scope.$ctrl.currentLayer) {

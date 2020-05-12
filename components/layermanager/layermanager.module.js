@@ -17,6 +17,7 @@ import layermanagerMetadataService from './layermanager-metadata.service';
 import layermanagerService from './layermanager.service';
 import layermanagerWmstService from './layermanager-wmst.service';
 import removeAllDialogDirective from './remove-all-dialog.directive';
+import layerEditorService from './layer-editor.service';
 
 /**
  * @ngdoc module
@@ -128,14 +129,22 @@ angular
    * @description Panel for editing selected layer parameters
    */
   .component('hs.layerEditor', layerEditorComponent)
+
   /**
    * @module hs.layerEditor
    * @name hs.layer-editor
    * @ngdoc service
-   * @description Service for layer editor management.
-   * manages layer clustering and decluttering
+   * @description Service for vector layer management.
    */
   .factory('hs.layerEditorVectorLayer.service', layerEditorVectorLayerService)
+
+  /**
+   * @module hs.layerEditor
+   * @name hs.layer-editor.service
+   * @ngdoc service
+   * @description Service for layer editor.
+   */
+  .factory('hs.layerEditor.service', layerEditorService)
 
   /**
    * @module hs.layermanager
