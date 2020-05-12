@@ -42,7 +42,18 @@
     "angular/typecheck-object": "off",
     "angular/typecheck-string": "off",
     "valid-jsdoc": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.spec.js"
+      ],
+      "env": {
+        "jasmine": true,
+        "angular/mocks": true
+      }
+    }
+  ]
   /*"settings": {
     "import/resolver": "webpack"
   }*/
