@@ -12,7 +12,7 @@ export default [
         endpoint.getCurrentUserIfNeeded();
         endpoint.compositionsPaging.loaded = false;
         if (angular.isUndefined(params.sortBy)) {
-          params.sortBy = 'bbox';
+          params.sortBy = '';
         }
         return new Promise(async (resolve, reject) => {
           try {

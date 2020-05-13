@@ -87,7 +87,7 @@ export default {
        * @type {string} bbox
        * @description Store current rule for sorting compositions in composition list (supported values: bbox, title, date)
        */
-      $scope.sortBy = 'bbox';
+      $scope.sortBy = 'title';
       /**
        * @ngdoc property
        * @name hs.compositions.controller#filterByExtent
