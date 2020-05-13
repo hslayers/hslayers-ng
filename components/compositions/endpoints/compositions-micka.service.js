@@ -20,7 +20,7 @@ export default [
           ? 'serviceName=&' + endpoint.serviceName
           : '';
         bbox = params.filterExtent
-          ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'")
+          ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + " 1'")
           : '';
         const textFilter =
           query && angular.isDefined(query.title) && query.title != ''
@@ -66,7 +66,7 @@ export default [
       loadList(endpoint, params, bbox, extentLayer) {
         endpoint.compositionsPaging.loaded = false;
         if (angular.isUndefined(params.sortBy)) {
-          params.sortBy = 'bbox';
+          params.sortBy = 'title';
         }
         if (angular.isUndefined(params.start)) {
           params.start = endpoint.compositionsPaging.start;
