@@ -76,7 +76,7 @@ export default [
             sortby:
               angular.isDefined(query.sortby) && query.sortby != ''
                 ? query.sortby
-                : 'bbox',
+                : 'title',
             limit: dataset.paging.itemsPerPage,
             start: dataset.datasourcePaging.start,
           });

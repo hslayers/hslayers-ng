@@ -20,7 +20,7 @@ export default [
           ? 'serviceName=&' + endpoint.serviceName
           : '';
         bbox = params.filterExtent
-          ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + " 1'")
+          ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'")
           : '';
         const textFilter =
           query && angular.isDefined(query.title) && query.title != ''

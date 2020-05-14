@@ -16,3 +16,5 @@ dependencygraph.svg
 .tern-project
 .vscode/
 .env
+*.bat
+/.vs
