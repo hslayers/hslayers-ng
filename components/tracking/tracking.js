@@ -1,15 +1,13 @@
 import '../core/core.module';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
-import dc from 'dc';
-import s4a from 's4a';
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {GeometryType, LineString, Polygon} from 'ol/geom';
+import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Vector} from 'ol/source';
 
 /**
  * @namespace hs.tracking
  * @memberOf hs
+ * @param config
  */
 angular
   .module('hs.tracking', ['hs.map', 'hs.core'])
@@ -24,7 +22,7 @@ angular
     'HsConfig',
     function (config) {
       return {
-        template: require('components/tracking/partials/tracking.html'),
+        template: require('./partials/tracking.html'),
       };
     },
   ])
@@ -32,14 +30,12 @@ angular
   /**
    * @memberof hs.tracking
    * @ngdoc controller
-   * @name hs.tracking.controller
+   * @name HsTrackingController
    */
-  .controller('hs.tracking.controller', [
-    '$scope',
-    'HsMapService',
-    'HsCore',
-    'HsLayoutService',
-    function ($scope, OlMap, HsCore, layoutService) {
+  .controller(
+    'HsTrackingController',
+    ($scope, HsMapService, HsLayoutService) => {
+      'ngInject';
       // Set the instance of the OpenAPI that s4a.js
       // works towards (by default portal.sdi4apps.eu)
       //s4a.openApiUrl('http://localhost:8080/openapi');
@@ -49,7 +45,7 @@ angular
       const SensLog = s4a.data.SensLog;
 
       // Assign the OpenLayers map object to a local variable
-      const map = OlMap.map;
+      const map = HsMapService.map;
 
       // Define the source of a vector layer to hold
       // routing calculataed features
@@ -93,8 +89,9 @@ angular
 
       /**
        * (PRIVATE) Add feature to source of vector layer
+       *
        * @function addFeature
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        * @param {type} lonLatArray
        */
       const addFeature = function (lonLatArray) {
@@ -108,8 +105,9 @@ angular
 
       /**
        * Load positions and observations from SensLog
+       *
        * @function loadValues
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       const loadValues = function () {
         SensLog.getLastPosition(3, 'sdi4apps').then((res) => {
@@ -156,8 +154,9 @@ angular
 
       /**
        * Run when clicking start tracking button, load values in defined interval
+       *
        * @function startTracking
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       $scope.startTracking = function () {
         $scope.isTracking = true;
@@ -175,8 +174,9 @@ angular
 
       /**
        * Run when clicking stop tracking button, cleans tracking
+       *
        * @function stopTracking
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       $scope.stopTracking = function () {
         $scope.isTracking = false;
@@ -189,8 +189,9 @@ angular
 
       /**
        * Clears points from map and observations from table
+       *
        * @function clearAll
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       $scope.clearAll = function () {
         gjSrc.clear();
@@ -199,8 +200,9 @@ angular
 
       /**
        * Function to be run when tracking is activated
+       *
        * @function activate
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       $scope.activate = function () {
         map.addLayer(gjLyr);
@@ -208,8 +210,9 @@ angular
 
       /**
        * Function to be run when tracking is deactivated
+       *
        * @function deactivate
-       * @memberof hs.tracking.controller
+       * @memberof HsTrackingController
        */
       $scope.deactivate = function () {
         map.removeLayer(gjLyr);
@@ -220,7 +223,7 @@ angular
        * are activated by clicking on the side menu
        */
       $scope.$on('core.mainpanel_changed', (event) => {
-        if (layoutService.mainpanel === 'tracking') {
+        if (HsLayoutService.mainpanel === 'tracking') {
           $scope.activate();
         } else {
           $scope.deactivate();
@@ -232,7 +235,7 @@ angular
        * are loaded from static URLs
        */
       $scope.$on('scope_loaded', (event, data) => {
-        if (layoutService.mainpanel === 'tracking' && data === 'tracking') {
+        if (HsLayoutService.mainpanel === 'tracking' && data === 'tracking') {
           $scope.activate();
         } else {
           $scope.deactivate();
@@ -243,5 +246,5 @@ angular
        * Emit a signal when the scope is first loaded
        */
       $scope.$emit('scope_loaded', 'tracking');
-    },
-  ]);
+    }
+  );

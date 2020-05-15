@@ -1,175 +1,189 @@
 import * as extent from 'ol/extent';
 import {Select} from 'ol/interaction';
 import {WKT} from 'ol/format';
-import {altKeyOnly, click, pointerMove} from 'ol/events/condition.js';
-import {toLonLat} from 'ol/proj.js';
+import {click} from 'ol/events/condition';
+import {toLonLat} from 'ol/proj';
 
-export default [
-  '$rootScope',
-  'HsQueryBaseService',
-  '$sce',
-  'HsMapService',
-  'HsConfig',
-  'HsUtilsService',
-  'HsUtilsLayerUtilsService',
-  '$window',
-  function ($rootScope, Base, $sce, OlMap, Config, utils, layerUtils, $window) {
-    const me = this;
+/**
+ * @param $rootScope
+ * @param HsQueryBaseService
+ * @param $sce
+ * @param HsMapService
+ * @param HsConfig
+ * @param HsLayerUtilsService
+ * @param $window
+ */
+export default function (
+  $rootScope,
+  HsQueryBaseService,
+  $sce,
+  HsMapService,
+  HsConfig,
+  HsLayerUtilsService,
+  $window
+) {
+  'ngInject';
+  const me = this;
 
-    this.selector = new Select({
-      condition: click,
-      multi:
-        angular.isDefined(Config.query) && Config.query.multi
-          ? Config.query.multi
-          : false,
-      filter: function (feature, layer) {
-        if (layer === null) {
-          return;
-        }
-        if (layer.get('queryable') === false) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-    });
-    $rootScope.$broadcast('vectorSelectorCreated', me.selector);
-
-    $rootScope.$on('map.loaded', (e) => {
-      OlMap.map.addInteraction(me.selector);
-    });
-
-    $rootScope.$on('queryStatusChanged', () => {
-      /*if (Base.queryActive) OlMap.map.addInteraction(me.selector);
-            else OlMap.map.removeInteraction(me.selector);*/
-    });
-
-    me.selector.getFeatures().on('add', (e) => {
-      $rootScope.$broadcast(
-        'vectorQuery.featureSelected',
-        e.element,
-        me.selector
-      );
-      //deprecated
-      $rootScope.$broadcast(
-        'infopanel.feature_selected',
-        e.element,
-        me.selector
-      );
-    });
-
-    me.selector.getFeatures().on('remove', (e) => {
-      $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
-      //deprecated
-      $rootScope.$broadcast('infopanel.feature_deselected', e.element);
-    });
-
-    $rootScope.$on('mapQueryStarted', (e) => {
-      Base.clearData('features');
-      if (!Base.queryActive) {
+  this.selector = new Select({
+    condition: click,
+    multi:
+      angular.isDefined(HsConfig.query) && HsConfig.query.multi
+        ? HsConfig.query.multi
+        : false,
+    filter: function (feature, layer) {
+      if (layer === null) {
         return;
       }
-      me.createFeatureAttributeList();
-    });
-    me.createFeatureAttributeList = () => {
-      Base.data.attributes.length = 0;
-      const features = me.selector.getFeatures().getArray();
-      let featureDescriptions = [];
-      angular.forEach(features, (feature) => {
-        featureDescriptions = featureDescriptions.concat(
-          getFeatureAttributes(feature)
-        );
-      });
-      Base.setData(featureDescriptions, 'features');
-      $rootScope.$broadcast('queryVectorResult');
-    };
-    me.exportData = (clickedFormat, feature) => {
-      if (clickedFormat == 'WKT format') {
-        const formatWKT = new WKT();
-        const wktRepresentation = formatWKT.writeFeature(feature);
-        const data = new Blob([wktRepresentation], {type: 'text/plain'});
-        const url = $window.URL.createObjectURL(data);
-        if (me.exportedFeatureHref) {
-          $window.URL.revokeObjectURL(me.exportedFeatureHref);
-        }
-        me.exportedFeatureHref = url;
+      if (layer.get('queryable') === false) {
+        return false;
       } else {
+        return true;
+      }
+    },
+  });
+  $rootScope.$broadcast('vectorSelectorCreated', me.selector);
+
+  $rootScope.$on('map.loaded', (e) => {
+    HsMapService.map.addInteraction(me.selector);
+  });
+
+  $rootScope.$on('queryStatusChanged', () => {
+    /*if (Base.queryActive) OlMap.map.addInteraction(me.selector);
+            else OlMap.map.removeInteraction(me.selector);*/
+  });
+
+  me.selector.getFeatures().on('add', (e) => {
+    $rootScope.$broadcast(
+      'vectorQuery.featureSelected',
+      e.element,
+      me.selector
+    );
+    //deprecated
+    $rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
+  });
+
+  me.selector.getFeatures().on('remove', (e) => {
+    $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
+    //deprecated
+    $rootScope.$broadcast('infopanel.feature_deselected', e.element);
+  });
+
+  $rootScope.$on('mapQueryStarted', (e) => {
+    HsQueryBaseService.clearData('features');
+    if (!HsQueryBaseService.queryActive) {
+      return;
+    }
+    me.createFeatureAttributeList();
+  });
+  me.createFeatureAttributeList = () => {
+    HsQueryBaseService.data.attributes.length = 0;
+    const features = me.selector.getFeatures().getArray();
+    let featureDescriptions = [];
+    angular.forEach(features, (feature) => {
+      featureDescriptions = featureDescriptions.concat(
+        getFeatureAttributes(feature)
+      );
+    });
+    HsQueryBaseService.setData(featureDescriptions, 'features');
+    $rootScope.$broadcast('queryVectorResult');
+  };
+  me.exportData = (clickedFormat, feature) => {
+    if (clickedFormat == 'WKT format') {
+      const formatWKT = new WKT();
+      const wktRepresentation = formatWKT.writeFeature(feature);
+      const data = new Blob([wktRepresentation], {type: 'text/plain'});
+      const url = $window.URL.createObjectURL(data);
+      if (me.exportedFeatureHref) {
+        $window.URL.revokeObjectURL(me.exportedFeatureHref);
+      }
+      me.exportedFeatureHref = url;
+    } else {
+      return;
+    }
+  };
+
+  /**
+   * @param feature
+   */
+  function getFeatureLayerName(feature) {
+    if (angular.isUndefined(feature.getLayer)) {
+      return '';
+    }
+    const layer = feature.getLayer(HsMapService.map);
+    return HsLayerUtilsService.getLayerName(layer);
+  }
+
+  /**
+   * @param feature
+   */
+  function getCentroid(feature) {
+    if (angular.isUndefined(feature)) {
+      return;
+    }
+    const center = extent.getCenter(feature.getGeometry().getExtent());
+    return center;
+  }
+  /**
+   * @function getFeatureAttributes
+   * @memberOf HsQueryController
+   * @params {Object} feature Selected feature from map
+   * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
+   * @param feature
+   */
+  function getFeatureAttributes(feature) {
+    const attributes = [];
+    let tmp = [];
+    let hstemplate = null;
+    let customInfoTemplate = null;
+    feature.getKeys().forEach((key) => {
+      if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) {
         return;
       }
-    };
-
-    function getFeatureLayerName(feature) {
-      if (angular.isUndefined(feature.getLayer)) {
-        return '';
+      if (feature.get('hstemplate')) {
+        hstemplate = feature.get('hstemplate');
       }
-      const layer = feature.getLayer(OlMap.map);
-      return layerUtils.getLayerName(layer);
-    }
-
-    function getCentroid(feature) {
-      if (angular.isUndefined(feature)) {
-        return;
-      }
-      const center = extent.getCenter(feature.getGeometry().getExtent());
-      return center;
-    }
-    /**
-     * @function getFeatureAttributes
-     * @memberOf HsQueryController
-     * @params {Object} feature Selected feature from map
-     * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
-     */
-    function getFeatureAttributes(feature) {
-      const attributes = [];
-      let tmp = [];
-      let hstemplate = null;
-      let customInfoTemplate = null;
-      feature.getKeys().forEach((key) => {
-        if (['gid', 'geometry', 'wkb_geometry'].indexOf(key) > -1) {
-          return;
+      if (key == 'features') {
+        for (const ixSubFeature in feature.get('features')) {
+          const subFeature = feature.get('features')[ixSubFeature];
+          tmp = tmp.concat(getFeatureAttributes(subFeature));
         }
-        if (feature.get('hstemplate')) {
-          hstemplate = feature.get('hstemplate');
-        }
-        if (key == 'features') {
-          for (const ixSubFeature in feature.get('features')) {
-            const subFeature = feature.get('features')[ixSubFeature];
-            tmp = tmp.concat(getFeatureAttributes(subFeature));
-          }
+      } else {
+        let obj;
+        if ((typeof feature.get(key)).toLowerCase() == 'string') {
+          obj = {
+            name: key,
+            value: $sce.trustAsHtml(feature.get(key)),
+          };
         } else {
-          let obj;
-          if ((typeof feature.get(key)).toLowerCase() == 'string') {
-            obj = {
-              name: key,
-              value: $sce.trustAsHtml(feature.get(key)),
-            };
-          } else {
-            obj = {
-              name: key,
-              value: feature.get(key),
-            };
-          }
-          attributes.push(obj);
+          obj = {
+            name: key,
+            value: feature.get(key),
+          };
         }
-      });
-      if (feature.getLayer && feature.getLayer(OlMap.map).get('customInfoTemplate')) {
-        customInfoTemplate = feature
-          .getLayer(OlMap.map)
-          .get('customInfoTemplate');
+        attributes.push(obj);
       }
-
-      const featureDescription = {
-        layer: getFeatureLayerName(feature),
-        name: 'Feature',
-        attributes: attributes,
-        stats: [{name: 'center', value: toLonLat(getCentroid(feature))}],
-        hstemplate,
-        feature,
-        customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
-      };
-      tmp.push(featureDescription);
-      return tmp;
+    });
+    if (
+      feature.getLayer &&
+      feature.getLayer(HsMapService.map).get('customInfoTemplate')
+    ) {
+      customInfoTemplate = feature
+        .getLayer(HsMapService.map)
+        .get('customInfoTemplate');
     }
-    return me;
-  },
-];
+
+    const featureDescription = {
+      layer: getFeatureLayerName(feature),
+      name: 'Feature',
+      attributes: attributes,
+      stats: [{name: 'center', value: toLonLat(getCentroid(feature))}],
+      hstemplate,
+      feature,
+      customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
+    };
+    tmp.push(featureDescription);
+    return tmp;
+  }
+  return me;
+}

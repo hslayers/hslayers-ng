@@ -1,5 +1,8 @@
-export default ['HsConfig', function (config) {
-    return {
-        template: require('components/mobile_settings/partials/mobile_settings.html')
-    };
-}]
+/**
+ *
+ */
+export default function () {
+  return {
+    template: require('./partials/mobile_settings.html'),
+  };
+}

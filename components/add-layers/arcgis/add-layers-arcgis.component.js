@@ -4,32 +4,45 @@ global.moment = moment;
 import '../../../common/get-capabilities.module';
 
 export default {
-  template: ['HsConfig', function (config) {
-    return config.design == 'md' ?
-      require('./add-arcgis-layer.md.directive.html') :
-      require('./add-arcgis-layer.directive.html');
-  }],
-  controller: ['$scope', '$element', 'HsMapService', 'HsCore', 'HsArcgisGetCapabilitiesService', 'HsAddLayersArcgisAddLayerService', 'HsHistoryListService', '$timeout', function ($scope, $element, OlMap, HsCore, arcgisGetCapabilitiesService, LayService, historyListService, $timeout) {
-    $scope.data = LayService.data;
+  template: function (HsConfig) {
+    'ngInject';
+    return HsConfig.design == 'md'
+      ? require('./add-arcgis-layer.md.directive.html')
+      : require('./add-arcgis-layer.directive.html');
+  },
+  controller: function (
+    $scope,
+    HsArcgisGetCapabilitiesService,
+    HsAddLayersArcgisAddLayerService,
+    HsHistoryListService,
+    $timeout
+  ) {
+    'ngInject';
+    $scope.data = HsAddLayersArcgisAddLayerService.data;
     /**
-        * Clear Url and hide detailsArcgis
-        * @memberof hs.addLayers
-        * @function clear
-        */
+     * Clear Url and hide detailsArcgis
+     *
+     * @memberof hs.addLayers
+     * @function clear
+     */
     $scope.clear = function () {
       $scope.url = '';
       $scope.showDetails = false;
     };
 
     $scope.connect = function (layerToSelect) {
-      historyListService.addSourceHistory('Arcgis', $scope.url);
-      arcgisGetCapabilitiesService.requestGetCapabilities($scope.url)
-        .then((capabilities) => {
-          LayService.data.getMapUrl = $scope.url;
-          $timeout(_ => {
-            LayService.capabilitiesReceived(capabilities, layerToSelect);
+      HsHistoryListService.addSourceHistory('Arcgis', $scope.url);
+      HsArcgisGetCapabilitiesService.requestGetCapabilities($scope.url).then(
+        (capabilities) => {
+          HsAddLayersArcgisAddLayerService.data.getMapUrl = $scope.url;
+          $timeout((_) => {
+            HsAddLayersArcgisAddLayerService.capabilitiesReceived(
+              capabilities,
+              layerToSelect
+            );
           }, 0);
-        });
+        }
+      );
       $scope.showDetails = true;
     };
 
@@ -38,11 +51,14 @@ export default {
     });
 
     /**
-         * @function selectAllLayers
-         * @memberOf hs.addLayersArcgis.controller
-         * @description Select all layers from service.
-         */
+     * @function selectAllLayers
+     * @memberOf hs.addLayersArcgis.controller
+     * @description Select all layers from service.
+     */
     $scope.selectAllLayers = function () {
+      /**
+       * @param layer
+       */
       function recurse(layer) {
         layer.checked = true;
 
@@ -56,31 +72,32 @@ export default {
     };
 
     $scope.addLayers = function (checked) {
-      LayService.addLayers(checked);
+      HsAddLayersArcgisAddLayerService.addLayers(checked);
     };
 
     $scope.srsChanged = function () {
-      LayService.srsChanged();
+      HsAddLayersArcgisAddLayerService.srsChanged();
     };
 
     /**
-        * Connect to service of specified Url
-        * @memberof hs.addLayersArcgis
-        * @function setUrlAndConnect
-        * @param {String} url Url of requested service
-        * @param {String} layer Optional layer to select, when
-        * getCapabilities arrives
-        */
+     * Connect to service of specified Url
+     *
+     * @memberof hs.addLayersArcgis
+     * @function setUrlAndConnect
+     * @param {string} url Url of requested service
+     * @param {string} layer Optional layer to select, when
+     * getCapabilities arrives
+     */
     $scope.setUrlAndConnect = function (url, layer) {
       $scope.url = url;
       $scope.connect(layer);
     };
 
-    $scope.sourceHistory = LayService.sourceHistory;
+    $scope.sourceHistory = HsAddLayersArcgisAddLayerService.sourceHistory;
 
-    $scope.getDimensionValues = LayService.getDimensionValues;
+    $scope.getDimensionValues =
+      HsAddLayersArcgisAddLayerService.getDimensionValues;
 
-    $scope.hasNestedLayers = LayService.hasNestedLayers;
-  }
-  ]
+    $scope.hasNestedLayers = HsAddLayersArcgisAddLayerService.hasNestedLayers;
+  },
 };

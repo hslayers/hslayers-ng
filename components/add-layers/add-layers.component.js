@@ -1,107 +1,99 @@
 export default {
-  template: [
-    'HsConfig',
-    (config) => {
-      if (config.design == 'md') {
-        return require('./partials/add-layers.md.directive.html');
-      } else {
-        return require('./partials/add-layers.directive.html');
-      }
-    },
-  ],
-  controller: [
-    '$scope',
-    'HsPermalinkUrlService',
-    'HsCore',
-    'HsConfig',
-    '$rootScope',
-    '$timeout',
-    'HsLayoutService',
-    'HsDragDropLayerService',
-    function (
-      $scope,
-      permalink,
-      HsCore,
-      config,
-      $rootScope,
-      $timeout,
-      layoutService,
-      HsDragDropLayerService
-    ) {
-      $scope.HsCore = HsCore;
-      if (angular.isArray(config.connectTypes)) {
-        $scope.types = config.connectTypes;
-      } else {
-        $scope.types = [
-          {id: 'wms', text: 'Web map service (WMS)'},
-          {id: 'arcgis', text: 'ArcGIS Map Server'},
-          {id: 'vector', text: 'Vector file (GeoJson, KML)'},
-          {id: 'shp', text: 'Shapefile'},
-        ];
-      }
-      $scope.type = '';
-      $scope.image_formats = [];
-      $scope.query_formats = [];
-      $scope.tile_size = 512;
+  template: (HsConfig) => {
+    'ngInject';
+    if (HsConfig.design == 'md') {
+      return require('./partials/add-layers.md.directive.html');
+    } else {
+      return require('./partials/add-layers.directive.html');
+    }
+  },
+  controller: function (
+    $scope,
+    HsPermalinkUrlService,
+    HsCore,
+    HsConfig,
+    $rootScope,
+    $timeout,
+    HsLayoutService
+  ) {
+    'ngInject';
+    $scope.HsCore = HsCore;
+    if (angular.isArray(HsConfig.connectTypes)) {
+      $scope.types = HsConfig.connectTypes;
+    } else {
+      $scope.types = [
+        {id: 'wms', text: 'Web map service (WMS)'},
+        {id: 'arcgis', text: 'ArcGIS Map Server'},
+        {id: 'vector', text: 'Vector file (GeoJson, KML)'},
+        {id: 'shp', text: 'Shapefile'},
+      ];
+    }
+    $scope.type = '';
+    $scope.image_formats = [];
+    $scope.query_formats = [];
+    $scope.tile_size = 512;
 
-      /**
-       * Change detail panel template according to selected type
-       * @memberof hs.addLayers
-       * @function templateByType
-       * @return {String} template Path to correct type template
-       */
-      $scope.templateByType = function () {
-        /**TODO: move variables out of this function. Call $scope.connected = false when template change */
-        let template;
-        switch ($scope.type.toLowerCase()) {
-          case 'wms':
-            template = '<hs.add-layers-wms/>';
-            break;
-          case 'arcgis':
-            template = '<hs.add-layers-arcgis/>';
-            break;
-          case 'wmts':
-            template = '<hs.add-layers-wmts/>';
-            break;
-          case 'wfs':
-            template = '<hs.add-layers-wfs/>';
-            break;
-          case 'vector':
-            template = '<hs.add-layers-vector/>';
-            $scope.showDetails = true;
-            break;
-          case 'shp':
-            template = '<hs.add-layers-shp/>';
-            $scope.showDetails = true;
-            break;
-          default:
-            break;
-        }
-        return template;
-      };
-
-      function connectServiceFromUrlParam(type) {
-        if (permalink.getParamValue(`${type}_to_connect`)) {
-          const url = permalink.getParamValue(`${type}_to_connect`);
-          layoutService.setMainPanel('datasource_selector');
-          $scope.type = type.toUpperCase();
-          $timeout(() => {
-            $rootScope.$broadcast(`ows.${type}_connecting`, url);
-          });
-        }
+    /**
+     * Change detail panel template according to selected type
+     *
+     * @memberof hs.addLayers
+     * @function templateByType
+     * @returns {string} template Path to correct type template
+     */
+    $scope.templateByType = function () {
+      /**TODO: move variables out of this function. Call $scope.connected = false when template change */
+      let template;
+      switch ($scope.type.toLowerCase()) {
+        case 'wms':
+          template = '<hs.add-layers-wms/>';
+          break;
+        case 'arcgis':
+          template = '<hs.add-layers-arcgis/>';
+          break;
+        case 'wmts':
+          template = '<hs.add-layers-wmts/>';
+          break;
+        case 'wfs':
+          template = '<hs.add-layers-wfs/>';
+          break;
+        case 'vector':
+          template = '<hs.add-layers-vector/>';
+          $scope.showDetails = true;
+          break;
+        case 'shp':
+          template = '<hs.add-layers-shp/>';
+          $scope.showDetails = true;
+          break;
+        default:
+          break;
       }
+      return template;
+    };
 
-      $scope.$on('ows.filling', (event, type, url, layer) => {
-        $scope.type = type.toLowerCase();
+    /**
+     * @param type
+     */
+    function connectServiceFromUrlParam(type) {
+      if (HsPermalinkUrlService.getParamValue(`${type}_to_connect`)) {
+        const url = HsPermalinkUrlService.getParamValue(`${type}_to_connect`);
+        HsLayoutService.setMainPanel('datasource_selector');
+        $scope.type = type.toUpperCase();
         $timeout(() => {
-          $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);
+          $rootScope.$broadcast(`ows.${type}_connecting`, url);
         });
+      }
+    }
+
+    $scope.$on('ows.filling', (event, type, url, layer) => {
+      $scope.type = type.toLowerCase();
+      $timeout(() => {
+        $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);
       });
+    });
 
-      connectServiceFromUrlParam('wms');
-      connectServiceFromUrlParam('wfs');
+    connectServiceFromUrlParam('wms');
+    connectServiceFromUrlParam('wfs');
 
-      $scope.$emit('scope_loaded', 'Ows');
-    },
-  ],
+    $scope.$emit('scope_loaded', 'Ows');
+  },
 };

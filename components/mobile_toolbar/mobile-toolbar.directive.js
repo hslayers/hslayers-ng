@@ -1,5 +1,8 @@
-export default ['HsConfig', function (config) {
-    return {
-        template: require('components/mobile_toolbar/partials/mobile_toolbar.html')
-    };
-}]
+/**
+ *
+ */
+export default function () {
+  return {
+    template: require('./partials/mobile_toolbar.html'),
+  };
+}

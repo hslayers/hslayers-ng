@@ -5,25 +5,21 @@ export default {
     types: '<',
     endpoint: '<',
   },
-  controller: [
-    '$http',
-    '$scope',
-    'HsDatasourceBrowserService',
-    function ($http, $scope, datasourceSelectorService) {
-      this.modalVisible = true;
-      const vm = this;
-      vm.add = function () {
-        if (angular.isUndefined(vm.type)) {
-          vm.alertChoose = true;
-        } else {
-          vm.modalVisible = false;
-          datasourceSelectorService.addLayerToMap(
-            vm.endpoint,
-            vm.layer,
-            vm.type
-          );
-        }
-      };
-    },
-  ],
+  controller: function (HsDatasourceBrowserService) {
+    'ngInject';
+    this.modalVisible = true;
+    const vm = this;
+    vm.add = function () {
+      if (angular.isUndefined(vm.type)) {
+        vm.alertChoose = true;
+      } else {
+        vm.modalVisible = false;
+        HsDatasourceBrowserService.addLayerToMap(
+          vm.endpoint,
+          vm.layer,
+          vm.type
+        );
+      }
+    };
+  },
 };

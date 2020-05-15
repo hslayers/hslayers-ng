@@ -1,22 +1,32 @@
-export default ['HsMapService', 'HsGeolocationService', 'HsCore', 'HsConfig', 'HsLayoutService',
-  function (hsMap, locationService, HsCore, config, layoutService) {
-    return {
-      template: require('./partials/geolocation.html'),
-      link: function link(scope, element, attrs) {
-        if (layoutService.componentEnabled('geolocationButton')) {
-          hsMap.loaded().then(_ => {
-            layoutService.contentWrapper.querySelector('.ol-overlaycontainer-stopevent').appendChild(element[0]);
-          });
-        }
-      },
-      controller: ['$scope', 'HsConfig', function ($scope, config) {
-        $scope.locationService = locationService;
+/**
+ * @param HsMapService
+ * @param HsGeolocationService
+ * @param HsLayoutService
+ */
+export default function (HsMapService, HsGeolocationService, HsLayoutService) {
+  'ngInject';
+  return {
+    template: require('./partials/geolocation.html'),
+    link: function link(scope, element, attrs) {
+      if (HsLayoutService.componentEnabled('geolocationButton')) {
+        HsMapService.loaded().then((_) => {
+          HsLayoutService.contentWrapper
+            .querySelector('.ol-overlaycontainer-stopevent')
+            .appendChild(element[0]);
+        });
+      }
+    },
+    controller: [
+      '$scope',
+      'HsConfig',
+      function ($scope, config) {
+        $scope.locationService = HsGeolocationService;
         $scope.collapsed = true;
 
         $scope.geolocationVisible = function () {
-          return layoutService.componentEnabled('geolocationButton');
+          return HsLayoutService.componentEnabled('geolocationButton');
         };
-      }]
-
-    };
-  }];
+      },
+    ],
+  };
+}

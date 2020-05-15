@@ -7,6 +7,7 @@ import 'angular-drag-and-drop-lists';
 import folderDirective from './layermanager-folder.directive';
 import layerEditorComponent from './layer-editor.component';
 import layerEditorDimensionsComponent from './dimensions/layer-editor-dimensions.component';
+import layerEditorService from './layer-editor.service';
 import layerEditorSubLayerCheckboxesDirective from './layer-editor.sub-layer-checkboxes.directive';
 import layerEditorSubLayerService from './layer-editor.sub-layer.service';
 import layerEditorVectorLayerService from './layer-editor-vector-layer.service';
@@ -17,7 +18,6 @@ import layermanagerMetadataService from './layermanager-metadata.service';
 import layermanagerService from './layermanager.service';
 import layermanagerWmstService from './layermanager-wmst.service';
 import removeAllDialogDirective from './remove-all-dialog.directive';
-import layerEditorService from './layer-editor.service';
 
 /**
  * @ngdoc module

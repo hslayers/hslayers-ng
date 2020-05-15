@@ -1,9 +1,9 @@
 import '../drag/drag.module';
 import '../layout/layout.module';
 import '../map/map.module';
-import 'angular-gettext';
-import '../translations/js/translations';
+//import '../translations/js/translations';
 import '../utils/utils.module';
+import 'angular-gettext';
 import coreService from './core.service';
 
 /**

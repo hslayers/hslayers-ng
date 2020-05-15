@@ -1,8 +1,10 @@
-export default ['HsConfig', function (config) {
-    return {
-        template: require(`components/feature-filter/partials/feature-filter-md.html`),
-        link: function (scope, element) {
-
-        }
-    };
-}]
+/**
+ * @param HsConfig
+ */
+export default function (HsConfig) {
+  'ngInject';
+  return {
+    template: require(`./partials/feature-filter-md.html`),
+    link: function (scope, element) {},
+  };
+}

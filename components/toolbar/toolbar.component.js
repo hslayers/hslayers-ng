@@ -1,90 +1,88 @@
 export default {
   template: require('./partials/toolbar.html'),
-  controller: [
-    '$scope',
-    'HsCore',
-    '$timeout',
-    'HsLayoutService',
-    '$document',
-    function ($scope, HsCore, $timeout, layoutService, $document) {
-      let collapsed = false;
+  controller: function ($scope, HsCore, $timeout, HsLayoutService, $document) {
+    'ngInject';
+    let collapsed = false;
 
-      angular.extend($scope, {
-        HsCore: HsCore,
-        layoutService,
+    angular.extend($scope, {
+      HsCore: HsCore,
+      layoutService: HsLayoutService,
 
-        measureButtonClicked() {
-          layoutService.setMainPanel('measure', true);
-        },
+      measureButtonClicked() {
+        HsLayoutService.setMainPanel('measure', true);
+      },
 
-        /**
-         * Change/read collapsed setting
-         * @memberof hs.toolbar.controller
-         * @function collapsed
-         * @returns {Boolean} Collapsed state
-         * @param {boolean} is Value to set collapsed state to
-         */
-        collapsed(is) {
-          if (arguments.length > 0) {
-            collapsed = is;
-          }
-          return collapsed;
-        },
+      /**
+       * Change/read collapsed setting
+       *
+       * @memberof hs.toolbar.controller
+       * @function collapsed
+       * @returns {boolean} Collapsed state
+       * @param {boolean} is Value to set collapsed state to
+       */
+      collapsed(is) {
+        if (arguments.length > 0) {
+          collapsed = is;
+        }
+        return collapsed;
+      },
 
-        /**
-         * Test mobile mode (document width under 800px)
-         * @memberof hs.toolbar.controller
-         * @returns {String} Returns if mobile layout should be used (document body less than 800px)
-         * @function isMobile
-         */
-        isMobile() {
-          if ($document[0].body.innerWidth < 800) {
-            return 'mobile';
+      /**
+       * Test mobile mode (document width under 800px)
+       *
+       * @memberof hs.toolbar.controller
+       * @returns {string} Returns if mobile layout should be used (document body less than 800px)
+       * @function isMobile
+       */
+      isMobile() {
+        if ($document[0].body.innerWidth < 800) {
+          return 'mobile';
+        } else {
+          return '';
+        }
+      },
+
+      /**
+       * True if composition is loaded
+       *
+       * @memberof hs.toolbar.controller
+       * @function compositionLoaded
+       * @returns {boolean} Returns if composition_title is set and thus composition is loaded. TODO rename
+       */
+      compositionLoaded() {
+        return angular.isDefined($scope.composition_title);
+      },
+
+      /**
+       * Dinamically generates style for placement of toolbar according
+       * to panel size and position
+       *
+       * @memberof hs.toolbar.controller
+       * @function toolbarStyle
+       * @returns {object} Dinamicaly generated CSS style
+       */
+      toolbarStyle() {
+        if (!HsLayoutService.sidebarBottom()) {
+          if (!HsLayoutService.sidebarRight) {
+            return {
+              marginLeft: HsLayoutService.panelSpaceWidth() + 'px',
+            };
           } else {
-            return '';
+            return {
+              marginRight: HsLayoutService.panelSpaceWidth() + 'px',
+            };
           }
-        },
+        }
+      },
+    });
 
-        /**
-         * True if composition is loaded
-         * @memberof hs.toolbar.controller
-         * @function compositionLoaded
-         * @returns {Boolean} Returns if composition_title is set and thus composition is loaded. TODO rename
-         */
-        compositionLoaded() {
-          return angular.isDefined($scope.composition_title);
-        },
-
-        /**
-         * Dinamically generates style for placement of toolbar according
-         * to panel size and position
-         * @memberof hs.toolbar.controller
-         * @function toolbarStyle
-         * @return {Object} Dinamicaly generated CSS style
-         */
-        toolbarStyle() {
-          if (!layoutService.sidebarBottom()) {
-            if (!layoutService.sidebarRight) {
-              return {
-                marginLeft: layoutService.panelSpaceWidth() + 'px',
-              };
-            } else {
-              return {
-                marginRight: layoutService.panelSpaceWidth() + 'px',
-              };
-            }
-          }
-        },
+    $scope.$on('core.map_reset', (event) => {
+      $timeout(() => {
+        delete $scope.composition_title;
+        delete $scope.composition_abstract;
       });
+    });
 
-      $scope.$on('core.map_reset', (event) => {
-        $timeout(() => {
-          delete $scope.composition_title;
-          delete $scope.composition_abstract;
-        });
-      });
-
-      $scope.$emit('scope_loaded', 'Toolbar');
-    },
-  ],
+    $scope.$emit('scope_loaded', 'Toolbar');
+  },
 };

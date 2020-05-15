@@ -3,14 +3,11 @@ export default {
   bindings: {
     url: '=',
   },
-  controller: [
-    '$http',
-    '$scope',
-    function ($http, $scope) {
-      this.modalVisible = true;
-      $scope.$on('datasource-selector.layman_auth', () => {
-        this.modalVisible = false;
-      });
-    },
-  ],
+  controller: function ($scope) {
+    'ngInject';
+    this.modalVisible = true;
+    $scope.$on('datasource-selector.layman_auth', () => {
+      this.modalVisible = false;
+    });
+  },
 };

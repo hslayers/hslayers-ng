@@ -3,7 +3,11 @@ global.moment = moment;
 import momentinterval from 'moment-interval/src/moment-interval';
 
 //TODO needs to be documented
-export default ['$log', function ($log) {
+/**
+ * @param $log
+ */
+export default function ($log) {
+  'ngInject';
   const me = this;
   angular.extend(me, {
     prepareTimeSteps(step_string) {
@@ -22,11 +26,15 @@ export default ['$log', function ($log) {
           } else {
             step = momentinterval.interval('P1D');
           }
-          const interval = momentinterval.interval(interval_def[0] + '/' + interval_def[1]);
+          const interval = momentinterval.interval(
+            interval_def[0] + '/' + interval_def[1]
+          );
           while (interval.start() < interval.end()) {
             //console.log(interval.start().toDate().toISOString());
             steps.push(interval.start().toDate().toISOString());
-            interval.start(momentinterval.utc(interval.start().toDate()).add(step.period()));
+            interval.start(
+              momentinterval.utc(interval.start().toDate()).add(step.period())
+            );
           }
         }
       }
@@ -71,6 +79,7 @@ export default ['$log', function ($log) {
 
     /**
      * fillDimensionValues
+     *
      * @param {ol/Layer} layer Layer to fill the dimension values
      * @description A recursive function with goes through layers
      * children and sets the possible dimension values used in dropdown.
@@ -84,8 +93,8 @@ export default ['$log', function ($log) {
           dimension.values = me.getDimensionValues(dimension);
         });
       });
-    }
+    },
   });
 
   return me;
-}];
+}

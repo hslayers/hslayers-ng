@@ -1,5 +1,5 @@
-import 'components/layermanager/layermanager.module';
-import 'components/map/map.module';
+import '../layermanager/layermanager.module';
+import '../map/map.module';
 import featureFilterController from './feature-filter.controller';
 import featureFilterDirective from './feature-filter.directive';
 import featureFilterElementDirective from './feature-filter-element.directive';

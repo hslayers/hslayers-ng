@@ -1,4 +1,5 @@
 export default function () {
+  'ngInject';
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {

@@ -1,53 +1,57 @@
-export default [
-  'HsConfig',
-  'HsCommonLaymanService',
-  function (config, laymanService) {
-    const me = this;
+/**
+ * @param HsConfig
+ * @param HsCommonLaymanService
+ */
+export default function (HsConfig, HsCommonLaymanService) {
+  'ngInject';
+  const me = this;
 
-    function getItemsPerPageConfig(ds) {
-      return angular.isDefined(ds.paging) &&
-        angular.isDefined(ds.paging.itemsPerPage)
-        ? ds.paging.itemsPerPage
-        : config.dsPaging || 20;
-    }
+  /**
+   * @param ds
+   */
+  function getItemsPerPageConfig(ds) {
+    return angular.isDefined(ds.paging) &&
+      angular.isDefined(ds.paging.itemsPerPage)
+      ? ds.paging.itemsPerPage
+      : HsConfig.dsPaging || 20;
+  }
 
-    angular.extend(me, {
-      endpoints: [
-        ...(config.status_manager_url
-          ? [
-              {
-                type: 'statusmanager',
-                title: 'Status manager',
-                url: config.status_manager_url,
-              },
-            ]
-          : []),
-        ...(config.datasources || []).map((ds) => {
-          return {
-            url: ds.url,
-            type: ds.type,
-            title: ds.title,
-            datasourcePaging: {
-              start: 0,
-              limit: getItemsPerPageConfig(ds),
-              loaded: false,
+  angular.extend(me, {
+    endpoints: [
+      ...(HsConfig.status_manager_url
+        ? [
+            {
+              type: 'statusmanager',
+              title: 'Status manager',
+              url: HsConfig.status_manager_url,
             },
-            compositionsPaging: {
-              start: 0,
-              limit: getItemsPerPageConfig(ds),
-              loaded: false,
-            },
-            paging: {
-              itemsPerPage: getItemsPerPageConfig(ds),
-            },
-            user: ds.user,
-            liferayProtocol: ds.liferayProtocol,
-            originalConfiguredUser: ds.user,
-            getCurrentUserIfNeeded: laymanService.getCurrentUserIfNeeded,
-          };
-        }),
-      ],
-    });
-    return me;
-  },
-];
+          ]
+        : []),
+      ...(HsConfig.datasources || []).map((ds) => {
+        return {
+          url: ds.url,
+          type: ds.type,
+          title: ds.title,
+          datasourcePaging: {
+            start: 0,
+            limit: getItemsPerPageConfig(ds),
+            loaded: false,
+          },
+          compositionsPaging: {
+            start: 0,
+            limit: getItemsPerPageConfig(ds),
+            loaded: false,
+          },
+          paging: {
+            itemsPerPage: getItemsPerPageConfig(ds),
+          },
+          user: ds.user,
+          liferayProtocol: ds.liferayProtocol,
+          originalConfiguredUser: ds.user,
+          getCurrentUserIfNeeded: HsCommonLaymanService.getCurrentUserIfNeeded,
+        };
+      }),
+    ],
+  });
+  return me;
+}

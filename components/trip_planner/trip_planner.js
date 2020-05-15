@@ -12,6 +12,12 @@ import {transform} from 'ol/proj';
 /**
  * @namespace hs.trip_planner
  * @memberOf hs
+ * @param $scope
+ * @param OlMap
+ * @param HsCore
+ * @param service
+ * @param config
+ * @param layoutService
  */
 angular
   .module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
@@ -25,7 +31,7 @@ angular
     'HsConfig',
     function (config) {
       return {
-        template: require('components/trip_planner/partials/trip_planner.html'),
+        template: require('./partials/trip_planner.html'),
       };
     },
   ])
@@ -36,18 +42,16 @@ angular
    * @name HsTripPlannerService
    * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
    */
-  .factory('HsTripPlannerService', [
-    'HsCore',
-    'HsMapService',
-    'HsUtilsService',
-    '$http',
-    'HsPermalinkUrlService',
-    function (HsCore, OlMap, utils, $http, permalink) {
+  .factory(
+    'HsTripPlannerService',
+    (HsMapService, HsUtilsService, $http, HsPermalinkUrlService) => {
+      'ngInject';
       const me = {
         waypoints: [],
         scopes: [],
         /**
          * Refresh scopes phase
+         *
          * @memberof HsTripPlannerService
          * @function digestScopes
          */
@@ -60,9 +64,11 @@ angular
         },
         /**
          * Load selected trip data from plan4all server and calculate routes
+         *
          * @memberof HsTripPlannerService
          * @function loadWaypoints
          * @params {String} uuid Identifier of selected trip
+         * @param uuid
          */
         loadWaypoints: function (uuid) {
           const trip_url = '<http://www.sdi4apps.eu/trips.rdf#' + uuid + '>';
@@ -89,16 +95,17 @@ angular
         },
         /**
          * Add waypoint to waypoint list and recalculate route
+         *
          * @memberof HsTripPlannerService
          * @function addWaypoint
-         * @param {Number} lon Longitude number (part of Ol.coordinate Array)
-         * @param {Number} lat Latitude number (part of Ol.coordinate Array)
+         * @param {number} lon Longitude number (part of Ol.coordinate Array)
+         * @param {number} lat Latitude number (part of Ol.coordinate Array)
          */
         addWaypoint: function (lon, lat) {
-          if (permalink.getParamValue('trip') == null) {
-            me.trip = utils.generateUuid();
-            permalink.push('trip', me.trip);
-            permalink.update();
+          if (HsPermalinkUrlService.getParamValue('trip') == null) {
+            me.trip = HsUtilsService.generateUuid();
+            HsPermalinkUrlService.push('trip', me.trip);
+            HsPermalinkUrlService.update();
           }
           const wp = {
             lon: lon,
@@ -121,11 +128,12 @@ angular
         },
         /**
          * Store current waypoints on remote Plan4All server if possible
+         *
          * @memberof HsTripPlannerService
          * @function storeWaypoints
          */
         storeWaypoints: function () {
-          if (permalink.getParamValue('trip_editable') == null) {
+          if (HsPermalinkUrlService.getParamValue('trip_editable') == null) {
             return;
           }
           const waypoints = [];
@@ -162,9 +170,10 @@ angular
         },
         /**
          * Remove selected waypoint from trip
+         *
          * @memberof HsTripPlannerService
          * @function removeWaypoint
-         * @param {Object} wp Waypoint object to remove
+         * @param {object} wp Waypoint object to remove
          */
         removeWaypoint: function (wp) {
           const prev_index = me.waypoints.indexOf(wp) - 1;
@@ -194,6 +203,7 @@ angular
         },
         /**
          * Calculate routes between stored waypoints
+         *
          * @memberof HsTripPlannerService
          * @function calculateRoutes
          */
@@ -205,7 +215,7 @@ angular
               wpt.loading = true;
               $.ajax({
                 method: 'GET',
-                url: utils.proxify(
+                url: HsUtilsService.proxify(
                   'http://www.yournavigation.org/api/1.0/gosmore.php?flat=' +
                     wpf.lat +
                     '&flon=' +
@@ -231,7 +241,7 @@ angular
                   },
                   {
                     dataProjection: response.crs.name,
-                    featureProjection: OlMap.map
+                    featureProjection: HsMapService.map
                       .getView()
                       .getProjection()
                       .getCode(),
@@ -250,15 +260,15 @@ angular
         },
       };
 
-      if (permalink.getParamValue('trip') != null) {
-        me.trip = permalink.getParamValue('trip');
+      if (HsPermalinkUrlService.getParamValue('trip') != null) {
+        me.trip = HsPermalinkUrlService.getParamValue('trip');
         me.loadWaypoints(me.trip);
-        permalink.push('trip', me.trip);
+        HsPermalinkUrlService.push('trip', me.trip);
       }
 
       return me;
-    },
-  ])
+    }
+  )
 
   /**
    * @memberof hs.trip_planner
@@ -266,30 +276,30 @@ angular
    * @name hs.tripPlanner.toolbarButtonDirective
    * @description Add trip planner button html template to the map
    */
-  .directive('hs.tripPlanner.toolbarButtonDirective', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('components/trip_planner/partials/toolbar_button_directive.html'),
-      };
-    },
-  ])
+  .directive('hs.tripPlanner.toolbarButtonDirective', () => {
+    return {
+      template: require('./partials/toolbar_button_directive.html'),
+    };
+  })
 
   /**
    * @memberof hs.trip_planner
    * @ngdoc controller
    * @name HsTripPlannerController
    */
-  .controller('HsTripPlannerController', [
-    '$scope',
-    'HsMapService',
-    'HsCore',
-    'HsTripPlannerService',
-    'HsConfig',
-    'HsLayoutService',
-    function ($scope, OlMap, HsCore, service, config, layoutService) {
-      const map = OlMap.map;
-      $scope.loaderImage = config.hsl_path + 'img/ajax-loader.gif';
+  .controller(
+    'HsTripPlannerController',
+    (
+      $scope,
+      HsMapService,
+      HsCore,
+      HsTripPlannerService,
+      HsConfig,
+      HsLayoutService
+    ) => {
+      'ngInject';
+      const map = HsMapService.map;
+      $scope.loaderImage = HsConfig.hsl_path + 'img/ajax-loader.gif';
 
       const source = new Vector({});
       const style = function (feature, resolution) {
@@ -304,8 +314,8 @@ angular
             }),
             image: new Icon({
               src: feature.get('highlighted')
-                ? config.hsl_path + 'img/pin_white_red32.png'
-                : config.hsl_path + 'img/pin_white_blue32.png',
+                ? HsConfig.hsl_path + 'img/pin_white_red32.png'
+                : HsConfig.hsl_path + 'img/pin_white_blue32.png',
               crossOrigin: 'anonymous',
               anchor: [0.5, 1],
             }),
@@ -325,21 +335,22 @@ angular
         features: movable_features,
       });
 
-      OlMap.loaded().then((map) => {
+      HsMapService.loaded().then((map) => {
         map.addLayer(vector);
       });
 
-      if (angular.isUndefined(config.default_layers)) {
-        config.default_layers = [];
+      if (angular.isUndefined(HsConfig.default_layers)) {
+        HsConfig.default_layers = [];
       }
-      config.default_layers.push(vector);
+      HsConfig.default_layers.push(vector);
 
-      $scope.service = service;
-      service.scopes.push($scope);
+      $scope.service = HsTripPlannerService;
+      HsTripPlannerService.scopes.push($scope);
       let timer;
 
       /**
        * Handler of adding waypoint in connected service
+       *
        * @memberof HsTripPlannerController
        * @function waypointAdded
        * @param {object} wp Waypoint ojbect, with lat, lon and routes array
@@ -350,7 +361,7 @@ angular
             transform(
               [wp.lon, wp.lat],
               'EPSG:4326',
-              OlMap.map.getView().getProjection().getCode()
+              HsMapService.map.getView().getProjection().getCode()
             )
           ),
           wp: wp,
@@ -366,23 +377,26 @@ angular
             }
             const new_cords = transform(
               f.getGeometry().getCoordinates(),
-              OlMap.map.getView().getProjection().getCode(),
+              HsMapService.map.getView().getProjection().getCode(),
               'EPSG:4326'
             );
             this.get('wp').lon = new_cords[0];
             this.get('wp').lat = new_cords[1];
-            const prev_index = service.waypoints.indexOf(this.get('wp')) - 1;
+            const prev_index =
+              HsTripPlannerService.waypoints.indexOf(this.get('wp')) - 1;
             if (
               prev_index > -1 &&
-              service.waypoints[prev_index].routes.length > 0
+              HsTripPlannerService.waypoints[prev_index].routes.length > 0
             ) {
-              removeRoutesForWaypoint(service.waypoints[prev_index]);
+              removeRoutesForWaypoint(
+                HsTripPlannerService.waypoints[prev_index]
+              );
             }
             if (timer != null) {
               clearTimeout(timer);
             }
             timer = setTimeout(() => {
-              service.calculateRoutes();
+              HsTripPlannerService.calculateRoutes();
             }, 500);
           },
           f
@@ -391,6 +405,7 @@ angular
 
       /**
        * (PRIVATE) Remove routes from selected waypoint
+       *
        * @memberof HsTripPlannerController
        * @function removeRoutesForWaypoint
        * @param {object} wp Waypoint to remove routes
@@ -404,6 +419,7 @@ angular
 
       /**
        * Clear all waypoints from service and layer
+       *
        * @memberof HsTripPlannerController
        * @function clearAll
        */
@@ -415,10 +431,11 @@ angular
         }
       };
 
-      OlMap.map.addInteraction(modify);
+      HsMapService.map.addInteraction(modify);
 
       /**
        * Handler of adding computed route to layer
+       *
        * @memberof HsTripPlannerController
        * @function routeAdded
        * @param {GeoJSON} feature Route to add
@@ -429,6 +446,7 @@ angular
 
       /**
        * Remove selected route from source
+       *
        * @memberof HsTripPlannerController
        * @function routeRemoved
        * @param {object} feature Route feature to remove
@@ -441,6 +459,7 @@ angular
 
       /**
        * Remove selected waypoint from source
+       *
        * @memberof HsTripPlannerController
        * @function waypointRemoved
        * @param {object} wp Waypoint feature to remove
@@ -453,6 +472,7 @@ angular
 
       /**
        * Format waypoint route distance in a human friendly way
+       *
        * @memberof HsTripPlannerController
        * @function formatDistance
        * @param {float} wp Wayoint
@@ -471,6 +491,7 @@ angular
 
       /**
        * Get the total distance for all waypoint routes
+       *
        * @memberof HsTripPlannerController
        * @function totalDistance
        */
@@ -486,6 +507,7 @@ angular
 
       /**
        * Remove selected waypoint from source
+       *
        * @memberof HsTripPlannerController
        * @function toggleEdit
        * @param {object} waypoint
@@ -498,11 +520,11 @@ angular
       };
 
       $scope.prevPanel = function () {
-        layoutService.setMainPanel('info');
+        HsLayoutService.setMainPanel('info');
       };
 
       $scope.$on('core.mainpanel_changed', (event) => {});
 
       $scope.$emit('scope_loaded', 'Trip planner');
-    },
-  ]);
+    }
+  );

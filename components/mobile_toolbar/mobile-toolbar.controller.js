@@ -1,24 +1,38 @@
-export default ['$scope', '$timeout', 'HsMobileToolbarService', 'HsCore', '$window', 'HsLayoutService',
-function ($scope, $timeout, service, HsCore, $window, layoutService) {
-    $scope.HsCore = HsCore;
-    layoutService.sidebarRight = false;
-    sidebarExpanded.sidebarExpanded = service.panelspace0pened;
-    $scope.layoutService = layoutService;
-    $scope.service = service;
+/**
+ * @param $scope
+ * @param $timeout
+ * @param HsMobileToolbarService
+ * @param HsCore
+ * @param HsLayoutService
+ */
+export default function (
+  $scope,
+  $timeout,
+  HsMobileToolbarService,
+  HsCore,
+  HsLayoutService
+) {
+  'ngInject';
+  $scope.HsCore = HsCore;
+  HsLayoutService.sidebarRight = false;
+  HsLayoutService.sidebarExpanded = HsMobileToolbarService.panelspace0pened;
+  $scope.layoutService = HsLayoutService;
+  $scope.service = HsMobileToolbarService;
 
-    /**
-     * @function setMainPanel
-     * @memberOf HsMobileToolbarController
-     * @params {} which
-     * @description TODO
-     */
-    $scope.setMainPanel = function (which) {
-        $timeout(function () { layoutService.setMainPanel(which, false); })
-    }
+  /**
+   * @function setMainPanel
+   * @memberOf HsMobileToolbarController
+   * @params which
+   * @description TODO
+   * @param which
+   */
+  $scope.setMainPanel = function (which) {
+    $timeout(() => {
+      HsLayoutService.setMainPanel(which, false);
+    });
+  };
 
-    $scope.togglePanelspace = service.togglePanelspace;
-    togglePanelspace = service.togglePanelspace;
-    $scope.$emit('scope_loaded', "Mobile Toolbar");
+  $scope.togglePanelspace = HsMobileToolbarService.togglePanelspace;
+  togglePanelspace = HsMobileToolbarService.togglePanelspace;
+  $scope.$emit('scope_loaded', 'Mobile Toolbar');
 }
-
-]

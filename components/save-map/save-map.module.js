@@ -27,14 +27,12 @@ angular
    * @memberof hs.save-map
    * @description Display Save map (composition) dialog
    */
-  .directive('hs.save-map.directive', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/dialog.html'),
-      };
-    },
-  ])
+  .directive('hs.save-map.directive', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/dialog.html'),
+    };
+  })
 
   /**
    * @ngdoc directive
@@ -42,14 +40,12 @@ angular
    * @memberof hs.save-map
    * @description Display advanced form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveForm', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/form.html'),
-      };
-    },
-  ])
+  .directive('hs.saveMap.directiveForm', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/form.html'),
+    };
+  })
 
   /**
    * @ngdoc directive
@@ -57,14 +53,12 @@ angular
    * @memberof hs.save-map
    * @description Display simple form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveSimpleform', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/simpleform.html'),
-      };
-    },
-  ])
+  .directive('hs.saveMap.directiveSimpleform', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/simpleform.html'),
+    };
+  })
 
   /**
    * @ngdoc directive
@@ -72,17 +66,15 @@ angular
    * @memberof hs.save-map
    * @description Display dialog about result of saving to status manager operation
    */
-  .directive('hs.saveMap.resultDialogDirective', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/dialog_result.html'),
-        link: function (scope, element, attrs) {
-          scope.resultModalVisible = true;
-        },
-      };
-    },
-  ])
+  .directive('hs.saveMap.resultDialogDirective', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/dialog_result.html'),
+      link: function (scope, element, attrs) {
+        scope.resultModalVisible = true;
+      },
+    };
+  })
 
   /**
    * @ngdoc directive
@@ -90,17 +82,15 @@ angular
    * @memberof hs.save-map
    * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
    */
-  .directive('hs.saveMap.saveDialogDirective', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/dialog_save.html'),
-        link: function (scope, element, attrs) {
-          scope.saveCompositionModalVisible = true;
-        },
-      };
-    },
-  ])
+  .directive('hs.saveMap.saveDialogDirective', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/dialog_save.html'),
+      link: function (scope, element, attrs) {
+        scope.saveCompositionModalVisible = true;
+      },
+    };
+  })
 
   /**
    * @ngdoc directive
@@ -108,24 +98,21 @@ angular
    * @memberof hs.save-map
    * @description UNUSED?
    */
-  .directive('hs.saveMap.focusName', [
-    'timeout',
-    '$log',
-    ($timeout, $log) => {
-      return {
-        link: function (scope, element, attrs) {
-          scope.$watch(attrs.focusName, (value) => {
-            if (value === true) {
-              $log.log('value=', value);
-              element[0].focus();
-              scope[attrs.focusName] = false;
-              //});
-            }
-          });
-        },
-      };
-    },
-  ])
+  .directive('hs.saveMap.focusName', ($log) => {
+    'ngInject';
+    return {
+      link: function (scope, element, attrs) {
+        scope.$watch(attrs.focusName, (value) => {
+          if (value === true) {
+            $log.log('value=', value);
+            element[0].focus();
+            scope[attrs.focusName] = false;
+            //});
+          }
+        });
+      },
+    };
+  })
 
   /**
    * @ngdoc service

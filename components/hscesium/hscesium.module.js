@@ -5,6 +5,9 @@ import hscesiumService from './hscesium.service';
  * @module hs.cesium
  * @name hs.cesium
  * @description Module containing cesium map
+ * @param config
+ * @param service
+ * @param $timeout
  */
 angular
   .module('hs.cesium', [])
@@ -23,21 +26,17 @@ angular
    * @ngdoc directive
    * @description
    */
-  .directive('hs.cesium.directive', [
-    'HsConfig',
-    'HsCesiumService',
-    '$timeout',
-    function (config, service, $timeout) {
-      return {
-        template: require('components/hscesium/partials/cesium.html'),
-        link: function (scope, element) {
-          $timeout(() => {
-            service.init();
-          });
-        },
-      };
-    },
-  ])
+  .directive('hs.cesium.directive', (HsCesiumService, $timeout) => {
+    'ngInject';
+    return {
+      template: require('./partials/cesium.html'),
+      link: function (scope, element) {
+        $timeout(() => {
+          HsCesiumService.init();
+        });
+      },
+    };
+  })
 
   /**
    * @module hs.cesium
@@ -45,28 +44,20 @@ angular
    * @ngdoc controller
    * @description
    */
-  .controller('HsCesiumController', [
-    '$scope',
-    'HsCesiumService',
-    'HsConfig',
-    'HsPermalinkUrlService',
-    'HsCore',
-    'HsMapService',
-    'HsSidebarService',
-    '$timeout',
-    '$rootScope',
-    function (
+  .controller(
+    'HsCesiumController',
+    (
       $scope,
-      service,
-      config,
-      permalink,
+      HsCesiumService,
+      HsPermalinkUrlService,
       HsCore,
-      hsMap,
-      sidebarService,
+      HsMapService,
+      HsSidebarService,
       $timeout,
       $rootScope
-    ) {
-      const map = service.map;
+    ) => {
+      'ngInject';
+      const map = HsCesiumService.map;
       $scope.visible = true;
 
       /**
@@ -76,16 +67,18 @@ angular
        * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
        */
       function toggleCesiumMap() {
-        hsMap.visible = !hsMap.visible;
-        $scope.visible = !hsMap.visible;
-        permalink.updateCustomParams({view: hsMap.visible ? '2d' : '3d'});
-        if (hsMap.visible) {
-          service.viewer.destroy();
+        HsMapService.visible = !HsMapService.visible;
+        $scope.visible = !HsMapService.visible;
+        HsPermalinkUrlService.updateCustomParams({
+          view: HsMapService.visible ? '2d' : '3d',
+        });
+        if (HsMapService.visible) {
+          HsCesiumService.viewer.destroy();
           $timeout(() => {
             HsCore.updateMapSize();
           }, 5000);
         } else {
-          service.init();
+          HsCesiumService.init();
         }
         $rootScope.$broadcast(
           'map.mode_changed',
@@ -93,29 +86,29 @@ angular
         );
       }
 
-      const view = permalink.getParamValue('view');
+      const view = HsPermalinkUrlService.getParamValue('view');
       if (view != '2d' || view == '3d') {
-        permalink.updateCustomParams({view: '3d'});
+        HsPermalinkUrlService.updateCustomParams({view: '3d'});
         setTimeout(() => {
-          hsMap.visible = false;
+          HsMapService.visible = false;
         }, 0);
       } else {
-        permalink.updateCustomParams({view: '2d'});
+        HsPermalinkUrlService.updateCustomParams({view: '2d'});
       }
 
-      sidebarService.extraButtons.push({
+      HsSidebarService.extraButtons.push({
         title: '3D/2D',
         icon_class: 'icon-globealt',
         click: toggleCesiumMap,
       });
 
       $rootScope.$on('layermanager.dimension_changed', (e, data) => {
-        service.dimensionChanged(data.layer, data.dimension);
+        HsCesiumService.dimensionChanged(data.layer, data.dimension);
       });
 
-      $rootScope.$on('HsCore.mapSizeUpdated', service.resize);
-      service.resize();
+      $rootScope.$on('HsCore.mapSizeUpdated', HsCesiumService.resize);
+      HsCesiumService.resize();
 
       $scope.$emit('scope_loaded', 'CesiumMap');
-    },
-  ]);
+    }
+  );

@@ -1,5 +1,9 @@
-export default ['HsConfig', function (config) {
+/**
+ * @param HsConfig
+ */
+export default function (HsConfig) {
+  'ngInject';
   return {
-    template: require('./partials/swipe-area.html')
+    template: require('./partials/swipe-area.html'),
   };
-}];
+}

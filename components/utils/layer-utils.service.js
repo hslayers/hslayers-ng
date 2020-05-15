@@ -5,264 +5,266 @@ import {ImageWMS} from 'ol/source';
 import {TileWMS, WMTS} from 'ol/source';
 import {isEmpty} from 'ol/extent';
 
-export default [
-  'HsConfig',
-  'HsUtilsService',
-  function (config, utils) {
-    const me = this;
-    return angular.extend(me, {
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#layerIsZoomable
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True for layer with BoundingBox property, for
-       * WMS layer or for layer, which has source with extent
-       * @description Determines if layer have properties needed for Zoom
-       * to layer function.
-       */
-      layerIsZoomable(layer) {
-        if (typeof layer == 'undefined') {
-          return false;
-        }
-        if (layer.get('BoundingBox')) {
-          return true;
-        }
-        if (me.isLayerWMS(layer)) {
-          return true;
-        }
-        if (
-          layer.getSource().getExtent &&
-          layer.getSource().getExtent() &&
-          !isEmpty(layer.getSource().getExtent())
-        ) {
-          return true;
-        }
+/**
+ * @param HsUtilsService
+ */
+export default function (HsUtilsService) {
+  'ngInject';
+  const me = this;
+  return angular.extend(me, {
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#layerIsZoomable
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True for layer with BoundingBox property, for
+     * WMS layer or for layer, which has source with extent
+     * @description Determines if layer have properties needed for Zoom
+     * to layer function.
+     */
+    layerIsZoomable(layer) {
+      if (typeof layer == 'undefined') {
         return false;
-      },
+      }
+      if (layer.get('BoundingBox')) {
+        return true;
+      }
+      if (me.isLayerWMS(layer)) {
+        return true;
+      }
+      if (
+        layer.getSource().getExtent &&
+        layer.getSource().getExtent() &&
+        !isEmpty(layer.getSource().getExtent())
+      ) {
+        return true;
+      }
+      return false;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#layerIsStyleable
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True for ol.layer.Vector
-       * @description Determines if layer is a Vector layer and therefore
-       * styleable
-       */
-      layerIsStyleable(layer) {
-        if (typeof layer == 'undefined') {
-          return false;
-        }
-        if (
-          utils.instOf(layer, VectorLayer) /*&& layer.getSource().styleAble*/
-        ) {
-          return true;
-        }
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#layerIsStyleable
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True for ol.layer.Vector
+     * @description Determines if layer is a Vector layer and therefore
+     * styleable
+     */
+    layerIsStyleable(layer) {
+      if (typeof layer == 'undefined') {
         return false;
-      },
+      }
+      if (
+        HsUtilsService.instOf(
+          layer,
+          VectorLayer
+        ) /*&& layer.getSource().styleAble*/
+      ) {
+        return true;
+      }
+      return false;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerQueryable
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image with
-       * INFO_FORMAT in params
-       * @description Test if layer is queryable (WMS layer with Info format)
-       */
-      isLayerQueryable(layer) {
-        if (
-          utils.instOf(layer, Tile) &&
-          utils.instOf(layer.getSource(), TileWMS) &&
-          layer.getSource().getParams().INFO_FORMAT
-        ) {
-          return true;
-        }
-        if (
-          utils.instOf(layer, ImageLayer) &&
-          utils.instOf(layer.getSource(), ImageWMS) &&
-          layer.getSource().getParams().INFO_FORMAT
-        ) {
-          return true;
-        }
-        return false;
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerQueryable
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True for ol.layer.Tile and ol.layer.Image with
+     * INFO_FORMAT in params
+     * @description Test if layer is queryable (WMS layer with Info format)
+     */
+    isLayerQueryable(layer) {
+      if (
+        HsUtilsService.instOf(layer, Tile) &&
+        HsUtilsService.instOf(layer.getSource(), TileWMS) &&
+        layer.getSource().getParams().INFO_FORMAT
+      ) {
+        return true;
+      }
+      if (
+        HsUtilsService.instOf(layer, ImageLayer) &&
+        HsUtilsService.instOf(layer.getSource(), ImageWMS) &&
+        layer.getSource().getParams().INFO_FORMAT
+      ) {
+        return true;
+      }
+      return false;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#getLayerTitle
-       * @param {Ol.layer} Layer to get layer title
-       * @returns {String} Layer title or "Void"
-       * @description Get title of selected layer
-       */
-      getLayerTitle(layer) {
-        if (angular.isDefined(layer.get('title'))) {
-          return layer.get('title').replace(/&#47;/g, '/');
-        } else {
-          return 'Void';
-        }
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#getLayerTitle
+     * @param layer
+     * @param {Ol.layer} Layer to get layer title
+     * @returns {string} Layer title or "Void"
+     * @description Get title of selected layer
+     */
+    getLayerTitle(layer) {
+      if (angular.isDefined(layer.get('title'))) {
+        return layer.get('title').replace(/&#47;/g, '/');
+      } else {
+        return 'Void';
+      }
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerWMS
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image
-       * @description Test if layer is WMS layer
-       */
-      isLayerWMS(layer) {
-        if (
-          utils.instOf(layer, Tile) &&
-          utils.instOf(layer.getSource(), TileWMS)
-        ) {
-          return true;
-        }
-        if (
-          utils.instOf(layer, ImageLayer) &&
-          utils.instOf(layer.getSource(), ImageWMS)
-        ) {
-          return true;
-        }
-        return false;
-      },
-      // todo
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerWMS
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True for ol.layer.Tile and ol.layer.Image
+     * @description Test if layer is WMS layer
+     */
+    isLayerWMS(layer) {
+      if (
+        HsUtilsService.instOf(layer, Tile) &&
+        HsUtilsService.instOf(layer.getSource(), TileWMS)
+      ) {
+        return true;
+      }
+      if (
+        HsUtilsService.instOf(layer, ImageLayer) &&
+        HsUtilsService.instOf(layer.getSource(), ImageWMS)
+      ) {
+        return true;
+      }
+      return false;
+    },
+    // todo
 
-      isLayerWMTS(layer) {
-        if (
-          utils.instOf(layer, Tile) &&
-          utils.instOf(layer.getSource(), WMTS)
-        ) {
-          return true;
-        }
-      },
-      // todo
-      getURL(layer) {
-        let url;
-        if (layer.getSource().getUrls) {
-          //Multi tile
-          url = layer.getSource().getUrls()[0];
-        }
-        if (layer.getSource().getUrl) {
-          //Single tile
-          url = layer.getSource().getUrl();
-        }
-        return url;
-      },
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerVectorLayer
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True for Vector layer
-       * @description Test if layer is Vector layer
-       */
-      isLayerVectorLayer(layer) {
-        if (
-          utils.instOf(layer, VectorLayer) &&
-          (utils.instOf(layer.getSource(), Cluster) ||
-            utils.instOf(layer.getSource(), VectorSource))
-        ) {
-          return true;
-        }
-        return false;
-      },
+    isLayerWMTS(layer) {
+      if (
+        HsUtilsService.instOf(layer, Tile) &&
+        HsUtilsService.instOf(layer.getSource(), WMTS)
+      ) {
+        return true;
+      }
+    },
+    // todo
+    getURL(layer) {
+      let url;
+      if (layer.getSource().getUrls) {
+        //Multi tile
+        url = layer.getSource().getUrls()[0];
+      }
+      if (layer.getSource().getUrl) {
+        //Single tile
+        url = layer.getSource().getUrl();
+      }
+      return url;
+    },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerVectorLayer
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True for Vector layer
+     * @description Test if layer is Vector layer
+     */
+    isLayerVectorLayer(layer) {
+      if (
+        HsUtilsService.instOf(layer, VectorLayer) &&
+        (HsUtilsService.instOf(layer.getSource(), Cluster) ||
+          HsUtilsService.instOf(layer.getSource(), VectorSource))
+      ) {
+        return true;
+      }
+      return false;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerInManager
-       * @param {Ol.layer} layer Layer to check
-       * @returns {Boolean} True if show_in_manager attribute is set to true
-       * @description Test if layer is shown in layer switcher
-       * (if not some internal hslayers layer like selected feature layer)
-       */
-      isLayerInManager(layer) {
-        return (
-          angular.isUndefined(layer.get('show_in_manager')) ||
-          layer.get('show_in_manager') == true
-        );
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerInManager
+     * @param {Ol.layer} layer Layer to check
+     * @returns {boolean} True if show_in_manager attribute is set to true
+     * @description Test if layer is shown in layer switcher
+     * (if not some internal hslayers layer like selected feature layer)
+     */
+    isLayerInManager(layer) {
+      return (
+        angular.isUndefined(layer.get('show_in_manager')) ||
+        layer.get('show_in_manager') == true
+      );
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#hasLayerTitle
-       * @param {Ol.layer} layer Layer to check
-       * @returns {Boolean} True if layer is has a title
-       * @description Test if layer is has a title
-       */
-      hasLayerTitle(layer) {
-        return (
-          angular.isDefined(layer.get('title')) && layer.get('title') != ''
-        );
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#hasLayerTitle
+     * @param {Ol.layer} layer Layer to check
+     * @returns {boolean} True if layer is has a title
+     * @description Test if layer is has a title
+     */
+    hasLayerTitle(layer) {
+      return angular.isDefined(layer.get('title')) && layer.get('title') != '';
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerEditable
-       * @param {Ol.layer} layer Layer to check
-       * @returns {Boolean} True if layer has attribute editor amd in it
-       * editable property is set to true or missing
-       * @description Test if layers features are editable
-       */
-      isLayerEditable(layer) {
-        if (angular.isUndefined(layer.get('editor'))) {
-          return true;
-        }
-        const editorConfig = layer.get('editor');
-        if (angular.isUndefined(editorConfig.editable)) {
-          return true;
-        }
-        return editorConfig.editable;
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerEditable
+     * @param {Ol.layer} layer Layer to check
+     * @returns {boolean} True if layer has attribute editor amd in it
+     * editable property is set to true or missing
+     * @description Test if layers features are editable
+     */
+    isLayerEditable(layer) {
+      if (angular.isUndefined(layer.get('editor'))) {
+        return true;
+      }
+      const editorConfig = layer.get('editor');
+      if (angular.isUndefined(editorConfig.editable)) {
+        return true;
+      }
+      return editorConfig.editable;
+    },
 
-      getLayerName(layer) {
-        if (
-          angular.isUndefined(layer) ||
-          (angular.isDefined(layer.get('show_in_manager')) &&
-            layer.get('show_in_manager') === false)
-        ) {
-          return '';
-        }
-        const layerName = layer.get('title') || layer.get('name');
-        return layerName;
-      },
+    getLayerName(layer) {
+      if (
+        angular.isUndefined(layer) ||
+        (angular.isDefined(layer.get('show_in_manager')) &&
+          layer.get('show_in_manager') === false)
+      ) {
+        return '';
+      }
+      const layerName = layer.get('title') || layer.get('name');
+      return layerName;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#isLayerDrawable
-       * @param {Ol.layer} layer Layer to check
-       * @returns {Boolean} True if layer is drawable vector layer
-       * @description Check if layer hasa a VectorSource object, if layer is
-       * not internal for hslayers, if it has title and is shown in layer
-       * switcher
-       */
-      isLayerDrawable(layer) {
-        return (
-          utils.instOf(layer, VectorLayer) &&
-          layer.getVisible() &&
-          me.isLayerInManager(layer) &&
-          me.hasLayerTitle(layer) &&
-          me.isLayerEditable(layer)
-        );
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerDrawable
+     * @param {Ol.layer} layer Layer to check
+     * @returns {boolean} True if layer is drawable vector layer
+     * @description Check if layer hasa a VectorSource object, if layer is
+     * not internal for hslayers, if it has title and is shown in layer
+     * switcher
+     */
+    isLayerDrawable(layer) {
+      return (
+        HsUtilsService.instOf(layer, VectorLayer) &&
+        layer.getVisible() &&
+        me.isLayerInManager(layer) &&
+        me.hasLayerTitle(layer) &&
+        me.isLayerEditable(layer)
+      );
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#layerLoaded
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True loaded / False not (fully) loaded
-       * @description Test if layers source is loaded
-       */
-      layerLoaded(layer) {
-        return layer.getSource().loaded;
-      },
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#layerLoaded
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True loaded / False not (fully) loaded
+     * @description Test if layers source is loaded
+     */
+    layerLoaded(layer) {
+      return layer.getSource().loaded;
+    },
 
-      /**
-       * @ngdoc method
-       * @name HsUtilsLayerUtilsService#layerInvalid
-       * @param {Ol.layer} layer Selected layer
-       * @returns {Boolean} True invalid, false valid source
-       * @description Test if layers source is validly loaded (!true for invalid)
-       */
-      layerInvalid(layer) {
-        return layer.getSource().error;
-      },
-    });
-  },
-];
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#layerInvalid
+     * @param {Ol.layer} layer Selected layer
+     * @returns {boolean} True invalid, false valid source
+     * @description Test if layers source is validly loaded (!true for invalid)
+     */
+    layerInvalid(layer) {
+      return layer.getSource().error;
+    },
+  });
+}

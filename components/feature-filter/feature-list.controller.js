@@ -1,32 +1,54 @@
-export default ['$scope', 'HsMapService', 'HsCore', 'HsFeatureFilterService', 'HsLayermanagerService', 'HsConfig',
-    function ($scope, OlMap, HsCore, service, LayMan, config) {
-        window.scope = $scope;
-        $scope.map = OlMap.map;
-        $scope.LayMan = LayMan;
+/**
+ * @param $scope
+ * @param HsMapService
+ * @param HsCore
+ * @param HsFeatureFilterService
+ * @param HsLayermanagerService
+ * @param config
+ */
+export default function (
+  $scope,
+  HsMapService,
+  HsCore,
+  HsFeatureFilterService,
+  HsLayermanagerService,
+  config
+) {
+  'ngInject';
+  window.scope = $scope;
+  $scope.map = HsMapService.map;
+  $scope.LayMan = HsLayermanagerService;
 
-        $scope.applyFilters = service.applyFilters;
+  $scope.applyFilters = HsFeatureFilterService.applyFilters;
 
-        $scope.displayDetails = false;
+  $scope.displayDetails = false;
 
-        $scope.toggleFeatureDetails = function (feature) {
-            $scope.displayDetails = !$scope.displayDetails;
-            if ($scope.selectedFeature) $scope.selectedFeature.setStyle(null);
-
-            if ($scope.displayDetails) {
-                $scope.featureDetails = feature.values_;
-                $scope.selectedFeature = feature;
-                OlMap.moveToAndZoom(feature.values_.geometry.flatCoordinates[0], feature.values_.geometry.flatCoordinates[1], 7);
-                feature.setStyle(new Style({
-                    image: new Icon(({
-                        crossOrigin: 'anonymous',
-                        src: 'marker_lt.png',
-                        anchor: [0.5, 1],
-                        scale: 0.4,
-                    }))
-                }))
-            }
-        };
-
-        $scope.$emit('scope_loaded', "featureList");
+  $scope.toggleFeatureDetails = function (feature) {
+    $scope.displayDetails = !$scope.displayDetails;
+    if ($scope.selectedFeature) {
+      $scope.selectedFeature.setStyle(null);
     }
-]
+
+    if ($scope.displayDetails) {
+      $scope.featureDetails = feature.values_;
+      $scope.selectedFeature = feature;
+      HsMapService.moveToAndZoom(
+        feature.values_.geometry.flatCoordinates[0],
+        feature.values_.geometry.flatCoordinates[1],
+        7
+      );
+      feature.setStyle(
+        new Style({
+          image: new Icon({
+            crossOrigin: 'anonymous',
+            src: 'marker_lt.png',
+            anchor: [0.5, 1],
+            scale: 0.4,
+          }),
+        })
+      );
+    }
+  };
+
+  $scope.$emit('scope_loaded', 'featureList');
+}

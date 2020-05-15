@@ -1,33 +1,46 @@
-import '../../utils/utils.module';
 import '../../../common/get-capabilities.module';
+import '../../utils/utils.module';
 
 export default {
-  template: ['HsConfig', function (config) {
-    return config.design == 'md' ?
-      require('./add-wms-layer.md.directive.html') :
-      require('./add-wms-layer.directive.html');
-  }],
-  controller: ['$scope', 'HsMapService', 'HsCore', 'HsWmsGetCapabilitiesService', 'HsAddLayersWmsAddLayerService', 'HsHistoryListService', '$timeout', function ($scope, OlMap, HsCore, wmsGetCapabilitiesService, LayService, historyListService, $timeout) {
-    $scope.data = LayService.data;
+  template: function (HsConfig) {
+    'ngInject';
+    return HsConfig.design == 'md'
+      ? require('./add-wms-layer.md.directive.html')
+      : require('./add-wms-layer.directive.html');
+  },
+  controller: function (
+    $scope,
+    HsWmsGetCapabilitiesService,
+    HsAddLayersWmsAddLayerService,
+    HsHistoryListService,
+    $timeout
+  ) {
+    'ngInject';
+    $scope.data = HsAddLayersWmsAddLayerService.data;
 
     /**
-        * Clear Url and hide detailsWms
-        * @memberof hs.addLayers
-        * @function clear
-        */
+     * Clear Url and hide detailsWms
+     *
+     * @memberof hs.addLayers
+     * @function clear
+     */
     $scope.clear = function () {
       $scope.url = '';
       $scope.showDetails = false;
     };
 
     $scope.connect = function (layerToSelect) {
-      historyListService.addSourceHistory('Wms', $scope.url);
-      wmsGetCapabilitiesService.requestGetCapabilities($scope.url)
-        .then((capabilities) => {
-          $timeout(_ => {
-            LayService.capabilitiesReceived(capabilities, layerToSelect);
+      HsHistoryListService.addSourceHistory('Wms', $scope.url);
+      HsWmsGetCapabilitiesService.requestGetCapabilities($scope.url).then(
+        (capabilities) => {
+          $timeout((_) => {
+            HsAddLayersWmsAddLayerService.capabilitiesReceived(
+              capabilities,
+              layerToSelect
+            );
           }, 0);
-        });
+        }
+      );
       $scope.showDetails = true;
     };
 
@@ -36,11 +49,14 @@ export default {
     });
 
     /**
-         * @function selectAllLayers
-         * @memberOf hs.addLayersWms.controller
-         * @description Select all layers from service.
-         */
+     * @function selectAllLayers
+     * @memberOf hs.addLayersWms.controller
+     * @description Select all layers from service.
+     */
     $scope.selectAllLayers = function () {
+      /**
+       * @param layer
+       */
       function recurse(layer) {
         layer.checked = true;
 
@@ -54,31 +70,32 @@ export default {
     };
 
     $scope.addLayers = function (checked) {
-      LayService.addLayers(checked);
+      HsAddLayersWmsAddLayerService.addLayers(checked);
     };
 
     $scope.srsChanged = function () {
-      LayService.srsChanged();
+      HsAddLayersWmsAddLayerService.srsChanged();
     };
 
     /**
-    * Connect to service of specified Url
-    * @memberof hs.addLayersWms
-    * @function setUrlAndConnect
-    * @param {String} url Url of requested service
-    * @param {String} layer Optional layer to select, when
-    * getCapabilities arrives
-    */
+     * Connect to service of specified Url
+     *
+     * @memberof hs.addLayersWms
+     * @function setUrlAndConnect
+     * @param {string} url Url of requested service
+     * @param {string} layer Optional layer to select, when
+     * getCapabilities arrives
+     */
     $scope.setUrlAndConnect = function (url, layer) {
       $scope.url = url;
       $scope.connect(layer);
     };
 
-    $scope.sourceHistory = LayService.sourceHistory;
+    $scope.sourceHistory = HsAddLayersWmsAddLayerService.sourceHistory;
 
-    $scope.getDimensionValues = LayService.getDimensionValues;
+    $scope.getDimensionValues =
+      HsAddLayersWmsAddLayerService.getDimensionValues;
 
-    $scope.hasNestedLayers = LayService.hasNestedLayers;
-  }
-  ]
+    $scope.hasNestedLayers = HsAddLayersWmsAddLayerService.hasNestedLayers;
+  },
 };

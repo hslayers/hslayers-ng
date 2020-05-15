@@ -22,9 +22,9 @@ angular
 
   /**
    * @ngdoc service
-   * @name HsUtilsLayerUtilsService
+   * @name HsLayerUtilsService
    * @module hs.utils
    * @param {object} config - Application configuration
    * @description Service containing varius functions for testing layer functionalities
    */
-  .factory('HsUtilsLayerUtilsService', layerUtilsService);
+  .factory('HsLayerUtilsService', layerUtilsService);

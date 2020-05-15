@@ -1,12 +1,13 @@
-export default [
-  'HsConfig',
-  function (config) {
-    return {
-      template: require('./partials/layer-vector-directive.html'),
-      scope: {
-        layerStyle: '<',
-        geometryType: '<',
-      },
-    };
-  },
-];
+/**
+ * @param HsConfig
+ */
+export default function (HsConfig) {
+  'ngInject';
+  return {
+    template: require('./partials/layer-vector-directive.html'),
+    scope: {
+      layerStyle: '<',
+      geometryType: '<',
+    },
+  };
+}
