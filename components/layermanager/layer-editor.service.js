@@ -32,6 +32,10 @@ export default function (
       } else if (angular.isDefined(layer.getSource().getExtent)) {
         extent = layer.getSource().getExtent();
       }
+      if (extent) {
+        fitIfExtentSet(extent, layer);
+        return true;
+      }
       if (extent === null && HsLayerUtilsService.isLayerWMS(layer)) {
         let url = null;
         if (layer.getSource().getUrls) {
@@ -53,6 +57,7 @@ export default function (
               extent =
                 layer_def.EX_GeographicBoundingBox || layer_def.BoundingBox;
               fitIfExtentSet(transformToCurrentProj(extent), layer);
+              return true;
             }
           });
         } else if (angular.isObject(caps.Capability.Layer)) {
@@ -60,9 +65,11 @@ export default function (
             caps.Capability.Layer.EX_GeographicBoundingBox ||
             caps.Capability.Layer.BoundingBox;
           fitIfExtentSet(transformToCurrentProj(extent), layer);
+          return true;
+        } else {
+          return false;
         }
       }
-      fitIfExtentSet(extent, layer);
     },
 
     /**
