@@ -1,8 +1,7 @@
 /**
- * @param config
  * @param $sce
  */
-export default function (config, $sce) {
+export default function ($sce) {
   'ngInject';
   return {
     template: require('./partials/layer-static-directive.html'),
