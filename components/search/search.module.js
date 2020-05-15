@@ -26,10 +26,10 @@ angular
   /**
    * @memberof hs.search
    * @ngdoc service
-   * @name hs.search.service
+   * @name HsSearchService
    * @description Provides geolocation search request from site selected in config (geonames/sdi4apps) and pass response to handler on success
    */
-  .factory('hs.search.service', searchService)
+  .factory('HsSearchService', searchService)
 
   /**
    * @memberof hs.search

@@ -1,6 +1,6 @@
-export default ['$scope', '$timeout', 'hs.mobile_toolbar.service', 'Core', '$window', 'hs.layout.service',
-function ($scope, $timeout, service, Core, $window, layoutService) {
-    $scope.Core = Core;
+export default ['$scope', '$timeout', 'HsMobileToolbarService', 'HsCore', '$window', 'HsLayoutService',
+function ($scope, $timeout, service, HsCore, $window, layoutService) {
+    $scope.HsCore = HsCore;
     layoutService.sidebarRight = false;
     sidebarExpanded.sidebarExpanded = service.panelspace0pened;
     $scope.layoutService = layoutService;
@@ -8,7 +8,7 @@ function ($scope, $timeout, service, Core, $window, layoutService) {
 
     /**
      * @function setMainPanel
-     * @memberOf hs.mobile_toolbar.controller
+     * @memberOf HsMobileToolbarController
      * @params {} which
      * @description TODO
      */

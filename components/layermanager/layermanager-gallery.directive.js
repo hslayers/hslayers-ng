@@ -1,7 +1,7 @@
 export default [
-  'config',
-  'hs.layout.service',
-  'hs.layermanager.service',
+  'HsConfig',
+  'HsLayoutService',
+  'HsLayermanagerService',
   '$window',
   '$timeout',
   function (config, layoutService, LayerManager, $window, $timeout) {

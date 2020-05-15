@@ -4,10 +4,10 @@ export default {
     '$rootScope',
     '$scope',
     '$timeout',
-    'Core',
-    'hs.utils.service',
-    function ($rootScope, $scope, $timeout, Core, utils) {
-      $scope.Core = Core;
+    'HsCore',
+    'HsUtilsService',
+    function ($rootScope, $scope, $timeout, HsCore, utils) {
+      $scope.HsCore = HsCore;
       /**
        * @ngdoc property
        * @name hs.info#composition_loaded

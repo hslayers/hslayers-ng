@@ -1,6 +1,11 @@
 /**
  * @namespace hs.print
  * @memberOf hs
+ * @param HsCore
+ * @param gettextCatalog
+ * @param $scope
+ * @param service
+ * @param config
  */
 export default angular
   .module('hs.language', [])
@@ -11,7 +16,7 @@ export default angular
    * @description Add print dialog template to the app
    */
   .directive('hs.language.directive', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require(`components/language/partials/language.html`),
@@ -22,19 +27,20 @@ export default angular
   /**
    * @memberof hs.language
    * @ngdoc service
-   * @name hs.language.service
+   * @name HsLanguageService
    */
-  .service('hs.language.service', [
-    'Core',
+  .factory('HsLanguageService', [
+    'HsCore',
     'gettextCatalog',
-    function (Core, gettextCatalog) {
+    function (HsCore, gettextCatalog) {
       const me = {};
       /**
-       * @memberof hs.language.service
+       * @memberof HsLanguageService
        * @function setlanguage
        * @public
        * @params {String} lang
        * @description Set language
+       * @param lang
        */
       me.setLanguage = function (lang) {
         me.language = lang;
@@ -51,7 +57,7 @@ export default angular
 
       /**
        * @ngdoc method
-       * @name Core#getCurrentLanguagePrefix
+       * @name HsCore#getCurrentLanguagePrefix
        * @public
        * @description Get code of current language
        */
@@ -64,7 +70,7 @@ export default angular
 
       /**
        * @ngdoc method
-       * @name Core#listAvailableLanguages
+       * @name HsCore#listAvailableLanguages
        * @public
        * @description Get array of available languages based on translations.js
        * or translations_extended.js files which have gettextCatalog services in them
@@ -93,15 +99,16 @@ export default angular
   /**
    * @memberof hs.language
    * @ngdoc controller
-   * @name hs.language.controller
+   * @name HsLanguageController
    */
-  .controller('hs.language.controller', [
+  .controller('HsLanguageController', [
     '$scope',
-    'hs.language.service',
+    'HsLanguageService',
     function ($scope, service) {
       /**
        * Set language
-       * @memberof hs.language.controller
+       *
+       * @memberof HsLanguageController
        * @function setLanguage
        * @param {string} lang
        */

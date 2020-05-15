@@ -4,12 +4,12 @@ global.moment = moment;
 import '../../../common/get-capabilities.module';
 
 export default {
-  template: ['config', function (config) {
+  template: ['HsConfig', function (config) {
     return config.design == 'md' ?
       require('./add-arcgis-layer.md.directive.html') :
       require('./add-arcgis-layer.directive.html');
   }],
-  controller: ['$scope', '$element', 'hs.map.service', 'Core', 'hs.arcgis.getCapabilitiesService', 'hs.addLayersArcgis.addLayerService', 'hs.historyListService', '$timeout', function ($scope, $element, OlMap, Core, arcgisGetCapabilitiesService, LayService, historyListService, $timeout) {
+  controller: ['$scope', '$element', 'HsMapService', 'HsCore', 'HsArcgisGetCapabilitiesService', 'HsAddLayersArcgisAddLayerService', 'HsHistoryListService', '$timeout', function ($scope, $element, OlMap, HsCore, arcgisGetCapabilitiesService, LayService, historyListService, $timeout) {
     $scope.data = LayService.data;
     /**
         * Clear Url and hide detailsArcgis

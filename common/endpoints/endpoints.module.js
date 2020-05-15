@@ -5,9 +5,9 @@ angular
   .module('hs.common.endpoints', [])
 
   /**
-   * @name hs.common.endpointsService
+   * @name HsCommonEndpointsService
    * @ngdoc service
    * @memberOf hs.common.endpoints
    * @description Service for endpoints
    */
-  .factory('hs.common.endpointsService', endpointsService);
+  .factory('HsCommonEndpointsService', endpointsService);

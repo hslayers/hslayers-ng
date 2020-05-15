@@ -64,27 +64,27 @@ angular
 
   /**
    * @module hs.compositions
-   * @name hs.compositions.service
+   * @name HsCompositionsService
    * @ngdoc controller
    * @description Service of composition module
    */
-  .factory('hs.compositions.service', compositionsService)
+  .factory('HsCompositionsService', compositionsService)
 
   /**
    * @module hs.compositions
-   * @name hs.compositions.mapService
+   * @name HsCompositionsMapService
    * @ngdoc controller
    * @description Service of composition module which deal ith Openlayers map objects
    */
-  .factory('hs.compositions.mapService', compositionsMapService)
+  .factory('HsCompositionsMapService', compositionsMapService)
 
   /**
    * @module hs.compositions
-   * @name hs.compositions.service_parser
+   * @name HsCompositionsParserService
    * @ngdoc service
    * @description Contains function of managing composition (loading, removing Layers)
    */
-  .factory('hs.compositions.service_parser', parserService)
+  .factory('HsCompositionsParserService', parserService)
 
   /**
    * @module hs.compositions

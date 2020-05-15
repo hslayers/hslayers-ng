@@ -2,10 +2,10 @@ import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 export default [
-  'hs.map.service',
-  'hs.wms.getCapabilitiesService',
-  'hs.utils.layerUtilsService',
-  'hs.layerEditorVectorLayer.service',
+  'HsMapService',
+  'HsWmsGetCapabilitiesService',
+  'HsUtilsLayerUtilsService',
+  'HsLayerEditorVectorLayerService',
   '$rootScope',
   function (
     hsMap,
@@ -17,7 +17,7 @@ export default [
     const me = {
       /**
        * @function zoomToLayer
-       * @memberOf hs.layerEditor.service
+       * @memberOf HsLayerEditorService
        * @param {ol/layer} layer Openlayers layer to zoom to
        * @description Zoom to selected layer (layer extent). Get extent
        * from bounding box property, getExtent() function or from
@@ -68,7 +68,7 @@ export default [
 
       /**
        * @function cluster
-       * @memberOf hs.layerEditor.service
+       * @memberOf HsLayerEditorService
        * @description Set cluster for layer
        * @param {ol/layer} layer Layer
        * @param {boolean} newValue To cluster or not to cluster
@@ -89,7 +89,7 @@ export default [
       },
       /**
        * @function cluster
-       * @memberOf hs.layerEditor.service
+       * @memberOf HsLayerEditorService
        * @description Set cluster for layer
        * @param {ol/layer} layer Layer
        * @param {boolean} newValue To cluster or not to cluster

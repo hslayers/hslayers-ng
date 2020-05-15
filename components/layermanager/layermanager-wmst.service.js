@@ -3,17 +3,17 @@ global.moment = moment;
 
 export default [
   '$rootScope',
-  'hs.map.service',
-  'Core',
-  'hs.utils.service',
-  'config',
-  function ($rootScope, OlMap, Core, utils, config) {
+  'HsMapService',
+  'HsCore',
+  'HsUtilsService',
+  'HsConfig',
+  function ($rootScope, OlMap, HsCore, utils, config) {
     const me = {};
 
     /**
      * Get date format of time data based on time unit property
      * @function getDateFormatForTimeSlider
-     * @memberOf hs.layermanager.WMSTservice
+     * @memberOf HsLayermanagerWmstService
      * @param {String} time_unit
      */
     me.getDateFormatForTimeSlider = function (time_unit) {
@@ -31,7 +31,7 @@ export default [
     /**
      * Set time intervals for WMS-T (WMS with time support)
      * @function setLayerTimeSliderIntervals
-     * @memberOf hs.layermanager.WMSTservice
+     * @memberOf HsLayermanagerWmstService
      * @param {Object} new_layer Layer to set time intervals
      * @param {Object} metadata Time dimension metadata for layer
      */
@@ -63,7 +63,7 @@ export default [
 
     /**
      * @function parseInterval
-     * @memberOf hs.layermanager.WMSTservice
+     * @memberOf HsLayermanagerWmstService
      * @param {String} interval Interval time string
      * @description Parse interval string to get interval in Date format
      */
@@ -160,7 +160,7 @@ export default [
     }
     /**
      * @function layerIsWmsT
-     * @memberOf hs.layermanager.WMSTservice
+     * @memberOf HsLayermanagerWmstService
      * @param {Ol.collection} layer_container Container object of layer (layer_container.layer expected)
      * @return {Boolean} True for WMS layer with time support
      * Test if WMS layer have time support (WMS-T). WMS layer has to have dimensions_time or dimension property, function converts dimension to dimensions_time
@@ -219,7 +219,7 @@ export default [
 
     /**
      * @function setLayerTime
-     * @memberOf hs.layermanager.WMSTservice
+     * @memberOf HsLayermanagerWmstService
      * @param {object} currentLayer Selected layer
      * @param {number} dateIncrement Value days, months or years by which to increment start time to reach current selected time in the range control
      * @description Update layer time parameter

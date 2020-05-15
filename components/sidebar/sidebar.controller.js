@@ -1,18 +1,18 @@
-export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.urlService', '$window', '$cookies', 'hs.sidebar.service', 'hs.layout.service', 'config',
-  function ($scope, $timeout, OlMap, Core, bus, $window, $cookies, sidebarService, layoutService, config) {
+export default ['$scope', '$timeout', 'HsMapService', 'HsCore', 'HsPermalinkUrlService', '$window', '$cookies', 'HsSidebarService', 'HsLayoutService', 'HsConfig',
+  function ($scope, $timeout, OlMap, HsCore, bus, $window, $cookies, sidebarService, layoutService, config) {
     $scope = angular.extend($scope, {
       layoutService,
       sidebarService,
       showUnimportant: false,
       /**
              * Set visibility parameter of buttons object
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function setPanelState
              * @param {object} buttons Buttons object
              */
       setPanelState(buttons) {
         for (const button of buttons) {
-          if (Core.exists(button.module) && layoutService.panelEnabled(button.panel) && $scope.checkConfigurableButtons(button)) {
+          if (HsCore.exists(button.module) && layoutService.panelEnabled(button.panel) && $scope.checkConfigurableButtons(button)) {
             if (!sidebarService.visibleButtons.includes(button.panel)) {
               sidebarService.visibleButtons.push(button.panel);
               button.visible = true;
@@ -26,7 +26,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
       /**
              * Seat weather to show all sidebar buttons or just a
              * subset of important ones
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function toggleUnimportant
              */
       toggleUnimportant() {
@@ -36,7 +36,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
       /**
              * Returns if a button should be visible by its 'important'
              * property and current view mode defined in showUnimportant variable
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function visibilityByImportancy
              */
       visibilityByImportancy(button) {
@@ -54,7 +54,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
              * should be placed in sidebar rather then in map.
              * It´s necessary for buttons like 'measure' because simple
              * 'config.panelsEnabled = false' would prevent their functionality.
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function checkConfigurableButtons
              * @param {object} button buttons Buttons object
              */
@@ -70,7 +70,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
       /**
             * @ngdoc method
-            * @name hs.sidebar.controller#fitsSidebar
+            * @name HsSidebarController#fitsSidebar
             * @public
             * @param {String} which Sidear button to be checked (specify panel name)
             * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
@@ -93,7 +93,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
       /**
              * Set current active panel in sidebar
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function setMainPanel
              * @param {string} which Name of panel to set active
              */
@@ -105,7 +105,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
       /**
              * Toggle sidebar mode between expanded and narrow
-             * @memberof hs.sidebar.controller
+             * @memberof HsSidebarController
              * @function toggleSidebar
              */
       toggleSidebar() {
@@ -115,7 +115,7 @@ export default ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.permalink.ur
 
 
     if (bus.getParamValue('hs_panel')) {
-      if (Core.exists('hs.sidebar') && !layoutService.minisidebar) {
+      if (HsCore.exists('hs.sidebar') && !layoutService.minisidebar) {
         $scope.setMainPanel(bus.getParamValue('hs_panel'));
       }
     }

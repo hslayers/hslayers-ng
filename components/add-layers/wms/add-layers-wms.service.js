@@ -9,9 +9,9 @@ import '../../../common/get-capabilities.module';
 import {addAnchors} from '../../../common/attribution-utils';
 import 'angular-cookies';
 
-export default ['$rootScope', 'hs.map.service', 'hs.wms.getCapabilitiesService',
-  'Core', 'hs.dimensionService', '$timeout', 'hs.layout.service', 'hs.utils.service', 'config',
-  function ($rootScope, OlMap, WmsCapsService, Core, dimensionService, $timeout, layoutService, utils, config) {
+export default ['$rootScope', 'HsMapService', 'HsWmsGetCapabilitiesService',
+  'HsCore', 'HsDimensionService', '$timeout', 'HsLayoutService', 'HsUtilsService', 'HsConfig',
+  function ($rootScope, OlMap, WmsCapsService, HsCore, dimensionService, $timeout, layoutService, utils, config) {
     const me = this;
 
     this.data = {

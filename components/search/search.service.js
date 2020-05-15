@@ -8,10 +8,10 @@ import {transform} from 'ol/proj';
 export default [
   '$http',
   '$q',
-  'hs.utils.service',
-  'config',
-  'hs.map.service',
-  'hs.styles.service',
+  'HsUtilsService',
+  'HsConfig',
+  'HsMapService',
+  'HsStylesService',
   '$rootScope',
   function ($http, $q, utils, config, OlMap, Styles, $rootScope) {
     const me = this;
@@ -30,7 +30,7 @@ export default [
 
     this.canceler = {};
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function request
      * @public
      * @param {String} query Place name or part of it
@@ -98,7 +98,7 @@ export default [
       });
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function searchResultsReceived
      * @public
      * @param {Object} response Response object of Geolocation request
@@ -123,7 +123,7 @@ export default [
       });
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function hideResultsLayer
      * @public
      * @description Remove results layer from map
@@ -132,7 +132,7 @@ export default [
       OlMap.map.removeLayer(me.searchResultsLayer);
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function showResultsLayer
      * @public
      * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
@@ -142,7 +142,7 @@ export default [
       OlMap.map.addLayer(me.searchResultsLayer);
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function cleanResults
      * @public
      * @description Clean all search results from results variable and results layer
@@ -157,7 +157,7 @@ export default [
       me.hideResultsLayer();
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function selectResult
      * @public
      * @param {Object} result Entity of selected result
@@ -181,7 +181,7 @@ export default [
       });
     };
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function getResultCoordinate
      * @public
      * @param {Object} result Entity of selected result
@@ -208,7 +208,7 @@ export default [
     }
 
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function parseGeonamesResults
      * @private
      * @param {object} response Result of search request
@@ -233,7 +233,7 @@ export default [
     }
 
     /**
-     * @memberof hs.search.service
+     * @memberof HsSearchService
      * @function parseOpenApiResults
      * @private
      * @param {object} response Result of search request

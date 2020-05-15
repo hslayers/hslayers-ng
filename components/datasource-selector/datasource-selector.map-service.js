@@ -7,8 +7,8 @@ import {transform} from 'ol/proj';
 export default [
   '$timeout',
   '$rootScope',
-  'hs.map.service',
-  'hs.layout.service',
+  'HsMapService',
+  'HsLayoutService',
   '$log',
   function ($timeout, $rootScope, hsMap, layoutService, $log) {
     const me = this;
@@ -68,7 +68,7 @@ export default [
 
       /**
        * @function clearDatasetFeatures
-       * @memberOf hs.datasourceBrowserService
+       * @memberOf HsDatasourceBrowserService
        * @param {Object} dataset Configuration of selected datasource (from app config)
        * Remove layer extent features from map
        */
@@ -86,7 +86,7 @@ export default [
 
       /**
        * @function isZoomable
-       * @memberOf hs.datasourceSelector.mapService
+       * @memberOf HsDataSourceSelectorMapService
        * @param {unknown} layer TODO
        * @return {boolean} Returns if bbox is specified and thus layer is zoomable
        * Test if it possible to zoom to layer overview (bbox has to be defined
@@ -98,7 +98,7 @@ export default [
 
       /**
        * @function addExtentFeature
-       * @memberOf hs.datasourceSelector.mapService
+       * @memberOf HsDataSourceSelectorMapService
        * @param {ol/Feature} extentFeature Openlayers Feature
        * @description  Callback function which gets executed when extent feature
        * is created. It should add the feature to vector layer source
@@ -115,7 +115,7 @@ export default [
 
       /**
        * @function zoomTo
-       * @memberOf hs.datasourceSelector.mapService
+       * @memberOf HsDataSourceSelectorMapService
        * @param {String} bbox Bounding box of selected layer
        * ZoomTo / MoveTo to selected layer overview
        */

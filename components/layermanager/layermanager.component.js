@@ -1,6 +1,6 @@
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('./partials/layermanagermd.html');
@@ -11,22 +11,22 @@ export default {
   ],
   controller: [
     '$scope',
-    'Core',
+    'HsCore',
     '$compile',
-    'hs.utils.service',
-    'hs.utils.layerUtilsService',
-    'config',
-    'hs.map.service',
-    'hs.layermanager.service',
+    'HsUtilsService',
+    'HsUtilsLayerUtilsService',
+    'HsConfig',
+    'HsMapService',
+    'HsLayermanagerService',
     '$rootScope',
-    'hs.layermanager.WMSTservice',
-    'hs.legend.service',
-    'hs.layout.service',
-    'hs.layerEditor.sublayerService',
-    'hs.layerSynchronizerService',
+    'HsLayermanagerWmstService',
+    'HsLegendService',
+    'HsLayoutService',
+    'HsLayerEditorSublayerService',
+    'HsLayerSynchronizerService',
     function (
       $scope,
-      Core,
+      HsCore,
       $compile,
       utils,
       layerUtils,
@@ -42,7 +42,7 @@ export default {
     ) {
       $scope.LayerManager = LayerManager;
       $scope.data = LayerManager.data;
-      $scope.Core = Core;
+      $scope.HsCore = HsCore;
       $scope.utils = utils;
       $scope.layoutService = layoutService;
       let map;

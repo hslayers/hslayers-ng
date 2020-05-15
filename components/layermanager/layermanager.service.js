@@ -9,19 +9,19 @@ import {TileWMS} from 'ol/source';
 
 export default [
   '$rootScope',
-  'hs.map.service',
-  'Core',
-  'hs.utils.service',
-  'hs.utils.layerUtilsService',
-  'config',
-  'hs.layermanager.WMSTservice',
-  'hs.layerEditorVectorLayer.service',
-  'hs.layermanager.metadata',
+  'HsMapService',
+  'HsCore',
+  'HsUtilsService',
+  'HsUtilsLayerUtilsService',
+  'HsConfig',
+  'HsLayermanagerWmstService',
+  'HsLayerEditorVectorLayerService',
+  'HsLayermanagerMetadata',
   '$timeout',
   function (
     $rootScope,
     OlMap,
-    Core,
+    HsCore,
     utils,
     layerUtils,
     config,
@@ -34,7 +34,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.layermanager.service#data
+     * @name HsLayermanagerService#data
      * @public
      * @type {Object}
      * @description Containg object for all properties which are shared with controllers.
@@ -43,7 +43,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.layermanager.service.data#folders
+     * @name HsLayermanagerService.data#folders
      * @public
      * @type {Object}
      * @description Folders object for structure of layers. Each level contain 5 properties:
@@ -65,7 +65,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.layermanager.service.data#layers
+     * @name HsLayermanagerService.data#layers
      * @public
      * @type {Array}
      * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
@@ -73,7 +73,7 @@ export default [
     me.data.layers = [];
     /**
      * @ngdoc property
-     * @name hs.layermanager.service.data#baselayers
+     * @name HsLayermanagerService.data#baselayers
      * @public
      * @type {Array}
      * @description List of all baselayers loaded in layer manager.
@@ -81,7 +81,7 @@ export default [
     me.data.baselayers = [];
     /**
      * @ngdoc property
-     * @name hs.layermanager.service.data#terrainlayers
+     * @name HsLayermanagerService.data#terrainlayers
      * @public
      * @type {Array}
      * @description List of all cesium terrain layers loaded in layer manager.
@@ -89,7 +89,7 @@ export default [
     me.data.terrainlayers = [];
     /**
      * @ngdoc property
-     * @name hs.layermanager.service.data#baselayersVisible
+     * @name HsLayermanagerService.data#baselayersVisible
      * @public
      * @type {Boolean}
      * @description Store if baselayers are visible (more precisely one of baselayers)
@@ -101,7 +101,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.layermanager.service#layerAdded
+     * @name HsLayermanagerService#layerAdded
      * @private
      * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
      * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
@@ -133,7 +133,7 @@ export default [
       }
       /**
        * @ngdoc property
-       * @name hs.layermanager.service#layer
+       * @name HsLayermanagerService#layer
        * @private
        * @type {Object}
        * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
@@ -183,7 +183,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.layermanager.service#getImage
+     * @name HsLayermanagerService#getImage
      * @param {layer} layer Base layer added to map
      * @description Function for adding baselayer thumbnail visible in basemap gallery.
      */
@@ -230,7 +230,7 @@ export default [
     /**
      * (PRIVATE) Get layer by its title
      * @function getLayerByTitle
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @param {Object} Hslayers layer
      */
     function getLayerByTitle(title) {
@@ -247,7 +247,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.layermanager.service#getLayerDescriptorForOlLayer
+     * @name HsLayermanagerService#getLayerDescriptorForOlLayer
      * @private
      * @param {Ol.layer} Layer to get layer title
      * @returns {Object} Layer container which is used in layer-list directive
@@ -263,7 +263,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.layermanager.service#populateFolders
+     * @name HsLayermanagerService#populateFolders
      * @private
      * @param {Object} lyr Layer to add into folder structure
      * @description Place layer into layer manager folder structure based on path property hsl-path of layer
@@ -316,7 +316,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.layermanager.service#cleanFolders
+     * @name HsLayermanagerService#cleanFolders
      * @private
      * @param {ol.Layer} lyr Layer to remove from layer folder
      * @description Remove layer from layer folder structure a clean empty folder
@@ -373,7 +373,7 @@ export default [
     /**
      * (PRIVATE)
      * @function layerRemoved
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Callback function for removing layer. Clean layers variables
      * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
      */
@@ -399,7 +399,7 @@ export default [
     /**
      * (PRIVATE)
      * @function boxLayersInit
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Initilaze box layers and their starting active state
      */
     function boxLayersInit() {
@@ -422,7 +422,7 @@ export default [
 
     /**
      * @function changeLayerVisibility
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
      * @param {Boolean} visibility Visibility layer should have
      * @param {Object} layer Selected layer - wrapped layer object (layer.layer expected)
@@ -445,7 +445,7 @@ export default [
     };
     /**
      * @function changeBaseLayerVisibility
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
      * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
      * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
@@ -517,7 +517,7 @@ export default [
 
     /**
      * @function changeTerrainLayerVisibility
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Change visibility (on/off) of baselayers, only one baselayer may be visible
      * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
      * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
@@ -538,7 +538,7 @@ export default [
     /**
      * Update "position" property of layers, so layers could be correctly ordered in GUI
      * @function updateLayerOrder
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      */
     me.updateLayerOrder = function () {
       angular.forEach(me.data.layers, (my_layer) => {
@@ -549,7 +549,7 @@ export default [
     /**
      * (PRIVATE) Get position of selected layer in map layer order
      * @function getMyLayerPosition
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @param {Ol.layer} layer Selected layer
      */
     function getMyLayerPosition(layer) {
@@ -566,7 +566,7 @@ export default [
     /**
      * (PRIVATE)
      * @function removeAllLayers
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Remove all layers from map
      */
     me.removeAllLayers = function () {
@@ -596,7 +596,7 @@ export default [
 
     /**
      * @function activateTheme
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Show all layers of particular layer group (when groups are defined)
      * @param {ol.layer.Group} theme Group layer to activate
      */
@@ -622,7 +622,7 @@ export default [
 
     /**
      * @function loadingEvents
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
      * @param {ol.layer} layer Layer which is being added
      */
@@ -700,7 +700,7 @@ export default [
 
     /**
      * @function isLayerInResolutionInterval
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @param {Ol.layer} lyr Selected layer
      * @description Test if layer (WMS) resolution is within map resolution interval
      */
@@ -728,7 +728,7 @@ export default [
     /**
      * (PRIVATE)
      * @function init
-     * @memberOf hs.layermanager.service
+     * @memberOf HsLayermanagerService
      * @description Initialization of needed controllers, run when map object is available
      */
     function init() {

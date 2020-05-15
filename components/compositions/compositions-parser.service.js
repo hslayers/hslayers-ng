@@ -3,19 +3,19 @@ import 'angular-socialshare';
 import {transform} from 'ol/proj';
 
 export default [
-  'hs.map.service',
-  'config',
-  'Core',
+  'HsMapService',
+  'HsConfig',
+  'HsCore',
   '$rootScope',
   '$http',
-  'hs.utils.service',
-  'hs.compositions.layerParserService',
-  'hs.layout.service',
+  'HsUtilsService',
+  'HsCompositionsLayerParserService',
+  'HsLayoutService',
   '$log',
   function (
     hsMap,
     config,
-    Core,
+    HsCore,
     $rootScope,
     $http,
     utils,
@@ -26,7 +26,7 @@ export default [
     const me = {
       /**
        * @ngdoc property
-       * @name hs.compositions.service_parser#composition_loaded
+       * @name HsCompositionsParserService#composition_loaded
        * @public
        * @type {string} null
        * @description Stores current composition URL if there is one or NULL
@@ -34,7 +34,7 @@ export default [
       composition_loaded: null,
       /**
        * @ngdoc property
-       * @name hs.compositions.service_parser#composition_edited
+       * @name HsCompositionsParserService#composition_edited
        * @public
        * @type {Boolean} null
        * @description Stores whether current composition was edited (for composition changes, saving etc.)
@@ -43,7 +43,7 @@ export default [
       utils: utils,
       /**
        * @ngdoc property
-       * @name hs.compositions.service_parser#current_composition_title
+       * @name HsCompositionsParserService#current_composition_title
        * @public
        * @type {String} ""
        * @description Stores title of current composition
@@ -51,7 +51,7 @@ export default [
       current_composition_title: '',
       /**
        * @ngdoc method
-       * @name hs.compositions.service_parser#load
+       * @name HsCompositionsParserService#load
        * @public
        * @param {String} url Url of selected composition
        * @param {Boolean} overwrite Whether overwrite current composition in map - remove all layers from maps which originate from composition (if not pasted, it counts as "true")
@@ -75,7 +75,7 @@ export default [
       loaded(response) {
         /**
          * @ngdoc event
-         * @name hs.compositions.service_parser#compositions.composition_loading
+         * @name HsCompositionsParserService#compositions.composition_loading
          * @eventType broadcast on $rootScope
          * @description Fires when composition is downloaded from server and parsing begins
          */
@@ -156,7 +156,7 @@ export default [
         me.composition_edited = false;
         /**
          * @ngdoc event
-         * @name hs.compositions.service_parser#compositions.composition_loaded
+         * @name HsCompositionsParserService#compositions.composition_loaded
          * @eventType broadcast on $rootScope
          * @description Fires when composition is loaded or not loaded with Error message
          */
@@ -178,7 +178,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.compositions.service_parser#removeCompositionLayers
+       * @name HsCompositionsParserService#removeCompositionLayers
        * @public
        * @description Remove all layers gained from composition from map
        */
@@ -195,7 +195,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.compositions.service_parser#loadInfo
+       * @name HsCompositionsParserService#loadInfo
        * @public
        * @param {String} url Url to composition info
        * @returns {Object} Object containing composition info
@@ -210,7 +210,7 @@ export default [
             info = response.data.data || response.data;
             /**
              * @ngdoc event
-             * @name hs.compositions.service_parser#compositions.composition_info_loaded
+             * @name HsCompositionsParserService#compositions.composition_info_loaded
              * @eventType broadcast on $rootScope
              * @description Fires when metadata about selected composition are loaded
              */
@@ -245,7 +245,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.compositions.service_parser#jsonToLayers
+       * @name HsCompositionsParserService#jsonToLayers
        * @public
        * @param {Object} j Composition object with Layers
        * @returns {Array} Array of created layers
@@ -270,7 +270,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.compositions.service_parser#jsonToLayer
+       * @name HsCompositionsParserService#jsonToLayer
        * @public
        * @param {Object} lyr_def Layer to be created (encapsulated in layer definition object)
        * @returns {Function} Parser function to create layer (using config_parsers service)

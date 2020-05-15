@@ -35,20 +35,20 @@ var module = angular.module('hs', [
 /* Here goes code to modify the UI for extra functionality */
 module.directive(
     'hs', [
-        'config', 'Core',
-        function(config, Core) {
+        'HsConfig', 'HsCore',
+        function(config, HsCore) {
             return {
                 /* A different layout of the application can be achieved by changing the main template*/
-                template: Core.hslayersNgTemplate,
+                template: HsCore.hslayersNgTemplate,
                 link: function(scope, element) {
-                    Core.fullScreenMap(element);
+                    HsCore.fullScreenMap(element);
                 }
             };
         }
     ]);
 
 /* Here goes configuration of layers, viewport and HsLayers components */
-module.value('config', {
+module.value('HsConfig', {
     /* Here goes layer definitions which can be ordinary OL layers with extra parameters which are interpreted by HsLayers or some special layer types which are unique to HsLayers */
     default_layers: [
         new Tile({
@@ -71,11 +71,11 @@ module.value('config', {
 });
 
 /* The main code which does extra things apart from HsLayers components is located in the controller function below*/
-module.controller('Main', ['$scope', 'Core', '$compile', 'hs.map.service',
+module.controller('Main', ['$scope', 'HsCore', '$compile', 'HsMapService',
     /* The order of function parameters must match the array of component names above */
-    function($scope, Core, $compile, hsmap) {
-        /* Core component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
-        $scope.Core = Core;
+    function($scope, HsCore, $compile, hsmap) {
+        /* HsCore component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
+        $scope.HsCore = HsCore;
 
         /* We can listen to event emited by components such as layer manager and hide a layer which was added by code or by user for example*/
         $scope.$on('layermanager.updated', function(data, layer) {

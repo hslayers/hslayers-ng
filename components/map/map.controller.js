@@ -2,20 +2,20 @@ import {transform} from 'ol/proj';
 
 export default [
   '$scope',
-  'hs.map.service',
-  'config',
-  'hs.permalink.urlService',
-  'Core',
+  'HsMapService',
+  'HsConfig',
+  'HsPermalinkUrlService',
+  'HsCore',
   '$rootScope',
   '$compile',
   '$timeout',
-  'hs.layout.service',
+  'HsLayoutService',
   function (
     $scope,
     OlMap,
     config,
     permalink,
-    Core,
+    HsCore,
     $rootScope,
     $compile,
     $timeout,
@@ -25,7 +25,7 @@ export default [
       layoutService,
       /**
        * @ngdoc method
-       * @name hs.map.controller#setTargetDiv
+       * @name HsMapController#setTargetDiv
        * @public
        * @description Sets div element of the map
        * @param {string} div ID of the container element or element itself
@@ -36,7 +36,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.map.controller#findLayerByTitle
+       * @name HsMapController#findLayerByTitle
        * @public
        * @param {string} title Title of the layer (from layer creation)
        * @returns {Ol.layer} Ol.layer object
@@ -46,7 +46,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.map.controller#init
+       * @name HsMapController#init
        * @public
        * @description Initialization of map object, initialize map and
        * map state from permalink.
@@ -77,9 +77,9 @@ export default [
         }
 
         if (permalink.getParamValue('puremap') || config.pureMap == true) {
-          Core.puremapApp = true;
+          HsCore.puremapApp = true;
           config.mapInteractionsEnabled = false;
-          Core.createComponentsEnabledConfigIfNeeded();
+          HsCore.createComponentsEnabledConfigIfNeeded();
           config.componentsEnabled.mapControls = false;
           config.componentsEnabled.geolocationButton = false;
           config.componentsEnabled.defaultViewButton = false;
@@ -96,7 +96,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.controller#onCenterSync
+     * @name HsMapController#onCenterSync
      * @private
      * @param {event} event Info about angularjs broadcasted event
      * @param {array} data Coordinates in lon/lat and resolution
@@ -128,7 +128,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.controller#zoomForResolution
+     * @name HsMapController#zoomForResolution
      * @private
      * @param {number} resolution Resolution
      * @description Calculates zoom level for a given resolution

@@ -13,38 +13,38 @@ angular
   .module('hs.compositions.endpoints', [])
 
   /**
-   * @module hs.compositions.mickaService
+   * @module HsCompositionsMickaService
    * @ngdoc service
    * @name hs.compositions.endpoints
    * @description Service for gettign compositions from Micka
    */
-  .factory('hs.compositions.mickaService', mickaService)
+  .factory('HsCompositionsMickaService', mickaService)
 
   /**
-   * @module hs.compositions.laymanService
+   * @module HsCompositionsLaymanService
    * @ngdoc service
    * @name hs.compositions.endpoints
    * @description Service for gettign compositions from Layman
    */
-  .factory('hs.compositions.laymanService', compositionsLaymanService)
+  .factory('HsCompositionsLaymanService', compositionsLaymanService)
 
   /**
-   * @module hs.compositions.statusManagerService
+   * @module HsCompositionsStatusManagerService
    * @ngdoc service
    * @name hs.compositions.endpoints
    * @description Service for getting list of compositions from statusmanager.
    */
-  .factory('hs.compositions.statusManagerService', statusManagerService)
+  .factory('HsCompositionsStatusManagerService', statusManagerService)
 
   /**
-  * @module hs.compositions.statusManagerMickaJointService
+  * @module HsCompositionsStatusManagerMickaJointService
   * @ngdoc service
   * @name hs.compositions.endpoints
   * @description Service for getting list of compositions from statusmanager.
   Links together with mickaService to make micka compositions editable.
   */
   .factory(
-    'hs.compositions.statusManagerMickaJointService',
+    'HsCompositionsStatusManagerMickaJointService',
     statusManagerMickaJointService
   )
 

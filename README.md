@@ -93,16 +93,16 @@ var module = angular.module('hs', [
     'hs.info'
 ]);
 
-module.directive('hs', ['config', 'Core', function (config, Core) {
+module.directive('hs', ['HsConfig', 'HsCore', function (config, HsCore) {
     return {
-        template: Core.hslayersNgTemplate,
+        template: HsCore.hslayersNgTemplate,
         link: function (scope, element) {
-            Core.fullScreenMap(element);
+            HsCore.fullScreenMap(element);
         }
     };
 }]);
 
-module.value('config', {
+module.value('HsConfig', {
     open_lm_after_comp_loaded: true,
     layer_order: '-position',
     box_layers: [
@@ -135,8 +135,8 @@ module.value('config', {
     })
 });
 
-module.controller('Main', ['$scope', 'Core', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
-    function ($scope, Core, composition_parser, config, layoutService) {
+module.controller('Main', ['$scope', 'HsCore', 'HsCompositionsParserService', 'HsConfig', 'HsLayoutService',
+    function ($scope, HsCore, composition_parser, config, layoutService) {
         layoutService.sidebarRight = false;
     }
 ]);
@@ -211,7 +211,7 @@ grunt nggettext_compile
 ```
 It will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
 
-translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in Core module. To have it use your own generated translations.js file override the path in hslayers.js file:
+translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in HsCore module. To have it use your own generated translations.js file override the path in hslayers.js file:
 ```
 translations: hsl_path + 'examples/pilsen_traffic/translations' 
 ```

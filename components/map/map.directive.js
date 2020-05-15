@@ -1,8 +1,8 @@
 export default [
-  'config',
-  'hs.map.service',
+  'HsConfig',
+  'HsMapService',
   '$timeout',
-  'hs.layout.service',
+  'HsLayoutService',
   function (config, service, $timeout, layoutService) {
     return {
       template: require('./partials/map.html'),

@@ -2,7 +2,7 @@ import compositionsService from './compositions.service';
 
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('./partials/compositionsmd.html');
@@ -13,23 +13,23 @@ export default {
   ],
   controller: [
     '$scope',
-    'Core',
-    'hs.map.service',
-    'hs.compositions.service',
-    'hs.compositions.service_parser',
+    'HsCore',
+    'HsMapService',
+    'HsCompositionsService',
+    'HsCompositionsParserService',
     '$window',
-    'config',
+    'HsConfig',
     '$compile',
-    'hs.compositions.mickaService',
+    'HsCompositionsMickaService',
     '$rootScope',
-    'hs.layout.service',
-    'hs.common.endpointsService',
-    'hs.utils.service',
-    'hs.compositions.mapService',
+    'HsLayoutService',
+    'HsCommonEndpointsService',
+    'HsUtilsService',
+    'HsCompositionsMapService',
     'forCompositionsFilter',
     function (
       $scope,
-      Core,
+      HsCore,
       hsMap,
       Composition,
       compositionParser,
@@ -596,7 +596,7 @@ export default {
       $window.addEventListener('resize', () => {
         $scope.getPageSize();
       });
-      $scope.$on('Core_sizeChanged', () => {
+      $scope.$on('HsCore_sizeChanged', () => {
         $scope.getPageSize();
       });
 

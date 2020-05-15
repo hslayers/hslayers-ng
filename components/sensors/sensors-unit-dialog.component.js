@@ -5,10 +5,10 @@ export default {
   },
   controller: [
     '$scope',
-    'hs.map.service',
-    'hs.sensors.service',
-    'hs.layout.service',
-    'hs.sensors.service',
+    'HsMapService',
+    'HsSensorsService',
+    'HsLayoutService',
+    'HsSensorsService',
     function ($scope, OlMap, sensorsService, layoutService, sensorService) {
       sensorsService.unitDialogVisible = true;
       angular.extend($scope, {

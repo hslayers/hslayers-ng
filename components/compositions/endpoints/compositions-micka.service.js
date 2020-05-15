@@ -3,12 +3,12 @@ import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 export default [
   '$rootScope',
-  'hs.compositions.service_parser',
-  'config',
+  'HsCompositionsParserService',
+  'HsConfig',
   '$q',
   '$http',
-  'hs.map.service',
-  'hs.utils.service',
+  'HsMapService',
+  'HsUtilsService',
   function ($rootScope, compositionParser, config, $q, $http, hsMap, utils) {
     const me = this;
     angular.extend(me, {

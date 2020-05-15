@@ -63,45 +63,45 @@ angular
 
   /**
    * @ngdoc service
-   * @name hs.mickaFiltersService
+   * @name HsMickaFiltersService
    * @memberOf hs.datasource_selector
    * @description Service for calling catalogue loaders and managing layers -
    * initiating adding to map, downloading, storing layer extents
    */
-  .factory('hs.datasourceBrowserService', datasourceSelectorService)
+  .factory('HsDatasourceBrowserService', datasourceSelectorService)
 
   /**
    * @module hs.datasource_selector
-   * @name hs.datasourceSelector.mapService
+   * @name HsDataSourceSelectorMapService
    * @ngdoc controller
-   * @description Service of composition module which deal ith Openlayers map objects
+   * @description Service of composition module which deal ith OpenLayers map objects
    */
-  .factory('hs.datasourceSelector.mapService', datasourceSelectorMapService)
+  .factory('HsDataSourceSelectorMapService', datasourceSelectorMapService)
 
   /**
    * @ngdoc service
-   * @name hs.mickaFiltersService
+   * @name HsMickaFiltersService
    * @memberOf hs.datasource_selector
    * @description Service for managing micka query filter parameters and
    * their possible values i.e. suggestions
    */
-  .factory('hs.mickaFiltersService', mickaFilterService)
+  .factory('HsMickaFiltersService', mickaFilterService)
 
   /**
    * @ngdoc service
-   * @name hs.mickaBrowserService
+   * @name HsMickaBrowserService
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
    */
-  .factory('hs.mickaBrowserService', mickaService)
+  .factory('HsMickaBrowserService', mickaService)
 
   /**
    * @ngdoc service
-   * @name hs.laymanBrowserService
+   * @name HsLaymanBrowserService
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Layman
    */
-  .factory('hs.laymanBrowserService', laymanService)
+  .factory('HsLaymanBrowserService', laymanService)
 
   /**
    * @ngdoc component

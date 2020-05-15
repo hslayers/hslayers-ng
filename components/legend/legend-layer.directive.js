@@ -1,6 +1,6 @@
 import VectorLayer from 'ol/layer/Vector';
 export default [
-  'config',
+  'HsConfig',
   function (config) {
     return {
       template: require('./partials/layer-directive.html'),
@@ -9,8 +9,8 @@ export default [
       },
       controller: [
         '$scope',
-        'hs.legend.service',
-        'hs.utils.service',
+        'HsLegendService',
+        'HsUtilsService',
         function ($scope, service, utils) {
           const olLayer = $scope.layer.lyr;
           $scope.styles = [];

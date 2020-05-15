@@ -5,12 +5,12 @@ import HsCsTime from 'hs_cesium_time';
 import {transformExtent} from 'ol/proj';
 
 export default [
-  'config',
+  'HsConfig',
   '$rootScope',
-  'hs.utils.service',
-  'hs.map.service',
-  'hs.layermanager.service',
-  'hs.layout.service',
+  'HsUtilsService',
+  'HsMapService',
+  'HsLayermanagerService',
+  'HsLayoutService',
   function (
     config,
     $rootScope,
@@ -19,6 +19,7 @@ export default [
     layer_manager_service,
     layoutService
   ) {
+    const me = this;
     let viewer;
     const BING_KEY = angular.isDefined(config.cesiumBingKey)
       ? config.cesiumBingKey
@@ -26,7 +27,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.cesium.service#init
+     * @name HsCesiumService#init
      * @public
      * @description Initializes Cesium map
      */
@@ -276,7 +277,7 @@ export default [
 
       /**
        * @ngdoc event
-       * @name hs.cesium.service#map.loaded
+       * @name HsCesiumService#map.loaded
        * @eventType broadcast on $rootScope
        * @description
        */
@@ -321,6 +322,6 @@ export default [
     this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
     this.linkOlLayerToCesiumLayer = HsCsLayers.linkOlLayerToCesiumLayer;
     this.broadcastLayerList = HsCsTime.broadcastLayerList;
-    var me = this;
+    return me;
   },
 ];

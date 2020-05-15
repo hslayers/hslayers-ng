@@ -13,13 +13,13 @@ import {Vector as VectorSource} from 'ol/source';
 import {get as getProj, transform} from 'ol/proj';
 
 export default [
-  'hs.map.service',
-  'config',
-  'Core',
+  'HsMapService',
+  'HsConfig',
+  'HsCore',
   '$rootScope',
-  'hs.utils.service',
-  'hs.addLayersVector.service',
-  function (OlMap, config, Core, $rootScope, utils, nonWmsService) {
+  'HsUtilsService',
+  'HsAddLayersVectorService',
+  function (OlMap, config, HsCore, $rootScope, utils, nonWmsService) {
     const me = {
       /**
        * @ngdoc method

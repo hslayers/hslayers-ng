@@ -1,14 +1,14 @@
 export default [
   '$scope',
-  'Core',
-  'hs.search.service',
-  'hs.permalink.urlService',
-  'hs.layout.service',
-  'config',
+  'HsCore',
+  'HsSearchService',
+  'HsPermalinkUrlService',
+  'HsLayoutService',
+  'HsConfig',
   '$timeout',
   function (
     $scope,
-    Core,
+    HsCore,
     SearchService,
     permalink,
     layoutService,
@@ -28,7 +28,7 @@ export default [
       $scope.clearvisible = false;
       if (permalink.getParamValue('search')) {
         $scope.query = permalink.getParamValue('search');
-        Core.searchVisible(true);
+        HsCore.searchVisible(true);
         $scope.queryChanged();
       }
       window.innerWidth < 767 ? $scope.searchInputVisible = false : $scope.searchInputVisible = true;

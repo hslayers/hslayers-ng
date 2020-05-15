@@ -21,7 +21,7 @@ angular
    * @description Add tracking panel html template to the map
    */
   .directive('hs.tracking.directive', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('components/tracking/partials/tracking.html'),
@@ -36,10 +36,10 @@ angular
    */
   .controller('hs.tracking.controller', [
     '$scope',
-    'hs.map.service',
-    'Core',
-    'hs.layout.service',
-    function ($scope, OlMap, Core, layoutService) {
+    'HsMapService',
+    'HsCore',
+    'HsLayoutService',
+    function ($scope, OlMap, HsCore, layoutService) {
       // Set the instance of the OpenAPI that s4a.js
       // works towards (by default portal.sdi4apps.eu)
       //s4a.openApiUrl('http://localhost:8080/openapi');

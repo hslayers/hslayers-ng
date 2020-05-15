@@ -6,8 +6,8 @@ import {transform} from 'ol/proj';
 
 export default {
   template: require('./partials/vgi-draw.html'),
-  controller: ['$scope', 'hs.map.service', 'Core', 'hs.geolocation.service', '$http', 'hs.utils.service', '$timeout', 'hs.save-map.service', 'config', 'hs.draw.service', '$compile', 'hs.layout.service',
-    function ($scope, OlMap, Core, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile, layoutService) {
+  controller: ['$scope', 'HsMapService', 'HsCore', 'HsGeolocationService', '$http', 'HsUtilsService', '$timeout', 'HsSaveMapService', 'HsConfig', 'HsDrawService', '$compile', 'HsLayoutService',
+    function ($scope, OlMap, HsCore, Geolocation, $http, utils, $timeout, saveMap, config, drawService, $compile, layoutService) {
       const map = OlMap.map;
       let newObsId = 0;
 
@@ -78,7 +78,7 @@ export default {
           if (feature.get('media_count') && feature.get('obs_vgi_id')) {
             $http.get($scope.senslog_url + '/observation/' + feature.get('obs_vgi_id') + '/media?user_name=' + config.user_name).then((response) => {
               const media = [];
-              if (Core.isMobile()) {
+              if (HsCore.isMobile()) {
                 const portalFolder = config.hostname.default.url.split('/').slice(-1)[0];
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fileSys) => {
                   fileSys.root.getDirectory(portalFolder, {

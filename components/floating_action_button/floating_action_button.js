@@ -9,11 +9,12 @@ define(['angular', 'core'],
             /**
             * @memberof hs.floating_action_button
             * @ngdoc service
-            * @name hs.floating_action_button.service
+            * @name HsFloatingActionButtonService
             * @description TODO
             */
-            .service('hs.floating_action_button.service', ['Core',
-                function(Core) {
+            .factory('HsFloatingActionButtonService', ['HsCore',
+                function(HsCore) {
+                    return this;
                 }
             ])
             /**
@@ -22,7 +23,7 @@ define(['angular', 'core'],
             * @name hs.floating_action_button.directive
             * @description TODO
             */
-            .directive('hs.floatingActionButton.directive', ['config', function (config) {
+            .directive('hs.floatingActionButton.directive', ['HsConfig', function (config) {
                 return {
                     template: require('components/floating_action_button/partials/floating_action_button.html')
                 };
@@ -31,11 +32,11 @@ define(['angular', 'core'],
         /**
         * @memberof hs.floating_action_button
         * @ngdoc controller
-        * @name hs.floating_action_button.controller
+        * @name HsFloatingActionButtonController
         * @description TODO
         */
-        .controller('hs.floating_action_button.controller', ['$scope', 'hs.floating_action_button.service', 'Core', '$window',
-            function($scope, service, Core, $window) {
+        .controller('HsFloatingActionButtonController', ['$scope', 'HsFloatingActionButtonService', 'HsCore', '$window',
+            function($scope, service, HsCore, $window) {
                 $scope.primary = {
                     classes: ["btn-large"],
                     icon: {

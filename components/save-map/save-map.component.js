@@ -1,6 +1,6 @@
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('./partials/panelmd.html');
@@ -11,21 +11,21 @@ export default {
   ],
   controller: [
     '$scope',
-    'hs.map.service',
-    'Core',
-    'hs.save-map.service',
-    'config',
+    'HsMapService',
+    'HsCore',
+    'HsSaveMapService',
+    'HsConfig',
     '$compile',
-    'hs.saveMapManagerService',
+    'HsSaveMapManagerService',
     '$timeout',
-    'hs.layout.service',
-    'hs.common.laymanService',
-    'hs.common.endpointsService',
+    'HsLayoutService',
+    'HsCommonLaymanService',
+    'HsCommonEndpointsService',
     'gettext',
     function (
       $scope,
       OlMap,
-      Core,
+      HsCore,
       saveMapService,
       config,
       $compile,
@@ -192,7 +192,7 @@ export default {
             return false;
           }
           if ($scope.endpoint.type == 'statusmanager') {
-            return !Core.isAuthorized();
+            return !HsCore.isAuthorized();
           } else if ($scope.endpoint.type == 'layman') {
             return true;
           }

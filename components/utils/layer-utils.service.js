@@ -6,14 +6,14 @@ import {TileWMS, WMTS} from 'ol/source';
 import {isEmpty} from 'ol/extent';
 
 export default [
-  'config',
-  'hs.utils.service',
+  'HsConfig',
+  'HsUtilsService',
   function (config, utils) {
     const me = this;
     return angular.extend(me, {
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#layerIsZoomable
+       * @name HsUtilsLayerUtilsService#layerIsZoomable
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True for layer with BoundingBox property, for
        * WMS layer or for layer, which has source with extent
@@ -42,7 +42,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#layerIsStyleable
+       * @name HsUtilsLayerUtilsService#layerIsStyleable
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True for ol.layer.Vector
        * @description Determines if layer is a Vector layer and therefore
@@ -62,7 +62,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerQueryable
+       * @name HsUtilsLayerUtilsService#isLayerQueryable
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image with
        * INFO_FORMAT in params
@@ -88,7 +88,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#getLayerTitle
+       * @name HsUtilsLayerUtilsService#getLayerTitle
        * @param {Ol.layer} Layer to get layer title
        * @returns {String} Layer title or "Void"
        * @description Get title of selected layer
@@ -103,7 +103,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerWMS
+       * @name HsUtilsLayerUtilsService#isLayerWMS
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True for ol.layer.Tile and ol.layer.Image
        * @description Test if layer is WMS layer
@@ -148,7 +148,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerVectorLayer
+       * @name HsUtilsLayerUtilsService#isLayerVectorLayer
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True for Vector layer
        * @description Test if layer is Vector layer
@@ -166,7 +166,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerInManager
+       * @name HsUtilsLayerUtilsService#isLayerInManager
        * @param {Ol.layer} layer Layer to check
        * @returns {Boolean} True if show_in_manager attribute is set to true
        * @description Test if layer is shown in layer switcher
@@ -181,7 +181,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#hasLayerTitle
+       * @name HsUtilsLayerUtilsService#hasLayerTitle
        * @param {Ol.layer} layer Layer to check
        * @returns {Boolean} True if layer is has a title
        * @description Test if layer is has a title
@@ -194,7 +194,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerEditable
+       * @name HsUtilsLayerUtilsService#isLayerEditable
        * @param {Ol.layer} layer Layer to check
        * @returns {Boolean} True if layer has attribute editor amd in it
        * editable property is set to true or missing
@@ -225,7 +225,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#isLayerDrawable
+       * @name HsUtilsLayerUtilsService#isLayerDrawable
        * @param {Ol.layer} layer Layer to check
        * @returns {Boolean} True if layer is drawable vector layer
        * @description Check if layer hasa a VectorSource object, if layer is
@@ -244,7 +244,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#layerLoaded
+       * @name HsUtilsLayerUtilsService#layerLoaded
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True loaded / False not (fully) loaded
        * @description Test if layers source is loaded
@@ -255,7 +255,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.utils.layerUtilsService#layerInvalid
+       * @name HsUtilsLayerUtilsService#layerInvalid
        * @param {Ol.layer} layer Selected layer
        * @returns {Boolean} True invalid, false valid source
        * @description Test if layers source is validly loaded (!true for invalid)

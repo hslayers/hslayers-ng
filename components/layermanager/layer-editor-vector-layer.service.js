@@ -4,12 +4,12 @@ import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Point} from 'ol/geom';
 
 export default [
-  'hs.map.service',
+  'HsMapService',
   function (hsMap) {
     const me = {};
     /**
      * @function Declutter
-     * @memberOf hs.layerEditor.service
+     * @memberOf HsLayerEditorService
      * @description Set declutter of features;
      */
     me.declutter = function (newValue, layer) {
@@ -42,7 +42,7 @@ export default [
     };
     /**
      * @function cluster
-     * @memberOf hs.layerEditor.service
+     * @memberOf HsLayerEditorService
      * @description Set cluster for layer;
      */
     me.cluster = function (newValue, layer, distance) {

@@ -6,7 +6,7 @@ export default {
     bindings: {
         feature: '<'
     },
-    controller: ['$scope', 'hs.utils.service', 'hs.utils.layerUtilsService', 'hs.map.service', 'hs.query.vectorService',
+    controller: ['$scope', 'HsUtilsService', 'HsUtilsLayerUtilsService', 'HsMapService', 'HsQueryVectorService',
         function ($scope, utils, layerUtilsService, hsMap, queryVectorService) {
             let olSource = () => {
                 let layer = olFeature().getLayer(hsMap.map);

@@ -1,5 +1,5 @@
 export default [
-  'config',
+  'HsConfig',
   '$rootScope',
   '$window',
   '$document',
@@ -94,7 +94,7 @@ export default [
     angular.extend(me, {
       /**
        * @ngdoc property
-       * @name hs.layout.service#defaultPanel
+       * @name HsLayoutService#defaultPanel
        * @public
        * @type {String} null
        * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed).
@@ -102,14 +102,14 @@ export default [
       defaultPanel: '',
       /**
        * @ngdoc property
-       * @name hs.layout.service#panel_statuses
+       * @name HsLayoutService#panel_statuses
        * @public
        * @type {Object}
        */
       panel_statuses: {},
       /**
        * @ngdoc property
-       * @name hs.layout.service#panel_enabled
+       * @name HsLayoutService#panel_enabled
        * @public
        * @type {Object}
        * @description DEPRACATED?
@@ -117,15 +117,15 @@ export default [
       panel_enabled: {},
       /**
        * @ngdoc property
-       * @name hs.layout.service#mainpanel
+       * @name HsLayoutService#mainpanel
        * @public
        * @type {String} null
-       * @description Storage of current main panel (panel which is opened). When {@link hs.layout.service#defaultPanel defaultPanel} is specified, main panel is set to it during Core initialization.
+       * @description Storage of current main panel (panel which is opened). When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
        */
       mainpanel: '',
       /**
        * @ngdoc property
-       * @name Core#sidebarRight
+       * @name HsCore#sidebarRight
        * @public
        * @type {Boolean} true
        * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
@@ -133,7 +133,7 @@ export default [
       sidebarRight: true,
       /**
        * @ngdoc property
-       * @name hs.layout.service#sidebarLabels
+       * @name HsLayoutService#sidebarLabels
        * @public
        * @type {Boolean} true
        * @description DEPRECATED? (labels display is done with CSS classes)
@@ -141,7 +141,7 @@ export default [
       sidebarLabels: true,
       /**
        * @ngdoc property
-       * @name hs.layout.service#sidebarToggleable
+       * @name HsLayoutService#sidebarToggleable
        * @public
        * @type {Boolean} true
        * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
@@ -149,7 +149,7 @@ export default [
       sidebarToggleable: true,
       /**
        * @ngdoc property
-       * @name hs.layout.service#sidebarButtons
+       * @name HsLayoutService#sidebarButtons
        * @public
        * @type {Boolean} true
        * @description DEPRECATED?
@@ -157,7 +157,7 @@ export default [
       sidebarButtons: true,
       /**
        * @ngdoc property
-       * @name hs.layout.service#smallWidth
+       * @name HsLayoutService#smallWidth
        * @public
        * @type {Boolean} false
        * @description Helper property for showing some button on smaller screens
@@ -166,10 +166,10 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.layout.service#fullScreenMap
+       * @name HsLayoutService#fullScreenMap
        * @public
        * @param {Object} element HS layers element gained from directive link
-       * @param {Object} core hs.Core element, holds sizeOptions variable and init method
+       * @param {Object} core hs.HsCore element, holds sizeOptions variable and init method
        * @description Helper function for single page HS map applications.
        */
       fullScreenMap: function (element, core) {
@@ -181,7 +181,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.layout.service#panelVisible
+       * @name HsLayoutService#panelVisible
        * @public
        * @param {String} which Name of panel to test
        * @param {$scope} scope Angular scope of panels controller (optional, needed for test of unpinned panels)
@@ -203,7 +203,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.layout.service#hidePanels
+       * @name HsLayoutService#hidePanels
        * @public
        * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
        */
@@ -211,7 +211,7 @@ export default [
         me.mainpanel = '';
         me.sidebarLabels = true;
         $timeout(() => {
-          if (!me.exists('hs.sidebar.controller')) {
+          if (!me.exists('HsSidebarController')) {
             me.sidebarExpanded = false;
           }
           $rootScope.$broadcast('core.mainpanel_changed');
@@ -219,7 +219,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.layout.service#closePanel
+       * @name HsLayoutService#closePanel
        * @public
        * @param {Object} which Panel to close (panel scope)
        * @description Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
@@ -254,7 +254,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.layout.service#panelEnabled
+       * @name HsLayoutService#panelEnabled
        * @public
        * @param {String} which Selected panel (panel name)
        * @param {Boolean} status Visibility status of panel to set
@@ -283,7 +283,7 @@ export default [
 
       /**
        * @ngdoc method
-       * @name hs.layout.service#setMainPanel
+       * @name HsLayoutService#setMainPanel
        * @public
        * @param {String} which New panel to activate (panel name)
        * @param {Boolean} by_gui Whether function call came as result of GUI action
@@ -309,7 +309,7 @@ export default [
         me.mainpanel = which;
         /**
          * @ngdoc event
-         * @name Core#core.mainpanel_changed
+         * @name HsCore#core.mainpanel_changed
          * @eventType broadcast on $rootScope
          * @description Fires when current mainpanel change - toggle, change of opened panel
          */
@@ -317,7 +317,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name hs.layout.service#setDefaultPanel
+       * @name HsLayoutService#setDefaultPanel
        * @public
        * @param {String} which New panel to be default (specify panel name)
        * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
@@ -397,7 +397,7 @@ export default [
       },
       /**
        * @ngdoc property
-       * @name hs.layout.service#sidebarExpanded
+       * @name HsLayoutService#sidebarExpanded
        * @public
        * @type {Boolean} false
        * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
@@ -405,7 +405,7 @@ export default [
       sidebarExpanded: false,
       /**
        * @ngdoc property
-       * @name hs.layout.service#minisidebar
+       * @name HsLayoutService#minisidebar
        * @public
        * @type {Boolean} false
        * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace

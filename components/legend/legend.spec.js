@@ -8,7 +8,7 @@ describe('legend', () => {
 
   beforeEach(() => {
     angular.mock.module(($provide) => {
-      $provide.value('config', {
+      $provide.value('HsConfig', {
         proxyPrefix: '',
         default_layers: [],
       });

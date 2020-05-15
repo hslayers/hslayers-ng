@@ -2,8 +2,8 @@ export default [
   '$rootScope',
   '$q',
   '$http',
-  'hs.utils.service',
-  'hs.compositions.service_parser',
+  'HsUtilsService',
+  'HsCompositionsParserService',
   function ($rootScope, $q, $http, utils, compositionParser) {
     const me = this;
     angular.extend(me, {

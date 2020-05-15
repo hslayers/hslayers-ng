@@ -1,8 +1,8 @@
 export default [
-  'hs.compositions.statusManagerService',
-  'hs.compositions.mickaService',
-  'hs.compositions.mapService',
-  'hs.compositions.service_parser',
+  'HsCompositionsStatusManagerService',
+  'HsCompositionsMickaService',
+  'HsCompositionsMapService',
+  'HsCompositionsParserService',
   function (
     compositionsStatusManagerService,
     mickaEndpointService,
@@ -13,7 +13,7 @@ export default [
     angular.extend(me, {
       /**
        * @ngdoc method
-       * @name hs.compositions.service#loadList
+       * @name HsCompositionsService#loadList
        * @public
        * @description Load list of compositions according to current
        * filter values and pager position (filter, keywords, current

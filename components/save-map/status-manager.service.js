@@ -1,7 +1,7 @@
 export default [
   '$http',
-  'config',
-  'hs.utils.service',
+  'HsConfig',
+  'HsUtilsService',
   function ($http, config, utils) {
     const me = this;
     angular.extend(me, {

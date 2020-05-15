@@ -1,6 +1,6 @@
-export default ['$scope', 'config', 'Core', 'hs.map.service', '$window',
-    function ($scope, config, Core, OlMap, $window) {
-        $scope.Core = Core;
+export default ['$scope', 'HsConfig', 'HsCore', 'HsMapService', '$window',
+    function ($scope, config, HsCore, OlMap, $window) {
+        $scope.HsCore = HsCore;
         configDebug = config;
         $scope.settingsDb = settingsDb;
         $scope.originalHostnames = $.extend({}, config.hostname);

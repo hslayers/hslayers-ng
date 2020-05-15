@@ -4,12 +4,12 @@ import {TileWMS} from 'ol/source';
 import {Attribution} from 'ol/control';
 import {getPreferedFormat} from '../format-utils';
 
-export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', '$log', function ($http, OlMap, utils, $rootScope, $log) {
+export default ['$http', 'HsMapService', 'HsUtilsService', '$rootScope', '$log', function ($http, OlMap, utils, $rootScope, $log) {
   const me = this;
 
   /**
     * Get WMS service location without parameters from url string
-    * @memberof hs.arcgis.getCapabilitiesService
+    * @memberof HsArcgisGetCapabilitiesService
     * @function getPathFromUrl
     * @param {String} str Url string to parse
     * @returns {String} WMS service Url
@@ -25,7 +25,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', '$l
   /**
      * TODO: Probably the same as utils.paramsToURL
     * Create WMS parameter string from parameter object
-    * @memberof hs.arcgis.getCapabilitiesService
+    * @memberof HsArcgisGetCapabilitiesService
     * @function param2String
     * @param {Object} obj Object with stored WNS service parameters
     * @returns {String} Parameter string or empty string if no object given
@@ -46,7 +46,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', '$l
 
   /**
     * Parse added service url and sends GetCapabalities request to WMS service
-    * @memberof hs.arcgis.getCapabilitiesService
+    * @memberof HsArcgisGetCapabilitiesService
     * @function requestGetCapabilities
     * @param {String} service_url Raw Url localization of service
     * @returns {Promise} Promise object - Response to GetCapabalities request
@@ -71,7 +71,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', '$l
 
   /**
     * Load all layers of selected service to the map
-    * @memberof hs.arcgis.getCapabilitiesService
+    * @memberof HsArcgisGetCapabilitiesService
     * @function service2layers
     * @param {String} caps Xml response of GetCapabilities of selected service
     * @returns {Ol.collection} List of layers from service
@@ -123,7 +123,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', '$l
 
   /**
     * Test if current map projection is in supported projection list
-    * @memberof hs.arcgis.getCapabilitiesService
+    * @memberof HsArcgisGetCapabilitiesService
     * @function currentProjectionSupported
     * @param {Array} srss List of supported projections
     * @returns {Boolean} True if map projection is in list, otherwise false

@@ -7,7 +7,7 @@ export default {
     '$http',
     '$scope',
     '$timeout',
-    'hs.draw.service',
+    'HsDrawService',
     function ($http, $scope, $timeout, drawService) {
       this.modalVisible = true;
       const vm = this;

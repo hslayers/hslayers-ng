@@ -1,6 +1,6 @@
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('./partials/add-layers.md.directive.html');
@@ -11,24 +11,24 @@ export default {
   ],
   controller: [
     '$scope',
-    'hs.permalink.urlService',
-    'Core',
-    'config',
+    'HsPermalinkUrlService',
+    'HsCore',
+    'HsConfig',
     '$rootScope',
     '$timeout',
-    'hs.layout.service',
+    'HsLayoutService',
     'HsDragDropLayerService',
     function (
       $scope,
       permalink,
-      Core,
+      HsCore,
       config,
       $rootScope,
       $timeout,
       layoutService,
       HsDragDropLayerService
     ) {
-      $scope.Core = Core;
+      $scope.HsCore = HsCore;
       if (angular.isArray(config.connectTypes)) {
         $scope.types = config.connectTypes;
       } else {

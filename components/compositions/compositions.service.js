@@ -6,27 +6,27 @@ export default [
   '$rootScope',
   '$location',
   '$http',
-  'hs.map.service',
-  'Core',
-  'hs.compositions.service_parser',
-  'config',
-  'hs.permalink.urlService',
+  'HsMapService',
+  'HsCore',
+  'HsCompositionsParserService',
+  'HsConfig',
+  'HsPermalinkUrlService',
   '$cookies',
-  'hs.utils.service',
-  'hs.statusManagerService',
-  'hs.compositions.mickaService',
-  'hs.compositions.statusManagerMickaJointService',
-  'hs.compositions.laymanService',
+  'HsUtilsService',
+  'HsStatusManagerService',
+  'HsCompositionsMickaService',
+  'HsCompositionsStatusManagerMickaJointService',
+  'HsCompositionsLaymanService',
   '$log',
   '$window',
-  'hs.common.endpointsService',
-  'hs.compositions.mapService',
+  'HsCommonEndpointsService',
+  'HsCompositionsMapService',
   function (
     $rootScope,
     $location,
     $http,
     OlMap,
-    Core,
+    HsCore,
     compositionParser,
     config,
     permalink,
@@ -87,7 +87,7 @@ export default [
 
       shareComposition(record) {
         const compositionUrl =
-          (Core.isMobile() && config.permalinkLocation
+          (HsCore.isMobile() && config.permalinkLocation
             ? config.permalinkLocation.origin +
               config.permalinkLocation.pathname
             : $location.protocol() +
@@ -184,7 +184,7 @@ export default [
 
       /**
        * @function parsePermalinkLayers
-       * @memberof hs.compositions.service
+       * @memberof HsCompositionsService
        * Load layers received through permalink to map
        */
       async parsePermalinkLayers() {

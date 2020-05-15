@@ -15,7 +15,7 @@ import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 
 angular
   .module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
-  .factory('hs.draw.service', drawService)
+  .factory('HsDrawService', drawService)
 
   /**
    * @memberof hs.draw

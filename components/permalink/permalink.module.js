@@ -31,19 +31,19 @@ angular
 
   /**
    * @ngdoc service
-   * @name hs.permalink.urlService
+   * @name HsPermalinkUrlService
    * @membeof hs.permalink
    * @description Service responsible for creating permalink URLs. Mantain parameters information about map
    */
-  .factory('hs.permalink.urlService', permalinkUrlService)
+  .factory('HsPermalinkUrlService', permalinkUrlService)
 
   /**
    * @ngdoc service
-   * @name hs.permalink.shareService
+   * @name HsPermalinkShareService
    * @membeof hs.permalink
    * @description Service responsible for sharing background. Mantain correct sharing links on the fly
    */
-  .factory('hs.permalink.shareService', permalinkShareService)
+  .factory('HsPermalinkShareService', permalinkShareService)
 
   /**
    * @name hs.permalink

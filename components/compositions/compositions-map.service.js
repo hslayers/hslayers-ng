@@ -6,8 +6,8 @@ import {Vector} from 'ol/source';
 export default [
   '$timeout',
   '$rootScope',
-  'hs.map.service',
-  'hs.layout.service',
+  'HsMapService',
+  'HsLayoutService',
   function ($timeout, $rootScope, hsMap, layoutService) {
     const me = this;
 

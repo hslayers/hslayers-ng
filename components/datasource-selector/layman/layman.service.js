@@ -1,16 +1,16 @@
 export default [
-  'hs.map.service',
-  'Core',
-  'config',
+  'HsMapService',
+  'HsCore',
+  'HsConfig',
   '$http',
   '$q',
-  'hs.utils.service',
-  'hs.mickaFiltersService',
+  'HsUtilsService',
+  'HsMickaFiltersService',
   '$rootScope',
-  'hs.common.laymanService',
+  'HsCommonLaymanService',
   function (
     OlMap,
-    Core,
+    HsCore,
     config,
     $http,
     $q,
@@ -23,7 +23,7 @@ export default [
     angular.extend(me, {
       /*
        * @function queryCatalog
-       * @memberOf hs.laymanBrowserService
+       * @memberOf HsLaymanBrowserService
        * @param {Object} endpoint Configuration of selected datasource (from app config)
        * extent feature is created. Has one parameter: feature
        * @description Loads datasets metadata from Layman
@@ -50,7 +50,7 @@ export default [
 
       /**
        * @function datasetsReceived
-       * @memberOf hs.laymanBrowserService
+       * @memberOf HsLaymanBrowserService
        * @param {Object} j HTTP response containing all the layers
        * (PRIVATE) Callback for catalogue http query
        */
@@ -79,7 +79,7 @@ export default [
 
       /**
        * @function fillLayerMetadata
-       * @memberOf hs.laymanBrowserService
+       * @memberOf HsLaymanBrowserService
        * @param {Object} dataset Configuration of selected datasource (from app config)
        * @param {Object} layer Layman layer for which to get metadata
        * @return {Promise} Promise which is resolved when layer metadata is filled
@@ -110,7 +110,7 @@ export default [
 
       /*
        * @function describeWhatToAdd
-       * @memberOf hs.laymanBrowserService
+       * @memberOf HsLaymanBrowserService
        * @param {Object} dataset Configuration of selected datasource (from app config)
        * @param {Object} layer Layman layer for which to get metadata
        * Gets layer metadata and returns promise which describes layer

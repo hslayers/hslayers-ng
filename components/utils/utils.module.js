@@ -12,19 +12,19 @@ angular
 
   /**
    * @ngdoc service
-   * @name hs.utils.service
+   * @name HsUtilsService
    * @module hs.utils
    * @param {object} config - Application configuration
    * @description Service for containing various utility functions used throughout HSL modules.
    * Add few utility functions and also enrich some data types with additional functions (mainly Date and String).
    */
-  .factory('hs.utils.service', utilsService)
+  .factory('HsUtilsService', utilsService)
 
   /**
    * @ngdoc service
-   * @name hs.utils.layerUtilsService
+   * @name HsUtilsLayerUtilsService
    * @module hs.utils
    * @param {object} config - Application configuration
    * @description Service containing varius functions for testing layer functionalities
    */
-  .factory('hs.utils.layerUtilsService', layerUtilsService);
+  .factory('HsUtilsLayerUtilsService', layerUtilsService);

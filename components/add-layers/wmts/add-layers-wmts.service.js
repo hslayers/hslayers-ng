@@ -1,7 +1,7 @@
 import moment from 'moment';
 global.moment = moment;
 
-export default ['hs.map.service', 'hs.wmts.getCapabilitiesService', function (OlMap, srv_caps) {
+export default ['HsMapService', 'HsWmtsGetCapabilitiesService', function (OlMap, srv_caps) {
   /**
     * Add service and its layers to project TODO
     * @memberof add-layers-wms.service_layer_producer

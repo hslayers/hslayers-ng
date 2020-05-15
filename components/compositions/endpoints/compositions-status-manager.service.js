@@ -2,9 +2,9 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 export default [
-  'hs.statusManagerService',
-  'config',
-  'hs.utils.service',
+  'HsStatusManagerService',
+  'HsConfig',
+  'HsUtilsService',
   '$q',
   '$http',
   function (statusManagerService, config, utils, $q, $http) {
@@ -12,7 +12,7 @@ export default [
     angular.extend(me, {
       /**
        * @ngdoc method
-       * @name hs.compositions.service#loadList
+       * @name HsCompositionsService#loadList
        * @public
        * @description Load list of compositions according to current
        * filter values and pager position (filter, keywords, current

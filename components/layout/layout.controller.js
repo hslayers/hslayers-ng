@@ -3,13 +3,13 @@ export default [
   '$injector',
   '$rootScope',
   '$window',
-  'Core',
-  'hs.map.service',
-  'hs.geolocation.service',
-  'hs.layermanager.service',
-  'config',
+  'HsCore',
+  'HsMapService',
+  'HsGeolocationService',
+  'HsLayermanagerService',
+  'HsConfig',
   '$timeout',
-  'hs.layout.service',
+  'HsLayoutService',
   '$log',
   '$document',
   function (
@@ -17,7 +17,7 @@ export default [
     $injector,
     $rootScope,
     $window,
-    Core,
+    HsCore,
     OlMap,
     Geolocation,
     LayerManager,
@@ -39,7 +39,7 @@ export default [
     $scope.useIsolatedBootstrap = angular.isDefined(config.useIsolatedBootstrap)
       ? config.useIsolatedBootstrap
       : false;
-    $scope.Core = Core;
+    $scope.HsCore = HsCore;
     $scope.geolocation = Geolocation;
     $scope.LM = LayerManager;
     $scope.layoutService = layoutService;

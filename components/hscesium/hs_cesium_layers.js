@@ -120,7 +120,7 @@ var me = {
 
   /**
    * @ngdoc method
-   * @name hs.cesium.service#repopulateLayers
+   * @name HsCesiumService#repopulateLayers
    * @public
    * @param {object} visible_layers List of layers, which should be visible.
    * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.

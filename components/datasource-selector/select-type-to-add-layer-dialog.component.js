@@ -8,7 +8,7 @@ export default {
   controller: [
     '$http',
     '$scope',
-    'hs.datasourceBrowserService',
+    'HsDatasourceBrowserService',
     function ($http, $scope, datasourceSelectorService) {
       this.modalVisible = true;
       const vm = this;

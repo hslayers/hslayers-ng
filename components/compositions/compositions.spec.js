@@ -8,7 +8,7 @@ describe('compositions', () => {
 
   beforeEach(() => {
     angular.mock.module(($provide) => {
-      $provide.value('config', {compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php', status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php'});
+      $provide.value('HsConfig', {compositions_catalogue_url: 'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php', status_manager_url: 'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php'});
     });
 
     angular.mock.module('hs.compositions');

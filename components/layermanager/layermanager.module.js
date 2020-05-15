@@ -78,29 +78,29 @@ angular
 
   /**
    * @module hs.layermanager
-   * @name hs.layermanager.WMSTservice
+   * @name HsLayermanagerWmstService
    * @ngdoc service
    * @description Service for management of time (WMS) layers
    */
-  .factory('hs.layermanager.WMSTservice', layermanagerWmstService)
+  .factory('HsLayermanagerWmstService', layermanagerWmstService)
 
   /**
    * @module hs.layermanager
-   * @name hs.layermanager.service
+   * @name HsLayermanagerService
    * @ngdoc service
    * @description Service for core layers management. Maintain layer management
    * structures and connect layer manager with map.Automatically update
    * manager when layer is added or removed from map.
    */
-  .factory('hs.layermanager.service', layermanagerService)
+  .factory('HsLayermanagerService', layermanagerService)
 
   /**
    * @module hs.layermanager
-   * @name hs.layermanager.WMSTservice
+   * @name HsLayermanagerWmstService
    * @ngdoc service
    * @description Manage layer´s metadata through getCapabilities request calls and responses
    */
-  .factory('hs.layermanager.metadata', layermanagerMetadataService)
+  .factory('HsLayermanagerMetadata', layermanagerMetadataService)
 
   /**
    * @module hs.layermanager
@@ -136,7 +136,7 @@ angular
    * @ngdoc service
    * @description Service for vector layer management.
    */
-  .factory('hs.layerEditorVectorLayer.service', layerEditorVectorLayerService)
+  .factory('HsLayerEditorVectorLayerService', layerEditorVectorLayerService)
 
   /**
    * @module hs.layerEditor
@@ -144,7 +144,7 @@ angular
    * @ngdoc service
    * @description Service for layer editor.
    */
-  .factory('hs.layerEditor.service', layerEditorService)
+  .factory('HsLayerEditorService', layerEditorService)
 
   /**
    * @module hs.layermanager
@@ -164,5 +164,5 @@ angular
     'hs.layerEditor.sublayerCheckbox',
     layerEditorSubLayerCheckboxesDirective
   )
-  .factory('hs.layerEditor.sublayerService', layerEditorSubLayerService)
+  .factory('HsLayerEditorSublayerService', layerEditorSubLayerService)
   .component('hs.layerEditorDimensions', layerEditorDimensionsComponent);

@@ -7,11 +7,11 @@ export default {
   },
   controller: [
     '$scope',
-    'hs.map.service',
-    'hs.sensors.service',
+    'HsMapService',
+    'HsSensorsService',
     '$compile',
     '$timeout',
-    'hs.layout.service',
+    'HsLayoutService',
     function (
       $scope,
       OlMap,

@@ -1,5 +1,5 @@
-export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
-    function (Core, $timeout, config, $compile, layoutService) {
+export default ['HsCore', '$timeout', 'HsConfig', '$compile', 'HsLayoutService',
+    function (HsCore, $timeout, config, $compile, layoutService) {
         return {
             template: config.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
             link: function (scope, element) {
@@ -8,14 +8,14 @@ export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
                 try {
                     if (angular.module('hs.cesium')) {
                         if (element[0].querySelector('.hs-page-content')) {
-                            let cesiumDir = $compile('<div hs.cesium.directive ng-controller="hs.cesium.controller"></div>')(scope);
+                            let cesiumDir = $compile('<div hs.cesium.directive ng-controller="HsCesiumController"></div>')(scope);
                             element[0].querySelector('.hs-page-content').appendChild(cesiumDir[0]);
                         }
                     }
                 } catch (err) { /* failed to require */ }
 
 
-                Core.init(element, {
+                HsCore.init(element, {
                     innerElement: '.hs-map-container'
                 });
 
@@ -28,7 +28,7 @@ export default ['Core', '$timeout', 'config', '$compile', 'hs.layout.service',
 
                     function containerCheck() {
                         $timeout(function () {
-                            if (container.clientHeight != 0) scope.$emit("Core_sizeChanged");
+                            if (container.clientHeight != 0) scope.$emit("HsCore_sizeChanged");
                             else containerCheck();
                         }, 100);
                     }

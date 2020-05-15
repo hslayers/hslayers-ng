@@ -11,12 +11,12 @@ angular
   .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout'])
 
   /**
-   * @memberof hs.sensors.service
+   * @memberof HsSensorsService
    * @ngdoc service
    * @name hs.sensors
    * @description Panel for listing of sensors
    */
-  .factory('hs.sensors.service', sensorsService)
+  .factory('HsSensorsService', sensorsService)
 
   /**
    * @memberof hs.sensors.list

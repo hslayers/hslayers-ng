@@ -1,4 +1,4 @@
-export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.language.service', function (config, $rootScope, utils, gettext, languageService) {
+export default ['HsConfig', '$rootScope', 'HsUtilsService', 'gettext', 'HsLanguageService', function (config, $rootScope, utils, gettext, languageService) {
     this.extraButtons = [];
 
     var me = this;
@@ -7,14 +7,14 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
         /**
          * If buttons with importancy property exist.
          * If not, don't display expansion +/- icon 
-         * @memberof hs.sidebar.service
+         * @memberof HsSidebarService
          * @member buttons
          */
         unimportantExist: false,
 
         /**
          * List of sidebar buttons 
-         * @memberof hs.sidebar.service
+         * @memberof HsSidebarService
          * @member buttons
          */
         buttons: [
@@ -31,7 +31,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             { panel: 'print', module: 'hs.print', order: 10, title: gettext('Print'), description: gettext('Print map'), icon: 'icon-print' },
             { panel: 'permalink', module: 'hs.permalink', order: 11, title: gettext('Share map'), description: gettext('Share map'), icon: 'icon-share-alt' },
             { panel: 'saveMap', module: 'hs.save-map', order: 12, title: gettext('Save composition'), description: gettext('Save content of map to composition'), icon: 'icon-save-floppy' },
-            { panel: 'language', module: 'hs.language.controller', order: 13, title: gettext('Change language'), description: gettext('Change language'), content: function () { return languageService.getCurrentLanguageCode().toUpperCase() } },
+            { panel: 'language', module: 'HsLanguageController', order: 13, title: gettext('Change language'), description: gettext('Change language'), content: function () { return languageService.getCurrentLanguageCode().toUpperCase() } },
             { panel: 'mobile_settings', module: 'hs.mobile_settings.controller', order: 14, title: gettext('Application settings'), description: gettext('Specify application user settings'), icon: 'icon-settingsandroid' },
             { panel: 'search', module: 'HsSearchController', order: 15, title: gettext('Search'), description: gettext('Search for location'), icon: 'icon-search' },
             { panel: 'draw', module: 'hs.draw', order: 16, title: gettext('Draw'), description: gettext('Draw new features'), icon: 'icon-pencil' }
@@ -39,7 +39,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
 
         /**
          * List of visible buttons taking into acount viewport size 
-         * @memberof hs.sidebar.service
+         * @memberof HsSidebarService
          * @member visibleButtons
          */
         visibleButtons: [],
@@ -47,7 +47,7 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
         /**
          * Function to set if a button is important and always visible
          * or only when the sidebar buttons are expanded 
-         * @memberof hs.sidebar.service
+         * @memberof HsSidebarService
          * @function setButtonImportancy
          */
         setButtonImportancy(panelName, state) {
@@ -55,5 +55,6 @@ export default ['config', '$rootScope', 'hs.utils.service', 'gettext', 'hs.langu
             me.unimportantExist = me.buttons.filter(b => b.important == false).length > 0;
         }
     })
+    return me;
 
 }]

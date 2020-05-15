@@ -1,4 +1,4 @@
-export default ['$compile', 'config', function ($compile, config) {
+export default ['$compile', 'HsConfig', function ($compile, config) {
     return {
         template: require('./object.html'),
         compile: function compile(element) {

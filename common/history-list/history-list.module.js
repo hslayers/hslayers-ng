@@ -17,4 +17,4 @@ export default angular
    * @name compile
    * @description Service which reads and writes list of previously used urls or any other string
    */
-  .factory('hs.historyListService', historyListService);
+  .factory('HsHistoryListService', historyListService);

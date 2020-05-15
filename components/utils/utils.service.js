@@ -1,7 +1,7 @@
 import {isFunction} from 'lodash';
 
 export default [
-  'config',
+  'HsConfig',
   '$http',
   '$window',
   '$document',
@@ -10,7 +10,7 @@ export default [
     const me = this;
     /**
      * @ngdoc method
-     * @name hs.utils.service#proxify
+     * @name HsUtilsService#proxify
      * @public
      * @param {String} url Url to proxify
      * @param {Boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.
@@ -50,7 +50,7 @@ export default [
 
     /**
     * @ngdoc method
-    * @name hs.utils.service#shortUrl
+    * @name HsUtilsService#shortUrl
     * @public
     * @param {String} url Url to shorten
     * @returns {String} Shortened url
@@ -87,7 +87,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.utils.service#getPortFromUrl
+     * @name HsUtilsService#getPortFromUrl
      * @param {String} url Url for which to determine port number
      * @returns {String} Port number
      */
@@ -99,7 +99,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.utils.service#getParamsFromUrl
+     * @name HsUtilsService#getParamsFromUrl
      * @public
      * @param {String} str Url to parse for parameters
      * @returns {Object} Object with parsed parameters as properties
@@ -143,7 +143,7 @@ export default [
     };
     /**
      * @ngdoc method
-     * @name hs.utils.service#paramsToUrl
+     * @name HsUtilsService#paramsToUrl
      * @public
      * @param {Object} array Parameter object with parameter key-value pairs
      * @returns {String} Joined encoded Url query string
@@ -162,7 +162,7 @@ export default [
     };
     /**
      * @ngdoc method
-     * @name hs.utils.service#insertAfter
+     * @name HsUtilsService#insertAfter
      * @public
      * @param {element} newNode Element to insert
      * @param {element} referenceNode Element after which to insert
@@ -176,7 +176,7 @@ export default [
     };
     /**
      * @ngdoc method
-     * @name hs.utils.service#paramsToUrlWoEncode
+     * @name HsUtilsService#paramsToUrlWoEncode
      * @public
      * @param {Object} array Parameter object with parameter key-value pairs
      * @returns {String} Joined Url query string
@@ -193,7 +193,7 @@ export default [
     };
     /**
      * @ngdoc method
-     * @name hs.utils.service#debounce
+     * @name HsUtilsService#debounce
      * @public
      * @param {Function} func Function to execute with throttling
      * @param {Number} wait  The function will be called after it stops
@@ -229,7 +229,7 @@ export default [
     };
     /**
      * @ngdoc method
-     * @name hs.utils.service#generateUuid
+     * @name HsUtilsService#generateUuid
      * @public
      * @returns {String} Random uuid
      * @description Generate randomized uuid
@@ -244,7 +244,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.utils.service#rainbow
+     * @name HsUtilsService#rainbow
      * @public
      * @param {Number} numOfSteps Maximum value which is the last color in rainbow
      * @param {Number} step Current value to get color for

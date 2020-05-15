@@ -1,6 +1,6 @@
 export default [
   '$compile',
-  'config',
+  'HsConfig',
   function ($compile, config) {
     return {
       template: require('./partials/folder.html'),

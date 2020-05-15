@@ -5,21 +5,21 @@ import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
 
 export default [
-  'Core',
-  'hs.utils.service',
-  'config',
-  'hs.map.service',
-  'hs.laymanService',
-  'hs.query.baseService',
+  'HsCore',
+  'HsUtilsService',
+  'HsConfig',
+  'HsMapService',
+  'HsLaymanService',
+  'HsQueryBaseService',
   '$rootScope',
-  'hs.utils.layerUtilsService',
+  'HsUtilsLayerUtilsService',
   'gettext',
   '$log',
   '$document',
-  'hs.layout.service',
+  'HsLayoutService',
   '$compile',
   function (
-    Core,
+    HsCore,
     utils,
     config,
     hsMap,
@@ -111,7 +111,7 @@ export default [
       },
       /**
        * @function updateStyle
-       * @memberOf hs.draw.service
+       * @memberOf HsDrawService
        * @param {function} changeStyle controller callback function
        * @description Update draw style without neccessity to reactivate drawing interaction
        */
@@ -122,7 +122,7 @@ export default [
       },
       /**
        * @function activateDrawing
-       * @memberOf hs.draw.service
+       * @memberOf HsDrawService
        * @param {function} onDrawStart Callback function called when drawing is started
        * @param {function} onDrawEnd Callback function called when drawing is finished
        * @param {function} onSelected Callback function called when feature is selected for modification
@@ -209,7 +209,7 @@ export default [
 
       /**
        * @function deactivateDrawing
-       * @memberOf hs.draw.service
+       * @memberOf HsDrawService
        * @return {Promise}
        * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
        */

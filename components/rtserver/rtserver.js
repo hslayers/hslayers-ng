@@ -9,11 +9,11 @@ define(['angular', 'ol', 'socketio', 'utils', 'map'], (
 ) => {
   angular
     .module('hs.rtserver', ['hs.map', 'hs.utils'])
-    .service('hs.rtserver.service', [
-      'hs.utils.service',
+    .factory('HsRtserverService', [
+      'HsUtilsService',
       '$rootScope',
-      'hs.map.service',
-      'hs.compositions.service_parser',
+      'HsMapService',
+      'HsCompositionsParserService',
       function (utils, $rootScope, hs_map, composition_parser) {
         const map = hs_map.map;
 
@@ -76,6 +76,7 @@ define(['angular', 'ol', 'socketio', 'utils', 'map'], (
 
         this.init = init;
         var me = this;
+        return me;
       },
     ]);
 });

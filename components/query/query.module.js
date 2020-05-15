@@ -1,6 +1,6 @@
+import '../language/language.module';
 import '../utils/utils.module';
 import 'angular-sanitize';
-import 'language.module';
 import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
 import featureComponent from './feature.component';
@@ -15,6 +15,7 @@ import queryWmsService from './query-wms.service';
 /**
  * @namespace hs.query
  * @memberOf hs
+ * @param $compileProvider
  */
 angular
   .module('hs.query', [
@@ -23,7 +24,7 @@ angular
     'ngSanitize',
     'hs.language',
     'hs.layout',
-    'hs.utils'
+    'hs.utils',
   ])
   /**
    * @ngdoc directive
@@ -59,35 +60,35 @@ angular
 
   /**
    * @ngdoc service
-   * @name hs.query.baseService
+   * @name HsQueryBaseService
    * @memberOf hs.query
    * @description TODO
    */
-  .service('hs.query.baseService', queryBaseService)
+  .factory('HsQueryBaseService', queryBaseService)
 
   /**
    * @ngdoc service
-   * @name hs.query.wmsService
+   * @name HsQueryWmsService
    * @memberOf hs.query
    * @description TODO
    */
-  .service('hs.query.wmsService', queryWmsService)
+  .factory('HsQueryWmsService', queryWmsService)
 
   /**
    * @ngdoc service
-   * @name hs.query.vectorService
+   * @name HsQueryVectorService
    * @memberOf hs.query
    * @description TODO
    */
-  .service('hs.query.vectorService', queryVectorService)
+  .factory('HsQueryVectorService', queryVectorService)
 
   /**
    * @ngdoc controller
-   * @name hs.query.controller
+   * @name HsQueryController
    * @memberOf hs.query
    * @description TODO
    */
-  .controller('hs.query.controller', queryController)
+  .controller('HsQueryController', queryController)
 
   .component('hs.query.featurePopup', featurePopupComponent)
 

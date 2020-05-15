@@ -3,19 +3,19 @@ import {transform} from 'ol/proj';
 
 export default [
   '$rootScope',
-  'hs.map.service',
-  'Core',
-  'hs.save-map.service',
-  'config',
+  'HsMapService',
+  'HsCore',
+  'HsSaveMapService',
+  'HsConfig',
   '$http',
-  'hs.statusManagerService',
-  'hs.laymanService',
-  'hs.layout.service',
-  'hs.utils.service',
+  'HsStatusManagerService',
+  'HsLaymanService',
+  'HsLayoutService',
+  'HsUtilsService',
   function (
     $rootScope,
     OlMap,
-    Core,
+    HsCore,
     saveMap,
     config,
     $http,
@@ -237,7 +237,7 @@ export default [
        * Send getGroups request to status manager server and process response
        * @function fillGroups
        * @param {Function} cb Callback function
-       * @memberof hs.saveMapManagerService
+       * @memberof HsSaveMapManagerService
        */
       fillGroups(cb) {
         me.statusData.groups = [];
@@ -270,7 +270,7 @@ export default [
       /**
        * Get User info from server and call callback (setUserDetail)
        * @function loadUserDetails
-       * @memberof hs.saveMapManagerService
+       * @memberof HsSaveMapManagerService
        */
       loadUserDetails() {
         $http({
@@ -281,7 +281,7 @@ export default [
       /**
        * Process user info into controller model, so they can be used in Save composition forms
        * @function setUserDetails
-       * @memberof hs.saveMapManagerService
+       * @memberof HsSaveMapManagerService
        * @param {Object} response Http response containig user data
        */
       setUserDetails(response) {
@@ -307,7 +307,7 @@ export default [
       /**
        * Get current extent of map, transform it into EPSG:4326 and save it into controller model
        * @function getCurrentExtent
-       * @memberof hs.saveMapManagerService
+       * @memberof HsSaveMapManagerService
        * @returns {Array} Extent coordinates
        */
       getCurrentExtent() {

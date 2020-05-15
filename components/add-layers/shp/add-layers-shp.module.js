@@ -23,7 +23,7 @@ angular
    * @description TODO
    */
   .directive('hs.addLayersShp', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./add-shp-layer.directive.html'),
@@ -63,10 +63,10 @@ angular
   /**
    * @memberof hs.addLayersShp
    * @ngdoc service
-   * @name hs.addLayersShp.service
-   * @description Service for adding shapefiles through layman.
+   * @name HsAddLayersShpService
+   * @description Service for adding shape files through layman.
    */
-  .factory('hs.addLayersShp.service', addLayersShpService)
+  .factory('HsAddLayersShpService', addLayersShpService)
 
   /**
    * @memberof hs.addLayersShp
@@ -74,13 +74,13 @@ angular
    * @name HsAddLayersShpController
    */
   .controller('HsAddLayersShpController', [
-    'hs.addLayersShp.service',
-    'hs.layout.service',
-    'config',
-    'hs.laymanService',
-    'hs.addLayersWms.addLayerService',
+    'HsAddLayersShpService',
+    'HsLayoutService',
+    'HsConfig',
+    'HsLaymanService',
+    'HsAddLayersWmsAddLayerService',
     '$timeout',
-    'hs.common.endpointsService',
+    'HsCommonEndpointsService',
     '$scope',
     function (
       service,

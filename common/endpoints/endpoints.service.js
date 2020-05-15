@@ -1,6 +1,6 @@
 export default [
-  'config',
-  'hs.common.laymanService',
+  'HsConfig',
+  'HsCommonLaymanService',
   function (config, laymanService) {
     const me = this;
 

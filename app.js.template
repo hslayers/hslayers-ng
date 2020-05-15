@@ -35,16 +35,16 @@ var module = angular.module('hs', [
     'hs.info'
 ]);
 
-module.directive('hs', ['config', 'Core', function(config, Core) {
+module.directive('hs', ['HsConfig', 'HsCore', function(config, HsCore) {
     return {
         template: require('hslayers.html'),
         link: function(scope, element) {
-            Core.fullScreenMap(element);
+            HsCore.fullScreenMap(element);
         }
     };
 }]);
 
-module.value('config', {
+module.value('HsConfig', {
     open_lm_after_comp_loaded: true,
     layer_order: '-position',
     box_layers: [
@@ -135,10 +135,10 @@ module.value('config', {
     }]
 });
 
-module.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config',
-    function($scope, Core, srv_producer, composition_parser, config) {
+module.controller('Main', ['$scope', 'HsCore', 'hs.addLayersWms.service_layer_producer', 'HsCompositionsParserService', 'HsConfig',
+    function($scope, HsCore, srv_producer, composition_parser, config) {
         $scope.hsl_path = config.hsl_path; //Get this from hslayers.js file
-        $scope.Core = Core;
+        $scope.HsCore = HsCore;
     }
 ]);
 

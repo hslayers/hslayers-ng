@@ -28,7 +28,7 @@ angular
    * @description Display Save map (composition) dialog
    */
   .directive('hs.save-map.directive', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./partials/dialog.html'),
@@ -43,7 +43,7 @@ angular
    * @description Display advanced form to collect information (metadata) about saved composition
    */
   .directive('hs.saveMap.directiveForm', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./partials/form.html'),
@@ -58,7 +58,7 @@ angular
    * @description Display simple form to collect information (metadata) about saved composition
    */
   .directive('hs.saveMap.directiveSimpleform', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./partials/simpleform.html'),
@@ -73,7 +73,7 @@ angular
    * @description Display dialog about result of saving to status manager operation
    */
   .directive('hs.saveMap.resultDialogDirective', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./partials/dialog_result.html'),
@@ -91,7 +91,7 @@ angular
    * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
    */
   .directive('hs.saveMap.saveDialogDirective', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('./partials/dialog_save.html'),
@@ -129,47 +129,47 @@ angular
 
   /**
    * @ngdoc service
-   * @name hs.save-map.service
+   * @name HsSaveMapService
    * @memberof hs.save-map
    * @description Service for converting composition and composition data into JSON object which can be saved on server
    */
-  .factory('hs.save-map.service', saveMapService)
+  .factory('HsSaveMapService', saveMapService)
 
   /**
    * @ngdoc service
-   * @name hs.save-map.service
+   * @name HsSaveMapService
    * @memberof hs.save-map
    * @description Service for managing saving logic to various providers.
    * Currently Layman and Status manager are supported.
    */
-  .factory('hs.saveMapManagerService', saveMapManagerService)
+  .factory('HsSaveMapManagerService', saveMapManagerService)
 
   /**
    * @ngdoc service
-   * @name hs.laymanService
+   * @name HsLaymanService
    * @memberof hs.save-map
    * @description Service for sending and retrieving compositions from Status
    * Manager backend
    */
-  .factory('hs.statusManagerService', statusManagerService)
+  .factory('HsStatusManagerService', statusManagerService)
 
   /**
    * @ngdoc service
-   * @name hs.laymanService
+   * @name HsLaymanService
    * @memberof hs.save-map
    * @description Service for sending and retrieving data from Layman
    * (compositions, layers) (https://github.com/jirik/gspld)
    */
-  .factory('hs.laymanService', laymanService)
+  .factory('HsLaymanService', laymanService)
 
   /**
    * @ngdoc service
-   * @name hs.layerSynchronizerService
+   * @name HsLayerSynchronizerService
    * @memberof hs.save-map
    * @description Service which monitors vector layers and initiates sending
    * and gets requesting of features to/from Layman
    */
-  .factory('hs.layerSynchronizerService', layerSynchronizerService)
+  .factory('HsLayerSynchronizerService', layerSynchronizerService)
 
   /**
    * @ngdoc component

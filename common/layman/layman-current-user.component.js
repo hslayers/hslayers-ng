@@ -7,10 +7,10 @@ export default {
   controller: [
     '$http',
     '$scope',
-    'hs.layout.service',
+    'HsLayoutService',
     '$compile',
     '$location',
-    'hs.common.laymanService',
+    'HsCommonLaymanService',
     function (
       $http,
       $scope,

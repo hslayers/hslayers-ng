@@ -14,7 +14,7 @@ angular
   .directive('hs.legend.layerDirective', legendLayerDirective)
   .directive('hs.legend.layerVectorDirective', legendLayerVectorDirective)
   .directive('hs.legend.layerStaticDirective', legendLayerStaticDirective)
-  .factory('hs.legend.service', legendService)
+  .factory('HsLegendService', legendService)
 
   /**
    * @memberof hs.legend

@@ -2,8 +2,8 @@ export default {
   template: require('./partials/panel.html'),
   controller: [
     '$scope',
-    'hs.map.service',
-    'hs.sensors.service',
+    'HsMapService',
+    'HsSensorsService',
     function ($scope, OlMap, sensorsService) {
       angular.extend($scope, {
         service: sensorsService,

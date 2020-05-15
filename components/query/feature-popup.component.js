@@ -3,9 +3,9 @@ export default {
   template: require('./partials/feature-popup.html'),
   controller: [
     '$scope',
-    'hs.query.baseService',
-    'hs.map.service',
-    'hs.query.vectorService',
+    'HsQueryBaseService',
+    'HsMapService',
+    'HsQueryVectorService',
     '$element',
     '$timeout',
     function (

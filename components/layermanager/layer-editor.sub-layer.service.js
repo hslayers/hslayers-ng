@@ -1,7 +1,7 @@
 import {coordinateRelationship} from 'ol/extent';
 
 export default [
-  'hs.layermanager.service',
+  'HsLayermanagerService',
   function (LayerManager) {
     const me = {};
     me.checkedSubLayers = {};

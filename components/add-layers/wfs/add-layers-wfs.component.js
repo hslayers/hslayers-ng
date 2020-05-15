@@ -10,13 +10,13 @@ import {getPreferedFormat} from '../../../common/format-utils';
 import {addAnchors} from '../../../common/attribution-utils';
 
 export default {
-  template: ['config', function (config) {
+  template: ['HsConfig', function (config) {
     return {
       template: require('./add-wfs-layer.directive.html')
     };
   }],
-  controller: ['$scope', 'hs.map.service', 'hs.wfs.getCapabilitiesService', 'Core', '$compile', '$rootScope', 'hs.layout.service', '$log',
-    function ($scope, OlMap, wfsGetCapabilitiesService, Core, $compile, $rootScope, layoutService, $log) {
+  controller: ['$scope', 'HsMapService', 'HsWfsGetCapabilitiesService', 'HsCore', '$compile', '$rootScope', 'HsLayoutService', '$log',
+    function ($scope, OlMap, wfsGetCapabilitiesService, HsCore, $compile, $rootScope, layoutService, $log) {
       $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
       $scope.$on('ows_wfs.capabilities_received', (event, response) => {
         try {

@@ -1,5 +1,5 @@
 export default [
-  'config',
+  'HsConfig',
   '$sce',
   function (config, $sce) {
     return {

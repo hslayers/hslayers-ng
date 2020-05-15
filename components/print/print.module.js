@@ -18,6 +18,6 @@ angular
   /**
    * @memberof hs.print
    * @ngdoc service
-   * @name hs.print.service
+   * @name HsPrintService
    */
-  .factory('hs.print.service', printService);
+  .factory('HsPrintService', printService);

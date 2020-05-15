@@ -3,8 +3,8 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorLayerDescriptor from './VectorLayerDescriptor';
 
 export default [
-  'hs.map.service',
-  'hs.utils.service',
+  'HsMapService',
+  'HsUtilsService',
   function (hsMap, utils) {
     const me = this;
 

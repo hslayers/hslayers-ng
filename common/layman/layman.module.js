@@ -6,12 +6,12 @@ angular
   .module('hs.common.layman', [])
 
   /**
-   * @name hs.common.laymanService
+   * @name HsCommonLaymanService
    * @ngdoc service
    * @memberOf hs.common.layman
    * @description Service for common Layman functions
    */
-  .factory('hs.common.laymanService', laymanService)
+  .factory('HsCommonLaymanService', laymanService)
 
   .component('hs.layman.currentUser', laymanCurrentUserComponent)
 

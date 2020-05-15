@@ -7,13 +7,13 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {getTopLeft, getWidth} from 'ol/extent';
 import {get} from 'ol/proj';
 export default {
-  template: ['config', function (config) {
+  template: ['HsConfig', function (config) {
     return {
       template: require('./add-wmts-layer.directive.html')
     };
   }],
-  controller: ['$scope', 'hs.map.service', 'hs.addLayersWmts.service_capabilities', 'Core', '$compile', 'hs.layout.service', '$log',
-    function ($scope, OlMap, srv_caps, Core, $compile, layoutService, $log) {
+  controller: ['$scope', 'HsMapService', 'hs.addLayersWmts.service_capabilities', 'HsCore', '$compile', 'HsLayoutService', '$log',
+    function ($scope, OlMap, srv_caps, HsCore, $compile, layoutService, $log) {
       $scope.map_projection = OlMap.map.getView().getProjection().getCode().toUpperCase();
       $scope.style = '';
       $scope.tileMatrixSet = '';

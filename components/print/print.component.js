@@ -1,6 +1,6 @@
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('./partials/printdialogmd.html');
@@ -11,7 +11,7 @@ export default {
   ],
   controller: [
     '$scope',
-    'hs.print.service',
+    'HsPrintService',
     '$timeout',
     function ($scope, PrintS, $timeout) {
       angular.extend($scope, {

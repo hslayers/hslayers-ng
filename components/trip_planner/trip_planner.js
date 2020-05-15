@@ -22,7 +22,7 @@ angular
    * @description Add trip planner panel html template to the map
    */
   .directive('hs.tripPlanner.directive', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('components/trip_planner/partials/trip_planner.html'),
@@ -33,22 +33,22 @@ angular
   /**
    * @memberof hs.trip_planner
    * @ngdoc service
-   * @name hs.trip_planner.service
+   * @name HsTripPlannerService
    * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
    */
-  .factory('hs.trip_planner.service', [
-    'Core',
-    'hs.map.service',
-    'hs.utils.service',
+  .factory('HsTripPlannerService', [
+    'HsCore',
+    'HsMapService',
+    'HsUtilsService',
     '$http',
-    'hs.permalink.urlService',
-    function (Core, OlMap, utils, $http, permalink) {
+    'HsPermalinkUrlService',
+    function (HsCore, OlMap, utils, $http, permalink) {
       const me = {
         waypoints: [],
         scopes: [],
         /**
          * Refresh scopes phase
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function digestScopes
          */
         digestScopes: function () {
@@ -60,7 +60,7 @@ angular
         },
         /**
          * Load selected trip data from plan4all server and calculate routes
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function loadWaypoints
          * @params {String} uuid Identifier of selected trip
          */
@@ -89,7 +89,7 @@ angular
         },
         /**
          * Add waypoint to waypoint list and recalculate route
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function addWaypoint
          * @param {Number} lon Longitude number (part of Ol.coordinate Array)
          * @param {Number} lat Latitude number (part of Ol.coordinate Array)
@@ -121,7 +121,7 @@ angular
         },
         /**
          * Store current waypoints on remote Plan4All server if possible
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function storeWaypoints
          */
         storeWaypoints: function () {
@@ -162,7 +162,7 @@ angular
         },
         /**
          * Remove selected waypoint from trip
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function removeWaypoint
          * @param {Object} wp Waypoint object to remove
          */
@@ -194,7 +194,7 @@ angular
         },
         /**
          * Calculate routes between stored waypoints
-         * @memberof hs.trip_planner.service
+         * @memberof HsTripPlannerService
          * @function calculateRoutes
          */
         calculateRoutes: function () {
@@ -267,7 +267,7 @@ angular
    * @description Add trip planner button html template to the map
    */
   .directive('hs.tripPlanner.toolbarButtonDirective', [
-    'config',
+    'HsConfig',
     function (config) {
       return {
         template: require('components/trip_planner/partials/toolbar_button_directive.html'),
@@ -282,12 +282,12 @@ angular
    */
   .controller('HsTripPlannerController', [
     '$scope',
-    'hs.map.service',
-    'Core',
-    'hs.trip_planner.service',
-    'config',
-    'hs.layout.service',
-    function ($scope, OlMap, Core, service, config, layoutService) {
+    'HsMapService',
+    'HsCore',
+    'HsTripPlannerService',
+    'HsConfig',
+    'HsLayoutService',
+    function ($scope, OlMap, HsCore, service, config, layoutService) {
       const map = OlMap.map;
       $scope.loaderImage = config.hsl_path + 'img/ajax-loader.gif';
 

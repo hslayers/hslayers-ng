@@ -1,7 +1,7 @@
 <div class="hs-toolbar" ng-style="toolbarStyle()">
     <nav class="navbar navbar-expand">
         <div class="navbar-nav">
-            <div ng-controller="HsSearchController" class="nav-item" ng-if="Core.exists('hs.search') && layoutService.componentEnabled('searchToolbar')">
+            <div ng-controller="HsSearchController" class="nav-item" ng-if="HsCore.exists('hs.search') && layoutService.componentEnabled('searchToolbar')">
                 <div>
                     <div hs.search.directive_searchinput></div>
                     <div hs.search.directive_searchresults ></div>
@@ -10,7 +10,7 @@
             <hs.draw.shape-toolbar class="nav-item hs-toolbar-button"
                 ng-if="layoutService.componentEnabled('drawToolbar')"
                 ></hs.draw.shape-toolbar>
-            <div class="nav-item" ng-if="Core.exists('hs.measure') && layoutService.panelEnabled('measure') && layoutService.componentEnabled('measureToolbar')">
+            <div class="nav-item" ng-if="HsCore.exists('hs.measure') && layoutService.panelEnabled('measure') && layoutService.componentEnabled('measureToolbar')">
                 <div class="btn-group">
                     <button class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary"
                         title="{{'Measure lines and polygon'|translate}}"

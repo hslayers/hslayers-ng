@@ -15,9 +15,9 @@ angular
   ])
 
   /**
-   * @module hs.compositions.layerParserService
+   * @module HsCompositionsLayerParserService
    * @ngdoc service
-   * @name hs.compositions.layerParserService
+   * @name HsCompositionsLayerParserService
    * @description Service for parsing object definition which are invalid for direct use as layers
    */
-  .factory('hs.compositions.layerParserService', configParsersService);
+  .factory('HsCompositionsLayerParserService', configParsersService);

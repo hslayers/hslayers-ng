@@ -1,19 +1,19 @@
 import {GeoJSON, WFS} from 'ol/format';
 export default [
-  'hs.utils.service',
+  'HsUtilsService',
   '$http',
-  'config',
-  'hs.map.service',
+  'HsConfig',
+  'HsMapService',
   '$timeout',
   '$log',
-  'hs.common.endpointsService',
+  'HsCommonEndpointsService',
   function (utils, $http, config, hsMap, $timeout, $log, endpointsService) {
     const me = this;
     angular.extend(me, {
       /**
        * @ngdoc method
        * @function save
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {String} compositionJson Json with composition definition
        * @param {Object} endpoint Endpoint description
@@ -64,7 +64,7 @@ export default [
       /**
        * @ngdoc method
        * @function pushVectorSource
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {Object} endpoint Endpoint description
        * @param {String} geojson Geojson object with features to send to server
@@ -116,7 +116,7 @@ export default [
 
       /**
        * Send all features to Layman endpoint as WFS string
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function push
        * @param {Ol.layer} layer Layer to get Layman friendly name for
        * get features
@@ -150,7 +150,7 @@ export default [
       /**
        * @ngdoc method
        * @function addFeature
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {Object} endpoint Endpoint description
        * @param {Array} featuresToAdd Array of features to add
@@ -218,7 +218,7 @@ export default [
       /**
        * @ngdoc method
        * @function pullVectorSource
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {Object} endpoint Endpoint description
        * @param {String} layerName Object containing {name, title, crs} of
@@ -276,7 +276,7 @@ export default [
       /**
        * @ngdoc method
        * @function describeLayer
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {Object} endpoint Endpoint description
        * @param {String} layerName Layer name
@@ -313,7 +313,7 @@ export default [
       /**
        * @ngdoc method
        * @function checkIfLayerExists
-       * @memberof hs.laymanService
+       * @memberof HsLaymanService
        * @public
        * @param {Object} endpoint Endpoint description
        * @param {String} layerName Name of layer

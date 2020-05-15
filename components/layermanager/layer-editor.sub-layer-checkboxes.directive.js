@@ -1,6 +1,6 @@
 export default [
-  'hs.layerEditor.sublayerService',
-  'hs.layermanager.service',
+  'HsLayerEditorSublayerService',
+  'HsLayermanagerService',
   function (subLayerService, LayerManager) {
     return {
       template: require('./partials/sub-layer-checkboxes.html'),

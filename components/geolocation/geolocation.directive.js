@@ -1,5 +1,5 @@
-export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'hs.layout.service',
-  function (hsMap, locationService, Core, config, layoutService) {
+export default ['HsMapService', 'HsGeolocationService', 'HsCore', 'HsConfig', 'HsLayoutService',
+  function (hsMap, locationService, HsCore, config, layoutService) {
     return {
       template: require('./partials/geolocation.html'),
       link: function link(scope, element, attrs) {
@@ -9,7 +9,7 @@ export default ['hs.map.service', 'hs.geolocation.service', 'Core', 'config', 'h
           });
         }
       },
-      controller: ['$scope', 'config', function ($scope, config) {
+      controller: ['$scope', 'HsConfig', function ($scope, config) {
         $scope.locationService = locationService;
         $scope.collapsed = true;
 

@@ -9,7 +9,7 @@ import {Polygon} from 'ol/geom';
  */
 angular.module('hs.wirecloud', ['hs', 'hs.map'])
 
-    .service("hs.wirecloud.service", ['$rootScope', 'hs.map.service', 'config',
+    .service("HsWirecloudService", ['$rootScope', 'HsMapService', 'HsConfig',
         function ($rootScope, OlMap, config, default_layers) {
             var view = OlMap.map.getView();
             if (console) console.log('Wirecloud interface loaded');
@@ -45,6 +45,6 @@ angular.module('hs.wirecloud', ['hs', 'hs.map'])
         }
     ])
 
-    .run(['hs.wirecloud.service', function (WireCloud) { // instance-injector
+    .run(['HsWirecloudService', function (WireCloud) { // instance-injector
         //Gets executed after service is loaded
     }]);

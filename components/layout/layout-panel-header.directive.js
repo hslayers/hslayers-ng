@@ -1,6 +1,6 @@
 export default [
-  'config',
-  'hs.layout.service',
+  'HsConfig',
+  'HsLayoutService',
   function (config, layoutService) {
     return {
       template: require('./partials/panel-header.directive.html'),

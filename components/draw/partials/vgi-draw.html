@@ -36,7 +36,7 @@
              --><button class="btn btn-secondary ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()"
                 translate>New</button>
             <!--
-             --><button class="btn btn-secondary" ng-show="type=='Point' && Core.isMobile()"
+             --><button class="btn btn-secondary" ng-show="type=='Point' && HsCore.isMobile()"
                 ng-click="newPointFromGps()" translate>New GPS</button>
             <!--
              --><button class="btn btn-secondary btn-danger" ng-click="clearAll()" translate>Clear</button>
@@ -96,7 +96,7 @@
                     </div>
 
                     <!-- Photo -->
-                    <!-- <div class="form-group" ng-if="Core.isMobile()"> -->
+                    <!-- <div class="form-group" ng-if="HsCore.isMobile()"> -->
                     <div class="form-group" ng-if="current_feature.media.length">
                         <label translate>Photo</label>
                         <!-- <span>{{current_feature.photo_src}}</span> -->
@@ -126,7 +126,7 @@
                         <i class="icon-plus"></i>
                     </button>
 
-                    <button class="btn btn-secondary" ng-if="Core.isMobile()" ng-click="addPhoto()">
+                    <button class="btn btn-secondary" ng-if="HsCore.isMobile()" ng-click="addPhoto()">
                         <i class="icon-camera"></i>
                     </button>
 

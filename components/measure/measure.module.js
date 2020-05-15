@@ -10,9 +10,9 @@ angular
   /**
    * @memberof hs.measure
    * @ngdoc service
-   * @name hs.measure.service
+   * @name HsMeasureService
    */
-  .service('hs.measure.service', measureService)
+  .factory('HsMeasureService', measureService)
   /**
    * @memberof hs.measure
    * @ngdoc component

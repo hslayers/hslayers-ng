@@ -4,12 +4,12 @@ export default {
   template: require('components/styles/partials/styler.html'),
   controller: [
     '$scope',
-    'hs.styler.service',
+    'HsStylerService',
     '$sce',
-    'Core',
+    'HsCore',
     '$http',
-    'hs.layout.service',
-    function ($scope, service, $sce, Core, $http, layoutService) {
+    'HsLayoutService',
+    function ($scope, service, $sce, HsCore, $http, layoutService) {
       $scope.service = service;
       $scope.icons = null;
       $scope.imagetypes = [

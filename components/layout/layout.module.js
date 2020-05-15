@@ -110,7 +110,7 @@ angular
   /**
    * @memberof hs.layout
    * @ngdoc service
-   * @name hs.layout.service
+   * @name HsLayoutService
    * @description TODO
    */
-  .factory('hs.layout.service', layoutService);
+  .factory('HsLayoutService', layoutService);

@@ -13,7 +13,7 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
      * @description Add routing panel html template to the map
      */
     .directive('hs.routing.directive', [
-      'config',
+      'HsConfig',
       function (config) {
         return {
           template: require('./partials/routing.html'),
@@ -28,10 +28,10 @@ define(['angular', 'ol', 's4a', 'map', 'core'], (angular, ol, s4a) => {
      */
     .controller('HsRoutingController', [
       '$scope',
-      'hs.map.service',
-      'Core',
+      'HsMapService',
+      'HsCore',
       'layoutService',
-      function ($scope, OlMap, Core, layoutService) {
+      function ($scope, OlMap, HsCore, layoutService) {
         // Set the instance of the OpenAPI that s4a.js
         // works towards
         //s4a.openApiUrl('http://localhost:8080/openapi');

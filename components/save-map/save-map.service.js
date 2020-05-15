@@ -6,18 +6,18 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
 export default [
-  'hs.map.service',
-  'Core',
-  'hs.utils.service',
+  'HsMapService',
+  'HsCore',
+  'HsUtilsService',
   '$window',
   '$cookies',
-  'config',
-  'hs.layout.service',
+  'HsConfig',
+  'HsLayoutService',
   '$log',
   '$document',
   function (
     OlMap,
-    Core,
+    HsCore,
     utils,
     $window,
     $cookies,
@@ -29,7 +29,7 @@ export default [
     const me = {
       /**
        * Create Json object which stores information about composition, user, map state and map layers (including layer data)
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function map2json
        * @param {Ol.map} map Selected map object
        * @param {Object} compoData Composition general metadata
@@ -105,7 +105,7 @@ export default [
       },
       /**
        * Returns object about current selected base layer
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function getCurrentBaseLayer
        * @param {Ol.map} map Selected map object
        * @returns {Object} Returns object with current current selected base layers title as attribute
@@ -130,7 +130,7 @@ export default [
       /**
        * Converts map layers into a JSON object. If $scope is defined, stores only layers checked in form
        * Uses layer2json().
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function layer2json
        * @param {Array} layers All map layers
        * @param {Array} tickedLayers List of layers and if they have been ticked
@@ -165,7 +165,7 @@ export default [
        * Converts map layer from Layer object to text in JSON notation.
        *
        * Syntactic sugar for layer2json() UNUSED?
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function layer2string
        * @param {Object} layer Layer to be converted
        * @param {Boolean} pretty Whether to use pretty notation
@@ -179,7 +179,7 @@ export default [
 
       /**
        * Convert layer style object into JSON object, partial function of layer2style (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function serializeStyle
        * @param {ol.style.Style} s Style to convert
        * @returns {Object} Converted JSON object for style
@@ -261,7 +261,7 @@ export default [
        *
        * The layer index is not covered, as we assume
        * that it is corresponding to the layers order.
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function layer2json
        * @param {Object} layer Map layer that should be converted
        * @returns {Object} JSON object representing the layer
@@ -404,7 +404,7 @@ export default [
 
       /**
        * Convert feature array to GeoJSON string
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function serializeFeatures
        * @param {Array} features Array of features
        * @returns {String} GeoJSON string
@@ -419,7 +419,7 @@ export default [
 
       /**
        * Generate random Uuid
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function generateUuid
        * @returns {String} Random Uuid in string format
        */
@@ -427,7 +427,7 @@ export default [
 
       /**
        * Create thumbnail of map view and save it into selected element
-       * @memberof hs.save-map.service
+       * @memberof HsSaveMapService
        * @function generateThumbnail
        * @param {$element} $element Selected element
        * @param {Object} localThis Context to be passed to postcompose event handler

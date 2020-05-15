@@ -1,10 +1,10 @@
 import layoutService from "../layout/layout.service";
 
-export default ['Core', 'hs.layout.service',
-function (Core, layoutService) {
+export default ['HsCore', 'HsLayoutService',
+function (HsCore, layoutService) {
     /**
     * @function togglePanelspace
-    * @memberOf hs.mobile_toolbar.service
+    * @memberOf HsMobileToolbarService
     * @params {} to_state
     * @description (PRIVATE) TODO
     */

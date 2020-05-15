@@ -1,5 +1,5 @@
-export default ['$scope', 'hs.map.service', 'Core', 'hs.featureFilter.service', 'hs.layermanager.service', 'config',
-    function ($scope, OlMap, Core, service, LayMan, config) {
+export default ['$scope', 'HsMapService', 'HsCore', 'HsFeatureFilterService', 'HsLayermanagerService', 'HsConfig',
+    function ($scope, OlMap, HsCore, service, LayMan, config) {
         var map = OlMap.map;
 
         $scope.map = OlMap.map;

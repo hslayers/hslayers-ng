@@ -20,14 +20,14 @@
 	<md-icon class="{{fab.primary.icon.classes}} {{fab.primary.icon.iconSet}}">{{fab.primary.icon.text}}</md-icon>
 </md-button>
 
-<md-button ng-if="Core.exists('hs.geolocation.controller')" class="md-fab md-mini md-fab-bottom-left geolocation" ng-click="geolocation.toggleGps()">
+<md-button ng-if="HsCore.exists('hs.geolocation.controller')" class="md-fab md-mini md-fab-bottom-left geolocation" ng-click="geolocation.toggleGps()">
 	<md-icon md-icon-set="material-icons" class="geolocation material-icons {{location.status.class}}">{{location.status.icon}}</md-icon>
 </md-button>
 
-<md-button ng-if="Core.exists('hs.layermanager.controller')" class="md-fab md-mini md-fab-top-right baselayers-button" ng-click="openBaselayersPanel($event)">
+<md-button ng-if="HsCore.exists('hs.layermanager.controller')" class="md-fab md-mini md-fab-top-right baselayers-button" ng-click="openBaselayersPanel($event)">
 	<md-icon md-icon-set="material-icons">layers</md-icon>
 </md-button>
 
-<div ng-controller="hs.query.controller" ng-if="Core.exists('hs.query.controller')" ng-show="layoutService.panelVisible('info', this)"></div>
+<div ng-controller="HsQueryController" ng-if="HsCore.exists('HsQueryController')" ng-show="layoutService.panelVisible('info', this)"></div>
 
 <hs.query.feature-popup></hs.query.feature-popup>

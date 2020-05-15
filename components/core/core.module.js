@@ -11,14 +11,14 @@ import coreService from './core.service';
  * @ngdoc module
  * @module hs.core
  * @name hs.core
- * @description Core module for whole HSLayers-NG. Core module consists of Core service which keeps some app-level settings and mantain app size and panel statuses. TODO
+ * @description HsCore module for whole HSLayers-NG. HsCore module consists of HsCore service which keeps some app-level settings and mantain app size and panel statuses. TODO
  */
 angular
   .module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.utils'])
   /**
    * @module hs.core
-   * @name Core
+   * @name HsCore
    * @ngdoc service
-   * @description Core service of HSL. TODO expand the description
+   * @description HsCore service of HSL. TODO expand the description
    */
-  .factory('Core', coreService);
+  .factory('HsCore', coreService);

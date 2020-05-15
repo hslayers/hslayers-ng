@@ -12,10 +12,10 @@ angular
    * DEPRECATED?
    * @memberof hs.styles
    * @ngdoc service
-   * @name hs.styles.service
+   * @name HsStylesService
    * @description Service with definition of basic styles used througout HS-LayersNG
    */
-  .service('hs.styles.service', stylesService)
+  .factory('HsStylesService', stylesService)
 
   /**
    * @memberof hs.styles
@@ -24,7 +24,7 @@ angular
    * @description Display styling menu for layer
    */
   .directive('hs.styler.directive', [
-    'config',
+    'HsConfig',
     function (config) {
       return {};
     },
@@ -41,12 +41,13 @@ angular
   /**
    * @memberof hs.styles
    * @ngdoc service
-   * @name hs.styler.service
+   * @name HsStylerService
    * @description Contain current styled layer
    */
-  .service('hs.styler.service', [
+  .factory('HsStylerService', [
     function () {
       this.layer = null;
+      return this;
     },
   ])
 

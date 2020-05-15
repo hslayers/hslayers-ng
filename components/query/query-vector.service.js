@@ -6,12 +6,12 @@ import {toLonLat} from 'ol/proj.js';
 
 export default [
   '$rootScope',
-  'hs.query.baseService',
+  'HsQueryBaseService',
   '$sce',
-  'hs.map.service',
-  'config',
-  'hs.utils.service',
-  'hs.utils.layerUtilsService',
+  'HsMapService',
+  'HsConfig',
+  'HsUtilsService',
+  'HsUtilsLayerUtilsService',
   '$window',
   function ($rootScope, Base, $sce, OlMap, Config, utils, layerUtils, $window) {
     const me = this;
@@ -115,7 +115,7 @@ export default [
     }
     /**
      * @function getFeatureAttributes
-     * @memberOf hs.query.controller
+     * @memberOf HsQueryController
      * @params {Object} feature Selected feature from map
      * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
      */
@@ -170,5 +170,6 @@ export default [
       tmp.push(featureDescription);
       return tmp;
     }
+    return me;
   },
 ];

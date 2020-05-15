@@ -2,7 +2,7 @@ import { Style, Icon, Stroke, Fill, Circle } from 'ol/style';
 import VectorLayer from 'ol/layer/Vector';
 import Observable from 'ol/Observable';
 
-export default ['$rootScope', 'hs.map.service', 'hs.layermanager.service', 'Core', 'hs.utils.service', 'config', function ($rootScope, OlMap, LayMan, Core, utils, config) {
+export default ['$rootScope', 'HsMapService', 'HsLayermanagerService', 'HsCore', 'HsUtilsService', 'HsConfig', function ($rootScope, OlMap, LayMan, HsCore, utils, config) {
     var me = {
         applyFilters: function (layer) {
             if (!layer) {

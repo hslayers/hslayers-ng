@@ -27,20 +27,20 @@ const mainModuleMd = angular.module('hs', [
     'hs.info'
 ]);
 
-mainModuleMd.directive('hs', ['config', 'Core', function (config, Core) {
+mainModuleMd.directive('hs', ['HsConfig', 'HsCore', function (config, HsCore) {
     return {
         template: require('hslayers.html'),
         link: function (scope, element, attrs) {
-            Core.fullScreenMap(element);
+            HsCore.fullScreenMap(element);
         }
     };
 }]);
 
-if (window.hslayersNgConfig) mainModuleMd.value('config', Object.assign({}, window.hslayersNgConfig(ol)));
+if (window.hslayersNgConfig) mainModuleMd.value('HsConfig', Object.assign({}, window.hslayersNgConfig(ol)));
 
-mainModuleMd.controller('Main', ['$scope', 'Core', 'hs.addLayersWms.service_layer_producer', 'hs.compositions.service_parser', 'config', 'hs.layout.service',
-    function ($scope, Core, srv_producer, composition_parser, config, layoutService) {
-        $scope.Core = Core;
+mainModuleMd.controller('Main', ['$scope', 'HsCore', 'hs.addLayersWms.service_layer_producer', 'HsCompositionsParserService', 'HsConfig', 'HsLayoutService',
+    function ($scope, HsCore, srv_producer, composition_parser, config, layoutService) {
+        $scope.HsCore = HsCore;
         layoutService.sidebarRight = false;
     }
 ]);

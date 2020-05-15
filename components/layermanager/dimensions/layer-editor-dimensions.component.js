@@ -6,9 +6,9 @@ export default {
   },
   controller: [
     '$scope',
-    'hs.dimensionService',
-    'hs.utils.service',
-    'hs.map.service',
+    'HsDimensionService',
+    'HsUtilsService',
+    'HsMapService',
     function ($scope, dimensionService, utils, hsMap) {
       const vm = this;
       angular.extend(vm, {

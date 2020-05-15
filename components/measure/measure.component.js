@@ -1,6 +1,6 @@
 export default {
   template: [
-    'config',
+    'HsConfig',
     (config) => {
       if (config.design == 'md') {
         return require('components/measure/partials/measuremd.html');
@@ -11,9 +11,9 @@ export default {
   ],
   controller: [
     '$scope',
-    'hs.map.service',
-    'hs.layout.service',
-    'hs.measure.service',
+    'HsMapService',
+    'HsLayoutService',
+    'HsMeasureService',
     '$timeout',
     function ($scope, OlMap, layoutService, Measure, $timeout) {
       $scope.data = Measure.data;

@@ -1,5 +1,5 @@
 export default [
-  'config',
+  'HsConfig',
   function (config) {
     return {
       template: require('./partials/layer-vector-directive.html'),

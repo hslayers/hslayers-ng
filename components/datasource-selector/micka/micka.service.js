@@ -3,18 +3,18 @@ import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
 
 export default [
-  'hs.map.service',
-  'Core',
-  'config',
+  'HsMapService',
+  'HsCore',
+  'HsConfig',
   '$http',
   '$q',
-  'hs.utils.service',
-  'hs.mickaFiltersService',
-  'hs.addLayersVector.service',
+  'HsUtilsService',
+  'HsMickaFiltersService',
+  'HsAddLayersVectorService',
   '$log',
   function (
     OlMap,
-    Core,
+    HsCore,
     config,
     $http,
     $q,
@@ -27,7 +27,7 @@ export default [
     angular.extend(me, {
       /**
        * @function queryCatalog
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {Object} dataset Configuration of selected datasource (from app config)
        * @param {Object} query Container for all query filter values
        * @param {Function} extentFeatureCreated Function which gets called
@@ -100,7 +100,7 @@ export default [
 
       /*
        * @function datasetsReceived
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {Object} j HTTP response containing all the layers
        * (PRIVATE) Callback for catalogue http query
        */
@@ -130,7 +130,7 @@ export default [
 
       /*
        * @function param2Query
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {String} which Parameter name to parse
        * (PRIVATE) Parse query parameter into encoded key value pair.
        */
@@ -152,7 +152,7 @@ export default [
 
       /*
        * @function addExtentFeature
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {Object} record Record of one dataset from Get Records response
        * @param {ol/layer/Vector} extentLayer
        * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
@@ -220,7 +220,7 @@ export default [
 
       /**
        * @function getLayerLink
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {Object} layer Micka layer for which to get metadata
        * @description Get first link from records links array or link
        * property of record in older Micka versions
@@ -243,7 +243,7 @@ export default [
 
       /**
        * @function describeWhatToAdd
-       * @memberOf hs.mickaBrowserService
+       * @memberOf HsMickaBrowserService
        * @param {Object} ds Configuration of selected datasource (from app config)
        * @param {Object} layer Micka layer for which to get metadata
        * @description Gets layer metadata and returns promise which describes layer

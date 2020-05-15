@@ -4,20 +4,20 @@ export default {
   template: require('./partials/datasource_selector.html'),
   controller: [
     '$scope',
-    'Core',
+    'HsCore',
     '$compile',
-    'hs.utils.service',
+    'HsUtilsService',
     '$http',
-    'hs.datasourceBrowserService',
-    'config',
-    'hs.laymanBrowserService',
-    'hs.layout.service',
+    'HsDatasourceBrowserService',
+    'HsConfig',
+    'HsLaymanBrowserService',
+    'HsLayoutService',
     '$injector',
-    'hs.common.endpointsService',
-    'hs.datasourceSelector.mapService',
+    'HsCommonEndpointsService',
+    'HsDataSourceSelectorMapService',
     function (
       $scope,
-      Core,
+      HsCore,
       $compile,
       utils,
       $http,
@@ -29,7 +29,7 @@ export default {
       endpointsService,
       mapService
     ) {
-      $scope.Core = Core;
+      $scope.HsCore = HsCore;
       $scope.data = datasourceSelectorService.data;
       $scope.DS = datasourceSelectorService;
       $scope.mapService = mapService;

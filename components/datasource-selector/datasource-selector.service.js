@@ -2,25 +2,25 @@
 export default [
   '$rootScope',
   '$timeout',
-  'hs.map.service',
-  'Core',
-  'config',
-  'hs.addLayersVector.service',
-  'hs.mickaFiltersService',
-  'hs.mickaBrowserService',
-  'hs.laymanBrowserService',
-  'hs.layout.service',
+  'HsMapService',
+  'HsCore',
+  'HsConfig',
+  'HsAddLayersVectorService',
+  'HsMickaFiltersService',
+  'HsMickaBrowserService',
+  'HsLaymanBrowserService',
+  'HsLayoutService',
   '$log',
-  'hs.common.endpointsService',
-  'hs.utils.service',
-  'hs.datasourceSelector.mapService',
+  'HsCommonEndpointsService',
+  'HsUtilsService',
+  'HsDataSourceSelectorMapService',
   'forDatasourceBrowserFilter',
   '$compile',
   function (
     $rootScope,
     $timeout,
     OlMap,
-    Core,
+    HsCore,
     config,
     addLayersVectorService,
     mickaFilterService,
@@ -52,7 +52,7 @@ export default [
 
     /**
      * @function queryCatalogs
-     * @memberOf hs.datasourceBrowserService
+     * @memberOf HsDatasourceBrowserService
      * @description Queries all configured catalogs for datasources (layers)
      */
     this.queryCatalogs = function () {
@@ -67,7 +67,7 @@ export default [
 
     /**
      * @function queryCatalog
-     * @memberOf hs.datasourceBrowserService
+     * @memberOf HsDatasourceBrowserService
      * @param {Object} catalog Configuration of selected datasource (from app config)
      * @description Loads datasets metadata from selected source (CSW server).
      * Uses pagination set by 'start' attribute of 'dataset' param.
@@ -205,7 +205,7 @@ export default [
 
     /**
      * @function clear
-     * @memberOf hs.datasourceBrowserService
+     * @memberOf HsDatasourceBrowserService
      * Clear query variable
      */
     this.clear = function () {

@@ -1,5 +1,5 @@
 export default [
-  'config',
+  'HsConfig',
   function (config) {
     return {
       template: require('./partials/add-layers-url.directive.html'),
@@ -11,7 +11,7 @@ export default [
       },
       controller: [
         '$scope',
-        'hs.historyListService',
+        'HsHistoryListService',
         function ($scope, historyListService) {
           $scope.items = historyListService.readSourceHistory($scope.what);
           $scope.historySelected = function (url) {

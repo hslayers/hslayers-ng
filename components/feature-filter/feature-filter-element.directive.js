@@ -1,4 +1,4 @@
-export default ['config', '$compile', function (config, $compile) {
+export default ['HsConfig', '$compile', function (config, $compile) {
     // console.log($state);
     return {
         // templateUrl: `${config.hsl_path}components/feature-filter/partials/${$state.type}${config.design || ''}.html`,

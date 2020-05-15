@@ -24,10 +24,10 @@ angular
   /**
    * @memberof hs.addLayersVector
    * @ngdoc service
-   * @name hs.addLayersVector.service
+   * @name HsAddLayersVectorService
    * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
    */
-  .factory('hs.addLayersVector.service', addLayersVectorService)
+  .factory('HsAddLayersVectorService', addLayersVectorService)
 
   /**
    * @memberof hs.addLayersVector
@@ -46,8 +46,8 @@ angular
    * @name HsAddLayersVectorController
    */
   .controller('HsAddLayersVectorController', [
-    'hs.addLayersVector.service',
-    'hs.layout.service',
+    'HsAddLayersVectorService',
+    'HsLayoutService',
     function (service, layoutService) {
       const vm = this;
       vm.srs = 'EPSG:4326';

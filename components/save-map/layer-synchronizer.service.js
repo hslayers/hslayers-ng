@@ -3,12 +3,12 @@ import {WFS} from 'ol/format';
 const debounceInterval = 1000;
 
 export default [
-  'hs.utils.service',
-  'hs.laymanService',
-  'hs.common.endpointsService',
+  'HsUtilsService',
+  'HsLaymanService',
+  'HsCommonEndpointsService',
   '$compile',
   '$rootScope',
-  'hs.layout.service',
+  'HsLayoutService',
   function (
     utils,
     laymanService,
@@ -39,7 +39,7 @@ export default [
 
       /**
        * Start synchronizing layer to database
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function addLayer
        * @param {object} layer Layer to add
        */
@@ -53,7 +53,7 @@ export default [
       /**
        * Keep track of synchronized vector layers by listening to
        * VectorSources change events. Initialy also get features from server
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function startMonitoring
        * @param {object} layer Layer to add
        * @returns {Boolean} If layer is synchronizable
@@ -72,7 +72,7 @@ export default [
       /**
        * Get features from Layman endpoint as WFS string, parse and add
        * them to Openlayers VectorSource
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function pull
        * @param {Ol.layer} layer Layer to get Layman friendly name for
        * @param {Ol.source} source Openlayers VectorSource to store features in
@@ -167,7 +167,7 @@ export default [
       /**
        * Get Layman friendly name for layer based on its title by
        * removing spaces, converting to lowercase
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function getLayerName
        * @param {Ol.layer} layer Layer to get Layman friendly name for
        * @returns {String} Layer title
@@ -178,7 +178,7 @@ export default [
 
       /**
        * Stop synchronizing layer to database
-       * @memberof hs.layerSynchronizerService
+       * @memberof HsLayerSynchronizerService
        * @function removeLayer
        * @param {Ol.layer} layer Layer to remove from legend
        */

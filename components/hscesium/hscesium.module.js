@@ -11,11 +11,11 @@ angular
 
   /**
    * @module hs.cesium
-   * @name hs.cesium.service
+   * @name HsCesiumService
    * @ngdoc service
    * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
    */
-  .service('hs.cesium.service', hscesiumService)
+  .factory('HsCesiumService', hscesiumService)
 
   /**
    * @module hs.cesium
@@ -24,8 +24,8 @@ angular
    * @description
    */
   .directive('hs.cesium.directive', [
-    'config',
-    'hs.cesium.service',
+    'HsConfig',
+    'HsCesiumService',
     '$timeout',
     function (config, service, $timeout) {
       return {
@@ -41,18 +41,18 @@ angular
 
   /**
    * @module hs.cesium
-   * @name hs.cesium.controller
+   * @name HsCesiumController
    * @ngdoc controller
    * @description
    */
-  .controller('hs.cesium.controller', [
+  .controller('HsCesiumController', [
     '$scope',
-    'hs.cesium.service',
-    'config',
-    'hs.permalink.urlService',
-    'Core',
-    'hs.map.service',
-    'hs.sidebar.service',
+    'HsCesiumService',
+    'HsConfig',
+    'HsPermalinkUrlService',
+    'HsCore',
+    'HsMapService',
+    'HsSidebarService',
     '$timeout',
     '$rootScope',
     function (
@@ -60,7 +60,7 @@ angular
       service,
       config,
       permalink,
-      Core,
+      HsCore,
       hsMap,
       sidebarService,
       $timeout,
@@ -71,7 +71,7 @@ angular
 
       /**
        * @ngdoc method
-       * @name hs.cesium.controller#toggleCesiumMap
+       * @name HsCesiumController#toggleCesiumMap
        * @private
        * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
        */
@@ -82,7 +82,7 @@ angular
         if (hsMap.visible) {
           service.viewer.destroy();
           $timeout(() => {
-            Core.updateMapSize();
+            HsCore.updateMapSize();
           }, 5000);
         } else {
           service.init();
@@ -113,7 +113,7 @@ angular
         service.dimensionChanged(data.layer, data.dimension);
       });
 
-      $rootScope.$on('Core.mapSizeUpdated', service.resize);
+      $rootScope.$on('HsCore.mapSizeUpdated', service.resize);
       service.resize();
 
       $scope.$emit('scope_loaded', 'CesiumMap');

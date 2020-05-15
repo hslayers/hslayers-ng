@@ -1,8 +1,8 @@
 export default [
-  'config',
-  'hs.mickaFiltersService',
-  'hs.datasourceBrowserService',
-  'hs.layout.service',
+  'HsConfig',
+  'HsMickaFiltersService',
+  'HsDatasourceBrowserService',
+  'HsLayoutService',
   function (
     config,
     mickaFilterService,

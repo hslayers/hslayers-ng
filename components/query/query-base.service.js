@@ -7,8 +7,8 @@ import {transform, transformExtent} from 'ol/proj';
 import {toStringHDMS, createStringXY} from 'ol/coordinate';
 import {toLonLat} from 'ol/proj.js';
 
-export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.layout.service', 'hs.utils.service', '$timeout', 'gettext',
-  function ($rootScope, OlMap, Core, $sce, config, layoutService, utils, $timeout, gettext) {
+export default ['$rootScope', 'HsMapService', 'HsCore', '$sce', 'HsConfig', 'HsLayoutService', 'HsUtilsService', '$timeout', 'gettext',
+  function ($rootScope, OlMap, HsCore, $sce, config, layoutService, utils, $timeout, gettext) {
     const me = this;
 
     let map;
@@ -273,4 +273,5 @@ export default ['$rootScope', 'hs.map.service', 'Core', '$sce', 'config', 'hs.la
     me.deregisterVectorSelectorCreated = $rootScope.$on('vectorSelectorCreated', (e, selector) => {
       me.selector = selector;
     });
+    return me;
   }];

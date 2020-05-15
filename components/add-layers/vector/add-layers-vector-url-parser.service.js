@@ -1,10 +1,10 @@
 import '../../styles/styles.module';
 import {unByKey} from 'ol/Observable';
 export default [
-  'hs.map.service',
-  'hs.permalink.urlService',
-  'hs.layout.service',
-  'hs.addLayersVector.service',
+  'HsMapService',
+  'HsPermalinkUrlService',
+  'HsLayoutService',
+  'HsAddLayersVectorService',
   function (OlMap, permalink, layoutService, addLayersVectorService) {
     const me = this;
 

@@ -56,11 +56,11 @@ const bookmarkStyle = [
 ];
 
 export default [
-  'hs.utils.service',
+  'HsUtilsService',
   '$http',
-  'config',
-  'hs.map.service',
-  'hs.layout.service',
+  'HsConfig',
+  'HsMapService',
+  'HsLayoutService',
   '$rootScope',
   '$compile',
   '$timeout',
@@ -169,7 +169,7 @@ export default [
         hsMap.map.addLayer(me.layer);
       },
       /**
-       * @memberof hs.sensors.service
+       * @memberof HsSensorsService
        * @function getUnits
        * @description Get list of units from Senslog backend
        */
@@ -257,7 +257,7 @@ export default [
       },
 
       /**
-       * @memberof hs.sensors.service
+       * @memberof HsSensorsService
        * @function getObservationHistory
        * @param {Object} unit Object containing
        * {description, is_mobile, sensors, unit_id, unit_type}
@@ -302,7 +302,7 @@ export default [
       },
 
       /**
-       * @memberof hs.sensors.service
+       * @memberof HsSensorsService
        * @function createChart
        * @param {Object} unit Unit description
        * @description Create vega chart definition and use it in vegaEmbed
@@ -346,7 +346,7 @@ export default [
         //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
         const chartData = {
           '$schema': 'https://vega.github.io/schema/vega-lite/v3.4.0.json',
-          'config': {
+          'HsConfig': {
             'mark': {
               'tooltip': null,
             },

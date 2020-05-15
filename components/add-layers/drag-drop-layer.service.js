@@ -2,12 +2,12 @@ import {DragAndDrop} from 'ol/interaction';
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format';
 
 export default [
-  'hs.map.service',
-  'hs.statusManagerService',
+  'HsMapService',
+  'HsStatusManagerService',
   '$http',
-  'config',
+  'HsConfig',
   '$log',
-  'hs.addLayersVector.service',
+  'HsAddLayersVectorService',
   function (
     hsMap,
     statusManagerService,

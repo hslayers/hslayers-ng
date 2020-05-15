@@ -2,15 +2,15 @@ export default {
   template: require('./partials/toolbar.html'),
   controller: [
     '$scope',
-    'Core',
+    'HsCore',
     '$timeout',
-    'hs.layout.service',
+    'HsLayoutService',
     '$document',
-    function ($scope, Core, $timeout, layoutService, $document) {
+    function ($scope, HsCore, $timeout, layoutService, $document) {
       let collapsed = false;
 
       angular.extend($scope, {
-        Core: Core,
+        HsCore: HsCore,
         layoutService,
 
         measureButtonClicked() {

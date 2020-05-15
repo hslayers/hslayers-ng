@@ -2,11 +2,11 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
 export default [
   '$scope',
-  'hs.draw.service',
-  'hs.utils.layerUtilsService',
-  'hs.query.vectorService',
+  'HsDrawService',
+  'HsUtilsLayerUtilsService',
+  'HsQueryVectorService',
   '$timeout',
-  'hs.layout.service',
+  'HsLayoutService',
   'gettext',
   function (
     $scope,

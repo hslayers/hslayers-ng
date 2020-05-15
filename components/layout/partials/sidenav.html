@@ -3,29 +3,29 @@
     <md-content>
         <md-list flex>
             <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
-                <md-list-item ng-if="(Core.exists(panel.controller) || Core.exists(panel.directive)) && layoutService.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel)">
+                <md-list-item ng-if="(HsCore.exists(panel.controller) || HsCore.exists(panel.directive)) && layoutService.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel)">
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
                     <p translate>{{panel.title}}</p>
                 </md-list-item>
-                <div panel-creator="panel.controller" directive="panel.directive" ng-if="(Core.exists(panel.controller) || Core.exists(panel.directive))" ng-show="layoutService.panelVisible(panel.name)" hide-xs hide-sm></div>
+                <div panel-creator="panel.controller" directive="panel.directive" ng-if="(HsCore.exists(panel.controller) || HsCore.exists(panel.directive))" ng-show="layoutService.panelVisible(panel.name)" hide-xs hide-sm></div>
             </div>
 
-            <md-list-item ng-if="Core.exists('HsRoutingController')" ng-click="openPanel('routing')">
+            <md-list-item ng-if="HsCore.exists('HsRoutingController')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
                 <p translate>Routing</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.tracking.controller')" ng-click="openPanel('tracking')">
+            <md-list-item ng-if="HsCore.exists('hs.tracking.controller')" ng-click="openPanel('tracking')">
                 <md-icon md-icon-set="material-icons">track_changes</md-icon>
                 <p translate>Tracking</p>
             </md-list-item>
 
-            <md-list-item ng-if="Core.exists('hs.vgi-draw')" ng-click="openPanel('draw')">
+            <md-list-item ng-if="HsCore.exists('hs.vgi-draw')" ng-click="openPanel('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
                 <p translate>Draw new features</p>
             </md-list-item>           
             
-            <md-list-item ng-if="Core.exists('hs.mobile_settings.controller') && layoutService.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
+            <md-list-item ng-if="HsCore.exists('hs.mobile_settings.controller') && layoutService.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
                 <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>
                 <p translate>Application settings</p>
             </md-list-item>

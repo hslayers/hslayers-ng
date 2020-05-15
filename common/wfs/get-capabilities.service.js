@@ -1,9 +1,9 @@
-export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', function ($http, OlMap, utils, $rootScope) {
+export default ['$http', 'HsMapService', 'HsUtilsService', '$rootScope', function ($http, OlMap, utils, $rootScope) {
   const me = this;
 
   /**
     * Get WFS service location without parameters from url string
-    * @memberof hs.wfs.getCapabilitiesService
+    * @memberof HsWfsGetCapabilitiesService
     * @function getPathFromUrl
     * @param {String} str Url string to parse
     * @returns {String} WFS service Url without params
@@ -19,7 +19,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
   /**
      * TODO: Probably the same as utils.paramsToURL
     * Create WFS parameter string from parameter object
-    * @memberof hs.wfs.getCapabilitiesService
+    * @memberof HsWfsGetCapabilitiesService
     * @function param2String
     * @param {Object} obj Object with stored WFS service parameters
     * @returns {String} Parameter string or empty string if no object given
@@ -40,7 +40,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
 
   /**
     * Parse added service url and sends request GetCapabalities to WFS service
-    * @memberof hs.wfs.getCapabilitiesService
+    * @memberof HsWfsGetCapabilitiesService
     * @function requestGetCapabilities
     * @param {String} service_url Raw Url localization of service
     * @returns {Promise} Promise object -  Response to GetCapabalities request
@@ -77,7 +77,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
 
   /**
     * Test if current map projection is in supported projection list
-    * @memberof hs.wfs.getCapabilitiesService
+    * @memberof HsWfsGetCapabilitiesService
     * @function currentProjectionSupported
     * @param {Array} srss List of supported projections
     * @returns {Boolean} True if map projection is in list, otherwise false
@@ -94,7 +94,7 @@ export default ['$http', 'hs.map.service', 'hs.utils.service', '$rootScope', fun
 
   /**
     * (DEPRECATED ?)
-    * @memberof hs.wfs.getCapabilitiesService
+    * @memberof HsWfsGetCapabilitiesService
     * @function getUrl
     * @param {} url
     * @param {} use_proxy

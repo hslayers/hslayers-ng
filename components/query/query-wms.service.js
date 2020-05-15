@@ -6,12 +6,12 @@ export default [
   '$rootScope',
   '$http',
   '$sce',
-  'hs.query.baseService',
-  'hs.map.service',
-  'hs.utils.service',
-  'Core',
-  'hs.language.service',
-  'hs.utils.layerUtilsService',
+  'HsQueryBaseService',
+  'HsMapService',
+  'HsUtilsService',
+  'HsCore',
+  'HsLanguageService',
+  'HsUtilsLayerUtilsService',
   function (
     $rootScope,
     $http,
@@ -19,7 +19,7 @@ export default [
     Base,
     OlMap,
     utils,
-    Core,
+    HsCore,
     languageService,
     layerUtils
   ) {
@@ -224,7 +224,7 @@ export default [
 
     /**
      * @function queryWmsLayer
-     * @memberOf hs.query.controller
+     * @memberOf HsQueryController
      * @params {Ol.Layer} layer Layer to Query
      * @params {Ol.coordinate} coordinate
      * Get FeatureInfo from WMS queriable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
@@ -309,6 +309,7 @@ export default [
         }
       });
     });
+    return me;
   },
 ];
 

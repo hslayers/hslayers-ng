@@ -1,7 +1,7 @@
 export default [
   '$document',
   '$window',
-  'config',
+  'HsConfig',
   function ($document, $window, config) {
     return function (scope, element, attr) {
       function isPanel() {

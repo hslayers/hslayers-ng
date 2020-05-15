@@ -36,14 +36,15 @@ import {register} from 'ol/proj/proj4';
 import {transform, transformExtent} from 'ol/proj';
 
 export default [
-  'config',
+  'HsConfig',
   '$rootScope',
-  'hs.utils.service',
-  'hs.layout.service',
+  'HsUtilsService',
+  'HsLayoutService',
   '$timeout',
   'gettext',
   '$log',
   function (config, $rootScope, utils, layoutService, $timeout, gettext, $log) {
+    const me = this;
     /**
      * This is a workaround.
      * Returns the associated layer.
@@ -97,7 +98,7 @@ export default [
     let timer;
     /**
      * @ngdoc method
-     * @name hs.map.service#init
+     * @name HsMapService#init
      * @public
      * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
      */
@@ -121,7 +122,7 @@ export default [
         timer = setTimeout(() => {
           /**
            * @ngdoc event
-           * @name hs.map.service#map.extent_changed
+           * @name HsMapService#map.extent_changed
            * @eventType broadcast on $rootScope
            * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
            */
@@ -183,7 +184,7 @@ export default [
             Use ${platformModifierKey} key + mouse-wheel to zoom the map.
             </div>`;
             const element = angular.element(html)[0];
-            //TODO: '.hs-gui-overlay' is not available in Core.puremapApp mode => place it somewhere else
+            //TODO: '.hs-gui-overlay' is not available in HsCore.puremapApp mode => place it somewhere else
             layoutService.contentWrapper
               .querySelector('.hs-gui-overlay')
               .appendChild(element);
@@ -206,7 +207,7 @@ export default [
 
       /**
        * @ngdoc event
-       * @name hs.map.service#map.loaded
+       * @name HsMapService#map.loaded
        * @eventType broadcast on $rootScope
        * @description Fires when map is loaded (so other map dependent modules can proceed)
        */
@@ -243,7 +244,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.map.service#duration
+     * @name HsMapService#duration
      * @public
      * @type {Number} 400
      * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
@@ -252,7 +253,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.map.service#controls
+     * @name HsMapService#controls
      * @public
      * @type {Object}
      * @description Set of default map controls used in HSLayers, may be loaded from config file
@@ -302,7 +303,7 @@ export default [
 
     /**
      * @ngdoc property
-     * @name hs.map.service#interactions
+     * @name HsMapService#interactions
      * @public
      * @type {Object}
      * @description Set of default map interactions used in HSLayers (
@@ -358,11 +359,9 @@ export default [
       undefinedHTML: '&nbsp;',
     });
 
-    var me = this;
-
     /**
      * @ngdoc method
-     * @name hs.map.service#findLayerByTitle
+     * @name HsMapService#findLayerByTitle
      * @public
      * @param {string} title Title of the layer (from layer creation)
      * @returns {Ol.layer} Ol.layer object
@@ -438,7 +437,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#repopulateLayers
+     * @name HsMapService#repopulateLayers
      * @public
      * @param {object} visible_layers List of layers, which should be visible.
      * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
@@ -532,7 +531,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#reset
+     * @name HsMapService#reset
      * @public
      * @description Reset map to state configured in app config (reload all layers and set default view)
      */
@@ -544,7 +543,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#resetView
+     * @name HsMapService#resetView
      * @public
      * @description Reset map view to view configured in app config
      */
@@ -562,7 +561,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#isLayerVisible
+     * @name HsMapService#isLayerVisible
      * @public
      * @param {ol.Layer} lyr Layer for which to determine visibility
      * @param {Array} visible_layers Layers which should be programmticaly visible
@@ -588,7 +587,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#proxifyLayerLoader
+     * @name HsMapService#proxifyLayerLoader
      * @public
      * @param {Ol.layer} lyr Layer to proxify
      * @param {Boolean} tiled Info if layer is tiled
@@ -694,7 +693,7 @@ export default [
 
     /**
      * @ngdoc method
-     * @name hs.map.service#getMap
+     * @name HsMapService#getMap
      * @public
      * @description Get ol.Map object from service
      * @returns {ol.Map} ol.Map
@@ -712,5 +711,6 @@ export default [
         me.map.removeLayer(to_be_removed.shift());
       }
     };
+    return me;
   },
 ];

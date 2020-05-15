@@ -37,9 +37,9 @@ const mainModuleBs = angular.module('hs', [
 ]);
 
 mainModuleBs.directive('hs', [
-  'config',
-  'Core',
-  function (config, Core) {
+  'HsConfig',
+  'HsCore',
+  function (config, HsCore) {
     return {
       template: require('hslayers.html'),
       link: function (scope, element, attrs) {
@@ -47,7 +47,7 @@ mainModuleBs.directive('hs', [
           typeof config.sizeMode == 'undefined' ||
           config.sizeMode == 'fullscreen'
         ) {
-          Core.fullScreenMap(element);
+          HsCore.fullScreenMap(element);
         }
       },
     };
@@ -92,16 +92,16 @@ window.ol = {
 };
 
 if (window.hslayersNgConfig) {
-  mainModuleBs.value('config', window.hslayersNgConfig(window.ol));
+  mainModuleBs.value('HsConfig', window.hslayersNgConfig(window.ol));
 }
 
 mainModuleBs.controller('Main', [
   '$scope',
-  'Core',
-  'config',
-  'hs.map.service',
-  function ($scope, Core, config, hsMap) {
-    $scope.Core = Core;
+  'HsCore',
+  'HsConfig',
+  'HsMapService',
+  function ($scope, HsCore, config, hsMap) {
+    $scope.HsCore = HsCore;
     let lastConfigBuster = config.buster;
     setInterval(() => {
       if (lastConfigBuster != config.buster) {

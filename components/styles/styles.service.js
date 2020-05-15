@@ -2,7 +2,7 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
 export default [
   '$http',
-  'config',
+  'HsConfig',
   function ($http, config) {
     this.pin_white_blue = new Style({
       image: new Icon({
@@ -57,5 +57,6 @@ export default [
       }),
     });
     const me = this;
+    return me;
   },
 ];

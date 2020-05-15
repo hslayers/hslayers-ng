@@ -3,13 +3,13 @@ export default [
   '$controller',
   '$injector',
   '$window',
-  'hs.map.service',
-  'config',
+  'HsMapService',
+  'HsConfig',
   '$timeout',
-  'hs.layout.service',
+  'HsLayoutService',
   '$log',
   '$document',
-  'hs.utils.service',
+  'HsUtilsService',
   function (
     $rootScope,
     $controller,
@@ -27,7 +27,7 @@ export default [
       hslayersNgTemplate: require('../../hslayers.html'),
       /**
        * @ngdoc property
-       * @name Core#config
+       * @name HsCore#config
        * @public
        * @type {Object}
        * @description Service shortcut to config module defined by app.js for application
@@ -35,7 +35,7 @@ export default [
       config: config,
       /**
        * @ngdoc property
-       * @name Core#scopes_registered
+       * @name HsCore#scopes_registered
        * @public
        * @type {Array}
        * @description DEPRECATED?
@@ -43,7 +43,7 @@ export default [
       embededEnabled: true,
       /**
        * @ngdoc property
-       * @name Core#_exist_cache
+       * @name HsCore#_exist_cache
        * @public
        * @type {Object}
        * @description DEPRECATED?
@@ -52,7 +52,7 @@ export default [
 
       /**
        * @ngdoc property
-       * @name Core#sizeOptions
+       * @name HsCore#sizeOptions
        * @public
        * @type {Object}
        * @description Hold data for computing app sizes. Shouldnt be modified directly. Holds reference to HS app element and optionally its container.
@@ -65,37 +65,37 @@ export default [
       language: 'en',
       setMainPanel: function (which, by_gui) {
         $log.warn(
-          'setMainPanel will be removed from Core in future. Use hs.layout.service#setMainPanel method instead'
+          'setMainPanel will be removed from HsCore in future. Use HsLayoutService#setMainPanel method instead'
         );
         layoutService.setMainPanel(which, by_gui);
       },
       setDefaultPanel: function (which) {
         $log.warn(
-          'setDefaultPanel will be removed from Core in future. Use hs.layout.service#setDefaultPanel method instead'
+          'setDefaultPanel will be removed from HsCore in future. Use HsLayoutService#setDefaultPanel method instead'
         );
         return layoutService.setDefaultPanel(which);
       },
       panelVisible: function (which, scope) {
         $log.warn(
-          'panelVisible will be removed from Core in future. Use hs.layout.service#panelVisible method instead'
+          'panelVisible will be removed from HsCore in future. Use HsLayoutService#panelVisible method instead'
         );
         return layoutService.panelVisible(which, scope);
       },
       panelEnabled: function (which, status) {
         $log.warn(
-          'panelEnabled will be removed from Core in future. Use hs.layout.service#panelEnabled method instead'
+          'panelEnabled will be removed from HsCore in future. Use HsLayoutService#panelEnabled method instead'
         );
         return layoutService.panelEnabled(which, status);
       },
       closePanel: function (which) {
         $log.warn(
-          'closePanel will be removed from Core in future. Use hs.layout.service#closePanel method instead'
+          'closePanel will be removed from HsCore in future. Use HsLayoutService#closePanel method instead'
         );
         return layoutService.closePanel(which);
       },
       fullScreenMap: function (element) {
         $log.warn(
-          'fullScreenMap will be removed from Core in future. Use hs.layout.service#fullScreenMap method instead'
+          'fullScreenMap will be removed from HsCore in future. Use HsLayoutService#fullScreenMap method instead'
         );
         return layoutService.fullScreenMap(element, me);
       },
@@ -104,13 +104,13 @@ export default [
       },
       set singleDatasources(newName) {
         $log.warn(
-          'singleDatasources will be removed from Core in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object'
+          'singleDatasources will be removed from HsCore in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object'
         );
         config.allowAddExternalDatasets = newName;
       },
       /**
        * @ngdoc method
-       * @name Core#exists
+       * @name HsCore#exists
        * @public
        * @param {String} name Controler or module name to test e.g. hs.print
        * @returns {Boolean} True if controller or module exists
@@ -138,7 +138,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#init
+       * @name HsCore#init
        * @public
        * @param {Object} element HS layers element gained from directive link
        * @param {Object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any css like selector
@@ -182,7 +182,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#setSizeByContainer
+       * @name HsCore#setSizeByContainer
        * @public
        * @description Change container for HS element.
        */
@@ -193,7 +193,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#setSizeByCSS
+       * @name HsCore#setSizeByCSS
        * @public
        * @param {Number} height New height of HS element in pixels
        * @param {Number} width New width of HS element in pixels
@@ -210,7 +210,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#initSizeListeners
+       * @name HsCore#initSizeListeners
        * @public
        * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
        */
@@ -218,7 +218,7 @@ export default [
         const w = $window;
         /**
          * @ngdoc method
-         * @name Core#updateVH
+         * @name HsCore#updateVH
          * @private
          * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
          */
@@ -262,7 +262,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#updateElementSize
+       * @name HsCore#updateElementSize
        * @public
        * @description Update HS element size by its container sizes.
        */
@@ -275,7 +275,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#updateMapSize
+       * @name HsCore#updateMapSize
        * @public
        * @description Update map size.
        */
@@ -319,12 +319,12 @@ export default [
           }, 0);
         }
 
-        $rootScope.$broadcast('Core.mapSizeUpdated', neededSize);
+        $rootScope.$broadcast('HsCore.mapSizeUpdated', neededSize);
       },
 
       /**
        * @ngdoc method
-       * @name Core#searchVisible
+       * @name HsCore#searchVisible
        * @public
        * @param {booelan} is New status of search panel
        * @returns {Boolean} Current status of Search panel
@@ -338,7 +338,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#isAuthorized
+       * @name HsCore#isAuthorized
        * @public
        * @returns {Boolean} Check result - true for authorized user
        * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
@@ -363,7 +363,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#resetMap
+       * @name HsCore#resetMap
        * @public
        * @description Do complete reset of map (view, layers) according to app config
        */
@@ -371,7 +371,7 @@ export default [
         OlMap.reset();
         /**
          * @ngdoc event
-         * @name Core#core.map_reset
+         * @name HsCore#core.map_reset
          * @eventType broadcast on $rootScope
          * @description Fires when map completely reset
          */
@@ -379,7 +379,7 @@ export default [
       },
       /**
        * @ngdoc method
-       * @name Core#isMobile
+       * @name HsCore#isMobile
        * @public
        * @returns {String} Returns "mobile" or ""
        * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
@@ -401,7 +401,7 @@ export default [
     let _puremapApp = false;
     /**
      * @ngdoc property
-     * @name Core#puremapApp
+     * @name HsCore#puremapApp
      * @public
      * @type {Boolean} false
      * @description If app is running in puremapApp mode
@@ -424,7 +424,7 @@ export default [
       }
     });
 
-    if (me.exists('hs.sidebar.controller') /*&& me.puremapApp != true*/) {
+    if (me.exists('HsSidebarController') /*&& me.puremapApp != true*/) {
       if ($window.innerWidth < 767 || config.sidebarClosed) {
         layoutService.sidebarExpanded = false;
         layoutService.sidebarLabels = false;

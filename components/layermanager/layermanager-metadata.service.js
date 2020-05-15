@@ -2,11 +2,11 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 export default [
   '$rootScope',
-  'hs.wmts.getCapabilitiesService',
-  'hs.wfs.getCapabilitiesService',
-  'hs.wms.getCapabilitiesService',
+  'HsWmtsGetCapabilitiesService',
+  'HsWfsGetCapabilitiesService',
+  'HsWmsGetCapabilitiesService',
   '$timeout',
-  'hs.utils.layerUtilsService',
+  'HsUtilsLayerUtilsService',
   function (
     $rootScope,
     WMTSgetCapabilitiesService,
@@ -18,7 +18,7 @@ export default [
     const me = {};
     /**
      * @function identifyLayerObject
-     * @memberOf hs.layermanager.metadata.service
+     * @memberOf HsLayermanagerMetadata.service
      * @param {Ol.layer} layer Selected layer
      * @description Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
      * It is used as reference for sublayer structure, metadata
@@ -44,7 +44,7 @@ export default [
 
     /**
      * @function fillMetadata
-     * @memberOf hs.layermanager.metadata.service
+     * @memberOf HsLayermanagerMetadata.service
      * @param {Ol.layer} layer Selected layer
      * @description Async adds hasSublayers parameter if true
      */
@@ -62,7 +62,7 @@ export default [
     };
     /**
      * @function queryMetadata
-     * @memberOf hs.layermanager.metadata.service
+     * @memberOf HsLayermanagerMetadata.service
      * @param {Ol.layer} layer Selected layer
      * @description Callback function, adds getCapabilities response metadata to layer object
      */

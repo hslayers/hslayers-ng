@@ -1,4 +1,4 @@
-export default ['config', function (config) {
+export default ['HsConfig', function (config) {
     return {
         template: require('common/history-list/history-list.directive.html'),
         scope: {
@@ -7,7 +7,7 @@ export default ['config', function (config) {
         },
         replace: true,
         transclude: true,
-        controller: ['$scope', 'hs.historyListService', function($scope, historyListService){
+        controller: ['$scope', 'HsHistoryListService', function($scope, historyListService){
             $scope.items = historyListService.readSourceHistory($scope.what);
         }]
 

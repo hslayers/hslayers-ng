@@ -6,13 +6,13 @@ import {ImageWMS} from 'ol/source';
 import {TileWMS, XYZ} from 'ol/source';
 
 export default [
-  'hs.utils.service',
+  'HsUtilsService',
   function (utils) {
     const me = {};
     return angular.extend(me, {
       /**
        * Test if layer is visible and has supported type (conditions for displaying legend)
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function isLegendable
        * @param {object} layer Layer to test
        * @return {Boolean} Return if legend might exists for layer
@@ -32,7 +32,7 @@ export default [
 
       /**
        * Get vector layer feature geometries
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function getVectorFeatureGeometry
        * @param {ol/Layer} currentLayer Layer of interest
        * @return {Array} Array of simplified lowercase names of geometry types encountered in layer
@@ -76,7 +76,7 @@ export default [
 
       /**
        * Get vector layer styles for first 100 features
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function getStyleVectorLayer
        * @param {ol/Layer} currentLayer Layer of interest
        * @return {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
@@ -116,7 +116,7 @@ export default [
 
       /**
        * Serialize styles
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function serializeStyle
        * @param {ol/Style} style Openlayers style
        * @return {Object} Simplified description of style used by template to draw legend
@@ -131,7 +131,7 @@ export default [
 
       /**
        * Create object of parameters used for creation of svg content for legend using retreived styles
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function setUpLegendStyle
        * @param {ol/style/Fill} fill Fill description
        * @param {ol/style/Stroke} stroke Stroke description
@@ -217,7 +217,7 @@ export default [
 
       /**
        * Generate url for GetLegendGraphic request of WMS service for selected layer
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function getLegendUrl
        * @param {ol.source.Source} source Source of wms layer
        * @param {String} layer_name Name of layer for which legend is requested
@@ -259,7 +259,7 @@ export default [
 
       /**
        * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
-       * @memberof hs.legend.service
+       * @memberof HsLegendService
        * @function getLegendUrl
        * @return {Object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
        * @param {ol/Layer} layer Openlayers layer

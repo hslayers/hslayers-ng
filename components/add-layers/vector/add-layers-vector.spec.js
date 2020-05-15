@@ -7,7 +7,7 @@ describe('add-layers-vector', () => {
 
   beforeEach(() => {
     angular.mock.module(($provide) => {
-      $provide.value('config', {});
+      $provide.value('HsConfig', {});
     });
     angular.mock.module('hs.addLayersVector', 'hs.map');
   }); //<--- Hook module
@@ -18,7 +18,7 @@ describe('add-layers-vector', () => {
     $rootScope.$digest();
     scope = el.isolateScope() || el.scope();
     vm = scope.$$childHead.vm;
-    hsMap = $injector.get('hs.map.service');
+    hsMap = $injector.get('HsMapService');
   }));
 
   it('GeoJSON layer should be added', async () => {

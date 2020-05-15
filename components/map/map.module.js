@@ -14,11 +14,11 @@ angular
 
   /**
    * @module hs.map
-   * @name hs.map.service
+   * @name HsMapService
    * @ngdoc service
-   * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file), and basic set of {@link hs.map.service#interactions interactions}.
+   * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file), and basic set of {@link HsMapService#interactions interactions}.
    */
-  .service('hs.map.service', mapService)
+  .factory('HsMapService', mapService)
 
   /**
    * @module hs.map
@@ -30,8 +30,8 @@ angular
 
   /**
    * @module hs.map
-   * @name hs.map.controller
+   * @name HsMapController
    * @ngdoc controller
    * @description Main controller of default HSLayers map, initialize map service when default HSLayers template is used
    */
-  .controller('hs.map.controller', mapController);
+  .controller('HsMapController', mapController);

@@ -13,7 +13,7 @@
       <p class="md-body-2" translate>
           You are opening map <b>{{CS.compositionToLoad.title}}</b>. There are currently unsaved changes in compositions.
       </p>
-      <p ng-show="!Core.isAuthorized()" class="md-body-2" translate>
+      <p ng-show="!HsCore.isAuthorized()" class="md-body-2" translate>
               You are not loaded as user. You can't save composition now. Log in for saving.
           </p>
       <p class="md-body-2" translate>
@@ -29,7 +29,7 @@
       <md-button class="md-primary md-hue-2 md-raised" ng-click="add();closeDialog();">
           <translate>Merge compositions</translate>
       </md-button>
-      <md-button ng-show="!Core.isAuthorized()" class="md-accent md-raised" ng-click="save();closeDialog();">
+      <md-button ng-show="!HsCore.isAuthorized()" class="md-accent md-raised" ng-click="save();closeDialog();">
           <translate>Save changes first</translate>
       </md-button>
       <md-button ng-click="closeDialog()">

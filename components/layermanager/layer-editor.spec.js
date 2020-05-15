@@ -13,7 +13,7 @@ describe('layermanager', function () {
 
     beforeEach(function () {
         angular.mock.module(function ($provide) {
-            $provide.value('config', {
+            $provide.value('HsConfig', {
                 default_layers: [layerForCluster]
             });
         });

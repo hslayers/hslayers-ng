@@ -8,8 +8,8 @@ import {transform} from 'ol/proj';
 
 export default [
   '$rootScope',
-  'hs.map.service',
-  'hs.utils.service',
+  'HsMapService',
+  'HsUtilsService',
   '$timeout',
   function ($rootScope, OlMap, utils, $timeout) {
     const me = this;
@@ -46,7 +46,7 @@ export default [
     this.currentMeasurement;
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function switchMultipleMode
      * @public
      * @param {Boolean} mode Optional parameter if multiple shape mode should be enabled
@@ -61,7 +61,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function changeMeasureParams
      * @public
      * @param {String} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
@@ -74,7 +74,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function clearMeasurement
      * @public
      * @description Clear all measurements and restart measuring
@@ -88,7 +88,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function activateMeasuring
      * @public
      * @param {Boolean} mode Optional parameter, Geometry type of measurement ('area' for polygon, 'line' for linestring) Line is default
@@ -104,7 +104,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function deactivateMeasuring
      * @public
      * @description Stop measuring interaction in app
@@ -121,7 +121,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function mouseMoveHandler
      * @private
      * @param {Object} evt Callback param for mouse move event
@@ -150,7 +150,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function addMultiple
      * @private
      * @param {object} val1 Output of new object
@@ -191,7 +191,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function addInteraction
      * @private
      * @param {Boolean} type Geometry type
@@ -233,7 +233,7 @@ export default [
     }
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function formatLength
      * @private
      * @param {ol.geom.LineString} line
@@ -268,7 +268,7 @@ export default [
     };
 
     /**
-     * @memberof hs.measure.service
+     * @memberof HsMeasureService
      * @function formatArea
      * @private
      * @param {ol.geom.Polygon} polygon
@@ -292,5 +292,6 @@ export default [
       }
       return output;
     };
+    return me;
   },
 ];

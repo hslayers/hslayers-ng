@@ -1,12 +1,12 @@
 export default [
   '$timeout',
-  'hs.map.service',
+  'HsMapService',
   '$window',
   function ($timeout, hsMap, $window) {
     const me = {};
     return angular.extend(me, {
       /**
-       * @memberof hs.print.service
+       * @memberof HsPrintService
        * @function print
        * @public
        * @param {String} title Heading of printed page

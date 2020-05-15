@@ -7,9 +7,9 @@ import '../../../common/get-capabilities.module';
 import {addAnchors} from '../../../common/attribution-utils';
 import 'angular-cookies';
 
-export default ['$rootScope', 'hs.map.service', 'hs.arcgis.getCapabilitiesService',
-  'Core', 'hs.dimensionService', '$timeout', 'hs.layout.service',
-  function ($rootScope, OlMap, ArcgisCapsService, Core, dimensionService, $timeout, layoutService) {
+export default ['$rootScope', 'HsMapService', 'HsArcgisGetCapabilitiesService',
+  'HsCore', 'HsDimensionService', '$timeout', 'HsLayoutService',
+  function ($rootScope, OlMap, ArcgisCapsService, HsCore, dimensionService, $timeout, layoutService) {
     const me = this;
 
     this.data = {
@@ -140,7 +140,7 @@ export default ['$rootScope', 'hs.map.service', 'hs.arcgis.getCapabilitiesServic
 
     /**
      * @function addLayer
-     * @memberOf hs.addLayersArcgis.addLayerService
+     * @memberOf HsAddLayersArcgisAddLayerService
      * @param {Object} layer capabilities layer object
      * @param {String} layerName layer name in the map
      * @param {String} path Path name

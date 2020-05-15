@@ -1,9 +1,9 @@
 export default [
-  'config',
-  'hs.mickaFiltersService',
-  'hs.datasourceBrowserService',
+  'HsConfig',
+  'HsMickaFiltersService',
+  'HsDatasourceBrowserService',
   '$compile',
-  'hs.layout.service',
+  'HsLayoutService',
   function (
     config,
     mickaFilterService,
@@ -66,7 +66,7 @@ export default [
 
         /**
          * @function addSuggestion
-         * @memberOf hs.datasourceBrowserService
+         * @memberOf HsDatasourceBrowserService
          * @param {String} text Selected property value from suggestions
          * Save suggestion into Query object
          */

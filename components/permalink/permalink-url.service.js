@@ -4,13 +4,13 @@ export default [
   '$http',
   '$location',
   '$window',
-  'hs.map.service',
-  'Core',
-  'hs.utils.service',
-  'hs.save-map.service',
-  'config',
-  'hs.language.service',
-  'hs.layout.service',
+  'HsMapService',
+  'HsCore',
+  'HsUtilsService',
+  'HsSaveMapService',
+  'HsConfig',
+  'HsLanguageService',
+  'HsLayoutService',
   '$timeout',
   function (
     $rootScope,
@@ -18,7 +18,7 @@ export default [
     $location,
     $window,
     OlMap,
-    Core,
+    HsCore,
     utils,
     saveMap,
     config,
@@ -42,7 +42,7 @@ export default [
 
       /**
        * @function update
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {Object} e Event changing map state
        * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
        */
@@ -82,7 +82,7 @@ export default [
           me.push('lang', languageService.language);
         }
         me.push('visible_layers', visible_layers.join(';'));
-        if (Core.puremapApp) {
+        if (HsCore.puremapApp) {
           me.push('puremap', 'true');
         }
         for (const cP in me.customParams) {
@@ -95,12 +95,12 @@ export default [
 
       /**
        * @function getPermalinkUrl
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @returns {String} Permalink url
        * Create permalink Url to map
        */
       getPermalinkUrl: function () {
-        if (Core.isMobile() && config.permalinkLocation) {
+        if (HsCore.isMobile() && config.permalinkLocation) {
           return (
             config.permalinkLocation.origin +
             me.current_url.replace(
@@ -125,7 +125,7 @@ export default [
 
       /**
        * @function getPureMapUrl
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @returns {String} Embeded url
        * Create Url for PureMap version of map
        */
@@ -137,7 +137,7 @@ export default [
 
       /**
        * @function parse
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {String} str Parameter string to parse
        * @returns {Object} Parsed parameter object
        * Parse parameter string from Url into key-value(s) pairs
@@ -180,7 +180,7 @@ export default [
 
       /**
        * @function stringify
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {Object} obj Parameter object to stringify
        * @returns {String} Encoded parameter string or "" if no parameter object is given
        * Create encoded parameter string from parameter object
@@ -209,7 +209,7 @@ export default [
 
       /**
        * @function push
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {Object} key Key name for pushed parameter
        * @param {Object} new_value Value for pushed parameter
        * Push new key-value pair into paramater object and update Url string with new params
@@ -224,7 +224,7 @@ export default [
 
       /**
        * @function getParamValue
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {String} param Param to get current value
        * @returns {String} Current value for requested param or null if param doesn´t exist
        * Find current param value from Url
@@ -240,7 +240,7 @@ export default [
 
       /**
        * @function updateCustomParams
-       * @memberof hs.permalink.urlService
+       * @memberof HsPermalinkUrlService
        * @param {Object} params A dictionary of custom parameters which get added to the generated url
        * Update values for custom parameters which get added to the url and usually are application speciffic
        */
@@ -259,7 +259,7 @@ export default [
 
     /**
      * @function init
-     * @memberof hs.permalink.urlService
+     * @memberof HsPermalinkUrlService
      * @param {ol/Map} map Openlayers map
      * @private
      * Function for service initialization when map object is ready

@@ -6,7 +6,7 @@ let hs_map;
 const me = {
   /**
    * @ngdoc method
-   * @name hs.cesium.service#calcResolutionForDistance
+   * @name HsCesiumService#calcResolutionForDistance
    * @private
    * @description Calculates the resolution for a given distance from the ground and latitude
    */
@@ -26,7 +26,7 @@ const me = {
 
   /**
    * @ngdoc method
-   * @name hs.cesium.service#getCameraCenterInLngLat
+   * @name HsCesiumService#getCameraCenterInLngLat
    * @private
    * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
    */
@@ -70,7 +70,7 @@ const me = {
 
   /**
    * @ngdoc method
-   * @name hs.cesium.service#getCameraCenterCartesian
+   * @name HsCesiumService#getCameraCenterCartesian
    * @private
    * @description Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
    */
@@ -267,7 +267,7 @@ const me = {
 
   /**
    * @ngdoc method
-   * @name hs.cesium.service#calcDistanceForResolution
+   * @name HsCesiumService#calcDistanceForResolution
    * @private
    * @deprecated
    * @description Calculates the distance from the ground based on resolution and latitude
