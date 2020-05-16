@@ -93,14 +93,15 @@ var module = angular.module('hs', [
     'hs.info'
 ]);
 
-module.directive('hs', ['HsConfig', 'HsCore', function (config, HsCore) {
+module.directive('hs',  function (HsCore) {
+    'ngInject';
     return {
         template: HsCore.hslayersNgTemplate,
         link: function (scope, element) {
             HsCore.fullScreenMap(element);
         }
     };
-}]);
+});
 
 module.value('HsConfig', {
     open_lm_after_comp_loaded: true,
@@ -135,11 +136,11 @@ module.value('HsConfig', {
     })
 });
 
-module.controller('Main', ['$scope', 'HsCore', 'HsCompositionsParserService', 'HsConfig', 'HsLayoutService',
-    function ($scope, HsCore, composition_parser, config, layoutService) {
+module.controller('Main', function ($scope, HsLayoutService) {
+        'ngInject';
         layoutService.sidebarRight = false;
     }
-]);
+);
 ```
 
 For webpack bundling instructions see: https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack

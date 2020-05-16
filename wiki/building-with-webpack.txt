@@ -34,9 +34,8 @@ var module = angular.module('hs', [
 
 /* Here goes code to modify the UI for extra functionality */
 module.directive(
-    'hs', [
-        'HsConfig', 'HsCore',
-        function(config, HsCore) {
+    'hs', function(HsCore) {
+            'ngInject';
             return {
                 /* A different layout of the application can be achieved by changing the main template*/
                 template: HsCore.hslayersNgTemplate,
@@ -45,7 +44,7 @@ module.directive(
                 }
             };
         }
-    ]);
+    );
 
 /* Here goes configuration of layers, viewport and HsLayers components */
 module.value('HsConfig', {
@@ -71,12 +70,9 @@ module.value('HsConfig', {
 });
 
 /* The main code which does extra things apart from HsLayers components is located in the controller function below*/
-module.controller('Main', ['$scope', 'HsCore', '$compile', 'HsMapService',
-    /* The order of function parameters must match the array of component names above */
-    function($scope, HsCore, $compile, hsmap) {
-        /* HsCore component is responsible for bootstrapping the application and managing top level interface such as panels and toolbar */
-        $scope.HsCore = HsCore;
-
+module.controller('Main', 
+    function($scope, $compile, HsMapService) {
+        'ngInject';
         /* We can listen to event emited by components such as layer manager and hide a layer which was added by code or by user for example*/
         $scope.$on('layermanager.updated', function(data, layer) {
             if (layer.get('base') != true && layer.get('always_visible') != true) {
@@ -84,7 +80,7 @@ module.controller('Main', ['$scope', 'HsCore', '$compile', 'HsMapService',
             }
         });       
     }
-]);
+);
 
 ```
 

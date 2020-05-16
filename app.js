@@ -36,23 +36,20 @@ const mainModuleBs = angular.module('hs', [
   'hs.styles',
 ]);
 
-mainModuleBs.directive('hs', [
-  'HsConfig',
-  'HsCore',
-  function (config, HsCore) {
-    return {
-      template: require('hslayers.html'),
-      link: function (scope, element, attrs) {
-        if (
-          typeof config.sizeMode == 'undefined' ||
-          config.sizeMode == 'fullscreen'
-        ) {
-          HsCore.fullScreenMap(element);
-        }
-      },
-    };
-  },
-]);
+mainModuleBs.directive('hs', (HsConfig, HsCore) => {
+  'ngInject';
+  return {
+    template: require('hslayers.html'),
+    link: function (scope, element, attrs) {
+      if (
+        typeof HsConfig.sizeMode == 'undefined' ||
+        HsConfig.sizeMode == 'fullscreen'
+      ) {
+        HsCore.fullScreenMap(element);
+      }
+    },
+  };
+});
 
 import * as proj from 'ol/proj';
 import Feature from 'ol/Feature';
@@ -95,19 +92,14 @@ if (window.hslayersNgConfig) {
   mainModuleBs.value('HsConfig', window.hslayersNgConfig(window.ol));
 }
 
-mainModuleBs.controller('Main', [
-  '$scope',
-  'HsCore',
-  'HsConfig',
-  'HsMapService',
-  function ($scope, HsCore, config, hsMap) {
-    $scope.HsCore = HsCore;
-    let lastConfigBuster = config.buster;
-    setInterval(() => {
-      if (lastConfigBuster != config.buster) {
-        lastConfigBuster = config.buster;
-        hsMap.reset();
-      }
-    }, 100);
-  },
-]);
+mainModuleBs.controller('Main', ($scope, HsCore, HsMapService) => {
+  'ngInject';
+  $scope.HsCore = HsCore;
+  let lastConfigBuster = config.buster;
+  setInterval(() => {
+    if (lastConfigBuster != config.buster) {
+      lastConfigBuster = config.buster;
+      HsMapService.reset();
+    }
+  }, 100);
+});
