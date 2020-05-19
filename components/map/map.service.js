@@ -397,33 +397,53 @@ export default function (
   };
 
   /**
-   * @param existing
-   * @param lyr
+   * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
+   * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
+   * @returns {boolean} True if layers are equal
    */
-  function layersEqual(existing, lyr) {
-    if (angular.isUndefined(lyr)) {
+  function layersEqual(existingLayers, newLayer) {
+    if (angular.isUndefined(newLayer)) {
       $log.warn(
         'Checking duplicity for undefined layer. Why are we doing this?'
       );
       return true;
     }
-    if (angular.isUndefined(existing.getSource)) {
+    if (angular.isUndefined(existingLayers.getSource)) {
       return false;
     }
-    if (angular.isUndefined(lyr.getSource)) {
+    if (angular.isUndefined(newLayer.getSource)) {
       return false;
     }
-    const s_existing = existing.getSource();
-    const s_new = lyr.getSource();
+    const existingSource = existingLayers.getSource();
+    const newSource = newLayer.getSource();
+    const existingTitle = existingLayers.get('title');
+    const newTitle = newLayer.get('title');
+    const existingSourceType = typeof existingSource;
+    const newSourceType = typeof newSource;
+    const existingLAYERS = angular.isUndefined(existingSource.getParams)
+      ? ''
+      : existingSource.getParams().LAYERS;
+    const newLAYERS = angular.isUndefined(newSource.getParams)
+      ? ''
+      : newSource.getParams().LAYERS;
+    const existingUrl = angular.isUndefined(existingSource.getUrl)
+      ? ''
+      : existingSource.getUrl();
+    const newUrl = angular.isUndefined(newSource.getUrl)
+      ? ''
+      : newSource.getUrl();
+    const existingUrls = angular.isUndefined(existingSource.getUrls)
+      ? ''
+      : existingSource.getUrls();
+    const newUrls = angular.isUndefined(newSource.getUrls)
+      ? ''
+      : newSource.getUrls();
     return (
-      existing.get('title') == lyr.get('title') &&
-      typeof s_existing == typeof s_new &&
-      (angular.isUndefined(s_existing.getParams) ||
-        s_existing.getParams().LAYERS == s_new.getParams().LAYERS) &&
-      (angular.isUndefined(s_existing.getUrl) ||
-        s_existing.getUrl() == s_new.getUrl()) &&
-      (angular.isUndefined(s_existing.getUrls) ||
-        s_existing.getUrls() == s_new.getUrls())
+      existingTitle == newTitle &&
+      existingSourceType == newSourceType &&
+      existingLAYERS == newLAYERS &&
+      existingUrl == newUrl &&
+      existingUrls == newUrls
     );
   }
 
