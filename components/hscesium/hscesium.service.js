@@ -18,7 +18,8 @@ export default function (
   HsUtilsService,
   HsMapService,
   HsLayermanagerService,
-  HsLayoutService
+  HsLayoutService,
+  $location
 ) {
   'ngInject';
   const me = this;
@@ -144,7 +145,8 @@ export default function (
       me,
       $rootScope,
       HsConfig,
-      HsUtilsService
+      HsUtilsService,
+      $location
     );
 
     me.HsCsCamera = HsCsCamera;

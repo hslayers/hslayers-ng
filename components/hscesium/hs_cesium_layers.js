@@ -9,20 +9,23 @@ import {default as proj4} from 'proj4';
 
 let utils;
 
+/**
+ * @param proxy
+ * @param maxResolution
+ */
 function MyProxy(proxy, maxResolution) {
   this.proxy = proxy;
   this.maxResolution = maxResolution;
 }
 
-function defineProxy(config) {
+/**
+ * @param config
+ */
+function defineProxy($location) {
   MyProxy.prototype.getURL = function (resource) {
-    const blank_url =
-      this.proxy +
-      window.location.protocol +
-      '//' +
-      window.location.hostname +
-      window.location.pathname +
-      'img/blank.png';
+    const blank_url = `${
+      this.proxy
+    }${$location.protocol()}//${$location.host()}${$location.path()}img/blank.png`;
     const prefix =
       this.proxy.indexOf('?') === -1 && this.proxy.indexOf('hsproxy') > -1
         ? '?'
@@ -70,6 +73,11 @@ function defineProxy(config) {
   };
 }
 
+/**
+ * @param version
+ * @param srs
+ * @param crs
+ */
 function getProjectFromVersion(version, srs, crs) {
   if (version == '1.1.1') {
     return srs;
@@ -143,13 +151,13 @@ var me = {
     });
   },
 
-  init: function (viewer, hs_map, hs_cesium, $rootScope, config, _utils) {
+  init: function (viewer, hs_map, hs_cesium, $rootScope, config, _utils, $location) {
     me.viewer = viewer;
     me.hs_map = hs_map;
     me.hs_cesium = hs_cesium;
     me.$rootScope = $rootScope;
     me.config = config;
-    defineProxy(config);
+    defineProxy($location);
     me.setupEvents();
     utils = _utils;
   },
