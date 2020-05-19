@@ -11,7 +11,7 @@
                                 <div class="p-0 flex-grow-1">
                                     {{attribute.key}}
                                 </div>
-                                <div class="p-0">{{attribute.value}}</div>
+                                <div class="p-0" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
                             </div>
                         </div>
                     </div>
