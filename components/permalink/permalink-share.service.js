@@ -236,9 +236,10 @@ export default function (
         });
         HsPermalinkUrlService.permalinkRequestUrl =
           status_url + '?request=load&id=' + HsPermalinkUrlService.id;
-        $rootScope.$broadcast('browserurl.updated');
       } catch (ex) {
-        $log.log('Error saving permalink layers.');
+        $log.log('Error saving permalink layers.', ex);
+      } finally {
+        $rootScope.$broadcast('browserurl.updated');
       }
     }
   });

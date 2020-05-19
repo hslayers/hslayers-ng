@@ -6,7 +6,7 @@ import {isFunction} from 'lodash';
  * @param $window
  * @param $document
  */
-export default function (HsConfig, $http, $window, $document) {
+export default function (HsConfig, $http, $window, $document, $location) {
   'ngInject';
   const me = this;
   /**
@@ -24,11 +24,12 @@ export default function (HsConfig, $http, $window, $document) {
     }
     toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
     let outUrl = url;
+    //Not using $location because don't know if port 80 was specified explicitly or not
     const windowUrlPosition = url.indexOf($window.location.origin);
     if (
       windowUrlPosition == -1 ||
       windowUrlPosition > 7 ||
-      me.getPortFromUrl(url) != $window.location.port
+      me.getPortFromUrl(url) != $location.port()
     ) {
       if (
         angular.isUndefined(HsConfig.useProxy) ||

@@ -15,7 +15,6 @@
 export default function (
   $rootScope,
   $location,
-  $window,
   HsMapService,
   HsCore,
   HsUtilsService,
@@ -104,22 +103,20 @@ export default function (
         return (
           HsConfig.permalinkLocation.origin +
           me.current_url.replace(
-            $window.location.pathname,
+            $location.path(),
             HsConfig.permalinkLocation.pathname
           ) +
           '&permalink=' +
           encodeURIComponent(me.permalinkRequestUrl)
-        ).replace(
-          $window.location.pathname,
-          HsConfig.permalinkLocation.pathname
-        );
+        ).replace($location.path(), HsConfig.permalinkLocation.pathname);
       } else {
-        return (
-          $window.location.origin +
-          me.current_url +
-          '&permalink=' +
-          encodeURIComponent(me.permalinkRequestUrl)
-        );
+        const portIfNeeded =
+          [80, 443].indexOf($location.port()) > -1
+            ? ''
+            : `:${$location.port()}`;
+        return `${$location.protocol()}://${$location.host()}${portIfNeeded}/${
+          me.current_url
+        }&permalink=${encodeURIComponent(me.permalinkRequestUrl)}`;
       }
     },
 
@@ -220,7 +217,7 @@ export default function (
       me.params[key] = new_value;
       const new_params_string = me.stringify(me.params);
       me.param_string = new_params_string;
-      me.pathname = $window.location.pathname;
+      me.pathname = $location.path();
       me.current_url = me.pathname + '?' + new_params_string;
     },
 
