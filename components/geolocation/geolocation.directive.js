@@ -10,9 +10,12 @@ export default function (HsMapService, HsGeolocationService, HsLayoutService) {
     link: function link(scope, element, attrs) {
       if (HsLayoutService.componentEnabled('geolocationButton')) {
         HsMapService.loaded().then((_) => {
-          HsLayoutService.contentWrapper
-            .querySelector('.ol-overlaycontainer-stopevent')
-            .appendChild(element[0]);
+          const container = HsLayoutService.contentWrapper.querySelector(
+            '.ol-overlaycontainer-stopevent'
+          );
+          if (container) {
+            container.appendChild(element[0]);
+          }
         });
       }
     },
