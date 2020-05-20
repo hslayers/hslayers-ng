@@ -26,50 +26,50 @@ export default function (
      * BoundingBox property of GetCapabalities request (for WMS layer)
      */
     async zoomToLayer(layer) {
-      let extent = null;
-      if (layer.get('BoundingBox')) {
-        extent = getExtentFromBoundingBoxAttribute(layer);
-      } else if (angular.isDefined(layer.getSource().getExtent)) {
-        extent = layer.getSource().getExtent();
-      }
-      if (extent) {
-        fitIfExtentSet(extent, layer);
-        return true;
-      }
-      if (extent === null && HsLayerUtilsService.isLayerWMS(layer)) {
-        let url = null;
-        if (layer.getSource().getUrls) {
-          //Multi tile
-          url = layer.getSource().getUrls()[0];
+        let extent = null;
+        if (layer.get('BoundingBox')) {
+          extent = getExtentFromBoundingBoxAttribute(layer);
+        } else if (angular.isDefined(layer.getSource().getExtent)) {
+          extent = layer.getSource().getExtent();
         }
-        if (layer.getSource().getUrl) {
-          //Single tile
-          url = layer.getSource().getUrl();
+        if (extent) {
+          fitIfExtentSet(extent, layer);
+          return true;
         }
-        const capabilities_xml = await HsWmsGetCapabilitiesService.requestGetCapabilities(
-          url
-        );
-        const parser = new WMSCapabilities();
-        const caps = parser.read(capabilities_xml);
-        if (angular.isArray(caps.Capability.Layer.Layer)) {
-          angular.forEach(caps.Capability.Layer.Layer, (layer_def) => {
-            if (layer_def.Name == layer.getSource().getParams().LAYERS) {
-              extent =
-                layer_def.EX_GeographicBoundingBox || layer_def.BoundingBox;
+        if (extent === null && HsLayerUtilsService.isLayerWMS(layer)) {
+          let url = null;
+          if (layer.getSource().getUrls) {
+            //Multi tile
+            url = layer.getSource().getUrls()[0];
+          }
+          if (layer.getSource().getUrl) {
+            //Single tile
+            url = layer.getSource().getUrl();
+          }
+          const capabilities_xml = await HsWmsGetCapabilitiesService.requestGetCapabilities(
+            url
+          );
+          const parser = new WMSCapabilities();
+          const caps = parser.read(capabilities_xml);
+          if (angular.isArray(caps.Capability.Layer.Layer)) {
+            const foundDefs = caps.Capability.Layer.Layer.filter(layer_def => 
+              layer_def.Name == layer.getSource().getParams().LAYERS);
+            const foundDef = foundDefs.length > 0 ? foundDefs[0]: null;
+            if (foundDef) {
+              extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
               fitIfExtentSet(transformToCurrentProj(extent), layer);
               return true;
-            }
-          });
-        } else if (angular.isObject(caps.Capability.Layer)) {
-          extent =
-            caps.Capability.Layer.EX_GeographicBoundingBox ||
-            caps.Capability.Layer.BoundingBox;
-          fitIfExtentSet(transformToCurrentProj(extent), layer);
-          return true;
-        } else {
-          return false;
+            };
+          } else if (angular.isObject(caps.Capability.Layer)) {
+            extent =
+              caps.Capability.Layer.EX_GeographicBoundingBox ||
+              caps.Capability.Layer.BoundingBox;
+            fitIfExtentSet(transformToCurrentProj(extent), layer);
+            return true;
+          } else {
+            return false;
+          }
         }
-      }
     },
 
     /**
