@@ -92,13 +92,13 @@ if (window.hslayersNgConfig) {
   mainModuleBs.value('HsConfig', window.hslayersNgConfig(window.ol));
 }
 
-mainModuleBs.controller('Main', ($scope, HsCore, HsMapService) => {
+mainModuleBs.controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
   'ngInject';
   $scope.HsCore = HsCore;
-  let lastConfigBuster = config.buster;
+  let lastConfigBuster = HsConfig.buster;
   setInterval(() => {
-    if (lastConfigBuster != config.buster) {
-      lastConfigBuster = config.buster;
+    if (lastConfigBuster != HsConfig.buster) {
+      lastConfigBuster = HsConfig.buster;
       HsMapService.reset();
     }
   }, 100);
