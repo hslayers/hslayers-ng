@@ -97,6 +97,14 @@ export default function (HsConfig, $http, $window, $document, $location) {
   this.getPortFromUrl = function (url) {
     const link = $document[0].createElement('a');
     link.setAttribute('href', url);
+    if (link.port == '') {
+      if (url.indexOf('https://') === 0) {
+        return '443';
+      }
+      if (url.indexOf('http://') === 0) {
+        return '80';
+      }
+    }
     return link.port;
   };
 
