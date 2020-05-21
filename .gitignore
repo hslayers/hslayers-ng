@@ -18,3 +18,4 @@ dependencygraph.svg
 .env
 *.bat
 /.vs
+stats.json

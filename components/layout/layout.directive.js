@@ -36,10 +36,10 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
 
       if (angular.isUndefined(HsConfig.importCss) || HsConfig.importCss) {
         if (HsConfig.design == 'md') {
-          import('angular-material/angular-material.css');
-          import('angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
+          import(/* webpackChunkName: "lazy" */'angular-material/angular-material.css');
+          import(/* webpackChunkName: "lazy" */'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
         } else {
-          import('bootstrap/dist/css/bootstrap.isolated.css');
+          import(/* webpackChunkName: "lazy" */'bootstrap/dist/css/bootstrap.isolated.css');
           $timeout(_ => {
             if (window.innerWidth < 600) {
               var viewport = document.querySelector('meta[name="viewport"]');
@@ -50,7 +50,7 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
         import('ol/ol.css');
         import('css/app.css');
         if (!!window.cordova) {
-          import('css/mobile.css')
+          import(/* webpackChunkName: "lazy" */'css/mobile.css')
         }
         import('css/whhg-font/css/whhg.css')
 
