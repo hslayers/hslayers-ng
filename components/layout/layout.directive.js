@@ -36,6 +36,7 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
 
       if (angular.isUndefined(HsConfig.importCss) || HsConfig.importCss) {
         if (HsConfig.design == 'md') {
+          import(/* webpackChunkName: "lazy-material" */'angular-material');
           import(/* webpackChunkName: "lazy-material" */'angular-material/angular-material.css');
           import(/* webpackChunkName: "lazy-material" */'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css');
         } else {

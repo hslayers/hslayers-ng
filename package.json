@@ -56,7 +56,7 @@
     "webpack-merge": "^4.2.2"
   },
   "scripts": {
-    "build": "npm run isolate-bootstrap && rm -rf dist && webpack --config scripts/webpack.all.prod.js",
+    "build": "npm run isolate-bootstrap && rm -rf dist && webpack --config scripts/webpack.prod.js",
     "postinstall": "",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000",
