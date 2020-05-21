@@ -1,10 +1,9 @@
-import {isFunction} from 'lodash';
-
 /**
  * @param HsConfig
  * @param $http
  * @param $window
  * @param $document
+ * @param $location
  */
 export default function (HsConfig, $http, $window, $document, $location) {
   'ngInject';
@@ -293,6 +292,16 @@ export default function (HsConfig, $http, $window, $document, $location) {
       ')';
     return c;
   };
+
+  /**
+   * @param functionToCheck
+   */
+  function isFunction(functionToCheck) {
+    return (
+      functionToCheck &&
+      {}.toString.call(functionToCheck) === '[object Function]'
+    );
+  }
 
   //Check if object is an instance of a class
   this.instOf = function (obj, type) {

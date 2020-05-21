@@ -1,6 +1,5 @@
 import 'ol-popup/src/ol-popup.css';
 import Popup from 'ol-popup';
-import {remove} from 'lodash';
 
 /**
  * @param $scope
@@ -152,7 +151,7 @@ export default function (
   });
 
   $scope.$on('infopanel.featureRemoved', (e, feature) => {
-    remove($scope.data.features, feature);
+    $scope.data.features.splice($scope.data.features.indexOf(feature), 1);
   });
 
   $scope.$emit('scope_loaded', 'Query');
