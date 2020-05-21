@@ -15,8 +15,6 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
@@ -25,14 +23,12 @@ module.exports = merge(common, {
   devtool: 'source-map',
   output: {
     // Add a chunkhash to file name so it will not be cached by browsers when content changed
-    filename: 'hslayers-ng.js',
+    filename: 'hslayers-ng.[name].js',
     path: path.resolve(__dirname, '../dist'),
     library: 'hslayers-ng',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
-  plugins: [
-    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
-  ],
+  plugins: [],
   optimization: {
     minimizer: [
       // JS minifier/uglifier
@@ -40,36 +36,35 @@ module.exports = merge(common, {
         parallel: true,
         sourceMap: true,
         // Remove comments as well
-        terserOptions: { output: { comments: false } }
+        terserOptions: {output: {comments: false}},
       }),
       // CSS minifier
       new OptimizeCSSAssetsPlugin({
         cssProcessorPluginOptions: {
-          preset: ['default', { discardComments: { removeAll: true } }]
-        }
-      })
-    ]
+          preset: ['default', {discardComments: {removeAll: true}}],
+        },
+      }),
+    ],
   },
   module: {
     rules: [
       // CSS files are bundled togethers
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: ['url-loader']
+        use: ['url-loader'],
       },
       // Load images as URLs
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [{
-          loader: 'url-loader',
-        }]
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
       },
       // AngularJS templates are cached using cache template
       {
@@ -87,10 +82,10 @@ module.exports = merge(common, {
           'extract-loader',
           {
             loader: 'html-loader',
-            options: { minimize: true }
-          }
-        ]
-      }
-    ]
-  }
+            options: {minimize: true},
+          },
+        ],
+      },
+    ],
+  },
 });
