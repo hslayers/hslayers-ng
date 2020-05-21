@@ -30,9 +30,7 @@ export default function (
 ) {
   'ngInject';
   if (HsConfig.design == 'md') {
-    require([
-      'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible',
-    ]);
+    import(/* webpackChunkName: "lazy-material" */'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible');
   }
   $scope.config = HsConfig;
   $scope.importCss = angular.isDefined(HsConfig.importCss)
