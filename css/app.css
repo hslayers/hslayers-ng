@@ -30,7 +30,7 @@
 		transform: rotate(359deg);
 	}
 }
-
+/*
 @font-face {
 	font-family: "OpenWeb Icons";
 	src: url("font/openwebicons.eot");
@@ -39,7 +39,7 @@
 		url("font/openwebicons.svg#openweb_iconsregular") format("svg");
 	font-weight: normal;
 	font-style: normal;
-}
+}*/
 
 .hs-grayscale {
 	filter: grayscale(100%);
