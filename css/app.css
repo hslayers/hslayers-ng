@@ -139,7 +139,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	padding: 3px 6px;
 }
 
-.bootstrap-iso .hs-lm-header:first-child,
+.bsi .hs-lm-header:first-child,
 .hs-lm-list:first-child,
 .hs-lm-item:first-child,
 .hs-comp-header:first-child,
@@ -149,7 +149,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	border-top-right-radius: 0;
 }
 
-.bootstrap-iso .hs-lm-list:last-child,
+.bsi .hs-lm-list:last-child,
 .hs-lm-item:last-child,
 .hs-comp-list:last-child,
 .hs-comp-item:last-child {
@@ -238,7 +238,7 @@ ul.hs-comp-list {
 	overflow-y: auto;
 }
 
-.bootstrap-iso .modal.in {
+.bsi .modal.in {
 	display: block;
 }
 

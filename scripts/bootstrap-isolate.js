@@ -6,7 +6,7 @@ var css = fs.readFileSync('node_modules/bootstrap/dist/css/bootstrap.css', 'utf8
 
 var out = postcss()
     .use(prefixer({
-        prefix: '.bootstrap-iso'
+        prefix: '.bsi'
     }))
     .process(css).then(function (result) {
         fs.writeFileSync('node_modules/bootstrap/dist/css/bootstrap.isolated.css', result.css);
