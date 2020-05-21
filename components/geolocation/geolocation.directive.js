@@ -19,17 +19,14 @@ export default function (HsMapService, HsGeolocationService, HsLayoutService) {
         });
       }
     },
-    controller: [
-      '$scope',
-      'HsConfig',
-      function ($scope, config) {
-        $scope.locationService = HsGeolocationService;
-        $scope.collapsed = true;
+    controller: function ($scope) {
+      'ngInject';
+      $scope.locationService = HsGeolocationService;
+      $scope.collapsed = true;
 
-        $scope.geolocationVisible = function () {
-          return HsLayoutService.componentEnabled('geolocationButton');
-        };
-      },
-    ],
+      $scope.geolocationVisible = function () {
+        return HsLayoutService.componentEnabled('geolocationButton');
+      };
+    },
   };
 }
