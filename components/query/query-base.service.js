@@ -128,7 +128,9 @@ export default function (
             if (feature.get('features')) {
               feature
                 .get('features')
-                .forEach((subfeature) => serializeFeatureAttributes(subfeature));
+                .forEach((subfeature) =>
+                  serializeFeatureAttributes(subfeature)
+                );
             }
           });
           const pixel = e.pixel;
@@ -140,10 +142,7 @@ export default function (
         }
       }, 0);
     }
-    map.on(
-      'pointermove',
-      HsUtilsService.debounce(showPopUp, 500, false, me)
-    );
+    map.on('pointermove', HsUtilsService.debounce(showPopUp, 500, false, me));
   }
 
   /**
@@ -155,33 +154,39 @@ export default function (
     }
     const layer = feature.getLayer(HsMapService.map);
     let attrsConfig = [];
-    if (angular.isDefined(layer.get('popUp')) && angular.isDefined(layer.get('popUp').attributes)) {
+    if (
+      angular.isDefined(layer.get('popUp')) &&
+      angular.isDefined(layer.get('popUp').attributes)
+    ) {
       //must be an array
       attrsConfig = layer.get('popUp').attributes;
     } else if (angular.isDefined(layer.get('hoveredKeys'))) {
-      //only for backwards-compatibility with HSLayers 1.10 .. 1.15
+      //only for backwards-compatibility with HSLayers 1.10 .. 1.22
       //should be dropped in future releases
       //expected to be an array
       attrsConfig = layer.get('hoveredKeys');
       if (angular.isDefined(layer.get('hoveredKeysTranslations'))) {
         //expected to be an object
-        for (const [key, val] of Object.entries(layer.get('hoveredKeysTranslations'))) {
+        for (const [key, val] of Object.entries(
+          layer.get('hoveredKeysTranslations')
+        )) {
           const index = attrsConfig.indexOf(key);
           if (index > -1) {
             attrsConfig[index] = {
               'attribute': key,
-              'label': val
+              'label': val,
             };
           }
         }
       }
     } else {
+      // Layer is not configured to show pop-ups
       return;
     }
     feature.attributesForHover = [];
     for (const attr of attrsConfig) {
       let attrName, attrLabel;
-      let attrFunction = x => x;
+      let attrFunction = (x) => x;
       if (typeof attr === 'string' || attr instanceof String) {
         //simple case when only attribute name is provided in the layer config
         attrName = attr;
@@ -201,13 +206,14 @@ export default function (
         feature.attributesForHover.push({
           key: attrLabel,
           value: feature.get(attrName),
-          displayFunction: attrFunction
+          displayFunction: attrFunction,
         });
       }
     }
   }
 
   HsMapService.loaded().then(init);
+
   this.setData = function (data, type, overwrite) {
     if (angular.isDefined(type)) {
       if (angular.isDefined(overwrite) && overwrite) {
@@ -224,6 +230,7 @@ export default function (
       console.log('Query.BaseService.setData type not passed');
     }
   };
+
   this.clearData = function (type) {
     if (type) {
       me.data[type].length = 0;
@@ -319,6 +326,7 @@ export default function (
       $rootScope.$broadcast('queryStatusChanged', true);
     });
   };
+
   this.deactivateQueries = function () {
     if (!me.queryActive) {
       return;
@@ -329,6 +337,7 @@ export default function (
       $rootScope.$broadcast('queryStatusChanged', false);
     });
   };
+
   me.nonQueryablePanels = [
     'measure',
     'composition_browser',
@@ -359,7 +368,6 @@ export default function (
         radius: 5,
       }),
     });
-
     if (angular.isDefined(HsConfig.queryPoint)) {
       if (HsConfig.queryPoint == 'hidden') {
         defaultStyle.getImage().setRadius(0);
@@ -371,6 +379,7 @@ export default function (
     }
     return defaultStyle;
   }
+
   if (me.deregisterVectorSelectorCreated) {
     me.deregisterVectorSelectorCreated();
   }
