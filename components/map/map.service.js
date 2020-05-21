@@ -19,13 +19,12 @@ import {
   PinchZoom,
 } from 'ol/interaction';
 import {Group} from 'ol/layer';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {ImageArcGISRest, ImageWMS, TileArcGISRest, TileWMS, XYZ} from 'ol/source';
 import {
   MousePosition,
   ScaleLine,
   defaults as controlDefaults,
 } from 'ol/control';
-import {TileWMS, XYZ} from 'ol/source';
 import {
   always as alwaysCondition,
   never as neverCondition,
@@ -507,10 +506,10 @@ export default function (
     if (!me.layerDuplicate(lyr)) {
       lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
       lyr.manuallyAdded = false;
-      if (HsUtilsService.instOf(lyr.getSource(), ImageWMS)) {
+      if (HsUtilsService.instOf(lyr.getSource(), ImageWMS) || HsUtilsService.instOf(lyr.getSource(), ImageArcGISRest)) {
         me.proxifyLayerLoader(lyr, false);
       }
-      if (HsUtilsService.instOf(lyr.getSource(), TileWMS)) {
+      if (HsUtilsService.instOf(lyr.getSource(), TileWMS) || HsUtilsService.instOf(lyr.getSource(), TileArcGISRest)) {
         me.proxifyLayerLoader(lyr, true);
       }
       if (
