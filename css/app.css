@@ -821,24 +821,6 @@ a.sidebar-main {
 	margin-left: 0;
 }
 
-.hs-icon-rdf {
-	color: #000;
-	display: inline-block;
-	font-family: "OpenWeb Icons";
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: 1;
-	position: relative;
-	top: 1px;
-	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
-}
-
-.hs-icon-rdf:before {
-	content: "";
-}
-
 div.hs-info-area {
 	background-color: rgba(47, 88, 141, 0.4);
 	border-radius: 4px;
