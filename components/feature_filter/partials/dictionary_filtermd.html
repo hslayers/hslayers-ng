@@ -1,0 +1,8 @@
+<md-input-container ng-switch-when="dictionary" class="md-block" flex-gt-sm>
+	<label>{{selectedFilter.title}}</label>
+	<md-select ng-model="selectedFilter" md-change="applyFilters()">
+		<md-option ng-repeat="value in selectedFilter.values" value="{{selectedFilter}}">
+			{{selectedFilter.value}}
+		</md-option>
+	</md-select>
+</md-input-container>

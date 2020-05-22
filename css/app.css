@@ -1296,6 +1296,10 @@ md-bottom-sheet .content {
     background-color: #fff;
 }
 
+.md-panel.filter-panel {
+	background-color: #fff;
+}
+
 .baselayer-tile {
     position: relative;
     padding: 8px;
@@ -1383,7 +1387,6 @@ div.md-sidenav {
 
 md-content.card-collection {
     column-count: 1;
-    column-gap: 10px;
 }
 
 md-card {
@@ -1400,8 +1403,37 @@ div.card-list md-content {
     overflow: hidden;
 }
 
+.feature-sort-menu {
+	margin: 0;
+	padding-bottom: 0;
+	width: fit-content;
+}
+
+.feature-sort-menu md-icon {
+	font-size: 20px;
+}
+
 div.feature-list {
     max-height: 100%;
+}
+
+.md-chips md-chip {
+	background: rgb(224,224,224);
+	color: rgb(66,66,66);
+}
+
+div.feature-list md-chips-wrap {
+	box-shadow: initial;
+}
+
+.md-chips md-chip.active md-icon {
+	line-height: .9;
+}
+
+.md-chips md-chip.active {
+	background: #BCAAA4;
+	border: 2px solid #5D4037;
+	line-height: 28px;
 }
 
 div.feature-list md-content img {
@@ -1409,6 +1441,8 @@ div.feature-list md-content img {
     display: block;
     margin-left: auto;
     margin-right: 0;
+	height: 10em;
+	object-fit: cover;
 }
 
 div.feature-list md-content .img-float {

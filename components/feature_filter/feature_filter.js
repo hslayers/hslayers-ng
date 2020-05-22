@@ -98,7 +98,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                         if (!layer.hsFilters) return source.getFeatures();
 
                         var filters = layer.hsFilters;
-                        var filteredFeatures = [];
+                        var filteredFeatures = source.getFeatures();
 
                         source.forEachFeature(function (feature) {
                             feature.setStyle(null);
@@ -116,50 +116,50 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                                     //     };
                                     //     break;
                                     // }
-                                    displayFeature = function (feature, filter) {
+                                    displayFeature = function (feature) {
                                         return filter.selected.indexOf(feature.getProperties()[filter.valueField]) !== -1;
                                     };
                                     break;
                                 case 'slider':
                                     switch (filter.type.parameters) {
                                         case 'lt':
-                                            displayFeature = function (feature, filter) {
+                                            displayFeature = function (feature) {
                                                 return feature.getProperties()[filter.valueField] < filter.value;
                                             };
                                             break;
                                         case 'le':
-                                            displayFeature = function (feature, filter) {
+                                            displayFeature = function (feature) {
                                                 return feature.getProperties()[filter.valueField] <= filter.value;
                                             };
                                             break;
                                         case 'gt':
-                                            displayFeature = function (feature, filter) {
+                                            displayFeature = function (feature) {
                                                 return feature.getProperties()[filter.valueField] > filter.value;
                                             };
                                             break;
                                         case 'ge':
-                                            displayFeature = function (feature, filter) {
+                                            displayFeature = function (feature) {
                                                 return feature.getProperties()[filter.valueField] >= filter.value;
                                             };
                                             break;
                                         case 'eq':
-                                            displayFeature = function (feature, filter) {
+                                            displayFeature = function (feature) {
                                                 return feature.getProperties()[filter.valueField] === filter.value;
                                             };
                                             break;
                                     }
                                 default:
-                                    displayFeature = function (feature, filter) {
+                                    displayFeature = function (feature) {
                                         return true;
                                     };
                             }
+							
+							filteredFeatures = filteredFeatures.filter(displayFeature);
 
                             source.forEachFeature(function(feature) {
                                 if (!displayFeature(feature, filter)) {
                                     feature.setStyle(new ol.style.Style({}));
-                                } else {
-                                    filteredFeatures.push(feature);
-                                }
+								}
                             });
                         }
 
@@ -256,10 +256,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
             * @name hs.featureFilter.controller
             * @description TODO
             */
-            .controller('hs.feature_filter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config',
-                function($scope, OlMap, Core, service, LayMan, config) {
-                    var map = OlMap.map;
-
+            .controller('hs.feature_filter.controller', ['$scope', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config', '$mdPanel',
+                function($scope, OlMap, Core, service, LayMan, config, $mdPanel) {
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
 
@@ -294,6 +292,63 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                             filter.selected = filter.values.slice(0);
                         }
                         $scope.applyFilters();
+                    };
+
+					$scope.filterChanged = function(filter) {
+						switch (filter.type.type) {
+							case 'fieldset': case 'dictionary':
+								return !$scope.allSelected(filter);
+						}
+					};
+
+					$scope.resetFilter = function(ev, filter) {
+						ev.stopPropagation();
+						switch (filter.type.type) {
+							case 'fieldset': case 'dictionary':
+								filter.selected = filter.values.slice(0);
+								break;
+						}
+						$scope.applyFilters();
+					};
+
+					$scope.showFilter = function(ev, filter) {
+                        let panelPosition = $mdPanel.newPanelPosition()
+                            .relativeTo(ev.target)
+                            .addPanelPosition(
+								$mdPanel.xPosition.ALIGN_START,
+								$mdPanel.yPosition.BELOW
+                            );
+                        let panelAnimation = $mdPanel.newPanelAnimation()
+                            .openFrom(ev.target)
+                            .closeTo(ev.target)
+                            // .targetEvent($event)
+                            // .defaultAnimation('md-panel-animate-fly')
+                            // .withAnimation($mdPanel.animation.SLIDE);
+                            .withAnimation($mdPanel.animation.FADE);
+                        let panelConfig = {
+                            attachTo: angular.element('body'),
+                            position: panelPosition,
+                            animation: panelAnimation,
+                            targetEvent: ev,
+                            templateUrl: `${config.hsl_path}components/feature_filter/partials/${filter.type.type}_filtermd.html`,
+                            panelClass: 'filter-panel md-whiteframe-8dp',
+                            scope: this,
+                            trapFocus: true,
+                            clickOutsideToClose: true,
+                            clickEscapeToClose: true,
+                            zIndex: 50
+                        };
+
+						$scope.selectedFilter = filter;
+
+                        $mdPanel.open(panelConfig)
+                            .then(function (result) {
+                                $scope.filterPanelRef = result;
+                            });
+
+                        $scope.closeFilter = function (MdPanelRef) {
+                            if (MdPanelRef) MdPanelRef.close();
+                        };
                     };
 
                     $scope.$emit('scope_loaded', "featureFilter");
@@ -336,6 +391,17 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                             OlMap.map.addOverlay(POPUP);
                         });
 
+					window.scope = $scope;
+					$scope.reverseOrdering = false;
+					$scope.orderProperty = 'position';
+					$scope.defaultOrder = 'bp_id';
+
+					$scope.orderProperties = [`values_.${$scope.orderProperty}`, `values_.${$scope.defaultOrder}`];
+
+					$scope.sortBy = function(property) {
+						$scope.reverseOrdering = $scope.orderProperty === property ? !$scope.reverseOrdering : false;
+						$scope.orderProperties[0] = `${$scope.reverseOrdering ? '-' : ''}values_.${property}`;
+					};
 
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
