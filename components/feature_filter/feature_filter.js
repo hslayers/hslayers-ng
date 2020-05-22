@@ -297,7 +297,7 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 					$scope.filterChanged = function(filter) {
 						switch (filter.type.type) {
 							case 'fieldset': case 'dictionary':
-								return !$scope.allSelected(filter);
+								return filter.selected && !$scope.allSelected(filter);
 						}
 					};
 
