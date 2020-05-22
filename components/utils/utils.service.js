@@ -302,7 +302,10 @@ export default function (HsConfig, $http, $window, $document, $location) {
   };
 
   /**
-   * @param functionToCheck
+   * Check if object is a function
+   *
+   * @param {object} functionToCheck
+   * @returns {boolean}
    */
   function isFunction(functionToCheck) {
     return (
@@ -311,7 +314,13 @@ export default function (HsConfig, $http, $window, $document, $location) {
     );
   }
 
-  //Check if object is an instance of a class
+  /**
+   * Check if object is an instance of a class
+   *
+   * @param {object} obj
+   * @param {*} type
+   * @returns {boolean}
+   */
   this.instOf = function (obj, type) {
     const instanceOf = function (obj, klass) {
       if (isFunction(klass)) {
@@ -328,6 +337,14 @@ export default function (HsConfig, $http, $window, $document, $location) {
     };
     return instanceOf(obj, type);
   };
+
+  /**
+   * Remove duplicate items from an array
+   *
+   * @param {Array} myArr Array with possible duplicate objects
+   * @param {string} prop Property of objects which must be unique in the new array
+   * @returns {Array} Array without duplicate objects
+   */
   this.removeDuplicates = function (myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos;
