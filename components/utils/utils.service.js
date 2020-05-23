@@ -5,7 +5,7 @@
  * @param $document
  * @param $location
  */
-export default function (HsConfig, $http, $window, $document, $location) {
+export default function (HsConfig, $http, $window, $document, $location, $log) {
   'ngInject';
   const me = this;
   /**
@@ -341,13 +341,30 @@ export default function (HsConfig, $http, $window, $document, $location) {
   /**
    * Remove duplicate items from an array
    *
-   * @param {Array} myArr Array with possible duplicate objects
-   * @param {string} prop Property of objects which must be unique in the new array
-   * @returns {Array} Array without duplicate objects
+   * @param {Array<object>} dirtyArray Array with possible duplicate objects
+   * @param {string} property Property of objects which must be unique in the new array.
+   * Use dot symbol (".") to denote a property chain in nested object.
+   * Function will return an empty array if it won't find the property in the object.
+   * @returns {Array<object>} Array without duplicate objects
    */
-  this.removeDuplicates = function (myArr, prop) {
-    return myArr.filter((obj, pos, arr) => {
-      return arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos;
+  this.removeDuplicates = function (dirtyArray, property) {
+    const propertyChain = property.split('.');
+    const flatArray = [...dirtyArray];
+    for (const prop of propertyChain) {
+      for (const idx in flatArray) {
+        if (angular.isUndefined(flatArray[idx])) {
+          $log.error(`Property "${prop}" not found in object.`);
+          return [];
+        }
+        flatArray[idx] = flatArray[idx][prop];
+      }
+    }
+    return dirtyArray.filter((item, position, arr) => {
+      let propertyValue = item;
+      for (const prop of propertyChain) {
+        propertyValue = propertyValue[prop];
+      }
+      return flatArray.indexOf(propertyValue) === position;
     });
   };
 
