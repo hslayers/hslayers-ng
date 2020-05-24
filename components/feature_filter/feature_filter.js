@@ -391,15 +391,19 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
                             OlMap.map.addOverlay(POPUP);
                         });
 
-					window.scope = $scope;
-					$scope.reverseOrdering = false;
 					$scope.orderProperty = 'position';
+					$scope.reverseOrdering = true;
 					$scope.defaultOrder = 'bp_id';
 
-					$scope.orderProperties = [`values_.${$scope.orderProperty}`, `values_.${$scope.defaultOrder}`];
+					$scope.defaultReverse = [
+						'bp_id',
+						'position'
+					];
+
+					$scope.orderProperties = [`${$scope.reverseOrdering ? '-' : ''}values_.${$scope.orderProperty}`, `values_.${$scope.defaultOrder}`];
 
 					$scope.sortBy = function(property) {
-						$scope.reverseOrdering = $scope.orderProperty === property ? !$scope.reverseOrdering : false;
+						$scope.reverseOrdering = $scope.orderProperty === property ? !$scope.reverseOrdering : $scope.defaultReverse.includes(property) || false;
 						$scope.orderProperties[0] = `${$scope.reverseOrdering ? '-' : ''}values_.${property}`;
 					};
 
