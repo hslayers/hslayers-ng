@@ -4,7 +4,7 @@
             <strong style="font-size: small;">{{layer.layer}}</strong><br>
             <div ng-repeat="feature in layer.features">
                 <div ng-show="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
-                    <div ng-repeat="subFeature in feature.get('features')">
+                    <div ng-repeat="subFeature in feature.get('features')" ng-show="subFeature.attributesForHover.length > 0">
                         {{serializeFeatureName(subFeature)}}
                         <div ng-repeat="attribute in subFeature.attributesForHover">
                             <div class="d-flex flex-row">
@@ -17,7 +17,7 @@
                         <hr>
                     </div>
                 </div>
-                <div ng-show="!isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                <div ng-show="!isClustered(feature) && feature.attributesForHover.length > 0" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
                     <div ng-repeat="attribute in feature.attributesForHover">
                         <div class="d-flex flex-row">
