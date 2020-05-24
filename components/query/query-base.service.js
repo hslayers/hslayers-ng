@@ -105,7 +105,8 @@ export default function (
             return (
               feature.getLayer &&
               feature.getLayer(map) &&
-              feature.getLayer(map).get('title').length > 0
+              feature.getLayer(map).get('title').length > 0 &&
+              feature.getLayer(map).get('title') !== 'Point clicked'
             );
           });
           me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
@@ -113,7 +114,7 @@ export default function (
           );
           me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
             me.featureLayersUnderMouse,
-            'title'
+            'values_.title'
           );
           me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
             return {
@@ -142,7 +143,17 @@ export default function (
         }
       }, 0);
     }
-    map.on('pointermove', HsUtilsService.debounce(showPopUp, 500, false, me));
+    if (
+      angular.isDefined(HsConfig.popUpDisplay) &&
+      HsConfig.popUpDisplay === 'hover'
+    ) {
+      map.on('pointermove', HsUtilsService.debounce(showPopUp, 500, false, me));
+    } else if (
+      angular.isDefined(HsConfig.popUpDisplay) &&
+      HsConfig.popUpDisplay === 'click'
+    ) {
+      map.on('singleclick', HsUtilsService.debounce(showPopUp, 500, false, me));
+    } /* else none */
   }
 
   /**
