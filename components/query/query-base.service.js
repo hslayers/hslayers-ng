@@ -90,76 +90,83 @@ export default function (
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
-    /**
-     * @param e
-     */
-    function showPopUp(e) {
-      if (e.dragging) {
-        return;
-      }
-      const map = e.map;
-      $timeout((_) => {
-        me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-        if (me.featuresUnderMouse !== null) {
-          me.featuresUnderMouse = me.featuresUnderMouse.filter((feature) => {
-            return (
-              feature.getLayer &&
-              feature.getLayer(map) &&
-              feature.getLayer(map).get('title').length > 0 &&
-              feature.getLayer(map).get('title') !== 'Point clicked'
-            );
-          });
-          me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
-            f.getLayer(HsMapService.map)
-          );
-          me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
-            me.featureLayersUnderMouse,
-            'values_.title'
-          );
-          me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
-            return {
-              layer: l.get('title'),
-              features: me.featuresUnderMouse.filter(
-                (f) => f.getLayer(HsMapService.map) == l
-              ),
-            };
-          });
-          me.featuresUnderMouse.forEach((feature) => {
-            serializeFeatureAttributes(feature);
-            if (feature.get('features')) {
-              feature
-                .get('features')
-                .forEach((subfeature) =>
-                  serializeFeatureAttributes(subfeature)
-                );
-            }
-          });
-          const pixel = e.pixel;
-          pixel[0] += 2;
-          pixel[1] += 4;
-          me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
-        } else {
-          me.featuresUnderMouse = [];
-        }
-      }, 0);
-    }
     if (
       angular.isDefined(HsConfig.popUpDisplay) &&
       HsConfig.popUpDisplay === 'hover'
     ) {
-      map.on('pointermove', HsUtilsService.debounce(showPopUp, 500, false, me));
+      map.on(
+        'pointermove',
+        HsUtilsService.debounce(me.showPopUp, 500, false, me)
+      );
     } else if (
       angular.isDefined(HsConfig.popUpDisplay) &&
       HsConfig.popUpDisplay === 'click'
     ) {
-      map.on('singleclick', HsUtilsService.debounce(showPopUp, 500, false, me));
+      map.on(
+        'singleclick',
+        HsUtilsService.debounce(me.showPopUp, 500, false, me)
+      );
     } /* else none */
   }
 
   /**
+   * @param e Event, which triggered this function
+   */
+  this.showPopUp = function (e) {
+    if (e.dragging) {
+      return;
+    }
+    const map = e.map;
+    $timeout((_) => {
+      me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
+      if (me.featuresUnderMouse !== null) {
+        me.featuresUnderMouse = me.featuresUnderMouse.filter((feature) => {
+          return (
+            feature.getLayer &&
+            feature.getLayer(map) &&
+            feature.getLayer(map).get('title').length > 0 &&
+            feature.getLayer(map).get('title') !== 'Point clicked'
+          );
+        });
+        me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
+          f.getLayer(HsMapService.map)
+        );
+        me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
+          me.featureLayersUnderMouse,
+          'values_.title'
+        );
+        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
+          return {
+            layer: l.get('title'),
+            features: me.featuresUnderMouse.filter(
+              (f) => f.getLayer(HsMapService.map) == l
+            ),
+          };
+        });
+        me.featuresUnderMouse.forEach((feature) => {
+          me.serializeFeatureAttributes(feature);
+          if (feature.get('features')) {
+            feature
+              .get('features')
+              .forEach((subfeature) =>
+                me.serializeFeatureAttributes(subfeature)
+              );
+          }
+        });
+        const pixel = e.pixel;
+        pixel[0] += 2;
+        pixel[1] += 4;
+        me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
+      } else {
+        me.featuresUnderMouse = [];
+      }
+    }, 0);
+  };
+
+  /**
    * @param feature
    */
-  function serializeFeatureAttributes(feature) {
+  this.serializeFeatureAttributes = function (feature) {
     if (angular.isUndefined(feature.getLayer)) {
       return;
     }
@@ -221,7 +228,7 @@ export default function (
         });
       }
     }
-  }
+  };
 
   HsMapService.loaded().then(init);
 
