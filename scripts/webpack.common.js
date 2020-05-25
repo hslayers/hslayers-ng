@@ -12,6 +12,7 @@
 const path = require('path');
 var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
+const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, '../app.js'),
@@ -30,6 +31,9 @@ module.exports = {
     ].concat(hslPaths.paths)
   },
   plugins: [
+    new DynamicPubPathPlugin({
+      'expression': `(window.HSL_PATH || './node_modules/hslayers-ng/dist/')`,
+    }),
     // Clean before build
     //new CleanWebpackPlugin()
     new WebpackBuildNotifierPlugin({
