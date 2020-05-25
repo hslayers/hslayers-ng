@@ -356,13 +356,17 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
           $log.error(`Property "${prop}" not found in object.`);
           return [];
         }
-        flatArray[idx] = flatArray[idx][prop];
+        flatArray[idx] = angular.isDefined(flatArray[idx].get)
+          ? flatArray[idx].get(prop) /* get() is only defined for OL objects */
+          : flatArray[idx][prop]; /* POJO access */
       }
     }
     return dirtyArray.filter((item, position, arr) => {
       let propertyValue = item;
       for (const prop of propertyChain) {
-        propertyValue = propertyValue[prop];
+        propertyValue = angular.isDefined(propertyValue.get)
+          ? propertyValue.get(prop) /* get() is only defined for OL objects */
+          : propertyValue[prop]; /* POJO access */
       }
       return flatArray.indexOf(propertyValue) === position;
     });
