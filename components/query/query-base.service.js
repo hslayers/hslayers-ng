@@ -133,7 +133,7 @@ export default function (
         );
         me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
           me.featureLayersUnderMouse,
-          'values_.title'
+          'title'
         );
         me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
           return {

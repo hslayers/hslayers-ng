@@ -1,6 +1,9 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
+
+import VectorLayer from 'ol/layer/Vector';
+
 describe('utils', () => {
   let hsUtils;
 
@@ -45,5 +48,18 @@ describe('utils', () => {
       {values: {properties: {title: 'villages', features: 10}}},
       {values: {properties: {title: 'cities', features: 50}}},
     ]);
+  });
+
+  it('remove duplicates from an array of OL objects', () => {
+    const layers = [
+      new VectorLayer({title: 'villages', features: 10}),
+      new VectorLayer({title: 'villages', features: 10}),
+      new VectorLayer({title: 'cities', features: 50}),
+      new VectorLayer({title: 'villages', features: 100}),
+      new VectorLayer({title: 'cities', features: 5}),
+    ];
+    const unique = hsUtils.removeDuplicates(layers, 'title');
+    expect(unique.length).toBe(2);
+    expect(unique).toEqual([layers[0], layers[2]]);
   });
 });
