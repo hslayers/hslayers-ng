@@ -8,7 +8,7 @@ import sensorsUnitListItemComponent from './sensors-unit-list-item.component';
  * @memberOf hs
  */
 angular
-  .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout'])
+  .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout', 'ui.bootstrap.datetimepicker'])
 
   /**
    * @memberof HsSensorsService

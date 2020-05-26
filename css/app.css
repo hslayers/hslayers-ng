@@ -1623,3 +1623,4 @@ li.hs-lm-header {
 .hs-hover-popup{max-height: 20em; max-width: 30em; overflow-y: scroll; visibility: visible;}
 
 .hs-toolbar-button{height: 2.4em}
+.bsi .dropdown-menu.datetime-picker-menu {min-width: 22rem;}
