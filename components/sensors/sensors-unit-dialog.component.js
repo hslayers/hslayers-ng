@@ -1,3 +1,7 @@
+import 'angularjs-bootstrap-datetimepicker/src/css/datetimepicker.css';
+import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker';
+import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker.templates';
+
 export default {
   template: require('./partials/unit-dialog.html'),
   bindings: {

@@ -89,6 +89,7 @@
     "angular-socialshare": "^2.3.11",
     "angular-timelinejs3": "~0.2.3",
     "angular-update-meta": "2.1.0",
+    "angularjs-bootstrap-datetimepicker": "^1.1.4",
     "bootstrap": ">=4.4.1",
     "clipboard": "^2.0.4",
     "cors-anywhere": "^0.4.1",
