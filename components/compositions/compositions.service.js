@@ -11,7 +11,6 @@ import 'angular';
  * @param HsCompositionsParserService
  * @param HsConfig
  * @param HsPermalinkUrlService
- * @param $cookies
  * @param HsUtilsService
  * @param HsStatusManagerService
  * @param HsCompositionsMickaService
