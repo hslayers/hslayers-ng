@@ -20,6 +20,7 @@ export default {
         {name: '1M', amount: 1, unit: 'months'},
         {name: '6M', amount: 6, unit: 'months'},
       ],
+      customInterval: {name: 'Custom', fromTime: new Date()},
       loaderImage: require('../../img/ajax-loader.gif'),
 
       /**
@@ -47,9 +48,22 @@ export default {
        */
       timeButtonClicked(interval) {
         HsSensorsService.currentInterval = interval;
+        $scope.customInterval.fromTime = HsSensorsService.getTimeForInterval(
+          interval
+        ).toDate();
         HsSensorsService.getObservationHistory(
           HsSensorsService.unit,
           interval
+        ).then((_) => {
+          HsSensorsService.createChart(HsSensorsService.unit);
+        });
+      },
+
+      customIntervalChanged() {
+        HsSensorsService.currentInterval = $scope.customInterval;
+        HsSensorsService.getObservationHistory(
+          HsSensorsService.unit,
+          $scope.customInterval
         ).then((_) => HsSensorsService.createChart(HsSensorsService.unit));
       },
 

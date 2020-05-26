@@ -256,6 +256,14 @@ export default function (
         });
     },
 
+    getTimeForInterval(interval) {
+      if (angular.isDefined(interval.fromTime)) {
+        return moment(interval.fromTime);
+      } else {
+        return moment().subtract(interval.amount, interval.unit);
+      }
+    },
+
     /**
      * @memberof HsSensorsService
      * @function getObservationHistory
@@ -272,8 +280,8 @@ export default function (
         const url = HsUtilsService.proxify(
           `${endpoint.url}/senslog-lite/rest/observation`
         );
-        let from_time = moment().subtract(interval.amount, interval.unit);
-        from_time = `${from_time.format('YYYY-MM-DD')} ${from_time.format(
+        const time = me.getTimeForInterval(interval);
+        const from_time = `${time.format('YYYY-MM-DD')} ${time.format(
           'HH:mm:ssZ'
         )}`;
         interval.loading = true;
@@ -353,7 +361,7 @@ export default function (
         },
         'width':
           HsLayoutService.dialogAreaElement.querySelector('.hs-chartplace')
-            .offsetWidth - 40,
+            .parentElement.offsetWidth - 40,
         'autosize': {
           'type': 'fit',
           'contains': 'padding',

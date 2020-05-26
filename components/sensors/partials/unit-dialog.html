@@ -33,6 +33,7 @@
                                     aria-label="1 hour">{{interval.name}}<img ng-src="{{loaderImage}}" ng-show="interval.loading"/></button>
                             </div>
                         </div>
+                        <input type="datetime-local" ng-model="customInterval.fromTime" ng-change="customIntervalChanged()">
                     </div>
                 </div>
             </div>
