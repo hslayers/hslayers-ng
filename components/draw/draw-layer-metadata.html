@@ -12,9 +12,15 @@
                 <form>
                     <div class="form-group">
                         <label class="control-label" translate>Layer title</label>
-                        <input class="form-control" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
+                        <div class="input-group mb-3">
+                            <input class="form-control" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
+                            <div class="input-group-append"  data-toggle="tooltip" title="{{'More options' | translate}}">
+                                <span class="input-group-text icon-chevron-down"
+                                    ng-click="folderVisible = !folderVisible"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-show="folderVisible">
                         <label class="control-label" translate>Folder</label>
                         <input class="form-control" ng-model="$ctrl.path" ng-change="$ctrl.pathChanged()" />
                     </div>
@@ -32,7 +38,7 @@
                                 </tr>
                                 </tr>
                             </table>
-                            <btn class="btn btn-primary" ng-click="$ctrl.addAttr()"><i class="icon-plus"></i></a>
+                            <btn class="btn btn-primary" ng-click="$ctrl.addAttr()"><i class="icon-plus"></i></btn>
                         </div>
                     </div>
                 </form>
