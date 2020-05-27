@@ -162,34 +162,54 @@ export default function (
        *
        */
       function rendered() {
-        const canvas = HsMapService.getCanvas();
-        const canvas2 = $document[0].createElement('canvas');
+        const targetCanvas = $document[0].createElement('canvas');
         const width = 256,
           height = 256;
-        canvas2.width = width;
-        canvas2.height = height;
+        targetCanvas.width = width;
+        targetCanvas.height = height;
 
-        canvas2.style.width = width + 'px';
-        canvas2.style.height = height + 'px';
-        const ctx2 = canvas2.getContext('2d');
+        targetCanvas.style.width = width + 'px';
+        targetCanvas.style.height = height + 'px';
+        const ctx2 = targetCanvas.getContext('2d');
         ctx2.mozImageSmoothingEnabled = false;
         ctx2.webkitImageSmoothingEnabled = false;
         ctx2.msImageSmoothingEnabled = false;
         ctx2.imageSmoothingEnabled = false;
-        ctx2.drawImage(
-          canvas,
-          canvas.width / 2 - width / 2,
-          canvas.height / 2 - height / 2,
-          width,
-          height,
-          0,
-          0,
-          width,
-          height
+        Array.prototype.forEach.call(
+          HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
+          (canvas) => {
+            if (canvas.width > 0) {
+              const opacity = canvas.parentNode.style.opacity;
+              ctx2.globalAlpha = opacity === '' ? 1 : Number(opacity);
+              const transform = canvas.style.transform;
+              // Get the transform parameters from the style's transform matrix
+              const matrix = transform
+                .match(/^matrix\(([^\(]*)\)$/)[1]
+                .split(',')
+                .map(Number);
+              // Apply the transform to the export map context
+              CanvasRenderingContext2D.prototype.setTransform.apply(
+                ctx2,
+                matrix
+              );
+              ctx2.drawImage(
+                canvas,
+                canvas.width / 2 - width / 2,
+                canvas.height / 2 - height / 2,
+                width,
+                height,
+                0,
+                0,
+                width,
+                height
+              );
+            }
+          }
         );
+
         try {
-          $element.setAttribute('src', canvas2.toDataURL('image/png'));
-          me.data.thumbnail = canvas2.toDataURL('image/jpeg', 0.85);
+          $element.setAttribute('src', targetCanvas.toDataURL('image/png'));
+          me.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
         } catch (e) {
           $log.warn(e);
           $element.setAttribute('src', require('../save-map/notAvailable.png'));
@@ -207,8 +227,8 @@ export default function (
         }
         $element.setAttribute('crossOrigin', 'Anonymous');
 
-        HsMapService.map.once('postcompose', rendered, me);
         if (newRender) {
+          HsMapService.map.once('postcompose', rendered, me);
           HsMapService.map.renderSync();
         } else {
           rendered();
