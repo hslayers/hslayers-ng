@@ -89,22 +89,10 @@ export default function (
 
     addDrawLayer(layer) {
       HsMapService.map.addLayer(layer);
+      me.fillDrawableLayers();
     },
 
-    drawableLayers() {
-      if (HsMapService.map) {
-        const tmp = HsMapService.map
-          .getLayers()
-          .getArray()
-          .filter(HsLayerUtilsService.isLayerDrawable);
-        if (tmp.length > 0 && me.selectedLayer === null) {
-          me.selectedLayer = tmp[0];
-        } else if (tmp.length == 0) {
-          me.selectedLayer = null;
-        }
-        return tmp;
-      }
-    },
+    drawableLayers: [],
     /**
      * @function updateStyle
      * @memberOf HsDrawService
@@ -250,6 +238,17 @@ export default function (
       }
       me.draw.setActive(true);
     },
+
+    fillDrawableLayers() {
+      const tmp = HsMapService.map
+        .getLayers()
+        .getArray()
+        .filter(HsLayerUtilsService.isLayerDrawable);
+      if (tmp.length > 0 && me.selectedLayer === null) {
+        me.selectedLayer = tmp[0];
+      }
+      me.drawableLayers = tmp;
+    },
   });
 
   HsMapService.loaded().then((map) => {
@@ -257,6 +256,7 @@ export default function (
       features: me.selectedFeatures,
     });
     map.addInteraction(me.modify);
+    me.fillDrawableLayers();
   });
 
   me.selectedFeatures.on('add', (e) => {

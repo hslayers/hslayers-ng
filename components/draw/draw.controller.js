@@ -22,7 +22,6 @@ export default function (
   angular.extend($scope, {
     layoutService: HsLayoutService,
     service: HsDrawService,
-    drawableLayers: HsDrawService.drawableLayers,
     isLayerInManager: HsLayerUtilsService.isLayerInManager,
     hasLayerTitle: HsLayerUtilsService.hasLayerTitle,
     isLayerEditable: HsLayerUtilsService.isLayerEditable,
