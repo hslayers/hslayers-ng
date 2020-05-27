@@ -1624,3 +1624,6 @@ li.hs-lm-header {
 
 .hs-toolbar-button{height: 2.4em}
 .bsi .dropdown-menu.datetime-picker-menu {min-width: 22rem;}
+a.hs-sensor-type {color: black}
+a.hs-sensor-unit{color: black; font-weight: bold;}
+.hs-sensor{line-height: 1.9em;}
