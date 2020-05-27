@@ -361,6 +361,7 @@ export default function (
     'composition_browser',
     'analysis',
     'sensors',
+    'draw'
   ];
 
   this.currentPanelQueryable = function () {
