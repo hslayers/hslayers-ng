@@ -15,7 +15,7 @@
         </div>
 
         <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
-            <a class="dropdown-item" href="#" ng-repeat="layer in drawableLayers()"
+            <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
                 ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
         </div>
     </div>
