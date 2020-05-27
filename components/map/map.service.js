@@ -4,6 +4,7 @@ import Control from 'ol/control/Control';
 import Feature from 'ol/Feature';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
+import Static from 'ol/source/ImageStatic';
 import View from 'ol/View';
 import proj4 from 'proj4';
 import {Cluster, OSM, Vector} from 'ol/source';
@@ -19,7 +20,13 @@ import {
   PinchZoom,
 } from 'ol/interaction';
 import {Group} from 'ol/layer';
-import {ImageArcGISRest, ImageWMS, TileArcGISRest, TileWMS, XYZ} from 'ol/source';
+import {
+  ImageArcGISRest,
+  ImageWMS,
+  TileArcGISRest,
+  TileWMS,
+  XYZ,
+} from 'ol/source';
 import {
   MousePosition,
   ScaleLine,
@@ -506,20 +513,31 @@ export default function (
     if (!me.layerDuplicate(lyr)) {
       lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
       lyr.manuallyAdded = false;
-      if (HsUtilsService.instOf(lyr.getSource(), ImageWMS) || HsUtilsService.instOf(lyr.getSource(), ImageArcGISRest)) {
+      const source = lyr.getSource();
+      if (
+        HsUtilsService.instOf(source, ImageWMS) ||
+        HsUtilsService.instOf(source, ImageArcGISRest)
+      ) {
         me.proxifyLayerLoader(lyr, false);
       }
-      if (HsUtilsService.instOf(lyr.getSource(), TileWMS) || HsUtilsService.instOf(lyr.getSource(), TileArcGISRest)) {
-        me.proxifyLayerLoader(lyr, true);
-      }
       if (
-        HsUtilsService.instOf(lyr.getSource(), XYZ) &&
-        !HsUtilsService.instOf(lyr.getSource(), OSM)
+        HsUtilsService.instOf(source, TileWMS) ||
+        HsUtilsService.instOf(source, TileArcGISRest)
       ) {
         me.proxifyLayerLoader(lyr, true);
       }
-      if (HsUtilsService.instOf(lyr.getSource(), Vector)) {
+      if (
+        HsUtilsService.instOf(source, XYZ) &&
+        !HsUtilsService.instOf(source, OSM)
+      ) {
+        me.proxifyLayerLoader(lyr, true);
+      }
+      if (HsUtilsService.instOf(source, Vector)) {
         me.getVectorType(lyr);
+      }
+      if (HsUtilsService.instOf(source, Static)) {
+        //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
+        source.url_ = HsUtilsService.proxify(source.getUrl());
       }
       me.map.addLayer(lyr);
     }
