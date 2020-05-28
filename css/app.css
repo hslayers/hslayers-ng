@@ -705,7 +705,10 @@ a.sidebar-main {
 	background-color: white;
 }
 .sublayerContainer .hs-checkmark::before,
-.sublayerContainer .hs-uncheckmark::before {
+.sublayerContainer .hs-uncheckmark::before,
+.form-check .hs-checkmark::before,
+.form-check .hs-uncheckmark::before
+{	
 	margin-right: 0.5em;
 }
 
@@ -1181,6 +1184,10 @@ button.hs_draw_new_extended {
 
 .panel.hs-dr-editpanel {
 	margin-bottom: 0;
+}
+
+.draw-buttons button {
+	margin-left: 0.3em;
 }
 
 .card-icon {
