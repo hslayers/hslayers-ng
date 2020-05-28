@@ -27,6 +27,7 @@ export default {
         }
         editorConfig.defaultAttributes = dic;
         HsDrawService.addDrawLayer(vm.layer);
+        HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
       },
       pathChanged() {
