@@ -22,7 +22,7 @@
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-angular": "^4.0.1",
     "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jsdoc": "^25.4.0",
+    "eslint-plugin-jsdoc": "^26.0.0",
     "eslint-stats": "^1.0.1",
     "extract-loader": "^5.0.1",
     "file-loader": "^6.0.0",
