@@ -1,15 +1,23 @@
-<div class="panel-default hs-main-panel">
-    <hs.layout.panel-header panel-name="draw" panel-title="'Draw'| translate"></hs.layout.panel-header>
+<div class="card panel-default hs-main-panel">
+    <hs.layout.panel-header panel-name="draw" panel-title="'Draw'| translate">
+        <extra-buttons>
+            <button class="but-title-sm" data-toggle="tooltip"
+                title="While drawing polygon or line you can hold shit to free-hand draw">
+                <i class="icon-question-sign"></i>
+            </button>
+        </extra-buttons>
+    </hs.layout.panel-header>
 
     <div class="dropdown">
         <div class="btn-group w-100" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'" c>
-            <button type="button" class="btn rounded-0 btn-light hs-toolbar-button btn-outline-primary btn-secondary dropdown-toggle"
+            <button type="button"
+                class="btn rounded-0 btn-light hs-toolbar-button btn-outline-primary btn-secondary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
                 aria-expanded="{{layersExpanded}}">
                 {{selectedLayerString() | translate}}
             </button>
-            <button class="btn btn-primary rounded-0 hs-toolbar-button" ng-click="service.initiateAddDrawLayer($scope)" data-toggle="tooltip"
-                title="{{'Add draw layer' | translate}}">
+            <button class="btn btn-primary rounded-0 hs-toolbar-button" ng-click="service.initiateAddDrawLayer($scope)"
+                data-toggle="tooltip" title="{{'Add draw layer' | translate}}">
                 <i class="icon-plus"></i>
             </button>
         </div>
@@ -19,29 +27,34 @@
                 ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
         </div>
     </div>
-    <div class="btn-group btn-block rounded-0 hs-toolbar-button" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
+    <div class="btn-group btn-block rounded-0 hs-toolbar-button"
+        ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light rounded-0 btn-outline-primary" ng-class="{active: service.type=='Point' }"
             ng-click="setType('Point')" data-toggle="tooltip" title="{{'Point' | translate}}">
             <i class="icon-pin"></i>
         </button>
-        <button class="btn btn-light hs-toolbar-button btn-outline-primary" ng-class="{active: service.type=='Polygon' }"
-            ng-click="setType('Polygon')" data-toggle="tooltip" title="{{'Polygon' | translate }}">
+        <button class="btn btn-light hs-toolbar-button btn-outline-primary"
+            ng-class="{active: service.type=='Polygon' }" ng-click="setType('Polygon')" data-toggle="tooltip"
+            title="{{'Polygon' | translate }}">
             <i class="icon-polygonlasso"></i>
         </button>
-        <button class="btn btn-light hs-toolbar-button btn-outline-primary" ng-class="{active: service.type=='LineString' }"
-            ng-click="setType('LineString')" data-toggle="tooltip" title="{{'Line' | translate}}">
+        <button class="btn btn-light hs-toolbar-button btn-outline-primary"
+            ng-class="{active: service.type=='LineString' }" ng-click="setType('LineString')" data-toggle="tooltip"
+            title="{{'Line' | translate}}">
             <i class="icon-line"></i>
         </button>
-        <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-primary" ng-class="{active: service.type=='Circle' }"
-            ng-click="setType('Circle')" data-toggle="tooltip" title="{{'Circle' | translate }}">
+        <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-primary"
+            ng-class="{active: service.type=='Circle' }" ng-click="setType('Circle')" data-toggle="tooltip"
+            title="{{'Circle' | translate }}">
             <i class="icon-circleloaderfull"></i>
         </button>
     </div>
     <div ng-show="service.type != null " class="pt-2">
-        <div 
-            class="form-check">
-            <input type="checkbox" ng-model="useIndividualStyle" />
-            <label translate>Individual style for feature</label>
+        <div class="form-check" style="font-size: smaller">
+            <input class="ng-hide" type="checkbox" ng-attr-id="individualStyle" ng-model="useIndividualStyle" />
+            <label translate ng-attr-for="individualStyle"
+                ng-class="{'hs-checkmark':useIndividualStyle,'hs-uncheckmark':!useIndividualStyle}">Individual style for
+                feature</label>
         </div>
         <div class="card" ng-show="useIndividualStyle">
             <div class="card-header h5 p-1 pl-4">
