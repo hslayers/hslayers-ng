@@ -20,7 +20,8 @@ export default {
     $rootScope,
     HsLayoutService,
     HsLayerEditorSublayerService,
-    HsLayerEditorService
+    HsLayerEditorService,
+    HsDrawService
   ) {
     'ngInject';
     $scope.distance = {
@@ -293,7 +294,12 @@ export default {
       },
 
       removeLayer() {
+        if (HsDrawService.selectedLayer = $scope.olLayer() ){
+          HsDrawService.selectedLayer = null;
+        }
         HsMapService.map.removeLayer($scope.olLayer());
+        HsDrawService.fillDrawableLayers();
+
         $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
       },
 

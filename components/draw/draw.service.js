@@ -61,15 +61,18 @@ export default function (
       ];
     },
 
-    initiateAddDrawLayer($scope) {
+    saveDrawingLayer($scope,addNewLayer = false) {
       let tmpTitle = gettext('Draw layer');
+      let tmpLayer = addNewLayer === true ? null : HsMapService.findLayerByTitle('tmpDrawLayer');
+      let tmpSource = addNewLayer === true ? new Vector() : tmpLayer.getSource();
+
       let i = 1;
       while (HsMapService.findLayerByTitle(tmpTitle)) {
         tmpTitle = `${gettext('Draw layer')} ${i++}`;
       }
       const drawLayer = new VectorLayer({
         title: tmpTitle,
-        source: new Vector(),
+        source: tmpSource,
         show_in_manager: true,
         visible: true,
         removable: true,
@@ -78,6 +81,8 @@ export default function (
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
       });
       me.selectedLayer = drawLayer;
+      HsMapService.map.removeLayer(tmpLayer)
+
       const el = angular.element(
         '<hs.draw-layer-metadata layer="service.selectedLayer"></draw-layer-metadata>'
       );
@@ -247,6 +252,10 @@ export default function (
       if (tmp.length > 0 && me.selectedLayer === null) {
         me.selectedLayer = tmp[0];
       }
+      if (tmp.length == 0 && me.selectedLayer === null){
+        me.type = null;
+        me.deactivateDrawing();
+      }
       me.drawableLayers = tmp;
     },
   });
@@ -271,7 +280,7 @@ export default function (
       me.onDeselected(e);
     }
   });
-
+ 
   const unregisterFeatureSelected = $rootScope.$on(
     'vectorQuery.featureSelected',
     (e, feature) => {

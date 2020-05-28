@@ -8,23 +8,39 @@
         </extra-buttons>
     </hs.layout.panel-header>
 
-    <div class="dropdown">
-        <div class="btn-group w-100" ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'" c>
-            <button type="button"
-                class="btn rounded-0 btn-light hs-toolbar-button btn-outline-primary btn-secondary dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
-                aria-expanded="{{layersExpanded}}">
-                {{selectedLayerString() | translate}}
+    <div>
+        <div class="d-flex w-75 m-auto py-2 justify-content-around ">
+            <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
+            ng-click="service.saveDrawingLayer($scope, true)">
+                New drawing
             </button>
-            <button class="btn btn-primary rounded-0 hs-toolbar-button" ng-click="service.initiateAddDrawLayer($scope)"
-                data-toggle="tooltip" title="{{'Add draw layer' | translate}}">
-                <i class="icon-plus"></i>
+            <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button">
+                Load drawing
             </button>
         </div>
+        <div ng-show="service.type" class="btn-group w-100"
+            ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
-        <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
-            <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
-                ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
+            <div ng-show="service.drawableLayers.length == 0" class="flex-row w-75 m-auto justify-content-around align-items-center"
+                style="display: flex;">
+                <p class="m-0 p-0" style="color:crimson">Unsaved drawing</p>
+                <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)">Save as..</a>
+            </div>
+            <div class="flex-row w-75 m-auto justify-content-center align-items-center"
+                ng-show="service.drawableLayers.length != 0" style="display: flex;">
+                <p class="m-0 p-0" style="color: blue;">Drawing to:</p>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
+                        aria-expanded="{{layersExpanded}}">
+                        {{selectedLayerString() | translate}}
+                    </button>
+                    <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
+                        <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
+                            ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="btn-block rounded-0 my-1 draw-buttons d-flex justify-content-center"
