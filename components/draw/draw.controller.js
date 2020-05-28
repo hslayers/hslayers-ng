@@ -1,22 +1,28 @@
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
 
 /**
  * @param $scope
+ * @param HsConfig
  * @param HsDrawService
  * @param HsLayerUtilsService
  * @param HsQueryVectorService
  * @param $timeout
  * @param HsLayoutService
  * @param gettext
+ * @param HsMapService
  */
 export default function (
   $scope,
+  HsConfig,
   HsDrawService,
   HsLayerUtilsService,
   HsQueryVectorService,
   $timeout,
   HsLayoutService,
-  gettext
+  gettext,
+  HsMapService
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -55,6 +61,23 @@ export default function (
         HsDrawService.type = null;
         HsDrawService.deactivateDrawing();
         return;
+      }
+      else {
+        if(HsDrawService.drawableLayers.length == 0){
+          const drawLayer = new VectorLayer({
+            title: 'tmpDrawLayer',
+            source: new Vector(),
+            show_in_manager: false,
+            visible: true,
+            removable: true,
+            editable: true,
+            synchronize: true,
+            path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
+          });
+          HsDrawService.tmpDrawLayer = true;
+          HsDrawService.selectedLayer = drawLayer;
+          HsDrawService.addDrawLayer(drawLayer);
+        }
       }
       HsDrawService.type = what;
       HsDrawService.source = angular.isDefined(
