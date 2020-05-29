@@ -26,7 +26,7 @@ export default function (
   $log,
   $document,
   HsLayoutService,
-  $compile
+  $compile,
 ) {
   'ngInject';
   const me = this;
@@ -272,7 +272,7 @@ export default function (
     }
     me.modify.setActive(true);
   });
-
+  
   me.selectedFeatures.on('remove', (e) => {
     if (me.onDeselected) {
       me.onDeselected(e);

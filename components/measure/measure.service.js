@@ -137,9 +137,9 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
       for (let i = 0; i < me.sketch.length; i++) {
         const geom = me.sketch[i].getGeometry();
         if (HsUtilsService.instOf(geom, Polygon)) {
-          output = addMultiple(formatArea(geom), output);
+          output = addMultiple(me.formatArea(geom), output);
         } else if (HsUtilsService.instOf(geom, LineString)) {
-          output = addMultiple(formatLength(geom), output);
+          output = addMultiple(me.formatLength(geom), output);
         }
       }
 
@@ -243,7 +243,7 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
    * @returns {object} numeric length of line with used units
    * @description Compute and format line length with correct units (m/km)
    */
-  const formatLength = function (line) {
+  this.formatLength = function (line) {
     let length = 0;
     const coordinates = line.getCoordinates();
     const sourceProj = map.getView().getProjection();
@@ -256,7 +256,7 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
 
     const output = {
       size: length,
-      type: 'length',
+      type: 'Length',
       unit: 'm',
     };
 
@@ -278,12 +278,12 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
    * @returns {object} area of polygon with used units
    * @description Compute and format polygon area with correct units (m2/km2)
    */
-  const formatArea = function (polygon) {
+  this.formatArea = function (polygon) {
     const sourceProj = map.getView().getProjection();
     const area = Math.abs(getArea(polygon));
     const output = {
       size: area,
-      type: 'area',
+      type: 'Area',
       unit: 'm',
     };
     if (area > 10000) {

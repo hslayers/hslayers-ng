@@ -12,6 +12,7 @@ import {toLonLat} from 'ol/proj';
  * @param HsConfig
  * @param HsLayerUtilsService
  * @param $window
+ * @param HsMeasureService
  */
 export default function (
   $rootScope,
@@ -20,7 +21,8 @@ export default function (
   HsMapService,
   HsConfig,
   HsLayerUtilsService,
-  $window
+  $window,
+  HsMeasureService
 ) {
   'ngInject';
   const me = this;
@@ -112,7 +114,7 @@ export default function (
     }
     const layer = feature.getLayer(HsMapService.map);
     return HsLayerUtilsService.getLayerName(layer);
-  }
+  };
 
   /**
    * @param feature
@@ -123,6 +125,32 @@ export default function (
     }
     const center = extent.getCenter(feature.getGeometry().getExtent());
     return center;
+  };
+  /**
+   * (PRIVATE) Adding a default stats to query based on feature geom type
+   *
+   * @function addDefaultAttributes
+   * @memberOf HsQueryController
+   * @param feature Selected feature from map
+   */
+  function addDefaultStats(f) {
+    let geom = f.getGeometry();
+    let type = geom.getType();
+    if (type == 'Polygon') {
+      let area = HsMeasureService.formatArea(geom);
+      return [
+        { name: `${area.type} in ${area.unit}`, value: area.size },
+        { name: 'center', value: toLonLat(getCentroid(f)) }];
+    }
+    if (type == 'LineString') {
+      let length = HsMeasureService.formatLength(geom);
+      return [
+        { name: `${length.type} in ${length.unit}`, value: length.size },
+        { name: 'center', value: toLonLat(getCentroid(f)) }];
+    }
+    if (type == 'Point') {
+      return [{ name: 'center', value: toLonLat(getCentroid(f)) }]
+    }
   }
   /**
    * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
@@ -175,7 +203,7 @@ export default function (
       layer: getFeatureLayerName(feature),
       name: 'Feature',
       attributes: attributes,
-      stats: [{name: 'center', value: toLonLat(getCentroid(feature))}],
+      stats: addDefaultStats(feature),
       hstemplate,
       feature,
       customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
