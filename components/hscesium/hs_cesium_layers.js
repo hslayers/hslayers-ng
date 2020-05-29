@@ -282,7 +282,7 @@ var me = {
       });
     } else {
       lyr.setVisible(
-        me.hs_map.isLayerVisible(lyr, me.hs_map.visible_layers) ||
+        me.hs_map.isLayerVisible(lyr, me.hs_map.visibleLayersInUrl) ||
           lyr.getVisible()
       );
       lyr.manuallyAdded = false;
