@@ -201,7 +201,7 @@ export default function (
         HsCompositionsParserService.removeCompositionLayers();
         const layers = HsCompositionsParserService.jsonToLayers(data);
         for (let i = 0; i < layers.length; i++) {
-          HsMapService.addLayer(layers[i]);
+          HsMapService.addLayer(layers[i], true);
         }
       } else {
         if (console) {
@@ -229,7 +229,7 @@ export default function (
         angular.fromJson(data)
       );
       for (let i = 0; i < layers.length; i++) {
-        HsMapService.addLayer(layers[i]);
+        HsMapService.addLayer(layers[i], false);
       }
       localStorage.removeItem('hs_layers');
     }
