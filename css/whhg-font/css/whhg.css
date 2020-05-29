@@ -14,6 +14,7 @@
 .icon-chevron-left:before{content:'\f489'}
 .icon-chevron-right:before{content:'\f488'}
 .icon-chevron-down:before{content:'\f48b'}
+.icon-check:before{content:'\f310'}
 .icon-database:before{content:'\f00b'}
 .icon-download:before{content:'\f47b'}
 .icon-facebook:before{content:'\f140'}
@@ -31,6 +32,7 @@
 .icon-question-sign:before{content:'\f0a3'}
 .icon-refresh:before{content:'\f078'}
 .icon-remove:before{content:'\00d7'}
+.icon-remove-circle:before{content:'\f470'}
 .icon-road:before{content:'\f249'}
 .icon-save-floppy:before{content:'\f0c8'}
 .icon-screenshot:before{content:'\f109'}
