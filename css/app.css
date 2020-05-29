@@ -253,6 +253,9 @@ ul.hs-comp-list {
 .form-control {
 	border-radius: 0;
 }
+.bsi input[type=range].form-control {
+	padding: 0;
+}
 
 .capabilities_label {
 	padding-right: 0px;
