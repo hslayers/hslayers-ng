@@ -133,7 +133,7 @@ export default function (
         );
       const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
-        HsMapService.repopulateLayer(lyr);
+        HsMapService.addLayer(lyr, true);
       });
 
       if (angular.isObject(obj.current_base_layer)) {

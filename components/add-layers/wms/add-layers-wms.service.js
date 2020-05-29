@@ -395,7 +395,7 @@ export default function (
         if (angular.isDefined(group)) {
           group.addLayer(layer);
         } else {
-          HsMapService.map.addLayer(layer);
+          HsMapService.addLayer(layer, true);
         }
       });
     });

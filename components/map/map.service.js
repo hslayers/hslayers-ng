@@ -218,7 +218,7 @@ export default function (
       });
     }
 
-    me.repopulateLayers();
+    me.repopulateLayers(me.visible_layers);
 
     proj4.defs(
       'EPSG:5514',
@@ -476,74 +476,80 @@ export default function (
       });
   };
 
-  this.addLayer = (lyr) => {
-    if (me.layerDuplicate(lyr)) {
+  /**
+   * @ngdoc method
+   * @name HsMapService#addLayer
+   * @param {ol/Layer} lyr Layer to add
+   * @param {boolean} removeIfExists True if we want to remove layer with the same title in case it exists
+   * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
+   * @description Function to add layer to map which also checks if
+   * the layer is not already present and also proxifies the layer if needed.
+   * Generally for non vector layers it would be better to use this function then to add to OL map directly
+   * and rely on layer manager service to do the proxifiction and also its shorter then to use HsMapService.map.addLayer.
+   * @returns {ol/Layer} OL layer
+   */
+  this.addLayer = (lyr, removeIfExists, visibilityOverrides) => {
+    if (removeIfExists && me.layerDuplicate(lyr)) {
       me.removeDuplicate(lyr);
     }
+    if (angular.isDefined(visibilityOverrides)) {
+      lyr.setVisible(me.layerTitleInArray(lyr, visibilityOverrides));
+    }
+    lyr.manuallyAdded = false;
+    const source = lyr.getSource();
+    if (
+      HsUtilsService.instOf(source, ImageWMS) ||
+      HsUtilsService.instOf(source, ImageArcGISRest)
+    ) {
+      me.proxifyLayerLoader(lyr, false);
+    }
+    if (
+      HsUtilsService.instOf(source, TileWMS) ||
+      HsUtilsService.instOf(source, TileArcGISRest)
+    ) {
+      me.proxifyLayerLoader(lyr, true);
+    }
+    if (
+      HsUtilsService.instOf(source, XYZ) &&
+      !HsUtilsService.instOf(source, OSM)
+    ) {
+      me.proxifyLayerLoader(lyr, true);
+    }
+    if (HsUtilsService.instOf(source, Vector)) {
+      me.getVectorType(lyr);
+    }
+    if (HsUtilsService.instOf(source, Static)) {
+      //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
+      source.url_ = HsUtilsService.proxify(source.getUrl());
+    }
     me.map.addLayer(lyr);
+    return lyr;
   };
 
   /**
    * @ngdoc method
    * @name HsMapService#repopulateLayers
    * @public
-   * @param {object} visible_layers List of layers, which should be visible.
-   * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+   * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
+   * should be visible. Usefull when the layer visibility is stored in a URL parameter
+   * @description Add all layers from app config (box_layers and default_layers) to the map.
+   * Only layers specified in visibilityOverrides parameter will get instantly visible.
    */
-  this.repopulateLayers = (visible_layers) => {
+  this.repopulateLayers = (visibilityOverrides) => {
     if (angular.isDefined(HsConfig.box_layers)) {
       angular.forEach(HsConfig.box_layers, (box) => {
         angular.forEach(box.get('layers'), (lyr) => {
-          repopulateLayer(lyr);
+          me.addLayer(lyr, false, visibilityOverrides);
         });
       });
     }
 
     if (angular.isDefined(HsConfig.default_layers)) {
       angular.forEach(HsConfig.default_layers, (lyr) => {
-        repopulateLayer(lyr);
+        me.addLayer(lyr, false, visibilityOverrides);
       });
     }
   };
-
-  /**
-   * @param lyr
-   */
-  function repopulateLayer(lyr) {
-    if (!me.layerDuplicate(lyr)) {
-      lyr.setVisible(me.isLayerVisible(lyr, me.visible_layers));
-      lyr.manuallyAdded = false;
-      const source = lyr.getSource();
-      if (
-        HsUtilsService.instOf(source, ImageWMS) ||
-        HsUtilsService.instOf(source, ImageArcGISRest)
-      ) {
-        me.proxifyLayerLoader(lyr, false);
-      }
-      if (
-        HsUtilsService.instOf(source, TileWMS) ||
-        HsUtilsService.instOf(source, TileArcGISRest)
-      ) {
-        me.proxifyLayerLoader(lyr, true);
-      }
-      if (
-        HsUtilsService.instOf(source, XYZ) &&
-        !HsUtilsService.instOf(source, OSM)
-      ) {
-        me.proxifyLayerLoader(lyr, true);
-      }
-      if (HsUtilsService.instOf(source, Vector)) {
-        me.getVectorType(lyr);
-      }
-      if (HsUtilsService.instOf(source, Static)) {
-        //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-        source.url_ = HsUtilsService.proxify(source.getUrl());
-      }
-      me.map.addLayer(lyr);
-    }
-  }
-
-  this.repopulateLayer = repopulateLayer;
 
   this.getVectorType = function (layer) {
     let src = [];
@@ -629,17 +635,18 @@ export default function (
 
   /**
    * @ngdoc method
-   * @name HsMapService#isLayerVisible
+   * @name HsMapService#layerTitleInArray
    * @public
    * @param {ol.Layer} lyr Layer for which to determine visibility
-   * @param {Array} visible_layers Layers which should be programmticaly visible
+   * @param {Array} array Layer title toc check in.
    * @returns {boolean} Detected visibility of layer
-   * @description Determine if layer is visible, either by its visibility status in map, or by its being in visible_layers group
+   * @description Checks if layer title is present in an array of layer titles.
+   * Used to set visibility by URL parameter which contains visible layer titles
    */
-  this.isLayerVisible = function (lyr, visible_layers) {
-    if (visible_layers) {
+  this.layerTitleInArray = function (lyr, array) {
+    if (array) {
       let found = false;
-      angular.forEach(visible_layers, (vlyr) => {
+      angular.forEach(array, (vlyr) => {
         if (vlyr == lyr.get('title')) {
           found = true;
         }

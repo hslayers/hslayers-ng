@@ -156,7 +156,7 @@ export default {
         dimensions: dimensions,
       });
 
-      HsMapService.map.addLayer(new_layer);
+      HsMapService.addLayer(new_layer, true);
     };
   },
 };
