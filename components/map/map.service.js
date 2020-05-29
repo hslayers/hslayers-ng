@@ -218,7 +218,7 @@ export default function (
       });
     }
 
-    me.repopulateLayers(me.visible_layers);
+    me.repopulateLayers(me.visibleLayersInUrl);
 
     proj4.defs(
       'EPSG:5514',
@@ -645,13 +645,7 @@ export default function (
    */
   this.layerTitleInArray = function (lyr, array) {
     if (array) {
-      let found = false;
-      angular.forEach(array, (vlyr) => {
-        if (vlyr == lyr.get('title')) {
-          found = true;
-        }
-      });
-      return found;
+      return array.filter((title) => title == lyr.get('title')).length > 0;
     }
     return lyr.getVisible();
   };
@@ -774,7 +768,7 @@ export default function (
    * @returns {ol.Map} ol.Map
    */
   this.getMap = function () {
-    return OlMap.map;
+    return me.map;
   };
 
   this.removeAllLayers = function () {
