@@ -22,7 +22,7 @@ export default function (HsMapService, HsWmtsGetCapabilitiesService) {
         if (angular.isDefined(box)) {
           box.get('layers').push(layer);
         }
-        HsMapService.map.addLayer(layer);
+        HsMapService.addLayer(layer, true);
       });
     });
   };

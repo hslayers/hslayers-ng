@@ -35,7 +35,7 @@ export default function (HsMapService, HsUtilsService) {
           options
         );
         if (HsMapService.map) {
-          HsMapService.map.addLayer(lyr);
+          HsMapService.addLayer(lyr, true);
         }
         resolve(lyr);
       } catch (ex) {
