@@ -14,7 +14,7 @@
         <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
         <ul class="list-group">
             <li ng-repeat="measurement in data.measurements" class="list-group-item">
-                {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='area'"><sup>2</sup></span>
+                {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='Area'"><sup>2</sup></span>
             </li>
         </ul>
     </div>
