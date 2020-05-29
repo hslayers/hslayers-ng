@@ -25,7 +25,7 @@ export default {
           HsMapService.map.removeLayer(tmpLayer)  
         }
 
-        vm.attributes.forEach((a) => (dic[a.name] = a.value));
+        vm.attributes.forEach((a) => {dic[a.name] = a.value});
         let editorConfig = vm.layer.get('editor');
         if (angular.isUndefined(editorConfig)) {
           editorConfig = {};
@@ -34,7 +34,7 @@ export default {
         editorConfig.defaultAttributes = dic;
 
         vm.layer.getSource().forEachFeature((f)=>{
-          f.setProperties(dic)
+          f.setProperties(dic);
         })
 
         HsDrawService.addDrawLayer(vm.layer);
