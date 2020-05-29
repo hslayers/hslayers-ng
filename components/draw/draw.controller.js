@@ -63,7 +63,7 @@ export default function (
         return;
       }
       else {
-        if(HsDrawService.drawableLayers.length == 0){
+        if(HsDrawService.drawableLayers.length == 0 && !HsDrawService.tmpDrawLayer){
           const drawLayer = new VectorLayer({
             title: 'tmpDrawLayer',
             source: new Vector(),
@@ -101,6 +101,11 @@ export default function (
         true //Activate drawing immediately
       );
     },
+    onDrawStart(){
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    },
     finishDrawing() {
       HsDrawService.draw.finishDrawing();
     },
@@ -113,7 +118,7 @@ export default function (
     },
     selectedLayerString() {
       if (HsDrawService.selectedLayer) {
-        return (
+        return HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer' ? 'Unsaved drawing' : (
           HsDrawService.selectedLayer.get('title') ||
           HsDrawService.selectedLayer.get('name')
         );
