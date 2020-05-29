@@ -81,8 +81,6 @@ export default function (
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
       });
       me.selectedLayer = drawLayer;
-      HsMapService.map.removeLayer(tmpLayer)
-
       const el = angular.element(
         '<hs.draw-layer-metadata layer="service.selectedLayer"></draw-layer-metadata>'
       );
