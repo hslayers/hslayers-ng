@@ -3,7 +3,7 @@ export default {
   bindings: {
     layer: '<',
   },
-  controller: function ($scope, $timeout, HsDrawService) {
+  controller: function ($scope, $timeout, HsDrawService, HsMapService) {
     'ngInject';
     this.modalVisible = true;
     const vm = this;
@@ -19,6 +19,12 @@ export default {
       },
       confirm() {
         const dic = {};
+
+        let tmpLayer = HsMapService.findLayerByTitle('tmpDrawLayer') || null;
+        if (tmpLayer) {
+          HsMapService.map.removeLayer(tmpLayer)  
+        }
+
         vm.attributes.forEach((a) => (dic[a.name] = a.value));
         let editorConfig = vm.layer.get('editor');
         if (angular.isUndefined(editorConfig)) {
@@ -26,9 +32,15 @@ export default {
           vm.layer.set('editor', editorConfig);
         }
         editorConfig.defaultAttributes = dic;
+
+        vm.layer.getSource().forEachFeature((f)=>{
+          f.setProperties(dic)
+        })
+
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
+        HsDrawService.tmpDrawLayer = false;
       },
       pathChanged() {
         vm.layer.set('path', vm.path);
