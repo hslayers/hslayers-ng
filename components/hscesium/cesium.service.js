@@ -1,7 +1,4 @@
-import 'permalink.module';
-import HsCsCamera from 'hs_cesium_camera';
-import HsCsLayers from 'hs_cesium_layers';
-import HsCsTime from 'hs_cesium_time';
+import '../permalink/permalink.module';
 import {transformExtent} from 'ol/proj';
 
 /**
@@ -11,15 +8,19 @@ import {transformExtent} from 'ol/proj';
  * @param HsMapService
  * @param HsLayermanagerService
  * @param HsLayoutService
+ * @param HsCesiumCameraService
+ * @param HsCesiumLayersService
+ * @param HsCesiumTimeService
  */
 export default function (
   HsConfig,
   $rootScope,
-  HsUtilsService,
   HsMapService,
   HsLayermanagerService,
   HsLayoutService,
-  $location
+  HsCesiumCameraService,
+  HsCesiumLayersService,
+  HsCesiumTimeService
 ) {
   'ngInject';
   const me = this;
@@ -137,21 +138,9 @@ export default function (
     }
 
     me.viewer = viewer;
-    HsCsCamera.init(viewer, HsMapService);
-    HsCsTime.init(viewer, HsMapService, me, $rootScope, HsCsLayers);
-    HsCsLayers.init(
-      viewer,
-      HsMapService,
-      me,
-      $rootScope,
-      HsConfig,
-      HsUtilsService,
-      $location
-    );
-
-    me.HsCsCamera = HsCsCamera;
-    me.HsCsTime = HsCsTime;
-    me.HsCsLayers = HsCsLayers;
+    HsCesiumCameraService.init(this);
+    HsCesiumLayersService.init(this);
+    HsCesiumTimeService.init(this);
 
     window.addEventListener('blur', () => {
       if (viewer.isDestroyed()) {
@@ -169,11 +158,11 @@ export default function (
 
     viewer.camera.moveEnd.addEventListener((e) => {
       if (!HsMapService.visible) {
-        const center = HsCsCamera.getCameraCenterInLngLat();
+        const center = HsCesiumCameraService.getCameraCenterInLngLat();
         if (center == null) {
           return;
         } //Not looking on the map but in the sky
-        const viewport = HsCsCamera.getViewportPolygon();
+        const viewport = HsCesiumCameraService.getViewportPolygon();
         $rootScope.$broadcast('map.sync_center', center, viewport);
       }
     });
@@ -187,7 +176,7 @@ export default function (
     $rootScope.$on('map.extent_changed', (event, data, b) => {
       const view = HsMapService.map.getView();
       if (HsMapService.visible) {
-        HsCsCamera.setExtentEqualToOlExtent(view);
+        HsCesiumCameraService.setExtentEqualToOlExtent(view);
       }
     });
 
@@ -227,6 +216,7 @@ export default function (
           }
           const iframe = document.querySelector('.cesium-infoBox-iframe');
           if (iframe) {
+            // eslint-disable-next-line angular/timeout-service
             setTimeout(() => {
               const innerDoc = iframe.contentDocument
                 ? iframe.contentDocument
@@ -297,7 +287,7 @@ export default function (
   };
 
   this.dimensionChanged = function (layer, dimension) {
-    var layer = layer.cesium_layer;
+    layer = layer.cesium_layer;
     if (
       angular.isUndefined(layer.prm_cache) ||
       angular.isUndefined(layer.prm_cache.dimensions) ||
@@ -305,8 +295,12 @@ export default function (
     ) {
       return;
     }
-    me.HsCsLayers.changeLayerParam(layer, dimension.name, dimension.value);
-    me.HsCsLayers.removeLayersWithOldParams();
+    HsCesiumLayersService.changeLayerParam(
+      layer,
+      dimension.name,
+      dimension.value
+    );
+    HsCesiumLayersService.removeLayersWithOldParams();
   };
 
   this.resize = function (event, size) {
@@ -331,8 +325,8 @@ export default function (
     $rootScope.$broadcast('cesiummap.resized', viewer, me);
   };
 
-  this.getCameraCenterInLngLat = HsCsCamera.getCameraCenterInLngLat;
-  this.linkOlLayerToCesiumLayer = HsCsLayers.linkOlLayerToCesiumLayer;
-  this.broadcastLayerList = HsCsTime.broadcastLayerList;
+  this.getCameraCenterInLngLat = HsCesiumCameraService.getCameraCenterInLngLat;
+  this.linkOlLayerToCesiumLayer =
+    HsCesiumLayersService.linkOlLayerToCesiumLayer;
   return me;
 }

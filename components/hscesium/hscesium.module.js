@@ -1,4 +1,7 @@
-import hscesiumService from './hscesium.service';
+import HsCesiumService from './cesium.service';
+import {HsCesiumCameraService} from './cesium-camera.service';
+import {HsCesiumLayersService} from './cesium-layers.service';
+import {HsCesiumTimeService} from './cesium-time.service';
 
 /**
  * @ngdoc module
@@ -18,7 +21,31 @@ angular
    * @ngdoc service
    * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
    */
-  .factory('HsCesiumService', hscesiumService)
+  .factory('HsCesiumService', HsCesiumService)
+
+  /**
+   * @module hs.cesium
+   * @name HsCesiumTime
+   * @ngdoc service
+   * @description Manages cesium timeline integration with HsLayers
+   */
+  .service('HsCesiumTimeService', HsCesiumTimeService)
+
+  /**
+   * @module hs.cesium
+   * @name HsCesiumTime
+   * @ngdoc service
+   * @description Manages cesium and openlayers layers integration
+   */
+  .service('HsCesiumLayersService', HsCesiumLayersService)
+
+  /**
+   * @module hs.cesium
+   * @name HsCesiumTime
+   * @ngdoc service
+   * @description Manages cesium and openlayers camera synchronization
+   */
+  .service('HsCesiumCameraService', HsCesiumCameraService)
 
   /**
    * @module hs.cesium
