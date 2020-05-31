@@ -1,13 +1,10 @@
 import moment from 'moment';
-import ol from 'ol';
 import {GeoJSON, KML} from 'ol/format';
-import {Group, Tile} from 'ol/layer';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
-import {OSM, TileWMS, WMTS} from 'ol/source';
+import {Group} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
+import {OSM, TileWMS} from 'ol/source';
 import {Vector} from 'ol/source';
 import {default as proj4} from 'proj4';
-
-let utils;
 
 /**
  * @param proxy
@@ -18,79 +15,99 @@ function MyProxy(proxy, maxResolution) {
   this.maxResolution = maxResolution;
 }
 
-/**
- * @param config
- */
-function defineProxy($location) {
-  MyProxy.prototype.getURL = function (resource) {
-    const blank_url = `${
-      this.proxy
-    }${$location.protocol()}//${$location.host()}${$location.path()}img/blank.png`;
-    const prefix =
-      this.proxy.indexOf('?') === -1 && this.proxy.indexOf('hsproxy') > -1
-        ? '?'
-        : '';
-    if (this.maxResolution <= 8550) {
-      if (
-        resource.indexOf('bbox=0%2C0%2C45') > -1 ||
-        resource.indexOf('bbox=0, 45') > -1
-      ) {
-        return blank_url;
-      } else {
-        const params = utils.getParamsFromUrl(resource);
-        const bbox = params.bbox.split(',');
-        const dist = Math.sqrt(
-          Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
-        );
-        const projection = getProjectFromVersion(
-          params.version,
-          params.srs,
-          params.crs
-        );
-        if (projection == 'EPSG:3857') {
-          if (dist > 1000000) {
-            return blank_url;
+export class HsCesiumLayersService {
+  constructor(HsMapService, $rootScope, HsConfig, HsUtilsService, $location) {
+    'ngInject';
+    this.$location = $location;
+    this.HsMapService = HsMapService;
+    this.$rootScope = $rootScope;
+    this.HsConfig = HsConfig;
+    this.HsUtilsService = HsUtilsService;
+    this.layersToBeDeleted = [];
+  }
+
+  init(HsCesiumService) {
+    this.HsCesiumService = HsCesiumService;
+    this.viewer = HsCesiumService.viewer;
+    this.defineProxy(this.$location, this);
+    this.setupEvents();
+  }
+
+  /**
+   * @param HsConfig
+   * @param $location
+   * @param HsCesiumLayersService
+   */
+  defineProxy($location, HsCesiumLayersService) {
+    MyProxy.prototype.getURL = function (resource) {
+      const blank_url = `${
+        this.proxy
+      }${$location.protocol()}//${$location.host()}${$location.path()}img/blank.png`;
+      const prefix =
+        this.proxy.indexOf('?') === -1 && this.proxy.indexOf('hsproxy') > -1
+          ? '?'
+          : '';
+      if (this.maxResolution <= 8550) {
+        if (
+          resource.indexOf('bbox=0%2C0%2C45') > -1 ||
+          resource.indexOf('bbox=0, 45') > -1
+        ) {
+          return blank_url;
+        } else {
+          const params = HsCesiumLayersService.HsUtilsService.getParamsFromUrl(
+            resource
+          );
+          const bbox = params.bbox.split(',');
+          const dist = Math.sqrt(
+            Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
+          );
+          const projection = HsCesiumLayersService.getProjectFromVersion(
+            params.version,
+            params.srs,
+            params.crs
+          );
+          if (projection == 'EPSG:3857') {
+            if (dist > 1000000) {
+              return blank_url;
+            }
           }
-        }
-        if (projection == 'EPSG:4326') {
-          if (dist > 1) {
-            return blank_url;
+          if (projection == 'EPSG:4326') {
+            if (dist > 1) {
+              return blank_url;
+            }
           }
         }
       }
-    }
-    resource = resource.replaceAll('fromcrs', 'FROMCRS');
-    if (resource.indexOf('proxy4ows') > -1) {
-      return resource;
-    }
-    return (
-      this.proxy +
-      prefix +
-      (this.proxy.indexOf('hsproxy') > -1
-        ? encodeURIComponent(resource)
-        : resource)
-    );
-  };
-}
-
-/**
- * @param version
- * @param srs
- * @param crs
- */
-function getProjectFromVersion(version, srs, crs) {
-  if (version == '1.1.1') {
-    return srs;
+      resource = resource.replaceAll('fromcrs', 'FROMCRS');
+      if (resource.indexOf('proxy4ows') > -1) {
+        return resource;
+      }
+      return (
+        this.proxy +
+        prefix +
+        (this.proxy.indexOf('hsproxy') > -1
+          ? encodeURIComponent(resource)
+          : resource)
+      );
+    };
   }
-  if (version == '1.3.1') {
-    return crs;
-  }
-}
 
-var me = {
-  to_be_deleted: [],
+  /**
+   * @param version
+   * @param srs
+   * @param crs
+   */
+  getProjectFromVersion(version, srs, crs) {
+    if (version == '1.1.1') {
+      return srs;
+    }
+    if (version == '1.3.1') {
+      return crs;
+    }
+  }
+
   setupEvents() {
-    me.$rootScope.$on(
+    this.$rootScope.$on(
       'layermanager.base_layer_visible_changed',
       (event, data, b) => {
         if (
@@ -103,11 +120,11 @@ var me = {
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
             const terrain_provider = Cesium.createWorldTerrain(
-              me.config.createWorldTerrainOptions
+              this.HsConfig.createWorldTerrainOptions
             );
-            me.viewer.terrainProvider = terrain_provider;
+            this.viewer.terrainProvider = terrain_provider;
           } else {
-            me.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+            this.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
               url: data.url,
             });
           }
@@ -115,52 +132,37 @@ var me = {
       }
     );
 
-    setTimeout(() => {
-      me.repopulateLayers(null);
-      me.hs_cesium.broadcastLayerList();
-    }, 3500);
+    this.repopulateLayers();
 
-    me.hs_map.map.getLayers().on('add', (e) => {
+    this.HsMapService.map.getLayers().on('add', (e) => {
       const lyr = e.element;
-      me.processOlLayer(lyr);
+      this.processOlLayer(lyr);
     });
-  },
+  }
 
   /**
    * @ngdoc method
    * @name HsCesiumService#repopulateLayers
    * @public
-   * @param {object} visible_layers List of layers, which should be visible.
-   * @description Add all layers from app config (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+   * @description Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
-  repopulateLayers(visible_layers) {
-    if (me.viewer.isDestroyed()) {
+  repopulateLayers() {
+    if (this.viewer.isDestroyed()) {
       return;
     }
-    if (angular.isDefined(me.config.default_layers)) {
-      angular.forEach(me.config.default_layers, me.processOlLayer);
+    if (angular.isDefined(this.HsConfig.default_layers)) {
+      this.HsConfig.default_layers.forEach((l) => this.processOlLayer(l));
     }
-    if (angular.isDefined(me.config.box_layers)) {
-      angular.forEach(me.config.box_layers, me.processOlLayer);
+    if (angular.isDefined(this.HsConfig.box_layers)) {
+      this.HsConfig.box_layers.forEach((l) => this.processOlLayer(l));
     }
     //Some layers might be loaded from cookies before cesium service was called
-    angular.forEach(me.hs_map.map.getLayers(), (lyr) => {
+    this.HsMapService.map.getLayers().forEach((lyr) => {
       if (angular.isUndefined(lyr.cesium_layer)) {
-        me.processOlLayer(lyr);
+        this.processOlLayer(lyr);
       }
     });
-  },
-
-  init: function (viewer, hs_map, hs_cesium, $rootScope, config, _utils, $location) {
-    me.viewer = viewer;
-    me.hs_map = hs_map;
-    me.hs_cesium = hs_cesium;
-    me.$rootScope = $rootScope;
-    me.config = config;
-    defineProxy($location);
-    me.setupEvents();
-    utils = _utils;
-  },
+  }
 
   serializeVectorLayerToGeoJson(ol_source) {
     const f = new GeoJSON();
@@ -193,7 +195,9 @@ var me = {
     const json = f.writeFeaturesObject(features);
     //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     //ol_source.cesium_layer.entities.removeAll();
-    if (me.hs_map.map.getView().getProjection().getCode() == 'EPSG:3857') {
+    if (
+      this.HsMapService.map.getView().getProjection().getCode() == 'EPSG:3857'
+    ) {
       json.crs = {
         type: 'name',
         properties: {
@@ -202,7 +206,7 @@ var me = {
       };
     }
     return json;
-  },
+  }
 
   linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
     ol_layer.cesium_layer = cesium_layer;
@@ -213,17 +217,17 @@ var me = {
     ol_layer.on('change:opacity', (e) => {
       e.target.cesium_layer.alpha = parseFloat(ol_layer.getOpacity());
     });
-  },
+  }
 
   linkOlSourceToCesiumDatasource(ol_source, cesium_layer) {
     ol_source.cesium_layer = cesium_layer;
-    me.syncFeatures(ol_source);
+    this.syncFeatures(ol_source);
     ol_source.on('features:loaded', (e) => {
       if (e.target.cesium_layer) {
-        me.syncFeatures(e.target);
+        this.syncFeatures(e.target);
       }
     });
-  },
+  }
 
   syncFeatures(ol_source) {
     const tmp_source = new Cesium.GeoJsonDataSource('tmp');
@@ -245,10 +249,10 @@ var me = {
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const promise = tmp_source.load(
-      me.serializeVectorLayerToGeoJson(ol_source),
+      this.serializeVectorLayerToGeoJson(ol_source),
       {
-        camera: me.viewer.scene.camera,
-        canvas: me.viewer.scene.canvas,
+        camera: this.viewer.scene.camera,
+        canvas: this.viewer.scene.canvas,
         clampToGround: true,
       }
     );
@@ -257,8 +261,9 @@ var me = {
       source.entities.values.forEach((entity) => {
         try {
           if (
-            typeof ol_source.cesium_layer.entities.getById(entity.id) ==
-            'undefined'
+            angular.isUndefined(
+              ol_source.cesium_layer.entities.getById(entity.id)
+            )
           ) {
             //console.log('Adding', entity.id);
             ol_source.cesium_layer.entities.add(entity);
@@ -273,42 +278,44 @@ var me = {
       ol_source.cesiumStyler(ol_source.cesium_layer);
       //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     });
-  },
+  }
 
   processOlLayer(lyr) {
-    if (utils.instOf(lyr, Group)) {
+    if (this.HsUtilsService.instOf(lyr, Group)) {
       angular.forEach(lyr.layers, (sub_lyr) => {
-        me.processOlLayer(sub_lyr);
+        this.processOlLayer(sub_lyr);
       });
     } else {
       lyr.setVisible(
-        me.hs_map.isLayerVisible(lyr, me.hs_map.visibleLayersInUrl) ||
-          lyr.getVisible()
+        this.HsMapService.isLayerVisible(
+          lyr,
+          this.HsMapService.visibleLayersInUrl
+        ) || lyr.getVisible()
       );
       lyr.manuallyAdded = false;
-      if (utils.instOf(lyr.getSource(), ImageWMS)) {
-        me.hs_map.proxifyLayerLoader(lyr, false);
+      if (this.HsUtilsService.instOf(lyr.getSource(), ImageWMS)) {
+        this.HsMapService.proxifyLayerLoader(lyr, false);
       }
-      if (utils.instOf(lyr.getSource(), TileWMS)) {
-        me.hs_map.proxifyLayerLoader(lyr, true);
+      if (this.HsUtilsService.instOf(lyr.getSource(), TileWMS)) {
+        this.HsMapService.proxifyLayerLoader(lyr, true);
       }
-      const cesium_layer = me.convertOlToCesiumProvider(lyr);
+      const cesium_layer = this.convertOlToCesiumProvider(lyr);
       if (angular.isDefined(cesium_layer)) {
-        if (utils.instOf(cesium_layer, Cesium.ImageryLayer)) {
-          me.linkOlLayerToCesiumLayer(lyr, cesium_layer);
-          me.viewer.imageryLayers.add(cesium_layer);
+        if (this.HsUtilsService.instOf(cesium_layer, Cesium.ImageryLayer)) {
+          this.linkOlLayerToCesiumLayer(lyr, cesium_layer);
+          this.viewer.imageryLayers.add(cesium_layer);
         } else {
-          me.viewer.dataSources.add(cesium_layer);
+          this.viewer.dataSources.add(cesium_layer);
           if (lyr.get('title') != 'Point clicked') {
-            me.linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
+            this.linkOlSourceToCesiumDatasource(lyr.getSource(), cesium_layer);
           }
         }
       }
     }
-  },
+  }
 
   convertOlToCesiumProvider(ol_lyr) {
-    if (utils.instOf(ol_lyr.getSource(), OSM)) {
+    if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new Cesium.ImageryLayer(
         new Cesium.OpenStreetMapImageryProvider(),
         {
@@ -316,12 +323,12 @@ var me = {
           minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15,
         }
       );
-    } else if (utils.instOf(ol_lyr.getSource(), TileWMS)) {
-      return me.createTileProvider(ol_lyr);
-    } else if (utils.instOf(ol_lyr.getSource(), ImageWMS)) {
-      return me.createSingleImageProvider(ol_lyr);
-    } else if (utils.instOf(ol_lyr.getSource(), Vector)) {
-      return me.createVectorDataSource(ol_lyr);
+    } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
+      return this.createTileProvider(ol_lyr);
+    } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), ImageWMS)) {
+      return this.createSingleImageProvider(ol_lyr);
+    } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), Vector)) {
+      return this.createVectorDataSource(ol_lyr);
     } else {
       if (console) {
         console.error(
@@ -331,16 +338,16 @@ var me = {
         );
       }
     }
-  },
+  }
 
   createVectorDataSource(ol_lyr) {
     if (
       angular.isDefined(ol_lyr.getSource().getFormat()) &&
-      utils.instOf(ol_lyr.getSource().getFormat(), KML)
+      this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
     ) {
       return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(), {
-        camera: viewer.scene.camera,
-        canvas: viewer.scene.canvas,
+        camera: this.viewer.scene.camera,
+        canvas: this.viewer.scene.canvas,
         clampToGround: ol_lyr.getSource().get('clampToGround') || true,
       });
     } else {
@@ -351,7 +358,7 @@ var me = {
       });
       return new_source;
     }
-  },
+  }
 
   createTileProvider(ol_lyr) {
     const src = ol_lyr.getSource();
@@ -368,8 +375,8 @@ var me = {
       url: new Cesium.Resource({
         url: src.getUrls()[0],
         proxy: new MyProxy(
-          me.config.proxyPrefix
-            ? me.config.proxyPrefix
+          this.HsConfig.proxyPrefix
+            ? this.HsConfig.proxyPrefix
             : '/cgi-bin/hsproxy.cgi?url=',
           ol_lyr.getMaxResolution()
         ),
@@ -392,7 +399,7 @@ var me = {
     };
     const tmp = new Cesium.ImageryLayer(
       new Cesium.WebMapServiceImageryProvider(
-        me.removeUnwantedParams(prm_cache, src)
+        this.removeUnwantedParams(prm_cache, src)
       ),
       {
         alpha: ol_lyr.getOpacity() || 0.7,
@@ -401,7 +408,7 @@ var me = {
     );
     tmp.prm_cache = prm_cache;
     return tmp;
-  },
+  }
 
   //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
   createSingleImageProvider(ol_lyr) {
@@ -421,8 +428,8 @@ var me = {
       url: new Cesium.Resource({
         url: src.getUrl(),
         proxy: new MyProxy(
-          me.config.proxyPrefix
-            ? me.config.proxyPrefix
+          this.HsConfig.proxyPrefix
+            ? this.HsConfig.proxyPrefix
             : '/cgi-bin/hsproxy.cgi?url=',
           ol_lyr.getMaxResolution()
         ),
@@ -447,7 +454,7 @@ var me = {
 
     const tmp = new Cesium.ImageryLayer(
       new Cesium.WebMapServiceImageryProvider(
-        me.removeUnwantedParams(prm_cache, src)
+        this.removeUnwantedParams(prm_cache, src)
       ),
       {
         alpha: ol_lyr.getOpacity() || 0.7,
@@ -456,21 +463,21 @@ var me = {
     );
     tmp.prm_cache = prm_cache;
     return tmp;
-  },
+  }
 
   removeUnwantedParams(prm_cache, src) {
     if (angular.isDefined(prm_cache.parameters.dimensions)) {
       delete prm_cache.parameters.dimensions;
     }
     return prm_cache;
-  },
+  }
 
   changeLayerParam(layer, parameter, new_value) {
     new_value = moment(new_value).isValid()
       ? moment(new_value).toISOString()
       : new_value;
     layer.prm_cache.parameters[parameter] = new_value;
-    me.to_be_deleted.push(layer);
+    this.layersToBeDeleted.push(layer);
     const tmp = new Cesium.ImageryLayer(
       new Cesium.WebMapServiceImageryProvider(layer.prm_cache),
       {
@@ -479,15 +486,13 @@ var me = {
       }
     );
     tmp.prm_cache = layer.prm_cache;
-    me.linkOlLayerToCesiumLayer(layer.ol_layer, tmp);
-    me.viewer.imageryLayers.add(tmp);
-  },
+    this.linkOlLayerToCesiumLayer(layer.ol_layer, tmp);
+    this.viewer.imageryLayers.add(tmp);
+  }
 
   removeLayersWithOldParams() {
-    while (me.to_be_deleted.length > 0) {
-      me.viewer.imageryLayers.remove(me.to_be_deleted.pop());
+    while (this.layersToBeDeleted.length > 0) {
+      this.viewer.imageryLayers.remove(this.layersToBeDeleted.pop());
     }
-  },
-};
-
-export default me;
+  }
+}

@@ -1,23 +1,35 @@
 import moment from 'moment';
-const me = {};
 
-export default {
+export class HsCesiumTimeService {
+  constructor(HsMapService, $rootScope, HsCesiumLayersService) {
+    'ngInject';
+    this.HsMapService = HsMapService;
+    this.$rootScope = $rootScope;
+    this.HsCesiumLayersService = HsCesiumLayersService;
+  }
+
+  init(HsCesiumService) {
+    this.HsCesiumService = HsCesiumService;
+    this.viewer = HsCesiumService.viewer;
+    this.monitorTimeLine();
+  }
+
   monitorTimeLine() {
     Cesium.knockout
-      .getObservable(me.viewer.clockViewModel, 'currentTime')
+      .getObservable(this.viewer.clockViewModel, 'currentTime')
       .subscribe((value) => {
         let something_changed = false;
-        for (let i = 0; i < me.viewer.imageryLayers.length; i++) {
+        for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
           let round_time = new Date(value.toString());
           round_time.setMilliseconds(0);
           round_time.setMinutes(0);
           round_time.setSeconds(0);
 
-          const layer = me.viewer.imageryLayers.get(i);
+          const layer = this.viewer.imageryLayers.get(i);
           if (
             layer.imageryProvider instanceof Cesium.WebMapServiceImageryProvider
           ) {
-            if (layer.prm_cache && me.getTimeParameter(layer)) {
+            if (layer.prm_cache && this.getTimeParameter(layer)) {
               if (angular.isDefined(layer.prm_cache.dimensions.time)) {
                 let min_dist = Number.MAX_VALUE;
                 let min_i = -1;
@@ -38,14 +50,14 @@ export default {
               const diff = Math.abs(
                 round_time -
                   new Date(
-                    layer.prm_cache.parameters[me.getTimeParameter(layer)]
+                    layer.prm_cache.parameters[this.getTimeParameter(layer)]
                   )
               );
               if (diff > 1000 * 60) {
-                //console.log('Was', layer.prm_cache.parameters[me.getTimeParameter(layer)], 'New', round_time)
-                me.HsCsLayers.changeLayerParam(
+                //console.log('Was', layer.prm_cache.parameters[this.getTimeParameter(layer)], 'New', round_time)
+                this.HsCesiumLayersService.changeLayerParam(
                   layer,
-                  me.getTimeParameter(layer),
+                  this.getTimeParameter(layer),
                   round_time.toISOString()
                 );
                 something_changed = true;
@@ -53,30 +65,29 @@ export default {
             }
           }
         }
-        me.HsCsLayers.removeLayersWithOldParams();
+        this.HsCesiumLayersService.removeLayersWithOldParams();
         if (something_changed) {
-          me.broadcastLayerList();
+          this.$rootScope.$broadcast(
+            'cesium.time_layers_changed',
+            this.getLayerListTimes()
+          );
         }
       });
-  },
-
-  broadcastLayerList() {
-    $rootScope.$broadcast('cesium.time_layers_changed', me.getLayerListTimes());
-  },
+  }
 
   getLayerListTimes() {
-    if (me.viewer.isDestroyed()) {
+    if (this.viewer.isDestroyed()) {
       return;
     }
     const tmp = [];
-    for (let i = 0; i < me.viewer.imageryLayers.length; i++) {
-      const layer = me.viewer.imageryLayers.get(i);
+    for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
+      const layer = this.viewer.imageryLayers.get(i);
       if (
         angular.isDefined(layer.ol_layer) &&
         angular.isDefined(layer.prm_cache)
       ) {
         const t = new Date(
-          layer.prm_cache.parameters[me.getTimeParameter(layer)]
+          layer.prm_cache.parameters[this.getTimeParameter(layer)]
         );
         tmp.push({
           name: layer.ol_layer.get('title'),
@@ -85,7 +96,7 @@ export default {
       }
     }
     return tmp;
-  },
+  }
 
   getTimeParameter(cesium_layer) {
     if (cesium_layer.prm_cache) {
@@ -98,14 +109,5 @@ export default {
     } else {
       return undefined;
     }
-  },
-
-  init: function (viewer, hs_map, hs_cesium, _$rootScope, HsCsLayers) {
-    me.viewer = viewer;
-    me.hs_map = hs_map;
-    me.hs_cesium = hs_cesium;
-    me.monitorTimeLine();
-    $rootScope = _$rootScope;
-    me.HsCsLayers = HsCsLayers;
-  },
-};
+  }
+}
