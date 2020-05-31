@@ -15,6 +15,7 @@
 .icon-chevron-right:before{content:'\f488'}
 .icon-database:before{content:'\f00b'}
 .icon-download:before{content:'\f47b'}
+.icon-edit:before{content:'\f47c'}
 .icon-facebook:before{content:'\f140'}
 .icon-gpsoff-gps:before{content:'\f21e'}
 .icon-info-sign:before{content:'\f315'}
@@ -48,3 +49,4 @@
 .icon-weightscale:before{content:'\f782'}
 .icon-cloudaltsync:before{content:'\f7ac'}
 .icon-textfield:before{content:'\f5d5'}
+.icon-time:before{content:'\f210'}
