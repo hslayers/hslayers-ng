@@ -12,12 +12,14 @@
         <div class="d-flex w-75 m-auto py-2 justify-content-around ">
             <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
             ng-click="service.saveDrawingLayer($scope, true)">
-                New drawing
+                New drawing layer
             </button>
-            <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button">
-                Load drawing
+            <button type="button" ng-click="setType(service.type)" class="btn btn-sm rounded btn-primary hs-toolbar-button"
+            ng-disabled="!service.type">
+                Disable drawing
             </button>
         </div>
+        <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;" ng-show="!service.type">Activate drawing by choosing a feature type</p>
         <div ng-show="service.type" class="btn-group w-100"
             ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
@@ -43,6 +45,7 @@
             </div>
         </div>
     </div>
+
     <div class="btn-block rounded-0 my-1 draw-buttons d-flex justify-content-center"
         ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
         <button class="btn btn-light btn-outline-primary" ng-class="{active: service.type=='Point' }"
