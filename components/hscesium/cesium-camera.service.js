@@ -1,9 +1,10 @@
 import {get as getProj, transformExtent} from 'ol/proj';
 
 export class HsCesiumCameraService {
-  constructor(HsMapService) {
+  constructor(HsMapService, $window) {
     'ngInject';
     this.HsMapService = HsMapService;
+    this.$window = $window;
   }
 
   init(HsCesiumService) {
@@ -376,5 +377,28 @@ export class HsCesiumCameraService {
         }, 1000);
       }
     });
+  }
+
+  setDefaultViewport() {
+    const view = this.HsMapService.map.getView();
+    const ol_ext = view.calculateExtent([
+      this.$window.innerWidth,
+      this.$window.innerHeight,
+    ]);
+    const trans_ext = transformExtent(
+      ol_ext,
+      view.getProjection(),
+      'EPSG:4326'
+    );
+    const rectangle = Cesium.Rectangle.fromDegrees(
+      trans_ext[0],
+      trans_ext[1],
+      trans_ext[2],
+      trans_ext[3]
+    );
+    if (trans_ext && !isNaN(trans_ext[0])) {
+      Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+    }
+    Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
   }
 }
