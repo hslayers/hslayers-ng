@@ -104,8 +104,17 @@ export default function (
      */
     updateStyle(changeStyle) {
       if (me.draw) {
-        me.draw.getOverlay().setStyle(changeStyle());
+        me.currentStyle = changeStyle();
+        me.draw.getOverlay().setStyle(me.currentStyle);
       }
+    },
+    /**
+     * (PRIVATE) Helper function which returns currently selected style. Used with 
+     * @function useCurrentStyle
+     * @memberOf HsDrawService
+     */
+    useCurrentStyle(){
+      return me.currentStyle;
     },
     /**
      * @function activateDrawing
@@ -201,9 +210,9 @@ export default function (
       me.source = me.selectedLayer.getSource()
       if (me.draw){
         me.activateDrawing(
-          null, null, null, null, null, true, true
+          null, null, null, null, me.useCurrentStyle, true
         );
-      }
+      };
     },
 
     /**
