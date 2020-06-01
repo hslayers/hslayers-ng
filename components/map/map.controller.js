@@ -55,7 +55,7 @@ export default function (
     init() {
       if (HsPermalinkUrlService.getParamValue('visible_layers')) {
         HsMapService.visibleLayersInUrl = HsPermalinkUrlService.getParamValue(
-          ''
+          'visible_layers'
         ).split(';');
       }
       HsMapService.init();
