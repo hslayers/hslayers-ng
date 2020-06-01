@@ -113,7 +113,13 @@ export default function (
       HsDrawService.removeLastPoint();
     },
     selectLayer(layer) {
-      HsDrawService.selectedLayer = layer;
+      if (layer != HsDrawService.selectedLayer ){
+        HsDrawService.selectedLayer = layer;
+        HsDrawService.changeDrawSource()
+      }
+      else {
+        HsDrawService.selectedLayer = layer;
+      }
       $scope.layersExpanded = false;
     },
     selectedLayerString() {

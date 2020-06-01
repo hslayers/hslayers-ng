@@ -33,9 +33,11 @@ export default {
         }
         editorConfig.defaultAttributes = dic;
 
-        vm.layer.getSource().forEachFeature((f)=>{
+        vm.layer.getSource().forEachFeature((f) => {
           f.setProperties(dic);
         })
+          
+        HsDrawService.changeDrawSource()
 
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();

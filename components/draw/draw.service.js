@@ -197,6 +197,15 @@ export default function (
       me.draw.removeLastPoint();
     },
 
+    changeDrawSource(){
+      me.source = me.selectedLayer.getSource()
+      if (me.draw){
+        me.activateDrawing(
+          null, null, null, null, null, true, true
+        );
+      }
+    },
+
     /**
      * @function deactivateDrawing
      * @memberOf HsDrawService
