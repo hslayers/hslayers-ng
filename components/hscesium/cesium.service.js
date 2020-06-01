@@ -49,22 +49,8 @@ export default function (
       );
     }
 
-    const view = HsMapService.map.getView();
-    const ol_ext = view.calculateExtent(HsMapService.map.getSize());
-    const trans_ext = transformExtent(
-      ol_ext,
-      view.getProjection(),
-      'EPSG:4326'
-    );
-    const rectangle = Cesium.Rectangle.fromDegrees(
-      trans_ext[0],
-      trans_ext[1],
-      trans_ext[2],
-      trans_ext[3]
-    );
+    HsCesiumCameraService.setDefaultViewport();
 
-    Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
-    Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
     Cesium.BingMapsApi.defaultKey = BING_KEY;
 
     //TODO: research if this must be used or ignored
