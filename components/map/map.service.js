@@ -453,6 +453,13 @@ export default function (
     );
   }
 
+  /**
+   * @ngdoc method
+   * @name HsMapService#layerDuplicate
+   * @description Checks if a layer with the same title alredy exists in the map
+   * @param {ol/Layer} lyr A layer to check
+   * @returns {boolean} True if layer is already present in the map, false otherwise
+   */
   this.layerDuplicate = (lyr) => {
     return (
       me.map
@@ -480,12 +487,12 @@ export default function (
    * @ngdoc method
    * @name HsMapService#addLayer
    * @param {ol/Layer} lyr Layer to add
-   * @param {boolean} removeIfExists True if we want to remove layer with the same title in case it exists
+   * @param {boolean} removeIfExists True if we want to remove a layer with the same title in case it exists
    * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
    * @description Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
-   * Generally for non vector layers it would be better to use this function then to add to OL map directly
-   * and rely on layer manager service to do the proxifiction and also its shorter then to use HsMapService.map.addLayer.
+   * Generally for non vector layers it would be better to use this function than to add to OL map directly
+   * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
    * @returns {ol/Layer} OL layer
    */
   this.addLayer = (lyr, removeIfExists, visibilityOverrides) => {
@@ -638,7 +645,7 @@ export default function (
    * @name HsMapService#layerTitleInArray
    * @public
    * @param {ol.Layer} lyr Layer for which to determine visibility
-   * @param {Array} array Layer title toc check in.
+   * @param {Array} array Layer title to check in.
    * @returns {boolean} Detected visibility of layer
    * @description Checks if layer title is present in an array of layer titles.
    * Used to set visibility by URL parameter which contains visible layer titles
