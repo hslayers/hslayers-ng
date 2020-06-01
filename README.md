@@ -24,7 +24,7 @@ Include the bundle file
 
 ### Configure the application
 
-A global hslayersNgConfig function, which returns a configuration object, needs to be created before loading the hslayers-ng.js script. It returns a json object to configure applications looks, behaviour and data. See [Configuration options](Config-parameters) for the available options.
+A global hslayersNgConfig function, which returns a configuration object, needs to be created before loading the hslayers-ng.js script. It returns a json object to configure applications looks, behaviour and data. See [Configuration options](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) for the available options.
 
 ```
 <script>
@@ -143,7 +143,7 @@ module.controller('Main', function ($scope, HsLayoutService) {
 );
 ```
 
-For webpack bundling instructions see: https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack
+For webpack bundling instructions see [Building with webpack](https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack)
 
 ### Proxy
 To overcome CORS issues when adding external datasources, querying feature info or searching, we use a proxy. 
@@ -166,7 +166,7 @@ sudo a2enmod cgi
 sudo service apache2 restart
 ```
 
-If you are using nginx, see [HsProxy configuration with uwsgi](Hsproxy-configuration)
+If you are using nginx, see [HsProxy configuration with uwsgi](https://github.com/hslayers/hslayers-ng/wiki/Hsproxy-configuration)
 
 ### Run the Application
 
@@ -185,18 +185,7 @@ Now browse to the app at `http://localhost:8000/`.
 
 ### Running Unit Tests
 
-The hslayers-ng app comes preconfigured with unit tests. These are written in
-[Jasmine][jasmine], which we run with the [Karma Test Runner][karma]. We provide a Karma
-configuration file to run them.
-
-* the configuration is found at `test/karma.conf.js`
-* the unit tests are found in `test/unit/` and also in components directories.
-
-The easiest way to run the unit tests is to use the supplied npm script:
-
-```
-npm test
-```
+See [Testing](https://github.com/hslayers/hslayers-ng/wiki/Testing).
 
 ## Translating
 Run 
