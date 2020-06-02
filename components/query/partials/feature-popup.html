@@ -1,8 +1,8 @@
 <div ng-style="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div ng-repeat="layer in queryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
-            <strong style="font-size: small;">{{layer.layer}}</strong><br>
-            <div ng-repeat="feature in layer.features">
+        <div ng-repeat="layerDesc in queryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
+            <strong style="font-size: small;">{{layerDesc.title}}</strong><br>
+            <div ng-repeat="feature in layerDesc.features">
                 <div ng-show="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     <div ng-repeat="subFeature in feature.get('features')" ng-show="subFeature.attributesForHover.length > 0">
                         {{serializeFeatureName(subFeature)}}
@@ -19,6 +19,11 @@
                 </div>
                 <div ng-show="!isClustered(feature) && feature.attributesForHover.length > 0" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
+                    <button class="btn btn-danger float-right btn-sm"
+                        ng-if="isFeatureRemovable(feature)"
+                        ng-click="removeFeature(feature)" translate data-toggle="tooltip" title="{{'Remove feature' | translate}}">
+                        <i class="icon-remove-circle"></i>
+                    </button>
                     <div ng-repeat="attribute in feature.attributesForHover">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
@@ -29,6 +34,10 @@
                     </div>
                 </div>
             </div>
+            <button class="btn btn-danger btn-block btn-sm"
+            ng-click="clearLayer(layerDesc.layer)" ng-if="isLayerEditable(layerDesc.layer)" translate data-toggle="tooltip" title="{{'Clear clear' | translate}}">
+            Clear layer
+        </button>
         </div>
     </div>
 </div>

@@ -34,6 +34,18 @@ export default {
           return feature.get('label');
         }
       },
+      isFeatureRemovable(feature) {
+        return HsQueryVectorService.isFeatureRemovable(feature);
+      },
+      isLayerEditable(layer) {
+        return HsQueryVectorService.isLayerEditable(layer);
+      },
+      removeFeature(feature) {
+        HsQueryVectorService.removeFeature(feature);
+      },
+      clearLayer(layer) {
+        layer.getSource().clear();
+      },
     });
     const hoverPopupElement = $element[0];
     HsQueryBaseService.hoverPopup = new Overlay({
