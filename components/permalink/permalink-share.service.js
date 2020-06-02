@@ -158,29 +158,41 @@ export default function (
      * @description Generate thumbnail of current map and save it to variable and selected element
      */
     generateThumbnail: function ($element, newRender) {
+      
+      function setCanvasSize(canvas, width, height) {
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+      }
+
+      function setupContext(ctx) {
+        ctx.mozImageSmoothingEnabled = false;
+        ctx.webkitImageSmoothingEnabled = false;
+        ctx.msImageSmoothingEnabled = false;
+        ctx.imageSmoothingEnabled = false;
+      }
+
       /**
        *
        */
       function rendered() {
+        const collectorCanvas = $document[0].createElement('canvas');
         const targetCanvas = $document[0].createElement('canvas');
-        const width = 256,
-          height = 256;
-        targetCanvas.width = width;
-        targetCanvas.height = height;
-
-        targetCanvas.style.width = width + 'px';
-        targetCanvas.style.height = height + 'px';
-        const ctx2 = targetCanvas.getContext('2d');
-        ctx2.mozImageSmoothingEnabled = false;
-        ctx2.webkitImageSmoothingEnabled = false;
-        ctx2.msImageSmoothingEnabled = false;
-        ctx2.imageSmoothingEnabled = false;
+        const width = 256, height = 256;
+        const firstCanvas = HsMapService.mapElement.querySelector('.ol-layer canvas');
+        setCanvasSize(targetCanvas, width, height);
+        setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
+        const ctxCollector = collectorCanvas.getContext('2d');
+        const ctxTarget = targetCanvas.getContext('2d');
+        setupContext(ctxTarget);
+        setupContext(ctxCollector);
         Array.prototype.forEach.call(
           HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
           (canvas) => {
             if (canvas.width > 0) {
               const opacity = canvas.parentNode.style.opacity;
-              ctx2.globalAlpha = opacity === '' ? 1 : Number(opacity);
+              ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
               const transform = canvas.style.transform;
               // Get the transform parameters from the style's transform matrix
               const matrix = transform
@@ -189,22 +201,25 @@ export default function (
                 .map(Number);
               // Apply the transform to the export map context
               CanvasRenderingContext2D.prototype.setTransform.apply(
-                ctx2,
+                ctxCollector,
                 matrix
               );
-              ctx2.drawImage(
-                canvas,
-                canvas.width / 2 - width / 2,
-                canvas.height / 2 - height / 2,
-                width,
-                height,
-                0,
-                0,
-                width,
-                height
-              );
+              ctxCollector.drawImage(canvas, 0, 0);
             }
           }
+        );
+
+        /* Final render pass */
+        ctxTarget.drawImage(
+          collectorCanvas,
+          Math.floor(collectorCanvas.width / 2 - width / 2),
+          Math.floor(collectorCanvas.height / 2 - height / 2),
+          width,
+          height,
+          0,
+          0,
+          width,
+          height
         );
 
         try {
@@ -216,6 +231,7 @@ export default function (
         }
         $element.style.width = width + 'px';
         $element.style.height = height + 'px';
+
       }
       if (
         HsLayoutService.mainpanel == 'saveMap' ||
