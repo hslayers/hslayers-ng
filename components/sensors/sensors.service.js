@@ -353,7 +353,7 @@ export default function (
       });
       //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
       const chartData = {
-        '$schema': 'https://vega.github.io/schema/vega-lite/v3.4.0.json',
+        '$schema': 'https://vega.github.io/schema/vega-lite/v4.0.2.json',
         'HsConfig': {
           'mark': {
             'tooltip': null,
@@ -379,6 +379,7 @@ export default function (
               'title': 'Sensor',
             },
             'type': 'nominal',
+            'sort': 'sensor_id',
           },
           'x': {
             'axis': {
