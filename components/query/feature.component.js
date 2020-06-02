@@ -1,27 +1,10 @@
-import '../utils/utils.module';
-import {Vector as VectorSource} from 'ol/source';
-
 export default {
   template: require('./partials/feature.html'),
   bindings: {
     feature: '<',
   },
-  controller: function (
-    $scope,
-    HsUtilsService,
-    HsLayerUtilsService,
-    HsMapService,
-    HsQueryVectorService
-  ) {
+  controller: function ($scope, HsMapService, HsQueryVectorService) {
     'ngInject';
-    const olSource = () => {
-      const layer = olFeature().getLayer(HsMapService.map);
-      if (angular.isUndefined(layer)) {
-        return;
-      } else {
-        return layer.getSource();
-      }
-    };
     const olFeature = () => {
       return $scope.$ctrl.feature.feature;
     };
@@ -33,15 +16,7 @@ export default {
       exportFormats: [{name: 'WKT format'}],
       isFeatureRemovable() {
         if (angular.isDefined($scope.$ctrl.feature.feature)) {
-          const source = olSource();
-          if (angular.isUndefined(source)) {
-            return false;
-          }
-          const layer = olFeature().getLayer(HsMapService.map);
-          return (
-            HsUtilsService.instOf(source, VectorSource) &&
-            HsLayerUtilsService.isLayerEditable(layer)
-          );
+          return HsQueryVectorService.isFeatureRemovable(olFeature());
         } else {
           return false;
         }
@@ -64,11 +39,8 @@ export default {
         $scope.$ctrl.attributeValue = '';
       },
       removeFeature() {
-        const source = olSource();
-        if (HsUtilsService.instOf(source, VectorSource)) {
-          source.removeFeature(olFeature());
-        }
-        $scope.$emit('infopanel.featureRemoved', $scope.$ctrl.feature);
+        HsQueryVectorService.removeFeature(olFeature());
+        $scope.$emit('infopanel.featureRemoved', olFeature());
       },
       zoomToFeature() {
         const extent = olFeature().getGeometry().getExtent();
