@@ -381,10 +381,15 @@ export class HsCesiumCameraService {
 
   setDefaultViewport() {
     const view = this.HsMapService.map.getView();
-    const ol_ext = view.calculateExtent([
-      this.$window.innerWidth,
-      this.$window.innerHeight,
-    ]);
+    let winWidth = this.$window.innerWidth;
+    let winHeight = this.$window.innerHeight;
+    if (innerWidth == 0) {
+      winWidth = 1900;
+    }
+    if (winHeight == 0) {
+      winHeight = 1080;
+    }
+    const ol_ext = view.calculateExtent([winWidth, winHeight]);
     const trans_ext = transformExtent(
       ol_ext,
       view.getProjection(),
