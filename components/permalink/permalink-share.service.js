@@ -158,7 +158,11 @@ export default function (
      * @description Generate thumbnail of current map and save it to variable and selected element
      */
     generateThumbnail: function ($element, newRender) {
-      
+      /**
+       * @param canvas
+       * @param width
+       * @param height
+       */
       function setCanvasSize(canvas, width, height) {
         canvas.width = width;
         canvas.height = height;
@@ -166,6 +170,9 @@ export default function (
         canvas.style.height = height + 'px';
       }
 
+      /**
+       * @param ctx
+       */
       function setupContext(ctx) {
         ctx.mozImageSmoothingEnabled = false;
         ctx.webkitImageSmoothingEnabled = false;
@@ -179,8 +186,11 @@ export default function (
       function rendered() {
         const collectorCanvas = $document[0].createElement('canvas');
         const targetCanvas = $document[0].createElement('canvas');
-        const width = 256, height = 256;
-        const firstCanvas = HsMapService.mapElement.querySelector('.ol-layer canvas');
+        const width = 256,
+          height = 256;
+        const firstCanvas = HsMapService.mapElement.querySelector(
+          '.ol-layer canvas'
+        );
         setCanvasSize(targetCanvas, width, height);
         setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
         const ctxCollector = collectorCanvas.getContext('2d');
@@ -231,7 +241,6 @@ export default function (
         }
         $element.style.width = width + 'px';
         $element.style.height = height + 'px';
-
       }
       if (
         HsLayoutService.mainpanel == 'saveMap' ||
