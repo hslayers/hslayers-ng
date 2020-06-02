@@ -147,6 +147,9 @@ export default function (
    * @returns {string} Url without proxy services port added to it.
    */
   function removePortIfProxified(url) {
+    if (angular.isUndefined(HsConfig.proxyPrefix)) {
+      return url;
+    }
     const proxyPort = parseInt(
       HsUtilsService.getPortFromUrl(HsConfig.proxyPrefix)
     );
