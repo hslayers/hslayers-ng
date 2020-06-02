@@ -117,9 +117,6 @@ export default function (
         HsDrawService.selectedLayer = layer;
         HsDrawService.changeDrawSource()
       }
-      else {
-        HsDrawService.selectedLayer = layer;
-      }
       $scope.layersExpanded = false;
     },
     selectedLayerString() {
