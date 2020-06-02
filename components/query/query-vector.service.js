@@ -1,5 +1,6 @@
 import * as extent from 'ol/extent';
 import {Select} from 'ol/interaction';
+import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
@@ -13,6 +14,7 @@ import {toLonLat} from 'ol/proj';
  * @param HsLayerUtilsService
  * @param $window
  * @param HsMeasureService
+ * @param HsUtilsService
  */
 export default function (
   $rootScope,
@@ -22,7 +24,8 @@ export default function (
   HsConfig,
   HsLayerUtilsService,
   $window,
-  HsMeasureService
+  HsMeasureService,
+  HsUtilsService
 ) {
   'ngInject';
   const me = this;
@@ -114,7 +117,7 @@ export default function (
     }
     const layer = feature.getLayer(HsMapService.map);
     return HsLayerUtilsService.getLayerName(layer);
-  };
+  }
 
   /**
    * @param feature
@@ -125,33 +128,75 @@ export default function (
     }
     const center = extent.getCenter(feature.getGeometry().getExtent());
     return center;
-  };
+  }
   /**
    * (PRIVATE) Adding a default stats to query based on feature geom type
    *
    * @function addDefaultAttributes
+   * @param f
    * @memberOf HsQueryController
    * @param feature Selected feature from map
    */
   function addDefaultStats(f) {
-    let geom = f.getGeometry();
-    let type = geom.getType();
+    const geom = f.getGeometry();
+    const type = geom.getType();
     if (type == 'Polygon') {
-      let area = HsMeasureService.formatArea(geom);
+      const area = HsMeasureService.formatArea(geom);
       return [
-        { name: `${area.type} in ${area.unit}`, value: area.size },
-        { name: 'center', value: toLonLat(getCentroid(f)) }];
+        {name: `${area.type} in ${area.unit}`, value: area.size},
+        {name: 'center', value: toLonLat(getCentroid(f))},
+      ];
     }
     if (type == 'LineString') {
-      let length = HsMeasureService.formatLength(geom);
+      const length = HsMeasureService.formatLength(geom);
       return [
-        { name: `${length.type} in ${length.unit}`, value: length.size },
-        { name: 'center', value: toLonLat(getCentroid(f)) }];
+        {name: `${length.type} in ${length.unit}`, value: length.size},
+        {name: 'center', value: toLonLat(getCentroid(f))},
+      ];
     }
     if (type == 'Point') {
-      return [{ name: 'center', value: toLonLat(getCentroid(f)) }]
+      return [{name: 'center', value: toLonLat(getCentroid(f))}];
     }
   }
+
+  /**
+   * @param feature
+   */
+  function olSource(feature) {
+    const layer = feature.getLayer(HsMapService.map);
+    if (angular.isUndefined(layer)) {
+      return;
+    } else {
+      return layer.getSource();
+    }
+  }
+
+  /**
+   * @param feature
+   */
+  me.isFeatureRemovable = function (feature) {
+    const source = olSource(feature);
+    if (angular.isUndefined(source)) {
+      return false;
+    }
+    const layer = feature.getLayer(HsMapService.map);
+    return (
+      HsUtilsService.instOf(source, VectorSource) &&
+      HsLayerUtilsService.isLayerEditable(layer)
+    );
+  };
+
+  me.isLayerEditable = function (layer) {
+    return HsLayerUtilsService.isLayerEditable(layer);
+  };
+
+  me.removeFeature = function (feature) {
+    const source = olSource(feature);
+    if (HsUtilsService.instOf(source, VectorSource)) {
+      source.removeFeature(feature);
+    }
+  };
+
   /**
    * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
    *
