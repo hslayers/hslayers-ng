@@ -6,7 +6,9 @@ export default {
     HsQueryBaseService,
     HsMapService,
     HsQueryVectorService,
-    $element
+    $element,
+    HsConfirmDialogService,
+    gettext
   ) {
     'ngInject';
     angular.extend($scope, {
@@ -20,9 +22,11 @@ export default {
               : 'hidden',
         };
       },
+
       isClustered(feature) {
         return feature.get('features') && feature.get('features').length > 0;
       },
+
       serializeFeatureName(feature) {
         if (feature.get('name')) {
           return feature.get('name');
@@ -34,19 +38,38 @@ export default {
           return feature.get('label');
         }
       },
+
       isFeatureRemovable(feature) {
         return HsQueryVectorService.isFeatureRemovable(feature);
       },
+
       isLayerEditable(layer) {
         return HsQueryVectorService.isLayerEditable(layer);
       },
-      removeFeature(feature) {
-        HsQueryVectorService.removeFeature(feature);
+
+      async removeFeature(feature) {
+        const confirmed = await HsConfirmDialogService.show(
+          gettext('Really delete all the feature?'),
+          gettext('Confirm delete')
+        );
+        if (confirmed == 'yes') {
+          HsQueryVectorService.removeFeature(feature);
+          HsQueryBaseService.featuresUnderMouse = [];
+        }
       },
-      clearLayer(layer) {
-        layer.getSource().clear();
+
+      async clearLayer(layer) {
+        const confirmed = await HsConfirmDialogService.show(
+          gettext('Really delete all the features in layer?'),
+          gettext('Confirm delete')
+        );
+        if (confirmed == 'yes') {
+          layer.getSource().clear();
+          HsQueryBaseService.featuresUnderMouse = [];
+        }
       },
     });
+
     const hoverPopupElement = $element[0];
     HsQueryBaseService.hoverPopup = new Overlay({
       element: hoverPopupElement,

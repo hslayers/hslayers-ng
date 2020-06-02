@@ -1,0 +1,19 @@
+<div ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" translate>
+                   {{$ctrl.title}}
+                </h4>
+                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                {{$ctrl.message}}
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" translate ng-click="$ctrl.yes()" title="Yes" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel"  title="No" ng-click="$ctrl.no()" data-dismiss="modal" translate>No</button>
+            </div>
+        </div>
+    </div>
+</div>
