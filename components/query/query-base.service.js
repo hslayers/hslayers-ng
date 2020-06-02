@@ -137,7 +137,8 @@ export default function (
         );
         me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
           return {
-            layer: l.get('title'),
+            title: l.get('title'),
+            layer: l,
             features: me.featuresUnderMouse.filter(
               (f) => f.getLayer(HsMapService.map) == l
             ),
