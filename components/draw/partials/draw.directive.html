@@ -2,7 +2,7 @@
     <hs.layout.panel-header panel-name="draw" panel-title="'Draw'| translate">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip"
-                title="While drawing polygon or line you can hold shit to free-hand draw">
+                title="'While drawing polygon or line you can hold shift to free-hand draw' | translate">
                 <i class="icon-question-sign"></i>
             </button>
         </extra-buttons>
@@ -11,11 +11,11 @@
     <div>
         <div class="d-flex w-75 m-auto py-2 justify-content-around ">
             <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
-            ng-click="service.saveDrawingLayer($scope, true)">
+            ng-click="service.saveDrawingLayer($scope, true)" translate>
                 New drawing layer
             </button>
             <button type="button" ng-click="setType(service.type)" class="btn btn-sm rounded btn-primary hs-toolbar-button"
-            ng-disabled="!service.type">
+            ng-disabled="!service.type" translate>
                 Disable drawing
             </button>
         </div>
@@ -25,12 +25,12 @@
 
             <div ng-show="service.drawableLayers.length == 0" class="flex-row w-75 m-auto justify-content-around align-items-center"
                 style="display: flex;">
-                <p class="m-0 p-0" style="color:crimson">Unsaved drawing</p>
-                <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)">Save as..</a>
+                <p class="m-0 p-0" style="color:crimson" translate>Unsaved drawing</p>
+                <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)" translate>Save as..</a>
             </div>
             <div class="flex-row w-75 m-auto justify-content-center align-items-center"
                 ng-show="service.drawableLayers.length != 0" style="display: flex;">
-                <p class="m-0 p-0" style="color: blue;">Drawing to:</p>
+                <p class="m-0 p-0" style="color: blue;" translate>Drawing to:</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
