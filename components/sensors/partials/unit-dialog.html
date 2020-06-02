@@ -34,10 +34,10 @@
                         </div>
                         <div class="col-sm-12 col-md-4 input-group mb-3">
                             <input type="datetime-local" class="form-control" ng-change="customIntervalChanged()" ng-model="customInterval.fromTime">
-                            <div class="input-group-append dropup">
+                            <div class="input-group-append dropup hs-date-time-chevron">
                                 <button class="btn btn-outline-secondary dropdown-toggle" role="button" data-toggle="dropdown"
                                     ng-click="dtPickerOpen=!dtPickerOpen" href="#">
-                                    ...
+                                    <i class="icon-calendarthree"></i>
                                 </button>
                                 <ul class="dropdown-menu datetime-picker-menu" style="right: 100%;left: auto;" ng-class="{'show': dtPickerOpen}"
                                     role="menu">

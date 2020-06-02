@@ -1637,3 +1637,6 @@ li.hs-lm-header {
 a.hs-sensor-type {color: black}
 a.hs-sensor-unit{color: black; font-weight: bold;}
 .hs-sensor{line-height: 1.9em;}
+.hs-date-time-chevron:not(*:root) { /* Supports only WebKit browsers */
+	visibility: hidden;
+}
