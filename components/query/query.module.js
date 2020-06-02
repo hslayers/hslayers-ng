@@ -1,3 +1,4 @@
+import '../../common/confirm/confirm.module';
 import '../language/language.module';
 import '../measure/measure.module';
 import '../utils/utils.module';
@@ -27,6 +28,7 @@ angular
     'hs.layout',
     'hs.utils',
     'hs.measure',
+    'hs.common.confirm',
   ])
   /**
    * @ngdoc directive
