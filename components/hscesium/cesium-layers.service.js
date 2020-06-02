@@ -287,7 +287,7 @@ export class HsCesiumLayersService {
       });
     } else {
       lyr.setVisible(
-        this.HsMapService.isLayerVisible(
+        this.HsMapService.layerTitleInArray(
           lyr,
           this.HsMapService.visibleLayersInUrl
         ) || lyr.getVisible()
