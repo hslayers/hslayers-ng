@@ -1,4 +1,5 @@
 import '../language/language.module';
+import '../measure/measure.module';
 import '../utils/utils.module';
 import 'angular-sanitize';
 import attributeRowComponent from './attribute-row.component';
@@ -25,6 +26,7 @@ angular
     'hs.language',
     'hs.layout',
     'hs.utils',
+    'hs.measure',
   ])
   /**
    * @ngdoc directive

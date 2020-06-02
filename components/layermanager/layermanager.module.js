@@ -1,4 +1,5 @@
 import '../../common/get-capabilities.module';
+import '../draw/draw.module';
 import '../legend/legend.module';
 import '../save-map/save-map.module';
 import '../styles/styles.module';
@@ -34,6 +35,7 @@ angular
     'hs.styles',
     'hs.legend',
     'hs.getCapabilities',
+    'hs.draw',
   ])
   // .directive('hs.baselayers.directive', function() {
   //     return {
