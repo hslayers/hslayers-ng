@@ -109,7 +109,7 @@ export default function (
       }
     },
     /**
-     * (PRIVATE) Helper function which returns currently selected style. Used with 
+     * (PRIVATE) Helper function which returns currently selected style.
      * @function useCurrentStyle
      * @memberOf HsDrawService
      */
