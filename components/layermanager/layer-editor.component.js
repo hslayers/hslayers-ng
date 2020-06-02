@@ -294,7 +294,7 @@ export default {
       },
 
       removeLayer() {
-        if (HsDrawService.selectedLayer = $scope.olLayer() ){
+        if (HsDrawService.selectedLayer == $scope.olLayer()) {
           HsDrawService.selectedLayer = null;
         }
         HsMapService.map.removeLayer($scope.olLayer());
