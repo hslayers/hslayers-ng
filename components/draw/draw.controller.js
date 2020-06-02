@@ -1,6 +1,6 @@
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
+import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
 /**
  * @param $scope
@@ -61,9 +61,11 @@ export default function (
         HsDrawService.type = null;
         HsDrawService.deactivateDrawing();
         return;
-      }
-      else {
-        if(HsDrawService.drawableLayers.length == 0 && !HsDrawService.tmpDrawLayer){
+      } else {
+        if (
+          HsDrawService.drawableLayers.length == 0 &&
+          !HsDrawService.tmpDrawLayer
+        ) {
           const drawLayer = new VectorLayer({
             title: 'tmpDrawLayer',
             source: new Vector(),
@@ -92,16 +94,16 @@ export default function (
       );
     },
     activateDrawing(withStyle) {
-      HsDrawService.activateDrawing(
-        $scope.onDrawStart, //Will add later
-        $scope.onDrawEnd,
-        $scope.onFeatureSelected, //Will add later
-        $scope.onFeatureDeselected, //Will add later
-        withStyle ? $scope.changeStyle : undefined,
-        true //Activate drawing immediately
-      );
+      HsDrawService.activateDrawing({
+        onDrawStart: $scope.onDrawStart, //Will add later
+        onDrawEnd: $scope.onDrawEnd,
+        onSelected: $scope.onFeatureSelected, //Will add later
+        onDeselected: $scope.onFeatureDeselected, //Will add later
+        changeStyle: withStyle ? $scope.changeStyle : undefined,
+        drawState: true, //Activate drawing immediately
+      });
     },
-    onDrawStart(){
+    onDrawStart() {
       if (!$scope.$$phase) {
         $scope.$digest();
       }
@@ -113,18 +115,18 @@ export default function (
       HsDrawService.removeLastPoint();
     },
     selectLayer(layer) {
-      if (layer != HsDrawService.selectedLayer ){
+      if (layer != HsDrawService.selectedLayer) {
         HsDrawService.selectedLayer = layer;
-        HsDrawService.changeDrawSource()
+        HsDrawService.changeDrawSource();
       }
       $scope.layersExpanded = false;
     },
     selectedLayerString() {
       if (HsDrawService.selectedLayer) {
-        return HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer' ? 'Unsaved drawing' : (
-          HsDrawService.selectedLayer.get('title') ||
-          HsDrawService.selectedLayer.get('name')
-        );
+        return HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer'
+          ? 'Unsaved drawing'
+          : HsDrawService.selectedLayer.get('title') ||
+              HsDrawService.selectedLayer.get('name');
       } else {
         return gettext('Select layer');
       }

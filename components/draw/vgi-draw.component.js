@@ -1079,12 +1079,12 @@ export default {
      *
      */
     function activateDrawing() {
-      HsDrawService.activateDrawing(
-        $scope.onDrawStart,
-        $scope.onDrawEnd,
-        $scope.onFeatureSelected,
-        $scope.onFeatureDeselected
-      );
+      HsDrawService.activateDrawing({
+        onDrawStart: $scope.onDrawStart,
+        onDrawEnd: $scope.onDrawEnd,
+        onSelected: $scope.onFeatureSelected,
+        onDeselected: $scope.onFeatureDeselected,
+      });
     }
 
     /**

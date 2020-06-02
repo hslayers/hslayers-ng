@@ -26,7 +26,7 @@ export default function (
   $log,
   $document,
   HsLayoutService,
-  $compile,
+  $compile
 ) {
   'ngInject';
   const me = this;
@@ -61,10 +61,14 @@ export default function (
       ];
     },
 
-    saveDrawingLayer($scope,addNewLayer = false) {
+    saveDrawingLayer($scope, addNewLayer = false) {
       let tmpTitle = gettext('Draw layer');
-      let tmpLayer = addNewLayer === true ? null : HsMapService.findLayerByTitle('tmpDrawLayer');
-      let tmpSource = addNewLayer === true ? new Vector() : tmpLayer.getSource();
+      const tmpLayer =
+        addNewLayer === true
+          ? null
+          : HsMapService.findLayerByTitle('tmpDrawLayer');
+      const tmpSource =
+        addNewLayer === true ? new Vector() : tmpLayer.getSource();
 
       let i = 1;
       while (HsMapService.findLayerByTitle(tmpTitle)) {
@@ -113,30 +117,31 @@ export default function (
      * @function useCurrentStyle
      * @memberOf HsDrawService
      */
-    useCurrentStyle(){
+    useCurrentStyle() {
       return me.currentStyle;
     },
     /**
      * @function activateDrawing
      * @memberOf HsDrawService
-     * @param {Function} onDrawStart Callback function called when drawing is started
-     * @param {Function} onDrawEnd Callback function called when drawing is finished
-     * @param {Function} onSelected Callback function called when feature is selected for modification
-     * @param {Function} onDeselected Callback function called when feature is deselected
-     * @param {Function} changeStyle controller callback function which set style
+     * @param {object} options Options object
+     * @param {Function} [options.onDrawStart] Callback function called when drawing is started
+     * @param {Function} [options.onDrawEnd] Callback function called when drawing is finished
+     * @param {Function} [options.onSelected] Callback function called when feature is selected for modification
+     * @param {Function} [options.onDeselected] Callback function called when feature is deselected
+     * @param {Function} [options.changeStyle] controller callback function which set style
      * dynamically according to selected parameters
-     * @param {boolean} drawState Should drawing be set active when
+     * @param {boolean} options.drawState Should drawing be set active when
      * creating the interactions
      * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
      */
-    activateDrawing(
+    activateDrawing({
       onDrawStart,
       onDrawEnd,
       onSelected,
       onDeselected,
       changeStyle,
-      drawState
-    ) {
+      drawState,
+    }) {
       me.onDeselected = onDeselected;
       me.onSelected = onSelected;
       me.deactivateDrawing().then(() => {
@@ -206,13 +211,14 @@ export default function (
       me.draw.removeLastPoint();
     },
 
-    changeDrawSource(){
-      me.source = me.selectedLayer.getSource()
-      if (me.draw){
-        me.activateDrawing(
-          null, null, null, null, me.useCurrentStyle, true
-        );
-      };
+    changeDrawSource() {
+      me.source = me.selectedLayer.getSource();
+      if (me.draw) {
+        me.activateDrawing({
+          changeStyle: me.useCurrentStyle,
+          drawState: true,
+        });
+      }
     },
 
     /**
@@ -268,7 +274,7 @@ export default function (
       if (tmp.length > 0 && me.selectedLayer === null) {
         me.selectedLayer = tmp[0];
       }
-      if (tmp.length == 0 && me.selectedLayer === null){
+      if (tmp.length == 0 && me.selectedLayer === null) {
         me.type = null;
         me.deactivateDrawing();
       }
@@ -290,13 +296,13 @@ export default function (
     }
     me.modify.setActive(true);
   });
-  
+
   me.selectedFeatures.on('remove', (e) => {
     if (me.onDeselected) {
       me.onDeselected(e);
     }
   });
- 
+
   const unregisterFeatureSelected = $rootScope.$on(
     'vectorQuery.featureSelected',
     (e, feature) => {
