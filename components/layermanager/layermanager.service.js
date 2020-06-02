@@ -458,7 +458,7 @@ export default function (
   me.changeBaseLayerVisibility = function ($event, layer) {
     if (angular.isUndefined(layer) || angular.isDefined(layer.layer)) {
       if (me.data.baselayersVisible == true) {
-        if ($event) {
+        if ($event && me.data.baselayer != layer.title) {
           for (var i = 0; i < me.data.baselayers.length; i++) {
             if (me.data.baselayers[i].layer) {
               me.data.baselayers[i].layer.setVisible(false);
@@ -474,6 +474,7 @@ export default function (
               me.data.baselayers[i].layer.setVisible(true);
               me.data.baselayers[i].visible = true;
               me.data.baselayers[i].active = true;
+              me.data.baselayer = layer.title;
               break;
             }
           }
@@ -487,11 +488,16 @@ export default function (
       } else {
         if ($event) {
           layer.active = true;
+
           for (var i = 0; i < me.data.baselayers.length; i++) {
             if (me.data.baselayers[i] != layer) {
               me.data.baselayers[i].active = false;
+              me.data.baselayers[i].visible = false;
             } else {
               me.data.baselayers[i].layer.setVisible(true);
+              me.data.baselayers[i].visible = true;
+
+              me.data.baselayer = layer.title;
             }
           }
         } else {
@@ -514,6 +520,8 @@ export default function (
         }
       }
     }
+    console.log(me.data.baselayer)
+
     $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
   };
 

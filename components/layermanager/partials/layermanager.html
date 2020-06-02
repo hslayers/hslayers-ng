@@ -34,18 +34,22 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item" ng-repeat="layer in data.baselayers | orderBy:'name'"
-                ng-click="changeBaseLayerVisibility($event, layer); toggleLayerEditor(layer,'settings','sublayers')" ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
+                 ng-class="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
                 <div class="d-flex ">
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" ng-click="changeBaseLayerVisibility($event, layer);" 
                         ng-class="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                   
-                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         ng-class="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
                         {{::layer.title}}
                     </div>
-
+                    <div class="pl-1 info_btn" style="cursor: pointer;">
+                        <span class="icon-settingsthree-gears text-secondary" ng-click="toggleLayerEditor(layer,'settings','sublayers')"
+                            title="{{'Additional information'|translate}}" data-toggle="tooltip" data-container="body"
+                            data-placement="auto"></span>
+                    </div>
                 </div>
             </li>
         </ul>
