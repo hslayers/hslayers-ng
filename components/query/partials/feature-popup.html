@@ -6,6 +6,10 @@
                 <div ng-show="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     <div ng-repeat="subFeature in feature.get('features')" ng-show="subFeature.attributesForHover.length > 0">
                         {{serializeFeatureName(subFeature)}}
+                        <button class="btn btn-danger float-right btn-sm" ng-if="isFeatureRemovable(subFeature)" ng-click="removeFeature(subFeature)"
+                            translate data-toggle="tooltip" title="{{'Remove feature' | translate}}">
+                            <i class="icon-remove-circle"></i>
+                        </button>
                         <div ng-repeat="attribute in subFeature.attributesForHover">
                             <div class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
