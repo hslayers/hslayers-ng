@@ -442,14 +442,17 @@ export default function (
       ? ''
       : existingSource.getUrls();
     const newUrls = angular.isUndefined(newSource.getUrls)
-      ? ''
+      ? ['']
       : newSource.getUrls();
+    const urlsEqual =
+      existingUrls == newUrls ||
+      (newUrls.length > 0 && existingUrls.indexOf(newUrls[0]) > -1);
     return (
       existingTitle == newTitle &&
       existingSourceType == newSourceType &&
       existingLAYERS == newLAYERS &&
       existingUrl == newUrl &&
-      existingUrls == newUrls
+      urlsEqual
     );
   }
 
@@ -461,14 +464,14 @@ export default function (
    * @returns {boolean} True if layer is already present in the map, false otherwise
    */
   this.layerDuplicate = (lyr) => {
-    return (
-      me.map
-        .getLayers()
-        .getArray()
-        .filter((existing) => {
-          layersEqual(existing, lyr);
-        }).length > 0
-    );
+    const duplicateLayers = me.map
+      .getLayers()
+      .getArray()
+      .filter((existing) => {
+        const equal = layersEqual(existing, lyr);
+        return equal;
+      });
+    return duplicateLayers.length > 0;
   };
 
   this.removeDuplicate = (lyr) => {
@@ -476,7 +479,8 @@ export default function (
       .getLayers()
       .getArray()
       .filter((existing) => {
-        layersEqual(existing, lyr);
+        const equal = layersEqual(existing, lyr);
+        return equal;
       })
       .forEach((to_remove) => {
         me.map.getLayers().remove(to_remove);
@@ -518,7 +522,8 @@ export default function (
     }
     if (
       HsUtilsService.instOf(source, XYZ) &&
-      !HsUtilsService.instOf(source, OSM)
+      !HsUtilsService.instOf(source, OSM) &&
+      source.getUrl().indexOf('openstreetmap') == -1
     ) {
       me.proxifyLayerLoader(lyr, true);
     }
