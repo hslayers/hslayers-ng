@@ -523,7 +523,8 @@ export default function (
     if (
       HsUtilsService.instOf(source, XYZ) &&
       !HsUtilsService.instOf(source, OSM) &&
-      source.getUrl().indexOf('openstreetmap') == -1
+      source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
+        .length == 0
     ) {
       me.proxifyLayerLoader(lyr, true);
     }
