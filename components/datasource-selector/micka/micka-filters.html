@@ -22,7 +22,7 @@
                         ng-change='queryCatalogs()'><span translate>Filter by map extent</span>
                 </div>
             </div>
-            <div class="btn-group">
+            <div class="btn-group" ng-show="mickaFilterService.otnKeywords.length>0">
                 <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"
                     ng-click="keywordsDropdownVisible =! keywordsDropdownVisible">
