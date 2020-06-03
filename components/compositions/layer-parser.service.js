@@ -195,7 +195,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
         maxScale: lyr_def.maxScale || 0,
         show_in_manager: lyr_def.displayInLayerSwitcher,
         abstract: lyr_def.name || lyr_def.abstract,
-        base: lyr_def.base,
+        base: lyr_def.base || lyr_def.url.indexOf('openstreetmap') > -1,
         metadata: lyr_def.metadata,
         dimensions: lyr_def.dimensions,
         legends: legends,
