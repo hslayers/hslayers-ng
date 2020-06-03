@@ -55,6 +55,11 @@ export default function (
             else OlMap.map.removeInteraction(me.selector);*/
   });
 
+  $rootScope.$on('map.selectedFeatureDetected', (e, feature) => {
+      me.selector.getFeatures().push(feature);
+      $rootScope.$broadcast('mapQueryStarted', e);
+    });
+
   me.selector.getFeatures().on('add', (e) => {
     $rootScope.$broadcast(
       'vectorQuery.featureSelected',

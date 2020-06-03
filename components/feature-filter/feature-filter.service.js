@@ -160,9 +160,9 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       var listenerKey = source.on('change', (e) => {
         if (source.getState() === 'ready') {
           console.log(source.getState());
-          Observable.unByKey(listenerKey);
+          //Observable.unByKey(listenerKey);
           me.prepLayerFilter(layer);
-          me.applyFilters(layer);
+          //me.applyFilters(layer);
         }
       });
     }

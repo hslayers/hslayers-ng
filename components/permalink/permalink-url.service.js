@@ -22,7 +22,8 @@ export default function (
   HsConfig,
   HsLanguageService,
   HsLayoutService,
-  $timeout
+  $timeout,
+  HsLayermanagerService
 ) {
   'ngInject';
   const url_generation = true;
@@ -38,6 +39,34 @@ export default function (
     added_layers: [],
     params: {},
     customParams: {},
+
+
+    /**
+     * @function updateFeature
+     * @memberof HsPermalinkUrlService
+     * @param {object} feature Selected feature
+     * Get actual selected feature create full Url link and push it in Url bar.
+     */
+    updateFeature: function (feature){
+      var currentLayer = HsLayermanagerService.currentLayer.layer;
+      var featureURI = currentLayer.get('featureURI');
+
+      if(! angular.isUndefined(feature)){
+          me.uri = feature.get(featureURI);
+          me.param_string = me.uri;
+          me.pathname = window.location.pathname;
+          me.current_url = me.pathname + '#' + me.uri;
+          location.hash = me.uri;
+          me.params = {};
+          $location.search(me.params);
+        }
+        else{
+          if (me.hashtagParam()){
+            history.pushState("", document.title, location.pathname + location.search);
+          }
+        }
+    },
+
 
     /**
      * @function update
@@ -119,6 +148,18 @@ export default function (
         }&permalink=${encodeURIComponent(me.permalinkRequestUrl)}`;
       }
     },
+
+    getFeatureByUri: function(features, uri, uriname){
+        var selected;
+        features.forEach((feature, i) => {
+          if (feature.getProperties()[uriname] == uri){
+            selected = feature;
+          }
+        });
+        $rootScope.$broadcast('map.selectedFeatureDetected', selected);
+        $rootScope.$broadcast('vectorQuery.featureSelected', selected);
+      },
+
 
     /**
      * @function getPureMapUrl
@@ -222,6 +263,18 @@ export default function (
     },
 
     /**
+       * @function hashtagParam
+       * @memberof hs.permalink.urlService
+       * Checks if the url link has a # parameter. If so, returns the parameter
+       */
+      hashtagParam: function(){
+        if (!location.hash){
+            return false;
+          }
+        return location.hash.substring(1);
+      },
+
+    /**
      * @function getParamValue
      * @memberof HsPermalinkUrlService
      * @param {string} param Param to get current value
@@ -278,6 +331,41 @@ export default function (
           me
         )
       );
+      $rootScope.$on(
+          'vectorQuery.featureSelected',
+          HsUtilsService.debounce(
+            (event, data, b) => {
+              me.updateFeature(data);
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            200,
+            false,
+            me
+          )
+        );
+        $rootScope.$on(
+          'vectorQuery.featureDelected',
+          HsUtilsService.debounce(
+            (event, data, b) => {
+              me.updateFeature();
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            200,
+            false,
+            me
+          )
+        );
+
+        if(me.hashtagParam()){
+          me.uri =  me.hashtagParam();
+          var layer = HsLayermanagerService.currentLayer.layer;
+          var source = layer.getSource();
+          source.once('change', function (e) {
+              if (source.getState() === 'ready') {
+                  me.getFeatureByUri(source.getFeatures(), me.uri, layer.get('featureURI'));
+              }
+          });
+        };
       map.getLayers().on('add', (e) => {
         const layer = e.element;
         if (
