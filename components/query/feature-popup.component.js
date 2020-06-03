@@ -49,7 +49,7 @@ export default {
 
       async removeFeature(feature) {
         const confirmed = await HsConfirmDialogService.show(
-          gettext('Really delete all the feature?'),
+          gettext('Really delete this feature?'),
           gettext('Confirm delete')
         );
         if (confirmed == 'yes') {
@@ -60,7 +60,10 @@ export default {
 
       async clearLayer(layer) {
         const confirmed = await HsConfirmDialogService.show(
-          gettext('Really delete all the features in layer?'),
+          gettext('Really delete all features from layer "{0}"?').replace(
+            '{0}',
+            layer.get('title')
+          ),
           gettext('Confirm delete')
         );
         if (confirmed == 'yes') {
