@@ -68,6 +68,10 @@ export default {
         );
         if (confirmed == 'yes') {
           layer.getSource().clear();
+          if (layer.getSource().getSource) {
+            //Clear clustered?
+            layer.getSource().getSource().clear();
+          }
           HsQueryBaseService.featuresUnderMouse = [];
         }
       },
