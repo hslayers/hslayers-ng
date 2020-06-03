@@ -160,19 +160,23 @@ export default function (
   }
 
   /**
-   * @param feature
+   * @param {ol/Feature} feature
+   * @returns {ol/source/Source}
    */
   function olSource(feature) {
     const layer = feature.getLayer(HsMapService.map);
     if (angular.isUndefined(layer)) {
       return;
+    } else if (layer.getSource().getSource) {
+      return layer.getSource().getSource();
     } else {
       return layer.getSource();
     }
   }
 
   /**
-   * @param feature
+   * @param {ol/Feature} feature
+   * @returns {boolean}
    */
   me.isFeatureRemovable = function (feature) {
     const source = olSource(feature);
@@ -186,10 +190,17 @@ export default function (
     );
   };
 
+  /**
+   * @param {ol/layer/Layer} layer
+   * @returns {boolean}
+   */
   me.isLayerEditable = function (layer) {
     return HsLayerUtilsService.isLayerEditable(layer);
   };
 
+  /**
+   * @param {ol/Feature} feature
+   */
   me.removeFeature = function (feature) {
     const source = olSource(feature);
     if (HsUtilsService.instOf(source, VectorSource)) {
