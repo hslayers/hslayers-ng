@@ -15,6 +15,7 @@ import {Draw, Modify} from 'ol/interaction';
  * @param $document
  * @param HsLayoutService
  * @param $compile
+ * @param $timeout
  */
 export default function (
   HsConfig,
@@ -26,7 +27,8 @@ export default function (
   $log,
   $document,
   HsLayoutService,
-  $compile
+  $compile,
+  $timeout
 ) {
   'ngInject';
   const me = this;
@@ -196,6 +198,26 @@ export default function (
       });
     },
 
+    onDrawEnd(e) {
+      if (angular.isUndefined(me.selectedLayer.get('editor'))) {
+        return;
+      }
+      const editorConfig = me.selectedLayer.get('editor');
+      if (editorConfig.defaultAttributes) {
+        angular.forEach(editorConfig.defaultAttributes, (value, key) => {
+          e.feature.set(key, value);
+        });
+      }
+      /*Timeout is necessary because features are not imediately
+       * added to the layer and layer can't be retrieved from the
+       * feature, so they don't appear in Info panel */
+      // $timeout(() => {
+      //   HsLayoutService.setMainPanel('info');
+      //   HsQueryVectorService.selector.getFeatures().push(e.feature);
+      //   HsQueryVectorService.createFeatureAttributeList();
+      // });
+    },
+
     /**
      * Re-enables getFeatureInfo info and cleans up after drawing
      */
@@ -217,6 +239,7 @@ export default function (
         me.activateDrawing({
           changeStyle: me.useCurrentStyle,
           drawState: true,
+          onDrawEnd: me.onDrawEnd
         });
       }
     },
