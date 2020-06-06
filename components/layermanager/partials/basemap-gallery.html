@@ -16,7 +16,7 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right p-0" ng-class="{'show': $parent.baseLayersExpanded}">
                 <div ng-repeat="layer in LayerManager.data.baselayers | orderBy: 'title'"
-                    ng-click="closeGallery(layer);LayerManager.changeBaseLayerVisibility($event, layer)" ng-style="{'position':'relative'}">
+                    ng-click="closeGallery(layer)" ng-style="{'position':'relative'}">
                     <div style="position:absolute;top:5px; right:5px;z-index:5"
                     ng-style="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}"
                         ng-if="layer.active" ng-click="toggleMiniMenu(layer)">

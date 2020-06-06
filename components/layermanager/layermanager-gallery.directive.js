@@ -31,6 +31,7 @@ export default function (
         $scope.closeGallery = function (layer) {
           if (arguments.length > 0) {
             if (!layer.active) {
+              HsLayermanagerService.changeBaseLayerVisibility(true, layer);
               $scope.baseLayersExpanded = false;
             }
           } else {
