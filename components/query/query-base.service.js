@@ -87,6 +87,7 @@ export default function (
       me.currentQuery = (Math.random() + 1).toString(36).substring(7);
       me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
       me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
+      me.data.selectedProj = me.data.coordinates[0].projections[0]
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
