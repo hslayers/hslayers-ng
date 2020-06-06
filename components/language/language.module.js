@@ -75,7 +75,7 @@ export default angular
     me.listAvailableLanguages = function () {
       const language_code_name_map = {
         'en': 'English',
-        cs: 'Český',
+        'cs': 'Český',
         'fr_FR': 'Français',
         'lv_LV': 'Latviski',
         'nl': 'Nederlands',
