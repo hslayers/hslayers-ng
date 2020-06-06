@@ -196,26 +196,6 @@ export default function (
           $scope.linewidth + 'px solid ' + $scope.fillcolor['background-color'],
       };
     },
-
-    onDrawEnd(e) {
-      if (angular.isUndefined(HsDrawService.selectedLayer.get('editor'))) {
-        return;
-      }
-      const editorConfig = HsDrawService.selectedLayer.get('editor');
-      if (editorConfig.defaultAttributes) {
-        angular.forEach(editorConfig.defaultAttributes, (value, key) => {
-          e.feature.set(key, value);
-        });
-      }
-      /*Timeout is necessary because features are not imediately
-       * added to the layer and layer can't be retrieved from the
-       * feature, so they don't appear in Info panel */
-      $timeout(() => {
-        HsLayoutService.setMainPanel('info');
-        HsQueryVectorService.selector.getFeatures().push(e.feature);
-        HsQueryVectorService.createFeatureAttributeList();
-      });
-    },
   });
 
   $scope.$emit('scope_loaded', 'DrawToolbar');
