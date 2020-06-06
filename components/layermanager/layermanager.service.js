@@ -520,8 +520,6 @@ export default function (
         }
       }
     }
-    console.log(me.data.baselayer)
-
     $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
   };
 
