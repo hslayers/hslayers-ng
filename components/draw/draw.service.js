@@ -63,7 +63,25 @@ export default function (
         }),
       ];
     },
-
+    defaultStyle: new Style({
+      stroke: new Stroke({
+        color: 'rgba(0, 153, 255, 1)',
+        width: 1.25,
+      }),
+      fill: new Fill({
+        color: 'rgba(255,255,255,0.4)',
+      }),
+      image: new Circle({
+        radius: 5,
+        fill: new Fill({
+          color: 'rgba(255,255,255,0.4)',
+        }),
+        stroke: new Stroke({
+          color: 'rgba(0, 153, 255, 1)',
+          width: 1.25,
+        }),
+      }),
+    }),
     saveDrawingLayer($scope, addNewLayer = false) {
       let tmpTitle = gettext('Draw layer');
       const tmpLayer =
@@ -121,6 +139,9 @@ export default function (
      * @memberOf HsDrawService
      */
     useCurrentStyle() {
+      if (!me.currentStyle){
+        me.currentStyle = me.defaultStyle;
+      }
       return me.currentStyle;
     },
     /**
@@ -237,7 +258,12 @@ export default function (
     },
 
     changeDrawSource() {
-      me.source = me.selectedLayer.getSource();
+      if (me.selectedLayer.getSource().getSource){
+        me.source = me.selectedLayer.getSource().getSource();
+      }
+      else{
+        me.source = me.selectedLayer.getSource();
+      }
       if (me.draw) {
         me.activateDrawing({
           changeStyle: me.useCurrentStyle,
