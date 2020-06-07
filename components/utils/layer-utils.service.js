@@ -93,8 +93,7 @@ export default function (HsUtilsService) {
     /**
      * @ngdoc method
      * @name HsLayerUtilsService#getLayerTitle
-     * @param layer
-     * @param {Ol.layer} Layer to get layer title
+     * @param {Ol.layer} layer to get layer title
      * @returns {string} Layer title or "Void"
      * @description Get title of selected layer
      */
@@ -231,7 +230,7 @@ export default function (HsUtilsService) {
      * @name HsLayerUtilsService#isLayerDrawable
      * @param {Ol.layer} layer Layer to check
      * @returns {boolean} True if layer is drawable vector layer
-     * @description Check if layer hasa a VectorSource object, if layer is
+     * @description Checks if layer has a VectorSource object, if layer is
      * not internal for hslayers, if it has title and is shown in layer
      * switcher
      */
@@ -243,6 +242,19 @@ export default function (HsUtilsService) {
         me.hasLayerTitle(layer) &&
         me.isLayerEditable(layer)
       );
+    },
+
+    /**
+     * @ngdoc method
+     * @name HsLayerUtilsService#isLayerClustered
+     * @param {Ol.layer} layer Layer to check
+     * @returns {boolean} True if layer is clustered, false otherwise
+     * @description Checks if layer's source has its own source
+     */
+    isLayerClustered(layer) {
+      return me.isLayerVectorLayer(layer) && layer.get('cluster')
+        ? true
+        : false;
     },
 
     /**
