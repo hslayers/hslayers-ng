@@ -35,25 +35,6 @@ export default function (
     linewidth: 1,
     $scope,
     fillcolor: {'background-color': 'rgba(0, 153, 255, 1)'},
-    defaultStyle: new Style({
-      stroke: new Stroke({
-        color: 'rgba(0, 153, 255, 1)',
-        width: 1.25,
-      }),
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.4)',
-      }),
-      image: new Circle({
-        radius: 5,
-        fill: new Fill({
-          color: 'rgba(255,255,255,0.4)',
-        }),
-        stroke: new Stroke({
-          color: 'rgba(0, 153, 255, 1)',
-          width: 1.25,
-        }),
-      }),
-    }),
     setType(what) {
       if (HsDrawService.type == what) {
         HsDrawService.type = null;
@@ -156,33 +137,32 @@ export default function (
      * @returns {Array} Array of style definitions
      */
     changeStyle(e = null) {
-      return [
-        new Style({
-          stroke: new Stroke({
-            color: $scope.fillcolor['background-color'],
-            width: $scope.linewidth,
-          }),
+      const newStyle = new Style({
+        stroke: new Stroke({
+          color: $scope.fillcolor['background-color'],
+          width: $scope.linewidth,
+        }),
+        fill: new Fill({
+          color:
+            $scope.fillcolor['background-color'].slice(0, -2) +
+            $scope.opacity +
+            ')',
+        }),
+        image: new Circle({
+          radius: 5,
           fill: new Fill({
             color:
               $scope.fillcolor['background-color'].slice(0, -2) +
               $scope.opacity +
               ')',
           }),
-          image: new Circle({
-            radius: 5,
-            fill: new Fill({
-              color:
-                $scope.fillcolor['background-color'].slice(0, -2) +
-                $scope.opacity +
-                ')',
-            }),
-            stroke: new Stroke({
-              color: $scope.fillcolor['background-color'],
-              width: $scope.linewidth,
-            }),
+          stroke: new Stroke({
+            color: $scope.fillcolor['background-color'],
+            width: $scope.linewidth,
           }),
         }),
-      ];
+      });
+      return newStyle
     },
     drawStyle() {
       return {
