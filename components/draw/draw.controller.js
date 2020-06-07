@@ -7,7 +7,6 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param HsConfig
  * @param HsDrawService
  * @param HsLayerUtilsService
- * @param HsQueryVectorService
  * @param $timeout
  * @param HsLayoutService
  * @param gettext
@@ -18,7 +17,6 @@ export default function (
   HsConfig,
   HsDrawService,
   HsLayerUtilsService,
-  HsQueryVectorService,
   $timeout,
   HsLayoutService,
   gettext,

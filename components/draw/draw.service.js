@@ -28,7 +28,8 @@ export default function (
   $document,
   HsLayoutService,
   $compile,
-  $timeout
+  $timeout,
+  HsQueryVectorService
 ) {
   'ngInject';
   const me = this;
@@ -211,11 +212,13 @@ export default function (
       /*Timeout is necessary because features are not imediately
        * added to the layer and layer can't be retrieved from the
        * feature, so they don't appear in Info panel */
-      // $timeout(() => {
-      //   HsLayoutService.setMainPanel('info');
-      //   HsQueryVectorService.selector.getFeatures().push(e.feature);
-      //   HsQueryVectorService.createFeatureAttributeList();
-      // });
+      if (HsLayoutService.mainpanel != 'draw'){
+        $timeout(() => {
+          HsLayoutService.setMainPanel('info');
+          HsQueryVectorService.selector.getFeatures().push(e.feature);
+          HsQueryVectorService.createFeatureAttributeList();
+        });
+      }
     },
 
     /**
