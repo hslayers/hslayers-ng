@@ -119,6 +119,8 @@ export default function (HsMapService) {
         switch (feature.getGeometry().getType()) {
           case 'Point':
             return feature.getGeometry();
+          case 'Circle':
+            return new Point(feature.getGeometry().getCenter());
           case 'Polygon':
             return feature.getGeometry().getInteriorPoint();
           case 'LineString':
