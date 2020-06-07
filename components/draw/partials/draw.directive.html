@@ -35,7 +35,7 @@
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
                         aria-expanded="{{layersExpanded}}">
-                        {{selectedLayerString() | translate}}
+                        {{selectedLayerString()}}
                     </button>
                     <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
                         <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
