@@ -925,11 +925,11 @@ msgstr "Číst"
 
 #: components/query/feature-popup.component.js:63
 msgid "Really delete all features from layer \"{0}\"?"
-msgstr "Opravdu chcete odstranit všechny prvky z vrstvy \"{0}\"?"
+msgstr "Opravdu odstranit všechny prvky z vrstvy \"{0}\"?"
 
 #: components/query/feature-popup.component.js:52
 msgid "Really delete this feature?"
-msgstr "Opravdu chcete odstranit tenhle prvek"
+msgstr "Opravdu odstranit tenhle prvek"
 
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:45
 #: components/add-layers/wms/add-wms-layer.md.directive.html:45
@@ -1109,7 +1109,7 @@ msgstr "Odesílam na Layman"
 
 #: components/sensors/partials/unit-dialog.html:7
 msgid "Sensor unit {{sensorsService.unit.description}}"
-msgstr "Senzorová jednotka {{$ctrl.unit.description}}"
+msgstr "Senzorová jednotka {{sensorsService.unit.description}}"
 
 #: components/sensors/partials/panel.html:2
 #: components/sidebar/sidebar.service.js:85
@@ -1206,7 +1206,7 @@ msgid "Stroke width"
 msgstr "Šířka tahu"
 
 #: components/draw/partials/draw.directive.html:88
-msgid "Stroke width: {{linewidth}}""
+msgid "Stroke width: {{linewidth}}"
 msgstr "Šířka tahu: {{linewidth}}"
 
 #: components/add-layers/wmts/add-wmts-layer.directive.html:29
@@ -1501,7 +1501,7 @@ msgstr "Kreslicí vrstva"
 
 #: components/draw/partials/draw.directive.html:33
 msgid "Drawing to:"
-msgstr "Kreslím do"
+msgstr "Kreslím do:"
 
 #: components/query/partials/infopanel.html:1
 msgid "Info"
@@ -1597,7 +1597,7 @@ msgstr "Jen mapa"
 
 #: components/draw/draw-layer-metadata.html:12
 msgid "*Layer will be added to the map and can be further managed in \"Layermanager\" panel"
-msgstr "Vrstva bude přidána do mapy a lze ji dále spravovat v panelu "Správce vrstev"
+msgstr "Vrstva bude přidána do mapy a lze ji dále spravovat v panelu 'Správce vrstev'"
 
 #: components/draw/partials/draw.directive.html:22
 msgid "Activate drawing by choosing a feature type"
