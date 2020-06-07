@@ -28,7 +28,7 @@ export default function (
             layer.galleryMiniMenu = true;
           }
         };
-        $scope.closeGallery = function (layer) {
+        $scope.toggleBasemap = function (layer) {
           if (arguments.length > 0) {
             if (!layer.active) {
               HsLayermanagerService.changeBaseLayerVisibility(true, layer);
@@ -36,6 +36,7 @@ export default function (
             }
           } else {
             $scope.baseLayersExpanded = false;
+            HsLayermanagerService.changeBaseLayerVisibility()
           }
         };
         $scope.galleryStyle = function () {
