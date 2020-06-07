@@ -13,8 +13,8 @@ export default function (HsMapService) {
    * @function Declutter
    * @memberOf HsLayerEditorService
    * @description Set declutter of features;
-   * @param newValue
-   * @param layer
+   * @param {boolean} newValue
+   * @param {ol/Layer} layer
    */
   me.declutter = function (newValue, layer) {
     const index = HsMapService.map.getLayers().getArray().indexOf(layer);
@@ -48,9 +48,9 @@ export default function (HsMapService) {
    * @function cluster
    * @memberOf HsLayerEditorService
    * @description Set cluster for layer;
-   * @param newValue
-   * @param layer
-   * @param distance
+   * @param {boolean} newValue
+   * @param {ol/Layer} layer
+   * @param {number} distance
    */
   me.cluster = function (newValue, layer, distance) {
     if (!layer.hsOriginalStyle) {
