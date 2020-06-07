@@ -61,11 +61,11 @@ export default function (
         }
       }
       HsDrawService.type = what;
-      HsDrawService.source = angular.isDefined(
-        HsDrawService.selectedLayer.getSource().getSource
+      HsDrawService.source = HsLayerUtilsService.isLayerClustered(
+        HsDrawService.selectedLayer
       )
         ? HsDrawService.selectedLayer.getSource().getSource() //Is it clustered vector layer?
-        : (HsDrawService.source = HsDrawService.selectedLayer.getSource());
+        : HsDrawService.selectedLayer.getSource();
       /* Individual feature styling is only available when drawing
 				is controlled in special panel not in toolbar */
       $scope.activateDrawing(

@@ -258,17 +258,16 @@ export default function (
     },
 
     changeDrawSource() {
-      if (me.selectedLayer.getSource().getSource){
+      if (HsLayerUtilsService.isLayerClustered(me.selectedLayer)) {
         me.source = me.selectedLayer.getSource().getSource();
-      }
-      else{
+      } else {
         me.source = me.selectedLayer.getSource();
       }
       if (me.draw) {
         me.activateDrawing({
           changeStyle: me.useCurrentStyle,
           drawState: true,
-          onDrawEnd: me.onDrawEnd
+          onDrawEnd: me.onDrawEnd,
         });
       }
     },
