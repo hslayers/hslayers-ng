@@ -129,9 +129,10 @@ export default function (HsUtilsService) {
      * @returns {object} Simplified description of style used by template to draw legend
      */
     serializeStyle(style) {
-      const image = style.getImage();
-      const stroke = style.getStroke();
-      const fill = style.getFill();
+      const styleToSerialize = style[0] ? style[0] : style;
+      const image = styleToSerialize.getImage();
+      const stroke = styleToSerialize.getStroke();
+      const fill = styleToSerialize.getFill();
       const genStyle = me.setUpLegendStyle(fill, stroke, image);
       return genStyle;
     },
