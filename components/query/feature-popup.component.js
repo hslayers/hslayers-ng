@@ -7,8 +7,8 @@ export default {
     HsMapService,
     HsQueryVectorService,
     $element,
-    HsConfirmDialogService,
-    gettext
+    gettext,
+    $injector
   ) {
     'ngInject';
     angular.extend($scope, {
@@ -48,7 +48,8 @@ export default {
       },
 
       async removeFeature(feature) {
-        const confirmed = await HsConfirmDialogService.show(
+        const dialog = $injector.get('HsConfirmDialog');
+        const confirmed = await dialog.show(
           gettext('Really delete this feature?'),
           gettext('Confirm delete')
         );
@@ -59,7 +60,8 @@ export default {
       },
 
       async clearLayer(layer) {
-        const confirmed = await HsConfirmDialogService.show(
+        const dialog = $injector.get('HsConfirmDialog');
+        const confirmed = await dialog.show(
           gettext('Really delete all features from layer "{0}"?').replace(
             '{0}',
             layer.get('title')
