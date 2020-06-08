@@ -1,6 +1,7 @@
 import '../core/core.module';
 import '../map/map.module';
 import '../permalink/permalink.module';
+import * as angular from "angular";
 import toolbarComponent from './toolbar.component';
 
 /**

@@ -2,6 +2,7 @@ import '../core/core.module';
 import '../geolocation/geolocation';
 import '../map/map.module';
 import '../utils/utils.module';
+import * as angular from "angular";
 import drawController from './draw.controller';
 import drawDirective from './draw.directive';
 import drawLayerMetadataComponent from './draw-layer-metadata.component';
