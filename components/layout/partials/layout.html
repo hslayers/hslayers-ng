@@ -28,7 +28,7 @@
                             <hs.compositions                        hs.draggable  ng-if="HsCore.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>
                             <div hs.feature_crossfilter.directive   hs.draggable ng-controller="hs.feature_crossfilter.controller"  ng-if="HsCore.exists('hs.feature_crossfilter.controller')" ng-show="panelVisible('feature_crossfilter', this)"></div>
                             <hs.measure                             hs.draggable ng-if="HsCore.exists('hs.measure')" ng-show="panelVisible('measure', this)"></hs.measure>
-                            <hs.print                               hs.draggable ng-if="HsCore.exists('hs.print')" ng-show="panelVisible('print', this)"></hs.print>
+                            <hs.print                               hs.draggable ng-show="panelVisible('print', this)"></hs.print>
                             <hs.styler                              hs.draggable ng-if="HsCore.exists('hs.styles')" ng-show="panelVisible('styler', this)"></hs.styler>
                             <hs.permalink                           hs.draggable ng-if="HsCore.exists('hs.permalink')" ng-show="panelVisible('permalink', this)"></hs.permalink>
                             <div hs.query.directive_infopanel       hs.draggable ng-controller="HsQueryController" class="hs-infopanel" ng-if="HsCore.exists('HsQueryController') && config.design != 'md'" ng-show="panelVisible('info', this)"></div>
