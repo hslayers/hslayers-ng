@@ -3,7 +3,7 @@ import '../geolocation/geolocation';
 import '../layermanager/layermanager.module';
 import '../map/map.module';
 import '../print/print.module';
-import angular from 'angular';
+import * as angular from 'angular';
 import layoutController from './layout.controller';
 import layoutDirective from './layout.directive';
 import layoutPanelHeaderDirective from './layout-panel-header.directive';
@@ -15,6 +15,9 @@ import mdSidenavDirective from './md-sidenav.directive';
 import mdSwipeAreaDirective from './md-swipe-area.directive';
 import mdToolbarDirective from './md-toolbar.directive';
 import panelCreatorDirective from './panel-creator.directive';
+import {downgrade} from '../../common/downgrader';
+import { downgradedPrintModule } from '../print';
+
 /**
  * @namespace hs.layout
  * @memberOf hs
@@ -25,7 +28,7 @@ angular
     'hs.map',
     'hs.geolocation',
     'hs.layermanager',
-    'hs.print',
+    downgradedPrintModule
   ]) // 'material.components.bottomSheetCollapsible'
   /**
    * @memberof hs.layout

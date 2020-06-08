@@ -3,6 +3,7 @@ import '../layout/layout.module';
 import '../map/map.module';
 import '../utils/utils.module';
 import 'angular-gettext';
+import * as angular from "angular";
 import '../translations/js/translations';
 import coreService from './core.service';
 

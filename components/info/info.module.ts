@@ -1,5 +1,6 @@
 import '../core/core.module';
 import '../map/map.module';
+import * as angular from "angular";
 import infoComponent from './info.component';
 
 /**

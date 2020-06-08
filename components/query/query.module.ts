@@ -1,8 +1,8 @@
-import '../../common/confirm/confirm.module';
 import '../language/language.module';
 import '../measure/measure.module';
 import '../utils/utils.module';
 import 'angular-sanitize';
+import * as angular from "angular";
 import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
 import featureComponent from './feature.component';
@@ -13,13 +13,16 @@ import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
 import queryVectorService from './query-vector.service';
 import queryWmsService from './query-wms.service';
+import { downgradedCommonConfirmModule } from '../../common/confirm';
 
+
+console.log(downgradedCommonConfirmModule);
 /**
  * @namespace hs.query
  * @memberOf hs
  * @param $compileProvider
  */
-angular
+export const HsQueryModule = angular
   .module('hs.query', [
     'hs.map',
     'hs.core',
@@ -28,7 +31,7 @@ angular
     'hs.layout',
     'hs.utils',
     'hs.measure',
-    'hs.common.confirm',
+    downgradedCommonConfirmModule
   ])
   /**
    * @ngdoc directive
