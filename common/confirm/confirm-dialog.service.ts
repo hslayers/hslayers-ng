@@ -1,3 +1,8 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class HsConfirmDialog {
   constructor($compile, HsLayoutService, $rootScope) {
     'ngInject';
@@ -16,7 +21,8 @@ export class HsConfirmDialog {
    * an argument based on which button the user clicked
    */
   show(message, title) {
-    return new Promise((resolve, reject) => {
+    //TODO: solve this mess
+ /*    return new Promise((resolve, reject) => {
       const scope = this.$rootScope.$new();
       Object.assign(scope, {
         title,
@@ -32,6 +38,6 @@ export class HsConfirmDialog {
         .querySelector('.hs-dialog-area')
         .appendChild(el[0]);
       this.$compile(el)(scope);
-    });
+    }); */
   }
 }
