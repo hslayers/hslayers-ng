@@ -31,7 +31,6 @@ export default function (
     setPanelState(buttons) {
       for (const button of buttons) {
         if (
-          HsCore.exists(button.module) &&
           HsLayoutService.panelEnabled(button.panel) &&
           $scope.checkConfigurableButtons(button)
         ) {
