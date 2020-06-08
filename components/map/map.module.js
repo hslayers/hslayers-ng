@@ -1,7 +1,7 @@
 import '../permalink/permalink.module';
 import mapController from './map.controller';
 import mapDirective from './map.directive';
-import mapService from './map.service';
+import {HsMapService} from './map.service';
 
 /**
  * @ngdoc module
@@ -18,7 +18,7 @@ angular
    * @ngdoc service
    * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file), and basic set of {@link HsMapService#interactions interactions}.
    */
-  .factory('HsMapService', mapService)
+  .service('HsMapService', HsMapService)
 
   /**
    * @module hs.map
