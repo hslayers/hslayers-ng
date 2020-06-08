@@ -31,7 +31,7 @@ import {
   MousePosition,
   ScaleLine,
   defaults as controlDefaults,
-} from 'ol/control';
+  } from 'ol/control';
 import {
   always as alwaysCondition,
   never as neverCondition,
@@ -282,7 +282,12 @@ export default function (
    * @type {object}
    * @description Set of default map controls used in HSLayers, may be loaded from config file
    */
-  const defaultDesktopControls = controlDefaults();
+  const defaultDesktopControls = controlDefaults({
+    attributionOptions: {
+      collapsible: true,
+      collapsed: true,
+    }
+  });
 
   //creates custom default view control
   const setDefaultView = function (e) {
@@ -313,6 +318,7 @@ export default function (
 
   defaultDesktopControls.removeAt(1);
   defaultDesktopControls.push(new ScaleLine());
+
   defaultDesktopControls.push(defaultViewControl);
 
   const defaultMobileControls = controlDefaults({
