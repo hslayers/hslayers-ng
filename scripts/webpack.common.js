@@ -14,6 +14,7 @@ var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 const webpack = require('webpack');
+
 module.exports = {
   entry: path.resolve(__dirname, '../main.ts'),
   output: {
@@ -56,7 +57,10 @@ module.exports = {
     rules: [
       {
         test: /\.ts?$/,
-        use: 'ts-loader',
+        use: [
+          { loader: 'ng-annotate-loader' },
+          'ts-loader'
+        ],
         exclude: /node_modules/,
       },
       {
