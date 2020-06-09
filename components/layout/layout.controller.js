@@ -516,8 +516,6 @@ export default function (
     let width = HsLayoutService.layoutElement.clientWidth;
     let marginLeft = 0;
 
-    HsMapService.map.updateSize();
-
     if (!HsLayoutService.sidebarBottom() || !fullscreen) {
       marginLeft += HsLayoutService.sidebarRight
         ? 0
@@ -534,6 +532,13 @@ export default function (
     }
 
     height -= HsLayoutService.mdToolbarHeight();
+
+    const currentMapSize = HsMapService.map.getSize();
+    //We can't call this too often because it messes up 
+    //the scrolling and animations - they get canceled
+    if(currentMapSize[0] != width || currentMapSize[1] != height){
+      setTimeout(() => HsMapService.map.updateSize(), 200);
+    }
 
     return {
       height: `${height}px`,
