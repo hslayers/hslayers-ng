@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "lib": ["esnext", "dom"],
+        "sourceMap": true,
+        "declaration": false
     }
 }
