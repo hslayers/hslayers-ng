@@ -6,51 +6,13 @@ import './components/draw/draw.module';
 import './components/info/info.module';
 import './components/measure/measure.module';
 import './components/permalink/permalink.module';
-import './components/print/print.module';
+import {downgradedPrintModule} from './components/print'
 import './components/query/query.module';
 import './components/search/search.module';
 import './components/sidebar/sidebar.module';
 import './components/styles/styles.module';
 import './components/toolbar/toolbar.module';
-
-const mainModuleBs = angular.module('hs', [
-  'hs.sidebar',
-  'hs.toolbar',
-  'hs.layermanager',
-  'hs.draw',
-  'hs.map',
-  'hs.query',
-  'hs.search',
-  'hs.print',
-  'hs.permalink',
-  'hs.measure',
-  'hs.legend',
-  'hs.geolocation',
-  'hs.core',
-  'hs.datasource_selector',
-  'hs.save-map',
-  'hs.addLayers',
-  'gettext',
-  'hs.compositions',
-  'hs.info',
-  'hs.styles',
-]);
-
-mainModuleBs.directive('hs', (HsConfig, HsCore) => {
-  'ngInject';
-  return {
-    template: require('hslayers.html'),
-    link: function (scope, element, attrs) {
-      if (
-        typeof HsConfig.sizeMode == 'undefined' ||
-        HsConfig.sizeMode == 'fullscreen'
-      ) {
-        HsCore.fullScreenMap(element);
-      }
-    },
-  };
-});
-
+import * as angular from "angular";
 import * as proj from 'ol/proj';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -64,6 +26,7 @@ import {Vector} from 'ol/source';
 import {Style, Fill, Stroke, Circle} from 'ol/style';
 import {register} from 'ol/proj/proj4';
 
+declare const window: any;
 window.ol = {
   layer: {
     Tile,
@@ -95,11 +58,43 @@ window.ol = {
   proj
 };
 
-if (window.hslayersNgConfig) {
-  mainModuleBs.value('HsConfig', window.hslayersNgConfig(window.ol));
-}
-
-mainModuleBs.controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
+export default angular.module('hs', [
+  'hs.sidebar',
+  'hs.toolbar',
+  'hs.layermanager',
+  'hs.draw',
+  'hs.map',
+  'hs.query',
+  'hs.search',
+  downgradedPrintModule,
+  'hs.permalink',
+  'hs.measure',
+  'hs.legend',
+  'hs.geolocation',
+  'hs.core',
+  'hs.datasource_selector',
+  'hs.save-map',
+  'hs.addLayers',
+  'gettext',
+  'hs.compositions',
+  'hs.info',
+  'hs.styles',
+]).directive('hs', (HsConfig, HsCore) => {
+  'ngInject';
+  return {
+    template: require('hslayers.html'),
+    link: function (scope, element, attrs) {
+      if (
+        typeof HsConfig.sizeMode == 'undefined' ||
+        HsConfig.sizeMode == 'fullscreen'
+      ) {
+        HsCore.fullScreenMap(element);
+      }
+    },
+  };
+})
+.value('HsConfig', window.hslayersNgConfig ? window.hslayersNgConfig(window.ol) : {})
+.controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
   'ngInject';
   $scope.HsCore = HsCore;
   let lastConfigBuster = HsConfig.buster;
