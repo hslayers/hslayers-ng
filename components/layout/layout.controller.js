@@ -43,8 +43,8 @@ export default function (
   $scope.geolocation = HsGeolocationService;
   $scope.LM = HsLayermanagerService;
   $scope.layoutService = HsLayoutService;
-  $scope.panelVisible = HsLayoutService.panelVisible;
-  $scope.panelEnabled = HsLayoutService.panelEnabled;
+  $scope.panelVisible = (which, scope) => HsLayoutService.panelVisible(which, scope);
+  $scope.panelEnabled = (which, status) => HsLayoutService.panelEnabled(which, status);
 
   $scope.location = {
     status: {
@@ -503,7 +503,7 @@ export default function (
     //Ignore error
   }
 
-  $scope.panelSpaceWidth = HsLayoutService.panelSpaceWidth;
+  $scope.panelSpaceWidth = () => HsLayoutService.panelSpaceWidth();
 
   $scope.infoContainerStyle = function () {
     if (HsLayoutService.sidebarBottom()) {
