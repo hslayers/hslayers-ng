@@ -5,13 +5,14 @@ import searchDirective from './search.directive';
 import searchInputDirective from './search-input.directive';
 import searchResultsDirective from './search-results.directive';
 import searchService from './search.service';
-
+import * as angular from "angular";
+import {downgradedLayoutModule} from '../layout';
 /**
  * @namespace hs.search
  * @memberOf hs
  */
 angular
-  .module('hs.search', ['hs.map', 'hs.styles', 'hs.layout'])
+  .module('hs.search', ['hs.map', 'hs.styles', downgradedLayoutModule])
   /**
    * @memberof hs.search
    * @ngdoc directive

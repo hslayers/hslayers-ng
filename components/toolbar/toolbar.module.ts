@@ -1,15 +1,15 @@
 import '../core/core.module';
 import '../map/map.module';
 import '../permalink/permalink.module';
-import * as angular from "angular";
 import toolbarComponent from './toolbar.component';
-
+import * as angular from "angular";
+import {downgradedLayoutModule} from '../layout';
 /**
  * @namespace hs.toolbar
  * @memberOf hs
  */
 angular
-  .module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout'])
+  .module('hs.toolbar', ['hs.map', 'hs.core', downgradedLayoutModule])
 
   /**
    * @memberof hs.toolbar

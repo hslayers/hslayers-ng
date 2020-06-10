@@ -3,12 +3,12 @@
  * @memberOf hs
  */
 
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HsPrintComponent } from './print.component';
 import { HsPrintService } from './print.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from "@angular/common";
+import { HsPanelHelpersModule } from '../layout/panel-helpers.module';
 /**
  * @memberof hs.print
  * @ngdoc component
@@ -21,16 +21,20 @@ import { CommonModule } from "@angular/common";
     HsPrintComponent
   ],
   imports: [
-    BrowserModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    HsPanelHelpersModule
+  ],
+  exports: [
+    HsPrintComponent
   ],
   providers: [HsPrintService,
     {
       provide: Window, useValue: window
-    }],
+    }
+  ],
   entryComponents: [
     HsPrintComponent
-  ],
+  ]
 })
 export class HsPrintModule { }
