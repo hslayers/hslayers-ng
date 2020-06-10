@@ -1,5 +1,5 @@
 <div class="card panel-default mainpanel hs-comp-mainpanel">
-    <hs.layout.panel-header panel-name="composition_browser" panel-title="'Compositions'| translate">
+    <hs-panel-header name="composition_browser" title="Compositions">
         <extra-title>
             <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
         </extra-title>
@@ -14,7 +14,7 @@
                 <span class="icon-plus"></span>
             </button>
         </extra-buttons>
-    </hs.layout.panel-header>
+    </hs-panel-header>
     <div class="card-body">
         <div class="input-group" ng-show="addCompositionUrlVisible">
             <input type="text" class="form-control" placeholder="{{'Address'|translate}}"
