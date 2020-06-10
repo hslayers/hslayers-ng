@@ -7,13 +7,14 @@ import sidebarDirective from './sidebar.directive';
 import sidebarMiniDirective from './sidebar-mini.directive';
 import sidebarService from './sidebar.service';
 import * as angular from "angular";
+import {downgradedLayoutModule} from '../layout';
 
 /**
  * @namespace hs.sidebar
  * @memberOf hs
  */
 angular
-  .module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies', 'hs.layout'])
+  .module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies', downgradedLayoutModule])
   /**
    * @memberof hs.sidebar
    * @ngdoc service
