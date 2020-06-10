@@ -1,7 +1,10 @@
 export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) {
   'ngInject';
   return {
-    template: HsConfig.design == 'md' ? require('components/layout/partials/layoutmd.html') : require('components/layout/partials/layout.html'),
+	template: HsConfig.design == 'md' ?
+		HsConfig.directiveTemplates.layout ||
+		require('components/layout/partials/layoutmd.html') :
+		require('components/layout/partials/layout.html'),
     link: function (scope, element) {
       HsLayoutService.contentWrapper = element[0].querySelector('.hs-content-wrapper');
       HsLayoutService.layoutElement = element[0];

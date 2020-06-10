@@ -152,20 +152,20 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
   };
 
   $rootScope.$on('layermanager.layer_added', (e, layer) => {
-    me.prepLayerFilter(layer);
+    // me.prepLayerFilter(layer);
 
-    if (HsUtilsService.instOf(layer.layer, VectorLayer)) {
-      const source = layer.layer.getSource();
-      console.log(source.getState());
-      var listenerKey = source.on('change', (e) => {
-        if (source.getState() === 'ready') {
-          console.log(source.getState());
-          Observable.unByKey(listenerKey);
-          me.prepLayerFilter(layer);
-          me.applyFilters(layer);
-        }
-      });
-    }
+    // if (HsUtilsService.instOf(layer.layer, VectorLayer)) {
+    //   const source = layer.layer.getSource();
+    //   console.log(source.getState());
+    //   var listenerKey = source.on('change', (e) => {
+    //     if (source.getState() === 'ready') {
+    //       console.log(source.getState());
+    //       Observable.unByKey(listenerKey);
+    //       me.prepLayerFilter(layer);
+    //       me.applyFilters(layer);
+    //     }
+    //   });
+    // }
   });
 
   return me;

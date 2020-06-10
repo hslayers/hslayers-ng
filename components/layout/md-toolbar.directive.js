@@ -4,6 +4,7 @@
 export default function (HsConfig) {
   'ngInject';
   return {
-    template: require('./partials/toolbar.html'),
+	  template: HsConfig.directiveTemplates['md-toolbar'] ||
+		require('./partials/toolbar.html'),
   };
 }
