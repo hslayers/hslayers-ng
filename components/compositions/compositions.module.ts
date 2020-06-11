@@ -11,6 +11,7 @@ import infoDialogDirective from './info-dialog.directive';
 import overwriteDialogDirective from './overwrite-dialog.directive';
 import parserService from './compositions-parser.service';
 import shareDialogDirective from './share-dialog.directive';
+import * as angular from 'angular';
 
 /**
  * @ngdoc module

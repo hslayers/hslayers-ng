@@ -1,5 +1,6 @@
 import layerUtilsService from './layer-utils.service';
 import utilsService from './utils.service';
+import * as angular from 'angular';
 
 /**
  * @ngdoc module

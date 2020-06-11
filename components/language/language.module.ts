@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 /* eslint-disable angular/di */
 /**
  * @namespace hs.print

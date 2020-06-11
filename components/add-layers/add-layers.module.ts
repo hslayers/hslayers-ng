@@ -12,6 +12,7 @@ import addLayersUrlDirective from './add-layers-url.directive';
 import compileDirective from '../../common/compile.directive';
 import dragDropLayerService from './drag-drop-layer.service';
 import nestedLayersTableDirective from './nested-layers-table.directive';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayers

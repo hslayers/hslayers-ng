@@ -1,11 +1,11 @@
 import mobile_settingsController from './mobile_settings.controller';
 import mobile_settingsDirective from './mobile_settings.directive';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.mobile_settings
  * @memberOf hs
  */
-
 angular.module('hs.mobile_settings', ['hs.core'])
     /**
     * @memberof hs.mobile_settings

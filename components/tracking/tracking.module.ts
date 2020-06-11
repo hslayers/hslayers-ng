@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Vector} from 'ol/source';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.tracking

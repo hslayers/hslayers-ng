@@ -1,5 +1,6 @@
 import addLayersVectorService from './add-layers-vector.service';
 import addLayersVectorUrlParserService from './add-layers-vector-url-parser.service';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayersVector

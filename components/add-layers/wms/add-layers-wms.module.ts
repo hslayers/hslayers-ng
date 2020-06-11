@@ -4,6 +4,7 @@ import addLayersWmsComponent from './add-layers-wms.component';
 import addLayersWmsService from './add-layers-wms.service';
 import capabilitiesErrorDirective from '../capabilities-error.directive';
 import resampleDialogDirective from '../resample-dialog.directive';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayersWms

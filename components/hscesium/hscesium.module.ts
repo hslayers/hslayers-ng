@@ -2,6 +2,7 @@ import HsCesiumService from './cesium.service';
 import {HsCesiumCameraService} from './cesium-camera.service';
 import {HsCesiumLayersService} from './cesium-layers.service';
 import {HsCesiumTimeService} from './cesium-time.service';
+import * as angular from 'angular';
 
 /**
  * @ngdoc module

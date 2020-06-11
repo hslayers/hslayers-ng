@@ -4,6 +4,7 @@ import legendLayerDirective from './legend-layer.directive';
 import legendLayerStaticDirective from './legend-layer-static.directive';
 import legendLayerVectorDirective from './legend-layer-vector.directive';
 import legendService from './legend.service';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.legend

@@ -6,6 +6,7 @@ import featureFilterElementDirective from './feature-filter-element.directive';
 import featureFilterService from './feature-filter.service';
 import featureListController from './feature-list.controller';
 import featureListDirective from './feature-list.directive';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.featureFilter
