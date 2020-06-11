@@ -28,7 +28,7 @@ angular
    * @memberof hs.save-map
    * @description Display Save map (composition) dialog
    */
-  .directive('hs.save-map.directive', (HsConfig) => {
+  .directive('hs.save-map.directive', function(){
     'ngInject';
     return {
       template: require('./partials/dialog.html'),
@@ -41,7 +41,7 @@ angular
    * @memberof hs.save-map
    * @description Display advanced form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveForm', (HsConfig) => {
+  .directive('hs.saveMap.directiveForm', function(){
     'ngInject';
     return {
       template: require('./partials/form.html'),
@@ -54,7 +54,7 @@ angular
    * @memberof hs.save-map
    * @description Display simple form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveSimpleform', (HsConfig) => {
+  .directive('hs.saveMap.directiveSimpleform', function() {
     'ngInject';
     return {
       template: require('./partials/simpleform.html'),
@@ -67,7 +67,7 @@ angular
    * @memberof hs.save-map
    * @description Display dialog about result of saving to status manager operation
    */
-  .directive('hs.saveMap.resultDialogDirective', (HsConfig) => {
+  .directive('hs.saveMap.resultDialogDirective', function(){
     'ngInject';
     return {
       template: require('./partials/dialog_result.html'),
@@ -83,7 +83,7 @@ angular
    * @memberof hs.save-map
    * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
    */
-  .directive('hs.saveMap.saveDialogDirective', (HsConfig) => {
+  .directive('hs.saveMap.saveDialogDirective', function(){
     'ngInject';
     return {
       template: require('./partials/dialog_save.html'),
