@@ -8,6 +8,7 @@ import {GeoJSON} from 'ol/format';
 import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.trip_planner

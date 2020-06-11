@@ -8,6 +8,7 @@ import saveMapManagerService from './save-map-manager.service';
 import saveMapService from './save-map.service';
 import statusManagerService from './status-manager.service';
 import syncErrorDialogComponent from './sync-error-dialog.component';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.save-map

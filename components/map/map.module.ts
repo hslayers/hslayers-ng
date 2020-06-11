@@ -2,6 +2,7 @@ import '../permalink/permalink.module';
 import mapController from './map.controller';
 import mapDirective from './map.directive';
 import {HsMapService} from './map.service';
+import * as angular from 'angular';
 
 /**
  * @ngdoc module

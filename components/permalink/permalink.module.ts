@@ -3,6 +3,7 @@ import '../language/language.module';
 import permalinkComponent from './permalink.component';
 import permalinkShareService from './permalink-share.service';
 import permalinkUrlService from './permalink-url.service';
+import * as angular from 'angular';
 
 /**
  * @namespace hs.permalink

@@ -19,6 +19,7 @@ import layermanagerMetadataService from './layermanager-metadata.service';
 import layermanagerService from './layermanager.service';
 import layermanagerWmstService from './layermanager-wmst.service';
 import removeAllDialogDirective from './remove-all-dialog.directive';
+import * as angular from 'angular';
 
 /**
  * @ngdoc module

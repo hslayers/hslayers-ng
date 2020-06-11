@@ -1,5 +1,5 @@
 import '../core/core.module';
-import '../geolocation/geolocation';
+import '../geolocation/geolocation.module';
 import '../map/map.module';
 import '../utils/utils.module';
 import * as angular from "angular";

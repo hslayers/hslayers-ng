@@ -3,6 +3,7 @@ import '../../save-map/save-map.module';
 import '../../styles/styles.module';
 import addLayersShpService from './add-layers-shp.service';
 import forShapefileUploadFilter from './for-shapefile-upload.filter';
+import * as angular from 'angular';
 
 /**
  * @param config
