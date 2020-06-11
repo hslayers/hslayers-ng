@@ -13,7 +13,7 @@ import mickaService from './micka/micka.service';
 import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
 import selectTypeToAddLayerDialogComponent from './select-type-to-add-layer-dialog.component';
 import * as angular from "angular";
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 /**
  * @namespace hs.datasource_selector
  * @memberOf hs
@@ -22,7 +22,7 @@ angular
   .module('hs.datasource_selector', [
     'hs.map',
     'hs.widgets',
-    downgradedLayoutModule,
+    'hs.layout',
     'hs.permalink',
   ])
   /**

@@ -18,4 +18,8 @@ angular
      */
     .factory('HsPrintService', downgradeInjectable(HsPrintService));
 
+angular
+    .module('hs.print', [downgradedPrintModule]);
+
 export * from './print.service';
+export {HsPrintModule} from './print.module';

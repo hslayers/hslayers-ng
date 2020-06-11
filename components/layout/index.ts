@@ -109,7 +109,7 @@ angular
    * @name hs.panelHeader
    * @description Directive for title bar of panels
    */
-   .directive('hsPanelHeader', downgradeComponent({ component: HsPanelHeaderComponent}))
+  .directive('hsPanelHeader', downgradeComponent({ component: HsPanelHeaderComponent }))
 
   /**
    * @memberof hs.layout
@@ -118,3 +118,8 @@ angular
    * @description TODO
    */
   .factory('HsLayoutService', HsLayoutService);
+
+angular
+  .module('hs.layout', [downgradedLayoutModule]);
+
+export { HsLayoutModule } from './layout.module';

@@ -3,13 +3,13 @@ import sensorsService from './sensors.service';
 import sensorsUnitDialogComponent from './sensors-unit-dialog.component';
 import sensorsUnitListItemComponent from './sensors-unit-list-item.component';
 import * as angular from "angular";
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 /**
  * @namespace hs.sensors
  * @memberOf hs
  */
 angular
-  .module('hs.sensors', ['hs.map', 'hs.utils', downgradedLayoutModule, 'ui.bootstrap.datetimepicker'])
+  .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout', 'ui.bootstrap.datetimepicker'])
 
   /**
    * @memberof HsSensorsService

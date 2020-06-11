@@ -3,13 +3,13 @@ import mobileToolbarController from './mobile-toolbar.controller';
 import mobileToolbarDirective from './mobile-toolbar.directive';
 import mobileToolbarService from './mobile-toolbar.service';
 import * as angular from "angular";
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 /**
  * @namespace hs.mobile_toolbar
  * @memberOf hs
  */
 angular
-  .module('hs.mobile_toolbar', ['hs.map', 'hs.core', downgradedLayoutModule])
+  .module('hs.mobile_toolbar', ['hs.map', 'hs.core', 'hs.layout'])
   /**
    * @memberof hs.mobile_toolbar
    * @ngdoc service
