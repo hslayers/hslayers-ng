@@ -3,13 +3,13 @@ import '../map/map.module';
 import '../permalink/permalink.module';
 import toolbarComponent from './toolbar.component';
 import * as angular from "angular";
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 /**
  * @namespace hs.toolbar
  * @memberOf hs
  */
 angular
-  .module('hs.toolbar', ['hs.map', 'hs.core', downgradedLayoutModule])
+  .module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout'])
 
   /**
    * @memberof hs.toolbar

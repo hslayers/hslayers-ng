@@ -6,7 +6,7 @@ import './components/draw/draw.module';
 import './components/info/info.module';
 import './components/measure/measure.module';
 import './components/permalink/permalink.module';
-import {downgradedPrintModule} from './components/print'
+import './components/print'
 import './components/query/query.module';
 import './components/search/search.module';
 import './components/sidebar/sidebar.module';
@@ -66,7 +66,7 @@ export default angular.module('hs', [
   'hs.map',
   'hs.query',
   'hs.search',
-  downgradedPrintModule,
+  'hs.print',
   'hs.permalink',
   'hs.measure',
   'hs.legend',

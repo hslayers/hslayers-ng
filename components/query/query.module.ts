@@ -14,7 +14,7 @@ import queryInfoPanelMdDirective from './query-info-panel-md.directive';
 import queryVectorService from './query-vector.service';
 import queryWmsService from './query-wms.service';
 import { downgradedCommonConfirmModule } from '../../common/confirm';
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 
 /**
  * @namespace hs.query
@@ -27,7 +27,7 @@ export const HsQueryModule = angular
     'hs.core',
     'ngSanitize',
     'hs.language',
-    downgradedLayoutModule,
+    'hs.layout',
     'hs.utils',
     'hs.measure',
     downgradedCommonConfirmModule

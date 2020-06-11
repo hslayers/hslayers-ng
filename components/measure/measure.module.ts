@@ -1,14 +1,14 @@
 import measureComponent from './measure.component';
 import measureService from './measure.service';
 import * as angular from "angular";
-import {downgradedLayoutModule} from '../layout';
+import '../layout';
 
 /**
  * @namespace hs.measure
  * @memberOf hs
  */
 angular
-  .module('hs.measure', ['hs.map', 'hs.core', downgradedLayoutModule])
+  .module('hs.measure', ['hs.map', 'hs.core', 'hs.layout'])
   /**
    * @memberof hs.measure
    * @ngdoc service
