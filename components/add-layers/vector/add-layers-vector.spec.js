@@ -1,9 +1,11 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
+import 'angular-mocks';
+import * as angular from 'angular';
+
 describe('add-layers-vector', () => {
   let el, scope, vm;
-  let hsMap;
 
   beforeEach(() => {
     angular.mock.module(($provide) => {
@@ -18,7 +20,7 @@ describe('add-layers-vector', () => {
     $rootScope.$digest();
     scope = el.isolateScope() || el.scope();
     vm = scope.$$childHead.vm;
-    hsMap = $injector.get('HsMapService');
+    $injector.get('HsMapService');
   }));
 
   it('GeoJSON layer should be added', async () => {

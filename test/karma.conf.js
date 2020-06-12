@@ -23,8 +23,8 @@ module.exports = function (config) {
     port: 9876,
 
     basePath: '',
-    files: ['webpack.karma.context.js'],
-    preprocessors: {'webpack.karma.context.js': ['webpack', 'sourcemap']},
+    files: ['webpack.karma.context.ts'],
+    preprocessors: {'webpack.karma.context.ts': ['webpack', 'sourcemap']},
     exclude: [],
     webpack: webpackCOnf,
     webpackMiddleware: {

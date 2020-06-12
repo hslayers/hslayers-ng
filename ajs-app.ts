@@ -57,7 +57,6 @@ window.ol = {
   View,
   proj
 };
-
 export default angular.module('hs', [
   'hs.sidebar',
   'hs.toolbar',
@@ -93,7 +92,7 @@ export default angular.module('hs', [
     },
   };
 })
-.value('HsConfig', window.hslayersNgConfig ? window.hslayersNgConfig(window.ol) : {})
+.value('HsConfig', window.hslayersNgConfig ? window.hslayersNgConfig(window.ol) : {proxyPrefix:'/some'})
 .controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
   'ngInject';
   $scope.HsCore = HsCore;
