@@ -13,6 +13,7 @@ export const HsMapServiceProvider = {
 };
 
 export function hsConfigFactory(i: any) {
+    console.log('BBBB', i.get('HsConfig'), i.get('HsConfig').proxyPrefix)
     return i.get('HsConfig');
 }
 

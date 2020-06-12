@@ -28,6 +28,7 @@ export class AppModule {
     constructor(private upgrade: UpgradeModule) { }
     ngDoBootstrap() {
         //app.name should be same as module name and directive name: 'hs'
+        console.log('te2');
         this.upgrade.bootstrap(document.documentElement, [app.name], { strictDi: true });
     }
 }

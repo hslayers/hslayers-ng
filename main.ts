@@ -6,6 +6,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { setAngularJSGlobal } from '@angular/upgrade/static';
 import * as angular from 'angular';
 import 'zone.js';
-
 setAngularJSGlobal(angular);
+console.log('te1');
 platformBrowserDynamic().bootstrapModule(AppModule);

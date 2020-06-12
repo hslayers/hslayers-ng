@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 'use strict';
 
+import 'angular-mocks';
 import VectorLayer from 'ol/layer/Vector';
 
 describe('utils', () => {

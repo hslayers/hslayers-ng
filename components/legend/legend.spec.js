@@ -1,6 +1,9 @@
+/* eslint-disable angular/di */
 'use strict';
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
-import {OSM, TileWMS} from 'ol/source';
+import 'angular-mocks';
+import * as angular from 'angular';
+import {Tile} from 'ol/layer';
+import {TileWMS} from 'ol/source';
 
 describe('legend', () => {
   let scope;
@@ -9,7 +12,7 @@ describe('legend', () => {
   beforeEach(() => {
     angular.mock.module(($provide) => {
       $provide.value('HsConfig', {
-        proxyPrefix: '',
+        proxyPrefix: '/proxy',
         default_layers: [],
       });
     });
@@ -17,8 +20,9 @@ describe('legend', () => {
     angular.mock.module('hs.legend');
   }); //<--- Hook module
 
-  beforeEach(inject((_$componentController_, $rootScope) => {
+  beforeEach(inject((_$componentController_, $rootScope, HsConfig) => {
     scope = $rootScope.$new();
+    HsConfig.proxyPrefix = '/proxy/';
     $componentController = _$componentController_;
   }));
 
@@ -35,7 +39,7 @@ describe('legend', () => {
       show_in_manager: false,
       visible: true,
     });
-    const ctrl = $componentController('hs.legend', {$scope: scope}, {});
+    $componentController('hs.legend', {$scope: scope}, {});
 
     scope.addLayerToLegends(layer);
 
@@ -44,7 +48,7 @@ describe('legend', () => {
     expect(scope.layerDescriptors[0].type).toBe('wms');
     expect(scope.layerDescriptors[0].title).toBe('Crop stats');
     expect(scope.layerDescriptors[0].subLayerLegends).toEqual([
-      'http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_yield_corn&format=image%2Fpng',
+      '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_yield_corn&format=image%2Fpng',
     ]);
   });
 
@@ -61,13 +65,13 @@ describe('legend', () => {
       show_in_manager: false,
       visible: true,
     });
-    const ctrl = $componentController('hs.legend', {$scope: scope}, {});
+    $componentController('hs.legend', {$scope: scope}, {});
     scope.addLayerToLegends(layer);
     const layerParams = layer.getSource().getParams();
     layerParams.LAYERS = `2017_damage_tomato`;
     layer.getSource().updateParams(layerParams);
     expect(scope.layerDescriptors[0].subLayerLegends).toEqual([
-      'http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',
+      '/proxy/http://localhost/ows?&version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=2017_damage_tomato&format=image%2Fpng',
     ]);
   });
 });

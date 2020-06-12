@@ -200,10 +200,8 @@ def main():
             #encoding issue with requests. See http://docs.python-requests.org/en/latest/user/advanced/#encodings
             try:
                 if not resp.headers['encoding']:
-                    print("TEEE")
                     content = resp.text
                 else:
-                    print("TUUR")
                     content = resp.read()
             except Exception as E:
                 content = resp.content
