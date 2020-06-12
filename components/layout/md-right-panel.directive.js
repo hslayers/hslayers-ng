@@ -5,6 +5,6 @@ export default function (HsConfig) {
   'ngInject';
   return {
     replace: true,
-    template: require('./partials/right-panel.html'),
+    template: HsConfig.directiveTemplates["md-right-panel"] || require('./partials/right-panel.html'),
   };
 }

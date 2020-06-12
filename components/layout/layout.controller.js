@@ -295,6 +295,27 @@ export default function (
       $log.log('Injector does not have mdBottomSheetCollapsible service!');
     }
 
+    try {
+		const $mdDialog = $injector.get('$mdDialog');
+
+		$scope.showDialog = function(ev, template) {
+			$mdDialog.show({
+				scope: this,
+				preserveScope: true,
+				template: template,
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose: true
+			});
+		};
+
+		$scope.cancelDialog = function() {
+			$mdDialog.cancel();
+		};
+    } catch (ex) {
+		$log.log('Injector does not have mdDialog service!');
+    }
+
     // $scope.$watch(function() {
     //     return $scope.getBottomSheetState();
     // }, function() {

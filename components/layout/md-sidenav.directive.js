@@ -4,6 +4,7 @@
 export default function (HsConfig) {
   'ngInject';
   return {
-    template: require('./partials/sidenav.html'),
+      template: HsConfig.directiveTemplates["md-sidenav"] ||
+		require('./partials/sidenav.html'),
   };
 }

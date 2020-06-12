@@ -4,7 +4,7 @@
  * @param HsCore
  * @param HsFeatureFilterService
  * @param HsLayermanagerService
- * @param config
+ * @param HsConfig
  */
 export default function (
   $scope,
@@ -12,7 +12,7 @@ export default function (
   HsCore,
   HsFeatureFilterService,
   HsLayermanagerService,
-  config
+  HsConfig
 ) {
   'ngInject';
   window.scope = $scope;
