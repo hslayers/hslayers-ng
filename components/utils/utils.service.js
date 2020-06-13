@@ -356,6 +356,31 @@ export class HsUtilsService {
     return false;
   }
 
+  injectService(name) {
+    return new Promise((resolve, reject) => {
+      try {
+        const tmp = this.$injector.get(name);
+        resolve(tmp);
+      } catch (ex) {
+        let tries = 0;
+        const clear = setInterval(() => {
+          try {
+            tries++;
+            const tmp = this.$injector.get(name);
+            clearInterval(clear);
+            resolve(tmp);
+          } catch (ex2) {
+            if (tries > 10) {
+              this.$log.log('Failed to get service', name, ex2);
+              clearInterval(clear);
+              reject(ex);
+            }
+          }
+        }, 500);
+      }
+    });
+  }
+
   /**
    * Remove duplicate items from an array
    *
