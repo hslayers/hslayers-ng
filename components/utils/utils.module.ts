@@ -1,5 +1,5 @@
 import layerUtilsService from './layer-utils.service';
-import utilsService from './utils.service';
+import {HsUtilsService} from './utils.service';
 import * as angular from 'angular';
 
 /**
@@ -19,7 +19,7 @@ angular
    * @description Service for containing various utility functions used throughout HSL modules.
    * Add few utility functions and also enrich some data types with additional functions (mainly Date and String).
    */
-  .factory('HsUtilsService', utilsService)
+  .service('HsUtilsService', HsUtilsService)
 
   /**
    * @ngdoc service
