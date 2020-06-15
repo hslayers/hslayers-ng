@@ -11,5 +11,7 @@ angular
     .factory('HsConfirmDialog', downgradeInjectable(HsConfirmDialog))
     .directive('hsConfirmDialogComponent', downgradeComponent({ component: HsConfirmDialogComponent }));
 
+angular
+    .module('hs.common.confirm', [downgradedCommonConfirmModule])
 
 export * from './confirm-dialog.service';
