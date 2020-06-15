@@ -1,6 +1,7 @@
 import { HsMapService } from './components/map/map.service';
 import { HsConfig } from './config.service';
-import  { HsLayoutService } from './components/layout/layout.service';
+import { HsLayoutService } from './components/layout/layout.service';
+import { HsUtilsService } from './components/utils/utils.service';
 
 export function hsMapServiceFactory(i: any) {
     return i.get('HsMapService');
@@ -13,10 +14,8 @@ export const HsMapServiceProvider = {
 };
 
 export function hsConfigFactory(i: any) {
-    console.log('BBBB', i.get('HsConfig'), i.get('HsConfig').proxyPrefix)
     return i.get('HsConfig');
 }
-
 
 export const HsConfigProvider = {
     provide: HsConfig,
@@ -31,5 +30,15 @@ export function hsLayoutServiceFactory(i: any) {
 export const HsLayoutServiceProvider = {
     provide: HsLayoutService,
     useFactory: hsLayoutServiceFactory,
+    deps: ['$injector']
+};
+
+export function hsUtilsServiceFactory(i: any) {
+    return i.get('HsUtilsService');
+}
+
+export const HsUtilsServiceProvider = {
+    provide: HsUtilsService,
+    useFactory: hsUtilsServiceFactory,
     deps: ['$injector']
 };
