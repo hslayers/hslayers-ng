@@ -1,16 +1,20 @@
 
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { HsConfig } from '../../config.service';
 import { HsMapService } from '../map/map.service.js';
 import { HsUtilsService } from '../utils/utils.service';
 import { HsLayoutService } from '../layout/layout.service';
 import { DOCUMENT } from '@angular/common';
 import { HsLogService } from './log.service';
+import {Observable, Observer} from 'rxjs';
 
 @Injectable({
   providedIn: 'any',
 })
 export class HsCoreService {
+  //TODO: Rewrite the on handlers in other modules. See commented out $rootScope.broadcast lines
+  sizeChanges: EventEmitter<any> = new EventEmitter();
+  mapResets: EventEmitter<any> = new EventEmitter();
   hslayersNgTemplate: string = require('../../hslayers.html');
   /**
    * @ngdoc property
@@ -213,7 +217,6 @@ export class HsCoreService {
      */
     const updateVH = this.HsUtilsService.debounce(
       () => {
-        debugger;
         if (this.sizeOptions.mode != 'fullscreen') {
           return;
         }
@@ -222,7 +225,7 @@ export class HsCoreService {
 
         if (w.matchMedia('(orientation: portrait)').matches) {
           this.document.getElementsByTagName('html')[0].style.height = '100vh';
-          $timeout(() => {
+          setTimeout(() => {
             this.document.getElementsByTagName('html')[0].style.height = '100%';
           }, 500);
         }
@@ -310,7 +313,8 @@ export class HsCoreService {
       }      
     }
 
-    $rootScope.$broadcast('HsCore.mapSizeUpdated', neededSize);
+    this.sizeChanges.emit(neededSize);
+    //$rootScope.$broadcast('HsCore.mapSizeUpdated', neededSize);
   }
 
   /**
@@ -322,7 +326,7 @@ export class HsCoreService {
    */
   isAuthorized() {
     if (
-      this.window.getLRUser === undefined &&
+      this.window['getLRUser'] === undefined &&
       this.missingLRFunctionsWarned === undefined
     ) {
       this.log.warn(
@@ -331,8 +335,8 @@ export class HsCoreService {
       this.missingLRFunctionsWarned = true;
     }
     if (
-      this.window.getLRUser &&
-      this.window.getLRUser() != 'guest'
+      this.window['getLRUser'] &&
+      this.window['getLRUser']() != 'guest'
     ) {
       return true;
     }
@@ -353,7 +357,8 @@ export class HsCoreService {
      * @eventType broadcast on $rootScope
      * @description Fires when map completely reset
      */
-    $rootScope.$broadcast('core.map_reset', {});
+    this.mapResets.emit();
+    //$rootScope.$broadcast('core.map_reset', {});
   }
 
   /**
@@ -364,7 +369,7 @@ export class HsCoreService {
    * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
    */
   isMobile() {
-    if (this.window.cordova) {
+    if (this.window['cordova']) {
       return 'mobile';
     } else {
       return '';
