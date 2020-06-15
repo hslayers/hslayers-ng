@@ -31,7 +31,6 @@ export default function (
     $scope.clearvisible = false;
     if (HsPermalinkUrlService.getParamValue('search')) {
       $scope.query = HsPermalinkUrlService.getParamValue('search');
-      HsCore.searchVisible(true);
       $scope.queryChanged();
     }
     window.innerWidth < 767
