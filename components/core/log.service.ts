@@ -9,4 +9,10 @@ import { Injectable } from '@angular/core';
     log (...attrs){
         console.log(attrs);
     }
+    error (...attrs){
+        console.error(attrs);
+    }
+    info (...attrs){
+        console.info(attrs);
+    }
   }
