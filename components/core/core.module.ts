@@ -16,7 +16,7 @@ import coreService from './core.service';
  * @description HsCore module for whole HSLayers-NG. HsCore module consists of HsCore service which keeps some app-level settings and mantain app size and panel statuses. TODO
  */
 angular
-  .module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.utils', 'hs.legend'])
+  .module('hs.core', ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.utils', 'hs.legend', 'hs.print'])
   /**
    * @module hs.core
    * @name HsCore
