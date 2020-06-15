@@ -1,3 +1,3 @@
-<img ng-if="legendType == 'image'" ng-src="{{legendImage}}"/>
-<div ng-if="legendType == 'svg'"  ng-bind-html="svgContent">
+<img *ngIf="legendType == 'image'" [src]="legendImage">
+<div *ngIf="legendType == 'svg'" [innerHtml]="svgContent">
 </div>

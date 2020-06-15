@@ -1,8 +1,12 @@
-<hs.legend.layer-vector-directive ng-if="layer.type == 'vector'" layer-style="styles" geometry-type="geometryTypes">
-</hs.legend.layer-vector-directive>
-<img ng-repeat="sublayer in layer.subLayerLegends" ng-if="layer.type == 'wms'" ng-src="{{sublayer}}"
-    onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }" />
-<p ng-repeat="category in layer.lyr.getSource().legend_categories" ng-if="layer.type == 'vector'"><span
-        style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
-</p>
-<hs.legend.layer-static-directive ng-if="layer.type == 'static'" layer="layer"></hs.legend.layer-static-directive>
+<div>
+    <legend-vector-layer-directive *ngIf="layer.type == 'vector'" [layer-style]="styles" [geometry-type]="geometryTypes">
+    </legend-vector-layer-directive>
+    <div *ngIf="layer.type == 'wms'">
+        <img *ngFor="let sublayer of layer.subLayerLegends" [src]="sublayer" onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }">
+    </div>
+   <div *ngIf="layer.type == 'vector'">
+        <p *ngFor="let category of layer.lyr.getSource().legend_categories"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
+        </p>
+   </div>   
+    <hs.legend.layer-static-directive *ngIf="layer.type == 'static'" [layer]="layer"></hs.legend.layer-static-directive>
+</div>

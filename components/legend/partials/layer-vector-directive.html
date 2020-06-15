@@ -1,42 +1,42 @@
-<div class="row" ng-repeat="geometry in geometryType">
+<div class="row" *ngFor="let geometry of geometryType">
     <div class="col-sm-2">
-        <div ng-repeat="style in layerStyle">
-            <div ng-if="style.icon && geometry == 'point'">
-                <img ng-style="{{style.style}}" ng-src="{{style.icon.src}}">
+        <div *ngFor="let style of layerStyle">
+            <div *ngIf="style.icon &amp;&amp; geometry == 'point'">
+                <img [ngStyle]="style.style" [src]="style.icon.src">
             </div>
-            <div ng-if="style.defaultCircle && geometry == 'point'">
-                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                    <circle ng-style="{{style.defaultCircle}}" />
+            <div *ngIf="style.defaultCircle &amp;&amp; geometry == 'point'">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                    <circle [ngStyle]="style.defaultCircle"></circle>
                 </svg>
             </div>
-            <div ng-if="style.customCircle && geometry == 'point'">
-                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                    <circle ng-style="{{style.customCircle}}" />
+            <div *ngIf="style.customCircle &amp;&amp; geometry == 'point'">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                    <circle [ngStyle]="style.customCircle"></circle>
                 </svg>
             </div>
-            <div ng-if="style.defaultPolygon && geometry == 'polygon'">
-                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                    <polygon points="5,30 8,5 25,5 30,30" ng-style="{{style.defaultPolygon}}" />
+            <div *ngIf="style.defaultPolygon &amp;&amp; geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                    <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.defaultPolygon"></polygon>
                 </svg>
             </div>
-            <div ng-if="style.fullPolygon && geometry == 'polygon'">
-                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                    <polygon points="5,30 8,5 25,5 30,30"   ng-style="{{style.fullPolygon}}" />
+            <div *ngIf="style.fullPolygon &amp;&amp; geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                    <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.fullPolygon"></polygon>
                 </svg>
             </div>
-            <div ng-if="style.polygon && geometry == 'polygon'">
-                <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                    <polygon points="5,30 8,5 25,5 30,30"   ng-style="{{style.polygon}}" />
+            <div *ngIf="style.polygon &amp;&amp; geometry == 'polygon'">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                    <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.polygon"></polygon>
                 </svg>
             </div>
-            <div ng-if="style.defaultLine && geometry == 'line'">
-                    <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                        <line x1="0" y1="20" x2="35" y2="20"   ng-style="{{style.defaultLine}}" />
+            <div *ngIf="style.defaultLine &amp;&amp; geometry == 'line'">
+                    <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                        <line x1="0" y1="20" x2="35" y2="20" [ngStyle]="style.defaultLine"></line>
                     </svg>
             </div>
-            <div ng-if="style.line && geometry == 'line'">
-                    <svg xmlns="http://www.w3.org/2000/svg" ng-style="{{style.style}}">
-                        <line x1="0" y1="20" x2="35" y2="20"   ng-style="{{style.line}}" />
+            <div *ngIf="style.line &amp;&amp; geometry == 'line'">
+                    <svg xmlns="http://www.w3.org/2000/svg" [ngStyle]="style.style">
+                        <line x1="0" y1="20" x2="35" y2="20" [ngStyle]="style.line"></line>
                     </svg>
             </div>
         </div>
