@@ -38,7 +38,8 @@ export default function (
   $log,
   $window,
   HsCommonEndpointsService,
-  HsCompositionsMapService
+  HsCompositionsMapService,
+  HsEventBusService
 ) {
   'ngInject';
   const me = this;
@@ -257,7 +258,7 @@ export default function (
     me.parsePermalinkLayers();
   }
 
-  $rootScope.$on('core.map_reset', (event, data) => {
+  HsEventBusService.mapResets.subscribe(() => {
     HsCompositionsParserService.composition_loaded = null;
     HsCompositionsParserService.composition_edited = false;
   });

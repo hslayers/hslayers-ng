@@ -1,6 +1,13 @@
 export default {
   template: require('./partials/info.html'),
-  controller: function ($rootScope, $scope, $timeout, HsCore, HsUtilsService) {
+  controller: function (
+    $rootScope,
+    $scope,
+    $timeout,
+    HsCore,
+    HsUtilsService,
+    HsEventBusService
+  ) {
     'ngInject';
     $scope.HsCore = HsCore;
     /**
@@ -137,7 +144,7 @@ export default {
       }
     });
 
-    $scope.$on('core.map_reset', (event) => {
+    HsEventBusService.mapResets.subscribe(() => {
       $timeout(() => {
         delete $scope.composition_title;
         delete $scope.composition_abstract;

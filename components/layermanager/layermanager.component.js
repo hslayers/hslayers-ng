@@ -19,7 +19,9 @@ export default {
     HsLayermanagerWmstService,
     HsLayoutService,
     HsLayerEditorSublayerService,
-    HsLayerSynchronizerService
+    HsLayerSynchronizerService,
+    HsEventBusService,
+    $timeout
   ) {
     'ngInject';
     $scope.LayerManager = HsLayermanagerService;
@@ -386,7 +388,7 @@ export default {
       }
     });
 
-    $scope.$on('core.map_reset', (event) => {
+    HsEventBusService.mapResets.subscribe(() => {
       $timeout(() => {
         delete $scope.composition_id;
       });

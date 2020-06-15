@@ -1,20 +1,17 @@
 
-import { Injectable, Inject, EventEmitter } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HsConfig } from '../../config.service';
 import { HsMapService } from '../map/map.service.js';
 import { HsUtilsService } from '../utils/utils.service';
 import { HsLayoutService } from '../layout/layout.service';
 import { DOCUMENT } from '@angular/common';
 import { HsLogService } from './log.service';
-import {Observable, Observer} from 'rxjs';
+import { HsEventBusService } from './event-bus.service';
 
 @Injectable({
   providedIn: 'any',
 })
 export class HsCoreService {
-  //TODO: Rewrite the on handlers in other modules. See commented out $rootScope.broadcast lines
-  sizeChanges: EventEmitter<any> = new EventEmitter();
-  mapResets: EventEmitter<any> = new EventEmitter();
   hslayersNgTemplate: string = require('../../hslayers.html');
   /**
    * @ngdoc property
@@ -50,13 +47,18 @@ export class HsCoreService {
   _puremapApp: boolean = false;
   initCalled: boolean;
   missingLRFunctionsWarned: any;
+  singleDatasourcesWarningShown: boolean;
+  existsWarningShown: any;
 
 
   constructor(private HsMapService: HsMapService,
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService, private window: Window,
-    private log: HsLogService, @Inject(DOCUMENT) private document: Document) {
+    private HsUtilsService: HsUtilsService,
+    private window: Window,
+    private log: HsLogService,
+    @Inject(DOCUMENT) private document: Document,
+    private HsEventBusService: HsEventBusService) {
     /**
   * @ngdoc property
   * @name HsCore#config
@@ -120,9 +122,12 @@ export class HsCoreService {
   }
 
   set singleDatasources(newName) {
-    this.log.warn(
-      'singleDatasources will be removed from HsCore in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object'
-    );
+    if (!this.singleDatasourcesWarningShown) {
+      this.singleDatasourcesWarningShown = true;
+      this.log.warn(
+        'singleDatasources will be removed from HsCore in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object'
+      );
+    }
     this.HsConfig.allowAddExternalDatasets = newName;
   }
 
@@ -306,15 +311,14 @@ export class HsCoreService {
     // map.style.width = neededSize.width + 'px';
     if (this.HsMapService.map) {
       this.HsMapService.map.updateSize();
-      if(map.offsetWidth < 767){
+      if (map.offsetWidth < 767) {
         this.HsLayoutService.smallWidth = true
       } else {
         this.HsLayoutService.smallWidth = false
-      }      
+      }
     }
 
-    this.sizeChanges.emit(neededSize);
-    //$rootScope.$broadcast('HsCore.mapSizeUpdated', neededSize);
+    this.HsEventBusService.sizeChanges.next(neededSize);
   }
 
   /**
@@ -357,7 +361,7 @@ export class HsCoreService {
      * @eventType broadcast on $rootScope
      * @description Fires when map completely reset
      */
-    this.mapResets.emit();
+    this.HsEventBusService.mapResets.next();
     //$rootScope.$broadcast('core.map_reset', {});
   }
 
@@ -380,7 +384,15 @@ export class HsCoreService {
     if (this.HsConfig.componentsEnabled === undefined) {
       this.HsConfig.componentsEnabled = {};
     }
-  };
+  }
+
+  exists() {
+    if (!this.existsWarningShown) {
+      this.existsWarningShown = true;
+      this.log.warn('Core.exists function will be removed. Please use panelsEnabled config option to set the statuses');
+    }
+    return true;
+  }
 
 
   /**
