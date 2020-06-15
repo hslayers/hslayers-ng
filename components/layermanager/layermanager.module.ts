@@ -1,10 +1,11 @@
 import '../../common/get-capabilities.module';
 import '../draw/draw.module';
-import '../legend/legend.module';
+import '../legend';
 import '../save-map/save-map.module';
 import '../styles/styles.module';
 import '../utils/utils.module';
 import 'angular-drag-and-drop-lists';
+import * as angular from 'angular';
 import folderDirective from './layermanager-folder.directive';
 import layerEditorComponent from './layer-editor.component';
 import layerEditorDimensionsComponent from './dimensions/layer-editor-dimensions.component';
@@ -19,7 +20,6 @@ import layermanagerMetadataService from './layermanager-metadata.service';
 import layermanagerService from './layermanager.service';
 import layermanagerWmstService from './layermanager-wmst.service';
 import removeAllDialogDirective from './remove-all-dialog.directive';
-import * as angular from 'angular';
 
 /**
  * @ngdoc module

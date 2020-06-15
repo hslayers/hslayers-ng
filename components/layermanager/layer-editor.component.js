@@ -2,18 +2,19 @@ import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format';
 import {Circle, Fill, RegularShape, Stroke, Style, Text} from 'ol/style';
 import {Cluster, Vector as VectorSource} from 'ol/source';
+import { isDebuggerStatement } from 'typescript';
 
 export default {
   template: require('./partials/layer-editor.html'),
   bindings: {
     currentLayer: '=',
   },
-  controller: function (
+  controller: async function (
     $scope,
     HsUtilsService,
     HsLayerUtilsService,
     HsLayermanagerWmstService,
-    HsLegendService,
+    $injector,
     HsStylerService,
     HsMapService,
     HsLayermanagerService,
@@ -21,17 +22,21 @@ export default {
     HsLayoutService,
     HsLayerEditorSublayerService,
     HsLayerEditorService,
-    HsDrawService
+    HsDrawService,
+    HsLegendService
   ) {
     'ngInject';
     $scope.distance = {
       value: 40,
     };
     angular.extend($scope, {
+      HsLegendService: HsLegendService,
       layer_renamer_visible: false,
-      legendService: HsLegendService,
       legendDescriptors: [],
       layoutService: HsLayoutService,
+      isLegendable(layer){
+         return $scope.HsLegendService.isLegendable(layer);
+      },
       layerIsWmsT() {
         return HsLayermanagerWmstService.layerIsWmsT($scope.$ctrl.currentLayer);
       },
@@ -445,7 +450,6 @@ export default {
      * @param wrapper
      */
     function setLayerStyle(wrapper) {
-      //debugger;
       const layer = wrapper.layer;
       const source = layer.getSource();
       const style = wrapper.style.style;
@@ -563,12 +567,13 @@ export default {
       wrapper.style.style = style;
     };
 
-    $scope.$watch('$ctrl.currentLayer', () => {
+    $scope.$watch('$ctrl.currentLayer', async () => {
       if (!$scope.$ctrl.currentLayer) {
         return;
       }
+   
       $scope.legendDescriptors = [
-        HsLegendService.getLayerLegendDescriptor(
+        $scope.HsLegendService.getLayerLegendDescriptor(
           $scope.$ctrl.currentLayer.layer
         ),
       ];

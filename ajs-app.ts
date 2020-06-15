@@ -6,7 +6,8 @@ import './components/draw/draw.module';
 import './components/info/info.module';
 import './components/measure/measure.module';
 import './components/permalink/permalink.module';
-import './components/print'
+import './components/print';
+import './components/legend';
 import './components/query/query.module';
 import './components/search/search.module';
 import './components/sidebar/sidebar.module';
