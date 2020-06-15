@@ -13,7 +13,7 @@ import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
 import queryVectorService from './query-vector.service';
 import queryWmsService from './query-wms.service';
-import { downgradedCommonConfirmModule } from '../../common/confirm';
+//import '../../common/confirm';
 import '../layout';
 
 /**
@@ -30,7 +30,7 @@ export const HsQueryModule = angular
     'hs.layout',
     'hs.utils',
     'hs.measure',
-    downgradedCommonConfirmModule
+   // 'hs.common.confirm'
   ])
   /**
    * @ngdoc directive
