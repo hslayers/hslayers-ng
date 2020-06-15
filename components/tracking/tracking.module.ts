@@ -1,4 +1,4 @@
-import '../core/core.module';
+import '../core/';
 import * as angular from 'angular';
 import TrackingController from './tracking.controller';
 /**

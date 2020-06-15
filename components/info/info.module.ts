@@ -1,4 +1,4 @@
-import '../core/core.module';
+import '../core/';
 import '../map/map.module';
 import * as angular from "angular";
 import infoComponent from './info.component';
