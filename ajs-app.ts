@@ -93,7 +93,7 @@ export default angular.module('hs', [
     },
   };
 })
-.value('HsConfig', window.hslayersNgConfig ? window.hslayersNgConfig(window.ol) : {proxyPrefix:'/some'})
+.value('HsConfig', window.hslayersNgConfig ? window.hslayersNgConfig(window.ol) : {})
 .controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
   'ngInject';
   $scope.HsCore = HsCore;
