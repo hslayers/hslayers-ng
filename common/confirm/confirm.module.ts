@@ -10,6 +10,7 @@ import { HsConfirmDialog } from './confirm-dialog.service';
   imports: [
     BrowserModule
   ],
-  providers: [HsConfirmDialog]
+  providers: [HsConfirmDialog],
+  bootstrap: [HsConfirmDialogComponent]
 })
 export class HsConfirmModule { }

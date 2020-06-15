@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
+import {HsLayoutService} from '../../components/layout/layout.service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsConfirmDialog {
-  constructor($compile, HsLayoutService, $rootScope) {
+  constructor(private HsLayoutService:HsLayoutService) {
     'ngInject';
     Object.assign(this, {
-      $compile,
       HsLayoutService,
-      $rootScope,
     });
   }
 
