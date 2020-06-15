@@ -371,7 +371,11 @@ export class HsUtilsService {
             resolve(tmp);
           } catch (ex2) {
             if (tries > 10) {
-              this.$log.log('Failed to get service', name, ex2);
+              this.$log.log(
+                'Failed to get service in HsUtilsService.injectService',
+                name,
+                ex2
+              );
               clearInterval(clear);
               reject(ex);
             }
