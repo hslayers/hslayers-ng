@@ -1,3 +1,9 @@
 export class HsConfig {
-    constructor(){}
+  componentsEnabled: any;
+  mapInteractionsEnabled: boolean;
+  allowAddExternalDatasets: boolean;
+  sidebarClosed: boolean;
+  constructor() { 
+    
+  }
 }
