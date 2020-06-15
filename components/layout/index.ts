@@ -9,7 +9,7 @@ import mdSidenavDirective from './md-sidenav.directive';
 import mdSwipeAreaDirective from './md-swipe-area.directive';
 import mdToolbarDirective from './md-toolbar.directive';
 import panelCreatorDirective from './panel-creator.directive';
-import '../core/core.module';
+import '../core/';
 import '../geolocation/geolocation.module';
 import '../layermanager/layermanager.module';
 import '../map/map.module';

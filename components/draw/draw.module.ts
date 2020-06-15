@@ -1,4 +1,4 @@
-import '../core/core.module';
+import '../core/';
 import '../geolocation/geolocation.module';
 import '../map/map.module';
 import '../utils/utils.module';

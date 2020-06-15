@@ -1,4 +1,4 @@
-import '../core/core.module';
+import '../core/';
 import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
