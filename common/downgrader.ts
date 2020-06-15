@@ -7,7 +7,10 @@ import { setAngularJSGlobal } from '@angular/upgrade/static';
 setAngularJSGlobal(angular);
 
 export const downgrade = (module) => {
-    const ng2BootstrapFn = (extraProviders: StaticProvider[]) =>
-        platformBrowserDynamic(extraProviders).bootstrapModule(module);
+    const ng2BootstrapFn = (extraProviders: StaticProvider[]) => 
+        {
+            return platformBrowserDynamic(extraProviders).bootstrapModule(module);
+        }
     return downgradeModule(ng2BootstrapFn)
 }
+
