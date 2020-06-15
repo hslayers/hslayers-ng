@@ -13,7 +13,6 @@ import '../core/core.module';
 import '../geolocation/geolocation.module';
 import '../layermanager/layermanager.module';
 import '../map/map.module';
-import '../print/print.module';
 import * as angular from 'angular';
 import layoutController from './layout.controller';
 import layoutDirective from './layout.directive';
