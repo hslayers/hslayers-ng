@@ -1,6 +1,13 @@
 export default {
   template: require('./partials/toolbar.html'),
-  controller: function ($scope, HsCore, $timeout, HsLayoutService, $document) {
+  controller: function (
+    $scope,
+    HsCore,
+    $timeout,
+    HsLayoutService,
+    $document,
+    HsEventBusService
+  ) {
     'ngInject';
     let collapsed = false;
 
@@ -76,7 +83,7 @@ export default {
       },
     });
 
-    $scope.$on('core.map_reset', (event) => {
+    HsEventBusService.mapResets.subscribe(() => {
       $timeout(() => {
         delete $scope.composition_title;
         delete $scope.composition_abstract;

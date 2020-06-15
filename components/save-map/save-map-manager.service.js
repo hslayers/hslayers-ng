@@ -21,7 +21,8 @@ export default function (
   HsStatusManagerService,
   HsLaymanService,
   HsLayoutService,
-  HsUtilsService
+  HsUtilsService,
+  HsEventBusService
 ) {
   'ngInject';
   const me = this;
@@ -363,7 +364,7 @@ export default function (
     }
   });
 
-  $rootScope.$on('core.map_reset', (event, data) => {
+  HsEventBusService.mapResets.subscribe(() => {
     me.resetCompoData();
   });
 

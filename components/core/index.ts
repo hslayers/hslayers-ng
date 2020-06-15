@@ -11,6 +11,7 @@ import {HsCoreService} from './core.service';
 import { downgradeInjectable, downgradeComponent } from '@angular/upgrade/static';
 import { HsCoreModule } from './core.module';
 import { downgrade } from '../../common/downgrader';
+import { HsEventBusService } from './event-bus.service';
 
 export const downgradedCoreModule = downgrade(HsCoreModule);
 /**
@@ -28,7 +29,10 @@ angular
    * @ngdoc service
    * @description HsCore service of HSL. TODO expand the description
    */
-  .service('HsCore', downgradeInjectable(HsCoreService));
+  .service('HsCore', downgradeInjectable(HsCoreService))
+  .service('HsEventBusService', downgradeInjectable(HsEventBusService));
+
+
 
 angular
   .module('hs.core', [downgradedCoreModule]);

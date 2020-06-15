@@ -82,7 +82,8 @@ angular
       HsMapService,
       HsSidebarService,
       $timeout,
-      $rootScope
+      $rootScope,
+      HsEventBusService
     ) => {
       'ngInject';
       const map = HsCesiumService.map;
@@ -134,7 +135,7 @@ angular
         HsCesiumService.dimensionChanged(data.layer, data.dimension);
       });
 
-      $rootScope.$on('HsCore.mapSizeUpdated', HsCesiumService.resize);
+      HsEventBusService.sizeChanges.subscribe((size) => HsCesiumService.resize(size));
       HsCesiumService.resize();
 
       $scope.$emit('scope_loaded', 'CesiumMap');
