@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
 import { HsLayoutServiceProvider } from '../../ajs-upgraded-providers';
 import { HsPrintModule } from '../print/print.module';
+import { HsLegendModule } from '../legend/legend.module';
+import {BootstrapComponent} from '../../bootstrap.component';
 /**
  * @namespace hs.layout
  * @memberOf hs
  */
 @NgModule({
-  declarations: [],
+  declarations: [BootstrapComponent],
   imports: [
-    HsPrintModule
+    HsPrintModule,
+    HsLegendModule
   ],
   providers: [
     HsLayoutServiceProvider
   ],
-  entryComponents: [],
-  exports: [],
+  entryComponents: [BootstrapComponent],
+  exports: [BootstrapComponent]
 })
-export class HsLayoutModule {}
+export class HsLayoutModule {
+  ngDoBootstrap(){}
+}
