@@ -5,6 +5,7 @@ import '../save-map/save-map.module';
 import '../styles/styles.module';
 import '../utils/utils.module';
 import 'angular-drag-and-drop-lists';
+import '../layout/';
 import * as angular from 'angular';
 import folderDirective from './layermanager-folder.directive';
 import layerEditorComponent from './layer-editor.component';
@@ -37,6 +38,7 @@ angular
     'hs.legend',
     'hs.getCapabilities',
     'hs.draw',
+    'hs.layout'
   ])
   // .directive('hs.baselayers.directive', function() {
   //     return {

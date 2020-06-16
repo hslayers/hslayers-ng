@@ -6,5 +6,7 @@
         "lib": ["esnext", "dom"],
         "sourceMap": true,
         "declaration": false
-    }
+    },
+    "files": ["polyfills.ts"],
+    "types": ["jasmine"],
 }

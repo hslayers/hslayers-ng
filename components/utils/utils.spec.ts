@@ -1,21 +1,23 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
-
+import * as angular from 'angular';
 import 'angular-mocks';
 import VectorLayer from 'ol/layer/Vector';
+import {HsUtilsService} from './utils.service';
+import hsLayerUtilsService from './layer-utils.service';
 
 describe('utils', () => {
   let hsUtils;
-
+  
   beforeEach(() => {
-    angular.mock.module(($provide) => {
-      $provide.value('HsConfig', {});
-    });
+    angular.module('hs.utils', ['hs', 'ng'])
+    .service('HsUtilsService', HsUtilsService)
+    .factory('HsLayerUtilsService', hsLayerUtilsService);
     angular.mock.module('hs.utils');
   }); //<--- Hook module
 
-  beforeEach(inject(($injector) => {
+  beforeEach(angular.mock.inject(($injector) => {
     hsUtils = $injector.get('HsUtilsService');
   }));
 

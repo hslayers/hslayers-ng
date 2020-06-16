@@ -9,7 +9,7 @@ import * as angular from 'angular';
  * @description Utility module which contains few utility functions.
  */
 angular
-  .module('hs.utils', ['hs'])
+  .module('hs.utils', [])
 
   /**
    * @ngdoc service
