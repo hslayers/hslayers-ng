@@ -3,6 +3,10 @@ import '../utils/utils.module';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
 import 'angular-socialshare';
+import '../utils/utils.module';
+import '../layout/layout.module';
+import '../permalink/permalink.module';
+import '../save-map/save-map.module';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
 import compositionsService from './compositions.service';
@@ -27,6 +31,11 @@ angular
     'hs.compositions.layerParser',
     'hs.compositions.endpoints',
     'hs.common.endpoints',
+    'hs.utils',
+    'hs.layout',
+    'hs.permalink',
+    'hs.save-map',
+    'hs'
   ])
   /**
    * @module hs.compositions

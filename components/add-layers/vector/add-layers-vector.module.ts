@@ -7,7 +7,7 @@ import * as angular from 'angular';
  * @memberOf hs
  */
 angular
-  .module('hs.addLayersVector', ['hs.styles'])
+  .module('hs.addLayersVector', ['hs.styles', 'gettext', 'hs.utils', 'hs.layout', 'hs.map'])
   /**
    * @memberof hs.ows
    * @ngdoc directive

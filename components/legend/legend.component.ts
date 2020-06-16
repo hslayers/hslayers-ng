@@ -6,7 +6,7 @@ import { HsMapService } from '../map/map.service.js';
   template: require('./partials/legend.html')
 })
 export class HsLegendComponent {
-  private layerDescriptors = [];
+  layerDescriptors = [];
 
   constructor(private HsLegendService: HsLegendService, private HsMapService: HsMapService) {
     this.HsMapService.loaded().then((map) => this.init(map));

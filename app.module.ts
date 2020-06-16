@@ -9,15 +9,16 @@ import app from './ajs-app';
 //New rewritten modules:
 import { HsPrintModule } from './components/print/print.module';
 //Old upgraded (not rewritten) services go here:
-import { HsConfigProvider, HsMapServiceProvider } from './ajs-upgraded-providers';
-import { HsLegendModule } from './components/legend';
+import { HsConfigProvider, HsMapServiceProvider, HsUtilsServiceProvider } from './ajs-upgraded-providers';
 import { BootstrapComponent } from './bootstrap.component';
+import { HsCoreModule } from './components/core';
+import { HsLayoutModule } from './components/layout';
 @NgModule({
     imports: [
         BrowserModule,
         UpgradeModule,
-        HsPrintModule,
-        HsLegendModule
+        HsLayoutModule,
+        HsCoreModule
     ],
     declarations: [
         // ... existing declarations       
@@ -25,7 +26,7 @@ import { BootstrapComponent } from './bootstrap.component';
     entryComponents: [
         
     ],
-    providers: [HsMapServiceProvider, HsConfigProvider,
+    providers: [HsMapServiceProvider, HsConfigProvider, HsUtilsServiceProvider,
         {
             provide: APP_BOOTSTRAP_LISTENER, multi: true, useFactory: () => {
               return (component: ComponentRef<BootstrapComponent>) => {

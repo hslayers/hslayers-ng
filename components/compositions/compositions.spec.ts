@@ -1,33 +1,85 @@
-/* eslint-disable angular/di */
-'use strict';
-import {TestBed} from '@angular/core/testing';
+/* eslint-disable prefer-arrow-callback */
+import * as angular from 'angular';
+import 'angular-mocks';
+import './compositions.module';
+import Map from 'ol/Map';
+import { Subject } from 'rxjs';
 
-describe('compositions', () => {
+/* eslint-disable angular/no-service-method */
+/* eslint-disable angular/di */
+('use strict');
+
+describe('compositions', function () {
   let scope;
   let $componentController;
   let $httpBackend;
 
-  beforeEach(() => TestBed.configureTestingModule({}));
 
-  beforeEach(() => {
-    angular.mock.module(($provide) => {
-      $provide.value('HsConfig', {
-        compositions_catalogue_url:
-          'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
-        status_manager_url:
-          'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
-      });
+  beforeEach(function () {
+
+    angular.module('hs', []).value('HsConfig', {
+      compositions_catalogue_url:
+        'http://www.whatstheplan.eu/p4b-dev/cat/catalogue/libs/cswclient/cswClientRun.php',
+      status_manager_url:
+        'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
     });
 
+    angular
+      .module('hs.core', [])
+      .service('HsCore', function () { })
+      .service('HsEventBusService', function () {
+        this.sizeChanges = new Subject();
+        this.mapResets = new Subject();
+      });
+
+    angular.module('hs.utils', [])
+      .service('HsUtilsService', function () {
+        this.debounce = function () { };
+      }).service('HsLayerUtilsService', function () {
+      });
+
+
+    angular.module('hs.layout', []).service('HsLayoutService', function () { });
+    angular
+      .module('hs.permalink', [])
+      .service('HsPermalinkUrlService', function () {
+        this.getParamValue = function () {
+          return undefined;
+        };
+      });
+    angular
+      .module('hs.save-map', [])
+      .service('HsStatusManagerService', function () { });
+    angular
+      .module('hs.common.layman', [])
+      .service('HsCommonLaymanService', function () { });
+    angular
+      .module('hs.common.endpoints', [])
+      .service('HsCommonEndpointsService', function () {
+        this.endpoints = []
+      });
+
+    angular.module('hs.map', []).service('HsMapService', function () {
+      this.map = new Map({
+        target: 'div',
+        interactions: [],
+      });
+      this.loaded = () => {
+        return new Promise((resolve, reject) => {
+          resolve(this.map);
+        });
+      };
+      this.getMapExtentInEpsg4326 = function () { };
+    });
     angular.mock.module('hs.compositions');
   }); //<--- Hook module
 
-  beforeEach(inject((_$componentController_, $rootScope) => {
+  beforeEach(angular.mock.inject(function (_$componentController_, $rootScope) {
     scope = $rootScope.$new();
     $componentController = _$componentController_;
   }));
 
-  beforeEach(inject(($injector) => {
+  beforeEach(angular.mock.inject(function ($injector) {
     $httpBackend = $injector.get('$httpBackend');
     // backend definition common for all tests
     $httpBackend.when('GET', 'http://cat.ccss.cz/csw/').respond({
@@ -221,9 +273,8 @@ describe('compositions', () => {
       ],
     });
   }));
-
-  it('compositions list should load', () => {
-    const ctrl = $componentController('hs.compositions', {$scope: scope}, {});
+  it('compositions list should load', function () {
+    const ctrl = $componentController('hs.compositions', { $scope: scope }, {});
     ctrl.compositions = [];
 
     /*
@@ -232,21 +283,21 @@ describe('compositions', () => {
             else
                 d.resolve({ "success": true, "results": [{ "id": "9f7af9fd-ad7f-44a0-b953-51c4e487cbd1", "title": "test", "abstract": "", "extent": [42.737206441986, 39.396478327701, 46.403893453194, 40.874652880637], "updated": "2015-10-23T11:03:17" }, { "id": "eda7c5c8-d4f7-454b-9ada-329c53027498", "title": "New composition", "abstract": "Test", "extent": [15.246823103975, 49.948881981057, 15.361407073076, 49.990948507028], "updated": "2015-11-26T12:40:09" }] });
          */
-    const ds = {
+    const ds: any = {
       url: 'http://cat.ccss.cz/csw/',
       type: 'micka',
       title: 'SuperCAT',
       start: 0,
       limit: 15,
     };
-    scope.loadCompositions(ds).then((_) => {
+    scope.loadCompositions(ds).then(function () {
       expect(ds.compositions).toBeDefined();
     });
   });
 
-  it('if "Only mine" is unchecked then query.editable should not be sent at all', () => {
-    $componentController('hs.compositions', {$scope: scope}, {});
-    scope.query = {editable: false};
+  it('if "Only mine" is unchecked then query.editable should not be sent at all', function () {
+    $componentController('hs.compositions', { $scope: scope }, {});
+    scope.query = { editable: false };
     scope.mineFilterChanged();
     expect(scope.query.editable).toBeUndefined();
   });
