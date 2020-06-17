@@ -5,8 +5,7 @@
         "target": "es5",
         "lib": ["esnext", "dom"],
         "sourceMap": true,
-        "declaration": false
+        "declaration": false,
     },
-    "files": ["polyfills.ts"],
     "types": ["jasmine"],
 }
