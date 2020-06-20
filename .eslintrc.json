@@ -3,7 +3,13 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["openlayers", "angular", "plugin:jsdoc/recommended"],
+  "extends": ["plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "openlayers",
+    "angular",
+    "plugin:jsdoc/recommended"
+  ],
+  "plugins": ["@typescript-eslint"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
@@ -12,6 +18,7 @@
     "stmPath": "readonly",
     "hslMin": "readonly"
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018
   },
@@ -30,10 +37,7 @@
     ],
     "angular/di": [
       "error",
-      "array",
-      {
-        "matchNames": false
-      }
+      "function"
     ],
     "angular/typecheck-array": "off",
     "angular/typecheck-date": "off",
