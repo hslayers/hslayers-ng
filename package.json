@@ -88,6 +88,7 @@
     "@angular/platform-browser": "^9.1.7",
     "@angular/platform-browser-dynamic": "^9.1.7",
     "@angular/upgrade": "^9.1.7",
+    "@types/ol": "^6.3.1",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.9",
     "angular-aria": "^1.7.9",
