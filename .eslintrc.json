@@ -56,9 +56,22 @@
         "jasmine": true,
         "angular/mocks": true
       }
+    },
+    {
+      "files": [
+        "**/webpack.*.js"
+      ],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
     }
-  ]
-  /*"settings": {
-    "import/resolver": "webpack"
-  }*/
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    }
+    //"import/resolver": "webpack"
+  }
 }
