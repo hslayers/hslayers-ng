@@ -32,7 +32,8 @@
       "error",
       "ignorePackages",
       {
-        "js": "never"
+        "js": "never",
+        "ts": "never"
       }
     ],
     "angular/di": [
