@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "es5",
+        "lib": ["esnext", "dom"],
+        "sourceMap": true,
+        "declaration": false,
+    },
+    "types": ["jasmine"],
+}

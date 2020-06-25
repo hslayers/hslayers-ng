@@ -1,3 +1,4 @@
+/* eslint-disable angular/interval-service */
 /**
  * @param HsConfig
  * @param $http
@@ -5,9 +6,20 @@
  * @param $document
  * @param $location
  */
-export default function (HsConfig, $http, $window, $document, $location, $log) {
-  'ngInject';
-  const me = this;
+export class HsUtilsService {
+  constructor(HsConfig, $http, $window, $document, $location, $log, $injector) {
+    'ngInject';
+    Object.assign(this, {
+      HsConfig,
+      $http,
+      $window,
+      $document,
+      $location,
+      $log,
+      $injector,
+    });
+    this.modifyPrototypes();
+  }
   /**
    * @ngdoc method
    * @name HsUtilsService#proxify
@@ -17,24 +29,24 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {string} Encoded Url with path to hsproxy.cgi script
    * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
    */
-  this.proxify = function (url, toEncoding) {
-    if (url.startsWith(HsConfig.proxyPrefix)) {
+  proxify(url, toEncoding) {
+    if (url.startsWith(this.HsConfig.proxyPrefix)) {
       return url;
     }
     toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
     let outUrl = url;
     //Not using $location because don't know if port 80 was specified explicitly or not
-    const windowUrlPosition = url.indexOf($window.location.origin);
+    const windowUrlPosition = url.indexOf(this.$window.location.origin);
     if (
       windowUrlPosition == -1 ||
       windowUrlPosition > 7 ||
-      me.getPortFromUrl(url) != $location.port()
+      this.getPortFromUrl(url) != this.$location.port()
     ) {
       if (
-        angular.isUndefined(HsConfig.useProxy) ||
-        HsConfig.useProxy === true
+        angular.isUndefined(this.HsConfig.useProxy) ||
+        this.HsConfig.useProxy === true
       ) {
-        outUrl = HsConfig.proxyPrefix || '/cgi-bin/hsproxy.cgi?';
+        outUrl = this.HsConfig.proxyPrefix || '/cgi-bin/hsproxy.cgi?';
         if (outUrl.indexOf('hsproxy.cgi') > -1) {
           if (
             toEncoding &&
@@ -49,7 +61,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       }
     }
     return outUrl;
-  };
+  }
 
   /**
    * @ngdoc method
@@ -70,13 +82,13 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
             })
         }
    */
-  this.shortUrl = function (url) {
-    if (HsConfig.shortenUrl) {
-      return HsConfig.shortenUrl(url);
+  shortUrl(url) {
+    if (this.HsConfig.shortenUrl) {
+      return this.HsConfig.shortenUrl(url);
     }
     return new Promise((resolve, reject) => {
-      $http
-        .get(me.proxify('http://tinyurl.com/api-create.php?url=' + url), {
+      this.$http
+        .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url), {
           longUrl: url,
         })
         .then((response) => {
@@ -86,7 +98,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
           reject();
         });
     });
-  };
+  }
 
   /**
    * @ngdoc method
@@ -94,8 +106,8 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @param {string} url Url for which to determine port number
    * @returns {string} Port number
    */
-  this.getPortFromUrl = function (url) {
-    const link = $document[0].createElement('a');
+  getPortFromUrl(url) {
+    const link = this.$document[0].createElement('a');
     link.setAttribute('href', url);
     if (link.port == '') {
       if (url.indexOf('https://') === 0) {
@@ -106,7 +118,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       }
     }
     return link.port;
-  };
+  }
 
   /**
    * @ngdoc method
@@ -116,7 +128,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {object} Object with parsed parameters as properties
    * @description Parse parameters and their values from Url string
    */
-  this.getParamsFromUrl = function (str) {
+  getParamsFromUrl(str) {
     if (!angular.isString(str)) {
       return {};
     }
@@ -151,7 +163,8 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
         }
         return ret;
       }, {});
-  };
+  }
+
   /**
    * @ngdoc method
    * @name HsUtilsService#paramsToUrl
@@ -160,7 +173,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {string} Joined encoded Url query string
    * @description Create encoded Url string from object with parameters
    */
-  this.paramsToURL = function (array) {
+  paramsToURL(array) {
     const pairs = [];
     for (const key in array) {
       if (array.hasOwnProperty(key) && angular.isDefined(array[key])) {
@@ -170,7 +183,8 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       }
     }
     return pairs.join('&');
-  };
+  }
+
   /**
    * @ngdoc method
    * @name HsUtilsService#insertAfter
@@ -179,12 +193,13 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @param {element} referenceNode Element after which to insert
    * @description Insert every element in the set of matched elements after the target.
    */
-  this.insertAfter = function (newNode, referenceNode) {
+  insertAfter(newNode, referenceNode) {
     if (angular.isDefined(newNode.length) && newNode.length > 0) {
       newNode = newNode[0];
     }
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-  };
+  }
+
   /**
    * @ngdoc method
    * @name HsUtilsService#paramsToUrlWoEncode
@@ -193,7 +208,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {string} Joined Url query string
    * @description Create Url string from object with parameters without encoding
    */
-  this.paramsToURLWoEncode = function (array) {
+  paramsToURLWoEncode(array) {
     const pairs = [];
     for (const key in array) {
       if (array.hasOwnProperty(key)) {
@@ -201,7 +216,8 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       }
     }
     return pairs.join('&');
-  };
+  }
+
   /**
    * @ngdoc method
    * @name HsUtilsService#debounce
@@ -217,7 +233,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
    */
-  this.debounce = function (func, wait, immediate, context) {
+  debounce(func, wait, immediate, context) {
     if (angular.isUndefined(context)) {
       context = this;
     }
@@ -237,7 +253,8 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
         func.apply(context, args);
       }
     };
-  };
+  }
+
   /**
    * @ngdoc method
    * @name HsUtilsService#generateUuid
@@ -245,13 +262,13 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {string} Random uuid
    * @description Generate randomized uuid
    */
-  this.generateUuid = function () {
+  generateUuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
-  };
+  }
 
   /**
    * @ngdoc method
@@ -263,7 +280,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @returns {string} CSS color
    * @description Generates css color string (rgba(0, 0, 0, 1)) from given range and value for which to have color
    */
-  this.rainbow = function (numOfSteps, step, opacity) {
+  rainbow(numOfSteps, step, opacity) {
     // based on http://stackoverflow.com/a/7419630
     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
     // Adam Cole, 2011-Sept-14
@@ -299,7 +316,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       opacity +
       ')';
     return c;
-  };
+  }
 
   /**
    * Check if object is a function
@@ -307,7 +324,7 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @param {object} functionToCheck
    * @returns {boolean}
    */
-  function isFunction(functionToCheck) {
+  isFunction(functionToCheck) {
     return (
       functionToCheck &&
       {}.toString.call(functionToCheck) === '[object Function]'
@@ -321,22 +338,52 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * @param {*} type
    * @returns {boolean}
    */
-  this.instOf = function (obj, type) {
-    const instanceOf = function (obj, klass) {
-      if (isFunction(klass)) {
-        return obj instanceof klass;
+  instOf(obj, type) {
+    return this._instanceOf(obj, type);
+  }
+
+  _instanceOf(obj, klass) {
+    if (this.isFunction(klass)) {
+      return obj instanceof klass;
+    }
+    obj = Object.getPrototypeOf(obj);
+    while (obj !== null) {
+      if (obj.constructor.name === klass) {
+        return true;
       }
       obj = Object.getPrototypeOf(obj);
-      while (obj !== null) {
-        if (obj.constructor.name === klass) {
-          return true;
-        }
-        obj = Object.getPrototypeOf(obj);
+    }
+    return false;
+  }
+
+  injectService(name) {
+    return new Promise((resolve, reject) => {
+      try {
+        const tmp = this.$injector.get(name);
+        resolve(tmp);
+      } catch (ex) {
+        let tries = 0;
+        const clear = setInterval(() => {
+          try {
+            tries++;
+            const tmp = this.$injector.get(name);
+            clearInterval(clear);
+            resolve(tmp);
+          } catch (ex2) {
+            if (tries > 10) {
+              this.$log.log(
+                'Failed to get service in HsUtilsService.injectService',
+                name,
+                ex2
+              );
+              clearInterval(clear);
+              reject(ex);
+            }
+          }
+        }, 500);
       }
-      return false;
-    };
-    return instanceOf(obj, type);
-  };
+    });
+  }
 
   /**
    * Remove duplicate items from an array
@@ -347,13 +394,13 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
    * Function will return an empty array if it won't find the property in the object.
    * @returns {Array<object>} Array without duplicate objects
    */
-  this.removeDuplicates = function (dirtyArray, property) {
+  removeDuplicates(dirtyArray, property) {
     const propertyChain = property.split('.');
     const flatArray = [...dirtyArray];
     for (const prop of propertyChain) {
       for (const idx in flatArray) {
         if (angular.isUndefined(flatArray[idx])) {
-          $log.error(`Property "${prop}" not found in object.`);
+          this.$log.error(`Property "${prop}" not found in object.`);
           return [];
         }
         flatArray[idx] = angular.isDefined(flatArray[idx].get)
@@ -370,84 +417,98 @@ export default function (HsConfig, $http, $window, $document, $location, $log) {
       }
       return flatArray.indexOf(propertyValue) === position;
     });
-  };
+  }
 
-  Date.isLeapYear = function (year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  };
+  modifyPrototypes() {
+    Date.isLeapYear = function (year) {
+      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    };
 
-  Date.getDaysInMonth = function (year, month) {
-    return [
-      31,
-      Date.isLeapYear(year) ? 29 : 28,
-      31,
-      30,
-      31,
-      30,
-      31,
-      31,
-      30,
-      31,
-      30,
-      31,
-    ][month];
-  };
+    Date.getDaysInMonth = function (year, month) {
+      return [
+        31,
+        Date.isLeapYear(year) ? 29 : 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+      ][month];
+    };
 
-  Date.prototype.isLeapYear = function () {
-    return Date.isLeapYear(this.getFullYear());
-  };
+    Date.prototype.isLeapYear = function () {
+      return Date.isLeapYear(this.getFullYear());
+    };
 
-  Date.prototype.getDaysInMonth = function () {
-    return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
-  };
+    Date.prototype.getDaysInMonth = function () {
+      return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+    };
 
-  Date.prototype.addMonths = function (value) {
-    const n = this.getDate();
-    this.setDate(1);
-    this.setMonth(this.getMonth() + value);
-    this.setDate(Math.min(n, this.getDaysInMonth()));
-    return this;
-  };
+    Date.prototype.addMonths = function (value) {
+      const n = this.getDate();
+      this.setDate(1);
+      this.setMonth(this.getMonth() + value);
+      this.setDate(Math.min(n, this.getDaysInMonth()));
+      return this;
+    };
 
-  Date.prototype.monthDiff = function (d2) {
-    let months;
-    months = (d2.getFullYear() - this.getFullYear()) * 12;
-    months -= this.getMonth() + 1;
-    months += d2.getMonth();
-    return months <= 0 ? 0 : months;
-  };
+    Date.prototype.monthDiff = function (d2) {
+      let months;
+      months = (d2.getFullYear() - this.getFullYear()) * 12;
+      months -= this.getMonth() + 1;
+      months += d2.getMonth();
+      return months <= 0 ? 0 : months;
+    };
 
-  String.prototype.hashCode = function () {
+    String.prototype.hashCode = function () {
+      let hash = 0;
+      if (this.length == 0) {
+        return hash;
+      }
+      for (let i = 0; i < this.length; i++) {
+        const char = this.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash = hash & hash; // Convert to 32bit integer
+      }
+      return hash;
+    };
+
+    String.prototype.replaceAll = function (search, replacement) {
+      const target = this;
+      return target.replace(new RegExp(search, 'g'), replacement);
+    };
+
+    if (!String.prototype.format) {
+      String.prototype.format = function () {
+        const args = arguments;
+        return this.replace(/{(\d+)}/g, (match, number) => {
+          return angular.isDefined(args[number]) ? args[number] : match;
+        });
+      };
+    }
+
+    if (!String.prototype.capitalizeFirstLetter) {
+      String.prototype.capitalizeFirstLetter = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      };
+    }
+  }
+
+  hashCode(s) {
     let hash = 0;
-    if (this.length == 0) {
+    if (s.length == 0) {
       return hash;
     }
-    for (let i = 0; i < this.length; i++) {
-      const char = this.charCodeAt(i);
+    for (let i = 0; i < s.length; i++) {
+      const char = s.charCodeAt(i);
       hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
-  };
-
-  String.prototype.replaceAll = function (search, replacement) {
-    const target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-  };
-
-  if (!String.prototype.format) {
-    String.prototype.format = function () {
-      const args = arguments;
-      return this.replace(/{(\d+)}/g, (match, number) => {
-        return angular.isDefined(args[number]) ? args[number] : match;
-      });
-    };
   }
-
-  if (!String.prototype.capitalizeFirstLetter) {
-    String.prototype.capitalizeFirstLetter = function () {
-      return this.charAt(0).toUpperCase() + this.slice(1);
-    };
-  }
-  return this;
 }

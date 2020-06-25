@@ -19,7 +19,8 @@ export default {
     HsLayoutService,
     HsCommonLaymanService,
     HsCommonEndpointsService,
-    gettext
+    gettext,
+    HsEventBusService
   ) {
     'ngInject';
     angular.extend($scope, {
@@ -188,7 +189,7 @@ export default {
       },
     });
 
-    $scope.$on('core.map_reset', (event, data) => {
+    HsEventBusService.mapResets.subscribe(() => {
       $scope.step = 'context';
     });
 

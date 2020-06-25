@@ -1,5 +1,5 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card">
-    <hs.layout.panel-header panel-name="layermanager" panel-title="'Layer manager'| translate">
+    <hs-panel-header name="layermanager" title="Layer manager">
         <extra-buttons>
             <button type="button" class="but-title-sm" ng-click="removeAllLayers()" title="{{'Remove all layers' | translate}}">
                 <i class="glyphicon icon-trash"></i>
@@ -8,7 +8,7 @@
                 <i class="glyphicon icon-fatredo"></i>
             </button>
         </extra-buttons>
-    </hs.layout.panel-header>
+    </hs-panel-header>
     <div class="card-body hs-lm-panel">
         <div class="nav nav-pills" ng-show="hasBoxImages()">
             <div ng-repeat="box in data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"

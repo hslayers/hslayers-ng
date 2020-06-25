@@ -13,9 +13,10 @@ const path = require('path');
 var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, '../app.js'),
+  entry: path.resolve(__dirname, '../main.ts'),
   output: {
     // Path where bundled files will be output
     path: path.resolve(__dirname, '../dist'),
@@ -25,6 +26,7 @@ module.exports = {
   },
   // Just for build speed improvement
   resolve: { symlinks: true,
+    extensions: ['.tsx', '.ts', '.js'],
     modules: [
       path.join(__dirname, '..'),
       "../node_modules",
@@ -39,10 +41,34 @@ module.exports = {
     new WebpackBuildNotifierPlugin({
       title: "HsLayersNg",
       suppressSuccess: false
-    })
+    }),
+    new webpack.ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+    
+      // For Angular 5, see also https://github.com/angular/angular/issues/20357#issuecomment-343683491
+      /\@angular(\\|\/)core(\\|\/)fesm5/,
+      '../', // location of your src
+      {
+        // your Angular Async Route paths relative to this root directory
+      }
+    )
   ],
   module: {
     rules: [
+      {
+        test: /\.ts?$/,
+        use: [
+          { loader: 'ng-annotate-loader' },
+          'ts-loader'
+        ],
+        exclude: /node_modules/,
+      },
+      {
+        // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
+        // Removing this will cause deprecation warnings to appear.
+        test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
+        parser: { system: true },  // enable SystemJS
+      },
       // Automatically generates $inject array for angularJS components annotated with:
       // 'ngInject';
       // or commented with /**@ngInject */

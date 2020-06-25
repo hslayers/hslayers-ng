@@ -71,15 +71,6 @@ module.exports = merge(common, {
         test: /\.html$/,
         exclude: path.resolve(__dirname, '../src/index.html'),
         use: [
-          'ng-cache-loader?prefix=[dir]/[dir]',
-          /*
-          {
-            loader: 'ngtemplate-loader',
-            options: {
-              relativeTo: path.resolve(__dirname, 'src')
-            }
-          },*/
-          'extract-loader',
           {
             loader: 'html-loader',
             options: {minimize: true},

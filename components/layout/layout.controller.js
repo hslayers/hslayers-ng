@@ -43,8 +43,8 @@ export default function (
   $scope.geolocation = HsGeolocationService;
   $scope.LM = HsLayermanagerService;
   $scope.layoutService = HsLayoutService;
-  $scope.panelVisible = HsLayoutService.panelVisible;
-  $scope.panelEnabled = HsLayoutService.panelEnabled;
+  $scope.panelVisible = (which, scope) => HsLayoutService.panelVisible(which, scope);
+  $scope.panelEnabled = (which, status) => HsLayoutService.panelEnabled(which, status);
 
   $scope.location = {
     status: {
@@ -235,6 +235,28 @@ export default function (
     }
   };
 
+
+	try {
+		const $mdDialog = $injector.get('$mdDialog');
+
+		$scope.showDialog = function(ev, template) {
+			$mdDialog.show({
+				scope: this,
+				preserveScope: true,
+				template: template,
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose: true
+			});
+		};
+
+		$scope.cancelDialog = function() {
+			$mdDialog.cancel();
+		};
+	} catch (ex) {
+		$log.log('Injector does not have mdDialog service!');
+	}
+
   $scope.switchBottomSheetState = function () {
     if ($scope.getBottomSheetState() === 'minimized') {
       $scope.setHalfway();
@@ -294,7 +316,6 @@ export default function (
     } catch (e) {
       $log.log('Injector does not have mdBottomSheetCollapsible service!');
     }
-
     // $scope.$watch(function() {
     //     return $scope.getBottomSheetState();
     // }, function() {
@@ -482,7 +503,7 @@ export default function (
     //Ignore error
   }
 
-  $scope.panelSpaceWidth = HsLayoutService.panelSpaceWidth;
+  $scope.panelSpaceWidth = () => HsLayoutService.panelSpaceWidth();
 
   $scope.infoContainerStyle = function () {
     if (HsLayoutService.sidebarBottom()) {
@@ -516,8 +537,6 @@ export default function (
     let width = HsLayoutService.layoutElement.clientWidth;
     let marginLeft = 0;
 
-    HsMapService.map.updateSize();
-
     if (!HsLayoutService.sidebarBottom() || !fullscreen) {
       marginLeft += HsLayoutService.sidebarRight
         ? 0
@@ -534,6 +553,13 @@ export default function (
     }
 
     height -= HsLayoutService.mdToolbarHeight();
+
+    const currentMapSize = HsMapService.map.getSize();
+    //We can't call this too often because it messes up 
+    //the scrolling and animations - they get canceled
+    if(currentMapSize[0] != width || currentMapSize[1] != height){
+      setTimeout(() => HsMapService.map.updateSize(), 200);
+    }
 
     return {
       height: `${height}px`,

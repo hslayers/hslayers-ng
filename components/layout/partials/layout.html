@@ -20,29 +20,30 @@
 
                 <div class="hs-panelspace" ng-if="layoutService.sidebarVisible() && layoutService.componentEnabled('sidebar')" ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}" ng-style="{width: panelSpaceWidth()+'px'}">
                     <div class="hs-panelspace-wrapper" ng-style="{width: panelSpaceWidth()+'px'}">
-                        <div class="hs-sidebar" hs.sidebar.directive ng-controller="HsSidebarController" ng-if="HsCore.exists('HsSidebarController')" ng-cloak></div>
+                        <div class="hs-sidebar" hs.sidebar.directive ng-controller="HsSidebarController" ng-cloak></div>
                         <div class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
                             <hs.layermanager                        hs.draggable ng-show="panelVisible('layermanager', this)"></hs.layermanager>
-                            <hs.legend                              hs.draggable ng-if="HsCore.exists('hs.legend')" ng-show="panelVisible('legend', this)"></hs.legend>
-                            <hs.datasource-selector                 hs.draggable ng-if="HsCore.exists('hs.datasource_selector')" ng-show="panelVisible('datasource_selector', this)"></hs.datasource-selector>
-                            <hs.compositions                        hs.draggable  ng-if="HsCore.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>
-                            <div hs.feature_crossfilter.directive   hs.draggable ng-controller="hs.feature_crossfilter.controller"  ng-if="HsCore.exists('hs.feature_crossfilter.controller')" ng-show="panelVisible('feature_crossfilter', this)"></div>
-                            <hs.measure                             hs.draggable ng-if="HsCore.exists('hs.measure')" ng-show="panelVisible('measure', this)"></hs.measure>
-                            <hs.print                               hs.draggable ng-if="HsCore.exists('hs.print')" ng-show="panelVisible('print', this)"></hs.print>
-                            <hs.styler                              hs.draggable ng-if="HsCore.exists('hs.styles')" ng-show="panelVisible('styler', this)"></hs.styler>
-                            <hs.permalink                           hs.draggable ng-if="HsCore.exists('hs.permalink')" ng-show="panelVisible('permalink', this)"></hs.permalink>
-                            <div hs.query.directive_infopanel       hs.draggable ng-controller="HsQueryController" class="hs-infopanel" ng-if="HsCore.exists('HsQueryController') && config.design != 'md'" ng-show="panelVisible('info', this)"></div>
-                            <div hs.query.directive_infopanel_md    hs.draggable ng-controller="HsQueryController" class="hs-infopanel" ng-if="HsCore.exists('HsQueryController') && config.design == 'md'" ng-show="panelVisible('info', this)"></div>
-                            <hs.save-map                            hs.draggable  ng-if="HsCore.exists('hs.save-map')" ng-show="panelVisible('saveMap', this)"></hs.save-map>
-                            <div hs.language.directive              hs.draggable ng-controller="HsLanguageController" ng-if="HsCore.exists('HsLanguageController')" ng-show="panelVisible('language', this)"></div>
-                            <div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-if="HsCore.exists('HsRoutingController')" ng-show="panelVisible('routing', this)"></div>
-                            <div hs.tracking.directive              hs.draggable ng-controller="HsTrackingController" ng-if="HsCore.exists('HsTrackingController')" ng-show="panelVisible('tracking', this)"></div>
-                            <hs.vgi-draw                            hs.draggable ng-if="HsCore.exists('hs.vgi-draw')" ng-show="panelVisible('draw', this)"></hs.vgi-draw>
-                            <hs.sensors.panel                       hs.draggable ng-if="HsCore.exists('hs.sensors')" ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
-                            <div hs.search.directive                hs.draggable ng-controller="HsSearchController" ng-if="HsCore.exists('HsSearchController') && panelVisible('search')" ng-show="panelVisible('search', this)"></div>
-                            <div hs.sidebar.directive             class="hs-minisidebar"  hs.draggable ng-controller="HsSidebarController" ng-if="HsCore.exists('hs.sidebar') && layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
-                            <div hs.draw.directive                  hs.draggable ng-if="HsCore.exists('hs.draw') " ng-show="panelVisible('draw', this)"></div>
-                            <div hs.customhtml.directive                                                            ng-if="HsCore.exists('hs.customhtml')"></div>
+                            <hs.legend                              hs.draggable ng-show="panelVisible('legend', this)"></hs.legend>
+                            <hs.datasource-selector                 hs.draggable ng-show="panelVisible('datasource_selector', this)"></hs.datasource-selector>
+                            <hs.compositions                        hs.draggable ng-show="panelVisible('composition_browser', this)"></hs.compositions>
+                            <hs.measure                             hs.draggable ng-show="panelVisible('measure', this)"></hs.measure>
+                            <hs.print                               hs.draggable ng-show="panelVisible('print', this)"></hs.print>
+                            <hs.styler                              hs.draggable ng-show="panelVisible('styler', this)"></hs.styler>
+                            <hs.permalink                           hs.draggable ng-show="panelVisible('permalink', this)"></hs.permalink>
+                            <div hs.query.directive_infopanel       hs.draggable ng-controller="HsQueryController" class="hs-infopanel" ng-if="config.design != 'md'" ng-show="panelVisible('info', this)"></div>
+                            <div hs.query.directive_infopanel_md    hs.draggable ng-controller="HsQueryController" class="hs-infopanel" ng-if="config.design == 'md'" ng-show="panelVisible('info', this)"></div>
+                            <hs.save-map                            hs.draggable ng-show="panelVisible('saveMap', this)"></hs.save-map>
+                            <div hs.language.directive              hs.draggable ng-controller="HsLanguageController" ng-show="panelVisible('language', this)"></div>
+                           <!--
+<div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
+                            <div hs.tracking.directive              hs.draggable ng-controller="HsTrackingController" ng-show="panelVisible('tracking', this)"></div>
+                           --> 
+                            <hs.vgi-draw                            hs.draggable ng-show="panelVisible('draw', this)"></hs.vgi-draw>
+                            <hs.sensors.panel                       hs.draggable ng-show="panelVisible('sensors', this)"></hs.sensors.panel>
+                            <div hs.search.directive                hs.draggable ng-controller="HsSearchController" ng-if="panelVisible('search')" ng-show="panelVisible('search', this)"></div>
+                            <div hs.sidebar.directive             class="hs-minisidebar"  hs.draggable ng-controller="HsSidebarController" ng-if="layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
+                            <div hs.draw.directive                  hs.draggable ng-show="panelVisible('draw', this)"></div>
+                            <div hs.customhtml.directive></div>
                         </div>
                     </div>
                 </div>
