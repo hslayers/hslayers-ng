@@ -235,6 +235,28 @@ export default function (
     }
   };
 
+
+	try {
+		const $mdDialog = $injector.get('$mdDialog');
+
+		$scope.showDialog = function(ev, template) {
+			$mdDialog.show({
+				scope: this,
+				preserveScope: true,
+				template: template,
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose: true
+			});
+		};
+
+		$scope.cancelDialog = function() {
+			$mdDialog.cancel();
+		};
+	} catch (ex) {
+		$log.log('Injector does not have mdDialog service!');
+	}
+
   $scope.switchBottomSheetState = function () {
     if ($scope.getBottomSheetState() === 'minimized') {
       $scope.setHalfway();
@@ -294,28 +316,6 @@ export default function (
     } catch (e) {
       $log.log('Injector does not have mdBottomSheetCollapsible service!');
     }
-
-    try {
-		const $mdDialog = $injector.get('$mdDialog');
-
-		$scope.showDialog = function(ev, template) {
-			$mdDialog.show({
-				scope: this,
-				preserveScope: true,
-				template: template,
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose: true
-			});
-		};
-
-		$scope.cancelDialog = function() {
-			$mdDialog.cancel();
-		};
-    } catch (ex) {
-		$log.log('Injector does not have mdDialog service!');
-    }
-
     // $scope.$watch(function() {
     //     return $scope.getBottomSheetState();
     // }, function() {
