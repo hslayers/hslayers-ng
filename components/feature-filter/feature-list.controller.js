@@ -1,3 +1,6 @@
+import Icon from 'ol/style/Icon';
+import Style from 'ol/style/Style';
+
 /**
  * @param $scope
  * @param HsMapService
@@ -15,7 +18,6 @@ export default function (
   HsConfig
 ) {
   'ngInject';
-  window.scope = $scope;
   $scope.map = HsMapService.map;
   $scope.LayMan = HsLayermanagerService;
 
