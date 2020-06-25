@@ -498,12 +498,12 @@ export class HsMapService {
 
   /**
    * @ngdoc method
-   * @name HsMapService#layerDuplicate
-   * @description Checks if a layer with the same title alredy exists in the map
+   * @name HsMapService#layerAlreadyExists
+   * @description Checks if a layer with the same title already exists in the map
    * @param {ol/Layer} lyr A layer to check
    * @returns {boolean} True if layer is already present in the map, false otherwise
    */
-  layerDuplicate(lyr) {
+  layerAlreadyExists(lyr) {
     const duplicateLayers = this.map
       .getLayers()
       .getArray()
@@ -540,7 +540,7 @@ export class HsMapService {
    * @returns {ol/Layer} OL layer
    */
   addLayer(lyr, removeIfExists, visibilityOverrides) {
-    if (removeIfExists && this.layerDuplicate(lyr)) {
+    if (removeIfExists && this.layerAlreadyExists(lyr)) {
       this.removeDuplicate(lyr);
     }
     if (angular.isDefined(visibilityOverrides)) {
