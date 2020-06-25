@@ -2,7 +2,6 @@ import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format';
 import {Circle, Fill, RegularShape, Stroke, Style, Text} from 'ol/style';
 import {Cluster, Vector as VectorSource} from 'ol/source';
-import { isDebuggerStatement } from 'typescript';
 
 export default {
   template: require('./partials/layer-editor.html'),
