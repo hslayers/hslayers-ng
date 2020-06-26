@@ -53,95 +53,17 @@ A global hslayersNgConfig function, which returns a configuration object, needs 
 Include in your html file, where the map should appear. 
 
 ```
-<div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
+<div hs ng-controller="Main" style="position: relative;"></div>
 ```
 
 To have more customization options which require programming you can also write your own entry module which in this example is named app.js, but can have any other file name. 
-App.js file is where you specify which hslayers modules will be loaded for your speciffic 
+app-js.ts file is where you specify which hslayers modules will be loaded for your specific 
 application, which map layers will be displayed and other configuration parameters. 
 You can also write some startup code here to load a map service, open some initial panels etc.
 
 Some example html files are provided in https://github.com/hslayers/examples repository. The template app.js uses 
 png icons for layer groups which are included in https://github.com/hslayers/examples/tree/master/full directory.
 
-Hslayers exposes Openlayers as global 'ol' variable and 'angular', which are used in defining modules, layers and configuration.
-
-Following example uses html:
-
-```
- <script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>
- <script src="app.js"></script>
- <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
-```
-
-And app.js with explanations:
-
-```
-var module = angular.module('hs', [
-    'hs.sidebar',
-    'hs.toolbar',
-    'hs.layermanager',
-    'hs.map',
-    'hs.query',
-    'hs.search', 'hs.print', 'hs.permalink', 'hs.measure',
-    'hs.legend', 'hs.geolocation', 'hs.core',
-    'hs.datasource_selector',
-    'hs.save-map',
-    'hs.ows',
-    'gettext',
-    'hs.compositions',
-    'hs.info'
-]);
-
-module.directive('hs',  function (HsCore) {
-    'ngInject';
-    return {
-        template: HsCore.hslayersNgTemplate,
-        link: function (scope, element) {
-            HsCore.fullScreenMap(element);
-        }
-    };
-});
-
-module.value('HsConfig', {
-    open_lm_after_comp_loaded: true,
-    layer_order: '-position',
-    box_layers: [
-        new ol.layer.Group({
-            'img': 'osm.png',
-            title: 'Base layer',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM(),
-                    title: "OpenStreetMap",
-                    base: true,
-                    visible: true,
-                    removable: false
-                }),
-                new ol.layer.Tile({
-                    title: "OpenCycleMap",
-                    visible: false,
-                    base: true,
-                    source: new ol.source.OSM({
-                        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                    })
-                })
-            ],
-        })
-    ],
-    default_view: new ol.View({
-        center: ol.proj.transform([17.474129, 52.574000], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-        zoom: 4,
-        units: "m"
-    })
-});
-
-module.controller('Main', function ($scope, HsLayoutService) {
-        'ngInject';
-        layoutService.sidebarRight = false;
-    }
-);
-```
 
 For webpack bundling instructions see [Building with webpack](https://github.com/hslayers/hslayers-ng/wiki/Building-with-webpack)
 
