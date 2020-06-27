@@ -8,5 +8,5 @@
         <p *ngFor="let category of layer.lyr.getSource().legend_categories"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
         </p>
    </div>   
-    <hs.legend.layer-static-directive *ngIf="layer.type == 'static'" [layer]="layer"></hs.legend.layer-static-directive>
+   <hs-legend-layer-static *ngIf="layer.type == 'static'" [layer]="layer"></hs-legend-layer-static>
 </div>
