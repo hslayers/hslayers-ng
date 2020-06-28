@@ -2,6 +2,6 @@
     <a href="#" class="list-group-item list-group-item-warning">
         <span ng-style="{'padding-left':value.indent*15}" ng-bind-html="value.name"></span>
     </a>
-    <li hs.layermanager.folder_directive ng-show='folderVisible(value)'></li>
-    <li hs.layermanager.layerlist_directive></li>
+    <li ng-show='folderVisible(value)'><hs-layer-manager-folder></hs-layer-manager-folder></li>
+    <li><hs-layermanager-layer-list></hs-layermanager-layer-list></li>
 </ul>

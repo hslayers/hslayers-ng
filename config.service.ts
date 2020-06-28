@@ -3,6 +3,7 @@ export class HsConfig {
   mapInteractionsEnabled: boolean;
   allowAddExternalDatasets: boolean;
   sidebarClosed: boolean;
+  layer_order: string
   constructor() { 
     
   }

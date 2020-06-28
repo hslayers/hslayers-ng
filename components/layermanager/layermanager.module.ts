@@ -6,7 +6,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { HsPanelHelpersModule } from '../layout/panel-helpers.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { HsFolderComponent as HsLayerManagerFolderComponent } from './layermanager-folder.component';
+import { HsLayerManagerFolderComponent } from './layermanager-folder.component';
 import { HsLayerEditorComponent } from './layer-editor.component';
 import { HsLayerEditorDimensionsComponent } from './dimensions/layer-editor-dimensions.component';
 import { HsLayerEditorService } from './layer-editor.service';
@@ -48,7 +48,14 @@ import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.comp
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent
   ],
-  providers: [HsLayerEditorSublayerService, HsLayerEditorService, HsLayerEditorVectorLayerService, HsLayerManagerMetadataService, HsLayerManagerService, HsLayerManagerWmstService],
+  providers: [
+    HsLayerEditorSublayerService,
+    HsLayerEditorService,
+    HsLayerEditorVectorLayerService,
+    HsLayerManagerMetadataService,
+    HsLayerManagerService,
+    HsLayerManagerWmstService
+  ],
   entryComponents: [
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,

@@ -1,141 +1,140 @@
-import {WMSCapabilities} from 'ol/format';
-import {get as getProj, transform, transformExtent} from 'ol/proj';
+import { WMSCapabilities } from 'ol/format';
+import { get as getProj, transform, transformExtent } from 'ol/proj';
+import { Injectable } from '@angular/core';
+import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
+import { HsMapService } from '../map/map.service.js';
+import { HsLayerUtilsService } from '../utils/utils.service';
 
-/**
- * @param HsMapService
- * @param HsWmsGetCapabilitiesService
- * @param HsLayerUtilsService
- * @param HsLayerEditorVectorLayerService
- * @param $rootScope
- */
-export default function (
-  HsMapService,
-  HsWmsGetCapabilitiesService,
-  HsLayerUtilsService,
-  HsLayerEditorVectorLayerService,
-  $rootScope
-) {
-  'ngInject';
-  const me = {
-    /**
-     * @function zoomToLayer
-     * @memberOf HsLayerEditorService
-     * @param {ol/layer} layer Openlayers layer to zoom to
-     * @description Zoom to selected layer (layer extent). Get extent
-     * from bounding box property, getExtent() function or from
-     * BoundingBox property of GetCapabalities request (for WMS layer)
-     */
-    async zoomToLayer(layer) {
-      let extent = null;
-      if (layer.get('BoundingBox')) {
-        extent = getExtentFromBoundingBoxAttribute(layer);
-      } else if (angular.isDefined(layer.getSource().getExtent)) {
-        extent = layer.getSource().getExtent();
+@Injectable({
+  providedIn: 'any',
+})
+export class HsLayerEditorService {
+  constructor(
+    private HsMapService: HsMapService,
+    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService) {}
+
+  /**
+   * @function zoomToLayer
+   * @memberOf HsLayerEditorService
+   * @param {ol/layer} layer Openlayers layer to zoom to
+   * @description Zoom to selected layer (layer extent). Get extent
+   * from bounding box property, getExtent() function or from
+   * BoundingBox property of GetCapabalities request (for WMS layer)
+   */
+  async zoomToLayer(layer) {
+    let extent = null;
+    if (layer.get('BoundingBox')) {
+      extent = this.getExtentFromBoundingBoxAttribute(layer);
+    } else if (layer.getSource().getExtent != undefined) {
+      extent = layer.getSource().getExtent();
+    }
+    if (extent) {
+      this.fitIfExtentSet(extent, layer);
+      return true;
+    }
+    if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
+      let url = null;
+      if (layer.getSource().getUrls) {
+        //Multi tile
+        url = layer.getSource().getUrls()[0];
       }
-      if (extent) {
-        fitIfExtentSet(extent, layer);
-        return true;
+      if (layer.getSource().getUrl) {
+        //Single tile
+        url = layer.getSource().getUrl();
       }
-      if (extent === null && HsLayerUtilsService.isLayerWMS(layer)) {
-        let url = null;
-        if (layer.getSource().getUrls) {
-          //Multi tile
-          url = layer.getSource().getUrls()[0];
-        }
-        if (layer.getSource().getUrl) {
-          //Single tile
-          url = layer.getSource().getUrl();
-        }
-        const capabilities_xml = await HsWmsGetCapabilitiesService.requestGetCapabilities(
-          url
+      const capabilities_xml = await this.HsWmsGetCapabilitiesService.requestGetCapabilities(
+        url
+      );
+      const parser = new WMSCapabilities();
+      const caps = parser.read(capabilities_xml);
+      if (Array.isArray(caps.Capability.Layer.Layer)) {
+        const foundDefs = caps.Capability.Layer.Layer.filter(
+          (layer_def) =>
+            layer_def.Name == layer.getSource().getParams().LAYERS
         );
-        const parser = new WMSCapabilities();
-        const caps = parser.read(capabilities_xml);
-        if (angular.isArray(caps.Capability.Layer.Layer)) {
-          const foundDefs = caps.Capability.Layer.Layer.filter(
-            (layer_def) =>
-              layer_def.Name == layer.getSource().getParams().LAYERS
-          );
-          const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
-          if (foundDef) {
-            extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
-            fitIfExtentSet(transformToCurrentProj(extent), layer);
-            return true;
-          }
-        } else if (angular.isObject(caps.Capability.Layer)) {
-          extent =
-            caps.Capability.Layer.EX_GeographicBoundingBox ||
-            caps.Capability.Layer.BoundingBox;
-          fitIfExtentSet(transformToCurrentProj(extent), layer);
+        const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
+        if (foundDef) {
+          extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
+          this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
           return true;
-        } else {
-          return false;
         }
+      } else if (typeof caps.Capability.Layer == 'object') {
+        extent =
+          caps.Capability.Layer.EX_GeographicBoundingBox ||
+          caps.Capability.Layer.BoundingBox;
+        this.fitIfExtentSet(this.transformToCurrentProj(extent), layer);
+        return true;
+      } else {
+        return false;
       }
-    },
+    }
+  }
 
-    /**
-     * @function cluster
-     * @memberOf HsLayerEditorService
-     * @description Set cluster for layer
-     * @param {ol/layer} layer Layer
-     * @param {boolean} newValue To cluster or not to cluster
-     * @param {int} distance Distance in pixels
-     * @returns {boolean} Current cluster state
-     */
-    cluster(layer, newValue, distance) {
-      if (angular.isUndefined(layer)) {
-        return;
-      }
-      if (angular.isDefined(newValue)) {
-        layer.set('cluster', newValue);
-        HsLayerEditorVectorLayerService.cluster(newValue, layer, distance);
-        $rootScope.$broadcast('compositions.composition_edited');
-      } else {
-        return layer.get('cluster');
-      }
-    },
-    /**
-     * @function declutter
-     * @memberOf HsLayerEditorService
-     * @description Set declutter for layer
-     * @param {ol/layer} layer Layer
-     * @param {boolean} newValue To clutter or not to clutter
-     * @returns {boolean} Current clutter state
-     */
-    declutter(layer, newValue) {
-      if (angular.isUndefined(layer)) {
-        return;
-      }
-      if (angular.isDefined(newValue)) {
-        layer.set('declutter', newValue);
-        HsLayerEditorVectorLayerService.declutter(newValue, layer);
-        $rootScope.$broadcast('compositions.composition_edited');
-      } else {
-        return layer.get('declutter');
-      }
-    },
-  };
+  /**
+   * @function cluster
+   * @memberOf HsLayerEditorService
+   * @description Set cluster for layer
+   * @param {ol/layer} layer Layer
+   * @param {boolean} newValue To cluster or not to cluster
+   * @param {int} distance Distance in pixels
+   * @returns {boolean} Current cluster state
+   */
+  cluster(layer, newValue, distance) {
+    if (layer == undefined) {
+      return;
+    }
+    if (newValue != undefined) {
+      layer.set('cluster', newValue);
+      this.HsLayerEditorVectorLayerService.cluster(newValue, layer, distance);
+      $rootScope.$broadcast('compositions.composition_edited');
+    } else {
+      return layer.get('cluster');
+    }
+  }
+
+  /**
+   * @function declutter
+   * @memberOf HsLayerEditorService
+   * @description Set declutter for layer
+   * @param {ol/layer} layer Layer
+   * @param {boolean} newValue To clutter or not to clutter
+   * @returns {boolean} Current clutter state
+   */
+  declutter(layer, newValue) {
+    if (layer == undefined) {
+      return;
+    }
+    if (newValue != undefined) {
+      layer.set('declutter', newValue);
+      this.HsLayerEditorVectorLayerService.declutter(newValue, layer);
+      $rootScope.$broadcast('compositions.composition_edited');
+    } else {
+      return layer.get('declutter');
+    }
+  }
+
 
   /**
    * @param {ol/extent} extent Extent in EPSG:4326
    * @param {ol/layer} layer
    */
-  function fitIfExtentSet(extent, layer) {
+  fitIfExtentSet(extent, layer) {
     if (extent !== null) {
       layer.set('BoundingBox', extent);
-      HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+      this.HsMapService.map.getView().fit(extent, this.HsMapService.map.getSize());
     }
   }
 
   /**
    * @param extent
    */
-  function transformToCurrentProj(extent) {
+  transformToCurrentProj(extent) {
     return transformExtent(
       extent,
       'EPSG:4326',
-      HsMapService.map.getView().getProjection()
+      this.HsMapService.map.getView().getProjection()
     );
   }
 
@@ -147,16 +146,16 @@ export default function (
    * @param {Ol.layer} layer Selected layer
    * @returns {ol/extent} Extent
    */
-  function getExtentFromBoundingBoxAttribute(layer) {
+  getExtentFromBoundingBoxAttribute(layer) {
     let extent = null;
     const bbox = layer.get('BoundingBox');
-    if (angular.isArray(bbox) && bbox.length == 4) {
-      extent = transformToCurrentProj(bbox);
+    if (Array.isArray(bbox) && bbox.length == 4) {
+      extent = this.transformToCurrentProj(bbox);
     } else {
       for (let ix = 0; ix < bbox.length; ix++) {
         if (
-          angular.isDefined(getProj(bbox[ix].crs)) ||
-          angular.isDefined(layer.getSource().getParams().FROMCRS)
+          getProj(bbox[ix].crs) != undefined ||
+          layer.getSource().getParams().FROMCRS != undefined
         ) {
           const crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
           const b = bbox[ix].extent;
@@ -165,12 +164,12 @@ export default function (
           first_pair = transform(
             first_pair,
             crs,
-            HsMapService.map.getView().getProjection()
+            this.HsMapService.map.getView().getProjection()
           );
           second_pair = transform(
             second_pair,
             crs,
-            HsMapService.map.getView().getProjection()
+            this.HsMapService.map.getView().getProjection()
           );
           extent = [
             first_pair[0],
@@ -184,5 +183,4 @@ export default function (
     }
     return extent;
   }
-  return me;
 }

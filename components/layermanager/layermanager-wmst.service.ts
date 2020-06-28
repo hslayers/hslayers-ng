@@ -1,13 +1,17 @@
-import moment from 'moment';
-global.moment = moment;
+import * as moment from "moment";
+import { Injectable } from '@angular/core';
+import { HsUtilsService } from '../utils/utils.service';
 
-/**
- * @param $rootScope
- * @param HsUtilsService
- */
-export default function ($rootScope, HsUtilsService) {
-  'ngInject';
-  const me = {};
+@Injectable({
+  providedIn: 'any',
+})
+export class HsLayerManagerWmstService {
+  constructor(
+    private HsUtilsService: HsUtilsService
+  ) {
+
+  }
+
 
   /**
    * Get date format of time data based on time unit property
@@ -16,12 +20,12 @@ export default function ($rootScope, HsUtilsService) {
    * @memberOf HsLayermanagerWmstService
    * @param {string} time_unit
    */
-  me.getDateFormatForTimeSlider = function (time_unit) {
+  getDateFormatForTimeSlider(time_unit) {
     switch (time_unit) {
       case 'FullYear':
       case 'Month':
       case 'Day':
-        return (date_format = 'dd-MM-yyyy');
+        return 'dd-MM-yyyy';
       default:
         return 'dd-MM-yyyy HH:mm';
     }
@@ -35,7 +39,7 @@ export default function ($rootScope, HsUtilsService) {
    * @param {object} new_layer Layer to set time intervals
    * @param {object} metadata Time dimension metadata for layer
    */
-  me.setLayerTimeSliderIntervals = function (new_layer, metadata) {
+  setLayerTimeSliderIntervals(new_layer, metadata) {
     switch (new_layer.time_unit) {
       case 'FullYear':
         var d = new Date(metadata.timeInterval[0]);
@@ -67,7 +71,7 @@ export default function ($rootScope, HsUtilsService) {
    * @param {string} interval Interval time string
    * @description Parse interval string to get interval in Date format
    */
-  function parseInterval(interval) {
+  parseInterval(interval) {
     let dateComponent;
     let timeComponent;
 
@@ -151,30 +155,30 @@ export default function ($rootScope, HsUtilsService) {
    * @returns {boolean} True for WMS layer with time support
    * Test if WMS layer have time support (WMS-T). WMS layer has to have dimensions_time or dimension property, function converts dimension to dimensions_time
    */
-  me.layerIsWmsT = function (layer_container) {
-    if (angular.isUndefined(layer_container) || layer_container == null) {
+  layerIsWmsT(layer_container) {
+    if (layer_container == undefined || layer_container == null) {
       return false;
     }
     const layer = layer_container.layer;
-    if (angular.isUndefined(layer)) {
+    if (layer == undefined) {
       return false;
     }
     if (
       layer.get('dimensions_time') &&
-      angular.isArray(layer.get('dimensions_time').timeInterval)
+      Array.isArray(layer.get('dimensions_time').timeInterval)
     ) {
       return true;
     }
     if (
       layer.get('dimensions') &&
-      angular.isObject(layer.get('dimensions').time)
+      typeof layer.get('dimensions').time == 'object'
     ) {
-      const metadata = {};
+      const metadata: any = {};
       let value = layer.get('dimensions').time.values;
-      if (angular.isArray(value)) {
+      if (Array.isArray(value)) {
         value = value[0];
       }
-      if (typeof value === 'string' || HsUtilsService.instOf(value, String)) {
+      if (typeof value === 'string' || this.HsUtilsService.instOf(value, String)) {
         value = value.replace(/\s*/g, '');
 
         if (value.search('/') > -1) {
@@ -186,14 +190,14 @@ export default function ($rootScope, HsUtilsService) {
           });
 
           if (interval.length == 3) {
-            metadata.timeStep = parseInterval(interval[2]);
+            metadata.timeStep = this.parseInterval(interval[2]);
             interval.pop();
           }
           if (interval.length == 2) {
             metadata.timeInterval = interval;
           }
         }
-        angular.extend(layer, {
+        Object.assign(layer, {
           dimensions_time: metadata,
         });
       }
@@ -210,26 +214,26 @@ export default function ($rootScope, HsUtilsService) {
    * @param {number} dateIncrement Value days, months or years by which to increment start time to reach current selected time in the range control
    * @description Update layer time parameter
    */
-  me.setLayerTime = function (currentLayer, dateIncrement) {
+  setLayerTime(currentLayer, dateIncrement) {
     if (
-      angular.isUndefined(currentLayer) ||
-      angular.isUndefined(currentLayer.layer)
+      currentLayer == undefined ||
+      currentLayer.layer == undefined
     ) {
       return;
     }
     const dimensions_time =
       currentLayer.layer.get('dimensions_time') ||
       currentLayer.layer.dimensions_time;
-    if (angular.isUndefined(dimensions_time)) {
+    if (dimensions_time == undefined) {
       return;
     }
-    let d = moment.utc(dimensions_time.timeInterval[0]);
+    let d: moment.Moment = moment.utc(dimensions_time.timeInterval[0]);
     switch (currentLayer.time_unit) {
       case 'FullYear':
-        d.setFullYear(dateIncrement);
+        d.set({year: dateIncrement});
         break;
       case 'Month':
-        d.addMonths(dateIncrement);
+        d.add(dateIncrement, 'months');
         break;
       default:
         if (dateIncrement < currentLayer.min_time) {
@@ -252,30 +256,41 @@ export default function ($rootScope, HsUtilsService) {
     );
   };
 
-  me.setupTimeLayerIfNeeded = function (new_layer) {
-    if (me.layerIsWmsT(new_layer)) {
+  setupTimeLayerIfNeeded(new_layer) {
+    if (this.layerIsWmsT(new_layer)) {
       const dimensions_time =
         new_layer.layer.get('dimensions_time') ||
         new_layer.layer.dimensions_time;
       let time;
-      if (angular.isDefined(new_layer.layer.get('dimensions').time.default)) {
+      if (new_layer.layer.get('dimensions').time.default != undefined) {
         time = new Date(new_layer.layer.get('dimensions').time.default);
       } else {
         time = new Date(dimensions_time.timeInterval[0]);
       }
-      angular.extend(new_layer, {
+      Object.assign(new_layer, {
         time_step: dimensions_time.timeStep,
         time_unit: dimensions_time.timeUnit,
-        date_format: me.getDateFormatForTimeSlider(dimensions_time.timeUnit),
+        date_format: this.getDateFormatForTimeSlider(dimensions_time.timeUnit),
         date_from: new Date(dimensions_time.timeInterval[0]),
         date_till: new Date(dimensions_time.timeInterval[1]),
         time: time,
         date_increment: time.getTime(),
       });
-      me.setLayerTimeSliderIntervals(new_layer, dimensions_time);
-      me.setLayerTime(new_layer);
+      this.setLayerTimeSliderIntervals(new_layer, dimensions_time);
+      this.setLayerTime(new_layer, 0);
     }
   };
-
-  return me;
 }
+
+declare global {
+  interface Date {
+    monthDiff: (d2) => number;
+  }
+}
+Date.prototype.monthDiff = function (d2) {
+  let months: number;
+  months = (d2.getFullYear() - this.getFullYear()) * 12;
+  months -= this.getMonth() + 1;
+  months += d2.getMonth();
+  return months <= 0 ? 0 : months;
+};

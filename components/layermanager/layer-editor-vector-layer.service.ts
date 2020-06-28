@@ -1,14 +1,19 @@
 import VectorLayer from 'ol/layer/Vector';
-import {Circle, Fill, RegularShape, Stroke, Style, Text} from 'ol/style';
-import {Cluster, Vector as VectorSource} from 'ol/source';
-import {Point} from 'ol/geom';
+import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
+import { Cluster } from 'ol/source';
+import { Point } from 'ol/geom';
+import { Injectable } from '@angular/core';
+import { HsMapService } from '../map/map.service.js';
 
-/**
- * @param HsMapService
- */
-export default function (HsMapService) {
-  'ngInject';
-  const me = {};
+@Injectable({
+  providedIn: 'any',
+})
+export class HsLayerEditorVectorLayerService {
+
+  constructor(private HsMapService: HsMapService) {
+
+  }
+
   /**
    * @function Declutter
    * @memberOf HsLayerEditorService
@@ -16,24 +21,25 @@ export default function (HsMapService) {
    * @param {boolean} newValue
    * @param {ol/Layer} layer
    */
-  me.declutter = function (newValue, layer) {
-    const index = HsMapService.map.getLayers().getArray().indexOf(layer);
+  declutter(newValue, layer) {
+    const index = this.HsMapService.map.getLayers().getArray().indexOf(layer);
     if (newValue == true && !layer.get('cluster')) {
-      HsMapService.map.removeLayer(layer);
-      HsMapService.map
+      this.HsMapService.map.removeLayer(layer);
+      this.HsMapService.map
         .getLayers()
-        .insertAt(index, me.cloneVectorLayer(layer, newValue));
+        .insertAt(index, this.cloneVectorLayer(layer, newValue));
     } else {
-      HsMapService.map.removeLayer(layer);
-      HsMapService.map
+      this.HsMapService.map.removeLayer(layer);
+      this.HsMapService.map
         .getLayers()
-        .insertAt(index, me.cloneVectorLayer(layer, false));
+        .insertAt(index, this.cloneVectorLayer(layer, false));
     }
-  };
-  me.cloneVectorLayer = function (layer, declutter) {
+  }
+
+  cloneVectorLayer(layer, declutter) {
     const options = {};
     layer.getKeys().forEach((k) => (options[k] = layer.get(k)));
-    angular.extend(options, {
+    Object.assign(options, {
       declutter,
       source: layer.getSource(),
       style: layer.getStyleFunction() || layer.getStyle(),
@@ -43,7 +49,8 @@ export default function (HsMapService) {
       opacity: layer.getOpacity(),
     });
     return new VectorLayer(options);
-  };
+  }
+
   /**
    * @function cluster
    * @memberOf HsLayerEditorService
@@ -52,13 +59,13 @@ export default function (HsMapService) {
    * @param {ol/Layer} layer
    * @param {number} distance
    */
-  me.cluster = function (newValue, layer, distance) {
+  cluster(newValue, layer, distance) {
     if (!layer.hsOriginalStyle) {
       layer.hsOriginalStyle = layer.getStyle();
     }
     if (newValue == true && !layer.get('declutter')) {
       const styleCache = {};
-      layer.setSource(me.createClusteredSource(layer, distance));
+      layer.setSource(this.createClusteredSource(layer, distance));
       layer.setStyle((feature, resolution) => {
         const size = feature.get('features').length;
         if (size > 1) {
@@ -110,8 +117,9 @@ export default function (HsMapService) {
       });
       layer.setSource(layer.getSource().getSource());
     }
-  };
-  me.createClusteredSource = function (layer, distance) {
+  }
+
+  createClusteredSource(layer, distance) {
     return new Cluster({
       distance: distance,
       source: layer.getSource(),
@@ -131,5 +139,5 @@ export default function (HsMapService) {
       },
     });
   };
-  return me;
+
 }
