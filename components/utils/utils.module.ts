@@ -1,4 +1,4 @@
-import layerUtilsService from './layer-utils.service';
+import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import * as angular from 'angular';
 
@@ -28,4 +28,4 @@ angular
    * @param {object} config - Application configuration
    * @description Service containing varius functions for testing layer functionalities
    */
-  .factory('HsLayerUtilsService', layerUtilsService);
+  .service('HsLayerUtilsService', HsLayerUtilsService);
