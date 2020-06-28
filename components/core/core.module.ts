@@ -11,6 +11,7 @@ import { HsLayoutModule } from '../layout/layout.module';
 import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider } from '../../ajs-upgraded-providers';
 import { HsLegendModule } from '../legend';
 import { HsPrintModule } from '../print';
+import { HsLayerManagerModule } from '../layermanager';
 @NgModule({
   declarations: [
   ],
@@ -19,7 +20,8 @@ import { HsPrintModule } from '../print';
     BrowserModule,
     HsLayoutModule,
     HsLegendModule,
-    HsPrintModule
+    HsPrintModule,
+    HsLayerManagerModule
   ],
   exports: [
   ],

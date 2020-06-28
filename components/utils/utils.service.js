@@ -457,14 +457,6 @@ export class HsUtilsService {
       return this;
     };
 
-    Date.prototype.monthDiff = function (d2) {
-      let months;
-      months = (d2.getFullYear() - this.getFullYear()) * 12;
-      months -= this.getMonth() + 1;
-      months += d2.getMonth();
-      return months <= 0 ? 0 : months;
-    };
-
     String.prototype.hashCode = function () {
       let hash = 0;
       if (this.length == 0) {

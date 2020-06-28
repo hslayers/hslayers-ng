@@ -1,80 +1,80 @@
-/**
- * @param HsLayoutService
- * @param HsLayermanagerService
- * @param $window
- * @param $timeout
- */
-export default function (
-  HsLayoutService,
-  HsLayermanagerService,
-  $window,
-  $timeout
-) {
-  'ngInject';
-  return {
-    template: require('./partials/basemap-gallery.html'),
+import { Component } from '@angular/core';
+import { HsLayoutService } from '../layout/layout.service.js';
+import { HsLayerManagerService } from './layermanager.service.js';
 
-    controller: [
-      '$scope',
-      function ($scope) {
-        $scope.LayerManager = HsLayermanagerService;
-        $scope.changeBaseLayerVisibility =
-          HsLayermanagerService.changeBaseLayerVisibility;
-        $scope.data = HsLayermanagerService.data;
-        $scope.toggleMiniMenu = function (layer) {
-          if (layer.galleryMiniMenu) {
-            layer.galleryMiniMenu = !layer.galleryMiniMenu;
-          } else {
-            layer.galleryMiniMenu = true;
-          }
-        };
-        $scope.toggleBasemap = function (layer) {
-          if (arguments.length > 0) {
-            if (!layer.active) {
-              HsLayermanagerService.changeBaseLayerVisibility(true, layer);
-              $scope.baseLayersExpanded = false;
-            }
-          } else {
-            $scope.baseLayersExpanded = false;
-            HsLayermanagerService.changeBaseLayerVisibility()
-          }
-        };
-        $scope.galleryStyle = function () {
-          if (
-            !HsLayoutService.sidebarRight ||
-            (HsLayoutService.layoutElement.clientWidth <= 767 &&
-              $window.innerWidth <= 767)
-          ) {
-            return {right: '15px'};
-          } else {
-            return {right: HsLayoutService.panelSpaceWidth() + 20 + 'px'};
-          }
-        };
+@Component({
+  selector: 'hs-layermanager-gallery',
+  template: require('./partials/basemap-gallery.html')
+})
+export class HsLayerManagerGalleryComponent {
+  baseLayersExpanded: boolean = false;
+  data: any;
 
-        $scope.fitsInContainer = () => {
-          return (
-            (HsLayermanagerService.data.baselayers.length + 1) * 150 <
-            HsLayoutService.layoutElement.clientWidth -
-              HsLayoutService.panelSpaceWidth() -
-              450
-          );
-        };
-        $scope.setGreyscale = function (layer) {
-          const layerContainer = document.querySelector(
-            '.ol-unselectable > div:first-child'
-          );
-          if (layerContainer.classList.contains('hs-grayscale')) {
-            layerContainer.classList.remove('hs-grayscale');
-            layer.grayscale = false;
-          } else {
-            layerContainer.classList.add('hs-grayscale');
-            layer.grayscale = true;
-          }
-          $timeout(() => {
-            layer.galleryMiniMenu = false;
-          }, 100);
-        };
-      },
-    ],
+  constructor(
+    private HsLayoutService: HsLayoutService,
+    private HsLayerManagerService: HsLayerManagerService,
+    private Window: Window) {
+    this.data = this.HsLayerManagerService.data;
+  }
+
+  changeBaseLayerVisibility(toWhat: boolean, layer) {
+    this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer)
+  }
+
+  toggleMiniMenu(layer) {
+    if (layer.galleryMiniMenu) {
+      layer.galleryMiniMenu = !layer.galleryMiniMenu;
+    } else {
+      layer.galleryMiniMenu = true;
+    }
+  };
+
+  toggleBasemap(layer) {
+    if (arguments.length > 0) {
+      if (!layer.active) {
+        this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
+        this.baseLayersExpanded = false;
+      }
+    } else {
+      this.baseLayersExpanded = false;
+      this.HsLayerManagerService.changeBaseLayerVisibility()
+    }
+  };
+
+  galleryStyle() {
+    if (
+      !this.HsLayoutService.sidebarRight ||
+      (this.HsLayoutService.layoutElement.clientWidth <= 767 &&
+        this.Window.innerWidth <= 767)
+    ) {
+      return { right: '15px' };
+    } else {
+      return { right: this.HsLayoutService.panelSpaceWidth() + 20 + 'px' };
+    }
+  };
+
+  fitsInContainer = () => {
+    return (
+      (this.HsLayerManagerService.data.baselayers.length + 1) * 150 <
+      this.HsLayoutService.layoutElement.clientWidth -
+      this.HsLayoutService.panelSpaceWidth() -
+      450
+    );
+  };
+
+  setGreyscale(layer) {
+    const layerContainer = document.querySelector(
+      '.ol-unselectable > div:first-child'
+    );
+    if (layerContainer.classList.contains('hs-grayscale')) {
+      layerContainer.classList.remove('hs-grayscale');
+      layer.grayscale = false;
+    } else {
+      layerContainer.classList.add('hs-grayscale');
+      layer.grayscale = true;
+    }
+    setTimeout(() => {
+      layer.galleryMiniMenu = false;
+    }, 100);
   };
 }

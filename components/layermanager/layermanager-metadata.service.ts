@@ -1,21 +1,20 @@
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
+import { Injectable } from '@angular/core';
+import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
 
-/**
- * @param HsWmtsGetCapabilitiesService
- * @param HsWfsGetCapabilitiesService
- * @param HsWmsGetCapabilitiesService
- * @param $timeout
- * @param HsLayerUtilsService
- */
-export default function (
-  HsWmtsGetCapabilitiesService,
-  HsWfsGetCapabilitiesService,
-  HsWmsGetCapabilitiesService,
-  $timeout,
-  HsLayerUtilsService
-) {
-  'ngInject';
-  const me = {};
+@Injectable({
+  providedIn: 'any',
+})
+export class HsLayerManagerMetadataService {
+  constructor(
+    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
+    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private HsLayerUtilsService: HsLayerUtilsService
+  ) {
+
+  }
+
   /**
    * @function identifyLayerObject
    * @memberOf HsLayermanagerMetadata.service
@@ -25,7 +24,7 @@ export default function (
    * @description Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
    * It is used as reference for sublayer structure, metadata
    */
-  me.identifyLayerObject = function (layerName, currentLayer) {
+  identifyLayerObject(layerName, currentLayer) {
     if (layerName == currentLayer.Name) {
       return currentLayer;
     } else {
@@ -34,7 +33,7 @@ export default function (
         if (node.Name == layerName) {
           return node;
         } else {
-          const result = me.identifyLayerObject(layerName, node);
+          const result = this.identifyLayerObject(layerName, node);
           if (result) {
             return result;
           }
@@ -50,15 +49,13 @@ export default function (
    * @param {Ol.layer} layer Selected layer
    * @description Async adds hasSublayers parameter if true
    */
-  me.fillMetadata = async function (layer) {
-    await me.queryMetadata(layer);
+  async fillMetadata(layer) {
+    await this.queryMetadata(layer);
     const subLayers = layer.get('Layer');
-    if (angular.isDefined(subLayers) && subLayers.length > 0) {
+    if (subLayers != undefined && subLayers.length > 0) {
       if (!layer.hasSublayers) {
-        $timeout(() => {
           layer.hasSublayers = true;
-          //ADD config values
-        }, 0);
+          //ADD config values       
       }
     }
   };
@@ -68,14 +65,14 @@ export default function (
    * @param {Ol.layer} layer Selected layer
    * @description Callback function, adds getCapabilities response metadata to layer object
    */
-  me.queryMetadata = async function (layer) {
-    const url = HsLayerUtilsService.getURL(layer);
+  async queryMetadata(layer) {
+    const url = this.HsLayerUtilsService.getURL(layer);
     const metadata = {
-      metainfo: {'OnlineResource': layer.get('Metadata')},
+      metainfo: { 'OnlineResource': layer.get('Metadata') },
     };
     //WMS
-    if (HsLayerUtilsService.isLayerWMS(layer)) {
-      const capabilities = HsWmsGetCapabilitiesService.requestGetCapabilities(
+    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      const capabilities = this.HsWmsGetCapabilitiesService.requestGetCapabilities(
         url
       )
         .then((capabilities_xml) => {
@@ -91,7 +88,7 @@ export default function (
             layer_name = layer_name.split(',');
             //loop over layers from layer.LAYERS
             for (let i = 0; i < layer_name.length; i++) {
-              layerObject[i] = me.identifyLayerObject(
+              layerObject[i] = this.identifyLayerObject(
                 layer_name[i],
                 caps.Capability.Layer
               );
@@ -100,7 +97,7 @@ export default function (
                   layerObject[i].Style[0].LegendURL[0].OnlineResource
                 );
               }
-              if (angular.isDefined(layerObject[i].Layer)) {
+              if (layerObject[i].Layer != undefined) {
                 //loop over sublayers of layer from layer.LAYERS
                 for (let j = 0; j < layerObject[i].Layer.length; j++) {
                   layers.push(layerObject[i].Layer[j]); //merge sublayers
@@ -115,7 +112,7 @@ export default function (
               '0': caps.Service,
             });
           } else {
-            layerObject[0] = me.identifyLayerObject(
+            layerObject[0] = this.identifyLayerObject(
               layer_name,
               caps.Capability.Layer
             );
@@ -138,7 +135,7 @@ export default function (
             layer.set('MetadataURL', metadata);
             return layer;
           }
-          if (angular.isUndefined(layerObject[0].MetadataURL)) {
+          if (layerObject[0].MetadataURL == undefined) {
             layer.set('MetadataURL', {
               '0': caps.Service,
             });
@@ -153,8 +150,8 @@ export default function (
       return capabilities;
     }
     //WMTS
-    else if (HsLayerUtilsService.isLayerWMTS(layer)) {
-      const capabilities = HsWmtsGetCapabilitiesService.requestGetCapabilities(
+    else if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
+      const capabilities = this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
         url
       )
         .then((capabilities_xml) => {
@@ -181,9 +178,9 @@ export default function (
       return capabilities;
     }
     //WFS and vector
-    else if (HsLayerUtilsService.isLayerVectorLayer(layer)) {
+    else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
       if (url) {
-        const capabilities = HsWfsGetCapabilitiesService.requestGetCapabilities(
+        const capabilities = this.HsWfsGetCapabilitiesService.requestGetCapabilities(
           url
         )
           .then((capabilities_xml) => {
@@ -212,5 +209,4 @@ export default function (
     }
   };
 
-  return me;
 }

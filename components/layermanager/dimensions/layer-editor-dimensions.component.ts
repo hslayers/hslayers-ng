@@ -1,74 +1,76 @@
-import {ImageWMS, TileWMS, XYZ} from 'ol/source';
-export default {
-  template: require('./layer-editor-dimensions.html'),
-  bindings: {
-    olLayer: '<',
-  },
-  controller: function (
-    $scope,
-    HsDimensionService,
-    HsUtilsService,
-    HsMapService
-  ) {
-    'ngInject';
-    const vm = this;
-    angular.extend(vm, {
-      dimensionType: HsDimensionService.dimensionType,
+import { ImageWMS, TileWMS, XYZ } from 'ol/source';
+import { Component, Input } from '@angular/core';
+import { HsMapService } from '../../map/map.service.js';
+import { HsUtilsService } from '../../utils/utils.service';
+@Component({
+  selector: 'hs-layer-editor-dimensions',
+  template: require('./layer-editor-dimensions.html')
+})
+export class HsLayerEditorDimensionsComponent {
+  @Input('ol-layer') olLayer: any;
 
-      /**
-       * @function isLayerWithDimensions
-       * @memberOf hs.layer-editor-dimensions
-       * @description Test if layer has dimensions
-       * @returns {boolean} Returns if layers has any dimensions
-       */
-      isLayerWithDimensions() {
-        const layer = vm.olLayer;
-        if (angular.isUndefined(layer)) {
-          return false;
-        }
-        if (angular.isUndefined(layer.get('dimensions'))) {
-          return false;
-        }
-        return Object.keys(layer.get('dimensions')).length > 0;
-      },
+  constructor(
+    private HsDimensionService: HsDimensionService,
+    private HsUtilsService: HsUtilsService,
+    private HsMapService: HsMapService
+  ) { }
 
-      dimensionChanged(dimension) {
-        //Dimension can be linked to multiple layers
-        HsMapService.map.getLayers().forEach((layer) => {
-          const iteratedDimensions = layer.get('dimensions');
-          if (
-            iteratedDimensions &&
-            Object.keys(iteratedDimensions).filter(
-              (dimensionIterator) =>
-                iteratedDimensions[dimensionIterator] == dimension
-            ).length > 0 //Dimension also linked to this layer?
-          ) {
-            const src = layer.getSource();
-            if (
-              HsUtilsService.instOf(src, TileWMS) ||
-              HsUtilsService.instOf(src, ImageWMS)
-            ) {
-              const params = src.getParams();
-              params[dimension.name] = dimension.value;
-              src.updateParams(params);
-            } else if (HsUtilsService.instOf(src, XYZ)) {
-              src.refresh();
-            }
-            $scope.$emit('layermanager.dimension_changed', {
-              layer: layer,
-              dimension,
-            });
-          }
+  dimensionType(dimension) {
+    return this.HsDimensionService.dimensionType(dimension)
+  }
+
+  /**
+   * @function isLayerWithDimensions
+   * @memberOf hs.layer-editor-dimensions
+   * @description Test if layer has dimensions
+   * @returns {boolean} Returns if layers has any dimensions
+   */
+  isLayerWithDimensions() {
+    const layer = this.olLayer;
+    if (layer == undefined) {
+      return false;
+    }
+    if (layer.get('dimensions') == undefined) {
+      return false;
+    }
+    return Object.keys(layer.get('dimensions')).length > 0;
+  }
+
+  dimensionChanged(dimension) {
+    //Dimension can be linked to multiple layers
+    this.HsMapService.map.getLayers().forEach((layer) => {
+      const iteratedDimensions = layer.get('dimensions');
+      if (
+        iteratedDimensions &&
+        Object.keys(iteratedDimensions).filter(
+          (dimensionIterator) =>
+            iteratedDimensions[dimensionIterator] == dimension
+        ).length > 0 //Dimension also linked to this layer?
+      ) {
+        const src = layer.getSource();
+        if (
+          this.HsUtilsService.instOf(src, TileWMS) ||
+          this.HsUtilsService.instOf(src, ImageWMS)
+        ) {
+          const params = src.getParams();
+          params[dimension.name] = dimension.value;
+          src.updateParams(params);
+        } else if (this.HsUtilsService.instOf(src, XYZ)) {
+          src.refresh();
+        }
+        $scope.$emit('layermanager.dimension_changed', {
+          layer: layer,
+          dimension,
         });
-      },
-
-      dimensions() {
-        const layer = vm.olLayer;
-        if (angular.isUndefined(layer)) {
-          return [];
-        }
-        return layer.get('dimensions');
-      },
+      }
     });
-  },
+  }
+
+  dimensions() {
+    const layer = this.olLayer;
+    if (layer == undefined) {
+      return [];
+    }
+    return layer.get('dimensions');
+  }
 };

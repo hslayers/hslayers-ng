@@ -7,6 +7,12 @@ import { METERS_PER_UNIT } from 'ol/proj';
 import { Tile } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { Injectable } from '@angular/core';
+import { HsMapService } from '../map/map.service.js';
+import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
+import { HsLayerManagerWmstService } from './layermanager-wmst.service';
+import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
+import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
+import { HsConfig } from '../../config.service';
 
 @Injectable({
   providedIn: 'any',
@@ -87,9 +93,9 @@ export class HsLayerManagerService {
     private HsUtilsService: HsUtilsService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsConfig: HsConfig,
-    private HsLayermanagerWmstService: HsLayermanagerWmstService,
+    private HsLayermanagerWmstService: HsLayerManagerWmstService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsLayerManagerMetadata: HsLayerManagerMetadata) {
+    private HsLayerManagerMetadata: HsLayerManagerMetadataService) {
     HsMapService.loaded().then(this.init);
   }
 

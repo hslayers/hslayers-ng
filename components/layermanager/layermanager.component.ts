@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
 import { HsMapService } from '../map/map.service.js';
+import { HsCoreService } from '../core/core.service.js';
+import { HsLayerManagerService } from './layermanager.service.js';
+import { HsLayerManagerWmstService } from './layermanager-wmst.service.js';
+import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service.js';
+import { HsEventBusService } from '../core/event-bus.service.js';
+import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
+import { HsLayoutService } from '../layout/layout.service.js';
+
 @Component({
   selector: 'hs-layer-manager',
   template: require('./partials/layermanager.html')
@@ -62,12 +70,12 @@ export class HsLayerManagerComponent {
   ];
 
 
-  constructor(private HsCore: HsCore,
+  constructor(private HsCore: HsCoreService,
     private HsUtilsService: HsUtilsService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsMapService: HsMapService,
     private HsLayerManagerService: HsLayerManagerService,
-    private HsLayermanagerWmstService: HsLayermanagerWmstService,
+    private HsLayermanagerWmstService: HsLayerManagerWmstService,
     private HsLayoutService: HsLayoutService,
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerSynchronizerService: HsLayerSynchronizerService,
@@ -78,7 +86,7 @@ export class HsLayerManagerComponent {
 
     $scope.$on('layer.removed', (event, layer) => {
       if (
-        angular.isObject(HsLayerManagerService.currentLayer) &&
+        typeof this.HsLayerManagerService.currentLayer == 'object' &&
         this.HsLayerManagerService.currentLayer.layer == layer
       ) {
         const layerPanel = this.HsLayoutService.contentWrapper.querySelector(

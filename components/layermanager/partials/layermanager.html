@@ -95,8 +95,10 @@
                     <span class="glyphicon" ng-class="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
                 </li>
                 <div ng-show="value.visible">
-                    <li hs.layermanager.folder_directive ng-show='value.sub_folders.length>0'></li>
-                    <li hs.layermanager.layerlist_directive></li>
+                    <li ng-show='value.sub_folders.length>0'>
+                        <hs-layer-manager-folder></hs-layer-manager-folder>
+                    </li>
+                    <li><hs-layermanager-layer-list></hs-layermanager-layer-list></li>
                 </div>
             </ul>
             <ul class="list-group hs-lm-layerlist">
@@ -106,7 +108,7 @@
                     <span translate class="align-middle">Other </span>
                     <span class="glyphicon" ng-class="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
                 </li>
-                <div ng-init="layerlistVisible = true" ng-show="layerlistVisible" hs.layermanager.layerlist_directive></div>
+                <li><hs-layermanager-layer-list></hs-layermanager-layer-list></li>
             </ul>
             <!--
         <div class="btn-group" data-toggle="buttons">

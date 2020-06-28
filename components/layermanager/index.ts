@@ -10,7 +10,7 @@ import '../styles/styles.module';
 import '../utils/utils.module';
 import 'angular-drag-and-drop-lists';
 import '../layout/';
-import {HsFolderComponent as HsLayerManagerFolderComponent} from './layermanager-folder.component';
+import {HsLayerManagerFolderComponent} from './layermanager-folder.component';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
@@ -180,8 +180,7 @@ export const downgradedLayerManagerModule = downgrade(HsLayerManagerModule);
     )
     .service('HsLayerEditorSublayerService', downgradeInjectable(HsLayerEditorSublayerService))
     .component('hs.layerEditorDimensions', downgradeComponent({ component:HsLayerEditorDimensionsComponent}));
-  
-
+ 
 angular
   .module('hs.layermanager', [downgradedLayerManagerModule]);
 
