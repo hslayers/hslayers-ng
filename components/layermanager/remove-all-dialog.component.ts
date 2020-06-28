@@ -1,12 +1,12 @@
-/**
- * @param HsConfig
- */
-export default function (HsConfig) {
-  'ngInject';
-  return {
-    template: require('./partials/dialog_removeall.html'),
-    link: function (scope, element, attrs) {
-      scope.removeAllModalVisible = true;
-    },
-  };
+import { Component } from '@angular/core';
+@Component({
+  selector: 'hs-layermanager-remove-all-dialog',
+  template: require('./partials/dialog_removeall.html')
+})
+export class HsLayerManagerRemoveAllDialogComponent {
+  removeAllModalVisible:boolean = true;
+
+  constructor() {
+  
+  }
 }
