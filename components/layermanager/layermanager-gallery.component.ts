@@ -27,7 +27,11 @@ export class HsLayerManagerGalleryComponent {
     } else {
       layer.galleryMiniMenu = true;
     }
-  };
+  }
+
+  fitting(a){
+    return a.filter((element) => this.fitsInContainer())
+  }
 
   toggleBasemap(layer) {
     if (arguments.length > 0) {
