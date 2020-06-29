@@ -8,12 +8,14 @@ import { Tile } from 'ol/layer';
 import { TileWMS } from 'ol/source';
 import { Injectable } from '@angular/core';
 import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
+import { HsUtilsService } from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsLayerManagerWmstService } from './layermanager-wmst.service';
 import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
 import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
 import { HsConfig } from '../../config.service';
 import { HsEventBusService } from '../core/event-bus.service';
+import { HsLayoutService } from '../layout/layout.service';
 
 @Injectable({
   providedIn: 'any',
@@ -96,8 +98,9 @@ export class HsLayerManagerService {
     private HsLayermanagerWmstService: HsLayerManagerWmstService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsLayerManagerMetadata: HsLayerManagerMetadataService,
-    private HsEventBusService: HsEventBusService,) {
-    HsMapService.loaded().then(this.init);
+    private HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService) {
+    HsMapService.loaded().then(() => this.init());
   }
 
   /**
@@ -142,7 +145,7 @@ export class HsLayerManagerService {
      * @type {object}
      * @description Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
      */
-    const new_layer:any = {
+    const new_layer: any = {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
       layer: layer,
       grayed: this.isLayerInResolutionInterval(layer),
@@ -154,6 +157,7 @@ export class HsLayerManagerService {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
     };
+    new_layer.trackBy = layer.ol_uid + ' ' + new_layer.position;
 
     layer.on('propertychange', (event) => {
       new_layer.title = this.HsLayerUtilsService.getLayerTitle(layer);
@@ -247,7 +251,7 @@ export class HsLayerManagerService {
    */
   getLayerByTitle(title) {
     let tmp;
-    for(let layer of this.data.layers) {
+    for (let layer of this.data.layers) {
       if (layer.title == title) {
         tmp = layer;
       }
@@ -286,7 +290,7 @@ export class HsLayerManagerService {
       let curfolder = this.data.folders;
       for (let i = 0; i < parts.length; i++) {
         let found = null;
-        for(let folder of curfolder.sub_folders){
+        for (let folder of curfolder.sub_folders) {
           if (folder.name == parts[i]) {
             found = folder;
           }
@@ -330,12 +334,12 @@ export class HsLayerManagerService {
    * @description Remove layer from layer folder structure a clean empty folder
    */
   cleanFolders(lyr) {
-    if (lyr.get('path')!=undefined && lyr.get('path') !== 'undefined') {
+    if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
       const path = lyr.get('path');
       const parts = path.split('/');
       let curfolder = this.data.folders;
       for (var i = 0; i < parts.length; i++) {
-        for(let folder of curfolder.sub_folders){
+        for (let folder of curfolder.sub_folders) {
           if (folder.name == parts[i]) {
             curfolder = folder;
           }
@@ -348,7 +352,7 @@ export class HsLayerManagerService {
           var newfolder = this.data.folders;
           if (i > 1) {
             for (var j = 0; j < i - 1; j++) {
-              for(let folder of newfolder.sub_folders) {
+              for (let folder of newfolder.sub_folders) {
                 if (folder.name == parts[j]) {
                   newfolder = folder;
                 }
@@ -409,10 +413,10 @@ export class HsLayerManagerService {
   boxLayersInit() {
     if (this.HsConfig.box_layers != undefined) {
       this.data.box_layers = this.HsConfig.box_layers;
-      for(let box of this.data.box_layers) {
+      for (let box of this.data.box_layers) {
         let visible = false;
         let baseVisible = false;
-        for(let layer of box.get('layers')) {
+        for (let layer of box.get('layers')) {
           if (layer.get('visible') == true && layer.get('base') == true) {
             baseVisible = true;
           } else if (layer.get('visible') == true) {
@@ -436,7 +440,7 @@ export class HsLayerManagerService {
     layer.visible = visibility;
     //Set the other layers in the same folder invisible
     if (visibility && layer.layer.get('exclusive') == true) {
-      for(let other_layer of this.data.layers){ 
+      for (let other_layer of this.data.layers) {
         if (
           other_layer.layer.get('path') == layer.layer.get('path') &&
           other_layer != layer
@@ -549,7 +553,7 @@ export class HsLayerManagerService {
    * @memberOf HsLayermanagerService
    */
   updateLayerOrder() {
-    for(let my_layer of this.data.layers){
+    for (let my_layer of this.data.layers) {
       my_layer.layer.set('position', this.getMyLayerPosition(my_layer.layer));
       my_layer.position = my_layer.layer.get('position');
     };
@@ -615,7 +619,7 @@ export class HsLayerManagerService {
     theme.set('active', switchOn);
     let baseSwitched = false;
     theme.setVisible(switchOn);
-    for(let layer of theme.get('layers')){
+    for (let layer of theme.get('layers')) {
       if (layer.get('base') == true && !baseSwitched) {
         this.changeBaseLayerVisibility();
         baseSwitched = true;
@@ -732,6 +736,94 @@ export class HsLayerManagerService {
   };
 
 
+   /**
+   * @function toggleLayerEditor
+   * @memberOf hs.layermanager.controller
+   * @description Toggles Additional information panel for current layer.
+   * @param {Ol.layer} layer Selected layer (HsLayerManagerService.currentLayer)
+   * * @param {Ol.layer} toToggle Part of layer editor to be toggled
+   * * @param {Ol.layer} control Part of layer editor to be controled for state.
+   * Determines whether only toggled part or whole layereditor would be closed
+   * @param toToggle
+   * @param control
+   */
+  toggleLayerEditor(layer, toToggle, control) {
+    if (toToggle == 'sublayers' && layer.layer.hasSublayers != true) {
+      return;
+    }
+    if (this.currentLayer != layer) {
+      this.toggleCurrentLayer(layer);
+      layer[toToggle] = true;
+    } else {
+      layer[toToggle] = !layer[toToggle];
+      if (!layer[control]) {
+        this.toggleCurrentLayer(layer);
+      }
+    }
+  };
+
+   /**
+   * @function toggleCurrentLayer
+   * @memberOf hs.layermanager.controller
+   * @description Opens detailed panel for manipulating selected layer and viewing metadata
+   * @param {object} layer Selected layer to edit or view - Wrapped layer object
+   * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
+   */
+  toggleCurrentLayer(layer) {
+    if (this.currentLayer == layer) {
+      layer.sublayers = false;
+      layer.settings = false;
+      this.currentLayer = null;
+
+      //TODO
+      //this.HsLayerEditorSublayerService.checkedSubLayers = {};
+      //this.HsLayerEditorSublayerService.withChildren = {};
+    } else {
+      this.setCurrentLayer(layer);
+      return false;
+    }
+  };
+
+  setCurrentLayer(layer) {
+    this.currentLayer = layer;
+    if (!layer.layer.checkedSubLayers) {
+      layer.layer.checkedSubLayers = {};
+      layer.layer.withChildren = {};
+    }
+    //TODO
+    // this.HsLayerEditorSublayerService.checkedSubLayers =
+    //   layer.layer.checkedSubLayers;
+    // this.HsLayerEditorSublayerService.withChildren = layer.layer.withChildren;
+
+    if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
+      this.currentLayer.time = new Date(
+        layer.layer.getSource().getParams().TIME
+      );
+      this.currentLayer.date_increment = this.currentLayer.time.getTime();
+    }
+    const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
+      '.hs-layerpanel'
+    );
+    const layerNode = document.getElementById(layer.idString());
+    this.HsUtilsService.insertAfter(layerPanel, layerNode);
+    return false;
+  };
+
+  /**
+   * @function hasCopyright
+   * @memberOf hs.layermanager.controller
+   * @description Determines if layer has metadata information avaliable *
+   * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+   */
+  hasMetadata(layer) {
+    if (!layer) {
+      return;
+    } else {
+      return layer.layer.get('MetadataURL') ? true : false;
+    }
+  }
+
+
   /**
    * (PRIVATE)
    *
@@ -762,7 +854,7 @@ export class HsLayerManagerService {
             somethingChanged = true;
           }
           if (somethingChanged) {
-          //  $timeout(() => { }, 0);
+            //  $timeout(() => { }, 0);
           }
         }
         this.timer = null;
