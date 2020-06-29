@@ -238,13 +238,6 @@ export class HsLayerManagerComponent {
     }
  */  };
 
-  hasMetadata(layer) {
-    if (!this.HsLayerManagerService.currentLayer) {
-      return;
-    } else {
-      return layer.layer.get('MetadataURL') ? true : false;
-    }
-  };
   /**
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
