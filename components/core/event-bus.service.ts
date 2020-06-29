@@ -17,6 +17,7 @@ export class HsEventBusService {
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<any> = new Subject();
   layerTimeChanges: Subject<any> = new Subject();
+  layermanagerDimensionChanges: Subject<any> = new Subject();
 
   constructor() {
 
