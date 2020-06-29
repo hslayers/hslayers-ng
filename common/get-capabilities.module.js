@@ -1,8 +1,9 @@
-import arcgisGetCapabilitiesService from './arcgis/get-capabilities.service';
-import dimensionService from './dimension.service';
-import wfsGetCapabilitiesService from './wfs/get-capabilities.service';
-import wmsGetCapabilitiesService from './wms/get-capabilities.service';
-import wmtsGetCapabilities from './wmts/get-capabilities.service';
+/* eslint-disable angular/no-service-method */
+import HsArcgisGetCapabilitiesService from './arcgis/get-capabilities.service';
+import {HsDimensionService} from './dimension.service';
+import {HsWfsGetCapabilitiesService} from './wfs/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from './wms/get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from './wmts/get-capabilities.service';
 
 /**
  * @namespace hs.common
@@ -17,7 +18,7 @@ angular
    * @memberOf hs.getCapabilities
    * @description Service for GetCapabilities requests to WFS
    */
-  .factory('HsWfsGetCapabilitiesService', wfsGetCapabilitiesService)
+  .service('HsWfsGetCapabilitiesService', HsWfsGetCapabilitiesService)
 
   /**
    * @class HsWmsGetCapabilitiesService
@@ -25,7 +26,7 @@ angular
    * @memberOf hs.getCapabilities
    * @description Service for GetCapabilities requests to WMS
    */
-  .factory('HsWmsGetCapabilitiesService', wmsGetCapabilitiesService)
+  .service('HsWmsGetCapabilitiesService', HsWmsGetCapabilitiesService)
 
   /**
    * @class HsArcgisGetCapabilitiesService
@@ -33,7 +34,7 @@ angular
    * @memberOf hs.getCapabilities
    * @description Service for GetCapabilities requests to WMS
    */
-  .factory('HsArcgisGetCapabilitiesService', arcgisGetCapabilitiesService)
+  .factory('HsArcgisGetCapabilitiesService', HsArcgisGetCapabilitiesService)
 
   /**
    * @class HsDimensionService
@@ -41,7 +42,7 @@ angular
    * @memberOf hs.getCapabilities
    * @description Service for filling dimension values such as time
    */
-  .factory('HsDimensionService', dimensionService)
+  .service('HsDimensionService', HsDimensionService)
 
   /**
    * @name HsWmtsGetCapabilitiesService
@@ -49,4 +50,4 @@ angular
    * @memberOf hs.getCapabilities
    * @description Service for GetCapabilities requests to WMTS
    */
-  .factory('HsWmtsGetCapabilitiesService', wmtsGetCapabilities);
+  .service('HsWmtsGetCapabilitiesService', HsWmtsGetCapabilitiesService);

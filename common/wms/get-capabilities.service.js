@@ -1,4 +1,3 @@
-import '../../components/utils/utils.module';
 import {Attribution} from 'ol/control';
 import {Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
@@ -11,9 +10,11 @@ import {getPreferedFormat} from '../format-utils';
  * @param HsUtilsService
  * @param $rootScope
  */
-export default function ($http, HsMapService, HsUtilsService, $rootScope) {
-  'ngInject';
-  const me = this;
+export class HsWmsGetCapabilitiesService {
+  constructor($http, HsMapService, HsUtilsService, $rootScope) {
+    'ngInject';
+    Object.assign(this, {$http, HsMapService, HsUtilsService, $rootScope});
+  }
 
   /**
    * Get WMS service location without parameters from url string
@@ -23,13 +24,13 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {string} str Url string to parse
    * @returns {string} WMS service Url
    */
-  this.getPathFromUrl = function (str) {
+  getPathFromUrl(str) {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
       return str;
     }
-  };
+  }
 
   /**
    * TODO: Probably the same as utils.paramsToURL
@@ -40,7 +41,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {object} obj Object with stored WNS service parameters
    * @returns {string} Parameter string or empty string if no object given
    */
-  this.params2String = function (obj) {
+  params2String(obj) {
     return obj
       ? Object.keys(obj)
           .map((key) => {
@@ -60,7 +61,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
           })
           .join('&')
       : '';
-  };
+  }
 
   /**
    * Parse added service url and sends GetCapabalities request to WMS service
@@ -70,9 +71,9 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {string} service_url Raw Url localization of service
    * @returns {Promise} Promise object - Response to GetCapabalities request
    */
-  this.requestGetCapabilities = function (service_url) {
+  requestGetCapabilities(service_url) {
     service_url = service_url.replace('&amp;', '&');
-    const params = HsUtilsService.getParamsFromUrl(service_url);
+    const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (
       angular.isUndefined(params.request) &&
@@ -96,21 +97,21 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
     ) {
       params.version = '1.3.0';
     }
-    let url = [path, me.params2String(params)].join('?');
+    let url = [path, this.params2String(params)].join('?');
 
-    url = HsUtilsService.proxify(url);
+    url = this.HsUtilsService.proxify(url);
     return new Promise((resolve, reject) => {
-      $http
+      this.$http
         .get(url)
         .then((r) => {
-          $rootScope.$broadcast('ows.capabilities_received', r);
+          this.$rootScope.$broadcast('ows.capabilities_received', r);
           resolve(r.data);
         })
         .catch((e) => {
           reject(e);
         });
     });
-  };
+  }
 
   /**
    * Load all layers of selected service to the map
@@ -120,7 +121,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {string} capabilities_xml Xml response of GetCapabilities of selected service
    * @returns {Ol.collection} List of layers from service
    */
-  this.service2layers = function (capabilities_xml) {
+  service2layers(capabilities_xml) {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
@@ -187,12 +188,12 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
           MetadataURL: layer.MetadataURL,
           BoundingBox: layer.BoundingBox,
         });
-        HsMapService.proxifyLayerLoader(new_layer, true);
+        this.HsMapService.proxifyLayerLoader(new_layer, true);
         tmp.push(new_layer);
       });
     });
     return tmp;
-  };
+  }
 
   /**
    * Test if current map projection is in supported projection list
@@ -202,17 +203,19 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {Array} srss List of supported projections
    * @returns {boolean} True if map projection is in list, otherwise false
    */
-  this.currentProjectionSupported = function (srss) {
+  currentProjectionSupported(srss) {
     let found = false;
     angular.forEach(srss, (val) => {
       if (
-        HsMapService.map.getView().getProjection().getCode().toUpperCase() ==
-        val.toUpperCase()
+        this.HsMapService.map
+          .getView()
+          .getProjection()
+          .getCode()
+          .toUpperCase() == val.toUpperCase()
       ) {
         found = true;
       }
     });
     return found;
-  };
-  return me;
+  }
 }

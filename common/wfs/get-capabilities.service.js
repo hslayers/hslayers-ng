@@ -4,9 +4,16 @@
  * @param HsUtilsService
  * @param $rootScope
  */
-export default function ($http, HsMapService, HsUtilsService, $rootScope) {
-  'ngInject';
-  const me = this;
+export class HsWfsGetCapabilitiesService {
+  constructor($http, HsMapService, HsUtilsService, $rootScope) {
+    'ngInject';
+    Object.assign(this, {
+      $http,
+      HsMapService,
+      HsUtilsService,
+      $rootScope,
+    });
+  }
 
   /**
    * Get WFS service location without parameters from url string
@@ -16,13 +23,13 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {string} str Url string to parse
    * @returns {string} WFS service Url without params
    */
-  this.getPathFromUrl = function (str) {
+  getPathFromUrl(str) {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
       return str;
     }
-  };
+  }
 
   /**
    * TODO: Probably the same as utils.paramsToURL
@@ -33,27 +40,27 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {object} obj Object with stored WFS service parameters
    * @returns {string} Parameter string or empty string if no object given
    */
-  this.params2String = function (obj) {
+  params2String(obj) {
     return obj
       ? Object.keys(obj)
-          .map((key) => {
-            const val = obj[key];
+        .map((key) => {
+          const val = obj[key];
 
-            if (angular.isArray(val)) {
-              return val
-                .map((val2) => {
-                  return (
-                    encodeURIComponent(key) + '=' + encodeURIComponent(val2)
-                  );
-                })
-                .join('&');
-            }
+          if (angular.isArray(val)) {
+            return val
+              .map((val2) => {
+                return (
+                  encodeURIComponent(key) + '=' + encodeURIComponent(val2)
+                );
+              })
+              .join('&');
+          }
 
-            return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-          })
-          .join('&')
+          return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+        })
+        .join('&')
       : '';
-  };
+  }
 
   /**
    * Parse added service url and sends request GetCapabalities to WFS service
@@ -63,10 +70,10 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {string} service_url Raw Url localization of service
    * @returns {Promise} Promise object -  Response to GetCapabalities request
    */
-  this.requestGetCapabilities = function (service_url) {
+  requestGetCapabilities(service_url) {
     service_url = service_url.replace('&amp;', '&');
-    me.service_url = service_url;
-    const params = HsUtilsService.getParamsFromUrl(service_url);
+    this.service_url = service_url;
+    const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (
       angular.isUndefined(params.request) &&
@@ -90,15 +97,15 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
     ) {
       params.version = '1.1.0';
     }
-    let url = [path, me.params2String(params)].join('?');
+    let url = [path, this.params2String(params)].join('?');
 
-    url = HsUtilsService.proxify(url);
-    const promise = $http.get(url);
+    url = this.HsUtilsService.proxify(url);
+    const promise = this.$http.get(url);
     promise.then((r) => {
-      $rootScope.$broadcast('ows_wfs.capabilities_received', r);
+      this.$rootScope.$broadcast('ows_wfs.capabilities_received', r);
     });
     return promise;
-  };
+  }
 
   /**
    * Test if current map projection is in supported projection list
@@ -108,14 +115,14 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {Array} srss List of supported projections
    * @returns {boolean} True if map projection is in list, otherwise false
    */
-  this.currentProjectionSupported = function (srss) {
+  currentProjectionSupported(srss) {
     let found = false;
     angular.forEach(srss, (val) => {
       if (
         val
           .toUpperCase()
           .indexOf(
-            HsMapService.map
+            this.HsMapService.map
               .getView()
               .getProjection()
               .getCode()
@@ -127,7 +134,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
       }
     });
     return found;
-  };
+  }
 
   /**
    * (DEPRECATED ?)
@@ -137,7 +144,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @param {} url
    * @param {} use_proxy
    */
-  this.getUrl = function (url, use_proxy) {
+  getUrl(url, use_proxy) {
     if (typeof use_proxy == 'undefined' || !use_proxy) {
       return url;
     } else {
@@ -147,6 +154,5 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
         '&owsService=WMS'
       );
     }
-  };
-  return me;
+  }
 }

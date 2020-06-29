@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
 import { HsMapService } from '../map/map.service.js';
 import { HsLayerUtilsService } from '../utils/utils.service';
+import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js'
 
 @Injectable({
   providedIn: 'any',
@@ -13,7 +14,7 @@ export class HsLayerEditorService {
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService) {}
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService) { }
 
   /**
    * @function zoomToLayer

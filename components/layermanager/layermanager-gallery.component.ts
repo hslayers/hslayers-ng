@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HsLayoutService } from '../layout/layout.service.js';
-import { HsLayerManagerService } from './layermanager.service.js';
+import { HsLayerManagerService } from './layermanager.service';
 
 @Component({
   selector: 'hs-layermanager-gallery',

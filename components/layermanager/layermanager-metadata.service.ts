@@ -1,6 +1,9 @@
 import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
 import { Injectable } from '@angular/core';
-import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/utils.service';
+import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js';
+import { HsWfsGetCapabilitiesService } from '../../common/wfs/get-capabilities.service.js';
+import { HsWmtsGetCapabilitiesService } from '../../common/wmts/get-capabilities.service.js';
 
 @Injectable({
   providedIn: 'any',

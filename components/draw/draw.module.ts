@@ -6,7 +6,7 @@ import * as angular from "angular";
 import drawController from './draw.controller';
 import drawDirective from './draw.directive';
 import drawLayerMetadataComponent from './draw-layer-metadata.component';
-import drawService from './draw.service';
+import {HsDrawService} from './draw.service';
 import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 
 /**
@@ -16,7 +16,7 @@ import drawShapeToolbarComponent from './draw-shape-toolbar.component';
 
 angular
   .module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
-  .factory('HsDrawService', drawService)
+  .service('HsDrawService', HsDrawService)
 
   /**
    * @memberof hs.draw

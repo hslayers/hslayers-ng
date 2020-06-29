@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { HsMapService } from '../map/map.service.js';
-import { HsCoreService } from '../core/core.service.js';
-import { HsLayerManagerService } from './layermanager.service.js';
-import { HsLayerManagerWmstService } from './layermanager-wmst.service.js';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service.js';
-import { HsEventBusService } from '../core/event-bus.service.js';
+import { HsMapService } from '../map/map.service';
+import { HsCoreService } from '../core/core.service';
+import { HsLayerManagerService } from './layermanager.service';
+import { HsLayerManagerWmstService } from './layermanager-wmst.service';
+import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
+import { HsEventBusService } from '../core/event-bus.service';
 import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
 import { HsLayoutService } from '../layout/layout.service.js';
+import { HsLayerSynchronizerService } from '../save-map/layer-synchronizer.service.js';
 
 @Component({
   selector: 'hs-layer-manager',
