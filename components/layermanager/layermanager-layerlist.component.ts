@@ -5,6 +5,7 @@ import { HsConfig } from '../../config.service';
 import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
 import { HsMapService } from '../map/map.service.js';
 import { HsLayoutService } from '../layout/layout.service.js';
+import { HsEventBusService } from '../core/event-bus.service';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -27,8 +28,11 @@ export class HsLayerListComponent {
     private HsMapService: HsMapService, 
     private HsUtilsService: HsUtilsService,
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayoutService: HsLayoutService) {
-    scope.$on('layermanager.updated', this.sortLayersByPosition);
+    private HsLayoutService: HsLayoutService,
+    private HsEventBusService: HsEventBusService,) {
+    this.HsEventBusService.layerManagerUpdates.subscribe(() => {
+      this.sortLayersByPosition();
+    })
   }
 
   changeSublayerVisibilityState(layer, state) {
@@ -239,7 +243,7 @@ export class HsLayerListComponent {
     setTimeout((_) => {
       layerNode = document.getElementById(layerDesc.idString());
       this.HsUtilsService.insertAfter(layerPanel, layerNode);
-      $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
+      this.HsEventBusService.layerManagerUpdates.next();
     }, 300);
   };
 };

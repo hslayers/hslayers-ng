@@ -13,6 +13,7 @@ import { HsLayerManagerWmstService } from './layermanager-wmst.service';
 import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
 import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
 import { HsConfig } from '../../config.service';
+import { HsEventBusService } from '../core/event-bus.service';
 
 @Injectable({
   providedIn: 'any',
@@ -80,13 +81,12 @@ export class HsLayerManagerService {
      * @description Store if baselayers are visible (more precisely one of baselayers)
      */
     baselayersVisible: true
-
-
   };
 
   //Property for pointer to main map object
   map: any;
   timer: any;
+  currentLayer: any;
 
   constructor(
     private HsMapService: HsMapService,
@@ -95,7 +95,8 @@ export class HsLayerManagerService {
     private HsConfig: HsConfig,
     private HsLayermanagerWmstService: HsLayerManagerWmstService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsLayerManagerMetadata: HsLayerManagerMetadataService) {
+    private HsLayerManagerMetadata: HsLayerManagerMetadataService,
+    private HsEventBusService: HsEventBusService,) {
     HsMapService.loaded().then(this.init);
   }
 
@@ -179,9 +180,9 @@ export class HsLayerManagerService {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
     this.updateLayerOrder();
-    $rootScope.$broadcast('layermanager.layer_added', new_layer);
-    $rootScope.$broadcast('layermanager.updated', layer);
-    $rootScope.$broadcast('compositions.composition_edited');
+    this.HsEventBusService.layerAdditions.next(new_layer);
+    this.HsEventBusService.layerManagerUpdates.next(layer);
+    this.HsEventBusService.compositionEdits.next();
   }
 
   /**
@@ -393,9 +394,9 @@ export class HsLayerManagerService {
       }
     }
     this.updateLayerOrder();
-    $rootScope.$broadcast('layermanager.updated', e.element);
-    $rootScope.$broadcast('layer.removed', e.element);
-    $rootScope.$broadcast('compositions.composition_edited');
+    this.HsEventBusService.layerManagerUpdates.next(e.element);
+    this.HsEventBusService.layerRemovals.next(e.element);
+    this.HsEventBusService.compositionEdits.next();
   }
 
   /**
@@ -518,7 +519,7 @@ export class HsLayerManagerService {
         }
       }
     }
-    $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
+    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
   };
 
   /**
@@ -538,7 +539,7 @@ export class HsLayerManagerService {
           this.data.terrainlayers[i] == layer;
       }
     }
-    $rootScope.$broadcast('layermanager.base_layer_visible_changed', layer);
+    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer)
   };
 
   /**
@@ -642,9 +643,9 @@ export class HsLayerManagerService {
       layer.getSource().on('propertychange', (event) => {
         if (event.key == 'loaded') {
           if (event.oldValue == false) {
-            $rootScope.$broadcast('layermanager.layer_loaded', layer);
+            this.HsEventBusService.layerLoads.next(layer);
           } else {
-            $rootScope.$broadcast('layermanager.layer_loading', layer);
+            this.HsEventBusService.layerLoadings.next(layer);
           }
         }
       });
@@ -652,17 +653,17 @@ export class HsLayerManagerService {
       source.on('imageloadstart', (event) => {
         source.loaded = false;
         source.loadCounter += 1;
-        $rootScope.$broadcast('layermanager.layer_loading', layer);
+        this.HsEventBusService.layerLoadings.next(layer)
       });
       source.on('imageloadend', (event) => {
         source.loaded = true;
         source.loadCounter -= 1;
-        $rootScope.$broadcast('layermanager.layer_loaded', layer);
+        this.HsEventBusService.layerLoads.next(layer);
       });
       source.on('imageloaderror', (event) => {
         source.loaded = true;
         source.error = true;
-        $rootScope.$broadcast('layermanager.layer_loaded', layer);
+        this.HsEventBusService.layerLoads.next(layer);
       });
     } else if (this.HsUtilsService.instOf(layer, Tile)) {
       source.on('tileloadstart', (event) => {
@@ -671,7 +672,7 @@ export class HsLayerManagerService {
         if (source.loaded == true) {
           source.loaded = false;
           source.set('loaded', false);
-          $rootScope.$broadcast('layermanager.layer_loading', layer);
+          this.HsEventBusService.layerLoadings.next(layer)
         }
       });
       source.on('tileloadend', (event) => {
@@ -679,7 +680,7 @@ export class HsLayerManagerService {
         if (source.loadCounter == 0) {
           source.loaded = true;
           source.set('loaded', true);
-          $rootScope.$broadcast('layermanager.layer_loaded', layer);
+          this.HsEventBusService.layerLoads.next(layer);
         }
       });
       source.on('tileloaderror', (event) => {
@@ -691,7 +692,7 @@ export class HsLayerManagerService {
         if (source.loadCounter == 0) {
           source.loaded = true;
           source.set('loaded', true);
-          $rootScope.$broadcast('layermanager.layer_loaded', layer);
+          this.HsEventBusService.layerLoads.next(layer);
         }
       });
     }

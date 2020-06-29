@@ -1,7 +1,6 @@
 export default {
   template: require('./partials/info.html'),
   controller: function (
-    $rootScope,
     $scope,
     $timeout,
     HsCore,
@@ -65,7 +64,7 @@ export default {
       }
     });
 
-    $scope.$on('compositions.composition_loaded', (event, data) => {
+    HsEventBusService.compositionLoads.subscribe((data) => {
       if (angular.isDefined(data.error)) {
         const temp_abstract = $scope.composition_abstract;
         const temp_title = $scope.composition_title;
@@ -91,7 +90,7 @@ export default {
 
     const layerLoadingContext = {};
 
-    $scope.$on('layermanager.layer_loading', (event, layer) => {
+    HsEventBusService.layerLoadings.subscribe((layer) => {
       let somethingChanged = false;
       if (!(layer.get('title') in $scope.layer_loading)) {
         $scope.layer_loading.push(layer.get('title'));
@@ -117,7 +116,7 @@ export default {
       $timeout(() => {}, 0);
     }
 
-    $scope.$on('layermanager.layer_loaded', (event, layer) => {
+    HsEventBusService.layerLoads.subscribe((layer) => {
       let somethingChanged = false;
       for (let i = 0; i < $scope.layer_loading.length; i++) {
         if ($scope.layer_loading[i] == layer.get('title')) {
@@ -137,7 +136,7 @@ export default {
       }
     });
 
-    $scope.$on('compositions.composition_deleted', (event, composition) => {
+    HsEventBusService.compositionDeletes.subscribe((composition) => {
       if (composition.id == $scope.composition_id) {
         delete $scope.composition_title;
         delete $scope.composition_abstract;
@@ -164,7 +163,7 @@ export default {
       return angular.isDefined($scope.composition_title);
     };
 
-    $rootScope.$on('compositions.composition_edited', (event) => {
+    HsEventBusService.compositionEdits.subscribe(() => {
       $scope.composition_edited = true;
     });
 

@@ -16,7 +16,7 @@ function MyProxy(proxy, maxResolution) {
 }
 
 export class HsCesiumLayersService {
-  constructor(HsMapService, $rootScope, HsConfig, HsUtilsService, $location) {
+  constructor(HsMapService, $rootScope, HsConfig, HsUtilsService, $location, HsEventBusService) {
     'ngInject';
     this.$location = $location;
     this.HsMapService = HsMapService;
@@ -24,6 +24,7 @@ export class HsCesiumLayersService {
     this.HsConfig = HsConfig;
     this.HsUtilsService = HsUtilsService;
     this.layersToBeDeleted = [];
+    this.HsEventBusService = HsEventBusService;
   }
 
   init(HsCesiumService) {
@@ -107,9 +108,8 @@ export class HsCesiumLayersService {
   }
 
   setupEvents() {
-    this.$rootScope.$on(
-      'layermanager.base_layer_visible_changed',
-      (event, data, b) => {
+    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
+      (data) => {
         if (
           angular.isDefined(data) &&
           angular.isDefined(data.type) &&

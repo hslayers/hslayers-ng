@@ -85,7 +85,7 @@ export class HsLayerManagerComponent {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then(this.init);
 
-    $scope.$on('layer.removed', (event, layer) => {
+    this.HsEventBusService.layerRemovals.subscribe((layer) => {
       if (
         typeof this.HsLayerManagerService.currentLayer == 'object' &&
         this.HsLayerManagerService.currentLayer.layer == layer
@@ -101,7 +101,7 @@ export class HsLayerManagerComponent {
       }
     });
 
-    $scope.$on('compositions.composition_loaded', (event, data) => {
+    this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
         if (data.data != undefined && data.data.id != undefined) {
           this.composition_id = data.data.id;
@@ -113,7 +113,7 @@ export class HsLayerManagerComponent {
       }
     });
 
-    $scope.$on('compositions.composition_deleted', (event, composition) => {
+    this.HsEventBusService.compositionDeletes.subscribe((composition) => {
       if (composition.id == this.composition_id) {
         delete this.composition_id;
       }
@@ -171,7 +171,7 @@ export class HsLayerManagerComponent {
     layers.removeAt(index);
     layers.insertAt(toIndex, moveLayer);
     this.HsLayerManagerService.updateLayerOrder();
-    $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
+    this.HsEventBusService.layerManagerUpdates.next();
   };
 
   isLayerType(layer, type) {
@@ -282,10 +282,7 @@ export class HsLayerManagerComponent {
     this.HsLayerManagerService.removeAllLayers();
 
     if (loadComp == true) {
-      $rootScope.$broadcast(
-        'compositions.load_composition',
-        this.composition_id
-      );
+      this.HsEventBusService.compositionLoadStarts.next(this.composition_id);
     }
   };
 

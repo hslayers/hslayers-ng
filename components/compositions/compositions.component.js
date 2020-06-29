@@ -23,7 +23,8 @@ export default {
     HsCommonEndpointsService,
     HsUtilsService,
     HsCompositionsMapService,
-    forCompositionsFilter
+    forCompositionsFilter,
+    HsEventBusService
   ) {
     'ngInject';
     $scope.CS = HsCompositionsService;
@@ -552,7 +553,7 @@ export default {
 
     $scope.datasetSelect = HsCompositionsService.datasetSelect;
 
-    $scope.$on('compositions.composition_deleted', (event, composition) => {
+    HsEventBusService.compositionDeletes.subscribe((composition) => {
       const deleteDialog = HsLayoutService.contentWrapper.querySelector(
         '.hs-composition-delete-dialog'
       );
