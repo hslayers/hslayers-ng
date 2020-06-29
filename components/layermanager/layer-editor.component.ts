@@ -13,6 +13,7 @@ import { HsStylerService } from '../styles/styler.service';
 import { HsDrawService } from '../draw/draw.service.js'
 import { HsEventBusService } from '../core/event-bus.service';
 import * as moment from "moment";
+import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -38,7 +39,9 @@ export class HsLayerEditorComponent {
     private HsLayerEditorService: HsLayerEditorService,
     private HsDrawService: HsDrawService,
     private HsLegendService: HsLegendService,
-    private HsEventBusService: HsEventBusService,) {
+    private HsEventBusService: HsEventBusService,
+    private HsLayerManagerMetadataService: HsLayerManagerMetadataService, // Used in template
+    ) {
   }
 
   ngOnChanges() {

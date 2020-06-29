@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <!-- Metadata -->
                     <div *ngIf="HsLayerManagerService.hasMetadata(currentLayer)" class="pt-2">
-                        <a class="card-href" *ngFor="let metadata of HsLayerMetadataService.metadataArray(currentLayer)" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
+                        <a class="card-href" *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
                             <span [hidden]="!metadata.type" i18n>
                                 Metadata of layer in {{metadata.type}}
                             </span>

@@ -1,6 +1,6 @@
 import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
 import { Injectable } from '@angular/core';
-import { HsLayerUtilsService } from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js';
 import { HsWfsGetCapabilitiesService } from '../../common/wfs/get-capabilities.service.js';
 import { HsWmtsGetCapabilitiesService } from '../../common/wmts/get-capabilities.service.js';
@@ -62,6 +62,14 @@ export class HsLayerManagerMetadataService {
       }
     }
   };
+
+  metadataArray(layer){
+    const obj = layer.layer.get('MetadataURL');
+    return Object.keys(obj).map(function(key) {
+      return [Number(key), obj[key]];
+    });
+  }
+  
   /**
    * @function queryMetadata
    * @memberOf HsLayermanagerMetadata.service
