@@ -27,7 +27,8 @@ export default function (
   $log,
   $timeout,
   $document,
-  HsSaveMapService
+  HsSaveMapService,
+  HsEventBusService
 ) {
   'ngInject';
   const me = {};
@@ -338,7 +339,7 @@ export default function (
     );
   });
 
-  $rootScope.$on('compositions.composition_loaded', (event, data) => {
+  HsEventBusService.compositionLoads.subscribe((data) => {
     if (angular.isDefined(data.data)) {
       data = data.data;
       me.data.title = data.title;

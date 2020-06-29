@@ -5,6 +5,7 @@ import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.ser
 import { HsMapService } from '../map/map.service.js';
 import { HsLayerUtilsService } from '../utils/utils.service';
 import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js'
+import { HsEventBusService } from '../core/event-bus.service';
 
 @Injectable({
   providedIn: 'any',
@@ -14,7 +15,8 @@ export class HsLayerEditorService {
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService) { }
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    private HsEventBusService: HsEventBusService) { }
 
   /**
    * @function zoomToLayer
@@ -89,7 +91,7 @@ export class HsLayerEditorService {
     if (newValue != undefined) {
       layer.set('cluster', newValue);
       this.HsLayerEditorVectorLayerService.cluster(newValue, layer, distance);
-      $rootScope.$broadcast('compositions.composition_edited');
+      this.HsEventBusService.compositionEdits.next();
     } else {
       return layer.get('cluster');
     }
@@ -110,7 +112,7 @@ export class HsLayerEditorService {
     if (newValue != undefined) {
       layer.set('declutter', newValue);
       this.HsLayerEditorVectorLayerService.declutter(newValue, layer);
-      $rootScope.$broadcast('compositions.composition_edited');
+      this.HsEventBusService.compositionEdits.next();
     } else {
       return layer.get('declutter');
     }

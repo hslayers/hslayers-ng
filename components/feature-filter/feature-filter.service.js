@@ -7,7 +7,7 @@ import {Style} from 'ol/style';
  * @param HsLayermanagerService
  * @param HsUtilsService
  */
-export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
+export default function ($rootScope, HsLayermanagerService, HsEventBusService) {
   'ngInject';
   const me = {
     applyFilters: function (layer) {
@@ -151,7 +151,7 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
     },
   };
 
-  $rootScope.$on('layermanager.layer_added', (e, layer) => {
+  HsEventBusService.layerAdditions.subscribe((layer) => {
     // me.prepLayerFilter(layer);
 
     // if (HsUtilsService.instOf(layer.layer, VectorLayer)) {

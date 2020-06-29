@@ -1,13 +1,15 @@
 import * as moment from "moment";
 import { Injectable } from '@angular/core';
 import { HsUtilsService } from '../utils/utils.service';
+import { HsEventBusService } from "../core/event-bus.service";
 
 @Injectable({
   providedIn: 'any',
 })
 export class HsLayerManagerWmstService {
   constructor(
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService
   ) {
 
   }
@@ -230,7 +232,7 @@ export class HsLayerManagerWmstService {
     let d: moment.Moment = moment.utc(dimensions_time.timeInterval[0]);
     switch (currentLayer.time_unit) {
       case 'FullYear':
-        d.set({year: dateIncrement});
+        d.set({ year: dateIncrement });
         break;
       case 'Month':
         d.add(dateIncrement, 'months');
@@ -249,11 +251,7 @@ export class HsLayerManagerWmstService {
     currentLayer.layer.getSource().updateParams({
       'TIME': d.toISOString(),
     });
-    $rootScope.$broadcast(
-      'layermanager.layer_time_changed',
-      currentLayer.layer,
-      d.toISOString()
-    );
+    this.HsEventBusService.layerTimeChanges.next({ layer: currentLayer.layer, time: d.toISOString() });
   };
 
   setupTimeLayerIfNeeded(new_layer) {

@@ -20,7 +20,8 @@ export default function (
   HsUtilsService,
   HsCompositionsLayerParserService,
   HsLayoutService,
-  $log
+  $log,
+  HsEventBusService
 ) {
   'ngInject';
   const me = {
@@ -154,10 +155,9 @@ export default function (
       /**
        * @ngdoc event
        * @name HsCompositionsParserService#compositions.composition_loaded
-       * @eventType broadcast on $rootScope
        * @description Fires when composition is loaded or not loaded with Error message
        */
-      $rootScope.$broadcast('compositions.composition_loaded', responseData);
+      HsEventBusService.compositionLoads.next(responseData);
     },
 
     raiseCompositionLoadError: function (response) {
@@ -170,7 +170,7 @@ export default function (
             'Sorry but composition was deleted or incorrectly saved';
           break;
       }
-      $rootScope.$broadcast('compositions.composition_loaded', respError);
+      HsEventBusService.compositionLoads.next(respError);
     },
 
     /**

@@ -52,7 +52,7 @@ export default function (
 
   $scope.$emit('scope_loaded', 'featureFilter');
 
-  // $rootScope.$on('layermanager.layer_added', function (e, layer) {
+  // HsEventBusService.layerAdditions.subscribe((layer) => {
   //     service.prepLayerFilter(layer);
 
   //     if (layer.layer instanceof VectorLayer) {

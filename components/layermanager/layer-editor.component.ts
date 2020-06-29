@@ -10,6 +10,7 @@ import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
 import { HsLayoutService } from '../layout/layout.service.js';
 import { HsStylerService } from '../styles/styler.service';
 import { HsDrawService } from '../draw/draw.service.js'
+import { HsEventBusService } from '../core/event-bus.service';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -34,7 +35,8 @@ export class HsLayerEditorComponent {
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerEditorService: HsLayerEditorService,
     private HsDrawService: HsDrawService,
-    private HsLegendService: HsLegendService) {
+    private HsLegendService: HsLegendService,
+    private HsEventBusService: HsEventBusService,) {
 
     this.$watch('$ctrl.currentLayer', async () => {
       if (!this.currentLayer) {
@@ -214,7 +216,7 @@ export class HsLayerEditorComponent {
     const layer = this.olLayer();
     if (arguments.length) {
       layer.setOpacity(newValue);
-      this.$emit('compositions.composition_edited');
+      this.HsEventBusService.compositionEdits.next();
     } else {
       return layer.getOpacity();
     }
@@ -334,7 +336,7 @@ export class HsLayerEditorComponent {
     this.HsMapService.map.removeLayer(this.olLayer());
     this.HsDrawService.fillDrawableLayers();
 
-    $rootScope.$broadcast('layermanager.updated'); //Rebuild the folder contents
+    this.HsEventBusService.layerManagerUpdates.next();
   }
 
   saveStyle(layer) {

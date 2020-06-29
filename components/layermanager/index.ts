@@ -83,10 +83,10 @@ export const downgradedLayerManagerModule = downgrade(HsLayerManagerModule);
      * @ngdoc directive
      * @description Directive for displaying list of layers in default HSLayers
      * manager template. Every directive instance contain one folder of
-     * folder stucture. For every layer displays current information notes and
+     * folder structure. For every layer displays current information notes and
      * on click opens layer options panel. Every directive instance is
-     * automatically refresh when layermanager.updated fires. Directive has
-     * access to contollers data object.
+     * automatically refresh when HsEventBusService.layerManagerUpdates.next fires. Directive has
+     * access to controllers data object.
      */
     .directive('hs.layermanager.layerlistDirective',  downgradeComponent({ component: HsLayerListComponent}))
   

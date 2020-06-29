@@ -263,11 +263,11 @@ export default function (
     HsCompositionsParserService.composition_edited = false;
   });
 
-  $rootScope.$on('compositions.composition_edited', (event) => {
+  HsEventBusService.compositionEdits.subscribe(() => {
     HsCompositionsParserService.composition_edited = true;
   });
 
-  $rootScope.$on('compositions.load_composition', (event, id) => {
+  HsEventBusService.compositionLoadStarts.subscribe((id) => {
     id = `${HsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
     HsCompositionsParserService.loadUrl(id);
   });

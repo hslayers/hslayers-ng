@@ -150,10 +150,7 @@ export default function (
                 'compositions.composition_loading',
                 compInfo
               );
-              $rootScope.$broadcast(
-                'compositions.composition_loaded',
-                compInfo
-              );
+              HsEventBusService.compositionLoads.next(compInfo);
             }
             //const saveStatus = me.status ? 'ok' : 'not-saved';
             //me.statusData.success = me.status;
@@ -344,7 +341,7 @@ export default function (
     me.open();
   });
 
-  $rootScope.$on('compositions.composition_loaded', (event, data) => {
+  HsEventBusService.compositionLoads.subscribe((data) => {
     if (angular.isUndefined(data.error)) {
       if (data.data) {
         me.compoData.id = data.id;

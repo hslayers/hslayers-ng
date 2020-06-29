@@ -10,7 +10,8 @@ export default function (
   $q,
   $http,
   HsUtilsService,
-  HsCompositionsParserService
+  HsCompositionsParserService,
+  HsEventBusService
 ) {
   'ngInject';
   const me = this;
@@ -61,7 +62,7 @@ export default function (
       const method = 'DELETE';
       url = HsUtilsService.proxify(url);
       await $http({url, method});
-      $rootScope.$broadcast('compositions.composition_deleted', composition);
+      HsEventBusService.compositionDeletes.next(composition);
     },
 
     getInfo(composition) {
