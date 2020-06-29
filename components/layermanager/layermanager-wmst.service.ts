@@ -146,8 +146,8 @@ export class HsLayerManagerWmstService {
       }
     }
     // year, month, day, hours, minutes, seconds, milliseconds)
-    const zero = new Date(0, 0, 0, 0, 0, 0, 0);
-    const step = new Date(year, month, day, hour, minute, second, 0);
+    const zero = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
+    const step = new Date(year, month, day, hour, minute, second, 0).getTime();
     return step - zero;
   }
   /**
