@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'hs-layer-manager-folder',
   template: require('./partials/folder.html')
 })
 export class HsLayerManagerFolderComponent {
-  obj: any;
+  @Input() folder: any;
   
   /**
    * @ngdoc method
@@ -17,23 +17,4 @@ export class HsLayerManagerFolderComponent {
   folderVisible(obj) {
     return obj.sub_folders.length > 0;
   };
-
-  ngOnInit() {
-    /**
-     * @ngdoc property
-     * @name hs.layermanager.folderDirective#obj
-     * @public
-     * @type {object}
-     * @description Container for folder object of current folder instance. 
-     * Either full folders object or its subset based on hierarchy place of directive
-     */
-    if (this.value === null) {
-      this.obj = '-';
-    } else {
-      this.obj = this.value;
-    }
-
-
-  }
-
 }
