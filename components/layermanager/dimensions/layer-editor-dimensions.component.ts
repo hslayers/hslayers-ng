@@ -2,6 +2,7 @@ import { ImageWMS, TileWMS, XYZ } from 'ol/source';
 import { Component, Input } from '@angular/core';
 import { HsMapService } from '../../map/map.service.js';
 import { HsUtilsService } from '../../utils/utils.service';
+import { HsDimensionService } from '../../../common/dimension.service.js';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   template: require('./layer-editor-dimensions.html')
