@@ -1,7 +1,7 @@
 import '../../common/layman/layman.module';
 import '../../common/widgets/widgets.module';
 import 'angular-cookies';
-import layerSynchronizerService from './layer-synchronizer.service';
+import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import laymanService from './layman.service';
 import saveMapComponent from './save-map.component';
 import saveMapManagerService from './save-map-manager.service';
@@ -157,7 +157,7 @@ angular
    * @description Service which monitors vector layers and initiates sending
    * and gets requesting of features to/from Layman
    */
-  .factory('HsLayerSynchronizerService', layerSynchronizerService)
+  .service('HsLayerSynchronizerService', HsLayerSynchronizerService)
 
   /**
    * @ngdoc component

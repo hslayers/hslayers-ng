@@ -2,6 +2,7 @@ import stylerColorDirective from './styler-color.directive';
 import stylerComponent from './styler.component';
 import stylesService from './styles.service';
 import * as angular from 'angular';
+import { HsStylerService } from './styler.service';
 
 /**
  * @namespace hs.styles
@@ -45,12 +46,7 @@ angular
    * @name HsStylerService
    * @description Contain current styled layer
    */
-  .factory('HsStylerService', [
-    function () {
-      this.layer = null;
-      return this;
-    },
-  ])
+  .service('HsStylerService', HsStylerService)
 
   /**
    * @memberof hs.styler

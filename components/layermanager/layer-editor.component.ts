@@ -8,6 +8,9 @@ import { HsLegendService } from '../legend';
 import { HsMapService } from '../map/map.service.js';
 import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
 import { HsLayoutService } from '../layout/layout.service.js';
+import { HsStylerService } from '../styles/styler.service';
+import { HsDrawService } from '../draw/draw.service.js'
+
 @Component({
   selector: 'hs-layer-editor',
   template: require('./partials/layer-editor.html')
