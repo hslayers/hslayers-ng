@@ -8,6 +8,7 @@ import { HsLayerSynchronizerService } from './components/save-map/layer-synchron
 import { HsWmsGetCapabilitiesService } from './common/wms/get-capabilities.service.js';
 import { HsWfsGetCapabilitiesService } from './common/wfs/get-capabilities.service.js';
 import { HsWmtsGetCapabilitiesService } from './common/wmts/get-capabilities.service.js';
+import { HsDimensionService } from './common/dimension.service.js';
 
 export function hsMapServiceFactory(i: any) {
     return i.get('HsMapService');
@@ -106,5 +107,15 @@ export function hsWmtsGetCapabilitiesService(i: any) {
 export const HsWmtsGetCapabilitiesServiceProvider = {
     provide: HsWmtsGetCapabilitiesService,
     useFactory: hsWmtsGetCapabilitiesService,
+    deps: ['$injector']
+};
+
+export function hsDimensionService(i: any) {
+    return i.get('HsDimensionService');
+}
+
+export const HsDimensionServiceProvider = {
+    provide: HsDimensionService,
+    useFactory: hsDimensionService,
     deps: ['$injector']
 };
