@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HsUtilsService } from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/layer-utils.service';
 import { HsLayerManagerService } from './layermanager.service';
 import { HsConfig } from '../../config.service';
 import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
@@ -12,6 +13,7 @@ import { HsEventBusService } from '../core/event-bus.service';
   template: require('./partials/layerlist.html')
 })
 export class HsLayerListComponent {
+  @Input() folder: any;
   /**
    * @ngdoc property
    * @name hs.layermanager.layerlistDirective#layer_titles
@@ -29,7 +31,8 @@ export class HsLayerListComponent {
     private HsUtilsService: HsUtilsService,
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,) {
+    private HsEventBusService: HsEventBusService,
+    private HsLayerUtilsService: HsLayerUtilsService) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.sortLayersByPosition();
     })
@@ -46,6 +49,16 @@ export class HsLayerListComponent {
         layer.layer.withChildren[key] = state;
       });
     }
+  }
+
+    /**
+   * @function layerValid
+   * @memberOf hs.layermanager.controller
+   * @param {Ol.layer} layer Selected layer
+   * @description Test if selected layer is valid (true for invalid)
+   */
+  layerValid(layer) {
+    return this.HsLayerUtilsService.layerInvalid(layer);
   }
 
   /**
@@ -84,18 +97,6 @@ export class HsLayerListComponent {
 
   ngOnInit() {
     /**
-   * @ngdoc property
-   * @name hs.layermanager.layerlistDirective#obj
-   * @public
-   * @type {object}
-   * @description Container for folder object of current folder instance. Either full folders object or its subset based on hierarchy place of directive
-   */
-    if (this.value == null) {
-      this.obj = this.data.folders;
-    } else {
-      this.obj = this.value;
-    }
-    /**
     * @ngdoc property
     * @name hs.layermanager.layerlistDirective#filtered_layers
     * @public
@@ -115,12 +116,12 @@ export class HsLayerListComponent {
   filterLayers() {
     const tmp = [];
 
-    for(let layer of this.data.layers) {
+    for(let layer of this.HsLayerManagerService.data.layers) {
       if (
-        layer.layer.get('path') == this.obj.hsl_path ||
+        layer.layer.get('path') == this.folder.hsl_path ||
         ((layer.layer.get('path') == undefined ||
           layer.layer.get('path') == '') &&
-          this.obj.hsl_path == '')
+          this.folder.hsl_path == '')
       ) {
         tmp.push(layer);
       }
@@ -143,6 +144,16 @@ export class HsLayerListComponent {
 
   order() {
     return this.HsConfig.layer_order || '-position';
+  };
+
+  /**
+   * @function isLayerQueryable
+   * @memberOf hs.layermanager.controller
+   * @param {object} layer_container Selected layer - wrapped in layer object
+   * @description Test if layer is queryable (WMS layer with Info format)
+   */
+  isLayerQueryable(layer_container) {
+    this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   };
 
   /**
