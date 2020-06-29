@@ -6,18 +6,20 @@ import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
 import { HsLayerEditorService } from './layer-editor.service';
 import { HsLegendService } from '../legend';
 import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService, HsLayerUtilsService } from '../utils/utils.service';
+import { HsUtilsService} from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsLayoutService } from '../layout/layout.service.js';
 import { HsStylerService } from '../styles/styler.service';
 import { HsDrawService } from '../draw/draw.service.js'
 import { HsEventBusService } from '../core/event-bus.service';
+import * as moment from "moment";
 
 @Component({
   selector: 'hs-layer-editor',
   template: require('./partials/layer-editor.html')
 })
 export class HsLayerEditorComponent {
-  @Input() currentLayer: any;
+  @Input('current-layer') currentLayer: any;
   distance = {
     value: 40,
   }
@@ -37,18 +39,18 @@ export class HsLayerEditorComponent {
     private HsDrawService: HsDrawService,
     private HsLegendService: HsLegendService,
     private HsEventBusService: HsEventBusService,) {
+  }
 
-    this.$watch('$ctrl.currentLayer', async () => {
-      if (!this.currentLayer) {
-        return;
-      }
+  ngOnChanges() {
+    if (!this.currentLayer) {
+      return;
+    }
 
-      this.legendDescriptors = [
-        this.HsLegendService.getLayerLegendDescriptor(
-          this.currentLayer.layer
-        ),
-      ];
-    });
+    this.legendDescriptors = [
+      this.HsLegendService.getLayerLegendDescriptor(
+        this.currentLayer.layer
+      ),
+    ];
   }
 
 
@@ -182,7 +184,10 @@ export class HsLayerEditorComponent {
 
   showRemoveLayerDiag(e, layer) {
     try {
-      const $mdDialog = $injector.get('$mdDialog');
+      //TODO
+      console.error('not implemented');
+
+      /* const $mdDialog = $injector.get('$mdDialog');
 
       const confirm = $mdDialog
         .confirm()
@@ -199,7 +204,7 @@ export class HsLayerEditorComponent {
           this.removeLayer();
         },
         () => { }
-      );
+      ); */
     } catch (ex) { }
   }
 
@@ -243,20 +248,6 @@ export class HsLayerEditorComponent {
    */
   layerIsStyleable() {
     return this.HsLayerUtilsService.layerIsStyleable(this.olLayer());
-  }
-
-  /**
-   * @function hasCopyright
-   * @memberOf hs.layermanager.controller
-   * @description Determines if layer has metadata information avaliable *
-   * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
-   */
-  hasMetadata(layer) {
-    if (!this.currentLayer) {
-      return;
-    } else {
-      return layer.layer.get('MetadataURL') ? true : false;
-    }
   }
 
   /**
@@ -484,6 +475,9 @@ export class HsLayerEditorComponent {
     return noutc;
   }
 
+  formatDate(date, format){
+    return moment(date).format(format);
+  }
 
   /**
    * @param wrapper
