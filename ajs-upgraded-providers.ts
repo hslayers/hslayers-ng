@@ -2,6 +2,7 @@ import { HsMapService } from './components/map/map.service';
 import { HsConfig } from './config.service';
 import { HsLayoutService } from './components/layout/layout.service';
 import { HsUtilsService } from './components/utils/utils.service';
+import { HsLayerUtilsService } from './components/utils/layer-utils.service';
 import { HsDrawService } from './components/draw/draw.service.js';
 import { HsStylerService } from './components/styles/styler.service';
 import { HsLayerSynchronizerService } from './components/save-map/layer-synchronizer.service.js';
@@ -117,5 +118,15 @@ export function hsDimensionService(i: any) {
 export const HsDimensionServiceProvider = {
     provide: HsDimensionService,
     useFactory: hsDimensionService,
+    deps: ['$injector']
+};
+
+export function hsLayerUtilsServiceProvider(i: any) {
+    return i.get('HsLayerUtilsService');
+}
+
+export const HsLayerUtilsServiceProvider = {
+    provide: HsLayerUtilsService,
+    useFactory: hsLayerUtilsServiceProvider,
     deps: ['$injector']
 };

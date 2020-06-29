@@ -3,6 +3,7 @@ import '../map/map.module';
 import '../utils/utils.module';
 import 'angular-gettext';
 import * as angular from "angular";
+import '../layermanager';
 import '../layout';
 import '../legend';
 import '../print';
@@ -22,7 +23,7 @@ export const downgradedCoreModule = downgrade(HsCoreModule);
  * @description HsCore module for whole HSLayers-NG. HsCore module consists of HsCore service which keeps some app-level settings and mantain app size and panel statuses. TODO
  */
 angular
-  .module(downgradedCoreModule, ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.utils', 'hs.legend', 'hs.print'])
+  .module(downgradedCoreModule, ['hs.map', 'gettext', 'hs.drag', 'hs.layout', 'hs.utils', 'hs.legend', 'hs.print', 'hs.layermanager'])
   /**
    * @module hs.core
    * @name HsCore

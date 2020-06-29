@@ -365,7 +365,7 @@ export class HsDrawService {
     const tmp = this.HsMapService.map
       .getLayers()
       .getArray()
-      .filter(this.HsLayerUtilsService.isLayerDrawable);
+      .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
     if (tmp.length > 0 && this.selectedLayer === null) {
       this.selectedLayer = tmp[0];
     }

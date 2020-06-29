@@ -134,7 +134,7 @@ export const downgradedLayerManagerModule = downgrade(HsLayerManagerModule);
      * @description Layer manager panel. Contains filter, baselayers, overlay
      * container and settings panel for active layer.
      */
-    .component('hs.layermanager', downgradeComponent({ component:HsLayerManagerComponent}))
+    .directive('hs.layermanager', downgradeComponent({ component:HsLayerManagerComponent}))
   
     /**
      * @module hs.layerEditor
@@ -179,7 +179,7 @@ export const downgradedLayerManagerModule = downgrade(HsLayerManagerModule);
       downgradeComponent({ component: HsLayerEditorSubLayerCheckboxesComponent})
     )
     .service('HsLayerEditorSublayerService', downgradeInjectable(HsLayerEditorSublayerService))
-    .component('hs.layerEditorDimensions', downgradeComponent({ component:HsLayerEditorDimensionsComponent}));
+    .directive('hs.layerEditorDimensions', downgradeComponent({ component:HsLayerEditorDimensionsComponent}));
  
 angular
   .module('hs.layermanager', [downgradedLayerManagerModule]);
