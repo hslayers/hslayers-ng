@@ -1,47 +1,32 @@
-<div class="basemapGallery" ng-style="galleryStyle()">
-    <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
-        <button type="button" ng-if="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
-            ng-repeat="layer in LayerManager.data.baselayers | orderBy: 'title'"
-            ng-click="toggleBasemap(layer)"
-            ng-class="{'active': layer.active}">{{::layer.title}}</button>
-        <button type="button" ng-if="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
-        ng-click="changeBaseLayerVisibility()"
-        ng-class="{'active': !data.baselayersVisible}" translate>No basemap</button>
+<div class="basemapGallery" [ngStyle]="galleryStyle()">
+    <div class="btn-group btn-group-sm" role="group" aria-label="Button group with (nested )dropdown">
+        <button type="button" class="button-primary btn-sm  basemap-tile " *ngFor="let layer of fitting(LayerManager.data.baselayers)" (click)="toggleBasemap(layer)" [ngClass]="{'active': layer.active}">{{layer.title}}</button>
+        <button type="button" *ngIf="fitsInContainer()" class="button-primary btn-sm  basemap-tile " (click)="changeBaseLayerVisibility()" [ngClass]="{'active' : !data.baselayersVisible}" i18n>No basemap</button>
 
-        <div class="btn-group btn-group-sm" role="group" ng-if="!fitsInContainer()">
-            <button type="button" ng-click="$parent.baseLayersExpanded=!$parent.baseLayersExpanded"
-                class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="{{$parent.baseLayersExpanded}}">
+        <div class="btn-group btn-group-sm" role="group" *ngIf="!fitsInContainer()">
+            <button type="button" (click)="$parent.baseLayersExpanded=!$parent.baseLayersExpanded" class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" [attr.aria-expanded]="$parent.baseLayersExpanded">
                 <i class="glyphicon icon-map x-large p-0"></i>
             </button>
-            <div class="dropdown-menu dropdown-menu-right p-0" ng-class="{'show': $parent.baseLayersExpanded}">
-                <div ng-repeat="layer in LayerManager.data.baselayers | orderBy: 'title'"
-                    ng-click="toggleBasemap(layer)" ng-style="{'position':'relative'}">
-                    <div style="position:absolute;top:5px; right:5px;z-index:5"
-                    ng-style="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}"
-                        ng-if="layer.active" ng-click="toggleMiniMenu(layer)">
+            <div class="dropdown-menu dropdown-menu-right p-0" [ngClass]="{'show': $parent.baseLayersExpanded}">
+                <div *ngFor="let layer of LayerManager.data.baselayers" (click)="toggleBasemap(layer)" [ngStyle]="{'position':'relative'}">
+                    <div style="position:absolute;top:5px; right:5px;z-index5" [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}" *ngIf="layer.active" (click)="toggleMiniMenu(layer)">
                         <span class="glyphicon icon-menu icon-small"></span>
                     </div>
-                    <div class="p-0 hs-miniMenu" ng-show="layer.galleryMiniMenu == true && layer.active"
-                        ng-style="{'position':'absolute'}">
-                        <div class="pl-1 w-100" ng-click="setGreyscale(layer)">
-                            <label class="form-check-label m-0"
-                                ng-class="{'hs-checkmark':layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
-                            <p class="ml-1 mb-0" ng-style="{'font-size':'medium'}" translate="">Grayscale</p>
+                    <div class="p-0 hs-miniMenu" [hidden]="!(layer.galleryMiniMenu == true && layer.active)" [ngStyle]="{'position':'absolute'}">
+                        <div class="pl-1 w-100" (click)="setGreyscale(layer)">
+                            <label class="form-check-label m-0" [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
+                            <p class="ml-1 mb-0" [ngStyle]="{'font-size':'medium'}" i18n>Grayscale</p>
                         </div>
                     </div>
 
-                    <img ng-class="{'active': layer.active, 'hs-ale': !layer.active}" ng-src="{{layer.thumbnail}}" alt="Basemap thumbnail"
-                        ng-style="{'height':'4em', 'width': '100%'}">
-                    <a class="dropdown-item" href="#" ng-class="{'active': layer.active}">{{layer.title}}</a>
+                <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" src="{{layer.thumbnail}}" alt="Basemap thumbnail" style="height:4em; width:100%">
+                    <a class="dropdown-item" href="" [ngClass]="{'active': layer.active}">{{layer.title}}</a>
                 </div>
-                <div ng-click="toggleBasemap()">
-                    <div ng-style="{'height':'4em', 'width': '100%'}" ng-class="{'active': !data.baselayersVisible}"
-                        alt=""></div>
-                    <a class="dropdown-item" href="#" ng-class="{'active': !data.baselayersVisible}" translate>No basemap</a>
+                <div (click)="toggleBasemap()">
+                    <div style="height: 4em; width: 100%" [ngClass]="{'active': !data.baselayersVisible}" alt=""></div>
+                    <a class="dropdown-item" href="" [ngClass]="{'active': !data.baselayersVisible}" i18n>No basemap</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
