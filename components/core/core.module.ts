@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HsCoreService } from './core.service';
 import { HsLogService } from './log.service';
 import { HsLayoutModule } from '../layout/layout.module';
-import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider, HsDrawServiceProvider, HsStylerServiceProvider, HsLayerSynchronizerServiceProvider, HsWmsGetCapabilitiesServiceProvider, HsWfsGetCapabilitiesServiceProvider, HsWmtsGetCapabilitiesServiceProvider, HsDimensionServiceProvider } from '../../ajs-upgraded-providers';
+import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider, HsDrawServiceProvider, HsStylerServiceProvider, HsLayerSynchronizerServiceProvider, HsWmsGetCapabilitiesServiceProvider, HsWfsGetCapabilitiesServiceProvider, HsWmtsGetCapabilitiesServiceProvider, HsDimensionServiceProvider, HsLayerUtilsServiceProvider } from '../../ajs-upgraded-providers';
 import { HsLegendModule } from '../legend';
 import { HsPrintModule } from '../print';
 import { HsLayerManagerModule } from '../layermanager';
@@ -31,6 +31,7 @@ import { HsLayerManagerModule } from '../layermanager';
     HsMapServiceProvider,
     HsConfigProvider,
     HsUtilsServiceProvider,
+    HsLayerUtilsServiceProvider,
     HsStylerServiceProvider,
     HsDrawServiceProvider,
     HsLayerSynchronizerServiceProvider,

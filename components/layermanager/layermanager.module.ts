@@ -20,6 +20,7 @@ import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
 import { HsLayerManagerService } from './layermanager.service';
 import { HsLayerManagerWmstService } from './layermanager-wmst.service';
 import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -36,6 +37,7 @@ import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.comp
   imports: [
     CommonModule,
     BrowserModule,
+    FormsModule,
     HsPanelHelpersModule
   ],
   exports: [
@@ -61,7 +63,6 @@ import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.comp
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
     HsLayerManagerGalleryComponent,
-    HsLayerEditorComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent

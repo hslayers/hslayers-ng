@@ -24,7 +24,7 @@ export class HsLayerEditorDimensionsComponent {
 
   /**
    * @function isLayerWithDimensions
-   * @memberOf hs.layer-editor-dimensions
+   * @memberOf hs-layer-editor-dimensions
    * @description Test if layer has dimensions
    * @returns {boolean} Returns if layers has any dimensions
    */

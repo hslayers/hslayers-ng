@@ -3,7 +3,7 @@ import { get as getProj, transform, transformExtent } from 'ol/proj';
 import { Injectable } from '@angular/core';
 import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
 import { HsMapService } from '../map/map.service.js';
-import { HsLayerUtilsService } from '../utils/utils.service';
+import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js'
 import { HsEventBusService } from '../core/event-bus.service';
 
