@@ -196,7 +196,7 @@ export class HsLayerEditorComponent {
 
       $mdDialog.show(confirm).then(
         () => {
-          this.removeLayer(layer.layer);
+          this.removeLayer();
         },
         () => { }
       );
@@ -342,6 +342,14 @@ export class HsLayerEditorComponent {
   saveStyle(layer) {
     this.setLayerStyle(layer);
   }
+
+  changePointType(layer, type) {
+    if (layer.style == undefined) {
+      this.getLayerStyle(layer);
+    }
+    layer.style.pointType = type;
+    this.setLayerStyle(layer);
+  };
 
   /**
    * @function isScaleVisible
