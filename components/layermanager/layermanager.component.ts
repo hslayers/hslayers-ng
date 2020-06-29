@@ -193,14 +193,6 @@ export class HsLayerManagerComponent {
     layer.set(property, value);
   };
 
-  changePointType(layer, type) {
-    if (layer.style == undefined) {
-      getLayerStyle(layer);
-    }
-    layer.style.pointType = type;
-    setLayerStyle(layer);
-  };
-
   activateTheme(e) {
     return this.HsLayerManagerService.activateTheme(e)
   }
