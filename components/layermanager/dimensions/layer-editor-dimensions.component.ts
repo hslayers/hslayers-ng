@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { HsMapService } from '../../map/map.service.js';
 import { HsUtilsService } from '../../utils/utils.service';
 import { HsDimensionService } from '../../../common/dimension.service.js';
+import { HsEventBusService } from '../../core/event-bus.service';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   template: require('./layer-editor-dimensions.html')
@@ -13,7 +14,8 @@ export class HsLayerEditorDimensionsComponent {
   constructor(
     private HsDimensionService: HsDimensionService,
     private HsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private HsEventBusService: HsEventBusService
   ) { }
 
   dimensionType(dimension) {
@@ -59,7 +61,7 @@ export class HsLayerEditorDimensionsComponent {
         } else if (this.HsUtilsService.instOf(src, XYZ)) {
           src.refresh();
         }
-        $scope.$emit('layermanager.dimension_changed', {
+        this.HsEventBusService.layermanagerDimensionChanges.next({
           layer: layer,
           dimension,
         });

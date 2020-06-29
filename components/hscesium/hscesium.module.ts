@@ -131,10 +131,10 @@ angular
         click: toggleCesiumMap,
       });
 
-      $rootScope.$on('layermanager.dimension_changed', (e, data) => {
-        HsCesiumService.dimensionChanged(data.layer, data.dimension);
-      });
-
+      HsEventBusService.layerManagerDimensionChanges.subscribe((data) =>  
+        HsCesiumService.dimensionChanged(data.layer, data.dimension)
+      );
+      
       HsEventBusService.sizeChanges.subscribe((size) => HsCesiumService.resize(size));
       HsCesiumService.resize();
 
