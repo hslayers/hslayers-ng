@@ -50,7 +50,7 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
             }
             displayFeature = function (feature, filter) {
               return (
-                filter.selected.indexOf(feature.values_[filter.valueField]) !==
+                filter.selected.indexOf(feature.getProperties()[filter.valueField]) !==
                 -1
               );
             };
@@ -59,27 +59,27 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
             switch (filter.type.parameters) {
               case 'lt':
                 displayFeature = function (feature, filter) {
-                  return feature.values_[filter.valueField] < filter.value;
+                  return feature.getProperties()[filter.valueField] < filter.value;
                 };
                 break;
               case 'le':
                 displayFeature = function (feature, filter) {
-                  return feature.values_[filter.valueField] <= filter.value;
+                  return feature.getProperties()[filter.valueField] <= filter.value;
                 };
                 break;
               case 'gt':
                 displayFeature = function (feature, filter) {
-                  return feature.values_[filter.valueField] > filter.value;
+                  return feature.getProperties()[filter.valueField] > filter.value;
                 };
                 break;
               case 'ge':
                 displayFeature = function (feature, filter) {
-                  return feature.values_[filter.valueField] >= filter.value;
+                  return feature.getProperties()[filter.valueField] >= filter.value;
                 };
                 break;
               case 'eq':
                 displayFeature = function (feature, filter) {
-                  return feature.values_[filter.valueField] === filter.value;
+                  return feature.getProperties()[filter.valueField] === filter.value;
                 };
                 break;
             }
@@ -115,10 +115,10 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
                 source.forEachFeature((feature) => {
                   if (
                     filter.values.indexOf(
-                      feature.values_[filter.valueField]
+                      feature.getProperties()[filter.valueField]
                     ) === -1
                   ) {
-                    filter.values.push(feature.values_[filter.valueField]);
+                    filter.values.push(feature.getProperties()[filter.valueField]);
                   }
                 });
                 break;
@@ -128,11 +128,11 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
 
                 // var source = layer.layer.getSource();
                 // source.forEachFeature(function (feature) {
-                //     if (feature.values_[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
-                //         filter.range[0] = feature.values_[filter.valueField];
+                //     if (feature.getProperties()[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
+                //         filter.range[0] = feature.getProperties()[filter.valueField];
                 //     }
-                //     if (feature.values_[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
-                //         filter.range[1] = feature.values_[filter.valueField];
+                //     if (feature.getProperties()[filter.valueField] > filter.range[1] || filter.range[1] === undefined) {
+                //         filter.range[1] = feature.getProperties()[filter.valueField];
                 //     }
                 // });
                 break;
