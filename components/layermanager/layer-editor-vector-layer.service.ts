@@ -4,13 +4,14 @@ import { Cluster } from 'ol/source';
 import { Point } from 'ol/geom';
 import { Injectable } from '@angular/core';
 import { HsMapService } from '../map/map.service.js';
+import { HsUtilsService } from '../utils/utils.service';
 
 @Injectable({
   providedIn: 'any',
 })
 export class HsLayerEditorVectorLayerService {
 
-  constructor(private HsMapService: HsMapService) {
+  constructor(private HsMapService: HsMapService, private HsUtilsService: HsUtilsService) {
 
   }
 
@@ -64,57 +65,53 @@ export class HsLayerEditorVectorLayerService {
       layer.hsOriginalStyle = layer.getStyle();
     }
     if (newValue == true && !layer.get('declutter')) {
-      const styleCache = {};
-      layer.setSource(this.createClusteredSource(layer, distance));
-      layer.setStyle((feature, resolution) => {
-        const size = feature.get('features').length;
-        if (size > 1) {
-          let textStyle = styleCache[size];
-          if (!textStyle) {
-            textStyle = new Style({
-              image: new Circle({
-                radius: 10,
-                stroke: new Stroke({
-                  color: '#fff',
+      if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
+        const styleCache = {};
+        layer.setSource(this.createClusteredSource(layer, distance));
+        layer.setStyle((feature, resolution) => {
+          const size = feature.get('features').length;
+          if (size > 1) {
+            let textStyle = styleCache[size];
+            if (!textStyle) {
+              textStyle = new Style({
+                image: new Circle({
+                  radius: 10,
+                  stroke: new Stroke({
+                    color: '#fff',
+                  }),
+                  fill: new Fill({
+                    color: '#3399CC',
+                  }),
                 }),
-                fill: new Fill({
-                  color: '#3399CC',
+                text: new Text({
+                  text: size.toString(),
+                  fill: new Fill({
+                    color: '#000',
+                  }),
                 }),
-              }),
-              text: new Text({
-                text: size.toString(),
-                fill: new Fill({
-                  color: '#000',
-                }),
-              }),
-            });
-            styleCache[size] = textStyle;
-          }
-          return textStyle;
-        } else {
-          let tmp;
-          if (typeof layer.hsOriginalStyle == 'function') {
-            tmp = layer.hsOriginalStyle(feature, resolution);
+              });
+              styleCache[size] = textStyle;
+            }
+            return textStyle;
           } else {
-            tmp = layer.hsOriginalStyle;
+            let tmp;
+            if (typeof layer.hsOriginalStyle == 'function') {
+              tmp = layer.hsOriginalStyle(feature, resolution);
+            } else {
+              tmp = layer.hsOriginalStyle;
+            }
+            const originalFeature = feature.get('features');
+            if (tmp.length) {
+              tmp[0].setGeometry(originalFeature[0].getGeometry());
+            } else {
+              tmp.setGeometry(originalFeature[0].getGeometry());
+            }
+            return tmp;
           }
-          const originalFeature = feature.get('features');
-          if (tmp.length) {
-            tmp[0].setGeometry(originalFeature[0].getGeometry());
-          } else {
-            tmp.setGeometry(originalFeature[0].getGeometry());
-          }
-          return tmp;
-        }
-      });
+        });
+      }
     } else {
-      layer.setStyle(() => {
-        if (typeof layer.hsOriginalStyle == 'function') {
-          return layer.hsOriginalStyle();
-        } else {
-          return layer.hsOriginalStyle;
-        }
-      });
+      layer.setStyle(layer.hsOriginalStyle);
       layer.setSource(layer.getSource().getSource());
     }
   }
