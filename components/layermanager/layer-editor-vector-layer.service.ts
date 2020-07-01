@@ -7,7 +7,7 @@ import { HsMapService } from '../map/map.service.js';
 import { HsUtilsService } from '../utils/utils.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerEditorVectorLayerService {
 

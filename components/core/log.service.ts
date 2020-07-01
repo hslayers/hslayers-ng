@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 @Injectable({
-    providedIn: 'any',
+    providedIn: 'root',
   })
   export class HsLogService {
     warn(...attrs) {

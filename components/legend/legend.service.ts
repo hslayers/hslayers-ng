@@ -10,7 +10,7 @@ import { HsUtilsService } from '../utils/utils.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLegendService {
 

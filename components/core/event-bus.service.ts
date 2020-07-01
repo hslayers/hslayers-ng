@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Subject } from 'rxjs';
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsEventBusService {
   sizeChanges: Subject<any> = new Subject();

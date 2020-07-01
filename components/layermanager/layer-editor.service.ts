@@ -8,7 +8,7 @@ import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.s
 import { HsEventBusService } from '../core/event-bus.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerEditorService {
   constructor(

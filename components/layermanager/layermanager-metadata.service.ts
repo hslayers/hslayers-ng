@@ -6,7 +6,7 @@ import { HsWfsGetCapabilitiesService } from '../../common/wfs/get-capabilities.s
 import { HsWmtsGetCapabilitiesService } from '../../common/wmts/get-capabilities.service.js';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerManagerMetadataService {
   constructor(
