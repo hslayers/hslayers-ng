@@ -9,9 +9,9 @@
         <div *ngIf="currentLayer.settings">
             <form>
                 <!-- Metadata/Copyright -->
-                <div class="form-group">
+                <div class="form-group" *ngIf="HsLayerManagerService.hasMetadata(currentLayer)">
                     <!-- Metadata -->
-                    <div *ngIf="HsLayerManagerService.hasMetadata(currentLayer)" class="pt-2">
+                    <div class="pt-2">
                         <a class="card-href" *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
                             <span [hidden]="!metadata.type" i18n>
                                 Metadata of layer in {{metadata.type}}
@@ -58,29 +58,30 @@
                     <span *ngIf="minResolutionValid()"><span i18n>from</span> 1:{{minResolution()}}</span>
                     <span *ngIf="maxResolutionValid()"><span i18n>to</span> 1:{{maxResolution()}}</span>
                 </div>
-                <!-- Declutter checkbox  -->
-                <div [hidden]="cluster" *ngIf="isVectorLayer()" class="form-check">
-                    <input name="layer-declutter" type="checkbox" [(ngModel)]="declutter">
-                    <label i18n>Declutter</label>
-                </div>
-                <!-- Cluster features checkbox  -->
-                <div [hidden]="declutter">
-                    <div *ngIf="isVectorLayer()" class="form-check">
-                        <input name="layer-cluster" type="checkbox" [(ngModel)]="cluster">
-                        <label i18n>Cluster</label>
+                <div class="d-flex flex-row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125)">
+                    <!-- Declutter checkbox  -->
+                    <div [hidden]="cluster" *ngIf="isVectorLayer()" class="form-check flex-fill">
+                        <input name="layer-declutter" class="form-check-input" type="checkbox" [(ngModel)]="declutter">
+                        <label class="form-check-label" i18n>Declutter</label>
                     </div>
-                    <div class="form-group" *ngIf="cluster">
-                        <label>Cluster distance</label>
-                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control" style="width: 100%;height: 21px;">
+                    <!-- Cluster features checkbox  -->
+                    <div *ngIf="isVectorLayer()" [hidden]="declutter" class="form-check flex-fill ">
+                        <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster">
+                        <label class="form-check-label" i18n>Cluster</label>
+                    </div>
+                    <div class="form-group flex-fill" [hidden]="declutter" *ngIf="cluster">
+                        <label i18n>distance</label>
+                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control" style="width: 100%;height: 21px;">        
                     </div>
                 </div>
-    
+                
                 <!-- Legends -->
                 <div *ngIf="olLayer()">
                     <div *ngFor="let layer of legendDescriptors">
-                        <div class="form-group" *ngIf="isLegendable(layer) && (layer.lyr.get('inlineLegend') || !HsLayoutService.panelEnabled('legend'))">
-                            <label i18n>Legend</label>
+                        <div *ngIf="isLegendable(layer) && (layer.lyr.get('inlineLegend') || !HsLayoutService.panelEnabled('legend'))">
+                            <p style="text-align: center;" i18n>Legend</p>
                             <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
+                            <hr/>
                         </div>
                     </div>
                 </div>
@@ -120,10 +121,12 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()" data-toggle="tooltip" i18n-title="Zoom to layer"><i class="icon-search"></i></button>
-        <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()" data-toggle="tooltip" i18n-title="Style layer"><i class="icon-brush"></i></button>
-        <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip" i18n-title="Rename layer"><i class="icon-textfield"></i></button>
-        <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip" i18n-title="Remove layer"><i class="icon-trash"></i></button>
+        <div class="btn-group" role="group" aria-label="Editor buttons">
+            <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()" data-toggle="tooltip" i18n-title="Zoom to layer"><i class="icon-search"></i></button>
+            <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()" data-toggle="tooltip" i18n-title="Style layer"><i class="icon-brush"></i></button>
+            <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip" i18n-title="Rename layer"><i class="icon-textfield"></i></button>
+            <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip" i18n-title="Remove layer"><i class="icon-trash"></i></button>
+        </div>
     </div>
 
 </div>

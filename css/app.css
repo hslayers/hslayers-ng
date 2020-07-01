@@ -1640,3 +1640,8 @@ li.hs-lm-header {
 .hs-date-time-chevron:not(*:root) { /* Supports only WebKit browsers */
 	visibility: hidden;
 }
+.bsi hs-layer-editor .form-check {line-height: 1.5}
+.bsi hs-layer-editor .card-body {padding: 0.65rem}
+.bsi hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
+.hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
+.hs-layerpanel {overflow-x: hidden;}
