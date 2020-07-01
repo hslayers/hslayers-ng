@@ -17,7 +17,9 @@ import * as angular from 'angular';
 import layoutController from './layout.controller';
 import layoutDirective from './layout.directive';
 import { HsPanelHeaderComponent } from './layout-panel-header.component';
-import { downgradeComponent } from '@angular/upgrade/static';
+import { downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
+import { HsDialogContainerComponent } from './dialog-container.component';
+import { HsDialogContainerService } from './dialog-container.service';
 
 /**
  * @namespace hs.layout
@@ -110,13 +112,17 @@ angular
    */
   .directive('hsPanelHeader', downgradeComponent({ component: HsPanelHeaderComponent }))
 
+  .directive('hsDialogContainer', downgradeComponent({ component: HsDialogContainerComponent }))
+
+  .service('HsDialogContainerService', downgradeInjectable(HsDialogContainerService))
+
   /**
    * @memberof hs.layout
    * @ngdoc service
    * @name HsLayoutService
    * @description TODO
    */
-  .factory('HsLayoutService', HsLayoutService);
+  .service('HsLayoutService', HsLayoutService);
 
 angular
   .module('hs.layout', [downgradedLayoutModule]);
