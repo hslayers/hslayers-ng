@@ -21,6 +21,7 @@ import { HsLayerManagerService } from './layermanager.service';
 import { HsLayerManagerWmstService } from './layermanager-wmst.service';
 import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { HsLegendModule } from '../legend';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -38,7 +39,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     BrowserModule,
     FormsModule,
-    HsPanelHelpersModule
+    HsPanelHelpersModule,
+    HsLegendModule
   ],
   exports: [
     HsLayerManagerComponent,
