@@ -6,7 +6,7 @@ import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
 import { HsLayerEditorService } from './layer-editor.service';
 import { HsLegendService } from '../legend';
 import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService} from '../utils/utils.service';
+import { HsUtilsService } from '../utils/utils.service';
 import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsLayoutService } from '../layout/layout.service.js';
 import { HsStylerService } from '../styles/styler.service';
@@ -17,7 +17,7 @@ import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
 
 @Component({
   selector: 'hs-layer-editor',
-  template: require('./partials/layer-editor.html')
+  template: require('./partials/layer-editor.html'),
 })
 export class HsLayerEditorComponent {
   @Input('current-layer') currentLayer: any;
@@ -41,7 +41,7 @@ export class HsLayerEditorComponent {
     private HsLegendService: HsLegendService,
     private HsEventBusService: HsEventBusService,
     private HsLayerManagerMetadataService: HsLayerManagerMetadataService, // Used in template
-    ) {
+  ) {
   }
 
   ngOnChanges() {
@@ -234,10 +234,10 @@ export class HsLayerEditorComponent {
     }
     this.olLayer().setOpacity(newValue);
     this.HsEventBusService.compositionEdits.next();
-    
+
   }
 
-  get opacity(){
+  get opacity() {
     return this.olLayer().getOpacity();
   }
 
@@ -503,7 +503,7 @@ export class HsLayerEditorComponent {
   }
 
   //TODO refactor to some helper service
-  formatDate(date, format){
+  formatDate(date, format) {
     return moment(date).format(format);
   }
 
