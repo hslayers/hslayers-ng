@@ -69,7 +69,7 @@ export default function (
   });
 
   me.selector.getFeatures().on('remove', (e) => {
-    $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
+    $rootScope.$broadcast('vectorQuery.featureDeselected', e.element);
     //deprecated
     $rootScope.$broadcast('infopanel.feature_deselected', e.element);
   });

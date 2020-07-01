@@ -362,7 +362,7 @@ export default function (
   );
 
   const unregisterFeatureDeselected = $rootScope.$on(
-    'vectorQuery.featureDelected',
+    'vectorQuery.featureDeselected',
     (e, feature) => {
       me.selectedFeatures.remove(feature);
     }
