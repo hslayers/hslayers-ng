@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HsLayerManagerService } from './layermanager.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerEditorSublayerService {
 

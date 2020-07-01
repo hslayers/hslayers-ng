@@ -4,7 +4,7 @@ import { HsUtilsService } from '../utils/utils.service';
 import { HsEventBusService } from "../core/event-bus.service";
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerManagerWmstService {
   constructor(

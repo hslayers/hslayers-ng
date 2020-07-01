@@ -18,7 +18,7 @@ import { HsEventBusService } from '../core/event-bus.service';
 import { HsLayoutService } from '../layout/layout.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsLayerManagerService {
   /**

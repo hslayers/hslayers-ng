@@ -9,7 +9,7 @@ import { HsLogService } from './log.service';
 import { HsEventBusService } from './event-bus.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class HsCoreService {
   hslayersNgTemplate: string = require('../../hslayers.html');
