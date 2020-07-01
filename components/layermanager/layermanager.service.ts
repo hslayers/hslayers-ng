@@ -89,7 +89,8 @@ export class HsLayerManagerService {
   map: any;
   timer: any;
   currentLayer: any;
-
+  composition_id: string;
+  
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,

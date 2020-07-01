@@ -9,6 +9,9 @@ import { HsUtilsService } from '../utils/utils.service';
 import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
 import { HsLayoutService } from '../layout/layout.service.js';
 import { HsLayerSynchronizerService } from '../save-map/layer-synchronizer.service.js';
+import { HsDialogContainerService } from '../layout/dialog-container.service';
+import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.component';
+import { HsDialogItem } from '../layout/dialog-item';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -19,7 +22,6 @@ export class HsLayerManagerComponent {
   map: any;
   shiftDown: boolean = false;
   data: any;
-  composition_id: string;
   query: any = {title: undefined}
 
   icons = [
@@ -83,6 +85,7 @@ export class HsLayerManagerComponent {
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerSynchronizerService: HsLayerSynchronizerService,
     private HsEventBusService: HsEventBusService,
+    private HsDialogContainerService: HsDialogContainerService
   ) {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
@@ -106,18 +109,18 @@ export class HsLayerManagerComponent {
     this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
         if (data.data != undefined && data.data.id != undefined) {
-          this.composition_id = data.data.id;
+          this.HsLayerManagerService.composition_id = data.data.id;
         } else if (data.id != undefined) {
-          this.composition_id = data.id;
+          this.HsLayerManagerService.composition_id = data.id;
         } else {
-          delete this.composition_id;
+          this.HsLayerManagerService.composition_id = null;
         }
       }
     });
 
     this.HsEventBusService.compositionDeletes.subscribe((composition) => {
-      if (composition.id == this.composition_id) {
-        delete this.composition_id;
+      if (composition.id == this.HsLayerManagerService.composition_id) {
+        this.HsLayerManagerService.composition_id = null;
       }
     });
   }
@@ -212,31 +215,14 @@ export class HsLayerManagerComponent {
   /**
    * @function removeAllLayers
    * @memberOf hs.layermanager.controller
-   * @description Removes all layers which don't have 'removable' attribute set to false. If removal wasn´t confirmed display dialog first. Might reload composition again
-   * @param {boolean} confirmed Whether removing was confirmed (by user/code), (true for confirmed, left undefined for not)
-   * @param {boolean} loadComp Whether composition should be loaded again (true = reload composition, false = remove without reloading)
+   * @description Removes all layers which don't have 'removable' attribute
+   * set to false if user confirms the removal. Might reload composition again.
    */
-  removeAllLayers(confirmed, loadComp) {
-    //TODO
-    console.error('Not supported now');
-    return;
-/*     if (confirmed == undefined) {
-      const el = angular.element(
-        '<hs-layermanager-remove-all-dialog></hs-layermanager-remove-all-dialog>'
-      );
-      this.HsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
-      $compile(el)($scope);
-      return;
-    }
-
-    this.HsLayerManagerService.removeAllLayers();
-
-    if (loadComp == true) {
-      this.HsEventBusService.compositionLoadStarts.next(this.composition_id);
-    }
- */  };
+  removeAllLayers() {
+    this.HsDialogContainerService.create(
+      HsLayerManagerRemoveAllDialogComponent, {}
+    );
+  };
 
   /**
    * @function hasCopyright
@@ -304,7 +290,7 @@ export class HsLayerManagerComponent {
     this.map = this.HsMapService.map;
     this.HsLayerSynchronizerService.init(this.map);
     this.HsEventBusService.mapResets.subscribe(() => {
-      delete this.composition_id;
+      this.HsLayerManagerService.composition_id = null;
     });
 
   }
