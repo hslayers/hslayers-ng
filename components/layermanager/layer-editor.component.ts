@@ -56,7 +56,6 @@ export class HsLayerEditorComponent {
     ];
   }
 
-
   isLegendable(layer) {
     return this.HsLegendService.isLegendable(layer);
   }
@@ -135,11 +134,12 @@ export class HsLayerEditorComponent {
    * @description Set decluttering of features
    * @returns {boolean} Current declutter state
    */
-  declutter(newValue) {
-    if (!this.currentLayer) {
-      return;
-    }
-    return this.HsLayerEditorService.declutter(this.olLayer(), newValue);
+  set declutter(newValue) {
+    this.HsLayerEditorService.declutter(this.olLayer(), newValue);
+  }
+
+  get declutter() {
+    return this.HsLayerEditorService.declutter(this.olLayer(), undefined);
   }
 
   /**
@@ -149,13 +149,24 @@ export class HsLayerEditorComponent {
    * @param {boolean} newValue To cluster or not to cluster
    * @returns {boolean} Current cluster state
    */
-  cluster(newValue) {
+  set cluster(newValue) {
+    if (!this.currentLayer) {
+      return;
+    }
+    this.HsLayerEditorService.cluster(
+      this.olLayer(),
+      newValue,
+      this.distance.value
+    );
+  }
+
+  get cluster() {
     if (!this.currentLayer) {
       return;
     }
     return this.HsLayerEditorService.cluster(
       this.olLayer(),
-      newValue,
+      undefined,
       this.distance.value
     );
   }
@@ -217,17 +228,17 @@ export class HsLayerEditorComponent {
    * @description Set selected layers opacity and emits "compositionchanged"
    * @param newValue
    */
-  opacity(newValue) {
+  set opacity(newValue) {
     if (!this.currentLayer) {
       return;
     }
-    const layer = this.olLayer();
-    if (arguments.length) {
-      layer.setOpacity(newValue);
-      this.HsEventBusService.compositionEdits.next();
-    } else {
-      return layer.getOpacity();
-    }
+    this.olLayer().setOpacity(newValue);
+    this.HsEventBusService.compositionEdits.next();
+    
+  }
+
+  get opacity(){
+    return this.olLayer().getOpacity();
   }
 
   /**
@@ -278,16 +289,20 @@ export class HsLayerEditorComponent {
    * @description Set min resolution for selected layer
    * @param newValue
    */
-  minResolution(newValue) {
+  set minResolution(newValue) {
     if (!this.currentLayer) {
       return;
     }
     const layer = this.olLayer();
-    if (arguments.length) {
-      layer.setMinResolution(newValue);
-    } else {
-      return layer.minResolution;
+    layer.setMinResolution(newValue);
+  }
+
+  get minResolution() {
+    if (!this.currentLayer) {
+      return;
     }
+    const layer = this.olLayer();
+    return layer.minResolution;
   }
 
   /**
@@ -395,29 +410,37 @@ export class HsLayerEditorComponent {
    * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
    * @returns {string} Title
    */
-  title(newTitle) {
+  set title(newTitle) {
     const layer = this.olLayer();
     if (layer == undefined) {
-      return false;
+      return;
     }
-    if (arguments.length) {
-      this.currentLayer.title = newTitle;
-      layer.set('title', newTitle);
-    } else {
-      return layer.get('title');
-    }
+    layer.title = newTitle;
+    layer.set('title', newTitle);
   }
 
-  abstract(newAbstract) {
+  get title() {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
     }
-    if (arguments.length) {
-      layer.set('abstract', newAbstract);
-    } else {
-      return layer.get('abstract');
+    return layer.get('title');
+  }
+
+  set abstract(newAbstract) {
+    const layer = this.olLayer();
+    if (layer == undefined) {
+      return;
     }
+    layer.set('abstract', newAbstract);
+  }
+
+  get abstract() {
+    const layer = this.olLayer();
+    if (layer == undefined) {
+      return false;
+    }
+    return layer.get('abstract');
   }
 
   expandLayer(layer) {
@@ -463,6 +486,7 @@ export class HsLayerEditorComponent {
     layer.expandInfo = value;
   }
 
+  //TODO refactor to some helper service
   /**
    * @function dateToNonUtc
    * @memberOf hs.layermanager.controller
@@ -478,10 +502,12 @@ export class HsLayerEditorComponent {
     return noutc;
   }
 
+  //TODO refactor to some helper service
   formatDate(date, format){
     return moment(date).format(format);
   }
 
+  //TODO refactor to some style oriented helper service
   /**
    * @param wrapper
    */
@@ -545,6 +571,7 @@ export class HsLayerEditorComponent {
     layer.setStyle(style);
   }
 
+  //TODO refactor to some style oriented helper service
   getLayerStyle(wrapper) {
     const layer = wrapper.layer;
     const source = layer.getSource();

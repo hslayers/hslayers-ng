@@ -45,10 +45,10 @@
                 </div>
     
                 <!-- Abstract -->
-                <div class="form-group" [hidden]="!abstract()">
+                <div class="form-group" [hidden]="!abstract">
                     <label i18n>Abstract</label>
                     <p>
-                        {{abstract()}}
+                        {{abstract}}
                     </p>
                 </div>
     
@@ -59,19 +59,19 @@
                     <span *ngIf="maxResolutionValid()"><span i18n>to</span> 1:{{maxResolution()}}</span>
                 </div>
                 <!-- Declutter checkbox  -->
-                <div [hidden]="currentLayer.layer.get('cluster')" *ngIf="isVectorLayer()" class="form-check">
-                    <input type="checkbox" [(ngModel)]="declutter" ng-model-options="{ getterSetter:  true}">
+                <div [hidden]="cluster" *ngIf="isVectorLayer()" class="form-check">
+                    <input name="layer-declutter" type="checkbox" [(ngModel)]="declutter">
                     <label i18n>Declutter</label>
                 </div>
                 <!-- Cluster features checkbox  -->
-                <div [hidden]="currentLayer.layer.get('declutter')">
+                <div [hidden]="declutter">
                     <div *ngIf="isVectorLayer()" class="form-check">
-                        <input type="checkbox" [(ngModel)]="cluster" ng-model-options="{ getterSetter:  true}">
+                        <input name="layer-cluster" type="checkbox" [(ngModel)]="cluster">
                         <label i18n>Cluster</label>
                     </div>
-                    <div class="form-group" *ngIf="currentLayer.layer.get('cluster')">
+                    <div class="form-group" *ngIf="cluster">
                         <label>Cluster distance</label>
-                        <input type="range" min="0" max="100" step="1" [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control" style="width: 100%;height: 21px;">
+                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control" style="width: 100%;height: 21px;">
                     </div>
                 </div>
     
@@ -88,7 +88,7 @@
                 <!-- Opacity slider -->
                 <div class="form-group">
                     <label i18n>Opacity</label>
-                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" [(ngModel)]="opacity" ng-model-options="{ getterSetter: true }">
+                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" [(ngModel)]="opacity">
                 </div>
     
                 <!-- Footer -->
@@ -98,7 +98,7 @@
     <div class="card-footer" *ngIf="currentLayer != undefined && currentLayer.settings">
         <div class="form-group" [hidden]="!layer_renamer_visible">
             <label i18n>Title</label>
-            <input type="text" class="form-control" [(ngModel)]="title" ng-model-options="{ getterSetter: true }">
+            <input type="text" class="form-control" [(ngModel)]="title">
             <div class="form">
                 <br>
                 <label i18n>Scale</label>
@@ -107,7 +107,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><span i18n>from</span>&nbsp;1</span>
                         </div>
-                        <input class="form-control" style="width:65px" [(ngModel)]="minResolution" ng-model-options="{ getterSetter: true }">
+                        <input class="form-control" style="width:65px" [(ngModel)]="minResolution">
                     </div>
                 </div>
                 <div *ngIf="maxResolutionValid()">
@@ -115,7 +115,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <span i18n>to</span>&nbsp;1</span>
                         </div>
-                        <input class="form-control" style="width:65px" [(ngModel)]="maxResolution" ng-model-options="{ getterSetter: true }">
+                        <input class="form-control" style="width:65px" [(ngModel)]="maxResolution">
                     </div>
                 </div>
             </div>
