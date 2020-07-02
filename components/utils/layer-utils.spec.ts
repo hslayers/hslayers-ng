@@ -5,7 +5,7 @@ import 'angular-mocks';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {HsUtilsService} from './utils.service';
-import hsLayerUtilsService from './layer-utils.service';
+import {HsLayerUtilsService} from './layer-utils.service';
 
 describe('layer-utils', () => {
   let hsLayerUtils;
@@ -24,7 +24,7 @@ describe('layer-utils', () => {
   
     angular.module('hs.utils', ['hs', 'ng'])
     .service('HsUtilsService', HsUtilsService)
-    .factory('HsLayerUtilsService', hsLayerUtilsService);
+    .service('HsLayerUtilsService', HsLayerUtilsService);
     angular.mock.module('hs.utils');
   })
 
