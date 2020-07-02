@@ -2,32 +2,32 @@ import '../layers/hs.source.SparqlJson';
 import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
-import { ImageWMS } from 'ol/source';
-import { METERS_PER_UNIT } from 'ol/proj';
-import { Tile } from 'ol/layer';
-import { TileWMS } from 'ol/source';
-import { Injectable } from '@angular/core';
-import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
-import { HsLayerManagerWmstService } from './layermanager-wmst.service';
-import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
-import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
-import { HsConfig } from '../../config.service';
-import { HsEventBusService } from '../core/event-bus.service';
-import { HsLayoutService } from '../layout/layout.service';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service.js';
+import {HsUtilsService} from '../utils/utils.service';
+import {ImageWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {METERS_PER_UNIT} from 'ol/proj';
+import {Tile} from 'ol/layer';
+import {TileWMS} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerManagerService {
   /**
-  * @ngdoc property
-  * @name HsLayermanagerService#data
-  * @public
-  * @type {object}
-  * @description Containg object for all properties which are shared with controllers.
-  */
+   * @ngdoc property
+   * @name HsLayermanagerService#data
+   * @public
+   * @type {object}
+   * @description Containg object for all properties which are shared with controllers.
+   */
   data: any = {
     /**
      * @ngdoc property
@@ -82,7 +82,7 @@ export class HsLayerManagerService {
      * @type {boolean}
      * @description Store if baselayers are visible (more precisely one of baselayers)
      */
-    baselayersVisible: true
+    baselayersVisible: true,
   };
 
   //Property for pointer to main map object
@@ -90,7 +90,7 @@ export class HsLayerManagerService {
   timer: any;
   currentLayer: any;
   composition_id: string;
-  
+
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
@@ -100,8 +100,9 @@ export class HsLayerManagerService {
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsLayerManagerMetadata: HsLayerManagerMetadataService,
     private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService) {
-    HsMapService.loaded().then(() => this.init());
+    private HsLayoutService: HsLayoutService
+  ) {
+    this.HsMapService.loaded().then(() => this.init());
   }
 
   /**
@@ -252,11 +253,11 @@ export class HsLayerManagerService {
    */
   getLayerByTitle(title) {
     let tmp;
-    for (let layer of this.data.layers) {
+    for (const layer of this.data.layers) {
       if (layer.title == title) {
         tmp = layer;
       }
-    };
+    }
     return tmp;
   }
 
@@ -275,7 +276,7 @@ export class HsLayerManagerService {
       return tmp[0];
     }
     return;
-  };
+  }
 
   /**
    * @ngdoc method
@@ -291,11 +292,11 @@ export class HsLayerManagerService {
       let curfolder = this.data.folders;
       for (let i = 0; i < parts.length; i++) {
         let found = null;
-        for (let folder of curfolder.sub_folders) {
+        for (const folder of curfolder.sub_folders) {
           if (folder.name == parts[i]) {
             found = folder;
           }
-        };
+        }
         if (found == null) {
           //TODO: Need to describe how hsl_path works here
           const new_folder = {
@@ -320,7 +321,10 @@ export class HsLayerManagerService {
       lyr.coded_path = curfolder.coded_path;
       curfolder.layers.push(lyr);
       if (this.data.folders.layers.indexOf(lyr) > -1) {
-        this.data.folders.layers.splice(this.data.folders.layers.indexOf(lyr), 1);
+        this.data.folders.layers.splice(
+          this.data.folders.layers.indexOf(lyr),
+          1
+        );
       }
     } else {
       this.data.folders.layers.push(lyr);
@@ -339,25 +343,25 @@ export class HsLayerManagerService {
       const path = lyr.get('path');
       const parts = path.split('/');
       let curfolder = this.data.folders;
-      for (var i = 0; i < parts.length; i++) {
-        for (let folder of curfolder.sub_folders) {
+      for (let i = 0; i < parts.length; i++) {
+        for (const folder of curfolder.sub_folders) {
           if (folder.name == parts[i]) {
             curfolder = folder;
           }
-        };
+        }
       }
 
       curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
       for (let i = parts.length; i > 0; i--) {
         if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
-          var newfolder = this.data.folders;
+          let newfolder = this.data.folders;
           if (i > 1) {
-            for (var j = 0; j < i - 1; j++) {
-              for (let folder of newfolder.sub_folders) {
+            for (let j = 0; j < i - 1; j++) {
+              for (const folder of newfolder.sub_folders) {
                 if (folder.name == parts[j]) {
                   newfolder = folder;
                 }
-              };
+              }
             }
           }
           var ixToRemove = newfolder.sub_folders.indexOf(curfolder);
@@ -414,18 +418,18 @@ export class HsLayerManagerService {
   boxLayersInit() {
     if (this.HsConfig.box_layers != undefined) {
       this.data.box_layers = this.HsConfig.box_layers;
-      for (let box of this.data.box_layers) {
+      for (const box of this.data.box_layers) {
         let visible = false;
         let baseVisible = false;
-        for (let layer of box.get('layers')) {
+        for (const layer of box.get('layers')) {
           if (layer.get('visible') == true && layer.get('base') == true) {
             baseVisible = true;
           } else if (layer.get('visible') == true) {
             visible = true;
           }
-        };
+        }
         box.set('active', baseVisible ? baseVisible : visible);
-      };
+      }
     }
   }
 
@@ -441,7 +445,7 @@ export class HsLayerManagerService {
     layer.visible = visibility;
     //Set the other layers in the same folder invisible
     if (visibility && layer.layer.get('exclusive') == true) {
-      for (let other_layer of this.data.layers) {
+      for (const other_layer of this.data.layers) {
         if (
           other_layer.layer.get('path') == layer.layer.get('path') &&
           other_layer != layer
@@ -449,9 +453,9 @@ export class HsLayerManagerService {
           other_layer.layer.setVisible(false);
           other_layer.visible = false;
         }
-      };
+      }
     }
-  };
+  }
   /**
    * @function changeBaseLayerVisibility
    * @memberOf HsLayermanagerService
@@ -474,7 +478,10 @@ export class HsLayerManagerService {
             }
           }
           for (var i = 0; i < this.data.baselayers.length; i++) {
-            if (this.data.baselayers[i].layer && this.data.baselayers[i] == layer) {
+            if (
+              this.data.baselayers[i].layer &&
+              this.data.baselayers[i] == layer
+            ) {
               this.data.baselayers[i].layer.setVisible(true);
               this.data.baselayers[i].visible = true;
               this.data.baselayers[i].active = true;
@@ -525,7 +532,7 @@ export class HsLayerManagerService {
       }
     }
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
-  };
+  }
 
   /**
    * @function changeTerrainLayerVisibility
@@ -544,8 +551,8 @@ export class HsLayerManagerService {
           this.data.terrainlayers[i] == layer;
       }
     }
-    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer)
-  };
+    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
+  }
 
   /**
    * Update "position" property of layers, so layers could be correctly ordered in GUI
@@ -554,11 +561,11 @@ export class HsLayerManagerService {
    * @memberOf HsLayermanagerService
    */
   updateLayerOrder() {
-    for (let my_layer of this.data.layers) {
+    for (const my_layer of this.data.layers) {
       my_layer.layer.set('position', this.getMyLayerPosition(my_layer.layer));
       my_layer.position = my_layer.layer.get('position');
-    };
-  };
+    }
+  }
   /**
    * (PRIVATE) Get position of selected layer in map layer order
    *
@@ -587,10 +594,7 @@ export class HsLayerManagerService {
   removeAllLayers() {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (
-        lyr.get('removable') == undefined ||
-        lyr.get('removable') == true
-      ) {
+      if (lyr.get('removable') == undefined || lyr.get('removable') == true) {
         if (lyr.get('base') == undefined || lyr.get('base') == false) {
           if (
             lyr.get('show_in_manager') == undefined ||
@@ -604,7 +608,7 @@ export class HsLayerManagerService {
     while (to_be_removed.length > 0) {
       this.HsMapService.map.removeLayer(to_be_removed.shift());
     }
-  };
+  }
 
   /**
    * @function activateTheme
@@ -620,7 +624,7 @@ export class HsLayerManagerService {
     theme.set('active', switchOn);
     let baseSwitched = false;
     theme.setVisible(switchOn);
-    for (let layer of theme.get('layers')) {
+    for (const layer of theme.get('layers')) {
       if (layer.get('base') == true && !baseSwitched) {
         this.changeBaseLayerVisibility();
         baseSwitched = true;
@@ -629,8 +633,8 @@ export class HsLayerManagerService {
       } else {
         layer.setVisible(switchOn);
       }
-    };
-  };
+    }
+  }
 
   /**
    * @function loadingEvents
@@ -658,7 +662,7 @@ export class HsLayerManagerService {
       source.on('imageloadstart', (event) => {
         source.loaded = false;
         source.loadCounter += 1;
-        this.HsEventBusService.layerLoadings.next(layer)
+        this.HsEventBusService.layerLoadings.next(layer);
       });
       source.on('imageloadend', (event) => {
         source.loaded = true;
@@ -677,7 +681,7 @@ export class HsLayerManagerService {
         if (source.loaded == true) {
           source.loaded = false;
           source.set('loaded', false);
-          this.HsEventBusService.layerLoadings.next(layer)
+          this.HsEventBusService.layerLoadings.next(layer);
         }
       });
       source.on('tileloadend', (event) => {
@@ -708,7 +712,7 @@ export class HsLayerManagerService {
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
       this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
     );
-  };
+  }
 
   /**
    * @function isLayerInResolutionInterval
@@ -734,10 +738,9 @@ export class HsLayerManagerService {
         lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
       );
     }
-  };
+  }
 
-
-   /**
+  /**
    * @function toggleLayerEditor
    * @memberOf hs.layermanager.controller
    * @description Toggles Additional information panel for current layer.
@@ -761,9 +764,9 @@ export class HsLayerManagerService {
         this.toggleCurrentLayer(layer);
       }
     }
-  };
+  }
 
-   /**
+  /**
    * @function toggleCurrentLayer
    * @memberOf hs.layermanager.controller
    * @description Opens detailed panel for manipulating selected layer and viewing metadata
@@ -783,7 +786,7 @@ export class HsLayerManagerService {
       this.setCurrentLayer(layer);
       return false;
     }
-  };
+  }
 
   setCurrentLayer(layer) {
     this.currentLayer = layer;
@@ -808,7 +811,7 @@ export class HsLayerManagerService {
     const layerNode = document.getElementById(layer.idString());
     this.HsUtilsService.insertAfter(layerPanel, layerNode);
     return false;
-  };
+  }
 
   /**
    * @function hasCopyright
@@ -823,7 +826,6 @@ export class HsLayerManagerService {
       return layer.layer.get('MetadataURL') ? true : false;
     }
   }
-
 
   /**
    * (PRIVATE)
@@ -849,7 +851,9 @@ export class HsLayerManagerService {
       this.timer = setTimeout(() => {
         let somethingChanged = false;
         for (let i = 0; i < this.data.layers.length; i++) {
-          const tmp = this.isLayerInResolutionInterval(this.data.layers[i].layer);
+          const tmp = this.isLayerInResolutionInterval(
+            this.data.layers[i].layer
+          );
           if (this.data.layers[i].grayed != tmp) {
             this.data.layers[i].grayed = tmp;
             somethingChanged = true;

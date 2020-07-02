@@ -1,24 +1,25 @@
-import { Component } from '@angular/core';
-import { HsLayoutService } from '../layout/layout.service.js';
-import { HsLayerManagerService } from './layermanager.service';
+import {Component} from '@angular/core';
+import {HsLayerManagerService} from './layermanager.service';
+import {HsLayoutService} from '../layout/layout.service.js';
 
 @Component({
   selector: 'hs-layermanager-gallery',
-  template: require('./partials/basemap-gallery.html')
+  template: require('./partials/basemap-gallery.html'),
 })
 export class HsLayerManagerGalleryComponent {
-  baseLayersExpanded: boolean = false;
+  baseLayersExpanded = false;
   data: any;
 
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
-    private Window: Window) {
+    private Window: Window
+  ) {
     this.data = this.HsLayerManagerService.data;
   }
 
   changeBaseLayerVisibility(toWhat: boolean, layer) {
-    this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer)
+    this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
   }
 
   toggleMiniMenu(layer) {
@@ -29,8 +30,8 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  fitting(a){
-    return a.filter((element) => this.fitsInContainer())
+  fitting(a) {
+    return a.filter((element) => this.fitsInContainer());
   }
 
   toggleBasemap(layer) {
@@ -41,9 +42,9 @@ export class HsLayerManagerGalleryComponent {
       }
     } else {
       this.baseLayersExpanded = false;
-      this.HsLayerManagerService.changeBaseLayerVisibility()
+      this.HsLayerManagerService.changeBaseLayerVisibility();
     }
-  };
+  }
 
   galleryStyle() {
     if (
@@ -51,18 +52,18 @@ export class HsLayerManagerGalleryComponent {
       (this.HsLayoutService.layoutElement.clientWidth <= 767 &&
         this.Window.innerWidth <= 767)
     ) {
-      return { right: '15px' };
+      return {right: '15px'};
     } else {
-      return { right: this.HsLayoutService.panelSpaceWidth() + 20 + 'px' };
+      return {right: this.HsLayoutService.panelSpaceWidth() + 20 + 'px'};
     }
-  };
+  }
 
   fitsInContainer = () => {
     return (
       (this.HsLayerManagerService.data.baselayers.length + 1) * 150 <
       this.HsLayoutService.layoutElement.clientWidth -
-      this.HsLayoutService.panelSpaceWidth() -
-      450
+        this.HsLayoutService.panelSpaceWidth() -
+        450
     );
   };
 
@@ -80,5 +81,5 @@ export class HsLayerManagerGalleryComponent {
     setTimeout(() => {
       layer.galleryMiniMenu = false;
     }, 100);
-  };
+  }
 }

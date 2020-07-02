@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import { HsLegendService } from './legend.service';
-import { HsMapService } from '../map/map.service.js';
+import {Component} from '@angular/core';
+import {HsLegendService} from './legend.service';
+import {HsMapService} from '../map/map.service.js';
 @Component({
   selector: 'hs.legend',
-  template: require('./partials/legend.html')
+  template: require('./partials/legend.html'),
 })
 export class HsLegendComponent {
   layerDescriptors = [];
 
-  constructor(private HsLegendService: HsLegendService, private HsMapService: HsMapService) {
+  constructor(
+    private HsLegendService: HsLegendService,
+    private HsMapService: HsMapService
+  ) {
     this.HsMapService.loaded().then((map) => this.init(map));
     //this.$emit('scope_loaded', 'Legend');
   }
@@ -65,7 +68,7 @@ export class HsLegendComponent {
   }
 
   /**
-   *
+   * @param map
    */
   init(map) {
     map.getLayers().on('add', (e) => this.layerAdded(e));
@@ -145,5 +148,4 @@ export class HsLegendComponent {
       return found[0];
     }
   }
-
 }

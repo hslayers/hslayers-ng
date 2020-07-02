@@ -1,25 +1,21 @@
 import Static from 'ol/source/ImageStatic';
 import VectorLayer from 'ol/layer/Vector';
-import { Circle, Icon } from 'ol/style';
-import { Image as ImageLayer } from 'ol/layer';
-import { ImageWMS } from 'ol/source';
-import { TileWMS, XYZ } from 'ol/source';
-import { HsUtilsService } from '../utils/utils.service';
+import {Circle, Icon} from 'ol/style';
+import {HsUtilsService} from '../utils/utils.service';
+import {Image as ImageLayer} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
+import {TileWMS, XYZ} from 'ol/source';
 
-
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLegendService {
-
   /**
- * @param HsUtilsService
- */
-  constructor(private HsUtilsService: HsUtilsService) {
-
-  }
+   * @param HsUtilsService
+   */
+  constructor(private HsUtilsService: HsUtilsService) {}
 
   /**
    * Test if layer is visible and has supported type (conditions for displaying legend)
@@ -57,7 +53,7 @@ export class HsLegendService {
     let foundPoint = false;
     let foundLine = false;
     let foundPolygon = false;
-    for (let feature of currentLayer.getSource().getFeatures()) {
+    for (const feature of currentLayer.getSource().getFeatures()) {
       if (feature.getGeometry()) {
         const type = feature.getGeometry().getType();
         switch (type) {
@@ -73,7 +69,7 @@ export class HsLegendService {
           default:
         }
       }
-    };
+    }
     const tmp = [];
     if (foundLine) {
       tmp.push('line');
@@ -158,9 +154,9 @@ export class HsLegendService {
    */
   setUpLegendStyle(fill, stroke, image) {
     const row: any = {};
-    row.style = { maxWidth: '35px', maxHeight: '35px', marginBottom: '10px' };
+    row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
-      row.icon = { type: 'icon', src: image.getSrc() };
+      row.icon = {type: 'icon', src: image.getSrc()};
     } else if (image && this.HsUtilsService.instOf(image, Circle)) {
       if (image.getStroke() && image.getFill()) {
         row.customCircle = {
@@ -192,7 +188,7 @@ export class HsLegendService {
       };
     }
     if (!stroke && !fill) {
-      row.defaultLine = { type: 'line', stroke: 'blue', strokeWidth: '1' };
+      row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
       row.defaultPolygon = {
         type: 'polygon',
         fill: 'blue',
@@ -213,8 +209,8 @@ export class HsLegendService {
       };
     } else {
       if (fill) {
-        row.polygon = { type: 'polygon', fill: fill.getColor() };
-        row.defaultLine = { type: 'line', stroke: 'blue', strokeWidth: '1' };
+        row.polygon = {type: 'polygon', fill: fill.getColor()};
+        row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
       } else {
         row.line = {
           type: 'line',

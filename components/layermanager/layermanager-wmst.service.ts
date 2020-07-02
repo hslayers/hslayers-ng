@@ -1,7 +1,7 @@
-import * as moment from "moment";
-import { Injectable } from '@angular/core';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsEventBusService } from "../core/event-bus.service";
+import * as moment from 'moment';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +10,7 @@ export class HsLayerManagerWmstService {
   constructor(
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService
-  ) {
-
-  }
-
+  ) {}
 
   /**
    * Get date format of time data based on time unit property
@@ -31,7 +28,7 @@ export class HsLayerManagerWmstService {
       default:
         return 'dd-MM-yyyy HH:mm';
     }
-  };
+  }
 
   /**
    * Set time intervals for WMS-T (WMS with time support)
@@ -65,7 +62,7 @@ export class HsLayerManagerWmstService {
           .toDate()
           .getTime();
     }
-  };
+  }
 
   /**
    * @function parseInterval
@@ -180,7 +177,10 @@ export class HsLayerManagerWmstService {
       if (Array.isArray(value)) {
         value = value[0];
       }
-      if (typeof value === 'string' || this.HsUtilsService.instOf(value, String)) {
+      if (
+        typeof value === 'string' ||
+        this.HsUtilsService.instOf(value, String)
+      ) {
         value = value.replace(/\s*/g, '');
 
         if (value.search('/') > -1) {
@@ -207,7 +207,7 @@ export class HsLayerManagerWmstService {
       return Object.keys(metadata).length > 0;
     }
     return false;
-  };
+  }
 
   /**
    * @function setLayerTime
@@ -217,10 +217,7 @@ export class HsLayerManagerWmstService {
    * @description Update layer time parameter
    */
   setLayerTime(currentLayer, dateIncrement) {
-    if (
-      currentLayer == undefined ||
-      currentLayer.layer == undefined
-    ) {
+    if (currentLayer == undefined || currentLayer.layer == undefined) {
       return;
     }
     const dimensions_time =
@@ -232,7 +229,7 @@ export class HsLayerManagerWmstService {
     let d: moment.Moment = moment.utc(dimensions_time.timeInterval[0]);
     switch (currentLayer.time_unit) {
       case 'FullYear':
-        d.set({ year: dateIncrement });
+        d.set({year: dateIncrement});
         break;
       case 'Month':
         d.add(dateIncrement, 'months');
@@ -251,8 +248,11 @@ export class HsLayerManagerWmstService {
     currentLayer.layer.getSource().updateParams({
       'TIME': d.toISOString(),
     });
-    this.HsEventBusService.layerTimeChanges.next({ layer: currentLayer.layer, time: d.toISOString() });
-  };
+    this.HsEventBusService.layerTimeChanges.next({
+      layer: currentLayer.layer,
+      time: d.toISOString(),
+    });
+  }
 
   setupTimeLayerIfNeeded(new_layer) {
     if (this.layerIsWmsT(new_layer)) {
@@ -277,7 +277,7 @@ export class HsLayerManagerWmstService {
       this.setLayerTimeSliderIntervals(new_layer, dimensions_time);
       this.setLayerTime(new_layer, 0);
     }
-  };
+  }
 }
 
 declare global {

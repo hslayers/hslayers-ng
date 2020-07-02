@@ -1,19 +1,19 @@
 import VectorLayer from 'ol/layer/Vector';
-import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
-import { Cluster } from 'ol/source';
-import { Point } from 'ol/geom';
-import { Injectable } from '@angular/core';
-import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService } from '../utils/utils.service';
+import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
+import {Cluster} from 'ol/source';
+import {HsMapService} from '../map/map.service.js';
+import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
+import {Point} from 'ol/geom';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorVectorLayerService {
-
-  constructor(private HsMapService: HsMapService, private HsUtilsService: HsUtilsService) {
-
-  }
+  constructor(
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService
+  ) {}
 
   /**
    * @function Declutter
@@ -135,6 +135,5 @@ export class HsLayerEditorVectorLayerService {
         }
       },
     });
-  };
-
+  }
 }

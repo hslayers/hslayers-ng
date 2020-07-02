@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {Component, Input} from '@angular/core';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 @Component({
   selector: 'hs-legend-layer-static',
-  template: require('./partials/layer-static-directive.html')
+  template: require('./partials/layer-static-directive.html'),
 })
 export class HsLegendLayerStaticComponent {
   @Input() layer: any;
@@ -12,8 +12,7 @@ export class HsLegendLayerStaticComponent {
   svgContent: SafeHtml;
   legendImage: string;
 
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   fillContent() {
     const legendImage = this.layer.lyr.get('legendImage');
@@ -30,16 +29,14 @@ export class HsLegendLayerStaticComponent {
   }
 
   ngOnInit() {
-    
     if (this.layer.lyr.get('legendImage')) {
       this.fillContent();
     }
     this.layer.lyr.on('change', (e) => {
       //TODO: Maybe rewrite this to something more fancy like Observable
-      if(this.layer.lyr.get('legendImage') != this.lastLegendImage) {
-        this.fillContent()
+      if (this.layer.lyr.get('legendImage') != this.lastLegendImage) {
+        this.fillContent();
       }
     });
   }
-
 }

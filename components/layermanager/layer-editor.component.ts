@@ -1,19 +1,19 @@
-import { Circle, Fill, RegularShape, Stroke } from 'ol/style';
-import { Component, Input } from '@angular/core';
-import { HsLayerManagerWmstService } from './layermanager-wmst.service';
-import { HsLayerManagerService } from './layermanager.service';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
-import { HsLayerEditorService } from './layer-editor.service';
-import { HsLegendService } from '../legend';
-import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
-import { HsLayoutService } from '../layout/layout.service.js';
-import { HsStylerService } from '../styles/styler.service';
-import { HsDrawService } from '../draw/draw.service.js'
-import { HsEventBusService } from '../core/event-bus.service';
-import * as moment from "moment";
-import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
+import * as moment from 'moment';
+import {Circle, Fill, RegularShape, Stroke} from 'ol/style';
+import {Component, Input} from '@angular/core';
+import {HsDrawService} from '../draw/draw.service.js';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorService} from './layer-editor.service';
+import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
+import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLegendService} from '../legend';
+import {HsMapService} from '../map/map.service.js';
+import {HsStylerService} from '../styles/styler.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -23,8 +23,8 @@ export class HsLayerEditorComponent {
   @Input('current-layer') currentLayer: any;
   distance = {
     value: 40,
-  }
-  layer_renamer_visible: boolean = false;
+  };
+  layer_renamer_visible = false;
   legendDescriptors: Array<any> = [];
 
   constructor(
@@ -40,9 +40,8 @@ export class HsLayerEditorComponent {
     private HsDrawService: HsDrawService,
     private HsLegendService: HsLegendService,
     private HsEventBusService: HsEventBusService,
-    private HsLayerManagerMetadataService: HsLayerManagerMetadataService, // Used in template
-  ) {
-  }
+    private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
+  ) {}
 
   ngOnChanges() {
     if (!this.currentLayer) {
@@ -50,9 +49,7 @@ export class HsLayerEditorComponent {
     }
 
     this.legendDescriptors = [
-      this.HsLegendService.getLayerLegendDescriptor(
-        this.currentLayer.layer
-      ),
+      this.HsLegendService.getLayerLegendDescriptor(this.currentLayer.layer),
     ];
   }
 
@@ -72,8 +69,8 @@ export class HsLayerEditorComponent {
    * @deprecated TODO
    */
   isLayerWMS(layer) {
-    return this.HsLayerUtilsService.isLayerWMS(layer)
-  };
+    return this.HsLayerUtilsService.isLayerWMS(layer);
+  }
 
   /**
    * @function zoomToLayer
@@ -106,7 +103,7 @@ export class HsLayerEditorComponent {
    * @description Test if layer is WMS layer
    */
   isLayerVectorLayer(layer) {
-    return this.HsLayerUtilsService.isLayerVectorLayer(layer)
+    return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 
   /**
@@ -219,7 +216,7 @@ export class HsLayerEditorComponent {
         },
         () => { }
       ); */
-    } catch (ex) { }
+    } catch (ex) {}
   }
 
   /**
@@ -234,7 +231,6 @@ export class HsLayerEditorComponent {
     }
     this.olLayer().setOpacity(newValue);
     this.HsEventBusService.compositionEdits.next();
-
   }
 
   get opacity() {
@@ -333,8 +329,7 @@ export class HsLayerEditorComponent {
     const layer = this.olLayer();
     return (
       layer != undefined &&
-      (layer.get('removable') == undefined ||
-        layer.get('removable') == true)
+      (layer.get('removable') == undefined || layer.get('removable') == true)
     );
   }
 
@@ -358,7 +353,7 @@ export class HsLayerEditorComponent {
     }
     layer.style.pointType = type;
     this.setLayerStyle(layer);
-  };
+  }
 
   /**
    * @function isScaleVisible
@@ -387,8 +382,7 @@ export class HsLayerEditorComponent {
       return false;
     }
     return (
-      layer.getMinResolution() != undefined &&
-      layer.getMinResolution() != 0
+      layer.getMinResolution() != undefined && layer.getMinResolution() != 0
     );
   }
 
@@ -455,10 +449,7 @@ export class HsLayerEditorComponent {
     if (layer.opacity == undefined) {
       layer.opacity = layer.layer.getOpacity();
     }
-    if (
-      layer.style == undefined &&
-      layer.layer.getSource().styleAble
-    ) {
+    if (layer.style == undefined && layer.layer.getSource().styleAble) {
       this.getLayerStyle(layer);
     }
     layer.expandSettings = value;
@@ -628,6 +619,5 @@ export class HsLayerEditorComponent {
       }
     }
     wrapper.style.style = style;
-  };
-
+  }
 }
