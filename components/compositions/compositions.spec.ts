@@ -30,6 +30,9 @@ describe('compositions', function () {
       .service('HsEventBusService', function () {
         this.sizeChanges = new Subject();
         this.mapResets = new Subject();
+        this.compositionEdits = new Subject();
+        this.compositionLoadStarts = new Subject();
+        this.compositionDeletes = new Subject();
       });
 
     angular.module('hs.utils', [])
