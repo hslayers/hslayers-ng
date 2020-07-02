@@ -2,26 +2,26 @@
  * @namespace hs.legend
  * @memberOf hs
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { HsPanelHelpersModule } from '../layout/panel-helpers.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { HsLayerManagerFolderComponent } from './layermanager-folder.component';
-import { HsLayerEditorComponent } from './layer-editor.component';
-import { HsLayerEditorDimensionsComponent } from './dimensions/layer-editor-dimensions.component';
-import { HsLayerEditorService } from './layer-editor.service';
-import { HsLayerEditorSubLayerCheckboxesComponent } from './layer-editor.sub-layer-checkboxes.component';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
-import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
-import { HsLayerListComponent } from './layermanager-layerlist.component';
-import { HsLayerManagerComponent } from './layermanager.component';
-import { HsLayerManagerGalleryComponent } from './layermanager-gallery.component';
-import { HsLayerManagerMetadataService } from './layermanager-metadata.service';
-import { HsLayerManagerService } from './layermanager.service';
-import { HsLayerManagerWmstService } from './layermanager-wmst.service';
-import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.component';
-import { FormsModule } from '@angular/forms';
-import { HsLegendModule } from '../legend';
+import {BrowserModule} from '@angular/platform-browser';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsLayerEditorComponent} from './layer-editor.component';
+import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
+import {HsLayerEditorService} from './layer-editor.service';
+import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor.sub-layer-checkboxes.component';
+import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerListComponent} from './layermanager-layerlist.component';
+import {HsLayerManagerComponent} from './layermanager.component';
+import {HsLayerManagerFolderComponent} from './layermanager-folder.component';
+import {HsLayerManagerGalleryComponent} from './layermanager-gallery.component';
+import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
+import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
+import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLegendModule} from '../legend';
+import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -33,14 +33,14 @@ import { HsLegendModule } from '../legend';
     HsLayerEditorComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent
+    HsLayerManagerRemoveAllDialogComponent,
   ],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
     HsPanelHelpersModule,
-    HsLegendModule
+    HsLegendModule,
   ],
   exports: [
     HsLayerManagerComponent,
@@ -50,7 +50,7 @@ import { HsLegendModule } from '../legend';
     HsLayerEditorComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent
+    HsLayerManagerRemoveAllDialogComponent,
   ],
   providers: [
     HsLayerEditorSublayerService,
@@ -58,7 +58,7 @@ import { HsLegendModule } from '../legend';
     HsLayerEditorVectorLayerService,
     HsLayerManagerMetadataService,
     HsLayerManagerService,
-    HsLayerManagerWmstService
+    HsLayerManagerWmstService,
   ],
   entryComponents: [
     HsLayerManagerComponent,
@@ -67,10 +67,7 @@ import { HsLegendModule } from '../legend';
     HsLayerManagerGalleryComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent
-  ]
+    HsLayerManagerRemoveAllDialogComponent,
+  ],
 })
-export class HsLayerManagerModule {
-}
-
-
+export class HsLayerManagerModule {}

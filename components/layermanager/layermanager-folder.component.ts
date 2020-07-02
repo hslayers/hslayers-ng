@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 @Component({
   selector: 'hs-layer-manager-folder',
-  template: require('./partials/folder.html')
+  template: require('./partials/folder.html'),
 })
 export class HsLayerManagerFolderComponent {
   @Input() folder: any;
-  
+
   /**
    * @ngdoc method
    * @name hs.layermanager.folderDirective#folderVisible
@@ -16,5 +16,5 @@ export class HsLayerManagerFolderComponent {
    */
   folderVisible(obj) {
     return obj.sub_folders.length > 0;
-  };
+  }
 }

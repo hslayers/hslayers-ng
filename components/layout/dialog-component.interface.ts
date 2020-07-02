@@ -1,3 +1,3 @@
 export interface HsDialogComponent {
-    data: any;
+  data: any;
 }

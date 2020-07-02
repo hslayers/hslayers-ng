@@ -1,28 +1,27 @@
-import { Component } from '@angular/core';
-import { HsMapService } from '../map/map.service';
-import { HsCoreService } from '../core/core.service';
-import { HsLayerManagerService } from './layermanager.service';
-import { HsLayerManagerWmstService } from './layermanager-wmst.service';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
-import { HsEventBusService } from '../core/event-bus.service';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
-import { HsLayoutService } from '../layout/layout.service.js';
-import { HsLayerSynchronizerService } from '../save-map/layer-synchronizer.service.js';
-import { HsDialogContainerService } from '../layout/dialog-container.service';
-import { HsLayerManagerRemoveAllDialogComponent } from './remove-all-dialog.component';
-import { HsDialogItem } from '../layout/dialog-item';
+import {Component} from '@angular/core';
+import {HsCoreService} from '../core/core.service';
+import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsDialogItem} from '../layout/dialog-item';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
+import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsLayoutService} from '../layout/layout.service.js';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layer-manager',
-  template: require('./partials/layermanager.html')
+  template: require('./partials/layermanager.html'),
 })
 export class HsLayerManagerComponent {
-
   map: any;
-  shiftDown: boolean = false;
+  shiftDown = false;
   data: any;
-  query: any = {title: undefined}
+  query: any = {title: undefined};
 
   icons = [
     'bag1.svg',
@@ -74,8 +73,8 @@ export class HsLayerManagerComponent {
     'wifi8.svg',
   ];
 
-
-  constructor(private HsCore: HsCoreService,
+  constructor(
+    private HsCore: HsCoreService,
     private HsUtilsService: HsUtilsService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsMapService: HsMapService,
@@ -139,7 +138,7 @@ export class HsLayerManagerComponent {
 
   layerOrder(layer) {
     return layer.layer.get('position');
-  };
+  }
 
   changePosition(layer, direction, $event) {
     const index = layer.layer.get('position');
@@ -177,7 +176,7 @@ export class HsLayerManagerComponent {
     layers.insertAt(toIndex, moveLayer);
     this.HsLayerManagerService.updateLayerOrder();
     this.HsEventBusService.layerManagerUpdates.next();
-  };
+  }
 
   isLayerType(layer, type) {
     switch (type) {
@@ -192,14 +191,14 @@ export class HsLayerManagerComponent {
       default:
         return false;
     }
-  };
+  }
 
   setProp(layer, property, value) {
     layer.set(property, value);
-  };
+  }
 
   activateTheme(e) {
-    return this.HsLayerManagerService.activateTheme(e)
+    return this.HsLayerManagerService.activateTheme(e);
   }
 
   /**
@@ -210,7 +209,7 @@ export class HsLayerManagerComponent {
    */
   removeLayer(layer) {
     this.map.removeLayer(layer);
-  };
+  }
 
   /**
    * @function removeAllLayers
@@ -220,9 +219,10 @@ export class HsLayerManagerComponent {
    */
   removeAllLayers() {
     this.HsDialogContainerService.create(
-      HsLayerManagerRemoveAllDialogComponent, {}
+      HsLayerManagerRemoveAllDialogComponent,
+      {}
     );
-  };
+  }
 
   /**
    * @function hasCopyright
@@ -241,7 +241,7 @@ export class HsLayerManagerComponent {
         return false;
       }
     }
-  };
+  }
 
   /**
    * @function hasBoxLayers
@@ -250,23 +250,24 @@ export class HsLayerManagerComponent {
    */
   hasBoxImages() {
     if (this.data.box_layers != undefined) {
-      for (let layer of this.data.box_layers) {
+      for (const layer of this.data.box_layers) {
         if (layer.get('img')) {
           return true;
         }
       }
     }
     return false;
-  };
+  }
 
   /**
    * @function isLayerInResolutionInterval
+   * @param layer
    * @memberOf hs.layermanager.controller
    * @param {Ol.layer} lyr Selected layer
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
   isLayerInResolutionInterval(layer) {
-    return this.HsLayerManagerService.isLayerInResolutionInterval(layer)
+    return this.HsLayerManagerService.isLayerInResolutionInterval(layer);
   }
 
   /**
@@ -292,7 +293,5 @@ export class HsLayerManagerComponent {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.HsLayerManagerService.composition_id = null;
     });
-
   }
 }
-

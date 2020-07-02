@@ -1,25 +1,25 @@
-import { NgModule } from '@angular/core';
-import { HsLayoutServiceProvider } from '../../ajs-upgraded-providers';
 import {BootstrapComponent} from '../../bootstrap.component';
-import { HsDialogContainerComponent } from './dialog-container.component';
-import { HsDialogContainerService } from './dialog-container.service';
-import { BrowserModule } from '@angular/platform-browser';
-import { HsDialogHostDirective } from './dialog-host.directive';
+import {BrowserModule} from '@angular/platform-browser';
+import {HsDialogContainerComponent} from './dialog-container.component';
+import {HsDialogContainerService} from './dialog-container.service';
+import {HsDialogHostDirective} from './dialog-host.directive';
+import {HsLayoutServiceProvider} from '../../ajs-upgraded-providers';
+import {NgModule} from '@angular/core';
 /**
  * @namespace hs.layout
  * @memberOf hs
  */
 @NgModule({
-  declarations: [BootstrapComponent, HsDialogContainerComponent, HsDialogHostDirective],
-  imports: [
-    BrowserModule
+  declarations: [
+    BootstrapComponent,
+    HsDialogContainerComponent,
+    HsDialogHostDirective,
   ],
-  providers: [
-    HsLayoutServiceProvider, HsDialogContainerService
-  ],
+  imports: [BrowserModule],
+  providers: [HsLayoutServiceProvider, HsDialogContainerService],
   entryComponents: [BootstrapComponent, HsDialogContainerComponent],
-  exports: [BootstrapComponent]
+  exports: [BootstrapComponent],
 })
 export class HsLayoutModule {
-  ngDoBootstrap(){}
+  ngDoBootstrap() {}
 }

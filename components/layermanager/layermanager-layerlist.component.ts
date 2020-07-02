@@ -1,16 +1,16 @@
-import { Component, Input } from '@angular/core';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsLayerUtilsService } from '../utils/layer-utils.service';
-import { HsLayerManagerService } from './layermanager.service';
-import { HsConfig } from '../../config.service';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
-import { HsMapService } from '../map/map.service.js';
-import { HsLayoutService } from '../layout/layout.service.js';
-import { HsEventBusService } from '../core/event-bus.service';
+import {Component, Input} from '@angular/core';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service.js';
+import {HsMapService} from '../map/map.service.js';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
-  template: require('./partials/layerlist.html')
+  template: require('./partials/layerlist.html'),
 })
 export class HsLayerListComponent {
   @Input() folder: any;
@@ -21,21 +21,22 @@ export class HsLayerListComponent {
    * @type {Array}
    * @description List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
    */
-  layer_titles:Array<any> = [];
-  filtered_layers:Array<any> = [];
+  layer_titles: Array<any> = [];
+  filtered_layers: Array<any> = [];
 
   constructor(
     private HsConfig: HsConfig,
     private HsLayerManagerService: HsLayerManagerService,
-    private HsMapService: HsMapService, 
+    private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayoutService: HsLayoutService,
     private HsEventBusService: HsEventBusService,
-    private HsLayerUtilsService: HsLayerUtilsService) {
+    private HsLayerUtilsService: HsLayerUtilsService
+  ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.sortLayersByPosition();
-    })
+    });
   }
 
   changeSublayerVisibilityState(layer, state) {
@@ -51,7 +52,7 @@ export class HsLayerListComponent {
     }
   }
 
-    /**
+  /**
    * @function layerValid
    * @memberOf hs.layermanager.controller
    * @param {Ol.layer} layer Selected layer
@@ -88,21 +89,20 @@ export class HsLayerListComponent {
       }
       if (layer.layer.withChildren) {
         Object.keys(layer.layer.withChildren).forEach((key) => {
-          layer.layer.withChildren[key] =
-            layer.layer.withChildrenTmp[key];
+          layer.layer.withChildren[key] = layer.layer.withChildrenTmp[key];
         });
       }
     }
-  };
+  }
 
   ngOnInit() {
     /**
-    * @ngdoc property
-    * @name hs.layermanager.layerlistDirective#filtered_layers
-    * @public
-    * @type {Array}
-    * @description List of layers which belong to folder hierarchy level of directive instance
-    */
+     * @ngdoc property
+     * @name hs.layermanager.layerlistDirective#filtered_layers
+     * @public
+     * @type {Array}
+     * @description List of layers which belong to folder hierarchy level of directive instance
+     */
     this.filtered_layers = this.filterLayers();
     this.sortLayersByPosition();
   }
@@ -116,7 +116,7 @@ export class HsLayerListComponent {
   filterLayers() {
     const tmp = [];
 
-    for(let layer of this.HsLayerManagerService.data.layers) {
+    for (const layer of this.HsLayerManagerService.data.layers) {
       if (
         layer.layer.get('path') == this.folder.hsl_path ||
         ((layer.layer.get('path') == undefined ||
@@ -125,7 +125,7 @@ export class HsLayerListComponent {
       ) {
         tmp.push(layer);
       }
-    };
+    }
     return tmp;
   }
 
@@ -140,11 +140,11 @@ export class HsLayerListComponent {
     for (let i = 0; i < this.filtered_layers.length; i++) {
       this.layer_titles.push(this.filtered_layers[i].title);
     }
-  };
+  }
 
   order() {
     return this.HsConfig.layer_order || '-position';
-  };
+  }
 
   /**
    * @function isLayerQueryable
@@ -154,7 +154,7 @@ export class HsLayerListComponent {
    */
   isLayerQueryable(layer_container) {
     this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
-  };
+  }
 
   /**
    * @ngdoc method
@@ -187,15 +187,8 @@ export class HsLayerListComponent {
    * @description Callback for dragged event so event can be injected with correct layer titles list needed for correct recalculation.
    */
   dragged(event, index, item, type, external) {
-    this.draggedCont(
-      event,
-      index,
-      item,
-      type,
-      external,
-      this.layer_titles
-    );
-  };
+    this.draggedCont(event, index, item, type, external, this.layer_titles);
+  }
 
   /**
    * @function dragged
@@ -209,14 +202,7 @@ export class HsLayerListComponent {
    * @description Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop).
    * This is called from layerlistDirective
    */
-  draggedCont(
-    event,
-    index,
-    item,
-    type,
-    external,
-    layerTitles
-  ) {
+  draggedCont(event, index, item, type, external, layerTitles) {
     if (layerTitles.indexOf(item) < index) {
       index--;
     } //Must take into acount that this item will be removed and list will shift
@@ -239,7 +225,7 @@ export class HsLayerListComponent {
     const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-layerpanel'
     );
-    let layerNodes = document
+    const layerNodes = document
       .querySelector('.hs-lm-list')
       .querySelectorAll('.hs-lm-item');
     let layerNode = layerNodes[layerNodes.length - 1];
@@ -256,6 +242,5 @@ export class HsLayerListComponent {
       this.HsUtilsService.insertAfter(layerPanel, layerNode);
       this.HsEventBusService.layerManagerUpdates.next();
     }, 300);
-  };
-};
-
+  }
+}

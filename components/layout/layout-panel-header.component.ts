@@ -12,8 +12,7 @@ export class HsPanelHeaderComponent {
     'extraTitle': '?extraTitle',
   },*/
 
-  constructor(private HsLayoutService: HsLayoutService) {
-  }
+  constructor(private HsLayoutService: HsLayoutService) {}
 
   /**
    *

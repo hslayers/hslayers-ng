@@ -1,12 +1,12 @@
-import { ImageWMS, TileWMS, XYZ } from 'ol/source';
-import { Component, Input } from '@angular/core';
-import { HsMapService } from '../../map/map.service.js';
-import { HsUtilsService } from '../../utils/utils.service';
-import { HsDimensionService } from '../../../common/dimension.service.js';
-import { HsEventBusService } from '../../core/event-bus.service';
+import {Component, Input} from '@angular/core';
+import {HsDimensionService} from '../../../common/dimension.service.js';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsMapService} from '../../map/map.service.js';
+import {HsUtilsService} from '../../utils/utils.service';
+import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 @Component({
   selector: 'hs-layer-editor-dimensions',
-  template: require('./layer-editor-dimensions.html')
+  template: require('./layer-editor-dimensions.html'),
 })
 export class HsLayerEditorDimensionsComponent {
   @Input('ol-layer') olLayer: any;
@@ -16,10 +16,10 @@ export class HsLayerEditorDimensionsComponent {
     private HsUtilsService: HsUtilsService,
     private HsMapService: HsMapService,
     private HsEventBusService: HsEventBusService
-  ) { }
+  ) {}
 
   dimensionType(dimension) {
-    return this.HsDimensionService.dimensionType(dimension)
+    return this.HsDimensionService.dimensionType(dimension);
   }
 
   /**
@@ -76,4 +76,4 @@ export class HsLayerEditorDimensionsComponent {
     }
     return layer.get('dimensions');
   }
-};
+}

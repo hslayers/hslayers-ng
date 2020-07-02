@@ -1,9 +1,8 @@
-import { Type } from '@angular/core';
+import {Type} from '@angular/core';
 
 export class HsDialogItem {
   constructor(public component: Type<any>, public data: any) {}
 }
-
 
 /*
 Copyright Google LLC. All Rights Reserved.

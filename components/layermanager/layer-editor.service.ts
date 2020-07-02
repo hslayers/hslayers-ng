@@ -1,11 +1,11 @@
-import { WMSCapabilities } from 'ol/format';
-import { get as getProj, transform, transformExtent } from 'ol/proj';
-import { Injectable } from '@angular/core';
-import { HsLayerEditorVectorLayerService } from './layer-editor-vector-layer.service';
-import { HsMapService } from '../map/map.service.js';
-import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
-import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js'
-import { HsEventBusService } from '../core/event-bus.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsMapService} from '../map/map.service.js';
+import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
+import {Injectable} from '@angular/core';
+import {WMSCapabilities} from 'ol/format';
+import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,8 @@ export class HsLayerEditorService {
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsEventBusService: HsEventBusService) { }
+    private HsEventBusService: HsEventBusService
+  ) {}
 
   /**
    * @function zoomToLayer
@@ -54,8 +55,7 @@ export class HsLayerEditorService {
       const caps = parser.read(capabilities_xml);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
         const foundDefs = caps.Capability.Layer.Layer.filter(
-          (layer_def) =>
-            layer_def.Name == layer.getSource().getParams().LAYERS
+          (layer_def) => layer_def.Name == layer.getSource().getParams().LAYERS
         );
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
@@ -118,7 +118,6 @@ export class HsLayerEditorService {
     }
   }
 
-
   /**
    * @param {ol/extent} extent Extent in EPSG:4326
    * @param {ol/layer} layer
@@ -126,7 +125,9 @@ export class HsLayerEditorService {
   fitIfExtentSet(extent, layer) {
     if (extent !== null) {
       layer.set('BoundingBox', extent);
-      this.HsMapService.map.getView().fit(extent, this.HsMapService.map.getSize());
+      this.HsMapService.map
+        .getView()
+        .fit(extent, this.HsMapService.map.getSize());
     }
   }
 

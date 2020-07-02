@@ -1,25 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HsLayerManagerService } from './layermanager.service';
+import {HsLayerManagerService} from './layermanager.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorSublayerService {
-
   checkedSubLayers: any = {};
   withChildren: any = {};
   populatedLayers: Array<any> = [];
   withChildrenTmp: any = {};
   checkedSubLayersTmp: any = {};
 
-  constructor(private HsLayerManagerService: HsLayerManagerService) {
-
-  }
+  constructor(private HsLayerManagerService: HsLayerManagerService) {}
 
   hasSubLayers() {
-    const subLayers = this.HsLayerManagerService.currentLayer.layer.get('Layer');
+    const subLayers = this.HsLayerManagerService.currentLayer.layer.get(
+      'Layer'
+    );
     return subLayers != undefined && subLayers.length > 0;
-  };
+  }
 
   getSubLayers() {
     if (this.HsLayerManagerService.currentLayer == null) {
@@ -28,7 +27,7 @@ export class HsLayerEditorSublayerService {
     this.populateSubLayers();
 
     return this.HsLayerManagerService.currentLayer.layer.get('Layer');
-  };
+  }
 
   populateSubLayers() {
     if (
@@ -38,10 +37,14 @@ export class HsLayerEditorSublayerService {
     ) {
       return;
     }
-    const sublayers = this.HsLayerManagerService.currentLayer.layer.get('Layer');
+    const sublayers = this.HsLayerManagerService.currentLayer.layer.get(
+      'Layer'
+    );
     if (sublayers) {
-      this.populatedLayers.push(this.HsLayerManagerService.currentLayer.layer.ol_uid);
-      for (let layer of sublayers) {
+      this.populatedLayers.push(
+        this.HsLayerManagerService.currentLayer.layer.ol_uid
+      );
+      for (const layer of sublayers) {
         if (layer.Layer) {
           Object.assign(
             this.HsLayerManagerService.currentLayer.layer.withChildren,
@@ -49,14 +52,14 @@ export class HsLayerEditorSublayerService {
               [layer.Name]: this.HsLayerManagerService.currentLayer.layer.getVisible(),
             }
           );
-          for (let sublayer of layer.Layer) {
+          for (const sublayer of layer.Layer) {
             Object.assign(
               this.HsLayerManagerService.currentLayer.layer.checkedSubLayers,
               {
                 [sublayer.Name]: this.HsLayerManagerService.currentLayer.layer.getVisible(),
               }
             );
-          };
+          }
         } else {
           Object.assign(
             this.HsLayerManagerService.currentLayer.layer.checkedSubLayers,
@@ -65,9 +68,8 @@ export class HsLayerEditorSublayerService {
             }
           );
         }
-      };
-      this.checkedSubLayers =
-        this.HsLayerManagerService.currentLayer.layer.checkedSubLayers;
+      }
+      this.checkedSubLayers = this.HsLayerManagerService.currentLayer.layer.checkedSubLayers;
       this.withChildren = this.HsLayerManagerService.currentLayer.layer.withChildren;
 
       this.HsLayerManagerService.currentLayer.layer.checkedSubLayersTmp = this.checkedSubLayersTmp = Object.assign(
@@ -88,7 +90,7 @@ export class HsLayerEditorSublayerService {
         );
       }
     }
-  };
+  }
 
   subLayerSelected() {
     const layer = this.HsLayerManagerService.currentLayer;
@@ -105,6 +107,5 @@ export class HsLayerEditorSublayerService {
       this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
     }
     src.updateParams(params);
-  };
-
+  }
 }

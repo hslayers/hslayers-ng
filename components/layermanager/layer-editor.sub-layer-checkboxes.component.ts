@@ -1,30 +1,32 @@
-import { Component } from '@angular/core';
-import { HsLayerEditorSublayerService } from './layer-editor.sub-layer.service';
+import {Component} from '@angular/core';
+import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
-  template: require('./partials/sub-layer-checkboxes.html')
+  template: require('./partials/sub-layer-checkboxes.html'),
 })
 export class HsLayerEditorSubLayerCheckboxesComponent {
-  expanded: boolean = false;
+  expanded = false;
   checkedSubLayers: any;
   withChildren: any;
 
-  constructor(private HsLayerEditorSublayerService: HsLayerEditorSublayerService) {
+  constructor(
+    private HsLayerEditorSublayerService: HsLayerEditorSublayerService
+  ) {
     this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
   }
 
   getSubLayers() {
     return this.HsLayerEditorSublayerService.getSubLayers();
-  };
+  }
 
   subLayerIsString(subLayer) {
     return typeof subLayer == 'string';
-  };
+  }
 
   toggleExpanded() {
     this.expanded = !this.expanded;
-  };
+  }
 
   /**
    * @function toggleSublayersVisibility
@@ -35,14 +37,14 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
    */
   subLayerSelected(sublayer, state) {
     if (sublayer != undefined && sublayer.Layer) {
-      for (let children of sublayer.Layer) {
+      for (const children of sublayer.Layer) {
         Object.assign(this.checkedSubLayers, {
           [children.Name]: state,
         });
         this.HsLayerEditorSublayerService.checkedSubLayersTmp[
           children.Name
         ] = state;
-      };
+      }
     }
     if (this.checkedSubLayers[sublayer.Name] != undefined) {
       this.HsLayerEditorSublayerService.checkedSubLayersTmp[
@@ -52,5 +54,5 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
       this.HsLayerEditorSublayerService.withChildrenTmp[sublayer.Name] = state;
     }
     return this.HsLayerEditorSublayerService.subLayerSelected();
-  };
+  }
 }

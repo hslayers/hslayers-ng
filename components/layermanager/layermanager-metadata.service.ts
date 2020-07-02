@@ -1,9 +1,9 @@
-import { WMSCapabilities, WMTSCapabilities } from 'ol/format';
-import { Injectable } from '@angular/core';
-import { HsLayerUtilsService } from '../utils/layer-utils.service.js';
-import { HsWmsGetCapabilitiesService } from '../../common/wms/get-capabilities.service.js';
-import { HsWfsGetCapabilitiesService } from '../../common/wfs/get-capabilities.service.js';
-import { HsWmtsGetCapabilitiesService } from '../../common/wmts/get-capabilities.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service.js';
+import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
+import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service.js';
+import {Injectable} from '@angular/core';
+import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +14,7 @@ export class HsLayerManagerMetadataService {
     private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsLayerUtilsService: HsLayerUtilsService
-  ) {
-
-  }
+  ) {}
 
   /**
    * @function identifyLayerObject
@@ -44,7 +42,7 @@ export class HsLayerManagerMetadataService {
       }
       return false;
     }
-  };
+  }
 
   /**
    * @function fillMetadata
@@ -57,19 +55,19 @@ export class HsLayerManagerMetadataService {
     const subLayers = layer.get('Layer');
     if (subLayers != undefined && subLayers.length > 0) {
       if (!layer.hasSublayers) {
-          layer.hasSublayers = true;
-          //ADD config values       
+        layer.hasSublayers = true;
+        //ADD config values
       }
     }
-  };
+  }
 
-  metadataArray(layer){
+  metadataArray(layer) {
     const obj = layer.layer.get('MetadataURL');
-    return Object.keys(obj).map(function(key) {
+    return Object.keys(obj).map((key) => {
       return [Number(key), obj[key]];
     });
   }
-  
+
   /**
    * @function queryMetadata
    * @memberOf HsLayermanagerMetadata.service
@@ -79,7 +77,7 @@ export class HsLayerManagerMetadataService {
   async queryMetadata(layer) {
     const url = this.HsLayerUtilsService.getURL(layer);
     const metadata = {
-      metainfo: { 'OnlineResource': layer.get('Metadata') },
+      metainfo: {'OnlineResource': layer.get('Metadata')},
     };
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
@@ -218,6 +216,5 @@ export class HsLayerManagerMetadataService {
         return capabilities;
       }
     }
-  };
-
+  }
 }
