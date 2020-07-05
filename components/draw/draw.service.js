@@ -17,7 +17,8 @@ export class HsDrawService {
     HsLayoutService,
     $compile,
     $timeout,
-    HsQueryVectorService
+    HsQueryVectorService,
+    HsEventBusService
   ) {
     'ngInject';
     Object.assign(this, {
