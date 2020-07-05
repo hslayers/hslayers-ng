@@ -25,7 +25,8 @@ export default function (
   HsLayerUtilsService,
   $window,
   HsMeasureService,
-  HsUtilsService
+  HsUtilsService,
+  HsEventBusService
 ) {
   'ngInject';
   const me = this;
@@ -59,11 +60,10 @@ export default function (
   });
 
   me.selector.getFeatures().on('add', (e) => {
-    $rootScope.$broadcast(
-      'vectorQuery.featureSelected',
-      e.element,
-      me.selector
-    );
+    HsEventBusService.vectorQueryFeatureSelection.next({
+      feature: e.element,
+      selector: me.selector
+    });
     //deprecated
     $rootScope.$broadcast('infopanel.feature_selected', e.element, me.selector);
   });

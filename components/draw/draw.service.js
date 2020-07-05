@@ -33,6 +33,7 @@ export class HsDrawService {
       $compile,
       $timeout,
       HsQueryVectorService,
+      HsEventBusService
     });
 
     Object.assign(this, {
@@ -108,12 +109,9 @@ export class HsDrawService {
       }
     });
 
-    const unregisterFeatureSelected = $rootScope.$on(
-      'vectorQuery.featureSelected',
-      (e, feature) => {
-        this.selectedFeatures.push(feature);
-      }
-    );
+    HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
+      this.selectedFeatures.push(event.feature);
+    });
 
     const unregisterFeatureDeselected = $rootScope.$on(
       'vectorQuery.featureDelected',
