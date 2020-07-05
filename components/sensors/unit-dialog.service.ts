@@ -82,13 +82,11 @@ export class HsSensorsUnitDialogService {
       )}`;
       interval.loading = true;
       this.http
-        .get(url, {
-          params: {
-            user_id: this.endpoint.user_id,
-            unit_id: unit.unit_id,
-            from_time,
-          },
-        })
+        .get(
+          `${url}?user_id=${encodeURIComponent(
+            this.endpoint.user_id
+          )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(from_time)}`
+        )
         .subscribe(
           (response) => {
             interval.loading = false;
