@@ -1,7 +1,7 @@
-<div class="card panel-default hs-main-panel">
+<div class="card panel- hs-main-panel">
     <hs-panel-header name="sensors" title="Sensors"></hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" ng-model="query.description"></p>
+        <p><input type="text" class="form-control" placeholder="Filter:" [(ngModel)]="query.description"></p>
         <div class="container">
             <div class="row" style="width: 662;">
                 <div class="col-9">
@@ -21,15 +21,14 @@
                     </ul><!-- Tab panes -->
                 </div>
                 <div class="col-3 text-right">
-                    <button type="button" class="btn btn-sm" ng-click="toggleExpansion()"><i
-                        ng-class="{'icon-calcminus': viewExpanded, 'icon-calcplus': !viewExpanded}"></i>
+                    <button type="button" class="btn btn-sm" (click)="toggleExpansion()"><i [ngClass]="{'icon-calcminus': viewExpanded, 'icon-calcplus':!viewExpanded}"></i>
                     </button>
                 </div>
             </div>
         </div>
         <ul class="list-group">
-            <li ng-repeat="unit in service.units | filter:query" class="list-group-item">
-                <hs.sensors.unit-list-item unit="unit" expanded="viewExpanded" view-mode="viewMode"></hs.sensors.unit-list-item>
+            <li *ngFor="let unit of HsSensorsService.filterquery(HsSensorsService.units, query)" class="list-group-item">
+                <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode"></hs-sensor-unit-list-item>
             </li>
         </ul>
     </div>
