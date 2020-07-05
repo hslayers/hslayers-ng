@@ -142,6 +142,7 @@ export class HsSensorsService {
   }
 
   createLayer() {
+    const me = this;
     this.layer = new VectorLayer({
       title: 'Sensor units',
       synchronize: false,
@@ -149,8 +150,8 @@ export class HsSensorsService {
         editable: false,
       },
       style: function (feature) {
-        this.labelStyle.getText().setText(feature.get('name'));
-        return this.bookmarkStyle;
+        me.labelStyle.getText().setText(feature.get('name'));
+        return me.bookmarkStyle;
       },
       source: new VectorSource({}),
     });
@@ -198,6 +199,9 @@ export class HsSensorsService {
           unit.sensorTypes = unit.sensors.map((s) => {
             return {name: s.sensor_type};
           });
+          unit.sensors.sort((a, b) => {
+            return b.sensor_id - a.sensor_id;
+          });
           unit.sensorTypes = this.HsUtilsService.removeDuplicates(
             unit.sensorTypes,
             'name'
@@ -211,6 +215,13 @@ export class HsSensorsService {
         });
         setInterval(this.fillLastObservations, 60000);
       });
+  }
+
+  filterquery(sensors, query) {
+    return sensors.filter(
+      (s) =>
+        query.description == '' || s.description.toLowerCase().indexOf(query.description.toLowerCase()) > -1
+    );
   }
 
   fillLastObservations() {
