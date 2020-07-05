@@ -1108,8 +1108,8 @@ msgid "Sending to layman"
 msgstr "Odesílam na Layman"
 
 #: components/sensors/partials/unit-dialog.html:7
-msgid "Sensor unit {{sensorsService.unit.description}}"
-msgstr "Senzorová jednotka {{sensorsService.unit.description}}"
+msgid "Sensor unit {{HsSensorsUnitDialogService.unit.description}}"
+msgstr "Senzorová jednotka {{HsSensorsUnitDialogService.unit.description}}"
 
 #: components/sensors/partials/panel.html:2
 #: components/sidebar/sidebar.service.js:85
