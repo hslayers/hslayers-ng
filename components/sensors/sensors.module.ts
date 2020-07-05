@@ -1,46 +1,29 @@
-import sensorsComponent from './sensors.component';
-import sensorsService from './sensors.service';
-import sensorsUnitDialogComponent from './sensors-unit-dialog.component';
-import sensorsUnitListItemComponent from './sensors-unit-list-item.component';
-import * as angular from "angular";
-import '../layout';
 /**
- * @namespace hs.sensors
+ * @namespace hs.legend
  * @memberOf hs
  */
-angular
-  .module('hs.sensors', ['hs.map', 'hs.utils', 'hs.layout', 'ui.bootstrap.datetimepicker'])
-
-  /**
-   * @memberof HsSensorsService
-   * @ngdoc service
-   * @name hs.sensors
-   * @description Panel for listing of sensors
-   */
-  .factory('HsSensorsService', sensorsService)
-
-  /**
-   * @memberof hs.sensors.list
-   * @ngdoc component
-   * @name hs.sensors
-   * @description Panel for listing of sensors
-   */
-  .component('hs.sensors.panel', sensorsComponent)
-
-  /**
-   * @memberof hs.sensors.unit
-   * @ngdoc component
-   * @name hs.sensors
-   * @description Sensor unit item in list. Contains unit name and list of
-   * sensors
-   */
-  .component('hs.sensors.unitListItem', sensorsUnitListItemComponent)
-
-  /**
-   * @memberof hs.sensors
-   * @ngdoc component
-   * @name hs.sensors.unitDialog
-   * @description Dialog window showing list of sensors for unit and vega
-   * charts for different date intervals
-   */
-  .component('hs.sensors.unitDialog', sensorsUnitDialogComponent);
+import {BrowserModule} from '@angular/platform-browser';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsSensorsComponent} from './sensors.component';
+import {HsSensorsService} from './sensors.service';
+import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
+import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item-dialog.component';
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  declarations: [
+    HsSensorsComponent,
+    HsSensorsUnitDialogComponent,
+    HsSensorsUnitListItemComponent,
+  ],
+  imports: [CommonModule, BrowserModule, HsPanelHelpersModule],
+  exports: [
+    HsSensorsComponent,
+    HsSensorsUnitDialogComponent,
+    HsSensorsUnitListItemComponent,
+  ],
+  providers: [HsSensorsService],
+  entryComponents: [HsSensorsComponent],
+})
+export class HsSensorsModule {}
