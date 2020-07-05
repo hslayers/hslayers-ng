@@ -1,21 +1,19 @@
-<div ng-style="dialogStyle()" class="hs-sensor-unit-dialog" tabindex="-1" role="dialog" aria-hidden="true" style="position: absolute;
+<div [ngStyle]="dialogStyle()" class="hs-sensor-unit-dialog" tabindex="-1" role="dialog" aria-hidden="true" style="position: absolute;
     bottom: 5px;
     ">
-    <div class="modal-dialog modal-lg" style="margin-right: 15px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
+    <div class="modal-dialog modal-lg" style="margin-right 15px; max-width 100%; z-index 4; margin-bottom 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
                 <h4 class="modal-title" translate="">
-                    Sensor unit {{sensorsService.unit.description}}
+                    Sensor unit {{HsSensorsUnitDialogService.unit.description}}
                 </h4>
-                <button type="button" class="close" ng-click="sensorsService.unitDialogVisible = false"
-                    data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"
-                        translate="">Close</span></button>
+                <button type="button" class="close" (click)="HsSensorsUnitDialogService.unitDialogVisible = false" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
             </div>
-            <div class="modal-body" style="max-height:260px; overflow-y:auto" translate>
+            <div class="modal-body" style="max-height260px; overflow-yauto" translate="">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="hs-chartplace" style="min-width: 400px; min-height:50px"></div>
+                            <div class="hs-chartplace" style="min-width 400px; min-height50px"></div>
                         </div>
                     </div>
                 </div>
@@ -25,24 +23,17 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-4">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default"
-                                    ng-class="{'btn-primary': sensorsService.currentInterval == interval}"
-                                    ng-click="timeButtonClicked(interval)" ng-repeat="interval in intervals"
-                                    aria-label="1 hour">{{interval.name}}<img ng-src="{{loaderImage}}"
-                                        ng-show="interval.loading" /></button>
+                                <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of intervals" aria-label="1 hour">{{interval.name}}<img src="{{loaderImage}}" [hidden]="!interval.loading"></button>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 input-group mb-3">
-                            <input type="datetime-local" class="form-control" ng-change="customIntervalChanged()" ng-model="customInterval.fromTime">
+                            <input type="datetime-local" class="form-control" (change)="customIntervalChanged()" [(ngModel)]="customInterval.fromTime">
                             <div class="input-group-append dropup hs-date-time-chevron">
-                                <button class="btn btn-outline-secondary dropdown-toggle" role="button" data-toggle="dropdown"
-                                    ng-click="dtPickerOpen=!dtPickerOpen" href="#">
+                                <button class="btn btn-outline-secondary dropdown-toggle" role="button" data-toggle="dropdown" (click)="dtPickerOpen=!dtPickerOpen" href="">
                                     <i class="icon-calendarthree"></i>
                                 </button>
-                                <ul class="dropdown-menu datetime-picker-menu" style="right: 100%;left: auto;" ng-class="{'show': dtPickerOpen}"
-                                    role="menu">
-                                    <datetimepicker data-ng-model="customInterval.fromTime"
-                                        data-on-set-time="customIntervalChanged()" data-datetimepicker-config="{ }">
+                                <ul class="dropdown-menu datetime-picker-menu" style="right: 100%;left: auto;" [ngClass]="{'show':dtPickerOpen}" role="menu">
+                                    <datetimepicker data-ng-model="customInterval.fromTime" data-on-set-time="customIntervalChanged()" data-datetimepicker-config="{ }">
                                     </datetimepicker>
                                 </ul>
                             </div>
