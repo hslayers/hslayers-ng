@@ -1,89 +1,74 @@
-export default {
+import {Component, Input} from '@angular/core';
+import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsMapService} from '../map/map.service.js';
+import {HsSensorUnit} from './sensor-unit.class';
+import {HsSensorsService} from './sensors.service';
+import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
+import {HsSensorsUnitDialogService} from './unit-dialog.service';
+
+@Component({
+  selector: 'hs-sensor-unit-list-item',
   template: require('./partials/unit-list-item.html'),
-  bindings: {
-    unit: '=',
-    expanded: '=',
-    viewMode: '=',
-  },
-  controller: function (
-    $scope,
-    HsMapService,
-    HsSensorsService,
-    $compile,
-    $timeout,
-    HsLayoutService
-  ) {
-    'ngInject';
-    angular.extend($scope, {
-      sensorsService: HsSensorsService,
+})
+export class HsSensorsUnitListItemComponent {
+  @Input() unit: HsSensorUnit;
+  @Input() expanded: boolean;
+  @Input() viewMode: string;
 
-      /**
-       * @memberof hs.sensors.unitListItem
-       * @function unitClicked
-       * @description When unit is clicked, create a dialog window for
-       * displaying charts or reopen already existing one.
-       */
-      unitClicked() {
-        HsSensorsService.selectUnit($scope.$ctrl.unit);
-      },
+  constructor(
+    private HsSensorsService: HsSensorsService,
+    private HsDialogContainerService: HsDialogContainerService,
+    private HsSensorsUnitDialogService: HsSensorsUnitDialogService
+  ) {}
 
-      /**
-       * @memberof hs.sensors.unitListItem
-       * @function sensorClicked
-       * @param {object} sensor Clicked sensor
-       * @description When sensor is clicked, create a dialog window for
-       * displaying charts or reopen already existing one.
-       */
-      sensorClicked(sensor) {
-        HsSensorsService.unit = $scope.$ctrl.unit;
-        HsSensorsService.selectSensor(sensor);
-        generateDialog();
-      },
+  /**
+   * @memberof hs.sensors.unitListItem
+   * @function unitClicked
+   * @description When unit is clicked, create a dialog window for
+   * displaying charts or reopen already existing one.
+   */
+  unitClicked() {
+    this.HsSensorsService.selectUnit(this.unit);
+  }
 
-      /**
-       * @memberof hs.sensors.unitListItem
-       * @function sensorToggleSelected
-       * @param {object} sensor Clicked to be toggled
-       * @description When sensor is toggled, create a dialog window for
-       * displaying charts or reopen already existing one.
-       */
-      sensorToggleSelected(sensor) {
-        HsSensorsService.unit = $scope.$ctrl.unit;
-        sensor.checked = !sensor.checked;
-        HsSensorsService.toggleSensor(sensor);
-        generateDialog();
-      },
-    });
+  /**
+   * @memberof hs.sensors.unitListItem
+   * @function sensorClicked
+   * @param {object} sensor Clicked sensor
+   * @description When sensor is clicked, create a dialog window for
+   * displaying charts or reopen already existing one.
+   */
+  sensorClicked(sensor) {
+    this.HsSensorsUnitDialogService.unit = this.unit;
+    this.HsSensorsService.selectSensor(sensor);
+    this.generateDialog();
+  }
 
-    /**
-     *
-     */
-    function generateDialog() {
-      if (
-        !HsLayoutService.contentWrapper.querySelector('.hs-sensor-unit-dialog')
-      ) {
-        const dir = 'hs.sensors.unit-dialog';
-        const html = `<${dir} 
-                    unit="sensorsService.unit"W
-                    ></${dir}>`;
-        const element = angular.element(html)[0];
-        HsLayoutService.contentWrapper
-          .querySelector('.hs-dialog-area')
-          .appendChild(element);
-        $compile(element)($scope);
-      } else {
-        HsSensorsService.unitDialogVisible = true;
-      }
-      $timeout((_) => {
-        HsSensorsService.createChart(HsSensorsService.unit);
-      }, 0);
+  /**
+   * @memberof hs.sensors.unitListItem
+   * @function sensorToggleSelected
+   * @param {object} sensor Clicked to be toggled
+   * @description When sensor is toggled, create a dialog window for
+   * displaying charts or reopen already existing one.
+   */
+  sensorToggleSelected(sensor) {
+    this.HsSensorsUnitDialogService.unit = this.unit;
+    sensor.checked = !sensor.checked;
+    this.HsSensorsUnitDialogService.toggleSensor(sensor);
+    this.generateDialog();
+  }
+
+  /**
+   *
+   */
+  generateDialog() {
+    if (!this.HsSensorsUnitDialogService.unitDialogVisible) {
+      this.HsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
+    } else {
+      this.HsSensorsUnitDialogService.unitDialogVisible = true;
     }
-
-    /**
-     *
-     */
-    function init() {}
-
-    HsMapService.loaded().then(init);
-  },
-};
+    this.HsSensorsUnitDialogService.createChart(
+      this.HsSensorsUnitDialogService.unit
+    );
+  }
+}
