@@ -5,6 +5,7 @@ export class HsConfig {
   sidebarClosed: boolean;
   layer_order: string;
   box_layers: Array<any>;
+  senslog: any;
   constructor() { 
     
   }

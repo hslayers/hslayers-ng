@@ -12,6 +12,8 @@ import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider, HsDrawS
 import { HsLegendModule } from '../legend';
 import { HsPrintModule } from '../print';
 import { HsLayerManagerModule } from '../layermanager';
+import { HsSensorsModule } from '../sensors/sensors.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,13 +21,14 @@ import { HsLayerManagerModule } from '../layermanager';
   imports: [
     CommonModule,
     BrowserModule,
+    HttpClientModule,
     HsLayoutModule,
     HsLegendModule,
     HsPrintModule,
-    HsLayerManagerModule
+    HsLayerManagerModule,
+    HsSensorsModule,
   ],
-  exports: [
-  ],
+  exports: [],
   providers: [
     HsCoreService,
     HsMapServiceProvider,
@@ -48,5 +51,3 @@ import { HsLayerManagerModule } from '../layermanager';
 })
 export class HsCoreModule {
 }
-
-

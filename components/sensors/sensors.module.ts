@@ -9,7 +9,8 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 import {HsSensorsComponent} from './sensors.component';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
-import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item-dialog.component';
+import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
+import { HsSensorsUnitDialogService } from './unit-dialog.service';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -23,7 +24,7 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item-dialog.co
     HsSensorsUnitDialogComponent,
     HsSensorsUnitListItemComponent,
   ],
-  providers: [HsSensorsService],
+  providers: [HsSensorsService, HsSensorsUnitDialogService],
   entryComponents: [HsSensorsComponent],
 })
 export class HsSensorsModule {}
