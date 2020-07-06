@@ -213,7 +213,7 @@ export class HsSensorsService {
               ))
           );
         });
-        setInterval(this.fillLastObservations, 60000);
+        setInterval(() => this.fillLastObservations(), 60000);
       });
   }
 

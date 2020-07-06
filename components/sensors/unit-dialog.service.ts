@@ -60,7 +60,15 @@ export class HsSensorsUnitDialogService {
 
   getTimeForInterval(interval) {
     if (interval.fromTime != undefined) {
-      return moment(interval.fromTime);
+      if (
+        interval.fromTime.year &&
+        interval.fromTime.month &&
+        interval.fromTime.day
+      ) {
+        return moment(interval.fromTime).subtract(1, 'month');
+      } else {
+        return moment(interval.fromTime);
+      }
     } else {
       return moment().subtract(interval.amount, interval.unit);
     }

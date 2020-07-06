@@ -27,15 +27,11 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 input-group mb-3">
-                            <input type="datetime-local" class="form-control" (change)="customIntervalChanged()" [(ngModel)]="customInterval.fromTime">
-                            <div class="input-group-append dropup hs-date-time-chevron">
-                                <button class="btn btn-outline-secondary dropdown-toggle" role="button" data-toggle="dropdown" (click)="dtPickerOpen=!dtPickerOpen" href="">
-                                    <i class="icon-calendarthree"></i>
-                                </button>
-                                <ul class="dropdown-menu datetime-picker-menu" style="right: 100%;left: auto;" [ngClass]="{'show':dtPickerOpen}" role="menu">
-                                    <datetimepicker data-ng-model="customInterval.fromTime" data-on-set-time="customIntervalChanged()" data-datetimepicker-config="{ }">
-                                    </datetimepicker>
-                                </ul>
+                            <div class="input-group">
+                                <input type="text" ngbDatepicker placeholder="From:" #d="ngbDatepicker" [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged($event)"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>

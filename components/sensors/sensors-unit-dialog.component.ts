@@ -1,11 +1,9 @@
 /* eslint-disable angular/definedundefined */
-import 'angularjs-bootstrap-datetimepicker/src/css/datetimepicker.css';
-import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker';
-import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker.templates';
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialog-component.interface';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import moment = require('moment');
 
 @Component({
   selector: 'hs-sensor-unit',
