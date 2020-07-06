@@ -16,6 +16,7 @@ import {Injectable} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
+import { HsLayerEditorStylesService } from './layer-editor-styles.service';
 
 @Injectable({
   providedIn: 'root',
@@ -100,7 +101,8 @@ export class HsLayerManagerService {
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsLayerManagerMetadata: HsLayerManagerMetadataService,
     private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private HsLayerEditorStylesService: HsLayerEditorStylesService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -868,5 +870,32 @@ export class HsLayerManagerService {
 
     this.map.getLayers().on('add', (e) => this.layerAdded(e));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
+  }
+
+  expandLayer(layer) {
+    if (layer.expanded == undefined) {
+      layer.expanded = true;
+    } else {
+      layer.expanded = !layer.expanded;
+    }
+  }
+
+  expandSettings(layer, value) {
+    if (layer.opacity == undefined) {
+      layer.opacity = layer.layer.getOpacity();
+    }
+    if (layer.style == undefined && layer.layer.getSource().styleAble) {
+      this.HsLayerEditorStylesService.getLayerStyle(layer);
+    }
+    layer.expandSettings = value;
+  }
+
+  expandFilter(layer, value) {
+    layer.expandFilter = value;
+    this.currentLayer = layer;
+  }
+
+  expandInfo(layer, value) {
+    layer.expandInfo = value;
   }
 }

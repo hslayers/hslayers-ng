@@ -26,7 +26,7 @@
             </div>
             <!--Button toolbar-->
             <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar">
-                <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="About layer" ng-click="$event.stopPropagation();expandInfo(layer,!layer.expandInfo);">
+                <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="About layer" ng-click="$event.stopPropagation();HsLayerManagerService.expandInfo(layer,!layer.expandInfo);">
                     <md-icon>info</md-icon>
                     <md-tooltip md-direction="down" translate>About layer</md-tooltip>
                 </md-button>
@@ -42,7 +42,7 @@
                     <md-icon>settings</md-icon>
                     <md-tooltip md-direction="down" translate>Layer options</md-tooltip>
                 </md-button>
-                <md-button layout-fill ng-if="layer.hsFilters" class="md-icon-button md-primary" aria-label="Filter features" ng-click="expandFilter(layer,!layer.expandFilter);">
+                <md-button layout-fill ng-if="layer.hsFilters" class="md-icon-button md-primary" aria-label="Filter features" ng-click="HsLayerManagerService.expandFilter(layer,!layer.expandFilter);">
                     <md-icon>filter_list</md-icon>
                     <md-tooltip md-direction="down" translate>Filter features</md-tooltip>
                 </md-button>
@@ -53,7 +53,7 @@
             </div>
             <!-- expand divider-->
             <div layout="column" class="divider-layer" layout-fill layout-align="center center" ng-if="layer.expandSettings || layer.expandInfo || layer.expandFilter">
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Hide" ng-click="$event.stopPropagation();expandSettings(layer,false);expandInfo(layer,false);expandFilter(layer,false);">
+                <md-button layout-fill class="md-icon-button md-primary" aria-label="Hide" ng-click="$event.stopPropagation();HsLayerManagerService.expandSettings(layer,false);HsLayerManagerService.expandInfo(layer,false);HsLayerManagerService.expandFilter(layer,false);">
                     <md-icon>arrow_drop_up</md-icon>
                     <md-tooltip md-direction="down" translate>Hide</md-tooltip>
                 </md-button>
