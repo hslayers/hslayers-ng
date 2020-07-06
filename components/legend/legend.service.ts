@@ -1,12 +1,13 @@
+import BaseLayer from 'ol/layer/Base';
 import Static from 'ol/source/ImageStatic';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon} from 'ol/style';
+import { HsLegendDescriptor } from './legend-descriptor.class';
 import {HsUtilsService} from '../utils/utils.service';
 import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
-import {TileWMS, XYZ} from 'ol/source';
-
 import {Injectable} from '@angular/core';
+import {TileWMS, XYZ} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +24,9 @@ export class HsLegendService {
    * @memberof HsLegendService
    * @function isLegendable
    * @param {object} layer Layer to test
-   * @returns {boolean} Return if legend might exists for layer
+   * @returns {boolean} Return if legend might exist for layer and layer is visible
    */
-  isLegendable(layer) {
+  legendValid(layer: HsLegendDescriptor) {
     if (layer === undefined || layer.type == undefined) {
       return false;
     }
@@ -280,7 +281,7 @@ export class HsLegendService {
    * @returns {object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
    * @param {ol/Layer} layer Openlayers layer
    */
-  getLayerLegendDescriptor(layer) {
+  getLayerLegendDescriptor(layer: BaseLayer): HsLegendDescriptor {
     if (layer.get('base')) {
       return;
     }

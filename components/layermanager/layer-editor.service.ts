@@ -1,23 +1,39 @@
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsLayoutService} from '../layout/layout.service.js';
+import { HsLegendDescriptor } from '../legend/legend-descriptor.class';
+import {HsLegendService} from '../legend';
 import {HsMapService} from '../map/map.service.js';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
 import {Injectable} from '@angular/core';
 import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
+import { HsLayerDescriptor } from './layer-descriptor.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorService {
+  legendDescriptor: HsLegendDescriptor;
+  currentLayer: any;
+
   constructor(
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService,
+    private HsLegendService: HsLegendService,
   ) {}
+
+  setLayer(currentLayer: HsLayerDescriptor) {
+    this.currentLayer = currentLayer;
+    this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(
+      currentLayer.layer
+    );
+  }
 
   /**
    * @function zoomToLayer
@@ -186,5 +202,13 @@ export class HsLayerEditorService {
       }
     }
     return extent;
+  }
+
+  legendVisible() {
+    return (
+      this.HsLegendService.legendValid(this.legendDescriptor) &&
+      (this.legendDescriptor.lyr.get('inlineLegend') ||
+        !this.HsLayoutService.panelEnabled('legend'))
+    );
   }
 }
