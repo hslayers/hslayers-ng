@@ -1,19 +1,19 @@
 <div [ngStyle]="dialogStyle()" class="hs-sensor-unit-dialog" tabindex="-1" role="dialog" aria-hidden="true" style="position: absolute;
     bottom: 5px;
     ">
-    <div class="modal-dialog modal-lg" style="margin-right 15px; max-width 100%; z-index 4; margin-bottom 3px;">
+    <div class="modal-dialog modal-lg" style="margin-right: 15px; max-width: 100%; z-index: 4; margin-bottom: 3px;">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.2rem 0.3rem;">
-                <h4 class="modal-title" translate="">
+                <h4 class="modal-title" i18n>
                     Sensor unit {{HsSensorsUnitDialogService.unit.description}}
                 </h4>
-                <button type="button" class="close" (click)="HsSensorsUnitDialogService.unitDialogVisible = false" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" class="close" (click)="HsSensorsUnitDialogService.unitDialogVisible = false" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" i18n>Close</span></button>
             </div>
-            <div class="modal-body" style="max-height260px; overflow-yauto" translate="">
+            <div class="modal-body" style="max-height: 260px; overflow-y: auto" i18n>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="hs-chartplace" style="min-width 400px; min-height50px"></div>
+                            <div class="hs-chartplace" style="min-width: 400px; min-height: 50px"></div>
                         </div>
                     </div>
                 </div>
