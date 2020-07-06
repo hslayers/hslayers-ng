@@ -3,10 +3,11 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+  "extends": [
     "openlayers",
-    "angular",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:angular/johnpapa",
     "plugin:jsdoc/recommended"
   ],
   "plugins": ["@typescript-eslint"],
@@ -40,6 +41,7 @@
       "error",
       "function"
     ],
+    "angular/definedundefined": "off",
     "angular/typecheck-array": "off",
     "angular/typecheck-date": "off",
     "angular/typecheck-function": "off",
