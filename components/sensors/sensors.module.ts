@@ -12,6 +12,7 @@ import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
 import { HsSensorsUnitDialogService } from './unit-dialog.service';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [
@@ -19,7 +20,7 @@ import { FormsModule } from '@angular/forms';
     HsSensorsUnitDialogComponent,
     HsSensorsUnitListItemComponent,
   ],
-  imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule],
+  imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule, NgbModule,],
   exports: [
     HsSensorsComponent,
     HsSensorsUnitDialogComponent,

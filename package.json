@@ -88,6 +88,7 @@
     "@angular/platform-browser": "^9.1.7",
     "@angular/platform-browser-dynamic": "^9.1.7",
     "@angular/upgrade": "^9.1.7",
+    "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.9",
     "angular-aria": "^1.7.9",
@@ -130,6 +131,8 @@
     "rxjs": "^6.5.5",
     "tinycolor2": "^1.4.1",
     "ttf2eot": "^2.0.0",
-    "zone.js": "^0.10.3"
+    "zone.js": "^0.10.3",
+    "vega": "5.9.0",
+    "vega-embed": "6.2.1"
   }
 }

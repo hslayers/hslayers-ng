@@ -15,12 +15,7 @@ export const downgradedModule = downgrade(HsSensorsModule);
  * @memberOf hs
  */
 angular
-  .module(downgradedModule, [
-    'hs.map',
-    'hs.utils',
-    'hs.layout',
-    'ui.bootstrap.datetimepicker',
-  ])
+  .module(downgradedModule, ['hs.map', 'hs.utils', 'hs.layout'])
 
   /**
    * @memberof HsSensorsService
