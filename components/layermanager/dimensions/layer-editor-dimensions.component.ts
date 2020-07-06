@@ -1,4 +1,6 @@
+import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
+import {HsDimensionDescriptor} from './dimension.class';
 import {HsDimensionService} from '../../../common/dimension.service.js';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service.js';
@@ -9,7 +11,8 @@ import {ImageWMS, TileWMS, XYZ} from 'ol/source';
   template: require('./layer-editor-dimensions.html'),
 })
 export class HsLayerEditorDimensionsComponent {
-  @Input('ol-layer') olLayer: any;
+  @Input('ol-layer') olLayer: BaseLayer;
+  dimensions: Array<HsDimensionDescriptor> = [];
 
   constructor(
     private HsDimensionService: HsDimensionService,
@@ -18,8 +21,14 @@ export class HsLayerEditorDimensionsComponent {
     private HsEventBusService: HsEventBusService
   ) {}
 
-  dimensionType(dimension) {
-    return this.HsDimensionService.dimensionType(dimension);
+  ngOnChanges() {
+    const layer = this.olLayer;
+    if (layer == undefined) {
+      this.dimensions = [];
+    }
+    for (const [key, dimension] of Object.entries(layer.get('dimensions'))) {
+      this.dimensions.push(new HsDimensionDescriptor(key, dimension));
+    }
   }
 
   /**
@@ -28,7 +37,7 @@ export class HsLayerEditorDimensionsComponent {
    * @description Test if layer has dimensions
    * @returns {boolean} Returns if layers has any dimensions
    */
-  isLayerWithDimensions() {
+  isLayerWithDimensions(): boolean {
     const layer = this.olLayer;
     if (layer == undefined) {
       return false;
@@ -39,15 +48,16 @@ export class HsLayerEditorDimensionsComponent {
     return Object.keys(layer.get('dimensions')).length > 0;
   }
 
-  dimensionChanged(dimension) {
+  dimensionChanged(dimension: HsDimensionDescriptor): void {
+    dimension.postProcessDimensionValue();
     //Dimension can be linked to multiple layers
-    this.HsMapService.map.getLayers().forEach((layer) => {
+    for (const layer of this.HsMapService.map.getLayers().getArray()) {
       const iteratedDimensions = layer.get('dimensions');
       if (
         iteratedDimensions &&
         Object.keys(iteratedDimensions).filter(
           (dimensionIterator) =>
-            iteratedDimensions[dimensionIterator] == dimension
+            iteratedDimensions[dimensionIterator] == dimension.originalDimension
         ).length > 0 //Dimension also linked to this layer?
       ) {
         const src = layer.getSource();
@@ -63,17 +73,9 @@ export class HsLayerEditorDimensionsComponent {
         }
         this.HsEventBusService.layermanagerDimensionChanges.next({
           layer: layer,
-          dimension,
+          dimension: dimension.originalDimension,
         });
       }
-    });
-  }
-
-  dimensions() {
-    const layer = this.olLayer;
-    if (layer == undefined) {
-      return [];
     }
-    return layer.get('dimensions');
   }
 }

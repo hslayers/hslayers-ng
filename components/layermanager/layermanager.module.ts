@@ -23,7 +23,7 @@ import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLegendModule} from '../legend';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -42,6 +42,7 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
     FormsModule,
     HsPanelHelpersModule,
     HsLegendModule,
+    NgbModule,
   ],
   exports: [
     HsLayerManagerComponent,
