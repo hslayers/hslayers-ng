@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
+import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor.sub-layer-checkboxes.component';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -59,6 +60,7 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
     HsLayerManagerMetadataService,
     HsLayerManagerService,
     HsLayerManagerWmstService,
+    HsLayerEditorStylesService,
   ],
   entryComponents: [
     HsLayerManagerComponent,
