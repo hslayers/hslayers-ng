@@ -3,7 +3,7 @@
     <div class="form-group" *ngFor="let item of dimensions() | keyvalue">
         <label class="control-label">{{item.value.label || item.key}}:</label>
 
-        <select class="form-control" [(ngModel)]="item.value.value" *ngIf="dimensionType(dimension) == null" (change)="dimensionChanged(item.value)">
+        <select class="form-control" [(ngModel)]="item.value.value" *ngIf="dimensionType(item.value) == null" (change)="dimensionChanged(item.value)">
             <option ng-value="dimension_value" *ngFor="let dimension_value of item.value.values">
                 {{dimension_value}}</option>
         </select>
