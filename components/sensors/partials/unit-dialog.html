@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-4">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of intervals" aria-label="1 hour">{{interval.name}}<img src="{{loaderImage}}" [hidden]="!interval.loading"></button>
+                                <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of HsSensorsUnitDialogService.intervals" aria-label="1 hour">{{interval.name}}<img src="{{loaderImage}}" [hidden]="!interval.loading"></button>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 input-group mb-3">

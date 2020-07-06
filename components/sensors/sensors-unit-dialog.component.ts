@@ -4,10 +4,7 @@ import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker';
 import 'angularjs-bootstrap-datetimepicker/src/js/datetimepicker.templates';
 import {Component} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialog-component.interface';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service.js';
-import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 
 @Component({
@@ -15,24 +12,20 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
   template: require('./partials/unit-dialog.html'),
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent {
-  intervals = [
-    {name: '1H', amount: 1, unit: 'hours'},
-    {name: '1D', amount: 1, unit: 'days'},
-    {name: '1W', amount: 1, unit: 'weeks'},
-    {name: '1M', amount: 1, unit: 'months'},
-    {name: '6M', amount: 6, unit: 'months'},
-  ];
   customInterval = {name: 'Custom', fromTime: new Date()};
   loaderImage = require('../../img/ajax-loader.gif');
 
   constructor(
-    private HsMapService: HsMapService,
     private HsLayoutService: HsLayoutService,
     private HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
     this.HsSensorsUnitDialogService.unitDialogVisible = true;
   }
   data: any;
+
+  ngOnInit(){
+    this.timeButtonClicked(this.HsSensorsUnitDialogService.intervals[2]);
+  }
 
   /**
    * @memberof hs.sensors.unitDialog
