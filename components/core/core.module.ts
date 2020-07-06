@@ -12,7 +12,6 @@ import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider, HsDrawS
 import { HsLegendModule } from '../legend';
 import { HsPrintModule } from '../print';
 import { HsLayerManagerModule } from '../layermanager';
-import { HsSensorsModule } from '../sensors/sensors.module';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { HttpClientModule } from '@angular/common/http';
     HsLegendModule,
     HsPrintModule,
     HsLayerManagerModule,
-    HsSensorsModule,
   ],
   exports: [],
   providers: [
