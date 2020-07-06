@@ -77,12 +77,10 @@
                 
                 <!-- Legends -->
                 <div *ngIf="olLayer()">
-                    <div *ngFor="let layer of legendDescriptors">
-                        <div *ngIf="isLegendable(layer) && (layer.lyr.get('inlineLegend') || !HsLayoutService.panelEnabled('legend'))">
-                            <p style="text-align: center;" i18n>Legend</p>
-                            <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
-                            <hr/>
-                        </div>
+                    <div *ngIf="HsLayerEditorService.legendVisible()">
+                        <p style="text-align: center;font-weight: bold;" i18n>Legend</p>
+                        <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor"></hs-legend-layer-directive>
+                        <hr/>
                     </div>
                 </div>
                 <hs-layer-editor-dimensions [ol-layer]="olLayer()"></hs-layer-editor-dimensions>

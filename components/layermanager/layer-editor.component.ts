@@ -1,8 +1,10 @@
+/* eslint-disable angular/definedundefined */
 import * as moment from 'moment';
 import {Circle, Fill, RegularShape, Stroke} from 'ol/style';
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service.js';
 import {HsEventBusService} from '../core/event-bus.service';
+import { HsLayerDescriptor } from './layer-descriptor.class';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
@@ -10,22 +12,21 @@ import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
 import {HsLayoutService} from '../layout/layout.service.js';
-import {HsLegendService} from '../legend';
 import {HsMapService} from '../map/map.service.js';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import BaseLayer from 'ol/layer/Base';
 
 @Component({
   selector: 'hs-layer-editor',
   template: require('./partials/layer-editor.html'),
 })
 export class HsLayerEditorComponent {
-  @Input('current-layer') currentLayer: any;
+  @Input('current-layer') currentLayer: HsLayerDescriptor;
   distance = {
     value: 40,
   };
   layer_renamer_visible = false;
-  legendDescriptors: Array<any> = [];
 
   constructor(
     private HsUtilsService: HsUtilsService,
@@ -38,7 +39,6 @@ export class HsLayerEditorComponent {
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerEditorService: HsLayerEditorService,
     private HsDrawService: HsDrawService,
-    private HsLegendService: HsLegendService,
     private HsEventBusService: HsEventBusService,
     private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
   ) {}
@@ -47,14 +47,7 @@ export class HsLayerEditorComponent {
     if (!this.currentLayer) {
       return;
     }
-
-    this.legendDescriptors = [
-      this.HsLegendService.getLayerLegendDescriptor(this.currentLayer.layer),
-    ];
-  }
-
-  isLegendable(layer) {
-    return this.HsLegendService.isLegendable(layer);
+    this.HsLayerEditorService.setLayer(this.currentLayer);
   }
 
   layerIsWmsT() {
@@ -369,7 +362,7 @@ export class HsLayerEditorComponent {
     return this.minResolutionValid() || this.maxResolutionValid();
   }
 
-  olLayer() {
+  olLayer(): BaseLayer {
     if (!this.currentLayer) {
       return undefined;
     }
