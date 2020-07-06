@@ -1,9 +1,10 @@
 /* eslint-disable angular/definedundefined */
 import * as moment from 'moment';
+import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service.js';
 import {HsEventBusService} from '../core/event-bus.service';
-import { HsLayerDescriptor } from './layer-descriptor.class';
+import {HsLayerDescriptor} from './layer-descriptor.class';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
@@ -13,7 +14,6 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
 import {HsLayoutService} from '../layout/layout.service.js';
 import {HsMapService} from '../map/map.service.js';
 import {HsStylerService} from '../styles/styler.service';
-import BaseLayer from 'ol/layer/Base';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -415,24 +415,6 @@ export class HsLayerEditorComponent {
     return layer.get('abstract');
   }
 
-  expandLayer(layer) {
-    if (layer.expanded == undefined) {
-      layer.expanded = true;
-    } else {
-      layer.expanded = !layer.expanded;
-    }
-  }
-
-  expandSettings(layer, value) {
-    if (layer.opacity == undefined) {
-      layer.opacity = layer.layer.getOpacity();
-    }
-    if (layer.style == undefined && layer.layer.getSource().styleAble) {
-      this.getLayerStyle(layer);
-    }
-    layer.expandSettings = value;
-  }
-
   hasSubLayers() {
     if (this.currentLayer === null) {
       return;
@@ -443,16 +425,6 @@ export class HsLayerEditorComponent {
 
   getSubLayers() {
     return this.HsLayerEditorSublayerService.getSubLayers();
-  }
-
-  expandFilter(layer, value) {
-    layer.expandFilter = value;
-    this.HsLayerManagerService.currentLayer = layer;
-    this.currentLayer = this.HsLayerManagerService.currentLayer;
-  }
-
-  expandInfo(layer, value) {
-    layer.expandInfo = value;
   }
 
   //TODO refactor to some helper service
@@ -475,5 +447,4 @@ export class HsLayerEditorComponent {
   formatDate(date, format) {
     return moment(date).format(format);
   }
-
 }
