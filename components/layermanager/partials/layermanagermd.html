@@ -76,37 +76,37 @@
                 <!-- style -->
                 <label ng-if="layer.layer.getSource().styleAble" translate>Layer Style</label>
                 <div ng-if="layer.layer.getSource().hasPoly">
-                    <div md-color-picker ng-model="layer.style.fillColor" label="Fill" ng-change="saveStyle(layer)" icon="format_color_fill"
+                    <div md-color-picker ng-model="layer.style.fillColor" label="Fill" ng-change="HsLayerEditorStylesService.HsLayerEditorStylesService.saveStyle(layer)" icon="format_color_fill"
                         type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
                 </div>
                 <div ng-if="layer.layer.getSource().hasLine || layer.layer.getSource().hasPoly">
-                    <div md-color-picker ng-model="layer.style.lineColor" label="Stroke" ng-change="saveStyle(layer)" icon="brush" type="1" md-color-sliders="false"
+                    <div md-color-picker ng-model="layer.style.lineColor" label="Stroke" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="brush" type="1" md-color-sliders="false"
                         md-color-history="false" md-color-default-tab="1"></div>
                     <md-input-container layout-fill class="md-block">
                         <label translate>Width</label>
-                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="saveStyle(layer);" aria-label="Change line width"></md-slider>
+                        <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth" ng-change="HsLayerEditorStylesService.saveStyle(layer);" aria-label="Change line width"></md-slider>
                     </md-input-container>
                 </div>
                 <div layout-fill ng-if="layer.layer.getSource().hasPoint">
                     <md-tabs md-no-pagination="true" md-no-ink="true" md-stretch-tabs="always" md-dynamic-height="true">
-                        <md-tab md-on-select="changePointType(layer,'Circle')">
+                        <md-tab md-on-select="HsLayerEditorStylesService.changePointType(layer,'Circle')">
                             <md-tab-label>
                                 <md-icon>brightness_1</md-icon>
                                 <md-tooltip md-direction="down" translate>Circle</md-tooltip>
                             </md-tab-label>
                             <md-tab-body>
-                                <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="format_color_fill"
                                     type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
-                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="brush" type="1"
                                     md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
                                 <label translate>Stroke width</label>
-                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Radius</label>
-                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
 
                             </md-tab-body>
                         </md-tab>
-                        <md-tab md-on-select="changePointType(layer,'Polygon')">
+                        <md-tab md-on-select="HsLayerEditorStylesService.changePointType(layer,'Polygon')">
                             <md-tab-label>
                                 <md-icon>stop</md-icon>
                                 <md-tooltip md-direction="down" translate>Polygon</md-tooltip>
@@ -114,39 +114,39 @@
                             
                             <md-tab-body>
                                     <label translate>Sides number</label>
-                                    <md-slider min="3" max="10" step="1" ng-model="layer.style.pointPoints" ng-change="saveStyle(layer);"></md-slider>
-                                    <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                    <md-slider min="3" max="10" step="1" ng-model="layer.style.pointPoints" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
+                                    <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="format_color_fill"
                                     type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
-                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="brush" type="1"
                                     md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
                                 <label translate>Stroke width</label>
-                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Rotation</label>
-                                <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Radius</label>
-                                <md-slider min="0" max="40" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="40" ng-model="layer.style.radius" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                             </md-tab-body>
                         </md-tab>
-                        <md-tab md-on-select="changePointType(layer,'Star')">
+                        <md-tab md-on-select="HsLayerEditorStylesService.changePointType(layer,'Star')">
                             <md-tab-label>
                                 <md-icon>star</md-icon>
                                 <md-tooltip md-direction="down" translate>Star</md-tooltip>
                             </md-tab-label>
                             <md-tab-body>
                                     <label translate>Sides number</label>
-                                    <md-slider min="3" max="20" step="1" ng-model="layer.style.pointPoints" ng-change="saveStyle(layer);"></md-slider>
-                                    <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="saveStyle(layer)" icon="format_color_fill"
+                                    <md-slider min="3" max="20" step="1" ng-model="layer.style.pointPoints" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
+                                    <div md-color-picker ng-model="layer.style.pointFill" label="{{'Fill'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="format_color_fill"
                                     type="1" md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
-                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="saveStyle(layer)" icon="brush" type="1"
+                                <div md-color-picker ng-model="layer.style.pointStroke" label="{{'Stroke'|translate}}" ng-change="HsLayerEditorStylesService.saveStyle(layer)" icon="brush" type="1"
                                     md-color-sliders="false" md-color-history="false" md-color-default-tab="1"></div>
                                 <label translate>Stroke width</label>
-                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="20" step="0.1" ng-model="layer.style.pointWidth" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Rotation</label>
-                                <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="1.57" step="0.01" ng-model="layer.style.rotation" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Outer radius</label>
-                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                                 <label translate>Inner radius</label>
-                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius2" ng-change="saveStyle(layer);"></md-slider>
+                                <md-slider min="0" max="40" step="0.1" ng-model="layer.style.radius2" ng-change="HsLayerEditorStylesService.saveStyle(layer);"></md-slider>
                             </md-tab-body>
                         </md-tab>
                     </md-tabs>
