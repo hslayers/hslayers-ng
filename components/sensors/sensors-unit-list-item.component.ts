@@ -13,7 +13,7 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;
   @Input() expanded: boolean;
-  @Input() viewMode: string;
+  @Input('view-mode') viewMode: string;
 
   constructor(
     private HsSensorsService: HsSensorsService,
@@ -65,10 +65,7 @@ export class HsSensorsUnitListItemComponent {
     if (!this.HsSensorsUnitDialogService.unitDialogVisible) {
       this.HsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.HsSensorsUnitDialogService.unitDialogVisible = true;
+      this.HsSensorsUnitDialogService.createChart(this.HsSensorsUnitDialogService.unit);
     }
-    this.HsSensorsUnitDialogService.createChart(
-      this.HsSensorsUnitDialogService.unit
-    );
   }
 }

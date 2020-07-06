@@ -21,6 +21,13 @@ export class HsSensorsUnitDialogService {
   endpoint: any;
   observations: any;
   sensorById = {};
+  intervals = [
+    {name: '1H', amount: 1, unit: 'hours'},
+    {name: '1D', amount: 1, unit: 'days'},
+    {name: '1W', amount: 1, unit: 'weeks'},
+    {name: '1M', amount: 1, unit: 'months'},
+    {name: '6M', amount: 6, unit: 'months'},
+  ];
 
   constructor(
     private http: HttpClient,
@@ -151,7 +158,7 @@ export class HsSensorsUnitDialogService {
         },
       },
       'width':
-        this.HsLayoutService.dialogAreaElement.querySelector('.hs-chartplace')
+        this.HsLayoutService.contentWrapper.querySelector('.hs-chartplace')
           .parentElement.offsetWidth - 40,
       'autosize': {
         'type': 'fit',
@@ -200,7 +207,7 @@ export class HsSensorsUnitDialogService {
     };
     try {
       vegaEmbed(
-        this.HsLayoutService.dialogAreaElement.querySelector('.hs-chartplace'),
+        this.HsLayoutService.contentWrapper.querySelector('.hs-chartplace'),
         chartData
       );
     } catch (ex) {

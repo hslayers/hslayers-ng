@@ -9,7 +9,7 @@ import {HsSensorsService} from './sensors.service';
 export class HsSensorsComponent {
   viewMode = 'sensors';
   viewExpanded = false;
-
+  query: any = {description: ''}
   constructor(
     private HsMapService: HsMapService,
     private HsSensorsService: HsSensorsService
