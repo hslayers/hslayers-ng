@@ -10,10 +10,10 @@
         attributes: ["http://gis.zcu.cz/poi#category_osm"]
     }]);
 */
-define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
+define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager', 'angular-sanitize'],
 
     function(angular, ol) {
-        var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'ngMaterial', 'hs.layermanager'])
+        var module = angular.module('hs.feature_filter', ['hs.map', 'hs.core', 'ngMaterial', 'hs.layermanager', 'ngSanitize'])
 
             /**
             * @memberof hs.feature_filter
@@ -380,8 +380,8 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
             * @name hs.featureList.controller
             * @description TODO
             */
-            .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config', '$rootScope',
-                function($scope, $timeout, OlMap, Core, service, LayMan, config, $rootScope, feature_filter, map) {
+            .controller('hs.feature_list.controller', ['$scope', '$timeout', 'hs.map.service', 'Core', 'hs.feature_filter.service', 'hs.layermanager.service', 'config', '$rootScope', '$sce',
+                function($scope, $timeout, OlMap, Core, service, LayMan, config, $rootScope, $sce) {
                     const POPUP = new ol.Overlay.Popup();
 
                     if (OlMap.map)
@@ -409,6 +409,22 @@ define(['angular', 'ol', 'angular-material', 'map', 'core', 'layermanager'],
 
                     $scope.map = OlMap.map;
                     $scope.LayMan = LayMan;
+
+                    $scope.youtubeRegex = /^(https?:\/\/(?:www.)?)?youtube.com\/watch\?.*(?:v=(?<id>[^&/\r\n]+))/;
+                    $scope.vimeoRegex = /^(https?:\/\/(?:www.)?)?vimeo.com\/(?<id>[\d]+)/;
+                    $scope.otherSourceRegex = /^(https?:\/\/(www\.)?)?(?!.*(youtube|vimeo)).*\.\w+\//;
+
+                    $scope.parseVideo = function(url) {
+                        if (url.match($scope.youtubeRegex)) {
+                            const VIDEO_ID = url.match($scope.youtubeRegex).groups.id;
+                            return $sce.trustAsHtml(`<iframe src="https://www.youtube.com/embed/${VIDEO_ID}" type="text/html" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>></iframe>`);
+                        } else if (url.match(($scope.vimeoRegex))) {
+                            const VIDEO_ID = url.match($scope.vimeoRegex).groups.id;
+                            return $sce.trustAsHtml(`<iframe src="https://player.vimeo.com/video/${VIDEO_ID}" type="text/html" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`);
+                        } else {
+                            return $sce.trustAsHtml(`<a href="${url}" target="_blank">${url}</a>`);
+                        }
+                    };
 
                     $scope.applyFilters = service.applyFilters;
                     $scope.displayDetails = false;
