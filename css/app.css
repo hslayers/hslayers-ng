@@ -1264,7 +1264,7 @@ md-bottom-sheet-collapsible.minimized .bottom-sheet-switcher md-icon {
     transform: rotate(180deg);
 }
 
-md-bottom-sheet {
+md-bottom-sheet-collapsible {
     box-shadow: 0 -5px 10px 1px rgba(0, 0, 0, 0.3);
     max-height: 80%;
     touch-action: pan-y;

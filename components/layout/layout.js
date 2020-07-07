@@ -404,6 +404,17 @@ define(['angular', 'angular-material', 'core', 'map', 'geolocation', 'layermanag
                         $scope.bottomSheet = undefined;
                     }
 
+                    $scope.showPolicyDialog = function(ev) {
+                        $mdDialog.show({
+                            scope: this,
+                            preserveScope: true,
+                            templateUrl: config.policy_template || `${config.hsl_path}components/layout/partials/policy${config.design || ''}.html`,
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            clickOutsideToClose: true
+                        });
+                    };
+
                     $scope.showAcknowledgement = function(ev) {
                         $mdDialog.show({
                             scope: this,
