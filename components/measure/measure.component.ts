@@ -1,4 +1,4 @@
-export default {
+export const HsMeasureComponent = {
   template: (HsConfig) => {
     'ngInject';
     if (HsConfig.design == 'md') {

@@ -12,7 +12,7 @@ import {transform} from 'ol/proj';
  * @param HsUtilsService
  * @param $timeout
  */
-export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
+export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsService, $timeout) {
   'ngInject';
   const me = this;
 
