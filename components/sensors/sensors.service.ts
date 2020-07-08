@@ -116,7 +116,7 @@ export class HsSensorsService {
   selectUnit(unit) {
     this.HsSensorsUnitDialogService.unit = unit;
     unit.expanded = !unit.expanded;
-    this.selectSensor(unit.sensors[0]);
+    //this.selectSensor(unit.sensors[0]);
     if (
       !this.HsLayoutService.contentWrapper.querySelector(
         '.hs-sensor-unit-dialog'
