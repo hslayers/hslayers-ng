@@ -55,7 +55,7 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
    * @description Enable/disable multiple shape mode for measuring (switch without parameter)
    */
   this.switchMultipleMode = function (mode) {
-    if (angular.isDefined(mode)) {
+    if (mode !== undefined) {
       me.data.multipleShapeMode = mode;
     } else {
       me.data.multipleShapeMode = !me.data.multipleShapeMode;
@@ -212,7 +212,7 @@ export default function ($rootScope, HsMapService, HsUtilsService, $timeout) {
     me.draw.on('drawstart', (evt) => {
       $rootScope.$broadcast('measure.drawStart');
       if (me.data.multipleShapeMode) {
-        if (!angular.isArray(me.sketch)) {
+        if (!Array.isArray(me.sketch)) {
           me.sketch = [];
           me.data.measurements.push({
             size: 0,
