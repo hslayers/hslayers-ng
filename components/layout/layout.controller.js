@@ -1,3 +1,4 @@
+/* eslint-disable angular/timeout-service */
 /**
  * @param $scope
  * @param $injector
@@ -555,10 +556,15 @@ export default function (
     height -= HsLayoutService.mdToolbarHeight();
 
     const currentMapSize = HsMapService.map.getSize();
-    //We can't call this too often because it messes up 
+    //We can't call this too often because it messes up
     //the scrolling and animations - they get canceled
-    if(currentMapSize[0] != width || currentMapSize[1] != height){
-      setTimeout(() => HsMapService.map.updateSize(), 200);
+    if (
+      Math.round(currentMapSize[0]) != Math.round(width) ||
+      Math.round(currentMapSize[1]) != Math.round(height)
+    ) {
+      setTimeout(() => {
+        HsMapService.map.updateSize();
+      }, 200);
     }
 
     return {
