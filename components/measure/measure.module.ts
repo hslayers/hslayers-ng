@@ -1,24 +1,15 @@
-import measureComponent from './measure.component';
-import measureService from './measure.service';
-import * as angular from "angular";
-import '../layout';
+import {BrowserModule} from '@angular/platform-browser';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HsMeasureComponent} from './measure.component';
+import {HsMeasureService} from './measure.service';
 
-/**
- * @namespace hs.measure
- * @memberOf hs
- */
-angular
-  .module('hs.measure', ['hs.map', 'hs.core', 'hs.layout'])
-  /**
-   * @memberof hs.measure
-   * @ngdoc service
-   * @name HsMeasureService
-   */
-  .factory('HsMeasureService', measureService)
-  /**
-   * @memberof hs.measure
-   * @ngdoc component
-   * @name hs.measure
-   * @description Add measure html template of measuring distance or area to the map
-   */
-  .component('hs.measure', measureComponent);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  declarations: [HsMeasureComponent],
+  imports: [CommonModule, BrowserModule],
+  exports: [HsMeasureComponent],
+  providers: [HsMeasureService],
+  entryComponents: [HsMeasureComponent],
+})
+export class HsMeasureModule {}
