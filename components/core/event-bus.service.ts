@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Inject, Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +20,5 @@ export class HsEventBusService {
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
 
-  constructor() {
-
-  }
+  constructor() {}
 }
