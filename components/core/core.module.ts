@@ -1,22 +1,33 @@
 /**
-* @namespace hs.legend
-* @memberOf hs
-*/
-import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { BrowserModule } from '@angular/platform-browser';
-import { HsCoreService } from './core.service';
-import { HsLogService } from './log.service';
-import { HsLayoutModule } from '../layout/layout.module';
-import { HsMapServiceProvider, HsUtilsServiceProvider, HsConfigProvider, HsDrawServiceProvider, HsStylerServiceProvider, HsLayerSynchronizerServiceProvider, HsWmsGetCapabilitiesServiceProvider, HsWfsGetCapabilitiesServiceProvider, HsWmtsGetCapabilitiesServiceProvider, HsDimensionServiceProvider, HsLayerUtilsServiceProvider } from '../../ajs-upgraded-providers';
-import { HsLegendModule } from '../legend';
-import { HsPrintModule } from '../print';
-import { HsLayerManagerModule } from '../layermanager';
-import { HttpClientModule } from '@angular/common/http';
+ * @namespace hs.legend
+ * @memberOf hs
+ */
+import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
+import {
+  HsConfigProvider,
+  HsDimensionServiceProvider,
+  HsDrawServiceProvider,
+  HsLayerSynchronizerServiceProvider,
+  HsLayerUtilsServiceProvider,
+  HsMapServiceProvider,
+  HsStylerServiceProvider,
+  HsUtilsServiceProvider,
+  HsWfsGetCapabilitiesServiceProvider,
+  HsWmsGetCapabilitiesServiceProvider,
+  HsWmtsGetCapabilitiesServiceProvider,
+} from '../../ajs-upgraded-providers';
+import {HsCoreService} from './core.service';
+import {HsLayerManagerModule} from '../layermanager';
+import {HsLayoutModule} from '../layout/layout.module';
+import {HsLegendModule} from '../legend';
+import {HsLogService} from './log.service';
+import {HsPrintModule} from '../print';
+import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     BrowserModule,
@@ -36,16 +47,16 @@ import { HttpClientModule } from '@angular/common/http';
     HsStylerServiceProvider,
     HsDrawServiceProvider,
     HsLayerSynchronizerServiceProvider,
-    HsWmsGetCapabilitiesServiceProvider, 
-    HsWfsGetCapabilitiesServiceProvider, 
+    HsWmsGetCapabilitiesServiceProvider,
+    HsWfsGetCapabilitiesServiceProvider,
     HsWmtsGetCapabilitiesServiceProvider,
     HsDimensionServiceProvider,
     {
-      provide: Window, useValue: window
+      provide: Window,
+      useValue: window,
     },
-    HsLogService],
-  entryComponents: [
-  ]
+    HsLogService,
+  ],
+  entryComponents: [],
 })
-export class HsCoreModule {
-}
+export class HsCoreModule {}
