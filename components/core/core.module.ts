@@ -22,6 +22,7 @@ import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLegendModule} from '../legend';
 import {HsLogService} from './log.service';
+import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -34,6 +35,7 @@ import {NgModule} from '@angular/core';
     HttpClientModule,
     HsLayoutModule,
     HsLegendModule,
+    HsMeasureModule,
     HsPrintModule,
     HsLayerManagerModule,
   ],

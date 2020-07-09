@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMeasureService} from './measure.service';
 
 @Component({
   selector: 'hs-measure',
@@ -9,43 +12,35 @@ export class HsMeasureComponent {
     return require('./partials/measuremd.html');
   }*/
   type = 'distance';
+  data;
 
   constructor(
-    $scope,
-    private HsLayoutService,
-    private HsMeasureService,
-    $timeout
+    private HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService,
+    private HsMeasureService: HsMeasureService
   ) {
-    'ngInject';
-    $scope.data = this.HsMeasureService.data;
+    this.data = this.HsMeasureService.data;
 
     document.addEventListener('keyup', (e) => {
       if (e.keyCode == 17) {
         //ControlLeft
-        $timeout(() => {
+        setTimeout(() => {
           this.HsMeasureService.switchMultipleMode();
         }, 0);
       }
     });
 
-    $scope.$on('measure.drawStart', () => {
+    HsEventBusService.measurementStarts.subscribe(() => {
       this.HsLayoutService.panelEnabled('toolbar', false);
     });
 
-    $scope.$on('measure.drawEnd', () => {
+    HsEventBusService.measurementEnds.subscribe(() => {
       this.HsLayoutService.panelEnabled('toolbar', true);
     });
 
-    $scope.$watch('type', () => {
-      if (this.HsLayoutService.mainpanel != 'measure') {
-        return;
-      }
-      this.HsMeasureService.changeMeasureParams($scope.type);
-    });
-
-    $scope.$on('core.mainpanel_changed', (event) => {
+    HsEventBusService.mainPanelChanges.subscribe((event) => {
       if (HsLayoutService.mainpanel == 'measure') {
-        this.HsMeasureService.activateMeasuring($scope.type);
+        this.HsMeasureService.activateMeasuring(this.type);
       } else {
         this.HsMeasureService.deactivateMeasuring();
       }
@@ -53,34 +48,26 @@ export class HsMeasureComponent {
 
     //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
     if (this.HsLayoutService.mainpanel == 'measure') {
-      this.HsMeasureService.activateMeasuring($scope.type);
+      this.HsMeasureService.activateMeasuring(this.type);
     }
 
-    $scope.$emit('scope_loaded', 'Measure');
+    //$scope.$emit('scope_loaded', 'Measure');
   }
 
-  /**
-   * @memberof hs.measure.controller
-   * @function setType
-   * @public
-   * @param {string} type type of measure to use, should be "area" or "distance"
-   * @returns {object} area of polygon with used units
-   * @description Set type of current measurment
-   */
-  setType(type) {
-    this.type = type;
-    this.HsMeasureService.switchMeasureType(type);
+  ngOnChanges(): void {
+    if (this.HsLayoutService.mainpanel != 'measure') {
+      return;
+    }
+    this.HsMeasureService.changeMeasureParams(this.type);
   }
 
   /**
    * @memberof hs.measure.controller
    * @function clearAll
    * @public
-   * @param {string} type type of measure to use, should be "area" or "distance"
-   * @returns {object} area of polygon with used units
    * @description Reset sketch and all measurements to start new drawing
    */
-  clearAll() {
+  clearAll(): void {
     this.HsMeasureService.clearMeasurement();
   }
 }

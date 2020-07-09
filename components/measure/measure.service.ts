@@ -2,6 +2,9 @@ import * as GeometryType from 'ol/geom/GeometryType';
 import VectorLayer from 'ol/layer/Vector';
 import {Draw} from 'ol/interaction';
 import {Fill, Stroke, Style} from 'ol/style';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {LineString, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
@@ -42,11 +45,9 @@ export class HsMeasureService {
   });
 
   constructor(
-    $rootScope,
-    private HsMapService,
-    private HsUtilsService,
-    private HsEventBusService,
-    $timeout
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService
   ) {
     HsMapService.loaded().then((m) => {
       this.map = m;
@@ -57,10 +58,10 @@ export class HsMeasureService {
    * @memberof HsMeasureService
    * @function switchMultipleMode
    * @public
-   * @param {?boolean} mode Optional parameter if multiple shape mode should be enabled
+   * @param {boolean?} mode Optional parameter if multiple shape mode should be enabled
    * @description Enable/disable multiple shape mode for measuring (switch without parameter)
    */
-  switchMultipleMode(mode: boolean | null): void {
+  switchMultipleMode(mode?: boolean): void {
     if (mode !== undefined) {
       this.data.multipleShapeMode = mode;
     } else {
