@@ -27,7 +27,8 @@ export default function (
   $timeout,
   HsLayoutService,
   $log,
-  $document
+  $document,
+  HsUtilsService
 ) {
   'ngInject';
   if (HsConfig.design == 'md') {
@@ -562,9 +563,14 @@ export default function (
       Math.round(currentMapSize[0]) != Math.round(width) ||
       Math.round(currentMapSize[1]) != Math.round(height)
     ) {
-      setTimeout(() => {
-        HsMapService.map.updateSize();
-      }, 200);
+      HsUtilsService.debounce(
+        function (){
+          HsMapService.map.updateSize();
+        },
+        300,
+        false,
+        $scope
+      )();
     }
 
     return {

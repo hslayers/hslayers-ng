@@ -38,7 +38,7 @@ export default function (
     added_layers: [],
     params: {},
     customParams: {},
-
+    updateDebouncer: {},
     /**
      * @function update
      * @memberof HsPermalinkUrlService
@@ -87,9 +87,15 @@ export default function (
       for (const cP in me.customParams) {
         me.push(cP, me.customParams[cP]);
       }
-      $timeout(() => {
-        $location.search(me.params);
-      }, 0);
+      HsUtilsService.debounce(function() {
+        $timeout(() => {
+            $location.search(me.params);
+          }, 0);
+        },
+        300,
+        false,
+        me.updateDebouncer
+      )();
     },
 
     /**
