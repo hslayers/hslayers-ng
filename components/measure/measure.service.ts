@@ -1,7 +1,9 @@
+import * as GeometryType from 'ol/geom/GeometryType';
 import VectorLayer from 'ol/layer/Vector';
 import {Draw} from 'ol/interaction';
 import {Fill, Stroke, Style} from 'ol/style';
-import {GeometryType, LineString, Polygon} from 'ol/geom';
+import {Injectable} from '@angular/core';
+import {LineString, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {getArea, getDistance} from 'ol/sphere';
 import {transform} from 'ol/proj';
@@ -12,19 +14,21 @@ import {transform} from 'ol/proj';
  * @param HsUtilsService
  * @param $timeout
  */
-export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsService, $timeout) {
-  'ngInject';
-  const me = this;
-
-  let map;
-
-  HsMapService.loaded().then((m) => {
-    map = m;
-  });
-
-  this.draw;
-
-  this.measureVector = new VectorLayer({
+@Injectable({
+  providedIn: 'root',
+})
+export class HsMeasureService {
+  map;
+  draw;
+  data = {
+    measurements: [],
+    multipleShapeMode: false,
+  };
+  sketch = [];
+  currentMeasurement;
+  $rootScope;
+  $timeout;
+  measureVector = new VectorLayer({
     source: new Vector(),
     style: new Style({
       fill: new Fill({
@@ -37,30 +41,31 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
     }),
   });
 
-  this.data = {};
-
-  this.data.measurements = [];
-
-  this.data.multipleShapeMode = false;
-
-  this.sketch = {};
-
-  this.currentMeasurement;
+  constructor(
+    $rootScope,
+    private HsMapService,
+    private HsUtilsService,
+    $timeout
+  ) {
+    HsMapService.loaded().then((m) => {
+      this.map = m;
+    });
+  }
 
   /**
    * @memberof HsMeasureService
    * @function switchMultipleMode
    * @public
-   * @param {boolean} mode Optional parameter if multiple shape mode should be enabled
+   * @param {?boolean} mode Optional parameter if multiple shape mode should be enabled
    * @description Enable/disable multiple shape mode for measuring (switch without parameter)
    */
-  this.switchMultipleMode = function (mode) {
+  switchMultipleMode(mode: boolean | null): void {
     if (mode !== undefined) {
-      me.data.multipleShapeMode = mode;
+      this.data.multipleShapeMode = mode;
     } else {
-      me.data.multipleShapeMode = !me.data.multipleShapeMode;
+      this.data.multipleShapeMode = !this.data.multipleShapeMode;
     }
-  };
+  }
 
   /**
    * @memberof HsMeasureService
@@ -69,11 +74,11 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @param {string} type Geometry type of measurement ('area' for polygon, 'line' for linestring)
    * @description Change geometry type of measurement without deleting of old ones
    */
-  this.changeMeasureParams = function (type) {
-    map.removeInteraction(me.draw);
-    me.sketch = null;
-    addInteraction(type);
-  };
+  changeMeasureParams(type: string): void {
+    this.map.removeInteraction(this.draw);
+    this.sketch = null;
+    this.addInteraction(type);
+  }
 
   /**
    * @memberof HsMeasureService
@@ -81,30 +86,29 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @public
    * @description Clear all measurements and restart measuring
    */
-  this.clearMeasurement = function () {
-    me.draw.setActive(false);
-    me.data.measurements.length = 0;
-    me.measureVector.getSource().clear();
-    me.sketch = null;
-    me.draw.setActive(true);
-  };
+  clearMeasurement(): void {
+    this.draw.setActive(false);
+    this.data.measurements.length = 0;
+    this.measureVector.getSource().clear();
+    this.sketch = null;
+    this.draw.setActive(true);
+  }
 
   /**
    * @memberof HsMeasureService
    * @function activateMeasuring
    * @public
    * @param type
-   * @param {boolean} mode Optional parameter, Geometry type of measurement ('area' for polygon, 'line' for linestring) Line is default
    * @description Start measuring interaction in app
    */
-  this.activateMeasuring = function (type) {
-    map.addLayer(me.measureVector);
-    map.getViewport().addEventListener('mousemove', mouseMoveHandler);
-    map.getViewport().addEventListener('touchmove', mouseMoveHandler);
-    map.getViewport().addEventListener('touchend', mouseMoveHandler);
+  activateMeasuring(type): void {
+    this.map.addLayer(this.measureVector);
+    this.map.getViewport().addEventListener('mousemove', this.mouseMoveHandler);
+    this.map.getViewport().addEventListener('touchmove', this.mouseMoveHandler);
+    this.map.getViewport().addEventListener('touchend', this.mouseMoveHandler);
 
-    addInteraction(type);
-  };
+    this.addInteraction(type);
+  }
 
   /**
    * @memberof HsMeasureService
@@ -112,16 +116,16 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @public
    * @description Stop measuring interaction in app
    */
-  this.deactivateMeasuring = function () {
-    HsMapService.loaded().then((map) => {
-      map.getViewport().removeEventListener('mousemove', mouseMoveHandler);
-      map.getViewport().removeEventListener('touchmove', mouseMoveHandler);
-      map.getViewport().removeEventListener('touchend', mouseMoveHandler);
+  deactivateMeasuring(): void {
+    this.HsMapService.loaded().then((map) => {
+      map.getViewport().removeEventListener('mousemove', this.mouseMoveHandler);
+      map.getViewport().removeEventListener('touchmove', this.mouseMoveHandler);
+      map.getViewport().removeEventListener('touchend', this.mouseMoveHandler);
 
-      map.removeInteraction(me.draw);
-      map.removeLayer(me.measureVector);
+      map.removeInteraction(this.draw);
+      map.removeLayer(this.measureVector);
     });
-  };
+  }
 
   /**
    * @memberof HsMeasureService
@@ -130,27 +134,27 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @param {object} evt Callback param for mouse move event
    * @description Callback for mouse and touch move event, compute live measurement results
    */
-  const mouseMoveHandler = function (evt) {
-    if (me.sketch) {
+  mouseMoveHandler(evt): void {
+    if (this.sketch) {
       let output;
 
-      for (let i = 0; i < me.sketch.length; i++) {
-        const geom = me.sketch[i].getGeometry();
-        if (HsUtilsService.instOf(geom, Polygon)) {
-          output = addMultiple(me.formatArea(geom), output);
-        } else if (HsUtilsService.instOf(geom, LineString)) {
-          output = addMultiple(me.formatLength(geom), output);
+      for (let i = 0; i < this.sketch.length; i++) {
+        const geom = this.sketch[i].getGeometry();
+        if (this.HsUtilsService.instOf(geom, Polygon)) {
+          output = this.addMultiple(this.formatArea(geom), output);
+        } else if (this.HsUtilsService.instOf(geom, LineString)) {
+          output = this.addMultiple(this.formatLength(geom), output);
         }
       }
 
-      $timeout(() => {
-        me.data.measurements[me.currentMeasurement] = output;
-        if (me.data.measurements[me.currentMeasurement]) {
-          me.data.measurements[me.currentMeasurement].geom = me.sketch;
+      this.$timeout(() => {
+        this.data.measurements[this.currentMeasurement] = output;
+        if (this.data.measurements[this.currentMeasurement]) {
+          this.data.measurements[this.currentMeasurement].geom = this.sketch;
         }
       }, 0);
     }
-  };
+  }
 
   /**
    * @memberof HsMeasureService
@@ -158,16 +162,18 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @private
    * @param {object} val1 Output of new object
    * @param {object} val2 Old value
+   * @returns {}
    * @description Add two measure results for multiple shape mode to display joined result
    */
-  const addMultiple = function (val1, val2) {
+  addMultiple(val1, val2) {
     if (val2 == undefined) {
       return val1;
     }
     let unit = val1.unit;
     const type = val1.type;
+    let value: number;
     if (val1.unit == val2.unit) {
-      var value = Math.round((val1.size + val2.size) * 100) / 100;
+      value = Math.round((val1.size + val2.size) * 100) / 100;
       if (unit == 'm' && type == 'length' && value > 1000) {
         value = Math.round((value / 1000) * 100) / 100;
         unit = 'km';
@@ -182,55 +188,54 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
           type == 'length' ? (arr[i].size /= 1000) : (arr[i].size /= 1000000);
         }
       }
-      var value = Math.round((arr[0].size + arr[1].size) * 100) / 100;
+      value = Math.round((arr[0].size + arr[1].size) * 100) / 100;
       unit = 'km';
     }
-    const output = {
+    return {
       size: value,
       type: type,
       unit: unit,
     };
-    return output;
-  };
+  }
 
   /**
    * @memberof HsMeasureService
    * @function addInteraction
    * @private
-   * @param {boolean} type Geometry type
+   * @param {string} type Geometry type
    * @description Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
    */
-  function addInteraction(type) {
+  addInteraction(type: string): void {
     const drawType = type == 'area' ? 'Polygon' : 'LineString';
-    me.draw = new Draw({
-      source: me.measureVector.getSource(),
-      type: /** @type {GeometryType} */ (drawType),
+    this.draw = new Draw({
+      source: this.measureVector.getSource(),
+      type: /** @type {GeometryType} */ drawType,
       dragVertexDelay: 150,
     });
-    map.addInteraction(me.draw);
+    this.map.addInteraction(this.draw);
 
-    me.draw.on('drawstart', (evt) => {
-      $rootScope.$broadcast('measure.drawStart');
-      if (me.data.multipleShapeMode) {
-        if (!Array.isArray(me.sketch)) {
-          me.sketch = [];
-          me.data.measurements.push({
+    this.draw.on('drawstart', (evt) => {
+      this.$rootScope.$broadcast('measure.drawStart');
+      if (this.data.multipleShapeMode) {
+        if (!Array.isArray(this.sketch)) {
+          this.sketch = [];
+          this.data.measurements.push({
             size: 0,
             unit: '',
           });
         }
-        me.sketch.push(evt.feature);
+        this.sketch.push(evt.feature);
       } else {
-        me.sketch = [evt.feature];
-        me.data.measurements.push({
+        this.sketch = [evt.feature];
+        this.data.measurements.push({
           size: 0,
           unit: '',
         });
       }
-      me.currentMeasurement = me.data.measurements.length - 1;
+      this.currentMeasurement = this.data.measurements.length - 1;
     });
 
-    me.draw.on('drawend', (evt) => {
+    this.draw.on('drawend', (evt) => {
       $rootScope.$broadcast('measure.drawEnd');
     });
   }
@@ -243,10 +248,10 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @returns {object} numeric length of line with used units
    * @description Compute and format line length with correct units (m/km)
    */
-  this.formatLength = function (line) {
+  formatLength(line: LineString) {
     let length = 0;
     const coordinates = line.getCoordinates();
-    const sourceProj = map.getView().getProjection();
+    const sourceProj = this.map.getView().getProjection();
 
     for (let i = 0, ii = coordinates.length - 1; i < ii; ++i) {
       const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
@@ -268,7 +273,7 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
       output.unit = 'm';
     }
     return output;
-  };
+  }
 
   /**
    * @memberof HsMeasureService
@@ -278,8 +283,8 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
    * @returns {object} area of polygon with used units
    * @description Compute and format polygon area with correct units (m2/km2)
    */
-  this.formatArea = function (polygon) {
-    const sourceProj = map.getView().getProjection();
+  formatArea(polygon: Polygon) {
+    const sourceProj = this.map.getView().getProjection();
     const area = Math.abs(getArea(polygon));
     const output = {
       size: area,
@@ -294,6 +299,5 @@ export const HsMeasureService = function ($rootScope, HsMapService, HsUtilsServi
       output.unit = 'm';
     }
     return output;
-  };
-  return me;
+  }
 }
