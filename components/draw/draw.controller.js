@@ -75,7 +75,7 @@ export default function (
     activateDrawing(withStyle) {
       HsDrawService.activateDrawing({
         onDrawStart: $scope.onDrawStart, //Will add later
-        onDrawEnd: HsDrawService.onDrawEnd,
+        onDrawEnd: (e) => HsDrawService.onDrawEnd(e),
         onSelected: $scope.onFeatureSelected, //Will add later
         onDeselected: $scope.onFeatureDeselected, //Will add later
         changeStyle: withStyle ? $scope.changeStyle : undefined,
