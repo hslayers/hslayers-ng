@@ -308,9 +308,9 @@ export class HsDrawService {
     }
     if (this.draw) {
       this.activateDrawing({
-        changeStyle: this.useCurrentStyle,
+        changeStyle: () => this.useCurrentStyle(),
         drawState: true,
-        onDrawEnd: this.onDrawEnd,
+        onDrawEnd: (e) => this.onDrawEnd(e),
       });
     }
   }
