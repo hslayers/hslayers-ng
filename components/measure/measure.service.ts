@@ -45,6 +45,7 @@ export class HsMeasureService {
     $rootScope,
     private HsMapService,
     private HsUtilsService,
+    private HsEventBusService,
     $timeout
   ) {
     HsMapService.loaded().then((m) => {
@@ -138,8 +139,8 @@ export class HsMeasureService {
     if (this.sketch) {
       let output;
 
-      for (let i = 0; i < this.sketch.length; i++) {
-        const geom = this.sketch[i].getGeometry();
+      for (const sketchItem of this.sketch) {
+        const geom = sketchItem.getGeometry();
         if (this.HsUtilsService.instOf(geom, Polygon)) {
           output = this.addMultiple(this.formatArea(geom), output);
         } else if (this.HsUtilsService.instOf(geom, LineString)) {
@@ -160,12 +161,12 @@ export class HsMeasureService {
    * @memberof HsMeasureService
    * @function addMultiple
    * @private
-   * @param {object} val1 Output of new object
-   * @param {object} val2 Old value
-   * @returns {}
+   * @param {measurement} val1 Output of new object
+   * @param {measurement} val2 Old value
+   * @returns {measurement}
    * @description Add two measure results for multiple shape mode to display joined result
    */
-  addMultiple(val1, val2) {
+  addMultiple(val1: measurement, val2: measurement): measurement {
     if (val2 == undefined) {
       return val1;
     }
@@ -236,7 +237,7 @@ export class HsMeasureService {
     });
 
     this.draw.on('drawend', (evt) => {
-      $rootScope.$broadcast('measure.drawEnd');
+      this.$rootScope.$broadcast('measure.drawEnd');
     });
   }
 
@@ -244,11 +245,11 @@ export class HsMeasureService {
    * @memberof HsMeasureService
    * @function formatLength
    * @private
-   * @param {ol.geom.LineString} line
-   * @returns {object} numeric length of line with used units
+   * @param {LineString} line
+   * @returns {measurement} numeric length of line with used units
    * @description Compute and format line length with correct units (m/km)
    */
-  formatLength(line: LineString) {
+  formatLength(line: LineString): measurement {
     let length = 0;
     const coordinates = line.getCoordinates();
     const sourceProj = this.map.getView().getProjection();
@@ -279,12 +280,12 @@ export class HsMeasureService {
    * @memberof HsMeasureService
    * @function formatArea
    * @private
-   * @param {ol.geom.Polygon} polygon
+   * @param {Polygon} polygon
    * @returns {object} area of polygon with used units
    * @description Compute and format polygon area with correct units (m2/km2)
    */
-  formatArea(polygon: Polygon) {
-    const sourceProj = this.map.getView().getProjection();
+  formatArea(polygon: Polygon): measurement {
+    //const sourceProj = this.map.getView().getProjection();
     const area = Math.abs(getArea(polygon));
     const output = {
       size: area,
@@ -300,4 +301,10 @@ export class HsMeasureService {
     }
     return output;
   }
+}
+
+interface measurement {
+  size: number;
+  type: string;
+  unit: string;
 }
