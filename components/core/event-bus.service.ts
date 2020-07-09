@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class HsEventBusService {
   sizeChanges: Subject<any> = new Subject();
@@ -19,6 +19,9 @@ export class HsEventBusService {
   layerTimeChanges: Subject<any> = new Subject();
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
+  mainPanelChanges: Subject<any> = new Subject(); //to replace 'core.mainpanel_changed'
+  measurementStarts: Subject<any> = new Subject();
+  measurementEnds: Subject<any> = new Subject();
 
   constructor() {}
 }
