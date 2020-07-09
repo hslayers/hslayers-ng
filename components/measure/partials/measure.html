@@ -1,21 +1,23 @@
 <div class="card panel-default hs-main-panel">
-    <hs-panel-header name="measure" title="Measure">
-        <extra-title>&nbsp;<span ng-show="data.multipleShapeMode" translate>multiple shapes</span></extra-title>
-    </hs-panel-header>
-    <div class="card-body p-2">
-          <div class="btn-group btn-group-toggle" style="margin-bottom:10px">
-            <label class="btn btn-secondary" ng-class="{active: type == 'distance'}">
-                <input type="radio" name="type" value="distance"  ng-model="type"><translate>Distance</translate>
-            </label>
-            <label class="btn btn-secondary" ng-class="{active: type == 'area'}">
-                <input type="radio" name="type" value="area"  ng-model="type"><translate>Area</translate>
-            </label>
-        </div>
-        <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
-        <ul class="list-group">
-            <li ng-repeat="measurement in data.measurements" class="list-group-item">
-                {{measurement.size}}{{measurement.unit}}<span ng-if="measurement.type=='Area'"><sup>2</sup></span>
-            </li>
-        </ul>
+  <hs-panel-header name="measure" title="Measure">
+    <extra-title>&nbsp;<span [hidden]="!data.multipleShapeMode" i18n>multiple shapes</span></extra-title>
+  </hs-panel-header>
+  <div class="card-body p-2">
+    <div class="btn-group btn-group-toggle" style="margin-bottom:10px">
+      <label class="btn btn-secondary" [ngClass]="{active: type == 'distance'}">
+        <input type="radio" name="type" value="distance" [(ngModel)]="type">
+        <!--i18n-->Distance<!--i18n-->
+      </label>
+      <label class="btn btn-secondary" [ngClass]="{active: type == 'area'}">
+        <input type="radio" name="type" value="area" [(ngModel)]="type">
+        <!--i18n-->>Area<!--i18n-->
+      </label>
     </div>
+    <button class="btn btn-secondary" style="float:right" (click)="clearAll()" i18n>Clear</button>
+    <ul class="list-group">
+      <li *ngFor="const measurement of data.measurements" class="list-group-item">
+        {{measurement.size}}{{measurement.unit}}<span *ngIf="measurement.type == 'Area'"><sup>2</sup></span>
+      </li>
+    </ul>
+  </div>
 </div>
