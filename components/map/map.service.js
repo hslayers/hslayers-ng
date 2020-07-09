@@ -106,7 +106,7 @@ export class HsMapService {
           }
         }
       };
-      this.map.getLayers().forEach((layer) => {
+      map.getLayers().forEach((layer) => {
         if (HsUtilsService.instOf(layer, Group)) {
           layer.getLayers().forEach(check);
         } else {
