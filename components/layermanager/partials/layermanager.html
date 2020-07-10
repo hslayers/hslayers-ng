@@ -11,7 +11,7 @@
     </hs-panel-header>
     <div class="card-body hs-lm-panel">
         <div class="nav nav-pills" [hidden]="!hasBoxImages()">
-            <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary" style="padding-right 2px; padding-left 2px;">
+            <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary" style="padding-right: 2px; padding-left: 2px;">
                 <a href="" [ngClass]="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" (click)="activateTheme(box)">
                     <img src="{{box.get('img')}}" alt="{{box.get('title')}}">
                 </a>
@@ -23,7 +23,7 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height 2em;" i18n>Baselayers</span>
+                        <span class="align-middle" style="line-height: 2em;" i18n>Baselayers</span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()" [ngClass]="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
@@ -50,7 +50,7 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span i18n class="align-middle" style="line-height 2em;">Terrains</span>
+                        <span i18n class="align-middle" style="line-height: 2em;">Terrains</span>
                     </div>
                 </div>
             </li>
@@ -73,8 +73,8 @@
         </ul>
 
         <ul class="list-group hs-lm-mapcontentlist">
-            <li *ngIf="!HsLayoutService.panelVisible('gallery')" class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item" style="margin-bottom 0.2em;">
-                <span i18n class="align-middle" style="line-height 2em;">Map Content</span>
+            <li *ngIf="!HsLayoutService.panelVisible('gallery')" class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item" style="margin-bottom: 0.2em;">
+                <span i18n class="align-middle" style="line-height: 2em;">Map Content</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary" (click)="value.visible = !value.visible">
