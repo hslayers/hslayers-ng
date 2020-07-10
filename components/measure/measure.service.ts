@@ -29,8 +29,6 @@ export class HsMeasureService {
   };
   sketch = [];
   currentMeasurement;
-  $rootScope;
-  $timeout;
   measureVector = new VectorLayer({
     source: new Vector(),
     style: new Style({
@@ -149,7 +147,7 @@ export class HsMeasureService {
         }
       }
 
-      this.$timeout(() => {
+      setTimeout(() => {
         this.data.measurements[this.currentMeasurement] = output;
         if (this.data.measurements[this.currentMeasurement]) {
           this.data.measurements[this.currentMeasurement].geom = this.sketch;
@@ -217,7 +215,7 @@ export class HsMeasureService {
     this.map.addInteraction(this.draw);
 
     this.draw.on('drawstart', (evt) => {
-      this.$rootScope.$broadcast('measure.drawStart');
+      this.HsEventBusService.measurementStarts.next();
       if (this.data.multipleShapeMode) {
         if (!Array.isArray(this.sketch)) {
           this.sketch = [];
@@ -238,7 +236,7 @@ export class HsMeasureService {
     });
 
     this.draw.on('drawend', (evt) => {
-      this.$rootScope.$broadcast('measure.drawEnd');
+      this.HsEventBusService.measurementEnds.next();
     });
   }
 
