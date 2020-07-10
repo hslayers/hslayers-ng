@@ -101,7 +101,10 @@ export class HsMeasureService {
    * @param type
    * @description Start measuring interaction in app
    */
-  activateMeasuring(type): void {
+  activateMeasuring(type: string): void {
+    if (!this.map) {
+      return;
+    }
     this.map.addLayer(this.measureVector);
     this.map.getViewport().addEventListener('mousemove', this.mouseMoveHandler);
     this.map.getViewport().addEventListener('touchmove', this.mouseMoveHandler);
