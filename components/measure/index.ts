@@ -25,7 +25,7 @@ angular
    * @name hs.measure
    * @description Add measure html template of measuring distance or area to the map
    */
-  .component('hs.measure', downgradeComponent({component: HsMeasureComponent}));
+  .directive('hs.measure', downgradeComponent({component: HsMeasureComponent}));
 
 angular.module('hs.measure', [downgradedMeasureModule]);
 
