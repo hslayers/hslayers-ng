@@ -4,22 +4,22 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
 
 @Component({
-  selector: 'hs-measure',
+  selector: 'hs.measure',
   template: require('./partials/measure.html'),
 })
 export class HsMeasureComponent {
   /*if (HsConfig.design == 'md') {
     return require('./partials/measuremd.html');
   }*/
-  type = 'distance';
-  data;
+  type: string;
 
   constructor(
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
     private HsMeasureService: HsMeasureService
   ) {
-    this.data = this.HsMeasureService.data;
+    //this.data = this.HsMeasureService.data;
+    this.type = 'distance';
 
     document.addEventListener('keyup', (e) => {
       if (e.keyCode == 17) {

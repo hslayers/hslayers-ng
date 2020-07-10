@@ -4,7 +4,7 @@ import {HsMeasureComponent} from './measure.component';
 import {HsMeasureModule} from './measure.module';
 import {HsMeasureService} from './measure.service';
 import {downgrade} from '../../common/downgrader';
-import {downgradeComponent} from '@angular/upgrade/static';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedMeasureModule = downgrade(HsMeasureModule);
 /**
@@ -18,7 +18,7 @@ angular
    * @ngdoc service
    * @name HsMeasureService
    */
-  .factory('HsMeasureService', HsMeasureService)
+  .service('HsMeasureService', downgradeInjectable(HsMeasureService))
   /**
    * @memberof hs.measure
    * @ngdoc component

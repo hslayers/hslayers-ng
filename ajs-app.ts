@@ -4,7 +4,7 @@ import './components/add-layers/add-layers.module';
 import './components/datasource-selector/datasource-selector.module';
 import './components/draw/draw.module';
 import './components/info/info.module';
-import './components/measure/measure.module';
+import './components/measure';
 import './components/permalink/permalink.module';
 import './components/print';
 import './components/legend';
