@@ -240,7 +240,7 @@ export const HsTripPlannerController = (
     HsLayoutService.setMainPanel('info');
   };
 
-  $scope.$on('core.mainpanel_changed', (event) => {});
+  //HsEventBusService.mainPanelChanges.subscribe(() => {});
 
   $scope.$emit('scope_loaded', 'Trip planner');
 };
