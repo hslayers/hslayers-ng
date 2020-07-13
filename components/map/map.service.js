@@ -262,6 +262,8 @@ export default function (
       zoom: template.getZoom(),
       projection: template.getProjection(),
       rotation: template.getRotation(),
+      maxZoom: template.getMaxZoom(),
+      minZoom: template.getMinZoom(),
     });
     return view;
   }
