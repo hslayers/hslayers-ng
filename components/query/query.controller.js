@@ -9,6 +9,7 @@ import Popup from 'ol-popup';
  * @param HsQueryBaseService
  * @param HsConfig
  * @param HsLayoutService
+ * @param HsEventBusService
  * @param $injector
  */
 export default function (
@@ -19,6 +20,7 @@ export default function (
   HsQueryBaseService,
   HsConfig,
   HsLayoutService,
+  HsEventBusService,
   $injector
 ) {
   'ngInject';
@@ -128,7 +130,7 @@ export default function (
   });
 
   //add current panel queriable - activate/deactivate
-  $scope.$on('core.mainpanel_changed', (event, closed) => {
+  HsEventBusService.mainPanelChanges.subscribe((closed) => {
     if (HsQueryBaseService.currentPanelQueryable()) {
       if (!HsQueryBaseService.queryActive) {
         HsQueryBaseService.activateQueries();

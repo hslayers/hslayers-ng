@@ -2,7 +2,14 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
 export default {
   template: require('./partials/styler.html'),
-  controller: function ($scope, HsStylerService, $sce, $http, HsLayoutService) {
+  controller: function (
+    $scope,
+    HsStylerService,
+    $sce,
+    $http,
+    HsLayoutService,
+    HsEventBusService
+  ) {
     'ngInject';
     $scope.service = HsStylerService;
     $scope.icons = null;
@@ -40,19 +47,19 @@ export default {
       return src;
     };
     $scope.save = function () {
-      if (HsStylerService.layer == null) {
+      if (HsStylerService.layer === null) {
         return;
       }
       const source = $scope.getLayerSource(HsStylerService.layer);
       const style_json = {};
-      if (angular.isDefined($scope.fillcolor) && $scope.fillcolor != null) {
+      if (angular.isDefined($scope.fillcolor) && $scope.fillcolor !== null) {
         style_json.fill = new Fill({
           color: $scope.fillcolor['background-color'],
         });
       }
       if (
         angular.isDefined($scope.linecolor) &&
-        $scope.linecolor != null &&
+        $scope.linecolor !== null &&
         $scope.linewidth > 0
       ) {
         style_json.stroke = new Stroke({
@@ -75,7 +82,7 @@ export default {
           };
           if (
             angular.isDefined($scope.iconfillcolor) &&
-            $scope.iconfillcolor != null
+            $scope.iconfillcolor !== null
           ) {
             circle_json.fill = new Fill({
               color: $scope.iconfillcolor['background-color'],
@@ -83,7 +90,7 @@ export default {
           }
           if (
             angular.isDefined($scope.iconlinecolor) &&
-            $scope.iconlinecolor != null &&
+            $scope.iconlinecolor !== null &&
             angular.isDefined($scope.iconlinewidth) &&
             $scope.iconlinewidth > 0
           ) {
@@ -164,19 +171,19 @@ export default {
       }
       if (
         angular.isDefined($scope.iconfillcolor) &&
-        $scope.iconfillcolor != null
+        $scope.iconfillcolor !== null
       ) {
         svgPath.style.fill = $scope.iconfillcolor['background-color'];
       }
       if (
         angular.isDefined($scope.iconlinecolor) &&
-        $scope.iconlinecolor != null
+        $scope.iconlinecolor !== null
       ) {
         svgPath.style.stroke = $scope.iconlinecolor['background-color'];
       }
       if (
         angular.isDefined($scope.iconlinewidth) &&
-        $scope.iconlinewidth != null
+        $scope.iconlinewidth !== null
       ) {
         svgPath.style.strokeWidth = $scope.iconlinewidth;
       }
@@ -207,13 +214,13 @@ export default {
      * @description (PRIVATE) Get geometry type and title for selected layer
      */
     function updateHasVectorFeatures() {
-      if (HsStylerService.layer == null) {
+      if (HsStylerService.layer === null) {
         return;
       }
       const src = $scope.getLayerSource(HsStylerService.layer);
       if (
         angular.isUndefined(HsStylerService.layer) ||
-        HsStylerService.layer == null
+        HsStylerService.layer === null
       ) {
         return;
       }
@@ -274,8 +281,8 @@ export default {
       $scope.save();
     });
 
-    $scope.$on('core.mainpanel_changed', (e, panel) => {
-      if (HsLayoutService.mainpanel == 'styler' && $scope.icons == null) {
+    HsEventBusService.mainPanelChanges.subscribe((panel) => {
+      if (HsLayoutService.mainpanel == 'styler' && $scope.icons === null) {
         $scope.icons = [
           require('./img/svg/bag1.svg'),
           require('./img/svg/banking4.svg'),

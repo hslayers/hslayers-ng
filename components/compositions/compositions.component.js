@@ -603,7 +603,7 @@ export default {
       $scope.startLoadComposition(composition);
     };
 
-    $scope.$on('core.mainpanel_changed', (event) => {
+    HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
         HsLayoutService.mainpanel === 'composition_browser' ||
         HsLayoutService.mainpanel === 'composition'

@@ -7,12 +7,14 @@ import {transform} from 'ol/proj';
 /**
  * @param $scope
  * @param HsMapService
-  * @param HsLayoutService
+ * @param HsLayoutService
+ * @param HsEventBusService
  */
 export const HsRoutingController = function (
   $scope,
   HsMapService,
-  HsLayoutService
+  HsLayoutService,
+  HsEventBusService
 ) {
   'ngInject';
   // Set the instance of the OpenAPI that s4a.js
@@ -454,7 +456,7 @@ export const HsRoutingController = function (
     $scope.clearAll();
   };
 
-  $scope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (HsLayoutService.mainpanel === 'routing') {
       setDefaultOperation();
       $scope.activate();

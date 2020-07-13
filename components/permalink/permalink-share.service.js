@@ -264,7 +264,7 @@ export default function (
   });
 
   // eslint-disable-next-line angular/on-watch
-  $rootScope.$on('core.mainpanel_changed', async (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(async () => {
     if (HsLayoutService.mainpanel == 'permalink') {
       HsPermalinkUrlService.update();
       const status_url = HsStatusManagerService.endpointUrl();
@@ -313,7 +313,7 @@ export default function (
     }
   });
 
-  $rootScope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (HsLayoutService.mainpanel == 'permalink') {
       me.generateThumbnail(
         HsLayoutService.contentWrapper.querySelector('.hs-permalink-thumbnail')

@@ -193,7 +193,7 @@ export default {
       $scope.step = 'context';
     });
 
-    $scope.$on('core.mainpanel_changed', (event) => {
+    HsEventBusService.mainPanelChanges.subscribe(() => {
       if (HsLayoutService.mainpanel == 'saveMap') {
         $scope.step = 'context';
       }

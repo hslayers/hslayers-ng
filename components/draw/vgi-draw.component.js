@@ -17,7 +17,8 @@ export default {
     HsSaveMapService,
     HsConfig,
     HsDrawService,
-    HsLayoutService
+    HsLayoutService,
+    HsEventBusService
   ) {
     'ngInject';
     const map = HsMapService.map;
@@ -1061,7 +1062,7 @@ export default {
       activateDrawing();
     });
 
-    $scope.$on('core.mainpanel_changed', (event) => {
+    HsEventBusService.mainPanelChanges.subscribe(() => {
       if (HsLayoutService.mainpanel == 'draw') {
         fillDrawableLayersList();
         if ($scope.drawable_layers.length == 1) {

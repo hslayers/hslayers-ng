@@ -6,6 +6,7 @@
  * @param HsCore
  * @param HsConfig
  * @param HsAddLayersVectorService
+ * @param HsEventBusService
  * @param HsMickaFiltersService
  * @param HsMickaBrowserService
  * @param HsLaymanBrowserService
@@ -22,6 +23,7 @@ export default function (
   $timeout,
   HsConfig,
   HsAddLayersVectorService,
+  HsEventBusService,
   HsMickaFiltersService,
   HsMickaBrowserService,
   HsLaymanBrowserService,
@@ -264,7 +266,7 @@ export default function (
     )
   );
 
-  $rootScope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (dataSourceExistsAndEmpty() && panelVisible()) {
       me.queryCatalogs();
       HsMickaFiltersService.fillCodesets();

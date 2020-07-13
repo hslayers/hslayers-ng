@@ -365,7 +365,7 @@ export default function (
     me.resetCompoData();
   });
 
-  $rootScope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (
       HsLayoutService.mainpanel == 'saveMap' ||
       HsLayoutService.mainpanel == 'statusCreator'

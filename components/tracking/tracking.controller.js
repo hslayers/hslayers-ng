@@ -3,7 +3,8 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Point} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
-export default ($scope, HsMapService, HsLayoutService) => {
+
+export default ($scope, HsMapService, HsLayoutService, HsEventBusService) => {
   'ngInject';
   // Set the instance of the OpenAPI that s4a.js
   // works towards (by default portal.sdi4apps.eu)
@@ -189,7 +190,7 @@ export default ($scope, HsMapService, HsLayoutService) => {
    * Run the activate/deactivate functions when components
    * are activated by clicking on the side menu
    */
-  $scope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (HsLayoutService.mainpanel === 'tracking') {
       $scope.activate();
     } else {

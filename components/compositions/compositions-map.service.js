@@ -5,11 +5,16 @@ import {Vector} from 'ol/source';
 /* eslint-disable angular/on-watch */
 /**
  * @param $timeout
- * @param $rootScope
+ * @param HsEventBusService
  * @param HsMapService
  * @param HsLayoutService
  */
-export default function ($timeout, $rootScope, HsMapService, HsLayoutService) {
+export default function (
+  $timeout,
+  HsEventBusService,
+  HsMapService,
+  HsLayoutService
+) {
   'ngInject';
   const me = this;
 
@@ -50,7 +55,7 @@ export default function ($timeout, $rootScope, HsMapService, HsLayoutService) {
 
   HsMapService.loaded().then(init);
 
-  $rootScope.$on('core.mainpanel_changed', (event) => {
+  HsEventBusService.mainPanelChanges.subscribe(() => {
     if (angular.isDefined(me.extentLayer)) {
       if (
         HsLayoutService.mainpanel === 'composition_browser' ||

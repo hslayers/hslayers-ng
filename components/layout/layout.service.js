@@ -1,17 +1,17 @@
 /**
  * @param HsConfig
- * @param $rootScope
+ * @param HsEventBusService
  * @param $window
  * @param $document
  * @param $timeout
  * @param $log
  */
 export class HsLayoutService {
-  constructor(HsConfig, $rootScope, $window, $document, $timeout, $log) {
+  constructor(HsConfig, HsEventBusService, $window, $document, $timeout, $log) {
     'ngInject';
     Object.assign(this, {
       HsConfig,
-      $rootScope,
+      HsEventBusService,
       $window,
       $document,
       $timeout,
@@ -308,7 +308,7 @@ export class HsLayoutService {
       if (!this.exists('HsSidebarController')) {
         this.sidebarExpanded = false;
       }
-      this.$rootScope.$broadcast('core.mainpanel_changed');
+      this.HsEventBusService.mainPanelChanges.next();
     }, 0);
   }
 
@@ -345,7 +345,7 @@ export class HsLayoutService {
       this.sidebarExpanded = false;
     }
 
-    this.$rootScope.$broadcast('core.mainpanel_changed', which);
+    this.HsEventBusService.mainPanelChanges.next(which);
   }
 
   /**
@@ -405,11 +405,11 @@ export class HsLayoutService {
     this.mainpanel = which;
     /**
      * @ngdoc event
-     * @name HsCore#core.mainpanel_changed
-     * @eventType broadcast on $rootScope
+     * @name HsEventBusService#mainPanelChanges
+     * @eventType broadcast on HsEventBusService
      * @description Fires when current mainpanel change - toggle, change of opened panel
      */
-    this.$rootScope.$broadcast('core.mainpanel_changed');
+    this.HsEventBusService.mainPanelChanges.next();
   }
 
   /**
