@@ -22,5 +22,6 @@ export class HsConfig {
   newTerrainProviderOptions: any;
   terrain_providers: any;
   cesiumAccessToken: string;
+  proxyPrefix: string;
   constructor() {}
 }
