@@ -1,21 +1,22 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
-import * as angular from 'angular';
 import 'angular-mocks';
-import { HsUtilsService } from '../../utils/utils.service';
+import * as angular from 'angular';
 import HsLayerUtilsService from '../../utils/layer-utils.service';
-import {HsMapService} from '../../map/map.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
 describe('add-layers-vector', () => {
   let el, scope, vm;
-
 
   beforeEach(() => {
     angular.module('hs', []).value('HsConfig', {});
 
-    angular.module('hs.utils', ['hs']).service('HsUtilsService', HsUtilsService)
-    .factory('HsLayerUtilsService', HsLayerUtilsService);
+    angular
+      .module('hs.utils', ['hs'])
+      .service('HsUtilsService', HsUtilsService)
+      .factory('HsLayerUtilsService', HsLayerUtilsService);
 
     angular.module('hs.map', []).service('HsMapService', HsMapService);
 
@@ -32,15 +33,16 @@ describe('add-layers-vector', () => {
     angular.mock.module('hs.addLayersVector');
   });
 
-
-  beforeEach(angular.mock.inject(($compile, $rootScope, $injector) => {
-    el = angular.element('<hs.add-layers-vector></hs.add-layers-vector>');
-    $compile(el)($rootScope.$new());
-    $rootScope.$digest();
-    scope = el.isolateScope() || el.scope();
-    vm = scope.$$childHead.vm;
-    $injector.get('HsMapService');
-  }));
+  beforeEach(
+    angular.mock.inject(($compile, $rootScope, $injector) => {
+      el = angular.element('<hs.add-layers-vector></hs.add-layers-vector>');
+      $compile(el)($rootScope.$new());
+      $rootScope.$digest();
+      scope = el.isolateScope() || el.scope();
+      vm = scope.$$childHead.vm;
+      $injector.get('HsMapService');
+    })
+  );
 
   it('GeoJSON layer should be added', async () => {
     vm.url =
