@@ -4,18 +4,18 @@
   </hs-panel-header>
   <div class="card-body p-2">
     <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">
-      <label class="btn btn-secondary" [ngClass]="{active: type == 'distance'}" for="distance" i18n>
+      <label class="btn btn-secondary" [ngClass]="{'active': type == 'distance'}" for="distance" i18n>
         Distance
+        <input type="radio" name="type" id="distance" value="distance" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
-      <input type="radio" name="type" id="distance" value="distance" [(ngModel)]="type">
-      <label class="btn btn-secondary" [ngClass]="{active: type == 'area'}" for="area" i18n>
+      <label class="btn btn-secondary" [ngClass]="{'active': type == 'area'}" for="area" i18n>
         Area
+        <input type="radio" name="type" id="area" value="area" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
-      <input type="radio" name="type" id="area" value="area" [(ngModel)]="type">
     </div>
     <button class="btn btn-secondary" style="float:right" (click)="clearAll()" i18n>Clear</button>
     <ul class="list-group">
-      <li *ngFor="let measurement of HsMeasureService.data.measurements" class="list-group-item">
+      <li *ngFor="let measurement of data.measurements" class="list-group-item">
         {{measurement.size}}&nbsp;{{measurement.unit}}<span *ngIf="measurement.type == 'Area'"><sup>2</sup></span>
       </li>
     </ul>

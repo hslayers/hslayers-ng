@@ -8,17 +8,18 @@ import {HsMeasureService} from './measure.service';
   template: require('./partials/measure.html'),
 })
 export class HsMeasureComponent {
+  type: string;
+  data;
   /*if (HsConfig.design == 'md') {
     return require('./partials/measuremd.html');
   }*/
-  type: string;
 
   constructor(
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
     private HsMeasureService: HsMeasureService
   ) {
-    //this.data = this.HsMeasureService.data;
+    this.data = this.HsMeasureService.data;
     this.type = 'distance';
 
     document.addEventListener('keyup', (e) => {
@@ -54,7 +55,7 @@ export class HsMeasureComponent {
     //$scope.$emit('scope_loaded', 'Measure');
   }
 
-  ngOnChanges(): void {
+  changeMeasureParams(): void {
     if (this.HsLayoutService.mainpanel != 'measure') {
       return;
     }
