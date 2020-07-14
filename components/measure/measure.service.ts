@@ -1,6 +1,7 @@
 import * as GeometryType from 'ol/geom/GeometryType';
 import VectorLayer from 'ol/layer/Vector';
 import {Draw} from 'ol/interaction';
+import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
@@ -22,14 +23,18 @@ import {transform} from 'ol/proj';
 })
 export class HsMeasureService {
   map;
-  draw;
+  draw: Draw;
   data = {
     measurements: [],
     multipleShapeMode: false,
   };
-  sketch = [];
-  currentMeasurement;
+  /**
+   * @property {Feature[]} sketches Array of measure sketches
+   */
+  sketches: Feature[] = [];
+  lastMeasurementId: number;
   measureVector = new VectorLayer({
+    title: 'Measurement sketches',
     source: new Vector(),
     style: new Style({
       fill: new Fill({
@@ -76,7 +81,7 @@ export class HsMeasureService {
    */
   changeMeasureParams(type: string): void {
     this.map.removeInteraction(this.draw);
-    this.sketch = null;
+    this.sketches = [];
     this.addInteraction(type);
   }
 
@@ -88,9 +93,9 @@ export class HsMeasureService {
    */
   clearMeasurement(): void {
     this.draw.setActive(false);
-    this.data.measurements.length = 0;
+    this.data.measurements = [];
     this.measureVector.getSource().clear();
-    this.sketch = null;
+    this.sketches = [];
     this.draw.setActive(true);
   }
 
@@ -103,12 +108,21 @@ export class HsMeasureService {
    */
   activateMeasuring(type: string): void {
     if (!this.map) {
+      setTimeout(() => {
+        this.activateMeasuring(type);
+      }, 500);
       return;
     }
     this.map.addLayer(this.measureVector);
-    this.map.getViewport().addEventListener('mousemove', this.mouseMoveHandler);
-    this.map.getViewport().addEventListener('touchmove', this.mouseMoveHandler);
-    this.map.getViewport().addEventListener('touchend', this.mouseMoveHandler);
+    this.map.getViewport().addEventListener('mousemove', (evt) => {
+      this.mouseMoveHandler(evt);
+    });
+    this.map.getViewport().addEventListener('touchmove', (evt) => {
+      this.mouseMoveHandler(evt);
+    });
+    this.map.getViewport().addEventListener('touchend', (evt) => {
+      this.mouseMoveHandler(evt);
+    });
 
     this.addInteraction(type);
   }
@@ -121,13 +135,20 @@ export class HsMeasureService {
    */
   deactivateMeasuring(): void {
     this.HsMapService.loaded().then((map) => {
-      map.getViewport().removeEventListener('mousemove', this.mouseMoveHandler);
-      map.getViewport().removeEventListener('touchmove', this.mouseMoveHandler);
-      map.getViewport().removeEventListener('touchend', this.mouseMoveHandler);
+      map.getViewport().removeEventListener('mousemove', (evt) => {
+        this.mouseMoveHandler(evt);
+      });
+      map.getViewport().removeEventListener('touchmove', (evt) => {
+        this.mouseMoveHandler(evt);
+      });
+      map.getViewport().removeEventListener('touchend', (evt) => {
+        this.mouseMoveHandler(evt);
+      });
 
       map.removeInteraction(this.draw);
       map.removeLayer(this.measureVector);
     });
+    this.HsEventBusService.measurementEnds.next(); //better emit drawingEnds here
   }
 
   /**
@@ -138,23 +159,20 @@ export class HsMeasureService {
    * @description Callback for mouse and touch move event, compute live measurement results
    */
   mouseMoveHandler(evt): void {
-    if (this.sketch) {
-      let output;
+    if (this.sketches.length > 0) {
+      let output: measurement;
 
-      for (const sketchItem of this.sketch) {
-        const geom = sketchItem.getGeometry();
+      for (const sketch of this.sketches) {
+        const geom = sketch.getGeometry();
         if (this.HsUtilsService.instOf(geom, Polygon)) {
           output = this.addMultiple(this.formatArea(geom), output);
         } else if (this.HsUtilsService.instOf(geom, LineString)) {
           output = this.addMultiple(this.formatLength(geom), output);
         }
       }
-
+      //output.geom = this.sketch;
       setTimeout(() => {
-        this.data.measurements[this.currentMeasurement] = output;
-        if (this.data.measurements[this.currentMeasurement]) {
-          this.data.measurements[this.currentMeasurement].geom = this.sketch;
-        }
+        this.data.measurements[this.lastMeasurementId] = output;
       }, 0);
     }
   }
@@ -166,7 +184,7 @@ export class HsMeasureService {
    * @param {measurement} val1 Output of new object
    * @param {measurement} val2 Old value
    * @returns {measurement}
-   * @description Add two measure results for multiple shape mode to display joined result
+   * @description Adds two measure results for multiple shape mode to display joined result
    */
   addMultiple(val1: measurement, val2: measurement): measurement {
     if (val2 == undefined) {
@@ -220,22 +238,22 @@ export class HsMeasureService {
     this.draw.on('drawstart', (evt) => {
       this.HsEventBusService.measurementStarts.next();
       if (this.data.multipleShapeMode) {
-        if (!Array.isArray(this.sketch)) {
-          this.sketch = [];
+        if (!Array.isArray(this.sketches)) {
+          this.sketches = [];
           this.data.measurements.push({
             size: 0,
             unit: '',
           });
         }
-        this.sketch.push(evt.feature);
+        this.sketches.push(evt.feature);
       } else {
-        this.sketch = [evt.feature];
+        this.sketches = [evt.feature];
         this.data.measurements.push({
           size: 0,
           unit: '',
         });
       }
-      this.currentMeasurement = this.data.measurements.length - 1;
+      this.lastMeasurementId = this.data.measurements.length - 1;
     });
 
     this.draw.on('drawend', (evt) => {
@@ -256,7 +274,7 @@ export class HsMeasureService {
     const coordinates = line.getCoordinates();
     const sourceProj = this.map.getView().getProjection();
 
-    for (let i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+    for (let i = 0; i < coordinates.length - 1; ++i) {
       const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
       const c2 = transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
       length += getDistance(c1, c2);
