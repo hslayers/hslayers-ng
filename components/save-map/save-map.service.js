@@ -294,7 +294,6 @@ export default function (
       json.title = layer.get('title');
       if (angular.isUndefined(layer.get('title'))) {
         $log.warn('Layer title undefined', layer);
-        debugger;
       }
       //json.index = layer.map.getLayerIndex(layer);
       json.path = layer.get('path');
