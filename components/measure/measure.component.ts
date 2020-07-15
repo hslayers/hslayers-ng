@@ -31,15 +31,15 @@ export class HsMeasureComponent {
       }
     });
 
-    HsEventBusService.measurementStarts.subscribe(() => {
+    this.HsEventBusService.measurementStarts.subscribe(() => {
       this.HsLayoutService.panelEnabled('toolbar', false);
     });
 
-    HsEventBusService.measurementEnds.subscribe(() => {
+    this.HsEventBusService.measurementEnds.subscribe(() => {
       this.HsLayoutService.panelEnabled('toolbar', true);
     });
 
-    HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
       if (HsLayoutService.mainpanel == 'measure') {
         this.HsMeasureService.activateMeasuring(this.type);
       } else {
