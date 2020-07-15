@@ -31,6 +31,7 @@ describe('compositions', function () {
         this.compositionEdits = new Subject();
         this.compositionLoadStarts = new Subject();
         this.compositionDeletes = new Subject();
+        this.mainPanelChanges = new Subject();
       });
 
     angular
