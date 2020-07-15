@@ -1,13 +1,19 @@
-import addLayersVectorService from './add-layers-vector.service';
-import addLayersVectorUrlParserService from './add-layers-vector-url-parser.service';
 import * as angular from 'angular';
+import addLayersVectorUrlParserService from './add-layers-vector-url-parser.service';
+import {HsAddLayersVectorService} from './add-layers-vector.service';
 
 /**
  * @namespace hs.addLayersVector
  * @memberOf hs
  */
 angular
-  .module('hs.addLayersVector', ['hs.styles', 'gettext', 'hs.utils', 'hs.layout', 'hs.map'])
+  .module('hs.addLayersVector', [
+    'hs.styles',
+    'gettext',
+    'hs.utils',
+    'hs.layout',
+    'hs.map',
+  ])
   /**
    * @memberof hs.ows
    * @ngdoc directive
@@ -28,7 +34,7 @@ angular
    * @name HsAddLayersVectorService
    * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
    */
-  .factory('HsAddLayersVectorService', addLayersVectorService)
+  .service('HsAddLayersVectorService', HsAddLayersVectorService)
 
   /**
    * @memberof hs.addLayersVector

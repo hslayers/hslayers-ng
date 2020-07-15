@@ -6,9 +6,12 @@ import VectorLayerDescriptor from './VectorLayerDescriptor';
  * @param HsMapService
  * @param HsUtilsService
  */
-export default function (HsMapService, HsUtilsService) {
-  'ngInject';
-  const me = this;
+export class HsAddLayersVectorService {
+  constructor(HsMapService, HsUtilsService) {
+    'ngInject';
+    this.HsMapService = HsMapService;
+    this.HsUtilsService = HsUtilsService;
+  }
 
   /**
    * Load nonwms OWS data and create layer
@@ -23,10 +26,10 @@ export default function (HsMapService, HsUtilsService) {
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  me.addVectorLayer = function (type, url, title, abstract, srs, options) {
+  addVectorLayer(type, url, title, abstract, srs, options) {
     return new Promise((resolve, reject) => {
       try {
-        const lyr = me.createVectorLayer(
+        const lyr = this.createVectorLayer(
           type,
           url,
           title,
@@ -34,15 +37,15 @@ export default function (HsMapService, HsUtilsService) {
           srs,
           options
         );
-        if (HsMapService.map) {
-          HsMapService.addLayer(lyr, true);
+        if (this.HsMapService.map) {
+          this.HsMapService.addLayer(lyr, true);
         }
         resolve(lyr);
       } catch (ex) {
         reject(ex);
       }
     });
-  };
+  }
 
   /**
    * Load nonwms OWS data and create layer
@@ -57,7 +60,7 @@ export default function (HsMapService, HsUtilsService) {
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  me.createVectorLayer = function (type, url, title, abstract, srs, options) {
+  createVectorLayer(type, url, title, abstract, srs, options) {
     if (angular.isUndefined(options)) {
       options = {};
     }
@@ -66,16 +69,16 @@ export default function (HsMapService, HsUtilsService) {
       type.toLowerCase() != 'wfs' &&
       angular.isDefined(url)
     ) {
-      url = HsUtilsService.proxify(url);
+      url = this.HsUtilsService.proxify(url);
     }
 
     if (angular.isUndefined(type) || type == '') {
-      type = me.tryGuessTypeFromUrl(url);
+      type = this.tryGuessTypeFromUrl(url);
     }
 
     let mapProjection;
-    if (HsMapService.map) {
-      mapProjection = HsMapService.map.getView().getProjection().getCode();
+    if (this.HsMapService.map) {
+      mapProjection = this.HsMapService.map.getView().getProjection().getCode();
     }
 
     const descriptor = new VectorLayerDescriptor(
@@ -92,12 +95,12 @@ export default function (HsMapService, HsUtilsService) {
     descriptor.layerParams.source = src;
     const lyr = new VectorLayer(descriptor.layerParams);
     return lyr;
-  };
+  }
 
-  me.fitExtent = function (lyr) {
+  fitExtent(lyr) {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
-      tryFit(src.getExtent());
+      this.tryFit(src.getExtent());
     } else {
       src.on('change', (e) => {
         if (src.getState() == 'ready') {
@@ -105,28 +108,31 @@ export default function (HsMapService, HsUtilsService) {
             return;
           }
           const extent = src.getExtent();
-          tryFit(extent);
+          this.tryFit(extent);
         }
       });
     }
-  };
+  }
 
   /**
    * @param extent
+   * @private
    */
-  function tryFit(extent) {
+  tryFit(extent) {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
       !isNaN(extent[2]) &&
       !isNaN(extent[3]) &&
-      HsMapService.map
+      this.HsMapService.map
     ) {
-      HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+      this.HsMapService.map
+        .getView()
+        .fit(extent, this.HsMapService.map.getSize());
     }
   }
 
-  me.tryGuessTypeFromUrl = function (url) {
+  tryGuessTypeFromUrl(url) {
     if (angular.isDefined(url)) {
       if (url.toLowerCase().endsWith('kml')) {
         return 'kml';
@@ -141,7 +147,5 @@ export default function (HsMapService, HsUtilsService) {
         return 'geojson';
       }
     }
-  };
-
-  return me;
+  }
 }

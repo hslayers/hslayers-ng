@@ -17,6 +17,7 @@ export default {
     $window,
     HsConfig,
     $compile,
+    $injector,
     HsCompositionsMickaService,
     $rootScope,
     HsLayoutService,
@@ -126,18 +127,22 @@ export default {
      */
     $scope.loadCompositions = function (ds) {
       return new Promise((resolve, reject) => {
-        HsMapService.loaded().then((map) => {
-          HsCompositionsService.loadCompositions(ds, {
-            query: $scope.query,
-            sortBy: $scope.sortBy,
-            filterExtent: $scope.filterByExtent,
-            keywords: $scope.keywords,
-            start: ds.start,
-            limit: ds.limit,
-          }).then((_) => {
-            resolve();
+        HsMapService.loaded()
+          .then((map) => {
+            HsCompositionsService.loadCompositions(ds, {
+              query: $scope.query,
+              sortBy: $scope.sortBy,
+              filterExtent: $scope.filterByExtent,
+              keywords: $scope.keywords,
+              start: ds.start,
+              limit: ds.limit,
+            }).then((_) => {
+              resolve();
+            });
+          })
+          .catch((error) => {
+            reject(error);
           });
-        });
       });
     };
 
@@ -253,7 +258,7 @@ export default {
           escapeToClose: true,
           scope: $scope,
           preserveScope: true,
-          template: require('components/compositions/partials/dialog_sharemd.html'),
+          template: require('./partials/dialog_sharemd.html'),
           controller: function DialogController($scope, $mdDialog) {
             $scope.closeDialog = function () {
               $mdDialog.hide();
@@ -538,11 +543,11 @@ export default {
 
     $scope.handleFileSelect = function (evt) {
       const files = evt.target.files; // FileList object
-      for (var i = 0, f; (f = files[i]); i++) {
+      for (const f of files) {
         if (!f.type.match('application/json')) {
           continue;
         }
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function (theFile) {
           const json = JSON.parse(reader.result);
           HsCompositionsParserService.loadCompositionObject(json, true);
@@ -580,7 +585,7 @@ export default {
       const dialog_id = 'hs-composition-overwrite-dialog';
       $scope.composition_name_to_be_loaded = title;
       if (
-        HsLayoutService.contentWrapper.querySelector('.' + dialog_id) == null
+        HsLayoutService.contentWrapper.querySelector('.' + dialog_id) === null
       ) {
         const el = angular.element(
           '<div hs.compositions.overwrite_dialog_directive></span>'
@@ -623,11 +628,11 @@ export default {
     //This was put here from link function of previous compositions.directive
     //since components dont support link functions anymore
     if (angular.isUndefined(HsConfig.design) || HsConfig.design == '') {
-      var el = document.getElementsByClassName('mid-pane');
+      let el = document.getElementsByClassName('mid-pane');
       if (el.length > 0) {
         el[0].style.marginTop = '0px';
       }
-      var el = document.getElementsByClassName('keywords-panel');
+      el = document.getElementsByClassName('keywords-panel');
       if (el.length > 0) {
         el[0].style.display = 'none';
       }
