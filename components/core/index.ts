@@ -1,3 +1,8 @@
+import * as angular from 'angular';
+// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
+// 'angular-gettext' must be loaded before HSLayers modules
+import 'angular-gettext';
+// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../drag/drag.module';
 import '../layermanager';
 import '../layout';
@@ -6,8 +11,6 @@ import '../map/map.module';
 import '../print';
 import '../translations/js/translations';
 import '../utils/utils.module';
-import 'angular-gettext';
-import * as angular from 'angular';
 import {HsCoreModule} from './core.module';
 import {HsCoreService} from './core.service';
 import {HsEventBusService} from './event-bus.service';
