@@ -42,12 +42,12 @@
       "function"
     ],
     "angular/file-name": [
-      "error",
+      "warn",
       {
         "typeSeparator": "dot",
         "ignoreTypeSuffix": true,
         "nameStyle": "dash",
-        "ignorePrefix": "Hs"
+        "ignorePrefix": "hs."
       }
     ],
     "angular/definedundefined": "off",
