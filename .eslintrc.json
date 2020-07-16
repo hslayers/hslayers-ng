@@ -41,6 +41,15 @@
       "error",
       "function"
     ],
+    "angular/file-name": [
+      "error",
+      {
+        "typeSeparator": "dot",
+        "ignoreTypeSuffix": true,
+        "nameStyle": "dash",
+        "ignorePrefix": "Hs"
+      }
+    ],
     "angular/definedundefined": "off",
     "angular/typecheck-array": "off",
     "angular/typecheck-date": "off",
@@ -48,6 +57,13 @@
     "angular/typecheck-number": "off",
     "angular/typecheck-object": "off",
     "angular/typecheck-string": "off",
+    "angular/document-service": "off",
+    "angular/interval-service": "off",
+    "angular/timeout-service": "off",
+    "angular/window-service": "off",
+    "angular/prefer-component": "warn",
+    "angular/no-controller": "error",
+    "angular/no-service-method": "off",
     "valid-jsdoc": "off"
   },
   "overrides": [
