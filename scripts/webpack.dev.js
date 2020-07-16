@@ -7,7 +7,7 @@
  * - Allow Load css files (import './myCssFile.css') -> Css rules will be automatically added to index.html into a <style></style> tag.
  * - Allow to load fonts and images (import './myFont.eot'; import './someImage.jpg')
  */
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
 
