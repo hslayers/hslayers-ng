@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsLegendService} from './legend.service';
-import {HsMapService} from '../map/map.service.js';
+import {HsMapService} from '../map/map.service';
+import {Layer} from 'ol/layer';
 @Component({
   selector: 'hs.legend',
   template: require('./partials/legend.html'),
@@ -24,7 +25,7 @@ export class HsLegendComponent {
    * @function addLayerToLegends
    * @param {object} layer Layer to add legend for
    */
-  addLayerToLegends(layer) {
+  addLayerToLegends(layer): void {
     const descriptor = this.HsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
@@ -44,7 +45,7 @@ export class HsLegendComponent {
    * @returns {boolean} Returns true if no layers with legend exist
    * @function noLayerExists
    */
-  noLayerExists() {
+  noLayerExists(): boolean {
     const visibleLayers = this.layerDescriptors.filter(
       (check) => check.visible
     );
@@ -56,9 +57,9 @@ export class HsLegendComponent {
    *
    * @memberof hs.legend.controller
    * @function removeLayerFromLegends
-   * @param {Ol.layer} layer Layer to remove from legend
+   * @param {Layer} layer Layer to remove from legend
    */
-  removeLayerFromLegends(layer) {
+  removeLayerFromLegends(layer: Layer): void {
     for (let i = 0; i < this.layerDescriptors.length; i++) {
       if (this.layerDescriptors[i].lyr == layer) {
         this.layerDescriptors.splice(i, 1);
@@ -89,14 +90,14 @@ export class HsLegendComponent {
    * @function layerAdded
    * @param {object} e Event object, should have element property
    */
-  layerAdded(e) {
+  layerAdded(e): void {
     this.addLayerToLegends(e.element);
   }
 
   /**
    * @param e event description
    */
-  layerVisibilityChanged(e) {
+  layerVisibilityChanged(e): void {
     const descriptor = this.findLayerDescriptor(e.target);
     if (descriptor) {
       descriptor.visible = e.target.getVisible();
@@ -106,7 +107,7 @@ export class HsLegendComponent {
   /**
    * @param e event description
    */
-  layerSourcePropChanged(e) {
+  layerSourcePropChanged(e): void {
     const descriptor = this.findLayerDescriptorBySource(e.target);
     if (descriptor) {
       const newDescriptor = this.HsLegendService.getLayerLegendDescriptor(

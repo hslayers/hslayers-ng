@@ -1,5 +1,5 @@
-import customhtmlComponent from './customhtml.component';
 import * as angular from 'angular';
+import customhtmlComponent from './customhtml.component';
 
 /**
  * @namespace hs.customhtml

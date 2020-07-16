@@ -1,24 +1,24 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-    selector: 'hs.confirm-dialog',
-    template: require('./confirm-dialog.html')
+  selector: 'hs.confirm-dialog',
+  template: require('./confirm-dialog.html'),
 })
 export class HsConfirmDialogComponent {
-    modalVisible: boolean;
-    @Input() message: string;
-    @Input() title: string;
-    @Output() callback: EventEmitter<any> = new EventEmitter();
+  modalVisible: boolean;
+  @Input() message: string;
+  @Input() title: string;
+  @Output() callback: EventEmitter<any> = new EventEmitter();
 
-    constructor(){}
+  constructor() {}
 
-    yes() {
-      this.modalVisible = false;
-      this.callback.emit('yes');
-    }
+  yes(): void {
+    this.modalVisible = false;
+    this.callback.emit('yes');
+  }
 
-    no() {
-      this.modalVisible = false;
-      this.callback.emit('no');
-    }
+  no(): void {
+    this.modalVisible = false;
+    this.callback.emit('no');
+  }
 }

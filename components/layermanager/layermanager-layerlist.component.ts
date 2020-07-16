@@ -4,8 +4,8 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service.js';
-import {HsMapService} from '../map/map.service.js';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -162,13 +162,13 @@ export class HsLayerListComponent {
    * @private
    * @description Sort layers by computed position
    */
-  sortLayersByPosition() {
+  sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
     const minus = this.order().indexOf('-') == 0;
     const attribute = this.order().replaceAll('-', '');
     this.filtered_layers.sort((a, b) => {
-      var a = a.layer.get(attribute);
-      var b = b.layer.get(attribute);
+      a = a.layer.get(attribute);
+      b = b.layer.get(attribute);
       const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
       return tmp;
     });
@@ -186,15 +186,15 @@ export class HsLayerListComponent {
    * @public
    * @description Callback for dragged event so event can be injected with correct layer titles list needed for correct recalculation.
    */
-  dragged(event, index, item, type, external) {
+  dragged(event, index, item, type, external): void {
     this.draggedCont(event, index, item, type, external, this.layer_titles);
   }
 
   /**
    * @function dragged
    * @memberOf hs.layermanager-layerlist-directive
-   * @param {unknow} event
-   * @param {unknown} index
+   * @param {unknown} event
+   * @param {number} index
    * @param {unknown} item
    * @param {unknown} type
    * @param {unknown} external
@@ -202,7 +202,14 @@ export class HsLayerListComponent {
    * @description Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop).
    * This is called from layerlistDirective
    */
-  draggedCont(event, index, item, type, external, layerTitles) {
+  draggedCont(
+    event,
+    index: number,
+    item,
+    type,
+    external,
+    layerTitles: Array<any>
+  ): void {
     if (layerTitles.indexOf(item) < index) {
       index--;
     } //Must take into acount that this item will be removed and list will shift

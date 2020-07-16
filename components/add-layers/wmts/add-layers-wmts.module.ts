@@ -1,10 +1,10 @@
 import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
+import * as angular from 'angular';
 import addLayersWmtsComponent from './add-layers-wmts.component';
 import addLayersWmtsService from './add-layers-wmts.service';
 import capabilitiesErrorDirective from '../capabilities-error.directive';
 import resampleDialogDirective from '../resample-dialog.directive';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayersWmts

@@ -1,5 +1,7 @@
 import '../../common/endpoints/endpoints.module';
 import '../../common/widgets/widgets.module';
+import '../layout';
+import * as angular from 'angular';
 import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
 import datasourceSelectorComponent from './datasource-selector.component';
 import datasourceSelectorMapService from './datasource-selector.map-service';
@@ -12,8 +14,6 @@ import mickaFiltersDirective from './micka/micka-filters.directive';
 import mickaService from './micka/micka.service';
 import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
 import selectTypeToAddLayerDialogComponent from './select-type-to-add-layer-dialog.component';
-import * as angular from "angular";
-import '../layout';
 /**
  * @namespace hs.datasource_selector
  * @memberOf hs

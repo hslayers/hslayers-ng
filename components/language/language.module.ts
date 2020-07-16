@@ -1,7 +1,6 @@
 import * as angular from 'angular';
-import HsLanguageService from './language.service';
 import HsLanguageController from './language.controller';
-/* eslint-disable angular/di */
+import HsLanguageService from './language.service';
 /**
  * @namespace hs.print
  * @memberOf hs

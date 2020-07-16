@@ -1,17 +1,18 @@
 import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
-import {HsDialogItem} from '../layout/dialog-item';
+import {HsDialogItem} from '../layout/dialog-item.class';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
-import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service.js';
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -124,23 +125,23 @@ export class HsLayerManagerComponent {
     });
   }
 
-  changeBaseLayerVisibility(toWhat: boolean, layer) {
+  changeBaseLayerVisibility(toWhat: boolean, layer: Layer) {
     return this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
   }
 
-  changeTerrainLayerVisibility(e, layer) {
+  changeTerrainLayerVisibility(e, layer: Layer) {
     return this.HsLayerManagerService.changeTerrainLayerVisibility(e, layer);
   }
 
-  changeLayerVisibility(toWhat: boolean, layer) {
+  changeLayerVisibility(toWhat: boolean, layer: Layer) {
     return this.HsLayerManagerService.changeLayerVisibility(toWhat, layer);
   }
 
-  layerOrder(layer) {
+  layerOrder(layer: Layer) {
     return layer.layer.get('position');
   }
 
-  changePosition(layer, direction, $event) {
+  changePosition(layer: Layer, direction, $event): void {
     const index = layer.layer.get('position');
     const layers = this.HsMapService.map.getLayers();
     let toIndex = index;
@@ -178,7 +179,7 @@ export class HsLayerManagerComponent {
     this.HsEventBusService.layerManagerUpdates.next();
   }
 
-  isLayerType(layer, type) {
+  isLayerType(layer: Layer, type: string): boolean {
     switch (type) {
       case 'wms':
         return this.HsLayerManagerService.isWms(layer);
@@ -193,7 +194,7 @@ export class HsLayerManagerComponent {
     }
   }
 
-  setProp(layer, property, value) {
+  setProp(layer: Layer, property, value): void {
     layer.set(property, value);
   }
 
@@ -205,9 +206,9 @@ export class HsLayerManagerComponent {
    * @function removeLayer
    * @memberOf hs.layermanager.controller
    * @description Removes layer from map object
-   * @param {Ol.layer} layer Layer to remove
+   * @param {Layer} layer Layer to remove
    */
-  removeLayer(layer) {
+  removeLayer(layer: Layer): void {
     this.map.removeLayer(layer);
   }
 
@@ -217,7 +218,7 @@ export class HsLayerManagerComponent {
    * @description Removes all layers which don't have 'removable' attribute
    * set to false if user confirms the removal. Might reload composition again.
    */
-  removeAllLayers() {
+  removeAllLayers(): void {
     this.HsDialogContainerService.create(
       HsLayerManagerRemoveAllDialogComponent,
       {}
@@ -228,9 +229,9 @@ export class HsLayerManagerComponent {
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
    * @description Determines if layer has copyright information avaliable *
-   * @param {Ol.layer} layer Selected layer (HsLayerManagerService.currentLayer)
+   * @param {Layer} layer Selected layer (HsLayerManagerService.currentLayer)
    */
-  hasCopyright(layer) {
+  hasCopyright(layer: Layer): boolean | undefined {
     if (!this.HsLayerManagerService.currentLayer) {
       return;
     } else {
@@ -248,7 +249,7 @@ export class HsLayerManagerComponent {
    * @memberOf hs.layermanager.controller
    * @description Test if box layers are loaded
    */
-  hasBoxImages() {
+  hasBoxImages(): boolean {
     if (this.data.box_layers != undefined) {
       for (const layer of this.data.box_layers) {
         if (layer.get('img')) {
@@ -263,31 +264,31 @@ export class HsLayerManagerComponent {
    * @function isLayerInResolutionInterval
    * @param layer
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} lyr Selected layer
+   * @param {Layer} lyr Selected layer
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
-  isLayerInResolutionInterval(layer) {
+  isLayerInResolutionInterval(layer: Layer): boolean {
     return this.HsLayerManagerService.isLayerInResolutionInterval(layer);
   }
 
   /**
    * @function layerLoaded
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} layer Selected layer
    * @description Test if selected layer is loaded in map
    */
-  layerLoaded(layer) {
+  layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 
-  setLayerTime(layer, metadata) {
+  setLayerTime(layer: Layer, metadata) {
     return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
   }
 
   /**
    * @param m
    */
-  init(m) {
+  init(m): void {
     this.map = this.HsMapService.map;
     this.HsLayerSynchronizerService.init(this.map);
     this.HsEventBusService.mapResets.subscribe(() => {

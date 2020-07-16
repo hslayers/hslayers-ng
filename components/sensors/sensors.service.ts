@@ -1,4 +1,3 @@
-/* eslint-disable angular/definedundefined */
 import VectorLayer from 'ol/layer/Vector';
 import moment = require('moment');
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
@@ -86,7 +85,6 @@ export class HsSensorsService {
     ];
     this.endpoint = this.HsConfig.senslog;
 
-    // eslint-disable-next-line angular/on-watch
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       HsUtilsService.debounce(
         () => {
@@ -108,12 +106,12 @@ export class HsSensorsService {
     });
   }
 
-  selectSensor(sensor) {
+  selectSensor(sensor): void {
     this.HsSensorsUnitDialogService.selectSensor(sensor);
     sensor.checked = true;
   }
 
-  selectUnit(unit) {
+  selectUnit(unit: HsSensorUnit): void {
     this.HsSensorsUnitDialogService.unit = unit;
     unit.expanded = !unit.expanded;
     //this.selectSensor(unit.sensors[0]);
@@ -220,11 +218,13 @@ export class HsSensorsService {
   filterquery(sensors, query) {
     return sensors.filter(
       (s) =>
-        query.description == '' || s.description.toLowerCase().indexOf(query.description.toLowerCase()) > -1
+        query.description == '' ||
+        s.description.toLowerCase().indexOf(query.description.toLowerCase()) >
+          -1
     );
   }
 
-  fillLastObservations() {
+  fillLastObservations(): void {
     this.http
       .get(
         this.HsUtilsService.proxify(

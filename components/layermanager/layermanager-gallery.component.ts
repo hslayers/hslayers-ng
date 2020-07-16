@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsLayerManagerService} from './layermanager.service';
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLayoutService} from '../layout/layout.service';
+import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layermanager-gallery',
@@ -18,11 +19,11 @@ export class HsLayerManagerGalleryComponent {
     this.data = this.HsLayerManagerService.data;
   }
 
-  changeBaseLayerVisibility(toWhat: boolean, layer) {
+  changeBaseLayerVisibility(toWhat: boolean, layer: Layer): void {
     this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
   }
 
-  toggleMiniMenu(layer) {
+  toggleMiniMenu(layer: Layer): void {
     if (layer.galleryMiniMenu) {
       layer.galleryMiniMenu = !layer.galleryMiniMenu;
     } else {
@@ -34,7 +35,7 @@ export class HsLayerManagerGalleryComponent {
     return a.filter((element) => this.fitsInContainer());
   }
 
-  toggleBasemap(layer) {
+  toggleBasemap(layer: Layer): void {
     if (arguments.length > 0) {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
@@ -58,16 +59,16 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  fitsInContainer = () => {
+  fitsInContainer(): boolean {
     return (
       (this.HsLayerManagerService.data.baselayers.length + 1) * 150 <
       this.HsLayoutService.layoutElement.clientWidth -
         this.HsLayoutService.panelSpaceWidth() -
         450
     );
-  };
+  }
 
-  setGreyscale(layer) {
+  setGreyscale(layer: Layer): void {
     const layerContainer = document.querySelector(
       '.ol-unselectable > div:first-child'
     );

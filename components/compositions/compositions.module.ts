@@ -1,12 +1,13 @@
 import '../../common/endpoints/endpoints.module';
+import '../layout/layout.module';
+import '../permalink/permalink.module';
+import '../save-map/save-map.module';
+import '../utils/utils.module';
 import '../utils/utils.module';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
 import 'angular-socialshare';
-import '../utils/utils.module';
-import '../layout/layout.module';
-import '../permalink/permalink.module';
-import '../save-map/save-map.module';
+import * as angular from 'angular';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
 import compositionsService from './compositions.service';
@@ -15,7 +16,6 @@ import infoDialogDirective from './info-dialog.directive';
 import overwriteDialogDirective from './overwrite-dialog.directive';
 import parserService from './compositions-parser.service';
 import shareDialogDirective from './share-dialog.directive';
-import * as angular from 'angular';
 
 /**
  * @ngdoc module
@@ -35,7 +35,7 @@ angular
     'hs.layout',
     'hs.permalink',
     'hs.save-map',
-    'hs'
+    'hs',
   ])
   /**
    * @module hs.compositions

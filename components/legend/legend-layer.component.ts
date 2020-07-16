@@ -17,7 +17,7 @@ export class HsLegendLayerComponent {
     private HsLegendService: HsLegendService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const olLayer = this.layer.lyr;
 
     if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {

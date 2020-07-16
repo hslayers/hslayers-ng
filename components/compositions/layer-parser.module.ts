@@ -1,6 +1,6 @@
 import 'angular-socialshare';
-import configParsersService from './layer-parser.service';
 import * as angular from 'angular';
+import configParsersService from './layer-parser.service';
 
 /**
  * @ngdoc module

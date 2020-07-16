@@ -1,9 +1,9 @@
 import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsDimensionDescriptor} from './dimension.class';
-import {HsDimensionService} from '../../../common/dimension.service.js';
+import {HsDimensionService} from '../../../common/dimension.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsMapService} from '../../map/map.service.js';
+import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 @Component({
@@ -21,7 +21,7 @@ export class HsLayerEditorDimensionsComponent {
     private HsEventBusService: HsEventBusService
   ) {}
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     const layer = this.olLayer;
     if (layer == undefined) {
       this.dimensions = [];

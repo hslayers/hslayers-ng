@@ -1,15 +1,16 @@
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
-import {HsLayoutService} from '../layout/layout.service.js';
-import { HsLegendDescriptor } from '../legend/legend-descriptor.class';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend';
-import {HsMapService} from '../map/map.service.js';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
+import {HsMapService} from '../map/map.service';
+import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
-import { HsLayerDescriptor } from './layer-descriptor.class';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +26,10 @@ export class HsLayerEditorService {
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
-    private HsLegendService: HsLegendService,
+    private HsLegendService: HsLegendService
   ) {}
 
-  setLayer(currentLayer: HsLayerDescriptor) {
+  setLayer(currentLayer: HsLayerDescriptor): void {
     this.currentLayer = currentLayer;
     this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(
       currentLayer.layer
@@ -38,12 +39,12 @@ export class HsLayerEditorService {
   /**
    * @function zoomToLayer
    * @memberOf HsLayerEditorService
-   * @param {ol/layer} layer Openlayers layer to zoom to
+   * @param {Layer} layer Openlayers layer to zoom to
    * @description Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabalities request (for WMS layer)
    */
-  async zoomToLayer(layer) {
+  async zoomToLayer(layer: Layer) {
     let extent = null;
     if (layer.get('BoundingBox')) {
       extent = this.getExtentFromBoundingBoxAttribute(layer);
@@ -95,12 +96,16 @@ export class HsLayerEditorService {
    * @function cluster
    * @memberOf HsLayerEditorService
    * @description Set cluster for layer
-   * @param {ol/layer} layer Layer
+   * @param {Layer} layer Layer
    * @param {boolean} newValue To cluster or not to cluster
-   * @param {int} distance Distance in pixels
+   * @param {number} distance Distance in pixels
    * @returns {boolean} Current cluster state
    */
-  cluster(layer, newValue, distance) {
+  cluster(
+    layer: Layer,
+    newValue: boolean,
+    distance: number
+  ): boolean | undefined {
     if (layer == undefined) {
       return;
     }
@@ -117,11 +122,11 @@ export class HsLayerEditorService {
    * @function declutter
    * @memberOf HsLayerEditorService
    * @description Set declutter for layer
-   * @param {ol/layer} layer Layer
+   * @param {Layer} layer Layer
    * @param {boolean} newValue To clutter or not to clutter
    * @returns {boolean} Current clutter state
    */
-  declutter(layer, newValue) {
+  declutter(layer: Layer, newValue: boolean): boolean | undefined {
     if (layer == undefined) {
       return;
     }
@@ -135,10 +140,11 @@ export class HsLayerEditorService {
   }
 
   /**
-   * @param {ol/extent} extent Extent in EPSG:4326
-   * @param {ol/layer} layer
+   * @typedef {Array<number>} Extent
+   * @param {Extent} extent Extent in EPSG:4326
+   * @param {Layer} layer
    */
-  fitIfExtentSet(extent, layer) {
+  fitIfExtentSet(extent: number[], layer: Layer): void {
     if (extent !== null) {
       layer.set('BoundingBox', extent);
       this.HsMapService.map
@@ -150,7 +156,7 @@ export class HsLayerEditorService {
   /**
    * @param extent
    */
-  transformToCurrentProj(extent) {
+  transformToCurrentProj(extent: number[]): number[] {
     return transformExtent(
       extent,
       'EPSG:4326',
@@ -163,10 +169,10 @@ export class HsLayerEditorService {
    *
    * @function getExtentFromBoundingBoxAttribute
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
-   * @returns {ol/extent} Extent
+   * @param {Layer} layer Selected layer
+   * @returns {Extent} Extent
    */
-  getExtentFromBoundingBoxAttribute(layer) {
+  getExtentFromBoundingBoxAttribute(layer: Layer): number[] {
     let extent = null;
     const bbox = layer.get('BoundingBox');
     if (Array.isArray(bbox) && bbox.length == 4) {
@@ -204,7 +210,7 @@ export class HsLayerEditorService {
     return extent;
   }
 
-  legendVisible() {
+  legendVisible(): boolean {
     return (
       this.HsLegendService.legendValid(this.legendDescriptor) &&
       (this.legendDescriptor.lyr.get('inlineLegend') ||

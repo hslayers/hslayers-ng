@@ -7,6 +7,6 @@
    <div *ngIf="layer.type == 'vector'">
         <p *ngFor="let category of layer.lyr.getSource().legend_categories"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
         </p>
-   </div>   
+    </div>
    <hs-legend-layer-static *ngIf="layer.type == 'static'" [layer]="layer"></hs-legend-layer-static>
 </div>

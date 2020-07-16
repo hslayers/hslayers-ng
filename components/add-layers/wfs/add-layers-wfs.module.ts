@@ -1,8 +1,8 @@
 import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
+import * as angular from 'angular';
 import addLayersWfsComponent from './add-layers-wfs.component';
 import capabilitiesErrorDirective from '../capabilities-error.directive';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayersWfs

@@ -1,6 +1,6 @@
+import * as angular from 'angular';
 import geolocationDirective from './geolocation.directive';
 import geolocationService from './geolocation.service';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.geolocation

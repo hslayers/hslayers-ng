@@ -21,5 +21,5 @@ import {NgModule} from '@angular/core';
   exports: [BootstrapComponent],
 })
 export class HsLayoutModule {
-  ngDoBootstrap() {}
+  ngDoBootstrap(): void {}
 }

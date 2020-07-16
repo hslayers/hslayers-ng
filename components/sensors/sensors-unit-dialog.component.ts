@@ -21,7 +21,7 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   }
   data: any;
 
-  ngOnInit(){
+  ngOnInit(): void {
     this.timeButtonClicked(this.HsSensorsUnitDialogService.intervals[2]);
   }
 
@@ -32,7 +32,7 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
    * @description Regenerate chart for sensor is clicked. If no
    * interval was clicked before use 1 day timeframe by default.
    */
-  sensorClicked(sensor) {
+  sensorClicked(sensor): void {
     this.HsSensorsUnitDialogService.selectSensor(sensor);
     if (this.HsSensorsUnitDialogService.currentInterval == undefined) {
       this.timeButtonClicked({amount: 1, unit: 'days'});
@@ -50,7 +50,7 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
    * @description Get data for different time interval and regenerate
    * chart
    */
-  timeButtonClicked(interval) {
+  timeButtonClicked(interval): void {
     this.HsSensorsUnitDialogService.currentInterval = interval;
     this.customInterval.fromTime = this.HsSensorsUnitDialogService.getTimeForInterval(
       interval
@@ -65,7 +65,7 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
     });
   }
 
-  customIntervalChanged() {
+  customIntervalChanged(): void {
     this.HsSensorsUnitDialogService.currentInterval = this.customInterval;
     this.HsSensorsUnitDialogService.getObservationHistory(
       this.HsSensorsUnitDialogService.unit,

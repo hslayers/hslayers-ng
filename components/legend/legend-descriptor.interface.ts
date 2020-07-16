@@ -1,5 +1,5 @@
 import BaseLayer from 'ol/layer/Base';
-export class HsLegendDescriptor {
+export interface HsLegendDescriptor {
   lyr: BaseLayer;
   title: string;
   type: string;

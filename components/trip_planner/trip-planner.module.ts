@@ -1,6 +1,6 @@
 import 'focusIf';
 import * as angular from 'angular';
-import { HsTripPlannerController } from './trip-planner.controller';
+import {HsTripPlannerController} from './trip-planner.controller';
 import {HsTripPlannerService} from './trip-planner.service';
 /**
  * @namespace hs.trip_planner
@@ -35,10 +35,7 @@ angular
    * @name HsTripPlannerService
    * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
    */
-  .factory(
-    'HsTripPlannerService',
-    HsTripPlannerService
-  )
+  .factory('HsTripPlannerService', HsTripPlannerService)
 
   /**
    * @memberof hs.trip_planner
@@ -57,7 +54,4 @@ angular
    * @ngdoc controller
    * @name HsTripPlannerController
    */
-  .controller(
-    'HsTripPlannerController',
-    HsTripPlannerController
-  );
+  .controller('HsTripPlannerController', HsTripPlannerController);

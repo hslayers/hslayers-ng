@@ -1,8 +1,8 @@
+import * as angular from 'angular';
 import stylerColorDirective from './styler-color.directive';
 import stylerComponent from './styler.component';
 import stylesService from './styles.service';
-import * as angular from 'angular';
-import { HsStylerService } from './styler.service';
+import {HsStylerService} from './styler.service';
 
 /**
  * @namespace hs.styles

@@ -2,21 +2,23 @@ import '../layers/hs.source.SparqlJson';
 import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
+import {CollectionEvent} from 'ol/Collection';
+import {Group, Tile} from 'ol/layer';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service.js';
+import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {METERS_PER_UNIT} from 'ol/proj';
-import {Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
-import { HsLayerEditorStylesService } from './layer-editor-styles.service';
 
 @Injectable({
   providedIn: 'root',
@@ -111,14 +113,14 @@ export class HsLayerManagerService {
    * @ngdoc method
    * @name HsLayermanagerService#layerAdded
    * @private
-   * @param {ol.CollectionEvent} e Event object emited by Ol add layer event
+   * @param {CollectionEvent} e Event object emited by Ol add layer event
    * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    */
-  layerAdded(e) {
+  layerAdded(e: CollectionEvent): void {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
-      layer.get('show_in_manager') != null &&
+      layer.get('show_in_manager') !== null &&
       layer.get('show_in_manager') == false
     ) {
       return;
@@ -137,11 +139,12 @@ export class HsLayerManagerService {
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       layer.get('cluster')
     ) {
-      this.HsLayerEditorVectorLayerService.cluster(true, layer, '40');
+      this.HsLayerEditorVectorLayerService.cluster(true, layer, 40);
     }
     if (typeof layer.get('position') == 'undefined') {
       layer.set('position', this.getMyLayerPosition(layer));
     }
+
     /**
      * @ngdoc property
      * @name HsLayermanagerService#layer
@@ -196,10 +199,10 @@ export class HsLayerManagerService {
   /**
    * @ngdoc method
    * @name HsLayermanagerService#getImage
-   * @param {layer} layer Base layer added to map
+   * @param {Layer} layer Base layer added to map
    * @description Function for adding baselayer thumbnail visible in basemap gallery.
    */
-  getImage(layer) {
+  getImage(layer: Layer) {
     const thumbnail = layer.get('thumbnail');
     if (thumbnail) {
       if (thumbnail.length > 10) {
@@ -214,7 +217,7 @@ export class HsLayerManagerService {
   /**
    * @param layer
    */
-  checkLayerHealth(layer) {
+  checkLayerHealth(layer: Layer): void {
     if (this.isWms(layer)) {
       const src = layer.getSource();
       if (src.getParams().LAYERS == undefined) {
@@ -226,20 +229,20 @@ export class HsLayerManagerService {
   /**
    * @param e
    */
-  layerVisibilityChanged(e) {
+  layerVisibilityChanged(e): void {
     if (e.target.get('base') != true) {
-      for (var i = 0; i < this.data.layers.length; i++) {
-        if (this.data.layers[i].layer == e.target) {
-          this.data.layers[i].visible = e.target.getVisible();
+      for (const layer of this.data.layers) {
+        if (layer.layer == e.target) {
+          layer.visible = e.target.getVisible();
           break;
         }
       }
     } else {
-      for (var i = 0; i < this.data.baselayers.length; i++) {
-        if (this.data.baselayers[i].layer == e.target) {
-          this.data.baselayers[i].active = e.target.getVisible();
+      for (const baseLayer of this.data.baselayers) {
+        if (baseLayer.layer == e.target) {
+          baseLayer.active = e.target.getVisible();
         } else {
-          this.data.baselayers[i].active = false;
+          baseLayer.active = false;
         }
       }
     }
@@ -250,10 +253,10 @@ export class HsLayerManagerService {
    *
    * @function getLayerByTitle
    * @memberOf HsLayermanagerService
-   * @param title
-   * @param {object} Hslayers layer
+   * @param {string} title
+   * @private
    */
-  getLayerByTitle(title) {
+  getLayerByTitle(title: string): Layer | undefined {
     let tmp;
     for (const layer of this.data.layers) {
       if (layer.title == title) {
@@ -267,12 +270,11 @@ export class HsLayerManagerService {
    * @ngdoc method
    * @name HsLayermanagerService#getLayerDescriptorForOlLayer
    * @private
-   * @param layer
-   * @param {Ol.layer} Layer to get layer title
+   * @param {Layer} layer to get layer title
    * @returns {object} Layer container which is used in layer-list directive
    * @description Get layer container object for OL layer
    */
-  getLayerDescriptorForOlLayer(layer) {
+  getLayerDescriptorForOlLayer(layer: Layer) {
     const tmp = this.data.layers.filter((l) => l.layer == layer);
     if (tmp.length > 0) {
       return tmp[0];
@@ -284,10 +286,10 @@ export class HsLayerManagerService {
    * @ngdoc method
    * @name HsLayermanagerService#populateFolders
    * @private
-   * @param {object} lyr Layer to add into folder structure
+   * @param {Layer} lyr Layer to add into folder structure
    * @description Place layer into layer manager folder structure based on path property hsl-path of layer
    */
-  populateFolders(lyr) {
+  populateFolders(lyr: Layer): void {
     if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
       const path = lyr.get('path') || '';
       const parts = path.split('/');
@@ -299,7 +301,7 @@ export class HsLayerManagerService {
             found = folder;
           }
         }
-        if (found == null) {
+        if (found === null) {
           //TODO: Need to describe how hsl_path works here
           const new_folder = {
             sub_folders: [],
@@ -337,10 +339,10 @@ export class HsLayerManagerService {
    * @ngdoc method
    * @name HsLayermanagerService#cleanFolders
    * @private
-   * @param {ol.Layer} lyr Layer to remove from layer folder
+   * @param {Layer} lyr Layer to remove from layer folder
    * @description Remove layer from layer folder structure a clean empty folder
    */
-  cleanFolders(lyr) {
+  cleanFolders(lyr: Layer): void {
     if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
       const path = lyr.get('path');
       const parts = path.split('/');
@@ -366,7 +368,7 @@ export class HsLayerManagerService {
               }
             }
           }
-          var ixToRemove = newfolder.sub_folders.indexOf(curfolder);
+          const ixToRemove = newfolder.sub_folders.indexOf(curfolder);
           if (ixToRemove > -1) {
             newfolder.sub_folders.splice(ixToRemove, 1);
           }
@@ -376,7 +378,7 @@ export class HsLayerManagerService {
         }
       }
     } else {
-      var ixToRemove = this.data.folders.layers.indexOf(lyr);
+      const ixToRemove = this.data.folders.layers.indexOf(lyr);
       if (ixToRemove > -1) {
         this.data.folders.layers.splice(ixToRemove, 1);
       }
@@ -388,18 +390,19 @@ export class HsLayerManagerService {
    *
    * @function layerRemoved
    * @memberOf HsLayermanagerService
+   * @private
    * @description Callback function for removing layer. Clean layers variables
-   * @param {ol.CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
+   * @param {CollectionEvent} e - Events emitted by ol.Collection instances are instances of this type.
    */
-  layerRemoved(e) {
+  layerRemoved(e): void {
     this.cleanFolders(e.element);
-    for (var i = 0; i < this.data.layers.length; i++) {
+    for (let i = 0; i < this.data.layers.length; i++) {
       if (this.data.layers[i].layer == e.element) {
         this.data.layers.splice(i, 1);
       }
     }
 
-    for (var i = 0; i < this.data.baselayers.length; i++) {
+    for (let i = 0; i < this.data.baselayers.length; i++) {
       if (this.data.baselayers[i].layer == e.element) {
         this.data.baselayers.splice(i, 1);
       }
@@ -417,7 +420,7 @@ export class HsLayerManagerService {
    * @memberOf HsLayermanagerService
    * @description Initilaze box layers and their starting active state
    */
-  boxLayersInit() {
+  boxLayersInit(): void {
     if (this.HsConfig.box_layers != undefined) {
       this.data.box_layers = this.HsConfig.box_layers;
       for (const box of this.data.box_layers) {
@@ -440,9 +443,9 @@ export class HsLayerManagerService {
    * @memberOf HsLayermanagerService
    * @description Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
    * @param {boolean} visibility Visibility layer should have
-   * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
+   * @param {Layer} layer Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeLayerVisibility(visibility, layer) {
+  changeLayerVisibility(visibility: boolean, layer: Layer): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
     //Set the other layers in the same folder invisible
@@ -458,6 +461,7 @@ export class HsLayerManagerService {
       }
     }
   }
+
   /**
    * @function changeBaseLayerVisibility
    * @memberOf HsLayermanagerService
@@ -465,71 +469,63 @@ export class HsLayerManagerService {
    * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
    * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeBaseLayerVisibility($event = null, layer = null) {
-    if (layer == null || layer.layer != undefined) {
+  changeBaseLayerVisibility($event = null, layer = null): void {
+    if (layer === null || layer.layer != undefined) {
       if (this.data.baselayersVisible == true) {
         if ($event && this.data.baselayer != layer.title) {
-          for (var i = 0; i < this.data.baselayers.length; i++) {
-            if (this.data.baselayers[i].layer) {
-              this.data.baselayers[i].layer.setVisible(false);
-              this.data.baselayers[i].visible = false;
-              this.data.baselayers[i].active = false;
-              if (this.data.baselayers[i] != layer) {
-                this.data.baselayers[i].galleryMiniMenu = false;
+          for (const baseLayer of this.data.baselayers) {
+            if (baseLayer.layer) {
+              baseLayer.layer.setVisible(false);
+              baseLayer.visible = false;
+              baseLayer.active = false;
+              if (baseLayer != layer) {
+                baseLayer.galleryMiniMenu = false;
               }
             }
           }
-          for (var i = 0; i < this.data.baselayers.length; i++) {
-            if (
-              this.data.baselayers[i].layer &&
-              this.data.baselayers[i] == layer
-            ) {
-              this.data.baselayers[i].layer.setVisible(true);
-              this.data.baselayers[i].visible = true;
-              this.data.baselayers[i].active = true;
+          for (const baseLayer of this.data.baselayers) {
+            if (baseLayer.layer && baseLayer == layer) {
+              baseLayer.layer.setVisible(true);
+              baseLayer.visible = true;
+              baseLayer.active = true;
               this.data.baselayer = layer.title;
               break;
             }
           }
         } else {
           this.data.baselayersVisible = false;
-          for (var i = 0; i < this.data.baselayers.length; i++) {
-            this.data.baselayers[i].layer.setVisible(false);
-            this.data.baselayers[i].galleryMiniMenu = false;
+          for (const baseLayer of this.data.baselayers) {
+            baseLayer.layer.setVisible(false);
+            baseLayer.galleryMiniMenu = false;
           }
         }
       } else {
         if ($event) {
           layer.active = true;
 
-          for (var i = 0; i < this.data.baselayers.length; i++) {
-            if (this.data.baselayers[i] != layer) {
-              this.data.baselayers[i].active = false;
-              this.data.baselayers[i].visible = false;
+          for (const baseLayer of this.data.baselayers) {
+            if (baseLayer != layer) {
+              baseLayer.active = false;
+              baseLayer.visible = false;
             } else {
-              this.data.baselayers[i].layer.setVisible(true);
-              this.data.baselayers[i].visible = true;
-
+              baseLayer.layer.setVisible(true);
+              baseLayer.visible = true;
               this.data.baselayer = layer.title;
             }
           }
         } else {
-          for (var i = 0; i < this.data.baselayers.length; i++) {
-            if (this.data.baselayers[i].visible == true) {
-              this.data.baselayers[i].layer.setVisible(true);
+          for (const baseLayer of this.data.baselayers) {
+            if (baseLayer.visible == true) {
+              baseLayer.layer.setVisible(true);
             }
           }
         }
         this.data.baselayersVisible = true;
       }
     } else {
-      for (var i = 0; i < this.data.baselayers.length; i++) {
-        if (
-          this.data.baselayers[i].type != undefined &&
-          this.data.baselayers[i].type == 'terrain'
-        ) {
-          this.data.baselayers[i].active = this.data.baselayers[i].visible =
-            this.data.baselayers[i] == layer;
+      for (const baseLayer of this.data.baselayers) {
+        if (baseLayer.type != undefined && baseLayer.type == 'terrain') {
+          baseLayer.active = baseLayer.visible = baseLayer == layer;
         }
       }
     }
@@ -543,7 +539,7 @@ export class HsLayerManagerService {
    * @param {object} $event Info about the event change visibility event, used if visibility of only one layer is changed
    * @param {object} layer Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeTerrainLayerVisibility($event, layer) {
+  changeTerrainLayerVisibility($event, layer): void {
     for (let i = 0; i < this.data.terrainlayers.length; i++) {
       if (
         this.data.terrainlayers[i].type != undefined &&
@@ -562,20 +558,22 @@ export class HsLayerManagerService {
    * @function updateLayerOrder
    * @memberOf HsLayermanagerService
    */
-  updateLayerOrder() {
+  updateLayerOrder(): void {
     for (const my_layer of this.data.layers) {
       my_layer.layer.set('position', this.getMyLayerPosition(my_layer.layer));
       my_layer.position = my_layer.layer.get('position');
     }
   }
+
   /**
    * (PRIVATE) Get position of selected layer in map layer order
    *
    * @function getMyLayerPosition
    * @memberOf HsLayermanagerService
-   * @param {Ol.layer} layer Selected layer
+   * @private
+   * @param {Layer} layer Selected layer
    */
-  getMyLayerPosition(layer) {
+  getMyLayerPosition(layer: Layer): number | null {
     let pos = null;
     for (let i = 0; i < this.HsMapService.map.getLayers().getLength(); i++) {
       if (this.HsMapService.map.getLayers().item(i) == layer) {
@@ -591,9 +589,10 @@ export class HsLayerManagerService {
    *
    * @function removeAllLayers
    * @memberOf HsLayermanagerService
+   * @private
    * @description Remove all layers from map
    */
-  removeAllLayers() {
+  removeAllLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (lyr.get('removable') == undefined || lyr.get('removable') == true) {
@@ -616,9 +615,9 @@ export class HsLayerManagerService {
    * @function activateTheme
    * @memberOf HsLayermanagerService
    * @description Show all layers of particular layer group (when groups are defined)
-   * @param {ol.layer.Group} theme Group layer to activate
+   * @param {Group} theme Group layer to activate
    */
-  activateTheme(theme) {
+  activateTheme(theme: Group): void {
     let switchOn = true;
     if (theme.get('active') == true) {
       switchOn = false;
@@ -642,9 +641,9 @@ export class HsLayerManagerService {
    * @function loadingEvents
    * @memberOf HsLayermanagerService
    * @description Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
-   * @param {ol.layer} layer Layer which is being added
+   * @param {Layer} layer Layer which is being added
    */
-  loadingEvents(layer) {
+  loadingEvents(layer: Layer): void {
     const source = layer.getSource();
     source.loadCounter = 0;
     source.loadTotal = 0;
@@ -709,7 +708,7 @@ export class HsLayerManagerService {
     }
   }
 
-  isWms(layer) {
+  isWms(layer: Layer): boolean {
     return (
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
       this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
@@ -719,10 +718,10 @@ export class HsLayerManagerService {
   /**
    * @function isLayerInResolutionInterval
    * @memberOf HsLayermanagerService
-   * @param {Ol.layer} lyr Selected layer
+   * @param {Layer} lyr Selected layer
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
-  isLayerInResolutionInterval(lyr) {
+  isLayerInResolutionInterval(lyr: Layer): boolean {
     const src = lyr.getSource();
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
@@ -730,12 +729,12 @@ export class HsLayerManagerService {
       const units = this.map.getView().getProjection().getUnits();
       const dpi = 25.4 / 0.28;
       const mpu = METERS_PER_UNIT[units];
-      var cur_res = resolution * mpu * 39.37 * dpi;
+      const cur_res = resolution * mpu * 39.37 * dpi;
       return (
         lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution()
       );
     } else {
-      var cur_res = this.HsMapService.map.getView().getResolution();
+      const cur_res = this.HsMapService.map.getView().getResolution();
       return (
         lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
       );
@@ -746,14 +745,12 @@ export class HsLayerManagerService {
    * @function toggleLayerEditor
    * @memberOf hs.layermanager.controller
    * @description Toggles Additional information panel for current layer.
-   * @param {Ol.layer} layer Selected layer (HsLayerManagerService.currentLayer)
-   * * @param {Ol.layer} toToggle Part of layer editor to be toggled
-   * * @param {Ol.layer} control Part of layer editor to be controled for state.
+   * @param {Layer} layer Selected layer (HsLayerManagerService.currentLayer)
+   * @param {Layer} toToggle Part of layer editor to be toggled
+   * @param {Layer} control Part of layer editor to be controlled for state.
    * Determines whether only toggled part or whole layereditor would be closed
-   * @param toToggle
-   * @param control
    */
-  toggleLayerEditor(layer, toToggle, control) {
+  toggleLayerEditor(layer: Layer, toToggle, control): void {
     if (toToggle == 'sublayers' && layer.layer.hasSublayers != true) {
       return;
     }
@@ -773,9 +770,8 @@ export class HsLayerManagerService {
    * @memberOf hs.layermanager.controller
    * @description Opens detailed panel for manipulating selected layer and viewing metadata
    * @param {object} layer Selected layer to edit or view - Wrapped layer object
-   * @param {number} index Position of layer in layer manager structure - used to position the detail panel after layers li element
    */
-  toggleCurrentLayer(layer) {
+  toggleCurrentLayer(layer): void | false {
     if (this.currentLayer == layer) {
       layer.sublayers = false;
       layer.settings = false;
@@ -790,7 +786,7 @@ export class HsLayerManagerService {
     }
   }
 
-  setCurrentLayer(layer) {
+  setCurrentLayer(layer: Layer): false {
     this.currentLayer = layer;
     if (!layer.layer.checkedSubLayers) {
       layer.layer.checkedSubLayers = {};
@@ -819,9 +815,9 @@ export class HsLayerManagerService {
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
    * @description Determines if layer has metadata information avaliable *
-   * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+   * @param {Layer} layer Selected layer (LayMan.currentLayer)
    */
-  hasMetadata(layer) {
+  hasMetadata(layer: Layer): boolean | undefined {
     if (!layer) {
       return;
     } else {
@@ -834,9 +830,10 @@ export class HsLayerManagerService {
    *
    * @function init
    * @memberOf HsLayermanagerService
+   * @private
    * @description Initialization of needed controllers, run when map object is available
    */
-  init() {
+  init(): void {
     this.map = this.HsMapService.map;
     this.HsMapService.map.getLayers().forEach((lyr) => {
       this.layerAdded({
@@ -847,7 +844,7 @@ export class HsLayerManagerService {
     this.boxLayersInit();
 
     this.map.getView().on('change:resolution', (e) => {
-      if (this.timer != null) {
+      if (this.timer !== null) {
         clearTimeout(this.timer);
       }
       this.timer = setTimeout(() => {
@@ -872,7 +869,7 @@ export class HsLayerManagerService {
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
 
-  expandLayer(layer) {
+  expandLayer(layer: Layer): void {
     if (layer.expanded == undefined) {
       layer.expanded = true;
     } else {
@@ -880,7 +877,7 @@ export class HsLayerManagerService {
     }
   }
 
-  expandSettings(layer, value) {
+  expandSettings(layer: Layer, value): void {
     if (layer.opacity == undefined) {
       layer.opacity = layer.layer.getOpacity();
     }
@@ -890,12 +887,12 @@ export class HsLayerManagerService {
     layer.expandSettings = value;
   }
 
-  expandFilter(layer, value) {
+  expandFilter(layer: Layer, value): void {
     layer.expandFilter = value;
     this.currentLayer = layer;
   }
 
-  expandInfo(layer, value) {
+  expandInfo(layer: Layer, value): void {
     layer.expandInfo = value;
   }
 }

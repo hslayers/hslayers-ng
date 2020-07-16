@@ -1,14 +1,6 @@
-import { downgrade } from '../../common/downgrader';
-import { HsLayoutModule } from './layout.module';
+import {HsLayoutModule} from './layout.module';
+import {downgrade} from '../../common/downgrader';
 export const downgradedLayoutModule = downgrade(HsLayoutModule);
-import { HsLayoutService } from './layout.service';
-import mdBottomsheetScrollDirective from './md-bottomsheet-scroll.directive';
-import mdOverlayDirective from './md-overlay.directive';
-import mdRightPanelDirective from './md-right-panel.directive';
-import mdSidenavDirective from './md-sidenav.directive';
-import mdSwipeAreaDirective from './md-swipe-area.directive';
-import mdToolbarDirective from './md-toolbar.directive';
-import panelCreatorDirective from './panel-creator.directive';
 import '../core/';
 import '../geolocation/geolocation.module';
 import '../layermanager/layermanager.module';
@@ -16,10 +8,18 @@ import '../map/map.module';
 import * as angular from 'angular';
 import layoutController from './layout.controller';
 import layoutDirective from './layout.directive';
-import { HsPanelHeaderComponent } from './layout-panel-header.component';
-import { downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
-import { HsDialogContainerComponent } from './dialog-container.component';
-import { HsDialogContainerService } from './dialog-container.service';
+import mdBottomsheetScrollDirective from './md-bottomsheet-scroll.directive';
+import mdOverlayDirective from './md-overlay.directive';
+import mdRightPanelDirective from './md-right-panel.directive';
+import mdSidenavDirective from './md-sidenav.directive';
+import mdSwipeAreaDirective from './md-swipe-area.directive';
+import mdToolbarDirective from './md-toolbar.directive';
+import panelCreatorDirective from './panel-creator.directive';
+import {HsDialogContainerComponent} from './dialog-container.component';
+import {HsDialogContainerService} from './dialog-container.service';
+import {HsLayoutService} from './layout.service';
+import {HsPanelHeaderComponent} from './layout-panel-header.component';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 /**
  * @namespace hs.layout
@@ -30,7 +30,7 @@ angular
     'hs.core',
     'hs.map',
     'hs.geolocation',
-    'hs.layermanager'
+    'hs.layermanager',
   ]) // 'material.components.bottomSheetCollapsible'
   /**
    * @memberof hs.layout
@@ -110,11 +110,20 @@ angular
    * @name hs.panelHeader
    * @description Directive for title bar of panels
    */
-  .directive('hsPanelHeader', downgradeComponent({ component: HsPanelHeaderComponent }))
+  .directive(
+    'hsPanelHeader',
+    downgradeComponent({component: HsPanelHeaderComponent})
+  )
 
-  .directive('hsDialogContainer', downgradeComponent({ component: HsDialogContainerComponent }))
+  .directive(
+    'hsDialogContainer',
+    downgradeComponent({component: HsDialogContainerComponent})
+  )
 
-  .service('HsDialogContainerService', downgradeInjectable(HsDialogContainerService))
+  .service(
+    'HsDialogContainerService',
+    downgradeInjectable(HsDialogContainerService)
+  )
 
   /**
    * @memberof hs.layout
@@ -124,7 +133,6 @@ angular
    */
   .service('HsLayoutService', HsLayoutService);
 
-angular
-  .module('hs.layout', [downgradedLayoutModule]);
+angular.module('hs.layout', [downgradedLayoutModule]);
 
-export { HsLayoutModule } from './layout.module';
+export {HsLayoutModule} from './layout.module';

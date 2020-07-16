@@ -1,8 +1,8 @@
+import * as angular from 'angular';
 import HsCesiumService from './cesium.service';
 import {HsCesiumCameraService} from './cesium-camera.service';
 import {HsCesiumLayersService} from './cesium-layers.service';
 import {HsCesiumTimeService} from './cesium-time.service';
-import * as angular from 'angular';
 
 /**
  * @ngdoc module
@@ -131,11 +131,13 @@ angular
         click: toggleCesiumMap,
       });
 
-      HsEventBusService.layerManagerDimensionChanges.subscribe((data) =>  
+      HsEventBusService.layerManagerDimensionChanges.subscribe((data) =>
         HsCesiumService.dimensionChanged(data.layer, data.dimension)
       );
-      
-      HsEventBusService.sizeChanges.subscribe((size) => HsCesiumService.resize(size));
+
+      HsEventBusService.sizeChanges.subscribe((size) =>
+        HsCesiumService.resize(size)
+      );
       HsCesiumService.resize();
 
       $scope.$emit('scope_loaded', 'CesiumMap');

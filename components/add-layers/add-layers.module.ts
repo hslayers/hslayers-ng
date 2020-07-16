@@ -7,12 +7,12 @@ import './vector/add-layers-vector.module';
 import './wfs/add-layers-wfs.module';
 import './wms/add-layers-wms.module';
 import './wmts/add-layers-wmts.module';
+import * as angular from 'angular';
 import addLayersComponent from './add-layers.component';
 import addLayersUrlDirective from './add-layers-url.directive';
 import compileDirective from '../../common/compile.directive';
 import dragDropLayerService from './drag-drop-layer.service';
 import nestedLayersTableDirective from './nested-layers-table.directive';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayers

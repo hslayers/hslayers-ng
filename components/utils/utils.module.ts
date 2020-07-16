@@ -1,6 +1,6 @@
+import * as angular from 'angular';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
-import * as angular from 'angular';
 
 /**
  * @ngdoc module

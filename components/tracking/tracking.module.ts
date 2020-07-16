@@ -29,7 +29,4 @@ angular
    * @ngdoc controller
    * @name HsTrackingController
    */
-  .controller(
-    'HsTrackingController',
-    TrackingController
-  );
+  .controller('HsTrackingController', TrackingController);

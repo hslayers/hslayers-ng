@@ -1,9 +1,10 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
 import {Cluster} from 'ol/source';
-import {HsMapService} from '../map/map.service.js';
+import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {Point} from 'ol/geom';
 
 @Injectable({
@@ -20,9 +21,9 @@ export class HsLayerEditorVectorLayerService {
    * @memberOf HsLayerEditorService
    * @description Set declutter of features;
    * @param {boolean} newValue
-   * @param {ol/Layer} layer
+   * @param {Layer} layer
    */
-  declutter(newValue, layer) {
+  declutter(newValue: boolean, layer: Layer): void {
     const index = this.HsMapService.map.getLayers().getArray().indexOf(layer);
     if (newValue == true && !layer.get('cluster')) {
       this.HsMapService.map.removeLayer(layer);
@@ -37,7 +38,7 @@ export class HsLayerEditorVectorLayerService {
     }
   }
 
-  cloneVectorLayer(layer, declutter) {
+  cloneVectorLayer(layer: Layer, declutter: boolean): VectorLayer {
     const options = {};
     layer.getKeys().forEach((k) => (options[k] = layer.get(k)));
     Object.assign(options, {
@@ -57,10 +58,10 @@ export class HsLayerEditorVectorLayerService {
    * @memberOf HsLayerEditorService
    * @description Set cluster for layer;
    * @param {boolean} newValue
-   * @param {ol/Layer} layer
+   * @param {Layer} layer
    * @param {number} distance
    */
-  cluster(newValue, layer, distance) {
+  cluster(newValue: boolean, layer: Layer, distance: number) {
     if (!layer.hsOriginalStyle) {
       layer.hsOriginalStyle = layer.getStyle();
     }
@@ -116,7 +117,7 @@ export class HsLayerEditorVectorLayerService {
     }
   }
 
-  createClusteredSource(layer, distance) {
+  createClusteredSource(layer: Layer, distance: number): Cluster {
     return new Cluster({
       distance: distance,
       source: layer.getSource(),

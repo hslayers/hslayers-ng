@@ -13,7 +13,7 @@ export class HsLayerEditorSublayerService {
 
   constructor(private HsLayerManagerService: HsLayerManagerService) {}
 
-  hasSubLayers() {
+  hasSubLayers(): boolean {
     const subLayers = this.HsLayerManagerService.currentLayer.layer.get(
       'Layer'
     );
@@ -21,7 +21,7 @@ export class HsLayerEditorSublayerService {
   }
 
   getSubLayers() {
-    if (this.HsLayerManagerService.currentLayer == null) {
+    if (this.HsLayerManagerService.currentLayer === null) {
       return;
     }
     this.populateSubLayers();
@@ -92,7 +92,7 @@ export class HsLayerEditorSublayerService {
     }
   }
 
-  subLayerSelected() {
+  subLayerSelected(): void {
     const layer = this.HsLayerManagerService.currentLayer;
     const src = this.HsLayerManagerService.currentLayer.layer.getSource();
     const params = src.getParams();

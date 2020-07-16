@@ -2,10 +2,11 @@ import BaseLayer from 'ol/layer/Base';
 import Static from 'ol/source/ImageStatic';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon} from 'ol/style';
-import { HsLegendDescriptor } from './legend-descriptor.class';
+import {Fill, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {Image as ImageLayer} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
+import {Image as ImageLayer, Layer} from 'ol/layer';
+import {ImageWMS, Source} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {TileWMS, XYZ} from 'ol/source';
 
@@ -26,7 +27,7 @@ export class HsLegendService {
    * @param {object} layer Layer to test
    * @returns {boolean} Return if legend might exist for layer and layer is visible
    */
-  legendValid(layer: HsLegendDescriptor) {
+  legendValid(layer: HsLegendDescriptor): boolean {
     if (layer === undefined || layer.type == undefined) {
       return false;
     }
@@ -44,10 +45,10 @@ export class HsLegendService {
    *
    * @memberof HsLegendService
    * @function getVectorFeatureGeometry
-   * @param {ol/Layer} currentLayer Layer of interest
-   * @returns {Array} Array of simplified lowercase names of geometry types encountered in layer
+   * @param {Layer} currentLayer Layer of interest
+   * @returns {Array<string>} Array of simplified lowercase names of geometry types encountered in layer
    */
-  getVectorFeatureGeometry(currentLayer) {
+  getVectorFeatureGeometry(currentLayer: Layer): string[] {
     if (currentLayer === undefined) {
       return;
     }
@@ -89,10 +90,10 @@ export class HsLegendService {
    *
    * @memberof HsLegendService
    * @function getStyleVectorLayer
-   * @param {ol/Layer} currentLayer Layer of interest
+   * @param {Layer} currentLayer Layer of interest
    * @returns {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
    */
-  getStyleVectorLayer(currentLayer) {
+  getStyleVectorLayer(currentLayer: Layer): Array<any> {
     if (currentLayer === undefined) {
       return;
     }
@@ -131,10 +132,10 @@ export class HsLegendService {
    *
    * @memberof HsLegendService
    * @function serializeStyle
-   * @param {ol/Style} style Openlayers style
+   * @param {Style} style Openlayers style
    * @returns {object} Simplified description of style used by template to draw legend
    */
-  serializeStyle(style) {
+  serializeStyle(style: Style) {
     const styleToSerialize = style[0] ? style[0] : style;
     const image = styleToSerialize.getImage();
     const stroke = styleToSerialize.getStroke();
@@ -148,12 +149,12 @@ export class HsLegendService {
    *
    * @memberof HsLegendService
    * @function setUpLegendStyle
-   * @param {ol/style/Fill} fill Fill description
-   * @param {ol/style/Stroke} stroke Stroke description
-   * @param {ol/style/Image~ImageStyle} image Image description
+   * @param {Fill} fill Fill description
+   * @param {Stroke} stroke Stroke description
+   * @param {ImageStyle} image Image description
    * @returns {object} Simplified description of style used by template to draw legend
    */
-  setUpLegendStyle(fill, stroke, image) {
+  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
@@ -235,12 +236,12 @@ export class HsLegendService {
    *
    * @memberof HsLegendService
    * @function getLegendUrl
-   * @param {ol.source.Source} source Source of wms layer
+   * @param {Source} source Source of wms layer
    * @param {string} layer_name Name of layer for which legend is requested
-   * @param {ol/Layer} layer Layer to get legend for
+   * @param {Layer} layer Layer to get legend for
    * @returns {string} Url of the legend graphics
    */
-  getLegendUrl(source, layer_name, layer) {
+  getLegendUrl(source: Source, layer_name: string, layer: Layer): string {
     let source_url = '';
     if (this.HsUtilsService.instOf(source, TileWMS)) {
       source_url = source.getUrls()[0];
@@ -279,9 +280,9 @@ export class HsLegendService {
    * @memberof HsLegendService
    * @function getLegendUrl
    * @returns {object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
-   * @param {ol/Layer} layer Openlayers layer
+   * @param {BaseLayer} layer Openlayers layer
    */
-  getLayerLegendDescriptor(layer: BaseLayer): HsLegendDescriptor {
+  getLayerLegendDescriptor(layer: BaseLayer): HsLegendDescriptor | undefined {
     if (layer.get('base')) {
       return;
     }

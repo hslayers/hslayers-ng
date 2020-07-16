@@ -16,7 +16,7 @@ export class HsLayerManagerRemoveAllDialogComponent
     private HsEventBusService: HsEventBusService
   ) {}
 
-  removeAllLayers(reloadComposition) {
+  removeAllLayers(reloadComposition?: boolean): void {
     this.HsLayerManagerService.removeAllLayers();
     if (reloadComposition) {
       this.HsEventBusService.compositionLoadStarts.next(
