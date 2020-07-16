@@ -3,12 +3,12 @@
  * @memberOf hs
  */
 
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HsPrintComponent } from './print.component';
-import { HsPrintService } from './print.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from "@angular/common";
-import { HsPanelHelpersModule } from '../layout/panel-helpers.module';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPrintComponent} from './print.component';
+import {HsPrintService} from './print.service';
 /**
  * @memberof hs.print
  * @ngdoc component
@@ -17,24 +17,16 @@ import { HsPanelHelpersModule } from '../layout/panel-helpers.module';
  */
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    HsPrintComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HsPanelHelpersModule
-  ],
-  exports: [
-    HsPrintComponent
-  ],
-  providers: [HsPrintService,
+  declarations: [HsPrintComponent],
+  imports: [CommonModule, FormsModule, HsPanelHelpersModule],
+  exports: [HsPrintComponent],
+  providers: [
+    HsPrintService,
     {
-      provide: Window, useValue: window
-    }
+      provide: Window,
+      useValue: window,
+    },
   ],
-  entryComponents: [
-    HsPrintComponent
-  ]
+  entryComponents: [HsPrintComponent],
 })
-export class HsPrintModule { }
+export class HsPrintModule {}

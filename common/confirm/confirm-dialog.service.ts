@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import {HsLayoutService} from '../../components/layout/layout.service'
+import {HsLayoutService} from '../../components/layout/layout.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsConfirmDialog {
-  constructor(private HsLayoutService:HsLayoutService) {
+  constructor(private HsLayoutService: HsLayoutService) {
     'ngInject';
     Object.assign(this, {
       HsLayoutService,
@@ -21,7 +21,7 @@ export class HsConfirmDialog {
    */
   show(message, title) {
     //TODO: solve this mess
- /*    return new Promise((resolve, reject) => {
+    /*    return new Promise((resolve, reject) => {
       const scope = this.$rootScope.$new();
       Object.assign(scope, {
         title,

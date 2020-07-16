@@ -26,7 +26,7 @@ export class HsSensorsUnitListItemComponent {
    * @description When unit is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
-  unitClicked() {
+  unitClicked(): void {
     this.HsSensorsService.selectUnit(this.unit);
   }
 
@@ -37,7 +37,7 @@ export class HsSensorsUnitListItemComponent {
    * @description When sensor is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
-  sensorClicked(sensor) {
+  sensorClicked(sensor): void {
     this.HsSensorsUnitDialogService.unit = this.unit;
     this.HsSensorsService.selectSensor(sensor);
     this.generateDialog();
@@ -50,21 +50,20 @@ export class HsSensorsUnitListItemComponent {
    * @description When sensor is toggled, create a dialog window for
    * displaying charts or reopen already existing one.
    */
-  sensorToggleSelected(sensor) {
+  sensorToggleSelected(sensor): void {
     this.HsSensorsUnitDialogService.unit = this.unit;
     sensor.checked = !sensor.checked;
     this.HsSensorsUnitDialogService.toggleSensor(sensor);
     this.generateDialog();
   }
 
-  /**
-   *
-   */
-  generateDialog() {
+  generateDialog(): void {
     if (!this.HsSensorsUnitDialogService.unitDialogVisible) {
       this.HsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.HsSensorsUnitDialogService.createChart(this.HsSensorsUnitDialogService.unit);
+      this.HsSensorsUnitDialogService.createChart(
+        this.HsSensorsUnitDialogService.unit
+      );
     }
   }
 }

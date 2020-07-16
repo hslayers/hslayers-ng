@@ -7,7 +7,7 @@ import {Injectable} from '@angular/core';
 })
 export class HsLayerEditorStylesService {
   constructor(private HsUtilsService: HsUtilsService) {}
-  changePointType(layer, type) {
+  changePointType(layer, type): void {
     if (layer.style == undefined) {
       this.getLayerStyle(layer);
     }
@@ -19,7 +19,7 @@ export class HsLayerEditorStylesService {
   /**
    * @param wrapper
    */
-  setLayerStyle(wrapper) {
+  setLayerStyle(wrapper): void {
     const layer = wrapper.layer;
     const source = layer.getSource();
     const style = wrapper.style.style;
@@ -80,7 +80,7 @@ export class HsLayerEditorStylesService {
   }
 
   //TODO refactor to some style oriented helper service
-  getLayerStyle(wrapper) {
+  getLayerStyle(wrapper): void {
     const layer = wrapper.layer;
     const source = layer.getSource();
     wrapper.style = {};
@@ -138,7 +138,7 @@ export class HsLayerEditorStylesService {
     wrapper.style.style = style;
   }
 
-  saveStyle(layer) {
+  saveStyle(layer): void {
     this.setLayerStyle(layer);
   }
 }

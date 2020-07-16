@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HsMapService} from '../map/map.service.js';
+import {HsMapService} from '../map/map.service';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 @Component({
@@ -9,7 +9,7 @@ import {HsSensorsService} from './sensors.service';
 export class HsSensorsComponent {
   viewMode = 'sensors';
   viewExpanded = false;
-  query: any = {description: ''}
+  query: any = {description: ''};
   constructor(
     private HsMapService: HsMapService,
     private HsSensorsService: HsSensorsService
@@ -23,15 +23,15 @@ export class HsSensorsComponent {
    * @description Init function used to populate list of units and later
    * create some map functionality
    */
-  init() {
+  init(): void {
     this.HsSensorsService.getUnits();
   }
 
-  setViewMode(viewMode) {
+  setViewMode(viewMode): void {
     this.viewMode = viewMode;
   }
 
-  toggleExpansion() {
+  toggleExpansion(): void {
     this.viewExpanded = !this.viewExpanded;
     if (!this.viewExpanded) {
       this.HsSensorsService.units.forEach((element: HsSensorUnit) => {

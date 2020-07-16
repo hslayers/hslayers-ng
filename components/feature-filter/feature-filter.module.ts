@@ -1,24 +1,24 @@
 import '../layermanager/layermanager.module';
 import '../map/map.module';
+import * as angular from 'angular';
 import featureFilterController from './feature-filter.controller';
 import featureFilterDirective from './feature-filter.directive';
 import featureFilterElementDirective from './feature-filter-element.directive';
 import featureFilterService from './feature-filter.service';
 import featureListController from './feature-list.controller';
 import featureListDirective from './feature-list.directive';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.featureFilter
- * @memberOf hs  
+ * @memberOf hs
  * @description Module is used to filter certain features on vector layers based on attribute values.
  * It also draws nice charts with bars proportionaly to usage of each value of a particular attribute.
- * 
- * must provide layers to be fillterable in app.js parametrs:         
+ *
+ * must provide layers to be fillterable in app.js parametrs:
  *      module.value('crossfilterable_layers', [{
     layer_ix: 1,
     attributes: ["http://gis.zcu.cz/poi#category_osm"]
-}]); 
+}]);
  */
 angular
   .module('hs.featureFilter', ['hs.map', 'hs.core', 'hs.layermanager'])

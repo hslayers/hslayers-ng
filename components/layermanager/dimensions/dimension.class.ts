@@ -14,10 +14,10 @@ export class HsDimensionDescriptor {
   }
 
   /* This is needed because ng-bootstrap datepicker sets value to
-    object {year:.., month: .., day: ..} but we need vanillaJs Date 
-    in dimension.value attribute instead. Use the complex value only 
+    object {year:.., month: .., day: ..} but we need vanillaJs Date
+    in dimension.value attribute instead. Use the complex value only
     for picker through modelValue */
-  postProcessDimensionValue() {
+  postProcessDimensionValue(): void {
     if (this.modelValue.year && this.modelValue.month) {
       this.originalDimension.value = new Date(
         this.modelValue.year,

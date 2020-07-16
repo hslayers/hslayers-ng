@@ -1,10 +1,10 @@
 import '../../../common/endpoints/endpoints.module';
 import '../../save-map/save-map.module';
 import '../../styles/styles.module';
+import * as angular from 'angular';
+import HsShpController from './shp.controller';
 import addLayersShpService from './add-layers-shp.service';
 import forShapefileUploadFilter from './for-shapefile-upload.filter';
-import HsShpController from './shp.controller';
-import * as angular from 'angular';
 
 /**
  * @param config

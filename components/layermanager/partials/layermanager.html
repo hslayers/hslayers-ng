@@ -35,7 +35,6 @@
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" (click)="changeBaseLayerVisibility($event, layer);" [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
-                  
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu" [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}">
                         {{layer.title}}
                     </div>
@@ -62,7 +61,7 @@
                                 class="icon-globe"></i></button>
                     </div> -->
                     <div class="p-0">
-                            <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
 
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
@@ -79,7 +78,7 @@
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary" (click)="value.visible = !value.visible">
                     <span>{{value.name}}</span>
-                    <span class="glyphicon" [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
+                    <span class="glyphicon" [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
                 <div [hidden]="!value.visible">
                     <li [hidden]="!(value.sub_folders.length > 0)">
@@ -91,7 +90,7 @@
             <ul class="list-group hs-lm-layerlist">
                 <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)" class="list-group-item list-group-item-primary hs-lm-layerlist-header" (click)="layerlistVisible = !layerlistVisible">
                     <span i18n class="align-middle">Other </span>
-                    <span class="glyphicon" [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span> 
+                    <span class="glyphicon" [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
                 <li><hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list></li>
             </ul>

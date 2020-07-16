@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { HsLayoutService } from './layout.service';
+import {Component, Input} from '@angular/core';
+import {HsLayoutService} from './layout.service';
 @Component({
   selector: 'hs-panel-header',
-  template: require('./partials/panel-header.directive.html')
+  template: require('./partials/panel-header.directive.html'),
 })
 export class HsPanelHeaderComponent {
   @Input() name: string;
@@ -19,7 +19,7 @@ export class HsPanelHeaderComponent {
    * @memberof hs-panel-header.component
    * @function closePanel
    */
-  closePanel() {
+  closePanel(): void {
     this.HsLayoutService.closePanel(this.name);
   }
 }

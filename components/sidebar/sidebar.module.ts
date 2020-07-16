@@ -1,13 +1,13 @@
 import '../core/';
+import '../layout';
 import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
+import * as angular from 'angular';
 import sidebarController from './sidebar.controller';
 import sidebarDirective from './sidebar.directive';
 import sidebarMiniDirective from './sidebar-mini.directive';
 import sidebarService from './sidebar.service';
-import * as angular from "angular";
-import '../layout';
 
 /**
  * @namespace hs.sidebar

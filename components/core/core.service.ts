@@ -1,12 +1,11 @@
-
-import { Injectable, Inject } from '@angular/core';
-import { HsConfig } from '../../config.service';
-import { HsMapService } from '../map/map.service.js';
-import { HsUtilsService } from '../utils/utils.service';
-import { HsLayoutService } from '../layout/layout.service';
-import { DOCUMENT } from '@angular/common';
-import { HsLogService } from './log.service';
-import { HsEventBusService } from './event-bus.service';
+import {DOCUMENT} from '@angular/common';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from './event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from './log.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {Inject, Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class HsCoreService {
    * @type {Array}
    * @description DEPRECATED?
    */
-  embededEnabled: boolean = true;
+  embededEnabled = true;
   /**
    * @ngdoc property
    * @name HsCore#_exist_cache
@@ -42,30 +41,31 @@ export class HsCoreService {
     windowedMap: undefined,
     selector: undefined,
   };
-  language: string = 'en';
+  language = 'en';
   config: any;
-  _puremapApp: boolean = false;
+  _puremapApp = false;
   initCalled: boolean;
   missingLRFunctionsWarned: any;
   singleDatasourcesWarningShown: boolean;
   existsWarningShown: any;
 
-
-  constructor(private HsMapService: HsMapService,
+  constructor(
+    private HsMapService: HsMapService,
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
     private HsUtilsService: HsUtilsService,
     private window: Window,
     private log: HsLogService,
     @Inject(DOCUMENT) private document: Document,
-    private HsEventBusService: HsEventBusService) {
+    private HsEventBusService: HsEventBusService
+  ) {
     /**
-  * @ngdoc property
-  * @name HsCore#config
-  * @public
-  * @type {object}
-  * @description Service shortcut to config module defined by app.js for application
-  */
+     * @ngdoc property
+     * @name HsCore#config
+     * @public
+     * @type {object}
+     * @description Service shortcut to config module defined by app.js for application
+     */
     this.config = this.HsConfig;
     if (this.window.innerWidth < 767 || this.HsConfig.sidebarClosed) {
       this.HsLayoutService.sidebarExpanded = false;
@@ -75,13 +75,22 @@ export class HsCoreService {
     }
   }
 
-  setMainPanel(which, by_gui) {
+  /**
+   * @deprecated Replaced by HsLayoutService#setMainPanel
+   * @param which
+   * @param by_gui
+   */
+  setMainPanel(which, by_gui): void {
     this.log.warn(
       'setMainPanel will be removed from HsCore in future. Use HsLayoutService#setMainPanel method instead'
     );
     this.HsLayoutService.setMainPanel(which, by_gui);
   }
 
+  /**
+   * @deprecated Replaced by HsLayoutService#setDefaultPanel
+   * @param which
+   */
   setDefaultPanel(which) {
     this.log.warn(
       'setDefaultPanel will be removed from HsCore in future. Use HsLayoutService#setDefaultPanel method instead'
@@ -89,6 +98,11 @@ export class HsCoreService {
     return this.HsLayoutService.setDefaultPanel(which);
   }
 
+  /**
+   * @deprecated Replaced by HsLayoutService#panelVisible
+   * @param {*} which
+   * @param {*} scope
+   */
   panelVisible(which, scope) {
     this.log.warn(
       'panelVisible will be removed from HsCore in future. Use HsLayoutService#panelVisible method instead'
@@ -96,6 +110,11 @@ export class HsCoreService {
     return this.HsLayoutService.panelVisible(which, scope);
   }
 
+  /**
+   * @deprecated Replaced by HsLayoutService#panelEnabled
+   * @param {*} which
+   * @param {*} status
+   */
   panelEnabled(which, status) {
     this.log.warn(
       'panelEnabled will be removed from HsCore in future. Use HsLayoutService#panelEnabled method instead'
@@ -103,6 +122,11 @@ export class HsCoreService {
     return this.HsLayoutService.panelEnabled(which, status);
   }
 
+  /**
+   * @deprecated Replaced by HsLayoutService#closePanel
+   * @param {*} which
+   * @memberof HsCoreService
+   */
   closePanel(which) {
     this.log.warn(
       'closePanel will be removed from HsCore in future. Use HsLayoutService#closePanel method instead'
@@ -110,6 +134,10 @@ export class HsCoreService {
     return this.HsLayoutService.closePanel(which);
   }
 
+  /**
+   * @deprecated Replaced by HsLayoutService#fullScreenMap
+   * @param {*} element
+   */
   fullScreenMap(element) {
     this.log.warn(
       'fullScreenMap will be removed from HsCore in future. Use HsLayoutService#fullScreenMap method instead'
@@ -117,10 +145,16 @@ export class HsCoreService {
     return this.HsLayoutService.fullScreenMap(element, this);
   }
 
+  /**
+   * @deprecated Replaced by config.allowAddExternalDatasets
+   */
   get singleDatasources() {
     return this.HsConfig.allowAddExternalDatasets;
   }
 
+  /**
+   * @deprecated Replaced by config.allowAddExternalDatasets
+   */
   set singleDatasources(newName) {
     if (!this.singleDatasourcesWarningShown) {
       this.singleDatasourcesWarningShown = true;
@@ -139,7 +173,7 @@ export class HsCoreService {
    * @param {object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any css like selector
    * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
    */
-  init(element, options) {
+  init(element, options?): void {
     if (this.initCalled) {
       return;
     }
@@ -171,7 +205,6 @@ export class HsCoreService {
         this.initSizeListeners();
         this.updateMapSize();
       }
-
       this.initCalled = true;
     });
   }
@@ -182,8 +215,8 @@ export class HsCoreService {
    * @public
    * @description Change container for HS element.
    */
-  setSizeByContainer() {
-    //TODO Output warning if sizeOptions.element is not set
+  setSizeByContainer(): void {
+    //TODO: Output warning if sizeOptions.element is not set
     this.sizeOptions.selector = this.sizeOptions.element.parent();
     this.updateElementSize();
   }
@@ -196,7 +229,7 @@ export class HsCoreService {
    * @param {number} width New width of HS element in pixels
    * @description Change HS element size programmatically (currently accept only integer value of pixels).
    */
-  setSizeByCSS(height, width) {
+  setSizeByCSS(height: number, width: number): void {
     if (this.sizeOptions.selector) {
       this.sizeOptions.selector = undefined;
     }
@@ -212,7 +245,7 @@ export class HsCoreService {
    * @public
    * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    */
-  initSizeListeners() {
+  initSizeListeners(): void {
     const w = this.window;
     /**
      * @ngdoc method
@@ -264,7 +297,7 @@ export class HsCoreService {
    * @public
    * @description Update HS element size by its container sizes.
    */
-  updateElementSize() {
+  updateElementSize(): void {
     const element = this.sizeOptions.element[0];
     const container = this.sizeOptions.selector[0];
     element.style.height = container.clientHeight + 'px';
@@ -278,24 +311,26 @@ export class HsCoreService {
    * @public
    * @description Update map size.
    */
-  updateMapSize() {
-    const container = this.sizeOptions.innerElement !== undefined
-      ? this.sizeOptions.innerElement
-      : this.sizeOptions.element[0];
+  updateMapSize(): void {
+    const container =
+      this.sizeOptions.innerElement !== undefined
+        ? this.sizeOptions.innerElement
+        : this.sizeOptions.element[0];
     const map = this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map');
     if (map === null) {
       return;
     }
     let sidebarElem = null;
     if (
-      this.HsLayoutService.contentWrapper.getElementsByClassName('hs-panelspace')
-        .length > 0
+      this.HsLayoutService.contentWrapper.getElementsByClassName(
+        'hs-panelspace'
+      ).length > 0
     ) {
       sidebarElem = this.HsLayoutService.contentWrapper.querySelector(
         '.hs-panelspace'
       );
     }
-    const neededSize = { width: 0, height: container.clientHeight };
+    const neededSize = {width: 0, height: container.clientHeight};
 
     if (this.puremapApp) {
       neededSize.width = container.offsetWidth;
@@ -312,9 +347,9 @@ export class HsCoreService {
     if (this.HsMapService.map) {
       this.HsMapService.map.updateSize();
       if (map.offsetWidth < 767) {
-        this.HsLayoutService.smallWidth = true
+        this.HsLayoutService.smallWidth = true;
       } else {
-        this.HsLayoutService.smallWidth = false
+        this.HsLayoutService.smallWidth = false;
       }
     }
 
@@ -328,7 +363,7 @@ export class HsCoreService {
    * @returns {boolean} Check result - true for authorized user
    * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
    */
-  isAuthorized() {
+  isAuthorized(): boolean {
     if (
       this.window['getLRUser'] === undefined &&
       this.missingLRFunctionsWarned === undefined
@@ -338,10 +373,7 @@ export class HsCoreService {
       );
       this.missingLRFunctionsWarned = true;
     }
-    if (
-      this.window['getLRUser'] &&
-      this.window['getLRUser']() != 'guest'
-    ) {
+    if (this.window['getLRUser'] && this.window['getLRUser']() != 'guest') {
       return true;
     }
     return true;
@@ -353,7 +385,7 @@ export class HsCoreService {
    * @public
    * @description Do complete reset of map (view, layers) according to app config
    */
-  resetMap() {
+  resetMap(): void {
     this.HsMapService.reset();
     /**
      * @ngdoc event
@@ -372,7 +404,7 @@ export class HsCoreService {
    * @returns {string} Returns "mobile" or ""
    * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
    */
-  isMobile() {
+  isMobile(): string {
     if (this.window['cordova']) {
       return 'mobile';
     } else {
@@ -380,20 +412,24 @@ export class HsCoreService {
     }
   }
 
-  createComponentsEnabledConfigIfNeeded() {
+  createComponentsEnabledConfigIfNeeded(): void {
     if (this.HsConfig.componentsEnabled === undefined) {
       this.HsConfig.componentsEnabled = {};
     }
   }
 
-  exists() {
+  /**
+   * @deprecated Replaced by panelsEnabled config
+   */
+  exists(): true {
     if (!this.existsWarningShown) {
       this.existsWarningShown = true;
-      this.log.warn('Core.exists function will be removed. Please use panelsEnabled config option to set the statuses');
+      this.log.warn(
+        'Core.exists function will be removed. Please use panelsEnabled config option to set the statuses'
+      );
     }
     return true;
   }
-
 
   /**
    * @ngdoc property

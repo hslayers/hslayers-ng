@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HsMapService } from '../map/map.service.js';
+import {HsMapService} from '../map/map.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsPrintService {
-  constructor(private HsMapService: HsMapService, private window: Window) {
-  }
+  constructor(private HsMapService: HsMapService, private window: Window) {}
 
   /**
    * @memberof HsPrintService
@@ -15,7 +14,7 @@ export class HsPrintService {
    * @param {string} title Heading of printed page
    * @description Basic print implementation
    */
-  print(title) {
+  print(title: string): void {
     const canvas = this.HsMapService.getCanvas();
     const img = canvas.toDataURL('image/png');
     const win = this.window.open();

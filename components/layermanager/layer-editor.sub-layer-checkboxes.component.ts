@@ -20,11 +20,11 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
     return this.HsLayerEditorSublayerService.getSubLayers();
   }
 
-  subLayerIsString(subLayer) {
+  subLayerIsString(subLayer: any): boolean {
     return typeof subLayer == 'string';
   }
 
-  toggleExpanded() {
+  toggleExpanded(): void {
     this.expanded = !this.expanded;
   }
 

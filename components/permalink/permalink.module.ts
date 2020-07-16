@@ -1,9 +1,9 @@
 import '../compositions/compositions.module';
 import '../language/language.module';
+import * as angular from 'angular';
 import permalinkComponent from './permalink.component';
 import permalinkShareService from './permalink-share.service';
 import permalinkUrlService from './permalink-url.service';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.permalink
@@ -20,15 +20,13 @@ angular
     'hs.language',
   ])
 
-  .config([
-    '$locationProvider',
-    function ($locationProvider) {
-      $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false,
-      });
-    },
-  ])
+  .config(function ($locationProvider) {
+    'ngInject';
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false,
+    });
+  })
 
   /**
    * @ngdoc service

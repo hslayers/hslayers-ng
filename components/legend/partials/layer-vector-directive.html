@@ -2,40 +2,40 @@
     <div class="col-sm-2">
         <div *ngFor="let style of layerStyle">
             <div *ngIf="style.icon && geometry == 'point'">
-                <img [ngStyle]="style.style" [src]="style.icon.src"/>
+                <img [ngStyle]="style.style" [src]="style.icon.src" />
             </div>
             <div *ngIf="style.defaultCircle && geometry == 'point'">
-                <svg  [ngStyle]="style.style">
+                <svg [ngStyle]="style.style">
                     <circle [ngStyle]="style.defaultCircle"></circle>
                 </svg>
             </div>
             <div *ngIf="style.customCircle && geometry == 'point'">
-                <svg  [ngStyle]="style.style">
+                <svg [ngStyle]="style.style">
                     <circle [ngStyle]="style.customCircle"></circle>
                 </svg>
             </div>
             <div *ngIf="style.defaultPolygon && geometry == 'polygon'">
-                <svg  [ngStyle]="style.style">
+                <svg [ngStyle]="style.style">
                     <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.defaultPolygon"></polygon>
                 </svg>
             </div>
             <div *ngIf="style.fullPolygon && geometry == 'polygon'">
-                <svg  [ngStyle]="style.style">
+                <svg [ngStyle]="style.style">
                     <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.fullPolygon"></polygon>
                 </svg>
             </div>
             <div *ngIf="style.polygon && geometry == 'polygon'">
-                <svg  [ngStyle]="style.style">
+                <svg [ngStyle]="style.style">
                     <polygon points="5,30 8,5 25,5 30,30" [ngStyle]="style.polygon"></polygon>
                 </svg>
             </div>
             <div *ngIf="style.defaultLine && geometry == 'line'">
-                    <svg  [ngStyle]="style.style">
+                    <svg [ngStyle]="style.style">
                         <line x1="0" y1="20" x2="35" y2="20" [ngStyle]="style.defaultLine"></line>
                     </svg>
             </div>
             <div *ngIf="style.line && geometry == 'line'">
-                    <svg  [ngStyle]="style.style">
+                    <svg [ngStyle]="style.style">
                         <line x1="0" y1="20" x2="35" y2="20" [ngStyle]="style.line"></line>
                     </svg>
             </div>

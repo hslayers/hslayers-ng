@@ -1,12 +1,12 @@
+import '../layout';
 import '../permalink/permalink.module';
 import '../styles/styles.module';
+import * as angular from 'angular';
 import searchController from './search.controller';
 import searchDirective from './search.directive';
 import searchInputDirective from './search-input.directive';
 import searchResultsDirective from './search-results.directive';
 import searchService from './search.service';
-import * as angular from "angular";
-import '../layout';
 /**
  * @namespace hs.search
  * @memberOf hs

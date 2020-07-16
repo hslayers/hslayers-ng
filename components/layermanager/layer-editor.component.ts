@@ -2,18 +2,19 @@
 import * as moment from 'moment';
 import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
-import {HsDrawService} from '../draw/draw.service.js';
+import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.class';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
-import {HsLayoutService} from '../layout/layout.service.js';
-import {HsMapService} from '../map/map.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
+import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -40,25 +41,25 @@ export class HsLayerEditorComponent {
     private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
   ) {}
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     if (!this.currentLayer) {
       return;
     }
     this.HsLayerEditorService.setLayer(this.currentLayer);
   }
 
-  layerIsWmsT() {
+  layerIsWmsT(): boolean {
     return this.HsLayerManagerWmstService.layerIsWmsT(this.currentLayer);
   }
 
   /**
    * @function isLayerWMS
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} layer Selected layer
    * @description Test if layer is WMS layer
    * @deprecated TODO
    */
-  isLayerWMS(layer) {
+  isLayerWMS(layer: Layer): boolean {
     return this.HsLayerUtilsService.isLayerWMS(layer);
   }
 
@@ -70,17 +71,16 @@ export class HsLayerEditorComponent {
    * BoundingBox property of GetCapabalities request (for WMS layer)
    * @returns {Promise}
    */
-  zoomToLayer() {
+  zoomToLayer(): Promise<any> {
     return this.HsLayerEditorService.zoomToLayer(this.olLayer());
   }
 
   /**
    * @function styleLayer
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
    * @description Display styler panel for selected layer, so user can change its style
    */
-  styleLayer() {
+  styleLayer(): void {
     const layer = this.olLayer();
     this.HsStylerService.layer = layer;
     this.HsLayoutService.setMainPanel('styler');
@@ -89,20 +89,19 @@ export class HsLayerEditorComponent {
   /**
    * @function isLayerVectorLayer
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} layer Selected layer
    * @description Test if layer is WMS layer
    */
-  isLayerVectorLayer(layer) {
+  isLayerVectorLayer(layer: Layer): boolean {
     return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 
   /**
    * @function isVectorLayer
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
    * @description Test if layer is WMS layer
    */
-  isVectorLayer() {
+  isVectorLayer(): boolean | undefined {
     if (!this.currentLayer) {
       return;
     }
@@ -121,11 +120,11 @@ export class HsLayerEditorComponent {
    * @description Set decluttering of features
    * @returns {boolean} Current declutter state
    */
-  set declutter(newValue) {
+  set declutter(newValue: boolean) {
     this.HsLayerEditorService.declutter(this.olLayer(), newValue);
   }
 
-  get declutter() {
+  get declutter(): boolean {
     return this.HsLayerEditorService.declutter(this.olLayer(), undefined);
   }
 
@@ -136,7 +135,7 @@ export class HsLayerEditorComponent {
    * @param {boolean} newValue To cluster or not to cluster
    * @returns {boolean} Current cluster state
    */
-  set cluster(newValue) {
+  set cluster(newValue: boolean) {
     if (!this.currentLayer) {
       return;
     }
@@ -147,7 +146,7 @@ export class HsLayerEditorComponent {
     );
   }
 
-  get cluster() {
+  get cluster(): boolean | undefined {
     if (!this.currentLayer) {
       return;
     }
@@ -163,7 +162,7 @@ export class HsLayerEditorComponent {
    * @memberOf hs.layermanager.controller
    * @description Set distance between cluster features;
    */
-  changeDistance() {
+  changeDistance(): void {
     if (!this.currentLayer) {
       return;
     }
@@ -179,11 +178,11 @@ export class HsLayerEditorComponent {
    * @memberOf hs.layermanager.controller
    * @description Toogle layer rename control on panel (through layer rename variable)
    */
-  toggleLayerRename() {
+  toggleLayerRename(): void {
     this.layer_renamer_visible = !this.layer_renamer_visible;
   }
 
-  showRemoveLayerDiag(e, layer) {
+  showRemoveLayerDiag(e, layer): void {
     try {
       //TODO
       console.error('not implemented');
@@ -230,23 +229,21 @@ export class HsLayerEditorComponent {
   /**
    * @function layerIsZoomable
    * @memberOf hs.layermanager.controller
-   * @description Determines if layer has BoundingBox defined as
+   * @description Determines if selected layer has BoundingBox defined as
    * its metadata or is a Vector layer. Used for setting visibility
    * of 'Zoom to ' button
-   * @param {Ol.layer} layer Selected layer
    */
-  layerIsZoomable() {
+  layerIsZoomable(): boolean {
     return this.HsLayerUtilsService.layerIsZoomable(this.olLayer());
   }
 
   /**
    * @function layerIsStyleable
    * @memberOf hs.layermanager.controller
-   * @description Determines if layer is a Vector layer and
+   * @description Determines if selected layer is a Vector layer and
    * styleable. Used for allowing styling
-   * @param {Ol.layer} layer Selected layer
    */
-  layerIsStyleable() {
+  layerIsStyleable(): boolean {
     return this.HsLayerUtilsService.layerIsStyleable(this.olLayer());
   }
 
@@ -254,9 +251,9 @@ export class HsLayerEditorComponent {
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
    * @description Determines if layer has copyright information avaliable *
-   * @param {Ol.layer} layer Selected layer (LayMan.currentLayer)
+   * @param {Layer} layer Selected layer (LayMan.currentLayer)
    */
-  hasCopyright(layer) {
+  hasCopyright(layer: Layer): boolean | undefined {
     if (!this.currentLayer) {
       return;
     } else {
@@ -315,7 +312,7 @@ export class HsLayerEditorComponent {
    * @description Check if layer can be removed based on 'removable'
    * layer attribute
    */
-  isLayerRemovable() {
+  isLayerRemovable(): boolean {
     const layer = this.olLayer();
     return (
       layer != undefined &&
@@ -323,7 +320,7 @@ export class HsLayerEditorComponent {
     );
   }
 
-  removeLayer() {
+  removeLayer(): void {
     if (this.HsDrawService.selectedLayer == this.olLayer()) {
       this.HsDrawService.selectedLayer = null;
     }
@@ -336,10 +333,9 @@ export class HsLayerEditorComponent {
   /**
    * @function isScaleVisible
    * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
-   * @description Test if layer has min and max relolution set
+   * @description Test if selected layer has min and max relolution set
    */
-  isScaleVisible() {
+  isScaleVisible(): boolean {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
@@ -354,7 +350,7 @@ export class HsLayerEditorComponent {
     return this.currentLayer.layer;
   }
 
-  minResolutionValid() {
+  minResolutionValid(): boolean {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
@@ -364,7 +360,7 @@ export class HsLayerEditorComponent {
     );
   }
 
-  maxResolutionValid() {
+  maxResolutionValid(): boolean {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
@@ -382,7 +378,7 @@ export class HsLayerEditorComponent {
    * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
    * @returns {string} Title
    */
-  set title(newTitle) {
+  set title(newTitle: string | false) {
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
@@ -391,7 +387,7 @@ export class HsLayerEditorComponent {
     layer.set('title', newTitle);
   }
 
-  get title() {
+  get title(): string | false {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
@@ -399,7 +395,7 @@ export class HsLayerEditorComponent {
     return layer.get('title');
   }
 
-  set abstract(newAbstract) {
+  set abstract(newAbstract: string | false) {
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
@@ -407,7 +403,7 @@ export class HsLayerEditorComponent {
     layer.set('abstract', newAbstract);
   }
 
-  get abstract() {
+  get abstract(): string | false {
     const layer = this.olLayer();
     if (layer == undefined) {
       return false;
@@ -415,7 +411,7 @@ export class HsLayerEditorComponent {
     return layer.get('abstract');
   }
 
-  hasSubLayers() {
+  hasSubLayers(): boolean | undefined {
     if (this.currentLayer === null) {
       return;
     }
@@ -435,7 +431,7 @@ export class HsLayerEditorComponent {
    * @description Convert date to non Utc format
    * @returns {Date} Date with timezone added
    */
-  dateToNonUtc(d) {
+  dateToNonUtc(d: Date): Date | undefined {
     if (d == undefined) {
       return;
     }

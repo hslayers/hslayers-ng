@@ -14,7 +14,7 @@ export class HsLayerManagerFolderComponent {
    * @returns {boolean} True if subfolders exists
    * @description Find if current folder has any subfolder
    */
-  folderVisible(obj) {
+  folderVisible(obj): boolean {
     return obj.sub_folders.length > 0;
   }
 }

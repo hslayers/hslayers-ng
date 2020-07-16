@@ -1,7 +1,7 @@
 import '../../utils/utils.module';
+import * as angular from 'angular';
 import addLayersArcgisComponent from './add-layers-arcgis.component';
 import addLayersArcgisService from './add-layers-arcgis.service';
-import * as angular from 'angular';
 
 /**
  * @namespace hs.addLayersArcgis

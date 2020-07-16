@@ -14,7 +14,7 @@ export class HsLegendLayerStaticComponent {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  fillContent() {
+  fillContent(): void {
     const legendImage = this.layer.lyr.get('legendImage');
     if (legendImage) {
       this.lastLegendImage = legendImage;
@@ -28,7 +28,7 @@ export class HsLegendLayerStaticComponent {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.layer.lyr.get('legendImage')) {
       this.fillContent();
     }

@@ -1,8 +1,8 @@
 import '../permalink/permalink.module';
+import * as angular from 'angular';
 import mapController from './map.controller';
 import mapDirective from './map.directive';
 import {HsMapService} from './map.service';
-import * as angular from 'angular';
 
 /**
  * @ngdoc module

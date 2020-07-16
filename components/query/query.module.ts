@@ -2,7 +2,7 @@ import '../language/language.module';
 import '../measure/measure.module';
 import '../utils/utils.module';
 import 'angular-sanitize';
-import * as angular from "angular";
+import * as angular from 'angular';
 import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
 import featureComponent from './feature.component';
@@ -30,7 +30,7 @@ export const HsQueryModule = angular
     'hs.layout',
     'hs.utils',
     'hs.measure',
-   // 'hs.common.confirm'
+    // 'hs.common.confirm'
   ])
   /**
    * @ngdoc directive
@@ -98,11 +98,9 @@ export const HsQueryModule = angular
 
   .component('hs.query.featurePopup', featurePopupComponent)
 
-  .config([
-    '$compileProvider',
-    function ($compileProvider) {
-      $compileProvider.aHrefSanitizationWhitelist(
-        /^\s*(https?|ftp|mailto|file|blob):/
-      );
-    },
-  ]);
+  .config(function ($compileProvider) {
+    'ngInject';
+    $compileProvider.aHrefSanitizationWhitelist(
+      /^\s*(https?|ftp|mailto|file|blob):/
+    );
+  });

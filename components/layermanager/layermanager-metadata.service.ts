@@ -1,8 +1,9 @@
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
-import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service.js';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
-import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 @Injectable({
@@ -20,12 +21,11 @@ export class HsLayerManagerMetadataService {
    * @function identifyLayerObject
    * @memberOf HsLayermanagerMetadata.service
    * @param layerName
-   * @param currentLayer
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} currentLayer Selected layer
    * @description Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
    * It is used as reference for sublayer structure, metadata
    */
-  identifyLayerObject(layerName, currentLayer) {
+  identifyLayerObject(layerName, currentLayer: Layer) {
     if (layerName == currentLayer.Name) {
       return currentLayer;
     } else {
@@ -47,10 +47,10 @@ export class HsLayerManagerMetadataService {
   /**
    * @function fillMetadata
    * @memberOf HsLayermanagerMetadata.service
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} layer Selected layer
    * @description Async adds hasSublayers parameter if true
    */
-  async fillMetadata(layer) {
+  async fillMetadata(layer: Layer) {
     await this.queryMetadata(layer);
     const subLayers = layer.get('Layer');
     if (subLayers != undefined && subLayers.length > 0) {
@@ -61,7 +61,7 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  metadataArray(layer) {
+  metadataArray(layer: Layer): Array<any> {
     const obj = layer.layer.get('MetadataURL');
     return Object.keys(obj).map((key) => {
       return [Number(key), obj[key]];
@@ -71,10 +71,10 @@ export class HsLayerManagerMetadataService {
   /**
    * @function queryMetadata
    * @memberOf HsLayermanagerMetadata.service
-   * @param {Ol.layer} layer Selected layer
+   * @param {Layer} layer Selected layer
    * @description Callback function, adds getCapabilities response metadata to layer object
    */
-  async queryMetadata(layer) {
+  async queryMetadata(layer: Layer) {
     const url = this.HsLayerUtilsService.getURL(layer);
     const metadata = {
       metainfo: {'OnlineResource': layer.get('Metadata')},
