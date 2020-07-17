@@ -20,7 +20,7 @@ describe('add-layers-vector', () => {
 
     angular.module('hs.map', []).service('HsMapService', HsMapService);
 
-    angular.module('hs.layout', []).service('HsLayoutService', HsLayoutService);
+    angular.module('hs.layout', ['hs.core']).service('HsLayoutService', HsLayoutService);
 
     angular.module('gettext').filter('translate', function (gettextCatalog) {
       function filter(input, context) {
