@@ -22,6 +22,7 @@ export default function (
   HsConfig,
   HsLanguageService,
   HsLayoutService,
+  HsLayermanagerService,
   $timeout
 ) {
   'ngInject';
@@ -67,6 +68,9 @@ export default function (
       });
       me.added_layers = HsSaveMapService.layers2json(added_layers);
 
+      var currentLayer = HsLayermanagerService.currentLayer;
+      var featureURI = currentLayer.layer.get('featureURI');
+
       if (HsLayoutService.mainpanel) {
         if (HsLayoutService.mainpanel == 'permalink') {
           me.push('hs_panel', 'layermanager');
@@ -87,9 +91,26 @@ export default function (
       for (const cP in me.customParams) {
         me.push(cP, me.customParams[cP]);
       }
-      $timeout(() => {
+      
+      if (angular.isUndefined(featureURI)) {
+        console.log('angular.isUndefined(featureURI)');
         $location.search(me.params);
-      }, 0);
+      }
+      else {
+        console.log('no angular.isUndefined(featureURI)');
+        console.log(currentLayer);
+        if(! angular.isUndefined(currentLayer.selectedFeature)){
+          console.log(";! angular.isUndefined(currentLayer.selectedFeature");
+          me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
+        }
+        else {
+          console.log("no ;! angular.isUndefined(currentLayer.selectedFeature");
+          if (me.hashtagParam()) {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+          }
+        }
+      }
+
     },
 
     /**
@@ -132,6 +153,34 @@ export default function (
       return (
         me.getPermalinkUrl() + '&' + HsUtilsService.paramsToURLWoEncode(params)
       );
+    },
+
+    getFeatureByUri: function(features, uri, uriname){
+      var selected;
+      features.forEach((feature, i) => {
+        if (feature.getProperties()[uriname] == uri){
+          selected = feature;
+        }
+      });
+      console.log(selected);
+      $rootScope.$broadcast('map.selectedFeatureDetected', selected);
+      $rootScope.$broadcast('vectorQuery.featureSelected', selected);
+    },
+
+    featureAsUrl: function (uri) {
+      me.param_string = uri;
+      me.pathname = window.location.pathname;
+      me.current_url = me.pathname + '#' + uri;
+      location.hash = uri;
+      me.params = {};
+      $location.search(me.params);
+    },
+
+    hashtagParam: function(){
+      if (!location.hash){
+        return false;
+      }
+      return location.hash.substring(1);
     },
 
     /**
@@ -278,6 +327,18 @@ export default function (
           me
         )
       );
+
+      if(me.hashtagParam()){
+        me.uri =  me.hashtagParam();
+        var layer = HsLayermanagerService.currentLayer.layer;
+        var source = layer.getSource();
+        source.once('change', function (e) {
+            if (source.getState() === 'ready') {
+                me.getFeatureByUri(source.getFeatures(), me.uri, layer.get('featureURI'));
+            }
+        });
+      };
+
       map.getLayers().on('add', (e) => {
         const layer = e.element;
         if (
