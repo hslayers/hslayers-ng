@@ -366,7 +366,7 @@ export class HsCoreService {
   isAuthorized(): boolean {
     if (
       this.window['getLRUser'] === undefined &&
-      this.missingLRFunctionsWarned === undefined
+      !this.missingLRFunctionsWarned
     ) {
       this.log.warn(
         'window.getLRUser function needs to be defined, which usually comes from liferay.'
@@ -376,7 +376,7 @@ export class HsCoreService {
     if (this.window['getLRUser'] && this.window['getLRUser']() != 'guest') {
       return true;
     }
-    return true;
+    return false;
   }
 
   /**
