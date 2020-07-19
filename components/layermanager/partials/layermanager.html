@@ -77,7 +77,7 @@
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary" (click)="value.visible = !value.visible">
-                    <span>{{value.name}}</span>
+                    <span>{{value.name}}&nbsp;</span>
                     <span class="glyphicon" [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
                 <div [hidden]="!value.visible">
@@ -89,10 +89,10 @@
             </ul>
             <ul class="list-group hs-lm-layerlist">
                 <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)" class="list-group-item list-group-item-primary hs-lm-layerlist-header" (click)="layerlistVisible = !layerlistVisible">
-                    <span i18n class="align-middle">Other </span>
+                    <span i18n class="align-middle">Other&nbsp;</span>
                     <span class="glyphicon" [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
-                <li><hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list></li>
+                <li [hidden]="!layerlistVisible"><hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list></li>
             </ul>
             <!--
         <div class="btn-group" data-toggle="buttons">
