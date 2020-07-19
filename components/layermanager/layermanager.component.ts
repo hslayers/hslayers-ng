@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsDialogItem} from '../layout/dialog-item.class';
@@ -18,11 +18,12 @@ import {Layer} from 'ol/layer';
   selector: 'hs-layer-manager',
   template: require('./partials/layermanager.html'),
 })
-export class HsLayerManagerComponent {
+export class HsLayerManagerComponent implements OnInit {
   map: any;
   shiftDown = false;
   data: any;
   query: any = {title: undefined};
+  layerlistVisible: boolean;
 
   icons = [
     'bag1.svg',
@@ -123,6 +124,10 @@ export class HsLayerManagerComponent {
         this.HsLayerManagerService.composition_id = null;
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.layerlistVisible = true;
   }
 
   changeBaseLayerVisibility(toWhat: boolean, layer: Layer) {
