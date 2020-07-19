@@ -26,7 +26,7 @@ export class HsLayerEditorDimensionsComponent {
     if (layer == undefined) {
       this.dimensions = [];
     }
-    if (Object.entries(layer.get('dimensions'))) {
+    if (layer.get('dimensions') && Object.entries(layer.get('dimensions'))) {
       for (const [key, dimension] of Object.entries(layer.get('dimensions'))) {
         this.dimensions.push(new HsDimensionDescriptor(key, dimension));
       }
