@@ -11,7 +11,7 @@ import {transform} from 'ol/proj';
  * @param HsUtilsService
  * @param HsConfig
  * @param HsMapService
- * @param HsStylesService
+ * @param HsStylerService
  * @param $rootScope
  */
 export default function (
@@ -20,7 +20,7 @@ export default function (
   HsUtilsService,
   HsConfig,
   HsMapService,
-  HsStylesService,
+  HsStylerService,
   $rootScope,
   HsEventBusService
 ) {
@@ -35,7 +35,7 @@ export default function (
   this.searchResultsLayer = new VectorLayer({
     title: 'Search results',
     source: new Vector({}),
-    style: HsStylesService.pin_white_blue_highlight,
+    style: HsStylerService.pin_white_blue_highlight,
     show_in_manager: false,
   });
 

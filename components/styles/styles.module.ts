@@ -1,56 +1,31 @@
 import * as angular from 'angular';
-import stylerColorDirective from './styler-color.directive';
-import stylerComponent from './styler.component';
-import stylesService from './styles.service';
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+
+import {FormsModule} from '@angular/forms';
+import {HsStylerColorComponent} from './styler-color.component';
+import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-/**
- * @namespace hs.styles
- * @memberOf hs
- */
-angular
-  .module('hs.styles', ['hs.map'])
-  /**
-   * DEPRECATED?
-   * @memberof hs.styles
-   * @ngdoc service
-   * @name HsStylesService
-   * @description Service with definition of basic styles used througout HS-LayersNG
-   */
-  .factory('HsStylesService', stylesService)
-
-  /**
-   * @memberof hs.styles
-   * @ngdoc directive
-   * @name hs.styler.directive
-   * @description Display styling menu for layer
-   */
-  .directive('hs.styler.directive', [
-    'HsConfig',
-    function (config) {
-      return {};
-    },
-  ])
-
-  /**
-   * @memberof hs.styles
-   * @ngdoc directive
-   * @name hs.styler.colorDirective
-   * @description Display color selector for styling menu
-   */
-  .directive('hs.styler.colorDirective', stylerColorDirective)
-
-  /**
-   * @memberof hs.styles
-   * @ngdoc service
-   * @name HsStylerService
-   * @description Contain current styled layer
-   */
-  .service('HsStylerService', HsStylerService)
-
-  /**
-   * @memberof hs.styler
-   * @ngdoc component
-   * @name hs.styler
-   */
-  .component('hs.styler', stylerComponent);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsStylerComponent, HsStylerColorComponent],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    HsPanelHelpersModule,
+    FormsModule,
+    NgbModule,
+  ],
+  exports: [HsStylerComponent, HsStylerColorComponent],
+  providers: [HsStylerService],
+  entryComponents: [HsStylerComponent, HsStylerColorComponent],
+})
+export class HsStylerModule {}
