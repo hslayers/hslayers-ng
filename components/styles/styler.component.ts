@@ -116,7 +116,6 @@ export class HsStylerComponent {
       this.updateHasVectorFeatures();
     });
   }
-
   /**
    * @function save
    * @memberOf hs.styler.controller
@@ -137,7 +136,7 @@ export class HsStylerComponent {
     if (this.HsStylerService.layer === null) {
       return;
     }
-    const source = this.getLayerSource(this.HsStylerService.layer);
+    const source: any = this.getLayerSource(this.HsStylerService.layer);
     const style_json: styleJson = {};
     if (this.fillcolor !== undefined && this.fillcolor !== null) {
       style_json.fill = new Fill({
@@ -192,9 +191,9 @@ export class HsStylerComponent {
             crossOrigin: 'anonymous',
           };
           style_json.image = new Icon(icon_json);
-          // source.getFeatures().forEach((f) => {
-          //   f.setStyle(null);
-          // });
+          source.getFeatures().forEach((f) => {
+            f.setStyle(null);
+          });
           this.HsStylerService.layer.setStyle(new Style(style_json));
         };
       }
@@ -205,9 +204,9 @@ export class HsStylerComponent {
       style_json.image !== undefined
     ) {
       const style = new Style(style_json);
-      // source.getFeatures().forEach((f) => {
-      //   f.setStyle(null);
-      // });
+      source.getFeatures().forEach((f) => {
+        f.setStyle(null);
+      });
       this.HsStylerService.layer.setStyle(style);
     }
   }
@@ -264,10 +263,9 @@ export class HsStylerComponent {
     this.imagetype = t;
     this.save();
   };
-  //   (this.layermanager = function () {
-  //     HsLayoutService.setMainPanel('layermanager');
-  //   }),
-
+  layermanager = function () {
+    this.HsLayoutService.setMainPanel('layermanager');
+  };
   //   this.$watch('linecolor', this.save);
   //   this.$watch('service.layer', updateHasVectorFeatures);
 
