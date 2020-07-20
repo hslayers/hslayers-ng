@@ -7,10 +7,11 @@ import {CommonModule} from '@angular/common';
 import {
   HsConfigProvider,
   HsDimensionServiceProvider,
-  HsDrawServiceProvider,
   HsLayerSynchronizerServiceProvider,
   HsLayerUtilsServiceProvider,
   HsMapServiceProvider,
+  HsQueryBaseServiceProvider,
+  HsQueryVectorServiceProvider,
   HsStylerServiceProvider,
   HsUtilsServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
@@ -18,6 +19,8 @@ import {
   HsWmtsGetCapabilitiesServiceProvider,
 } from '../../ajs-upgraded-providers';
 import {HsCoreService} from './core.service';
+import {HsDrawModule} from '../draw';
+import {HsDrawService} from '../draw/draw.service';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLegendModule} from '../legend';
@@ -36,23 +39,26 @@ import {NgModule} from '@angular/core';
     HsLayoutModule,
     HsLegendModule,
     HsMeasureModule,
+    HsDrawModule,
     HsPrintModule,
     HsLayerManagerModule,
   ],
   exports: [],
   providers: [
     HsCoreService,
+    HsDrawService,
     HsMapServiceProvider,
     HsConfigProvider,
     HsUtilsServiceProvider,
     HsLayerUtilsServiceProvider,
     HsStylerServiceProvider,
-    HsDrawServiceProvider,
     HsLayerSynchronizerServiceProvider,
     HsWmsGetCapabilitiesServiceProvider,
     HsWfsGetCapabilitiesServiceProvider,
     HsWmtsGetCapabilitiesServiceProvider,
     HsDimensionServiceProvider,
+    HsQueryVectorServiceProvider,
+    HsQueryBaseServiceProvider,
     {
       provide: Window,
       useValue: window,

@@ -1,30 +1,47 @@
 import '../core/';
-import '../geolocation/geolocation.module';
 import '../map/map.module';
 import '../utils/utils.module';
-import * as angular from "angular";
-import drawController from './draw.controller';
-import drawDirective from './draw.directive';
-import drawLayerMetadataComponent from './draw-layer-metadata.component';
+import * as angular from 'angular';
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+
+import {FormsModule} from '@angular/forms';
+import {HsDrawComponent} from './draw.component';
+import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
-import drawShapeToolbarComponent from './draw-shape-toolbar.component';
+import {HsDrawToolbarComponent} from './draw-toolbar.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-/**
- * @namespace hs.draw
- * @memberOf hs
- */
-
-angular
-  .module('hs.draw', ['hs.map', 'hs.core', 'hs.utils'])
-  .service('HsDrawService', HsDrawService)
-
-  /**
-   * @memberof hs.draw
-   * @ngdoc component
-   * @name hs.draw.shapeToolbar
-   * @description Buttons in the corner for controlling drawing
-   */
-  .component('hs.draw.shapeToolbar', drawShapeToolbarComponent)
-  .component('hs.drawLayerMetadata', drawLayerMetadataComponent)
-  .controller('HsDrawController', drawController)
-  .directive('hs.draw.directive', drawDirective);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [
+    HsDrawComponent,
+    HsDrawLayerMetadataDialogComponent,
+    HsDrawToolbarComponent,
+  ],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    HsPanelHelpersModule,
+    FormsModule,
+    NgbModule,
+  ],
+  exports: [
+    HsDrawComponent,
+    HsDrawLayerMetadataDialogComponent,
+    HsDrawToolbarComponent,
+  ],
+  providers: [HsDrawService],
+  entryComponents: [
+    HsDrawComponent,
+    HsDrawLayerMetadataDialogComponent,
+    HsDrawToolbarComponent,
+  ],
+})
+export class HsDrawModule {}

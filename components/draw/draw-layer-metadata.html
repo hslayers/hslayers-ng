@@ -1,58 +1,57 @@
-<div ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div [ngClass]="{'in': AddNewDrawLayerModalVisible}" class="modal hs-draw-layer-metadata" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex flex-column">
                 <div class="d-flex w-100 align-items-center"> 
-                    <h4 class="modal-title" translate>
+                    <h4 class="modal-title" i18n>
                         New drawing layer
                     </h4>
-                    <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span
-                            aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                    <button type="button" (click)="AddNewDrawLayerModalVisible = false" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only" i18n="">Close</span></button>
                 </div>
-                <p class="m-0 p-0" style="font-size: x-small; color: red;" translate>*Layer will be added to the map and can be further managed in "Layermanager" panel</p>
+                <p class="m-0 p-0" style="font-size: x-small; color: red;" i18n>*Layer will be added to the map and can be further managed in "Layermanager" panel</p>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <form>
                     <div class="form-group">
-                        <label class="control-label" translate>Layer title</label>
+                        <label class="control-label" i18n>Layer title</label>
                         <div class="mb-3">
-                            <input class="form-control" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
+                            <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title" />
                         </div>
                     </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
-                        <a href="" class="p-1 mb-1" ng-click="folderVisible = !folderVisible" translate>Advanced options</a>
+                        <a href="" class="p-1 mb-1" (click)="folderVisible = !folderVisible" i18n>Advanced options</a>
                     </div>
                     <div ng-show="folderVisible">
                         <div class="form-group">
-                            <label class="control-label" translate>Folder</label>
-                            <input class="form-control" ng-model="$ctrl.path" ng-change="$ctrl.pathChanged()"
+                            <label class="control-label" i18n>Folder</label>
+                            <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
                                 placeholder="Name of folder in layer-manager hierararchy" />
                         </div>
                         <div class="card">
-                            <h5 class="card-header" translate>Default attributes</h5>
+                            <h5 class="card-header" i18n>Default attributes</h5>
                             <div class="card-body">
                                 <table class="table table-condensed">
                                     <tr>
-                                        <th translate>Attribute</th>
-                                        <th translate>Default value</th>
+                                        <th i18n>Attribute</th>
+                                        <th i18n>Default value</th>
                                     </tr>
-                                    <tr ng-repeat="attr in $ctrl.attributes">
-                                        <td><input class="form-control" ng-model="attr.name" /></td>
-                                        <td><input class="form-control" ng-model="attr.value" /></td>
-                                    </tr>
+                                    <tr *ngFor="let attr of attributes">
+                                        <td><input class="form-control" [(ngModel)]="attr.name" [ngModelOptions]="{standalone: true}"/></td>
+                                        <td><input class="form-control" [(ngModel)]="attr.value" [ngModelOptions]="{standalone: true}" /></td>
                                     </tr>
                                 </table>
-                                <btn class="btn btn-primary" ng-click="$ctrl.addAttr()"><i class="icon-plus"></i></btn>
+                                <btn class="btn btn-primary" (click)="addAttr()"><i class="icon-plus"></i></btn>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
-                    translate>OK</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.modalVisible = false"
-                    translate>Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="confirm()"
+                    i18n>OK</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="AddNewDrawLayerModalVisible = false"
+                    i18n>Cancel</button>
             </div>
         </div>
     </div>

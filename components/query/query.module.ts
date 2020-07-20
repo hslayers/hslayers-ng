@@ -7,11 +7,11 @@ import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
 import featureComponent from './feature.component';
 import featurePopupComponent from './feature-popup.component';
-import queryBaseService from './query-base.service';
+import {HsQueryBaseService} from './query-base.service';
 import queryController from './query.controller';
 import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
-import queryVectorService from './query-vector.service';
+import {HsQueryVectorService} from './query-vector.service';
 import queryWmsService from './query-wms.service';
 //import '../../common/confirm';
 import '../layout';
@@ -70,7 +70,7 @@ export const HsQueryModule = angular
    * @memberOf hs.query
    * @description TODO
    */
-  .factory('HsQueryBaseService', queryBaseService)
+  .service('HsQueryBaseService', HsQueryBaseService)
 
   /**
    * @ngdoc service
@@ -86,7 +86,7 @@ export const HsQueryModule = angular
    * @memberOf hs.query
    * @description TODO
    */
-  .factory('HsQueryVectorService', queryVectorService)
+  .service('HsQueryVectorService', HsQueryVectorService)
 
   /**
    * @ngdoc controller

@@ -17,7 +17,7 @@ import {transform} from 'ol/proj';
  * @param $timeout
  * @param gettext
  */
-export default function (
+export const HsQueryBaseService = function (
   $rootScope,
   HsMapService,
   HsCore,

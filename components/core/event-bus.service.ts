@@ -19,6 +19,7 @@ export class HsEventBusService {
   layerTimeChanges: Subject<any> = new Subject();
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
+  vectorQueryFeatureDeselection: Subject<any> = new Subject();
   mainPanelChanges: Subject<any> = new Subject(); //replaces 'core.mainpanel_changed'
   measurementStarts: Subject<any> = new Subject(); //replaces 'measure.drawStart'
   measurementEnds: Subject<any> = new Subject(); //replaces 'measure.drawEnd'

@@ -16,7 +16,7 @@ import {toLonLat} from 'ol/proj';
  * @param HsMeasureService
  * @param HsUtilsService
  */
-export default function (
+export const HsQueryVectorService = function (
   $rootScope,
   HsQueryBaseService,
   $sce,

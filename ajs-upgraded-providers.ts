@@ -1,16 +1,20 @@
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
-import {HsDrawService} from './components/draw/draw.service';
 import {HsLayerSynchronizerService} from './components/save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from './components/utils/layer-utils.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
+import {HsQueryBaseService} from './components/query/query-base.service.js';
+import {HsQueryVectorService} from './components/query/query-vector.service.js';
 import {HsStylerService} from './components/styles/styler.service';
 import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
 
+/**
+ * @param i
+ */
 export function hsMapServiceFactory(i: any) {
   return i.get('HsMapService');
 }
@@ -21,6 +25,9 @@ export const HsMapServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsConfigFactory(i: any) {
   return i.get('HsConfig');
 }
@@ -31,6 +38,9 @@ export const HsConfigProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsLayoutServiceFactory(i: any) {
   return i.get('HsLayoutService');
 }
@@ -41,6 +51,9 @@ export const HsLayoutServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsUtilsServiceFactory(i: any) {
   return i.get('HsUtilsService');
 }
@@ -51,16 +64,9 @@ export const HsUtilsServiceProvider = {
   deps: ['$injector'],
 };
 
-export function hsDrawServiceFactory(i: any) {
-  return i.get('HsDrawService');
-}
-
-export const HsDrawServiceProvider = {
-  provide: HsDrawService,
-  useFactory: hsDrawServiceFactory,
-  deps: ['$injector'],
-};
-
+/**
+ * @param i
+ */
 export function hsStylerServiceFactory(i: any) {
   return i.get('HsStylerService');
 }
@@ -71,6 +77,9 @@ export const HsStylerServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsLayerSynchronizerServiceFactory(i: any) {
   return i.get('HsLayerSynchronizerService');
 }
@@ -81,6 +90,9 @@ export const HsLayerSynchronizerServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsWmsGetCapabilitiesService(i: any) {
   return i.get('HsWmsGetCapabilitiesService');
 }
@@ -91,6 +103,9 @@ export const HsWmsGetCapabilitiesServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsWfsGetCapabilitiesService(i: any) {
   return i.get('HsWfsGetCapabilitiesService');
 }
@@ -101,6 +116,9 @@ export const HsWfsGetCapabilitiesServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsWmtsGetCapabilitiesService(i: any) {
   return i.get('HsWmtsGetCapabilitiesService');
 }
@@ -111,6 +129,9 @@ export const HsWmtsGetCapabilitiesServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsDimensionService(i: any) {
   return i.get('HsDimensionService');
 }
@@ -121,6 +142,9 @@ export const HsDimensionServiceProvider = {
   deps: ['$injector'],
 };
 
+/**
+ * @param i
+ */
 export function hsLayerUtilsServiceProvider(i: any) {
   return i.get('HsLayerUtilsService');
 }
@@ -128,5 +152,31 @@ export function hsLayerUtilsServiceProvider(i: any) {
 export const HsLayerUtilsServiceProvider = {
   provide: HsLayerUtilsService,
   useFactory: hsLayerUtilsServiceProvider,
+  deps: ['$injector'],
+};
+
+/**
+ * @param i
+ */
+export function hsQueryBaseService(i: any) {
+  return i.get('HsQueryBaseService');
+}
+
+export const HsQueryBaseServiceProvider = {
+  provide: HsQueryBaseService,
+  useFactory: hsQueryBaseService,
+  deps: ['$injector'],
+};
+
+/**
+ * @param i
+ */
+export function hsQueryVectorService(i: any) {
+  return i.get('HsQueryVectorService');
+}
+
+export const HsQueryVectorServiceProvider = {
+  provide: HsQueryVectorService,
+  useFactory: hsQueryVectorService,
   deps: ['$injector'],
 };
