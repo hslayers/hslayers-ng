@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Injector} from '@angular/core';
 
 @Component({
@@ -6,9 +6,9 @@ import {Injector} from '@angular/core';
   template: require('./partials/color.html'),
 })
 export class HsStylerColorComponent {
-  @Input('info') info: any;
+  @Input() color: any;
+  @Output() colorChange = new EventEmitter<any>();
 
-  color: any;
   colors = [
     {
       'background-color': 'rgba(244, 235, 55, 1)',
@@ -109,5 +109,6 @@ export class HsStylerColorComponent {
   constructor() {}
   colorSelected(col) {
     this.color = col;
+    this.colorChange.emit(this.color);
   }
 }
