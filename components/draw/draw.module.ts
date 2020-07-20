@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsStylerModule} from '../styles/styles.module'
 
 import {FormsModule} from '@angular/forms';
 import {HsDrawComponent} from './draw.component';
@@ -31,6 +32,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsPanelHelpersModule,
     FormsModule,
     NgbModule,
+    HsStylerModule,
   ],
   exports: [
     HsDrawComponent,

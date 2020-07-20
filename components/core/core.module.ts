@@ -12,7 +12,6 @@ import {
   HsMapServiceProvider,
   HsQueryBaseServiceProvider,
   HsQueryVectorServiceProvider,
-  HsStylerServiceProvider,
   HsUtilsServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
@@ -27,6 +26,7 @@ import {HsLegendModule} from '../legend';
 import {HsLogService} from './log.service';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
+import {HsStylerModule} from '../styles';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
@@ -40,6 +40,7 @@ import {NgModule} from '@angular/core';
     HsLegendModule,
     HsMeasureModule,
     HsDrawModule,
+    HsStylerModule,
     HsPrintModule,
     HsLayerManagerModule,
   ],
@@ -51,7 +52,6 @@ import {NgModule} from '@angular/core';
     HsConfigProvider,
     HsUtilsServiceProvider,
     HsLayerUtilsServiceProvider,
-    HsStylerServiceProvider,
     HsLayerSynchronizerServiceProvider,
     HsWmsGetCapabilitiesServiceProvider,
     HsWfsGetCapabilitiesServiceProvider,

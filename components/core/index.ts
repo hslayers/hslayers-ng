@@ -9,7 +9,7 @@ import '../layout';
 import '../legend';
 import '../map/map.module';
 import '../print';
-import '../draw'
+import '../draw';
 import '../translations/js/translations';
 import '../utils/utils.module';
 import {HsCoreModule} from './core.module';

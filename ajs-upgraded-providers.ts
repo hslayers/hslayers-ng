@@ -6,7 +6,6 @@ import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
 import {HsQueryBaseService} from './components/query/query-base.service.js';
 import {HsQueryVectorService} from './components/query/query-vector.service.js';
-import {HsStylerService} from './components/styles/styler.service';
 import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
@@ -61,19 +60,6 @@ export function hsUtilsServiceFactory(i: any) {
 export const HsUtilsServiceProvider = {
   provide: HsUtilsService,
   useFactory: hsUtilsServiceFactory,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsStylerServiceFactory(i: any) {
-  return i.get('HsStylerService');
-}
-
-export const HsStylerServiceProvider = {
-  provide: HsStylerService,
-  useFactory: hsStylerServiceFactory,
   deps: ['$injector'],
 };
 

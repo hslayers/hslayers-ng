@@ -1,91 +1,88 @@
 <div class="card panel-default hs-main-panel">
     <div class="card-header"><span class="panel-title">
-            <translate>Style layer</translate> {{layerTitle}}
+            Style layer {{layerTitle}}
         </span>
-        <button type="button" class="close" ng-click="layermanager()">
+        <button type="button" class="close" (click)="layermanager()">
             <span aria-hidden="true">×</span>
-            <span class="sr-only" translate>Close</span>
+            <span class="sr-only" i18n>Close</span>
         </button>
     </div>
     <div class="card-body">
         <form class="form-inline">
-
-
-            <div class="card panel-info" ng-show="hasPoly">
+            <div class="card panel-info" [hidden]="!hasPoly">
                 <div class="card-header">
-                    <h3 class="panel-title" translate>Fill</h3>
+                    <h3 class="panel-title" i18n>Fill</h3>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="hs-styler-fillcolor" class="control-label" translate>Colour</label>
-                        <div class="hs-styler-selected-color-box" ng-style="fillcolor"></div>
-                        <div hs.styler.color_directive info="fillcolor"></div>
+                        <label for="hs-styler-fillcolor" class="control-label" i18n>Colour</label>
+                        <div class="hs-styler-selected-color-box" [ngStyle]="fillcolor"></div>
+                        <hs-styler-color-component info="fillcolor"></hs-styler-color-component>
                     </div>
                 </div>
             </div>
 
-            <div class="card panel-info" ng-show="hasLine || hasPoly">
+            <div class="card panel-info" [hidden]="!(hasLine || hasPoly)">
                 <div class="card-header">
-                    <h3 class="panel-title" translate>Line</h3>
+                    <h3 class="panel-title" i18n>Line</h3>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="hs-styler-linecolor" class="control-label" translate>Line Colour</label>
-                        <div class="hs-styler-selected-color-box" ng-style="linecolor"></div>
-                        <div hs.styler.color_directive info="linecolor"></div>
+                        <label for="hs-styler-linecolor" class="control-label" i18n>Line Colour</label>
+                        <div class="hs-styler-selected-color-box" [ngStyle]="linecolor"></div>
+                        <hs-styler-color-component info="linecolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group">
-                        <label for="hs-styler-linewidth" class="control-label" translate>Line width</label>
+                        <label for="hs-styler-linewidth" class="control-label" i18n>Line width</label>
                         <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;"
-                            ng-model="linewidth" ng-change='save()' /><span>{{linewidth}}</span>
+                            [(ngModel)]="linewidth" (ngModelChange)='save()' [ngModelOptions]="{standalone: true}" /><span>{{linewidth}}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="card panel-info" ng-show="hasPoint">
+            <div class="card panel-info" [hidden]="!hasPoint">
                 <div class="card-header">
-                    <h3 class="panel-title" translate>Point</h3>
+                    <h3 class="panel-title" i18n>Point</h3>
                 </div>
                 <div class="card-body">
 
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" ng-repeat="m in imagetypes" ng-click='setImageType(m.name)'>
+                        <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)'>
                             <input type="radio" class="form-control" ng-value="m.name"
                                 name="imagetype" />{{m.hrname}}
                         </label>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="hs-styler-iconfillcolor" class="control-label" translate>Colour</label>
-                        <div class="hs-styler-selected-color-box" ng-style="iconfillcolor"></div>
-                        <div hs.styler.color_directive info="iconfillcolor"></div>
+                        <label for="hs-styler-iconfillcolor" class="control-label" i18n>Colour</label>
+                        <div class="hs-styler-selected-color-box" [ngStyle]="iconfillcolor"></div>
+                        <hs-styler-color-component info="iconfillcolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group">
-                        <label for="hs-styler-linecolor" class="control-label" translate>Line Colour</label>
-                        <div class="hs-styler-selected-color-box" ng-style="iconlinecolor"></div>
-                        <div hs.styler.color_directive info="iconlinecolor"></div>
+                        <label for="hs-styler-linecolor" class="control-label" i18n>Line Colour</label>
+                        <div class="hs-styler-selected-color-box" [ngStyle]="iconlinecolor"></div>
+                        <hs-styler-color-component info="iconlinecolor"></hs-styler-color-component>
                     </div>
 
-                    <div class="form-group" ng-show="imagetype=='circle'">
-                        <label for="hs-styler-radius" class="control-label" translate>Radius</label>
+                    <div class="form-group" [hidden]="imagetype !='circle'">
+                        <label for="hs-styler-radius" class="control-label" i18n>Radius</label>
                         <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;"
-                            ng-model="radius" /><span>{{radius}}</span>
+                            [(ngModel)]="radius" [ngModelOptions]="{standalone: true}" /><span>{{radius}}</span>
                     </div>
 
                     <div class="form-group">
-                        <label for="hs-styler-iconlinewidth" class="control-label" translate>Line width</label>
+                        <label for="hs-styler-iconlinewidth" class="control-label" i18n>Line width</label>
                         <input type="range" step="0.5" min="0" max="10" class="form-control" style="height: 21px;"
-                            ng-model="iconlinewidth" ng-change='save()' /><span>{{iconlinewidth}}</span>
+                            [(ngModel)]="iconlinewidth" (ngModelChange)='save()' [ngModelOptions]="{standalone: true}"/><span>{{iconlinewidth}}</span>
                     </div>
 
-                    <div class="form-group" ng-show="imagetype=='icon'">
-                        <label for="hs-styler-icon" class="control-label" translate>Icon</label>
+                    <div class="form-group" [hidden]="imagetype !='icon'">
+                        <label for="hs-styler-icon" class="control-label" i18n>Icon</label>
                         <div class="hs-styler-selected-icon-box" ng-bind-html="iconimage"></div>
                         <div>
-                            <div ng-repeat="icon in icons" class="hs-styler-iconbox" ng-click="iconSelected(icon)">
+                            <div *ngFor="let icon of icons" class="hs-styler-iconbox" (click)="iconSelected(icon)">
                                 <img ng-src='{{icon}}' />
                             </div>
                         </div>
