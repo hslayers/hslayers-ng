@@ -1,4 +1,5 @@
 import {get as getProj, transformExtent} from 'ol/proj';
+import * as Cesium from 'cesium/Source/Cesium';
 
 export class HsCesiumCameraService {
   constructor(HsMapService, $window) {

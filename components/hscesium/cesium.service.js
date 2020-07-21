@@ -1,6 +1,7 @@
 import '../permalink/permalink.module';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
+import * as Cesium from 'cesium/Source/Cesium';
 import {transformExtent} from 'ol/proj';
-
 /**
  * @param HsConfig
  * @param $rootScope
@@ -80,24 +81,12 @@ export default function (
         // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
         skyBox: new Cesium.SkyBox({
           sources: {
-            positiveX:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
-            negativeX:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
-            positiveY:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
-            negativeY:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
-            positiveZ:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
-            negativeZ:
-              (HsConfig.cesiumBase || 'node_modules/cesium/Build/Cesium/') +
-              'Assets/Textures/SkyBox/tycho2t3_80_mz.jpg',
+            positiveX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg'),
+            negativeX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg'),
+            positiveY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg'),
+            negativeY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg'),
+            positiveZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg'),
+            negativeZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'),
           },
         }),
         // Show Columbus View map with Web Mercator projection

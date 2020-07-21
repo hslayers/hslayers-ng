@@ -5,7 +5,7 @@ import {ImageWMS} from 'ol/source';
 import {OSM, TileWMS} from 'ol/source';
 import {Vector} from 'ol/source';
 import {default as proj4} from 'proj4';
-
+import * as Cesium from 'cesium/Source/Cesium';
 /**
  * @param proxy
  * @param maxResolution
