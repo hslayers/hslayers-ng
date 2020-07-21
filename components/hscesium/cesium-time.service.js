@@ -1,5 +1,5 @@
-import moment from 'moment';
 import * as Cesium from 'cesium/Source/Cesium';
+import moment from 'moment';
 export class HsCesiumTimeService {
   constructor(HsMapService, $rootScope, HsCesiumLayersService) {
     'ngInject';

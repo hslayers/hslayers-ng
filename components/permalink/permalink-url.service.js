@@ -22,7 +22,8 @@ export default function (
   HsConfig,
   HsLanguageService,
   HsLayoutService,
-  $timeout
+  $timeout,
+  HsEventBusService
 ) {
   'ngInject';
   const url_generation = true;
@@ -272,10 +273,9 @@ export default function (
     if (url_generation) {
       let timer = null;
       // eslint-disable-next-line angular/on-watch
-      $rootScope.$on(
-        'map.extent_changed',
+      HsEventBusService.mapExtentChanges.subscribe(
         HsUtilsService.debounce(
-          (event, data, b) => {
+          (data) => {
             me.update();
             $rootScope.$broadcast('browserurl.updated');
           },

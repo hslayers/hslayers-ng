@@ -249,8 +249,7 @@ export default function (
     HsConfig.allowAddExternalDatasets = true;
   }
 
-  $rootScope.$on(
-    'map.extent_changed',
+  HsEventBusService.mapExtentChanges.subscribe(
     HsUtilsService.debounce(
       (e) => {
         if (!panelVisible()) {

@@ -21,7 +21,8 @@ export default function (
   HsConfig,
   HsMapService,
   HsStylesService,
-  $rootScope
+  $rootScope,
+  HsEventBusService
 ) {
   'ngInject';
   const me = this;
@@ -181,7 +182,7 @@ export default function (
       zoomLevel = 10;
     }
     HsMapService.map.getView().setZoom(zoomLevel);
-    $rootScope.$broadcast('search.zoom_to_center', {
+    HsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,
         HsMapService.map.getView().getProjection(),

@@ -58,7 +58,8 @@ export class HsMapService {
     HsLayoutService,
     $timeout,
     gettext,
-    $log
+    $log,
+    HsEventBusService
   ) {
     'ngInject';
     Object.assign(this, {
@@ -69,6 +70,7 @@ export class HsMapService {
       $timeout,
       gettext,
       $log,
+      HsEventBusService,
     });
 
     //timer variable for extent change event
@@ -272,17 +274,10 @@ export class HsMapService {
       clearTimeout(this.timer);
     }
     this.timer = setTimeout(() => {
-      /**
-       * @ngdoc event
-       * @name HsMapService#map.extent_changed
-       * @eventType broadcast on $rootScope
-       * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
-       */
-      this.$rootScope.$broadcast(
-        'map.extent_changed',
-        e.element,
-        this.map.getView().calculateExtent(this.map.getSize())
-      );
+      this.HsEventBusService.mapExtentChanges.next({
+        element: e.element,
+        extent: this.map.getView().calculateExtent(this.map.getSize()),
+      });
     }, 500);
   }
 
