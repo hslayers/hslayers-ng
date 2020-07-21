@@ -1,8 +1,8 @@
-import * as CesiumMath from 'cesium/Source/Core/Math';
 import Camera from 'cesium/Source/Scene/Camera';
 import Cartesian2 from 'cesium/Source/Core/Cartesian2';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import Cartographic from 'cesium/Source/Core/Cartographic';
+import CesiumMath from 'cesium/Source/Core/Math';
 import Ellipsoid from 'cesium/Source/Core/Ellipsoid';
 import Rectangle from 'cesium/Source/Core/Rectangle';
 import SceneMode from 'cesium/Source/Scene/SceneMode';
