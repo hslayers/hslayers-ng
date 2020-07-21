@@ -11,12 +11,14 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Feature} from 'ol';
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLayerUtilsServiceMock} from './layer-utils.service.mock';
 import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
+import {Point} from 'ol/geom';
 import {TestBed} from '@angular/core/testing';
 class HsConfigMock {
   constructor() {}
@@ -96,5 +98,31 @@ describe('HsUtilsService', () => {
     const unique = hsUtilsService.removeDuplicates(layers, 'title');
     expect(unique.length).toBe(2);
     expect(unique).toEqual([layers[0], layers[2]]);
+  });
+
+  it('create a deep copy of any object', () => {
+    const obj = {
+      date: new Date(),
+      func: function (q) {
+        return 1 + q;
+      },
+      num: 123,
+      text: 'asdasd',
+      array: [1, 'asd'],
+      regex: new RegExp(/aaa/i),
+      subobj: {
+        num: 234,
+        text: 'asdsaD',
+      },
+      olFeature: new Feature({
+        geometry: new Point([45, 12]),
+        name: 'Testing point',
+      }),
+    };
+    const copy = hsUtilsService.structuredClone(obj);
+    expect(copy).not.toBe(obj);
+    expect(copy).toEqual(obj);
+    delete obj.subobj;
+    expect(copy.subobj).toBeDefined();
   });
 });
