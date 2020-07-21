@@ -1,7 +1,7 @@
 import * as angular from 'angular';
-import HsCesiumService from './cesium.service';
 import {HsCesiumCameraService} from './cesium-camera.service';
 import {HsCesiumLayersService} from './cesium-layers.service';
+import {HsCesiumService} from './cesium.service';
 import {HsCesiumTimeService} from './cesium-time.service';
 
 /**
@@ -22,7 +22,7 @@ angular
    * @ngdoc service
    * @description Contains map object and few utility functions working with whole map. Map object get initialized with default view specified in config module (mostly in app.js file).
    */
-  .factory('HsCesiumService', HsCesiumService)
+  .service('HsCesiumService', HsCesiumService)
 
   /**
    * @module hs.cesium
