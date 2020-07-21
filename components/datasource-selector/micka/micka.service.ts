@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
@@ -43,7 +44,7 @@ export default function (
         ? "BBOX='" + b.join(' ') + "'"
         : '';
       const text =
-        angular.isDefined(query.textFilter) && query.textFilter.length > 0
+        query.textFilter !== undefined && query.textFilter.length > 0
           ? query.textFilter
           : query.title;
       const sql = [
@@ -70,7 +71,7 @@ export default function (
           language: dataset.language,
           query: sql,
           sortby:
-            angular.isDefined(query.sortby) && query.sortby != ''
+            query.sortby !== undefined && query.sortby != ''
               ? query.sortby
               : 'title',
           limit: dataset.paging.itemsPerPage,
@@ -78,7 +79,7 @@ export default function (
         });
       url = HsUtilsService.proxify(url);
       dataset.datasourcePaging.loaded = false;
-      if (angular.isDefined(dataset.canceler)) {
+      if (dataset.canceler !== undefined) {
         dataset.canceler.resolve();
         delete dataset.canceler;
       }
@@ -131,7 +132,7 @@ export default function (
      * (PRIVATE) Parse query parameter into encoded key value pair.
      */
     param2Query(which, query) {
-      if (angular.isDefined(query[which])) {
+      if (query[which] !== undefined) {
         if (which == 'type' && query[which] == 'data') {
           //Special case for type 'data' because it can contain many things
           return "(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')";
@@ -161,9 +162,9 @@ export default function (
         title: record.title || record.name,
       };
       let b = null;
-      if (angular.isString(record.bbox)) {
+      if (typeof record.bbox === 'string') {
         b = record.bbox.split(' ');
-      } else if (angular.isArray(record.bbox)) {
+      } else if (Array.isArray(record.bbox)) {
         b = record.bbox;
       }
       let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
@@ -225,7 +226,7 @@ export default function (
      */
     getLayerLink(layer) {
       if (layer.links && layer.links.length > 0) {
-        if (angular.isDefined(layer.links[0].url)) {
+        if (layer.links[0].url !== undefined) {
           return layer.links[0].url;
         } else {
           return layer.links[0];

@@ -10,7 +10,7 @@ export default {
     this.modalVisible = true;
     const vm = this;
     vm.add = function () {
-      if (angular.isUndefined(vm.type)) {
+      if (vm.type === undefined) {
         vm.alertChoose = true;
       } else {
         vm.modalVisible = false;
