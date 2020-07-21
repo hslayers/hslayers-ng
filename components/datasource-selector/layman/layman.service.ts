@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 /**
  * @param $http
  * @param $q
@@ -19,7 +20,7 @@ export default function ($http, $q, HsUtilsService) {
       let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
       url = HsUtilsService.proxify(url);
       endpoint.datasourcePaging.loaded = false;
-      if (angular.isDefined(endpoint.canceler)) {
+      if (endpoint.canceler !== undefined) {
         endpoint.canceler.resolve();
         delete endpoint.canceler;
       }
@@ -82,7 +83,7 @@ export default function ($http, $q, HsUtilsService) {
             dataset,
           })
           .then((j) => {
-            angular.extend(layer, j.data);
+            layer = {...layer, ...j.data};
             if (layer.thumbnail) {
               layer.thumbnail = dataset.url + layer.thumbnail.url;
             }

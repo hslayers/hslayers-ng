@@ -26,7 +26,7 @@ export default function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
       ),
     }).then((response) => {
       me.otnKeywords = [{title: '-'}];
-      angular.forEach(response.data.result.tags, (tag) => {
+      response.data.result.tags.forEach((tag) => {
         me.otnKeywords.push({title: tag.name});
       });
     });
@@ -53,11 +53,11 @@ export default function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
   me.fillCodeset = function (ds) {
     if (ds.type == 'micka') {
       let url = ds.code_list_url;
-      if (angular.isUndefined(url)) {
+      if (url === undefined) {
         return;
       }
       url = HsUtilsService.proxify(url);
-      if (angular.isUndefined(ds.code_lists)) {
+      if (ds.code_lists === undefined) {
         ds.code_lists = {
           serviceType: [],
           applicationType: [],
@@ -65,7 +65,7 @@ export default function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
           topicCategory: [],
         };
       }
-      if (angular.isDefined(ds.canceler)) {
+      if (ds.canceler !== undefined) {
         ds.canceler.resolve();
         delete ds.canceler;
       }
@@ -108,7 +108,7 @@ export default function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
    * Sets Micka source level types according to current query type (service/appilication). Deprecated?
    */
   me.advancedMickaTypeChanged = function (mickaDS, type) {
-    if (angular.isUndefined(mickaDS.code_lists)) {
+    if (mickaDS.code_lists === undefined) {
       return;
     }
     switch (type) {

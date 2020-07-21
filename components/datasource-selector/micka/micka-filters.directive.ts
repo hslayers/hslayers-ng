@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 /**
  * @param HsMickaFiltersService
  * @param HsDatasourceBrowserService
@@ -34,7 +35,7 @@ export default function (
           const el = angular.element('<div hs.adv-micka-dialog></div>');
           el[0].setAttribute(
             'micka-dataset-config',
-            angular.toJson(mickaDatasetConfig)
+            JSON.stringify(mickaDatasetConfig)
           );
           $compile(el)(scope);
           HsLayoutService.contentWrapper

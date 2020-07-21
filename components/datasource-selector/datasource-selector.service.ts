@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 /* eslint-disable angular/on-watch */
 /**
  * @param $rootScope
@@ -143,10 +145,10 @@ export default function (
       describer = HsLaymanBrowserService.describeWhatToAdd(ds, layer);
     }
     describer.then(async (whatToAdd) => {
-      if (angular.isDefined(type)) {
+      if (type !== undefined) {
         whatToAdd.type = type;
       }
-      if (angular.isArray(whatToAdd.type)) {
+      if (Array.isArray(whatToAdd.type)) {
         const scope = $rootScope.$new();
         Object.assign(scope, {
           types: whatToAdd.type,
@@ -223,10 +225,9 @@ export default function (
    */
   function dataSourceExistsAndEmpty() {
     return (
-      forDatasourceBrowserFilter(
-        HsCommonEndpointsService.endpoints
-      ).filter((ep) => angular.isUndefined(ep.datasourcePaging.loaded)).length >
-      0
+      forDatasourceBrowserFilter(HsCommonEndpointsService.endpoints).filter(
+        (ep) => ep.datasourcePaging.loaded === undefined
+      ).length > 0
     );
   }
 
@@ -245,7 +246,7 @@ export default function (
     HsMickaFiltersService.fillCodesets();
   }
 
-  if (angular.isUndefined(HsConfig.allowAddExternalDatasets)) {
+  if (HsConfig.allowAddExternalDatasets === undefined) {
     HsConfig.allowAddExternalDatasets = true;
   }
 

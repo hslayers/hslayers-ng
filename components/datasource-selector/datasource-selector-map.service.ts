@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 import VectorLayer from 'ol/layer/Vector';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Vector} from 'ol/source';
@@ -21,14 +22,17 @@ export default function ($timeout, HsMapService, $log) {
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     let somethingChanged = false;
-    angular.forEach(me.extentLayer.getSource().getFeatures(), (feature) => {
-      if (feature.get('record').highlighted) {
-        feature.get('record').highlighted = false;
-        somethingChanged = true;
-      }
-    });
+    me.extentLayer
+      .getSource()
+      .getFeatures()
+      .forEach((feature) => {
+        if (feature.get('record').highlighted) {
+          feature.get('record').highlighted = false;
+          somethingChanged = true;
+        }
+      });
     if (features.length) {
-      angular.forEach(features, (feature) => {
+      features.forEach((feature) => {
         if (!feature.get('record').highlighted) {
           feature.get('record').highlighted = true;
           somethingChanged = true;
@@ -79,9 +83,9 @@ export default function ($timeout, HsMapService, $log) {
      * Remove layer extent features from map
      */
     clearDatasetFeatures(dataset) {
-      angular.forEach(dataset.layers, (val) => {
+      dataset.layers.forEach((val) => {
         try {
-          if (angular.isDefined(val.feature) && val.feature) {
+          if (val.feature) {
             me.extentLayer.getSource().removeFeature(val.feature);
           }
         } catch (ex) {
@@ -99,7 +103,7 @@ export default function ($timeout, HsMapService, $log) {
      * in metadata of selected layer)
      */
     isZoomable(layer) {
-      return angular.isDefined(layer.bbox);
+      return layer.bbox !== undefined;
     },
 
     /**
@@ -114,7 +118,7 @@ export default function ($timeout, HsMapService, $log) {
     },
 
     highlightComposition(composition, state) {
-      if (angular.isDefined(composition.feature)) {
+      if (composition.feature !== undefined) {
         composition.feature.set('highlighted', state);
       }
     },
@@ -126,13 +130,13 @@ export default function ($timeout, HsMapService, $log) {
      * ZoomTo / MoveTo to selected layer overview
      */
     zoomTo(bbox) {
-      if (angular.isUndefined(bbox)) {
+      if (bbox === undefined) {
         return;
       }
       let b = null;
-      if (angular.isString(bbox)) {
+      if (typeof bbox === 'string') {
         b = bbox.split(' ');
-      } else if (angular.isArray(bbox)) {
+      } else if (Array.isArray(bbox)) {
         b = bbox;
       }
       let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
