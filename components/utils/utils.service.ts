@@ -318,6 +318,40 @@ export class HsUtilsService {
   }
 
   /**
+   * @description Creates a deep copy of the input object
+   * @param {object} from object to deep copy
+   * @param {object?} to optional target for copy
+   * @returns {object} a deep copy of input object
+   * @memberof HsUtilsService
+   */
+  structuredClone(from, to?) {
+    if (from === null || typeof from !== 'object') {
+      return from;
+    }
+    if (from.constructor != Object && from.constructor != Array) {
+      return from;
+    }
+    if (
+      from.constructor == Date ||
+      from.constructor == RegExp ||
+      from.constructor == Function ||
+      from.constructor == String ||
+      from.constructor == Number ||
+      from.constructor == Boolean
+    ) {
+      return new from.constructor(from);
+    }
+    to = to || new from.constructor();
+    for (const key in from) {
+      to[key] =
+        typeof to[key] == 'undefined'
+          ? this.structuredClone(from[key], null)
+          : to[key];
+    }
+    return to;
+  }
+
+  /**
    * Check if object is a function
    * @param {object} functionToCheck
    * @returns {boolean}
