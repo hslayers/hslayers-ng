@@ -3,17 +3,17 @@ import '../../common/widgets/widgets.module';
 import '../layout';
 import * as angular from 'angular';
 import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
-import datasourceSelectorComponent from './datasource-selector.component';
-import datasourceSelectorMapService from './datasource-selector-map.service';
-import datasourceSelectorService from './datasource-selector.service';
-import forDatasourceBrowserFilter from './for-datasource-browser.filter';
-import laymanService from './layman/layman.service';
+import {HsDatasourcesComponent} from './datasource-selector.component';
+import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsDatasourcesService} from './datasource-selector.service';
+import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
+import {HsLaymanService} from './layman/layman.service';
 import metadataDialogDirective from './metadata-dialog.directive';
-import mickaFilterService from './micka/micka-filters.service';
+import {HsMickaFilterService} from './micka/micka-filters.service';
 import mickaFiltersDirective from './micka/micka-filters.directive';
-import mickaService from './micka/micka.service';
+import {HsMickaService} from './micka/micka.service';
 import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
-import selectTypeToAddLayerDialogComponent from './select-type-to-add-layer-dialog.component';
+import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
 /**
  * @namespace hs.datasource_selector
  * @memberOf hs
@@ -69,7 +69,7 @@ angular
    * @description Service for calling catalogue loaders and managing layers -
    * initiating adding to map, downloading, storing layer extents
    */
-  .factory('HsDatasourceBrowserService', datasourceSelectorService)
+  .factory('HsDatasourceBrowserService', HsDatasourcesService)
 
   /**
    * @module hs.datasource_selector
@@ -77,7 +77,7 @@ angular
    * @ngdoc controller
    * @description Service of composition module which deal ith OpenLayers map objects
    */
-  .factory('HsDataSourceSelectorMapService', datasourceSelectorMapService)
+  .factory('HsDataSourceSelectorMapService', HsDatasourcesMapService)
 
   /**
    * @ngdoc service
@@ -86,7 +86,7 @@ angular
    * @description Service for managing micka query filter parameters and
    * their possible values i.e. suggestions
    */
-  .factory('HsMickaFiltersService', mickaFilterService)
+  .factory('HsMickaFiltersService', HsMickaFilterService)
 
   /**
    * @ngdoc service
@@ -94,7 +94,7 @@ angular
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
    */
-  .factory('HsMickaBrowserService', mickaService)
+  .factory('HsMickaBrowserService', HsMickaService)
 
   /**
    * @ngdoc service
@@ -102,7 +102,7 @@ angular
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Layman
    */
-  .factory('HsLaymanBrowserService', laymanService)
+  .factory('HsLaymanBrowserService', HsLaymanService)
 
   /**
    * @ngdoc component
@@ -110,11 +110,11 @@ angular
    * @name hs.datasourceSelector
    * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas.
    */
-  .component('hs.datasourceSelector', datasourceSelectorComponent)
+  .component('hs.datasourceSelector', HsDatasourcesComponent)
 
   .component(
     'hsSelectTypeToAddLayerDialog',
-    selectTypeToAddLayerDialogComponent
+    HsSelectTypeToAddLayerDialogComponent
   )
 
-  .filter('forDatasourceBrowser', forDatasourceBrowserFilter);
+  .filter('forDatasourceBrowser', HsForDatasourceBrowserFilter);

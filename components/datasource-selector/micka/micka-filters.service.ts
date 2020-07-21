@@ -4,7 +4,7 @@
  * @param HsUtilsService
  * @param HsCommonEndpointsService
  */
-export default function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
+export const HsMickaFilterService = function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
   'ngInject';
   const me = this;
   this.suggestionConfig = {};
