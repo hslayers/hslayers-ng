@@ -1,10 +1,8 @@
 /* eslint-disable angular/window-service */
 /* eslint-disable angular/document-service */
 import {Component, Input} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Injector} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
+import {DomSanitizer} from '@angular/platform-browser';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service.js';
@@ -59,10 +57,11 @@ export class HsStylerComponent {
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
     private http: HttpClient,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    public sanitizer: DomSanitizer
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (HsLayoutService.mainpanel == 'styler' && this.icons === null) {
+      if (HsLayoutService.mainpanel == 'styler' && !this.icons) {
         this.icons = [
           require('./img/svg/bag1.svg'),
           require('./img/svg/banking4.svg'),
@@ -133,8 +132,11 @@ export class HsStylerComponent {
   }
 
   save() {
-    if (this.HsStylerService.layer === null) {
+    if (!this.HsStylerService.layer) {
       return;
+    }
+    if (this.imagetype == 'icon') {
+      this.colorIcon();
     }
     const source: any = this.getLayerSource(this.HsStylerService.layer);
     const style_json: styleJson = {};
@@ -219,11 +221,17 @@ export class HsStylerComponent {
    */
 
   iconSelected = function (i) {
-    this.http.get('' + i, {}).subscribe((response) => {
-      this.iconimage = response.data;
-      this.colorIcon();
-      this.save();
-    });
+    const headers = new HttpHeaders();
+    headers.set('Accept', 'image/svg+xml');
+    this.http
+      .get('' + i, {headers, responseType: 'text'})
+      .subscribe((response) => {
+        this.iconimage = this.sanitizer.bypassSecurityTrustHtml(response);
+        setTimeout(() => {
+          this.colorIcon();
+          this.save();
+        }, 0);
+      });
   };
 
   /**
@@ -266,9 +274,6 @@ export class HsStylerComponent {
   layermanager = function () {
     this.HsLayoutService.setMainPanel('layermanager');
   };
-  //   this.$watch('linecolor', this.save);
-  //   this.$watch('service.layer', updateHasVectorFeatures);
-
   /**
    * @function updateHasVectorFeatures
    * @memberOf hs.styler.controller
@@ -319,27 +324,4 @@ export class HsStylerComponent {
       }
     });
   }
-
-  //   this.$watch('fillcolor', this.save);
-  //   this.$watch('iconfillcolor', () => {
-  //     if (this.imagetype == 'icon') {
-  //       colorIcon();
-  //     }
-  //     this.save();
-  //   });
-  //   this.$watch('iconlinecolor', () => {
-  //     if (this.imagetype == 'icon') {
-  //       colorIcon();
-  //     }
-  //     this.save();
-  //   });
-  //   this.$watch('iconlinewidth', () => {
-  //     if (this.imagetype == 'icon') {
-  //       colorIcon();
-  //     }
-  //     this.save();
-  //   });
-  //   this.$watch('radius', () => {
-  //     this.save();
-  //   });
 }
