@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 /**
  * @param HsConfig
  * @param HsMickaFiltersService

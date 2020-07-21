@@ -1,4 +1,5 @@
 import './layman/layman.service';
+import * as angular from 'angular';
 
 export default {
   template: require('./partials/datasource_selector.html'),
@@ -12,7 +13,8 @@ export default {
     HsLayoutService,
     $injector,
     HsCommonEndpointsService,
-    HsDataSourceSelectorMapService
+    HsDataSourceSelectorMapService,
+    HsUtilsService
   ) {
     'ngInject';
     $scope.HsCore = HsCore;
@@ -108,10 +110,10 @@ export default {
      * @param input
      * @param prestring
      */
-    function decomposeMetadata(input, prestring) {
-      if (angular.isObject(input)) {
+    function decomposeMetadata(input, prestring?) {
+      if (HsUtilsService.isPOJO(input)) {
         return decomposeObject(input, prestring);
-      } else if (angular.isArray(input)) {
+      } else if (Array.isArray(input)) {
         return decomposeArray(input, prestring);
       }
     }
@@ -120,28 +122,29 @@ export default {
      * @param obj
      * @param substring
      */
-    function decomposeObject(obj, substring) {
-      const decomposed = {};
+    function decomposeObject(obj, substring?) {
+      let decomposed = {};
       let subvalue = undefined;
-      angular.forEach(obj, (value, key) => {
+      Object.entries(obj).forEach((entry) => {
+        const [key, value] = entry;
         if (key == 'feature') {
           return;
         }
         let newstring = '';
-        if (angular.isDefined(substring)) {
+        if (substring !== undefined) {
           newstring = substring + ' - ' + key;
         } else {
           newstring = key;
         }
-        if (angular.isObject(value)) {
+        if (HsUtilsService.isPOJO(value)) {
           subvalue = decomposeObject(value, newstring);
-        } else if (angular.isArray(value)) {
+        } else if (Array.isArray(value)) {
           subvalue = decomposeArray(value, newstring);
         } else {
           subvalue = value;
         }
-        if (angular.isObject(subvalue)) {
-          angular.merge(decomposed, subvalue);
+        if (HsUtilsService.isPOJO(subvalue)) {
+          decomposed = HsUtilsService.structuredClone(subvalue, decomposed);
         } else {
           decomposed[newstring] = subvalue;
         }
@@ -153,19 +156,19 @@ export default {
      * @param arr
      * @param substring
      */
-    function decomposeArray(arr, substring) {
-      const decomposed = undefined;
+    function decomposeArray(arr: Array<any>, substring) {
+      let decomposed = undefined;
       let sub = undefined;
-      angular.forEach(arr, (value) => {
-        if (angular.isObject(value)) {
+      arr.forEach((value) => {
+        if (HsUtilsService.isPOJO(value)) {
           sub = decomposeObject(value, substring);
-        } else if (angular.isArray(value)) {
+        } else if (Array.isArray(value)) {
           sub = decomposeArray(value, substring);
         } else {
           sub += value;
         }
-        if (angular.isObject(sub)) {
-          angular.merge(decomposed, sub);
+        if (HsUtilsService.isPOJO(sub)) {
+          decomposed = HsUtilsService.structuredClone(sub, decomposed);
         } else {
           decomposed[substring] = sub;
         }
