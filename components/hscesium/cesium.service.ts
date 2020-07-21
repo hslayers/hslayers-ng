@@ -1,33 +1,32 @@
 import '../permalink/permalink.module';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import * as Cesium from 'cesium/Source/Cesium';
+import * as Cesium from 'cesium/Source/Cesium.js';
+import {HsCesiumCameraService} from './cesium-camera.service';
+import {HsCesiumLayersService} from './cesium-layers.service';
+import {HsCesiumTimeService} from './cesium-time.service';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerManagerService} from '../layermanager';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
 
 export class HsCesiumService {
+  BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
+  viewer: any;
   constructor(
-    HsConfig,
-    $rootScope,
-    HsMapService,
-    HsLayermanagerService,
-    HsLayoutService,
-    HsCesiumCameraService,
-    HsCesiumLayersService,
-    HsCesiumTimeService
+    private HsConfig: HsConfig,
+    private HsMapService: HsMapService,
+    private HsLayermanagerService: HsLayerManagerService,
+    private HsLayoutService: HsLayoutService,
+    private HsCesiumCameraService: HsCesiumCameraService,
+    private HsCesiumLayersService: HsCesiumLayersService,
+    private HsCesiumTimeService: HsCesiumTimeService,
+    private HsEventBusService: HsEventBusService
   ) {
     'ngInject';
-    this.BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
-    if (angular.isDefined(HsConfig.cesiumBingKey)) {
-      this.BING_KEY = HsConfig.cesiumBingKey;
+    if (this.HsConfig.cesiumBingKey) {
+      this.BING_KEY = this.HsConfig.cesiumBingKey;
     }
-    Object.assign(this, {
-      HsConfig,
-      $rootScope,
-      HsMapService,
-      HsLayermanagerService,
-      HsLayoutService,
-      HsCesiumCameraService,
-      HsCesiumLayersService,
-      HsCesiumTimeService,
-    });
   }
 
   /**
@@ -63,16 +62,16 @@ export class HsCesiumService {
     const viewer = new Cesium.Viewer(
       this.HsLayoutService.contentWrapper.querySelector('.hs-cesium-container'),
       {
-        timeline: angular.isDefined(this.HsConfig.cesiumTimeline)
+        timeline: this.HsConfig.cesiumTimeline
           ? this.HsConfig.cesiumTimeline
           : false,
-        animation: angular.isDefined(this.HsConfig.cesiumAnimation)
+        animation: this.HsConfig.cesiumAnimation
           ? this.HsConfig.cesiumAnimation
           : false,
-        creditContainer: angular.isDefined(this.HsConfig.creditContainer)
+        creditContainer: this.HsConfig.creditContainer
           ? this.HsConfig.creditContainer
           : undefined,
-        infoBox: angular.isDefined(this.HsConfig.cesiumInfoBox)
+        infoBox: this.HsConfig.cesiumInfoBox
           ? this.HsConfig.cesiumInfoBox
           : true,
         terrainProvider: terrain_provider,
@@ -98,9 +97,8 @@ export class HsCesiumService {
       }
     );
 
-    viewer.scene.debugShowFramesPerSecond = angular.isDefined(
-      this.HsConfig.cesiumdDebugShowFramesPerSecond
-    )
+    viewer.scene.debugShowFramesPerSecond = this.HsConfig
+      .cesiumdDebugShowFramesPerSecond
       ? this.HsConfig.cesiumdDebugShowFramesPerSecond
       : false;
     viewer.scene.globe.enableLighting = this.HsConfig.cesiumShadows || false;
@@ -108,7 +106,7 @@ export class HsCesiumService {
 
     viewer.terrainProvider = terrain_provider;
 
-    if (angular.isDefined(this.HsConfig.cesiumTime)) {
+    if (this.HsConfig.cesiumTime) {
       viewer.clockViewModel.currentTime = this.HsConfig.cesiumTime;
     }
 
@@ -138,24 +136,29 @@ export class HsCesiumService {
           return;
         } //Not looking on the map but in the sky
         const viewport = this.HsCesiumCameraService.getViewportPolygon();
-        this.$rootScope.$broadcast('map.sync_center', center, viewport);
+        this.HsEventBusService.mapCenterSynchronizations.next({
+          center,
+          viewport,
+        });
       }
     });
 
     this.HsLayermanagerService.data.terrainlayers = [];
-    angular.forEach(this.HsConfig.terrain_providers, (provider) => {
-      provider.type = 'terrain';
-      this.HsLayermanagerService.data.terrainlayers.push(provider);
-    });
+    if (this.HsConfig.terrain_providers) {
+      for (const provider of this.HsConfig.terrain_providers) {
+        provider.type = 'terrain';
+        this.HsLayermanagerService.data.terrainlayers.push(provider);
+      }
+    }
 
-    this.$rootScope.$on('map.extent_changed', (event, data, b) => {
+    this.HsEventBusService.mapExtentChanges.subscribe((data) => {
       const view = this.HsMapService.map.getView();
       if (this.HsMapService.visible) {
         this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
       }
     });
 
-    this.$rootScope.$on('search.zoom_to_center', (event, data) => {
+    this.HsEventBusService.zoomTo.subscribe((data) => {
       this.viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(
           data.coordinate[0],
@@ -191,7 +194,7 @@ export class HsCesiumService {
               s = s + features[i].data + '\n';
             }
           }
-          const iframe = document.querySelector('.cesium-infoBox-iframe');
+          const iframe: any = document.querySelector('.cesium-infoBox-iframe');
           if (iframe) {
             // eslint-disable-next-line angular/timeout-service
             setTimeout(() => {
@@ -260,23 +263,26 @@ export class HsCesiumService {
      * @eventType broadcast on $rootScope
      * @description
      */
-    this.$rootScope.$broadcast('cesiummap.loaded', viewer, this);
+    this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
+  }
 
-    this.getCameraCenterInLngLat = () =>
-      this.HsCesiumCameraService.getCameraCenterInLngLat();
-    this.linkOlLayerToCesiumLayer = (ol_layer, cesium_layer) =>
-      this.HsCesiumLayersService.linkOlLayerToCesiumLayer(
-        ol_layer,
-        cesium_layer
-      );
+  getCameraCenterInLngLat() {
+    return this.HsCesiumCameraService.getCameraCenterInLngLat();
+  }
+
+  linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
+    return this.HsCesiumLayersService.linkOlLayerToCesiumLayer(
+      ol_layer,
+      cesium_layer
+    );
   }
 
   dimensionChanged(layer, dimension) {
     layer = layer.cesium_layer;
     if (
-      angular.isUndefined(layer.prm_cache) ||
-      angular.isUndefined(layer.prm_cache.dimensions) ||
-      angular.isUndefined(layer.prm_cache.dimensions[dimension.name])
+      layer.prm_cache == undefined ||
+      layer.prm_cache.dimensions == undefined ||
+      layer.prm_cache.dimensions[dimension.name] == undefined
     ) {
       return;
     }
@@ -289,24 +295,32 @@ export class HsCesiumService {
   }
 
   resize(event, size) {
-    if (angular.isUndefined(size)) {
+    if (size == undefined) {
       return;
     }
     this.HsLayoutService.contentWrapper.querySelector(
       '.hs-cesium-container'
     ).style.height = size.height + 'px';
-    if (document.querySelector('.cesium-viewer-timelineContainer')) {
-      document.querySelector('.cesium-viewer-timelineContainer').style.right =
-        '0';
+    const timelineElement = <HTMLElement>(
+      document.querySelector('.cesium-viewer-timelineContainer')
+    );
+    if (timelineElement) {
+      timelineElement.style.right = '0';
     }
     if (document.querySelector('.cesium-viewer-bottom')) {
-      if (document.querySelector('.cesium-viewer-timelineContainer')) {
-        document.querySelector('.cesium-viewer-bottom').style.bottom = '30px';
+      const bottomElement = <HTMLElement>(
+        document.querySelector('.cesium-viewer-bottom')
+      );
+      if (timelineElement) {
+        bottomElement.style.bottom = '30px';
       } else {
-        document.querySelector('.cesium-viewer-bottom').style.bottom = '0';
+        bottomElement.style.bottom = '0';
       }
     }
 
-    this.$rootScope.$broadcast('cesiummap.resized', this.viewer, this);
+    this.HsEventBusService.cesiumResizes.next({
+      viewer: this.viewer,
+      service: this,
+    });
   }
 }

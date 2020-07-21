@@ -373,10 +373,9 @@ export default {
     };
 
     const extendChangeDebouncer = {};
-    $scope.$on(
-      'map.extent_changed',
+    HsEventBusService.mapExtentChanges.subscribe(
       HsUtilsService.debounce(
-        (event, data, b) => {
+        (data) => {
           if (
             HsLayoutService.mainpanel != 'composition_browser' &&
             HsLayoutService.mainpanel != 'composition'

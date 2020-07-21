@@ -22,6 +22,17 @@ export class HsEventBusService {
   mainPanelChanges: Subject<any> = new Subject(); //replaces 'core.mainpanel_changed'
   measurementStarts: Subject<any> = new Subject(); //replaces 'measure.drawStart'
   measurementEnds: Subject<any> = new Subject(); //replaces 'measure.drawEnd'
+  cesiumLoads: Subject<any> = new Subject();
+  cesiumResizes: Subject<any> = new Subject();
+  zoomTo: Subject<any> = new Subject();
+  /**
+   * @ngdoc event
+   * @name mapExtentChanges
+   * @eventType broadcast on $rootScope
+   * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
+   */
+  mapExtentChanges: Subject<any> = new Subject();
+  mapCenterSynchronizations: Subject<any> = new Subject();
 
   constructor() {}
 }

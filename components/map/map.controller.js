@@ -19,7 +19,8 @@ export default function (
   HsCore,
   $rootScope,
   $compile,
-  HsLayoutService
+  HsLayoutService,
+  HsEventBusService
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -107,21 +108,21 @@ export default function (
    * @description This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps
    */
-  function onCenterSync(event, data) {
-    if (angular.isUndefined(data) || data === null) {
+  function onCenterSync(data) {
+    const center = data.center;
+    if (angular.isUndefined(center) || center === null) {
       return;
     }
     const toProj = HsMapService.map.getView().getProjection();
-    const transformed = transform([data[0], data[1]], 'EPSG:4326', toProj);
+    const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
     HsMapService.moveToAndZoom(
       transformed[0],
       transformed[1],
-      zoomForResolution(data[2])
+      zoomForResolution(center[2])
     );
   }
 
-  const unregisterMapSyncCenterHandler = $rootScope.$on(
-    'map.sync_center',
+  const unregisterMapSyncCenterHandler = HsEventBusService.mapCenterSynchronizations.subscribe(
     onCenterSync
   );
   $scope.$on('$destroy', () => {
