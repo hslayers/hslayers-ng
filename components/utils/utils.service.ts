@@ -319,7 +319,6 @@ export class HsUtilsService {
 
   /**
    * Check if object is a function
-   *
    * @param {object} functionToCheck
    * @returns {boolean}
    */
@@ -327,6 +326,18 @@ export class HsUtilsService {
     return (
       functionToCheck &&
       {}.toString.call(functionToCheck) === '[object Function]'
+    );
+  }
+
+  /**
+   * Check if object is plain object (not function, not array, not class)
+   * @param {object} objectToCheck
+   * @returns {boolean}
+   * @memberof HsUtilsService
+   */
+  isPOJO(objectToCheck) {
+    return (
+      objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
     );
   }
 
