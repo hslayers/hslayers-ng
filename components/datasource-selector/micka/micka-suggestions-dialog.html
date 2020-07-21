@@ -5,22 +5,24 @@
                 <h4 class="modal-title" translate>
                     Suggestions
                 </h4>
-                <button type="button" ng-click="suggestionsModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="suggestionsModalVisible = false" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span>
+                </button>
             </div>
             <div class="modal-body" style="max-height:525px; overflow-y:auto">
                 <form>
                     <label class="form-group"><translate>Filter</translate>
                         <input type="text" class="hs-ds-sug-filter form-control" ng-change="mickaFilterService.suggestionFilterChanged(mickaDatasetConfig)" ng-model="mickaFilterService.suggestionFilter">
-                    </label>                   
+                    </label>
                 </form>
                 <ul class="list-group">
                     <li class='list-group-item' ng-show="!mickaFilterService.suggestionsLoaded"><img ng-src="{{loaderImage}}" /></li>
                     <li ng-show='mickaFilterService.suggestions.length == 0' class='list-group-item' translate>No results</li>
                     <li ng-repeat="suggestion in mickaFilterService.suggestions | limitTo:10" ng-class="'list-group-item'">
                         <b class="list-group-item-heading">
-                            <a 
-                            href="#" 
-                            ng-click="addSuggestion(suggestion[mickaFilterService.suggestionConfig.field]); suggestionsModalVisible = false" 
+                            <a
+                            href="#"
+                            ng-click="addSuggestion(suggestion[mickaFilterService.suggestionConfig.field]); suggestionsModalVisible = false"
                             data-dismiss="modal">
                                 {{suggestion[mickaFilterService.suggestionConfig.field]}} <span ng-show="{{suggestion.count !== undefined}}">({{suggestion.count}})</span>
                             </a>

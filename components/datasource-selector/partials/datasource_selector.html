@@ -22,8 +22,10 @@
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources" ng-if="HsCore.exists('hs.addLayers') && config.allowAddExternalDatasets">
-                <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>
-                    External data</a>
+                <a class="nav-link" href="#" aria-controls="OWS" ng-class="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}"
+                    role="tab" ng-click="datasetSelect('OWS')" data-toggle="tab" translate>
+                    External data
+                </a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
@@ -69,13 +71,14 @@
                                     <a href="#" class="page-link" ng-click='getPreviousRecords(endpoint)'><span
                                             aria-hidden="true">&laquo;</span></a>
                                 </li>
-                                <li class="page-item" ng-if="endpoint.datasourcePaging.next != 0"><span class="page-link"> Results
-                                        {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.next}}</span></li>
-                                <li class="page-item" ng-if="endpoint.datasourcePaging.next == 0"><span class="page-link"> Results
-                                        {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.matched}}</span>
-                                    </li>
+                                <li class="page-item" ng-if="endpoint.datasourcePaging.next != 0"><span class="page-link">
+                                    Results {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.next}}
+                                </span></li>
+                                <li class="page-item" ng-if="endpoint.datasourcePaging.next == 0"><span class="page-link">
+                                    Results {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.matched}}
+                                </span></li>
                                 <li class="page-item" ng-show="endpoint.datasourcePaging.loaded == false">
-                                    <span class="page-link"><span class="icon-refresh icon-spin" ></span></span></li>    
+                                    <span class="page-link"><span class="icon-refresh icon-spin" ></span></span></li>
                                 <li class="page-item" ng-class="{'disabled': endpoint.datasourcePaging.next == 0 }">
                                     <a href="#" class="page-link" ng-click='getNextRecords(endpoint)'><span
                                             aria-hidden="true">&raquo;</span></a>

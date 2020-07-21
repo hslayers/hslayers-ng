@@ -5,7 +5,9 @@
                 <h4 class="modal-title">
                     <translate>Metadata for</translate> {{selected_layer.title}}
                 </h4>
-                <button type="button" ng-click="metadataModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="metadataModalVisible = false" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span>
+                </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
                 <dl ng-repeat="(key, value) in selected_layer" ng-if="key!='feature'">
@@ -14,9 +16,16 @@
                 </dl>
             </div>
             <div class="modal-footer" >
-                <a role="button" class="btn btn-success" href="#" ng-href='{{DS.layerRDF(selected_ds, selected_layer)}}' data-toggle="tooltip" title="GeoDCAT-AP" target="_blank" ng-show='selected_ds.type=="micka" && DS.layerRDF(selected_ds, selected_layer) != "#"'><i class="icon-share-alt"></i> RDF</a>
-                <button type="button" class="btn btn-success" translate ng-show="mapService.isZoomable(selected_layer)" ng-click="mapService.zoomTo(selected_layer.bbox)">Zoom to</button>
-                <button type="button" class="btn btn-primary" ng-repeat="type in selected_layer.type" ng-click="addLayerToMap(selected_ds, selected_layer, type); metadataModalVisible = false;" ng-hide='config.dss_disallow_add == true' data-dismiss="modal"><span class="icon-plus"></span><span translate>Add to map as {{type}}</span></button>
+                <a role="button" class="btn btn-success" href="#" ng-href='{{DS.layerRDF(selected_ds, selected_layer)}}' data-toggle="tooltip" title="GeoDCAT-AP"
+                    target="_blank" ng-show='selected_ds.type=="micka" && DS.layerRDF(selected_ds, selected_layer) != "#"'>
+                    <i class="icon-share-alt"></i> RDF
+                </a>
+                <button type="button" class="btn btn-success" translate ng-show="mapService.isZoomable(selected_layer)"
+                    ng-click="mapService.zoomTo(selected_layer.bbox)">Zoom to</button>
+                <button type="button" class="btn btn-primary" ng-repeat="type in selected_layer.type"
+                    ng-click="addLayerToMap(selected_ds, selected_layer, type); metadataModalVisible = false;" ng-hide='config.dss_disallow_add == true' data-dismiss="modal">
+                    <span class="icon-plus"></span><span translate>Add to map as {{type}}</span>
+                </button>
                 <button type="button" class="btn btn-secondary" ng-click="metadataModalVisible = false" data-dismiss="modal" translate>Close</button>
             </div>
         </div>
