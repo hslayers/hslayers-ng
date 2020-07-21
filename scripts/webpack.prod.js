@@ -30,6 +30,7 @@ module.exports = merge(common, {
   },
   plugins: [],
   optimization: {
+    usedExports: true,
     minimizer: [
       // JS minifier/uglifier
       new TerserPlugin({
