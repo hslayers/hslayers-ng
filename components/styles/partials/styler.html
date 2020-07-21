@@ -17,7 +17,7 @@
                     <div class="form-group">
                         <label for="hs-styler-fillcolor" class="control-label" i18n>Colour</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="fillcolor"></div>
-                        <hs-styler-color-component (colorChange)="save()" [(color)]="fillcolor"></hs-styler-color-component>
+                        <hs-styler-color-component (click)="save()" [(color)]="fillcolor"></hs-styler-color-component>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="hs-styler-linecolor" class="control-label" i18n>Line Colour</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="linecolor"></div>
-                        <hs-styler-color-component (colorChange)="save()" [(color)]="linecolor"></hs-styler-color-component>
+                        <hs-styler-color-component (click)="save()" [(color)]="linecolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group">
@@ -57,19 +57,19 @@
                     <div class="form-group">
                         <label for="hs-styler-iconfillcolor" class="control-label" i18n>Colour</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="iconfillcolor"></div>
-                        <hs-styler-color-component  (colorChange)="save()" [(color)]="iconfillcolor"></hs-styler-color-component>
+                        <hs-styler-color-component  (click)="save()" [(color)]="iconfillcolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group">
                         <label for="hs-styler-linecolor" class="control-label" i18n>Line Colour</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="iconlinecolor"></div>
-                        <hs-styler-color-component (colorChange)="save()" [(color)]="iconlinecolor"></hs-styler-color-component>
+                        <hs-styler-color-component (click)="save()" [(color)]="iconlinecolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group" [hidden]="imagetype !='circle'">
                         <label for="hs-styler-radius" class="control-label" i18n>Radius</label>
                         <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;"
-                            [(ngModel)]="radius" [ngModelOptions]="{standalone: true}" /><span>{{radius}}</span>
+                            [(ngModel)]="radius" (ngModelChange)='save()' [ngModelOptions]="{standalone: true}" /><span>{{radius}}</span>
                     </div>
 
                     <div class="form-group">
@@ -80,10 +80,10 @@
 
                     <div class="form-group" [hidden]="imagetype !='icon'">
                         <label for="hs-styler-icon" class="control-label" i18n>Icon</label>
-                        <div class="hs-styler-selected-icon-box" ng-bind-html="iconimage"></div>
+                        <div class="hs-styler-selected-icon-box" [innerHtml]="iconimage"></div>
                         <div>
                             <div *ngFor="let icon of icons" class="hs-styler-iconbox" (click)="iconSelected(icon)">
-                                <img ng-src='{{icon}}' />
+                                <img [src]='icon'/>
                             </div>
                         </div>
                     </div>
