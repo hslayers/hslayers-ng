@@ -1,5 +1,7 @@
-import * as Cesium from 'cesium/Source/Cesium';
+import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
+import knockout from 'cesium/Source/ThirdParty/knockout';
 import moment from 'moment';
+
 export class HsCesiumTimeService {
   constructor(HsMapService, $rootScope, HsCesiumLayersService) {
     'ngInject';
@@ -15,7 +17,7 @@ export class HsCesiumTimeService {
   }
 
   monitorTimeLine() {
-    Cesium.knockout
+    knockout
       .getObservable(this.viewer.clockViewModel, 'currentTime')
       .subscribe((value) => {
         let something_changed = false;
@@ -26,9 +28,7 @@ export class HsCesiumTimeService {
           round_time.setSeconds(0);
 
           const layer = this.viewer.imageryLayers.get(i);
-          if (
-            layer.imageryProvider instanceof Cesium.WebMapServiceImageryProvider
-          ) {
+          if (layer.imageryProvider instanceof WebMapServiceImageryProvider) {
             if (layer.prm_cache && this.getTimeParameter(layer)) {
               if (angular.isDefined(layer.prm_cache.dimensions.time)) {
                 let min_dist = Number.MAX_VALUE;

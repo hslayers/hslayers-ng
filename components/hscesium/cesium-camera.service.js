@@ -1,5 +1,12 @@
+import * as CesiumMath from 'cesium/Source/Core/Math';
+import Camera from 'cesium/Source/Scene/Camera';
+import Cartesian2 from 'cesium/Source/Core/Cartesian2';
+import Cartesian3 from 'cesium/Source/Core/Cartesian3';
+import Cartographic from 'cesium/Source/Core/Cartographic';
+import Ellipsoid from 'cesium/Source/Core/Ellipsoid';
+import Rectangle from 'cesium/Source/Core/Rectangle';
+import SceneMode from 'cesium/Source/Scene/SceneMode';
 import {get as getProj, transformExtent} from 'ol/proj';
-import * as Cesium from 'cesium/Source/Cesium';
 
 export class HsCesiumCameraService {
   constructor(HsMapService, $window) {
@@ -43,8 +50,8 @@ export class HsCesiumCameraService {
    */
   getCameraCenterInLngLat() {
     if (
-      this.viewer.scene.mode == Cesium.SceneMode.SCENE2D ||
-      this.viewer.scene.mode == Cesium.SceneMode.COLUMBUS_VIEW
+      this.viewer.scene.mode == SceneMode.SCENE2D ||
+      this.viewer.scene.mode == SceneMode.COLUMBUS_VIEW
     ) {
       const lngDeg =
         this.viewer.camera.positionCartographic.longitude * (180 / Math.PI);
@@ -52,9 +59,9 @@ export class HsCesiumCameraService {
         this.viewer.camera.positionCartographic.latitude * (180 / Math.PI);
       const position = [lngDeg, latDeg, 0];
       return position;
-    } else if (this.viewer.scene.mode == Cesium.SceneMode.SCENE3D) {
+    } else if (this.viewer.scene.mode == SceneMode.SCENE3D) {
       const ray = this.viewer.camera.getPickRay(
-        new Cesium.Cartesian2(
+        new Cartesian2(
           this.viewer.canvas.width / 2,
           this.viewer.canvas.height / 2
         )
@@ -64,17 +71,17 @@ export class HsCesiumCameraService {
         this.viewer.scene
       );
       if (positionCartesian3) {
-        const positionCartographic = Cesium.Cartographic.fromCartesian(
+        const positionCartographic = Cartographic.fromCartesian(
           positionCartesian3
         );
-        const lngDeg = Cesium.Math.toDegrees(positionCartographic.longitude);
-        const latDeg = Cesium.Math.toDegrees(positionCartographic.latitude);
+        const lngDeg = CesiumMath.toDegrees(positionCartographic.longitude);
+        const latDeg = CesiumMath.toDegrees(positionCartographic.latitude);
         const position = [
           lngDeg,
           latDeg,
           this.calcResolutionForDistance(
-            Cesium.Cartographic.fromCartesian(this.viewer.camera.position)
-              .height - positionCartographic.height,
+            Cartographic.fromCartesian(this.viewer.camera.position).height -
+              positionCartographic.height,
             latDeg
           ),
         ];
@@ -93,7 +100,7 @@ export class HsCesiumCameraService {
    */
   getCameraCenterInCartesian() {
     const ray = this.viewer.camera.getPickRay(
-      new Cesium.Cartesian2(
+      new Cartesian2(
         this.viewer.canvas.width / 2,
         this.viewer.canvas.height / 2
       )
@@ -116,11 +123,11 @@ export class HsCesiumCameraService {
     function cornerToDegrees(d) {
       try {
         return [
-          Cesium.Math.toDegrees(
+          CesiumMath.toDegrees(
             this.viewer.scene.globe.ellipsoid.cartesianToCartographic(d)
               .longitude
           ),
-          Cesium.Math.toDegrees(
+          CesiumMath.toDegrees(
             this.viewer.scene.globe.ellipsoid.cartesianToCartographic(d)
               .latitude
           ),
@@ -132,12 +139,12 @@ export class HsCesiumCameraService {
     const of_x = 0;
     const of_y = 0;
     const center = [
-      Cesium.Math.toDegrees(
+      CesiumMath.toDegrees(
         this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
           this.viewer.camera.position
         ).longitude
       ),
-      Cesium.Math.toDegrees(
+      CesiumMath.toDegrees(
         this.viewer.scene.globe.ellipsoid.cartesianToCartographic(
           this.viewer.camera.position
         ).latitude
@@ -145,35 +152,29 @@ export class HsCesiumCameraService {
     ];
     let top_left = cornerToDegrees(
       this.getCornerCoord(
-        new Cesium.Cartesian2(of_x, of_y),
-        new Cesium.Cartesian2(
-          this.viewer.canvas.width,
-          this.viewer.canvas.height
-        )
+        new Cartesian2(of_x, of_y),
+        new Cartesian2(this.viewer.canvas.width, this.viewer.canvas.height)
       )
     );
     let top_right = cornerToDegrees(
       this.getCornerCoord(
-        new Cesium.Cartesian2(this.viewer.canvas.width - of_x, of_y),
-        new Cesium.Cartesian2(0, this.viewer.canvas.height)
+        new Cartesian2(this.viewer.canvas.width - of_x, of_y),
+        new Cartesian2(0, this.viewer.canvas.height)
       )
     );
     let bot_left = cornerToDegrees(
       this.getCornerCoord(
-        new Cesium.Cartesian2(
+        new Cartesian2(
           this.viewer.canvas.width - of_x + 100,
           this.viewer.canvas.height - of_y + 100
         ),
-        new Cesium.Cartesian2(0, 0)
+        new Cartesian2(0, 0)
       )
     );
     let bot_right = cornerToDegrees(
       this.getCornerCoord(
-        new Cesium.Cartesian2(
-          -100 + of_x,
-          this.viewer.canvas.height - of_y + 100
-        ),
-        new Cesium.Cartesian2(this.viewer.canvas.width, 0)
+        new Cartesian2(-100 + of_x, this.viewer.canvas.height - of_y + 100),
+        new Cartesian2(this.viewer.canvas.width, 0)
       )
     );
 
@@ -267,7 +268,7 @@ export class HsCesiumCameraService {
       'EPSG:4326'
     );
     this.viewer.camera.setView({
-      destination: Cesium.Rectangle.fromDegrees(
+      destination: Rectangle.fromDegrees(
         trans_ext[0],
         trans_ext[1],
         trans_ext[2],
@@ -276,7 +277,7 @@ export class HsCesiumCameraService {
     });
 
     const ray = this.viewer.camera.getPickRay(
-      new Cesium.Cartesian2(
+      new Cartesian2(
         this.viewer.canvas.width / 2,
         this.viewer.canvas.height / 2
       )
@@ -288,21 +289,20 @@ export class HsCesiumCameraService {
     if (positionCartesian3) {
       /*
             var instance = new Cesium.GeometryInstance({
-                geometry : new Cesium.RectangleGeometry({
-                    rectangle : Cesium.Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                    height: Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
-                    vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                geometry : new RectangleGeometry({
+                    rectangle : Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
+                    height: Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
+                    vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
                 })
             });
 
             this.viewer.scene.primitives.removeAll();
             this.viewer.scene.primitives.add(new Cesium.Primitive({
                 geometryInstances : instance,
-                appearance : new Cesium.EllipsoidSurfaceAppearance({aboveGround: true})
+                appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
             })); */
       this.viewer.camera.moveBackward(
-        Cesium.Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3)
-          .height
+        Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
       );
     }
   }
@@ -368,7 +368,7 @@ export class HsCesiumCameraService {
         // eslint-disable-next-line angular/timeout-service
         setTimeout(() => {
           viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(
+            destination: Cartesian3.fromDegrees(
               me.lastGoodCenter[0],
               me.lastGoodCenter[1],
               15000.0
@@ -396,15 +396,15 @@ export class HsCesiumCameraService {
       view.getProjection(),
       'EPSG:4326'
     );
-    const rectangle = Cesium.Rectangle.fromDegrees(
+    const rectangle = Rectangle.fromDegrees(
       trans_ext[0],
       trans_ext[1],
       trans_ext[2],
       trans_ext[3]
     );
     if (trans_ext && !isNaN(trans_ext[0])) {
-      Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+      Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
     }
-    Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
+    Camera.DEFAULT_VIEW_FACTOR = 0;
   }
 }

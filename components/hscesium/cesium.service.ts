@@ -1,6 +1,23 @@
 import '../permalink/permalink.module';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import * as Cesium from 'cesium/Source/Cesium.js';
+import BingMapsApi from 'cesium/Source/Core/BingMapsApi';
+import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
+import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
+import Cartesian3 from 'cesium/Source/Core/Cartesian3';
+import Cartographic from 'cesium/Source/Core/Cartographic';
+import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
+import Ion from 'cesium/Source/Core/Ion';
+import Math from 'cesium/Source/Core/Math';
+import SceneMode from 'cesium/Source/Scene/SceneMode';
+import ScreenSpaceEventHandler from 'cesium/Source/Core/ScreenSpaceEventHandler';
+import ScreenSpaceEventType from 'cesium/Source/Core/ScreenSpaceEventType';
+import ShadowMode from 'cesium/Source/Scene/ShadowMode';
+import SkyBox from 'cesium/Source/Scene/SkyBox';
+import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
+import WebMercatorProjection from 'cesium/Source/Core/WebMercatorProjection';
+import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
+import defined from 'cesium/Source/Core/defined';
+import when from 'cesium/Source/ThirdParty/when';
 import {HsCesiumCameraService} from './cesium-camera.service';
 import {HsCesiumLayersService} from './cesium-layers.service';
 import {HsCesiumTimeService} from './cesium-time.service';
@@ -36,30 +53,30 @@ export class HsCesiumService {
    * @description Initializes Cesium map
    */
   init() {
-    Cesium.Ion.defaultAccessToken =
+    Ion.defaultAccessToken =
       this.HsConfig.cesiumAccessToken ||
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-    window.CESIUM_BASE_URL = this.HsConfig.cesiumBase;
+    (<any>window).CESIUM_BASE_URL = this.HsConfig.cesiumBase;
     let terrain_provider =
       this.HsConfig.terrain_provider ||
-      Cesium.createWorldTerrain(this.HsConfig.createWorldTerrainOptions);
+      createWorldTerrain(this.HsConfig.createWorldTerrainOptions);
     if (this.HsConfig.newTerrainProviderOptions) {
-      terrain_provider = new Cesium.CesiumTerrainProvider(
+      terrain_provider = new CesiumTerrainProvider(
         this.HsConfig.newTerrainProviderOptions
       );
     }
 
     this.HsCesiumCameraService.setDefaultViewport();
 
-    Cesium.BingMapsApi.defaultKey = this.BING_KEY;
+    BingMapsApi.defaultKey = this.BING_KEY;
 
     //TODO: research if this must be used or ignored
-    const bing = new Cesium.BingMapsImageryProvider({
+    const bing = new BingMapsImageryProvider({
       url: '//dev.virtualearth.net',
-      key: Cesium.BingMapsApi.defaultKey,
-      mapStyle: Cesium.BingMapsStyle.AERIAL,
+      key: BingMapsApi.defaultKey,
+      mapStyle: BingMapsStyle.AERIAL,
     });
-    const viewer = new Cesium.Viewer(
+    const viewer = new Viewer(
       this.HsLayoutService.contentWrapper.querySelector('.hs-cesium-container'),
       {
         timeline: this.HsConfig.cesiumTimeline
@@ -78,7 +95,7 @@ export class HsCesiumService {
         imageryProvider: this.HsConfig.imageryProvider,
         terrainExaggeration: this.HsConfig.terrainExaggeration || 1.0,
         // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
-        skyBox: new Cesium.SkyBox({
+        skyBox: new SkyBox({
           sources: {
             positiveX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg'),
             negativeX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg'),
@@ -89,9 +106,9 @@ export class HsCesiumService {
           },
         }),
         // Show Columbus View map with Web Mercator projection
-        sceneMode: Cesium.SceneMode.SCENE3D,
-        mapProjection: new Cesium.WebMercatorProjection(),
-        shadows: this.HsConfig.cesiumShadows || false,
+        sceneMode: SceneMode.SCENE3D,
+        mapProjection: new WebMercatorProjection(),
+        shadows: this.getShadowMode(),
         scene3DOnly: true,
         sceneModePicker: false,
       }
@@ -101,8 +118,8 @@ export class HsCesiumService {
       .cesiumdDebugShowFramesPerSecond
       ? this.HsConfig.cesiumdDebugShowFramesPerSecond
       : false;
-    viewer.scene.globe.enableLighting = this.HsConfig.cesiumShadows || false;
-    viewer.scene.globe.shadows = this.HsConfig.cesiumShadows || false;
+    viewer.scene.globe.enableLighting = this.getShadowMode();
+    viewer.scene.globe.shadows = this.getShadowMode();
 
     viewer.terrainProvider = terrain_provider;
 
@@ -160,7 +177,7 @@ export class HsCesiumService {
 
     this.HsEventBusService.zoomTo.subscribe((data) => {
       this.viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(
+        destination: Cartesian3.fromDegrees(
           data.coordinate[0],
           data.coordinate[1],
           15000.0
@@ -168,9 +185,7 @@ export class HsCesiumService {
       });
     });
 
-    const handler = new Cesium.ScreenSpaceEventHandler(
-      this.viewer.scene.canvas
-    );
+    const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
     handler.setInputAction((movement) => {
       const pickRay = this.viewer.camera.getPickRay(movement.position);
       const pickedObject = this.viewer.scene.pick(movement.position);
@@ -182,12 +197,12 @@ export class HsCesiumService {
         pickedObject.id.onclick(pickedObject.id);
         return;
       }
-      if (!Cesium.defined(featuresPromise)) {
+      if (!defined(featuresPromise)) {
         if (console) {
           console.log('No features picked.');
         }
       } else {
-        Cesium.when(featuresPromise, (features) => {
+        when(featuresPromise, (features) => {
           let s = '';
           if (features.length > 0) {
             for (let i = 0; i < features.length; i++) {
@@ -209,7 +224,7 @@ export class HsCesiumService {
           }
         });
       }
-    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+    }, ScreenSpaceEventType.LEFT_DOWN);
 
     handler.setInputAction((movement) => {
       const pickedObject = this.viewer.scene.pick(movement.position);
@@ -217,7 +232,7 @@ export class HsCesiumService {
         pickedObject.id.onmouseup(pickedObject.id);
         return;
       }
-    }, Cesium.ScreenSpaceEventType.LEFT_UP);
+    }, ScreenSpaceEventType.LEFT_UP);
 
     /**
      * @param movement
@@ -227,14 +242,12 @@ export class HsCesiumService {
       const pickedObject = this.viewer.scene.pick(movement.position);
 
       if (this.viewer.scene.pickPositionSupported) {
-        if (this.viewer.scene.mode === Cesium.SceneMode.SCENE3D) {
+        if (this.viewer.scene.mode === SceneMode.SCENE3D) {
           const cartesian = this.viewer.scene.pickPosition(movement.position);
-          if (Cesium.defined(cartesian)) {
-            const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-            const longitudeString = Cesium.Math.toDegrees(
-              cartographic.longitude
-            );
-            const latitudeString = Cesium.Math.toDegrees(cartographic.latitude);
+          if (defined(cartesian)) {
+            const cartographic = Cartographic.fromCartesian(cartesian);
+            const longitudeString = Math.toDegrees(cartographic.longitude);
+            const latitudeString = Math.toDegrees(cartographic.latitude);
             this.$rootScope.$broadcast('cesium_position_clicked', [
               longitudeString,
               latitudeString,
@@ -250,11 +263,11 @@ export class HsCesiumService {
 
     handler.setInputAction(
       rightClickLeftDoubleClick,
-      Cesium.ScreenSpaceEventType.RIGHT_DOWN
+      ScreenSpaceEventType.RIGHT_DOWN
     );
     handler.setInputAction(
       rightClickLeftDoubleClick,
-      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+      ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
 
     /**
@@ -264,6 +277,12 @@ export class HsCesiumService {
      * @description
      */
     this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
+  }
+
+  private getShadowMode(): any {
+    return this.HsConfig.cesiumShadows == undefined
+      ? ShadowMode.DISABLED
+      : this.HsConfig.cesiumShadows;
   }
 
   getCameraCenterInLngLat() {

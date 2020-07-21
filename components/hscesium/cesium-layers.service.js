@@ -1,3 +1,15 @@
+import Cartesian3 from 'cesium/Source/Core/Cartesian3';
+import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
+import GeoJsonDataSource from 'cesium/Source/DataSources/GeoJsonDataSource';
+import GetFeatureInfoFormat from 'cesium/Source/Scene/GetFeatureInfoFormat';
+import ImageryLayer from 'cesium/Source/Scene/ImageryLayer';
+import KmlDataSource from 'cesium/Source/DataSources/KmlDataSource';
+import OpenStreetMapImageryProvider from 'cesium/Source/Scene/OpenStreetMapImageryProvider';
+import Resource from 'cesium/Source/Core/Resource';
+import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
+import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
+import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
+
 import moment from 'moment';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
@@ -5,7 +17,6 @@ import {ImageWMS} from 'ol/source';
 import {OSM, TileWMS} from 'ol/source';
 import {Vector} from 'ol/source';
 import {default as proj4} from 'proj4';
-import * as Cesium from 'cesium/Source/Cesium';
 /**
  * @param proxy
  * @param maxResolution
@@ -16,7 +27,14 @@ function MyProxy(proxy, maxResolution) {
 }
 
 export class HsCesiumLayersService {
-  constructor(HsMapService, $rootScope, HsConfig, HsUtilsService, $location, HsEventBusService) {
+  constructor(
+    HsMapService,
+    $rootScope,
+    HsConfig,
+    HsUtilsService,
+    $location,
+    HsEventBusService
+  ) {
     'ngInject';
     this.$location = $location;
     this.HsMapService = HsMapService;
@@ -119,12 +137,12 @@ export class HsCesiumLayersService {
             data.url ==
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
           ) {
-            const terrain_provider = Cesium.createWorldTerrain(
+            const terrain_provider = createWorldTerrain(
               this.HsConfig.createWorldTerrainOptions
             );
             this.viewer.terrainProvider = terrain_provider;
           } else {
-            this.viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+            this.viewer.terrainProvider = new CesiumTerrainProvider({
               url: data.url,
             });
           }
@@ -181,7 +199,7 @@ export class HsCesiumLayersService {
     //console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const to_remove = [];
     ol_source.cesium_layer.entities.values.forEach((entity) => {
-      if (ol_source.getFeatureById(entity.id) == null) {
+      if (ol_source.getFeatureById(entity.id) === null) {
         to_remove.push(entity.id);
       }
     });
@@ -230,8 +248,8 @@ export class HsCesiumLayersService {
   }
 
   syncFeatures(ol_source) {
-    const tmp_source = new Cesium.GeoJsonDataSource('tmp');
-    Cesium.GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
+    const tmp_source = new GeoJsonDataSource('tmp');
+    GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
       const firstProjection =
         'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]';
       const secondProjection =
@@ -241,11 +259,7 @@ export class HsCesiumLayersService {
       const ya = coordinates[1];
 
       const newCoordinates = proj4(firstProjection, secondProjection, [xa, ya]);
-      return Cesium.Cartesian3.fromDegrees(
-        newCoordinates[0],
-        newCoordinates[1],
-        0
-      );
+      return Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const promise = tmp_source.load(
@@ -301,7 +315,7 @@ export class HsCesiumLayersService {
       }
       const cesium_layer = this.convertOlToCesiumProvider(lyr);
       if (angular.isDefined(cesium_layer)) {
-        if (this.HsUtilsService.instOf(cesium_layer, Cesium.ImageryLayer)) {
+        if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(lyr, cesium_layer);
           this.viewer.imageryLayers.add(cesium_layer);
         } else {
@@ -316,13 +330,10 @@ export class HsCesiumLayersService {
 
   convertOlToCesiumProvider(ol_lyr) {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
-      return new Cesium.ImageryLayer(
-        new Cesium.OpenStreetMapImageryProvider(),
-        {
-          show: ol_lyr.getVisible(),
-          minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15,
-        }
-      );
+      return new ImageryLayer(new OpenStreetMapImageryProvider(), {
+        show: ol_lyr.getVisible(),
+        minimumTerrainLevel: ol_lyr.minimumTerrainLevel || 15,
+      });
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
       return this.createTileProvider(ol_lyr);
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), ImageWMS)) {
@@ -345,13 +356,13 @@ export class HsCesiumLayersService {
       angular.isDefined(ol_lyr.getSource().getFormat()) &&
       this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
     ) {
-      return Cesium.KmlDataSource.load(ol_lyr.getSource().getUrl(), {
+      return KmlDataSource.load(ol_lyr.getSource().getUrl(), {
         camera: this.viewer.scene.camera,
         canvas: this.viewer.scene.canvas,
         clampToGround: ol_lyr.getSource().get('clampToGround') || true,
       });
     } else {
-      const new_source = new Cesium.GeoJsonDataSource(ol_lyr.get('title'));
+      const new_source = new GeoJsonDataSource(ol_lyr.get('title'));
       ol_lyr.cesium_layer = new_source; //link to cesium layer will be set also for OL layers source object, when this function returns.
       ol_lyr.on('change:visible', (e) => {
         e.target.cesium_layer.show = ol_lyr.getVisible();
@@ -372,7 +383,7 @@ export class HsCesiumLayersService {
     }
     params.FROMCRS = 'EPSG:4326';
     const prm_cache = {
-      url: new Cesium.Resource({
+      url: new Resource({
         url: src.getUrls()[0],
         proxy: new MyProxy(
           this.HsConfig.proxyPrefix
@@ -383,9 +394,7 @@ export class HsCesiumLayersService {
       }),
       layers: src.getParams().LAYERS,
       dimensions: ol_lyr.get('dimensions'),
-      getFeatureInfoFormats: [
-        new Cesium.GetFeatureInfoFormat('text', 'text/plain'),
-      ],
+      getFeatureInfoFormats: [new GetFeatureInfoFormat('text', 'text/plain')],
       enablePickFeatures: true,
       parameters: params,
       getFeatureInfoParameters: {
@@ -397,8 +406,8 @@ export class HsCesiumLayersService {
       maximumLevel: params.maximumLevel,
       minimumLevel: params.minimumLevel,
     };
-    const tmp = new Cesium.ImageryLayer(
-      new Cesium.WebMapServiceImageryProvider(
+    const tmp = new ImageryLayer(
+      new WebMapServiceImageryProvider(
         this.removeUnwantedParams(prm_cache, src)
       ),
       {
@@ -425,7 +434,7 @@ export class HsCesiumLayersService {
     }
     params.FROMCRS = 'EPSG:4326';
     const prm_cache = {
-      url: new Cesium.Resource({
+      url: new Resource({
         url: src.getUrl(),
         proxy: new MyProxy(
           this.HsConfig.proxyPrefix
@@ -436,12 +445,10 @@ export class HsCesiumLayersService {
       }),
       layers: src.getParams().LAYERS,
       dimensions: ol_lyr.get('dimensions'),
-      getFeatureInfoFormats: [
-        new Cesium.GetFeatureInfoFormat('text', 'text/plain'),
-      ],
+      getFeatureInfoFormats: [new GetFeatureInfoFormat('text', 'text/plain')],
       enablePickFeatures: true,
       parameters: params,
-      tilingScheme: new Cesium.WebMercatorTilingScheme(),
+      tilingScheme: new WebMercatorTilingScheme(),
       getFeatureInfoParameters: {
         VERSION: params.VERSION,
         CRS: 'EPSG:4326',
@@ -452,8 +459,8 @@ export class HsCesiumLayersService {
       tileHeight: 1024,
     };
 
-    const tmp = new Cesium.ImageryLayer(
-      new Cesium.WebMapServiceImageryProvider(
+    const tmp = new ImageryLayer(
+      new WebMapServiceImageryProvider(
         this.removeUnwantedParams(prm_cache, src)
       ),
       {
@@ -478,8 +485,8 @@ export class HsCesiumLayersService {
       : new_value;
     layer.prm_cache.parameters[parameter] = new_value;
     this.layersToBeDeleted.push(layer);
-    const tmp = new Cesium.ImageryLayer(
-      new Cesium.WebMapServiceImageryProvider(layer.prm_cache),
+    const tmp = new ImageryLayer(
+      new WebMapServiceImageryProvider(layer.prm_cache),
       {
         alpha: layer.alpha,
         show: layer.show,
