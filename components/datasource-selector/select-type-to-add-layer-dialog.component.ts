@@ -1,5 +1,5 @@
 export default {
-  template: require('./select-type-to-add-layer-dialog.html'),
+  template: require('./partials/select-type-to-add-layer-dialog.html'),
   bindings: {
     layer: '<',
     types: '<',
