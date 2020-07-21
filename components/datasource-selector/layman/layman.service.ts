@@ -4,7 +4,7 @@ import * as angular from 'angular';
  * @param $q
  * @param HsUtilsService
  */
-export default function ($http, $q, HsUtilsService) {
+export const HsLaymanService = function ($http, $q, HsUtilsService) {
   'ngInject';
   const me = this;
   angular.extend(me, {

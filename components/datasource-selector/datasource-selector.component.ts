@@ -1,7 +1,7 @@
 import './layman/layman.service';
 import * as angular from 'angular';
 
-export default {
+export const HsDatasourcesComponent = {
   template: require('./partials/datasource_selector.html'),
   controller: function (
     $scope,

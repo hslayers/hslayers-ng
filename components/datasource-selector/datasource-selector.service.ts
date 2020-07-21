@@ -20,7 +20,7 @@ import * as angular from 'angular';
  * @param forDatasourceBrowserFilter
  * @param $compile
  */
-export default function (
+export const HsDatasourcesService = function (
   $rootScope,
   $timeout,
   HsConfig,

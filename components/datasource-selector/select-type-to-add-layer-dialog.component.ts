@@ -1,4 +1,4 @@
-export default {
+export const HsSelectTypeToAddLayerDialogComponent = {
   template: require('./partials/select-type-to-add-layer-dialog.html'),
   bindings: {
     layer: '<',
