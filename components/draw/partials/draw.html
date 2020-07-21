@@ -77,11 +77,11 @@
         <div class="card" [hidden]="!useIndividualStyle">
             <div class="card-header h5 p-1 pl-4">
                 <span>Defined style</span>
-                <div class="hs-styler-selected-color-box" ng-style="drawStyle()">
+                <div class="hs-styler-selected-color-box" [ngStyle]="drawStyle()">
                 </div>
             </div>
             <span>Color</span>
-            <hs-styler-color-component class="m-auto" (click)="updateStyle()" (colorChange)="save()"  [(color)]="fillcolor"></hs-styler-color-component>
+            <hs-styler-color-component class="m-auto" (click)="updateStyle()"  [(color)]="fillcolor"></hs-styler-color-component>
             <div [hidden]="HsDrawService.type == 'LineString'">
                 <label>Fill opacity: {{opacity}}</label>
                 <input type="range" step="0.01" min="0" max="1" class="form-control m-auto"
