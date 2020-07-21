@@ -12,7 +12,7 @@
             <div class="hs-lm-item-title hover">{{layer.Title}}</div>
         </li>
     </ul>
-    
+
     <div class="card panel-default hs-wmts-layerpanel" ng-show="currentLayer!=null">
         <div class="card-body">
             <form>
@@ -22,7 +22,7 @@
                         <select class="form-control" ng-model="image_format">
                             <option ng-repeat="i in currentLayer.Format">{{i}}</option>
                         </select>
-                    </div>      
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -31,7 +31,7 @@
                         <select class="form-control" ng-model="style">
                             <option ng-repeat="i in currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
                         </select>
-                    </div>      
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -40,8 +40,8 @@
                         <select class="form-control" ng-model="tileMatrixSet">
                             <option ng-repeat="i in currentLayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
                         </select>
-                    </div>      
-                </div>                     
+                    </div>
+                </div>
             <!-- Footer -->
             </form>
         </div>
@@ -49,5 +49,5 @@
             <button class="btn btn-success" ng-click="addLayer(currentLayer)">Connect</button>
         </div>
     </div>
-    
+
 </form>

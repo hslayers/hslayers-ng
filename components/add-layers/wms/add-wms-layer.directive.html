@@ -35,20 +35,21 @@
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-danger" ng-show="data.useResampling" translate>Map and layer projection do
-            not
-            match! Resampling will be used. This may lead to unexpectable results.</p>
+        <p class="col-sm-12 alert alert-danger" ng-show="data.useResampling" translate>
+            Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.
+        </p>
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox" ng-model="data.useTiles" /> Use
-                    tiles</label>
+                <label class="capabilities_label control-label"> <input type="checkbox" ng-model="data.useTiles" />
+                    Use tiles
+                </label>
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-warning" ng-show="!data.useTiles" translate>Consider using tiles. Some servers
-            have
-            restricted max size of picture.</p>
+        <p class="col-sm-12 alert alert-warning" ng-show="!data.useTiles" translate>
+            Consider using tiles. Some servers have restricted max size of picture.
+        </p>
 
         <div class="form-group">
             <div class="input-group">
@@ -71,7 +72,7 @@
         <div class="form-group">
             <div class="capabilities_input">
                 <label class="capabilities_label control-label" translate> <input type="checkbox"
-                        ng-model="data.registerMetadata" /> Register metadata</label>
+                    ng-model="data.registerMetadata" />Register metadata</label>
             </div>
         </div>
         <hr />

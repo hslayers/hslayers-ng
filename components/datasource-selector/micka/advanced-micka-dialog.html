@@ -1,5 +1,5 @@
 <div ng-class="{'in': modalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog"
-     aria-hidden="true">
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,14 +7,14 @@
                     Extended search parameters for Micka
                 </h4>
                 <button type="button" ng-click="modalVisible = false" class="close" data-dismiss="modal"><span
-                        aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
+                    aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
                     <label class="form-group">
                         <translate class="control-label">Fulltext</translate>
                         <input type="text" class="form-control" ng-model="datasourceSelectorService.data.query.textFilter"/>
-                    </label>  
+                    </label>
                     <div>
                         <label class="radio-inline">
                             <input type="radio" ng-model="datasourceSelectorService.data.textField" value="AnyText"> All
@@ -28,7 +28,7 @@
                         </label>
                     </div>
 
-                    <label class="form-group"> 
+                    <label class="form-group">
                         <translate class="control-label">Keywords</translate>
                         <div class="input-group">
                             <input type="text" class="form-control"
@@ -39,8 +39,8 @@
                             </div>
                         </div>
                     </label>
-                    
-                    <label class="form-group"> 
+
+                    <label class="form-group">
                         <translate class="control-label">Organization name</translate>
                         <div class="input-group">
                             <input type="text" class="form-control"
@@ -52,7 +52,7 @@
                         </div>
                     </label>
 
-                    <label class="form-group" ng-show='false'> 
+                    <label class="form-group" ng-show='false'>
                         <translate class="control-label">Type</translate>
                         <select class="form-control"
                             ng-model="datasourceSelectorService.data.query.type"
@@ -64,19 +64,19 @@
                             <option value="featureCatalogue">Feature catalogue</option>
                         </select>
                     </label>
-                    <!--                                    
+                    <!--
                     <div class="form-group" ng-show="query.type=='application' || query.type=='service'">
                         <label class="control-label" translate>
                             <span ng-show="query.type=='application'">Application type:</span>
                             <span ng-show="query.type=='service'">Service type:</span>
-                        </label> 
-                        <select class="form-control" ng-model="query.ServiceType">  
+                        </label>
+                        <select class="form-control" ng-model="query.ServiceType">
                             <option ng-repeat="type in micka_ds.level2_types" ng-attr-value="{{type.value}}">{{type.name}}</option>
                         </select>
                     </div>
                     -->
 
-                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'"> 
+                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'">
                         <translate class="control-label">Topic category</translate>
 
                         <select class="form-control"
@@ -85,8 +85,8 @@
                                 ng-attr-value="{{type.value}}">{{type.name}}</option>
                         </select>
                     </label>
-                    
-                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'"> 
+
+                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'">
                         <translate class="control-label">Scale</translate> 1:
                         <select class="form-control"
                             ng-model="datasourceSelectorService.data.query.Denominator">
@@ -100,8 +100,8 @@
                         </select>
                     </label>
 
-                    
-                    <label class="form-group" ng-show='false'> 
+
+                    <label class="form-group" ng-show='false'>
                         <translate class="control-label">Order by</translate>
                         <select class="form-control"
                             ng-model="datasourceSelectorService.data.query.sortby">
