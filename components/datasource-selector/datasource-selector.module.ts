@@ -4,7 +4,7 @@ import '../layout';
 import * as angular from 'angular';
 import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
 import datasourceSelectorComponent from './datasource-selector.component';
-import datasourceSelectorMapService from './datasource-selector.map-service';
+import datasourceSelectorMapService from './datasource-selector-map.service';
 import datasourceSelectorService from './datasource-selector.service';
 import forDatasourceBrowserFilter from './for-datasource-browser.filter';
 import laymanService from './layman/layman.service';
