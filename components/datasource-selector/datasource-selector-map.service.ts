@@ -10,7 +10,7 @@ import {transform} from 'ol/proj';
  * @param HsMapService
  * @param $log
  */
-export default function ($timeout, HsMapService, $log) {
+export const HsDatasourcesMapService = function ($timeout, HsMapService, $log) {
   'ngInject';
   const me = this;
 
