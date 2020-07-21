@@ -15,7 +15,10 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
             element[0].querySelector('.hs-page-content').appendChild(cesiumDir[0]);
           }
         }
-      } catch (err) { /* failed to require */ }
+      } catch (err) {
+        console.error(err);
+        /* failed to require */
+      }
 
 
       HsCore.init(element, {

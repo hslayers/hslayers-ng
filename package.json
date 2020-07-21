@@ -107,6 +107,7 @@
     "angular-update-meta": "2.1.0",
     "angularjs-bootstrap-datetimepicker": "^1.1.4",
     "bootstrap": ">=4.4.1",
+    "cesium": "^1.71.0",
     "clipboard": "^2.0.4",
     "cors-anywhere": "^0.4.1",
     "dynamic-pub-path-plugin": "0.0.4",
@@ -131,8 +132,8 @@
     "rxjs": "^6.5.5",
     "tinycolor2": "^1.4.1",
     "ttf2eot": "^2.0.0",
-    "zone.js": "^0.10.3",
     "vega": "5.13.0",
-    "vega-embed": "6.10.0"
+    "vega-embed": "6.10.0",
+    "zone.js": "^0.10.3"
   }
 }

@@ -131,7 +131,7 @@ angular
         click: toggleCesiumMap,
       });
 
-      HsEventBusService.layerManagerDimensionChanges.subscribe((data) =>
+      HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
         HsCesiumService.dimensionChanged(data.layer, data.dimension)
       );
 
