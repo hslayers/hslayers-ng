@@ -1,5 +1,5 @@
 export class HsConfig {
-  cesiumTime: boolean;
+  cesiumTime: any;
   componentsEnabled: any;
   mapInteractionsEnabled: boolean;
   allowAddExternalDatasets: boolean;
@@ -8,7 +8,7 @@ export class HsConfig {
   box_layers: Array<any>;
   senslog: any;
   cesiumdDebugShowFramesPerSecond: boolean;
-  cesiumShadows: boolean;
+  cesiumShadows: number;
   cesiumBase: string;
   createWorldTerrainOptions: any;
   terrain_provider: any;
