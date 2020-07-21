@@ -252,7 +252,7 @@ export class HsLayoutService {
     // For backwards-compatibility
     if (angular.isDefined(HsConfig.locationButtonVisible)) {
       $log.warn(
-        'config.locationButtonVisible parameter is deprecated. Use config.panelsEnabled.geolocationButton instead'
+        'config.locationButtonVisible parameter is deprecated. Use config.componentsEnabled.geolocationButton instead'
       );
       if (angular.isUndefined(HsConfig.componentsEnabled)) {
         HsConfig.componentsEnabled = {};
