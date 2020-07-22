@@ -11,7 +11,7 @@ import {transform, transformExtent} from 'ol/proj';
  * @param HsMickaFiltersService
  * @param $log
  */
-export const HsMickaService = function (
+export const HsMickaBrowserService = function (
   HsMapService,
   $http,
   $q,
