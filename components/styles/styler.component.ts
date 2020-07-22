@@ -6,7 +6,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service.js';
-import {HsMapService} from '../map/map.service.js';
 import {HsStylerService} from '../styles/styler.service';
 
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
@@ -53,7 +52,6 @@ export class HsStylerComponent {
   layerTitle: any;
 
   constructor(
-    private HsMapService: HsMapService,
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
     private http: HttpClient,
@@ -61,7 +59,7 @@ export class HsStylerComponent {
     public sanitizer: DomSanitizer
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (HsLayoutService.mainpanel == 'styler' && !this.icons) {
+      if (this.HsLayoutService.mainpanel == 'styler' && !this.icons) {
         this.icons = [
           require('./img/svg/bag1.svg'),
           require('./img/svg/banking4.svg'),
