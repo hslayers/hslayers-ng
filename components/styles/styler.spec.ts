@@ -16,12 +16,10 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {
   HttpClientTestingModule,
-  HttpTestingController,
 } from '@angular/common/http/testing';
 
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
-import { stringValue } from 'vega';
 
 class emptyMock {
   constructor() {}
