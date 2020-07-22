@@ -140,11 +140,13 @@ export class HsStylerComponent {
     }
     const source: any = this.getLayerSource(this.HsStylerService.layer);
     const style_json: styleJson = {};
+    //FILL
     if (this.fillcolor !== undefined && this.fillcolor !== null) {
       style_json.fill = new Fill({
         color: this.fillcolor['background-color'],
       });
     }
+    //STROKE WIDTH
     if (
       this.linecolor !== undefined &&
       this.linecolor !== null &&
@@ -155,6 +157,7 @@ export class HsStylerComponent {
         width: this.linewidth !== undefined ? this.linewidth.toFixed(0) : 1,
       });
     }
+    //
     if (this.imagetype != 'none') {
       if (
         this.imagetype == 'circle' &&

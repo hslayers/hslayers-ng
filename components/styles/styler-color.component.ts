@@ -14,6 +14,9 @@ export class HsStylerColorComponent {
       'background-color': 'rgba(244, 235, 55, 1)',
     },
     {
+      'background-color': 'rgba(0, 0, 0, 1)',
+    },
+    {
       'background-color': 'rgba(205, 220, 57, 1)',
     },
     {
@@ -96,9 +99,6 @@ export class HsStylerColorComponent {
     },
     {
       'background-color': 'rgba(119, 119, 119, 1)',
-    },
-    {
-      'background-color': 'rgba(0, 0, 0, 1)',
     },
   ];
 
