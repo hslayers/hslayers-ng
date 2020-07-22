@@ -2,7 +2,7 @@
 
 import './components/add-layers/add-layers.module';
 import './components/core';
-import './components/datasource-selector/datasource-selector.module';
+import './components/datasource-selector';
 import './components/draw/draw.module';
 import './components/info/info.module';
 import './components/legend';

@@ -3,10 +3,13 @@ import * as angular from 'angular';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMickaBrowserService} from './micka/micka.service';
+import {HsMickaFilterService} from './micka/micka-filters.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 export class HsDatasourcesService {
   data: any = {};
@@ -30,13 +33,13 @@ export class HsDatasourcesService {
     private $rootScope,
     private HsConfig: HsConfig,
     private HsAddLayersVectorService: HsAddLayersVectorService,
-    HsEventBusService,
-    HsMickaFiltersService,
+    private HsEventBusService: HsEventBusService,
+    private HsMickaFilterService,
     private HsMickaBrowserService,
     private HsLaymanBrowserService,
     private HsLayoutService: HsLayoutService,
     private HsCommonEndpointsService: HsCommonEndpointsService,
-    HsUtilsService,
+    private HsUtilsService: HsUtilsService,
     private HsDatasourcesMapService: HsDatasourcesMapService,
     private HsForDatasourceBrowserFilter,
     private $compile
@@ -57,7 +60,7 @@ export class HsDatasourcesService {
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
-      HsMickaFiltersService.fillCodesets();
+      this.HsMickaFilterService.fillCodesets();
     }
 
     if (this.HsConfig.allowAddExternalDatasets === undefined) {
@@ -66,12 +69,12 @@ export class HsDatasourcesService {
 
     this.$rootScope.$on(
       'map.extent_changed',
-      HsUtilsService.debounce(
+      this.HsUtilsService.debounce(
         (e) => {
           if (!this.panelVisible()) {
             return;
           }
-          if (HsMickaFiltersService.filterByExtent) {
+          if (this.HsMickaFilterService.filterByExtent) {
             this.queryCatalogs();
           }
         },
@@ -81,10 +84,10 @@ export class HsDatasourcesService {
       )
     );
 
-    HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
         this.queryCatalogs();
-        HsMickaFiltersService.fillCodesets();
+        this.HsMickaFilterService.fillCodesets();
       }
       this.calcExtentLayerVisibility();
     });

@@ -36,6 +36,7 @@ import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import { HsDatasourcesModule } from '../datasource-selector';
 
 @NgModule({
   declarations: [],
@@ -43,6 +44,7 @@ import {NgModule} from '@angular/core';
     CommonModule,
     BrowserModule,
     HttpClientModule,
+    HsDatasourcesModule,
     HsLayoutModule,
     HsLegendModule,
     HsMeasureModule,
