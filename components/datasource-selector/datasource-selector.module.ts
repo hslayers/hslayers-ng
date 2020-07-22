@@ -3,6 +3,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsDatasourcesComponent} from './datasource-selector.component';
+import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 
@@ -11,7 +12,7 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
   declarations: [HsDatasourcesComponent],
   imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
   exports: [HsDatasourcesComponent],
-  providers: [HsDatasourcesService],
+  providers: [HsDatasourcesService, HsDatasourcesMapService],
   entryComponents: [HsDatasourcesComponent],
 })
 export class HsDatasourcesModule {}

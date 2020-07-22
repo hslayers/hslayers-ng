@@ -11,12 +11,12 @@ import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesModule} from './datasource-selector.module';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
-import {HsLaymanService} from './layman/layman.service';
+import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
-import {HsMickaService} from './micka/micka.service';
 import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
 import {downgrade} from '../../common/downgrader';
-import {downgradeComponent} from '@angular/upgrade/static';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedDatasourcesModule = downgrade(HsDatasourcesModule);
 
@@ -75,7 +75,10 @@ angular
    * @description Service for calling catalogue loaders and managing layers -
    * initiating adding to map, downloading, storing layer extents
    */
-  .factory('HsDatasourceBrowserService', HsDatasourcesService)
+  .service(
+    'HsDatasourceBrowserService',
+    downgradeInjectable(HsDatasourcesService)
+  )
 
   /**
    * @module hs.datasource_selector
@@ -83,7 +86,10 @@ angular
    * @ngdoc controller
    * @description Service of composition module which deal ith OpenLayers map objects
    */
-  .factory('HsDataSourceSelectorMapService', HsDatasourcesMapService)
+  .service(
+    'HsDataSourceSelectorMapService',
+    downgradeInjectable(HsDatasourcesMapService)
+  )
 
   /**
    * @ngdoc service
@@ -100,7 +106,7 @@ angular
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
    */
-  .factory('HsMickaBrowserService', HsMickaService)
+  .factory('HsMickaBrowserService', HsMickaBrowserService)
 
   /**
    * @ngdoc service
@@ -108,7 +114,7 @@ angular
    * @memberOf hs.datasource_selector
    * @description Service for querying layer from Layman
    */
-  .factory('HsLaymanBrowserService', HsLaymanService)
+  .factory('HsLaymanBrowserService', HsLaymanBrowserService)
 
   /**
    * @ngdoc component

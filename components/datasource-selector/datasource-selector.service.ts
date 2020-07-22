@@ -1,110 +1,147 @@
+import * as HsCommonEndpointsService from '../../common/endpoints/endpoints.service';
 import * as angular from 'angular';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsConfig} from '../../config.service';
+import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
+import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMickaBrowserService} from './micka/micka.service';
 
-/* eslint-disable angular/on-watch */
-/**
- * @param $rootScope
- * @param $timeout
- * @param OlMap
- * @param HsCore
- * @param HsConfig
- * @param HsAddLayersVectorService
- * @param HsEventBusService
- * @param HsMickaFiltersService
- * @param HsMickaBrowserService
- * @param HsLaymanBrowserService
- * @param HsLayoutService
- * @param $log
- * @param HsCommonEndpointsService
- * @param HsUtilsService
- * @param HsDataSourceSelectorMapService
- * @param forDatasourceBrowserFilter
- * @param $compile
- */
-export const HsDatasourcesService = function (
-  $rootScope,
-  $timeout,
-  HsConfig,
-  HsAddLayersVectorService,
-  HsEventBusService,
-  HsMickaFiltersService,
-  HsMickaBrowserService,
-  HsLaymanBrowserService,
-  HsLayoutService,
-  HsCommonEndpointsService,
-  HsUtilsService,
-  HsDataSourceSelectorMapService,
-  forDatasourceBrowserFilter,
-  $compile
-) {
-  'ngInject';
-  const me = this;
+export class HsDatasourcesService {
+  data: any = {};
 
-  this.data = {};
+  /**
+   * @param $rootScope
+   * @param HsConfig
+   * @param HsAddLayersVectorService
+   * @param HsEventBusService
+   * @param HsMickaFiltersService
+   * @param HsMickaBrowserService
+   * @param HsLaymanBrowserService
+   * @param HsLayoutService
+   * @param HsCommonEndpointsService
+   * @param HsUtilsService
+   * @param HsDataSourceSelectorMapService
+   * @param forDatasourceBrowserFilter
+   * @param $compile
+   */
+  constructor(
+    private $rootScope,
+    private HsConfig: HsConfig,
+    private HsAddLayersVectorService: HsAddLayersVectorService,
+    HsEventBusService,
+    HsMickaFiltersService,
+    private HsMickaBrowserService,
+    private HsLaymanBrowserService,
+    private HsLayoutService: HsLayoutService,
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    HsUtilsService,
+    private HsDatasourcesMapService: HsDatasourcesMapService,
+    private HsForDatasourceBrowserFilter,
+    private $compile
+  ) {
+    'ngInject';
 
-  this.data.query = {
-    textFilter: '',
-    title: '',
-    type: 'service',
-    Subject: '',
-  };
+    this.data.query = {
+      textFilter: '',
+      title: '',
+      type: 'service',
+      Subject: '',
+    };
 
-  this.data.textField = 'AnyText';
-  this.data.selectedLayer = null;
-  this.data.wms_connecting = false;
-  this.data.id_selected = 'OWS';
+    this.data.textField = 'AnyText';
+    this.data.selectedLayer = null;
+    this.data.wms_connecting = false;
+    this.data.id_selected = 'OWS';
+
+    if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
+      this.queryCatalogs();
+      HsMickaFiltersService.fillCodesets();
+    }
+
+    if (this.HsConfig.allowAddExternalDatasets === undefined) {
+      this.HsConfig.allowAddExternalDatasets = true;
+    }
+
+    this.$rootScope.$on(
+      'map.extent_changed',
+      HsUtilsService.debounce(
+        (e) => {
+          if (!this.panelVisible()) {
+            return;
+          }
+          if (HsMickaFiltersService.filterByExtent) {
+            this.queryCatalogs();
+          }
+        },
+        500,
+        false,
+        this
+      )
+    );
+
+    HsEventBusService.mainPanelChanges.subscribe(() => {
+      if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
+        this.queryCatalogs();
+        HsMickaFiltersService.fillCodesets();
+      }
+      this.calcExtentLayerVisibility();
+    });
+  }
 
   /**
    * @function queryCatalogs
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @description Queries all configured catalogs for datasources (layers)
    */
-  this.queryCatalogs = function () {
-    HsDataSourceSelectorMapService.clearExtentLayer();
-    HsCommonEndpointsService.endpoints.forEach((endpoint) => {
+  queryCatalogs(): void {
+    this.HsDatasourcesMapService.clearExtentLayer();
+    this.HsCommonEndpointsService.endpoints.forEach((endpoint) => {
       if (endpoint.datasourcePaging) {
         endpoint.datasourcePaging.start = 0;
       }
-      me.queryCatalog(endpoint);
+      this.queryCatalog(endpoint);
     });
-  };
+  }
 
   /**
    * @function queryCatalog
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @param {object} catalog Configuration of selected datasource (from app config)
    * @description Loads datasets metadata from selected source (CSW server).
    * Uses pagination set by 'start' attribute of 'dataset' param.
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-  this.queryCatalog = function (catalog) {
-    HsDataSourceSelectorMapService.clearDatasetFeatures(catalog);
+  queryCatalog(catalog): void {
+    this.HsDatasourcesMapService.clearDatasetFeatures(catalog);
     switch (catalog.type) {
       case 'micka':
-        HsMickaBrowserService.queryCatalog(
+        this.HsMickaBrowserService.queryCatalog(
           catalog,
-          me.data.query,
-          HsDataSourceSelectorMapService.addExtentFeature,
-          me.data.textField
+          this.data.query,
+          this.HsDatasourcesMapService.addExtentFeature,
+          this.data.textField
         );
         break;
       case 'layman':
-        HsLaymanBrowserService.queryCatalog(catalog);
+        this.HsLaymanBrowserService.queryCatalog(catalog);
         break;
       default:
         break;
     }
-  };
+  }
 
   /**
    * @function layerDownload
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} Download url of layer if possible
    * Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
    */
-  this.layerDownload = function (ds, layer) {
+  layerDownload(ds, layer): string {
     if (ds.download == true) {
       if (
         ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) >
@@ -115,41 +152,41 @@ export const HsDatasourcesService = function (
       }
     }
     return '#';
-  };
+  }
 
   /**
    * @function layerRDF
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} URL to record file
    * Get URL for RDF-DCAT record of selected layer
    */
-  this.layerRDF = function (ds, layer) {
+  layerRDF(ds, layer): string {
     return `${ds.url}?request=GetRecordById&id=${layer.id}&outputschema=http://www.w3.org/ns/dcat%23`;
-  };
+  }
 
   /**
    * @function addLayerToMap
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
    * Add selected layer to map (into layer manager) if possible
    */
-  this.addLayerToMap = async function (ds, layer, type) {
+  async addLayerToMap(ds, layer, type) {
     let describer = Promise.resolve({type: 'none'});
     if (ds.type == 'micka') {
-      describer = HsMickaBrowserService.describeWhatToAdd(ds, layer);
+      describer = this.HsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type == 'layman') {
-      describer = HsLaymanBrowserService.describeWhatToAdd(ds, layer);
+      describer = this.HsLaymanBrowserService.describeWhatToAdd(ds, layer);
     }
-    describer.then(async (whatToAdd) => {
+    describer.then(async (whatToAdd: any) => {
       if (type !== undefined) {
         whatToAdd.type = type;
       }
       if (Array.isArray(whatToAdd.type)) {
-        const scope = $rootScope.$new();
+        const scope = this.$rootScope.$new();
         Object.assign(scope, {
           types: whatToAdd.type,
           layer,
@@ -158,16 +195,16 @@ export const HsDatasourcesService = function (
         const el = angular.element(
           '<hs-select-type-to-add-layer-dialog layer="layer" endpoint="endpoint" types="types"></hs-select-type-to-add-layer-dialog>'
         );
-        HsLayoutService.contentWrapper
+        this.HsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
-        $compile(el)(scope);
+        this.$compile(el)(scope);
         return;
       }
       if (whatToAdd.type == 'WMS') {
-        me.datasetSelect('OWS');
-        $timeout(() => {
-          $rootScope.$broadcast(
+        this.datasetSelect('OWS');
+        setTimeout(() => {
+          this.$rootScope.$broadcast(
             'ows.filling',
             whatToAdd.type.toLowerCase(),
             decodeURIComponent(whatToAdd.link),
@@ -175,7 +212,7 @@ export const HsDatasourcesService = function (
           );
         });
       } else if (whatToAdd.type == 'WFS') {
-        const layer = await HsAddLayersVectorService.addVectorLayer(
+        const layer = await this.HsAddLayersVectorService.addVectorLayer(
           'wfs',
           whatToAdd.link,
           whatToAdd.title,
@@ -183,9 +220,9 @@ export const HsDatasourcesService = function (
           whatToAdd.projection,
           {extractStyles: whatToAdd.extractStyles}
         );
-        HsAddLayersVectorService.fitExtent(layer);
+        this.HsAddLayersVectorService.fitExtent(layer);
       } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-        const layer = await HsAddLayersVectorService.addVectorLayer(
+        const layer = await this.HsAddLayersVectorService.addVectorLayer(
           whatToAdd.type.toLowerCase(),
           whatToAdd.link,
           whatToAdd.title,
@@ -193,92 +230,57 @@ export const HsDatasourcesService = function (
           whatToAdd.projection,
           {extractStyles: whatToAdd.extractStyles}
         );
-        HsAddLayersVectorService.fitExtent(layer);
+        this.HsAddLayersVectorService.fitExtent(layer);
       } else {
-        HsLayoutService.setMainPanel('layermanager');
+        this.HsLayoutService.setMainPanel('layermanager');
       }
     });
-  };
+  }
 
-  me.datasetSelect = function (id_selected) {
-    me.data.wms_connecting = false;
-    me.data.id_selected = id_selected;
-    me.calcEntentLayerVisibility();
-  };
+  datasetSelect(id_selected): void {
+    this.data.wms_connecting = false;
+    this.data.id_selected = id_selected;
+    this.calcExtentLayerVisibility();
+  }
 
   /**
    * @function clear
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * Clear query variable
    */
-  this.clear = function () {
-    me.data.query.textFilter = '';
-    me.data.query.title = '';
-    me.data.query.Subject = '';
-    me.data.query.keywords = '';
-    me.data.query.OrganisationName = '';
-    me.data.query.sortby = '';
-  };
-
-  /**
-   *
-   */
-  function dataSourceExistsAndEmpty() {
-    return (
-      forDatasourceBrowserFilter(HsCommonEndpointsService.endpoints).filter(
-        (ep) => ep.datasourcePaging.loaded === undefined
-      ).length > 0
-    );
+  clear(): void {
+    this.data.query.textFilter = '';
+    this.data.query.title = '';
+    this.data.query.Subject = '';
+    this.data.query.keywords = '';
+    this.data.query.OrganisationName = '';
+    this.data.query.sortby = '';
   }
 
   /**
    *
    */
-  function panelVisible() {
+  dataSourceExistsAndEmpty(): boolean {
     return (
-      HsLayoutService.panelVisible('datasource_selector') ||
-      HsLayoutService.panelVisible('datasourceBrowser')
+      this.HsForDatasourceBrowserFilter(
+        this.HsCommonEndpointsService.endpoints
+      ).filter((ep) => ep.datasourcePaging.loaded === undefined).length > 0
     );
   }
 
-  if (dataSourceExistsAndEmpty() && panelVisible()) {
-    me.queryCatalogs();
-    HsMickaFiltersService.fillCodesets();
-  }
-
-  if (HsConfig.allowAddExternalDatasets === undefined) {
-    HsConfig.allowAddExternalDatasets = true;
-  }
-
-  HsEventBusService.mapExtentChanges.subscribe(
-    HsUtilsService.debounce(
-      (e) => {
-        if (!panelVisible()) {
-          return;
-        }
-        if (HsMickaFiltersService.filterByExtent) {
-          me.queryCatalogs();
-        }
-      },
-      500,
-      false,
-      me
-    )
-  );
-
-  HsEventBusService.mainPanelChanges.subscribe(() => {
-    if (dataSourceExistsAndEmpty() && panelVisible()) {
-      me.queryCatalogs();
-      HsMickaFiltersService.fillCodesets();
-    }
-    me.calcEntentLayerVisibility();
-  });
-
-  me.calcEntentLayerVisibility = function () {
-    HsDataSourceSelectorMapService.extentLayer.setVisible(
-      panelVisible() && me.data.id_selected != 'OWS'
+  /**
+   *
+   */
+  panelVisible(): boolean {
+    return (
+      this.HsLayoutService.panelVisible('datasource_selector') ||
+      this.HsLayoutService.panelVisible('datasourceBrowser')
     );
-  };
+  }
 
-  return me;
+  calcExtentLayerVisibility(): void {
+    this.HsDatasourcesMapService.extentLayer.setVisible(
+      this.panelVisible() && this.data.id_selected != 'OWS'
+    );
+  }
 }
