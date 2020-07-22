@@ -22,7 +22,7 @@ export const downgradedDatasourcesModule = downgrade(HsDatasourcesModule);
 
 /**
  * @namespace hs.datasource_selector
- * @memberOf hs
+ * @memberof hs
  */
 angular
   .module(downgradedDatasourcesModule, [
@@ -34,7 +34,7 @@ angular
   /**
    * @ngdoc directive
    * @name hs.datasourceSelector.metadataDialogDirective
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Directive for displaying metadata about data source
    */
   .directive(
@@ -45,7 +45,7 @@ angular
   /**
    * @ngdoc directive
    * @name hs.advMickaDialog
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Directive for displaying extended search parameters for
    * Micka catalogue service
    */
@@ -54,7 +54,7 @@ angular
   /**
    * @ngdoc directive
    * @name hs.mickaSuggestionsDialog
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Directive for displaying suggestions for search parameters for Micka catalogue service
    */
   .directive('hs.mickaSuggestionsDialog', mickaSuggestionsDialogDirective)
@@ -62,7 +62,7 @@ angular
   /**
    * @ngdoc directive
    * @name hs.mickaFiltersDirective
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Directive for providing basic html elements for Micka
    * metadata filtering
    */
@@ -71,7 +71,7 @@ angular
   /**
    * @ngdoc service
    * @name HsMickaFiltersService
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Service for calling catalogue loaders and managing layers -
    * initiating adding to map, downloading, storing layer extents
    */
@@ -94,7 +94,7 @@ angular
   /**
    * @ngdoc service
    * @name HsMickaFiltersService
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Service for managing micka query filter parameters and
    * their possible values i.e. suggestions
    */
@@ -103,7 +103,7 @@ angular
   /**
    * @ngdoc service
    * @name HsMickaBrowserService
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
    */
   .factory('HsMickaBrowserService', HsMickaBrowserService)
@@ -111,7 +111,7 @@ angular
   /**
    * @ngdoc service
    * @name HsLaymanBrowserService
-   * @memberOf hs.datasource_selector
+   * @memberof hs.datasource_selector
    * @description Service for querying layer from Layman
    */
   .factory('HsLaymanBrowserService', HsLaymanBrowserService)
@@ -122,7 +122,10 @@ angular
    * @name hs.datasourceSelector
    * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas.
    */
-  .component('hs.datasourceSelector', HsDatasourcesComponent)
+  .directive(
+    'hs.datasourceSelector',
+    downgradeComponent({component: HsDatasourcesComponent})
+  )
 
   .component(
     'hsSelectTypeToAddLayerDialog',
