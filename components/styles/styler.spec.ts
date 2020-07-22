@@ -14,10 +14,14 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
-import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
+import { stringValue } from 'vega';
 
 class emptyMock {
   constructor() {}
@@ -60,11 +64,12 @@ describe('HsStyler', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule,HttpClientTestingModule],
+      imports: [FormsModule, HttpClientTestingModule],
       declarations: [HsStylerComponent],
-      providers: [HsStylerService,
+      providers: [
+        HsStylerService,
         {provide: HsLayoutService, useValue: new emptyMock()},
-    ],
+      ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);
     service = TestBed.get(HsStylerService);
@@ -83,5 +88,11 @@ describe('HsStyler', () => {
     expect(component.hasPoly).toBe(true);
     expect(component.hasPoint).toBe(true);
   });
-
+  it('styleChange', () => {
+    component.fillcolor = {
+      'background-color': 'rgba(244, 235, 55, 1)',
+    };
+    component.save();
+    expect(service.layer.getStyle().getFill()).toBeDefined()
+  });
 });
