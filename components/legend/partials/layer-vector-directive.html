@@ -2,7 +2,7 @@
     <div class="col-sm-2">
         <div *ngFor="let style of layerStyle">
             <div *ngIf="style.icon && geometry == 'point'">
-                <img [ngStyle]="style.style" [src]="style.icon.src" />
+                <img [ngStyle]="style.style" [src]="sanitizer.bypassSecurityTrustResourceUrl(style.icon.src)" />
             </div>
             <div *ngIf="style.defaultCircle && geometry == 'point'">
                 <svg [ngStyle]="style.style">
