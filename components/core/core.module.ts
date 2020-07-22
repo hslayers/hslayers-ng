@@ -1,7 +1,3 @@
-/**
- * @namespace hs.legend
- * @memberOf hs
- */
 import {
   HsCommonEndpointsServiceProvider,
   HsCommonLaymanServiceProvider,
@@ -14,6 +10,7 @@ import {
 } from '../../ajs-upgraded-providers';
 import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
+import {HsDatasourcesModule} from '../datasource-selector';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
 import {HsGeolocationModule} from './../geolocation';
@@ -57,6 +54,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
   imports: [
     HsGeolocationModule,
     HttpClientModule,
+    HsDatasourcesModule,
     HsLayoutModule,
     HsLegendModule,
     HsMeasureModule,
