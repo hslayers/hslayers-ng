@@ -160,6 +160,7 @@ export const HsMickaBrowserService = function (
         hs_notqueryable: true,
         highlighted: false,
         title: record.title || record.name,
+        geometry: null,
       };
       let b = null;
       if (typeof record.bbox === 'string') {
@@ -249,7 +250,7 @@ export const HsMickaBrowserService = function (
      * in a common format for use in add-layers component
      */
     describeWhatToAdd(ds, layer) {
-      let whatToAdd = {type: 'none'};
+      let whatToAdd: any = {type: 'none'};
       const type = layer.type || layer.trida;
       return new Promise((resolve, reject) => {
         if (type == 'service') {
@@ -322,4 +323,4 @@ export const HsMickaBrowserService = function (
     },
   });
   return me;
-}
+};

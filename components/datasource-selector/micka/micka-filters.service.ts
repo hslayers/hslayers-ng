@@ -75,19 +75,19 @@ export const HsMickaFilterService = function ($http, $q, HsUtilsService, HsCommo
           const oParser = new DOMParser();
           const oDOM = oParser.parseFromString(j.data, 'application/xml');
           const doc = oDOM.documentElement;
-          doc.querySelectorAll('map serviceType value').forEach((type) => {
+          doc.querySelectorAll('map serviceType value').forEach((type: any) => {
             ds.code_lists.serviceType.push({
               value: type.attributes.name.value,
               name: type.innerHTML,
             });
           });
-          doc.querySelectorAll('map applicationType value').forEach((type) => {
+          doc.querySelectorAll('map applicationType value').forEach((type: any) => {
             ds.code_lists.applicationType.push({
               value: type.attributes.name.value,
               name: type.innerHTML,
             });
           });
-          doc.querySelectorAll('map topicCategory value').forEach((type) => {
+          doc.querySelectorAll('map topicCategory value').forEach((type: any) => {
             ds.code_lists.topicCategory.push({
               value: type.attributes.name.value,
               name: type.innerHTML,

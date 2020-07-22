@@ -2,7 +2,7 @@
 
 import './components/add-layers/add-layers.module';
 import './components/core';
-import './components/datasource-selector/datasource-selector.module';
+import './components/datasource-selector';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
