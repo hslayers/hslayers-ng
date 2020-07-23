@@ -11,7 +11,7 @@
                         </div>
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
                             <a *ngIf="viewMode == 'sensors'" class="hs-sensor" href="" (click)="sensorClicked(sensor)">
-                                <b>{{sensor.sensor_name}}</b> <translate>measure</translate> {{sensor.phenomenon_name}}</a>
+                                <b>{{sensor.sensor_name}}</b><span class="ml-1" i18n>measure</span> {{sensor.phenomenon_name}}</a>
                             <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" href="" (click)="sensorClicked(sensor)">
                                 {{sensor.phenomenon_name}}</a>
                         </div>
