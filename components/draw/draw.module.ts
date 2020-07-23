@@ -1,7 +1,6 @@
 import '../core/';
 import '../map/map.module';
 import '../utils/utils.module';
-import * as angular from 'angular';
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
@@ -10,7 +9,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
-import {HsStylerModule} from '../styles/styles.module'
+import {HsStylerModule} from '../styles/styles.module';
 
 import {FormsModule} from '@angular/forms';
 import {HsDrawComponent} from './draw.component';

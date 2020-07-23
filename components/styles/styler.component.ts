@@ -1,14 +1,13 @@
-/* eslint-disable angular/window-service */
-/* eslint-disable angular/document-service */
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerService} from '../styles/styler.service';
 
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+import {Layer} from 'ol/layer';
 
 interface styleJson {
   fill?: any;
@@ -41,6 +40,7 @@ export class HsStylerComponent {
   radius = 5;
   linewidth = 2;
   iconlinewidth = 2;
+  iconimage: any;
   fillcolor: any;
   linecolor: any;
   iconfillcolor: any;
@@ -49,7 +49,7 @@ export class HsStylerComponent {
   hasLine: any;
   hasPoly: any;
   hasPoint: any;
-  layerTitle: any;
+  layerTitle: string;
 
   constructor(
     private HsStylerService: HsStylerService,
@@ -113,13 +113,14 @@ export class HsStylerComponent {
       this.updateHasVectorFeatures();
     });
   }
+
   /**
    * @function save
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
    * @description Get current style variables value and style current layer accordingly
-   * @param layer
+   * @param {Layer} layer
    */
-  getLayerSource(layer) {
+  getLayerSource(layer: Layer) {
     let src = [];
     if (layer.getSource().getSource !== undefined) {
       src = layer.getSource().getSource();
@@ -129,7 +130,7 @@ export class HsStylerComponent {
     return src;
   }
 
-  save() {
+  save(): void {
     if (!this.HsStylerService.layer) {
       return;
     }
@@ -216,12 +217,11 @@ export class HsStylerComponent {
 
   /**
    * @function iconSelected
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
    * @param {string} i Icon name
    * @description Load selected SVG icon from folder and use it for layer
    */
-
-  iconSelected = function (i) {
+  iconSelected(i: string): void {
     const headers = new HttpHeaders();
     headers.set('Accept', 'image/svg+xml');
     this.http
@@ -233,14 +233,14 @@ export class HsStylerComponent {
           this.save();
         }, 0);
       });
-  };
+  }
 
   /**
    * @function colorIcon
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
    * @description Change colors of selected icon based on user input. Decode modifyied icon into Base-64
    */
-  colorIcon() {
+  colorIcon(): void {
     const iconPreview = document.getElementsByClassName(
       'hs-styler-selected-icon-box'
     )[0];
@@ -263,24 +263,26 @@ export class HsStylerComponent {
 
   /**
    * @function setImageType
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
    * @params {String} t New image type
    * @description Change image type for point geometry and redraw style
    * @param t
    */
-  setImageType = function (t) {
+  setImageType(t): void {
     this.imagetype = t;
     this.save();
-  };
-  layermanager = function () {
+  }
+
+  layermanager(): void {
     this.HsLayoutService.setMainPanel('layermanager');
-  };
+  }
+
   /**
    * @function updateHasVectorFeatures
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
-  updateHasVectorFeatures() {
+  updateHasVectorFeatures(): void {
     if (this.HsStylerService.layer === null) {
       return;
     }
@@ -300,11 +302,12 @@ export class HsStylerComponent {
 
   /**
    * @function calculateHasLinePointPoly
-   * @memberOf hs.styler.controller
+   * @memberof hs.styler.controller
+   * @private
    * @description (PRIVATE) Calculate vector type if not specified in layer metadata
    * @param src
    */
-  calculateHasLinePointPoly(src) {
+  calculateHasLinePointPoly(src): void {
     src.hasLine = false;
     src.hasPoly = false;
     src.hasPoint = false;

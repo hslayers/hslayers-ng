@@ -14,9 +14,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
-import {
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
@@ -91,6 +89,6 @@ describe('HsStyler', () => {
       'background-color': 'rgba(244, 235, 55, 1)',
     };
     component.save();
-    expect(service.layer.getStyle().getFill()).toBeDefined()
+    expect(service.layer.getStyle().getFill()).toBeDefined();
   });
 });

@@ -1,5 +1,3 @@
-/* eslint-disable angular/document-service */
-/* eslint-disable angular/timeout-service */
 import Collection from 'ol/Collection';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
@@ -10,12 +8,12 @@ import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service.js';
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../core/log.service';
-import {HsMapService} from '../map/map.service.js';
-import {HsQueryBaseService} from '../query/query-base.service.js';
-import {HsQueryVectorService} from '../query/query-vector.service.js';
+import {HsMapService} from '../map/map.service';
+import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryVectorService} from '../query/query-vector.service';
 
 import {Injectable} from '@angular/core';
 
@@ -25,7 +23,7 @@ interface activateParams {
   onSelected?;
   onDeselected?;
   changeStyle?;
-  drawState?;
+  drawState?: boolean;
 }
 
 @Injectable({
@@ -81,7 +79,7 @@ export class HsDrawService {
     });
   }
 
-  selectedLayerString() {
+  selectedLayerString(): string {
     if (this.selectedLayer) {
       return this.selectedLayer.get('title') == 'tmpDrawLayer'
         ? 'Unsaved drawing'
@@ -91,7 +89,7 @@ export class HsDrawService {
     }
   }
 
-  saveDrawingLayer(addNewLayer = false) {
+  saveDrawingLayer(addNewLayer = false): void {
     let tmpTitle = 'Draw layer'; //this.gettext()
     const tmpLayer =
       addNewLayer === true
@@ -121,7 +119,7 @@ export class HsDrawService {
     );
   }
 
-  setType(what) {
+  setType(what): boolean {
     if (this.type == what) {
       this.type = null;
       this.deactivateDrawing();
@@ -156,18 +154,18 @@ export class HsDrawService {
     return true;
   }
 
-  addDrawLayer(layer) {
+  addDrawLayer(layer): void {
     this.HsMapService.map.addLayer(layer);
     this.fillDrawableLayers();
   }
 
   /**
    * @function updateStyle
-   * @memberOf HsDrawService
+   * @memberof HsDrawService
    * @param {Function} changeStyle controller callback function
    * @description Update draw style without neccessity to reactivate drawing interaction
    */
-  updateStyle(changeStyle) {
+  updateStyle(changeStyle): void {
     if (this.draw) {
       this.currentStyle = changeStyle();
       this.draw.getOverlay().setStyle(this.currentStyle);
@@ -176,9 +174,9 @@ export class HsDrawService {
 
   /**
    * (PRIVATE) Helper function which returns currently selected style.
-   *
+   * @private
    * @function useCurrentStyle
-   * @memberOf HsDrawService
+   * @memberof HsDrawService
    */
   useCurrentStyle() {
     if (!this.currentStyle) {
@@ -187,7 +185,7 @@ export class HsDrawService {
     return this.currentStyle;
   }
 
-  onDrawEnd(e) {
+  onDrawEnd(e): void {
     if (!this.selectedLayer.get('editor')) {
       return;
     }
@@ -209,10 +207,11 @@ export class HsDrawService {
       });
     }
   }
+
   /**
    * Re-enables getFeatureInfo info and cleans up after drawing
    */
-  afterDrawEnd() {
+  afterDrawEnd(): void {
     if (this.draw) {
       this.draw.setActive(false);
     }
@@ -220,11 +219,11 @@ export class HsDrawService {
     this.HsQueryBaseService.activateQueries();
   }
 
-  removeLastPoint() {
+  removeLastPoint(): void {
     this.draw.removeLastPoint();
   }
 
-  changeDrawSource() {
+  changeDrawSource(): void {
     if (this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)) {
       this.source = this.selectedLayer.getSource().getSource();
     } else {
@@ -241,11 +240,11 @@ export class HsDrawService {
 
   /**
    * @function deactivateDrawing
-   * @memberOf HsDrawService
+   * @memberof HsDrawService
    * @returns {Promise}
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
    */
-  deactivateDrawing() {
+  deactivateDrawing(): Promise<undefined> {
     return new Promise((resolve, reject) => {
       this.HsMapService.loaded().then((map) => {
         this.afterDrawEnd();
@@ -258,7 +257,7 @@ export class HsDrawService {
     });
   }
 
-  stopDrawing() {
+  stopDrawing(): void {
     if (!this.draw || this.draw === null) {
       return;
     }
@@ -273,7 +272,7 @@ export class HsDrawService {
     this.modify.setActive(false);
   }
 
-  startDrawing() {
+  startDrawing(): void {
     try {
       if (this.draw.getActive()) {
         this.draw.finishDrawing();
@@ -284,7 +283,7 @@ export class HsDrawService {
     this.draw.setActive(true);
   }
 
-  fillDrawableLayers() {
+  fillDrawableLayers(): void {
     const tmp = this.HsMapService.map
       .getLayers()
       .getArray()
@@ -301,7 +300,7 @@ export class HsDrawService {
 
   /**
    * @function activateDrawing
-   * @memberOf HsDrawService
+   * @memberof HsDrawService
    * @param {object} options Options object
    * @param {Function} [options.onDrawStart] Callback function called when drawing is started
    * @param {Function} [options.onDrawEnd] Callback function called when drawing is finished
@@ -313,7 +312,6 @@ export class HsDrawService {
    * creating the interactions
    * @description Add drawing interaction to map. Partial interactions are Draw, Modify and Select. Add Event listeners for drawstart, drawend and (de)selection of feature.
    */
-
   activateDrawing({
     onDrawStart,
     onDrawEnd = (e) => this.onDrawEnd(e),
@@ -321,7 +319,7 @@ export class HsDrawService {
     onDeselected,
     changeStyle,
     drawState = true,
-  }: activateParams) {
+  }: activateParams): void {
     this.onDeselected = onDeselected;
     this.onSelected = onSelected;
     this.deactivateDrawing().then(() => {

@@ -1,9 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Injector} from '@angular/core';
-
 import {HsDialogComponent} from '../layout/dialog-component.interface';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsMapService} from '../map/map.service';
 
 @Component({
@@ -21,16 +17,18 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   path: string;
 
   constructor(private HsMapService: HsMapService) {}
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.layer = this.data.selectedLayer;
     this.title = this.layer.get('title');
     this.path = this.layer.get('path');
   }
-  titleChanged() {
+
+  titleChanged(): void {
     this.layer.set('title', this.title);
   }
 
-  confirm() {
+  confirm(): void {
     const dic = {};
 
     const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
@@ -60,11 +58,11 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     this.data.tmpDrawLayer = false;
   }
 
-  pathChanged() {
+  pathChanged(): void {
     this.layer.set('path', this.path);
   }
 
-  addAttr() {
+  addAttr(): void {
     this.attributes.push({id: Math.random(), name: '', value: ''});
   }
 }

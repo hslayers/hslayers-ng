@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
