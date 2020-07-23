@@ -8,13 +8,13 @@
             data-toggle="dropdown" aria-haspopup="true"
             [hidden]="!(HsDrawService.drawableLayers.length == 0 && HsDrawService.type)"
             (click)="HsDrawService.saveDrawingLayer()"
-            ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}">
+            style="max-width: 125px; overflow: hidden; font-size: smaller">
             Unsaved drawing
         </button>
         <button type="button" class="btn btn-light btn-secondary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" [hidden]="HsDrawService.drawableLayers.length == 0"
             (click)="layersExpanded = !layersExpanded" [attr.aria-expanded]="layersExpanded"
-            ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}"
+            style="max-width: 125px; overflow: hidden; font-size: smaller"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
             {{HsDrawService.selectedLayerString()}}
         </button>
@@ -39,7 +39,7 @@
             [ngClass]="{active: HsDrawService.type=='Polygon' }" (click)="setType('Polygon')"  data-toggle="tooltip"
             title="Polygon"><i class="icon-polygonlasso"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
-            [ngClass]="{active: HsDrawService.type=='LineString' }" (click)="setType('LineString')" 
+            [ngClass]="{active: HsDrawService.type=='LineString' }" (click)="setType('LineString')"
             data-toggle="tooltip" title="Line">
             <i class="icon-line"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary" *ngIf="HsDrawService.drawActive"

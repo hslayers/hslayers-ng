@@ -25,9 +25,13 @@ export class HsDrawComponent {
     private HsLayoutService: HsLayoutService
   ) {}
 
-  activateDrawing(withStyle): void {
+  activateDrawing(withStyle?): void {
     this.HsDrawService.activateDrawing({
-      changeStyle: withStyle ? this.changeStyle : undefined,
+      changeStyle: withStyle
+        ? () => {
+            this.changeStyle();
+          }
+        : undefined,
     });
   }
 
@@ -54,7 +58,7 @@ export class HsDrawComponent {
 
   /**
    * @function changeStyle
-   * @memberof HsDrawController
+   * @memberof HsDrawComponent
    * @param {Event} e optional parameter passed when changeStyle is called
    * for 'ondrawend' event features
    * @description Dynamically create draw feature style according to parameters selected in
