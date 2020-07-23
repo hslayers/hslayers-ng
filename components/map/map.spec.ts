@@ -13,6 +13,12 @@ describe('hs.map', () => {
   beforeEach(() => {
     /* Mocks start ===== */
     angular
+    .module('hs.core', [])
+    .service('HsCore', function () {})
+    .service('HsEventBusService', function () {
+    });
+
+    angular
       .module('hs.utils', [])
       .service('HsUtilsService', function () {
         this.debounce = function () {};
@@ -33,7 +39,7 @@ describe('hs.map', () => {
     });
     /* Mocks end ===== */
     angular
-      .module('hs.map', ['hs', 'ng', 'hs.utils', 'hs.layout', 'gettext'])
+      .module('hs.map', ['hs', 'ng', 'hs.utils', 'hs.layout', 'gettext', 'hs.core'])
       .service('HsMapService', HsMapService);
     angular.mock.module('hs.map');
   });
