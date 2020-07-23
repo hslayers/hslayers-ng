@@ -1,4 +1,6 @@
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+import {Feature} from 'ol';
+
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -47,7 +49,7 @@ export class HsStylerService {
   });
   constructor() {}
 
-  pin_white_blue_highlight(feature, resolution) {
+  pin_white_blue_highlight(feature: Feature, resolution): Array<Style> {
     return [
       new Style({
         image: new Icon({

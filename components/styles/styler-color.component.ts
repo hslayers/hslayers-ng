@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Injector} from '@angular/core';
 
 @Component({
   selector: 'hs-styler-color-component',
@@ -107,7 +106,8 @@ export class HsStylerColorComponent {
   };
 
   constructor() {}
-  colorSelected(col) {
+
+  colorSelected(col): void {
     this.color = col;
     this.colorChange.emit(this.color);
   }

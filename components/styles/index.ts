@@ -12,7 +12,7 @@ import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 export const downgradedModule = downgrade(HsStylerModule);
 /**
  * @namespace hs.styles
- * @memberOf hs
+ * @memberof hs
  */
 angular
   .module(downgradedModule, ['hs.map'])

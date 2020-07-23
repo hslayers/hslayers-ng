@@ -3,9 +3,8 @@ import {Component} from '@angular/core';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-
 import {HsDrawService} from './draw.service';
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
   selector: 'hs-draw',
@@ -26,12 +25,13 @@ export class HsDrawComponent {
     private HsLayoutService: HsLayoutService
   ) {}
 
-  activateDrawing(withStyle) {
+  activateDrawing(withStyle): void {
     this.HsDrawService.activateDrawing({
       changeStyle: withStyle ? this.changeStyle : undefined,
     });
   }
-  setType(what) {
+
+  setType(what): void {
     const type = this.HsDrawService.setType(what);
     if (type) {
       this.activateDrawing(
@@ -40,7 +40,7 @@ export class HsDrawComponent {
     }
   }
 
-  selectLayer(layer) {
+  selectLayer(layer): void {
     if (layer != this.HsDrawService.selectedLayer) {
       this.HsDrawService.selectedLayer = layer;
       this.HsDrawService.changeDrawSource();
@@ -48,19 +48,20 @@ export class HsDrawComponent {
     this.layersExpanded = false;
   }
 
-  updateStyle() {
+  updateStyle(): void {
     this.HsDrawService.updateStyle(this.changeStyle);
   }
+
   /**
    * @function changeStyle
-   * @memberOf HsDrawController
+   * @memberof HsDrawController
    * @param {Event} e optional parameter passed when changeStyle is called
    * for 'ondrawend' event features
    * @description Dynamically create draw feature style according to parameters selected in
    * hs.styler.colorDirective
    * @returns {Array} Array of style definitions
    */
-  changeStyle = (e = null) => {
+  changeStyle(e = null): Style {
     const newStyle = new Style({
       stroke: new Stroke({
         color: this.fillcolor['background-color'],
@@ -85,7 +86,8 @@ export class HsDrawComponent {
       }),
     });
     return newStyle;
-  };
+  }
+
   drawStyle() {
     return {
       'background-color':
