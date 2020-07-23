@@ -16,7 +16,6 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
           }
         }
       } catch (err) {
-        console.error(err);
         /* failed to require */
       }
 
