@@ -4,11 +4,8 @@ import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
-import {HsConfig} from '../../config.service';
 import {HsDrawService} from './draw.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service.js';
-import {HsMapService} from '../map/map.service.js';
 
 @Component({
   selector: 'hs-draw',
@@ -25,10 +22,7 @@ export class HsDrawComponent {
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
 
   constructor(
-    private HsMapService: HsMapService,
     private HsDrawService: HsDrawService,
-    private HsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayoutService: HsLayoutService
   ) {}
 
