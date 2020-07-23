@@ -190,7 +190,7 @@ export class HsStylerComponent {
           const icon_json = {
             img: img,
             imgSize: [img.width, img.height],
-            anchor: [0.6, 0.8],
+            anchor: [0.5, 1],
             crossOrigin: 'anonymous',
           };
           style_json.image = new Icon(icon_json);
