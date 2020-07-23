@@ -32,12 +32,14 @@ describe('compositions', function () {
         this.compositionLoadStarts = new Subject();
         this.compositionDeletes = new Subject();
         this.mainPanelChanges = new Subject();
+        this.mapExtentChanges = new Subject();
       });
 
     angular
       .module('hs.utils', [])
       .service('HsUtilsService', function () {
         this.debounce = function () {};
+        this.proxify = function(url){return url}
       })
       .service('HsLayerUtilsService', function () {});
 
@@ -282,6 +284,7 @@ describe('compositions', function () {
   it('compositions list should load', function () {
     const ctrl = $componentController('hs.compositions', {$scope: scope}, {});
     ctrl.compositions = [];
+    scope.filterByExtent = false;
 
     /*
             if (!(req.url.indexOf('www.whatstheplan.eu/p4b-dev/cat/catalogue') > 0))
@@ -293,8 +296,11 @@ describe('compositions', function () {
       url: 'http://cat.ccss.cz/csw/',
       type: 'micka',
       title: 'SuperCAT',
-      start: 0,
-      limit: 15,
+      compositionsPaging: {
+        start: 0,
+        limit: 15,
+        loaded: false,
+      },
     };
     scope.loadCompositions(ds).then(function () {
       expect(ds.compositions).toBeDefined();
