@@ -141,7 +141,12 @@ export class HsMapService {
      * @type {object}
      * @description Set of default map controls used in HSLayers, may be loaded from config file
      */
-    const defaultDesktopControls = controlDefaults();
+    const defaultDesktopControls = controlDefaults({
+      attributionOptions: {
+        collapsible: true,
+        collapsed: true,
+      }
+    });
 
     //creates custom default view control
     const setDefaultView = function (e) {
