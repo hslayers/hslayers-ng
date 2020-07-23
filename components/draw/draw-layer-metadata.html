@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex flex-column">
-                <div class="d-flex w-100 align-items-center"> 
+                <div class="d-flex w-100 align-items-center">
                     <h4 class="modal-title" i18n>
                         New drawing layer
                     </h4>
@@ -22,7 +22,7 @@
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
                         <a href="" class="p-1 mb-1" (click)="folderVisible = !folderVisible" i18n>Advanced options</a>
                     </div>
-                    <div ng-show="folderVisible">
+                    <div [hidden]="!folderVisible">
                         <div class="form-group">
                             <label class="control-label" i18n>Folder</label>
                             <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
