@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialog-component.interface';
+import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 @Component({
@@ -8,11 +9,12 @@ import {HsLayerManagerService} from './layermanager.service';
 })
 export class HsLayerManagerRemoveAllDialogComponent
   implements HsDialogComponent {
-  removeAllModalVisible = true;
   @Input() data: any;
+  viewRef: ViewRef;
 
   constructor(
     private HsLayerManagerService: HsLayerManagerService,
+    private HsDialogContainerService: HsDialogContainerService,
     private HsEventBusService: HsEventBusService
   ) {}
 
@@ -23,6 +25,10 @@ export class HsLayerManagerRemoveAllDialogComponent
         this.HsLayerManagerService.composition_id
       );
     }
-    this.removeAllModalVisible = false;
+    this.close();
+  }
+
+  close(): void {
+    this.HsDialogContainerService.destroy(this);
   }
 }

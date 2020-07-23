@@ -8,8 +8,14 @@ import {Subject} from 'rxjs';
 export class HsDialogContainerService {
   dialogs: Array<any> = [];
   dialogObserver: Subject<any> = new Subject();
+  dialogDestroyObserver: Subject<any> = new Subject();
+
   constructor() {}
   create(component: Type<any>, data: any): void {
     this.dialogObserver.next(new HsDialogItem(component, data));
+  }
+
+  destroy(component: HsDialogComponent){
+    this.dialogDestroyObserver.next(component);
   }
 }

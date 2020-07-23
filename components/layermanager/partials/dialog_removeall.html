@@ -1,17 +1,17 @@
-<div [ngClass]="{'in': removeAllModalVisible}" class="modal hs-remove-all-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal hs-remove-all-dialog in" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" i18n>
                     Layer manager
                 </h4>
-                <button type="button" (click)="removeAllModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" i18n>Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" i18n>Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto" i18n>Do you really want to remove all layers?</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" i18n (click)="removeAllLayers(true, false); removeAllModalVisible = false" data-dismiss="modal">Remove all added layers</button>
+                <button type="button" class="btn btn-primary" i18n (click)="removeAllLayers(true, false);" data-dismiss="modal">Remove all added layers</button>
                 <button type="button" class="btn btn-primary" *ngIf="composition_id" i18n (click)="removeAllLayers(true)" data-dismiss="modal">Reload composition</button>
-                <button type="button" class="btn btn-secondary" (click)="removeAllModalVisible = false" data-dismiss="modal" i18n>No</button>
+                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal" i18n>No</button>
             </div>
         </div>
     </div>

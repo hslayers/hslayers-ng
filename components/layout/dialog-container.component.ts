@@ -21,6 +21,16 @@ export class HsDialogContainerComponent {
         this.loadDialog(item);
       }
     );
+    this.HsDialogContainerService.dialogDestroyObserver.subscribe(
+      (item: HsDialogComponent) => {
+        this.destroyDialog(item);
+      }
+    );
+  }
+
+  destroyDialog(dialog: HsDialogComponent) {
+    const viewContainerRef = this.dialogHost.viewContainerRef;
+    viewContainerRef.remove(viewContainerRef.indexOf(dialog.viewRef));
   }
 
   loadDialog(dialogItem: HsDialogItem): void {
@@ -31,6 +41,7 @@ export class HsDialogContainerComponent {
     //    viewContainerRef.clear();
 
     const componentRef = viewContainerRef.createComponent(componentFactory);
+    (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
   }
 }
