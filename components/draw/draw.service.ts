@@ -1,8 +1,10 @@
+import * as GeometryType from 'ol/geom/GeometryType';
 import Collection from 'ol/Collection';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {Layer} from 'ol/layer';
 
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
@@ -31,10 +33,14 @@ interface activateParams {
 })
 export class HsDrawService {
   drawableLayers: Array<any> = [];
-  draw: any;
+  draw: Draw;
   modify: any;
-  type: any;
-  selectedLayer: any;
+  /**
+   * @type {GeometryType}
+   * @memberof HsDrawService
+   */
+  type: string; //string of type GeometryType
+  selectedLayer: Layer;
   tmpDrawLayer: any;
   source: any;
   drawActive = false;
@@ -130,22 +136,23 @@ export class HsDrawService {
         this.tmpDrawLayer = false;
       }
       return false;
-    } else {
-      if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
-        const drawLayer = new VectorLayer({
-          title: 'tmpDrawLayer',
-          source: new Vector(),
-          show_in_manager: false,
-          visible: true,
-          removable: true,
-          editable: true,
-          synchronize: true,
-          path: this.HsConfig.defaultDrawLayerPath || 'User generated',
-        });
-        this.tmpDrawLayer = true;
-        this.selectedLayer = drawLayer;
-        this.addDrawLayer(drawLayer);
-      }
+    }
+    //console.log(this.drawableLayers);
+    //console.log(this.selectedLayer);
+    if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
+      const drawLayer = new VectorLayer({
+        title: 'tmpDrawLayer',
+        source: new Vector(),
+        show_in_manager: false,
+        visible: true,
+        removable: true,
+        editable: true,
+        synchronize: true,
+        path: this.HsConfig.defaultDrawLayerPath || 'User generated',
+      });
+      this.tmpDrawLayer = true;
+      this.selectedLayer = drawLayer;
+      this.addDrawLayer(drawLayer);
     }
     this.type = what;
     this.source = this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)
@@ -154,7 +161,7 @@ export class HsDrawService {
     return true;
   }
 
-  addDrawLayer(layer): void {
+  addDrawLayer(layer: Layer): void {
     this.HsMapService.map.addLayer(layer);
     this.fillDrawableLayers();
   }
@@ -284,18 +291,18 @@ export class HsDrawService {
   }
 
   fillDrawableLayers(): void {
-    const tmp = this.HsMapService.map
+    const drawables = this.HsMapService.map
       .getLayers()
       .getArray()
       .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
-    if (tmp.length > 0 && this.selectedLayer === null) {
-      this.selectedLayer = tmp[0];
+    if (drawables.length > 0 && !this.selectedLayer) {
+      this.selectedLayer = drawables[0];
     }
-    if (tmp.length == 0 && this.selectedLayer === null) {
+    if (drawables.length == 0 && !this.selectedLayer) {
       this.type = null;
       this.deactivateDrawing();
     }
-    this.drawableLayers = tmp;
+    this.drawableLayers = drawables;
   }
 
   /**
@@ -326,7 +333,7 @@ export class HsDrawService {
       this.HsQueryBaseService.deactivateQueries();
       this.draw = new Draw({
         source: this.source,
-        type: /** @type {ol.geom.GeometryType} */ this.type,
+        type: /** @type {GeometryType} */ this.type,
         style: changeStyle ? changeStyle() : undefined,
       });
 
