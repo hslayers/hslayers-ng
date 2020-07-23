@@ -34,7 +34,7 @@
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" (click)="layersExpanded = !layersExpanded"
-                        aria-expanded="{{layersExpanded}}">
+                        [attr.aria-expanded]="layersExpanded">
                         {{HsDrawService.selectedLayerString()}}
                     </button>
                     <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
