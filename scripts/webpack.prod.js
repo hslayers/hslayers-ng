@@ -12,7 +12,7 @@
  * - Allow to load html angularjs partials (i.e all html files under src folder) as url ->
  *
  */
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -30,6 +30,7 @@ module.exports = merge(common, {
   },
   plugins: [],
   optimization: {
+    usedExports: true,
     minimizer: [
       // JS minifier/uglifier
       new TerserPlugin({
@@ -73,7 +74,13 @@ module.exports = merge(common, {
         use: [
           {
             loader: 'html-loader',
-            options: {minimize: true},
+            options: {
+              minimize: {
+                removeComments: false,
+                collapseWhitespace: false,
+                caseSensitive: true,
+              },
+            },
           },
         ],
       },
