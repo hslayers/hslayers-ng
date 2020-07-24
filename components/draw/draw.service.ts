@@ -47,7 +47,25 @@ export class HsDrawService {
   selectedFeatures: any = new Collection();
   onSelected: any;
   currentStyle: any;
-  defaultStyle: any;
+  defaultStyle: Style = new Style({
+    stroke: new Stroke({
+      color: 'rgba(0, 153, 255, 1)',
+      width: 1.25,
+    }),
+    fill: new Fill({
+      color: 'rgba(255,255,255,0.4)',
+    }),
+    image: new Circle({
+      radius: 5,
+      fill: new Fill({
+        color: 'rgba(255,255,255,0.4)',
+      }),
+      stroke: new Stroke({
+        color: 'rgba(0, 153, 255, 1)',
+        width: 1.25,
+      }),
+    }),
+  });
   onDeselected: any;
 
   constructor(
