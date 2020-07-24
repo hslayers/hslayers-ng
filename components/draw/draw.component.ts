@@ -27,11 +27,7 @@ export class HsDrawComponent {
 
   activateDrawing(withStyle?): void {
     this.HsDrawService.activateDrawing({
-      changeStyle: withStyle
-        ? () => {
-            this.changeStyle();
-          }
-        : undefined,
+      changeStyle: withStyle ? () => this.changeStyle() : undefined,
     });
   }
 
@@ -53,7 +49,7 @@ export class HsDrawComponent {
   }
 
   updateStyle(): void {
-    this.HsDrawService.updateStyle(this.changeStyle);
+    this.HsDrawService.updateStyle(() => this.changeStyle());
   }
 
   /**
