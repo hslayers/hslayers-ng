@@ -13,7 +13,7 @@
         </button>
         <button type="button" class="btn btn-light btn-secondary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" [hidden]="HsDrawService.drawableLayers.length == 0"
-            (click)="layersExpanded = !layersExpanded" [attr.aria-expanded]="layersExpanded"
+            (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() " [attr.aria-expanded]="layersExpanded"
             style="max-width: 125px; overflow: hidden; font-size: smaller"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
             {{HsDrawService.selectedLayerString()}}

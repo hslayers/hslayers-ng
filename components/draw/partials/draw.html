@@ -33,7 +33,7 @@
                 <p class="m-0 p-0" style="color: blue;">Drawing to:</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" (click)="layersExpanded = !layersExpanded"
+                        data-toggle="dropdown" aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
                         [attr.aria-expanded]="layersExpanded">
                         {{HsDrawService.selectedLayerString()}}
                     </button>

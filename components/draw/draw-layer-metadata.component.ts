@@ -4,7 +4,7 @@ import {HsMapService} from '../map/map.service';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
-  template: require('./draw-layer-metadata.html'),
+  template: require('./partials/draw-layer-metadata.html'),
 })
 export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   @Input() data: any;
