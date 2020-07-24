@@ -74,7 +74,13 @@ module.exports = merge(common, {
         use: [
           {
             loader: 'html-loader',
-            options: {minimize: true},
+            options: {
+              minimize: {
+                removeComments: false,
+                collapseWhitespace: false,
+                caseSensitive: true,
+              },
+            },
           },
         ],
       },
