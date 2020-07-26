@@ -7,6 +7,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -38,6 +39,17 @@ export class HsLayerListComponent {
       this.sortLayersByPosition();
     });
   }
+  
+  /**
+   * @function layerLoaded
+   * @memberOf hs.layermanager-layerlist
+   * @param {Layer} layer Selected layer
+   * @description Test if selected layer is loaded in map
+   */
+  layerLoaded(layer: Layer): boolean {
+    return this.HsLayerUtilsService.layerLoaded(layer);
+  }
+
 
   changeSublayerVisibilityState(layer, state) {
     if (layer.layer.checkedSubLayers) {
