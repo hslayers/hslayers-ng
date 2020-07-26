@@ -1,7 +1,7 @@
 <div class="card panel-">
     <div class="card-body" *ngIf="currentLayer != undefined">
         <!-- Sublayers-->
-        <div *ngIf="!currentLayer.sublayers" class="form-group">
+        <div [hidden]="!currentLayer.sublayers" class="form-group">
             <div *ngFor="let subLayer of getSubLayers()">
                 <hs-layer-editor-sub-layer-checkbox [(subLayer)]="subLayer"></hs-layer-editor-sub-layer-checkbox>
             </div>
