@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
   template: require('./partials/sub-layer-checkboxes.html'),
 })
 export class HsLayerEditorSubLayerCheckboxesComponent {
+  @Input() subLayer: any;
   expanded = false;
   checkedSubLayers: any;
   withChildren: any;
@@ -21,6 +22,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   }
 
   subLayerIsString(subLayer: any): boolean {
+    console.log(subLayer)
     return typeof subLayer == 'string';
   }
 
