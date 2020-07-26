@@ -31,7 +31,7 @@
                     <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer]" (change)="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])" [attr.id]="'hs-sublayers-'+subLayer">
                     <label class="form-check-label" [attr.for]="'hs-sublayers-'+subLayer">{{subLayer}}</label>
                 </div>
-                <hs-layer-editor-sub-layer-checkbox *ngIf="!subLayerIsString(subLayer)"></hs-layer-editor-sub-layer-checkbox>
+                <hs-layer-editor-sub-layer-checkbox [(subLayer)]="subLayer" *ngIf="!subLayerIsString(subLayer)"></hs-layer-editor-sub-layer-checkbox>
             </div>
         </div>
 

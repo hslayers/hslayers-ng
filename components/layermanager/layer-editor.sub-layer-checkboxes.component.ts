@@ -22,7 +22,6 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   }
 
   subLayerIsString(subLayer: any): boolean {
-    console.log(subLayer)
     return typeof subLayer == 'string';
   }
 
