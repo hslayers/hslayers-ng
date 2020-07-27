@@ -63,6 +63,7 @@ module.exports = {
         ],
         exclude: /node_modules/,
       },
+      {test: /\.xml$/, loader: 'raw-loader'},
       {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
         // Removing this will cause deprecation warnings to appear.

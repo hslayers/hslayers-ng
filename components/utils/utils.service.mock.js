@@ -1,3 +1,5 @@
+import { Math } from "cesium";
+
 export class HsUtilsServiceMock {
   constructor() {}
 
@@ -17,6 +19,10 @@ export class HsUtilsServiceMock {
       obj = Object.getPrototypeOf(obj);
     }
     return false;
+  }
+
+  generateUuid(){
+    return Math.randomBetween().toString();
   }
 
   isFunction(functionToCheck) {

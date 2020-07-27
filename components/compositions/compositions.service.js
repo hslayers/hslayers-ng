@@ -226,6 +226,9 @@ export default function (
     ) {
       await HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
+      if (!data) {
+        return;
+      }
       const layers = HsCompositionsParserService.jsonToLayers(
         angular.fromJson(data)
       );

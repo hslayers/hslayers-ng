@@ -726,7 +726,7 @@ export class HsLayerManagerService {
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
       const resolution = view.getResolution();
-      const units = this.map.getView().getProjection().getUnits();
+      const units = this.HsMapService.map.getView().getProjection().getUnits();
       const dpi = 25.4 / 0.28;
       const mpu = METERS_PER_UNIT[units];
       const cur_res = resolution * mpu * 39.37 * dpi;
