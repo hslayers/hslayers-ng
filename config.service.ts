@@ -26,5 +26,5 @@ export class HsConfig {
   defaultDrawLayerPath: string;
 
   constructor() {}
-}
+
 }
