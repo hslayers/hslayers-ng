@@ -106,7 +106,7 @@ export class HsLegendService {
         let featureStyle = currentLayer
           .getSource()
           .getFeatures()
-          .map((feature) => currentLayer.getStyle()(feature));
+          .map((feature) => layerStyle(feature));
         if (featureStyle.length > 1000) {
           featureStyle = featureStyle.slice(0, 100);
         }
