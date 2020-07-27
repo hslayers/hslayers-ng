@@ -79,6 +79,7 @@ export class HsDrawService {
     private HsQueryBaseService: HsQueryBaseService,
     private HsQueryVectorService: HsQueryVectorService
   ) {
+    this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
       this.modify = new Modify({
         features: this.selectedFeatures,
@@ -199,6 +200,7 @@ export class HsDrawService {
 
   /**
    * (PRIVATE) Helper function which returns currently selected style.
+   *
    * @private
    * @function useCurrentStyle
    * @memberof HsDrawService
@@ -324,6 +326,15 @@ export class HsDrawService {
   }
 
   /**
+   * @param event
+   */
+  keyUp(event) {
+    if (event.keyCode === 27) {
+      this.removeLastPoint();
+    }
+  }
+
+  /**
    * @function activateDrawing
    * @memberof HsDrawService
    * @param {object} options Options object
@@ -361,15 +372,6 @@ export class HsDrawService {
         map.addInteraction(this.draw);
       });
 
-      /**
-       * @param event
-       */
-      function keyUp(event) {
-        if (event.keyCode === 27) {
-          this.removeLastPoint();
-        }
-      }
-
       this.draw.on(
         'drawstart',
         (e) => {
@@ -378,7 +380,7 @@ export class HsDrawService {
           if (onDrawStart) {
             onDrawStart(e);
           }
-          document.addEventListener('keyup', keyUp);
+          document.addEventListener('keyup', this.keyUp);
         },
         this
       );
@@ -392,7 +394,7 @@ export class HsDrawService {
           if (onDrawEnd) {
             onDrawEnd(e);
           }
-          document.removeEventListener('keyup', keyUp);
+          document.removeEventListener('keyup', this.keyUp);
         },
         this
       );
