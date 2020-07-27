@@ -9,8 +9,8 @@
                     {{layer.title}}
                 </div>
                 <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers" style="font-size:x-small; flex-grow: 20;" (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
-                    <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer.layer)"></span>
-                    <span class="mr-1" [ngClass]="{true:'icon-chevron-right', false:'icon-chevron-down'}[HsLayerManagerService.currentLayer == layer]" [hidden]="!layerLoaded(layer.layer)"></span> 
+                    <span class="mr-1 icon-refresh icon-spin" [hidden]="HsLayerUtilsService.layerLoaded(layer.layer)"></span>
+                    <span class="mr-1" [ngClass]="{true:'icon-chevron-right', false:'icon-chevron-down'}[HsLayerManagerService.currentLayer == layer]" [hidden]="!HsLayerUtilsService.layerLoaded(layer.layer)"></span> 
                 </div>
 
                 <div class="p-0 " [hidden]="layerValid(layer.layer)">
