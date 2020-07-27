@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialog-component.interface';
 import {HsMapService} from '../map/map.service';
 
@@ -17,7 +17,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   path: string;
 
   constructor(private HsMapService: HsMapService) {}
-
+  viewRef: ViewRef;
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;
     this.title = this.layer.get('title');
