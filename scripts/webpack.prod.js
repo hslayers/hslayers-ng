@@ -52,7 +52,16 @@ module.exports = merge(common, {
       // CSS files are bundled togethers
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              // We do not yet use Modular CSS, hence it's safe to disable their resolving
+              modules: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
