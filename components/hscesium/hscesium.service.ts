@@ -18,9 +18,9 @@ import WebMercatorProjection from 'cesium/Source/Core/WebMercatorProjection';
 import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
 import defined from 'cesium/Source/Core/defined';
 import when from 'cesium/Source/ThirdParty/when';
-import {HsCesiumCameraService} from './cesium-camera.service';
-import {HsCesiumLayersService} from './cesium-layers.service';
-import {HsCesiumTimeService} from './cesium-time.service';
+import {HsCesiumCameraService} from './hscesium-camera.service';
+import {HsCesiumLayersService} from './hscesium-layers.service';
+import {HsCesiumTimeService} from './hscesium-time.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from '../layermanager';
@@ -313,7 +313,7 @@ export class HsCesiumService {
     this.HsCesiumLayersService.removeLayersWithOldParams();
   }
 
-  resize(event, size) {
+  resize(event?, size?) {
     if (size == undefined) {
       return;
     }
