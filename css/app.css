@@ -1579,7 +1579,6 @@ div.md-sidenav {
 
 md-content.card-collection {
 	column-count: 1;
-	column-gap: 10px;
 }
 
 md-card {

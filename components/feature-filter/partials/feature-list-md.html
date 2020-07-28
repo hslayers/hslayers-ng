@@ -1,5 +1,5 @@
-<!-- <md-list layout-fill ng-show="!displayDetails">
-	<md-list-item class="md-line-2" ng-repeat="feature in LayMan.currentLayer.filteredFeatures" ng-click="toggleFeatureDetails(feature)"
+<!-- <md-list layout-fill ng-show="!featureDetails">
+	<md-list-item class="md-line-2" ng-repeat="feature in LayMan.currentLayer.filteredFeatures" ng-click="selectFeature(feature)"
 		layout-fill>
 		<div class="md-list-item-text">
 			<h3>{{ feature.getProperties().name }}</h3>
@@ -8,11 +8,11 @@
 	</md-list-item>
 </md-list> -->
 
-<div class="feature-list" ng-class="{'card-list': !displayDetails, 'layout-column': displayDetails}">
-	<md-content flex layout-padding class="card-collection" ng-show="!displayDetails">
+<div class="feature-list" ng-class="{'card-list': !featureDetails, 'layout-column': featureDetails}">
+	<md-content flex layout-padding class="card-collection" ng-show="!featureDetails">
 		<!-- <div flex-xs flex-gt-xs="50" layout="column"> -->
 		<md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures"
-			ng-click="toggleFeatureDetails(feature, true)"
+			ng-click="selectFeature(feature)"
 			ng-mouseenter="highlightFeature(feature)"
 			ng-mouseleave="unhighlightFeature(feature)"
 			ng-class="feature.getProperties().class">
@@ -30,20 +30,20 @@
 		<!-- </div> -->
 	</md-content>
 
-	<!-- <md-toolbar md-scroll-shrink class="md-hue-1" ng-show="displayDetails"> -->
-	<md-toolbar class="md-hue-1" ng-show="displayDetails">
+	<!-- <md-toolbar md-scroll-shrink class="md-hue-1" ng-show="featureDetails"> -->
+	<md-toolbar class="md-hue-1" ng-show="featureDetails">
 		<div class="md-toolbar-tools">
 			<h2 class="md-flex">{{ featureDetails.name }}</h2>
 
 			<div flex></div>
 
-			<md-button class="md-icon-button" aria-label="Close" ng-click="toggleFeatureDetails()">
+			<md-button class="md-icon-button" aria-label="Close" ng-click="deselectFeatures()">
 				<md-icon md-menu-origin class="material-icons">close</md-icon>
 			</md-button>
 		</div>
 	</md-toolbar>
 
-	<md-content layout-padding ng-show="displayDetails">
+	<md-content layout-padding ng-show="featureDetails">
 		<div class="img-float">
 			<img ng-src="https://db.atlasbestpractices.com{{ featureDetails.img }}" alt="Best Practice thumbnail">
 		</div>

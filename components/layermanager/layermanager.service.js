@@ -148,6 +148,8 @@ export default function (
       visible: layer.getVisible(),
       position: layer.get('position'),
       hsFilters: layer.get('hsFilters'),
+      selectedStyle: layer.get('selectedStyle'),
+      highlightedStyle: layer.get('highlightedStyle'),
       uid: HsUtilsService.generateUuid(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');

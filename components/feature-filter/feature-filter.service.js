@@ -30,8 +30,6 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       const filters = layer.hsFilters;
       const filteredFeatures = [];
 
-      console.log(source.getFeatures());
-
       source.forEachFeature((feature) => {
         feature.setStyle(null);
       });
