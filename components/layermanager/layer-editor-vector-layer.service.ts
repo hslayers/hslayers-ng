@@ -95,19 +95,23 @@ export class HsLayerEditorVectorLayerService {
             }
             return textStyle;
           } else {
-            let tmp;
+            let originalStyle;
             if (typeof layer.hsOriginalStyle == 'function') {
-              tmp = layer.hsOriginalStyle(feature, resolution);
+              originalStyle = layer.hsOriginalStyle(feature, resolution);
             } else {
-              tmp = layer.hsOriginalStyle;
+              originalStyle = layer.hsOriginalStyle;
             }
             const originalFeature = feature.get('features');
-            if (tmp.length) {
-              tmp[0].setGeometry(originalFeature[0].getGeometry());
+            let newStyle;
+            if (originalStyle.length) {
+              newStyle = originalStyle[0].clone();
+              newStyle.setGeometry(originalFeature[0].getGeometry());
+              return [newStyle];
             } else {
-              tmp.setGeometry(originalFeature[0].getGeometry());
+              newStyle = originalStyle.clone();
+              newStyle.setGeometry(originalFeature[0].getGeometry());
+              return newStyle;
             }
-            return tmp;
           }
         });
       }
