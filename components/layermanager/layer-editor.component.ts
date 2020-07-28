@@ -289,21 +289,25 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function minResolution
+   * @function maxResolution
    * @memberOf hs.layermanager.controller
-   * @description Set max resolution for selected layer
+   * @description Set min resolution for selected layer
    * @param newValue
    */
-  maxResolution(newValue) {
+  set maxResolution(newValue) {
     if (!this.currentLayer) {
       return;
     }
     const layer = this.olLayer();
-    if (arguments.length) {
-      layer.setMaxResolution(newValue);
-    } else {
-      return layer.maxResolution;
+    layer.setMaxResolution(newValue);
+  }
+
+  get maxResolution() {
+    if (!this.currentLayer) {
+      return;
     }
+    const layer = this.olLayer();
+    return layer.maxResolution;
   }
 
   /**
