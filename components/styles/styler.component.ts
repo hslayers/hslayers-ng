@@ -130,7 +130,7 @@ export class HsStylerComponent {
     return src;
   }
 
-  toDecimal2(n:number){
+  toDecimal2(n: number) {
     return Math.round(n * 100) / 100;
   }
 
@@ -267,7 +267,7 @@ export class HsStylerComponent {
   /**
    * @function setImageType
    * @memberof hs.styler.controller
-   * @params {String} t New image type
+   * @params {string} t New image type
    * @description Change image type for point geometry and redraw style
    * @param t
    */
@@ -301,6 +301,7 @@ export class HsStylerComponent {
     this.hasPoly = src.hasPoly;
     this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
+    console.log(this.hasPoly);
   }
 
   /**
@@ -321,6 +322,9 @@ export class HsStylerComponent {
             src.hasLine = true;
             break;
           case 'Polygon' || 'MultiPolygon':
+            src.hasPoly = true;
+            break;
+          case 'Circle':
             src.hasPoly = true;
             break;
           case 'Point' || 'MultiPoint':
