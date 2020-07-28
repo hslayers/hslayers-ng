@@ -133,6 +133,7 @@ export class HsDrawService {
       show_in_manager: true,
       visible: true,
       removable: true,
+      style: this.defaultStyle,
       editable: true,
       synchronize: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
