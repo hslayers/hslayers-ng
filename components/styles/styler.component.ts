@@ -301,7 +301,6 @@ export class HsStylerComponent {
     this.hasPoly = src.hasPoly;
     this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
-    console.log(this.hasPoly);
   }
 
   /**
