@@ -130,6 +130,10 @@ export class HsStylerComponent {
     return src;
   }
 
+  toDecimal2(n:number){
+    return Math.round(n * 100) / 100;
+  }
+
   save(): void {
     if (!this.HsStylerService.layer) {
       return;
@@ -153,7 +157,7 @@ export class HsStylerComponent {
     ) {
       style_json.stroke = new Stroke({
         color: this.linecolor['background-color'],
-        width: this.linewidth !== undefined ? this.linewidth.toFixed(0) : 1,
+        width: this.linewidth !== undefined ? this.linewidth : 1,
       });
     }
     //
@@ -163,7 +167,7 @@ export class HsStylerComponent {
         (this.iconfillcolor !== undefined || this.iconlinecolor !== undefined)
       ) {
         const circle_json: styleJson = {
-          radius: this.radius !== undefined ? this.radius.toFixed(2) : 5,
+          radius: this.radius !== undefined ? this.toDecimal2(this.radius) : 5,
         };
         if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
           circle_json.fill = new Fill({
@@ -179,7 +183,6 @@ export class HsStylerComponent {
           circle_json.stroke = new Stroke({
             color: this.iconlinecolor['background-color'],
             width: this.iconlinewidth,
-            radius: this.radius !== undefined ? this.radius.toFixed(2) : 5,
           });
         }
         style_json.image = new Circle(circle_json);
