@@ -2,7 +2,7 @@
     <hs-panel-header name="draw" title="Draw">
         <extra-buttons>
             <button class="but-title-sm" data-toggle="tooltip"
-                title="While drawing polygon or line you can hold shift to free-hand draw">
+                title="While drawing polygon or line you can hold SHIFT to free-hand draw&#10;You can delete last point with ESC key">
                 <i class="icon-question-sign"></i>
             </button>
         </extra-buttons>
@@ -90,7 +90,7 @@
             <label>Stroke width: {{linewidth}}</label>
 
             <input type="range" step="0.5" min="0" max="20" class="form-control m-auto" style="width: 85%;height: 21px;"
-            [(ngModel)]="linewidth"  (ngModelChange)="updateStyle()" /> 
+            [(ngModel)]="linewidth"  (ngModelChange)="updateStyle()" />
 
         </div>
     </div>
