@@ -10,6 +10,7 @@
  * @param HsConfig
  * @param HsLanguageService
  * @param HsLayoutService
+ * @param HsQueryVectorService
  * @param $timeout
  */
 export default function (
@@ -23,6 +24,7 @@ export default function (
   HsLanguageService,
   HsLayoutService,
   HsLayermanagerService,
+  HsQueryVectorService,
   $timeout
 ) {
   'ngInject';
@@ -93,22 +95,13 @@ export default function (
       }
       
       if (angular.isUndefined(featureURI)) {
-        console.log('angular.isUndefined(featureURI)');
         $location.search(me.params);
       }
-      else {
-        console.log('no angular.isUndefined(featureURI)');
-        console.log(currentLayer);
-        if(! angular.isUndefined(currentLayer.selectedFeature)){
-          console.log(";! angular.isUndefined(currentLayer.selectedFeature");
-          me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
-        }
-        else {
-          console.log("no ;! angular.isUndefined(currentLayer.selectedFeature");
-          if (me.hashtagParam()) {
-            history.pushState("", document.title, window.location.pathname + window.location.search);
-          }
-        }
+      else if (angular.isDefined(currentLayer.selectedFeature)) {
+        me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
+      }
+      else if (me.hashtagParam()) {
+        history.pushState("", document.title, window.location.pathname + window.location.search);
       }
 
     },
@@ -155,16 +148,9 @@ export default function (
       );
     },
 
-    getFeatureByUri: function(features, uri, uriname){
-      var selected;
-      features.forEach((feature, i) => {
-        if (feature.getProperties()[uriname] == uri){
-          selected = feature;
-        }
-      });
-      console.log(selected);
-      $rootScope.$broadcast('map.selectedFeatureDetected', selected);
-      $rootScope.$broadcast('vectorQuery.featureSelected', selected);
+    getFeatureByUri: function(features, uri, uriname) {
+      const SELECTED = features.find(f => f.getProperties()[uriname] === uri);
+      HsQueryVectorService.selector.getFeatures().push(SELECTED);
     },
 
     featureAsUrl: function (uri) {
@@ -177,10 +163,9 @@ export default function (
     },
 
     hashtagParam: function(){
-      if (!location.hash){
-        return false;
-      }
-      return location.hash.substring(1);
+      return !location.hash ?
+        false :
+        location.hash.substring(1);
     },
 
     /**

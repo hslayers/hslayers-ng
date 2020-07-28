@@ -43,7 +43,7 @@ export default function (
 		},
 		// style: $scope.highlightedStyle,
 		filter: function(feature) {
-			return feature !== $scope.selectedFeature
+			return feature !== HsLayermanagerService.currentLayer.selectedFeature
 		},
 	});
 
@@ -85,7 +85,7 @@ export default function (
 	$scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
 		// $scope.displayDetails = true;
 		$scope.featureDetails = feature.getProperties();
-		$scope.selectedFeature = feature;
+		HsLayermanagerService.currentLayer.selectedFeature = feature;
 		if (!$scope.$$phase) $scope.$digest();
 
 		$scope.lastView = HsMapService.map.getView().getProperties();
@@ -100,7 +100,7 @@ export default function (
 	$scope.$on('vectorQuery.featureDeselected', (e, feature) => {
 		// $scope.displayDetails = false;
 		$scope.featureDetails = undefined;
-		$scope.selectedFeature = undefined;
+		HsLayermanagerService.currentLayer.selectedFeature = undefined;
 		if (!$scope.$$phase) $scope.$digest();
 		
 		HsMapService.map.getView().animate({
@@ -114,13 +114,13 @@ export default function (
 		// HsCore.updateMapSize();
 		$scope.displayDetails = !$scope.displayDetails;
 
-		if ($scope.selectedFeature) {
-			$scope.selectedFeature.setStyle(null);
+		if (HsLayermanagerService.currentLayer.selectedFeature) {
+			HsLayermanagerService.currentLayer.selectedFeature.setStyle(null);
 		}
 
 		if ($scope.displayDetails) {
 			$scope.featureDetails = feature.getProperties();
-			$scope.selectedFeature = feature;
+			HsLayermanagerService.currentLayer.selectedFeature = feature;
 			HsMapService.moveToAndZoom(
 				feature.getProperties().geometry.flatCoordinates[0],
 				feature.getProperties().geometry.flatCoordinates[1],
