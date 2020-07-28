@@ -54,7 +54,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function isLayerWMS
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @param {Layer} layer Selected layer
    * @description Test if layer is WMS layer
    * @deprecated TODO
@@ -65,7 +65,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function zoomToLayer
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabalities request (for WMS layer)
@@ -77,7 +77,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function styleLayer
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Display styler panel for selected layer, so user can change its style
    */
   styleLayer(): void {
@@ -88,7 +88,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function isLayerVectorLayer
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @param {Layer} layer Selected layer
    * @description Test if layer is WMS layer
    */
@@ -98,7 +98,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function isVectorLayer
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Test if layer is WMS layer
    */
   isVectorLayer(): boolean | undefined {
@@ -115,7 +115,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function Declutter
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @param {boolean} newValue To declutter or not to declutter
    * @description Set decluttering of features
    * @returns {boolean} Current declutter state
@@ -130,7 +130,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function cluster
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Set cluster for layer
    * @param {boolean} newValue To cluster or not to cluster
    * @returns {boolean} Current cluster state
@@ -159,7 +159,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function changeDistance
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Set distance between cluster features;
    */
   changeDistance(): void {
@@ -175,7 +175,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function toggleLayerRename
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Toogle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename(): void {
@@ -210,7 +210,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function opacity
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Set selected layers opacity and emits "compositionchanged"
    * @param newValue
    */
@@ -228,7 +228,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function layerIsZoomable
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Determines if selected layer has BoundingBox defined as
    * its metadata or is a Vector layer. Used for setting visibility
    * of 'Zoom to ' button
@@ -239,7 +239,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function layerIsStyleable
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Determines if selected layer is a Vector layer and
    * styleable. Used for allowing styling
    */
@@ -249,7 +249,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function hasCopyright
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Determines if layer has copyright information avaliable *
    * @param {Layer} layer Selected layer (LayMan.currentLayer)
    */
@@ -268,7 +268,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function minResolution
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Set min resolution for selected layer
    * @param newValue
    */
@@ -290,8 +290,8 @@ export class HsLayerEditorComponent {
 
   /**
    * @function maxResolution
-   * @memberOf hs.layermanager.controller
-   * @description Set min resolution for selected layer
+   * @memberOf HsLayerEditorComponent
+   * @description Set max resolution for selected layer
    * @param newValue
    */
   set maxResolution(newValue) {
@@ -312,7 +312,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function isLayerRemovable
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Check if layer can be removed based on 'removable'
    * layer attribute
    */
@@ -336,7 +336,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function isScaleVisible
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @description Test if selected layer has min and max relolution set
    */
   isScaleVisible(): boolean {
@@ -377,7 +377,7 @@ export class HsLayerEditorComponent {
 
   /**
    * @function title
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @param {string} newTitle New title to set
    * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
    * @returns {string} Title
@@ -430,7 +430,7 @@ export class HsLayerEditorComponent {
   //TODO refactor to some helper service
   /**
    * @function dateToNonUtc
-   * @memberOf hs.layermanager.controller
+   * @memberOf HsLayerEditorComponent
    * @param {Date} d Date to convert
    * @description Convert date to non Utc format
    * @returns {Date} Date with timezone added
