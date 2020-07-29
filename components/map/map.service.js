@@ -145,7 +145,7 @@ export class HsMapService {
       attributionOptions: {
         collapsible: true,
         collapsed: true,
-      }
+      },
     });
 
     //creates custom default view control
@@ -269,6 +269,26 @@ export class HsMapService {
         }
       }
     );
+    this.HsEventBusService.layoutResizes.subscribe((size) => {
+      if (this.map) {
+        const currentMapSize = this.map.getSize();
+        //We can't call this too often because it messes up
+        //the scrolling and animations - they get canceled
+        if (
+          Math.round(currentMapSize[0]) != Math.round(size.width) ||
+          Math.round(currentMapSize[1]) != Math.round(size.height)
+        ) {
+          this.HsUtilsService.debounce(
+            function () {
+              this.map.updateSize();
+            },
+            300,
+            false,
+            this
+          )();
+        }
+      }
+    });
   }
 
   /**

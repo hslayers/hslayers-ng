@@ -527,59 +527,7 @@ export default function (
       }
     }
   };
-
-  $scope.mapStyle = () => {
-    if (!HsMapService.map) {
-      return {};
-    }
-    const fullscreen =
-      angular.isUndefined(HsConfig.sizeMode) ||
-      HsConfig.sizeMode == 'fullscreen';
-    let height = HsLayoutService.layoutElement.clientHeight;
-    let width = HsLayoutService.layoutElement.clientWidth;
-    let marginLeft = 0;
-
-    if (!HsLayoutService.sidebarBottom() || !fullscreen) {
-      marginLeft += HsLayoutService.sidebarRight
-        ? 0
-        : HsLayoutService.panelSpaceWidth();
-      width -= HsLayoutService.panelSpaceWidth();
-    }
-
-    if (
-      HsLayoutService.sidebarBottom() &&
-      (fullscreen || $window.innerWidth <= 767)
-    ) {
-      height -= HsLayoutService.panelSpaceHeight();
-      width = HsLayoutService.panelSpaceWidth();
-    }
-
-    height -= HsLayoutService.mdToolbarHeight();
-
-    const currentMapSize = HsMapService.map.getSize();
-    //We can't call this too often because it messes up
-    //the scrolling and animations - they get canceled
-    if (
-      Math.round(currentMapSize[0]) != Math.round(width) ||
-      Math.round(currentMapSize[1]) != Math.round(height)
-    ) {
-      HsUtilsService.debounce(
-        function (){
-          HsMapService.map.updateSize();
-        },
-        300,
-        false,
-        $scope
-      )();
-    }
-
-    return {
-      height: `${height}px`,
-      width: `${width}px`,
-      ...(marginLeft > 0 && {marginLeft: `${marginLeft}px`}),
-    };
-  };
-
+  
   $scope.onlyEnabled = function (item) {
     return typeof item.enabled == 'function' ? item.enabled() : item.enabled;
   };
