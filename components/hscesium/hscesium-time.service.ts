@@ -1,18 +1,23 @@
+import * as moment from 'moment';
+import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import knockout from 'cesium/Source/ThirdParty/knockout';
-import moment from 'moment';
+import {HsCesiumLayersService} from './hscesium-layers.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {Injectable} from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumTimeService {
-  constructor(HsMapService, $rootScope, HsCesiumLayersService) {
-    'ngInject';
-    this.HsMapService = HsMapService;
-    this.$rootScope = $rootScope;
-    this.HsCesiumLayersService = HsCesiumLayersService;
-  }
+  viewer: Viewer;
+  constructor(
+    private HsCesiumLayersService: HsCesiumLayersService,
+    private HsEventBusService: HsEventBusService
+  ) {}
 
-  init(HsCesiumService) {
-    this.HsCesiumService = HsCesiumService;
-    this.viewer = HsCesiumService.viewer;
+  init(viewer: Viewer) {
+    this.viewer = viewer;
     this.monitorTimeLine();
   }
 
@@ -30,7 +35,7 @@ export class HsCesiumTimeService {
           const layer = this.viewer.imageryLayers.get(i);
           if (layer.imageryProvider instanceof WebMapServiceImageryProvider) {
             if (layer.prm_cache && this.getTimeParameter(layer)) {
-              if (angular.isDefined(layer.prm_cache.dimensions.time)) {
+              if (layer.prm_cache.dimensions.time) {
                 let min_dist = Number.MAX_VALUE;
                 let min_i = -1;
                 for (
@@ -39,7 +44,8 @@ export class HsCesiumTimeService {
                   pt++
                 ) {
                   const diff2 =
-                    round_time - layer.prm_cache.dimensions.time.values[pt];
+                    round_time.getTime() -
+                    layer.prm_cache.dimensions.time.values[pt].getTime();
                   if (diff2 > 0 && diff2 < min_dist) {
                     min_dist = diff2;
                     min_i = pt;
@@ -48,10 +54,10 @@ export class HsCesiumTimeService {
                 round_time = layer.prm_cache.dimensions.time.values[min_i];
               }
               const diff = Math.abs(
-                round_time -
+                round_time.getTime() -
                   new Date(
                     layer.prm_cache.parameters[this.getTimeParameter(layer)]
-                  )
+                  ).getTime()
               );
               if (diff > 1000 * 60) {
                 //console.log('Was', layer.prm_cache.parameters[this.getTimeParameter(layer)], 'New', round_time)
@@ -67,8 +73,7 @@ export class HsCesiumTimeService {
         }
         this.HsCesiumLayersService.removeLayersWithOldParams();
         if (something_changed) {
-          this.$rootScope.$broadcast(
-            'cesium.time_layers_changed',
+          this.HsEventBusService.cesiumTimeLayerChanges.next(
             this.getLayerListTimes()
           );
         }
@@ -82,10 +87,7 @@ export class HsCesiumTimeService {
     const tmp = [];
     for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
       const layer = this.viewer.imageryLayers.get(i);
-      if (
-        angular.isDefined(layer.ol_layer) &&
-        angular.isDefined(layer.prm_cache)
-      ) {
+      if (layer.ol_layer && layer.prm_cache) {
         const t = new Date(
           layer.prm_cache.parameters[this.getTimeParameter(layer)]
         );

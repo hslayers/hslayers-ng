@@ -6,17 +6,27 @@ import CesiumMath from 'cesium/Source/Core/Math';
 import Ellipsoid from 'cesium/Source/Core/Ellipsoid';
 import Rectangle from 'cesium/Source/Core/Rectangle';
 import SceneMode from 'cesium/Source/Scene/SceneMode';
+import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
+import {HsConfig} from '../../config.service';
+import {HsMapService} from '../map/map.service';
+import {Injectable} from '@angular/core';
 import {get as getProj, transformExtent} from 'ol/proj';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumCameraService {
-  constructor(HsMapService, $window) {
-    'ngInject';
-    this.HsMapService = HsMapService;
-    this.$window = $window;
-  }
+  viewer: Viewer;
+  lastGoodCenter: any[] = null;
+  ellipsoid: any;
+  constructor(
+    private HsMapService: HsMapService,
+    private Window: Window,
+    private HsConfig: HsConfig
+  ) {}
 
-  init(HsCesiumService) {
-    this.viewer = HsCesiumService.viewer;
+  init(viewer: Viewer) {
+    this.viewer = viewer;
     this.fixMorphs(this.viewer);
   }
 
@@ -353,24 +363,23 @@ export class HsCesiumCameraService {
   }
 
   fixMorphs(viewer) {
-    const me = this;
     viewer.camera.moveEnd.addEventListener((e) => {
-      if (!me.HsMapService.visible) {
-        const center = me.getCameraCenterInLngLat();
+      if (!this.HsMapService.visible) {
+        const center = this.getCameraCenterInLngLat();
         if (center === null || center[0] == 0 || center[1] == 0) {
           return;
         } //Not looking on the map but in the sky
-        me.lastGoodCenter = center;
+        this.lastGoodCenter = center;
       }
     });
     viewer.scene.morphComplete.addEventListener(() => {
-      if (me.lastGoodCenter) {
+      if (this.lastGoodCenter) {
         // eslint-disable-next-line angular/timeout-service
         setTimeout(() => {
           viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(
-              me.lastGoodCenter[0],
-              me.lastGoodCenter[1],
+              this.lastGoodCenter[0],
+              this.lastGoodCenter[1],
               15000.0
             ),
             duration: 1,
@@ -381,9 +390,9 @@ export class HsCesiumCameraService {
   }
 
   setDefaultViewport() {
-    const view = this.HsMapService.map.getView();
-    let winWidth = this.$window.innerWidth;
-    let winHeight = this.$window.innerHeight;
+    const view = this.HsConfig.default_view;
+    let winWidth = this.Window.innerWidth;
+    let winHeight = this.Window.innerHeight;
     if (innerWidth == 0) {
       winWidth = 1900;
     }
