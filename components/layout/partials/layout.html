@@ -3,7 +3,7 @@
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
         <div class="hs-page-content">
             <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map" style="z-index:990"
-                ng-style="mapStyle()"></div>
+                ng-style="layoutService.mapStyle()"></div>
   
             <div class="hs-gui-overlay" ng-if="layoutService.componentEnabled('guiOverlay')">
                 <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
@@ -63,6 +63,7 @@
                 <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->
             </div>
             <hs-dialog-container></hs-dialog-container>
+            <hs.cesium></hs.cesium>
         </div>
     </div>
 </div>

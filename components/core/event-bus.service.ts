@@ -34,6 +34,8 @@ export class HsEventBusService {
    */
   mapExtentChanges: Subject<any> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
-
+  mapLibraryChanges: Subject<any> = new Subject();
+  cesiumTimeLayerChanges: Subject<any> = new Subject(); //replaces 'cesium.time_layers_changed'
+  layoutResizes: Subject<any> = new Subject();
   constructor() {}
 }

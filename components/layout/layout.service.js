@@ -7,7 +7,14 @@
  * @param $log
  */
 export class HsLayoutService {
-  constructor(HsConfig, HsEventBusService, $window, $document, $timeout, $log) {
+  constructor(
+    HsConfig,
+    HsEventBusService,
+    $window,
+    $document,
+    $timeout,
+    $log
+  ) {
     'ngInject';
     Object.assign(this, {
       HsConfig,
@@ -501,5 +508,40 @@ export class HsLayoutService {
 
   widthWithoutPanelSpace() {
     return 'calc(100% - ' + this.panelSpaceWidth() + 'px)';
+  }
+
+  mapStyle() {
+    const fullscreen =
+      angular.isUndefined(this.HsConfig.sizeMode) ||
+      this.HsConfig.sizeMode == 'fullscreen';
+    let height = this.layoutElement.clientHeight;
+    let width = this.layoutElement.clientWidth;
+    let marginLeft = 0;
+
+    if (!this.sidebarBottom() || !fullscreen) {
+      marginLeft += this.sidebarRight ? 0 : this.panelSpaceWidth();
+      width -= this.panelSpaceWidth();
+    }
+
+    if (
+      this.sidebarBottom() &&
+      (fullscreen || this.$window.innerWidth <= 767)
+    ) {
+      height -= this.panelSpaceHeight();
+      width = this.panelSpaceWidth();
+    }
+
+    height -= this.mdToolbarHeight();
+
+    this.HsEventBusService.layoutResizes.next({
+      width,
+      height,
+    });
+
+    return {
+      height: `${height}px`,
+      width: `${width}px`,
+      ...(marginLeft > 0 && {marginLeft: `${marginLeft}px`}),
+    };
   }
 }
