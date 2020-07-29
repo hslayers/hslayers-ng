@@ -1,5 +1,3 @@
-import { Math } from "cesium";
-
 export class HsUtilsServiceMock {
   constructor() {}
 
@@ -22,7 +20,7 @@ export class HsUtilsServiceMock {
   }
 
   generateUuid(){
-    return Math.randomBetween().toString();
+    return Math.random().toString();
   }
 
   isFunction(functionToCheck) {
