@@ -4,13 +4,14 @@ import {HsLayerSynchronizerService} from './components/save-map/layer-synchroniz
 import {HsLayerUtilsService} from './components/utils/layer-utils.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
-import {HsQueryBaseService} from './components/query/query-base.service.js';
-import {HsQueryVectorService} from './components/query/query-vector.service.js';
+import {HsPermalinkUrlService} from './components/permalink/permalink-url.service';
+import {HsQueryBaseService} from './components/query/query-base.service';
+import {HsQueryVectorService} from './components/query/query-vector.service';
+import {HsSidebarService} from './components/sidebar/sidebar.service';
 import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
-
 /**
  * @param i
  */
@@ -164,5 +165,31 @@ export function hsQueryVectorService(i: any) {
 export const HsQueryVectorServiceProvider = {
   provide: HsQueryVectorService,
   useFactory: hsQueryVectorService,
+  deps: ['$injector'],
+};
+
+/**
+ * @param i
+ */
+export function hsPermalinkUrlService(i: any) {
+  return i.get('HsPermalinkUrlService');
+}
+
+export const HsPermalinkUrlServiceProvider = {
+  provide: HsPermalinkUrlService,
+  useFactory: hsPermalinkUrlService,
+  deps: ['$injector'],
+};
+
+/**
+ * @param i
+ */
+export function hsSidebarService(i: any) {
+  return i.get('HsSidebarService');
+}
+
+export const HsSidebarServiceProvider = {
+  provide: HsSidebarService,
+  useFactory: hsSidebarService,
   deps: ['$injector'],
 };
