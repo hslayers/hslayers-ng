@@ -7,7 +7,7 @@ import * as angular from 'angular';
 import sidebarController from './sidebar.controller';
 import sidebarDirective from './sidebar.directive';
 import sidebarMiniDirective from './sidebar-mini.directive';
-import sidebarService from './sidebar.service';
+import {HsSidebarService} from './sidebar.service';
 
 /**
  * @namespace hs.sidebar
@@ -21,7 +21,7 @@ angular
    * @name HsSidebarService
    * @description TODO
    */
-  .factory('HsSidebarService', sidebarService)
+  .service('HsSidebarService', HsSidebarService)
 
   /**
    * @memberof hs.sidebar

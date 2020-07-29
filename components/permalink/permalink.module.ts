@@ -3,7 +3,7 @@ import '../language/language.module';
 import * as angular from 'angular';
 import permalinkComponent from './permalink.component';
 import permalinkShareService from './permalink-share.service';
-import permalinkUrlService from './permalink-url.service';
+import {HsPermalinkUrlService} from './permalink-url.service';
 
 /**
  * @namespace hs.permalink
@@ -34,7 +34,7 @@ angular
    * @membeof hs.permalink
    * @description Service responsible for creating permalink URLs. Mantain parameters information about map
    */
-  .factory('HsPermalinkUrlService', permalinkUrlService)
+  .service('HsPermalinkUrlService', HsPermalinkUrlService)
 
   /**
    * @ngdoc service
