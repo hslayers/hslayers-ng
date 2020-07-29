@@ -1,22 +1,19 @@
+/* eslint-disable prefer-arrow-callback */
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
+import '../core/core-ajs.mock';
 import 'angular-mocks';
 import * as angular from 'angular';
 import VectorLayer from 'ol/layer/Vector';
 import {HsMapService} from './map.service';
 import {Vector as VectorSource} from 'ol/source';
 
-describe('hs.map', () => {
+describe('hs.map', function () {
   let hsMap;
 
-  beforeEach(() => {
+  beforeEach(function () {
     /* Mocks start ===== */
-    angular
-    .module('hs.core', [])
-    .service('HsCore', function () {})
-    .service('HsEventBusService', function () {
-    });
 
     angular
       .module('hs.utils', [])
@@ -30,7 +27,11 @@ describe('hs.map', () => {
 
     angular.module('hs.layout', []).service('HsLayoutService', function () {});
 
-    angular.module('gettext').filter('translate', function (gettextCatalog) {
+    angular.module('gettext').filter('translate', (gettextCatalog) => {
+      /**
+       * @param input
+       * @param context
+       */
       function filter(input, context) {
         return gettextCatalog.getString(input, null, context);
       }
@@ -39,7 +40,14 @@ describe('hs.map', () => {
     });
     /* Mocks end ===== */
     angular
-      .module('hs.map', ['hs', 'ng', 'hs.utils', 'hs.layout', 'gettext', 'hs.core'])
+      .module('hs.map', [
+        'hs',
+        'ng',
+        'hs.utils',
+        'hs.layout',
+        'gettext',
+        'hs.core',
+      ])
       .service('HsMapService', HsMapService);
     angular.mock.module('hs.map');
   });
@@ -51,12 +59,12 @@ describe('hs.map', () => {
     })
   );
 
-  it('should create map object', async () => {
+  it('should create map object', async function () {
     const map = await hsMap.loaded();
     expect(map).toBeDefined();
   });
 
-  it('should not add duplicate layers', async () => {
+  it('should not add duplicate layers', async function () {
     await hsMap.loaded();
     const layer1 = new VectorLayer({
       title: 'Bookmarks',
