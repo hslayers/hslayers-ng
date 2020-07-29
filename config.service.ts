@@ -1,3 +1,6 @@
+import BaseLayer from 'ol/layer/Base';
+import View from 'ol/View';
+
 export class HsConfig {
   cesiumTime: any;
   componentsEnabled: any;
@@ -24,7 +27,8 @@ export class HsConfig {
   cesiumAccessToken: string;
   proxyPrefix: string;
   defaultDrawLayerPath: string;
+  default_layers: Array<BaseLayer>;
+  default_view: View;
 
   constructor() {}
-
 }

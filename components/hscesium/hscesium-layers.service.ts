@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
 import GeoJsonDataSource from 'cesium/Source/DataSources/GeoJsonDataSource';
@@ -6,17 +7,24 @@ import ImageryLayer from 'cesium/Source/Scene/ImageryLayer';
 import KmlDataSource from 'cesium/Source/DataSources/KmlDataSource';
 import OpenStreetMapImageryProvider from 'cesium/Source/Scene/OpenStreetMapImageryProvider';
 import Resource from 'cesium/Source/Core/Resource';
+import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
 import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
-
-import moment from 'moment';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
+import {HsCesiumService} from './hscesium.service';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {ImageWMS} from 'ol/source';
+import {Inject, Injectable, ViewRef} from '@angular/core';
 import {OSM, TileWMS} from 'ol/source';
 import {Vector} from 'ol/source';
+import {WINDOW} from '../utils/window';
 import {default as proj4} from 'proj4';
+
 /**
  * @param proxy
  * @param maxResolution
@@ -26,29 +34,24 @@ function MyProxy(proxy, maxResolution) {
   this.maxResolution = maxResolution;
 }
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumLayersService {
-  constructor(
-    HsMapService,
-    $rootScope,
-    HsConfig,
-    HsUtilsService,
-    $location,
-    HsEventBusService
-  ) {
-    'ngInject';
-    this.$location = $location;
-    this.HsMapService = HsMapService;
-    this.$rootScope = $rootScope;
-    this.HsConfig = HsConfig;
-    this.HsUtilsService = HsUtilsService;
-    this.layersToBeDeleted = [];
-    this.HsEventBusService = HsEventBusService;
-  }
+  layersToBeDeleted = [];
+  viewer: Viewer;
 
-  init(HsCesiumService) {
-    this.HsCesiumService = HsCesiumService;
-    this.viewer = HsCesiumService.viewer;
-    this.defineProxy(this.$location, this);
+  constructor(
+    private HsMapService: HsMapService,
+    private HsConfig: HsConfig,
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService,
+    @Inject(WINDOW) private window: Window
+  ) {}
+
+  init(viewer: Viewer) {
+    this.viewer = viewer;
+    this.defineProxy();
     this.setupEvents();
   }
 
@@ -57,11 +60,10 @@ export class HsCesiumLayersService {
    * @param $location
    * @param HsCesiumLayersService
    */
-  defineProxy($location, HsCesiumLayersService) {
+  defineProxy() {
+    const me = this;
     MyProxy.prototype.getURL = function (resource) {
-      const blank_url = `${
-        this.proxy
-      }${$location.protocol()}//${$location.host()}${$location.path()}img/blank.png`;
+      const blank_url = `${this.proxy}${window.location.protocol}//${window.location.host}${window.location.pathname}img/blank.png`;
       const prefix =
         this.proxy.indexOf('?') === -1 && this.proxy.indexOf('hsproxy') > -1
           ? '?'
@@ -73,14 +75,12 @@ export class HsCesiumLayersService {
         ) {
           return blank_url;
         } else {
-          const params = HsCesiumLayersService.HsUtilsService.getParamsFromUrl(
-            resource
-          );
+          const params = me.HsUtilsService.getParamsFromUrl(resource);
           const bbox = params.bbox.split(',');
           const dist = Math.sqrt(
             Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
           );
-          const projection = HsCesiumLayersService.getProjectFromVersion(
+          const projection = me.getProjectFromVersion(
             params.version,
             params.srs,
             params.crs
@@ -128,11 +128,7 @@ export class HsCesiumLayersService {
   setupEvents() {
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
       (data) => {
-        if (
-          angular.isDefined(data) &&
-          angular.isDefined(data.type) &&
-          data.type == 'terrain'
-        ) {
+        if (data && data.type && data.type == 'terrain') {
           if (
             data.url ==
             'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
@@ -151,10 +147,11 @@ export class HsCesiumLayersService {
     );
 
     this.repopulateLayers();
-
-    this.HsMapService.map.getLayers().on('add', (e) => {
-      const lyr = e.element;
-      this.processOlLayer(lyr);
+    this.HsMapService.loaded((map) => {
+      map.getLayers().on('add', (e) => {
+        const lyr = e.element;
+        this.processOlLayer(lyr);
+      });
     });
   }
 
@@ -168,17 +165,19 @@ export class HsCesiumLayersService {
     if (this.viewer.isDestroyed()) {
       return;
     }
-    if (angular.isDefined(this.HsConfig.default_layers)) {
+    if (this.HsConfig.default_layers !== undefined) {
       this.HsConfig.default_layers.forEach((l) => this.processOlLayer(l));
     }
-    if (angular.isDefined(this.HsConfig.box_layers)) {
+    if (this.HsConfig.box_layers) {
       this.HsConfig.box_layers.forEach((l) => this.processOlLayer(l));
     }
     //Some layers might be loaded from cookies before cesium service was called
-    this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (angular.isUndefined(lyr.cesium_layer)) {
-        this.processOlLayer(lyr);
-      }
+    this.HsMapService.loaded((map) => {
+      map.getLayers().forEach((lyr) => {
+        if (lyr.cesium_layer == undefined) {
+          this.processOlLayer(lyr);
+        }
+      });
     });
   }
 
@@ -274,11 +273,7 @@ export class HsCesiumLayersService {
       //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
       source.entities.values.forEach((entity) => {
         try {
-          if (
-            angular.isUndefined(
-              ol_source.cesium_layer.entities.getById(entity.id)
-            )
-          ) {
+          if (ol_source.cesium_layer.entities.getById(entity.id) == undefined) {
             //console.log('Adding', entity.id);
             ol_source.cesium_layer.entities.add(entity);
           }
@@ -296,9 +291,9 @@ export class HsCesiumLayersService {
 
   processOlLayer(lyr) {
     if (this.HsUtilsService.instOf(lyr, Group)) {
-      angular.forEach(lyr.layers, (sub_lyr) => {
+      for (const sub_lyr of lyr.layers) {
         this.processOlLayer(sub_lyr);
-      });
+      }
     } else {
       lyr.setVisible(
         this.HsMapService.layerTitleInArray(
@@ -314,7 +309,7 @@ export class HsCesiumLayersService {
         this.HsMapService.proxifyLayerLoader(lyr, true);
       }
       const cesium_layer = this.convertOlToCesiumProvider(lyr);
-      if (angular.isDefined(cesium_layer)) {
+      if (cesium_layer) {
         if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
           this.linkOlLayerToCesiumLayer(lyr, cesium_layer);
           this.viewer.imageryLayers.add(cesium_layer);
@@ -353,7 +348,7 @@ export class HsCesiumLayersService {
 
   createVectorDataSource(ol_lyr) {
     if (
-      angular.isDefined(ol_lyr.getSource().getFormat()) &&
+      ol_lyr.getSource().getFormat() &&
       this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
     ) {
       return KmlDataSource.load(ol_lyr.getSource().getUrl(), {
@@ -373,7 +368,7 @@ export class HsCesiumLayersService {
 
   createTileProvider(ol_lyr) {
     const src = ol_lyr.getSource();
-    const params = JSON.parse(angular.toJson(src.getParams()));
+    const params = JSON.parse(JSON.stringify(src.getParams()));
     params.VERSION = params.VERSION || '1.1.1';
     if (params.VERSION.indexOf('1.1.') == 0) {
       params.CRS = 'EPSG:4326';
@@ -473,7 +468,7 @@ export class HsCesiumLayersService {
   }
 
   removeUnwantedParams(prm_cache, src) {
-    if (angular.isDefined(prm_cache.parameters.dimensions)) {
+    if (prm_cache.parameters.dimensions) {
       delete prm_cache.parameters.dimensions;
     }
     return prm_cache;

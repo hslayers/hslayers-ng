@@ -1,14 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HsCesiumService} from './hscesium.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsPermalinkUrlService} from '../permalink/permalink-url.service';
+import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs.cesium',
   template: require('./partials/cesium.html'),
 })
-export class HsCesiumComponent {
+export class HsCesiumComponent implements OnInit {
   visible = true;
   constructor(
     private HsCesiumService: HsCesiumService,
@@ -16,35 +19,11 @@ export class HsCesiumComponent {
     private HsCoreService: HsCoreService,
     private HsMapService: HsMapService,
     private HsSidebarService: HsSidebarService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService //Used in template
   ) {}
-
-  /**
-   * @ngdoc method
-   * @name HsCesiumController#toggleCesiumMap
-   * @private
-   * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
-   */
-  toggleCesiumMap() {
-    this.HsMapService.visible = !this.HsMapService.visible;
-    this.visible = !this.HsMapService.visible;
-    this.HsPermalinkUrlService.updateCustomParams({
-      view: HsMapService.visible ? '2d' : '3d',
-    });
-    if (HsMapService.visible) {
-      this.HsCesiumService.viewer.destroy();
-      setTimeout(() => {
-        this.HsCoreService.updateMapSize();
-      }, 5000);
-    } else {
-      this.HsCesiumService.init();
-    }
-    this.HsEventBusService.mapLibraryChanges.next(
-      this.visible ? 'cesium' : 'ol'
-    );
-  }
-
-  init() {
+  
+  ngOnInit(): void {
     this.HsCesiumService.init();
     const view = this.HsPermalinkUrlService.getParamValue('view');
     if (view != '2d' || view == '3d') {
@@ -70,5 +49,30 @@ export class HsCesiumComponent {
       this.HsCesiumService.resize(size)
     );
     this.HsCesiumService.resize();
+  }
+
+  /**
+   * @ngdoc method
+   * @name HsCesiumController#toggleCesiumMap
+   * @private
+   * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
+   */
+  toggleCesiumMap() {
+    this.HsMapService.visible = !this.HsMapService.visible;
+    this.visible = !this.HsMapService.visible;
+    this.HsPermalinkUrlService.updateCustomParams({
+      view: HsMapService.visible ? '2d' : '3d',
+    });
+    if (HsMapService.visible) {
+      this.HsCesiumService.viewer.destroy();
+      setTimeout(() => {
+        this.HsCoreService.updateMapSize();
+      }, 5000);
+    } else {
+      this.HsCesiumService.init();
+    }
+    this.HsEventBusService.mapLibraryChanges.next(
+      this.visible ? 'cesium' : 'ol'
+    );
   }
 }

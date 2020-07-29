@@ -26,7 +26,11 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from '../layermanager';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {Injectable} from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumService {
   BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
   viewer: any;
@@ -128,9 +132,9 @@ export class HsCesiumService {
     }
 
     this.viewer = viewer;
-    this.HsCesiumCameraService.init(this);
-    this.HsCesiumLayersService.init(this);
-    this.HsCesiumTimeService.init(this);
+    this.HsCesiumCameraService.init(this.viewer);
+    this.HsCesiumLayersService.init(this.viewer);
+    this.HsCesiumTimeService.init(this.viewer);
 
     window.addEventListener('blur', () => {
       if (this.viewer.isDestroyed()) {

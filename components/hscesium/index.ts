@@ -56,4 +56,6 @@ angular
 
   .directive('hs.cesium', downgradeComponent({component: HsCesiumComponent}));
 
+angular.module('hs.cesium', [downgradedModule]);
+
 export {HsCesiumModule} from './hscesium.module';
