@@ -8,17 +8,6 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
     link: function (scope, element) {
       HsLayoutService.contentWrapper = element[0].querySelector('.hs-content-wrapper');
       HsLayoutService.layoutElement = element[0];
-      try {
-        if (angular.module('hs.cesium')) {
-          if (element[0].querySelector('.hs-page-content')) {
-            let cesiumDir = $compile('<div hs.cesium.directive ng-controller="HsCesiumController"></div>')(scope);
-            element[0].querySelector('.hs-page-content').appendChild(cesiumDir[0]);
-          }
-        }
-      } catch (err) {
-        /* failed to require */
-      }
-
 
       HsCore.init(element, {
         innerElement: '.hs-map-container'
