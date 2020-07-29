@@ -1,9 +1,9 @@
 /* eslint-disable prefer-arrow-callback */
+import '../core/core-ajs.mock';
 import './compositions.module';
 import 'angular-mocks';
 import * as angular from 'angular';
 import Map from 'ol/Map';
-import {Subject} from 'rxjs';
 
 /* eslint-disable angular/no-service-method */
 /* eslint-disable angular/di */
@@ -21,19 +21,6 @@ describe('compositions', function () {
       status_manager_url:
         'http://erra.ccss.cz/wwwlibs/statusmanager2/index.php',
     });
-
-    angular
-      .module('hs.core', [])
-      .service('HsCore', function () {})
-      .service('HsEventBusService', function () {
-        this.sizeChanges = new Subject();
-        this.mapResets = new Subject();
-        this.compositionEdits = new Subject();
-        this.compositionLoadStarts = new Subject();
-        this.compositionDeletes = new Subject();
-        this.mainPanelChanges = new Subject();
-        this.mapExtentChanges = new Subject();
-      });
 
     angular
       .module('hs.utils', [])

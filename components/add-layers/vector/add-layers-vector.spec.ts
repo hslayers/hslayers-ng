@@ -1,13 +1,13 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
+import '../../core/core-ajs.mock';
 import 'angular-mocks';
 import * as angular from 'angular';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {Subject} from 'rxjs';
 describe('add-layers-vector', () => {
   let el, scope, vm;
 
@@ -15,22 +15,21 @@ describe('add-layers-vector', () => {
     angular.module('hs', []).value('HsConfig', {});
 
     angular
-      .module('hs.core', [])
-      .service('HsCore', function () {})
-      .service('HsEventBusService', function () {
-        this.mainPanelChanges = new Subject();
-      });
-      
-    angular
       .module('hs.utils', ['hs'])
       .service('HsUtilsService', HsUtilsService)
       .factory('HsLayerUtilsService', HsLayerUtilsService);
 
     angular.module('hs.map', []).service('HsMapService', HsMapService);
 
-    angular.module('hs.layout', ['hs.core']).service('HsLayoutService', HsLayoutService);
+    angular
+      .module('hs.layout', ['hs.core'])
+      .service('HsLayoutService', HsLayoutService);
 
-    angular.module('gettext').filter('translate', function (gettextCatalog) {
+    angular.module('gettext').filter('translate', (gettextCatalog) => {
+      /**
+       * @param input
+       * @param context
+       */
       function filter(input, context) {
         return gettextCatalog.getString(input, null, context);
       }
