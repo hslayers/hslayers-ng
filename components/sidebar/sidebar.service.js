@@ -6,10 +6,10 @@
  * @param HsLanguageService
  */
 export class HsSidebarService {
-  constructor(gettext, HsLanguageService) {
+  constructor(gettext, HsLanguageService, HsLayoutService) {
     'ngInject';
     this.extraButtons = [];
-    angular.extend(this, {gettext, HsLanguageService});
+    angular.extend(this, {gettext, HsLanguageService, HsLayoutService});
 
     angular.extend(this, {
       /**
@@ -194,5 +194,13 @@ export class HsSidebarService {
     this.buttons.filter((b) => b.panel == panelName)[0].important = state;
     this.unimportantExist =
       this.buttons.filter((b) => b.important == false).length > 0;
+  }
+
+  buttonClicked(button) {
+    if (button.click) {
+      button.click();
+    } else {
+      this.HsLayoutService.setMainPanel(button.panel, true);
+    }
   }
 }
