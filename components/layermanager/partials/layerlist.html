@@ -5,10 +5,10 @@
                 <div class="p-0">
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" (click)="HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);toggleSublayersVisibility(layer);$event.stopPropagation()" [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
-                <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')" style="word-break:break-all" [ngClass]="{'hover': layer.layer.hasSublayers == true}">
+                <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleLayerEditor(layer,'sublayers', 'settings')" style="word-break:break-all" [ngClass]="{'hover': layer.layer.hasSublayers == true}">
                     {{layer.title}}
                 </div>
-                <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers" style="font-size:x-small; flex-grow: 20;" (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
+                <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers" style="font-size:x-small; flex-grow: 20;" (click)="toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer.layer)"></span>
                     <span class="mr-1" [ngClass]="{true:'icon-chevron-right', false:'icon-chevron-down'}[HsLayerManagerService.currentLayer == layer]" [hidden]="!layerLoaded(layer.layer)"></span> 
                 </div>
@@ -26,7 +26,7 @@
                     <i class="icon-info-sign hs-lm-queryable" i18n-title="This layer is queryable" (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="pl-1 info_btn">
-                    <span class="icon-settingsthree-gears text-secondary" (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')" i18n-title="Additional information" data-toggle="tooltip" data-container="body" data-placement="auto"></span>
+                    <span class="icon-settingsthree-gears text-secondary" (click)="toggleLayerEditor(layer,'settings','sublayers')" i18n-title="Additional information" data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                 </div>
             </div>
         </li>
