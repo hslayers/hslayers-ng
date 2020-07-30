@@ -20,6 +20,7 @@ export class HsCesiumCameraService {
   viewer: Viewer;
   lastGoodCenter: any[] = null;
   ellipsoid: any;
+  lastSyncedExtentFromOl: any;
   constructor(
     private HsMapService: HsMapService,
     private Window: Window,
@@ -264,60 +265,65 @@ export class HsCesiumCameraService {
 
   setExtentEqualToOlExtent(view) {
     try {
-      if (this.viewer.isDestroyed()) {
-        return;
-      }
       const ol_ext = view.calculateExtent(this.HsMapService.map.getSize());
       const trans_ext = transformExtent(
         ol_ext,
         view.getProjection(),
         'EPSG:4326'
       );
-      this.viewer.camera.setView({
-        destination: Rectangle.fromDegrees(
-          trans_ext[0],
-          trans_ext[1],
-          trans_ext[2],
-          trans_ext[3]
-        ),
-      });
-
-      const width =
-        this.viewer.canvas.width > 0
-          ? this.viewer.canvas.width
-          : this.Window.innerWidth;
-      const height =
-        this.viewer.canvas.height > 0
-          ? this.viewer.canvas.height
-          : this.Window.innerHeight;
-      const ray = this.viewer.camera.getPickRay(
-        new Cartesian2(width / 2, height / 2)
-      );
-      const positionCartesian3 = this.viewer.scene.globe.pick(
-        ray,
-        this.viewer.scene
-      );
-      if (positionCartesian3) {
-        /*
-              var instance = new Cesium.GeometryInstance({
-                  geometry : new RectangleGeometry({
-                      rectangle : Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                      height: Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
-                      vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
-                  })
-              });
-  
-              this.viewer.scene.primitives.removeAll();
-              this.viewer.scene.primitives.add(new Cesium.Primitive({
-                  geometryInstances : instance,
-                  appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
-              })); */
-        this.viewer.camera.moveBackward(
-          Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
-        );
+      this.lastSyncedExtentFromOl = trans_ext;
+      if (this.viewer.isDestroyed()) {
+        return;
       }
+      this.fitExtent(trans_ext);
     } catch (ex) {
       console.error(ex);
+    }
+  }
+
+  private fitExtent(trans_ext: any) {
+    this.viewer.camera.setView({
+      destination: Rectangle.fromDegrees(
+        trans_ext[0],
+        trans_ext[1],
+        trans_ext[2],
+        trans_ext[3]
+      ),
+    });
+
+    const width =
+      this.viewer.canvas.width > 0
+        ? this.viewer.canvas.width
+        : this.Window.innerWidth;
+    const height =
+      this.viewer.canvas.height > 0
+        ? this.viewer.canvas.height
+        : this.Window.innerHeight;
+    const ray = this.viewer.camera.getPickRay(
+      new Cartesian2(width / 2, height / 2)
+    );
+    const positionCartesian3 = this.viewer.scene.globe.pick(
+      ray,
+      this.viewer.scene
+    );
+    if (positionCartesian3) {
+      /*
+            var instance = new Cesium.GeometryInstance({
+                geometry : new RectangleGeometry({
+                    rectangle : Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
+                    height: Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
+                    vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                })
+            });
+ 
+            this.viewer.scene.primitives.removeAll();
+            this.viewer.scene.primitives.add(new Cesium.Primitive({
+                geometryInstances : instance,
+                appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
+            })); */
+      this.viewer.camera.moveBackward(
+        Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
+      );
     }
   }
 
@@ -394,21 +400,22 @@ export class HsCesiumCameraService {
   }
 
   setDefaultViewport() {
-    const view = this.HsConfig.default_view;
-    let winWidth = this.Window.innerWidth;
-    let winHeight = this.Window.innerHeight;
-    if (innerWidth == 0) {
-      winWidth = 1900;
+    let trans_ext;
+    if (this.lastSyncedExtentFromOl) {
+      trans_ext = this.lastSyncedExtentFromOl;
+    } else {
+      const view = this.HsConfig.default_view;
+      let winWidth = this.Window.innerWidth;
+      let winHeight = this.Window.innerHeight;
+      if (innerWidth == 0) {
+        winWidth = 1900;
+      }
+      if (winHeight == 0) {
+        winHeight = 1080;
+      }
+      const ol_ext = view.calculateExtent([winWidth, winHeight]);
+      trans_ext = transformExtent(ol_ext, view.getProjection(), 'EPSG:4326');
     }
-    if (winHeight == 0) {
-      winHeight = 1080;
-    }
-    const ol_ext = view.calculateExtent([winWidth, winHeight]);
-    const trans_ext = transformExtent(
-      ol_ext,
-      view.getProjection(),
-      'EPSG:4326'
-    );
     const rectangle = Rectangle.fromDegrees(
       trans_ext[0],
       trans_ext[1],
