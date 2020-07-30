@@ -268,52 +268,61 @@ export class HsCesiumCameraService {
   }
 
   setExtentEqualToOlExtent(view) {
-    if (this.viewer.isDestroyed()) {
-      return;
-    }
-    const ol_ext = view.calculateExtent(this.HsMapService.map.getSize());
-    const trans_ext = transformExtent(
-      ol_ext,
-      view.getProjection(),
-      'EPSG:4326'
-    );
-    this.viewer.camera.setView({
-      destination: Rectangle.fromDegrees(
-        trans_ext[0],
-        trans_ext[1],
-        trans_ext[2],
-        trans_ext[3]
-      ),
-    });
-
-    const ray = this.viewer.camera.getPickRay(
-      new Cartesian2(
-        this.viewer.canvas.width / 2,
-        this.viewer.canvas.height / 2
-      )
-    );
-    const positionCartesian3 = this.viewer.scene.globe.pick(
-      ray,
-      this.viewer.scene
-    );
-    if (positionCartesian3) {
-      /*
-            var instance = new Cesium.GeometryInstance({
-                geometry : new RectangleGeometry({
-                    rectangle : Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
-                    height: Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
-                    vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
-                })
-            });
-
-            this.viewer.scene.primitives.removeAll();
-            this.viewer.scene.primitives.add(new Cesium.Primitive({
-                geometryInstances : instance,
-                appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
-            })); */
-      this.viewer.camera.moveBackward(
-        Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
+    try {
+      if (this.viewer.isDestroyed()) {
+        return;
+      }
+      const ol_ext = view.calculateExtent(this.HsMapService.map.getSize());
+      const trans_ext = transformExtent(
+        ol_ext,
+        view.getProjection(),
+        'EPSG:4326'
       );
+      this.viewer.camera.setView({
+        destination: Rectangle.fromDegrees(
+          trans_ext[0],
+          trans_ext[1],
+          trans_ext[2],
+          trans_ext[3]
+        ),
+      });
+
+      const width =
+        this.viewer.canvas.width > 0
+          ? this.viewer.canvas.width
+          : this.Window.innerWidth;
+      const height =
+        this.viewer.canvas.height > 0
+          ? this.viewer.canvas.height
+          : this.Window.innerHeight;
+      const ray = this.viewer.camera.getPickRay(
+        new Cartesian2(width / 2, height / 2)
+      );
+      const positionCartesian3 = this.viewer.scene.globe.pick(
+        ray,
+        this.viewer.scene
+      );
+      if (positionCartesian3) {
+        /*
+              var instance = new Cesium.GeometryInstance({
+                  geometry : new RectangleGeometry({
+                      rectangle : Rectangle.fromDegrees(trans_ext[0], trans_ext[1], trans_ext[2], trans_ext[3]),
+                      height: Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height,
+                      vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
+                  })
+              });
+  
+              this.viewer.scene.primitives.removeAll();
+              this.viewer.scene.primitives.add(new Cesium.Primitive({
+                  geometryInstances : instance,
+                  appearance : new EllipsoidSurfaceAppearance({aboveGround: true})
+              })); */
+        this.viewer.camera.moveBackward(
+          Ellipsoid.WGS84.cartesianToCartographic(positionCartesian3).height
+        );
+      }
+    } catch (ex) {
+      console.error(ex);
     }
   }
 
