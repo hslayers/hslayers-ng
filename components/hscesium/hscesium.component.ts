@@ -28,16 +28,15 @@ export class HsCesiumComponent implements OnInit {
     const view = this.HsPermalinkUrlService.getParamValue('view');
     if (view != '2d' || view == '3d') {
       this.HsPermalinkUrlService.updateCustomParams({view: '3d'});
-      setTimeout(() => {
-        HsMapService.visible = false;
-      }, 0);
+      this.HsMapService.visible = false;
     } else {
       this.HsPermalinkUrlService.updateCustomParams({view: '2d'});
     }
 
-    this.HsSidebarService.extraButtons.push({
+    this.HsSidebarService.buttons.push({
       title: '3D/2D',
-      icon_class: 'icon-globealt',
+      description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
+      icon: 'icon-globealt',
       click: () => this.toggleCesiumMap(),
     });
 
@@ -63,11 +62,9 @@ export class HsCesiumComponent implements OnInit {
     this.HsPermalinkUrlService.updateCustomParams({
       view: HsMapService.visible ? '2d' : '3d',
     });
-    if (HsMapService.visible) {
+    if (this.HsMapService.visible) {
       this.HsCesiumService.viewer.destroy();
-      setTimeout(() => {
-        this.HsCoreService.updateMapSize();
-      }, 5000);
+      this.HsCoreService.updateMapSize();
     } else {
       this.HsCesiumService.init();
     }

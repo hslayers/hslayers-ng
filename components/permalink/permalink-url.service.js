@@ -330,6 +330,8 @@ export class HsPermalinkUrlService {
       if (this.getParamValue('lang')) {
         this.HsLanguageService.setLanguage(this.getParamValue('lang'));
       }
+      const view = this.getParamValue('view');
+      this.HsMapService.visible = !(view == '3d');
     }
   }
 }

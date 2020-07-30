@@ -128,19 +128,6 @@ export default function (
     },
 
     /**
-     * Set current active panel in sidebar
-     *
-     * @memberof HsSidebarController
-     * @function setMainPanel
-     * @param {string} which Name of panel to set active
-     */
-    setMainPanel(which) {
-      $timeout(() => {
-        HsLayoutService.setMainPanel(which, true);
-      });
-    },
-
-    /**
      * Toggle sidebar mode between expanded and narrow
      *
      * @memberof HsSidebarController
@@ -153,7 +140,9 @@ export default function (
 
   if (HsPermalinkUrlService.getParamValue('hs_panel')) {
     if (HsCore.exists('hs.sidebar') && !HsLayoutService.minisidebar) {
-      $scope.setMainPanel(HsPermalinkUrlService.getParamValue('hs_panel'));
+      HsLayoutService.setMainPanel(
+        HsPermalinkUrlService.getParamValue('hs_panel')
+      );
     }
   }
   $scope.setPanelState(HsSidebarService.buttons);

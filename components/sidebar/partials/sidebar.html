@@ -5,7 +5,7 @@
     </a>
 
     <a href="#" ng-repeat="button in sidebarService.buttons | orderBy:'order'" class="flex-fill hs-sidebar-item list-group-item"
-        ng-show="button.visible && visibilityByImportancy(button)" ng-click="setMainPanel(button.panel)"
+        ng-show="button.visible && visibilityByImportancy(button)" ng-click="sidebarService.buttonClicked(button)"
         ng-class="{active: layoutService.mainpanel == button.panel, 'hs-panel-hidden': fitsSidebar(button.panel)}" title="{{button.description | translate}}">
 
         <i ng-if="::button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"

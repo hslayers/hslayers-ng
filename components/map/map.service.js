@@ -1,5 +1,4 @@
 /* eslint-disable angular/timeout-service */
-import '../permalink/permalink.module';
 import Control from 'ol/control/Control';
 import Feature from 'ol/Feature';
 import Kinetic from 'ol/Kinetic';
@@ -324,8 +323,6 @@ export class HsMapService {
         this.HsConfig.default_view || this.createPlaceholderView()
       ),
     });
-
-    this.visible = true;
 
     this.map.getView().on('change:center', (e) => {
       this.extentChanged(e);
