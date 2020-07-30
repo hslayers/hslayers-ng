@@ -82,7 +82,7 @@ export class HsPermalinkUrlService {
       if (lyr.getVisible()) {
         visible_layers.push(lyr.get('title'));
       }
-      if (lyr.manuallyAdded != false) {
+      if (lyr.get('manuallyAdded')) {
         added_layers.push(lyr);
       }
     });

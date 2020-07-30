@@ -1,4 +1,3 @@
-import BaseLayer from 'ol/layer/Base';
 import Static from 'ol/source/ImageStatic';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon} from 'ol/style';
@@ -154,7 +153,7 @@ export class HsLegendService {
    * @param {ImageStyle} image Image description
    * @returns {object} Simplified description of style used by template to draw legend
    */
-  setUpLegendStyle(fill: Fill, stroke: Stroke, image: ImageStyle) {
+  setUpLegendStyle(fill: Fill, stroke: Stroke, image: any) {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
@@ -280,9 +279,9 @@ export class HsLegendService {
    * @memberof HsLegendService
    * @function getLegendUrl
    * @returns {object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
-   * @param {BaseLayer} layer Openlayers layer
+   * @param {Layer} layer Openlayers layer
    */
-  getLayerLegendDescriptor(layer: BaseLayer): HsLegendDescriptor | undefined {
+  getLayerLegendDescriptor(layer: Layer): HsLegendDescriptor | undefined {
     if (layer.get('base')) {
       return;
     }

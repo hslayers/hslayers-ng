@@ -10,6 +10,7 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
+import {PerspectiveFrustum} from 'cesium';
 import {get as getProj, transformExtent} from 'ol/proj';
 
 @Injectable({
@@ -41,10 +42,10 @@ export class HsCesiumCameraService {
   calcResolutionForDistance(distance, latitude) {
     // See the reverse calculation (calcDistanceForResolution_) for details
     const canvas = this.viewer.scene.canvas;
-    const fovy = this.viewer.camera.frustum.fovy;
+    const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
     const metersPerUnit = getProj('EPSG:3857').getMetersPerUnit();
 
-    const visibleMeters = 2 * distance * Math.tan(fovy / 2);
+    const visibleMeters = 2 * distance * Math.tan(fov / 2);
     const relativeCircumference = Math.cos(Math.abs(latitude));
     const visibleMapUnits =
       visibleMeters / metersPerUnit / relativeCircumference;
@@ -231,10 +232,7 @@ export class HsCesiumCameraService {
     let err = dx - dy;
 
     coordinate = this.viewer.scene.camera.pickEllipsoid(
-      {
-        x: x1,
-        y: y1,
-      },
+      new Cartesian2(x1, y1),
       this.ellipsoid
     );
     if (coordinate) {
@@ -254,10 +252,7 @@ export class HsCesiumCameraService {
       }
 
       coordinate = this.viewer.scene.camera.pickEllipsoid(
-        {
-          x: x1,
-          y: y1,
-        },
+        new Cartesian2(x1, y1),
         this.ellipsoid
       );
       if (coordinate) {
@@ -337,7 +332,7 @@ export class HsCesiumCameraService {
    */
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.viewer.scene.canvas;
-    const fovy = this.viewer.camera.frustum.fovy;
+    const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
     const metersPerUnit = this.HsMapService.map
       .getView()
       .getProjection()
@@ -363,7 +358,7 @@ export class HsCesiumCameraService {
     //  x | \
     //    |--\
     // visibleMeters/2
-    const requiredDistance = visibleMeters / 2 / Math.tan(fovy / 2);
+    const requiredDistance = visibleMeters / 2 / Math.tan(fov / 2);
 
     // NOTE: This calculation is not absolutely precise, because metersPerUnit
     // is a great simplification. It does not take ellipsoid/terrain into account.

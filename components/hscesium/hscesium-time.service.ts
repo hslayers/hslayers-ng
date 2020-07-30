@@ -34,33 +34,34 @@ export class HsCesiumTimeService {
 
           const layer = this.viewer.imageryLayers.get(i);
           if (layer.imageryProvider instanceof WebMapServiceImageryProvider) {
-            if (layer.prm_cache && this.getTimeParameter(layer)) {
-              if (layer.prm_cache.dimensions.time) {
+            const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+            if (prmCache && this.getTimeParameter(layer)) {
+              if (prmCache.dimensions.time) {
                 let min_dist = Number.MAX_VALUE;
                 let min_i = -1;
                 for (
                   let pt = 0;
-                  pt < layer.prm_cache.dimensions.time.values.length;
+                  pt < prmCache.dimensions.time.values.length;
                   pt++
                 ) {
                   const diff2 =
                     round_time.getTime() -
-                    layer.prm_cache.dimensions.time.values[pt].getTime();
+                    prmCache.dimensions.time.values[pt].getTime();
                   if (diff2 > 0 && diff2 < min_dist) {
                     min_dist = diff2;
                     min_i = pt;
                   }
                 }
-                round_time = layer.prm_cache.dimensions.time.values[min_i];
+                round_time = prmCache.dimensions.time.values[min_i];
               }
               const diff = Math.abs(
                 round_time.getTime() -
                   new Date(
-                    layer.prm_cache.parameters[this.getTimeParameter(layer)]
+                    prmCache.parameters[this.getTimeParameter(layer)]
                   ).getTime()
               );
               if (diff > 1000 * 60) {
-                //console.log('Was', layer.prm_cache.parameters[this.getTimeParameter(layer)], 'New', round_time)
+                //console.log('Was', prmCache.parameters[this.getTimeParameter(layer)], 'New', round_time)
                 this.HsCesiumLayersService.changeLayerParam(
                   layer,
                   this.getTimeParameter(layer),
@@ -87,12 +88,11 @@ export class HsCesiumTimeService {
     const tmp = [];
     for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
       const layer = this.viewer.imageryLayers.get(i);
-      if (layer.ol_layer && layer.prm_cache) {
-        const t = new Date(
-          layer.prm_cache.parameters[this.getTimeParameter(layer)]
-        );
+      const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+      if (prmCache) {
+        const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
         tmp.push({
-          name: layer.ol_layer.get('title'),
+          name: this.HsCesiumLayersService.findOlLayer(layer).get('title'),
           time: moment.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }

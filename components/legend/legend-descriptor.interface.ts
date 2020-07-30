@@ -1,6 +1,7 @@
-import BaseLayer from 'ol/layer/Base';
+import { Layer } from "ol/layer";
+
 export interface HsLegendDescriptor {
-  lyr: BaseLayer;
+  lyr: Layer;
   title: string;
   type: string;
   subLayerLegends?: Array<string>;
