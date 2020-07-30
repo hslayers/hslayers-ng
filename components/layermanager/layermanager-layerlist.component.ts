@@ -39,7 +39,7 @@ export class HsLayerListComponent {
       this.sortLayersByPosition();
     });
   }
-  
+
   /**
    * @function layerLoaded
    * @memberOf hs.layermanager-layerlist
@@ -49,7 +49,6 @@ export class HsLayerListComponent {
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
-
 
   changeSublayerVisibilityState(layer, state) {
     if (layer.layer.checkedSubLayers) {
@@ -103,6 +102,32 @@ export class HsLayerListComponent {
         Object.keys(layer.layer.withChildren).forEach((key) => {
           layer.layer.withChildren[key] = layer.layer.withChildrenTmp[key];
         });
+      }
+    }
+  }
+  /**
+   * @function toggleLayerEditor
+   * @memberOf hs.layermanager.layerlist
+   * @description Controls state of layer´s sublayers checkboxes when layermanager.currentLayer is changed
+   * @param {object} layer Selected layer
+   */
+  toggleLayerEditor(layer: Layer, toToggle, control) {
+    this.HsLayerManagerService.toggleLayerEditor(layer, toToggle, control);
+
+    if (toToggle === 'sublayers') {
+      if (this.HsLayerManagerService.currentLayer) {
+        this.HsLayerEditorSublayerService.checkedSubLayers =
+          layer.layer.checkedSubLayers;
+        this.HsLayerEditorSublayerService.checkedSubLayersTmp =
+          layer.layer.checkedSubLayersTmp;
+
+        this.HsLayerEditorSublayerService.withChildren =
+          layer.layer.withChildren;
+        this.HsLayerEditorSublayerService.withChildrenTmp =
+          layer.layer.withChildrenTmp;
+      } else {
+        this.HsLayerEditorSublayerService.checkedSubLayers = {};
+        this.HsLayerEditorSublayerService.withChildren = {};
       }
     }
   }

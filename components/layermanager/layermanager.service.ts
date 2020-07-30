@@ -776,10 +776,6 @@ export class HsLayerManagerService {
       layer.sublayers = false;
       layer.settings = false;
       this.currentLayer = null;
-
-      //TODO
-      //this.HsLayerEditorSublayerService.checkedSubLayers = {};
-      //this.HsLayerEditorSublayerService.withChildren = {};
     } else {
       this.setCurrentLayer(layer);
       return false;
@@ -792,11 +788,6 @@ export class HsLayerManagerService {
       layer.layer.checkedSubLayers = {};
       layer.layer.withChildren = {};
     }
-    //TODO
-    // this.HsLayerEditorSublayerService.checkedSubLayers =
-    //   layer.layer.checkedSubLayers;
-    // this.HsLayerEditorSublayerService.withChildren = layer.layer.withChildren;
-
     if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
       this.currentLayer.time = new Date(
         layer.layer.getSource().getParams().TIME
