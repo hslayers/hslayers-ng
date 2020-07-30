@@ -19,6 +19,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {METERS_PER_UNIT} from 'ol/proj';
 import {TileWMS} from 'ol/source';
+import { HsLayerDescriptor } from './layer-descriptor.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -815,9 +816,9 @@ export class HsLayerManagerService {
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
    * @description Determines if layer has metadata information avaliable *
-   * @param {Layer} layer Selected layer (LayMan.currentLayer)
+   * @param {HsLayerDescriptor} layer Selected layer (LayMan.currentLayer)
    */
-  hasMetadata(layer: Layer): boolean | undefined {
+  hasMetadata(layer: HsLayerDescriptor): boolean | undefined {
     if (!layer) {
       return;
     } else {

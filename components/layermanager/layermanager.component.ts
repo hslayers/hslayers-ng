@@ -3,6 +3,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsDialogItem} from '../layout/dialog-item.class';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
@@ -234,9 +235,9 @@ export class HsLayerManagerComponent implements OnInit {
    * @function hasCopyright
    * @memberOf hs.layermanager.controller
    * @description Determines if layer has copyright information avaliable *
-   * @param {Layer} layer Selected layer (HsLayerManagerService.currentLayer)
+   * @param {HsLayerDescriptor} layer Selected layer (HsLayerManagerService.currentLayer)
    */
-  hasCopyright(layer: Layer): boolean | undefined {
+  hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.HsLayerManagerService.currentLayer) {
       return;
     } else {

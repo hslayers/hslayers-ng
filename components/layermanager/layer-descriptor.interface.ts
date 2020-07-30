@@ -1,4 +1,5 @@
-import BaseLayer from 'ol/layer/Base';
+import {Layer} from 'ol/layer';
+
 export interface HsLayerDescriptor {
-  layer: BaseLayer;
+  layer: Layer;
 }

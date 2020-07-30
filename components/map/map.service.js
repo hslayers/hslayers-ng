@@ -563,7 +563,7 @@ export class HsMapService {
     if (angular.isDefined(visibilityOverrides)) {
       lyr.setVisible(this.layerTitleInArray(lyr, visibilityOverrides));
     }
-    lyr.manuallyAdded = false;
+    lyr.set('manuallyAdded', false);
     const source = lyr.getSource();
     if (
       this.HsUtilsService.instOf(source, ImageWMS) ||

@@ -1,4 +1,3 @@
-import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsDimensionDescriptor} from './dimension.class';
 import {HsDimensionService} from '../../../common/dimension.service';
@@ -6,12 +5,13 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
+import {Layer} from 'ol/layer';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   template: require('./layer-editor-dimensions.html'),
 })
 export class HsLayerEditorDimensionsComponent {
-  @Input('ol-layer') olLayer: BaseLayer;
+  @Input('ol-layer') olLayer: Layer;
   dimensions: Array<HsDimensionDescriptor> = [];
 
   constructor(

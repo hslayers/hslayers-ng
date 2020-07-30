@@ -1,6 +1,5 @@
 /* eslint-disable angular/definedundefined */
 import * as moment from 'moment';
-import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -251,9 +250,9 @@ export class HsLayerEditorComponent {
    * @function hasCopyright
    * @memberOf HsLayerEditorComponent
    * @description Determines if layer has copyright information avaliable *
-   * @param {Layer} layer Selected layer (LayMan.currentLayer)
+   * @param {HsLayerDescriptor} layer Selected layer (LayMan.currentLayer)
    */
-  hasCopyright(layer: Layer): boolean | undefined {
+  hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.currentLayer) {
       return;
     } else {
@@ -347,7 +346,7 @@ export class HsLayerEditorComponent {
     return this.minResolutionValid() || this.maxResolutionValid();
   }
 
-  olLayer(): BaseLayer {
+  olLayer(): Layer {
     if (!this.currentLayer) {
       return undefined;
     }
