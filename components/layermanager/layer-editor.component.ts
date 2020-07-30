@@ -285,7 +285,7 @@ export class HsLayerEditorComponent {
       return;
     }
     const layer = this.olLayer();
-    return layer.minResolution;
+    return layer.getMinResolution();
   }
 
   /**
@@ -307,7 +307,7 @@ export class HsLayerEditorComponent {
       return;
     }
     const layer = this.olLayer();
-    return layer.maxResolution;
+    return layer.getMaxResolution();
   }
 
   /**
