@@ -225,9 +225,7 @@ export class HsCesiumLayersService {
     const json: any = f.writeFeaturesObject(features);
     //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     //cesiumLayer.entities.removeAll();
-    if (
-      this.HsMapService.map.getView().getProjection().getCode() == 'EPSG:3857'
-    ) {
+    if (this.currentMapProjCode() == 'EPSG:3857') {
       json.crs = {
         type: 'name',
         properties: {
@@ -236,6 +234,14 @@ export class HsCesiumLayersService {
       };
     }
     return json;
+  }
+
+  currentMapProjCode() {
+    if (this.HsMapService.map) {
+      return this.HsMapService.map.getView().getProjection().getCode();
+    } else {
+      this.HsConfig.default_view.getProjection().getCode();
+    }
   }
 
   findCesiumLayer(ol: Layer | Source): ImageryLayer | DataSource {
