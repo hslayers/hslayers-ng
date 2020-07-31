@@ -321,8 +321,8 @@ export default function (
     }
   });
 
-  $rootScope.$on('map.loaded', (e) => {
-    HsMapService.map.on(
+  HsEventBusService.olMapLoads.subscribe((map) => {
+    map.on(
       'postcompose',
       HsUtilsService.debounce(
         () => {

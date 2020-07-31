@@ -11,6 +11,7 @@ import {transform} from 'ol/proj';
  * @param HsLaymanService
  * @param HsLayoutService
  * @param HsUtilsService
+ * @param HsEventBusService
  */
 export default function (
   $rootScope,
@@ -378,8 +379,8 @@ export default function (
     }
   });
 
-  $rootScope.$on('map.loaded', (e) => {
-    HsMapService.map.on(
+  HsEventBusService.olMapLoads.subscribe((map) => {
+    map.on(
       'postcompose',
       HsUtilsService.debounce(
         () => {

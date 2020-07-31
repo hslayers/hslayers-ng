@@ -50,8 +50,8 @@ export const HsQueryVectorService = function (
   });
   $rootScope.$broadcast('vectorSelectorCreated', me.selector);
 
-  $rootScope.$on('map.loaded', (e) => {
-    HsMapService.map.addInteraction(me.selector);
+  HsEventBusService.olMapLoads.subscribe((map) => {
+    map.addInteraction(me.selector);
   });
 
   $rootScope.$on('queryStatusChanged', () => {

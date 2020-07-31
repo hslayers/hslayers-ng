@@ -400,13 +400,7 @@ export class HsMapService {
     );
     register(proj4);
 
-    /**
-     * @ngdoc event
-     * @name HsMapService#map.loaded
-     * @eventType broadcast on $rootScope
-     * @description Fires when map is loaded (so other map dependent modules can proceed)
-     */
-    this.$rootScope.$broadcast('map.loaded');
+    this.HsEventBusService.olMapLoads.next(this.map);
   }
 
   loaded() {
@@ -415,13 +409,11 @@ export class HsMapService {
         resolve(this.map);
         return;
       } else {
-        this.$timeout(() => {
-          if (this.map) {
-            resolve(this.map);
-          } else {
-            reject();
+        this.HsEventBusService.olMapLoads.subscribe((map) => {
+          if (map) {
+            resolve(map);
           }
-        }, 1000);
+        });
       }
     });
   }
