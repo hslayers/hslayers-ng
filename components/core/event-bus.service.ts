@@ -1,4 +1,5 @@
-import {Inject, Injectable} from '@angular/core';
+import Map from 'ol/Map';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,6 @@ export class HsEventBusService {
   mapLibraryChanges: Subject<any> = new Subject();
   cesiumTimeLayerChanges: Subject<any> = new Subject(); //replaces 'cesium.time_layers_changed'
   layoutResizes: Subject<any> = new Subject();
+  olMapLoads: Subject<Map> = new Subject(); //replaces 'map.loaded'
   constructor() {}
 }

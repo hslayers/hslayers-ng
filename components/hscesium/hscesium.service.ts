@@ -124,7 +124,7 @@ export class HsCesiumService {
       : false;
     viewer.scene.globe.enableLighting = this.getShadowMode();
     viewer.scene.globe.shadows = this.getShadowMode();
-
+    
     viewer.terrainProvider = terrain_provider;
 
     if (this.HsConfig.cesiumTime) {
@@ -274,12 +274,6 @@ export class HsCesiumService {
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
 
-    /**
-     * @ngdoc event
-     * @name HsCesiumService#map.loaded
-     * @eventType broadcast on $rootScope
-     * @description
-     */
     this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
   }
 

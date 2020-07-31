@@ -8,7 +8,8 @@ export default {
     HsQueryVectorService,
     $element,
     gettext,
-    $injector
+    $injector,
+    HsEventBusService
   ) {
     'ngInject';
     angular.extend($scope, {
@@ -84,8 +85,8 @@ export default {
       element: hoverPopupElement,
     });
 
-    $scope.$on('map.loaded', (e) => {
-      HsMapService.map.addOverlay(HsQueryBaseService.hoverPopup);
+    HsEventBusService.olMapLoads.subscribe((map) => {
+      map.addOverlay(HsQueryBaseService.hoverPopup);
     });
   },
 };
