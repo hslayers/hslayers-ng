@@ -14,4 +14,5 @@ export default angular
     this.compositionDeletes = new Subject();
     this.mainPanelChanges = new Subject();
     this.mapExtentChanges = new Subject();
+    this.olMapLoads = new Subject();
   });
