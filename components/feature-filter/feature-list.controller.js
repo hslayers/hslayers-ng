@@ -15,6 +15,7 @@ import {pointerMove} from 'ol/events/condition';
  */
 export default function (
 	$scope,
+	$rootScope,
 	HsMapService,
 	HsCore,
 	HsFeatureFilterService,
@@ -87,7 +88,7 @@ export default function (
 		$scope.featureDetails = feature.getProperties();
 		HsLayermanagerService.currentLayer.selectedFeature = feature;
 		if (!$scope.$$phase) $scope.$digest();
-
+		$rootScope.$broadcast('featureSelectionChanged');
 		$scope.lastView = HsMapService.map.getView().getProperties();
 
 		HsMapService.map.getView().animate({
@@ -102,7 +103,8 @@ export default function (
 		$scope.featureDetails = undefined;
 		HsLayermanagerService.currentLayer.selectedFeature = undefined;
 		if (!$scope.$$phase) $scope.$digest();
-		
+		$rootScope.$broadcast('featureSelectionChanged');
+
 		HsMapService.map.getView().animate({
 			resolution: $scope.lastView.resolution,
 			center: $scope.lastView.center,
