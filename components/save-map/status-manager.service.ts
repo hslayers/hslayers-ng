@@ -1,8 +1,9 @@
 import {HsConfig} from '../../config.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
+import {SaverServiceInterface} from './saver-service.interface';
 
-export class HsStatusManagerService {
+export class HsStatusManagerService implements SaverServiceInterface {
   constructor(
     private http: HttpClient,
     private HsConfig: HsConfig,
@@ -47,7 +48,7 @@ export class HsStatusManagerService {
       compoData.id = this.HsUtilsService.generateUuid();
     }
     return new Promise((resolve, reject) => {
-      this.$http({
+      this.http({
         url: this.endpointUrl(),
         method: 'POST',
         data: angular.toJson({

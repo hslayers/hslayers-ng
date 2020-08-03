@@ -5,6 +5,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {
+  HsCommonEndpointsServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsLayerSynchronizerServiceProvider,
