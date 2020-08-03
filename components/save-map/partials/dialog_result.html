@@ -8,12 +8,12 @@
                 <button type="button" ng-click="resultModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    <div translate class="alert alert-status" ng-show="saveMapManagerService.statusData.status">Composition saved successfully</div>
-                    <div translate class="alert alert-danger" ng-show="!saveMapManagerService.statusData.status">Composition failed to save</div>
-                    <div translate class="alert alert-danger" ng-show="!saveMapManagerService.statusData.status && saveMapManagerService.statusData.resultCode == 'not-saved'">Request was processed, but map was not saved due to authorization missing</div>
-                    <div translate class="alert alert-danger" ng-show="!saveMapManagerService.statusData.status && saveMapManagerService.statusData.resultCode == 'error'">Server didn't respond or other error occured</div>
-                    <div class="alert alert-danger" ng-show="!saveMapManagerService.statusData.status && saveMapManagerService.statusData.resultCode == 'error'">
-                        <dl ng-repeat="(key, value) in saveMapManagerService.statusData.error">
+                    <div translate class="alert alert-status" ng-show="HsSaveMapManagerService.statusData.status">Composition saved successfully</div>
+                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status">Composition failed to save</div>
+                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'not-saved'">Request was processed, but map was not saved due to authorization missing</div>
+                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error'">Server didn't respond or other error occured</div>
+                    <div class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error'">
+                        <dl ng-repeat="(key, value) in HsSaveMapManagerService.statusData.error">
                             <dt>{{key}} </dt>
                             <dd hs.widgets.object-directive></dd>
                         </dl>

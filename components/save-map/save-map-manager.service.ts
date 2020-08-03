@@ -1,84 +1,59 @@
 /* eslint-disable angular/on-watch */
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLaymanService} from './layman.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsSaveMapService} from './save-map.service';
+import {HsStatusManagerService} from './status-manager.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Subject} from 'rxjs';
 import {transform} from 'ol/proj';
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsSaveMapService
- * @param HsConfig
- * @param $http
- * @param HsStatusManagerService
- * @param HsLaymanService
- * @param HsLayoutService
- * @param HsUtilsService
- * @param HsEventBusService
- */
 export class HsSaveMapManagerService {
+  statusData: any = {
+    titleFree: undefined,
+    hasPermission: undefined,
+    success: undefined,
+    changeTitle: undefined,
+    groups: [],
+  };
+  compoData: any = {
+    title: '',
+    abstract: '',
+    keywords: [],
+    layers: [],
+    id: '',
+    thumbnail: undefined,
+    bbox: undefined,
+    currentCompositionTitle: '',
+    currentComposition: undefined,
+  };
+  userData: any = {
+    email: '',
+    phone: '',
+    name: '',
+    address: '',
+    country: '',
+    postalCode: '',
+    city: '',
+    organization: '',
+  };
+  panelOpened: Subject<any> = new Subject();
   constructor(
-    $rootScope,
-    HsMapService,
-    HsSaveMapService,
-    HsConfig,
-    $http,
-    HsStatusManagerService,
-    HsLaymanService,
-    HsLayoutService,
-    HsUtilsService,
-    HsEventBusService
+    private HsMapService: HsMapService,
+    private HsSaveMapService: HsSaveMapService,
+    private HsConfig: HsConfig,
+    private http: HttpClient,
+    private HsStatusManagerService: HsStatusManagerService,
+    private HsLaymanService: HsLaymanService,
+    private HsLayoutService: HsLayoutService,
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService
   ) {
-    'ngInject';
-
-    Object.assign(this, {
-      $rootScope,
-      HsMapService,
-      HsSaveMapService,
-      HsConfig,
-      $http,
-      HsStatusManagerService,
-      HsLaymanService,
-      HsLayoutService,
-      HsUtilsService,
-      HsEventBusService,
-    });
-
-    Object.assign(this, {
-      btnSelectDeseletClicked: true,
-      compoData: {
-        title: '',
-        abstract: '',
-        keywords: [],
-        layers: [],
-        id: '',
-        thumbnail: undefined,
-        bbox: undefined,
-        currentCompositionTitle: '',
-        currentComposition: undefined,
-      },
-      userData: {
-        email: '',
-        phone: '',
-        name: '',
-        address: '',
-        country: '',
-        postalCode: '',
-        city: '',
-        organization: '',
-      },
-      statusData: {
-        titleFree: undefined,
-        hasPermission: undefined,
-        success: undefined,
-        changeTitle: undefined,
-        groups: [],
-      },
-    });
-
-    $rootScope.$on('StatusCreator.open', (e, composition) => {
-      this.open();
-    });
-
     HsEventBusService.compositionLoads.subscribe((data) => {
-      if (angular.isUndefined(data.error)) {
+      if (data.error == undefined) {
         if (data.data) {
           this.compoData.id = data.id;
           this.compoData.abstract = data.data.abstract;
@@ -106,9 +81,9 @@ export class HsSaveMapManagerService {
         HsLayoutService.mainpanel == 'saveMap' ||
         HsLayoutService.mainpanel == 'statusCreator'
       ) {
-        this.refresh();
-        HsSaveMapService.generateThumbnail(
-          HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+        this.fillCompositionData();
+        this.HsSaveMapService.generateThumbnail(
+          this.HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
           this.compoData
         );
       }
@@ -133,21 +108,8 @@ export class HsSaveMapManagerService {
     });
   }
 
-  /**
-   * Select or deselect all layers
-   *
-   * @function selectDeselectAllLayers
-   * @memberof hs.save-map
-   */
-  selectDeselectAllLayers() {
-    this.btnSelectDeseletClicked = !this.btnSelectDeseletClicked;
-    this.compoData.layers.forEach(
-      (layer) => (layer.checked = this.btnSelectDeseletClicked)
-    );
-  }
-
   confirmSave() {
-    this.$http({
+    this.http({
       method: 'POST',
       url: this.HsStatusManagerService.endpointUrl(),
       data: angular.toJson({
@@ -198,17 +160,17 @@ export class HsSaveMapManagerService {
       saver
         .save(compositionJson, endpoint, this.compoData, saveAsNew)
         .then((response) => {
-          const compInfo = {};
+          const compInfo: any = {};
           const j = response.data;
           let status = false;
           if (endpoint.type == 'statusmanager') {
-            status = angular.isDefined(j.saved) && j.saved !== false;
+            status = j.saved;
           }
           if (endpoint.type == 'layman') {
             if (saveAsNew) {
-              status = j.length == 1 && angular.isDefined(j[0].uuid);
+              status = j.length == 1 && j[0].uuid !== undefined;
             } else {
-              status = angular.isDefined(j.uuid);
+              status = j.uuid !== undefined;
             }
           }
           if (!status) {
@@ -257,22 +219,46 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * Initialization of Status Creator from outside of component
+   * Initialization of Save map wizard from outside of component
    *
-   * @function open
-   * @memberof hs.save-map.controller
+   * @param composition
+   * @function openPanel
+   * @memberof hs.HsSaveMapManagerService
    */
-  open() {
+  openPanel(composition) {
     this.HsLayoutService.setMainPanel('saveMap', true);
-    this.refresh();
+    this.fillCompositionData();
+    this.panelOpened.next({composition});
   }
 
-  refresh() {
+  private fillCompositionData() {
+    this.fillLayers();
+    this.fillGroups(() => {
+      this.statusData.groups.unshift({
+        roleTitle: 'Public',
+        roleName: 'guest',
+        w: false,
+        r: false,
+      });
+      const cc = this.compoData.currentComposition;
+      if (this.compoData.currentComposition && cc != '') {
+        for (const g of this.statusData.groups) {
+          if (cc.groups && cc.groups[g.roleName]) {
+            g.w = cc.groups[g.roleName].indexOf('w') > -1;
+            g.r = cc.groups[g.roleName].indexOf('r') > -1;
+          }
+        }
+      }
+    });
+    this.loadUserDetails();
+  }
+
+  private fillLayers() {
     this.compoData.layers = [];
     this.compoData.bbox = this.getCurrentExtent();
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (
-        (angular.isUndefined(lyr.get('show_in_manager')) ||
+        (lyr.get('show_in_manager') == undefined ||
           lyr.get('show_in_manager') == true) &&
         lyr.get('base') != true
       ) {
@@ -286,27 +272,6 @@ export class HsSaveMapManagerService {
     this.compoData.layers.sort((a, b) => {
       return a.layer.get('position') - b.layer.get('position');
     });
-    this.fillGroups(() => {
-      this.statusData.groups.unshift({
-        roleTitle: 'Public',
-        roleName: 'guest',
-        w: false,
-        r: false,
-      });
-      const cc = this.compoData.currentComposition;
-      if (angular.isDefined(this.compoData.currentComposition) && cc != '') {
-        angular.forEach(this.statusData.groups, (g) => {
-          if (
-            angular.isDefined(cc.groups) &&
-            angular.isDefined(cc.groups[g.roleName])
-          ) {
-            g.w = cc.groups[g.roleName].indexOf('w') > -1;
-            g.r = cc.groups[g.roleName].indexOf('r') > -1;
-          }
-        });
-      }
-    });
-    this.loadUserDetails();
   }
 
   /**
@@ -317,9 +282,10 @@ export class HsSaveMapManagerService {
    * @memberof HsSaveMapManagerService
    */
   fillGroups(cb) {
+    //TODO rewrite fillGroups as Promise
     this.statusData.groups = [];
     if (this.HsConfig.advancedForm) {
-      this.$http({
+      this.http({
         url: this.HsStatusManagerService.endpointUrl(),
         method: 'GET',
         data: {
@@ -330,10 +296,10 @@ export class HsSaveMapManagerService {
           const j = response.data;
           if (j.success) {
             this.statusData.groups = j.result;
-            angular.forEach(this.statusData.groups, (g) => {
+            for (const g of this.statusData.groups) {
               g.w = false;
               g.r = false;
-            });
+            }
           }
           cb();
         },
@@ -353,7 +319,7 @@ export class HsSaveMapManagerService {
    * @memberof HsSaveMapManagerService
    */
   loadUserDetails() {
-    this.$http({
+    this.http({
       url: this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo',
     }).then(this.setUserDetails, (err) => {
       //Nothing

@@ -1,22 +1,17 @@
-/**
- * @param $http
- * @param HsConfig
- * @param HsUtilsService
- */
-export class HsStatusManagerService {
-  constructor($http, HsConfig, HsUtilsService) {
-    'ngInject';
+import {HsConfig} from '../../config.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
 
-    Object.assign(this, {
-      $http,
-      HsConfig,
-      HsUtilsService,
-    });
-  }
+export class HsStatusManagerService {
+  constructor(
+    private http: HttpClient,
+    private HsConfig: HsConfig,
+    private HsUtilsService: HsUtilsService
+  ) {}
 
   endpointUrl() {
     let hostName = location.protocol + '//' + location.host;
-    if (angular.isDefined(this.HsConfig.hostname)) {
+    if (this.HsConfig.hostname) {
       if (
         this.HsConfig.hostname.status_manager &&
         this.HsConfig.hostname.status_manager.url
@@ -33,7 +28,7 @@ export class HsStatusManagerService {
       }
     }
     if (
-      angular.isDefined(this.HsConfig.status_manager_url) &&
+      this.HsConfig.status_manager_url &&
       this.HsConfig.status_manager_url.indexOf('://') > -1
     ) {
       //Full url specified
