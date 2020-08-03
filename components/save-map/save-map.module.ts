@@ -2,13 +2,13 @@ import '../../common/layman/layman.module';
 import '../../common/widgets/widgets.module';
 import 'angular-cookies';
 import * as angular from 'angular';
-import laymanService from './layman.service';
 import saveMapComponent from './save-map.component';
-import saveMapManagerService from './save-map-manager.service';
-import saveMapService from './save-map.service';
-import statusManagerService from './status-manager.service';
 import syncErrorDialogComponent from './sync-error-dialog.component';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
+import {HsLaymanService} from './layman.service';
+import {HsSaveMapManagerService} from './save-map-manager.service';
+import {HsSaveMapService} from './save-map.service';
+import {HsStatusManagerService} from './status-manager.service';
 
 /**
  * @namespace hs.save-map
@@ -28,7 +28,7 @@ angular
    * @memberof hs.save-map
    * @description Display Save map (composition) dialog
    */
-  .directive('hs.save-map.directive', function () {
+  .directive('hs.save-map.directive', () => {
     'ngInject';
     return {
       template: require('./partials/dialog.html'),
@@ -41,7 +41,7 @@ angular
    * @memberof hs.save-map
    * @description Display advanced form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveForm', function () {
+  .directive('hs.saveMap.directiveForm', () => {
     'ngInject';
     return {
       template: require('./partials/form.html'),
@@ -54,7 +54,7 @@ angular
    * @memberof hs.save-map
    * @description Display simple form to collect information (metadata) about saved composition
    */
-  .directive('hs.saveMap.directiveSimpleform', function () {
+  .directive('hs.saveMap.directiveSimpleform', () => {
     'ngInject';
     return {
       template: require('./partials/simpleform.html'),
@@ -67,7 +67,7 @@ angular
    * @memberof hs.save-map
    * @description Display dialog about result of saving to status manager operation
    */
-  .directive('hs.saveMap.resultDialogDirective', function () {
+  .directive('hs.saveMap.resultDialogDirective', () => {
     'ngInject';
     return {
       template: require('./partials/dialog_result.html'),
@@ -83,7 +83,7 @@ angular
    * @memberof hs.save-map
    * @description Display saving dialog (confirmation of saving, overwriting, selection of name)
    */
-  .directive('hs.saveMap.saveDialogDirective', function () {
+  .directive('hs.saveMap.saveDialogDirective', () => {
     'ngInject';
     return {
       template: require('./partials/dialog_save.html'),
@@ -99,7 +99,7 @@ angular
    * @memberof hs.save-map
    * @description Service for converting composition and composition data into JSON object which can be saved on server
    */
-  .factory('HsSaveMapService', saveMapService)
+  .service('HsSaveMapService', HsSaveMapService)
 
   /**
    * @ngdoc service
@@ -108,7 +108,7 @@ angular
    * @description Service for managing saving logic to various providers.
    * Currently Layman and Status manager are supported.
    */
-  .factory('HsSaveMapManagerService', saveMapManagerService)
+  .service('HsSaveMapManagerService', HsSaveMapManagerService)
 
   /**
    * @ngdoc service
@@ -117,7 +117,7 @@ angular
    * @description Service for sending and retrieving compositions from Status
    * Manager backend
    */
-  .factory('HsStatusManagerService', statusManagerService)
+  .service('HsStatusManagerService', HsStatusManagerService)
 
   /**
    * @ngdoc service
@@ -126,7 +126,7 @@ angular
    * @description Service for sending and retrieving data from Layman
    * (compositions, layers) (https://github.com/jirik/gspld)
    */
-  .factory('HsLaymanService', laymanService)
+  .service('HsLaymanService', HsLaymanService)
 
   /**
    * @ngdoc service
