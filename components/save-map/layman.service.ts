@@ -1,32 +1,21 @@
 import {GeoJSON, WFS} from 'ol/format';
-/**
- * @param HsUtilsService
- * @param $http
- * @param HsMapService
- * @param $timeout
- * @param $log
- * @param HsCommonEndpointsService
- */
-export class HsLaymanService {
-  constructor(
-    HsUtilsService,
-    $http,
-    HsMapService,
-    $timeout,
-    $log,
-    HsCommonEndpointsService
-  ) {
-    'ngInject';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
+import {HsLogService} from '../core/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {SaverServiceInterface} from './saver-service.interface';
 
-    Object.assign(this, {
-      HsUtilsService,
-      $http,
-      HsMapService,
-      $timeout,
-      $log,
-      HsCommonEndpointsService,
-    });
-  }
+export class HsLaymanService implements SaverServiceInterface {
+  crs: string;
+  constructor(
+    private HsUtilsService: HsUtilsService,
+    private http: HttpClient,
+    private HsMapService: HsMapService,
+    private HsLogService: HsLogService,
+    private HsCommonEndpointsService: HsCommonEndpointsService
+  ) {}
 
   /**
    * @ngdoc method
@@ -42,11 +31,11 @@ export class HsLaymanService {
    * @description Save composition to Layman
    */
   save(compositionJson, endpoint, compoData, saveAsNew) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
         'file',
-        new Blob([angular.toJson(compositionJson)], {
+        new Blob([JSON.stringify(compositionJson)], {
           type: 'application/json',
         }),
         'blob.json'
@@ -54,24 +43,26 @@ export class HsLaymanService {
       formdata.append('name', compoData.title);
       formdata.append('title', compoData.title);
       formdata.append('abstract', compoData.abstract);
-      this.$http({
-        url: `${endpoint.url}/rest/${endpoint.user}/maps${
-          saveAsNew
-            ? `?${Math.random()}`
-            : '/' + this.urlFriendly(compoData.title)
-        }`,
-        method: saveAsNew ? 'POST' : 'PATCH',
-        data: formdata,
-        transformRequest: angular.identity,
-        headers: {'Content-Type': undefined},
-      }).then(
-        (response) => {
-          resolve(response);
-        },
-        (err) => {
-          reject(err.data);
-        }
-      );
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+      const options = {
+        headers: headers,
+      };
+      try {
+        const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
+          `${endpoint.url}/rest/${endpoint.user}/maps${
+            saveAsNew
+              ? `?${Math.random()}`
+              : '/' + this.urlFriendly(compoData.title)
+          }`,
+          formdata,
+          options
+        ).toPromise();
+        resolve(response);
+      } catch (err) {
+        reject(err.data);
+      }
     });
   }
 
@@ -92,12 +83,12 @@ export class HsLaymanService {
    * @returns {Promise<boolean>} Promise result of POST/PATCH
    * @description Send layer definition and features to Layman
    */
-  pushVectorSource(endpoint, geojson, description, layerDesc) {
-    return new Promise((resolve, reject) => {
+  pushVectorSource(endpoint, geojson, description, layerDesc?) {
+    return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
         'file',
-        new Blob([angular.toJson(geojson)], {type: 'application/geo+json'}),
+        new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
         'blob.geojson'
       );
       formdata.append(
@@ -108,23 +99,31 @@ export class HsLaymanService {
       formdata.append('name', description.name);
       formdata.append('title', description.title);
       formdata.append('crs', description.crs);
-      this.checkIfLayerExists(endpoint, description.name, layerDesc)
-        .then((layerDesc) => {
-          this.$http({
-            url: `${endpoint.url}/rest/${endpoint.user}/layers${
-              layerDesc.exists ? '/' + description.name : ''
-            }?${Math.random()}`,
-            method: layerDesc.exists ? 'PATCH' : 'POST',
-            data: formdata,
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},
-          }).then((response) => {
-            resolve(response);
-          });
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+      const options = {
+        headers: headers,
+      };
+      try {
+        const layerDesc2 = await this.checkIfLayerExists(
+          endpoint,
+          description.name,
+          layerDesc
+        );
+        const response: any = await this.http[
+          layerDesc2.exists ? 'patch' : 'post'
+        ](
+          `${endpoint.url}/rest/${endpoint.user}/layers${
+            layerDesc2.exists ? '/' + description.name : ''
+          }?${Math.random()}`,
+          formdata,
+          options
+        ).toPromise();
+        resolve(response);
+      } catch (err) {
+        reject(err.data);
+      }
     });
   }
 
@@ -155,7 +154,7 @@ export class HsLaymanService {
           name: this.getLayerName(layer),
           crs: this.crs,
         }).then((response) => {
-          this.$timeout(() => {
+          setTimeout(() => {
             this.pullVectorSource(ds, this.getLayerName(layer)).then(
               (response) => {
                 layer.set('hs-layman-synchronizing', false);
@@ -194,7 +193,7 @@ export class HsLaymanService {
         name,
         layer.get('laymanLayerDescriptor')
       )
-        .then((layerDesc) => {
+        .then((layerDesc: any) => {
           if (layerDesc.exists) {
             layer.set('laymanLayerDescriptor', layerDesc);
             try {
@@ -213,19 +212,26 @@ export class HsLaymanService {
                     .getCode(),
                 }
               );
-
-              this.$http({
-                url: layerDesc.wfs.url,
-                method: 'POST',
-                data: serializedFeature.outerHTML
-                  .replaceAll('<geometry>', '<wkb_geometry>')
-                  .replaceAll('</geometry>', '</wkb_geometry>'),
-                headers: {'Content-Type': 'application/xml'},
-              }).then((response) => {
-                resolve(response);
-              });
+              const httpOptions = {
+                headers: new HttpHeaders({
+                  'Content-Type': 'application/xml', //<- To SEND XML
+                  'Accept': 'application/xml', //<- To ask for XML
+                  'Response-Type': 'text', //<- b/c Angular understands text
+                }),
+              };
+              this.http
+                .post(
+                  layerDesc.wfs.url,
+                  serializedFeature.outerHTML
+                    .replaceAll('<geometry>', '<wkb_geometry>')
+                    .replaceAll('</geometry>', '</wkb_geometry>'),
+                  httpOptions
+                )
+                .subscribe((response) => {
+                  resolve(response);
+                });
             } catch (ex) {
-              this.$log.error(ex);
+              this.HsLogService.error(ex);
             }
           } else {
             this.push(layer);
@@ -250,48 +256,50 @@ export class HsLaymanService {
    * @description Retrieve layers features from server
    */
   pullVectorSource(endpoint, layerName) {
-    return new Promise((resolve, reject) => {
-      this.describeLayer(endpoint, layerName).then((descr) => {
-        if (descr === null) {
-          resolve();
-          return;
-        }
-        if (
-          descr.wfs.status == 'NOT_AVAILABLE' &&
-          descr.wms.status == 'NOT_AVAILABLE'
-        ) {
-          resolve();
-          return;
-        }
-        if (descr.wfs.status == 'NOT_AVAILABLE') {
-          this.$timeout(() => {
-            this.pullVectorSource(endpoint, layerName).then((response) =>
-              resolve(response)
-            );
-          }, 2000);
-          return;
-        }
+    return new Promise(async (resolve, reject) => {
+      const descr: HsLaymanLayerDescriptor = await this.describeLayer(
+        endpoint,
+        layerName
+      );
+      if (descr === null) {
+        resolve();
+        return;
+      }
+      if (
+        descr.wfs.status == 'NOT_AVAILABLE' &&
+        descr.wms.status == 'NOT_AVAILABLE'
+      ) {
+        resolve();
+        return;
+      }
+      if (descr.wfs.status == 'NOT_AVAILABLE') {
+        setTimeout(() => {
+          this.pullVectorSource(endpoint, layerName).then((response) =>
+            resolve(response)
+          );
+        }, 2000);
+        return;
+      }
+      try {
         /* When OL will support GML3.2, then we can use WFS
                         version 2.0.0. Currently only 3.1.1 is possible */
-        this.$http({
-          url:
+        const response = await this.http
+          .get(
             descr.wfs.url +
-            '?' +
-            this.HsUtilsService.paramsToURL({
-              service: 'wfs',
-              version: '1.1.0',
-              request: 'GetFeature',
-              typeNames: `${endpoint.user}:${descr.name}`,
-              r: Math.random(),
-            }),
-          method: 'GET',
-        }).then(
-          (response) => {
-            resolve(response);
-          },
-          (err) => resolve(null)
-        );
-      });
+              '?' +
+              this.HsUtilsService.paramsToURL({
+                service: 'wfs',
+                version: '1.1.0',
+                request: 'GetFeature',
+                typeNames: `${endpoint.user}:${descr.name}`,
+                r: Math.random(),
+              })
+          )
+          .toPromise();
+        resolve(response);
+      } catch (ex) {
+        resolve(null);
+      }
     });
   }
 
@@ -307,28 +315,24 @@ export class HsLaymanService {
    * @description Try getting layer description from layman.
    */
   describeLayer(endpoint, layerName) {
-    return new Promise((resolve, reject) => {
-      this.$http({
-        url: `${endpoint.url}/rest/${
-          endpoint.user
-        }/layers/${layerName}?${Math.random()}`,
-        method: 'GET',
-      }).then(
-        (response) => {
-          if (
-            angular.isDefined(response.data.code) &&
-            response.data.code == 15
-          ) {
-            resolve(null);
-          }
-          if (angular.isDefined(response.data.name)) {
-            resolve(response.data);
-          }
-        },
-        (err) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response: any = await this.http
+          .get(
+            `${endpoint.url}/rest/${
+              endpoint.user
+            }/layers/${layerName}?${Math.random()}`
+          )
+          .toPromise();
+        if (response.data.code != undefined && response.data.code == 15) {
           resolve(null);
         }
-      );
+        if (response.data.name) {
+          resolve(response.data);
+        }
+      } catch (ex) {
+        resolve(null);
+      }
     });
   }
 
@@ -346,25 +350,28 @@ export class HsLaymanService {
    * succeeds, that means that layer is there and can be updated
    * instead of posting a new one
    */
-  checkIfLayerExists(endpoint, layerName, layerDesc) {
+  checkIfLayerExists(
+    endpoint,
+    layerName,
+    layerDesc
+  ): Promise<HsLaymanLayerDescriptor> {
     return new Promise((resolve, reject) => {
-      if (angular.isUndefined(layerDesc)) {
-        this.describeLayer(endpoint, layerName).then((description) => {
-          if (
-            description !== null &&
-            angular.isDefined(description.code) &&
-            description.code == 15
-          ) {
-            resolve({exists: false});
-          } else if (
-            description !== null &&
-            angular.isDefined(description.name)
-          ) {
-            resolve(angular.extend(description, {exists: true}));
-          } else {
-            resolve({exists: false});
+      if (layerDesc == undefined) {
+        this.describeLayer(endpoint, layerName).then(
+          (description: HsLaymanLayerDescriptor) => {
+            if (
+              description !== null &&
+              description.code != undefined &&
+              description.code == 15
+            ) {
+              resolve({exists: false});
+            } else if (description !== null && description.name != undefined) {
+              resolve(Object.assign(description, {exists: true}));
+            } else {
+              resolve({exists: false});
+            }
           }
-        });
+        );
       } else {
         resolve(layerDesc);
       }
