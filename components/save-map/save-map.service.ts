@@ -1,35 +1,26 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../core/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
-/**
- * @param HsMapService
- * @param HsUtilsService
- * @param $window
- * @param HsLayoutService
- * @param $log
- * @param $document
- */
 export class HsSaveMapService {
   constructor(
-    HsMapService,
-    HsUtilsService,
-    $window,
-    HsLayoutService,
-    $log,
-    $document
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService,
+    private HsLayoutService: HsLayoutService,
+    private HsLogService: HsLogService
   ) {
     'ngInject';
     Object.assign(this, {
       HsMapService,
       HsUtilsService,
-      $window,
       HsLayoutService,
-      $log,
-      $document,
     });
   }
 
@@ -45,16 +36,16 @@ export class HsSaveMapService {
    * @returns {object} JSON object with all required map composition metadata
    */
   map2json(map, compoData, userData, statusData) {
-    const groups = {};
-    angular.forEach(statusData.groups, (g) => {
+    const groups: any = {};
+    for (const g of statusData.groups) {
       if (g.r || g.w) {
         groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
       }
-    });
-    if (angular.isUndefined(groups.guest)) {
+    }
+    if (groups.guest == undefined) {
       groups.guest = 'r';
     }
-    const json = {
+    const json: any = {
       abstract: compoData.abstract,
       title: compoData.title,
       keywords: compoData.keywords,
@@ -102,9 +93,7 @@ export class HsSaveMapService {
     // Layers properties
     let layers = map.getLayers().getArray();
     layers = layers.filter(
-      (l) =>
-        angular.isUndefined(l.get('show_in_manager')) ||
-        l.get('show_in_manager')
+      (l) => l.get('show_in_manager') == undefined || l.get('show_in_manager')
     );
     json.layers = this.layers2json(layers, compoData.layers);
     json.current_base_layer = this.getCurrentBaseLayer(map);
@@ -121,9 +110,9 @@ export class HsSaveMapService {
    */
   getCurrentBaseLayer(map) {
     let current_base_layer = null;
-    angular.forEach(map.getLayers().getArray(), (lyr) => {
+    for (const lyr of map.getLayers().getArray()) {
       if (
-        (angular.isUndefined(lyr.get('show_in_manager')) ||
+        (lyr.get('show_in_manager') == undefined ||
           lyr.get('show_in_manager') == true) &&
         lyr.get('base') == true &&
         lyr.getVisible()
@@ -132,7 +121,7 @@ export class HsSaveMapService {
           title: lyr.get('title'),
         };
       }
-    });
+    }
     return current_base_layer;
   }
 
@@ -149,16 +138,16 @@ export class HsSaveMapService {
   layers2json(layers, tickedLayers) {
     const json = [];
     layers.forEach((lyr) => {
-      if (angular.isDefined(tickedLayers)) {
+      if (tickedLayers) {
         //From form
-        angular.forEach(tickedLayers, (list_item) => {
+        for (const list_item of tickedLayers) {
           if (list_item.layer == lyr && list_item.checked) {
             const l = this.layer2json(lyr);
             if (l) {
               json.push(l);
             }
           }
-        });
+        }
       } else {
         //From unloading
         const l = this.layer2json(lyr);
@@ -184,7 +173,7 @@ export class HsSaveMapService {
    */
   layer2string(layer, pretty) {
     const json = this.layer2json(layer);
-    const text = angular.toJson(json, pretty);
+    const text = JSON.stringify(json, pretty);
     return text;
   }
 
@@ -196,31 +185,31 @@ export class HsSaveMapService {
    * @param {ol.style.Style} s Style to convert
    * @returns {object} Converted JSON object for style
    */
-  serializeStyle(s) {
-    const o = {};
-    if (angular.isDefined(s.getFill()) && s.getFill() !== null) {
+  serializeStyle(s: Style) {
+    const o: any = {};
+    if (s.getFill() && s.getFill() !== null) {
       o.fill = s.getFill().getColor();
     }
-    if (angular.isDefined(s.getStroke()) && s.getStroke() !== null) {
+    if (s.getStroke() && s.getStroke() !== null) {
       o.stroke = {
         color: s.getStroke().getColor(),
         width: s.getStroke().getWidth(),
       };
     }
-    if (angular.isDefined(s.getImage()) && s.getImage() !== null) {
+    if (s.getImage() && s.getImage() !== null) {
       const style_img = s.getImage();
-      const ima = {};
+      const ima: any = {};
       if (
-        angular.isDefined(style_img.getFill) &&
-        angular.isDefined(style_img.getFill()) &&
+        style_img.getFill &&
+        style_img.getFill() &&
         style_img.getFill() !== null
       ) {
         ima.fill = style_img.getFill().getColor();
       }
 
       if (
-        angular.isDefined(style_img.getStroke) &&
-        angular.isDefined(style_img.getStroke()) &&
+        style_img.getStroke &&
+        style_img.getStroke() &&
         style_img.getStroke() !== null
       ) {
         ima.stroke = {
@@ -229,20 +218,20 @@ export class HsSaveMapService {
         };
       }
 
-      if (angular.isDefined(style_img.getRadius)) {
+      if (style_img.getRadius) {
         ima.radius = style_img.getRadius();
       }
 
       if (
-        angular.isFunction(style_img.getSrc) &&
-        angular.isString(style_img.getSrc())
+        this.HsUtilsService.isFunction(style_img.getSrc) &&
+        typeof style_img.getSrc() === 'string'
       ) {
         ima.src = this.HsUtilsService.proxify(style_img.getSrc());
       } else if (
-        angular.isFunction(style_img.getImage) &&
+        this.HsUtilsService.isFunction(style_img.getImage) &&
         style_img.getImage() !== null
       ) {
-        if (angular.isDefined(style_img.getImage().src)) {
+        if (style_img.getImage().src) {
           ima.src = style_img.getImage().src;
         }
       }
@@ -280,7 +269,7 @@ export class HsSaveMapService {
    * @returns {object} JSON object representing the layer
    */
   layer2json(layer) {
-    const json = {
+    const json: any = {
       metadata: {},
     };
 
@@ -303,8 +292,8 @@ export class HsSaveMapService {
     json.visibility = layer.getVisible();
     json.opacity = layer.getOpacity();
     json.title = layer.get('title');
-    if (angular.isUndefined(layer.get('title'))) {
-      this.$log.warn('Layer title undefined', layer);
+    if (layer.get('title') == undefined) {
+      this.HsLogService.warn('Layer title undefined', layer);
     }
     //json.index = layer.map.getLayerIndex(layer);
     json.path = layer.get('path');
@@ -392,7 +381,7 @@ export class HsSaveMapService {
       const src = layer.getSource();
       json.className = 'OpenLayers.Layer.Vector';
       const definition = layer.get('definition');
-      if (angular.isDefined(definition) && angular.isDefined(definition.url)) {
+      if (definition && definition.url) {
         json.protocol = {
           url: encodeURIComponent(definition.url),
           format: definition.format,
@@ -408,7 +397,7 @@ export class HsSaveMapService {
         json.protocol = {format: 'hs.format.LaymanWfs'};
         delete json.features;
       }
-      if (angular.isDefined(src.defOptions)) {
+      if (src.defOptions) {
         json.defOptions = src.defOptions;
       }
       json.maxResolution = layer.getMaxResolution();
@@ -449,11 +438,11 @@ export class HsSaveMapService {
    * @param {object} localThis Context to be passed to postcompose event handler
    * @param {boolean} newRender Force new render?
    */
-  generateThumbnail($element, localThis, newRender) {
+  generateThumbnail($element, localThis, newRender?) {
     /**
-     * @param event
+     *
      */
-    function rendered(event) {
+    function rendered() {
       const canvas = this.HsMapService.getCanvas();
       const canvas2 = this.$document[0].createElement('canvas');
       const width = 256,

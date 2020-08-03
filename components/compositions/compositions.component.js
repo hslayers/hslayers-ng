@@ -25,7 +25,8 @@ export default {
     HsUtilsService,
     HsCompositionsMapService,
     forCompositionsFilter,
-    HsEventBusService
+    HsEventBusService,
+    HsSaveMapManagerService
   ) {
     'ngInject';
     $scope.CS = HsCompositionsService;
@@ -355,7 +356,7 @@ export default {
     $scope.edit = function (composition) {
       HsCompositionsService.loadCompositionParser(composition)
         .then(() => {
-          $rootScope.$broadcast('StatusCreator.open', composition);
+          HsSaveMapManagerService.openPanel(composition);
         })
         .catch(() => {});
     };
