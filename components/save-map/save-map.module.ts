@@ -94,28 +94,6 @@ angular
   })
 
   /**
-   * @ngdoc directive
-   * @name hs.saveMap.focusName
-   * @memberof hs.save-map
-   * @description UNUSED?
-   */
-  .directive('hs.saveMap.focusName', ($log) => {
-    'ngInject';
-    return {
-      link: function (scope, element, attrs) {
-        scope.$watch(attrs.focusName, (value) => {
-          if (value === true) {
-            $log.log('value=', value);
-            element[0].focus();
-            scope[attrs.focusName] = false;
-            //});
-          }
-        });
-      },
-    };
-  })
-
-  /**
    * @ngdoc service
    * @name HsSaveMapService
    * @memberof hs.save-map
