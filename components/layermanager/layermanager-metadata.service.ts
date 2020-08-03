@@ -63,7 +63,7 @@ export class HsLayerManagerMetadataService {
 
   metadataArray(layer: Layer): Array<any> {
     const obj = layer.layer.get('MetadataURL');
-    return Object.entries(obj).map(e => e[1]);
+    return Object.entries(obj).map((e) => e[1]);
   }
 
   /**

@@ -6,19 +6,17 @@
             <p style="text-align: center" i18n>No layer with legend exists!</p>
         </span>
         <ul class="list-group">
-            <li *ngFor="let layer of filterDescriptors()" class="list-group-item"
-                >
-                <div *ngIf="HsLegendService.legendValid(layer)">
+            <li *ngFor="let layer of filterDescriptors()" class="list-group-item" [hidden]= !HsLegendService.legendValid(layer)>
+                <div>
                     {{layer.title}}
                     <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
                 </div>
-                
+
             </li>
         </ul>
         <div class="row justify-content-center">
             <div class="col col-md-2">
-                <button type="button" class="btn btn-light btn-outline ng-scope" i18n-title="Reload"
-                    ng-click="">
+                <button type="button" class="btn btn-light btn-outline ng-scope" i18n-title="Reload" ng-click="">
                     <i class="icon-refresh"></i>
                 </button>
             </div>
