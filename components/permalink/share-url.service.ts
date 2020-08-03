@@ -48,7 +48,7 @@ export class HsShareUrlService {
    */
   update(): void {
     const view = this.HsMapService.map.getView();
-    this.id = this.HsSaveMapService.generateUuid();
+    this.id = this.HsUtilsService.generateUuid();
     const visible_layers = [];
     const added_layers = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
