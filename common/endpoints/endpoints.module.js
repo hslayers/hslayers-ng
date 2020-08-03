@@ -10,4 +10,4 @@ angular
    * @memberOf hs.common.endpoints
    * @description Service for endpoints
    */
-  .factory('HsCommonEndpointsService', endpointsService);
+  .service('HsCommonEndpointsService', endpointsService);
