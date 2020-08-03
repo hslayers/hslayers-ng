@@ -8,6 +8,7 @@ import {HsSaveMapService} from './save-map.service';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
+import {SaverServiceInterface} from './saver-service.interface';
 import {Subject} from 'rxjs';
 import {transform} from 'ol/proj';
 
@@ -83,7 +84,9 @@ export class HsSaveMapManagerService {
       ) {
         this.fillCompositionData();
         this.HsSaveMapService.generateThumbnail(
-          this.HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+          this.HsLayoutService.contentWrapper.querySelector(
+            '.hs-stc-thumbnail'
+          ),
           this.compoData
         );
       }
@@ -96,7 +99,9 @@ export class HsSaveMapManagerService {
           () => {
             this.compoData.bbox = this.getCurrentExtent();
             this.HsSaveMapService.generateThumbnail(
-              this.HsLayoutService.contentWrapper.querySelector('.hs-stc-thumbnail'),
+              this.HsLayoutService.contentWrapper.querySelector(
+                '.hs-stc-thumbnail'
+              ),
               this.compoData
             );
           },
@@ -108,41 +113,37 @@ export class HsSaveMapManagerService {
     });
   }
 
-  confirmSave() {
-    this.http({
-      method: 'POST',
-      url: this.HsStatusManagerService.endpointUrl(),
-      data: angular.toJson({
-        project: this.HsConfig.project_name,
-        title: this.compoData.title,
-        request: 'rightToSave',
-      }),
-    }).then(
-      (response) => {
-        const j = response.data;
-        this.statusData.hasPermission = j.results.hasPermission;
-        this.statusData.titleFree = j.results.titleFree;
-        if (j.results.guessedTitle) {
-          this.statusData.guessedTitle = j.results.guessedTitle;
-        }
-        if (!this.statusData.titleFree) {
-          this.statusData.changeTitle = false;
-        }
-        if (this.statusData.titleFree && this.statusData.hasPermission) {
-          this.save(true);
-        } else {
-          this.$rootScope.$broadcast('StatusManager.saveResult', 'saveConfirm');
-        }
-      },
-      (err) => {
-        this.statusData.success = false;
-        this.$rootScope.$broadcast(
-          'StatusManager.saveResult',
-          'saveResult',
-          'error'
-        );
+  async confirmSave() {
+    try {
+      const response: any = await this.http
+        .post(this.HsStatusManagerService.endpointUrl(), {
+          project: this.HsConfig.project_name,
+          title: this.compoData.title,
+          request: 'rightToSave',
+        })
+        .toPromise();
+      const j = response.data;
+      this.statusData.hasPermission = j.results.hasPermission;
+      this.statusData.titleFree = j.results.titleFree;
+      if (j.results.guessedTitle) {
+        this.statusData.guessedTitle = j.results.guessedTitle;
       }
-    );
+      if (!this.statusData.titleFree) {
+        this.statusData.changeTitle = false;
+      }
+      if (this.statusData.titleFree && this.statusData.hasPermission) {
+        this.save(true);
+      } else {
+        this.$rootScope.$broadcast('StatusManager.saveResult', 'saveConfirm');
+      }
+    } catch (ex) {
+      this.statusData.success = false;
+      this.$rootScope.$broadcast(
+        'StatusManager.saveResult',
+        'saveResult',
+        'error'
+      );
+    }
   }
 
   save(saveAsNew, endpoint) {
@@ -153,7 +154,7 @@ export class HsSaveMapManagerService {
         this.userData,
         this.statusData
       );
-      let saver = this.HsStatusManagerService;
+      let saver: SaverServiceInterface = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
         saver = this.HsLaymanService;
       }
@@ -318,12 +319,11 @@ export class HsSaveMapManagerService {
    * @function loadUserDetails
    * @memberof HsSaveMapManagerService
    */
-  loadUserDetails() {
-    this.http({
-      url: this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo',
-    }).then(this.setUserDetails, (err) => {
-      //Nothing
-    });
+  async loadUserDetails() {
+    const response: any = await this.http
+      .get(this.HsStatusManagerService.endpointUrl() + '?request=getuserinfo')
+      .toPromise();
+    this.setUserDetails(response);
   }
 
   /**

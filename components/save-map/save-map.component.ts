@@ -7,10 +7,10 @@ import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsSaveMapDialogComponent} from './save-map-dialog.component';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component';
 import {HsSaveMapService} from './save-map.service';
-import { HsSaveMapDialogComponent } from './save-map-dialog.component';
 
 @Component({
   selector: 'hs.save-map',
@@ -146,10 +146,9 @@ export class HsSaveMapComponent {
    * @function confirmSave
    * @memberof hs.save-map
    */
-  confirmSave() {
-    this.HsSaveMapManagerService.confirmSave().then(() => {
-      this.showSaveDialog();
-    });
+  async confirmSave() {
+    await this.HsSaveMapManagerService.confirmSave();
+    this.showSaveDialog();
   }
 
   save(saveAsNew) {
