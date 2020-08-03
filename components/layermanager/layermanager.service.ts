@@ -14,6 +14,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {HsLayerSelectorService} from './layer-selector.service';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
@@ -105,7 +106,8 @@ export class HsLayerManagerService {
     private HsLayerManagerMetadata: HsLayerManagerMetadataService,
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
-    private HsLayerEditorStylesService: HsLayerEditorStylesService
+    private HsLayerEditorStylesService: HsLayerEditorStylesService,
+    private HsLayerSelectorService: HsLayerSelectorService,
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -789,6 +791,7 @@ export class HsLayerManagerService {
       layer.layer.checkedSubLayers = {};
       layer.layer.withChildren = {};
     }
+    this.HsLayerSelectorService.layerSelected.next(layer);
     if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
       this.currentLayer.time = new Date(
         layer.layer.getSource().getParams().TIME
@@ -882,6 +885,7 @@ export class HsLayerManagerService {
   expandFilter(layer: Layer, value): void {
     layer.expandFilter = value;
     this.currentLayer = layer;
+    // this.HsLayerSelectorService.layerSelected.next(layer);
   }
 
   expandInfo(layer: Layer, value): void {

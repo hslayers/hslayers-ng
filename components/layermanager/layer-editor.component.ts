@@ -40,13 +40,6 @@ export class HsLayerEditorComponent {
     private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
   ) {}
 
-  ngOnChanges(): void {
-    if (!this.currentLayer) {
-      return;
-    }
-    this.HsLayerEditorService.setLayer(this.currentLayer);
-  }
-
   layerIsWmsT(): boolean {
     return this.HsLayerManagerWmstService.layerIsWmsT(this.currentLayer);
   }
@@ -250,7 +243,7 @@ export class HsLayerEditorComponent {
    * @function hasCopyright
    * @memberOf HsLayerEditorComponent
    * @description Determines if layer has copyright information avaliable *
-   * @param {HsLayerDescriptor} layer Selected layer (LayMan.currentLayer)
+   * @param {HsLayerDescriptor} layer Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.currentLayer) {
