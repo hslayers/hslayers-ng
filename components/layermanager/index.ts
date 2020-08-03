@@ -22,6 +22,7 @@ import {HsLayerManagerModule} from './layermanager.module';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerSelectorService} from './layer-selector.service';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
@@ -209,7 +210,11 @@ angular
   .directive(
     'hs.layerEditorDimensions',
     downgradeComponent({component: HsLayerEditorDimensionsComponent})
-  );
+  )
+  .service(
+    'HsLayerSelectorService',
+    downgradeInjectable(HsLayerSelectorService)
+  )
 
 angular.module('hs.layermanager', [downgradedLayerManagerModule]);
 
