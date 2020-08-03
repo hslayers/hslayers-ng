@@ -1,3 +1,4 @@
+import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayerSynchronizerService} from './components/save-map/layer-synchronizer.service';
