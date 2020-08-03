@@ -1,4 +1,7 @@
 import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerSelectorService} from './layer-selector.service';
+import {Layer} from 'ol/layer';
+
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -10,9 +13,24 @@ export class HsLayerEditorSublayerService {
   populatedLayers: Array<any> = [];
   withChildrenTmp: any = {};
   checkedSubLayersTmp: any = {};
+  currentLayer: Layer;
+  constructor(
+    private HsLayerManagerService: HsLayerManagerService,
+    private HsLayerSelectorService: HsLayerSelectorService
+  ) {
+    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+      this.resetSublayers(layer);
+    });
+  }
+  resetSublayers(layer: Layer) {
+    if (this.HsLayerManagerService.currentLayer) {
+      this.checkedSubLayers = layer.layer.checkedSubLayers;
+      this.checkedSubLayersTmp = layer.layer.checkedSubLayersTmp;
 
-  constructor(private HsLayerManagerService: HsLayerManagerService) {}
-
+      this.withChildren = layer.layer.withChildren;
+      this.withChildrenTmp = layer.layer.withChildrenTmp;
+    }
+  }
   hasSubLayers(): boolean {
     const subLayers = this.HsLayerManagerService.currentLayer.layer.get(
       'Layer'

@@ -1,6 +1,7 @@
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
@@ -17,7 +18,6 @@ import {get as getProj, transform, transformExtent} from 'ol/proj';
 })
 export class HsLayerEditorService {
   legendDescriptor: HsLegendDescriptor;
-  currentLayer: any;
 
   constructor(
     private HsMapService: HsMapService,
@@ -26,14 +26,12 @@ export class HsLayerEditorService {
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
-    private HsLegendService: HsLegendService
-  ) {}
-
-  setLayer(currentLayer: HsLayerDescriptor): void {
-    this.currentLayer = currentLayer;
-    this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(
-      currentLayer.layer
-    );
+    private HsLegendService: HsLegendService,
+    private HsLayerSelectorService: HsLayerSelectorService
+  ) {
+    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+      this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+    });
   }
 
   /**
