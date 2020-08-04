@@ -38,6 +38,7 @@ export class HsSidebarService {
      * @memberof HsSidebarService
      * @member buttons
      */
+
     this.buttons = [
       {
         panel: 'layermanager',
