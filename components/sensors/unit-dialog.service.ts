@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import moment = require('moment');
 import {HsConfig} from '../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../core/log.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsSensorUnit} from './sensor-unit.class';
 import {default as vegaEmbed} from 'vega-embed';
 

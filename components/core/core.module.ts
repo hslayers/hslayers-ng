@@ -26,7 +26,7 @@ import {HsDrawService} from '../draw/draw.service';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLegendModule} from '../legend';
-import {HsLogService} from './log.service';
+import {HsLogModule} from '../../common/log/log.module';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsSaveMapModule} from '../save-map';
@@ -49,6 +49,7 @@ import {NgModule} from '@angular/core';
     HsPrintModule,
     HsLayerManagerModule,
     HsSaveMapModule,
+    HsLogModule,
   ],
   exports: [],
   providers: [
@@ -70,7 +71,6 @@ import {NgModule} from '@angular/core';
       provide: Window,
       useValue: window,
     },
-    HsLogService,
     HsPermalinkUrlServiceProvider,
   ],
   entryComponents: [],

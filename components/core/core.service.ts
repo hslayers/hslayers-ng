@@ -2,7 +2,7 @@ import {DOCUMENT} from '@angular/common';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from './event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from './log.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Inject, Injectable} from '@angular/core';
