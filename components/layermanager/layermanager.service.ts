@@ -885,7 +885,7 @@ export class HsLayerManagerService {
   expandFilter(layer: Layer, value): void {
     layer.expandFilter = value;
     this.currentLayer = layer;
-    // this.HsLayerSelectorService.layerSelected.next(layer);
+    this.HsLayerSelectorService.layerSelected.next(layer);
   }
 
   expandInfo(layer: Layer, value): void {
