@@ -6,6 +6,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {
   HsCommonEndpointsServiceProvider,
+  HsCommonLaymanServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsLayerSynchronizerServiceProvider,
@@ -28,8 +29,7 @@ import {HsLegendModule} from '../legend';
 import {HsLogService} from './log.service';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
-import {HsSidebarModule} from '../sidebar';
-import {HsSidebarService} from './../sidebar/sidebar.service';
+import {HsSaveMapModule} from '../save-map';
 import {HsStylerModule} from '../styles';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -48,6 +48,7 @@ import {NgModule} from '@angular/core';
     HsStylerModule,
     HsPrintModule,
     HsLayerManagerModule,
+    HsSaveMapModule,
   ],
   exports: [],
   providers: [

@@ -2,7 +2,7 @@ import '../../common/get-capabilities.module';
 import '../draw/draw.module';
 import '../layout/';
 import '../legend';
-import '../save-map/save-map.module';
+import '../save-map/';
 import '../styles/styles.module';
 import '../utils/utils.module';
 import 'angular-drag-and-drop-lists';
