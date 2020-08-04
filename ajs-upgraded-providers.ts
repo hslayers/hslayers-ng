@@ -2,7 +2,6 @@ import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from './common/layman/layman.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
-import {HsLayerSynchronizerService} from './components/save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from './components/utils/layer-utils.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
@@ -63,19 +62,6 @@ export function hsUtilsServiceFactory(i: any) {
 export const HsUtilsServiceProvider = {
   provide: HsUtilsService,
   useFactory: hsUtilsServiceFactory,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsLayerSynchronizerServiceFactory(i: any) {
-  return i.get('HsLayerSynchronizerService');
-}
-
-export const HsLayerSynchronizerServiceProvider = {
-  provide: HsLayerSynchronizerService,
-  useFactory: hsLayerSynchronizerServiceFactory,
   deps: ['$injector'],
 };
 
