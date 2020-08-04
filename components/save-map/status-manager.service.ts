@@ -1,3 +1,4 @@
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
@@ -7,7 +8,8 @@ export class HsStatusManagerService implements SaverServiceInterface {
   constructor(
     private http: HttpClient,
     private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   endpointUrl() {
@@ -43,30 +45,35 @@ export class HsStatusManagerService implements SaverServiceInterface {
     }
   }
 
+  findStatusmanagerEndpoint() {
+    const found = this.HsCommonEndpointsService.endpoints.filter(
+      (e) => e.type == 'status_manager'
+    );
+    if (found.length > 0) {
+      return found[0];
+    }
+  }
+
   save(compositionJson, endpoint, compoData, saveAsNew) {
     if (saveAsNew || compoData.id == '') {
       compoData.id = this.HsUtilsService.generateUuid();
     }
-    return new Promise((resolve, reject) => {
-      this.http({
-        url: this.endpointUrl(),
-        method: 'POST',
-        data: angular.toJson({
-          data: compositionJson,
-          permanent: true,
-          id: compoData.id,
-          project: this.HsConfig.project_name,
-          thumbnail: compoData.thumbnail,
-          request: 'save',
-        }),
-      }).then(
-        (response) => {
-          resolve(response);
-        },
-        (err) => {
-          reject();
-        }
-      );
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await this.http
+          .post(this.endpointUrl(), {
+            data: compositionJson,
+            permanent: true,
+            id: compoData.id,
+            project: this.HsConfig.project_name,
+            thumbnail: compoData.thumbnail,
+            request: 'save',
+          })
+          .toPromise();
+        resolve(response);
+      } catch (err) {
+        reject();
+      }
     });
   }
 }

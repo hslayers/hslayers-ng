@@ -7,7 +7,7 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {SaverServiceInterface} from './saver-service.interface';
 import {Subject} from 'rxjs';
 import {transform} from 'ol/proj';
@@ -132,17 +132,13 @@ export class HsSaveMapManagerService {
         this.statusData.changeTitle = false;
       }
       if (this.statusData.titleFree && this.statusData.hasPermission) {
-        this.save(true);
-      } else {
-        this.$rootScope.$broadcast('StatusManager.saveResult', 'saveConfirm');
+        this.save(
+          true,
+          this.HsStatusManagerService.findStatusmanagerEndpoint()
+        );
       }
     } catch (ex) {
       this.statusData.success = false;
-      this.$rootScope.$broadcast(
-        'StatusManager.saveResult',
-        'saveResult',
-        'error'
-      );
     }
   }
 
@@ -185,10 +181,7 @@ export class HsSaveMapManagerService {
               compInfo.abstract = j.abstract || '';
             }
           } else {
-            this.$rootScope.$broadcast(
-              'compositions.composition_loading',
-              compInfo
-            );
+            this.HsEventBusService.compositionLoading.next(compInfo);
             this.HsEventBusService.compositionLoads.next(compInfo);
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
@@ -196,11 +189,6 @@ export class HsSaveMapManagerService {
           resolve({
             status,
           });
-          /*               $rootScope.$broadcast(
-                'StatusManager.saveResult',
-                'saveResult',
-                saveStatus
-              ); */
         })
         .catch((e) => {
           //e contains the json responses data object from api
@@ -209,12 +197,6 @@ export class HsSaveMapManagerService {
             status: false,
             error: e,
           });
-          /* $rootScope.$broadcast(
-                'StatusManager.saveResult',
-                'saveResult',
-                'error',
-                e
-              ); */
         });
     });
   }
@@ -232,25 +214,24 @@ export class HsSaveMapManagerService {
     this.panelOpened.next({composition});
   }
 
-  private fillCompositionData() {
+  private async fillCompositionData() {
     this.fillLayers();
-    this.fillGroups(() => {
-      this.statusData.groups.unshift({
-        roleTitle: 'Public',
-        roleName: 'guest',
-        w: false,
-        r: false,
-      });
-      const cc = this.compoData.currentComposition;
-      if (this.compoData.currentComposition && cc != '') {
-        for (const g of this.statusData.groups) {
-          if (cc.groups && cc.groups[g.roleName]) {
-            g.w = cc.groups[g.roleName].indexOf('w') > -1;
-            g.r = cc.groups[g.roleName].indexOf('r') > -1;
-          }
+    await this.fillGroups();
+    this.statusData.groups.unshift({
+      roleTitle: 'Public',
+      roleName: 'guest',
+      w: false,
+      r: false,
+    });
+    const cc = this.compoData.currentComposition;
+    if (this.compoData.currentComposition && cc != '') {
+      for (const g of this.statusData.groups) {
+        if (cc.groups && cc.groups[g.roleName]) {
+          g.w = cc.groups[g.roleName].indexOf('w') > -1;
+          g.r = cc.groups[g.roleName].indexOf('r') > -1;
         }
       }
-    });
+    }
     this.loadUserDetails();
   }
 
@@ -282,34 +263,26 @@ export class HsSaveMapManagerService {
    * @param {Function} cb Callback function
    * @memberof HsSaveMapManagerService
    */
-  fillGroups(cb) {
-    //TODO rewrite fillGroups as Promise
+  async fillGroups(): Promise<void> {
     this.statusData.groups = [];
     if (this.HsConfig.advancedForm) {
-      this.http({
-        url: this.HsStatusManagerService.endpointUrl(),
-        method: 'GET',
-        data: {
-          request: 'getGroups',
-        },
-      }).then(
-        (response) => {
-          const j = response.data;
-          if (j.success) {
-            this.statusData.groups = j.result;
-            for (const g of this.statusData.groups) {
-              g.w = false;
-              g.r = false;
-            }
-          }
-          cb();
-        },
-        (err) => {
-          //Nothing
+      const response: any = await this.http
+        .get(this.HsStatusManagerService.endpointUrl(), {
+          params: new HttpParams({
+            fromObject: {
+              request: 'getGroups',
+            },
+          }),
+        })
+        .toPromise();
+      const j = response.data;
+      if (j.success) {
+        this.statusData.groups = j.result;
+        for (const g of this.statusData.groups) {
+          g.w = false;
+          g.r = false;
         }
-      );
-    } else {
-      cb();
+      }
     }
   }
 

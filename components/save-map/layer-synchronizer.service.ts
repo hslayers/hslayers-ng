@@ -1,40 +1,23 @@
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsLaymanService} from './layman.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
+import {HsUtilsService} from '../utils/utils.service';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
-const debounceInterval = 1000;
 
-/**
- * @param HsUtilsService
- * @param HsLaymanService
- * @param HsCommonEndpointsService
- * @param $compile
- * @param $rootScope
- * @param HsLayoutService
- */
 export class HsLayerSynchronizerService {
+  debounceInterval = 1000;
+  crs: any;
+  syncedLayers: any;
   constructor(
-    HsUtilsService,
-    HsLaymanService,
-    HsCommonEndpointsService,
-    $compile,
-    $rootScope,
-    HsLayoutService
-  ) {
-    'ngInject';
-    Object.assign(this, {
-      HsUtilsService,
-      HsLaymanService,
-      HsCommonEndpointsService,
-      $compile,
-      $rootScope,
-      HsLayoutService,
-    });
-
-    const me = this;
-    angular.extend(me, {
-      syncedLayers: [],
-      crs: null,
-    });
-  }
+    private HsUtilsService: HsUtilsService,
+    private HsLaymanService: HsLaymanService,
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private HsLayoutService: HsLayoutService,
+    private HsDialogContainerService: HsDialogContainerService
+  ) {}
 
   init(map) {
     const layerAdded = (e) => this.addLayer(e.element);
@@ -102,7 +85,7 @@ export class HsLayerSynchronizerService {
         this.HsLaymanService.pullVectorSource(
           ds,
           this.getLayerName(layer)
-        ).then((response) => {
+        ).then((response: any) => {
           let featureString;
           if (response) {
             featureString = response.data;
@@ -140,7 +123,7 @@ export class HsLayerSynchronizerService {
         (geom) => {
           this.handleFeatureChange(f);
         },
-        debounceInterval,
+        this.debounceInterval,
         false,
         this
       )
@@ -152,13 +135,14 @@ export class HsLayerSynchronizerService {
    * @param e
    */
   handleFeatureChange(e) {
-    this.sync([], [e.target || e], []);
+    this.sync([], [e.target || e], [], e.target.getLayer());
   }
 
   /**
    * @param inserted
    * @param updated
    * @param deleted
+   * @param layer
    */
   sync(inserted, updated, deleted, layer) {
     (this.HsCommonEndpointsService.endpoints || [])
@@ -172,7 +156,7 @@ export class HsLayerSynchronizerService {
           deleted,
           this.getLayerName(layer),
           layer
-        ).then((response) => {
+        ).then((response: any) => {
           if (response.data.indexOf('Exception') > -1) {
             this.displaySyncErrorDialog(response.data);
           }
@@ -181,18 +165,10 @@ export class HsLayerSynchronizerService {
       });
   }
 
-  displaySyncErrorDialog(error) {
-    const scope = this.$rootScope.$new();
-    Object.assign(scope, {
-      error,
+  displaySyncErrorDialog(error: any): void {
+    this.HsDialogContainerService.create(HsSyncErrorDialogComponent, {
+      exception: error,
     });
-    const el = angular.element(
-      '<hs-sync-error-dialog exception="error"></hs-sync-error-dialog>'
-    );
-    this.HsLayoutService.contentWrapper
-      .querySelector('.hs-dialog-area')
-      .appendChild(el[0]);
-    this.$compile(el)(scope);
   }
 
   /**
@@ -204,7 +180,7 @@ export class HsLayerSynchronizerService {
    * @param {Ol.layer} layer Layer to get Layman friendly name for
    * @returns {string} Layer title
    */
-  getLayerName(layer) {
+  getLayerName(layer): string {
     return layer.get('title').toLowerCase().replaceAll(' ', '');
   }
 

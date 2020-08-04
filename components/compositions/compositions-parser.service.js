@@ -80,7 +80,7 @@ export default function (
        * @eventType broadcast on $rootScope
        * @description Fires when composition is downloaded from server and parsing begins
        */
-      $rootScope.$broadcast('compositions.composition_loading', response.data);
+      this.HsEventBusService.compositionLoading.next(response.data);
       if (me.checkLoadSuccess(response)) {
         me.composition_loaded = response.config.url;
         if (angular.isDefined(response.config.pre_parse)) {
@@ -218,7 +218,9 @@ export default function (
           );
           cb(info);
         },
-        (err) => {}
+        (err) => {
+          //Nothing
+        }
       );
     },
 

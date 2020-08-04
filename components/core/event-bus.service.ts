@@ -39,5 +39,6 @@ export class HsEventBusService {
   cesiumTimeLayerChanges: Subject<any> = new Subject(); //replaces 'cesium.time_layers_changed'
   layoutResizes: Subject<any> = new Subject();
   olMapLoads: Subject<Map> = new Subject(); //replaces 'map.loaded'
+  compositionLoading: Subject<any> = new Subject(); // replaces 'compositions.composition_loading'
   constructor() {}
 }
