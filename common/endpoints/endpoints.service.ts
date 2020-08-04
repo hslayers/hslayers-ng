@@ -56,6 +56,7 @@ export class HsCommonEndpointsService {
         }),
       ],
     });
+    this.endpointsFilled.next(this.endpoints);
   }
 
   /**
