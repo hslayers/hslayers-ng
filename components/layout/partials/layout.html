@@ -20,7 +20,7 @@
 
                 <div class="hs-panelspace" ng-if="layoutService.sidebarVisible() && layoutService.componentEnabled('sidebar')" ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}" ng-style="{width: panelSpaceWidth()+'px'}">
                     <div class="hs-panelspace-wrapper" ng-style="{width: panelSpaceWidth()+'px'}">
-                        <div class="hs-sidebar" hs.sidebar.directive ng-controller="HsSidebarController" ng-cloak></div>
+                        <hs.sidebar ng-cloak></hs.sidebar>
                         <div class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
                             <hs.layermanager                        hs.draggable ng-show="panelVisible('layermanager', this)"></hs.layermanager>
                             <hs.legend                              hs.draggable ng-show="panelVisible('legend', this)"></hs.legend>
@@ -41,7 +41,7 @@
                             <hs.vgi-draw                            hs.draggable ng-show="panelVisible('draw', this)"></hs.vgi-draw>
                             <hs.sensors                       hs.draggable ng-show="panelVisible('sensors', this)"></hs.sensors>
                             <div hs.search.directive                hs.draggable ng-controller="HsSearchController" ng-if="panelVisible('search')" ng-show="panelVisible('search', this)"></div>
-                            <div hs.sidebar.directive             class="hs-minisidebar"  hs.draggable ng-controller="HsSidebarController" ng-if="layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
+                            <hs.sidebar-mini hs.draggable ng-if="layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></div>
                             <hs.draw                  hs.draggable ng-show="panelVisible('draw', this)"></hs.draw>
                             <div hs.customhtml.directive DEPRECATED style="height: auto"></div>
                         </div>

@@ -7,7 +7,6 @@ import {HsMapService} from './components/map/map.service';
 import {HsPermalinkUrlService} from './components/permalink/permalink-url.service';
 import {HsQueryBaseService} from './components/query/query-base.service';
 import {HsQueryVectorService} from './components/query/query-vector.service';
-import {HsSidebarService} from './components/sidebar/sidebar.service';
 import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
@@ -178,18 +177,5 @@ export function hsPermalinkUrlService(i: any) {
 export const HsPermalinkUrlServiceProvider = {
   provide: HsPermalinkUrlService,
   useFactory: hsPermalinkUrlService,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsSidebarService(i: any) {
-  return i.get('HsSidebarService');
-}
-
-export const HsSidebarServiceProvider = {
-  provide: HsSidebarService,
-  useFactory: hsSidebarService,
   deps: ['$injector'],
 };

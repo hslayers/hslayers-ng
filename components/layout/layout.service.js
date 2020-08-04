@@ -312,7 +312,7 @@ export class HsLayoutService {
     this.mainpanel = '';
     this.sidebarLabels = true;
     this.$timeout(() => {
-      if (!this.exists('HsSidebarController')) {
+      if (!this.exists('HsSidebarComponent')) {
         this.sidebarExpanded = false;
       }
       this.HsEventBusService.mainPanelChanges.next();

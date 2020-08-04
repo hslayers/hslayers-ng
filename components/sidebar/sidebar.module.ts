@@ -3,45 +3,23 @@ import '../layout';
 import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
-import * as angular from 'angular';
-import sidebarController from './sidebar.controller';
-import sidebarDirective from './sidebar.directive';
-import sidebarMiniDirective from './sidebar-mini.directive';
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {HsSidebarComponent} from './sidebar.component';
+import {HsSidebarMiniComponent} from './sidebar-mini.component';
 import {HsSidebarService} from './sidebar.service';
-
-/**
- * @namespace hs.sidebar
- * @memberOf hs
- */
-angular
-  .module('hs.sidebar', ['hs.map', 'hs.core', 'ngCookies', 'hs.layout'])
-  /**
-   * @memberof hs.sidebar
-   * @ngdoc service
-   * @name HsSidebarService
-   * @description TODO
-   */
-  .service('HsSidebarService', HsSidebarService)
-
-  /**
-   * @memberof hs.sidebar
-   * @ngdoc directive
-   * @name hs.sidebar.directive
-   * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
-   */
-  .directive('hs.sidebar.directive', sidebarDirective)
-
-  /**
-   * @memberof hs.sidebar
-   * @ngdoc directive
-   * @name hs.sidebar.directive
-   * @description Add sidebar template to app, listeners for sidebar width changes are embed in directive
-   */
-  .directive('hs.minisidebar.directive', sidebarMiniDirective)
-
-  /**
-   * @memberof hs.sidebar
-   * @ngdoc controller
-   * @name HsSidebarController
-   */
-  .controller('HsSidebarController', sidebarController);
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SortByPipe} from './sortByPipe.class';
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsSidebarMiniComponent, HsSidebarComponent, SortByPipe],
+  imports: [BrowserModule, NgbModule],
+  exports: [HsSidebarMiniComponent, HsSidebarComponent],
+  providers: [HsSidebarService],
+  entryComponents: [HsSidebarMiniComponent, HsSidebarComponent],
+})
+export class HsSidebarModule {}
