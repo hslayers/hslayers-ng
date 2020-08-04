@@ -1,4 +1,4 @@
-<div class="card panel-default mainpanel hs-stc-mainpanel">
+<div class="card panel- mainpanel hs-stc-mainpanel">
     <hs-panel-header name="saveMap" title="Save current map">
         <extra-title>{{title || current_composition_title}}</extra-title>
     </hs-panel-header>
@@ -6,23 +6,22 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Save to</span>
+                    <span class="input-group-text control-label" i18n>Save to</span>
                 </div>
-                <select class="form-control" ng-model="endpoint" ng-change="endpointChanged()">
-                    <option ng-repeat="e in HsCommonEndpointsService.endpoints" ng-value="e">{{e.title}}</option>
+                <select class="form-control" [(ngModel)]="endpoint" (change)="endpointChanged()">
+                    <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>
                 </select>
             </div>
         </div>
-        <hs.layman.current-user ng-if="endpoint.type == 'layman'" endpoint="endpoint"></hs.layman.current-user>
-        <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
-        <div class="modal-footer"  ng-if="config.advanced_form">
-            <button type="button" class="btn btn-block btn-primary" id="stc-save" ng-show="step=='end' && isAllowed() && overwrite" translate=""
-                ng-click="save(false)">Overwrite</button>
-            <button type="button" class="btn btn-block btn-primary" id="stc-saveas" ng-show="step=='end' && isAllowed()" translate="" ng-click="save(true)">Save
+        <hs.layman.current-user *ngIf="endpoint.type == 'layman'" endpoint="endpoint"></hs.layman.current-user>
+        <div hs.save-map.directive_form="" *ngIf="HsConfig.advanced_form"></div>
+        <div class="modal-footer" *ngIf="HsConfig.advanced_form">
+            <button type="button" class="btn btn-block btn-primary" id="stc-save" [hidden]="!(step == 'end' && isAllowed() && overwrite)" i18n (click)="save(false)">Overwrite</button>
+            <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())" i18n (click)="save(true)">Save
                 as</button>
-            <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" ng-show="step!='end'" translate="" ng-click="next()">Next</button>
-            <a class="btn btn-block btn-secondary" ng-href="data:{downloadableData}" id="stc-download" ng-show="step=='end'" download="context.hsl" translate>Download</a>
+            <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')" i18n (click)="next()">Next</button>
+            <a class="btn btn-block btn-secondary" href="data:{downloadableData}" id="stc-download" [hidden]="!(step == 'end')" download="context.hsl" i18n>Download</a>
         </div>
-        <div hs.save-map.directive_simpleform ng-if="!config.advanced_form"></div>
+        <div hs.save-map.directive_simpleform="" *ngIf="!HsConfig.advanced_form"></div>
     </div>
 </div>

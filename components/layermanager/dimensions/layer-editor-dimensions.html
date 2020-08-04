@@ -4,7 +4,7 @@
         <label class="control-label">{{dimension.label || dimension.name}}:</label>
 
         <select class="form-control" [(ngModel)]="dimension.modelValue" *ngIf="dimension.type == null" (change)="dimensionChanged(dimension)">
-            <option ng-value="dimension_value" *ngFor="let dimension_value of dimension.values">
+            <option [ngValue]="dimension_value" *ngFor="let dimension_value of dimension.values">
                 {{dimension_value}}</option>
         </select>
         <div class="input-group" *ngIf="dimension.type == 'datetime'">
