@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {HsButton} from './button.interface';
 import {HsLayoutService} from '../layout/layout.service';
 import {Injectable} from '@angular/core';
 // HsLanguageService not yet refactored
@@ -9,10 +10,10 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class HsSidebarService {
-  extraButtons: Array<any> = [];
-  buttons: Array<any> = [];
+  extraButtons: Array<HsButton> = [];
+  buttons: Array<HsButton> = [];
   unimportantExist: boolean;
-  visibleButtons: Array<any> = [];
+  visibleButtons: Array<HsButton> = [];
   constructor(private HsLayoutService: HsLayoutService) {
     this.extraButtons = [];
     /**
@@ -37,6 +38,7 @@ export class HsSidebarService {
      * @memberof HsSidebarService
      * @member buttons
      */
+
     this.buttons = [
       {
         panel: 'layermanager',
@@ -196,7 +198,7 @@ export class HsSidebarService {
       this.buttons.filter((b) => b.important == false).length > 0;
   }
 
-  buttonClicked(button: any): void {
+  buttonClicked(button: HsButton): void {
     if (button.click) {
       button.click();
     } else {
