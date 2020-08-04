@@ -1,60 +1,57 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
-    <li role="presentation" class="nav-item" ng-repeat="s in steps">
-        <a href="#hs-{{s}}" class="nav-link" ng-class="{'btn-primary': step == s}" aria-controls="hs-{{s}}"
-            role="tab" data-toggle="tab" ng-click="setStep(s)">{{gettext(s.capitalizeFirstLetter())}}</a>
+    <li role="presentation" class="nav-item" *ngFor="let s of steps">
+        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{gettext(s.capitalizeFirstLetter())}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='context'}" id="hs-context">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='context'}" id="hs-context">
         <form>
             <label class="form-group">
-                <translate>Title</translate> *
-                <input type="text" class="form-control" ng-model="compoData.title" ng-change="titleChanged()" />
+                <i18n>Title</i18n> *
+                <input type="text" class="form-control" [(ngModel)]="compoData.title" (change)="titleChanged()">
             </label>
 
             <label class="form-group">
-                <translate>Abstract</translate>
-                <textarea class="form-control" ng-model="compoData.abstract"></textarea>
+                <i18n>Abstract</i18n>
+                <textarea class="form-control" [(ngModel)]="compoData.abstract"></textarea>
             </label>
 
             <label class="form-group">
-                <translate>Keywords</translate>
-                <input type="text" class="form-control" ng-model="compoData.keywords" />
+                <i18n>Keywords</i18n>
+                <input type="text" class="form-control" [(ngModel)]="compoData.keywords">
             </label>
 
             <div class="form-group">
-                <label for="stc-extent1" class="form-group" translate="">Extent</label>
+                <label for="stc-extent1" class="form-group" i18n>Extent</label>
                 <div class="form-row stc-extent-row">
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" ng-model="compoData.bbox[0]" title="East" />
+                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[0]" title="East">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" ng-model="compoData.bbox[1]" title="South" />
+                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[1]" title="South">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" ng-model="compoData.bbox[2]" title="West" />
+                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[2]" title="West">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" ng-model="compoData.bbox[3]" title="North" />
+                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[3]" title="North">
                     </div>
                 </div>
-                <button type="button" class="mt-1 btn btn-secondary btn-block" ng-click="getCurrentExtent()"
-                    translate="">Use current map extent</button>
+                <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="getCurrentExtent()" i18n>Use current map extent</button>
             </div>
             <div class="form-group">
                 <ul class="list-group" id="stc-layerlist">
                     <li class="list-group-item" style="padding: 3px">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" checked ng-click="HsSaveMapManagerService.selectDeselectAllLayers()">
+                            <input class="form-check-input" type="checkbox" checked="" (click)="HsSaveMapManagerService.selectDeselectAllLayers()">
                             <label class="form-check-label"></label>
                           </div>
                     </li>
 
-                    <li ng-repeat="layer in compoData.layers | filter:query" style="padding: 3px"
-                        class="list-group-item">
+                    <li *ngFor="let layer of compoData.layers" style="padding: 3px" class="list-group-item">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" ng-model="layer.checked" />
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="layer.checked">
                             <label class="form-check-label">{{layer.title}}</label>
                         </div>
                     </li>
@@ -62,76 +59,75 @@
             </div>
         </form>
     </div>
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='access'}" id="hs-access">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='access'}" id="hs-access">
         <table class="table table-condensed">
-            <tr>
+            <tbody><tr>
                 <th></th>
-                <th translate>Read</th>
-                <th translate>Write</th>
+                <th i18n>Read</th>
+                <th i18n>Write</th>
             </tr>
-            <tr ng-repeat="g in HsSaveMapManagerService.statusData.groups">
+            <tr *ngFor="let g of HsSaveMapManagerService.statusData.groups">
                 <td>{{g.roleTitle || g.roleName}}:</td>
-                <td><input type="checkbox" class="form-control" ng-model="g.r" /></td>
-                <td><input type="checkbox" class="form-control" ng-model="g.w" /></td>
+                <td><input type="checkbox" class="form-control" [(ngModel)]="g.r"></td>
+                <td><input type="checkbox" class="form-control" [(ngModel)]="g.w"></td>
             </tr>
-        </table>
+        </tbody></table>
     </div>
-    <div role="tabpanel" class="tab-pane" ng-class="{'active': step =='author'}" id="hs-author">
+    <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='author'}" id="hs-author">
 
         <label class="form-group">
-            <translate>Person</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.name" />
+            <i18n>Person</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.name">
         </label>
 
         <label class="form-group">
-            <translate>Organization</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.organization" />
+            <i18n>Organization</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.organization">
         </label>
 
         <label class="form-group">
-            <translate>Position</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.position" />
+            <i18n>Position</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.position">
         </label>
 
         <label class="form-group">
-            <translate>Address</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.address" />
+            <i18n>Address</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.address">
         </label>
 
         <label class="form-group">
-            <translate>City</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.city" />
+            <i18n>City</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.city">
         </label>
 
         <label class="form-group">
-            <translate>State</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.state" />
+            <i18n>State</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.state">
         </label>
 
         <label class="form-group">
-            <translate>Postal code</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.postalcode" />
+            <i18n>Postal code</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.postalcode">
         </label>
 
         <label class="form-group">
-            <translate>Country</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.country" />
+            <i18n>Country</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.country">
         </label>
 
         <label class="form-group">
-            <translate>Phone</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.phone" />
+            <i18n>Phone</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.phone">
         </label>
 
         <label class="form-group">
-            <translate>E-mail</translate>
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.email" />
+            <i18n>E-mail</i18n>
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.email">
         </label>
 
         <label class="form-group">WWW
-            <input type="text" class="form-control" ng-model="HsSaveMapManagerService.userData.url" />
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.url">
         </label>
 
     </div>
-</div>
 </div>
