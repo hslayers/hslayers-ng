@@ -25,11 +25,12 @@ export const downgradedModule = downgrade(HsSaveMapModule);
  * @memberOf hs
  */
 angular
-  .module('hs.save-map', [
+  .module(downgradedModule, [
     'hs.map',
     'hs.core',
     'ngCookies',
     'hs.widgets',
+    'hs.utils',
     'hs.common.layman',
   ])
 

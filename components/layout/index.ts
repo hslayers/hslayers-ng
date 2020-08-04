@@ -3,7 +3,7 @@ import {downgrade} from '../../common/downgrader';
 export const downgradedLayoutModule = downgrade(HsLayoutModule);
 import '../core/';
 import '../geolocation/geolocation.module';
-import '../layermanager/layermanager.module';
+import '../layermanager/';
 import '../map/map.module';
 import * as angular from 'angular';
 import layoutController from './layout.controller';

@@ -3,7 +3,6 @@ import '../layout/layout.module';
 import '../permalink/share.module';
 import '../save-map/save-map.module';
 import '../utils/utils.module';
-import '../utils/utils.module';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
 import 'angular-socialshare';

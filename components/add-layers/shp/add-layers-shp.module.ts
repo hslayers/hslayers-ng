@@ -1,5 +1,5 @@
 import '../../../common/endpoints/endpoints.module';
-import '../../save-map/save-map.module';
+import '../../save-map/';
 import '../../styles/styles.module';
 import * as angular from 'angular';
 import HsShpController from './shp.controller';

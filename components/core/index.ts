@@ -4,12 +4,13 @@ import * as angular from 'angular';
 import 'angular-gettext';
 // eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../drag/drag.module';
+import '../draw';
 import '../layermanager';
 import '../layout';
 import '../legend';
 import '../map/map.module';
 import '../print';
-import '../draw';
+import '../save-map/';
 import '../translations/js/translations';
 import '../utils/utils.module';
 import {HsCoreModule} from './core.module';
@@ -36,6 +37,7 @@ angular
     'hs.legend',
     'hs.print',
     'hs.layermanager',
+    'hs.save-map'
   ])
   /**
    * @module hs.core

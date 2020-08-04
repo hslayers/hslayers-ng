@@ -1,4 +1,4 @@
-import '../layermanager/layermanager.module';
+import '../layermanager/';
 import '../map/map.module';
 import * as angular from 'angular';
 import featureFilterController from './feature-filter.controller';
