@@ -13,7 +13,6 @@ import {
   HsPermalinkUrlServiceProvider,
   HsQueryBaseServiceProvider,
   HsQueryVectorServiceProvider,
-  HsSidebarServiceProvider,
   HsUtilsServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
@@ -28,6 +27,8 @@ import {HsLegendModule} from '../legend';
 import {HsLogService} from './log.service';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
+import {HsSidebarModule} from '../sidebar';
+import {HsSidebarService} from './../sidebar/sidebar.service';
 import {HsStylerModule} from '../styles';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -42,6 +43,7 @@ import {NgModule} from '@angular/core';
     HsLegendModule,
     HsMeasureModule,
     HsDrawModule,
+    HsSidebarModule,
     HsStylerModule,
     HsPrintModule,
     HsLayerManagerModule,
@@ -50,6 +52,7 @@ import {NgModule} from '@angular/core';
   providers: [
     HsCoreService,
     HsDrawService,
+    HsSidebarService,
     HsMapServiceProvider,
     HsConfigProvider,
     HsUtilsServiceProvider,
@@ -67,7 +70,6 @@ import {NgModule} from '@angular/core';
     },
     HsLogService,
     HsPermalinkUrlServiceProvider,
-    HsSidebarServiceProvider,
   ],
   entryComponents: [],
 })

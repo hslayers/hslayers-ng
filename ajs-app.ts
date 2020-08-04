@@ -11,7 +11,7 @@ import './components/legend';
 import './components/core';
 import './components/query/query.module';
 import './components/search/search.module';
-import './components/sidebar/sidebar.module';
+import './components/sidebar/sidebar';
 import './components/styles/styles.module';
 import './components/toolbar/toolbar.module';
 import * as angular from "angular";
