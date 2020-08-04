@@ -93,10 +93,7 @@ export class HsLayerManagerComponent implements OnInit {
     this.HsMapService.loaded().then((map) => this.init(map));
 
     this.HsEventBusService.layerRemovals.subscribe((layer) => {
-      if (
-        typeof this.HsLayerManagerService.currentLayer == 'object' &&
-        this.HsLayerManagerService.currentLayer.layer == layer
-      ) {
+      if (this.HsLayerManagerService?.currentLayer?.layer == layer) {
         const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
           '.hs-layerpanel'
         );
