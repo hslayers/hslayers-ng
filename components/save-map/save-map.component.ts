@@ -44,7 +44,7 @@ export class HsSaveMapComponent {
     });
 
     HsEventBusService.mainPanelChanges.subscribe(() => {
-      if (HsLayoutService.mainpanel == 'saveMap') {
+      if (this.HsLayoutService.mainpanel == 'saveMap') {
         this.step = 'context';
       }
     });
@@ -69,7 +69,7 @@ export class HsSaveMapComponent {
           this.endpointChanged();
         }
         if (this.endpoint && this.endpoint.type == 'layman') {
-          HsCommonLaymanService.getCurrentUser(this.endpoint);
+          this.HsCommonLaymanService.getCurrentUser(this.endpoint);
         }
       }
     });
