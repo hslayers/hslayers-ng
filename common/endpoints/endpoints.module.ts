@@ -1,5 +1,5 @@
 import angular from 'angular';
-import endpointsService from './endpoints.service';
+import {HsCommonEndpointsService} from './endpoints.service';
 
 angular
   .module('hs.common.endpoints', [])
@@ -10,4 +10,4 @@ angular
    * @memberOf hs.common.endpoints
    * @description Service for endpoints
    */
-  .service('HsCommonEndpointsService', endpointsService);
+  .service('HsCommonEndpointsService', HsCommonEndpointsService);

@@ -1,4 +1,5 @@
 import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from './common/layman/layman.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayerSynchronizerService} from './components/save-map/layer-synchronizer.service';
@@ -12,6 +13,7 @@ import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
+
 /**
  * @param i
  */
