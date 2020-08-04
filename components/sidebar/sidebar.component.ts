@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-returns */
 import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
+import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -36,11 +37,11 @@ export class HsSidebarComponent implements OnInit {
   /**
    * Set visibility parameter of buttons object
    *
-   * @memberof HsSidebarController
+   * @memberof HsSidebarComponent
    * @function setPanelState
    * @param {object} buttons Buttons object
    */
-  setPanelState(buttons): void {
+  setPanelState(buttons: Array<HsButton>): void {
     for (const button of buttons) {
       if (
         this.HsLayoutService.panelEnabled(button.panel) &&
@@ -60,7 +61,7 @@ export class HsSidebarComponent implements OnInit {
    * Seat weather to show all sidebar buttons or just a
    * subset of important ones
    *
-   * @memberof HsSidebarController
+   * @memberof HsSidebarComponent
    * @function toggleUnimportant
    */
   toggleUnimportant(): void {
@@ -71,11 +72,11 @@ export class HsSidebarComponent implements OnInit {
    * Returns if a button should be visible by its 'important'
    * property and current view mode defined in showUnimportant variable
    *
-   * @memberof HsSidebarController
+   * @memberof HsSidebarComponent
    * @function visibilityByImportancy
    * @param button
    */
-  visibilityByImportancy(button): boolean {
+  visibilityByImportancy(button: HsButton): boolean {
     if (HsLayoutService.sidebarBottom()) {
       return true;
     } else {
@@ -95,7 +96,7 @@ export class HsSidebarComponent implements OnInit {
    * It´s necessary for buttons like 'measure' because simple
    * 'config.panelsEnabled = false' would prevent their functionality.
    *
-   * @memberof HsSidebarController
+   * @memberof HsSidebarComponent
    * @function checkConfigurableButtons
    * @param {object} button buttons Buttons object
    */
@@ -110,7 +111,7 @@ export class HsSidebarComponent implements OnInit {
   }
 
   /**
-   * @name HsSidebarController#fitsSidebar
+   * @name HsSidebarComponent#fitsSidebar
    * @public
    * @param {string} which Sidear button to be checked (specify panel name)
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
@@ -142,7 +143,7 @@ export class HsSidebarComponent implements OnInit {
   /**
    * Toggle sidebar mode between expanded and narrow
    *
-   * @memberof HsSidebarController
+   * @memberof HsSidebarComponent
    * @function toggleSidebar
    */
   toggleSidebar(): void {
