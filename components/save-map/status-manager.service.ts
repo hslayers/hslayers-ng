@@ -2,8 +2,12 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsConfig} from '../../config.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {SaverServiceInterface} from './saver-service.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsStatusManagerService implements SaverServiceInterface {
   constructor(
     private http: HttpClient,

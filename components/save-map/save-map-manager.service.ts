@@ -8,10 +8,14 @@ import {HsSaveMapService} from './save-map.service';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {SaverServiceInterface} from './saver-service.interface';
 import {Subject} from 'rxjs';
 import {transform} from 'ol/proj';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsSaveMapManagerService {
   statusData: any = {
     titleFree: undefined,
