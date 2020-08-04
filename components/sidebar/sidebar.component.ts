@@ -21,7 +21,6 @@ export class HsSidebarComponent implements OnInit {
     private HsSidebarService: HsSidebarService,
     private HsPermalinkUrlService: HsPermalinkUrlService
   ) {}
-
   ngOnInit(): void {
     if (angular.isDefined(this.HsCoreService.config.createExtraMenu)) {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
@@ -33,6 +32,7 @@ export class HsSidebarComponent implements OnInit {
         );
       }
     }
+    this.setPanelState(this.HsSidebarService.buttons);
   }
   /**
    * Set visibility parameter of buttons object
@@ -76,8 +76,8 @@ export class HsSidebarComponent implements OnInit {
    * @function visibilityByImportancy
    * @param button
    */
-  visibilityByImportancy(button: HsButton): boolean {
-    if (HsLayoutService.sidebarBottom()) {
+  visibilityByImportancy(button): boolean {
+    if (this.HsLayoutService.sidebarBottom()) {
       return true;
     } else {
       return (
@@ -119,7 +119,7 @@ export class HsSidebarComponent implements OnInit {
    */
   fitsSidebar(which): boolean {
     if (window.innerWidth > 767) {
-      HsLayoutService.minisidebar = false;
+      this.HsLayoutService.minisidebar = false;
       return true;
     } else {
       if (
@@ -128,14 +128,14 @@ export class HsSidebarComponent implements OnInit {
         window.innerWidth / 60 <=
           this.HsSidebarService.visibleButtons.length - 1
       ) {
-        HsLayoutService.minisidebar = true;
+        this.HsLayoutService.minisidebar = true;
         return true;
       }
       if (
         window.innerWidth >
         (this.HsSidebarService.visibleButtons.length - 1) * 60
       ) {
-        HsLayoutService.minisidebar = false;
+        this.HsLayoutService.minisidebar = false;
       }
     }
   }
