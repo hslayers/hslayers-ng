@@ -10,6 +10,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
 export class HsSaveMapService {
+  notAvailableImage = require('./notAvailable.png');
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
@@ -468,7 +469,7 @@ export class HsSaveMapService {
         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
       } catch (e) {
         this.$log.warn(e);
-        $element.setAttribute('src', import('./notAvailable.png'));
+        $element.setAttribute('src', this.notAvailableImage);
       }
       $element.style.width = width + 'px';
       $element.style.height = height + 'px';

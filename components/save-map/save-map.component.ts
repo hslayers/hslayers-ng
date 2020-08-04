@@ -52,32 +52,27 @@ export class HsSaveMapComponent {
     this.HsSaveMapManagerService.panelOpened.subscribe((composition) => {
       if (composition && composition.endpoint) {
         const openedType = composition.endpoint.type;
-        this.endpoint = HsCommonEndpointsService.endpoints.filter(
+        this.endpoint = this.HsCommonEndpointsService.endpoints.filter(
           (ep) => ep.type == openedType
         )[0];
       }
     });
 
-    this.$watch(
-      () => {
-        return HsCommonEndpointsService.endpoints;
-      },
-      (value) => {
-        if (value && this.endpoint === null && value.length > 0) {
-          const laymans = value.filter((ep) => ep.type == 'layman');
-          if (laymans.length > 0) {
-            this.endpoint = laymans[0];
-            this.endpointChanged();
-          } else {
-            this.endpoint = value[0];
-            this.endpointChanged();
-          }
-          if (this.endpoint && this.endpoint.type == 'layman') {
-            HsCommonLaymanService.getCurrentUser(this.endpoint);
-          }
+    this.HsCommonEndpointsService.endpointsFilled.subscribe((value) => {
+      if (value && this.endpoint === null && value.length > 0) {
+        const laymans = value.filter((ep) => ep.type == 'layman');
+        if (laymans.length > 0) {
+          this.endpoint = laymans[0];
+          this.endpointChanged();
+        } else {
+          this.endpoint = value[0];
+          this.endpointChanged();
+        }
+        if (this.endpoint && this.endpoint.type == 'layman') {
+          HsCommonLaymanService.getCurrentUser(this.endpoint);
         }
       }
-    );
+    });
   }
 
   endpointChanged() {
@@ -197,11 +192,8 @@ export class HsSaveMapComponent {
     if (this.HsSaveMapManagerService.statusData.guessedTitle) {
       this.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
     }
-    $timeout(() => {
-      this.HsLayoutService.contentWrapper
-        .querySelector('.hs-stc-title')
-        .focus();
-    });
+    //TODO Check if this works and input is focused
+    this.HsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
   }
 
   getCurrentExtent() {

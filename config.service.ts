@@ -34,6 +34,7 @@ export class HsConfig {
   project_name?: string;
   hostname?: any;
   status_manager_url: string;
+  dsPaging: number;
 
   constructor() {}
 }

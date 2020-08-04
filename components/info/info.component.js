@@ -26,7 +26,7 @@ export default {
      */
     $scope.layer_loading = [];
 
-    $scope.$on('compositions.composition_loading', (event, data) => {
+    HsEventBusService.compositionLoading.subscribe((data) => {
       if (angular.isUndefined(data.error)) {
         if (angular.isDefined(data.data)) {
           /**
@@ -113,7 +113,9 @@ export default {
      *
      */
     function forceRedraw() {
-      $timeout(() => {}, 0);
+      $timeout(() => {
+        //Nothing
+      }, 0);
     }
 
     HsEventBusService.layerLoads.subscribe((layer) => {
