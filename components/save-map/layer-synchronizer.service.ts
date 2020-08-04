@@ -1,12 +1,15 @@
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsLaymanService} from './layman.service';
-import {HsLayoutService} from '../layout/layout.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLayerSynchronizerService {
   debounceInterval = 1000;
   crs: any;
@@ -15,7 +18,6 @@ export class HsLayerSynchronizerService {
     private HsUtilsService: HsUtilsService,
     private HsLaymanService: HsLaymanService,
     private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsLayoutService: HsLayoutService,
     private HsDialogContainerService: HsDialogContainerService
   ) {}
 

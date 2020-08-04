@@ -11,7 +11,7 @@ angular
    * @memberOf hs.common.layman
    * @description Service for common Layman functions
    */
-  .factory('HsCommonLaymanService', HsCommonLaymanService)
+  .service('HsCommonLaymanService', HsCommonLaymanService)
 
   .component('hs.layman.currentUser', laymanCurrentUserComponent)
 

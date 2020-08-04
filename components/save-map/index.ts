@@ -1,6 +1,9 @@
 /* eslint-disable angular/file-name */
+import '../../common/endpoints/endpoints.module';
+import '../../common/get-capabilities.module';
 import '../../common/layman/layman.module';
 import '../../common/widgets/widgets.module';
+import '../utils/utils.module';
 import 'angular-cookies';
 import * as angular from 'angular';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
@@ -27,7 +30,6 @@ export const downgradedModule = downgrade(HsSaveMapModule);
 angular
   .module(downgradedModule, [
     'hs.map',
-    'hs.core',
     'ngCookies',
     'hs.widgets',
     'hs.utils',

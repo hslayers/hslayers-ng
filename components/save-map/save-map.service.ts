@@ -2,13 +2,17 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../core/log.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
+import {Injectable} from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsSaveMapService {
   notAvailableImage = require('./notAvailable.png');
   constructor(
@@ -16,14 +20,7 @@ export class HsSaveMapService {
     private HsUtilsService: HsUtilsService,
     private HsLayoutService: HsLayoutService,
     private HsLogService: HsLogService
-  ) {
-    'ngInject';
-    Object.assign(this, {
-      HsMapService,
-      HsUtilsService,
-      HsLayoutService,
-    });
-  }
+  ) {}
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)

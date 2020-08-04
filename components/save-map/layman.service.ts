@@ -1,12 +1,16 @@
 import {GeoJSON, WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
-import {HsLogService} from '../core/log.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {SaverServiceInterface} from './saver-service.interface';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLaymanService implements SaverServiceInterface {
   crs: string;
   constructor(
