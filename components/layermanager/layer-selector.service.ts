@@ -1,6 +1,5 @@
-
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {Injectable} from '@angular/core';
-import {HsLayerDescriptor } from './layer-descriptor.interface';
 import {Subject} from 'rxjs';
 
 @Injectable({
@@ -11,6 +10,6 @@ export class HsLayerSelectorService {
   constructor() {}
 
   select(layer: HsLayerDescriptor) {
-    this.layerSelected.next({layer});
+    this.layerSelected.next(layer);
   }
 }

@@ -1,7 +1,6 @@
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
-import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
@@ -27,11 +26,7 @@ export class HsLayerEditorService {
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
     private HsLegendService: HsLegendService,
-    private HsLayerSelectorService: HsLayerSelectorService
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
-      this.HsLegendService.getLayerLegendDescriptor(layer.layer);
-    });
   }
 
   /**

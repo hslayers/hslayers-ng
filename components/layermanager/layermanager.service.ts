@@ -6,21 +6,21 @@ import {CollectionEvent} from 'ol/Collection';
 import {Group, Tile} from 'ol/layer';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HsLayerSelectorService} from './layer-selector.service';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {METERS_PER_UNIT} from 'ol/proj';
 import {TileWMS} from 'ol/source';
-import { HsLayerDescriptor } from './layer-descriptor.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -107,7 +107,7 @@ export class HsLayerManagerService {
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
     private HsLayerEditorStylesService: HsLayerEditorStylesService,
-    private HsLayerSelectorService: HsLayerSelectorService,
+    private HsLayerSelectorService: HsLayerSelectorService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -785,13 +785,13 @@ export class HsLayerManagerService {
     }
   }
 
-  setCurrentLayer(layer: Layer): false {
+  setCurrentLayer(layer): false {
     this.currentLayer = layer;
     if (!layer.layer.checkedSubLayers) {
       layer.layer.checkedSubLayers = {};
       layer.layer.withChildren = {};
     }
-    this.HsLayerSelectorService.layerSelected.next(layer);
+    this.HsLayerSelectorService.select(layer);
     if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
       this.currentLayer.time = new Date(
         layer.layer.getSource().getParams().TIME
@@ -885,7 +885,7 @@ export class HsLayerManagerService {
   expandFilter(layer: Layer, value): void {
     layer.expandFilter = value;
     this.currentLayer = layer;
-    this.HsLayerSelectorService.layerSelected.next(layer);
+    this.HsLayerSelectorService.select(layer);
   }
 
   expandInfo(layer: Layer, value): void {
