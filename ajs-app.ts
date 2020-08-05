@@ -1,9 +1,3 @@
-/* eslint-disable angular/no-controller */
-/* eslint-disable angular/controller-as */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable angular/controller-name */
-/* eslint-disable angular/function-type */
-/* eslint-disable angular/file-name */
 'use strict';
 
 import './components/add-layers/add-layers.module';
