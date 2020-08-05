@@ -1,8 +1,6 @@
 /* eslint-disable jsdoc/require-returns */
 import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
-import {HsButton} from './button.interface';
-import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPermalinkUrlService} from '../permalink/permalink-url.service';
@@ -16,7 +14,6 @@ export class HsSidebarComponent implements OnInit {
 
   constructor(
     private HsLayoutService: HsLayoutService,
-    private HsConfig: HsConfig,
     private HsCoreService: HsCoreService,
     private HsSidebarService: HsSidebarService,
     private HsPermalinkUrlService: HsPermalinkUrlService
