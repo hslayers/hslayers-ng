@@ -78,7 +78,7 @@ export class HsSaveMapComponent {
   endpointChanged() {
     if (this.endpoint) {
       if (this.endpoint.getCurrentUserIfNeeded) {
-        this.endpoint.getCurrentUserIfNeeded();
+        this.endpoint.getCurrentUserIfNeeded(this.endpoint);
       }
       switch (this.endpoint.type) {
         case 'layman':

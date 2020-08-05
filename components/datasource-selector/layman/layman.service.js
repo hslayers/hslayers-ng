@@ -15,7 +15,7 @@ export default function ($http, $q, HsUtilsService) {
      * @description Loads datasets metadata from Layman
      */
     queryCatalog(endpoint) {
-      endpoint.getCurrentUserIfNeeded();
+      endpoint.getCurrentUserIfNeeded(endpoint);
       let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
       url = HsUtilsService.proxify(url);
       endpoint.datasourcePaging.loaded = false;
