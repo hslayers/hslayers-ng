@@ -2,6 +2,7 @@ import Static from 'ol/source/ImageStatic';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon} from 'ol/style';
 import {Fill, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {Image as ImageLayer, Layer} from 'ol/layer';
@@ -15,8 +16,16 @@ import {TileWMS, XYZ} from 'ol/source';
 export class HsLegendService {
   /**
    * @param HsUtilsService
+   * @param HsLayerSelectorService
    */
-  constructor(private HsUtilsService: HsUtilsService) {}
+  constructor(
+    private HsUtilsService: HsUtilsService,
+    private HsLayerSelectorService: HsLayerSelectorService,
+  ) {
+    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+      this.getLayerLegendDescriptor(layer.layer);
+    });
+  }
 
   /**
    * Test if layer is visible and has supported type (conditions for displaying legend)

@@ -13,7 +13,6 @@ export class HsLayerEditorSublayerService {
   populatedLayers: Array<any> = [];
   withChildrenTmp: any = {};
   checkedSubLayersTmp: any = {};
-  currentLayer: Layer;
   constructor(
     private HsLayerManagerService: HsLayerManagerService,
     private HsLayerSelectorService: HsLayerSelectorService

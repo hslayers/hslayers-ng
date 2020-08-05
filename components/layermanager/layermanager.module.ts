@@ -63,7 +63,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsLayerManagerService,
     HsLayerManagerWmstService,
     HsLayerEditorStylesService,
-    HsLayerSelectorService
+    HsLayerSelectorService,
   ],
   entryComponents: [
     HsLayerManagerComponent,
