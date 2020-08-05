@@ -32,29 +32,7 @@ export class HsSidebarComponent implements OnInit {
         );
       }
     }
-    this.setPanelState(this.HsSidebarService.buttons);
-  }
-  /**
-   * Set visibility parameter of buttons object
-   *
-   * @memberof HsSidebarComponent
-   * @function setPanelState
-   * @param {object} buttons Buttons object
-   */
-  setPanelState(buttons: Array<HsButton>): void {
-    for (const button of buttons) {
-      if (
-        this.HsLayoutService.panelEnabled(button.panel) &&
-        this.checkConfigurableButtons(button)
-      ) {
-        if (!this.HsSidebarService.visibleButtons.includes(button.panel)) {
-          this.HsSidebarService.visibleButtons.push(button.panel);
-          button.visible = true;
-        }
-      } else {
-        button.visible = false;
-      }
-    }
+    this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
   }
 
   /**
@@ -65,81 +43,8 @@ export class HsSidebarComponent implements OnInit {
    * @function toggleUnimportant
    */
   toggleUnimportant(): void {
-    this.showUnimportant = !this.showUnimportant;
+    this.HsSidebarService.showUnimportant = !this.HsSidebarService.showUnimportant;
   }
-
-  /**
-   * Returns if a button should be visible by its 'important'
-   * property and current view mode defined in showUnimportant variable
-   *
-   * @memberof HsSidebarComponent
-   * @function visibilityByImportancy
-   * @param {HsButton} button Sidebar button
-   */
-  visibilityByImportancy(button: HsButton): boolean {
-    if (this.HsLayoutService.sidebarBottom()) {
-      return true;
-    } else {
-      return (
-        button.important ||
-        angular.isUndefined(button.important) ||
-        !this.HsSidebarService.unimportantExist ||
-        this.showUnimportant
-      );
-    }
-  }
-
-  /**
-   * Checks whether the panels, which could be placed both in map or
-   * in sidebar, have state defined in config.panelsEnabled. If yes it
-   * should be placed in sidebar rather then in map.
-   * It´s necessary for buttons like 'measure' because simple
-   * 'config.panelsEnabled = false' would prevent their functionality.
-   *
-   * @memberof HsSidebarComponent
-   * @function checkConfigurableButtons
-   * @param {object} button buttons Buttons object
-   */
-  checkConfigurableButtons(button: HsButton): boolean {
-    if (typeof button.condition == 'undefined') {
-      return true;
-    } else if (angular.isUndefined(this.HsConfig.panelsEnabled)) {
-      return false;
-    } else {
-      return this.HsConfig.panelsEnabled[button.panel];
-    }
-  }
-
-  /**
-   * @name HsSidebarComponent#fitsSidebar
-   * @public
-   * @param {string} which Sidear button to be checked (specify panel name)
-   * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
-   * @description Toggles minisidebar button
-   */
-  fitsSidebar(which: HsButton): boolean {
-    if (window.innerWidth > 767) {
-      this.HsLayoutService.minisidebar = false;
-      return true;
-    } else {
-      if (
-        this.HsSidebarService.visibleButtons.indexOf(which) + 1 >=
-          window.innerWidth / 60 &&
-        window.innerWidth / 60 <=
-          this.HsSidebarService.visibleButtons.length - 1
-      ) {
-        this.HsLayoutService.minisidebar = true;
-        return true;
-      }
-      if (
-        window.innerWidth >
-        (this.HsSidebarService.visibleButtons.length - 1) * 60
-      ) {
-        this.HsLayoutService.minisidebar = false;
-      }
-    }
-  }
-
   /**
    * Toggle sidebar mode between expanded and narrow
    *

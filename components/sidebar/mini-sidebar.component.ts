@@ -1,16 +1,18 @@
 import {HsCoreService} from '../core/core.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 
 import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'hs-mini-sidebar',
-  template: require('./partials/minisidebar.html'),
+  template: require('./partials/sidebar.html'),
 })
 export class HsMiniSidebarComponent implements OnInit {
   constructor(
     private HsCoreService: HsCoreService,
-    private HsSidebarService: HsSidebarService
+    private HsSidebarService: HsSidebarService,
+    private HsLayoutService: HsLayoutService
   ) {}
 
   ngOnInit(): void {
