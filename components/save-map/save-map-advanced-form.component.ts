@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 @Component({
-  selector: 'hs.save-map-advanced-form',
+  selector: 'hs-save-map-advanced-form',
   template: require('./partials/form.html'),
 })
 export class HsSaveMapAdvancedFormComponent {
