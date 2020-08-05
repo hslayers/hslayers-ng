@@ -6,9 +6,9 @@
     </a>
 
     <a href="" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': propertyName: 'order'"
-        class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && visibilityByImportancy(button))"
+        class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))"
         (click)="HsSidebarService.buttonClicked(button)"
-        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : fitsSidebar(button.panel)}"
+        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}"
         title="{{button.description}}">
 
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
