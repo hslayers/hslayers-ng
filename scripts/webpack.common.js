@@ -29,7 +29,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
     modules: [
       path.join(__dirname, '..'),
-      "../node_modules",
+      path.resolve("../node_modules"),
     ].concat(hslPaths.paths)
   },
   plugins: [
@@ -53,6 +53,14 @@ module.exports = {
       }
     )
   ],
+  amd: {
+    // Enable webpack-friendly use of require in Cesium
+    toUrlUndefined: true
+  },
+  node: {
+    // Resolve node module use of fs
+    fs: 'empty'
+  },
   module: {
     rules: [
       {
