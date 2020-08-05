@@ -6,7 +6,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
   template: require('./partials/form.html'),
 })
 export class HsSaveMapAdvancedFormComponent {
-  btnSelectDeseletClicked = true;
+  btnSelectDeselectClicked = true;
   step = 'context';
   steps = ['context', 'access', 'author'];
   endpoint: any;
@@ -50,9 +50,9 @@ export class HsSaveMapAdvancedFormComponent {
   }
 
   selectDeselectAllLayers() {
-    this.btnSelectDeseletClicked = !this.btnSelectDeseletClicked;
+    this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
     this.HsSaveMapManagerService.compoData.layers.forEach(
-      (layer) => (layer.checked = this.btnSelectDeseletClicked)
+      (layer) => (layer.checked = this.btnSelectDeselectClicked)
     );
   }
 
