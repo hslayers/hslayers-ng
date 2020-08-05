@@ -13,7 +13,9 @@ export class HsSaveMapDialogSpawnerService {
     private HsSaveMapManagerService: HsSaveMapManagerService
   ) {
     this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
-      this.HsDialogContainerService.create(HsSaveMapResultDialogComponent, {});
+      this.HsDialogContainerService.create(HsSaveMapResultDialogComponent, {
+        statusData,
+      });
     });
     this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(() => {
       this.HsDialogContainerService.create(HsSaveMapDialogComponent, {});

@@ -383,17 +383,23 @@ export class HsSaveMapManagerService {
     this.compoData.currentComposition = '';
   }
 
-  initiateSave(saveAsNew) {
-    this.save(saveAsNew, this.endpointSelected.getValue())
-      .then(this.processSaveCallback)
-      .catch(this.processSaveCallback);
+  async initiateSave(saveAsNew) {
+    try {
+      const augmentedResponse = await this.save(
+        saveAsNew,
+        this.endpointSelected.getValue()
+      );
+      this.processSaveCallback(augmentedResponse);
+    } catch (ex) {
+      this.processSaveCallback(ex);
+    }
   }
 
   processSaveCallback(response) {
     this.statusData.status = response.status;
     if (!response.status) {
       this.statusData.resultCode = response.error ? 'error' : 'not-saved';
-      if (response.error.code == 24) {
+      if (response.error?.code == 24) {
         this.statusData.overwriteNeeded = true;
       }
       this.statusData.error = response.error;
