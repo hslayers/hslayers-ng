@@ -416,7 +416,7 @@ export class HsLayoutService {
      * @eventType broadcast on HsEventBusService
      * @description Fires when current mainpanel change - toggle, change of opened panel
      */
-    this.HsEventBusService.mainPanelChanges.next();
+    this.HsEventBusService.mainPanelChanges.next(which);
   }
 
   /**
