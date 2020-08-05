@@ -92,18 +92,20 @@ export class HsLayerManagerComponent implements OnInit {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
 
-    this.HsEventBusService.layerRemovals.subscribe((layer) => {
-      if (this.HsLayerManagerService?.currentLayer?.layer == layer) {
-        const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-          '.hs-layerpanel'
-        );
-        const layerNode = document.getElementsByClassName(
-          'hs-lm-mapcontentlist'
-        )[0];
-        this.HsUtilsService.insertAfter(layerPanel, layerNode);
-        this.HsLayerManagerService.currentLayer = null;
+    this.HsEventBusService.layerRemovals.subscribe(
+      (layer: HsLayerDescriptor) => {
+        if (this.HsLayerManagerService?.currentLayer?.layer == layer) {
+          const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
+            '.hs-layerpanel'
+          );
+          const layerNode = document.getElementsByClassName(
+            'hs-lm-mapcontentlist'
+          )[0];
+          this.HsUtilsService.insertAfter(layerPanel, layerNode);
+          this.HsLayerManagerService.currentLayer = null;
+        }
       }
-    });
+    );
 
     this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
