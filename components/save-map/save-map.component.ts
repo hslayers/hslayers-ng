@@ -21,7 +21,6 @@ export class HsSaveMapComponent {
   step = 'context';
   steps = ['context', 'access', 'author'];
   overwrite = false;
-  compoData: any;
   downloadableData: string;
   changeTitle: boolean;
 
@@ -37,7 +36,6 @@ export class HsSaveMapComponent {
     private HsEventBusService: HsEventBusService,
     private HsDialogContainerService: HsDialogContainerService
   ) {
-    this.compoData = this.HsSaveMapManagerService.compoData;
 
     HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';
@@ -108,7 +106,7 @@ export class HsSaveMapComponent {
           JSON.stringify(
             this.HsSaveMapService.map2json(
               this.HsMapService.map,
-              this.compoData,
+              this.HsSaveMapManagerService.compoData,
               this.HsSaveMapManagerService.userData,
               this.HsSaveMapManagerService.statusData
             )
@@ -180,7 +178,7 @@ export class HsSaveMapComponent {
    * @memberof hs.save-map
    */
   selectNewTitle() {
-    this.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
+    this.HsSaveMapManagerService.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
     this.changeTitle = true;
   }
 
@@ -190,14 +188,10 @@ export class HsSaveMapComponent {
    */
   focusTitle() {
     if (this.HsSaveMapManagerService.statusData.guessedTitle) {
-      this.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
+      this.HsSaveMapManagerService.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
     }
     //TODO Check if this works and input is focused
     this.HsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
-  }
-
-  getCurrentExtent() {
-    this.compoData.bbox = this.HsSaveMapManagerService.getCurrentExtent();
   }
 
   isAllowed() {

@@ -1,6 +1,5 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
-    {{steps}}
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
         <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{s.capitalizeFirstLetter()}}</a>
     </li>
@@ -25,7 +24,7 @@
 
             <div class="form-group">
                 <label for="stc-extent1" class="form-group" i18n>Extent</label>
-                <div class="form-row stc-extent-row">
+                <div class="form-row stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
                     <div class="col-sm-3 px-0">
                         <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]" title="East">
                     </div>
@@ -39,7 +38,7 @@
                         <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]" title="North">
                     </div>
                 </div>
-                <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="getCurrentExtent()" i18n>Use current map extent</button>
+                <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="HsSaveMapManagerService.setCurrentBoundingBox()" i18n>Use current map extent</button>
             </div>
             <div class="form-group">
                 <ul class="list-group" id="stc-layerlist">
