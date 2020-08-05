@@ -10,8 +10,8 @@
  *   `'ngInject';` or `@ngInject` in comments. See https://docs.angularjs.org/guide/di
  */
 const path = require('path');
-var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const hslPaths = require(path.join(__dirname, '..', 'common_paths')); //TODO this should not be necessary
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 const webpack = require('webpack');
 
@@ -22,15 +22,16 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     filename: 'hslayers-ng.js',
     library: 'hslayers-ng',
-    libraryTarget:'umd'
+    libraryTarget: 'umd',
   },
   // Just for build speed improvement
-  resolve: { symlinks: true,
+  resolve: {
+    symlinks: true,
     extensions: ['.tsx', '.ts', '.js'],
     modules: [
       path.join(__dirname, '..'),
-      path.resolve("../node_modules"),
-    ].concat(hslPaths.paths)
+      path.resolve('../node_modules'),
+    ].concat(hslPaths.paths),
   },
   plugins: [
     new DynamicPubPathPlugin({
@@ -39,36 +40,33 @@ module.exports = {
     // Clean before build
     //new CleanWebpackPlugin()
     new WebpackBuildNotifierPlugin({
-      title: "HsLayersNg",
-      suppressSuccess: false
+      title: 'HsLayersNg',
+      suppressSuccess: false,
     }),
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
-    
+
       // For Angular 5, see also https://github.com/angular/angular/issues/20357#issuecomment-343683491
       /\@angular(\\|\/)core(\\|\/)fesm5/,
       '../', // location of your src
       {
         // your Angular Async Route paths relative to this root directory
       }
-    )
+    ),
   ],
   amd: {
     // Enable webpack-friendly use of require in Cesium
-    toUrlUndefined: true
+    toUrlUndefined: true,
   },
   node: {
     // Resolve node module use of fs
-    fs: 'empty'
+    fs: 'empty',
   },
   module: {
     rules: [
       {
         test: /\.ts?$/,
-        use: [
-          { loader: 'ng-annotate-loader' },
-          'ts-loader'
-        ],
+        use: [{loader: 'ng-annotate-loader'}, 'ts-loader'],
         exclude: /node_modules/,
       },
       {test: /\.xml$/, loader: 'raw-loader'},
@@ -76,7 +74,7 @@ module.exports = {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
         // Removing this will cause deprecation warnings to appear.
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-        parser: { system: true },  // enable SystemJS
+        parser: {system: true}, // enable SystemJS
       },
       // Automatically generates $inject array for angularJS components annotated with:
       // 'ngInject';
@@ -90,11 +88,14 @@ module.exports = {
             options: {
               // Babel syntax dynamic import plugin allow babel to correctly parse js files
               // using webpack dynamic import expression (i.e import('angular').then(...))
-              plugins: ['angularjs-annotate', '@babel/plugin-syntax-dynamic-import']
-            }
-          }
-        ]
-      }
-    ]
-  }
+              plugins: [
+                'angularjs-annotate',
+                '@babel/plugin-syntax-dynamic-import',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
