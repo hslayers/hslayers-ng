@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
   providedIn: 'root',
 })
 export class HsLayerSelectorService {
-  layerSelected: Subject<any> = new Subject();
+  layerSelected: Subject<HsLayerDescriptor> = new Subject();
   constructor() {}
 
   select(layer: HsLayerDescriptor) {
