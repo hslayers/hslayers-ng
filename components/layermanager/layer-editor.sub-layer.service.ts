@@ -1,5 +1,7 @@
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSelectorService} from './layer-selector.service';
+
 import {Layer} from 'ol/layer';
 
 import {Injectable} from '@angular/core';
@@ -21,7 +23,7 @@ export class HsLayerEditorSublayerService {
       this.resetSublayers(layer);
     });
   }
-  resetSublayers(layer: Layer) {
+  resetSublayers(layer: HsLayerDescriptor) {
     if (this.HsLayerManagerService.currentLayer) {
       this.checkedSubLayers = layer.layer.checkedSubLayers;
       this.checkedSubLayersTmp = layer.layer.checkedSubLayersTmp;

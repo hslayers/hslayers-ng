@@ -93,7 +93,7 @@ export class HsLayerManagerService {
   //Property for pointer to main map object
   map: any;
   timer: any;
-  currentLayer: any;
+  currentLayer: HsLayerDescriptor;
   composition_id: string;
 
   constructor(
@@ -753,7 +753,7 @@ export class HsLayerManagerService {
    * @param {Layer} control Part of layer editor to be controlled for state.
    * Determines whether only toggled part or whole layereditor would be closed
    */
-  toggleLayerEditor(layer: Layer, toToggle, control): void {
+  toggleLayerEditor(layer: HsLayerDescriptor, toToggle, control): void {
     if (toToggle == 'sublayers' && layer.layer.hasSublayers != true) {
       return;
     }
@@ -774,7 +774,7 @@ export class HsLayerManagerService {
    * @description Opens detailed panel for manipulating selected layer and viewing metadata
    * @param {object} layer Selected layer to edit or view - Wrapped layer object
    */
-  toggleCurrentLayer(layer): void | false {
+  toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
     if (this.currentLayer == layer) {
       layer.sublayers = false;
       layer.settings = false;
@@ -785,7 +785,7 @@ export class HsLayerManagerService {
     }
   }
 
-  setCurrentLayer(layer): false {
+  setCurrentLayer(layer: HsLayerDescriptor): false {
     this.currentLayer = layer;
     if (!layer.layer.checkedSubLayers) {
       layer.layer.checkedSubLayers = {};
@@ -882,13 +882,13 @@ export class HsLayerManagerService {
     layer.expandSettings = value;
   }
 
-  expandFilter(layer: Layer, value): void {
+  expandFilter(layer: HsLayerDescriptor, value): void {
     layer.expandFilter = value;
     this.currentLayer = layer;
     this.HsLayerSelectorService.select(layer);
   }
 
-  expandInfo(layer: Layer, value): void {
+  expandInfo(layer: HsLayerDescriptor, value): void {
     layer.expandInfo = value;
   }
 }
