@@ -74,7 +74,7 @@ export class HsSidebarComponent implements OnInit {
    *
    * @memberof HsSidebarComponent
    * @function visibilityByImportancy
-   * @param button
+   * @param {HsButton} button Sidebar button
    */
   visibilityByImportancy(button): boolean {
     if (this.HsLayoutService.sidebarBottom()) {
@@ -100,7 +100,7 @@ export class HsSidebarComponent implements OnInit {
    * @function checkConfigurableButtons
    * @param {object} button buttons Buttons object
    */
-  checkConfigurableButtons(button): any {
+  checkConfigurableButtons(button: HsButton): boolean {
     if (typeof button.condition == 'undefined') {
       return true;
     } else if (angular.isUndefined(this.HsConfig.panelsEnabled)) {
@@ -117,7 +117,7 @@ export class HsSidebarComponent implements OnInit {
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
    * @description Toggles minisidebar button
    */
-  fitsSidebar(which): boolean {
+  fitsSidebar(which: HsButton): boolean {
     if (window.innerWidth > 767) {
       this.HsLayoutService.minisidebar = false;
       return true;

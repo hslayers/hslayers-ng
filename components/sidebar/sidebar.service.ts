@@ -197,7 +197,6 @@ export class HsSidebarService {
     this.unimportantExist =
       this.buttons.filter((b) => b.important == false).length > 0;
   }
-
   buttonClicked(button: HsButton): void {
     if (button.click) {
       button.click();
