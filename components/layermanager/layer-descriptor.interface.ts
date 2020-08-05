@@ -5,7 +5,7 @@ export interface HsLayerDescriptor {
   active?: boolean;
   grayed?: boolean;
   hsFilters?: any;
-  position: number;
+  position?: number;
   settings?: boolean;
   sublayers?: boolean;
   thumbnail?: string;
@@ -16,6 +16,6 @@ export interface HsLayerDescriptor {
   expandFilter?: boolean;
   expandInfo?: boolean;
   idString?: any;
-  time: any; //moment?
-  date_increment: number;
+  time?: any; //moment?
+  date_increment?: number;
 }
