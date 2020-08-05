@@ -260,22 +260,24 @@ export class HsSaveMapManagerService {
   private fillLayers() {
     this.compoData.layers = [];
     this.compoData.bbox = this.getCurrentExtent();
-    this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (
-        (lyr.get('show_in_manager') == undefined ||
-          lyr.get('show_in_manager') == true) &&
-        lyr.get('base') != true
-      ) {
-        this.compoData.layers.push({
+    this.compoData.layers = this.HsMapService.map
+      .getLayers()
+      .getArray()
+      .filter(
+        (lyr) =>
+          lyr.get('show_in_manager') == undefined ||
+          lyr.get('show_in_manager') == true
+      )
+      .map((lyr) => {
+        return {
           title: lyr.get('title'),
           checked: true,
           layer: lyr,
-        });
-      }
-    });
-    this.compoData.layers.sort((a, b) => {
-      return a.layer.get('position') - b.layer.get('position');
-    });
+        };
+      })
+      .sort((a, b) => {
+        return a.layer.get('position') - b.layer.get('position');
+      });
   }
 
   /**
