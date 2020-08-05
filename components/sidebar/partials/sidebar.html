@@ -15,7 +15,7 @@
         <i class="menu-icon" [ngClass]="{'icon-minus' : showUnimportant, 'icon-plus': !showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
     </a>
 
-    <a href="" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="setMainPanel('sidebar')" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">
+    <a href="" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="HsLayoutService.setMainPanel('sidebar')" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"></i>
     </a>
 </div>
