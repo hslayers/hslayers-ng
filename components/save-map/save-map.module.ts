@@ -12,6 +12,7 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 import {HsSaveMapAdvancedFormComponent} from './save-map-advanced-form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogComponent} from './save-map-dialog.component';
+import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component';
 import {HsSaveMapService} from './save-map.service';
@@ -44,6 +45,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsStatusManagerService,
     HsLaymanService,
     HsLayerSynchronizerService,
+    HsSaveMapDialogSpawnerService,
   ],
   entryComponents: [HsSaveMapComponent, HsSaveMapAdvancedFormComponent],
 })
