@@ -97,11 +97,12 @@ export class HsSaveMapManagerService {
     });
 
     this.HsEventBusService.olMapLoads.subscribe((map) => {
+      this.setCurrentBoundingBox();
       map.on(
         'postcompose',
         this.HsUtilsService.debounce(
           () => {
-            this.compoData.bbox = this.getCurrentExtent();
+            this.setCurrentBoundingBox();
             this.HsSaveMapService.generateThumbnail(
               this.HsLayoutService.contentWrapper.querySelector(
                 '.hs-stc-thumbnail'
@@ -115,6 +116,10 @@ export class HsSaveMapManagerService {
         )
       );
     });
+  }
+
+  setCurrentBoundingBox() {
+    this.compoData.bbox = this.getCurrentExtent();
   }
 
   async confirmSave() {
