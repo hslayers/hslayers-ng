@@ -13,12 +13,11 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
 import {HsSidebarMiniComponent} from './sidebar-mini.component';
 import {HsSidebarService} from './sidebar.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SortByPipe} from './sortByPipe.class';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsSidebarMiniComponent, HsSidebarComponent, SortByPipe],
-  imports: [BrowserModule, NgbModule, HsPanelHelpersModule],
+  imports: [BrowserModule, HsPanelHelpersModule],
   exports: [HsSidebarMiniComponent, HsSidebarComponent],
   providers: [HsSidebarService],
   entryComponents: [HsSidebarMiniComponent, HsSidebarComponent],
