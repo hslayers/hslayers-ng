@@ -9,33 +9,33 @@
         <form>
             <label class="form-group">
                 <i18n>Title</i18n> *
-                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
+                <input type="text" class="form-control" name="hs-save-map-title" [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
             </label>
 
             <label class="form-group">
                 <i18n>Abstract</i18n>
-                <textarea class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
+                <textarea class="form-control" name="hs-save-map-abstract" [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
             </label>
 
             <label class="form-group">
                 <i18n>Keywords</i18n>
-                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
+                <input type="text" class="form-control" name="hs-save-map-keywords" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
 
             <div class="form-group">
                 <label for="stc-extent1" class="form-group" i18n>Extent</label>
                 <div class="form-row stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]" title="East">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.east" title="East">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[1]" title="South">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.south" title="South">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[2]" title="West">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.west" title="West">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]" title="North">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.north" title="North">
                     </div>
                 </div>
                 <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="HsSaveMapManagerService.setCurrentBoundingBox()" i18n>Use current map extent</button>

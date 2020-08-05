@@ -31,7 +31,7 @@ export class HsSaveMapManagerService {
     layers: [],
     id: '',
     thumbnail: undefined,
-    bbox: undefined,
+    bbox: {east: 0, south: 0, west: 0, north: 0},
     currentCompositionTitle: '',
     currentComposition: undefined,
   };
@@ -364,12 +364,12 @@ export class HsSaveMapManagerService {
     const cur_proj = this.HsMapService.map.getView().getProjection().getCode();
     pair1 = transform(pair1, cur_proj, 'EPSG:4326');
     pair2 = transform(pair2, cur_proj, 'EPSG:4326');
-    return [
-      pair1[0].toFixed(2),
-      pair1[1].toFixed(2),
-      pair2[0].toFixed(2),
-      pair2[1].toFixed(2),
-    ];
+    return {
+      east: pair1[0].toFixed(2),
+      south: pair1[1].toFixed(2),
+      west: pair2[0].toFixed(2),
+      north: pair2[1].toFixed(2),
+    };
   }
 
   resetCompoData() {

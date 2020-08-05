@@ -5,6 +5,7 @@ import {
   NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
 import {HsLogModule} from '../../common/log/log.module';
@@ -36,6 +37,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     BrowserModule,
     NgbModule,
     HsPanelHelpersModule,
+    FormsModule,
     HsLogModule,
   ],
   exports: [HsSaveMapComponent],
