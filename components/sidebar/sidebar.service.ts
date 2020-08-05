@@ -225,12 +225,12 @@ export class HsSidebarService {
       }
     }
   }
-  
+
   /**
    * Returns if a button should be visible by its 'important'
    * property and current view mode defined in showUnimportant variable
    *
-   * @memberof HsSidebarComponent
+   * @memberof HsSidebarService
    * @function visibilityByImportancy
    * @param {HsButton} button Sidebar button
    */
@@ -253,7 +253,7 @@ export class HsSidebarService {
    * It´s necessary for buttons like 'measure' because simple
    * 'config.panelsEnabled = false' would prevent their functionality.
    *
-   * @memberof HsSidebarComponent
+   * @memberof HsSidebarService
    * @function checkConfigurableButtons
    * @param {object} button buttons Buttons object
    */
@@ -266,9 +266,9 @@ export class HsSidebarService {
       return this.HsConfig.panelsEnabled[button.panel];
     }
   }
-  
+
   /**
-   * @name HsSidebarComponent#fitsSidebar
+   * @name HsSidebarService#fitsSidebar
    * @public
    * @param {string} which Sidear button to be checked (specify panel name)
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
@@ -280,18 +280,13 @@ export class HsSidebarService {
       return true;
     } else {
       if (
-        this.visibleButtons.indexOf(which) + 1 >=
-          window.innerWidth / 60 &&
-        window.innerWidth / 60 <=
-          this.visibleButtons.length - 1
+        this.visibleButtons.indexOf(which) + 1 >= window.innerWidth / 60 &&
+        window.innerWidth / 60 <= this.visibleButtons.length - 1
       ) {
         this.HsLayoutService.minisidebar = true;
         return true;
       }
-      if (
-        window.innerWidth >
-        (this.visibleButtons.length - 1) * 60
-      ) {
+      if (window.innerWidth > (this.visibleButtons.length - 1) * 60) {
         this.HsLayoutService.minisidebar = false;
       }
     }
