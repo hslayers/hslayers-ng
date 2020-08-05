@@ -45,6 +45,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsLaymanService,
     HsLayerSynchronizerService,
   ],
-  entryComponents: [HsSaveMapComponent],
+  entryComponents: [HsSaveMapComponent, HsSaveMapAdvancedFormComponent],
 })
 export class HsSaveMapModule {}

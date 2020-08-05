@@ -4,6 +4,7 @@ import {HsLaymanService} from './layman.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
@@ -13,7 +14,7 @@ import {WFS} from 'ol/format';
 export class HsLayerSynchronizerService {
   debounceInterval = 1000;
   crs: any;
-  syncedLayers: any;
+  syncedLayers: Layer[] = [];
   constructor(
     private HsUtilsService: HsUtilsService,
     private HsLaymanService: HsLaymanService,
@@ -43,7 +44,7 @@ export class HsLayerSynchronizerService {
    * @function addLayer
    * @param {object} layer Layer to add
    */
-  addLayer(layer) {
+  addLayer(layer: Layer) {
     const synchronizable = this.startMonitoring(layer);
     if (synchronizable) {
       this.syncedLayers.push(layer);

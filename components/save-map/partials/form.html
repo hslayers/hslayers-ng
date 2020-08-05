@@ -1,7 +1,8 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
+    {{steps}}
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
-        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{gettext(s.capitalizeFirstLetter())}}</a>
+        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{s.capitalizeFirstLetter()}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
@@ -9,33 +10,33 @@
         <form>
             <label class="form-group">
                 <i18n>Title</i18n> *
-                <input type="text" class="form-control" [(ngModel)]="compoData.title" (change)="titleChanged()">
+                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
             </label>
 
             <label class="form-group">
                 <i18n>Abstract</i18n>
-                <textarea class="form-control" [(ngModel)]="compoData.abstract"></textarea>
+                <textarea class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
             </label>
 
             <label class="form-group">
                 <i18n>Keywords</i18n>
-                <input type="text" class="form-control" [(ngModel)]="compoData.keywords">
+                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
 
             <div class="form-group">
                 <label for="stc-extent1" class="form-group" i18n>Extent</label>
                 <div class="form-row stc-extent-row">
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[0]" title="East">
+                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]" title="East">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[1]" title="South">
+                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[1]" title="South">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[2]" title="West">
+                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[2]" title="West">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [(ngModel)]="compoData.bbox[3]" title="North">
+                        <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]" title="North">
                     </div>
                 </div>
                 <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="getCurrentExtent()" i18n>Use current map extent</button>
@@ -49,7 +50,7 @@
                           </div>
                     </li>
 
-                    <li *ngFor="let layer of compoData.layers" style="padding: 3px" class="list-group-item">
+                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" style="padding: 3px" class="list-group-item">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" [(ngModel)]="layer.checked">
                             <label class="form-check-label">{{layer.title}}</label>

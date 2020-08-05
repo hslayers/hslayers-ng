@@ -38,17 +38,6 @@ angular
 
   /**
    * @ngdoc directive
-   * @name hs.saveMap.directiveForm
-   * @memberof hs.save-map
-   * @description Display advanced form to collect information (metadata) about saved composition
-   */
-  .directive(
-    'hs.saveMap.directiveForm',
-    downgradeComponent({component: HsSaveMapAdvancedFormComponent})
-  )
-
-  /**
-   * @ngdoc directive
    * @name hs.saveMap.directiveSimpleform
    * @memberof hs.save-map
    * @description Display simple form to collect information (metadata) about saved composition
