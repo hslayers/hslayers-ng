@@ -43,11 +43,20 @@ export class HsSaveMapService {
     if (groups.guest == undefined) {
       groups.guest = 'r';
     }
+    let bbox = compoData.bbox;
+    if (!Array.isArray(compoData.bbox)) {
+      bbox = [
+        compoData.bbox.east,
+        compoData.bbox.south,
+        compoData.bbox.west,
+        compoData.bbox.north,
+      ];
+    }
     const json: any = {
       abstract: compoData.abstract,
       title: compoData.title,
       keywords: compoData.keywords,
-      extent: compoData.bbox,
+      extent: bbox,
       user: {
         address: userData.address,
         city: userData.city,

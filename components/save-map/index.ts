@@ -8,7 +8,6 @@ import 'angular-cookies';
 import * as angular from 'angular';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
-import {HsSaveMapAdvancedFormComponent} from './save-map-advanced-form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogComponent} from './save-map-dialog.component';
 import {HsSaveMapManagerService} from './save-map-manager.service';
