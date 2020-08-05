@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 
@@ -14,7 +13,6 @@ export class HsSaveMapComponent {
   endpoint = null;
 
   constructor(
-    private HsCoreService: HsCoreService,
     //Used in template
     private HsConfig: HsConfig,
     private HsSaveMapManagerService: HsSaveMapManagerService,
@@ -57,16 +55,5 @@ export class HsSaveMapComponent {
         }
       }
     });
-  }
-
-  isAllowed() {
-    if (this.endpoint === null) {
-      return false;
-    }
-    if (this.endpoint.type == 'statusmanager') {
-      return !this.HsCoreService.isAuthorized();
-    } else if (this.endpoint.type == 'layman') {
-      return true;
-    }
   }
 }

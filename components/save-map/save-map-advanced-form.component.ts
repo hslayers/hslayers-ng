@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 @Component({
@@ -16,7 +17,8 @@ export class HsSaveMapAdvancedFormComponent {
 
   constructor(
     private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsCoreService: HsCoreService
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';
@@ -93,5 +95,16 @@ export class HsSaveMapAdvancedFormComponent {
   selectNewTitle() {
     this.HsSaveMapManagerService.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
     this.changeTitle = true;
+  }
+
+  isAllowed() {
+    if (this.endpoint === null) {
+      return false;
+    }
+    if (this.endpoint.type == 'statusmanager') {
+      return !this.HsCoreService.isAuthorized();
+    } else if (this.endpoint.type == 'layman') {
+      return true;
+    }
   }
 }
