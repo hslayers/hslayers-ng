@@ -1,50 +1,49 @@
-<div ng-class="{'in': saveCompositionModalVisible}" class="modal hs-status-creator-save-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal hs-status-creator-save-dialog in" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" translate="">
+                <h4 class="modal-title" i18n>
                    Save composition
                 </h4>
-                <button type="button" ng-click="saveCompositionModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" i18n>Close</span></button>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto; text-align:center; font-size: 16px">
-                <div translate>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto; text-align: center; font-size: 16px">
+                <div i18n>
                     You are attempting to save map changes to
                 </div>
                 <div>
                     <b>{{compoData.title}}</b>
                 </div>
-                <div ng-if="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
-                    <div translate>
-                        Do you really want to overwrite <b>{{compoData.title}}</b>?
+                <div *ngIf="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
+                    <div i18n>
+                        Do you really want to overwrite <b>{{compoData.title}}</b>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save(); saveCompositionModalVisible = false" translate>Yes, save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="save(); close()" i18n>Yes, save</button>
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" ng-click="selectNewTitle()" translate>No, save as</button>
+                        <button type="button" class="btn btn-secondary btn-lg" (click)="selectNewTitle()" i18n>No, save as</button>
                     </p>
                 </div>
 
-                <div ng-if="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
-                    <div translate>
-                        Select new name for map.
-                    </div>
+                <div *ngIf="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
+                    <div i18n>
+                        Select new name for (map.;;)                  </div>
                     <p>
-                        <input type="text" class="form-control hs-stc-title" ng-model="compoData.title" />
+                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="compoData.title">
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="save(true); saveCompositionModalVisible = false" translate>Save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="save(true); saveCompositionModalVisible = false" i18n>Save</button>
                     </p>
                 </div>
 
-                <div ng-if="!statusData.titleFree || !statusData.hasPermission">
+                <div *ngIf="!statusData.titleFree || !statusData.hasPermission">
                     <div>
-                        <p translate ng-if="!statusData.hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
-                        <p translate ng-if="!statusData.titleFree">Use a different name to save the map.</p>
+                        <p i18n *ngIf="!statusData.hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
+                        <p i18n *ngIf="!statusData.titleFree">Use a different name to save the map.</p>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" ng-click="focusTitle(); saveCompositionModalVisible = false" translate>OK</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="close()" i18n>OK</button>
                     </p>
                 </div>
                 
