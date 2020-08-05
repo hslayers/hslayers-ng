@@ -1,4 +1,5 @@
 /* eslint-disable angular/on-watch */
+import {BehaviorSubject, Subject} from 'rxjs';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
@@ -10,7 +11,6 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {SaverServiceInterface} from './saver-service.interface';
-import {Subject} from 'rxjs';
 import {transform} from 'ol/proj';
 
 @Injectable({
@@ -46,6 +46,9 @@ export class HsSaveMapManagerService {
     organization: '',
   };
   panelOpened: Subject<any> = new Subject();
+  saveMapResulted: Subject<any> = new Subject();
+  endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
+  preSaveCheckCompleted: Subject<any> = new Subject();
   constructor(
     private HsMapService: HsMapService,
     private HsSaveMapService: HsSaveMapService,
@@ -118,6 +121,11 @@ export class HsSaveMapManagerService {
     });
   }
 
+  //TODO Add interface to describe Endpoint instead of any
+  selectEndpoint(endpoint: any) {
+    this.endpointSelected.next(endpoint);
+  }
+
   setCurrentBoundingBox() {
     this.compoData.bbox = this.getCurrentExtent();
   }
@@ -146,6 +154,7 @@ export class HsSaveMapManagerService {
           this.HsStatusManagerService.findStatusmanagerEndpoint()
         );
       }
+      this.preSaveCheckCompleted.next();
     } catch (ex) {
       this.statusData.success = false;
     }
@@ -153,12 +162,7 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
-      const compositionJson = this.HsSaveMapService.map2json(
-        this.HsMapService.map,
-        this.compoData,
-        this.userData,
-        this.statusData
-      );
+      const compositionJson = this.generateCompositionJson();
       let saver: SaverServiceInterface = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
         saver = this.HsLaymanService;
@@ -208,6 +212,15 @@ export class HsSaveMapManagerService {
           });
         });
     });
+  }
+
+  generateCompositionJson() {
+    return this.HsSaveMapService.map2json(
+      this.HsMapService.map,
+      this.compoData,
+      this.userData,
+      this.statusData
+    );
   }
 
   /**
@@ -366,5 +379,37 @@ export class HsSaveMapManagerService {
     this.compoData.currentCompositionTitle = '';
     this.compoData.keywords = '';
     this.compoData.currentComposition = '';
+  }
+
+  initiateSave(saveAsNew) {
+    this.save(saveAsNew, this.endpointSelected.getValue())
+      .then(this.processSaveCallback)
+      .catch(this.processSaveCallback);
+  }
+
+  processSaveCallback(response) {
+    this.statusData.status = response.status;
+    if (!response.status) {
+      this.statusData.resultCode = response.error ? 'error' : 'not-saved';
+      if (response.error.code == 24) {
+        this.statusData.overwriteNeeded = true;
+      }
+      this.statusData.error = response.error;
+    } else {
+      this.HsLayoutService.setMainPanel('layermanager', true);
+    }
+    this.saveMapResulted.next(this.statusData);
+  }
+
+  /**
+   * @function focusTitle
+   * @memberof hs.save-map
+   */
+  focusTitle() {
+    if (this.statusData.guessedTitle) {
+      this.compoData.title = this.statusData.guessedTitle;
+    }
+    //TODO Check if this works and input is focused
+    this.HsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
   }
 }

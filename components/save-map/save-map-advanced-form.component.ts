@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 @Component({
   selector: 'hs-save-map-advanced-form',
@@ -6,12 +7,91 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 })
 export class HsSaveMapAdvancedFormComponent {
   btnSelectDeseletClicked = true;
-  constructor(private HsSaveMapManagerService: HsSaveMapManagerService) {}
+  step = 'context';
+  steps = ['context', 'access', 'author'];
+  endpoint: any;
+  overwrite = false;
+  downloadableData: string;
+  changeTitle: boolean;
+
+  constructor(
+    private HsSaveMapManagerService: HsSaveMapManagerService,
+    private HsEventBusService: HsEventBusService
+  ) {
+    this.HsEventBusService.mapResets.subscribe(() => {
+      this.step = 'context';
+    });
+
+    this.HsEventBusService.mainPanelChanges.subscribe((which: string) => {
+      if (which == 'saveMap') {
+        this.step = 'context';
+      }
+    });
+
+    this.HsSaveMapManagerService.endpointSelected.subscribe((endpoint) => {
+      this.endpoint = endpoint;
+      switch (endpoint.type) {
+        case 'layman':
+          this.steps = ['context', 'author'];
+          break;
+        default:
+          this.steps = ['context', 'access', 'author'];
+      }
+    });
+
+    this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
+      if (statusData.status) {
+        this.step = 'context';
+      }
+      if (statusData.overWriteNeeded) {
+        this.overwrite = true;
+      }
+    });
+  }
 
   selectDeselectAllLayers() {
     this.btnSelectDeseletClicked = !this.btnSelectDeseletClicked;
     this.HsSaveMapManagerService.compoData.layers.forEach(
       (layer) => (layer.checked = this.btnSelectDeseletClicked)
     );
+  }
+
+  /**
+   * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
+   *
+   * @function next
+   * @memberof hs.save-map
+   */
+  next() {
+    const ixCurrent = this.steps.indexOf(this.step);
+    if (this.steps.length > ixCurrent + 1) {
+      this.step = this.steps[ixCurrent + 1];
+    } else {
+      this.step = 'end';
+      this.downloadableData =
+        'text/json;charset=utf-8,' +
+        encodeURIComponent(
+          JSON.stringify(this.HsSaveMapManagerService.generateCompositionJson())
+        );
+    }
+  }
+
+  setStep(step) {
+    this.step = step;
+  }
+
+  titleChanged() {
+    this.overwrite = false;
+  }
+
+  /**
+   * Callback for saving with new title
+   *
+   * @function selectNewTitle
+   * @memberof hs.save-map
+   */
+  selectNewTitle() {
+    this.HsSaveMapManagerService.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
+    this.changeTitle = true;
   }
 }
