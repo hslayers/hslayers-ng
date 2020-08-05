@@ -9,17 +9,17 @@ import {
   NO_ERRORS_SCHEMA,
   NgModule,
 } from '@angular/core';
+import {HsMiniSidebarComponent} from './mini-sidebar.component';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
-import {HsSidebarMiniComponent} from './sidebar-mini.component';
 import {HsSidebarService} from './sidebar.service';
 import {SortByPipe} from './sortByPipe.class';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  declarations: [HsSidebarMiniComponent, HsSidebarComponent, SortByPipe],
+  declarations: [HsMiniSidebarComponent, HsSidebarComponent, SortByPipe],
   imports: [BrowserModule, HsPanelHelpersModule],
-  exports: [HsSidebarMiniComponent, HsSidebarComponent],
+  exports: [HsMiniSidebarComponent, HsSidebarComponent],
   providers: [HsSidebarService],
-  entryComponents: [HsSidebarMiniComponent, HsSidebarComponent],
+  entryComponents: [HsMiniSidebarComponent, HsSidebarComponent],
 })
 export class HsSidebarModule {}

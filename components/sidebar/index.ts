@@ -5,8 +5,8 @@ import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
 import * as angular from 'angular';
+import {HsMiniSidebarComponent} from './mini-sidebar.component';
 import {HsSidebarComponent} from './sidebar.component';
-import {HsSidebarMiniComponent} from './sidebar-mini.component';
 import {HsSidebarModule} from './sidebar.module';
 import {HsSidebarService} from './sidebar.service';
 import {downgrade} from '../../common/downgrader';
@@ -22,8 +22,8 @@ angular
   .service('HsSidebarService', downgradeInjectable(HsSidebarService))
   .directive('hsSidebar', downgradeComponent({component: HsSidebarComponent}))
   .directive(
-    'hs.minisidebar',
-    downgradeComponent({component: HsSidebarMiniComponent})
+    'hsMiniSidebar',
+    downgradeComponent({component: HsMiniSidebarComponent})
   );
 
 angular.module('hs.sidebar', [downgradedModule]);

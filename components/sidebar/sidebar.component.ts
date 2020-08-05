@@ -76,7 +76,7 @@ export class HsSidebarComponent implements OnInit {
    * @function visibilityByImportancy
    * @param {HsButton} button Sidebar button
    */
-  visibilityByImportancy(button): boolean {
+  visibilityByImportancy(button: HsButton): boolean {
     if (this.HsLayoutService.sidebarBottom()) {
       return true;
     } else {
