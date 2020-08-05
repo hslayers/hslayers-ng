@@ -1,0 +1,6 @@
+<span *ngIf='!isIteratable()'>{{value}}</span>
+<dl *ngFor="let item2 of item">
+    <dt>{{item2.key}} </dt>
+    <hs-widgets-recursive-dd [value]="item2.value"></hs-widgets-recursive-dd>
+    <button *ngIf="key=='bbox'" (click)="DS.zoomTo(obj)" class='btn btn-secondary' i18n>Zoom to</button>
+</dl>

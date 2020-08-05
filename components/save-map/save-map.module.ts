@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
 import {HsLogModule} from '../../common/log/log.module';
+import {HsMiscModule} from '../../common/widgets/misc.module';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 import {HsSaveMapAdvancedFormComponent} from './save-map-advanced-form.component';
 import {HsSaveMapComponent} from './save-map.component';
@@ -20,7 +21,6 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaveMapSimpleFormComponent} from './save-map-simple-form.component';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -35,10 +35,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     BrowserModule,
-    NgbModule,
     HsPanelHelpersModule,
     FormsModule,
     HsLogModule,
+    HsMiscModule,
   ],
   exports: [HsSaveMapComponent],
   providers: [
@@ -49,6 +49,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsLayerSynchronizerService,
     HsSaveMapDialogSpawnerService,
   ],
-  entryComponents: [HsSaveMapComponent, HsSaveMapAdvancedFormComponent],
+  entryComponents: [
+    HsSaveMapComponent,
+    HsSaveMapAdvancedFormComponent,
+    HsSaveMapResultDialogComponent,
+    HsSaveMapDialogComponent,
+    HsSyncErrorDialogComponent,
+  ],
 })
 export class HsSaveMapModule {}

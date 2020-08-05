@@ -1,26 +1,28 @@
-<div ng-class="{'in': resultModalVisible}" class="modal hs-status-creator-result-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal hs-status-creator-result-dialog in" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" translate="">
                    Saving composition status
                 </h4>
-                <button type="button" ng-click="resultModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                    <div translate class="alert alert-status" ng-show="HsSaveMapManagerService.statusData.status">Composition saved successfully</div>
-                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status">Composition failed to save</div>
-                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'not-saved'">Request was processed, but map was not saved due to authorization missing</div>
-                    <div translate class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error'">Server didn't respond or other error occured</div>
-                    <div class="alert alert-danger" ng-show="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error'">
-                        <dl ng-repeat="(key, value) in HsSaveMapManagerService.statusData.error">
-                            <dt>{{key}} </dt>
-                            <dd hs.widgets.object-directive></dd>
+                    <div translate="" class="alert alert-status" [hidden]="!HsSaveMapManagerService.statusData.status">Composition saved successfully</div>
+                    <div translate="" class="alert alert-danger" [hidden]="!!HsSaveMapManagerService.statusData.status">Composition failed to save</div>
+                    <div translate="" class="alert alert-danger" [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'not-saved')">Request was processed, but map was not saved due to authorization missing</div>
+                    <div translate="" class="alert alert-danger" [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error')">Server didn't respond or other error occured</div>
+                    <div class="alert alert-danger" [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error')">
+                        <dl *ngFor="let item of HsSaveMapManagerService.statusData.error">
+                            <dt>{{item.key}} </dt>
+                            <dd>
+                                <hs-widgets-recursive-dd [value]="item.value"></hs-widgets-recursive-dd>
+                            </dd>
                         </dl>
                     </div>
             </div>
-            <div class="modal-footer" >
-                <button type="button" class="btn btn-primary" ng-click="resultModalVisible = false" data-dismiss="modal" translate>Close</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="close()" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
     </div>
