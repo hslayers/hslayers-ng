@@ -30,7 +30,7 @@ export class HsCommonEndpointsService {
             ]
           : []),
         ...(HsConfig.datasources || []).map((ds) => {
-          return {
+          const tmp = {
             url: ds.url,
             type: ds.type,
             title: ds.title,
@@ -50,9 +50,10 @@ export class HsCommonEndpointsService {
             user: ds.user,
             liferayProtocol: ds.liferayProtocol,
             originalConfiguredUser: ds.user,
-            getCurrentUserIfNeeded:
-              HsCommonLaymanService.getCurrentUserIfNeeded,
+            getCurrentUserIfNeeded: () =>
+              HsCommonLaymanService.getCurrentUserIfNeeded(tmp),
           };
+          return tmp;
         }),
       ],
     });

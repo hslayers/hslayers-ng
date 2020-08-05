@@ -42,7 +42,7 @@ export default function (
           vm.endpoint = value[0];
         }
         if (vm.endpoint && vm.endpoint.type == 'layman') {
-          vm.endpoint.getCurrentUserIfNeeded();
+          vm.endpoint.getCurrentUserIfNeeded(vm.endpoint);
         }
       }
     }

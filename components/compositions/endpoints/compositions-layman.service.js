@@ -18,7 +18,7 @@ export default function (
   angular.extend(me, {
     data: {},
     loadList(endpoint, params, bbox, extentLayer) {
-      endpoint.getCurrentUserIfNeeded();
+      endpoint.getCurrentUserIfNeeded(endpoint);
       endpoint.compositionsPaging.loaded = false;
       if (angular.isUndefined(params.sortBy)) {
         params.sortBy = '';

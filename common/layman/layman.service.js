@@ -38,9 +38,7 @@ export class HsCommonLaymanService {
     });
   }
 
-  async getCurrentUserIfNeeded() {
-    //TODO check if this is working
-    const endpoint = this;
+  async getCurrentUserIfNeeded(endpoint) {
     if (
       angular.isUndefined(endpoint.user) ||
       ['anonymous', 'browser'].indexOf(endpoint.user) > -1
