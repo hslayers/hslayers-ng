@@ -1,11 +1,11 @@
 <div *ngIf="isAllowed()">
     <form class="form">
         <label class="form-group"><i18n>Name</i18n>
-            <input type="text" class="form-control" i18n-placeholder="Fill in name" [(ngModel)]="compoData.title">
+            <input type="text" class="form-control" i18n-placeholder="Fill in name" [(ngModel)]="HsSaveMapManagerService.compoData.title">
         </label>
 
         <label class="form-group"><i18n>Abstract</i18n>
-            <textarea class="form-control" i18n-placeholder="Fill in descriptive text about map" [(ngModel)]="compoData.abstract">            </textarea>
+            <textarea class="form-control" i18n-placeholder="Fill in descriptive text about map" [(ngModel)]="HsSaveMapManagerService.compoData.abstract">            </textarea>
         </label>
 
         <label class="form-group"><i18n>Thumbnail</i18n>Thumbnail
@@ -27,22 +27,22 @@
     <div class="collapse hs-save-comp-advanced-panel">
         <form class="form">
             <label class="form-group"><i18n>Keywords</i18n>
-                <input type="text" class="form-control" [(ngModel)]="compoData.keywords">
+                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
 
             <label class="form-group"><i18n>Extent</i18n>
                 <div class="row hs-comp-ext-row">
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control input-group-lg" [(ngModel)]="compoData.bbox[0]">
+                        <input type="text" class="form-control input-group-lg" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="compoData.bbox[1]">
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[1]">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="compoData.bbox[2]">
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[2]">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
-                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="compoData.bbox[3]">
+                        <input type="text" class="form-control hs-comp-ext input-group-lg" [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]">
                     </div>
                 </div>
             </label>
@@ -53,7 +53,7 @@
 
             <label class="form-group"><i18n>Layers</i18n>
                 <ul class="list-group">
-                    <li *ngFor="let layer of compoData.layers" id="layer-{{$index}}" class="list-group-item">
+                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" id="layer-{{$index}}" class="list-group-item">
                         <span>{{layer.title}}</span>
                         <span class="pull-right">
                             <input type="checkbox" [(ngModel)]="layer.checked">
@@ -68,7 +68,7 @@
     <div class="card-footer row hs-stc-footer">
         <div class="btn-group" role="group" aria-label="Save composition">
             <button type="button" class="btn btn-secondary" i18n (click)="cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" [hidden]="!(step == 'context')" i18n [disabled]="!compoData.title" (click)="confirmSave()">Save</button>
+            <button type="button" class="btn btn-primary" [hidden]="!(step == 'context')" i18n [disabled]="!HsSaveMapManagerService.compoData.title" (click)="HsSaveMapManagerService.confirmSave()">Save</button>
         </div>
     </div>
 </div>
