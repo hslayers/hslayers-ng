@@ -550,35 +550,35 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
 	width: 400px;
 }
 
-div.hs-sidebar {
+hs-sidebar {
 	bottom: 0;
 	position: absolute;
 	top: 0;
 	background: var(--sidebar-bg-color,unset) ;
 	transition: width 100ms ease-out;
 }
-div.hs-sidebar div.hs-sidebar-list a:not(.active){
+hs-sidebar div.hs-sidebar-list a:not(.active){
 	background-color: transparent ;
 	color: var(--sidebar-item-color,#007bff) ;
 }
-.hs-content-wrapper.hs-open .hs-panelspace:not(.labels) div.hs-sidebar {
+.hs-content-wrapper.hs-open .hs-panelspace:not(.labels) hs-sidebar {
 	border-right: 1px solid #ddd;
 }
 
-.hs-panelspace.labels .hs-sidebar {
+.hs-panelspace.labels hs-sidebar {
 	width: 400px;
 }
-.hs-panelspace:not(.buttons) .hs-sidebar {
+.hs-panelspace:not(.buttons) hs-sidebar {
 	display: none;
 }
 
-.hs-content-wrapper.hs-sb-left:not(.hs-open) div.hs-sidebar {
+.hs-content-wrapper.hs-sb-left:not(.hs-open) hs-sidebar {
 	background-color: var(--sidebar-bg-color,white) ;
 	right: auto;
 	width: 48px;
 }
 
-.hs-content-wrapper.hs-sb-right:not(.hs-open) div.hs-sidebar {
+.hs-content-wrapper.hs-sb-right:not(.hs-open) hs-sidebar {
 	background-color: var(--sidebar-bg-color,white) ;
 	left: auto;
 	width: 48px;
@@ -597,7 +597,7 @@ div.hs-sidebar div.hs-sidebar-list a:not(.active){
 	width: 48px;
 }
 
-.hs-sidebar ~ div.hs-panelplace {
+div.hs-panelplace {
 	height: 100%;
 	overflow-y: auto;
 	width: 351px;
@@ -607,7 +607,7 @@ div.hs-sidebar div.hs-sidebar-list a:not(.active){
 div.hs-panelplace > div {
 	height: 100%;
 }
-div.hs-panelspace:not(.buttons) .hs-sidebar ~ div.hs-panelplace {
+div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	margin-left: 0;
 	width: 400px;
 }
@@ -972,21 +972,21 @@ div.hs-info-composition-edited {
 		margin-left: 0 !important	;
 	}
 
-	.hs-sidebar,
+	hs-sidebar,
 	#panelspace {
 		display: flex;
 	}
-	div.hs-sidebar {
+	hs-sidebar {
 		position: unset;
 		width: 100% !important;
 	}
-	.hs-sidebar ~ div.hs-panelplace {
+	hs-sidebar ~ div.hs-panelplace {
 		margin: auto;
 		height: 35vh;
 		padding-top: 0.5em;
 		scrollbar-width: none;
 	}
-	.hs-sidebar > div.list-group {
+	hs-sidebar > div.list-group {
 		flex-direction: row !important;
 		justify-content: space-evenly;
 	}
@@ -1049,7 +1049,7 @@ div.hs-info-composition-edited {
 	.panel-footer {
 		padding: 5px;
 	}
-	.hs-sidebar .hs-panel-hidden {
+	hs-sidebar .hs-panel-hidden {
 		display: none !important;
 	}
 	.hs-minisidebar .hs-sidebar-item:not(.hs-panel-hidden) {
@@ -1643,5 +1643,5 @@ li.hs-lm-header {
 .bsi hs-layer-editor .form-check {line-height: 1.5}
 .bsi hs-layer-editor .card-body {padding: 0.65rem}
 .bsi hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
-.hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
+hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}

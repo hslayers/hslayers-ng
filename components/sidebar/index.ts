@@ -20,7 +20,7 @@ export const downgradedModule = downgrade(HsSidebarModule);
 angular
   .module(downgradedModule, ['hs.map', 'hs.core', 'ngCookies', 'hs.layout'])
   .service('HsSidebarService', downgradeInjectable(HsSidebarService))
-  .directive('hs.sidebar', downgradeComponent({component: HsSidebarComponent}))
+  .directive('hsSidebar', downgradeComponent({component: HsSidebarComponent}))
   .directive(
     'hs.minisidebar',
     downgradeComponent({component: HsSidebarMiniComponent})
