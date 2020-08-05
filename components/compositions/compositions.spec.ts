@@ -40,6 +40,7 @@ describe('compositions', function () {
       });
     angular
       .module('hs.save-map', [])
+      .service('HsSaveMapManagerService', function () {})
       .service('HsStatusManagerService', function () {});
     angular
       .module('hs.common.layman', [])
