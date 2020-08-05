@@ -19,7 +19,7 @@
                         Do you really want to overwrite <b>{{compoData.title}}</b>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="save(); close()" i18n>Yes, save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.save(); close()" i18n>Yes, save</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" (click)="selectNewTitle()" i18n>No, save as</button>
@@ -33,7 +33,7 @@
                         <input type="text" class="form-control hs-stc-title" [(ngModel)]="compoData.title">
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="save(true); saveCompositionModalVisible = false" i18n>Save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.save(true); close()" i18n>Save</button>
                     </p>
                 </div>
 
@@ -43,7 +43,7 @@
                         <p i18n *ngIf="!statusData.titleFree">Use a different name to save the map.</p>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="close()" i18n>OK</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.focusTitle(); close()" i18n>OK</button>
                     </p>
                 </div>
                 

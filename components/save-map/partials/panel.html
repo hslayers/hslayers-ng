@@ -8,20 +8,13 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>Save to</span>
                 </div>
-                <select class="form-control" [(ngModel)]="endpoint" (change)="endpointChanged()">
+                <select class="form-control" [(ngModel)]="endpoint" (change)="HsSaveMapManagerService.selectEndpoint(endpoint)">
                     <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>
                 </select>
             </div>
         </div>
         <hs.layman.current-user *ngIf="endpoint.type == 'layman'" endpoint="endpoint"></hs.layman.current-user>
         <hs-save-map-advanced-form *ngIf="HsConfig.advanced_form"></hs-save-map-advanced-form>
-        <div class="modal-footer" *ngIf="HsConfig.advanced_form">
-            <button type="button" class="btn btn-block btn-primary" id="stc-save" [hidden]="!(step == 'end' && isAllowed() && overwrite)" i18n (click)="save(false)">Overwrite</button>
-            <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())" i18n (click)="save(true)">Save
-                as</button>
-            <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')" i18n (click)="next()">Next</button>
-            <a class="btn btn-block btn-secondary" href="data:{downloadableData}" id="stc-download" [hidden]="!(step == 'end')" download="context.hsl" i18n>Download</a>
-        </div>
         <div hs.save-map.directive_simpleform="" *ngIf="!HsConfig.advanced_form"></div>
     </div>
 </div>
