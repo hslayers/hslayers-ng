@@ -59,8 +59,8 @@
                 <!-- Scale -->
                 <div class="form-group" ng-show="isScaleVisible()">
                     <label translate>Scale</label>
-                    <span ng-if="minResolutionValid()"><span translate>from</span> 1:{{minResolution()}}</span>
-                    <span ng-if="maxResolutionValid()"><span translate>to</span> 1:{{maxResolution()}}</span>
+                    <span ng-if="minResolutionValid()"><span translate class="ml-1">from</span> 1:{{minResolution()}}</span>
+                    <span ng-if="maxResolutionValid()"><span translate class="ml-1">to</span> 1:{{maxResolution()}}</span>
                 </div>
                 <!-- Declutter checkbox  -->
                 <div ng-hide="$ctrl.currentLayer.layer.get('cluster')"

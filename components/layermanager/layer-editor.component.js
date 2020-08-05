@@ -256,7 +256,7 @@ export default {
         if (arguments.length) {
           layer.setMinResolution(newValue);
         } else {
-          return layer.minResolution;
+          return layer.getMinResolution();
         }
       },
 
@@ -274,7 +274,7 @@ export default {
         if (arguments.length) {
           layer.setMaxResolution(newValue);
         } else {
-          return layer.maxResolution;
+          return layer.getMaxResolution();
         }
       },
 
