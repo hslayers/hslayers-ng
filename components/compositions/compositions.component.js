@@ -86,12 +86,13 @@ export default {
      * @param ds
      */
     $scope.getPreviousCompositions = function (ds) {
-      if (ds.start - ds.limit < 0) {
-        ds.start = 0;
-        ds.next = ds.limit;
+      const paging = ds.compositionsPaging;
+      if (paging.start - ds.limit < 0) {
+        paging.start = 0;
+        paging.next = ds.limit;
       } else {
-        ds.start -= ds.limit;
-        ds.next = ds.start + ds.limit;
+        paging.start -= ds.limit;
+        paging.next = paging.start + ds.limit;
       }
       $scope.loadCompositions(ds);
     };
@@ -104,14 +105,16 @@ export default {
      * @param ds
      */
     $scope.getNextCompositions = function (ds) {
-      if (ds.next != 0) {
-        ds.start = Math.floor(ds.next / ds.limit) * ds.limit;
+      const paging = ds.compositionsPaging;
+      if (paging.next != 0) {
+        paging.start = Math.floor(paging.next / ds.limit) * ds.limit;
 
-        if (ds.next + ds.limit > ds.compositionsCount) {
-          ds.next = ds.compositionsCount;
+        if (paging.next + ds.limit > paging.compositionsCount) {
+          paging.next = paging.compositionsCount;
         } else {
-          ds.next += ds.limit;
+          paging.next += ds.limit;
         }
+
         $scope.loadCompositions(ds);
       }
     };
@@ -131,7 +134,7 @@ export default {
             sortBy: $scope.sortBy,
             filterExtent: $scope.filterByExtent,
             keywords: $scope.keywords,
-            start: ds.start,
+            start: ds.compositionsPaging.start,
             limit: ds.limit,
           }).then((_) => {
             resolve();
