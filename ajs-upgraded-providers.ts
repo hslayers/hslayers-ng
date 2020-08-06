@@ -168,3 +168,29 @@ export const HsPermalinkUrlServiceProvider = {
   useFactory: hsPermalinkUrlService,
   deps: ['$injector'],
 };
+
+/**
+ * @param i
+ */
+export function hsCommonEndpointsService(i: any) {
+  return i.get('HsCommonEndpointsService');
+}
+
+export const HsCommonEndpointsServiceProvider = {
+  provide: HsCommonEndpointsService,
+  useFactory: hsCommonEndpointsService,
+  deps: ['$injector'],
+};
+
+/**
+* @param i
+*/
+export function hsCommonLaymanService(i: any) {
+  return i.get('HsCommonLaymanService');
+}
+
+export const HsCommonLaymanServiceProvider = {
+  provide: HsCommonLaymanService,
+  useFactory: hsCommonLaymanService,
+  deps: ['$injector'],
+};
