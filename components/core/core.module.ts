@@ -29,6 +29,7 @@ import {HsLogModule} from '../../common/log/log.module';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsSaveMapModule} from '../save-map';
+import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -54,7 +55,6 @@ import {NgModule} from '@angular/core';
   providers: [
     HsCoreService,
     HsDrawService,
-    HsSidebarService,
     HsMapServiceProvider,
     HsConfigProvider,
     HsUtilsServiceProvider,
@@ -70,6 +70,8 @@ import {NgModule} from '@angular/core';
       useValue: window,
     },
     HsPermalinkUrlServiceProvider,
+    HsCommonEndpointsServiceProvider,
+    HsCommonLaymanServiceProvider,
   ],
   entryComponents: [],
 })
