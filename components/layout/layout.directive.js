@@ -58,6 +58,9 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
           HsLayoutService.layoutElement.style
             .setProperty('--sidebar-active-color', HsConfig.theme.sidebar.activeItemColor || null);
         }
+        if (HsConfig.sidebarRight == false){
+          //sidebarRIghts
+        }
       }
     }
   };

@@ -1,6 +1,9 @@
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
+import {HsCoreService} from './../core/core.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 
 // HsLanguageService not yet refactored
@@ -18,7 +21,10 @@ export class HsSidebarService {
   showUnimportant: boolean;
   constructor(
     private HsLayoutService: HsLayoutService,
-    private HsConfig: HsConfig
+    private HsConfig: HsConfig,
+    private HsEventBusService: HsEventBusService,
+    private HsCoreService: HsCoreService,
+    private HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
     /**
@@ -186,6 +192,13 @@ export class HsSidebarService {
         icon: 'icon-pencil',
       },
     ];
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+      if (!HsLayoutService.sidebarExpanded) {
+        setTimeout(() => {
+          this.HsCoreService.updateMapSize();
+        }, 150);
+      }
+    });
   }
 
   /**
@@ -278,14 +291,20 @@ export class HsSidebarService {
       this.HsLayoutService.minisidebar = false;
       return true;
     } else {
+      console.log(this.HsLayoutService.layoutElement.clientWidth);
       if (
-        this.visibleButtons.indexOf(which) + 1 >= window.innerWidth / 60 &&
-        window.innerWidth / 60 <= this.visibleButtons.length - 1
+        this.visibleButtons.indexOf(which) + 1 >=
+          this.HsLayoutService.layoutElement.clientWidth / 60 &&
+        this.HsLayoutService.layoutElement.clientWidth / 60 <=
+          this.visibleButtons.length - 1
       ) {
         this.HsLayoutService.minisidebar = true;
         return true;
       }
-      if (window.innerWidth > (this.visibleButtons.length - 1) * 60) {
+      if (
+        this.HsLayoutService.layoutElement.clientWidth >
+        (this.visibleButtons.length - 1) * 60
+      ) {
         this.HsLayoutService.minisidebar = false;
       }
     }
