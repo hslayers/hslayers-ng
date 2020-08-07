@@ -52,5 +52,8 @@ export class HsSidebarComponent implements OnInit {
   toggleSidebar(): void {
     this.HsLayoutService.sidebarExpanded = !this.HsLayoutService
       .sidebarExpanded;
+    setTimeout(() => {
+      this.HsCoreService.updateMapSize();
+    }, 110);
   }
 }

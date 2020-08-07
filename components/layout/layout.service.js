@@ -490,7 +490,7 @@ export class HsLayoutService {
   }
 
   sidebarBottom() {
-    return !!this.layoutElement && this.layoutElement.clientWidth <= 767;
+    return window.innerWidth <= 767;
   }
 
   panelSpaceHeight() {
@@ -522,7 +522,6 @@ export class HsLayoutService {
       marginLeft += this.sidebarRight ? 0 : this.panelSpaceWidth();
       width -= this.panelSpaceWidth();
     }
-
     if (
       this.sidebarBottom() &&
       (fullscreen || this.$window.innerWidth <= 767)

@@ -526,7 +526,7 @@ button.but-title-sm {
 	padding-left: 0;
 	padding-right: 0;
 	pointer-events: auto;
-	position: absolute;
+	/* position: absolute; */
 	top: 0;
 	width: 400px;
 	z-index: 2;
@@ -613,6 +613,10 @@ div.hs-panelplace > div {
 div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	margin-left: 0;
 	width: 400px;
+}
+hs-sidebar {
+	z-index: 2;
+	background-color: white;
 }
 a.sidebar-main {
 	padding: 0;
@@ -728,6 +732,7 @@ a.sidebar-main {
 	left: 10px;
 	max-width: 636px;
 	display: inline-block;
+	z-index: 999;
 }
 
 .hs-sb-left.hs-open .hs-toolbar {
@@ -930,6 +935,9 @@ div.hs-info-composition-edited {
 /**********************************/
 
 @media only screen and (max-width: 767px) {
+	.hs-gui-overlay{
+		flex-direction: column;
+	}
 	.hs-content-wrapper .hs-sidebar-item-title:not(.hs-mini-sidebar) {
 		display: none;
 	}
@@ -953,6 +961,10 @@ div.hs-info-composition-edited {
 		height: auto;
 		top: unset;
 		width: 100%;
+		transition: none;
+	}
+	.hs-panelspace.expanded {
+		min-width: 300px;
 	}
 	div .form-check-inline {
 		margin-right: 0 !important;
@@ -988,6 +1000,7 @@ div.hs-info-composition-edited {
 		height: 35vh;
 		padding-top: 0.5em;
 		scrollbar-width: none;
+		width: 95%;
 	}
 	hs-sidebar > div.list-group {
 		flex-direction: row !important;

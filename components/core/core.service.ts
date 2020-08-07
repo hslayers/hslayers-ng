@@ -177,67 +177,13 @@ export class HsCoreService {
     if (this.initCalled) {
       return;
     }
-    if (options) {
-      options = {};
-    }
-    if (options.windowedMap) {
-      this.sizeOptions.windowedMap = options.windowedMap;
-    }
-    this.sizeOptions.element = element;
-    if (
-      options.innerElement &&
-      this.document.getElementById(options.innerElement.replace('#', ''))
-    ) {
-      this.sizeOptions.innerElement = this.document.getElementById(
-        options.innerElement.replace('#', '')
-      );
-    }
     this.HsMapService.loaded().then((map) => {
-      if (options.parent) {
-        this.sizeOptions.selector = element.parent();
-        this.initSizeListeners();
-        this.updateElementSize();
-      } else if (options.element) {
-        this.sizeOptions.selector = options.element;
-        this.initSizeListeners();
-        this.updateElementSize();
-      } else {
-        this.initSizeListeners();
-        this.updateMapSize();
-      }
+      this.initSizeListeners();
+      this.updateMapSize();
       this.initCalled = true;
     });
   }
 
-  /**
-   * @ngdoc method
-   * @name HsCore#setSizeByContainer
-   * @public
-   * @description Change container for HS element.
-   */
-  setSizeByContainer(): void {
-    //TODO: Output warning if sizeOptions.element is not set
-    this.sizeOptions.selector = this.sizeOptions.element.parent();
-    this.updateElementSize();
-  }
-
-  /**
-   * @ngdoc method
-   * @name HsCore#setSizeByCSS
-   * @public
-   * @param {number} height New height of HS element in pixels
-   * @param {number} width New width of HS element in pixels
-   * @description Change HS element size programmatically (currently accept only integer value of pixels).
-   */
-  setSizeByCSS(height: number, width: number): void {
-    if (this.sizeOptions.selector) {
-      this.sizeOptions.selector = undefined;
-    }
-    const element = this.sizeOptions.element;
-    element.style.height = height + 'px';
-    element.style.width = width + 'px';
-    this.updateMapSize();
-  }
 
   /**
    * @ngdoc method
@@ -275,36 +221,11 @@ export class HsCoreService {
 
     w.addEventListener('resize', () => {
       updateVH();
-      this.sizeOptions.selector === undefined
-        ? this.updateMapSize()
-        : this.updateElementSize();
-    });
-
-    this.sizeOptions.selector === undefined
-      ? this.updateMapSize()
-      : this.updateElementSize();
-    w.addEventListener('load', () => {
-      //onload checker for cases when bootstrap css change box-sizing property
-      this.sizeOptions.selector === undefined
-        ? this.updateMapSize()
-        : this.updateElementSize();
+      setTimeout(()=>{
+        this.updateMapSize();
+      },500)
     });
   }
-
-  /**
-   * @ngdoc method
-   * @name HsCore#updateElementSize
-   * @public
-   * @description Update HS element size by its container sizes.
-   */
-  updateElementSize(): void {
-    const element = this.sizeOptions.element[0];
-    const container = this.sizeOptions.selector[0];
-    element.style.height = container.clientHeight + 'px';
-    element.style.width = container.offsetWidth + 'px';
-    this.updateMapSize();
-  }
-
   /**
    * @ngdoc method
    * @name HsCore#updateMapSize
@@ -312,38 +233,11 @@ export class HsCoreService {
    * @description Update map size.
    */
   updateMapSize(): void {
-    const container =
-      this.sizeOptions.innerElement !== undefined
-        ? this.sizeOptions.innerElement
-        : this.sizeOptions.element[0];
     const map = this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map');
     if (map === null) {
       return;
     }
-    let sidebarElem = null;
-    if (
-      this.HsLayoutService.contentWrapper.getElementsByClassName(
-        'hs-panelspace'
-      ).length > 0
-    ) {
-      sidebarElem = this.HsLayoutService.contentWrapper.querySelector(
-        '.hs-panelspace'
-      );
-    }
-    const neededSize = {width: 0, height: container.clientHeight};
 
-    if (this.puremapApp) {
-      neededSize.width = container.offsetWidth;
-    } else if (sidebarElem === null) {
-      neededSize.width = container.offsetWidth;
-    } else if (
-      sidebarElem !== null &&
-      container.offsetWidth > sidebarElem.offsetWidth
-    ) {
-      neededSize.width = container.offsetWidth - sidebarElem.offsetWidth;
-    }
-    // map.style.height = neededSize.height + 'px';
-    // map.style.width = neededSize.width + 'px';
     if (this.HsMapService.map) {
       this.HsMapService.map.updateSize();
       if (map.offsetWidth < 767) {
@@ -353,7 +247,7 @@ export class HsCoreService {
       }
     }
 
-    this.HsEventBusService.sizeChanges.next(neededSize);
+    // this.HsEventBusService.sizeChanges.next(neededSize);
   }
 
   /**
