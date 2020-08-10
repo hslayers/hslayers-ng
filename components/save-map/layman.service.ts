@@ -3,15 +3,15 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
+import {HsSaverService} from './saver-service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {SaverServiceInterface} from './saver-service.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsLaymanService implements SaverServiceInterface {
+export class HsLaymanService implements HsSaverService {
   crs: string;
   constructor(
     private HsUtilsService: HsUtilsService,
