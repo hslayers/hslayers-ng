@@ -6,11 +6,11 @@ import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
+import {HsSaverService} from './saver-service';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {SaverServiceInterface} from './saver-service.interface';
 import {transform} from 'ol/proj';
 
 @Injectable({
@@ -163,7 +163,7 @@ export class HsSaveMapManagerService {
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
       const compositionJson = this.generateCompositionJson();
-      let saver: SaverServiceInterface = this.HsStatusManagerService;
+      let saver: HsSaverService = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
         saver = this.HsLaymanService;
       }
