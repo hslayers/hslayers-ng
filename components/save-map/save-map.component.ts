@@ -34,7 +34,7 @@ export class HsSaveMapComponent {
     });
 
     this.HsCommonEndpointsService.endpointsFilled.subscribe((value) => {
-      if (value && this.endpoint === null && value.length > 0) {
+      if (value.length > 0 && !this.endpoint) {
         const laymans = value.filter((ep) => ep.type == 'layman');
         if (laymans.length > 0) {
           this.HsSaveMapManagerService.selectEndpoint(laymans[0]);
