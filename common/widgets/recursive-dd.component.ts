@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
   selector: 'hs-widgets-recursive-dd',
   template: require('./recursive-dd.html'),
 })
-export class HsMiscRecursiveDd {
+export class HsUiExtensionsRecursiveDd {
   @Input() value: any;
 
   constructor() {}
