@@ -1,16 +1,16 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
-import {HsMiscRecursiveDd} from './recursive-dd.component';
+import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
 import {NgModule} from '@angular/core';
 /**
  * @namespace HsMiscModule
  * @memberOf hs
  */
 @NgModule({
-  declarations: [HsMiscRecursiveDd],
+  declarations: [HsUiExtensionsRecursiveDd],
   imports: [CommonModule, BrowserModule],
   providers: [],
-  entryComponents: [HsMiscRecursiveDd],
-  exports: [HsMiscRecursiveDd],
+  entryComponents: [HsUiExtensionsRecursiveDd],
+  exports: [HsUiExtensionsRecursiveDd],
 })
-export class HsMiscModule {}
+export class HsUiExtensionsModule {}
