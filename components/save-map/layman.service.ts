@@ -216,13 +216,11 @@ export class HsLaymanService implements HsSaverService {
                     .getCode(),
                 }
               );
-              const httpOptions = {
-                headers: new HttpHeaders({
-                  'Content-Type': 'application/xml', //<- To SEND XML
-                  'Accept': 'application/xml', //<- To ask for XML
-                  'Response-Type': 'text', //<- b/c Angular understands text
-                }),
-              };
+              const headers = new HttpHeaders();
+              headers.append('Content-Type', 'application/xml');
+              headers.append('Accept', 'application/xml');
+              headers.append('Response-Type', 'text');
+              const httpOptions = {headers};
               this.http
                 .post(
                   layerDesc.wfs.url,
@@ -328,11 +326,11 @@ export class HsLaymanService implements HsSaverService {
             }/layers/${layerName}?${Math.random()}`
           )
           .toPromise();
-        if (response.data.code != undefined && response.data.code == 15) {
+        if (response?.code == 15) {
           resolve(null);
         }
-        if (response.data.name) {
-          resolve(response.data);
+        if (response.name) {
+          resolve(response);
         }
       } catch (ex) {
         resolve(null);
@@ -363,13 +361,9 @@ export class HsLaymanService implements HsSaverService {
       if (layerDesc == undefined) {
         this.describeLayer(endpoint, layerName).then(
           (description: HsLaymanLayerDescriptor) => {
-            if (
-              description !== null &&
-              description.code != undefined &&
-              description.code == 15
-            ) {
+            if (description?.code == 15) {
               resolve({exists: false});
-            } else if (description !== null && description.name != undefined) {
+            } else if (description?.name) {
               resolve(Object.assign(description, {exists: true}));
             } else {
               resolve({exists: false});
