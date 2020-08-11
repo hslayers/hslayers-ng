@@ -126,7 +126,7 @@ export class HsLaymanService implements HsSaverService {
         ).toPromise();
         resolve(response);
       } catch (err) {
-        reject(err.data);
+        reject(err);
       }
     });
   }
@@ -219,16 +219,15 @@ export class HsLaymanService implements HsSaverService {
               const headers = new HttpHeaders();
               headers.append('Content-Type', 'application/xml');
               headers.append('Accept', 'application/xml');
-              headers.append('Response-Type', 'text');
-              const httpOptions = {headers};
+              const httpOptions: any = {
+                headers,
+                responseType: 'text',
+              };
+              const body = serializedFeature.outerHTML
+                .replaceAll('<geometry>', '<wkb_geometry>')
+                .replaceAll('</geometry>', '</wkb_geometry>');
               this.http
-                .post(
-                  layerDesc.wfs.url,
-                  serializedFeature.outerHTML
-                    .replaceAll('<geometry>', '<wkb_geometry>')
-                    .replaceAll('</geometry>', '</wkb_geometry>'),
-                  httpOptions
-                )
+                .post(layerDesc.wfs.url, body, httpOptions)
                 .subscribe((response) => {
                   resolve(response);
                 });
@@ -240,7 +239,7 @@ export class HsLaymanService implements HsSaverService {
           }
         })
         .catch((err) => {
-          reject(err.data);
+          reject(err);
         });
     });
   }
