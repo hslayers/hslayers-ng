@@ -4,7 +4,7 @@ import {HsLayerSynchronizerService} from './components/save-map/layer-synchroniz
 import {HsLayerUtilsService} from './components/utils/layer-utils.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
-import {HsPermalinkUrlService} from './components/permalink/share-url.service';
+import {HsShareUrlService} from './components/permalink/share-url.service';
 import {HsQueryBaseService} from './components/query/query-base.service';
 import {HsQueryVectorService} from './components/query/query-vector.service';
 import {HsUtilsService} from './components/utils/utils.service';
@@ -175,7 +175,7 @@ export function hsPermalinkUrlService(i: any) {
 }
 
 export const HsPermalinkUrlServiceProvider = {
-  provide: HsPermalinkUrlService,
+  provide: HsShareUrlService,
   useFactory: hsPermalinkUrlService,
   deps: ['$injector'],
 };

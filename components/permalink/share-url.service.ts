@@ -1,63 +1,43 @@
-/* eslint-disable angular/timeout-service */
-/**
- * @param $rootScope
- * @param $location
- * @param $window
- * @param HsMapService
- * @param HsCore
- * @param HsUtilsService
- * @param HsSaveMapService
- * @param HsConfig
- * @param HsLanguageService
- * @param HsLayoutService
- * @param $timeout
- */
-export class HsPermalinkUrlService {
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {Inject} from '@angular/core';
+import {Location} from '@angular/common';
+import {Subject} from 'rxjs';
+import {WINDOW} from '../utils/window';
+
+export class HsShareUrlService {
+  url_generation = true;
+  //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
+  paramTimer = null;
+  shareId = null;
+  current_url = '';
+  permalinkRequestUrl = '';
+  //TODO remove keeping track of added layers, because permalink should also be generated on other cases like remove layer, visibility change etc.
+  added_layers = [];
+  params = {};
+  customParams = {};
+  updateDebouncer = {};
+  id: any;
+  pathname: any;
+  param_string: string;
+  public browserUrlUpdated: Subject<any> = new Subject();
+
   constructor(
-    $rootScope,
-    $location,
-    HsMapService,
-    HsCore,
-    HsUtilsService,
-    HsSaveMapService,
-    HsConfig,
-    HsLanguageService,
-    HsLayoutService,
-    $timeout,
-    HsEventBusService
+    private HsMapService: HsMapService,
+    private HsCore: HsCore,
+    private HsUtilsService: HsUtilsService,
+    private HsSaveMapService: HsSaveMapService,
+    private HsConfig: HsConfig,
+    private HsLanguageService: HsLanguageService,
+    private HsLayoutService: HsLayoutService,
+    private HsEventBusService: HsEventBusService,
+    private Location: Location,
+    @Inject(WINDOW) private window: Window
   ) {
-    'ngInject';
-
-    angular.extend(this, {
-      $rootScope,
-      $location,
-      HsMapService,
-      HsCore,
-      HsUtilsService,
-      HsSaveMapService,
-      HsConfig,
-      HsLanguageService,
-      HsLayoutService,
-      $timeout,
-      HsEventBusService,
-    });
-
-    this.url_generation = true;
-    //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
-
-    this.paramTimer = null;
     this.HsMapService.loaded().then((map) => this.init(map));
-
-    angular.extend(this, {
-      shareId: null,
-      current_url: '',
-      permalinkRequestUrl: '',
-      //TODO remove keeping track of added layers, because perlalink should also be generated on other cases like remove layer, visibility change etc.
-      added_layers: [],
-      params: {},
-      customParams: {},
-      updateDebouncer: {},
-    });
   }
 
   /**
@@ -66,14 +46,14 @@ export class HsPermalinkUrlService {
    * @param {object} e Event changing map state
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
-  update(e) {
+  update(): void {
     const view = this.HsMapService.map.getView();
     this.id = this.HsSaveMapService.generateUuid();
     const visible_layers = [];
     const added_layers = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (
-        angular.isDefined(lyr.get('show_in_manager')) &&
+        lyr.get('show_in_manager') &&
         lyr.get('show_in_manager') !== null &&
         lyr.get('show_in_manager') == false
       ) {
@@ -110,9 +90,16 @@ export class HsPermalinkUrlService {
     }
     this.HsUtilsService.debounce(
       () => {
-        this.$timeout(() => {
-          this.$location.search(this.params);
-        }, 0);
+        this.Location.replaceState(
+          this.Location.path(),
+          Object.keys(this.params)
+            .map((key) => {
+              return {key, value: this.params[key]};
+            })
+            .map((dic) => `{dic.key}=${encodeURIComponent(dic.value)}`)
+            .join('&')
+        );
+        this.browserUrlUpdated.next();
       },
       300,
       false,
@@ -131,23 +118,22 @@ export class HsPermalinkUrlService {
       return (
         this.HsConfig.permalinkLocation.origin +
         this.current_url.replace(
-          this.$location.path(),
+          this.Location.path(),
           this.HsConfig.permalinkLocation.pathname
         ) +
         '&permalink=' +
         encodeURIComponent(this.permalinkRequestUrl)
-      ).replace(
-        this.$location.path(),
-        this.HsConfig.permalinkLocation.pathname
-      );
+      ).replace(this.Location.path(), this.HsConfig.permalinkLocation.pathname);
     } else {
       const portIfNeeded =
-        [80, 443].indexOf(this.$location.port()) > -1
+        ['80', '443'].indexOf(this.window.location.port) > -1
           ? ''
-          : `:${this.$location.port()}`;
-      return `${this.$location.protocol()}://${this.$location.host()}${portIfNeeded}/${
-        this.current_url
-      }&permalink=${encodeURIComponent(this.permalinkRequestUrl)}`;
+          : `:${this.window.location.port}`;
+      return `${this.window.location.protocol}://${
+        this.window.location.host
+      }${portIfNeeded}/${this.current_url}&permalink=${encodeURIComponent(
+        this.permalinkRequestUrl
+      )}`;
     }
   }
 
@@ -158,8 +144,7 @@ export class HsPermalinkUrlService {
    * Create Url for PureMap version of map
    */
   getPureMapUrl() {
-    const params = {};
-    params.puremap = 'true';
+    const params: any = {puremap: 'true'};
     return (
       this.getPermalinkUrl() +
       '&' +
@@ -175,7 +160,7 @@ export class HsPermalinkUrlService {
    * Parse parameter string from Url into key-value(s) pairs
    */
   parse(str) {
-    if (!angular.isString(str)) {
+    if (typeof str != 'string') {
       return {};
     }
 
@@ -196,11 +181,11 @@ export class HsPermalinkUrlService {
         key = decodeURIComponent(key);
         // missing `=` should be `null`:
         // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-        val = angular.isUndefined(val) ? null : decodeURIComponent(val);
+        val = val == undefined ? null : decodeURIComponent(val);
 
         if (!ret.hasOwnProperty(key)) {
           ret[key] = val;
-        } else if (angular.isArray(ret[key])) {
+        } else if (Array.isArray(ret[key])) {
           ret[key].push(val);
         } else {
           ret[key] = [ret[key], val];
@@ -223,7 +208,7 @@ export class HsPermalinkUrlService {
           .map((key) => {
             const val = obj[key];
 
-            if (angular.isArray(val)) {
+            if (Array.isArray(val)) {
               return val
                 .map((val2) => {
                   return (
@@ -250,7 +235,7 @@ export class HsPermalinkUrlService {
     this.params[key] = new_value;
     const new_params_string = this.stringify(this.params);
     this.param_string = new_params_string;
-    this.pathname = this.$location.path();
+    this.pathname = this.Location.path();
     this.current_url = this.pathname + '?' + new_params_string;
   }
 
@@ -302,7 +287,7 @@ export class HsPermalinkUrlService {
         this.HsUtilsService.debounce(
           (data) => {
             this.update();
-            this.$rootScope.$broadcast('browserurl.updated');
+            this.browserUrlUpdated.next();
           },
           200,
           false,
@@ -323,7 +308,7 @@ export class HsPermalinkUrlService {
           }
           timer = setTimeout(() => {
             this.update();
-            this.$rootScope.$broadcast('browserurl.updated');
+            this.browserUrlUpdated.next();
           }, 1000);
         });
       });

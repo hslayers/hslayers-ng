@@ -30,5 +30,8 @@ export class HsConfig {
   default_layers: Array<BaseLayer>;
   default_view: View;
   panelsEnabled: boolean;
+  social_hashtag: string;
+  project_name: any;
+  permalinkLocation: any;
   constructor() {}
 }
