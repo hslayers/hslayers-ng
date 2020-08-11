@@ -171,7 +171,7 @@ export class HsSaveMapManagerService {
         .save(compositionJson, endpoint, this.compoData, saveAsNew)
         .then((response) => {
           const compInfo: any = {};
-          const j = response.data;
+          const j = response;
           let status = false;
           if (endpoint.type == 'statusmanager') {
             status = j.saved;

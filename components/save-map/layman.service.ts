@@ -47,9 +47,9 @@ export class HsLaymanService implements HsSaverService {
       formdata.append('name', compoData.title);
       formdata.append('title', compoData.title);
       formdata.append('abstract', compoData.abstract);
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-      });
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', null);
+      headers.append('Accept', 'application/json');
       const options = {
         headers: headers,
       };
@@ -65,7 +65,7 @@ export class HsLaymanService implements HsSaverService {
         ).toPromise();
         resolve(response);
       } catch (err) {
-        reject(err.data);
+        reject(err);
       }
     });
   }
@@ -103,9 +103,9 @@ export class HsLaymanService implements HsSaverService {
       formdata.append('name', description.name);
       formdata.append('title', description.title);
       formdata.append('crs', description.crs);
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-      });
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', null);
+      headers.append('Accept', 'application/json');
       const options = {
         headers: headers,
       };
