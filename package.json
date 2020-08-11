@@ -41,7 +41,7 @@
     "js-binary": "1.2.0",
     "karma": "^5.0.1",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-jasmine": "^3.1.0",
+    "karma-jasmine": "^4.0.0",
     "karma-junit-reporter": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-sourcemap-loader": "^0.3.7",
