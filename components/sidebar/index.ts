@@ -2,7 +2,7 @@
 import '../core/';
 import '../layout';
 import '../map/map.module';
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import 'angular-cookies';
 import * as angular from 'angular';
 import {HsMiniSidebarComponent} from './mini-sidebar.component';

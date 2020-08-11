@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsPermalinkUrlService} from '../permalink/permalink-url.service';
+import {HsPermalinkUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from './sidebar.service';
 @Component({
   selector: 'hs-sidebar',

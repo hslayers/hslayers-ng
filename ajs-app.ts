@@ -7,7 +7,7 @@ import './components/draw/draw.module';
 import './components/info/info.module';
 import './components/legend';
 import './components/measure';
-import './components/permalink/permalink.module';
+import './components/permalink/share.module';
 import './components/print';
 import './components/query/query.module';
 import './components/search/search.module';

@@ -1,9 +1,9 @@
 import '../compositions/compositions.module';
 import '../language/language.module';
 import * as angular from 'angular';
-import permalinkComponent from './permalink.component';
-import permalinkShareService from './permalink-share.service';
-import {HsPermalinkUrlService} from './permalink-url.service';
+import permalinkComponent from './share.component';
+import permalinkShareService from './share.service';
+import {HsPermalinkUrlService} from './share-url.service';
 
 /**
  * @namespace hs.permalink

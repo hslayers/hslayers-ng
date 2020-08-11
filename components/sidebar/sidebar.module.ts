@@ -1,7 +1,3 @@
-import '../core/';
-import '../layout';
-import '../map/map.module';
-import '../permalink/permalink.module';
 import 'angular-cookies';
 import {BrowserModule} from '@angular/platform-browser';
 import {
