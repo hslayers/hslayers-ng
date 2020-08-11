@@ -136,5 +136,5 @@
     <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())" i18n (click)="HsSaveMapManagerService.initiateSave(true)">Save
         as</button>
     <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')" i18n (click)="next()">Next</button>
-    <a class="btn btn-block btn-secondary" href="data:{downloadableData}" id="stc-download" [hidden]="!(step == 'end')" download="context.hsl" i18n>Download</a>
+    <a class="btn btn-block btn-secondary" [href]="'data:'+downloadableData" id="stc-download" [hidden]="!(step == 'end')" download="context.hsl" i18n>Download</a>
 </div>

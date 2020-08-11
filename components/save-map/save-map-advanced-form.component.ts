@@ -32,7 +32,7 @@ export class HsSaveMapAdvancedFormComponent {
 
     this.HsSaveMapManagerService.endpointSelected.subscribe((endpoint) => {
       this.endpoint = endpoint;
-      switch (endpoint.type) {
+      switch (endpoint?.type) {
         case 'layman':
           this.steps = ['context', 'author'];
           break;
