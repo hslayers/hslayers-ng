@@ -1,7 +1,7 @@
 import '../core/';
 import '../layout';
 import '../map/map.module';
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import * as angular from 'angular';
 import toolbarComponent from './toolbar.component';
 /**

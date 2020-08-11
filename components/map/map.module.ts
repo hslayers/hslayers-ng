@@ -1,4 +1,4 @@
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import * as angular from 'angular';
 import mapController from './map.controller';
 import mapDirective from './map.directive';

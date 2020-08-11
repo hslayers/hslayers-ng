@@ -1,6 +1,6 @@
 import '../../common/endpoints/endpoints.module';
 import '../layout/layout.module';
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import '../save-map/save-map.module';
 import '../utils/utils.module';
 import '../utils/utils.module';

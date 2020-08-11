@@ -1,6 +1,6 @@
 import '../../common/history-list/history-list.module';
 import '../map/map.module';
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import './arcgis/add-layers-arcgis.module';
 import './shp/add-layers-shp.module';
 import './vector/add-layers-vector.module';

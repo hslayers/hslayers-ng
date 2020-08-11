@@ -4,7 +4,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
-import {HsPermalinkUrlService} from '../permalink/permalink-url.service';
+import {HsPermalinkUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({

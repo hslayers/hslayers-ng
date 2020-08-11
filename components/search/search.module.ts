@@ -1,5 +1,5 @@
 import '../layout';
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import '../styles/styles.module';
 import * as angular from 'angular';
 import searchController from './search.controller';

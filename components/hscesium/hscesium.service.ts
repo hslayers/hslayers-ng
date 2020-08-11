@@ -1,4 +1,4 @@
-import '../permalink/permalink.module';
+import '../permalink/share.module';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsApi from 'cesium/Source/Core/BingMapsApi';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';

@@ -1,3 +1,14 @@
+/* eslint-disable jsdoc/require-returns */
+import * as angular from 'angular';
+import {Component, OnInit} from '@angular/core';
+@Component({
+  selector: 'hs-share',
+  template: require('./partials/directive.html'),
+})
+export class HsShareComponent implements OnInit {
+
+}
+
 export default {
   template: (HsConfig) => {
     'ngInject';
