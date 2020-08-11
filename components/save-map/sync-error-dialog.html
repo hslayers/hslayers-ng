@@ -1,9 +1,9 @@
 <div class="alert alert-danger alert-dismissible fade" style="position: fixed; top: 10em; left: calc((100% - 500),px) / 2; height: 19em; width: 500px; overflow-y: auto;" [ngClass]="{'show': modalVisible}" role="alert">
-    <h4 class="alert-heading" translate="">
+    <h4 class="alert-heading" i18n>
         Error when syncing
     </h4>
     {{exception}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="close()">
-        <span aria-hidden="true"></span>
+        <span aria-hidden="true">&times;</span>
     </button>
 </div>
