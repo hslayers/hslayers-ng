@@ -1,9 +1,14 @@
 import '../compositions/compositions.module';
 import '../language/language.module';
 import * as angular from 'angular';
-import permalinkComponent from './share.component';
-import permalinkShareService from './share.service';
-import {HsPermalinkUrlService} from './share-url.service';
+import {HsShareComponent} from './share.component';
+import {HsShareModule} from './share.module';
+import {HsShareService} from './share.service';
+import {HsShareUrlService} from './share-url.service';
+import {downgrade} from '../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
+
+export const downgradedModule = downgrade(HsShareModule);
 
 /**
  * @namespace hs.permalink
@@ -11,7 +16,7 @@ import {HsPermalinkUrlService} from './share-url.service';
  */
 
 angular
-  .module('hs.permalink', [
+  .module(downgradedModule, [
     '720kb.socialshare',
     'hs.core',
     'hs.map',
@@ -20,7 +25,7 @@ angular
     'hs.language',
   ])
 
-  .config(function ($locationProvider) {
+  .config(($locationProvider) => {
     'ngInject';
     $locationProvider.html5Mode({
       enabled: true,
@@ -34,7 +39,7 @@ angular
    * @membeof hs.permalink
    * @description Service responsible for creating permalink URLs. Mantain parameters information about map
    */
-  .service('HsPermalinkUrlService', HsPermalinkUrlService)
+  .service('HsPermalinkUrlService', downgradeInjectable(HsShareUrlService))
 
   /**
    * @ngdoc service
@@ -42,11 +47,14 @@ angular
    * @membeof hs.permalink
    * @description Service responsible for sharing background. Mantain correct sharing links on the fly
    */
-  .factory('HsPermalinkShareService', permalinkShareService)
+  .service('HsPermalinkShareService', downgradeInjectable(HsShareService))
 
   /**
    * @name hs.permalink
    * @membeof hs.permalink
    * @description
    */
-  .component('hs.permalink', permalinkComponent);
+  .component('hs.permalink', downgradeComponent({component: HsShareComponent}));
+
+angular.module('hs.sidebar', [downgradedModule]);
+export {HsShareModule} from './share.module';

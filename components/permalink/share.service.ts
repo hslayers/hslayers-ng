@@ -1,354 +1,347 @@
-/* eslint-disable angular/on-watch */
-/**
- * @param $rootScope
- * @param $http
- * @param HsConfig
- * @param HsPermalinkUrlService
- * @param Socialshare
- * @param HsUtilsService
- * @param HsMapService
- * @param HsStatusManagerService
- * @param HsLayoutService
- * @param $log
- * @param $timeout
- * @param $document
- * @param HsSaveMapService
- */
-export default function (
-  $rootScope,
-  $http,
-  HsConfig,
-  HsPermalinkUrlService,
-  Socialshare,
-  HsUtilsService,
-  HsMapService,
-  HsStatusManagerService,
-  HsLayoutService,
-  $log,
-  $timeout,
-  $document,
-  HsSaveMapService,
-  HsEventBusService
-) {
-  'ngInject';
-  const me = {};
-  angular.extend(me, {
-    /**
-     * @memberof permalink.shareService
-     * @property data
-     * @public
-     * @description variables which describe sharable link: url, title, abstract etc.
-     */
-    data: {
-      pureMapUrl: '',
-      permalinkUrl: '',
-      shareLink: 'permalink',
-      embedCode: '',
-      shareUrlValid: false,
-      title: '',
-      abstract: '',
-    },
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../core/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsShareUrlService} from './share-url.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable, Renderer2} from '@angular/core';
 
-    /**
-     * @memberof permalink.shareService
-     * @function getEmbedCode
-     * @public
-     * @description Get correct Embed code with correct share link type
-     * @returns {string} embeddable iframe html code
-     */
-    getEmbedCode: function () {
-      me.data.embedCode =
-        '<iframe src="' +
-        me.getShareUrl() +
-        '" width="1000" height="700"></iframe>';
-      return me.data.embedCode;
-    },
+@Injectable({
+  providedIn: 'root',
+})
+export class HsShareService {
+  /**
+   * @memberof permalink.shareService
+   * @property data
+   * @public
+   * @description variables which describe sharable link: url, title, abstract etc.
+   */
+  data: any = {
+    pureMapUrl: '',
+    permalinkUrl: '',
+    shareLink: 'permalink',
+    embedCode: '',
+    shareUrlValid: false,
+    title: '',
+    abstract: '',
+  };
+  notAvailableImage = require('../../img/notAvailable.png');
 
-    /**
-     * @memberof permalink.shareService
-     * @function getShareUrl
-     * @public
-     * @returns {string} Share URL
-     * @description Get correct share Url based on app choice
-     */
-    getShareUrl: function () {
-      if (me.data.shareLink == 'permalink') {
-        return me.data.permalinkUrl;
-      } else if (me.data.shareLink == 'puremap') {
-        return me.data.pureMapUrl;
-      }
-    },
-
-    /**
-     * @memberof permalink.shareService
-     * @function invalidateShareUrl
-     * @public
-     * @description Make current share url invalid for social sharing
-     */
-    invalidateShareUrl: function () {
-      me.data.shareUrlValid = false;
-    },
-
-    /**
-     * @memberof permalink.shareService
-     * @function shareOnSocial
-     * @public
-     * @param {string} provider Social share provider (twitter/facebook/google)
-     * @param {boolean} newShare If new share record on server should be created
-     * @description Share map on social network
-     */
-    async shareOnSocial(provider, newShare) {
-      if (!me.data.shareUrlValid) {
-        if (HsPermalinkUrlService.shareId === null || newShare) {
-          HsPermalinkUrlService.shareId = HsUtilsService.generateUuid();
-        }
+  constructor(
+    private HsConfig: HsConfig,
+    private HsShareUrlService: HsShareUrlService,
+    private Socialshare: Socialshare,
+    private HsUtilsService: HsUtilsService,
+    private HsMapService: HsMapService,
+    private HsStatusManagerService: HsStatusManagerService,
+    private HsLayoutService: HsLayoutService,
+    private HsSaveMapService: HsSaveMapService,
+    private HsEventBusService: HsEventBusService,
+    private HsLogService: HsLogService,
+    private HttpClient: HttpClient,
+    private renderer: Renderer2
+  ) {
+    this.HsEventBusService.mainPanelChanges.subscribe(async () => {
+      if (this.HsLayoutService.mainpanel == 'permalink') {
+        this.HsShareUrlService.update();
+        const status_url = this.HsStatusManagerService.endpointUrl();
         try {
-          const endpointUrl = HsStatusManagerService.endpointUrl();
-          await $http({
-            url: endpointUrl,
-            method: 'POST',
-            data: angular.toJson({
-              request: 'socialShare',
-              id: HsPermalinkUrlService.shareId,
-              url: encodeURIComponent(me.getShareUrl()),
-              title: me.data.title,
-              description: me.data.abstract,
-              image: me.data.thumbnail,
-            }),
-          });
-
-          const shortUrl = await HsUtilsService.shortUrl(
-            endpointUrl +
-              '?request=socialshare&id=' +
-              HsPermalinkUrlService.shareId
+          await this.HttpClient.post(
+            status_url,
+            JSON.stringify({
+              data: this.HsSaveMapService.map2json(
+                this.HsMapService.map,
+                {},
+                {},
+                {}
+              ),
+              permalink: true,
+              id: this.HsShareUrlService.id,
+              project: this.HsConfig.project_name,
+              request: 'save',
+            })
           );
-
-          const shareUrl = shortUrl;
-          Socialshare.share({
-            'provider': provider,
-            'attrs': {
-              'socialshareText': me.data.title,
-              'socialshareUrl': shareUrl,
-              'socialsharePopupHeight': 600,
-              'socialsharePopupWidth': 500,
-            },
-          });
-          me.data.shareUrlValid = true;
+          this.HsShareUrlService.permalinkRequestUrl =
+            status_url + '?request=load&id=' + this.HsShareUrlService.id;
         } catch (ex) {
-          $log.log('Error creating short Url');
+          this.HsLogService.log('Error saving permalink layers.', ex);
         }
-      } else {
-        Socialshare.share({
+      }
+    });
+
+    this.HsShareUrlService.browserUrlUpdated.subscribe(async () => {
+      if (
+        this.HsLayoutService.mainpanel == 'permalink' ||
+        this.HsLayoutService.mainpanel == 'shareMap'
+      ) {
+        this.data.shareUrlValid = false;
+        try {
+          this.data.pureMapUrl = await this.HsUtilsService.shortUrl(
+            this.HsShareUrlService.getPureMapUrl()
+          );
+          this.data.permalinkUrl = await this.HsUtilsService.shortUrl(
+            this.HsShareUrlService.getPermalinkUrl()
+          );
+          this.getEmbedCode();
+        } catch (ex) {
+          this.HsLogService.log('Error creating short Url');
+          this.data.pureMapUrl = this.HsShareUrlService.getPureMapUrl();
+          this.data.permalinkUrl = this.HsShareUrlService.getPermalinkUrl();
+        }
+      }
+    });
+
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+      if (this.HsLayoutService.mainpanel == 'permalink') {
+        this.generateThumbnail(
+          this.HsLayoutService.contentWrapper.querySelector(
+            '.hs-permalink-thumbnail'
+          ),
+          false
+        );
+      }
+    });
+
+    this.HsEventBusService.olMapLoads.subscribe((map) => {
+      map.on(
+        'postcompose',
+        this.HsUtilsService.debounce(
+          () => {
+            this.generateThumbnail(
+              this.HsLayoutService.contentWrapper.querySelector(
+                '.hs-permalink-thumbnail'
+              ),
+              false
+            );
+          },
+          300,
+          false,
+          this
+        )
+      );
+    });
+
+    this.HsEventBusService.compositionLoads.subscribe((data) => {
+      if (data.data) {
+        data = data.data;
+        this.data.title = data.title;
+        if (this.HsConfig.social_hashtag) {
+          this.data.title += ' ' + this.HsConfig.social_hashtag;
+        }
+        this.data.abstract = data.abstract;
+      }
+    });
+  }
+
+  /**
+   * @memberof permalink.shareService
+   * @function getEmbedCode
+   * @public
+   * @description Get correct Embed code with correct share link type
+   * @returns {string} embeddable iframe html code
+   */
+  getEmbedCode() {
+    this.data.embedCode =
+      '<iframe src="' +
+      this.getShareUrl() +
+      '" width="1000" height="700"></iframe>';
+    return this.data.embedCode;
+  }
+
+  /**
+   * @memberof permalink.shareService
+   * @function getShareUrl
+   * @public
+   * @returns {string} Share URL
+   * @description Get correct share Url based on app choice
+   */
+  getShareUrl() {
+    if (this.data.shareLink == 'permalink') {
+      return this.data.permalinkUrl;
+    } else if (this.data.shareLink == 'puremap') {
+      return this.data.pureMapUrl;
+    }
+  }
+
+  /**
+   * @memberof permalink.shareService
+   * @function invalidateShareUrl
+   * @public
+   * @description Make current share url invalid for social sharing
+   */
+  invalidateShareUrl() {
+    this.data.shareUrlValid = false;
+  }
+
+  /**
+   * @memberof permalink.shareService
+   * @function shareOnSocial
+   * @public
+   * @param {string} provider Social share provider (twitter/facebook/google)
+   * @param {boolean} newShare If new share record on server should be created
+   * @description Share map on social network
+   */
+  async shareOnSocial(provider, newShare) {
+    if (!this.data.shareUrlValid) {
+      if (this.HsShareUrlService.shareId === null || newShare) {
+        this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
+      }
+      try {
+        const endpointUrl = this.HsStatusManagerService.endpointUrl();
+        await this.HttpClient.post(
+          endpointUrl,
+          JSON.stringify({
+            request: 'socialShare',
+            id: this.HsShareUrlService.shareId,
+            url: encodeURIComponent(this.getShareUrl()),
+            title: this.data.title,
+            description: this.data.abstract,
+            image: this.data.thumbnail,
+          })
+        );
+
+        const shortUrl = await this.HsUtilsService.shortUrl(
+          `{endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
+        );
+
+        const shareUrl = shortUrl;
+        this.Socialshare.share({
           'provider': provider,
           'attrs': {
-            'socialshareText': me.data.title,
-            'socialshareUrl': me.getShareUrl(),
+            'socialshareText': this.data.title,
+            'socialshareUrl': shareUrl,
             'socialsharePopupHeight': 600,
             'socialsharePopupWidth': 500,
           },
         });
+        this.data.shareUrlValid = true;
+      } catch (ex) {
+        this.HsLogService.log('Error creating short Url');
       }
-    },
+    } else {
+      this.Socialshare.share({
+        'provider': provider,
+        'attrs': {
+          'socialshareText': this.data.title,
+          'socialshareUrl': this.getShareUrl(),
+          'socialsharePopupHeight': 600,
+          'socialsharePopupWidth': 500,
+        },
+      });
+    }
+  }
+
+  /**
+   * @memberof permalink.shareService
+   * @function generateThumbnail
+   * @public
+   * @param {object} $element DOM img element where to place the thumbnail
+   * @param {boolean} newRender Force synchronous rendering again or use last canvas state
+   * @description Generate thumbnail of current map and save it to variable and selected element
+   */
+  generateThumbnail($element, newRender: boolean) {
+    /**
+     * @param canvas
+     * @param width
+     * @param height
+     */
+    function setCanvasSize(canvas, width, height) {
+      canvas.width = width;
+      canvas.height = height;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+    }
 
     /**
-     * @memberof permalink.shareService
-     * @function generateThumbnail
-     * @public
-     * @param {object} $element DOM img element where to place the thumbnail
-     * @param {boolean} newRender Force synchronous rendering again or use last canvas state
-     * @description Generate thumbnail of current map and save it to variable and selected element
+     * @param ctx
      */
-    generateThumbnail: function ($element, newRender) {
-      /**
-       * @param canvas
-       * @param width
-       * @param height
-       */
-      function setCanvasSize(canvas, width, height) {
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-      }
-
-      /**
-       * @param ctx
-       */
-      function setupContext(ctx) {
-        ctx.mozImageSmoothingEnabled = false;
-        ctx.webkitImageSmoothingEnabled = false;
-        ctx.msImageSmoothingEnabled = false;
-        ctx.imageSmoothingEnabled = false;
-      }
-
-      /**
-       *
-       */
-      function rendered() {
-        const collectorCanvas = $document[0].createElement('canvas');
-        const targetCanvas = $document[0].createElement('canvas');
-        const width = 256,
-          height = 256;
-        const firstCanvas = HsMapService.mapElement.querySelector(
-          '.ol-layer canvas'
-        );
-        setCanvasSize(targetCanvas, width, height);
-        setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
-        const ctxCollector = collectorCanvas.getContext('2d');
-        const ctxTarget = targetCanvas.getContext('2d');
-        setupContext(ctxTarget);
-        setupContext(ctxCollector);
-        Array.prototype.forEach.call(
-          HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
-          (canvas) => {
-            if (canvas.width > 0) {
-              const opacity = canvas.parentNode.style.opacity;
-              ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
-              const transform = canvas.style.transform;
-              // Get the transform parameters from the style's transform matrix
-              const matrix = transform
-                .match(/^matrix\(([^\(]*)\)$/)[1]
-                .split(',')
-                .map(Number);
-              // Apply the transform to the export map context
-              CanvasRenderingContext2D.prototype.setTransform.apply(
-                ctxCollector,
-                matrix
-              );
-              ctxCollector.drawImage(canvas, 0, 0);
-            }
-          }
-        );
-
-        /* Final render pass */
-        ctxTarget.drawImage(
-          collectorCanvas,
-          Math.floor(collectorCanvas.width / 2 - width / 2),
-          Math.floor(collectorCanvas.height / 2 - height / 2),
-          width,
-          height,
-          0,
-          0,
-          width,
-          height
-        );
-
-        try {
-          $element.setAttribute('src', targetCanvas.toDataURL('image/png'));
-          me.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
-        } catch (e) {
-          $log.warn(e);
-          $element.setAttribute('src', require('../save-map/notAvailable.png'));
-        }
-        $element.style.width = width + 'px';
-        $element.style.height = height + 'px';
-      }
-      if (
-        HsLayoutService.mainpanel == 'saveMap' ||
-        HsLayoutService.mainpanel == 'permalink' ||
-        HsLayoutService.mainpanel == 'shareMap'
-      ) {
-        if ($element === null) {
-          return;
-        }
-        $element.setAttribute('crossOrigin', 'Anonymous');
-
-        if (newRender) {
-          HsMapService.map.once('postcompose', rendered, me);
-          HsMapService.map.renderSync();
-        } else {
-          rendered();
-        }
-      }
-    },
-  });
-
-  // eslint-disable-next-line angular/on-watch
-  HsEventBusService.mainPanelChanges.subscribe(async () => {
-    if (HsLayoutService.mainpanel == 'permalink') {
-      HsPermalinkUrlService.update();
-      const status_url = HsStatusManagerService.endpointUrl();
-      try {
-        await $http({
-          url: status_url,
-          method: 'POST',
-          data: angular.toJson({
-            data: HsSaveMapService.map2json(HsMapService.map, {}, {}, {}),
-            permalink: true,
-            id: HsPermalinkUrlService.id,
-            project: HsConfig.project_name,
-            request: 'save',
-          }),
-        });
-        HsPermalinkUrlService.permalinkRequestUrl =
-          status_url + '?request=load&id=' + HsPermalinkUrlService.id;
-      } catch (ex) {
-        $log.log('Error saving permalink layers.', ex);
-      } finally {
-        $rootScope.$broadcast('browserurl.updated');
-      }
+    function setupContext(ctx) {
+      ctx.mozImageSmoothingEnabled = false;
+      ctx.webkitImageSmoothingEnabled = false;
+      ctx.msImageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = false;
     }
-  });
 
-  $rootScope.$on('browserurl.updated', async () => {
-    if (
-      HsLayoutService.mainpanel == 'permalink' ||
-      HsLayoutService.mainpanel == 'shareMap'
-    ) {
-      me.data.shareUrlValid = false;
-      try {
-        me.data.pureMapUrl = await HsUtilsService.shortUrl(
-          HsPermalinkUrlService.getPureMapUrl()
-        );
-        me.data.permalinkUrl = await HsUtilsService.shortUrl(
-          HsPermalinkUrlService.getPermalinkUrl()
-        );
-        $timeout(() => {}, 0);
-        me.getEmbedCode();
-      } catch (ex) {
-        $log.log('Error creating short Url');
-        me.data.pureMapUrl = HsPermalinkUrlService.getPureMapUrl();
-        me.data.permalinkUrl = HsPermalinkUrlService.getPermalinkUrl();
-      }
-    }
-  });
-
-  HsEventBusService.mainPanelChanges.subscribe(() => {
-    if (HsLayoutService.mainpanel == 'permalink') {
-      me.generateThumbnail(
-        HsLayoutService.contentWrapper.querySelector('.hs-permalink-thumbnail')
+    /**
+     *
+     */
+    function rendered() {
+      const collectorCanvas = this.renderer.createElement('canvas');
+      const targetCanvas = this.renderer.createElement('canvas');
+      const width = 256,
+        height = 256;
+      const firstCanvas = this.HsMapService.mapElement.querySelector(
+        '.ol-layer canvas'
       );
-    }
-  });
+      setCanvasSize(targetCanvas, width, height);
+      setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
+      const ctxCollector = collectorCanvas.getContext('2d');
+      const ctxTarget = targetCanvas.getContext('2d');
+      setupContext(ctxTarget);
+      setupContext(ctxCollector);
+      Array.prototype.forEach.call(
+        this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
+        (canvas) => {
+          if (canvas.width > 0) {
+            const opacity = canvas.parentNode.style.opacity;
+            ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
+            const transform = canvas.style.transform;
+            // Get the transform parameters from the style's transform matrix
+            const matrix = transform
+              .match(/^matrix\(([^\(]*)\)$/)[1]
+              .split(',')
+              .map(Number);
+            // Apply the transform to the export map context
+            CanvasRenderingContext2D.prototype.setTransform.apply(
+              ctxCollector,
+              matrix
+            );
+            ctxCollector.drawImage(canvas, 0, 0);
+          }
+        }
+      );
 
-  HsEventBusService.olMapLoads.subscribe((map) => {
-    map.on(
-      'postcompose',
-      HsUtilsService.debounce(
-        () => {
-          me.generateThumbnail(
-            HsLayoutService.contentWrapper.querySelector(
-              '.hs-permalink-thumbnail'
-            )
-          );
-        },
-        300,
-        false,
-        me
-      )
-    );
-  });
+      /* Final render pass */
+      ctxTarget.drawImage(
+        collectorCanvas,
+        Math.floor(collectorCanvas.width / 2 - width / 2),
+        Math.floor(collectorCanvas.height / 2 - height / 2),
+        width,
+        height,
+        0,
+        0,
+        width,
+        height
+      );
 
-  HsEventBusService.compositionLoads.subscribe((data) => {
-    if (angular.isDefined(data.data)) {
-      data = data.data;
-      me.data.title = data.title;
-      if (HsConfig.social_hashtag) {
-        me.data.title += ' ' + HsConfig.social_hashtag;
+      try {
+        $element.setAttribute('src', targetCanvas.toDataURL('image/png'));
+        this.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
+      } catch (e) {
+        this.HsLogService.warn(e);
+        $element.setAttribute('src', this.notAvailableImage);
       }
-      me.data.abstract = data.abstract;
+      $element.style.width = width + 'px';
+      $element.style.height = height + 'px';
     }
-  });
+    if (
+      this.HsLayoutService.mainpanel == 'saveMap' ||
+      this.HsLayoutService.mainpanel == 'permalink' ||
+      this.HsLayoutService.mainpanel == 'shareMap'
+    ) {
+      if ($element === null) {
+        return;
+      }
+      $element.setAttribute('crossOrigin', 'Anonymous');
 
-  return me;
+      if (newRender) {
+        this.HsMapService.map.once('postcompose', rendered, this);
+        this.HsMapService.map.renderSync();
+      } else {
+        rendered();
+      }
+    }
+  }
 }

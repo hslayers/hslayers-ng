@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
