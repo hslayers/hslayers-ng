@@ -1,3 +1,5 @@
+import Feature from 'ol/Feature';
+import Map from 'ol/Map';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsDialogContainerService} from '../layout/dialog-container.service';
 import {HsLaymanService} from './layman.service';
@@ -5,7 +7,7 @@ import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
 @Injectable({
@@ -22,7 +24,7 @@ export class HsLayerSynchronizerService {
     private HsDialogContainerService: HsDialogContainerService
   ) {}
 
-  init(map) {
+  init(map: Map): void {
     const layerAdded = (e) => this.addLayer(e.element);
     map.getLayers().on('add', layerAdded);
     map.getLayers().on('remove', (e) => {
@@ -44,7 +46,7 @@ export class HsLayerSynchronizerService {
    * @function addLayer
    * @param {object} layer Layer to add
    */
-  addLayer(layer: Layer) {
+  addLayer(layer: Layer): void {
     const synchronizable = this.startMonitoring(layer);
     if (synchronizable) {
       this.syncedLayers.push(layer);
@@ -60,7 +62,7 @@ export class HsLayerSynchronizerService {
    * @param {object} layer Layer to add
    * @returns {boolean} If layer is synchronizable
    */
-  startMonitoring(layer) {
+  startMonitoring(layer: Layer): boolean {
     if (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       layer.get('synchronize') === true
@@ -80,7 +82,7 @@ export class HsLayerSynchronizerService {
    * @param {Ol.layer} layer Layer to get Layman friendly name for
    * @param {Ol.source} source Openlayers VectorSource to store features in
    */
-  pull(layer, source) {
+  pull(layer: Layer, source: Source): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
@@ -88,10 +90,10 @@ export class HsLayerSynchronizerService {
         this.HsLaymanService.pullVectorSource(
           ds,
           this.getLayerName(layer)
-        ).then((response: any) => {
+        ).then((response: string) => {
           let featureString;
           if (response) {
-            featureString = response.data;
+            featureString = response;
           }
           layer.set('hs-layman-synchronizing', false);
           if (featureString) {
@@ -119,7 +121,7 @@ export class HsLayerSynchronizerService {
   /**
    * @param f
    */
-  observeFeature(f) {
+  observeFeature(f): void {
     f.getGeometry().on(
       'change',
       this.HsUtilsService.debounce(
@@ -137,7 +139,7 @@ export class HsLayerSynchronizerService {
   /**
    * @param e
    */
-  handleFeatureChange(e) {
+  handleFeatureChange(e): void {
     this.sync([], [e.target || e], [], e.target.getLayer());
   }
 
@@ -147,7 +149,12 @@ export class HsLayerSynchronizerService {
    * @param deleted
    * @param layer
    */
-  sync(inserted, updated, deleted, layer) {
+  sync(
+    inserted: Feature[],
+    updated: Feature[],
+    deleted: Feature[],
+    layer: Layer
+  ): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
@@ -159,16 +166,16 @@ export class HsLayerSynchronizerService {
           deleted,
           this.getLayerName(layer),
           layer
-        ).then((response: any) => {
-          if (response.data.indexOf('Exception') > -1) {
-            this.displaySyncErrorDialog(response.data);
+        ).then((response: string) => {
+          if (response.indexOf('Exception') > -1) {
+            this.displaySyncErrorDialog(response);
           }
           layer.set('hs-layman-synchronizing', false);
         });
       });
   }
 
-  displaySyncErrorDialog(error: any): void {
+  displaySyncErrorDialog(error: string): void {
     this.HsDialogContainerService.create(HsSyncErrorDialogComponent, {
       exception: error,
     });
@@ -183,7 +190,7 @@ export class HsLayerSynchronizerService {
    * @param {Ol.layer} layer Layer to get Layman friendly name for
    * @returns {string} Layer title
    */
-  getLayerName(layer): string {
+  getLayerName(layer: Layer): string {
     return layer.get('title').toLowerCase().replaceAll(' ', '');
   }
 
@@ -194,7 +201,7 @@ export class HsLayerSynchronizerService {
    * @function removeLayer
    * @param {Ol.layer} layer Layer to remove from legend
    */
-  removeLayer(layer) {
+  removeLayer(layer: Layer): void {
     for (let i = 0; i < this.syncedLayers.length; i++) {
       if (this.syncedLayers[i] == layer) {
         this.syncedLayers.splice(i, 1);
