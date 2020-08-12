@@ -35,7 +35,7 @@ export class HsSaveMapService {
    */
   map2json(map, compoData, userData, statusData) {
     const groups: any = {};
-    for (const g of statusData.groups) {
+    for (const g of statusData.groups || []) {
       if (g.r || g.w) {
         groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
       }
@@ -44,7 +44,7 @@ export class HsSaveMapService {
       groups.guest = 'r';
     }
     let bbox = compoData.bbox;
-    if (!Array.isArray(compoData.bbox)) {
+    if (compoData.bbox && !Array.isArray(compoData.bbox)) {
       bbox = [
         compoData.bbox.east,
         compoData.bbox.south,

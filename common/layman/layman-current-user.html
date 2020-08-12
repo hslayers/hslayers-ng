@@ -1,4 +1,4 @@
-<div ng-if="$ctrl.endpoint?.type == 'layman'">
+<div ng-if="$ctrl.endpoint && $ctrl.endpoint.type == 'layman'">
     <a class="btn btn-block btn-light" ng-click="$ctrl.login()" ng-if="$ctrl.isAuthorized()" translate
         href="{{$ctrl.protocolsMatch() ? '#' : $ctrl.authUrl()}}" target="{{$ctrl.protocolsMatch() ? '' : '_blank'}}">
         Log in</a>
