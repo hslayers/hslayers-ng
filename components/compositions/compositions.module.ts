@@ -5,7 +5,6 @@ import '../save-map/save-map.module';
 import '../utils/utils.module';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
-import 'angular-socialshare';
 import * as angular from 'angular';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
@@ -24,7 +23,6 @@ import shareDialogDirective from './share-dialog.directive';
  */
 angular
   .module('hs.compositions', [
-    '720kb.socialshare',
     'hs.map',
     'hs.core',
     'hs.compositions.layerParser',

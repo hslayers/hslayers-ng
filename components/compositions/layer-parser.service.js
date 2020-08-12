@@ -1,5 +1,4 @@
 import '../add-layers/vector/add-layers-vector.module';
-import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
 import SparqlJson from '../layers/hs.source.SparqlJson';
 import VectorLayer from 'ol/layer/Vector';

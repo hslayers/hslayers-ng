@@ -1,5 +1,4 @@
 import '../layers/hs.source.SparqlJson';
-import 'angular-socialshare';
 import {transform} from 'ol/proj';
 
 /**
