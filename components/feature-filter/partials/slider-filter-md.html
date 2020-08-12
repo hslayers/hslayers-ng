@@ -1,0 +1,9 @@
+<md-slider-container ng-switch-when="slider">
+	<span class="md-body-1">{{selectedFilter.title}}</span>
+	<md-slider flex min="{{selectedFilter.range[0]}}" max="{{selectedFilter.range[1]}}" ng-model="selectedFilter.value">
+	</md-slider>
+	<md-input-container>
+		<input flex type="number" ng-model="selectedFilter.value" ng-change="applyFilters()"><span
+			class="md-body-1">{{selectedFilter.unit}}</span>
+	</md-input-container>
+</md-slider-container>

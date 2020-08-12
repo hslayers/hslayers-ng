@@ -3,16 +3,24 @@
  * @param HsMapService
  * @param HsFeatureFilterService
  * @param HsLayermanagerService
+ * @param $mdPanel
  */
 export default function (
   $scope,
   HsMapService,
   HsFeatureFilterService,
-  HsLayermanagerService
+  HsLayermanagerService,
+  $mdPanel
 ) {
   'ngInject';
   $scope.map = HsMapService.map;
   $scope.LayMan = HsLayermanagerService;
+
+  const FILTERS = {
+    'dictionary': require('./partials/dictionary-filter-md.html'),
+    'fieldset': require('./partials/fieldset-filter-md.html'),
+    'slider': require('./partials/slider-filter-md.html'),
+  };
 
   $scope.applyFilters = HsFeatureFilterService.applyFilters;
 
@@ -40,6 +48,7 @@ export default function (
     } else {
       selected.push(value);
     }
+    $scope.applyFilters();
   };
 
   $scope.toggleAll = function (filter) {
@@ -48,24 +57,58 @@ export default function (
     } else {
       filter.selected = filter.values.slice(0);
     }
+    $scope.applyFilters();
+  };
+
+  $scope.filterChanged = function (filter) {
+    switch (filter.type.type) {
+      case 'fieldset':
+      case 'dictionary':
+        return filter.selected && !$scope.allSelected(filter);
+    }
+  };
+
+  $scope.resetFilter = function (ev, filter) {
+    ev.stopPropagation();
+    switch (filter.type.type) {
+      case 'fieldset':
+      case 'dictionary':
+        filter.selected = filter.values.slice(0);
+        break;
+    }
+    $scope.applyFilters();
+  };
+
+  $scope.showFilter = function (ev, filter) {
+    const panelPosition = $mdPanel
+      .newPanelPosition()
+      .relativeTo(ev.target)
+      .addPanelPosition(
+        $mdPanel.xPosition.ALIGN_START,
+        $mdPanel.yPosition.BELOW
+      );
+    const panelAnimation = $mdPanel
+      .newPanelAnimation()
+      .openFrom(ev.target)
+      .closeTo(ev.target)
+      .withAnimation($mdPanel.animation.FADE);
+    const panelConfig = {
+      attachTo: angular.element(document).find('body'),
+      position: panelPosition,
+      animation: panelAnimation,
+      targetEvent: ev,
+      template: FILTERS[filter.type.type],
+      panelClass: 'filter-panel md-whiteframe-8dp',
+      scope: this,
+      trapFocus: true,
+      clickOutsideToClose: true,
+      clickEscapeToClose: true,
+    };
+
+    $scope.selectedFilter = filter;
+
+    $mdPanel.open(panelConfig);
   };
 
   $scope.$emit('scope_loaded', 'featureFilter');
-
-  // $rootScope.$on('layermanager.layer_added', function (e, layer) {
-  //     service.prepLayerFilter(layer);
-
-  //     if (layer.layer instanceof VectorLayer) {
-  //         var source = layer.layer.getSource();
-  //         console.log(source.getState());
-  //         var listenerKey = source.on('change', function (e) {
-  //             if (source.getState() === 'ready') {
-  //                 console.log(source.getState());
-  //                 Observable.unByKey(listenerKey);
-  //                 service.prepLayerFilter(layer);
-  //                 $scope.applyFilters(layer);
-  //             }
-  //         });
-  //     }
-  // });
 }

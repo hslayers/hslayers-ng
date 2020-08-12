@@ -1,44 +1,6 @@
-<div layout="column" layout-align="start start" layout-wrap class="layer-toolbar" ng-if="LayMan.currentLayer.hsFilters">
-    <div ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-switch on="filter.type.type">
-
-    	<md-slider-container ng-switch-when="slider">
-			<span class="md-body-1">{{filter.title}}</span>
-			<md-slider flex min="{{filter.range[0]}}" max="{{filter.range[1]}}" ng-model="filter.value">
-			</md-slider>
-			<md-input-container>
-				<input flex type="number" ng-model="filter.value" ng-change="applyFilters()"><span class="md-body-1">{{filter.unit}}</span>
-			</md-input-container>
-		</md-slider-container>
-
-		<fieldset ng-switch-when="fieldset">
-		    <legend class="legend">{{filter.title}}</legend>
-		    <div layout="row" layout-wrap flex>
-		        <div flex-xs flex="50">
-		            <md-checkbox    aria-label="Select All"
-		                            ng-checked="allSelected(filter)"
-		                            md-indeterminate="isIndeterminate(filter)"
-		                            ng-click="toggleAll(filter)">
-		                <span ng-if="allSelected(filter)">Un-</span>Select All
-		            </md-checkbox>
-		        </div>
-		        <div class="select-all-checkboxes" flex="100" ng-repeat="value in filter.values">
-		            <md-checkbox ng-checked="exists(value, filter.selected)" ng-click="toggle(value, filter.selected)">
-		            {{ value }}
-		            </md-checkbox>
-		        </div>
-		    </div>
-		</fieldset>
-
-		<md-input-container ng-switch-when="dictionary" class="md-block" flex-gt-sm>
-			<label>{{filter.title}}</label>
-			<md-select ng-model="filter" md-change="applyFilters()">
-				<md-option ng-repeat="value in filter.values" value="{{filter}}">
-					{{filter.value}}
-				</md-option>
-			</md-select>
-		</md-input-container>
-
-	</div>
-
-	<md-button class="md-raised md-primary" ng-click="applyFilters()">Apply</md-button>
+<div class="md-chips" ng-if="LayMan.currentLayer.hsFilters">
+	<md-chip ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-click="showFilter($event, filter)" ng-class="{active: filterChanged(filter)}">
+		{{ filter.title }}
+		<md-icon ng-if="filterChanged(filter)" ng-click="resetFilter($event, filter)">close</md-icon>
+	</md-chip-template>
 </div>

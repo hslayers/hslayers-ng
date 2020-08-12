@@ -1,7 +1,7 @@
 export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) {
   'ngInject';
   return {
-	template: HsConfig.design == 'md' ?
+	template: HsConfig.design === 'md' ?
 		HsConfig.directiveTemplates.layout ||
 		require('components/layout/partials/layoutmd.html') :
 		require('components/layout/partials/layout.html'),

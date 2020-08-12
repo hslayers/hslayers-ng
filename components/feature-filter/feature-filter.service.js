@@ -28,97 +28,114 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       }
 
       const filters = layer.hsFilters;
-      const filteredFeatures = [];
+      let filteredFeatures = source.getFeatures();
 
       source.forEachFeature((feature) => {
         feature.setStyle(null);
       });
 
-      for (const i in filters) {
-        var filter = filters[i];
-        var displayFeature;
+      for (const filter of filters) {
+        let displayFeature;
 
         switch (filter.type.type) {
           case 'fieldset':
-            if (filter.selected.length === 0) {
-              displayFeature = function (feature, filter) {
-                return true;
-              };
-              break;
-            }
-            displayFeature = function (feature, filter) {
+            displayFeature = function (feature) {
               return (
-                filter.selected.indexOf(feature.getProperties()[filter.valueField]) !==
-                -1
+                filter.selected.indexOf(
+                  feature.getProperties()[filter.valueField]
+                ) !== -1
               );
             };
             break;
           case 'slider':
             switch (filter.type.parameters) {
               case 'lt':
-                displayFeature = function (feature, filter) {
-                  return feature.getProperties()[filter.valueField] < filter.value;
+                displayFeature = function (feature) {
+                  return (
+                    feature.getProperties()[filter.valueField] < filter.value
+                  );
                 };
                 break;
               case 'le':
-                displayFeature = function (feature, filter) {
-                  return feature.getProperties()[filter.valueField] <= filter.value;
+                displayFeature = function (feature) {
+                  return (
+                    feature.getProperties()[filter.valueField] <= filter.value
+                  );
                 };
                 break;
               case 'gt':
-                displayFeature = function (feature, filter) {
-                  return feature.getProperties()[filter.valueField] > filter.value;
+                displayFeature = function (feature) {
+                  return (
+                    feature.getProperties()[filter.valueField] > filter.value
+                  );
                 };
                 break;
               case 'ge':
-                displayFeature = function (feature, filter) {
-                  return feature.getProperties()[filter.valueField] >= filter.value;
+                displayFeature = function (feature) {
+                  return (
+                    feature.getProperties()[filter.valueField] >= filter.value
+                  );
                 };
                 break;
               case 'eq':
-                displayFeature = function (feature, filter) {
-                  return feature.getProperties()[filter.valueField] === filter.value;
+                displayFeature = function (feature) {
+                  return (
+                    feature.getProperties()[filter.valueField] === filter.value
+                  );
                 };
                 break;
             }
           default:
-            displayFeature = function (feature, filter) {
+            displayFeature = function (feature) {
               return true;
             };
         }
 
+        filteredFeatures = filteredFeatures.filter(displayFeature);
+
         source.forEachFeature((feature) => {
-          if (!displayFeature(feature, filter)) {
+          if (!displayFeature(feature)) {
             feature.setStyle(new Style({}));
-          } else {
-            filteredFeatures.push(feature);
           }
         });
       }
 
       layer.filteredFeatures = filteredFeatures;
+      $rootScope.$digest();
       return filteredFeatures;
     },
 
     prepLayerFilter: function (layer) {
       if ('hsFilters' in layer) {
         for (const i in layer.hsFilters) {
-          var filter = layer.hsFilters[i];
+          const filter = layer.hsFilters[i];
 
           if (filter.gatherValues) {
             switch (filter.type.type) {
               case 'fieldset':
               case 'dictionary':
-                var source = layer.layer.getSource();
+                const source = layer.layer.getSource();
                 source.forEachFeature((feature) => {
                   if (
                     filter.values.indexOf(
                       feature.getProperties()[filter.valueField]
                     ) === -1
                   ) {
-                    filter.values.push(feature.getProperties()[filter.valueField]);
+                    filter.values.push(
+                      feature.getProperties()[filter.valueField]
+                    );
                   }
                 });
+
+                filter.values.sort((a, b) => {
+                  return (
+                    (a.replace('the ', '').replace('The ', '') >
+                      b.replace('the', '').replace('The ', '')) *
+                      2 -
+                    1
+                  );
+                });
+
                 break;
               case 'dateExtent':
                 // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
@@ -148,23 +165,6 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       }
     },
   };
-
-  $rootScope.$on('layermanager.layer_added', (e, layer) => {
-    // me.prepLayerFilter(layer);
-
-    // if (HsUtilsService.instOf(layer.layer, VectorLayer)) {
-    //   const source = layer.layer.getSource();
-    //   console.log(source.getState());
-    //   var listenerKey = source.on('change', (e) => {
-    //     if (source.getState() === 'ready') {
-    //       console.log(source.getState());
-    //       Observable.unByKey(listenerKey);
-    //       me.prepLayerFilter(layer);
-    //       me.applyFilters(layer);
-    //     }
-    //   });
-    // }
-  });
 
   return me;
 }
