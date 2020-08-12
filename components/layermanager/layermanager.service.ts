@@ -1,5 +1,4 @@
 import '../layers/hs.source.SparqlJson';
-import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
 import {CollectionEvent} from 'ol/Collection';

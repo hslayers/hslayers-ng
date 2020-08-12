@@ -1,4 +1,3 @@
-import 'angular-socialshare';
 import * as angular from 'angular';
 import configParsersService from './layer-parser.service';
 
@@ -9,7 +8,6 @@ import configParsersService from './layer-parser.service';
  */
 angular
   .module('hs.compositions.layerParser', [
-    '720kb.socialshare',
     'hs.map',
     'hs.core',
     'hs.addLayersVector',

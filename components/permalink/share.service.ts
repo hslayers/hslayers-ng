@@ -198,7 +198,7 @@ export class HsShareService {
    * @memberof permalink.shareService
    * @function shareOnSocial
    * @public
-   * @param {string} provider Social share provider (twitter/facebook/google)
+   * @param {string} provider Social share provider (twitter/facebook)
    * @param {boolean} newShare If new share record on server should be created
    * @description Share map on social network
    */
