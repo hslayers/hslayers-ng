@@ -9,16 +9,15 @@ import {
   HsCommonLaymanServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
+  HsLanguageServiceProvider,
   HsLayerUtilsServiceProvider,
   HsMapServiceProvider,
-  HsPermalinkUrlServiceProvider,
   HsQueryBaseServiceProvider,
   HsQueryVectorServiceProvider,
   HsUtilsServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
-  HsLanguageServiceProvider,
 } from '../../ajs-upgraded-providers';
 import {HsCoreService} from './core.service';
 import {HsDrawModule} from '../draw';
@@ -30,6 +29,7 @@ import {HsLogModule} from '../../common/log/log.module';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsSaveMapModule} from '../save-map';
+import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HttpClientModule} from '@angular/common/http';
@@ -51,6 +51,7 @@ import {NgModule} from '@angular/core';
     HsLayerManagerModule,
     HsSaveMapModule,
     HsLogModule,
+    HsShareModule,
   ],
   exports: [],
   providers: [
@@ -71,7 +72,6 @@ import {NgModule} from '@angular/core';
       provide: Window,
       useValue: window,
     },
-    HsPermalinkUrlServiceProvider,
     HsCommonEndpointsServiceProvider,
     HsCommonLaymanServiceProvider,
   ],

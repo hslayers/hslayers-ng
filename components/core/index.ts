@@ -9,6 +9,7 @@ import '../layermanager';
 import '../layout';
 import '../legend';
 import '../map/map.module';
+import '../permalink';
 import '../print';
 import '../save-map/';
 import '../translations/js/translations';
@@ -37,7 +38,8 @@ angular
     'hs.legend',
     'hs.print',
     'hs.layermanager',
-    'hs.save-map'
+    'hs.save-map',
+    'hs.permalink',
   ])
   /**
    * @module hs.core
