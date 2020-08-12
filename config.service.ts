@@ -35,6 +35,8 @@ export class HsConfig {
   hostname?: any;
   status_manager_url: string;
   dsPaging: number;
+  permalinkLocation: any;
+  social_hashtag: any;
 
   constructor() {}
 }

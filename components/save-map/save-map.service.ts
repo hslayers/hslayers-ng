@@ -142,7 +142,7 @@ export class HsSaveMapService {
    * @param {Array} tickedLayers List of layers and if they have been ticked
    * @returns {Array} JSON object representing the layers
    */
-  layers2json(layers, tickedLayers) {
+  layers2json(layers, tickedLayers?) {
     const json = [];
     layers.forEach((lyr) => {
       if (tickedLayers) {
