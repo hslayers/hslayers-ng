@@ -64,6 +64,7 @@
     "angular/prefer-component": "warn",
     "angular/no-controller": "error",
     "angular/no-service-method": "off",
+    "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
     "valid-jsdoc": "off"
   },
   "overrides": [
