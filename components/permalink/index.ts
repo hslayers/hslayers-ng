@@ -54,7 +54,7 @@ angular
    * @membeof hs.permalink
    * @description
    */
-  .component('hs.permalink', downgradeComponent({component: HsShareComponent}));
+  .directive('hsShare', downgradeComponent({component: HsShareComponent}));
 
-angular.module('hs.sidebar', [downgradedModule]);
+angular.module('hs.permalink', [downgradedModule]);
 export {HsShareModule} from './share.module';

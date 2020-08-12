@@ -1,15 +1,18 @@
 /* eslint-disable jsdoc/require-returns */
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {HsCoreService} from '../core/core.service';
 import {HsShareService} from './share.service';
 @Component({
   selector: 'hs-share',
   template: require('./partials/directive.html'),
 })
-export class HsShareComponent implements OnInit {
+export class HsShareComponent {
   new_share: false;
 
-  constructor(private HsShareService: HsShareService) {}
-  ngOnInit(): void {}
+  constructor(
+    private HsShareService: HsShareService,
+    private HsCore: HsCoreService
+  ) {}
 
   /**
    * @function updateEmbedCode
