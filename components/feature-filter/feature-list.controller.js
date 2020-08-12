@@ -1,6 +1,5 @@
-import Icon from 'ol/style/Icon';
-import Style from 'ol/style/Style';
-import Collection from 'ol/Collection';
+import 'ol-popup/src/ol-popup.css';
+import Popup from 'ol-popup';
 import {Select} from 'ol/interaction';
 import {pointerMove} from 'ol/events/condition';
 
@@ -14,130 +13,131 @@ import {pointerMove} from 'ol/events/condition';
  * @param HsConfig
  */
 export default function (
-	$scope,
-	HsMapService,
-	HsCore,
-	HsFeatureFilterService,
-	HsLayermanagerService,
-	HsQueryVectorService,
-	HsConfig
+  $scope,
+  HsMapService,
+  HsCore,
+  HsFeatureFilterService,
+  HsLayermanagerService,
+  HsQueryVectorService,
+  HsConfig
 ) {
-	'ngInject';
-	$scope.map = HsMapService.map;
-	$scope.LayMan = HsLayermanagerService;
+  'ngInject';
+  $scope.map = HsMapService.map;
+  $scope.LayMan = HsLayermanagerService;
 
-	$scope.applyFilters = HsFeatureFilterService.applyFilters;
+  const POPUP = new Popup();
 
-	$scope.displayDetails = false;
+  HsMapService.loaded().then((map) => {
+    map.addOverlay(POPUP);
+  });
 
-	$scope.HsMapService = HsMapService;
-	window.scope = $scope;
-	// $scope.selectedFeatures = new Collection();
+  $scope.reverseOrdering = true;
+  $scope.orderProperty = 'position';
+  $scope.defaultOrder = 'bp_id';
 
-	$scope.highlighter = new Select({
-		condition: pointerMove,
-		style: function (feature) {
-			return feature.getLayer().get('highlightedStyle')
-				|| HsQueryVectorService.DEFAULT_STYLES[feature.getGeometry().getType()]
-				|| null;
-		},
-		// style: $scope.highlightedStyle,
-		filter: function(feature) {
-			return feature !== HsLayermanagerService.currentLayer.selectedFeature
-		},
-	});
+  $scope.defaultReverse = ['bp_id', 'position'];
 
-	$scope.highlightFeature = function(feature) {
-		$scope.highlighter.getFeatures().push(feature);
-	}
+  $scope.orderProperties = [
+    `${$scope.reverseOrdering ? '-' : ''}getProperties().${
+      $scope.orderProperty
+    }`,
+    `getProperties().${$scope.defaultOrder}`,
+  ];
 
+  $scope.sortBy = function (property) {
+    $scope.reverseOrdering =
+      $scope.orderProperty === property ? !$scope.reverseOrdering : false;
+    $scope.orderProperties[0] = `${
+      $scope.reverseOrdering ? '-' : ''
+    }getProperties().${property}`;
+  };
 
-	$scope.unhighlightFeature = function(feature) {
-		$scope.highlighter.getFeatures().remove(feature);
-	}
+  $scope.applyFilters = HsFeatureFilterService.applyFilters;
+  $scope.HsMapService = HsMapService;
 
-	$scope.highlighter.getFeatures().on('add', e => {
-		e.element.setProperties({
-			class: 'highlighted'
-		});
-		if (!$scope.$$phase) $scope.$digest();
-	});
+  $scope.highlighter = new Select({
+    condition: pointerMove,
+    style: function (feature) {
+      return (
+        feature.getLayer().get('highlightedStyle') ||
+        HsQueryVectorService.DEFAULT_STYLES[feature.getGeometry().getType()] ||
+        null
+      );
+    },
+    filter: function (feature) {
+      return feature !== HsLayermanagerService.currentLayer.selectedFeature;
+    },
+  });
 
-	$scope.highlighter.getFeatures().on('remove', e => {
-		e.element.setProperties({
-			class: ''
-		});
-		if (!$scope.$$phase) $scope.$digest();
-	});
+  $scope.highlightFeature = function (feature) {
+    $scope.highlighter.getFeatures().push(feature);
+  };
 
-	$scope.$on('map.loaded', () => {
-		HsMapService.map.addInteraction($scope.highlighter);
-	});
+  $scope.unhighlightFeature = function (feature) {
+    $scope.highlighter.getFeatures().remove(feature);
+  };
 
-	$scope.deselectFeatures = function() {
-		HsQueryVectorService.selector.getFeatures().clear();
-	};
+  $scope.highlighter.getFeatures().on('add', (e) => {
+    e.element.setProperties({
+      class: 'highlighted',
+    });
+    if (!$scope.$$phase) $scope.$apply();
+  });
 
-	$scope.selectFeature = function(feature) {
-		HsQueryVectorService.selector.getFeatures().push(feature);
-	};
+  $scope.highlighter.getFeatures().on('remove', (e) => {
+    e.element.setProperties({
+      class: '',
+    });
+    if (!$scope.$$phase) $scope.$apply();
+  });
 
-	$scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
-		// $scope.displayDetails = true;
-		$scope.featureDetails = feature.getProperties();
-		HsLayermanagerService.currentLayer.selectedFeature = feature;
-		if (!$scope.$$phase) $scope.$digest();
+  $scope.highlighter.on('select', (e) => {
+    if (e.deselected.length > 0) {
+      POPUP.hide();
+    }
+    if (e.selected.length > 0) {
+      const FEATURE = e.selected[0];
+      const COORDS = FEATURE.getProperties().geometry.flatCoordinates;
+      POPUP.show(COORDS, FEATURE.getProperties().name);
+    }
+  });
 
-		$scope.lastView = HsMapService.map.getView().getProperties();
+  $scope.$on('map.loaded', () => {
+    HsMapService.map.addInteraction($scope.highlighter);
+  });
 
-		HsMapService.map.getView().animate({
-			zoom: 7,
-			center: feature.getProperties().geometry.flatCoordinates,
-			duration: 300
-		});
-	});
+  $scope.deselectFeatures = function () {
+    HsQueryVectorService.selector.getFeatures().clear();
+  };
 
-	$scope.$on('vectorQuery.featureDeselected', (e, feature) => {
-		// $scope.displayDetails = false;
-		$scope.featureDetails = undefined;
-		HsLayermanagerService.currentLayer.selectedFeature = undefined;
-		if (!$scope.$$phase) $scope.$digest();
-		
-		HsMapService.map.getView().animate({
-			resolution: $scope.lastView.resolution,
-			center: $scope.lastView.center,
-			duration: 300
-		});
-	});
+  $scope.selectFeature = function (feature) {
+    HsQueryVectorService.selector.getFeatures().push(feature);
+  };
 
-	$scope.toggleFeatureDetails = function (feature, handleFeature) {
-		// HsCore.updateMapSize();
-		$scope.displayDetails = !$scope.displayDetails;
+  $scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
+    $scope.featureDetails = feature.getProperties();
+    HsLayermanagerService.currentLayer.selectedFeature = feature;
+    if (!$scope.$$phase) $scope.$apply();
 
-		if (HsLayermanagerService.currentLayer.selectedFeature) {
-			HsLayermanagerService.currentLayer.selectedFeature.setStyle(null);
-		}
+    $scope.lastView = HsMapService.map.getView().getProperties();
 
-		if ($scope.displayDetails) {
-			$scope.featureDetails = feature.getProperties();
-			HsLayermanagerService.currentLayer.selectedFeature = feature;
-			HsMapService.moveToAndZoom(
-				feature.getProperties().geometry.flatCoordinates[0],
-				feature.getProperties().geometry.flatCoordinates[1],
-				7
-			);
-			feature.setStyle(
-				new Style({
-					image: new Icon({
-						crossOrigin: 'anonymous',
-						src: 'marker_lt.png',
-						anchor: [0.5, 1],
-						scale: 0.4,
-					}),
-				})
-			);
-		}
-	};
+    HsMapService.map.getView().animate({
+      zoom: 7,
+      center: feature.getProperties().geometry.flatCoordinates,
+      duration: 300,
+    });
+  });
 
-	$scope.$emit('scope_loaded', 'featureList');
+  $scope.$on('vectorQuery.featureDeselected', (e, feature) => {
+    $scope.featureDetails = undefined;
+    HsLayermanagerService.currentLayer.selectedFeature = undefined;
+    if (!$scope.$$phase) $scope.$apply();
+
+    HsMapService.map.getView().animate({
+      resolution: $scope.lastView.resolution,
+      center: $scope.lastView.center,
+      duration: 300,
+    });
+  });
+  $scope.$emit('scope_loaded', 'featureList');
 }

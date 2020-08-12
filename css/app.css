@@ -1532,6 +1532,16 @@ div.card-list md-content img {
 	object-fit: cover;
 }
 
+.feature-sort-menu {
+	margin: 0;
+	padding-bottom: 0;
+	width: fit-content;
+}
+
+.feature-sort-menu md-icon {
+	font-size: 20px;
+}
+
 .md-chips md-chip {
 	background: rgb(224,224,224);
 	color: rgb(66,66,66);

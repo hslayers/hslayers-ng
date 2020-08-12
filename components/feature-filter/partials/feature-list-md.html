@@ -2,13 +2,23 @@
 <div class="feature-list" ng-class="{'card-list': !featureDetails, 'layout-column': featureDetails}">
     <md-content flex layout-padding ng-show="!featureDetails" style="padding-bottom:0">
         <div layout="row" style="justify-content: space-between">
+            <md-select ng-model="orderProperty" placeholder="Sort By" class="md-no-underline feature-sort-menu" md-container-class="feature-sort-menu">
+                <md-option ng-click="sortBy('position')" value="position">
+                    <md-icon ng-if="orderProperty === 'position'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Default
+                </md-option>
+                <md-option ng-click="sortBy('bp_id')" value="bp_id">
+                    <md-icon ng-if="orderProperty === 'bp_id'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Recent
+                </md-option>
+                <md-option ng-click="sortBy('name')" value="name">
+                    <md-icon ng-if="orderProperty === 'name'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon>Name
+                </md-option>
+            </md-select>
             <div hs.feature-filter.directive ng-controller="HsFeatureFilterController"></div>
         </div>
     </md-content>
 
     <md-content flex layout-padding class="card-collection" ng-show="!featureDetails">
-		<!-- <div flex-xs flex-gt-xs="50" layout="column"> -->
-        <md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures"
+        <md-card ng-repeat="feature in LayMan.currentLayer.filteredFeatures | orderBy:orderProperties"
             ng-click="selectFeature(feature)"
             ng-mouseenter="highlightFeature(feature)"
             ng-mouseleave="unhighlightFeature(feature)"
