@@ -1,19 +1,22 @@
 /**
  * @param gettextCatalog
  */
-export default function (gettextCatalog) {
-  'ngInject';
-  const me = {};
+export class HsLanguageService {
+  constructor(gettextCatalog) {
+    'ngInject';
+    this.gettextCatalog = gettextCatalog;
+  }
+
   /**
    * @memberof HsLanguageService
    * @function setlanguage
    * @public
-   * @params {String} lang
+   * @params {string} lang
    * @description Set language
    * @param lang
    */
-  me.setLanguage = function (lang) {
-    me.language = lang;
+  setLanguage(lang) {
+    this.language = lang;
     switch (lang) {
       case 'cs_CZ':
         lang = 'cs';
@@ -24,8 +27,8 @@ export default function (gettextCatalog) {
       default:
         return;
     }
-    gettextCatalog.setCurrentLanguage(lang);
-  };
+    this.gettextCatalog.setCurrentLanguage(lang);
+  }
 
   /**
    * @ngdoc method
@@ -33,12 +36,12 @@ export default function (gettextCatalog) {
    * @public
    * @description Get code of current language
    */
-  me.getCurrentLanguageCode = function () {
-    if (typeof me.language == 'undefined' || me.language == '') {
+  getCurrentLanguageCode() {
+    if (typeof this.language == 'undefined' || this.language == '') {
       return 'en';
     }
-    return me.language.substr(0, 2).toLowerCase();
-  };
+    return this.language.substr(0, 2).toLowerCase();
+  }
 
   /**
    * @ngdoc method
@@ -47,7 +50,7 @@ export default function (gettextCatalog) {
    * @description Get array of available languages based on translations.js
    * or translations_extended.js files which have gettextCatalog services in them
    */
-  me.listAvailableLanguages = function () {
+  listAvailableLanguages() {
     const language_code_name_map = {
       'en': 'English',
       'cs': 'Český',
@@ -56,13 +59,11 @@ export default function (gettextCatalog) {
       'nl': 'Nederlands',
     };
     const langs = [{key: 'en', name: 'English'}];
-    for (const key in gettextCatalog.strings) {
-      if (gettextCatalog.strings.hasOwnProperty(key)) {
+    for (const key in this.gettextCatalog.strings) {
+      if (this.gettextCatalog.strings.hasOwnProperty(key)) {
         langs.push({key: key, name: language_code_name_map[key]});
       }
     }
     return langs;
-  };
-
-  return me;
+  }
 }

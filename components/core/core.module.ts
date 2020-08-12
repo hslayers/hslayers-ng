@@ -18,6 +18,7 @@ import {
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
+  HsLanguageServiceProvider,
 } from '../../ajs-upgraded-providers';
 import {HsCoreService} from './core.service';
 import {HsDrawModule} from '../draw';
@@ -65,6 +66,7 @@ import {NgModule} from '@angular/core';
     HsDimensionServiceProvider,
     HsQueryVectorServiceProvider,
     HsQueryBaseServiceProvider,
+    HsLanguageServiceProvider,
     {
       provide: Window,
       useValue: window,
