@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import HsLanguageController from './language.controller';
-import HsLanguageService from './language.service';
+import {HsLanguageService} from './language.service';
 /**
  * @namespace hs.print
  * @memberOf hs
@@ -30,7 +30,7 @@ export default angular
    * @ngdoc service
    * @name HsLanguageService
    */
-  .factory('HsLanguageService', HsLanguageService)
+  .service('HsLanguageService', HsLanguageService)
 
   /**
    * @memberof hs.language

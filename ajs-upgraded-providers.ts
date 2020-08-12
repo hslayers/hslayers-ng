@@ -160,19 +160,6 @@ export const HsQueryVectorServiceProvider = {
 /**
  * @param i
  */
-export function hsPermalinkUrlService(i: any) {
-  return i.get('HsPermalinkUrlService');
-}
-
-export const HsPermalinkUrlServiceProvider = {
-  provide: HsShareUrlService,
-  useFactory: hsPermalinkUrlService,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
 export function hsCommonEndpointsService(i: any) {
   return i.get('HsCommonEndpointsService');
 }
