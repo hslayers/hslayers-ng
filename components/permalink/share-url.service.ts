@@ -1,7 +1,10 @@
 import {HsConfig} from '../../config.service';
+import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Inject} from '@angular/core';
 import {Location} from '@angular/common';
@@ -27,7 +30,7 @@ export class HsShareUrlService {
 
   constructor(
     private HsMapService: HsMapService,
-    private HsCore: HsCore,
+    private HsCore: HsCoreService,
     private HsUtilsService: HsUtilsService,
     private HsSaveMapService: HsSaveMapService,
     private HsConfig: HsConfig,
