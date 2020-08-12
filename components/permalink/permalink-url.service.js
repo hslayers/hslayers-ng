@@ -93,7 +93,7 @@ export default function (
       for (const cP in me.customParams) {
         me.push(cP, me.customParams[cP]);
       }
-
+      
       if (angular.isUndefined(featureURI)) {
         $location.search(me.params);
       }
@@ -301,10 +301,16 @@ export default function (
       let timer = null;
       // eslint-disable-next-line angular/on-watch
       $rootScope.$on(
-        'featureSelectionChanged', (e) => {
-          me.update();
-          $rootScope.$broadcast('browserurl.updated');
-        }
+        'map.extent_changed',
+        HsUtilsService.debounce(
+          (event, data, b) => {
+            me.update();
+            $rootScope.$broadcast('browserurl.updated');
+          },
+          200,
+          false,
+          me
+        )
       );
 
       if(me.hashtagParam()){
@@ -326,8 +332,19 @@ export default function (
         ) {
           return;
         }
+        layer.on('change:visible', (e) => {
+          if (timer !== null) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            me.update();
+            $rootScope.$broadcast('browserurl.updated');
+          }, 1000);
+        });
       });
-
+      if (me.getParamValue('lang')) {
+        HsLanguageService.setLanguage(me.getParamValue('lang'));
+      }
     }
   }
 
