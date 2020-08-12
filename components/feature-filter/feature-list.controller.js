@@ -5,6 +5,7 @@ import {pointerMove} from 'ol/events/condition';
 
 /**
  * @param $scope
+ * @param $sce
  * @param HsMapService
  * @param HsCore
  * @param HsFeatureFilterService
@@ -14,6 +15,7 @@ import {pointerMove} from 'ol/events/condition';
  */
 export default function (
   $scope,
+  $sce,
   HsMapService,
   HsCore,
   HsFeatureFilterService,
@@ -24,6 +26,26 @@ export default function (
   'ngInject';
   $scope.map = HsMapService.map;
   $scope.LayMan = HsLayermanagerService;
+
+  $scope.youtubeRegex = /^(https?:\/\/(?:www.)?)?youtube.com\/watch\?.*(?:v=(?<id>[^&/\r\n]+))/;
+  $scope.vimeoRegex = /^(https?:\/\/(?:www.)?)?vimeo.com\/(?<id>[\d]+)/;
+  $scope.otherSourceRegex = /^(https?:\/\/(www\.)?)?(?!.*(youtube|vimeo)).*\.\w+\//;
+
+  $scope.parseVideo = function (url) {
+    if (url.match($scope.youtubeRegex)) {
+      const VIDEO_ID = url.match($scope.youtubeRegex).groups.id;
+      return $sce.trustAsHtml(
+        `<iframe src="https://www.youtube.com/embed/${VIDEO_ID}" type="text/html" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>></iframe>`
+      );
+    } else if (url.match($scope.vimeoRegex)) {
+      const VIDEO_ID = url.match($scope.vimeoRegex).groups.id;
+      return $sce.trustAsHtml(
+        `<iframe src="https://player.vimeo.com/video/${VIDEO_ID}" type="text/html" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
+      );
+    } else {
+      return $sce.trustAsHtml(`<a href="${url}" target="_blank">${url}</a>`);
+    }
+  };
 
   const POPUP = new Popup();
 

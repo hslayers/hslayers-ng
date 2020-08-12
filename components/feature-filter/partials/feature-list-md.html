@@ -92,6 +92,12 @@
                 <p class="content-info" ng-if="featureDetails.other_benefits" ng-bind-html="featureDetails.other_benefits"></p>
                 <h3 ng-if="featureDetails.other_factors" class="heading">Other factors that make possible a successful realisation of the practice/activity</h3>
                 <p class="content-info" ng-if="featureDetails.other_factors" ng-bind-html="featureDetails.other_factors"></p>
+                <h3 ng-if="featureDetails.videos.length > 0" class="heading">Videos</h3>
+                <div ng-if="featureDetails.videos.length > 0"
+                    ng-repeat="video in featureDetails.videos"
+                    ng-bind-html="parseVideo(video)"
+                    class="video">
+                </div>
             </div>
         </div>
     </md-content>
