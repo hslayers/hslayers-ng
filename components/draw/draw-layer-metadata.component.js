@@ -37,8 +37,9 @@ export default {
           f.setProperties(dic);
         })
           
-        HsDrawService.changeDrawSource()
-
+        HsDrawService.changeDrawSource();
+       
+        vm.layer.set('synchronize',true);
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
