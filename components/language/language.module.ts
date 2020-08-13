@@ -21,7 +21,7 @@ export default angular
   .directive('hs.language.directive', () => {
     'ngInject';
     return {
-      template: require(`components/language/partials/language.html`),
+      template: require(`./partials/language.html`),
     };
   })
 

@@ -210,10 +210,10 @@ export class HsLayerManagerService {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return require('img/' + thumbnail);
+        return require('../../img/' + thumbnail);
       }
     } else {
-      return require('img/default.png');
+      return require('../../img/default.png');
     }
   }
   /**
