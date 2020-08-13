@@ -11,7 +11,6 @@
  */
 const path = require('path');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-const hslPaths = require(path.join(__dirname, '..', 'common_paths')); //TODO this should not be necessary
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 const webpack = require('webpack');
 
@@ -28,10 +27,7 @@ module.exports = {
   resolve: {
     symlinks: true,
     extensions: ['.tsx', '.ts', '.js'],
-    modules: [
-      path.join(__dirname, '..'),
-      path.resolve('../node_modules'),
-    ].concat(hslPaths.paths),
+    modules: [path.join(__dirname, '..'), path.resolve('../node_modules')],
   },
   plugins: [
     new DynamicPubPathPlugin({
