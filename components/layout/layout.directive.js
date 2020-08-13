@@ -3,8 +3,8 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
   return {
 	template: HsConfig.design == 'md' ?
 		HsConfig.directiveTemplates.layout ||
-		require('components/layout/partials/layoutmd.html') :
-		require('components/layout/partials/layout.html'),
+		require('./partials/layoutmd.html') :
+		require('./partials/layout.html'),
     link: function (scope, element) {
       HsLayoutService.contentWrapper = element[0].querySelector('.hs-content-wrapper');
       HsLayoutService.layoutElement = element[0];
@@ -43,11 +43,11 @@ export default function (HsCore, $timeout, HsConfig, $compile, HsLayoutService) 
           }, 500);
         }
         import('ol/ol.css');
-        import('css/app.css');
+        import('../../css/app.css');
         if (!!window.cordova) {
-          import(/* webpackChunkName: "lazy-mobile" */'css/mobile.css')
+          import(/* webpackChunkName: "lazy-mobile" */ '../../css/mobile.css');
         }
-        import('css/whhg-font/css/whhg.css')
+        import('../../css/whhg-font/css/whhg.css');
 
         if (HsConfig.theme) {
           if (HsConfig.theme.sidebar)

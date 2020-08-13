@@ -1,4 +1,4 @@
-import FULLTILT from 'fulltilt';
+import FULLTILT from './fulltilt';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import GyroNorm from '../../lib/gyronorm_updated';

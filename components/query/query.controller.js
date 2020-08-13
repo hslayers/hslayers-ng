@@ -39,7 +39,7 @@ export default function (
         .show({
           scope: this,
           preserveScope: true,
-          template: require('components/query/partials/infopanel.html'),
+          template: require('./partials/infopanel.html'),
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,
