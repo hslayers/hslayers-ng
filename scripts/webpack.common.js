@@ -27,7 +27,10 @@ module.exports = {
   resolve: {
     symlinks: true,
     extensions: ['.tsx', '.ts', '.js'],
-    modules: [path.join(__dirname, '..'), path.resolve('../node_modules')],
+    modules: [
+      path.resolve(path.join(__dirname, '..')),
+      path.resolve(path.join(__dirname, '../node_modules')),
+    ],
   },
   plugins: [
     new DynamicPubPathPlugin({
