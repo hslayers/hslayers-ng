@@ -7,7 +7,6 @@ import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
-
 export const downgradedModule = downgrade(HsShareModule);
 
 /**
@@ -17,7 +16,6 @@ export const downgradedModule = downgrade(HsShareModule);
 
 angular
   .module(downgradedModule, [
-    '720kb.socialshare',
     'hs.core',
     'hs.map',
     'hs.save-map',
