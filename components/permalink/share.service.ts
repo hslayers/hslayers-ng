@@ -222,7 +222,7 @@ export class HsShareService {
         );
 
         const shortUrl = await this.HsUtilsService.shortUrl(
-          `{endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
+          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
         );
 
         const shareUrl = shortUrl;
