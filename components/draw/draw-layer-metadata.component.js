@@ -38,12 +38,14 @@ export default {
         })
           
         HsDrawService.changeDrawSource();
-       
         vm.layer.set('synchronize',true);
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
         HsDrawService.tmpDrawLayer = false;
+        setTimeout(()=> {
+          vm.layer.getSource().dispatchEvent('addfeature');
+        },1000)
       },
       pathChanged() {
         vm.layer.set('path', vm.path);
