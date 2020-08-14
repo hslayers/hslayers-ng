@@ -5,7 +5,7 @@
   "description": "Hslayers-ng mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",
-  "main": "dist/hslayers-ng.js",
+  "main": "dist/hslayers-ng.main.js",
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
@@ -77,7 +77,8 @@
     "test-watch": "node --max_old_space_size=4096 node_modules/karma/bin/karma start test/karma.conf.js --auto-watch=true --single-run=false",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-    "release": "npm run-script build && dotenv -- release-it",
+    "prerelease": "npm run doc",
+    "release": "npm run build && dotenv -- release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
