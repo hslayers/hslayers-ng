@@ -1,6 +1,17 @@
 import Map from 'ol/Map';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+
+/**
+ * HsEventBusService provides observable events which you can subscribe to or fire them
+ *
+ * @example
+ * HsEventBusService.sizeChanges.subscribe((size) => {
+ *              doSomethingWith(size);
+ * })
+ * @example
+ * HsEventBusService.layerLoads.next();
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -21,14 +32,22 @@ export class HsEventBusService {
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
   vectorQueryFeatureDeselection: Subject<any> = new Subject();
-  mainPanelChanges: Subject<any> = new Subject(); //replaces 'core.mainpanel_changed'
-  measurementStarts: Subject<any> = new Subject(); //replaces 'measure.drawStart'
-  measurementEnds: Subject<any> = new Subject(); //replaces 'measure.drawEnd'
+  /**
+   * replaces 'core.mainpanel_changed'
+   */
+  mainPanelChanges: Subject<any> = new Subject();
+  /**
+   * replaces 'measure.drawStart'
+   */
+  measurementStarts: Subject<any> = new Subject();
+  /**
+   * replaces 'measure.drawEnd'
+   */
+  measurementEnds: Subject<any> = new Subject();
   cesiumLoads: Subject<any> = new Subject();
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
   /**
-   * @ngdoc event
    * @name mapExtentChanges
    * @eventType broadcast on $rootScope
    * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
@@ -36,9 +55,18 @@ export class HsEventBusService {
   mapExtentChanges: Subject<any> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
   mapLibraryChanges: Subject<any> = new Subject();
-  cesiumTimeLayerChanges: Subject<any> = new Subject(); //replaces 'cesium.time_layers_changed'
+  /**
+   * replaces 'cesium.time_layers_changed'
+   */
+  cesiumTimeLayerChanges: Subject<any> = new Subject();
   layoutResizes: Subject<any> = new Subject();
-  olMapLoads: Subject<Map> = new Subject(); //replaces 'map.loaded'
-  compositionLoading: Subject<any> = new Subject(); // replaces 'compositions.composition_loading'
+  /**
+   * replaces 'map.loaded'
+   */
+  olMapLoads: Subject<Map> = new Subject();
+  /**
+   * replaces 'compositions.composition_loading'
+   */
+  compositionLoading: Subject<any> = new Subject();
   constructor() {}
 }
