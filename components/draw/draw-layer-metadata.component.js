@@ -3,7 +3,7 @@ export default {
   bindings: {
     layer: '<',
   },
-  controller: function ($scope, $timeout, HsDrawService, HsMapService) {
+  controller: function ($scope, $timeout, HsDrawService, HsMapService,HsLayerSynchronizerService) {
     'ngInject';
     this.modalVisible = true;
     const vm = this;
@@ -43,10 +43,17 @@ export default {
         HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
         HsDrawService.tmpDrawLayer = false;
-        setTimeout(()=> {
+        vm.waitForlayer(vm.layer).then(()=>{
           vm.layer.getSource().dispatchEvent('addfeature');
-        },1000)
+        })
       },
+
+    async waitForlayer(layer){
+      while(layer.get('hs-layman-synchronizing')) {
+        await new Promise(r => setTimeout(r, 200));
+      }
+      return true
+    },
       pathChanged() {
         vm.layer.set('path', vm.path);
       },
