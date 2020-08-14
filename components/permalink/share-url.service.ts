@@ -99,7 +99,7 @@ export class HsShareUrlService {
             .map((key) => {
               return {key, value: this.params[key]};
             })
-            .map((dic) => `{dic.key}=${encodeURIComponent(dic.value)}`)
+            .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
             .join('&')
         );
         this.browserUrlUpdated.next();
