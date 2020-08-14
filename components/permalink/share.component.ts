@@ -46,10 +46,9 @@ export class HsShareComponent {
   /**
    * @function shareOnSocial
    * @memberof hs.permalink
-   * @param {string} provider Social network provider for sharing
    * @description Create share post on selected social network
    */
-  shareOnSocial(provider) {
-    this.HsShareService.shareOnSocial(provider, this.new_share);
+  shareOnSocial() {
+    this.HsShareService.shareOnSocial(this.new_share);
   }
 }

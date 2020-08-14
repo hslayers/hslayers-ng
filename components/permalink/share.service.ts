@@ -202,7 +202,7 @@ export class HsShareService {
    * @param {boolean} newShare If new share record on server should be created
    * @description Share map on social network
    */
-  async shareOnSocial(provider, newShare) {
+  async shareOnSocial(newShare) {
     if (!this.data.shareUrlValid) {
       if (this.HsShareUrlService.shareId === null || newShare) {
         this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
@@ -236,7 +236,7 @@ export class HsShareService {
             console.log(response);
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
         this.data.shareUrlValid = true;
       } catch (ex) {
@@ -253,7 +253,7 @@ export class HsShareService {
           console.log(response);
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     }
   }
