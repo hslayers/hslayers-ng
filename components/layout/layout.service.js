@@ -346,6 +346,11 @@ export default function (
       Object.assign(panelWidths, HsConfig.panelWidths);
       let tmp = panelWidths[me.mainpanel] || panelWidths.default;
 
+      if (typeof tmp === 'string' && tmp.includes('%')) {
+        const widthRatio = Number(tmp.replace('%', ''));
+        return layoutWidth * (widthRatio / 100);
+      }
+
       if (layoutWidth <= 767 && $window.innerWidth <= 767) {
         tmp = layoutWidth;
         me.sidebarToggleable = false;

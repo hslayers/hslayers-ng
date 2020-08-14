@@ -10,6 +10,7 @@ import {pointerMove} from 'ol/events/condition';
  * @param HsCore
  * @param HsFeatureFilterService
  * @param HsLayermanagerService
+ * @param HsLayoutService
  * @param HsQueryVectorService
  * @param HsConfig
  */
@@ -20,6 +21,7 @@ export default function (
   HsCore,
   HsFeatureFilterService,
   HsLayermanagerService,
+  HsLayoutService,
   HsQueryVectorService,
   HsConfig
 ) {
@@ -161,5 +163,6 @@ export default function (
       duration: 300,
     });
   });
+  HsLayoutService.setMainPanel('feature-list');
   $scope.$emit('scope_loaded', 'featureList');
 }
