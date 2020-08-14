@@ -323,8 +323,8 @@ export class HsMeasureService {
   }
 }
 
-interface measurement {
+type measurement = {
   size: number;
   type: string;
   unit: string;
-}
+};

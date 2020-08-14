@@ -19,14 +19,14 @@ import {HsQueryVectorService} from '../query/query-vector.service';
 
 import {Injectable} from '@angular/core';
 
-interface activateParams {
+type activateParams = {
   onDrawStart?;
   onDrawEnd?;
   onSelected?;
   onDeselected?;
   changeStyle?;
   drawState?: boolean;
-}
+};
 
 @Injectable({
   providedIn: 'root',

@@ -9,12 +9,12 @@ import {HsStylerService} from '../styles/styler.service';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Layer} from 'ol/layer';
 
-interface styleJson {
+type styleJson = {
   fill?: any;
   stroke?: any;
   image?: any;
   radius?: any;
-}
+};
 
 @Component({
   selector: 'hs-styles',

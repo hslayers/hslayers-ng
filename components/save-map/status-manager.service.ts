@@ -1,6 +1,6 @@
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
-import {HsSaverService} from './saver-service';
+import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
