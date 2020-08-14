@@ -1,4 +1,4 @@
-import { Layer } from "ol/layer";
+import {Layer} from 'ol/layer';
 
 export interface HsLegendDescriptor {
   lyr: Layer;

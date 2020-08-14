@@ -6,7 +6,7 @@ import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
-import {HsSaverService} from './saver-service';
+import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
