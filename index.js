@@ -1,1 +1,1 @@
-module.exports = require('dist/hslayers-ng.main.js');
+module.exports = require('./dist/hslayers-ng.main.js');
