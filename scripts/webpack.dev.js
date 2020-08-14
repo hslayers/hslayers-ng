@@ -14,24 +14,33 @@ const path = require('path');
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
-  watchOptions: { ignored: /node_modules/ },
+  watchOptions: {ignored: /node_modules/},
   optimization: {
     // see https://webpack.js.org/guides/build-performance#avoid-extra-optimization-steps
     removeAvailableModules: false,
     removeEmptyChunks: false,
     // In dev mode we simply want to get a big bundle containing all our js
-    splitChunks: false
+    splitChunks: false,
   },
   module: {
     rules: [
       // Load css files which will be injected in html page at startup <style>...</style>)
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            // We do not yet use Modular CSS, hence it's safe to disable their resolving
+            options: {
+              modules: false,
+            },
+          },
+        ],
       },
       {
-          test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-          use: ['url-loader']
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: ['url-loader'],
       },
       // Load angularJS partials HTML file as URL
       {
@@ -40,16 +49,16 @@ module.exports = merge(common, {
         use: [
           'ng-cache-loader?prefix=[dir]/[dir]',
           'extract-loader',
-          'html-loader'
-        ]
+          'html-loader',
+        ],
       },
       // Load images as URLs
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: {
-          loader: 'url-loader'
-        }
-      }
-    ]
-  }
+          loader: 'url-loader',
+        },
+      },
+    ],
+  },
 });

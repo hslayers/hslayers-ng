@@ -10,8 +10,8 @@
  *   `'ngInject';` or `@ngInject` in comments. See https://docs.angularjs.org/guide/di
  */
 const path = require('path');
-var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-const hslPaths = require(path.join( __dirname, '..', 'common_paths')); //TODO this should not be necessary
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const hslPaths = require(path.join(__dirname, '..', 'common_paths')); //TODO this should not be necessary
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 
 module.exports = {
@@ -21,14 +21,14 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     filename: 'hslayers-ng.js',
     library: 'hslayers-ng',
-    libraryTarget:'umd'
+    libraryTarget: 'umd',
   },
   // Just for build speed improvement
-  resolve: { symlinks: true,
-    modules: [
-      path.join(__dirname, '..'),
-      "../node_modules",
-    ].concat(hslPaths.paths)
+  resolve: {
+    symlinks: true,
+    modules: [path.join(__dirname, '..'), '../node_modules'].concat(
+      hslPaths.paths
+    ),
   },
   plugins: [
     new DynamicPubPathPlugin({
@@ -37,9 +37,9 @@ module.exports = {
     // Clean before build
     //new CleanWebpackPlugin()
     new WebpackBuildNotifierPlugin({
-      title: "HsLayersNg",
-      suppressSuccess: false
-    })
+      title: 'HsLayersNg',
+      suppressSuccess: false,
+    }),
   ],
   module: {
     rules: [
@@ -55,11 +55,14 @@ module.exports = {
             options: {
               // Babel syntax dynamic import plugin allow babel to correctly parse js files
               // using webpack dynamic import expression (i.e import('angular').then(...))
-              plugins: ['angularjs-annotate', '@babel/plugin-syntax-dynamic-import']
-            }
-          }
-        ]
-      }
-    ]
-  }
+              plugins: [
+                'angularjs-annotate',
+                '@babel/plugin-syntax-dynamic-import',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
