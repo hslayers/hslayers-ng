@@ -9,6 +9,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@compodoc/compodoc": "^1.1.11",
     "@types/cesium": "^1.67.12",
     "@types/jasmine": "^3.5.10",
     "@types/webpack-env": "^1.15.2",
@@ -67,6 +68,7 @@
   },
   "scripts": {
     "build": "npm run isolate-bootstrap && rm -rf dist && webpack --config scripts/webpack.prod.js",
+    "doc": "npx compodoc -c .compodocrc.json",
     "postinstall": "",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000",
