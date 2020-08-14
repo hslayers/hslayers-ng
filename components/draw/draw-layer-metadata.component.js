@@ -38,17 +38,19 @@ export default {
         })
           
         HsDrawService.changeDrawSource();
+
         vm.layer.set('synchronize',true);
+        vm.awaitLayerSync(vm.layer).then(()=>{
+          vm.layer.getSource().dispatchEvent('addfeature');
+        })
+
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
         vm.modalVisible = false;
         HsDrawService.tmpDrawLayer = false;
-        vm.waitForlayer(vm.layer).then(()=>{
-          vm.layer.getSource().dispatchEvent('addfeature');
-        })
       },
 
-    async waitForlayer(layer){
+    async awaitLayerSync(layer){
       while(layer.get('hs-layman-synchronizing')) {
         await new Promise(r => setTimeout(r, 200));
       }
