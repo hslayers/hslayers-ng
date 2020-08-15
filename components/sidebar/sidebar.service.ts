@@ -291,7 +291,6 @@ export class HsSidebarService {
       this.HsLayoutService.minisidebar = false;
       return true;
     } else {
-      console.log(this.HsLayoutService.layoutElement.clientWidth);
       if (
         this.visibleButtons.indexOf(which) + 1 >=
           this.HsLayoutService.layoutElement.clientWidth / 60 &&

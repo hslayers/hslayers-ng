@@ -64,7 +64,9 @@ div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 	pointer-events: none;
 	background: none !important;
 }
-
+.flex-reverse{
+	flex-direction: row-reverse
+}
 .fill {
 	min-height: 100%;
 	height: 100%;
@@ -982,6 +984,7 @@ div.hs-info-composition-edited {
 		max-height: 40vh;
 		overflow-y: visible;
 		font-size: x-large;
+		width: 100%;
 	}
 	.hs-sb-left .hs-toolbar, .hs-sb-left .hs-toolbar{
 		margin-left: 0 !important	;
@@ -1013,7 +1016,9 @@ div.hs-info-composition-edited {
 	.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) .hs-sidebar-list {
 		width: 100%;
 	}
-
+	div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper{
+		width: 100%;
+	}
 	.hs-content-wrapper div.hs-panelspace:not(.labels) .hs-sidebar-list {
 		width: 100%;
 	}

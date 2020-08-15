@@ -470,9 +470,9 @@ export class HsLayoutService {
         tmp = 0;
       }
     }
-    if (tmp > layoutWidth * 0.45) {
-      tmp = layoutWidth * 0.45;
-    }
+    // if (tmp > layoutWidth * 0.45) {
+    //   tmp = layoutWidth * 0.45;
+    // }
     return tmp;
   }
 
