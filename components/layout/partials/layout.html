@@ -1,11 +1,13 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper w-100 h-100"
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
-        <div class="hs-gui-overlay d-flex w-100 h-100 " > <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
-            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100" style="z-index:990; flex: 1 1 auto;"></div>
+        <div class="hs-gui-overlay d-flex w-100 h-100 ">
+            <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
+            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"
+                style="z-index:990; flex: 1 1 auto;"></div>
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
-                    ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
-                </hs.toolbar>
+                ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
+            </hs.toolbar>
             <!-- <div ng-style="{'width':'239px'}" ng-controller="HsSearchController" ng-if="!HsCore.exists('hs.toolbar') && HsCore.exists('HsSearchController') && layoutService.sidebarVisible()">
                     <div>
                         <hs-search-input></hs-search-input>
@@ -56,16 +58,16 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="hs-info-container"
-                    ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')"
-                    ng-style="infoContainerStyle()">
-                    <div class="hs-info-area">
-                        <hs.info ng-if="HsCore.exists('hs.info')"></hs.info>
-                    </div>
+            <div class="hs-info-container"
+                ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')"
+                ng-style="infoContainerStyle()">
+                <div class="hs-info-area">
+                    <hs.info ng-if="HsCore.exists('hs.info')"></hs.info>
                 </div>
-                <div>
-                    <hs.query.feature-popup></hs.query.feature-popup>
-                </div> -->
+            </div>
+            <div>
+                <hs.query.feature-popup></hs.query.feature-popup>
+            </div>
             <!-- <hs.draw.shape-toolbar></hs.draw.shape-toolbar> -->
         </div>
         <div class="hs-dialog-area">

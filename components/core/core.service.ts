@@ -247,7 +247,6 @@ export class HsCoreService {
       }
     }
     const neededSize = {width: map.clientWidth, height: this.HsLayoutService.layoutElement.clientHeight};
-    console.log(neededSize)
     this.HsEventBusService.sizeChanges.next(neededSize);
   }
 
