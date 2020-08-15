@@ -1,14 +1,14 @@
-<div class="basemapGallery" [ngStyle]="galleryStyle()">
+<div class="basemapGallery" [ngStyle]="galleryStyle()" style="z-index: 991;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with (nested )dropdown">
-        <button type="button" class="button-primary btn-sm  basemap-tile " *ngFor="let layer of fitting(LayerManager.data.baselayers)" (click)="toggleBasemap(layer)" [ngClass]="{'active': layer.active}">{{layer.title}}</button>
+        <button type="button" class="button-primary btn-sm  basemap-tile " *ngFor="let layer of fitting(HsLayerManagerService.data.baselayers)" (click)="toggleBasemap(layer)" [ngClass]="{'active': layer.active}">{{layer.title}}</button>
         <button type="button" *ngIf="fitsInContainer()" class="button-primary btn-sm  basemap-tile " (click)="changeBaseLayerVisibility()" [ngClass]="{'active' : !data.baselayersVisible}" i18n>No basemap</button>
 
         <div class="btn-group btn-group-sm" role="group" *ngIf="!fitsInContainer()">
-            <button type="button" (click)="$parent.baseLayersExpanded=!$parent.baseLayersExpanded" class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" [attr.aria-expanded]="$parent.baseLayersExpanded">
+            <button type="button" (click)="baseLayersExpanded=!baseLayersExpanded" class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" [attr.aria-expanded]="baseLayersExpanded">
                 <i class="glyphicon icon-map x-large p-0"></i>
             </button>
-            <div class="dropdown-menu dropdown-menu-right p-0" [ngClass]="{'show': $parent.baseLayersExpanded}">
-                <div *ngFor="let layer of LayerManager.data.baselayers" (click)="toggleBasemap(layer)" [ngStyle]="{'position':'relative'}">
+            <div class="dropdown-menu dropdown-menu-right p-0" [ngClass]="{'show': baseLayersExpanded}">
+                <div *ngFor="let layer of HsLayerManagerService.data.baselayers" (click)="toggleBasemap(layer)" [ngStyle]="{'position':'relative'}">
                     <div style="position:absolute;top:5px; right:5px;z-index:5" [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}" *ngIf="layer.active" (click)="toggleMiniMenu(layer)">
                         <span class="glyphicon icon-menu icon-small"></span>
                     </div>
