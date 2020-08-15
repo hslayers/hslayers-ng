@@ -179,11 +179,12 @@ export class HsCoreService {
     }
     this.HsMapService.loaded().then((map) => {
       this.initSizeListeners();
-      this.updateMapSize();
+      setTimeout(() => {
+        this.updateMapSize();
+      }, 500);
       this.initCalled = true;
     });
   }
-
 
   /**
    * @ngdoc method
@@ -221,9 +222,9 @@ export class HsCoreService {
 
     w.addEventListener('resize', () => {
       updateVH();
-      setTimeout(()=>{
+      setTimeout(() => {
         this.updateMapSize();
-      },500)
+      }, 500);
     });
   }
   /**
@@ -246,7 +247,10 @@ export class HsCoreService {
         this.HsLayoutService.smallWidth = false;
       }
     }
-    const neededSize = {width: map.clientWidth, height: this.HsLayoutService.layoutElement.clientHeight};
+    const neededSize = {
+      width: map.clientWidth,
+      height: this.HsLayoutService.layoutElement.clientHeight,
+    };
     this.HsEventBusService.sizeChanges.next(neededSize);
   }
 
