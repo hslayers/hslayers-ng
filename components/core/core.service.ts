@@ -246,8 +246,8 @@ export class HsCoreService {
       }
     }
     const neededSize = {
-      width: map.clientWidth,
-      height: map.clientHeight,
+      width: map.offsetWidth,
+      height: map.offsetHeight,
     };
     this.HsEventBusService.sizeChanges.next(neededSize);
   }
