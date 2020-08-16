@@ -266,22 +266,6 @@ export class HsLayoutService {
 
   /**
    * @ngdoc method
-   * @name HsLayoutService#fullScreenMap
-   * @public
-   * @param {object} element HS layers element gained from directive link
-   * @param {object} core hs.HsCore element, holds sizeOptions variable and init method
-   * @description Helper function for single page HS map applications.
-   */
-  fullScreenMap(element, core) {
-    this.$document[0].documentElement.style.overflow = 'hidden';
-    this.$document[0].documentElement.style.height = '100%';
-    this.$document[0].body.style.height = '100%';
-    core.sizeOptions.mode = 'fullscreen';
-    core.init(element, {parent: true});
-  }
-
-  /**
-   * @ngdoc method
    * @name HsLayoutService#panelVisible
    * @public
    * @param {string} which Name of panel to test
