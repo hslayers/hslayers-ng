@@ -241,10 +241,12 @@ export class HsCoreService {
 
     if (this.HsMapService.map) {
       this.HsMapService.map.updateSize();
-      if (map.offsetWidth < 767) {
-        this.HsLayoutService.smallWidth = true;
+      if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
+        this.HsLayoutService.smallWidth = true; //deprecated?
+        this.HsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.smallWidth = false;
+        this.HsLayoutService.smallWidth = false;//deprecated?
+        this.HsLayoutService.sidebarLabels = true;
       }
     }
     const neededSize = {
