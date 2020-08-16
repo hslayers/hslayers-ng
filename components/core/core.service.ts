@@ -133,18 +133,6 @@ export class HsCoreService {
     );
     return this.HsLayoutService.closePanel(which);
   }
-
-  /**
-   * @deprecated Replaced by HsLayoutService#fullScreenMap
-   * @param {*} element
-   */
-  fullScreenMap(element) {
-    this.log.warn(
-      'fullScreenMap will be removed from HsCore in future. Use HsLayoutService#fullScreenMap method instead'
-    );
-    return this.HsLayoutService.fullScreenMap(element, this);
-  }
-
   /**
    * @deprecated Replaced by config.allowAddExternalDatasets
    */
