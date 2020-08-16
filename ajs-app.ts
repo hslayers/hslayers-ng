@@ -84,12 +84,6 @@ export default angular
     return {
       template: require('hslayers.html'),
       link: function (_scope, element) {
-        if (
-          typeof HsConfig.sizeMode == 'undefined' ||
-          HsConfig.sizeMode == 'fullscreen'
-        ) {
-          HsCore.fullScreenMap(element);
-        }
       },
     };
   })
