@@ -29,18 +29,6 @@ export class HsCoreService {
    */
   _exist_cache: any = {};
 
-  /**
-   * @ngdoc property
-   * @name HsCore#sizeOptions
-   * @public
-   * @type {object}
-   * @description Hold data for computing app sizes. Shouldnt be modified directly. Holds reference to HS app element and optionally its container.
-   */
-  sizeOptions: any = {
-    element: undefined,
-    windowedMap: undefined,
-    selector: undefined,
-  };
   language = 'en';
   config: any;
   _puremapApp = false;
@@ -180,9 +168,6 @@ export class HsCoreService {
    * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
    */
   updateVH() {
-    if (this.sizeOptions.mode != 'fullscreen') {
-      return;
-    }
     const vh = this.window.innerHeight * 0.01;
     this.document.body.style.setProperty('--vh', `${vh}px`);
 
