@@ -552,7 +552,6 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
 	padding-left: 0;
 	padding-right: 0;
 	overflow-y: auto;
-	width: 400px;
 }
 
 hs-sidebar {
@@ -605,7 +604,6 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 div.hs-panelplace {
 	height: 100%;
 	overflow-y: auto;
-	width: 351px;
 	margin-left: 49px;
 }
 
