@@ -185,7 +185,26 @@ export class HsCoreService {
       this.initCalled = true;
     });
   }
+  /**
+   * @ngdoc method
+   * @name HsCore#updateVH
+   * @private
+   * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
+   */
+  updateVH() {
+    if (this.sizeOptions.mode != 'fullscreen') {
+      return;
+    }
+    const vh = this.window.innerHeight * 0.01;
+    this.document.body.style.setProperty('--vh', `${vh}px`);
 
+    if (this.window.matchMedia('(orientation: portrait)').matches) {
+      this.document.getElementsByTagName('html')[0].style.height = '100vh';
+      setTimeout(() => {
+        this.document.getElementsByTagName('html')[0].style.height = '100%';
+      }, 500);
+    }
+  }
   /**
    * @ngdoc method
    * @name HsCore#initSizeListeners
@@ -193,38 +212,16 @@ export class HsCoreService {
    * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    */
   initSizeListeners(): void {
-    const w = this.window;
-    /**
-     * @ngdoc method
-     * @name HsCore#updateVH
-     * @private
-     * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
-     */
-    const updateVH = this.HsUtilsService.debounce(
-      () => {
-        if (this.sizeOptions.mode != 'fullscreen') {
-          return;
-        }
-        const vh = w.innerHeight * 0.01;
-        this.document.body.style.setProperty('--vh', `${vh}px`);
-
-        if (w.matchMedia('(orientation: portrait)').matches) {
-          this.document.getElementsByTagName('html')[0].style.height = '100vh';
-          setTimeout(() => {
-            this.document.getElementsByTagName('html')[0].style.height = '100%';
-          }, 500);
-        }
-      },
-      150,
-      false,
-      this
-    );
-
-    w.addEventListener('resize', () => {
-      updateVH();
-      setTimeout(() => {
-        this.updateMapSize();
-      }, 500);
+    this.window.addEventListener('resize', () => {
+      this.HsUtilsService.debounce(
+        function () {
+          this.updateVH();
+          this.updateMapSize();
+        },
+        300,
+        false,
+        this
+      )();
     });
   }
   /**
@@ -238,20 +235,19 @@ export class HsCoreService {
     if (map === null) {
       return;
     }
-
     if (this.HsMapService.map) {
       this.HsMapService.map.updateSize();
       if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
         this.HsLayoutService.smallWidth = true; //deprecated?
         this.HsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.smallWidth = false;//deprecated?
+        this.HsLayoutService.smallWidth = false; //deprecated?
         this.HsLayoutService.sidebarLabels = true;
       }
     }
     const neededSize = {
       width: map.clientWidth,
-      height: this.HsLayoutService.layoutElement.clientHeight,
+      height: map.clientHeight,
     };
     this.HsEventBusService.sizeChanges.next(neededSize);
   }
