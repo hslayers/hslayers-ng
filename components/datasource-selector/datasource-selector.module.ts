@@ -10,12 +10,13 @@ import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsDatasourcesComponent],
   imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
-  exports: [HsDatasourcesComponent],
+  exports: [HsDatasourcesComponent, HsSelectTypeToAddLayerDialogComponent],
   providers: [
     HsDatasourcesService,
     HsDatasourcesMapService,

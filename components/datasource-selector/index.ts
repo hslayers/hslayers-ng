@@ -32,7 +32,6 @@ angular
     'hs.permalink',
   ])
   /**
-   * @ngdoc directive
    * @name hs.datasourceSelector.metadataDialogDirective
    * @memberof hs.datasource_selector
    * @description Directive for displaying metadata about data source
@@ -43,7 +42,6 @@ angular
   )
 
   /**
-   * @ngdoc directive
    * @name hs.advMickaDialog
    * @memberof hs.datasource_selector
    * @description Directive for displaying extended search parameters for
@@ -60,7 +58,6 @@ angular
   .directive('hs.mickaSuggestionsDialog', mickaSuggestionsDialogDirective)
 
   /**
-   * @ngdoc directive
    * @name hs.mickaFiltersDirective
    * @memberof hs.datasource_selector
    * @description Directive for providing basic html elements for Micka
@@ -69,7 +66,6 @@ angular
   .directive('hs.mickaFiltersDirective', mickaFiltersDirective)
 
   /**
-   * @ngdoc service
    * @name HsMickaFiltersService
    * @memberof hs.datasource_selector
    * @description Service for calling catalogue loaders and managing layers -
@@ -83,7 +79,6 @@ angular
   /**
    * @module hs.datasource_selector
    * @name HsDataSourceSelectorMapService
-   * @ngdoc controller
    * @description Service of composition module which deal ith OpenLayers map objects
    */
   .service(
@@ -92,7 +87,6 @@ angular
   )
 
   /**
-   * @ngdoc service
    * @name HsMickaFiltersService
    * @memberof hs.datasource_selector
    * @description Service for managing micka query filter parameters and
@@ -101,7 +95,6 @@ angular
   .service('HsMickaFiltersService', downgradeInjectable(HsMickaFilterService))
 
   /**
-   * @ngdoc service
    * @name HsMickaBrowserService
    * @memberof hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
@@ -109,7 +102,6 @@ angular
   .service('HsMickaBrowserService', downgradeInjectable(HsMickaBrowserService))
 
   /**
-   * @ngdoc service
    * @name HsLaymanBrowserService
    * @memberof hs.datasource_selector
    * @description Service for querying layer from Layman
@@ -120,7 +112,6 @@ angular
   )
 
   /**
-   * @ngdoc component
    * @memberof hs.datasource_selector
    * @name hs.datasourceSelector
    * @description Display Datasource selector panel in app. Panel contains datasource types switcher and loaded list of datas.
@@ -130,9 +121,9 @@ angular
     downgradeComponent({component: HsDatasourcesComponent})
   )
 
-  .component(
+  .directive(
     'hsSelectTypeToAddLayerDialog',
-    HsSelectTypeToAddLayerDialogComponent
+    downgradeComponent({component: HsSelectTypeToAddLayerDialogComponent})
   )
 
   .filter('forDatasourceBrowser', HsForDatasourceBrowserFilter);
