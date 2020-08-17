@@ -1,5 +1,5 @@
 import '../../../common/get-capabilities.module';
-import '../../utils/utils.module';
+import '../../utils';
 import * as angular from 'angular';
 import addLayersWmsComponent from './add-layers-wms.component';
 import addLayersWmsService from './add-layers-wms.service';

@@ -1,5 +1,5 @@
 import '../../../common/get-capabilities.module';
-import '../../utils/utils.module';
+import '../../utils';
 
 export default {
   template: function (HsConfig) {

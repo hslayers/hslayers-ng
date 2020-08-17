@@ -3,7 +3,7 @@ import '../../common/endpoints/endpoints.module';
 import '../../common/get-capabilities.module';
 import '../../common/layman/layman.module';
 import '../../common/widgets/widgets.module';
-import '../utils/utils.module';
+import '../utils';
 import 'angular-cookies';
 import * as angular from 'angular';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';

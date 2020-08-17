@@ -1,4 +1,4 @@
-import '../../utils/utils.module';
+import '../../utils';
 import * as angular from 'angular';
 import addLayersArcgisComponent from './add-layers-arcgis.component';
 import addLayersArcgisService from './add-layers-arcgis.service';

@@ -2,7 +2,7 @@ import '../../common/endpoints/endpoints.module';
 import '../layout/layout.module';
 import '../permalink/share.module';
 import '../save-map/save-map.module';
-import '../utils/utils.module';
+import '../utils';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
 import * as angular from 'angular';

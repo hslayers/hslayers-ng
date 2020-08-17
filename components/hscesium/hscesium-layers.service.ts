@@ -1,3 +1,4 @@
+import '../utils/string-modifications';
 import * as moment from 'moment';
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
@@ -30,7 +31,6 @@ import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 import {WINDOW} from '../utils/window';
 import {default as proj4} from 'proj4';
-
 /**
  * @param proxy
  * @param maxResolution

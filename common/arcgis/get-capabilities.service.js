@@ -1,4 +1,4 @@
-import '../../components/utils/utils.module';
+import '../../components/utils';
 import {Attribution} from 'ol/control';
 import {Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';

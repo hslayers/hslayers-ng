@@ -37,6 +37,7 @@ export class HsConfig {
   dsPaging: number;
   permalinkLocation: any;
   social_hashtag: any;
-
+  useProxy: boolean;
+  shortenUrl: any;
   constructor() {}
 }

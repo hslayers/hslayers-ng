@@ -1,4 +1,4 @@
-import '../../utils/utils.module';
+import '../../utils';
 import moment from 'moment';
 global.moment = moment;
 import '../../../common/get-capabilities.module';

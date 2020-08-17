@@ -20,7 +20,7 @@ export class HsLegendService {
    */
   constructor(
     private HsUtilsService: HsUtilsService,
-    private HsLayerSelectorService: HsLayerSelectorService,
+    private HsLayerSelectorService: HsLayerSelectorService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);
@@ -119,7 +119,7 @@ export class HsLegendService {
           featureStyle = featureStyle.slice(0, 100);
         }
         if (featureStyle[0].length) {
-          featureStyle = [].concat.apply([], featureStyle);
+          featureStyle = [...featureStyle];
         }
         styleArray = styleArray.concat(featureStyle);
       }

@@ -13,7 +13,7 @@ import '../permalink';
 import '../print';
 import '../save-map/';
 import '../translations/js/translations';
-import '../utils/utils.module';
+import '../utils';
 import {HsCoreModule} from './core.module';
 import {HsCoreService} from './core.service';
 import {HsEventBusService} from './event-bus.service';
