@@ -107,7 +107,7 @@ export class HsLaymanBrowserService {
    * @description Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component
    */
-  describeWhatToAdd(ds, layer) {
+  describeWhatToAdd(ds, layer): Promise<any> {
     return new Promise((resolve, reject) => {
       this.fillLayerMetadata(ds, layer).then(() => {
         resolve({
