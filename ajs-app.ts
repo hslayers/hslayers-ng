@@ -59,7 +59,7 @@ export default angular
     'hs.measure',
     'hs.legend',
     'hs.core',
-    'hs.datasource_selector',
+    'hs.datasource-selector',
     'hs.save-map',
     'hs.addLayers',
     'gettext',

@@ -6,7 +6,7 @@ import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../core/log.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
