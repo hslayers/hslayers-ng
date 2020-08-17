@@ -2,14 +2,10 @@
  * Webpack production configuration (merged with common config).
  * it overrides webpack.common.js configuration and:
  * - Set mode to production (allow to minify css, js etc...)
- * - Add content hash to files name -> This way, each time bundled files content changed, file name will be different.
- *   This allow browsers to keep cached files which did not change
  * - Minify/Uglify JS and CSS files
- * - Split js into two bundles: vendors (js comming from node_modules) and bundle (our own js)
+ * - Split js into two bundles: vendors (js comming from node_modules) and main (our own js) + bundle
+ *  for each of the UI frameworks (bootstrap and material)
  *   This way, when we change our js, only our bundle is changed so browsers can keep vendors js in cache
- * - Allow Load css files (import './myCssFile.css') -> Css rules will be automatically added to index.html into a <style></style> tag.
- * - Allow to load fonts and images (import './myFont.eot'; import './someImage.jpg')
- * - Allow to load html angularjs partials (i.e all html files under src folder) as url ->
  *
  */
 const {merge} = require('webpack-merge');
@@ -17,19 +13,39 @@ const common = require('./webpack.common');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map',
   output: {
-    // Add a chunkhash to file name so it will not be cached by browsers when content changed
     filename: 'hslayers-ng.[name].js',
     path: path.resolve(__dirname, '../dist'),
     library: 'hslayers-ng',
     libraryTarget: 'umd',
   },
-  plugins: [],
+  plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      filename: 'hslayers-ng.[name].js.map',
+      exclude: [
+        'hslayers-ng.vendors~lazy-material.js',
+        'hslayers-ng.vendors~lazy-bootstrap.js',
+        'hslayers-ng.vendors.js',
+        'hslayers-ng.vendors~img.js',
+      ],
+    }),
+  ],
   optimization: {
+    namedChunks: true,
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial',
+          name: 'vendors',
+          enforce: true,
+        },
+      },
+    },
     usedExports: true,
     minimizer: [
       // JS minifier/uglifier

@@ -1,10 +1,9 @@
 /**
  * Webpack common configuration.
  * it:
- * - Define the app entry point (./src) -> Where webpack will start compiling/bundling
- * - Define where assets will be served at by our webserver  (static/)
+ * - Define the app entry point (./main.ts) -> Where webpack will start compiling/bundling
+ * - Define where assets will be served at by our webserver  (dist/)
  * - Clean previous build on each build
- * - Generates the index.html file automatically by injecting bundled assets in it (css, js)
  * - Allow to load html files as strings in js code (i.e: import htmlString from './myHtmlFile.html)
  * - Allow to automatically generates the dependencies injection for angularJS components annotated with
  *   `'ngInject';` or `@ngInject` in comments. See https://docs.angularjs.org/guide/di
@@ -65,7 +64,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts?$/,
-        use: [{loader: 'ng-annotate-loader'}, 'ts-loader'],
+        use: ['ng-annotate-loader', 'ts-loader'],
         exclude: /node_modules/,
       },
       {test: /\.xml$/, loader: 'raw-loader'},
