@@ -10,7 +10,7 @@ import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesModule} from './datasource-selector.module';
 import {HsDatasourcesService} from './datasource-selector.service';
-import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
@@ -126,7 +126,7 @@ angular
     downgradeComponent({component: HsSelectTypeToAddLayerDialogComponent})
   )
 
-  .filter('forDatasourceBrowser', HsForDatasourceBrowserFilter);
+  .filter('endpointsWithDatasources', EndpointsWithDatasourcesPipe);
 
 angular.module('hs.datasource-selector', [downgradedDatasourcesModule]);
 
