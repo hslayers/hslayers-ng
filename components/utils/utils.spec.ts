@@ -1,26 +1,55 @@
 /* eslint-disable angular/di */
-/* eslint-disable no-undef */
-'use strict';
-import * as angular from 'angular';
 import 'angular-mocks';
+import 'core-js/es6/reflect';
+import 'core-js/es7/reflect';
+import 'reflect-metadata';
+import 'zone.js/dist/zone';
+import 'zone.js/dist/zone-testing';
 import VectorLayer from 'ol/layer/Vector';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {HsConfig} from './../../config.service';
+import {HsLayerUtilsService} from './layer-utils.service';
+import {HsLayerUtilsServiceMock} from './layer-utils.service.mock';
+import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
-import hsLayerUtilsService from './layer-utils.service';
+import {HsUtilsServiceMock} from './utils.service.mock';
+import {TestBed} from '@angular/core/testing';
+class HsConfigMock {
+  constructor() {}
+}
+class HsLogServiceMock {
+  constructor() {}
+}
 
-describe('utils', () => {
-  let hsUtils;
-  
+describe('HsUtilsService', () => {
+  beforeAll(() => {
+    TestBed.resetTestEnvironment();
+    TestBed.initTestEnvironment(
+      BrowserDynamicTestingModule,
+      platformBrowserDynamicTesting()
+    );
+  });
+  let hsUtilsService: HsUtilsService;
+
   beforeEach(() => {
-    angular.module('hs.utils', ['hs', 'ng'])
-    .service('HsUtilsService', HsUtilsService)
-    .factory('HsLayerUtilsService', hsLayerUtilsService);
-    angular.mock.module('hs.utils');
-  }); //<--- Hook module
-
-  beforeEach(angular.mock.inject(($injector) => {
-    hsUtils = $injector.get('HsUtilsService');
-  }));
-
+    TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        {
+          provide: HsUtilsService,
+          useValue: new HsUtilsServiceMock(),
+        },
+        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsLogService, userValue: new HsLogServiceMock()},
+      ],
+    });
+    hsUtilsService = TestBed.inject(HsUtilsService);
+  });
   it('remove duplicates from a shallow array', () => {
     const layers = [
       {title: 'villages', features: 10},
@@ -29,7 +58,7 @@ describe('utils', () => {
       {title: 'villages', features: 100},
       {title: 'cities', features: 5},
     ];
-    const unique = hsUtils.removeDuplicates(layers, 'title');
+    const unique = hsUtilsService.removeDuplicates(layers, 'title');
     expect(unique.length).toBe(2);
     expect(unique).toEqual([
       {title: 'villages', features: 10},
@@ -45,7 +74,10 @@ describe('utils', () => {
       {values: {properties: {title: 'villages', features: 100}}},
       {values: {properties: {title: 'cities', features: 5}}},
     ];
-    const unique = hsUtils.removeDuplicates(layers, 'values.properties.title');
+    const unique = hsUtilsService.removeDuplicates(
+      layers,
+      'values.properties.title'
+    );
     expect(unique.length).toBe(2);
     expect(unique).toEqual([
       {values: {properties: {title: 'villages', features: 10}}},
@@ -61,7 +93,7 @@ describe('utils', () => {
       new VectorLayer({title: 'villages', features: 100}),
       new VectorLayer({title: 'cities', features: 5}),
     ];
-    const unique = hsUtils.removeDuplicates(layers, 'title');
+    const unique = hsUtilsService.removeDuplicates(layers, 'title');
     expect(unique.length).toBe(2);
     expect(unique).toEqual([layers[0], layers[2]]);
   });
