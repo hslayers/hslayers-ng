@@ -1,39 +1,47 @@
 /* eslint-disable angular/di */
-'use strict';
-import * as angular from 'angular';
 import 'angular-mocks';
+import 'core-js/es6/reflect';
+import 'core-js/es7/reflect';
+import 'reflect-metadata';
+import 'zone.js/dist/zone';
+import 'zone.js/dist/zone-testing';
 import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
-import {HsUtilsService} from './utils.service';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {HsLayerUtilsService} from './layer-utils.service';
+import {HsUtilsService} from './utils.service';
+import {HsUtilsServiceMock} from './utils.service.mock';
+import {TestBed} from '@angular/core/testing';
 
-describe('layer-utils', () => {
-  let hsLayerUtils;
-  
-  
+describe('HsLayerUtilsService', () => {
+  beforeAll(() => {
+    TestBed.resetTestEnvironment();
+    TestBed.initTestEnvironment(
+      BrowserDynamicTestingModule,
+      platformBrowserDynamicTesting()
+    );
+  });
+  let hsLayerUtils: HsLayerUtilsService;
 
-  beforeEach(function(){
-    angular.module('hs', []).value('HsConfig', {
-    }).provider({
-      $rootElement:function() {
-         this.$get = function() {
-           return angular.element('<div ng-app></div>');
-        };
-      }
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        HsLayerUtilsService,
+        {
+          provide: HsUtilsService,
+          useValue: new HsUtilsServiceMock(),
+        },
+      ],
     });
-  
-    angular.module('hs.utils', ['hs', 'ng'])
-    .service('HsUtilsService', HsUtilsService)
-    .service('HsLayerUtilsService', HsLayerUtilsService);
-    angular.mock.module('hs.utils');
-  })
-
-  beforeEach(function (){
-    var $injector = angular.injector([ 'hs.utils' ]);
-    hsLayerUtils = $injector.get( 'HsLayerUtilsService' );
+    hsLayerUtils = TestBed.get(HsLayerUtilsService);
   });
 
-  it('check if layer is clustered', function() {
+  it('check if layer is clustered', () => {
     const clusteredLayer = new VectorLayer({
       title: 'villages',
       source: new Vector(),
