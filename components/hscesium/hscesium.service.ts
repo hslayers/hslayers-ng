@@ -1,4 +1,5 @@
 import '../permalink/share.module';
+import '../utils/string-modifications';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsApi from 'cesium/Source/Core/BingMapsApi';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
@@ -124,7 +125,6 @@ export class HsCesiumService {
       : false;
     viewer.scene.globe.enableLighting = this.getShadowMode();
     viewer.scene.globe.shadows = this.getShadowMode();
-    
     viewer.terrainProvider = terrain_provider;
 
     if (this.HsConfig.cesiumTime) {

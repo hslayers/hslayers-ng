@@ -1,3 +1,4 @@
+import '../utils/string-modifications';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';

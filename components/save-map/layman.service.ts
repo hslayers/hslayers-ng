@@ -1,3 +1,4 @@
+import '../utils/string-modifications';
 import {GeoJSON, WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';

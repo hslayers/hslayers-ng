@@ -1,3 +1,4 @@
+import '../utils/string-modifications';
 import VectorLayer from 'ol/layer/Vector';
 import moment = require('moment');
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
