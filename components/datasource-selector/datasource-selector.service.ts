@@ -67,9 +67,8 @@ export class HsDatasourcesService {
       this.HsConfig.allowAddExternalDatasets = true;
     }
 
-    this.$rootScope.$on(
-      'map.extent_changed',
-      this.HsUtilsService.debounce(
+    this.HsEventBusService.mapExtentChanges.subscribe(
+      HsUtilsService.debounce(
         (e) => {
           if (!this.panelVisible()) {
             return;
