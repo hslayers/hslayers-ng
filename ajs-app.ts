@@ -71,7 +71,7 @@ export default angular
     'hs.legend',
     'hs.geolocation',
     'hs.core',
-    'hs.datasource_selector',
+    'hs.datasource-selector',
     'hs.save-map',
     'hs.addLayers',
     'gettext',

@@ -38,7 +38,7 @@ export class HsDatasourcesService {
     private HsMickaBrowserService,
     private HsLaymanBrowserService,
     private HsLayoutService: HsLayoutService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
     private HsDatasourcesMapService: HsDatasourcesMapService,
     private HsForDatasourceBrowserFilter,
