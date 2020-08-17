@@ -10,19 +10,23 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsDatasourcesService {
   data: any = {};
 
   /**
    * @param $rootScope
-   * @param HsConfig
-   * @param HsAddLayersVectorService
-   * @param HsEventBusService
+   * @param hsConfig
+   * @param hsAddLayersVectorService
+   * @param hsEventBusService
    * @param HsMickaFiltersService
    * @param HsMickaBrowserService
    * @param HsLaymanBrowserService
-   * @param HsLayoutService
+   * @param hsLayoutService
    * @param HsCommonEndpointsService
    * @param HsUtilsService
    * @param HsDataSourceSelectorMapService
@@ -30,19 +34,19 @@ export class HsDatasourcesService {
    * @param $compile
    */
   constructor(
-    private $rootScope,
-    private HsConfig: HsConfig,
-    private HsAddLayersVectorService: HsAddLayersVectorService,
-    private HsEventBusService: HsEventBusService,
-    private HsMickaFilterService,
-    private HsMickaBrowserService,
-    private HsLaymanBrowserService,
-    private HsLayoutService: HsLayoutService,
-    private HsCommonEndpointsService,
+    private $rootScope: any,
+    private hsConfig: HsConfig,
+    private hsAddLayersVectorService: HsAddLayersVectorService,
+    private hsEventBusService: HsEventBusService,
+    private HsMickaFilterService: any,
+    private HsMickaBrowserService: any,
+    private HsLaymanBrowserService: any,
+    private hsLayoutService: HsLayoutService,
+    private HsCommonEndpointsService: any,
     private HsUtilsService: HsUtilsService,
-    private HsDatasourcesMapService: HsDatasourcesMapService,
-    private HsForDatasourceBrowserFilter,
-    private $compile
+    private hsDatasourcesMapService: HsDatasourcesMapService,
+    private HsForDatasourceBrowserFilter: any,
+    private $compile: any
   ) {
     'ngInject';
 
@@ -63,11 +67,11 @@ export class HsDatasourcesService {
       this.HsMickaFilterService.fillCodesets();
     }
 
-    if (this.HsConfig.allowAddExternalDatasets === undefined) {
-      this.HsConfig.allowAddExternalDatasets = true;
+    if (this.hsConfig.allowAddExternalDatasets === undefined) {
+      this.hsConfig.allowAddExternalDatasets = true;
     }
 
-    this.HsEventBusService.mapExtentChanges.subscribe(
+    this.hsEventBusService.mapExtentChanges.subscribe(
       HsUtilsService.debounce(
         (e) => {
           if (!this.panelVisible()) {
@@ -83,7 +87,7 @@ export class HsDatasourcesService {
       )
     );
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
         this.queryCatalogs();
         this.HsMickaFilterService.fillCodesets();
@@ -98,7 +102,7 @@ export class HsDatasourcesService {
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(): void {
-    this.HsDatasourcesMapService.clearExtentLayer();
+    this.hsDatasourcesMapService.clearExtentLayer();
     this.HsCommonEndpointsService.endpoints.forEach((endpoint) => {
       if (endpoint.datasourcePaging) {
         endpoint.datasourcePaging.start = 0;
@@ -117,13 +121,13 @@ export class HsDatasourcesService {
    * Use all query params (search text, bbox, params.., sorting, start)
    */
   queryCatalog(catalog): void {
-    this.HsDatasourcesMapService.clearDatasetFeatures(catalog);
+    this.hsDatasourcesMapService.clearDatasetFeatures(catalog);
     switch (catalog.type) {
       case 'micka':
         this.HsMickaBrowserService.queryCatalog(
           catalog,
           this.data.query,
-          this.HsDatasourcesMapService.addExtentFeature,
+          this.hsDatasourcesMapService.addExtentFeature,
           this.data.textField
         );
         break;
@@ -197,7 +201,7 @@ export class HsDatasourcesService {
         const el = angular.element(
           '<hs-select-type-to-add-layer-dialog layer="layer" endpoint="endpoint" types="types"></hs-select-type-to-add-layer-dialog>'
         );
-        this.HsLayoutService.contentWrapper
+        this.hsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
         this.$compile(el)(scope);
@@ -214,7 +218,7 @@ export class HsDatasourcesService {
           );
         });
       } else if (whatToAdd.type == 'WFS') {
-        const layer = await this.HsAddLayersVectorService.addVectorLayer(
+        const layer = await this.hsAddLayersVectorService.addVectorLayer(
           'wfs',
           whatToAdd.link,
           whatToAdd.title,
@@ -222,9 +226,9 @@ export class HsDatasourcesService {
           whatToAdd.projection,
           {extractStyles: whatToAdd.extractStyles}
         );
-        this.HsAddLayersVectorService.fitExtent(layer);
+        this.hsAddLayersVectorService.fitExtent(layer);
       } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
-        const layer = await this.HsAddLayersVectorService.addVectorLayer(
+        const layer = await this.hsAddLayersVectorService.addVectorLayer(
           whatToAdd.type.toLowerCase(),
           whatToAdd.link,
           whatToAdd.title,
@@ -232,9 +236,9 @@ export class HsDatasourcesService {
           whatToAdd.projection,
           {extractStyles: whatToAdd.extractStyles}
         );
-        this.HsAddLayersVectorService.fitExtent(layer);
+        this.hsAddLayersVectorService.fitExtent(layer);
       } else {
-        this.HsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layermanager');
       }
     });
   }
@@ -275,13 +279,13 @@ export class HsDatasourcesService {
    */
   panelVisible(): boolean {
     return (
-      this.HsLayoutService.panelVisible('datasource_selector') ||
-      this.HsLayoutService.panelVisible('datasourceBrowser')
+      this.hsLayoutService.panelVisible('datasource_selector') ||
+      this.hsLayoutService.panelVisible('datasourceBrowser')
     );
   }
 
   calcExtentLayerVisibility(): void {
-    this.HsDatasourcesMapService.extentLayer.setVisible(
+    this.hsDatasourcesMapService.extentLayer.setVisible(
       this.panelVisible() && this.data.id_selected != 'OWS'
     );
   }
