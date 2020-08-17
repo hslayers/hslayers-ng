@@ -1,8 +1,11 @@
-import * as HsCommonEndpointsService from '../../common/endpoints/endpoints.service';
 import * as angular from 'angular';
+import {Injectable} from '@angular/core';
+
+import * as HsCommonEndpointsService from '../../common/endpoints/endpoints.service';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
 import {HsLaymanBrowserService} from './layman/layman.service';
@@ -10,7 +13,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +26,8 @@ export class HsDatasourcesService {
    * @param hsAddLayersVectorService
    * @param hsEventBusService
    * @param HsMickaFiltersService
-   * @param HsMickaBrowserService
-   * @param HsLaymanBrowserService
+   * @param hsMickaBrowserService
+   * @param hsLaymanBrowserService
    * @param hsLayoutService
    * @param HsCommonEndpointsService
    * @param HsUtilsService
@@ -38,9 +40,9 @@ export class HsDatasourcesService {
     private hsConfig: HsConfig,
     private hsAddLayersVectorService: HsAddLayersVectorService,
     private hsEventBusService: HsEventBusService,
-    private HsMickaFilterService: any,
-    private HsMickaBrowserService: any,
-    private HsLaymanBrowserService: any,
+    private hsMickaFilterService: HsMickaFilterService,
+    private hsMickaBrowserService: HsMickaBrowserService,
+    private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLayoutService: HsLayoutService,
     private HsCommonEndpointsService: any,
     private HsUtilsService: HsUtilsService,
@@ -64,7 +66,7 @@ export class HsDatasourcesService {
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
-      this.HsMickaFilterService.fillCodesets();
+      this.hsMickaFilterService.fillCodesets();
     }
 
     if (this.hsConfig.allowAddExternalDatasets === undefined) {
@@ -77,7 +79,7 @@ export class HsDatasourcesService {
           if (!this.panelVisible()) {
             return;
           }
-          if (this.HsMickaFilterService.filterByExtent) {
+          if (this.hsMickaFilterService.filterByExtent) {
             this.queryCatalogs();
           }
         },
@@ -90,7 +92,7 @@ export class HsDatasourcesService {
     this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
         this.queryCatalogs();
-        this.HsMickaFilterService.fillCodesets();
+        this.hsMickaFilterService.fillCodesets();
       }
       this.calcExtentLayerVisibility();
     });
@@ -103,7 +105,7 @@ export class HsDatasourcesService {
    */
   queryCatalogs(): void {
     this.hsDatasourcesMapService.clearExtentLayer();
-    this.HsCommonEndpointsService.endpoints.forEach((endpoint) => {
+    this.HsCommonEndpointsService.endpoints.forEach((endpoint: HsEndpoint) => {
       if (endpoint.datasourcePaging) {
         endpoint.datasourcePaging.start = 0;
       }
@@ -114,17 +116,17 @@ export class HsDatasourcesService {
   /**
    * @function queryCatalog
    * @memberof HsDatasourceBrowserService
-   * @param {object} catalog Configuration of selected datasource (from app config)
+   * @param {HsEndpoint} catalog Configuration of selected datasource (from app config)
    * @description Loads datasets metadata from selected source (CSW server).
    * Uses pagination set by 'start' attribute of 'dataset' param.
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-  queryCatalog(catalog): void {
+  queryCatalog(catalog: HsEndpoint): void {
     this.hsDatasourcesMapService.clearDatasetFeatures(catalog);
     switch (catalog.type) {
       case 'micka':
-        this.HsMickaBrowserService.queryCatalog(
+        this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data.query,
           this.hsDatasourcesMapService.addExtentFeature,
@@ -132,7 +134,7 @@ export class HsDatasourcesService {
         );
         break;
       case 'layman':
-        this.HsLaymanBrowserService.queryCatalog(catalog);
+        this.hsLaymanBrowserService.queryCatalog(catalog);
         break;
       default:
         break;
@@ -183,9 +185,9 @@ export class HsDatasourcesService {
   async addLayerToMap(ds, layer, type) {
     let describer = Promise.resolve({type: 'none'});
     if (ds.type == 'micka') {
-      describer = this.HsMickaBrowserService.describeWhatToAdd(ds, layer);
+      describer = this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type == 'layman') {
-      describer = this.HsLaymanBrowserService.describeWhatToAdd(ds, layer);
+      describer = this.hsLaymanBrowserService.describeWhatToAdd(ds, layer);
     }
     describer.then(async (whatToAdd: any) => {
       if (type !== undefined) {

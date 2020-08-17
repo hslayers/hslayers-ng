@@ -1,62 +1,83 @@
-/**
- * @param $http
- * @param $q
- * @param HsUtilsService
- * @param HsCommonEndpointsService
- */
-export const HsMickaFilterService = function ($http, $q, HsUtilsService, HsCommonEndpointsService) {
-  'ngInject';
-  const me = this;
-  this.suggestionConfig = {};
-  this.suggestions = [];
-  this.suggestionsLoaded = true;
-  this.filterByExtent = true;
-  me.otnKeywords = [];
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
-  if (
-    HsCommonEndpointsService.endpoints &&
-    HsCommonEndpointsService.endpoints.filter(
-      (ds) => ds.url.indexOf('opentnet.eu') > -1
-    ).length > 0
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsUtilsService} from '../../utils/utils.service';
+
+@Injectable({providedIn: 'root'})
+export class HsMickaFilterService {
+  suggestionConfig = {
+    input: '',
+    param: '',
+    field: '',
+  };
+  suggestions = [];
+  suggestionFilter;
+  suggestionsLoaded = true;
+  filterByExtent = true;
+  otnKeywords = [];
+
+  /**
+   * @param $http
+   * @param $q
+   * @param HsUtilsService
+   * @param HsCommonEndpointsService
+   */
+  constructor(
+    private http: HttpClient,
+    private hsUtilsService: HsUtilsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
-    $http({
-      method: 'GET',
-      url: HsUtilsService.proxify(
-        'http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66'
-      ),
-    }).then((response) => {
-      me.otnKeywords = [{title: '-'}];
-      response.data.result.tags.forEach((tag) => {
-        me.otnKeywords.push({title: tag.name});
-      });
-    });
+    if (
+      this.hsCommonEndpointsService.endpoints &&
+      this.hsCommonEndpointsService.endpoints.filter(
+        (ds) => ds.url.indexOf('opentnet.eu') > -1
+      ).length > 0
+    ) {
+      this.http
+        .get(
+          HsUtilsService.proxify(
+            'http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66'
+          ),
+          {
+            responseType: 'json',
+          }
+        )
+        .toPromise()
+        .then((response: any) => {
+          this.otnKeywords = [{title: '-'}];
+          response.data.result.tags.forEach((tag) => {
+            this.otnKeywords.push({title: tag.name});
+          });
+        });
+    }
   }
 
   /**
    * @function fillCodesets
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @param {object} datasets Input datasources
    * Download codelists for all "micka" type datasources from Url specified in app config.
    */
-  me.fillCodesets = function () {
-    HsCommonEndpointsService.endpoints
+  fillCodesets() {
+    this.hsCommonEndpointsService.endpoints
       .filter((ep) => ep.type == 'micka')
-      .forEach((ep) => me.fillCodeset(ep));
-  };
+      .forEach((ep) => this.fillCodeset(ep));
+  }
 
   /**
    * @function fillCodeset
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @param {object} ds Single datasource
    * Download code-list for micka type source from Url specifiead in app config.
    */
-  me.fillCodeset = function (ds) {
+  fillCodeset(ds) {
     if (ds.type == 'micka') {
       let url = ds.code_list_url;
       if (url === undefined) {
         return;
       }
-      url = HsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url);
       if (ds.code_lists === undefined) {
         ds.code_lists = {
           serviceType: [],
@@ -65,49 +86,61 @@ export const HsMickaFilterService = function ($http, $q, HsUtilsService, HsCommo
           topicCategory: [],
         };
       }
-      if (ds.canceler !== undefined) {
+      /*if (ds.canceler !== undefined) {
         ds.canceler.resolve();
         delete ds.canceler;
-      }
-      ds.canceler = $q.defer();
-      $http.get(url, {timeout: ds.canceler.promise}).then(
-        (j) => {
-          const oParser = new DOMParser();
-          const oDOM = oParser.parseFromString(j.data, 'application/xml');
-          const doc = oDOM.documentElement;
-          doc.querySelectorAll('map serviceType value').forEach((type: any) => {
-            ds.code_lists.serviceType.push({
-              value: type.attributes.name.value,
-              name: type.innerHTML,
-            });
-          });
-          doc.querySelectorAll('map applicationType value').forEach((type: any) => {
-            ds.code_lists.applicationType.push({
-              value: type.attributes.name.value,
-              name: type.innerHTML,
-            });
-          });
-          doc.querySelectorAll('map topicCategory value').forEach((type: any) => {
-            ds.code_lists.topicCategory.push({
-              value: type.attributes.name.value,
-              name: type.innerHTML,
-            });
-          });
-          me.advancedMickaTypeChanged(ds, 'service');
-        },
-        (err) => {}
-      );
+      }*/
+      //ds.canceler = $q.defer();
+      this.http
+        .get(url, {
+          responseType: 'json',
+          //timeout: ds.canceler.promise
+        })
+        .toPromise()
+        .then(
+          (j: any) => {
+            const oParser = new DOMParser();
+            const oDOM = oParser.parseFromString(j.data, 'application/xml');
+            const doc = oDOM.documentElement;
+            doc
+              .querySelectorAll('map serviceType value')
+              .forEach((type: any) => {
+                ds.code_lists.serviceType.push({
+                  value: type.attributes.name.value,
+                  name: type.innerHTML,
+                });
+              });
+            doc
+              .querySelectorAll('map applicationType value')
+              .forEach((type: any) => {
+                ds.code_lists.applicationType.push({
+                  value: type.attributes.name.value,
+                  name: type.innerHTML,
+                });
+              });
+            doc
+              .querySelectorAll('map topicCategory value')
+              .forEach((type: any) => {
+                ds.code_lists.topicCategory.push({
+                  value: type.attributes.name.value,
+                  name: type.innerHTML,
+                });
+              });
+            this.advancedMickaTypeChanged(ds, 'service');
+          },
+          (err) => {}
+        );
     }
-  };
+  }
 
   /**
    * @function advancedMickaTypeChanged
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @param {object} mickaDS Micka dataset definition
    * @param {string} type Micka query type
    * Sets Micka source level types according to current query type (service/appilication). Deprecated?
    */
-  me.advancedMickaTypeChanged = function (mickaDS, type) {
+  advancedMickaTypeChanged(mickaDS, type) {
     if (mickaDS.code_lists === undefined) {
       return;
     }
@@ -120,41 +153,40 @@ export const HsMickaFilterService = function ($http, $q, HsUtilsService, HsCommo
         mickaDS.level2_types = mickaDS.code_lists.applicationType;
         break;
     }
-  };
+  }
 
-  me.changeSuggestionConfig = function (input, param, field) {
-    me.suggestionConfig = {
+  changeSuggestionConfig(input: string, param: string, field: string): void {
+    this.suggestionConfig = {
       input: input,
       param: param,
       field: field,
     };
-  };
+  }
 
   /**
    * @function suggestionFilterChanged
-   * @memberOf HsDatasourceBrowserService
+   * @memberof HsDatasourceBrowserService
    * @param {object} mickaDS Micka catalogue config passed here from directive
    * Send suggestion request to Micka CSW server and parse response
    */
-  me.suggestionFilterChanged = function (mickaDS) {
+  suggestionFilterChanged(mickaDS) {
     let url =
       mickaDS.url +
       '../util/suggest.php?' +
-      HsUtilsService.paramsToURL({
-        type: me.suggestionConfig.param,
-        query: me.suggestionFilter,
+      this.hsUtilsService.paramsToURL({
+        type: this.suggestionConfig.param,
+        query: this.suggestionFilter,
       });
-    url = HsUtilsService.proxify(url);
-    me.suggestionsLoaded = false;
-    me.suggestions = [];
-    $http({
-      method: 'GET',
-      url: url,
-    }).then((response) => {
-      const j = response.data;
-      me.suggestionsLoaded = true;
-      me.suggestions = j.records;
-    });
-  };
-  return me;
+    url = this.hsUtilsService.proxify(url);
+    this.suggestionsLoaded = false;
+    this.suggestions = [];
+    this.http
+      .get(url, {responseType: 'json'})
+      .toPromise()
+      .then((response: any) => {
+        const j = response.data;
+        this.suggestionsLoaded = true;
+        this.suggestions = j.records;
+      });
+  }
 }
