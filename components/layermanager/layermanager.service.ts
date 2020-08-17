@@ -213,7 +213,7 @@ export class HsLayerManagerService {
         return require('../../img/' + thumbnail);
       }
     } else {
-      return require('../../img/default.png');
+      return require(/* webpackChunkName: "img" */'../../img/default.png');
     }
   }
   /**

@@ -14,7 +14,9 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  notAvailableImage = require('./notAvailable.png');
+  notAvailableImage = require(
+    /* webpackChunkName: "img" */ './notAvailable.png'
+  );
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,

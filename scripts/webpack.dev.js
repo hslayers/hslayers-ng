@@ -4,8 +4,6 @@
  * - Set mode to development -> This mode is used by some plugins and webpack to prevent minifying assets etc...
  * - Generates a sourcemap of bundled code -> Allow to easily debug js code (do not use in prod)
  * - Remove some bundling optimization to speed it up
- * - Allow Load css files (import './myCssFile.css') -> Css rules will be automatically added to index.html into a <style></style> tag.
- * - Allow to load fonts and images (import './myFont.eot'; import './someImage.jpg')
  */
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
