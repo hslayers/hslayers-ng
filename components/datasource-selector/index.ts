@@ -114,7 +114,10 @@ angular
    * @memberof hs.datasource_selector
    * @description Service for querying layer from Layman
    */
-  .factory('HsLaymanBrowserService', HsLaymanBrowserService)
+  .service(
+    'HsLaymanBrowserService',
+    downgradeInjectable(HsLaymanBrowserService)
+  )
 
   /**
    * @ngdoc component
