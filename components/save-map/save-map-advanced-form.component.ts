@@ -1,3 +1,4 @@
+import '../utils/string-modifications';
 import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';

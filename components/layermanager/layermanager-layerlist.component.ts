@@ -1,6 +1,8 @@
+import '../utils/string-modifications';
 import {Component, Input} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -8,7 +10,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -79,7 +80,7 @@ export class HsLayerListComponent {
    * @description Controls state of layer´s sublayers checkboxes with layer visibility changes
    * @param {object} layer Selected layer
    */
-  toggleSublayersVisibility(layer:HsLayerDescriptor) {
+  toggleSublayersVisibility(layer: HsLayerDescriptor) {
     if (!layer.visible) {
       if (this.HsLayerManagerService.currentLayer === layer) {
         if (this.HsLayerEditorSublayerService.hasSubLayers()) {
@@ -175,7 +176,7 @@ export class HsLayerListComponent {
   sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
     const minus = this.order().indexOf('-') == 0;
-    const attribute = this.order().replaceAll('-', '');
+    const attribute = this.order().replace('-', '');
     this.filtered_layers.sort((a, b) => {
       a = a.layer.get(attribute);
       b = b.layer.get(attribute);
