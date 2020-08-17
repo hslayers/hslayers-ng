@@ -12,7 +12,7 @@ export class HsSelectTypeToAddLayerDialogComponent implements OnInit {
 
   modalVisible;
   alertChoose;
-  type;
+  layerType; //do not rename to 'type', would clash in the template
 
   constructor(private hsDatasourcesService: HsDatasourcesService) {
     'ngInject';
@@ -20,14 +20,14 @@ export class HsSelectTypeToAddLayerDialogComponent implements OnInit {
   }
 
   add(): void {
-    if (this.type === undefined) {
+    if (this.layerType === undefined) {
       this.alertChoose = true;
     } else {
       this.modalVisible = false;
       this.hsDatasourcesService.addLayerToMap(
         this.endpoint,
         this.layer,
-        this.type
+        this.layerType
       );
     }
   }
