@@ -5,6 +5,8 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HsDatasourcesComponent} from './datasource-selector.component';
+import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -15,7 +17,7 @@ class emptyMock {
   constructor() {}
 }
 
-describe('HsMeasure', () => {
+describe('HsDatasource', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
