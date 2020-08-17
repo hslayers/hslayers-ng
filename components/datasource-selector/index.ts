@@ -98,7 +98,7 @@ angular
    * @description Service for managing micka query filter parameters and
    * their possible values i.e. suggestions
    */
-  .factory('HsMickaFiltersService', HsMickaFilterService)
+  .service('HsMickaFiltersService', downgradeInjectable(HsMickaFilterService))
 
   /**
    * @ngdoc service
@@ -106,7 +106,7 @@ angular
    * @memberof hs.datasource_selector
    * @description Service for querying layer from Micka metadata catalogue
    */
-  .factory('HsMickaBrowserService', HsMickaBrowserService)
+  .service('HsMickaBrowserService', downgradeInjectable(HsMickaBrowserService))
 
   /**
    * @ngdoc service

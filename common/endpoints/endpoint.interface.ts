@@ -2,9 +2,10 @@ export interface HsEndpoint {
   type: string;
   title: string;
   url: string;
-  user?;
+  language?;
   liferayProtocol?;
   originalConfiguredUser?;
+  user?;
   datasourcePaging?: {
     start?: number;
     limit: number;
