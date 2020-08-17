@@ -1,7 +1,7 @@
 import '../core/';
 import '../geolocation/geolocation.module';
 import '../map/map.module';
-import '../utils/utils.module';
+import '../utils';
 import './draw.module';
 import vgiDrawComponent from './vgi-draw.component';
 import * as angular from 'angular';

@@ -1,5 +1,5 @@
 import '../../../common/get-capabilities.module';
-import '../../utils/utils.module';
+import '../../utils';
 import 'angular-cookies';
 import {Attribution} from 'ol/control';
 import {Image as ImageLayer, Tile} from 'ol/layer';

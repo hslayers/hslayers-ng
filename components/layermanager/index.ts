@@ -4,7 +4,7 @@ import '../layout/';
 import '../legend';
 import '../save-map/';
 import '../styles/styles.module';
-import '../utils/utils.module';
+import '../utils';
 import 'angular-drag-and-drop-lists';
 import * as angular from 'angular';
 import {HsLayerEditorComponent} from './layer-editor.component';

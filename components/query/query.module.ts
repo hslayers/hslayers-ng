@@ -1,6 +1,6 @@
 import '../language/language.module';
 import '../measure/measure.module';
-import '../utils/utils.module';
+import '../utils';
 import 'angular-sanitize';
 import * as angular from 'angular';
 import attributeRowComponent from './attribute-row.component';

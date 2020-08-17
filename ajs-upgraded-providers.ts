@@ -3,13 +3,11 @@ import {HsCommonLaymanService} from './common/layman/layman.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLanguageService} from './components/language/language.service';
-import {HsLayerUtilsService} from './components/utils/layer-utils.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
 import {HsQueryBaseService} from './components/query/query-base.service';
 import {HsQueryVectorService} from './components/query/query-vector.service';
 import {HsShareUrlService} from './components/permalink/share-url.service';
-import {HsUtilsService} from './components/utils/utils.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
@@ -50,19 +48,6 @@ export function hsLayoutServiceFactory(i: any) {
 export const HsLayoutServiceProvider = {
   provide: HsLayoutService,
   useFactory: hsLayoutServiceFactory,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsUtilsServiceFactory(i: any) {
-  return i.get('HsUtilsService');
-}
-
-export const HsUtilsServiceProvider = {
-  provide: HsUtilsService,
-  useFactory: hsUtilsServiceFactory,
   deps: ['$injector'],
 };
 
@@ -115,19 +100,6 @@ export function hsDimensionService(i: any) {
 export const HsDimensionServiceProvider = {
   provide: HsDimensionService,
   useFactory: hsDimensionService,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsLayerUtilsServiceProvider(i: any) {
-  return i.get('HsLayerUtilsService');
-}
-
-export const HsLayerUtilsServiceProvider = {
-  provide: HsLayerUtilsService,
-  useFactory: hsLayerUtilsServiceProvider,
   deps: ['$injector'],
 };
 

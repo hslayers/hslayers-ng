@@ -10,11 +10,9 @@ import {
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsLanguageServiceProvider,
-  HsLayerUtilsServiceProvider,
   HsMapServiceProvider,
   HsQueryBaseServiceProvider,
   HsQueryVectorServiceProvider,
-  HsUtilsServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
@@ -32,6 +30,7 @@ import {HsSaveMapModule} from '../save-map';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
+import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
@@ -52,6 +51,7 @@ import {NgModule} from '@angular/core';
     HsSaveMapModule,
     HsLogModule,
     HsShareModule,
+    HsUtilsModule,
   ],
   exports: [],
   providers: [
@@ -59,8 +59,6 @@ import {NgModule} from '@angular/core';
     HsDrawService,
     HsMapServiceProvider,
     HsConfigProvider,
-    HsUtilsServiceProvider,
-    HsLayerUtilsServiceProvider,
     HsWmsGetCapabilitiesServiceProvider,
     HsWfsGetCapabilitiesServiceProvider,
     HsWmtsGetCapabilitiesServiceProvider,

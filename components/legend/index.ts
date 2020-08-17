@@ -1,4 +1,4 @@
-import '../utils/utils.module';
+import '../utils';
 import * as angular from 'angular';
 import {HsLegendComponent} from './legend.component';
 import {HsLegendLayerComponent} from './legend-layer.component';

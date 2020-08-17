@@ -16,7 +16,11 @@ describe('add-layers-vector', () => {
 
     angular
       .module('hs.utils', ['hs'])
-      .service('HsUtilsService', HsUtilsService)
+      .service('HsUtilsService', function () {
+        this.proxify = function (url) {
+          return url;
+        };
+      })
       .factory('HsLayerUtilsService', HsLayerUtilsService);
 
     angular.module('hs.map', []).service('HsMapService', HsMapService);
