@@ -108,7 +108,7 @@ export class HsUtilsService {
    * @returns {string} Port number
    */
   getPortFromUrl(url: string): string {
-    const link = this.document[0].createElement('a');
+    const link = this.document.createElement('a');
     link.setAttribute('href', url);
     if (link.port == '') {
       if (url.indexOf('https://') === 0) {
