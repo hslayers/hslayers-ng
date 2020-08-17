@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
+import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
 
 @NgModule({
@@ -12,7 +13,11 @@ import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
   declarations: [HsDatasourcesComponent],
   imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
   exports: [HsDatasourcesComponent],
-  providers: [HsDatasourcesService, HsDatasourcesMapService],
+  providers: [
+    HsDatasourcesService,
+    HsDatasourcesMapService,
+    HsLaymanBrowserService,
+  ],
   entryComponents: [HsDatasourcesComponent],
 })
 export class HsDatasourcesModule {}
