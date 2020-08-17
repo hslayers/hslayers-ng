@@ -13,7 +13,7 @@
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}"
-                *ngFor="let endpoint of endpointsService.endpoints | forDatasourceBrowser">
+                *ngFor="let endpoint of endpointsService.endpoints | endpointsWithDatasources">
                 <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" (click)="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
@@ -31,7 +31,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 [ngClass]="{'active': 'ds'+$index == data.id_selected && !data.wms_connecting}"
-                id="{{'ds'+$index}}" *ngFor="let endpoint of endpointsService.endpoints | forDatasourceBrowser">
+                id="{{'ds'+$index}}" *ngFor="let endpoint of endpointsService.endpoints | endpointsWithDatasources">
                 <div class="card">
                     <div class="card-body">
                         <div *ngIf="endpoint.type == 'micka'">

@@ -1,13 +1,13 @@
 import * as angular from 'angular';
 import {Injectable} from '@angular/core';
 
-import * as HsCommonEndpointsService from '../../common/endpoints/endpoints.service';
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsForDatasourceBrowserFilter} from './for-datasource-browser.filter';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMickaBrowserService} from './micka/micka.service';
@@ -29,10 +29,10 @@ export class HsDatasourcesService {
    * @param hsMickaBrowserService
    * @param hsLaymanBrowserService
    * @param hsLayoutService
-   * @param HsCommonEndpointsService
+   * @param hsCommonEndpointsService
    * @param HsUtilsService
    * @param HsDataSourceSelectorMapService
-   * @param forDatasourceBrowserFilter
+   * @param EndpointsWithDatasourcesPipe
    * @param $compile
    */
   constructor(
@@ -44,10 +44,10 @@ export class HsDatasourcesService {
     private hsMickaBrowserService: HsMickaBrowserService,
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLayoutService: HsLayoutService,
-    private HsCommonEndpointsService: any,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
     private hsDatasourcesMapService: HsDatasourcesMapService,
-    private HsForDatasourceBrowserFilter: any,
+    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
     private $compile: any
   ) {
     'ngInject';
@@ -105,7 +105,7 @@ export class HsDatasourcesService {
    */
   queryCatalogs(): void {
     this.hsDatasourcesMapService.clearExtentLayer();
-    this.HsCommonEndpointsService.endpoints.forEach((endpoint: HsEndpoint) => {
+    this.hsCommonEndpointsService.endpoints.forEach((endpoint: HsEndpoint) => {
       if (endpoint.datasourcePaging) {
         endpoint.datasourcePaging.start = 0;
       }
@@ -270,9 +270,9 @@ export class HsDatasourcesService {
    */
   dataSourceExistsAndEmpty(): boolean {
     return (
-      this.HsForDatasourceBrowserFilter(
-        this.HsCommonEndpointsService.endpoints
-      ).filter((ep) => ep.datasourcePaging.loaded === undefined).length > 0
+      this.endpointsWithDatasourcesPipe
+        .transform(this.hsCommonEndpointsService.endpoints)
+        .filter((ep) => ep.datasourcePaging.loaded === undefined).length > 0
     );
   }
 

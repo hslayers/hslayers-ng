@@ -3,6 +3,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
@@ -14,7 +15,11 @@ import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsDatasourcesComponent],
+  declarations: [
+    HsDatasourcesComponent,
+    HsSelectTypeToAddLayerDialogComponent,
+    EndpointsWithDatasourcesPipe,
+  ],
   imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
   exports: [HsDatasourcesComponent, HsSelectTypeToAddLayerDialogComponent],
   providers: [
