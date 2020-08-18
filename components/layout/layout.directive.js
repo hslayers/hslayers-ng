@@ -28,7 +28,7 @@ export default function (
       HsCore.init(element, {
         innerElement: '.hs-map-container',
       });
-      if (HsConfig.sidebarPosition === 'left') {
+      if (HsLayoutService.sidebarRight == false) { // TBD HsConfig.sidebarPosition === 'left'
         const gui = HsLayoutService.contentWrapper.querySelector(
           '.hs-gui-overlay'
         );
