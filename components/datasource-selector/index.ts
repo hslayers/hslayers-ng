@@ -2,18 +2,18 @@ import '../../common/endpoints/endpoints.module';
 import '../../common/widgets/widgets.module';
 import '../layout';
 import * as angular from 'angular';
-import advancedMickaDialogDirective from './micka/advanced-micka-dialog.directive';
-import metadataDialogDirective from './metadata-dialog.directive';
-import mickaFiltersDirective from './micka/micka-filters.directive';
-import mickaSuggestionsDialogDirective from './micka/micka-suggestions-dialog.directive';
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesModule} from './datasource-selector.module';
 import {HsDatasourcesService} from './datasource-selector.service';
-import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsMetadataDialogComponent} from './metadata-dialog.component';
 import {HsMickaBrowserService} from './micka/micka.service';
+import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
+import {HsMickaSuggestionsDialogComponent} from './micka/micka-suggestions-dialog.component';
 import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
@@ -38,16 +38,19 @@ angular
    */
   .directive(
     'hs.datasourceSelector.metadataDialogDirective',
-    metadataDialogDirective
+    downgradeComponent({component: HsMetadataDialogComponent})
   )
 
   /**
-   * @name hs.advMickaDialog
+   * @name hs.advancedMickaDialog
    * @memberof hs.datasource_selector
    * @description Directive for displaying extended search parameters for
    * Micka catalogue service
    */
-  .directive('hs.advMickaDialog', advancedMickaDialogDirective)
+  .directive(
+    'hs.advancedMickaDialog',
+    downgradeComponent({component: HsAdvancedMickaDialogComponent})
+  )
 
   /**
    * @ngdoc directive
@@ -55,7 +58,10 @@ angular
    * @memberof hs.datasource_selector
    * @description Directive for displaying suggestions for search parameters for Micka catalogue service
    */
-  .directive('hs.mickaSuggestionsDialog', mickaSuggestionsDialogDirective)
+  .directive(
+    'hs.mickaSuggestionsDialog',
+    downgradeComponent({component: HsMickaSuggestionsDialogComponent})
+  )
 
   /**
    * @name hs.mickaFiltersDirective
@@ -63,7 +69,10 @@ angular
    * @description Directive for providing basic html elements for Micka
    * metadata filtering
    */
-  .directive('hs.mickaFiltersDirective', mickaFiltersDirective)
+  .directive(
+    'hs.mickaFilters',
+    downgradeComponent({component: HsMickaFilterComponent})
+  )
 
   /**
    * @name HsMickaFiltersService
