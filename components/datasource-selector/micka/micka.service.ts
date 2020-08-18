@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';

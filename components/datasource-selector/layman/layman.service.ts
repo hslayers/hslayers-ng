@@ -1,8 +1,9 @@
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError} from 'rxjs/operators';
+
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
@@ -77,7 +78,7 @@ export class HsLaymanBrowserService {
    * @description Fills metadata about layer, because layman layer list API provides
    * just name and uuid
    */
-  fillLayerMetadata(dataset, layer) {
+  fillLayerMetadata(dataset, layer): Promise<any> {
     let url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
     url = this.hsUtilsService.proxify(url);
     return new Promise((resolve, reject) => {

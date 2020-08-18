@@ -1,11 +1,13 @@
+import {Injectable} from '@angular/core';
+
 import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
+
+import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
 
 @Injectable({
   providedIn: 'root',

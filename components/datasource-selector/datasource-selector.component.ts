@@ -1,7 +1,10 @@
-import './layman/layman.service';
 import * as angular from 'angular';
 import {Component} from '@angular/core';
+
+import './layman/layman.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
+import {HsCoreService} from '../core/core.service';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
@@ -30,15 +33,14 @@ export class HsDatasourcesComponent {
   metadata;
 
   constructor(
-    $scope,
-    $compile,
-    $injector,
-    HsCommonEndpointsService,
-    private HsConfig: HsConfig,
-    HsCore,
+    $scope: any,
+    $injector: any,
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private hsConfig: HsConfig,
+    private hsCore: HsCoreService,
     private HsDatasourcesService: HsDatasourcesService,
     private HsDatasourcesMapService: HsDatasourcesMapService,
-    private HsLaymanBrowserService,
+    private hsLaymanBrowserService: HsLaymanBrowserService,
     private HsLayoutService: HsLayoutService,
     private HsLogService: HsLogService,
     private HsUtilsService: HsUtilsService
@@ -46,19 +48,21 @@ export class HsDatasourcesComponent {
     'ngInject';
     this.$scope = $scope;
     this.$injector = $injector;
-    this.HsCore = HsCore;
+    this.HsCore = hsCore;
     this.data = HsDatasourcesService.data;
     this.DS = HsDatasourcesService;
     this.mapService = HsDatasourcesMapService;
-    this.config = HsConfig;
+    this.config = hsConfig;
     this.advancedSearch = false;
     this.endpointsService = HsCommonEndpointsService;
     this.datasetSelect = HsDatasourcesService.datasetSelect;
 
+    //FIXME:
     $scope.$on('ows.wms_connecting', () => {
       $scope.data.wms_connecting = true;
     });
 
+    //FIXME:
     $scope.$emit('scope_loaded', 'DatasourceSelector');
   }
 
@@ -114,10 +118,10 @@ export class HsDatasourcesComponent {
     let filler = Promise.resolve();
 
     if (endpoint.type == 'layman') {
-      filler = this.HsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
+      filler = this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
     }
     filler.then(() => {
-      //TODO: <hs.datasource_selector.metadata_dialog_directive>
+      //FIXME: <hs.datasource_selector.metadata_dialog_directive>
       /*this.metadata = this.decomposeMetadata(layer);
       if (this.HsConfig.design === 'md') {
         this.metadataDialog();
