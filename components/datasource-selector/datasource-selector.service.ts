@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {Injectable} from '@angular/core';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
@@ -20,23 +19,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsDatasourcesService {
   data: any = {};
 
-  /**
-   * @param $rootScope
-   * @param hsConfig
-   * @param hsAddLayersVectorService
-   * @param hsEventBusService
-   * @param HsMickaFiltersService
-   * @param hsMickaBrowserService
-   * @param hsLaymanBrowserService
-   * @param hsLayoutService
-   * @param hsCommonEndpointsService
-   * @param HsUtilsService
-   * @param HsDataSourceSelectorMapService
-   * @param EndpointsWithDatasourcesPipe
-   * @param $compile
-   */
   constructor(
-    private $rootScope: any,
     private hsConfig: HsConfig,
     private hsAddLayersVectorService: HsAddLayersVectorService,
     private hsEventBusService: HsEventBusService,
@@ -47,8 +30,7 @@ export class HsDatasourcesService {
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
     private hsDatasourcesMapService: HsDatasourcesMapService,
-    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
-    private $compile: any
+    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe
   ) {
     'ngInject';
 
@@ -194,7 +176,8 @@ export class HsDatasourcesService {
         whatToAdd.type = type;
       }
       if (Array.isArray(whatToAdd.type)) {
-        const scope = this.$rootScope.$new();
+        //FIXME: $compile
+        /*const scope = this.$rootScope.$new();
         Object.assign(scope, {
           types: whatToAdd.type,
           layer,
@@ -206,18 +189,19 @@ export class HsDatasourcesService {
         this.hsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
-        this.$compile(el)(scope);
+        this.$compile(el)(scope);*/
         return;
       }
       if (whatToAdd.type == 'WMS') {
         this.datasetSelect('OWS');
         setTimeout(() => {
-          this.$rootScope.$broadcast(
+          //FIXME: $rootScope.broadcast
+          /*this.$rootScope.$broadcast(
             'ows.filling',
             whatToAdd.type.toLowerCase(),
             decodeURIComponent(whatToAdd.link),
             whatToAdd.layer
-          );
+          );*/
         });
       } else if (whatToAdd.type == 'WFS') {
         const layer = await this.hsAddLayersVectorService.addVectorLayer(
