@@ -71,6 +71,21 @@ export default function (
       return tmp;
     },
 
+    /**
+     * Checks whether the endpoint already has a promise and resolves and deletes it if so.
+     * @param {any} url Endpoint url
+     */
+    resolveEndpointCanceler(url) {
+      if (angular.isDefined(me.promises)) {
+        for (let p in me.promises) {
+          if (me.promises[p].url == url) {
+            me.promises[p].canceler.resolve();
+            delete me.promises[p];
+          }
+        }
+      }
+    },
+
     loadList(endpoint, params, bbox, extentLayer) {
       endpoint.compositionsPaging.loaded = false;
       if (angular.isUndefined(params.sortBy)) {
@@ -83,14 +98,22 @@ export default function (
         params.limit = endpoint.compositionsPaging.limit;
       }
       return new Promise((resolve, reject) => {
-        if (angular.isDefined(me.canceler)) {
-          me.canceler.resolve();
-          delete me.canceler;
+        if (angular.isDefined(me.promises)) {
+          me.resolveEndpointCanceler(endpoint.url);
         }
-        me.canceler = $q.defer();
+        else {
+          // we need to keep array of promises to allow multiple Micka endpoints in the app
+          me.promises = [];
+        }
+        // create new promise and add it to the array of promises of all Micka endpoints
+        let prom = {
+          url: endpoint.url,
+          canceler: $q.defer()
+        };
+        me.promises.push(prom);
         $http
           .get(me.getCompositionsQueryUrl(endpoint, params, bbox), {
-            timeout: me.canceler.promise,
+            timeout: prom.canceler.promise,
           })
           .then(
             (response) => {
