@@ -1,3 +1,7 @@
+import * as olExtent from 'ol/extent';
+import {Vector as VectorLayer} from 'ol/layer';
+import Attribution from 'ol/control/Attribution';
+
 /**
  * @param $scope
  * @param $injector
@@ -236,26 +240,26 @@ export default function (
   };
 
 
-	try {
-		const $mdDialog = $injector.get('$mdDialog');
+  try {
+    const $mdDialog = $injector.get('$mdDialog');
 
-		$scope.showDialog = function(ev, template) {
-			$mdDialog.show({
-				scope: this,
-				preserveScope: true,
-				template: template,
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose: true
-			});
-		};
+    $scope.showDialog = function(ev, template) {
+      $mdDialog.show({
+        scope: this,
+        preserveScope: true,
+        template: template,
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true
+      });
+    };
 
-		$scope.cancelDialog = function() {
-			$mdDialog.cancel();
-		};
-	} catch (ex) {
-		$log.log('Injector does not have mdDialog service!');
-	}
+    $scope.cancelDialog = function() {
+      $mdDialog.cancel();
+    };
+  } catch (ex) {
+    $log.log('Injector does not have mdDialog service!');
+  }
 
   $scope.switchBottomSheetState = function () {
     if ($scope.getBottomSheetState() === 'minimized') {
@@ -478,7 +482,7 @@ export default function (
         // .defaultAnimation('md-panel-animate-fly')
         .withAnimation($mdPanel.animation.SCALE);
       const config = {
-        attachTo: angular.element('#gui'),
+        attachTo: document.querySelector('#gui'),
         position: panelPosition,
         animation: panelAnimation,
         targetEvent: $event,
@@ -499,6 +503,85 @@ export default function (
         }
       };
     };
+
+    $scope.openAttributionsPanel = function ($event) {
+      let panelPosition = $mdPanel.newPanelPosition()
+        // .relativeTo($event.srcElement)
+        .relativeTo($event.target)
+        .addPanelPosition(
+          $mdPanel.xPosition.ALIGN_END,
+          $mdPanel.yPosition.ALIGN_TOPS
+        )
+        .addPanelPosition(
+          $mdPanel.xPosition.ALIGN_START,
+          $mdPanel.yPosition.ALIGN_TOPS
+        )
+        .addPanelPosition(
+          $mdPanel.xPosition.ALIGN_END,
+          $mdPanel.yPosition.ALIGN_BOTTOMS
+        )
+        .addPanelPosition(
+          $mdPanel.xPosition.ALIGN_START,
+          $mdPanel.yPosition.ALIGN_BOTTOMS
+        );
+      let panelAnimation = $mdPanel.newPanelAnimation()
+        .openFrom($event.target)
+        .closeTo($event.target)
+        // .targetEvent($event)
+        // .defaultAnimation('md-panel-animate-fly')
+        .withAnimation($mdPanel.animation.SCALE);
+      let config = {
+        attachTo: document.querySelector('#gui'),
+        position: panelPosition,
+        animation: panelAnimation,
+        targetEvent: $event,
+        template: `<md-content flex layout-padding>©${HsMapService.map.controls.getArray()
+          .filter(function(el) {
+            return el instanceof Attribution;
+          })[0].renderedAttributions_.join("<br>©")}</md-content>`,
+        panelClass: 'attributions-panel md-whiteframe-8dp',
+        scope: this,
+        trapFocus: true,
+        clickOutsideToClose: true,
+        clickEscapeToClose: true,
+        zIndex: 50
+      }
+
+      $mdPanel.open(config)
+        .then(function (result) {
+          $scope.attributionsPanelRef = result;
+        });
+
+      $scope.closeAttributionsPanel = function (MdPanelRef) {
+        if (MdPanelRef) MdPanelRef.close();
+      }
+    };
+
+    $scope.defaultView = function(){
+      HsMapService.map.getView().animate({
+        center: HsConfig.default_view.getCenter(),
+        zoom: HsConfig.default_view.getZoom(),
+        duration: 300
+      });
+    };
+
+    $scope.maxView = function(){
+      $scope.extent = olExtent.createEmpty();
+      
+      HsLayermanagerService.data.layers.forEach(function(layer) {
+        if (layer.visible && layer.layer instanceof VectorLayer) {
+          olExtent.extend($scope.extent, layer.layer.getSource().getExtent());
+        }
+      });
+
+      HsMapService.map.getView().fit($scope.extent, {
+        size: HsMapService.map.getSize(),
+        padding: [50,50,50,50],
+        constrainResolution: true,
+        duration: 300
+      });
+    };
+                    
   } catch (ex) {
     //Ignore error
   }
