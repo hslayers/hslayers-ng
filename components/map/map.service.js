@@ -379,9 +379,9 @@ export class HsMapService {
             Use ${platformModifierKey} key + mouse-wheel to zoom the map.
             </div>`;
           const element = angular.element(html)[0];
-          //TODO: '.hs-gui-overlay' is not available in HsCore.puremapApp mode => place it somewhere else
+          //TODO: '.hs-page-content' is not available in HsCore.puremapApp mode => place it somewhere else
           this.HsLayoutService.contentWrapper
-            .querySelector('.hs-gui-overlay')
+            .querySelector('.hs-page-content')
             .appendChild(element);
           this.$timeout(() => {
             this.HsLayoutService.contentWrapper
