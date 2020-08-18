@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 /**
  * @ngdoc method
  * @name replaceAll
@@ -24,7 +23,7 @@ export function replaceAll(search: string, replacement: string): string {
  */
 export function format(...args: any): string {
   return this.replace(/{(\d+)}/g, (match, number) => {
-    return angular.isDefined(args[number]) ? args[number] : match;
+    return args[number] !== undefined ? args[number] : match;
   });
 }
 /**

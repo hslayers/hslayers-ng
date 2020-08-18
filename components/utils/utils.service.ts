@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {DOCUMENT} from '@angular/common';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
@@ -28,7 +27,7 @@ export class HsUtilsService {
     if (url.startsWith(this.HsConfig.proxyPrefix)) {
       return url;
     }
-    toEncoding = angular.isUndefined(toEncoding) ? true : toEncoding;
+    toEncoding = toEncoding === undefined ? true : toEncoding;
     let outUrl = url;
     //Not using location because don't know if port 80 was specified explicitly or not
     const windowUrlPosition = url.indexOf(this.window.location.origin);
@@ -38,7 +37,7 @@ export class HsUtilsService {
       this.getPortFromUrl(url) != this.window.location.port
     ) {
       if (
-        angular.isUndefined(this.HsConfig.useProxy) ||
+        this.HsConfig.useProxy === undefined ||
         this.HsConfig.useProxy === true
       ) {
         outUrl = this.HsConfig.proxyPrefix || '/cgi-bin/hsproxy.cgi?';
@@ -130,7 +129,7 @@ export class HsUtilsService {
    * @description Parse parameters and their values from Url string
    */
   getParamsFromUrl(str: string): any {
-    if (!angular.isString(str)) {
+    if (typeof str !== 'string') {
       return {};
     }
 
@@ -153,11 +152,11 @@ export class HsUtilsService {
         key = decodeURIComponent(key);
         // missing `=` should be `null`:
         // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-        val = angular.isUndefined(val) ? null : decodeURIComponent(val);
+        val = val === undefined ? null : decodeURIComponent(val);
 
         if (!ret.hasOwnProperty(key)) {
           ret[key] = val;
-        } else if (angular.isArray(ret[key])) {
+        } else if (Array.isArray(ret[key])) {
           ret[key].push(val);
         } else {
           ret[key] = [ret[key], val];
@@ -177,7 +176,7 @@ export class HsUtilsService {
   paramsToURL(array: any): string {
     const pairs = [];
     for (const key in array) {
-      if (array.hasOwnProperty(key) && angular.isDefined(array[key])) {
+      if (array.hasOwnProperty(key) && array[key] !== undefined) {
         pairs.push(
           encodeURIComponent(key) + '=' + encodeURIComponent(array[key])
         );
@@ -195,7 +194,7 @@ export class HsUtilsService {
    * @description Insert every element in the set of matched elements after the target.
    */
   insertAfter(newNode, referenceNode): void {
-    if (angular.isDefined(newNode.length) && newNode.length > 0) {
+    if (newNode.length !== undefined && newNode.length > 0) {
       newNode = newNode[0];
     }
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -235,7 +234,7 @@ export class HsUtilsService {
    * (https://davidwalsh.name/javascript-debounce-function)
    */
   debounce(func, wait, immediate, context) {
-    if (angular.isUndefined(context)) {
+    if (context === undefined) {
       context = this;
     }
     return function (...args) {
@@ -399,21 +398,25 @@ export class HsUtilsService {
     const flatArray = [...dirtyArray];
     for (const prop of propertyChain) {
       for (const idx in flatArray) {
-        if (angular.isUndefined(flatArray[idx])) {
+        if (flatArray[idx] === undefined) {
           this.LogService.error(`Property "${prop}" not found in object.`);
           return [];
         }
-        flatArray[idx] = angular.isDefined(flatArray[idx].get)
-          ? flatArray[idx].get(prop) /* get() is only defined for OL objects */
-          : flatArray[idx][prop]; /* POJO access */
+        flatArray[idx] =
+          flatArray[idx].get !== undefined
+            ? flatArray[idx].get(
+                prop
+              ) /* get() is only defined for OL objects */
+            : flatArray[idx][prop]; /* POJO access */
       }
     }
     return dirtyArray.filter((item, position) => {
       let propertyValue = item;
       for (const prop of propertyChain) {
-        propertyValue = angular.isDefined(propertyValue.get)
-          ? propertyValue.get(prop) /* get() is only defined for OL objects */
-          : propertyValue[prop]; /* POJO access */
+        propertyValue =
+          propertyValue.get !== undefined
+            ? propertyValue.get(prop) /* get() is only defined for OL objects */
+            : propertyValue[prop]; /* POJO access */
       }
       return flatArray.indexOf(propertyValue) === position;
     });

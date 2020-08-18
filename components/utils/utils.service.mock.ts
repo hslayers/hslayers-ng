@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 export class HsUtilsServiceMock {
   constructor() {}
 
@@ -39,20 +38,24 @@ export class HsUtilsServiceMock {
     const flatArray = [...dirtyArray];
     for (const prop of propertyChain) {
       for (const idx in flatArray) {
-        if (angular.isUndefined(flatArray[idx])) {
+        if (flatArray[idx] === undefined) {
           return [];
         }
-        flatArray[idx] = angular.isDefined(flatArray[idx].get)
-          ? flatArray[idx].get(prop) /* get() is only defined for OL objects */
-          : flatArray[idx][prop]; /* POJO access */
+        flatArray[idx] =
+          flatArray[idx].get !== undefined
+            ? flatArray[idx].get(
+                prop
+              ) /* get() is only defined for OL objects */
+            : flatArray[idx][prop]; /* POJO access */
       }
     }
     return dirtyArray.filter((item, position) => {
       let propertyValue = item;
       for (const prop of propertyChain) {
-        propertyValue = angular.isDefined(propertyValue.get)
-          ? propertyValue.get(prop) /* get() is only defined for OL objects */
-          : propertyValue[prop]; /* POJO access */
+        propertyValue =
+          propertyValue.get !== undefined
+            ? propertyValue.get(prop) /* get() is only defined for OL objects */
+            : propertyValue[prop]; /* POJO access */
       }
       return flatArray.indexOf(propertyValue) === position;
     });
