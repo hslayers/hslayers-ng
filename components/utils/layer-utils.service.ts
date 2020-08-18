@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {HsUtilsService} from './utils.service';
@@ -98,7 +97,7 @@ export class HsLayerUtilsService {
    * @description Get title of selected layer
    */
   getLayerTitle(layer: Layer): string {
-    if (angular.isDefined(layer.get('title'))) {
+    if (layer.get('title') !== undefined) {
       return layer.get('title').replace(/&#47;/g, '/');
     } else {
       return 'Void';
@@ -178,7 +177,7 @@ export class HsLayerUtilsService {
    */
   isLayerInManager(layer: Layer): boolean {
     return (
-      angular.isUndefined(layer.get('show_in_manager')) ||
+      layer.get('show_in_manager') === undefined ||
       layer.get('show_in_manager') == true
     );
   }
@@ -191,7 +190,7 @@ export class HsLayerUtilsService {
    * @description Test if layer is has a title
    */
   hasLayerTitle(layer: Layer): boolean {
-    return angular.isDefined(layer.get('title')) && layer.get('title') != '';
+    return layer.get('title') !== undefined && layer.get('title') != '';
   }
 
   /**
@@ -203,11 +202,11 @@ export class HsLayerUtilsService {
    * @description Test if layers features are editable
    */
   isLayerEditable(layer: Layer): boolean {
-    if (angular.isUndefined(layer.get('editor'))) {
+    if (layer.get('editor') === undefined) {
       return true;
     }
     const editorConfig = layer.get('editor');
-    if (angular.isUndefined(editorConfig.editable)) {
+    if (editorConfig.editable === undefined) {
       return true;
     }
     return editorConfig.editable;
@@ -215,8 +214,8 @@ export class HsLayerUtilsService {
 
   getLayerName(layer: Layer): string {
     if (
-      angular.isUndefined(layer) ||
-      (angular.isDefined(layer.get('show_in_manager')) &&
+      layer === undefined ||
+      (layer.get('show_in_manager' !== undefined) &&
         layer.get('show_in_manager') === false)
     ) {
       return '';
