@@ -17,7 +17,7 @@
                 </dl>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-success" href="#" [href]='{{DS.layerRDF(selected_ds, selected_layer)}}'
+                <a role="button" class="btn btn-success" href="#" [href]='DS.layerRDF(selected_ds, selected_layer)'
                     data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
                     [hidden]='selected_ds.type!="micka" || DS.layerRDF(selected_ds, selected_layer) == "#"'>
                     <i class="icon-share-alt"></i> RDF

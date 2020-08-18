@@ -1,95 +1,95 @@
-<div ng-class="{'in': modalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog"
-    aria-hidden="true">
+<div [ngClass]="{'in': modalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" translate="">
+                <h4 class="modal-title" i18n>
                     Extended search parameters for Micka
                 </h4>
-                <button type="button" ng-click="modalVisible = false" class="close" data-dismiss="modal"><span
-                    aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
+                <button type="button" (click)="modalVisible = false" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span class="sr-only" i18n>Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
                     <label class="form-group">
-                        <translate class="control-label">Fulltext</translate>
-                        <input type="text" class="form-control" ng-model="datasourceSelectorService.data.query.textFilter"/>
+                        <i18n class="control-label">Fulltext</i18n>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="datasourceSelectorService.data.query.textFilter" />
                     </label>
                     <div>
                         <label class="radio-inline">
-                            <input type="radio" ng-model="datasourceSelectorService.data.textField" value="AnyText"> All
+                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="AnyText">
+                            All
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" ng-model="datasourceSelectorService.data.textField" value="title"> Title
+                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="title">
+                            Title
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" ng-model="datasourceSelectorService.data.textField" value="abstract">
+                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="abstract">
                             Abstract
                         </label>
                     </div>
 
                     <label class="form-group">
-                        <translate class="control-label">Keywords</translate>
+                        <i18n class="control-label">Keywords</i18n>
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                ng-model="datasourceSelectorService.data.query.keywords" />
+                                [(ngModel)]="datasourceSelectorService.data.query.keywords" />
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
-                                    ng-click="showSuggestions('keywords', 'keyword', 'value')">...</button>
+                                    (click)="showSuggestions('keywords', 'keyword', 'value')">...</button>
                             </div>
                         </div>
                     </label>
 
                     <label class="form-group">
-                        <translate class="control-label">Organization name</translate>
+                        <i18n class="control-label">Organization name</i18n>
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                ng-model="datasourceSelectorService.data.query.OrganisationName" />
+                                [(ngModel)]="datasourceSelectorService.data.query.OrganisationName" />
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
-                                    ng-click="showSuggestions('OrganisationName', 'org', 'name')">...</button>
+                                    (click)="showSuggestions('OrganisationName', 'org', 'name')">...</button>
                             </div>
                         </div>
                     </label>
 
-                    <label class="form-group" ng-show='false'>
-                        <translate class="control-label">Type</translate>
-                        <select class="form-control"
-                            ng-model="datasourceSelectorService.data.query.type"
-                            ng-change='mickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, datasourceSelectorService.data.query.type)'>
+                    <label class="form-group" [hidden]='true'>
+                        <!-- TODO: wtf?-->
+                        <i18n class="control-label">Type</i18n>
+                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.type"
+                            (change)='mickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, datasourceSelectorService.data.query.type)'>
                             <option value=""></option>
-                            <option value="data" translate>Data</option>
-                            <option value="service">Service</option>
-                            <option value="application">Application</option>
-                            <option value="featureCatalogue">Feature catalogue</option>
+                            <option value="data" i18n>Data</option>
+                            <option value="service" i18n>Service</option>
+                            <option value="application" i18n>Application</option>
+                            <option value="featureCatalogue" i18n>Feature catalogue</option>
                         </select>
                     </label>
                     <!--
-                    <div class="form-group" ng-show="query.type=='application' || query.type=='service'">
-                        <label class="control-label" translate>
-                            <span ng-show="query.type=='application'">Application type:</span>
-                            <span ng-show="query.type=='service'">Service type:</span>
+                    <div class="form-group" [hidden]="query.type != 'application' && query.type != 'service'">
+                        <label class="control-label" i18n>
+                            <span [hidden]="query.type != 'application'">Application type:</span>
+                            <span [hidden]="query.type != 'service'">Service type:</span>
                         </label>
-                        <select class="form-control" ng-model="query.ServiceType">
-                            <option ng-repeat="type in micka_ds.level2_types" ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        <select class="form-control" [(ngModel)]="query.ServiceType">
+                            <option *ngFor="let type of micka_ds.level2_types" [attr.value]="{{type.value}}">{{type.name}}</option>
                         </select>
                     </div>
                     -->
 
-                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'">
-                        <translate class="control-label">Topic category</translate>
+                    <label class="form-group" [hidden]="datasourceSelectorService.data.query.type != 'data'">
+                        <i18n class="control-label">Topic category</i18n>
 
-                        <select class="form-control"
-                            ng-model="datasourceSelectorService.data.query.TopicCategory">
-                            <option ng-repeat="type in mickaFilterService.mickaDS.code_lists.topicCategory"
-                                ng-attr-value="{{type.value}}">{{type.name}}</option>
+                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.TopicCategory">
+                            <option *ngFor="let type of mickaFilterService.mickaDS.code_lists.topicCategory"
+                                [attr.value]="type.value">{{type.name}}</option>
                         </select>
                     </label>
 
-                    <label class="form-group" ng-show="datasourceSelectorService.data.query.type=='data'">
-                        <translate class="control-label">Scale</translate> 1:
-                        <select class="form-control"
-                            ng-model="datasourceSelectorService.data.query.Denominator">
+                    <label class="form-group" [hidden]="datasourceSelectorService.data.query.type != 'data'">
+                        <i18n class="control-label">Scale</i18n> 1:
+                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.Denominator">
                             <option value="2000">2000</option>
                             <option value="2500">2500</option>
                             <option value="2880">2880</option>
@@ -101,27 +101,27 @@
                     </label>
 
 
-                    <label class="form-group" ng-show='false'>
-                        <translate class="control-label">Order by</translate>
-                        <select class="form-control"
-                            ng-model="datasourceSelectorService.data.query.sortby">
-                            <option value="title" translate>Title</option>
-                            <option value="date">Date stamp</option>
-                            <option value="bbox">Extent similarity</option>
+                    <label class="form-group" [hidden]='true'>
+                        <!-- TODO: wtf?-->
+                        <i18n class="control-label">Order by</i18n>
+                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.sortby">
+                            <option value="title" i18n>Title</option>
+                            <option value="date" i18n>Date stamp</option>
+                            <option value="bbox" i18n>Extent similarity</option>
                         </select>
                     </label>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" translate
-                    ng-click="datasourceSelectorService.queryCatalogs(); modalVisible = false"
+                <button type="button" class="btn btn-primary" i18n
+                    (click)="datasourceSelectorService.queryCatalogs(); modalVisible = false"
                     data-dismiss="modal">Search</button>
-                <button type="button" class="btn btn-secondary" ng-click="DS.clear()">
-                    <translate>Clear</translate>
+                <button type="button" class="btn btn-secondary" (click)="DS.clear()">
+                    <i18n>Clear</i18n>
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    ng-click="DS.clear(); modalVisible = false" translate>Close</button>
+                    (click)="DS.clear(); modalVisible = false" i18n>Close</button>
             </div>
         </div>
     </div>
