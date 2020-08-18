@@ -264,6 +264,7 @@ export default function (
       rotation: template.getRotation(),
       maxZoom: template.getMaxZoom(),
       minZoom: template.getMinZoom(),
+      constrainResolution: template.getConstrainResolution(),
     });
     return view;
   }
