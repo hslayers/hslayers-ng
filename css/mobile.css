@@ -178,10 +178,6 @@ body {
     float: left;
 }
 
-.hs-page-wrapper, .hs-content-wrapper, .hs-page-content {
-    height: 100%;
-}
-
 .mobile .locate-mobile.ol-collapsed {
     display: none;
 }

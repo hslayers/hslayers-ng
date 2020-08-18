@@ -30,7 +30,7 @@ export default function (
       });
       if (HsLayoutService.sidebarRight == false) { // TBD HsConfig.sidebarPosition === 'left'
         const gui = HsLayoutService.contentWrapper.querySelector(
-          '.hs-gui-overlay'
+          '.hs-page-content'
         );
         gui.classList.add('flex-reverse');
       }

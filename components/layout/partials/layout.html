@@ -1,10 +1,13 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper w-100 h-100"
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
-        <div class="hs-gui-overlay d-flex w-100 h-100 ">
+        <div class="hs-page-content d-flex w-100 h-100 ">
             <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
-            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"
-                style="z-index:990; flex: 1 1 auto;"></div>
+            <div class="hs-map-space">
+                <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"
+               ></div>
+                <hs.cesium></hs.cesium>
+            </div>
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
                 ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
             </hs.toolbar>
@@ -74,6 +77,5 @@
             <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->
         </div>
         <hs-dialog-container></hs-dialog-container>
-        <hs.cesium></hs.cesium>
     </div>
 </div>
