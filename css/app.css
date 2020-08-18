@@ -459,12 +459,12 @@ button.but-title-sm {
 }
 
 .hs-content-wrapper {
-	position: relative;
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .hs-content-wrapper, .hs-page-wrapper, .hs-page-content {
 	height: 100%;
+	position: relative;
 }
 
 .basemapGallery {
@@ -1357,6 +1357,7 @@ md-icon > span.glyphicon {
 .map-floating-gui {
 	pointer-events: none;
 	position: absolute;
+	height: 100%;
 	width: 100%;
 	bottom: 0;
 	left: 0;
@@ -1630,6 +1631,38 @@ md-content a {
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	word-break: break-all;
+}
+
+#gui .buttons.top-right {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+    position: absolute;
+}
+
+#gui .buttons.top-left {
+    top: 20px;
+    left: 20px;
+    bottom: auto;
+    right: auto;
+    position: absolute;
+}
+
+#gui .buttons.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    top: auto;
+    right: auto;
+    position: absolute;
+}
+
+#gui .buttons.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    top: auto;
+    left: auto;
+    position: absolute;
 }
 
 .md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left,
