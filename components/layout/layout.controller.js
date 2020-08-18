@@ -8,6 +8,7 @@ import Attribution from 'ol/control/Attribution';
  * @param $rootScope
  * @param $window
  * @param HsCore
+ * @param HsUtilsService
  * @param HsMapService
  * @param HsGeolocationService
  * @param HsLayermanagerService
@@ -23,6 +24,7 @@ export default function (
   $rootScope,
   $window,
   HsCore,
+  HsUtilsService,
   HsMapService,
   HsGeolocationService,
   HsLayermanagerService,
@@ -620,8 +622,6 @@ export default function (
     let width = HsLayoutService.layoutElement.clientWidth;
     let marginLeft = 0;
 
-    HsMapService.map.updateSize();
-
     if (!HsLayoutService.sidebarBottom() || !fullscreen) {
       marginLeft += HsLayoutService.sidebarRight
         ? 0
@@ -638,6 +638,21 @@ export default function (
     }
 
     height -= HsLayoutService.mdToolbarHeight();
+
+    const currentMapSize = HsMapService.map.getSize();
+    if (
+      Math.round(currentMapSize[0]) != Math.round(width) || 
+      Math.round(currentMapSize[1]) != Math.round(height)
+    ) {
+      HsUtilsService.debounce(
+        () => {
+          HsMapService.map.updateSize();
+        },
+        300,
+        false,
+        $scope
+      )();
+    }
 
     return {
       height: `${height}px`,
