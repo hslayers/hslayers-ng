@@ -9,7 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
 import {HsLogModule} from '../../common/log/log.module';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapAdvancedFormComponent} from './save-map-advanced-form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogComponent} from './save-map-dialog.component';

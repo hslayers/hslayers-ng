@@ -10,7 +10,7 @@ import {HsLegendLayerComponent} from './legend-layer.component';
 import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
 import {HsLegendService} from './legend.service';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
