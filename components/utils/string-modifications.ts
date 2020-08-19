@@ -1,20 +1,5 @@
 /**
  * @ngdoc method
- * @name replaceAll
- * @public
- * @param {string} search String to look for
- * @param {string} replacement Replacement value
- * @returns {string} Returns modified string
- * @description Replaces input string text with replacement text
- */
-export function replaceAll(search: string, replacement: string): string {
-  if (!String.prototype.replaceAll) {
-    return this.replace(new RegExp(search, 'g'), replacement);
-  }
-}
-
-/**
- * @ngdoc method
  * @name format
  * @public
  * @param {any} args String to look for
