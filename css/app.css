@@ -308,6 +308,9 @@ hr {
 	top: 45px;
 	min-width: 250px;
 }
+.search-panel hs-search-input, .search-panel hs-search-results{
+	width: 100%;
+}
 
 .hs-sidebar-item [class*=" icon-"] {
 	margin-left: -4px;

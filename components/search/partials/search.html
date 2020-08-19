@@ -1,16 +1,7 @@
 <div>
     <hs-panel-header name="Search" title="Search"></hs-panel-header>
-    <div class="input-group hs-search-address pt-1 pb-1 d-flex">
-        <div class="input-group-prepend">
-            <button class="btn btn-light btn-outline-secondary rounded-0" *ngIf="!clearvisible"><i
-                    class="glyphicon icon-search"></i></button>
-            <button class="btn btn-light btn-outline-secondary rounded-0" *ngIf="clearvisible" (click)="clear()"><span
-                    aria-hidden="true" class="close"></span>x<span class="sr-only">
-                    <i18n>Clear</i18n>
-                </span></button>
-        </div>
-        <input [ngStyle]="{height: unset}" [(ngModel)]="query" class="hs-search-address-input flex-grow-1 w-75"
-            [hidden]="!searchInputVisible" placeholder="Search: " (ngModelChange)="queryChanged()">
+    <div class="input-group search-panel hs-search-address pt-1 pb-1 d-flex">
+        <hs-search-input></hs-search-input>
+        <hs-search-results></hs-search-results>
     </div>
-    <hs-search-results></hs-search-results>
 </div>
