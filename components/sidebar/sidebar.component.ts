@@ -5,6 +5,8 @@ import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from './sidebar.service';
+import {HsConfig} from '../../config.service';
+
 @Component({
   selector: 'hs-sidebar',
   template: require('./partials/sidebar.html'),
@@ -16,7 +18,8 @@ export class HsSidebarComponent implements OnInit {
     private HsLayoutService: HsLayoutService,
     private HsCoreService: HsCoreService,
     private HsSidebarService: HsSidebarService,
-    private HsPermalinkUrlService: HsShareUrlService
+    private HsPermalinkUrlService: HsShareUrlService,
+    private HsConfig: HsConfig
   ) {}
   ngOnInit(): void {
     if (angular.isDefined(this.HsCoreService.config.createExtraMenu)) {

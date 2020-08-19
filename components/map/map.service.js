@@ -356,25 +356,18 @@ export class HsMapService {
           //TODO: change the name of platform modifier key dynamically based on OS
           const platformModifierKey = 'CTRL or META';
           //Following styles would be better written as ng-styles...
+          const side =
+            this.HsConfig.sidebarPosition != 'invisible'
+              ? this.HsConfig.sidebarPosition
+              : 'right';
           const html = `<div
             class="alert alert-info mt-1 hs-zoom-info-dialog"
             style="
               position: absolute;
-              ${
-                !this.HsLayoutService.sidebarBottom() &&
-                this.HsLayoutService.sidebarRight
-                  ? 'right'
-                  : null
-              }: ${this.HsLayoutService.panelSpaceWidth() + 10}px;
-              ${
-                !this.HsLayoutService.sidebarBottom() &&
-                !this.HsLayoutService.sidebarRight
-                  ? 'left'
-                  : null
-              }: ${this.HsLayoutService.panelSpaceWidth() + 10}px;
+              ${!this.HsLayoutService.sidebarBottom() ? side : null}: ${
+            this.HsLayoutService.panelSpaceWidth() + 10}px;
               ${this.HsLayoutService.sidebarBottom() ? 'bottom:' : null}: ${
-            this.HsLayoutService.panelSpaceHeight() + 5
-          }px};"
+            this.HsLayoutService.panelSpaceHeight() + 5}px};"
             role="alert">
             Use ${platformModifierKey} key + mouse-wheel to zoom the map.
             </div>`;

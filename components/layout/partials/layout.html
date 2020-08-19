@@ -1,6 +1,6 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper w-100 h-100"
-        ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
+        ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': config.sidebarPosition == 'right' && layoutService.sidebarVisible(), 'hs-sb-left': config.sidebarPosition == 'left' && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
         <div class="hs-page-content d-flex w-100 h-100 ">
             <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
             <div class="hs-map-space">
@@ -21,7 +21,7 @@
             <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
 
             <div class="hs-panelspace"
-                ng-if="layoutService.sidebarVisible() && layoutService.componentEnabled('sidebar')"
+                ng-if="layoutService.sidebarVisible()"
                 ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}"
                 ng-style="{width: panelSpaceWidth()+'px'}">
                 <div class="hs-panelspace-wrapper">

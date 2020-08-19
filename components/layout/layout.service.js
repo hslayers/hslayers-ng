@@ -461,7 +461,7 @@ export class HsLayoutService {
   }
 
   sidebarVisible(state) {
-    if (!this.componentEnabled('sidebar')) {
+    if (this.HsConfig.sidebarPosition == 'invisible') {
       return false;
     }
     if (angular.isDefined(state)) {
