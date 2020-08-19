@@ -1,4 +1,9 @@
-import {Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {HsPanelComponent} from './panel-component';
 import {HsPanelContainerService} from './panel-container.service';
 import {HsPanelHostDirective} from './panel-host.directive';
@@ -8,14 +13,16 @@ import {HsPanelItem} from './panel-item.class';
   selector: 'hs-panel-container',
   template: require('./panel-container.html'),
 })
-export class HsPanelContainerComponent {
+export class HsPanelContainerComponent implements OnInit {
   @ViewChild(HsPanelHostDirective, {static: true})
   panelHost: HsPanelHostDirective;
   interval: any;
   constructor(
     private HsPanelContainerService: HsPanelContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.HsPanelContainerService.panelObserver.subscribe(
       (item: HsPanelItem) => {
         this.loadPanel(item);

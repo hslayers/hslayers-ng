@@ -1,4 +1,9 @@
-import {Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
 import {HsDialogHostDirective} from './dialog-host.directive';
@@ -8,14 +13,16 @@ import {HsDialogItem} from './dialog-item.class';
   selector: 'hs-dialog-container',
   template: require('./dialog-container.html'),
 })
-export class HsDialogContainerComponent {
+export class HsDialogContainerComponent implements OnInit {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
   constructor(
     private HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.HsDialogContainerService.dialogObserver.subscribe(
       (item: HsDialogItem) => {
         this.loadDialog(item);
