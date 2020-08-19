@@ -387,7 +387,7 @@ export default {
     });
 
     $scope.$on('core.map_reset', (event) => {
-      $timeout(() => {
+      setTimeout(() => {
         delete $scope.composition_id;
       });
     });
