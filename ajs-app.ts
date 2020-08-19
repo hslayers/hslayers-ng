@@ -10,7 +10,7 @@ import './components/measure';
 import './components/permalink/share.module';
 import './components/print';
 import './components/query/query.module';
-import './components/search/search.module';
+import './components/search';
 import './components/sidebar';
 import './components/styles/styles.module';
 import './components/toolbar/toolbar.module';

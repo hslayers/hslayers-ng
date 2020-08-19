@@ -27,6 +27,7 @@ import {HsLogModule} from '../../common/log/log.module';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsSaveMapModule} from '../save-map';
+import {HsSearchModule} from './../search';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
@@ -51,6 +52,7 @@ import {NgModule} from '@angular/core';
     HsSaveMapModule,
     HsLogModule,
     HsShareModule,
+    HsSearchModule,
     HsUtilsModule,
   ],
   exports: [],
