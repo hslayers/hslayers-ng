@@ -44,7 +44,7 @@
                             <hs-mini-sidebar hs.draggable ng-if="layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></hs-mini-sidebar>
                             <hs.draw                  hs.draggable ng-show="panelVisible('draw', this)"></hs.draw>
                             <div hs.customhtml.directive DEPRECATED style="height: auto"></div>
-                            <hs-panel-container ></hs-panel-container>
+                            <hs-panel-container class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}"></hs-panel-container>
                         </div>
                     </div>
                 </div>
