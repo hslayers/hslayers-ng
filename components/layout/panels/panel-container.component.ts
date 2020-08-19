@@ -1,0 +1,47 @@
+import {Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {HsPanelComponent} from './panel-component';
+import {HsPanelContainerService} from './panel-container.service';
+import {HsPanelHostDirective} from './panel-host.directive';
+import {HsPanelItem} from './panel-item.class';
+
+@Component({
+  selector: 'hs-panel-container',
+  template: require('./panel-container.html'),
+})
+export class HsPanelContainerComponent {
+  @ViewChild(HsPanelHostDirective, {static: true})
+  panelHost: HsPanelHostDirective;
+  interval: any;
+  constructor(
+    private HsPanelContainerService: HsPanelContainerService,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {
+    this.HsPanelContainerService.panelObserver.subscribe(
+      (item: HsPanelItem) => {
+        this.loadPanel(item);
+      }
+    );
+    this.HsPanelContainerService.panelDestroyObserver.subscribe(
+      (item: HsPanelComponent) => {
+        this.destroyPanel(item);
+      }
+    );
+  }
+
+  destroyPanel(panel: HsPanelComponent) {
+    const viewContainerRef = this.panelHost.viewContainerRef;
+    viewContainerRef.remove(viewContainerRef.indexOf(panel.viewRef));
+  }
+
+  loadPanel(panelItem: HsPanelItem): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      panelItem.component
+    );
+    const viewContainerRef = this.panelHost.viewContainerRef;
+    //    viewContainerRef.clear();
+
+    const componentRef = viewContainerRef.createComponent(componentFactory);
+    (<HsPanelComponent>componentRef.instance).viewRef = componentRef.hostView;
+    (<HsPanelComponent>componentRef.instance).data = panelItem.data;
+  }
+}
