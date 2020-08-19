@@ -31,12 +31,18 @@ import {ParamCacheMapItem} from './param-cache-map-item.class';
 import {WINDOW} from '../utils/window';
 import {default as proj4} from 'proj4';
 /**
+ * @param proxy.proxy
  * @param proxy
  * @param maxResolution
+ * @param proxy.maxResolution
+ * @param proxy.HsUtilsService
+ * @param proxy.projection
  */
-function MyProxy(proxy, maxResolution) {
+function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.proxy = proxy;
   this.maxResolution = maxResolution;
+  this.HsUtilsService = HsUtilsService;
+  this.projection = projection;
 }
 
 @Injectable({
@@ -88,17 +94,12 @@ export class HsCesiumLayersService {
           const dist = Math.sqrt(
             Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
           );
-          const projection = this.getProjectFromVersion(
-            params.version,
-            params.srs,
-            params.crs
-          );
-          if (projection == 'EPSG:3857') {
+          if (this.projection == 'EPSG:3857') {
             if (dist > 1000000) {
               return blank_url;
             }
           }
-          if (projection == 'EPSG:4326') {
+          if (this.projection == 'EPSG:4326') {
             if (dist > 1) {
               return blank_url;
             }
@@ -462,12 +463,12 @@ export class HsCesiumLayersService {
     const prmCache = {
       url: new Resource({
         url: src.getUrls()[0],
-        proxy: new MyProxy(
-          this.HsConfig.proxyPrefix
-            ? this.HsConfig.proxyPrefix
-            : '/cgi-bin/hsproxy.cgi?url=',
-          ol_lyr.getMaxResolution()
-        ),
+        proxy: new MyProxy({
+          proxy: this.getProxyFromConfig(),
+          maxResolution: ol_lyr.getMaxResolution(),
+          HsUtilsService: this.HsUtilsService,
+          projection: this.getProjectionFromParams(params),
+        }),
       }),
       layers: src.getParams().LAYERS,
       dimensions: ol_lyr.get('dimensions'),
@@ -494,6 +495,16 @@ export class HsCesiumLayersService {
     return tmp;
   }
 
+  private getProxyFromConfig(): string {
+    return this.HsConfig.proxyPrefix
+      ? this.HsConfig.proxyPrefix
+      : '/cgi-bin/hsproxy.cgi?url=';
+  }
+
+  private getProjectionFromParams(params: any): string {
+    return this.getProjectFromVersion(params.version, params.srs, params.crs);
+  }
+
   //Same as normal tiled WebMapServiceImageryProvider, but with bigger tileWidth and tileHeight
   createSingleImageProvider(ol_lyr: ImageLayer): ImageryLayer {
     const src: ImageWMS = <ImageWMS>ol_lyr.getSource();
@@ -511,12 +522,12 @@ export class HsCesiumLayersService {
     const prmCache: any = {
       url: new Resource({
         url: src.getUrl(),
-        proxy: new MyProxy(
-          this.HsConfig.proxyPrefix
-            ? this.HsConfig.proxyPrefix
-            : '/cgi-bin/hsproxy.cgi?url=',
-          ol_lyr.getMaxResolution()
-        ),
+        proxy: new MyProxy({
+          proxy: this.getProxyFromConfig(),
+          maxResolution: ol_lyr.getMaxResolution(),
+          HsUtilsService: this.HsUtilsService,
+          projection: this.getProjectionFromParams(params),
+        }),
       }),
       layers: src.getParams().LAYERS,
       dimensions: ol_lyr.get('dimensions'),
