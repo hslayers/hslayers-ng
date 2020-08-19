@@ -1,4 +1,4 @@
-import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsSaveMapDialogComponent} from './save-map-dialog.component';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component';

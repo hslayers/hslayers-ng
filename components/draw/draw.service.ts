@@ -7,7 +7,7 @@ import {Draw, Modify} from 'ol/interaction';
 import {Layer} from 'ol/layer';
 
 import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';

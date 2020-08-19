@@ -2,7 +2,7 @@ import VectorLayer from 'ol/layer/Vector';
 import moment = require('moment');
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';

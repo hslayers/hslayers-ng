@@ -1,10 +1,10 @@
 /* eslint-disable angular/definedundefined */
 import {Component, Inject, ViewRef} from '@angular/core';
-import {HsDialogComponent} from '../layout/dialog-component.interface';
+import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import moment = require('moment');
-import { HsDialogContainerService } from '../layout/dialog-container.service';
+import { HsDialogContainerService } from '../layout/dialogs/dialog-container.service';
 
 @Component({
   selector: 'hs-sensor-unit',

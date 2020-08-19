@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
-import {HsDialogContainerService} from '../layout/dialog-container.service';
-import {HsDialogItem} from '../layout/dialog-item.class';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsDialogItem} from '../layout/dialogs/dialog-item.class';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
