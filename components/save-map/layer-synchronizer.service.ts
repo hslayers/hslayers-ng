@@ -100,8 +100,8 @@ export class HsLayerSynchronizerService {
           if (featureString) {
             source.loading = true;
             const format = new WFS();
-            featureString = featureString.replaceAll(
-              'urn:x-ogc:def:crs:EPSG:3857',
+            featureString = featureString.replace(
+              '/urn:x-ogc:def:crs:EPSG:3857/gm',
               'EPSG:3857'
             );
             source.addFeatures(format.readFeatures(featureString));
@@ -192,7 +192,7 @@ export class HsLayerSynchronizerService {
    * @returns {string} Layer title
    */
   getLayerName(layer: Layer): string {
-    return layer.get('title').toLowerCase().replaceAll(' ', '');
+    return layer.get('title').toLowerCase().replace('/ /gm', '');
   }
 
   /**
