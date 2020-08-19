@@ -1,8 +1,8 @@
-import '../utils/string-modifications';
 import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
+import {HsUtilsService} from './../utils/utils.service';
 @Component({
   selector: 'hs-save-map-advanced-form',
   template: require('./partials/form.html'),
@@ -19,7 +19,8 @@ export class HsSaveMapAdvancedFormComponent {
   constructor(
     private HsSaveMapManagerService: HsSaveMapManagerService,
     private HsEventBusService: HsEventBusService,
-    private HsCoreService: HsCoreService
+    private HsCoreService: HsCoreService,
+    private HsUtilsService: HsUtilsService
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';
@@ -82,7 +83,9 @@ export class HsSaveMapAdvancedFormComponent {
   setStep(step) {
     this.step = step;
   }
-
+  capitalizeFirstLetter(string: string): string {
+    return this.HsUtilsService.capitalizeFirstLetter(string);
+  }
   titleChanged() {
     this.overwrite = false;
   }

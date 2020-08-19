@@ -1,7 +1,7 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
-        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{s.capitalizeFirstLetter()}}</a>
+        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{capitalizeFirstLetter(s)}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">

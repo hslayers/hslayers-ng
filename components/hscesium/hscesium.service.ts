@@ -1,5 +1,4 @@
 import '../permalink/share.module';
-import '../utils/string-modifications';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsApi from 'cesium/Source/Core/BingMapsApi';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
