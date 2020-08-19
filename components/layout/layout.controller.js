@@ -514,7 +514,7 @@ export default function (
         bottom: HsLayoutService.panelSpaceHeight() + 'px',
       };
     } else {
-      if (!HsLayoutService.sidebarRight) {
+      if (HsConfig.sidebarPosition === 'left') {
         return {
           marginLeft: HsLayoutService.panelSpaceWidth() + 'px',
           width: HsLayoutService.widthWithoutPanelSpace(),
