@@ -32,6 +32,7 @@ import {HsSearchService} from './../search/search.service';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
+import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -55,6 +56,7 @@ import {NgModule} from '@angular/core';
     HsShareModule,
     HsSearchModule,
     HsUtilsModule,
+    HsToolbarModule,
   ],
   exports: [],
   providers: [
