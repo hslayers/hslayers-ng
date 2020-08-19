@@ -6,7 +6,7 @@ import {
   NgModule,
 } from '@angular/core';
 import {HsMiniSidebarComponent} from './mini-sidebar.component';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
 import {HsSidebarService} from './sidebar.service';
 import {SortByPipe} from './sortByPipe.class';

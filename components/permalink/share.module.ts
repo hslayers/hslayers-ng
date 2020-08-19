@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareComponent} from './share.component';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';

@@ -1,4 +1,4 @@
-import {HsPanelHeaderComponent} from './layout-panel-header.component';
+import {HsPanelHeaderComponent} from '../layout-panel-header.component';
 import {NgModule} from '@angular/core';
 /**
  * @namespace hs.layout

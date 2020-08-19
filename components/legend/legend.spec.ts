@@ -17,7 +17,7 @@ import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Tile as TileLayer} from 'ol/layer';

@@ -5,7 +5,7 @@ import {
   NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 
 import {FormsModule} from '@angular/forms';
 import {HsStylerColorComponent} from './styler-color.component';
