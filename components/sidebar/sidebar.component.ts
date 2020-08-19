@@ -40,7 +40,8 @@ export class HsSidebarComponent implements OnInit {
    * @function toggleUnimportant
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant = !this.HsSidebarService.showUnimportant;
+    this.HsSidebarService.showUnimportant = !this.HsSidebarService
+      .showUnimportant;
   }
   /**
    * Toggle sidebar mode between expanded and narrow

@@ -54,8 +54,8 @@ export class HsStylerService {
       new Style({
         image: new Icon({
           src: feature.get('highlighted')
-            ? '../../img/pin_white_red32.png'
-            : '../../img/pin_white_blue32.png',
+            ? require('../../img/pin_white_red32.png')
+            : require('../../img/pin_white_blue32.png'),
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),

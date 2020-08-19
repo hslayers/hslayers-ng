@@ -1,7 +1,3 @@
-/**
- * @namespace hs.legend
- * @memberOf hs
- */
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
