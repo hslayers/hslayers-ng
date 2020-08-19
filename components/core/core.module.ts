@@ -28,6 +28,7 @@ import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsSaveMapModule} from '../save-map';
 import {HsSearchModule} from './../search';
+import {HsSearchService} from './../search/search.service';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
@@ -58,6 +59,7 @@ import {NgModule} from '@angular/core';
   exports: [],
   providers: [
     HsCoreService,
+    HsSearchService,
     HsDrawService,
     HsMapServiceProvider,
     HsConfigProvider,
