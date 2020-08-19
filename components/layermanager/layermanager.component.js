@@ -98,10 +98,10 @@ export default {
 
     $scope.changePointType = function (layer, type) {
       if (angular.isUndefined(layer.style)) {
-        getLayerStyle(layer);
+        $scope.getLayerStyle(layer);
       }
       layer.style.pointType = type;
-      setLayerStyle(layer);
+      $scope.setLayerStyle(layer);
     };
 
     $scope.icons = [
