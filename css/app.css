@@ -621,19 +621,6 @@ hs-sidebar {
 	z-index: 2;
 	background-color: white;
 }
-a.sidebar-main {
-	padding: 0;
-	cursor: default;
-}
-
-.sidebar-main > span {
-	padding: 10px 15px;
-	cursor: pointer;
-}
-.hs-sidebar-list .sidebar-main .menu-icon {
-	font-size: 19px;
-}
-
 .hs-sidebar-list .list-group-item {
 	border-left: 0px;
 	border-right: 0px;

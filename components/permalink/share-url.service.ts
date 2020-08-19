@@ -319,7 +319,7 @@ export class HsShareUrlService {
         this.HsLanguageService.setLanguage(this.getParamValue('lang'));
       }
       const view = this.getParamValue('view');
-      this.HsMapService.visible = !(view == '3d');
+      // this.HsMapService.visible = !(view == '3d');
     }
   }
 }
