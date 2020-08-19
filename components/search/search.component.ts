@@ -21,7 +21,7 @@ export class HsSearchComponent implements OnInit {
     private HsEventBusService: HsEventBusService,
     private HsShareUrlService: HsShareUrlService
   ) {
-    this.HsEventBusService.searchResultsReceived.subscribe((_) => {
+    this.HsEventBusService.searchResultsReceived.subscribe(() => {
       this.clearvisible = true;
     });
   }
