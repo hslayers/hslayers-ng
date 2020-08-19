@@ -1,20 +1,20 @@
-<div class="hs-toolbar" ng-style="toolbarStyle()">
+<div class="hs-toolbar" [ngStyle]="toolbarStyle()">
     <nav class="navbar navbar-expand">
         <div class="navbar-nav">
-            <div class="nav-item" ng-if="HsCore.exists('hs.search') && layoutService.componentEnabled('searchToolbar')">
+            <div ng-controller="HsSearchController" class="nav-item"*ngIf="this.HsCoreService.exists('hs.search') && this.HsLayoutService.componentEnabled('searchToolbar')">
                 <div>
                     <hs-search-input></hs-search-input>
                     <hs-search-results></hs-search-results>
                 </div>
             </div>
-            <hs.draw-toolbar class="nav-item hs-toolbar-button"
-                ng-if="layoutService.componentEnabled('drawToolbar')"
-                ></hs.draw-toolbar>
-            <div class="nav-item" ng-if="HsCore.exists('hs.measure') && layoutService.panelEnabled('measure') && layoutService.componentEnabled('measureToolbar')">
+            <hs-draw-toolbar class="nav-item hs-toolbar-button"
+               *ngIf="this.HsLayoutService.componentEnabled('drawToolbar')"
+               ></hs-draw-toolbar>
+            <div class="nav-item"*ngIf="this.HsCoreService.exists('hs.measure') && this.HsLayoutService.panelEnabled('measure') && this.HsLayoutService.componentEnabled('measureToolbar')">
                 <div class="btn-group">
-                    <button class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary"
-                        title="{{'Measure lines and polygon'|translate}}"
-                        ng-click="measureButtonClicked()">
+                    <button i18n class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary"
+                        title="'Measure lines and polygon'"
+                        (click)="measureButtonClicked()">
                         <i class="icon-design"></i>
                     </button>
                 </div>

@@ -1,20 +1,24 @@
 import '../core/';
-import '../layout';
-import '../map/map.module';
-import '../permalink/share.module';
-import * as angular from 'angular';
-import toolbarComponent from './toolbar.component';
-/**
- * @namespace hs.toolbar
- * @memberOf hs
- */
-angular
-  .module('hs.toolbar', ['hs.map', 'hs.core', 'hs.layout'])
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-  /**
-   * @memberof hs.toolbar
-   * @ngdoc component
-   * @name hs.toolbar
-   * @description Add toolbar to map (search field, full map button and measure button)
-   */
-  .component('hs.toolbar', toolbarComponent);
+import {FormsModule} from '@angular/forms';
+import {HsDrawModule} from '../draw/draw.module';
+import {HsToolbarComponent} from './toolbar.component';
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsToolbarComponent],
+  imports: [CommonModule, BrowserModule, FormsModule, NgbModule, HsDrawModule],
+  exports: [HsToolbarComponent],
+  providers: [],
+  entryComponents: [HsToolbarComponent],
+})
+export class HsToolbarModule {}

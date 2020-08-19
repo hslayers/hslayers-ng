@@ -14,6 +14,7 @@ import '../print';
 import '../save-map/';
 import '../translations/js/translations';
 import '../utils';
+import '../toolbar'
 import {HsCoreModule} from './core.module';
 import {HsCoreService} from './core.service';
 import {HsEventBusService} from './event-bus.service';
@@ -40,6 +41,7 @@ angular
     'hs.layermanager',
     'hs.save-map',
     'hs.permalink',
+    'hs.toolbar'
   ])
   /**
    * @module hs.core

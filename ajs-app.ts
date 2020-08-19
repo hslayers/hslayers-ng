@@ -13,7 +13,7 @@ import './components/query/query.module';
 import './components/search';
 import './components/sidebar';
 import './components/styles/styles.module';
-import './components/toolbar/toolbar.module';
+import './components/toolbar';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
