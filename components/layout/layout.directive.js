@@ -34,8 +34,8 @@ export default function (
         );
         gui.classList.add('flex-reverse');
         HsLayoutService.sidebarRight = false;
-      } else if (HsConfig.sidebarPosition === 'invisible') {
-        console.log('sidebar');
+      } else if (HsConfig.sidebarPosition != 'invisible') {
+        HsConfig.sidebarPosition = 'right';
       }
       //Hack - flex map container was not initialized when map loaded
       const container = HsLayoutService.contentWrapper.querySelector(
