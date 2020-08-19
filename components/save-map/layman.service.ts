@@ -72,7 +72,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   urlFriendly(text) {
-    return text.replaceAll(' ', '').toLowerCase();
+    return text.replace('/ /gm', '').toLowerCase();
   }
 
   /**
@@ -133,7 +133,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   getLayerName(layer) {
-    return layer.get('title').toLowerCase().replaceAll(' ', '');
+    return layer.get('title').toLowerCase().replace('/ /gm', '');
   }
 
   /**
@@ -225,8 +225,8 @@ export class HsLaymanService implements HsSaverService {
                 responseType: 'text',
               };
               const body = serializedFeature.outerHTML
-                .replaceAll('<geometry>', '<wkb_geometry>')
-                .replaceAll('</geometry>', '</wkb_geometry>');
+                .replace('/<geometry>/gm', '<wkb_geometry>')
+                .replace('/</geometry>/gm', '</wkb_geometry>');
               this.http
                 .post(layerDesc.wfs.url, body, httpOptions)
                 .subscribe((response) => {

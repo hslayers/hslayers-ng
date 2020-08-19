@@ -71,7 +71,6 @@ export class HsCesiumLayersService {
    * @param HsCesiumLayersService
    */
   defineProxy() {
-    const me = this;
     MyProxy.prototype.getURL = function (resource) {
       const blank_url = `${this.proxy}${window.location.protocol}//${window.location.host}${window.location.pathname}img/blank.png`;
       const prefix =
@@ -85,12 +84,12 @@ export class HsCesiumLayersService {
         ) {
           return blank_url;
         } else {
-          const params = me.HsUtilsService.getParamsFromUrl(resource);
+          const params = this.HsUtilsService.getParamsFromUrl(resource);
           const bbox = params.bbox.split(',');
           const dist = Math.sqrt(
             Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2)
           );
-          const projection = me.getProjectFromVersion(
+          const projection = this.getProjectFromVersion(
             params.version,
             params.srs,
             params.crs
@@ -107,7 +106,7 @@ export class HsCesiumLayersService {
           }
         }
       }
-      resource = resource.replaceAll('fromcrs', 'FROMCRS');
+      resource = resource.replace('/fromcrs/gm', 'FROMCRS');
       if (resource.indexOf('proxy4ows') > -1) {
         return resource;
       }
