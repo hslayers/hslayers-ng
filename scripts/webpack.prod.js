@@ -72,6 +72,9 @@ module.exports = merge(common, {
         use: [
           {
             loader: 'url-loader',
+            options: {
+              esModule: false
+            },
           },
         ],
       },

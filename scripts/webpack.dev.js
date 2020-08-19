@@ -57,6 +57,9 @@ module.exports = merge(common, {
         test: /\.(png|svg|jpg|gif)$/,
         use: {
           loader: 'url-loader',
+          options: {
+            esModule: false,
+          },
         },
       },
     ],
