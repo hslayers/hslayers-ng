@@ -1,10 +1,10 @@
 <div class="hs-toolbar" ng-style="toolbarStyle()">
     <nav class="navbar navbar-expand">
         <div class="navbar-nav">
-            <div ng-controller="HsSearchController" class="nav-item" ng-if="HsCore.exists('hs.search') && layoutService.componentEnabled('searchToolbar')">
+            <div class="nav-item" ng-if="HsCore.exists('hs.search') && layoutService.componentEnabled('searchToolbar')">
                 <div>
-                    <div hs.search.directive_searchinput></div>
-                    <div hs.search.directive_searchresults ></div>
+                    <hs-search-input></hs-search-input>
+                    <hs-search-results></hs-search-results>
                 </div>
             </div>
             <hs.draw-toolbar class="nav-item hs-toolbar-button"
