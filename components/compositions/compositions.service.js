@@ -228,8 +228,8 @@ export default function (
       const layers = HsCompositionsParserService.jsonToLayers(
         angular.fromJson(data)
       );
-      for (let i = 0; i < layers.length; i++) {
-        HsMapService.addLayer(layers[i], false);
+      for (const layer of layers) {
+        HsMapService.addLayer(layer, false);
       }
       localStorage.removeItem('hs_layers');
     }

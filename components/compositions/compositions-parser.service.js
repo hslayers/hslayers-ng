@@ -254,8 +254,10 @@ export default function (
       if (j.data) {
         j = j.data;
       }
-      for (let i = 0; i < j.layers.length; i++) {
-        const lyr_def = j.layers[i];
+      if (!j.layers) {
+        return layers;
+      }
+      for (const lyr_def of j.layers) {
         const layer = me.jsonToLayer(lyr_def);
         if (angular.isUndefined(layer)) {
           $log.warn('Was not able to parse layer from composition', lyr_def);
