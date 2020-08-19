@@ -1,5 +1,4 @@
 /* eslint-disable angular/definedundefined */
-import '../utils/string-modifications';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';

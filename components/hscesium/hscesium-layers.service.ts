@@ -1,4 +1,3 @@
-import '../utils/string-modifications';
 import * as moment from 'moment';
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';

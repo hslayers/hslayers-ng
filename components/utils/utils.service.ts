@@ -433,4 +433,45 @@ export class HsUtilsService {
     }
     return hash;
   }
+  /**
+   * @ngdoc method
+   * @name replaceAll
+   * @public
+   * @param {string} target target tring
+   * @param {string} search String to look for
+   * @param {string} replacement Replacement value
+   * @returns {string} Returns modified string
+   * @description Replaces input string text with replacement text
+   */
+  replaceAll(target: string, search: string, replacement: string): string {
+    if (!String.prototype.replaceAll) {
+      return target.replace(new RegExp(search, 'g'), replacement);
+    }
+  }
+  /**
+   * @ngdoc method
+   * @name format
+   * @public
+   * @param {string} target Target string
+   * @param {any} args String to look for
+   * @returns {string} Returns modified string
+   * @description Replaces input string text with replacement text
+   */
+  format(target: string, ...args: any): string {
+    return target.replace(/{(\d+)}/g, (match, number) => {
+      return args[number] !== undefined ? args[number] : match;
+    });
+  }
+  /**
+   * @param target
+   * @ngdoc method
+   * @name capitalizeFirstLetter
+   * @public
+   * @param {string} target Target string
+   * @returns {string} Returns modified string
+   * @description Replaces first string letter to UpperCase
+   */
+  capitalizeFirstLetter(target: string): string {
+    return target.charAt(0).toUpperCase() + target.slice(1);
+  }
 }

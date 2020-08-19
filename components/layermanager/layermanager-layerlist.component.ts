@@ -1,4 +1,3 @@
-import '../utils/string-modifications';
 import {Component, Input} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
