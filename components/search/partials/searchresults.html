@@ -1,7 +1,11 @@
-
-<div class="list-group" ng-show="searchResultsVisible" style="display: block; margin-bottom: 0px">
-    <div ng-repeat="provider in data.providers">
-        <a class="list-group-item active" ng-show="provider.results.length>0">Provider: {{provider.name}}</a>
-        <a ng-href='#'  ng-repeat="result in provider.results | limitTo:10" class="list-group-item hsl-search-result" ng-click="zoomTo(result)" ng-attr-title="{{result.DisplayDescription}}">{{result.name || result.DisplayTitle}}<small style="color: rgb(148, 143, 143)"><br/>{{result.fcodeName}}</small></a>
+<div class="list-group" [hidden]="!searchResultsVisible" style="display: block; margin-bottom: 0px">
+    <div *ngFor="let provider of data | keyvalue ">
+        <div *ngFor="let item of provider.value | keyvalue ">
+        <a class="list-group-item active" [hidden]="!(item.value.results.length > 0)">Provider: {{item.value.name}}</a>
+        <a href="" *ngFor="let result of item.value.results | limitTo: 10" class="list-group-item hsl-search-result"
+            (click)="zoomTo(result)"
+            [attr.title]="result.DisplayDescription">{{result.name || result.DisplayTitle}}<small
+                style="color: rgb(148, 143, 143)"><br>{{result.fcodeName}}</small></a>
+            </div>
     </div>
 </div>

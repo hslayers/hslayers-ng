@@ -1,40 +1,45 @@
-import '../layout';
-import '../permalink/share.module';
-import '../styles/styles.module';
-import * as angular from 'angular';
-import searchController from './search.controller';
-import searchDirective from './search.directive';
-import searchInputDirective from './search-input.directive';
-import searchResultsDirective from './search-results.directive';
-import searchService from './search.service';
-/**
- * @namespace hs.search
- * @memberOf hs
- */
-angular
-  .module('hs.search', ['hs.map', 'hs.styles', 'hs.layout'])
-  /**
-   * @memberof hs.search
-   * @ngdoc directive
-   * @name hs.search.directiveSearchinput
-   * @description Add search input template to page, with automatic change event and clear button
-   */
-  .directive('hs.search.directiveSearchinput', searchInputDirective)
+import 'angular-cookies';
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {HsLayoutModule} from './../layout/layout.module';
+import {HsSearchComponent} from './search.component';
+import {HsSearchInputComponent} from './search-input.component';
+import {HsSearchResultsComponent} from './search-results.component';
+import {HsSearchService} from './search.service';
+import {HsShareModule} from './../permalink/share.module';
+import {HsStylerModule} from './../styles/styles.module';
+import {limitToPipe} from './limitTo.pipe';
 
-  .directive('hs.search.directiveSearchresults', searchResultsDirective)
-  .directive('hs.search.directive', searchDirective)
-
-  /**
-   * @memberof hs.search
-   * @ngdoc service
-   * @name HsSearchService
-   * @description Provides geolocation search request from site selected in config (geonames/sdi4apps) and pass response to handler on success
-   */
-  .factory('HsSearchService', searchService)
-
-  /**
-   * @memberof hs.search
-   * @ngdoc controller
-   * @name HsSearchController
-   */
-  .controller('HsSearchController', searchController);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [
+    HsSearchComponent,
+    HsSearchResultsComponent,
+    HsSearchInputComponent,
+    limitToPipe,
+  ],
+  imports: [
+    BrowserModule,
+    HsStylerModule,
+    HsLayoutModule,
+    HsShareModule,
+    FormsModule,
+  ],
+  exports: [
+    HsSearchComponent,
+    HsSearchResultsComponent,
+    HsSearchInputComponent,
+  ],
+  providers: [HsSearchService],
+  entryComponents: [
+    HsSearchComponent,
+    HsSearchResultsComponent,
+    HsSearchInputComponent,
+  ],
+})
+export class HsSearchModule {}
