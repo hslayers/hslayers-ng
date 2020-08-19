@@ -68,5 +68,11 @@ export class HsEventBusService {
    * replaces 'compositions.composition_loading'
    */
   compositionLoading: Subject<any> = new Subject();
+  /**
+   * replaces 'search.resultsReceived'
+   */
+  searchResultsReceived: Subject<any> = new Subject();
+  searchZoomTo: Subject<any> = new Subject();
+  clearSearchResults: Subject<any> = new Subject();
   constructor() {}
 }
