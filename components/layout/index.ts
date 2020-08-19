@@ -18,6 +18,8 @@ import panelCreatorDirective from './panel-creator.directive';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogContainerService} from './dialogs/dialog-container.service';
 import {HsLayoutService} from './layout.service';
+import {HsPanelContainerComponent} from './panels/panel-container.component';
+import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsPanelHeaderComponent} from './panels/layout-panel-header.component';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
@@ -116,6 +118,11 @@ angular
   )
 
   .directive(
+    'hsPanelContainer',
+    downgradeComponent({component: HsPanelContainerComponent})
+  )
+
+  .directive(
     'hsDialogContainer',
     downgradeComponent({component: HsDialogContainerComponent})
   )
@@ -123,6 +130,11 @@ angular
   .service(
     'HsDialogContainerService',
     downgradeInjectable(HsDialogContainerService)
+  )
+
+  .service(
+    'HsPanelContainerService',
+    downgradeInjectable(HsPanelContainerService)
   )
 
   /**
