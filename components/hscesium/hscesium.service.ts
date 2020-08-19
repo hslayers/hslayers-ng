@@ -27,6 +27,7 @@ import {HsLayerManagerService} from '../layermanager';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,8 @@ import {Injectable} from '@angular/core';
 export class HsCesiumService {
   BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
   viewer: any;
+  cesiumPositionClicked: Subject<any> = new Subject();
+
   constructor(
     private HsConfig: HsConfig,
     private HsMapService: HsMapService,
@@ -251,10 +254,8 @@ export class HsCesiumService {
             const cartographic = Cartographic.fromCartesian(cartesian);
             const longitudeString = Math.toDegrees(cartographic.longitude);
             const latitudeString = Math.toDegrees(cartographic.latitude);
-            this.$rootScope.$broadcast('cesium_position_clicked', [
-              longitudeString,
-              latitudeString,
-            ]);
+            //TODO rewrite to subject
+            this.cesiumPositionClicked.next([longitudeString, latitudeString]);
           }
         }
       }
