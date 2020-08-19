@@ -7,7 +7,7 @@ export class HsConfig {
   mapInteractionsEnabled: boolean;
   allowAddExternalDatasets: boolean;
   sidebarClosed: boolean;
-  sidebarPosition: string = 'right';
+  sidebarPosition: string;
   layer_order: string;
   box_layers: Array<any>;
   senslog: any;
