@@ -28,11 +28,14 @@ export default function (
       HsCore.init(element, {
         innerElement: '.hs-map-container',
       });
-      if (HsLayoutService.sidebarRight == false) { // TBD HsConfig.sidebarPosition === 'left'
+      if (HsConfig.sidebarPosition === 'left') {
         const gui = HsLayoutService.contentWrapper.querySelector(
           '.hs-page-content'
         );
         gui.classList.add('flex-reverse');
+        HsLayoutService.sidebarRight = false;
+      } else if (HsConfig.sidebarPosition === 'invisible') {
+        console.log('sidebar');
       }
       //Hack - flex map container was not initialized when map loaded
       const container = HsLayoutService.contentWrapper.querySelector(

@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsConfig} from '../../config.service';
+
 import {Layer} from 'ol/layer';
 
 @Component({
@@ -14,7 +16,8 @@ export class HsLayerManagerGalleryComponent {
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
-    private Window: Window
+    private Window: Window,
+    private HsConfig: HsConfig,
   ) {
     this.data = this.HsLayerManagerService.data;
   }
@@ -49,7 +52,7 @@ export class HsLayerManagerGalleryComponent {
 
   galleryStyle() {
     if (
-      !this.HsLayoutService.sidebarRight ||
+      this.HsConfig.sidebarPosition === 'left' ||
       (this.HsLayoutService.layoutElement.clientWidth <= 767 &&
         this.Window.innerWidth <= 767)
     ) {
