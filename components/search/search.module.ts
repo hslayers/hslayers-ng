@@ -5,6 +5,7 @@ import {
   NO_ERRORS_SCHEMA,
   NgModule,
 } from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsLayoutModule} from './../layout/layout.module';
 import {HsSearchComponent} from './search.component';
@@ -29,6 +30,7 @@ import {limitToPipe} from './limitTo.pipe';
     HsLayoutModule,
     HsShareModule,
     FormsModule,
+    CommonModule,
   ],
   exports: [
     HsSearchComponent,

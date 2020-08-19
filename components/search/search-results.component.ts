@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
