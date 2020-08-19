@@ -157,7 +157,7 @@ export class HsCoreService {
       this.initSizeListeners();
       setTimeout(() => {
         this.updateMapSize();
-      }, 500);
+      }, 750);
       this.initCalled = true;
     });
   }
