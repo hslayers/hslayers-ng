@@ -2,7 +2,7 @@
     <a href="" class="hs-sidebar-item list-group-item" *ngIf="HsLayoutService.sidebarToggleable"
         (click)="toggleSidebar()">
         <i class="menu-icon"
-            [ngClass]="HsLayoutService.sidebarExpanded ? (!HsLayoutService.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : (!HsLayoutService.sidebarRight ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
+            [ngClass]="HsLayoutService.sidebarExpanded ? (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </a>
 
     <a href="" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': propertyName: 'order'"
