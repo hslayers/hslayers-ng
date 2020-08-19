@@ -4,8 +4,7 @@
         <div class="hs-page-content d-flex w-100 h-100 ">
             <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
             <div class="hs-map-space">
-                <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"
-               ></div>
+                <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
                 <hs.cesium></hs.cesium>
             </div>
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
@@ -20,8 +19,7 @@
 
             <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
 
-            <div class="hs-panelspace"
-                ng-if="layoutService.sidebarVisible()"
+            <div class="hs-panelspace" ng-if="layoutService.sidebarVisible()"
                 ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}"
                 ng-style="{width: panelSpaceWidth()+'px'}">
                 <div class="hs-panelspace-wrapper">
