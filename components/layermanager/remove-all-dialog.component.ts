@@ -1,6 +1,6 @@
 import {Component, Input, ViewRef} from '@angular/core';
-import {HsDialogComponent} from '../layout/dialog-component.interface';
-import {HsDialogContainerService} from '../layout/dialog-container.service';
+import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 @Component({

@@ -6,7 +6,7 @@ import {HsDialogItem} from './dialog-item.class';
 
 @Component({
   selector: 'hs-dialog-container',
-  template: require('./partials/dialog-container.html'),
+  template: require('./dialog-container.html'),
 })
 export class HsDialogContainerComponent {
   @ViewChild(HsDialogHostDirective, {static: true})

@@ -1,5 +1,5 @@
 import {Component, Input, ViewRef} from '@angular/core';
-import {HsDialogComponent} from '../layout/dialog-component.interface';
+import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsMapService} from '../map/map.service';
 
 @Component({
