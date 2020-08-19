@@ -37,13 +37,10 @@ export class HsConfig {
   dsPaging: number;
   permalinkLocation: any;
   social_hashtag: any;
-<<<<<<< HEAD
   useProxy: boolean;
   shortenUrl: any;
-=======
   search_provider: any;
   geonamesUser: any;
   searchProvider: any;
->>>>>>> f2721138... added necessarry config and event-bus properties
   constructor() {}
 }
