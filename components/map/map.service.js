@@ -365,17 +365,17 @@ export class HsMapService {
             style="
               position: absolute;
               ${!this.HsLayoutService.sidebarBottom() ? side : null}: ${
-            this.HsLayoutService.panelSpaceWidth() + 10}px;
+            this.HsLayoutService.panelSpaceWidth() + 10
+          }px;
               ${this.HsLayoutService.sidebarBottom() ? 'bottom:' : null}: ${
-            this.HsLayoutService.panelSpaceHeight() + 5}px}; z-index: 1000;"
+            this.HsLayoutService.panelSpaceHeight() + 5
+          }px}; z-index: 1000;"
             role="alert">
             Use ${platformModifierKey} key + mouse-wheel to zoom the map.
             </div>`;
           const element = angular.element(html)[0];
           //TODO: '.hs-page-content' is not available in HsCore.puremapApp mode => place it somewhere else
-          this.HsLayoutService.contentWrapper
-            .querySelector('.hs-page-content')
-            .appendChild(element);
+          this.HsLayoutService.contentWrapper.appendChild(element);
           this.$timeout(() => {
             this.HsLayoutService.contentWrapper
               .querySelector('.hs-zoom-info-dialog')

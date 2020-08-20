@@ -926,7 +926,7 @@ div.hs-info-composition-edited {
 /**********************************/
 
 @media only screen and (max-width: 767px) {
-	.hs-page-content{
+	.hs-content-wrapper{
 		flex-direction: column;
 	}
 	.hs-content-wrapper .hs-sidebar-item-title:not(.hs-mini-sidebar) {
@@ -943,7 +943,7 @@ div.hs-info-composition-edited {
 		font-size: x-large !important;
 	}
 
-	.hs-content-wrapper > div > div.hs-page-content.ng-scope > hs.layermanager.gallery > div > div > div > button {
+	.hs-content-wrapper > div.hs-map-space > hs.layermanager.gallery > div > div > div > button {
 		font-size: x-large;
 	}
 	.hs-panelspace {

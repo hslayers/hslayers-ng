@@ -1,7 +1,6 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
-    <div class="hs-content-wrapper w-100 h-100"
+    <div class="hs-content-wrapper d-flex w-100 h-100"
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': config.sidebarPosition == 'right' && layoutService.sidebarVisible(), 'hs-sb-left': config.sidebarPosition == 'left' && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
-        <div class="hs-page-content d-flex w-100 h-100 ">
             <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
             <div class="hs-map-space">
                 <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
@@ -45,7 +44,7 @@
                         <div hs.language.directive hs.draggable ng-controller="HsLanguageController"
                             ng-show="panelVisible('language', this)"></div>
                         <!--
-<div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
+        <div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="HsTrackingController" ng-show="panelVisible('tracking', this)"></div>
                            --> 
                             <hs.vgi-draw                            hs.draggable ng-show="panelVisible('draw', this)"></hs.vgi-draw>
@@ -70,7 +69,6 @@
                 <hs.query.feature-popup></hs.query.feature-popup>
             </div>
             <!-- <hs.draw.shape-toolbar></hs.draw.shape-toolbar> -->
-        </div>
         <div class="hs-dialog-area">
             <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->
         </div>
