@@ -1,5 +1,5 @@
 import {HsDialogComponent} from './dialog-component.interface';
-import {HsDialogItem} from './dialog-item.class';
+import {HsDialogItem} from './dialog-item';
 import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 @Injectable({

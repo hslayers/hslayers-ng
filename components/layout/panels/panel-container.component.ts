@@ -4,10 +4,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {HsPanelComponent} from './panel-component';
+import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerService} from './panel-container.service';
 import {HsPanelHostDirective} from './panel-host.directive';
-import {HsPanelItem} from './panel-item.class';
+import {HsPanelItem} from './panel-item';
 
 @Component({
   selector: 'hs-panel-container',
