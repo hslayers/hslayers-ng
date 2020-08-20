@@ -367,7 +367,7 @@ export class HsMapService {
               ${!this.HsLayoutService.sidebarBottom() ? side : null}: ${
             this.HsLayoutService.panelSpaceWidth() + 10}px;
               ${this.HsLayoutService.sidebarBottom() ? 'bottom:' : null}: ${
-            this.HsLayoutService.panelSpaceHeight() + 5}px};"
+            this.HsLayoutService.panelSpaceHeight() + 5}px}; z-index: 1000;"
             role="alert">
             Use ${platformModifierKey} key + mouse-wheel to zoom the map.
             </div>`;
