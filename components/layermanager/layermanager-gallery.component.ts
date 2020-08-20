@@ -50,18 +50,6 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  galleryStyle() {
-    if (
-      this.HsConfig.sidebarPosition === 'left' ||
-      (this.HsLayoutService.layoutElement.clientWidth <= 767 &&
-        this.Window.innerWidth <= 767)
-    ) {
-      return {right: '15px'};
-    } else {
-      return {right: this.HsLayoutService.panelSpaceWidth() + 20 + 'px'};
-    }
-  }
-
   fitsInContainer(): boolean {
     return (
       (this.HsLayerManagerService.data.baselayers.length + 1) * 150 <

@@ -6,6 +6,9 @@
             <div class="hs-map-space">
                 <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
                 <hs.cesium></hs.cesium>
+                
+                <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
+
             </div>
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
                 ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
@@ -16,9 +19,6 @@
                         <hs-search-results></hs-search-results>
                     </div>
                 </div> -->
-
-            <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
-
             <div class="hs-panelspace" ng-if="layoutService.sidebarVisible()"
                 ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}"
                 ng-style="{width: panelSpaceWidth()+'px'}">
