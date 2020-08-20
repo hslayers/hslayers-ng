@@ -1,4 +1,4 @@
-<div class="basemapGallery" [ngStyle]="galleryStyle()" style="z-index: 991;">
+<div class="basemapGallery" style="z-index: 991;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with (nested )dropdown">
         <button type="button" class="button-primary btn-sm  basemap-tile " *ngFor="let layer of fitting(HsLayerManagerService.data.baselayers)" (click)="toggleBasemap(layer)" [ngClass]="{'active': layer.active}">{{layer.title}}</button>
         <button type="button" *ngIf="fitsInContainer()" class="button-primary btn-sm  basemap-tile " (click)="changeBaseLayerVisibility()" [ngClass]="{'active' : !data.baselayersVisible}" i18n>No basemap</button>

@@ -479,6 +479,7 @@ button.but-title-sm {
 	position: absolute;
 	cursor: pointer;
 	box-sizing: border-box;
+	right: 15px;
 }
 .basemapGallery .basemap-tile {
 	background: rgba(0, 60, 136, 0.5);
