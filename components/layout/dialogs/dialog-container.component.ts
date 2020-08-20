@@ -7,7 +7,7 @@ import {
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
 import {HsDialogHostDirective} from './dialog-host.directive';
-import {HsDialogItem} from './dialog-item.class';
+import {HsDialogItem} from './dialog-item';
 
 @Component({
   selector: 'hs-dialog-container',

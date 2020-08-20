@@ -1,5 +1,5 @@
-import {HsPanelComponent} from './panel-component';
-import {HsPanelItem} from './panel-item.class';
+import {HsPanelComponent} from './panel-component.interface';
+import {HsPanelItem} from './panel-item';
 import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 @Injectable({
