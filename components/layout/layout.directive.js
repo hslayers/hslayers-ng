@@ -29,10 +29,7 @@ export default function (
         innerElement: '.hs-map-container',
       });
       if (HsConfig.sidebarPosition === 'left') {
-        const gui = HsLayoutService.contentWrapper.querySelector(
-          '.hs-page-content'
-        );
-        gui.classList.add('flex-reverse');
+        HsLayoutService.contentWrapper.classList.add('flex-reverse');
         HsLayoutService.sidebarRight = false;
       } else if (HsConfig.sidebarPosition != 'invisible') {
         HsConfig.sidebarPosition = 'right';
