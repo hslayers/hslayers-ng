@@ -1,31 +1,59 @@
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
 import {TileWMS} from 'ol/source';
 
-/**
- * @param $rootScope
- * @param $http
- * @param HsQueryBaseService
- * @param HsMapService
- * @param HsUtilsService
- * @param HsLanguageService
- * @param HsLayerUtilsService
- */
-export default function (
-  $rootScope,
-  $http,
-  HsQueryBaseService,
-  HsMapService,
-  HsUtilsService,
-  HsLanguageService,
-  HsLayerUtilsService
-) {
-  'ngInject';
-  const me = this;
+@Injectable({
+  providedIn: 'root',
+})
+export class HsQueryWmsService {
+  constructor(
+    private HsQueryBaseService: HsQueryBaseService,
+    private HsMapService: HsMapService,
+    private HsConfig: HsConfig,
+    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsLanguageService: HsLanguageService,
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService
+  ) {
+    this.infoCounter = 0;
 
-  me.infoCounter = 0;
+    $rootScope.$on('mapQueryStarted', (e, evt) => {
+      this.infoCounter = 0;
+      HsMapService.map.getLayers().forEach((layer) => {
+        if (layer.get('base') == true || layer.get('queriable') == false) {
+          return;
+        }
+        if (layer.get('queryFilter') != undefined) {
+          const filter = layer.get('queryFilter');
+          if (filter(HsMapService.map, layer, evt.pixel)) {
+            this.queryWmsLayer(layer, evt.coordinate);
+          }
+        } else {
+          this.queryWmsLayer(layer, evt.coordinate);
+        }
+      });
+    });
+  }
 
-  this.request = function (url, infoFormat, coordinate, layer) {
+  /**
+   * @param updated
+   * @param customInfoTemplate
+   * @param Base
+   * @param group
+   */
+  updateFeatureList(updated, customInfoTemplate, Base, group) {
+    if (updated) {
+      if (customInfoTemplate) {
+        Base.setData(group, 'customFeatures');
+        Base.dataCleared = false;
+      } else {
+        Base.setData(group, 'features');
+      }
+    }
+  }
+
+  request(url, infoFormat, coordinate, layer) {
     const req_url = HsUtilsService.proxify(url, true);
     const reqHash = HsQueryBaseService.currentQuery;
     $http({url: req_url})
@@ -33,7 +61,7 @@ export default function (
         if (reqHash != HsQueryBaseService.currentQuery) {
           return;
         }
-        me.featureInfoReceived(
+        this.featureInfoReceived(
           response.data,
           infoFormat,
           url,
@@ -45,9 +73,9 @@ export default function (
         if (reqHash != HsQueryBaseService.currentQuery) {
           return;
         }
-        me.featureInfoError(coordinate);
+        this.featureInfoError(coordinate);
       });
-  };
+  }
 
   /**
    * @function featureInfoError
@@ -55,18 +83,19 @@ export default function (
    * @description Error callback to decrease infoCounter
    * @param coordinate
    */
-  this.featureInfoError = function (coordinate) {
-    me.infoCounter--;
-    if (me.infoCounter === 0) {
+  featureInfoError(coordinate) {
+    this.infoCounter--;
+    if (this.infoCounter === 0) {
       queriesCollected(coordinate);
     }
-  };
+  }
+
   /**
    * @function featureInfoReceived
    * @memberOf hs.query.service_getwmsfeatureinfo
    * @params {Object} response Response of GetFeatureInfoRequest
-   * @params {String} infoFormat Format of GetFeatureInfoResponse
-   * @params {String} url Url of request
+   * @params {string} infoFormat Format of GetFeatureInfoResponse
+   * @params {string} url Url of request
    * @params {Ol.coordinate object} coordinate Coordinate of request
    * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
    * @param response
@@ -75,13 +104,7 @@ export default function (
    * @param coordinate
    * @param layer
    */
-  this.featureInfoReceived = function (
-    response,
-    infoFormat,
-    url,
-    coordinate,
-    layer
-  ) {
+  featureInfoReceived(response, infoFormat, url, coordinate, layer) {
     /* Maybe this will work in future OL versions
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
@@ -94,7 +117,7 @@ export default function (
       const doc = oDOM.documentElement;
 
       if (infoFormat.indexOf('gml') > 0) {
-        me.parseGmlResponse(doc, layer, customInfoTemplate);
+        this.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
         infoFormat === 'application/vnd.ogc.wms_xml'
@@ -135,13 +158,13 @@ export default function (
         }
       }
     }
-    me.infoCounter--;
-    if (me.infoCounter === 0) {
+    this.infoCounter--;
+    if (this.infoCounter === 0) {
       queriesCollected(coordinate);
     }
-  };
+  }
 
-  this.parseGmlResponse = function (doc, layer, customInfoTemplate) {
+  parseGmlResponse(doc, layer, customInfoTemplate) {
     let updated = false;
     let features = doc.querySelectorAll('gml\\:featureMember');
     if (features.length == 0) {
@@ -229,12 +252,12 @@ export default function (
         }
       }
     });
-  };
+  }
 
   /**
    * @param coordinate
    */
-  function queriesCollected(coordinate) {
+  queriesCollected(coordinate) {
     const invisiblePopup = HsQueryBaseService.getInvisiblePopup();
     if (
       HsQueryBaseService.data.features.length > 0 ||
@@ -253,7 +276,7 @@ export default function (
    * @param layer
    * @param coordinate
    */
-  this.queryWmsLayer = function (layer, coordinate) {
+  queryWmsLayer(layer, coordinate) {
     if (isLayerWmsQueryable(layer)) {
       const source = layer.getSource();
       const map = HsMapService.map;
@@ -289,17 +312,17 @@ export default function (
           source.getParams().INFO_FORMAT.indexOf('html') > 0 ||
           source.getParams().INFO_FORMAT.indexOf('gml') > 0
         ) {
-          me.infoCounter++;
-          me.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
+          this.infoCounter++;
+          this.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
         }
       }
     }
-  };
+  }
 
   /**
    * @param layer
    */
-  function isLayerWmsQueryable(layer) {
+  isLayerWmsQueryable(layer) {
     if (!layer.getVisible()) {
       return false;
     }
@@ -318,40 +341,5 @@ export default function (
       return true;
     }
     return false;
-  }
-
-  $rootScope.$on('mapQueryStarted', (e, evt) => {
-    me.infoCounter = 0;
-    HsMapService.map.getLayers().forEach((layer) => {
-      if (layer.get('base') == true || layer.get('queriable') == false) {
-        return;
-      }
-      if (layer.get('queryFilter') != undefined) {
-        const filter = layer.get('queryFilter');
-        if (filter(HsMapService.map, layer, evt.pixel)) {
-          me.queryWmsLayer(layer, evt.coordinate);
-        }
-      } else {
-        me.queryWmsLayer(layer, evt.coordinate);
-      }
-    });
-  });
-  return me;
-}
-
-/**
- * @param updated
- * @param customInfoTemplate
- * @param Base
- * @param group
- */
-function updateFeatureList(updated, customInfoTemplate, Base, group) {
-  if (updated) {
-    if (customInfoTemplate) {
-      Base.setData(group, 'customFeatures');
-      Base.dataCleared = false;
-    } else {
-      Base.setData(group, 'features');
-    }
   }
 }
