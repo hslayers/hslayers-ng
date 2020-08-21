@@ -30,10 +30,7 @@ export class HsQueryVectorService {
   ) {
     this.selector = new Select({
       condition: click,
-      multi:
-        angular.isDefined(this.HsConfig.query) && this.HsConfig.query.multi
-          ? this.HsConfig.query.multi
-          : false,
+      multi: this.HsConfig.query?.multi ? this.HsConfig.query.multi : false,
       filter: function (feature, layer) {
         if (layer === null) {
           return;
@@ -88,11 +85,11 @@ export class HsQueryVectorService {
     this.HsQueryBaseService.data.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
     let featureDescriptions = [];
-    angular.forEach(features, (feature) => {
+    for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
         this.getFeatureAttributes(feature)
       );
-    });
+    }
     this.HsQueryBaseService.setData(featureDescriptions, 'features');
     $rootScope.$broadcast('queryVectorResult');
   }
@@ -116,7 +113,7 @@ export class HsQueryVectorService {
    * @param feature
    */
   getFeatureLayerName(feature) {
-    if (angular.isUndefined(feature.getLayer)) {
+    if (feature.getLayer == undefined) {
       return '';
     }
     const layer = feature.getLayer(HsMapService.map);
@@ -127,7 +124,7 @@ export class HsQueryVectorService {
    * @param feature
    */
   getCentroid(feature) {
-    if (angular.isUndefined(feature)) {
+    if (feature == undefined) {
       return;
     }
     const center = extent.getCenter(feature.getGeometry().getExtent());
@@ -169,7 +166,7 @@ export class HsQueryVectorService {
    */
   olSource(feature) {
     const layer = feature.getLayer(HsMapService.map);
-    if (angular.isUndefined(layer)) {
+    if (layer == undefined) {
       return;
     } else if (layer.getSource().getSource) {
       return layer.getSource().getSource();
@@ -184,7 +181,7 @@ export class HsQueryVectorService {
    */
   isFeatureRemovable(feature) {
     const source = this.olSource(feature);
-    if (angular.isUndefined(source)) {
+    if (source == undefined) {
       return false;
     }
     const layer = feature.getLayer(HsMapService.map);

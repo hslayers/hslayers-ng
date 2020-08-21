@@ -23,7 +23,7 @@ export class HsQueryFeatureComponent {
   }
 
   isFeatureRemovable() {
-    if (angular.isDefined(this.feature.feature)) {
+    if (this.feature.feature) {
       return this.HsQueryVectorService.isFeatureRemovable(this.olFeature());
     } else {
       return false;
