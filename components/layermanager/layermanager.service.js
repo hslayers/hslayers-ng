@@ -147,6 +147,7 @@ export default function (
       grayed: me.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),
+      ordering: layer.get('ordering'),
       hsFilters: layer.get('hsFilters'),
       selectedStyle: layer.get('selectedStyle'),
       highlightedStyle: layer.get('highlightedStyle'),

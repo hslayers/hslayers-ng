@@ -55,22 +55,44 @@ export default function (
     map.addOverlay(POPUP);
   });
 
-  $scope.reverseOrdering = true;
-  $scope.orderProperty = 'position';
-  $scope.defaultOrder = 'bp_id';
+  // reversing primary ordering by 'id' should usually result in displaying most recent features first
+  $scope.$watch(
+    () => HsLayermanagerService.currentLayer,
+    (val) => {
+      // $scope.reverseOrdering =
+      //   HsLayermanagerService?.currentLayer?.ordering?.reverse ?? true;
+      // $scope.primaryOrder =
+      //   HsLayermanagerService?.currentLayer?.ordering?.primary ?? 'id';
+      // $scope.secondaryOrder =
+      //   HsLayermanagerService?.currentLayer?.ordering?.secondary ?? 'id';
+      // $scope.defaultReverse = HsLayermanagerService?.currentLayer?.ordering
+      //   ?.defaultReverse ?? ['id'];
+      $scope.ordering =
+        HsLayermanagerService.currentLayer &&
+        HsLayermanagerService.currentLayer.ordering;
+      $scope.primaryOrder =
+        ($scope.ordering && $scope.ordering.primary) || 'id';
+      $scope.secondaryOrder =
+        ($scope.ordering && $scope.ordering.secondary) || 'id';
+      $scope.defaultReverse = ($scope.ordering &&
+        $scope.ordering.defaultReverse) || ['id'];
+      $scope.reverseOrdering =
+        $scope.defaultReverse.indexOf($scope.primaryOrder) !== -1;
 
-  $scope.defaultReverse = ['bp_id', 'position'];
-
-  $scope.orderProperties = [
-    `${$scope.reverseOrdering ? '-' : ''}getProperties().${
-      $scope.orderProperty
-    }`,
-    `getProperties().${$scope.defaultOrder}`,
-  ];
+      $scope.orderProperties = [
+        `${$scope.reverseOrdering ? '-' : ''}getProperties().${
+          $scope.primaryOrder
+        }`,
+        `getProperties().${$scope.secondaryOrder}`,
+      ];
+    }
+  );
 
   $scope.sortBy = function (property) {
     $scope.reverseOrdering =
-      $scope.orderProperty === property ? !$scope.reverseOrdering : false;
+      $scope.primaryOrder === property
+        ? !$scope.reverseOrdering
+        : $scope.defaultReverse.indexOf(property) !== -1;
     $scope.orderProperties[0] = `${
       $scope.reverseOrdering ? '-' : ''
     }getProperties().${property}`;
@@ -105,14 +127,18 @@ export default function (
     e.element.setProperties({
       class: 'highlighted',
     });
-    if (!$scope.$$phase) $scope.$apply();
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
 
   $scope.highlighter.getFeatures().on('remove', (e) => {
     e.element.setProperties({
       class: '',
     });
-    if (!$scope.$$phase) $scope.$apply();
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
 
   $scope.highlighter.on('select', (e) => {
@@ -141,7 +167,9 @@ export default function (
   $scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
     $scope.featureDetails = feature.getProperties();
     HsLayermanagerService.currentLayer.selectedFeature = feature;
-    if (!$scope.$$phase) $scope.$apply();
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
 
     $scope.lastView = HsMapService.map.getView().getProperties();
 
@@ -155,7 +183,9 @@ export default function (
   $scope.$on('vectorQuery.featureDeselected', (e, feature) => {
     $scope.featureDetails = undefined;
     HsLayermanagerService.currentLayer.selectedFeature = undefined;
-    if (!$scope.$$phase) $scope.$apply();
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
 
     HsMapService.map.getView().animate({
       resolution: $scope.lastView.resolution,

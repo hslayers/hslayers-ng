@@ -1,16 +1,15 @@
-
 <div class="feature-list" ng-class="{'card-list': !featureDetails, 'layout-column': featureDetails}">
     <md-content flex layout-padding ng-show="!featureDetails" style="padding-bottom:0">
         <div layout="row" style="justify-content: space-between">
-            <md-select ng-model="orderProperty" placeholder="Sort By" class="md-no-underline feature-sort-menu" md-container-class="feature-sort-menu">
+            <md-select ng-model="primaryOrder" placeholder="Sort By" class="md-no-underline feature-sort-menu" md-container-class="feature-sort-menu">
                 <md-option ng-click="sortBy('position')" value="position">
-                    <md-icon ng-if="orderProperty === 'position'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Default
+                    <md-icon ng-if="primaryOrder === 'position'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Default
                 </md-option>
                 <md-option ng-click="sortBy('bp_id')" value="bp_id">
-                    <md-icon ng-if="orderProperty === 'bp_id'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Recent
+                    <md-icon ng-if="primaryOrder === 'bp_id'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon> Recent
                 </md-option>
                 <md-option ng-click="sortBy('name')" value="name">
-                    <md-icon ng-if="orderProperty === 'name'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon>Name
+                    <md-icon ng-if="primaryOrder === 'name'">{{ reverseOrdering ? 'arrow_downward' : 'arrow_upward' }}</md-icon>Name
                 </md-option>
             </md-select>
             <div hs.feature-filter.directive ng-controller="HsFeatureFilterController"></div>
