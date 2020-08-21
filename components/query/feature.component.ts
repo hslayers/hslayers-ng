@@ -19,41 +19,43 @@ export class HsQueryFeatureComponent {
   ) {}
 
   olFeature() {
-    return $scope.$ctrl.feature.feature;
+    return this.feature.feature;
   }
 
   isFeatureRemovable() {
-    if (angular.isDefined($scope.$ctrl.feature.feature)) {
-      return HsQueryVectorService.isFeatureRemovable(olFeature());
+    if (angular.isDefined(this.feature.feature)) {
+      return this.HsQueryVectorService.isFeatureRemovable(this.olFeature());
     } else {
       return false;
     }
   }
 
   saveNewAttribute(attributeName, attributeValue) {
-    if ($scope.$ctrl.feature && $scope.$ctrl.feature.feature) {
-      const feature = $scope.$ctrl.feature.feature;
-      const getDuplicates = $scope.$ctrl.feature.attributes.filter(
+    if (this.feature && this.feature.feature) {
+      const feature = this.feature.feature;
+      const getDuplicates = this.feature.attributes.filter(
         (duplicate) => duplicate.name == attributeName
       );
       if (getDuplicates.length == 0) {
         const obj = {name: attributeName, value: attributeValue};
-        $scope.$ctrl.feature.attributes.push(obj);
+        this.feature.attributes.push(obj);
         feature.set(attributeName, attributeValue);
       }
     }
-    $scope.$ctrl.newAttribVisible = !$scope.$ctrl.newAttribVisible;
-    $scope.$ctrl.attributeName = '';
-    $scope.$ctrl.attributeValue = '';
+    this.newAttribVisible = !this.newAttribVisible;
+    this.attributeName = '';
+    this.attributeValue = '';
   }
 
   removeFeature() {
-    HsQueryVectorService.removeFeature(olFeature());
-    $scope.$emit('infopanel.featureRemoved', olFeature());
+    this.HsQueryVectorService.removeFeature(this.olFeature());
+    $scope.$emit('infopanel.featureRemoved', this.olFeature());
   }
 
   zoomToFeature() {
-    const extent = olFeature().getGeometry().getExtent();
-    HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+    const extent = this.olFeature().getGeometry().getExtent();
+    this.HsMapService.map
+      .getView()
+      .fit(extent, this.HsMapService.map.getSize());
   }
 }

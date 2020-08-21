@@ -17,19 +17,21 @@ export class HsQueryFeaturePopupComponent {
     private HsEventBusService: HsEventBusService
   ) {
     const hoverPopupElement = $element[0];
-    HsQueryBaseService.hoverPopup = new Overlay({
+    this.HsQueryBaseService.hoverPopup = new Overlay({
       element: hoverPopupElement,
     });
 
     HsEventBusService.olMapLoads.subscribe((map) => {
-      map.addOverlay(HsQueryBaseService.hoverPopup);
+      map.addOverlay(this.HsQueryBaseService.hoverPopup);
     });
   }
 
   popupVisible() {
     return {
       'visibility':
-        HsQueryBaseService.featuresUnderMouse.length > 0 ? 'visible' : 'hidden',
+        this.HsQueryBaseService.featuresUnderMouse.length > 0
+          ? 'visible'
+          : 'hidden',
     };
   }
 
@@ -50,11 +52,11 @@ export class HsQueryFeaturePopupComponent {
   }
 
   isFeatureRemovable(feature) {
-    return HsQueryVectorService.isFeatureRemovable(feature);
+    return this.HsQueryVectorService.isFeatureRemovable(feature);
   }
 
   isLayerEditable(layer) {
-    return HsQueryVectorService.isLayerEditable(layer);
+    return this.HsQueryVectorService.isLayerEditable(layer);
   }
 
   async removeFeature(feature) {
@@ -64,8 +66,8 @@ export class HsQueryFeaturePopupComponent {
       gettext('Confirm delete')
     );
     if (confirmed == 'yes') {
-      HsQueryVectorService.removeFeature(feature);
-      HsQueryBaseService.featuresUnderMouse = [];
+      this.HsQueryVectorService.removeFeature(feature);
+      this.HsQueryBaseService.featuresUnderMouse = [];
     }
   }
 
@@ -84,7 +86,7 @@ export class HsQueryFeaturePopupComponent {
         layer.getSource().getSource().clear();
       }
       layer.getSource().clear();
-      HsQueryBaseService.featuresUnderMouse = [];
+      this.HsQueryBaseService.featuresUnderMouse = [];
     }
   }
 }

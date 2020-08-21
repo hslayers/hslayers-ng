@@ -17,6 +17,8 @@ import {toLonLat} from 'ol/proj';
   providedIn: 'root',
 })
 export class HsQueryVectorService {
+  exportedFeatureHref: any;
+  selector: any;
   constructor(
     private HsQueryBaseService: HsQueryBaseService,
     private HsMapService: HsMapService,
@@ -29,8 +31,8 @@ export class HsQueryVectorService {
     this.selector = new Select({
       condition: click,
       multi:
-        angular.isDefined(HsConfig.query) && HsConfig.query.multi
-          ? HsConfig.query.multi
+        angular.isDefined(this.HsConfig.query) && this.HsConfig.query.multi
+          ? this.HsConfig.query.multi
           : false,
       filter: function (feature, layer) {
         if (layer === null) {
@@ -83,15 +85,15 @@ export class HsQueryVectorService {
   }
 
   createFeatureAttributeList() {
-    HsQueryBaseService.data.attributes.length = 0;
+    this.HsQueryBaseService.data.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
     let featureDescriptions = [];
     angular.forEach(features, (feature) => {
       featureDescriptions = featureDescriptions.concat(
-        getFeatureAttributes(feature)
+        this.getFeatureAttributes(feature)
       );
     });
-    HsQueryBaseService.setData(featureDescriptions, 'features');
+    this.HsQueryBaseService.setData(featureDescriptions, 'features');
     $rootScope.$broadcast('queryVectorResult');
   }
 
@@ -118,7 +120,7 @@ export class HsQueryVectorService {
       return '';
     }
     const layer = feature.getLayer(HsMapService.map);
-    return HsLayerUtilsService.getLayerName(layer);
+    return this.HsLayerUtilsService.getLayerName(layer);
   }
 
   /**
@@ -143,21 +145,21 @@ export class HsQueryVectorService {
     const geom = f.getGeometry();
     const type = geom.getType();
     if (type == 'Polygon') {
-      const area = HsMeasureService.formatArea(geom);
+      const area = this.HsMeasureService.formatArea(geom);
       return [
         {name: `${area.type} in ${area.unit}`, value: area.size},
-        {name: 'center', value: toLonLat(getCentroid(f))},
+        {name: 'center', value: toLonLat(this.getCentroid(f))},
       ];
     }
     if (type == 'LineString') {
-      const length = HsMeasureService.formatLength(geom);
+      const length = this.HsMeasureService.formatLength(geom);
       return [
         {name: `${length.type} in ${length.unit}`, value: length.size},
-        {name: 'center', value: toLonLat(getCentroid(f))},
+        {name: 'center', value: toLonLat(this.getCentroid(f))},
       ];
     }
     if (type == 'Point') {
-      return [{name: 'center', value: toLonLat(getCentroid(f))}];
+      return [{name: 'center', value: toLonLat(this.getCentroid(f))}];
     }
   }
 
@@ -181,14 +183,14 @@ export class HsQueryVectorService {
    * @returns {boolean}
    */
   isFeatureRemovable(feature) {
-    const source = olSource(feature);
+    const source = this.olSource(feature);
     if (angular.isUndefined(source)) {
       return false;
     }
     const layer = feature.getLayer(HsMapService.map);
     return (
-      HsUtilsService.instOf(source, VectorSource) &&
-      HsLayerUtilsService.isLayerEditable(layer)
+      this.HsUtilsService.instOf(source, VectorSource) &&
+      this.HsLayerUtilsService.isLayerEditable(layer)
     );
   }
 
@@ -197,15 +199,15 @@ export class HsQueryVectorService {
    * @returns {boolean}
    */
   isLayerEditable(layer) {
-    return HsLayerUtilsService.isLayerEditable(layer);
+    return this.HsLayerUtilsService.isLayerEditable(layer);
   }
 
   /**
    * @param {ol/Feature} feature
    */
   removeFeature(feature) {
-    const source = olSource(feature);
-    if (HsUtilsService.instOf(source, VectorSource)) {
+    const source = this.olSource(feature);
+    if (this.HsUtilsService.instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
   }
@@ -230,7 +232,7 @@ export class HsQueryVectorService {
       }
       if (key == 'features') {
         for (const subFeature of feature.get('features')) {
-          tmp = tmp.concat(getFeatureAttributes(subFeature));
+          tmp = tmp.concat(this.getFeatureAttributes(subFeature));
         }
       } else {
         let obj;
@@ -258,10 +260,10 @@ export class HsQueryVectorService {
     }
 
     const featureDescription = {
-      layer: getFeatureLayerName(feature),
+      layer: this.getFeatureLayerName(feature),
       name: 'Feature',
       attributes: attributes,
-      stats: addDefaultStats(feature),
+      stats: this.addDefaultStats(feature),
       hstemplate,
       feature,
       customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
