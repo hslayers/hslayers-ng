@@ -1,46 +1,43 @@
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {HsConfig} from '../../config.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsCore
- * @param $sce
- * @param HsConfig
- * @param HsLayoutService
- * @param HsUtilsService
- * @param $timeout
- * @param gettext
- */
-export const HsQueryBaseService = function (
-  $rootScope,
-  HsMapService,
-  HsCore,
-  $sce,
-  HsConfig,
-  HsLayoutService,
-  HsUtilsService,
-  $timeout,
-  gettext
-) {
-  'ngInject';
-  const me = this;
-
-  let map;
-
-  this.queryPoint = new Point([0, 0]);
-  this.queryLayer = new VectorLayer({
+@Injectable({
+  providedIn: 'root',
+})
+export class HsQueryBaseService {
+  map: Map;
+  data: any = {
+    attributes: [],
+    features: [],
+    featureInfoHtmls: [],
+    customFeatures: [],
+    coordinates: [],
+  };
+  queryActive = false;
+  popupClassname = '';
+  selector = null;
+  currentQuery = null;
+  featuresUnderMouse = [];
+  featureLayersUnderMouse = [];
+  dataCleared = true;
+  queryPoint = new Point([0, 0]);
+  queryLayer = new VectorLayer({
     title: 'Point clicked',
     queryable: false,
     source: new Vector({
       features: [
         new Feature({
-          geometry: me.queryPoint,
+          geometry: this.queryPoint,
         }),
       ],
     }),
@@ -49,26 +46,38 @@ export const HsQueryBaseService = function (
     style: pointClickedStyle,
   });
 
-  this.data = {};
-  this.data.attributes = [];
-  this.data.features = [];
-  this.data.featureInfoHtmls = [];
-  this.data.customFeatures = [];
-  this.data.coordinates = [];
-  this.queryActive = false;
-  this.popupClassname = '';
-  this.selector = null;
-  this.currentQuery = null;
-  this.featuresUnderMouse = [];
-  this.featureLayersUnderMouse = [];
-  this.dataCleared = true;
+  nonQueryablePanels = [
+    'measure',
+    'composition_browser',
+    'analysis',
+    'sensors',
+    'draw',
+  ];
 
+  constructor(
+    private HsMapService: HsMapService,
+    private HsConfig: HsConfig,
+    private HsLayoutService: HsLayoutService,
+    private HsUtilsService: HsUtilsService
+  ) {
+    if (this.deregisterVectorSelectorCreated) {
+      this.deregisterVectorSelectorCreated();
+    }
+    this.deregisterVectorSelectorCreated = $rootScope.$on(
+      'vectorSelectorCreated',
+      (e, selector) => {
+        this.selector = selector;
+      }
+    );
+
+    this.HsMapService.loaded().then(() => this.init());
+  }
   /**
    *
    */
-  function init() {
-    map = HsMapService.map;
-    me.activateQueries();
+  init() {
+    this.map = this.HsMapService.map;
+    this.activateQueries();
     map.on('singleclick', (evt) => {
       $rootScope.$broadcast(
         'mapClicked',
@@ -76,18 +85,18 @@ export const HsQueryBaseService = function (
           coordinates: getCoordinate(evt.coordinate),
         })
       );
-      if (!me.queryActive) {
+      if (!this.queryActive) {
         return;
       }
-      me.popupClassname = '';
-      if (!me.dataCleared) {
-        me.clearData();
+      this.popupClassname = '';
+      if (!this.dataCleared) {
+        this.clearData();
       }
-      me.dataCleared = false;
-      me.currentQuery = (Math.random() + 1).toString(36).substring(7);
-      me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
-      me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-      me.data.selectedProj = me.data.coordinates[0].projections[0]
+      this.dataCleared = false;
+      this.currentQuery = (Math.random() + 1).toString(36).substring(7);
+      this.setData(getCoordinate(evt.coordinate), 'coordinates', true);
+      this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
+      this.data.selectedProj = this.data.coordinates[0].projections[0];
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
@@ -97,7 +106,7 @@ export const HsQueryBaseService = function (
     ) {
       map.on(
         'pointermove',
-        HsUtilsService.debounce(me.showPopUp, 500, false, me)
+        HsUtilsService.debounce(this.showPopUp, 500, false, me)
       );
     } else if (
       angular.isDefined(HsConfig.popUpDisplay) &&
@@ -105,7 +114,7 @@ export const HsQueryBaseService = function (
     ) {
       map.on(
         'singleclick',
-        HsUtilsService.debounce(me.showPopUp, 500, false, me)
+        HsUtilsService.debounce(this.showPopUp, 500, false, me)
       );
     } /* else none */
   }
@@ -113,15 +122,15 @@ export const HsQueryBaseService = function (
   /**
    * @param e Event, which triggered this function
    */
-  this.showPopUp = function (e) {
+  showPopUp(e) {
     if (e.dragging) {
       return;
     }
     const map = e.map;
     $timeout((_) => {
-      me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-      if (me.featuresUnderMouse !== null) {
-        me.featuresUnderMouse = me.featuresUnderMouse.filter((feature) => {
+      this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
+      if (this.featuresUnderMouse !== null) {
+        this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
           return (
             feature.getLayer &&
             feature.getLayer(map) &&
@@ -129,46 +138,46 @@ export const HsQueryBaseService = function (
             feature.getLayer(map).get('title') !== 'Point clicked'
           );
         });
-        me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
+        this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
           f.getLayer(HsMapService.map)
         );
-        me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
-          me.featureLayersUnderMouse,
+        this.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
+          this.featureLayersUnderMouse,
           'title'
         );
-        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
+        this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
           return {
             title: l.get('title'),
             layer: l,
-            features: me.featuresUnderMouse.filter(
+            features: this.featuresUnderMouse.filter(
               (f) => f.getLayer(HsMapService.map) == l
             ),
           };
         });
-        me.featuresUnderMouse.forEach((feature) => {
-          me.serializeFeatureAttributes(feature);
+        this.featuresUnderMouse.forEach((feature) => {
+          this.serializeFeatureAttributes(feature);
           if (feature.get('features')) {
             feature
               .get('features')
               .forEach((subfeature) =>
-                me.serializeFeatureAttributes(subfeature)
+                this.serializeFeatureAttributes(subfeature)
               );
           }
         });
         const pixel = e.pixel;
         pixel[0] += 2;
         pixel[1] += 4;
-        me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
+        this.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
       } else {
-        me.featuresUnderMouse = [];
+        this.featuresUnderMouse = [];
       }
     }, 0);
-  };
+  }
 
   /**
    * @param feature
    */
-  this.serializeFeatureAttributes = function (feature) {
+  serializeFeatureAttributes(feature) {
     if (angular.isUndefined(feature.getLayer)) {
       return;
     }
@@ -230,63 +239,61 @@ export const HsQueryBaseService = function (
         });
       }
     }
-  };
+  }
 
-  HsMapService.loaded().then(init);
-
-  this.setData = function (data, type, overwrite) {
+  setData(data, type, overwrite) {
     if (angular.isDefined(type)) {
       if (angular.isDefined(overwrite) && overwrite) {
-        me.data[type].length = 0;
+        this.data[type].length = 0;
       }
       if (angular.isArray(data)) {
-        me.data[type] = me.data[type].concat(data);
+        this.data[type] = this.data[type].concat(data);
       } else {
-        me.data[type].push(data);
+        this.data[type].push(data);
       }
       $rootScope.$broadcast('infopanel.updated'); //Compatibility, deprecated
-      $rootScope.$broadcast('query.dataUpdated', me.data);
+      $rootScope.$broadcast('query.dataUpdated', this.data);
     } else if (console) {
       console.log('Query.BaseService.setData type not passed');
     }
-  };
+  }
 
-  this.clearData = function (type) {
+  clearData(type) {
     if (type) {
-      me.data[type].length = 0;
+      this.data[type].length = 0;
     } else {
-      me.data.attributes.length = 0;
-      me.data.features = [];
-      me.data.coordinates.length = 0;
-      me.data.featureInfoHtmls = [];
-      me.data.customFeatures = [];
+      this.data.attributes.length = 0;
+      this.data.features = [];
+      this.data.coordinates.length = 0;
+      this.data.featureInfoHtmls = [];
+      this.data.customFeatures = [];
     }
-    const invisiblePopup = me.getInvisiblePopup();
+    const invisiblePopup = this.getInvisiblePopup();
     if (invisiblePopup) {
       invisiblePopup.contentDocument.body.innerHTML = '';
       invisiblePopup.style.height = 0;
       invisiblePopup.style.width = 0;
     }
-    me.dataCleared = true;
-  };
+    this.dataCleared = true;
+  }
 
-  this.getInvisiblePopup = function () {
+  getInvisiblePopup() {
     return document.getElementById('invisible_popup');
-  };
+  }
 
-  this.pushFeatureInfoHtml = (html) => {
-    me.data.featureInfoHtmls.push($sce.trustAsHtml(html));
-    me.dataCleared = false;
-  };
+  pushFeatureInfoHtml(html) {
+    this.data.featureInfoHtmls.push($sce.trustAsHtml(html));
+    this.dataCleared = false;
+  }
 
-  this.fillIframeAndResize = function (iframe, response, append) {
-    var iframe = me.getInvisiblePopup();
+  fillIframeAndResize(iframe, response, append) {
+    var iframe = this.getInvisiblePopup();
     if (append) {
-      iframe.contentDocument.body.innerHTML += response;
+      ifrathis.contentDocument.body.innerHTML += response;
     } else {
-      iframe.contentDocument.body.innerHTML = response;
+      ifrathis.contentDocument.body.innerHTML = response;
     }
-    let tmp_width = iframe.contentDocument.innerWidth;
+    let tmp_width = ifrathis.contentDocument.innerWidth;
     if (
       tmp_width >
       HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
@@ -296,19 +303,19 @@ export const HsQueryBaseService = function (
         HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
         60;
     }
-    iframe.style.width = tmp_width + 'px';
-    let tmp_height = iframe.contentDocument.innerHeight;
+    ifrathis.style.width = tmp_width + 'px';
+    let tmp_height = ifrathis.contentDocument.innerHeight;
     if (tmp_height > 700) {
       tmp_height = 700;
     }
-    iframe.style.height = tmp_height + 'px';
-  };
+    ifrathis.style.height = tmp_height + 'px';
+  }
 
   /**
    * @param coordinate
    */
-  function getCoordinate(coordinate) {
-    me.queryPoint.setCoordinates(coordinate, 'XY');
+  getCoordinate(coordinate) {
+    this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
       map.getView().getProjection(),
@@ -336,47 +343,39 @@ export const HsQueryBaseService = function (
     return coords;
   }
 
-  this.activateQueries = function () {
-    if (me.queryActive) {
+  activateQueries() {
+    if (this.queryActive) {
       return;
     }
-    me.queryActive = true;
+    this.queryActive = true;
     HsMapService.loaded().then((map) => {
-      map.addLayer(me.queryLayer);
+      map.addLayer(this.queryLayer);
       $rootScope.$broadcast('queryStatusChanged', true);
     });
-  };
+  }
 
-  this.deactivateQueries = function () {
-    if (!me.queryActive) {
+  deactivateQueries() {
+    if (!this.queryActive) {
       return;
     }
-    me.queryActive = false;
+    this.queryActive = false;
     HsMapService.loaded().then((map) => {
-      map.removeLayer(me.queryLayer);
+      map.removeLayer(this.queryLayer);
       $rootScope.$broadcast('queryStatusChanged', false);
     });
-  };
+  }
 
-  me.nonQueryablePanels = [
-    'measure',
-    'composition_browser',
-    'analysis',
-    'sensors',
-    'draw'
-  ];
-
-  this.currentPanelQueryable = function () {
+  currentPanelQueryable() {
     return (
-      me.nonQueryablePanels.indexOf(HsLayoutService.mainpanel) == -1 &&
-      me.nonQueryablePanels.indexOf('*') == -1
+      this.nonQueryablePanels.indexOf(HsLayoutService.mainpanel) == -1 &&
+      this.nonQueryablePanels.indexOf('*') == -1
     );
-  };
+  }
 
   /**
    * @param feature
    */
-  function pointClickedStyle(feature) {
+  pointClickedStyle(feature) {
     const defaultStyle = new Style({
       image: new Circle({
         fill: new Fill({
@@ -393,22 +392,11 @@ export const HsQueryBaseService = function (
       if (HsConfig.queryPoint == 'hidden') {
         defaultStyle.getImage().setRadius(0);
       } else if (HsConfig.queryPoint == 'notWithin') {
-        if (me.selector.getFeatures().getLength() > 0) {
+        if (this.selector.getFeatures().getLength() > 0) {
           defaultStyle.getImage().setRadius(0);
         }
       }
     }
     return defaultStyle;
   }
-
-  if (me.deregisterVectorSelectorCreated) {
-    me.deregisterVectorSelectorCreated();
-  }
-  me.deregisterVectorSelectorCreated = $rootScope.$on(
-    'vectorSelectorCreated',
-    (e, selector) => {
-      me.selector = selector;
-    }
-  );
-  return me;
 }
