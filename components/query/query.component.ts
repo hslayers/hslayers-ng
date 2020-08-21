@@ -5,6 +5,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsQueryBaseService} from './query-base.service';
 
 @Component({
   selector: 'hs.query',
@@ -24,6 +25,11 @@ export class HsQueryComponent {
       map.addOverlay(this.popup);
     });
 
+    try {
+      this.$mdDialog = $injector.get('$mdDialog');
+      this.$mdToast = $injector.get('$mdToast');
+    } catch (ex) {}
+
     //add current panel queriable - activate/deactivate
     this.HsEventBusService.mainPanelChanges.subscribe((closed) => {
       if (this.HsQueryBaseService.currentPanelQueryable()) {
@@ -40,51 +46,47 @@ export class HsQueryComponent {
     const deregisterQueryStatusChanged = $rootScope.$on(
       'queryStatusChanged',
       () => {
-        if (HsQueryBaseService.queryActive) {
-          $scope.deregisterVectorQuery = $scope.$on('mapQueryStarted', (e) => {
-            if (HsConfig.design === 'md' && $scope.data.features.length === 0) {
-              $scope.showNoImagesWarning();
+        $scope.$on('mapQueryStarted', (e) => {
+          if (
+            HsConfig.design === 'md' &&
+            this.HsQueryBaseService.data.features.length === 0
+          ) {
+            this.showNoImagesWarning();
+          }
+          if (
+            HsConfig.design === 'md' &&
+            this.HsQueryBaseService.data.features.length > 0
+          ) {
+            this.showQueryDialog(e);
+          } else {
+            this.popup.hide();
+            if (this.HsQueryBaseService.currentPanelQueryable()) {
+              this.HsLayoutService.setMainPanel('info');
             }
-            if (HsConfig.design === 'md' && $scope.data.features.length > 0) {
-              $scope.showQueryDialog(e);
-            } else {
-              this.popup.hide();
-              if (HsQueryBaseService.currentPanelQueryable()) {
-                HsLayoutService.setMainPanel('info');
-              }
-            }
-          });
+          }
+        });
 
-          $scope.deregisterWmsQuery = $scope.$on(
-            'queryWmsResult',
-            (e, coordinate) => {
-              $timeout(() => {
-                const invisiblePopup = HsQueryBaseService.getInvisiblePopup();
-                if (invisiblePopup.contentDocument.body.children.length > 0) {
-                  //TODO: dont count style, title, meta towards length
-                  if (HsQueryBaseService.popupClassname.length > 0) {
-                    this.popup.getElement().className =
-                      HsQueryBaseService.popupClassname;
-                  } else {
-                    this.popup.getElement().className = 'ol-popup';
-                  }
-                  this.popup.show(
-                    coordinate,
-                    invisiblePopup.contentDocument.body.innerHTML
-                  );
-                  $rootScope.$broadcast('popupOpened', 'hs.query');
+        $scope.deregisterWmsQuery = $scope.$on(
+          'queryWmsResult',
+          (e, coordinate) => {
+            $timeout(() => {
+              const invisiblePopup = this.HsQueryBaseService.getInvisiblePopup();
+              if (invisiblePopup.contentDocument.body.children.length > 0) {
+                //TODO: dont count style, title, meta towards length
+                if (this.HsQueryBaseService.popupClassname.length > 0) {
+                  this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
+                } else {
+                  this.popup.getElement().className = 'ol-popup';
                 }
-              });
-            }
-          );
-        } else {
-          if ($scope.deregisterVectorQuery) {
-            $scope.deregisterVectorQuery();
+                this.popup.show(
+                  coordinate,
+                  invisiblePopup.contentDocument.body.innerHTML
+                );
+                $rootScope.$broadcast('popupOpened', 'hs.query');
+              }
+            });
           }
-          if ($scope.deregisterWmsQuery) {
-            $scope.deregisterWmsQuery();
-          }
-        }
+        );
       }
     );
 
@@ -99,7 +101,42 @@ export class HsQueryComponent {
     });
 
     $scope.$on('infopanel.featureRemoved', (e, feature) => {
-      $scope.data.features.splice(this.HsQueryBaseService.data.features.indexOf(feature), 1);
+      this.HsQueryBaseService.data.features.splice(
+        this.HsQueryBaseService.data.features.indexOf(feature),
+        1
+      );
     });
+  }
+
+  showQueryDialog(ev) {
+    this.$mdDialog
+      .show({
+        scope: this,
+        preserveScope: true,
+        template: require('./partials/infopanel.html'),
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+      })
+      .then(
+        () => {
+          console.log('Closed.');
+        },
+        () => {
+          console.log('Cancelled.');
+        }
+      );
+  }
+
+  cancelQueryDialog() {
+    this.$mdDialog.cancel();
+  }
+
+  showNoImagesWarning() {
+    this.$mdToast.show(
+      this.$mdToast.simple().textContent('No images matched the query.')
+      // .position(pinTo )
+      // .hideDelay(3000)
+    );
   }
 }

@@ -11,9 +11,9 @@ export class HsQueryAttributeRowComponent {
   @Input() template;
 
   change() {
-    if ($scope.$ctrl.feature && $scope.$ctrl.feature.feature) {
-      const feature = $scope.$ctrl.feature.feature;
-      feature.set($scope.$ctrl.attribute.name, $scope.$ctrl.attribute.value);
+    if (this.feature && this.feature.feature) {
+      const feature = this.feature.feature;
+      feature.set(this.attribute.name, this.attribute.value);
     }
   }
 }
