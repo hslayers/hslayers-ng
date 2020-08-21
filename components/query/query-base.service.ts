@@ -53,6 +53,8 @@ export class HsQueryBaseService {
     'sensors',
     'draw',
   ];
+  last_coordinate_clicked: any;
+  hoverPopup: any;
 
   constructor(
     private HsMapService: HsMapService,
@@ -78,7 +80,7 @@ export class HsQueryBaseService {
   init() {
     this.map = this.HsMapService.map;
     this.activateQueries();
-    map.on('singleclick', (evt) => {
+    this.map.on('singleclick', (evt) => {
       $rootScope.$broadcast(
         'mapClicked',
         angular.extend(evt, {
@@ -101,20 +103,20 @@ export class HsQueryBaseService {
     });
 
     if (
-      angular.isDefined(HsConfig.popUpDisplay) &&
-      HsConfig.popUpDisplay === 'hover'
+      angular.isDefined(this.HsConfig.popUpDisplay) &&
+      this.HsConfig.popUpDisplay === 'hover'
     ) {
-      map.on(
+      this.map.on(
         'pointermove',
-        HsUtilsService.debounce(this.showPopUp, 500, false, me)
+        this.HsUtilsService.debounce(this.showPopUp, 500, false, me)
       );
     } else if (
-      angular.isDefined(HsConfig.popUpDisplay) &&
-      HsConfig.popUpDisplay === 'click'
+      angular.isDefined(this.HsConfig.popUpDisplay) &&
+      this.HsConfig.popUpDisplay === 'click'
     ) {
-      map.on(
+      this.map.on(
         'singleclick',
-        HsUtilsService.debounce(this.showPopUp, 500, false, me)
+        this.HsUtilsService.debounce(this.showPopUp, 500, false, me)
       );
     } /* else none */
   }
@@ -139,9 +141,9 @@ export class HsQueryBaseService {
           );
         });
         this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-          f.getLayer(HsMapService.map)
+          f.getLayer(this.HsMapService.map)
         );
-        this.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
+        this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
           this.featureLayersUnderMouse,
           'title'
         );
@@ -271,8 +273,8 @@ export class HsQueryBaseService {
     const invisiblePopup = this.getInvisiblePopup();
     if (invisiblePopup) {
       invisiblePopup.contentDocument.body.innerHTML = '';
-      invisiblePopup.style.height = 0;
-      invisiblePopup.style.width = 0;
+      invisiblePopup.style.height = '0px';
+      invisiblePopup.style.width = '0px';
     }
     this.dataCleared = true;
   }
@@ -287,28 +289,28 @@ export class HsQueryBaseService {
   }
 
   fillIframeAndResize(iframe, response, append) {
-    var iframe = this.getInvisiblePopup();
+    iframe = this.getInvisiblePopup();
     if (append) {
-      ifrathis.contentDocument.body.innerHTML += response;
+      iframe.contentDocument.body.innerHTML += response;
     } else {
-      ifrathis.contentDocument.body.innerHTML = response;
+      iframe.contentDocument.body.innerHTML = response;
     }
-    let tmp_width = ifrathis.contentDocument.innerWidth;
+    let tmp_width = iframe.contentDocument.innerWidth;
     if (
       tmp_width >
-      HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
+      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
         60
     ) {
       tmp_width =
-        HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
+      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
         60;
     }
-    ifrathis.style.width = tmp_width + 'px';
-    let tmp_height = ifrathis.contentDocument.innerHeight;
+    iframe.style.width = tmp_width + 'px';
+    let tmp_height = iframe.contentDocument.innerHeight;
     if (tmp_height > 700) {
       tmp_height = 700;
     }
-    ifrathis.style.height = tmp_height + 'px';
+    iframe.style.height = tmp_height + 'px';
   }
 
   /**
@@ -318,11 +320,12 @@ export class HsQueryBaseService {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
-      map.getView().getProjection(),
+      this.map.getView().getProjection(),
       'EPSG:4326'
     );
     const coords = {
-      name: gettext('Coordinates'),
+      //TODO Should envelope in i18n
+      name: 'Coordinates',
       mapProjCoordinate: coordinate,
       epsg4326Coordinate,
       projections: [
@@ -335,7 +338,7 @@ export class HsQueryBaseService {
           'value': createStringXY(7)(epsg4326Coordinate),
         },
         {
-          'name': map.getView().getProjection().getCode(),
+          'name': this.map.getView().getProjection().getCode(),
           'value': createStringXY(7)(coordinate),
         },
       ],
@@ -348,7 +351,7 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = true;
-    HsMapService.loaded().then((map) => {
+    this.HsMapService.loaded().then((map) => {
       map.addLayer(this.queryLayer);
       $rootScope.$broadcast('queryStatusChanged', true);
     });
@@ -359,7 +362,7 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = false;
-    HsMapService.loaded().then((map) => {
+    this.HsMapService.loaded().then((map) => {
       map.removeLayer(this.queryLayer);
       $rootScope.$broadcast('queryStatusChanged', false);
     });
@@ -367,7 +370,7 @@ export class HsQueryBaseService {
 
   currentPanelQueryable() {
     return (
-      this.nonQueryablePanels.indexOf(HsLayoutService.mainpanel) == -1 &&
+      this.nonQueryablePanels.indexOf(this.HsLayoutService.mainpanel) == -1 &&
       this.nonQueryablePanels.indexOf('*') == -1
     );
   }
@@ -388,10 +391,10 @@ export class HsQueryBaseService {
         radius: 5,
       }),
     });
-    if (angular.isDefined(HsConfig.queryPoint)) {
-      if (HsConfig.queryPoint == 'hidden') {
+    if (angular.isDefined(this.HsConfig.queryPoint)) {
+      if (this.HsConfig.queryPoint == 'hidden') {
         defaultStyle.getImage().setRadius(0);
-      } else if (HsConfig.queryPoint == 'notWithin') {
+      } else if (this.HsConfig.queryPoint == 'notWithin') {
         if (this.selector.getFeatures().getLength() > 0) {
           defaultStyle.getImage().setRadius(0);
         }
