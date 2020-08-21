@@ -54,7 +54,7 @@ export class HsQueryComponent {
             this.showNoImagesWarning();
           }
           if (
-            HsConfig.design === 'md' &&
+            this.HsConfig.design === 'md' &&
             this.HsQueryBaseService.data.features.length > 0
           ) {
             this.showQueryDialog(e);
@@ -91,11 +91,7 @@ export class HsQueryComponent {
     );
 
     $scope.$on('popupOpened', (e, source) => {
-      if (
-        angular.isDefined(source) &&
-        source != 'hs.query' &&
-        this.popup !== undefined
-      ) {
+      if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();
       }
     });

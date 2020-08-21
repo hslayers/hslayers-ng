@@ -83,8 +83,8 @@ export class HsQueryBaseService {
     this.map.on('singleclick', (evt) => {
       $rootScope.$broadcast(
         'mapClicked',
-        angular.extend(evt, {
-          coordinates: getCoordinate(evt.coordinate),
+        Object.assign(evt, {
+          coordinates: this.getCoordinate(evt.coordinate),
         })
       );
       if (!this.queryActive) {
@@ -102,16 +102,13 @@ export class HsQueryBaseService {
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
-    if (
-      angular.isDefined(this.HsConfig.popUpDisplay) &&
-      this.HsConfig.popUpDisplay === 'hover'
-    ) {
+    if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
       this.map.on(
         'pointermove',
         this.HsUtilsService.debounce(this.showPopUp, 500, false, me)
       );
     } else if (
-      angular.isDefined(this.HsConfig.popUpDisplay) &&
+      this.HsConfig.popUpDisplay &&
       this.HsConfig.popUpDisplay === 'click'
     ) {
       this.map.on(
@@ -180,23 +177,20 @@ export class HsQueryBaseService {
    * @param feature
    */
   serializeFeatureAttributes(feature) {
-    if (angular.isUndefined(feature.getLayer)) {
+    if (feature.getLayer == undefined) {
       return;
     }
     const layer = feature.getLayer(HsMapService.map);
     let attrsConfig = [];
-    if (
-      angular.isDefined(layer.get('popUp')) &&
-      angular.isDefined(layer.get('popUp').attributes)
-    ) {
+    if (layer.get('popUp')?.attributes) {
       //must be an array
       attrsConfig = layer.get('popUp').attributes;
-    } else if (angular.isDefined(layer.get('hoveredKeys'))) {
+    } else if (layer.get('hoveredKeys')) {
       //only for backwards-compatibility with HSLayers 1.10 .. 1.22
       //should be dropped in future releases
       //expected to be an array
       attrsConfig = layer.get('hoveredKeys');
-      if (angular.isDefined(layer.get('hoveredKeysTranslations'))) {
+      if (layer.get('hoveredKeysTranslations')) {
         //expected to be an object
         for (const [key, val] of Object.entries(
           layer.get('hoveredKeysTranslations')
@@ -223,17 +217,17 @@ export class HsQueryBaseService {
         attrName = attr;
         attrLabel = attr;
       } else {
-        if (angular.isUndefined(attr.attribute)) {
+        if (attr.attribute == undefined) {
           //implies malformed layer config - 'attribute' is obligatory in this case
           continue;
         }
         attrName = attr.attribute;
-        attrLabel = angular.isDefined(attr.label) ? attr.label : attr.attribute;
-        if (angular.isDefined(attr.displayFunction)) {
+        attrLabel = attr.label != undefined ? attr.label : attr.attribute;
+        if (attr.displayFunction) {
           attrFunction = attr.displayFunction;
         }
       }
-      if (angular.isDefined(feature.get(attrName))) {
+      if (feature.get(attrName)) {
         feature.attributesForHover.push({
           key: attrLabel,
           value: feature.get(attrName),
@@ -244,11 +238,11 @@ export class HsQueryBaseService {
   }
 
   setData(data, type, overwrite) {
-    if (angular.isDefined(type)) {
-      if (angular.isDefined(overwrite) && overwrite) {
+    if (type) {
+      if (overwrite) {
         this.data[type].length = 0;
       }
-      if (angular.isArray(data)) {
+      if (Array.isArray(data)) {
         this.data[type] = this.data[type].concat(data);
       } else {
         this.data[type].push(data);
@@ -298,12 +292,13 @@ export class HsQueryBaseService {
     let tmp_width = iframe.contentDocument.innerWidth;
     if (
       tmp_width >
-      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
+      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+        .clientWidth -
         60
     ) {
       tmp_width =
-      this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map').clientWidth -
-        60;
+        this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
+          .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
     let tmp_height = iframe.contentDocument.innerHeight;
@@ -391,7 +386,7 @@ export class HsQueryBaseService {
         radius: 5,
       }),
     });
-    if (angular.isDefined(this.HsConfig.queryPoint)) {
+    if (this.HsConfig.queryPoint) {
       if (this.HsConfig.queryPoint == 'hidden') {
         defaultStyle.getImage().setRadius(0);
       } else if (this.HsConfig.queryPoint == 'notWithin') {
