@@ -220,11 +220,11 @@ export class HsMapService {
             HsConfig.componentsEnabled &&
             HsConfig.componentsEnabled.mapControls == false
           ) {
-            return neverCondition;
+            return neverCondition();
           }
           return angular.isDefined(HsConfig.zoomWithModifierKeyOnly)
             ? platformModifierKeyOnlyCondition(browserEvent)
-            : alwaysCondition;
+            : alwaysCondition();
         },
         duration: this.duration,
       }),
