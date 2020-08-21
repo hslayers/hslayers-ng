@@ -121,7 +121,7 @@ export class HsQueryWmsService {
         infoFormat == 'text/xml' ||
         infoFormat === 'application/vnd.ogc.wms_xml'
       ) {
-        if (angular.isDefined(doc.childNodes[1].attributes)) {
+        if (doc.childNodes[1].attributes != undefined) {
           const group = {
             name: 'Feature',
             attributes: doc.childNodes[1].attributes,
@@ -169,19 +169,19 @@ export class HsQueryWmsService {
     if (features.length == 0) {
       features = doc.querySelectorAll('featureMember');
     }
-    angular.forEach(features, (feature) => {
+    for(let feature of features){
       const layerName = layer.get('title') || layer.get('name');
       const layers = feature.getElementsByTagName('Layer');
-      angular.forEach(layers, (fioLayer) => {
+      for(let fioLayer of layers){
         const featureName = fioLayer.attributes[0].nodeValue;
         const attrs = fioLayer.getElementsByTagName('Attribute');
         const attributes = [];
-        angular.forEach(attrs, (attr) => {
+        for(let attr of attrs){
           attributes.push({
             'name': attr.attributes[0].nodeValue,
             'value': attr.innerHTML,
           });
-        });
+        };
         const group = {
           layer: layerName,
           name: featureName,
@@ -194,7 +194,7 @@ export class HsQueryWmsService {
           this.HsQueryBaseService,
           group
         );
-      });
+      };
       const featureNode = feature.firstChild;
       const group = {
         name: 'Feature',
@@ -210,13 +210,18 @@ export class HsQueryWmsService {
           updated = true;
         }
       }
-      this.updateFeatureList(updated, customInfoTemplate, this.HsQueryBaseService, group);
-    });
+      this.updateFeatureList(
+        updated,
+        customInfoTemplate,
+        this.HsQueryBaseService,
+        group
+      );
+    };
     doc.querySelectorAll('msGMLOutput').forEach(($this) => {
       for (const layer_i in $this.children) {
         const layer = $this.children[layer_i];
         let layer_name = '';
-        if (angular.isUndefined(layer.children)) {
+        if (layer.children == undefined) {
           continue;
         }
         for (
@@ -291,10 +296,8 @@ export class HsQueryWmsService {
         }
       );
       if (
-        angular.isDefined(layer.get('featureInfoLang')) &&
-        angular.isDefined(
-          layer.get('featureInfoLang')[this.HsLanguageService.language]
-        )
+        layer.get('featureInfoLang') &&
+        layer.get('featureInfoLang')[this.HsLanguageService.language]
       ) {
         url = url.replace(
           source.getUrl(),
