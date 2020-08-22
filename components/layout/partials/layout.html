@@ -1,77 +1,81 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper d-flex w-100 h-100"
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': config.sidebarPosition == 'right' && layoutService.sidebarVisible(), 'hs-sb-left': config.sidebarPosition == 'left' && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
-            <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
-            <div class="hs-map-space">
-                <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
-                <hs.cesium></hs.cesium>
-                
-                <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
-                <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
-                ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
-                </hs.toolbar>
-            </div>
+        <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
+        <div class="hs-map-space">
+            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
+            <hs.cesium></hs.cesium>
 
-            <!-- <div ng-style="{'width':'239px'}" ng-controller="HsSearchController" ng-if="!HsCore.exists('hs.toolbar') && HsCore.exists('HsSearchController') && layoutService.sidebarVisible()">
+            <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
+            <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
+                ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
+            </hs.toolbar>
+            <div class="hs-info-container"
+                ng-show="panelEnabled('compositionLoadingProgress')"
+                >
+                <div class="hs-info-area">
+                    <hs.info ng-if="HsCore.exists('hs.info')"></hs.info>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div ng-style="{'width':'239px'}" ng-controller="HsSearchController" ng-if="!HsCore.exists('hs.toolbar') && HsCore.exists('HsSearchController') && layoutService.sidebarVisible()">
                     <div>
                         <hs-search-input></hs-search-input>
                         <hs-search-results></hs-search-results>
                     </div>
                 </div> -->
-            <div class="hs-panelspace" ng-if="layoutService.sidebarVisible()"
-                ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}"
-                ng-style="{width: panelSpaceWidth()+'px'}">
-                <div class="hs-panelspace-wrapper">
-                    <hs-sidebar ng-cloak></hs-sidebar>
-                    <div class="hs-panelplace">
-                        <hs.layermanager hs.draggable ng-show="panelVisible('layermanager', this)"></hs.layermanager>
-                        <hs.legend hs.draggable ng-show="panelVisible('legend', this)"></hs.legend>
-                        <hs.datasource-selector hs.draggable ng-show="panelVisible('datasource_selector', this)">
-                        </hs.datasource-selector>
-                        <hs.compositions hs.draggable ng-show="panelVisible('composition_browser', this)">
-                        </hs.compositions>
-                        <hs.measure hs.draggable ng-show="panelVisible('measure', this)"></hs.measure>
-                        <hs.print hs.draggable ng-show="panelVisible('print', this)"></hs.print>
-                        <hs.styles hs.draggable ng-show="panelVisible('styler', this)"></hs.styles>
-                        <hs.permalink hs.draggable ng-show="panelVisible('permalink', this)"></hs.permalink>
-                        <div hs.query.directive_infopanel hs.draggable ng-controller="HsQueryController"
-                            class="hs-infopanel" ng-if="config.design != 'md'" ng-show="panelVisible('info', this)">
-                        </div>
-                        <div hs.query.directive_infopanel_md hs.draggable ng-controller="HsQueryController"
-                            class="hs-infopanel" ng-if="config.design == 'md'" ng-show="panelVisible('info', this)">
-                        </div>
-                        <hs.save-map hs.draggable ng-show="panelVisible('saveMap', this)"></hs.save-map>
-                        <div hs.language.directive hs.draggable ng-controller="HsLanguageController"
-                            ng-show="panelVisible('language', this)"></div>
-                        <!--
+        <div class="hs-panelspace" ng-if="layoutService.sidebarVisible()"
+            ng-class="{'labels': layoutService.sidebarLabels, 'buttons': layoutService.sidebarButtons}"
+            ng-style="{width: panelSpaceWidth()+'px'}">
+            <div class="hs-panelspace-wrapper">
+                <hs-sidebar ng-cloak></hs-sidebar>
+                <div class="hs-panelplace">
+                    <hs.layermanager hs.draggable ng-show="panelVisible('layermanager', this)"></hs.layermanager>
+                    <hs.legend hs.draggable ng-show="panelVisible('legend', this)"></hs.legend>
+                    <hs.datasource-selector hs.draggable ng-show="panelVisible('datasource_selector', this)">
+                    </hs.datasource-selector>
+                    <hs.compositions hs.draggable ng-show="panelVisible('composition_browser', this)">
+                    </hs.compositions>
+                    <hs.measure hs.draggable ng-show="panelVisible('measure', this)"></hs.measure>
+                    <hs.print hs.draggable ng-show="panelVisible('print', this)"></hs.print>
+                    <hs.styles hs.draggable ng-show="panelVisible('styler', this)"></hs.styles>
+                    <hs.permalink hs.draggable ng-show="panelVisible('permalink', this)"></hs.permalink>
+                    <div hs.query.directive_infopanel hs.draggable ng-controller="HsQueryController"
+                        class="hs-infopanel" ng-if="config.design != 'md'" ng-show="panelVisible('info', this)">
+                    </div>
+                    <div hs.query.directive_infopanel_md hs.draggable ng-controller="HsQueryController"
+                        class="hs-infopanel" ng-if="config.design == 'md'" ng-show="panelVisible('info', this)">
+                    </div>
+                    <hs.save-map hs.draggable ng-show="panelVisible('saveMap', this)"></hs.save-map>
+                    <div hs.language.directive hs.draggable ng-controller="HsLanguageController"
+                        ng-show="panelVisible('language', this)"></div>
+                    <!--
         <div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="HsTrackingController" ng-show="panelVisible('tracking', this)"></div>
-                           --> 
-                            <hs.vgi-draw                            hs.draggable ng-show="panelVisible('draw', this)"></hs.vgi-draw>
-                            <hs.sensors                       hs.draggable ng-show="panelVisible('sensors', this)"></hs.sensors>
-                            <hs-search                hs.draggable ng-if="panelVisible('search')" ng-show="panelVisible('search', this)"></hs-search>
-                            <hs-mini-sidebar hs.draggable ng-if="layoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></hs-mini-sidebar>
-                            <hs.draw                  hs.draggable ng-show="panelVisible('draw', this)"></hs.draw>
-                            <div hs.customhtml.directive DEPRECATED style="height: auto"></div>
-                            <hs-panel-container class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}"></hs-panel-container>
-                        </div>
-                    </div>
+                           -->
+                    <hs.vgi-draw hs.draggable ng-show="panelVisible('draw', this)"></hs.vgi-draw>
+                    <hs.sensors hs.draggable ng-show="panelVisible('sensors', this)"></hs.sensors>
+                    <hs-search hs.draggable ng-if="panelVisible('search')" ng-show="panelVisible('search', this)">
+                    </hs-search>
+                    <hs-mini-sidebar hs.draggable ng-if="layoutService.minisidebar"
+                        ng-show="panelVisible('sidebar', this)"></hs-mini-sidebar>
+                    <hs.draw hs.draggable ng-show="panelVisible('draw', this)"></hs.draw>
+                    <div hs.customhtml.directive DEPRECATED style="height: auto"></div>
+                    <hs-panel-container class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
+                    </hs-panel-container>
                 </div>
             </div>
-            <div class="hs-info-container"
-                ng-hide="layoutService.smallWidth || !panelVisible('compositionLoadingProgress')"
-                ng-style="infoContainerStyle()">
-                <div class="hs-info-area">
-                    <hs.info ng-if="HsCore.exists('hs.info')"></hs.info>
-                </div>
-            </div>
-            <div>
-                <hs.query.feature-popup></hs.query.feature-popup>
-            </div>
-            <!-- <hs.draw.shape-toolbar></hs.draw.shape-toolbar> -->
-        <div class="hs-dialog-area">
-            <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->
         </div>
-        <hs-dialog-container></hs-dialog-container>
     </div>
+
+    <div>
+        <hs.query.feature-popup></hs.query.feature-popup>
+    </div>
+    <!-- <hs.draw.shape-toolbar></hs.draw.shape-toolbar> -->
+    <div class="hs-dialog-area">
+        <!--<div hs.save-map.directive ng-controller="hs.save-map.controller" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></div>-->
+    </div>
+    <hs-dialog-container></hs-dialog-container>
+</div>
 </div>

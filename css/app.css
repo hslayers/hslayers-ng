@@ -858,26 +858,6 @@ div.hs-info-composition-title {
 	padding-bottom: 6px;
 }
 
-.hs-open.hs-sb-left div.hs-info-container {
-	margin-left: 400px;
-	width: calc(100% - 400px);
-}
-.hs-open.hs-sb-right div.hs-info-container {
-	margin-left: 2px;
-	width: calc(100% - 20px);
-}
-div.hs-info-container {
-	height: 100%;
-	margin-left: 48px;
-	position: relative;
-	vertical-align: bottom;
-	width: calc(100% - 48px);
-}
-
-.hs-sb-right div.hs-info-container {
-	margin-left: 2px;
-}
-
 div.hs-info-composition-image > span {
 	line-height: 30px;
 	width: 30px;
@@ -1085,6 +1065,9 @@ div.hs-info-composition-edited {
 		top: auto;
 		right: 5px;
 		left: auto;
+	}
+	div.hs-info-container{
+		display: none;
 	}
 }
 
