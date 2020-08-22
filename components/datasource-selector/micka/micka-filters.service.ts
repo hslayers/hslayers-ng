@@ -36,7 +36,7 @@ export class HsMickaFilterService {
     ) {
       this.http
         .get(
-          HsUtilsService.proxify(
+          this.hsUtilsService.proxify(
             'http://opentransportnet.eu:8082/api/3/action/vocabulary_show?id=36c07014-c461-4f19-b4dc-a38106144e66'
           ),
           {
