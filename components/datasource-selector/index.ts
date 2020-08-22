@@ -133,9 +133,9 @@ angular
   .directive(
     'hsSelectTypeToAddLayerDialog',
     downgradeComponent({component: HsSelectTypeToAddLayerDialogComponent})
-  )
+  );
 
-  .filter('endpointsWithDatasources', EndpointsWithDatasourcesPipe);
+  //.filter('endpointsWithDatasources', EndpointsWithDatasourcesPipe);
 
 angular.module('hs.datasource-selector', [downgradedDatasourcesModule]);
 

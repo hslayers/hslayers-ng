@@ -5,6 +5,12 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsConfig} from '../../config.service';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -17,7 +23,12 @@ class emptyMock {
   constructor() {}
 }
 
-describe('HsDatasource', () => {
+class WindowMock {
+  innerWidth: any;
+  constructor() {}
+}
+
+describe('HsDatasources', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -34,12 +45,23 @@ describe('HsDatasource', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [FormsModule],
-      declarations: [HsDatasourcesComponent],
+      declarations: [HsDatasourcesComponent, EndpointsWithDatasourcesPipe],
       providers: [
         HsDatasourcesService,
+        {provide: HsAddLayersVectorService, useValue: new emptyMock()},
+        {provide: HsCommonEndpointsService, useValue: new emptyMock()},
+        {provide: HsConfig, useValue: new emptyMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {
+          provide: EndpointsWithDatasourcesPipe,
+          useValue: {
+            transform: () => [],
+          },
+        },
+        {provide: HttpClient, useValue: new emptyMock()},
+        {provide: Window, useValue: new WindowMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDatasourcesComponent);

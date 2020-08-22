@@ -12,6 +12,7 @@ export default {
     $scope,
     HsWmsGetCapabilitiesService,
     HsAddLayersWmsAddLayerService,
+    HsEventBusService,
     HsHistoryListService,
     $timeout
   ) {
@@ -44,7 +45,8 @@ export default {
       $scope.showDetails = true;
     };
 
-    $scope.$on('ows.wms_connecting', (event, wms, layer) => {
+    //FIXME: is it even fired?
+    HsEventBusService.wmsConnecting.subscribe((event, wms, layer) => {
       $scope.setUrlAndConnect(wms, layer);
     });
 
