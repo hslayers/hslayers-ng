@@ -25,6 +25,21 @@ export default function (
       );
       HsLayoutService.layoutElement = element[0];
 
+      setTimeout(() => {
+        const hsapp = document.getElementById('hs-app');
+        if (getComputedStyle(hsapp).display == 'inline') {
+          hsapp.style.display = 'block';
+          console.warn(
+            'Main element (#hs-app) needs display property to be defined...fallback value added'
+          );
+        }
+        if (hsapp.style.height == 0) {
+          hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+          console.warn(
+            'Main element (#hs-app) needs height property to be defined...fallback value added'
+          );
+        }
+      }, 250);
       HsCore.init(element, {
         innerElement: '.hs-map-container',
       });
@@ -34,28 +49,30 @@ export default function (
       } else if (HsConfig.sidebarPosition != 'invisible') {
         HsConfig.sidebarPosition = 'right';
       }
-      //Hack - flex map container was not initialized when map loaded
-      const container = HsLayoutService.contentWrapper.querySelector(
-        '.hs-map-container'
-      );
-      if (container) {
-        if (container.clientHeight === 0) {
-          containerCheck();
-        }
+      // DEPRECATED
 
-        /**
-         *
-         */
-        function containerCheck() {
-          $timeout(() => {
-            if (container.clientHeight != 0) {
-              scope.$emit('HsCore_sizeChanged');
-            } else {
-              containerCheck();
-            }
-          }, 100);
-        }
-      }
+      //Hack - flex map container was not initialized when map loaded
+      // const container = HsLayoutService.contentWrapper.querySelector(
+      //   '.hs-map-container'
+      // );
+      // if (container) {
+      //   if (container.clientHeight === 0) {
+      //     containerCheck();
+      //   }
+
+      //   /**
+      //    *
+      //    */
+      //   function containerCheck() {
+      //     $timeout(() => {
+      //       if (container.clientHeight != 0) {
+      //         scope.$emit('HsCore_sizeChanged');
+      //       } else {
+      //         containerCheck();
+      //       }
+      //     }, 100);
+      //   }
+      // }
 
       if (angular.isUndefined(HsConfig.importCss) || HsConfig.importCss) {
         if (HsConfig.design == 'md') {
