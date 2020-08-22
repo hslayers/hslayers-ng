@@ -31,7 +31,6 @@ export class HsUtilsServiceMock {
       };
       const callNow = immediate && !context.timeout;
       clearTimeout(context.timeout);
-      // eslint-disable-next-line angular/timeout-service
       context.timeout = setTimeout(later, wait);
       if (callNow) {
         func.apply(context, args);
@@ -40,6 +39,10 @@ export class HsUtilsServiceMock {
   }
   generateUuid() {
     return Math.random().toString();
+  }
+
+  structuredClone(from, to?) {
+    return from;
   }
 
   isFunction(functionToCheck) {

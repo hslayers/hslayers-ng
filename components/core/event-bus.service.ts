@@ -82,5 +82,10 @@ export class HsEventBusService {
    * replaces 'mapClicked'
    */
   mapClicked: Subject<any> = new Subject();
+  /**
+   * replaces 'ows.wms_connecting'
+   * FIXME: unused?
+   */
+  wmsConnecting: Subject<any> = new Subject();
   constructor() {}
 }

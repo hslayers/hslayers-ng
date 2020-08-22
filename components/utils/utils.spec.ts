@@ -5,25 +5,28 @@ import 'core-js/es7/reflect';
 import 'reflect-metadata';
 import 'zone.js/dist/zone';
 import 'zone.js/dist/zone-testing';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {TestBed} from '@angular/core/testing';
+
+import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
+import {Point} from 'ol/geom';
+
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLayerUtilsServiceMock} from './layer-utils.service.mock';
 import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
-import {HsUtilsServiceMock} from './utils.service.mock';
-import {Point} from 'ol/geom';
-import {TestBed} from '@angular/core/testing';
+import {WINDOW_PROVIDERS} from './window';
 class HsConfigMock {
   constructor() {}
 }
-class HsLogServiceMock {
+class EmptyMock {
   constructor() {}
 }
 
@@ -41,13 +44,12 @@ describe('HsUtilsService', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        {
-          provide: HsUtilsService,
-          useValue: new HsUtilsServiceMock(),
-        },
+        HsUtilsService,
+        WINDOW_PROVIDERS[0],
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
-        {provide: HsLogService, userValue: new HsLogServiceMock()},
+        {provide: HsLogService, userValue: new EmptyMock()},
+        {provide: HttpClient, useValue: new EmptyMock()},
       ],
     });
     hsUtilsService = TestBed.inject(HsUtilsService);

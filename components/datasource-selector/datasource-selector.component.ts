@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {Component} from '@angular/core';
 
 import './layman/layman.service';
@@ -7,6 +6,7 @@ import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -33,37 +33,31 @@ export class HsDatasourcesComponent {
   metadata;
 
   constructor(
-    $scope: any,
-    $injector: any,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsConfig: HsConfig,
     private hsCore: HsCoreService,
-    private HsDatasourcesService: HsDatasourcesService,
-    private HsDatasourcesMapService: HsDatasourcesMapService,
+    private hsDatasourcesService: HsDatasourcesService,
+    private hsDatasourcesMapService: HsDatasourcesMapService,
+    private hsEventBusService: HsEventBusService,
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private HsLayoutService: HsLayoutService,
-    private HsLogService: HsLogService,
-    private HsUtilsService: HsUtilsService
+    private hsLogService: HsLogService,
+    private hsUtilsService: HsUtilsService
   ) {
     'ngInject';
-    this.$scope = $scope;
-    this.$injector = $injector;
     this.HsCore = hsCore;
-    this.data = HsDatasourcesService.data;
-    this.DS = HsDatasourcesService;
-    this.mapService = HsDatasourcesMapService;
+    this.data = hsDatasourcesService.data;
+    this.DS = hsDatasourcesService;
+    this.mapService = hsDatasourcesMapService;
     this.config = hsConfig;
     this.advancedSearch = false;
-    this.endpointsService = HsCommonEndpointsService;
-    this.datasetSelect = HsDatasourcesService.datasetSelect;
+    this.endpointsService = hsCommonEndpointsService;
+    this.datasetSelect = hsDatasourcesService.datasetSelect;
 
-    //FIXME:
-    $scope.$on('ows.wms_connecting', () => {
-      $scope.data.wms_connecting = true;
+    //FIXME: is it even fired?
+    hsEventBusService.wmsConnecting.subscribe(() => {
+      this.data.wms_connecting = true;
     });
-
-    //FIXME:
-    $scope.$emit('scope_loaded', 'DatasourceSelector');
   }
 
   /**
@@ -82,7 +76,7 @@ export class HsDatasourcesComponent {
       paging.start -= itemsPerPage;
       paging.next = paging.start + itemsPerPage;
     }
-    this.HsDatasourcesService.queryCatalog(endpoint);
+    this.hsDatasourcesService.queryCatalog(endpoint);
   }
 
   /**
@@ -101,7 +95,7 @@ export class HsDatasourcesComponent {
       } else {
         paging.next += itemsPerPage;
       }
-      this.HsDatasourcesService.queryCatalog(endpoint);
+      this.hsDatasourcesService.queryCatalog(endpoint);
     }
   }
 
@@ -148,7 +142,7 @@ export class HsDatasourcesComponent {
    * @param prestring
    */
   decomposeMetadata(input, prestring?: string) {
-    if (this.HsUtilsService.isPOJO(input)) {
+    if (this.hsUtilsService.isPOJO(input)) {
       return this.decomposeObject(input, prestring);
     } else if (Array.isArray(input)) {
       return this.decomposeArray(input, prestring);
@@ -173,15 +167,15 @@ export class HsDatasourcesComponent {
       } else {
         newstring = key;
       }
-      if (this.HsUtilsService.isPOJO(value)) {
+      if (this.hsUtilsService.isPOJO(value)) {
         subvalue = this.decomposeObject(value, newstring);
       } else if (Array.isArray(value)) {
         subvalue = this.decomposeArray(value, newstring);
       } else {
         subvalue = value;
       }
-      if (this.HsUtilsService.isPOJO(subvalue)) {
-        decomposed = this.HsUtilsService.structuredClone(subvalue, decomposed);
+      if (this.hsUtilsService.isPOJO(subvalue)) {
+        decomposed = this.hsUtilsService.structuredClone(subvalue, decomposed);
       } else {
         decomposed[newstring] = subvalue;
       }
@@ -197,15 +191,15 @@ export class HsDatasourcesComponent {
     let decomposed = undefined;
     let sub = undefined;
     arr.forEach((value) => {
-      if (this.HsUtilsService.isPOJO(value)) {
+      if (this.hsUtilsService.isPOJO(value)) {
         sub = this.decomposeObject(value, substring);
       } else if (Array.isArray(value)) {
         sub = this.decomposeArray(value, substring);
       } else {
         sub += value;
       }
-      if (this.HsUtilsService.isPOJO(sub)) {
-        decomposed = this.HsUtilsService.structuredClone(sub, decomposed);
+      if (this.hsUtilsService.isPOJO(sub)) {
+        decomposed = this.hsUtilsService.structuredClone(sub, decomposed);
       } else {
         decomposed[substring] = sub;
       }
@@ -218,9 +212,11 @@ export class HsDatasourcesComponent {
    */
   metadataDialog(): void {
     try {
-      const $mdDialog = this.$injector.get('$mdDialog');
+      //TODO:
+      this.hsLogService.error('not implemented');
+      //const $mdDialog = this.$injector.get('$mdDialog');
 
-      $mdDialog.show({
+      /*$mdDialog.show({
         parent: angular.element('#hsContainer'),
         clickOutsideToClose: true,
         escapeToClose: true,
@@ -232,9 +228,9 @@ export class HsDatasourcesComponent {
             $mdDialog.hide();
           };
         },
-      });
+      });*/
     } catch (ex) {
-      this.HsLogService.error('Failed to create metadataDialog.');
+      //this.HsLogService.error('Failed to create metadataDialog.');
       // continue regardless of error
     }
   }
@@ -248,7 +244,7 @@ export class HsDatasourcesComponent {
    * @param type
    */
   addLayerToMap(ds, layer, type): void {
-    this.HsDatasourcesService.addLayerToMap(ds, layer, type);
+    this.hsDatasourcesService.addLayerToMap(ds, layer, type);
     this.metadataModalVisible = false;
   }
 }
