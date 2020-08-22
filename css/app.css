@@ -1562,8 +1562,13 @@ div.feature-list md-chips-wrap {
 	line-height: 28px;
 }
 
+div.feature-list .infopanel {
+	height: 100%;
+    background-color: #eaf1dd;
+}
+
 div.feature-list {
-	max-height: 100%;
+	height: 100%;
 }
 
 div.feature-list md-content img {
