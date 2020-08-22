@@ -19,8 +19,18 @@ export class HsUtilsServiceMock {
     return false;
   }
 
+  debounce(func, wait, immediate, context) {
+    return (...args) => {
+      func();
+    };
+  }
+
   generateUuid() {
     return Math.random().toString();
+  }
+
+  structuredClone(from, to?) {
+    return from;
   }
 
   isFunction(functionToCheck) {

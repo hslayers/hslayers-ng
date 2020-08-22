@@ -13,7 +13,7 @@
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}"
-                *ngFor="let endpoint of endpointsService.endpoints | endpointsWithDatasources">
+                *ngFor="let endpoint of (endpointsService.endpoints)">
                 <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
                     data-toggle="tab" (click)="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
@@ -21,7 +21,7 @@
                     <span class="icon-refresh icon-spin" [hidden]="endpoint.datasourcePaging.loaded"></span>
                 </a>
             </li>
-            <li class="nav-item hs-tab-single-datasources" *ngFf="HsCore.exists('hs.addLayers') && config.allowAddExternalDatasets">
+            <li class="nav-item hs-tab-single-datasources" *ngIf="HsCore.exists('hs.addLayers') && config.allowAddExternalDatasets">
                 <a class="nav-link" href="#" aria-controls="OWS" [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}"
                     role="tab" (click)="datasetSelect('OWS')" data-toggle="tab" i18n>
                     External data
@@ -31,7 +31,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="hs-dataset-panel tab-pane"
                 [ngClass]="{'active': 'ds'+$index == data.id_selected && !data.wms_connecting}"
-                id="{{'ds'+$index}}" *ngFor="let endpoint of endpointsService.endpoints | endpointsWithDatasources">
+                id="{{'ds'+$index}}" *ngFor="let endpoint of (endpointsService.endpoints)">
                 <div class="card">
                     <div class="card-body">
                         <div *ngIf="endpoint.type == 'micka'">
@@ -50,7 +50,7 @@
                                 </span>
                                 <span class="float-right">
                                     <a class="btn btn-sm btn-secondary" [href]='DS.layerDownload(endpoint, layer)'
-                                        data-toggle="tooltip" title="{{'Download'|i18n}}"
+                                        data-toggle="tooltip" title="{{'Download'}}"
                                         [hidden]='DS.layerDownload(endpoint,layer) == "#"'><i
                                             class="icon-download"></i></a>
                                     <a class="btn btn-sm btn-secondary" [href]='DS.layerRDF(endpoint, layer)'
@@ -58,7 +58,7 @@
                                         [hidden]='endpoint.type!="micka" || DS.layerRDF(endpoint, layer) == "#"'><i class="icon-share-alt"></i></a>
                                     <button type="button" class="btn btn-sm btn-primary"
                                         (click)="addLayerToMap(endpoint, layer)" [hidden]='config.dss_disallow_add == true'
-                                        data-toggle="tooltip" title="{{'Add to map'|i18n}}"><i
+                                        data-toggle="tooltip" title="{{'Add to map'}}"><i
                                             class="icon-plus"></i></button>
                                 </span>
                             </li>

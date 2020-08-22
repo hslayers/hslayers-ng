@@ -74,5 +74,10 @@ export class HsEventBusService {
   searchResultsReceived: Subject<any> = new Subject();
   searchZoomTo: Subject<any> = new Subject();
   clearSearchResults: Subject<any> = new Subject();
+  /**
+   * replaces 'ows.wms_connecting'
+   * FIXME: unused?
+   */
+  wmsConnecting: Subject<any> = new Subject();
   constructor() {}
 }

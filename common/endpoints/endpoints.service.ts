@@ -2,10 +2,6 @@ import * as angular from 'angular';
 import {BehaviorSubject} from 'rxjs';
 import {HsConfig} from '../../config.service';
 
-/**
- * @param HsConfig
- * @param HsCommonLaymanService
- */
 export class HsCommonEndpointsService {
   endpointsFilled: BehaviorSubject<any> = new BehaviorSubject(null);
   HsConfig: HsConfig;

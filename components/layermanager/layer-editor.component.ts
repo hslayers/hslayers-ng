@@ -176,7 +176,7 @@ export class HsLayerEditorComponent {
 
   showRemoveLayerDiag(e, layer): void {
     try {
-      //TODO
+      //TODO:
       console.error('not implemented');
 
       /* const $mdDialog = $injector.get('$mdDialog');
