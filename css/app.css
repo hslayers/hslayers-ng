@@ -1019,9 +1019,9 @@ div.hs-info-composition-edited {
 		line-height: 1.5;
 		font-size: large;
 	}
-	/* .hs-sb-left.hs-open .hs-toolbar {
-       margin-left: 310px;
-    }*/
+	.hs-search-address-input{
+		max-width: 20vw !important;
+	}
 	hs-mini-sidebar .hs-sidebar-list {
 		flex-direction: row !important;
 		justify-content: center;
