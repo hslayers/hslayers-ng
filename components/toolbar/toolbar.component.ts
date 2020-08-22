@@ -43,28 +43,5 @@ export class HsToolbarComponent {
     }
     return this.collapsed;
   }
-
-  /**
-   * Dinamically generates style for placement of toolbar according
-   * to panel size and position
-   *
-   * @memberof hs.toolbar.controller
-   * @function toolbarStyle
-   * @returns {object} Dinamicaly generated CSS style
-   */
-  toolbarStyle() {
-    if (!this.HsLayoutService.sidebarBottom()) {
-      if (!this.HsLayoutService.sidebarRight) {
-        return {
-          marginLeft: this.HsLayoutService.panelSpaceWidth() + 'px',
-        };
-      } else {
-        return {
-          marginRight: this.HsLayoutService.panelSpaceWidth() + 'px',
-        };
-      }
-    }
-  }
-
   // $scope.$emit('scope_loaded', 'Toolbar');
 }
