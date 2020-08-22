@@ -725,15 +725,6 @@ hs-sidebar {
 	display: inline-block;
 	z-index: 999;
 }
-
-.hs-sb-left.hs-open .hs-toolbar {
-	margin-left: 410px;
-}
-
-.hs-sb-left .hs-toolbar {
-	margin-left: 60px;
-}
-
 /********************/
 /** STATUS CREATOR **/
 /********************/

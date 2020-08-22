@@ -7,11 +7,11 @@
                 <hs.cesium></hs.cesium>
                 
                 <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
-
-            </div>
-            <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
+                <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
                 ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
-            </hs.toolbar>
+                </hs.toolbar>
+            </div>
+
             <!-- <div ng-style="{'width':'239px'}" ng-controller="HsSearchController" ng-if="!HsCore.exists('hs.toolbar') && HsCore.exists('HsSearchController') && layoutService.sidebarVisible()">
                     <div>
                         <hs-search-input></hs-search-input>
