@@ -14,7 +14,7 @@ import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsMickaSuggestionsDialogComponent} from './micka/micka-suggestions-dialog.component';
-import {HsPanelHelpersModule} from '../layout/panel-helpers.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
 
 @NgModule({

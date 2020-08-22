@@ -345,7 +345,7 @@ export class HsUtilsService {
     for (const key in from) {
       to[key] =
         typeof to[key] == 'undefined'
-          ? this.structuredClone(from[key], null)
+          ? this.structuredClone(from[key])
           : to[key];
     }
     return to;
@@ -369,7 +369,7 @@ export class HsUtilsService {
    * @returns {boolean}
    * @memberof HsUtilsService
    */
-  isPOJO(objectToCheck) {
+  isPOJO(objectToCheck: any): boolean {
     return (
       objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
     );
