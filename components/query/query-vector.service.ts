@@ -95,9 +95,9 @@ export class HsQueryVectorService {
       const formatWKT = new WKT();
       const wktRepresentation = formatWKT.writeFeature(feature);
       const data = new Blob([wktRepresentation], {type: 'text/plain'});
-      const url = $window.URL.createObjectURL(data);
+      const url = URL.createObjectURL(data);
       if (this.exportedFeatureHref) {
-        $window.URL.revokeObjectURL(this.exportedFeatureHref);
+        URL.revokeObjectURL(this.exportedFeatureHref);
       }
       this.exportedFeatureHref = url;
     } else {
