@@ -4,6 +4,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs.query.feature',
@@ -14,7 +15,8 @@ export class HsQueryFeaturePopupComponent {
     private HsQueryBaseService: HsQueryBaseService,
     private HsMapService: HsMapService,
     private HsQueryVectorService: HsQueryVectorService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private TranslateService: TranslateService
   ) {
     const hoverPopupElement = $element[0];
     this.HsQueryBaseService.hoverPopup = new Overlay({
@@ -62,8 +64,8 @@ export class HsQueryFeaturePopupComponent {
   async removeFeature(feature) {
     const dialog = $injector.get('HsConfirmDialog');
     const confirmed = await dialog.show(
-      gettext('Really delete this feature?'),
-      gettext('Confirm delete')
+      this.TranslateService.instant('Really delete this feature?'),
+      this.TranslateService.instant('Confirm delete')
     );
     if (confirmed == 'yes') {
       this.HsQueryVectorService.removeFeature(feature);
@@ -74,11 +76,11 @@ export class HsQueryFeaturePopupComponent {
   async clearLayer(layer) {
     const dialog = $injector.get('HsConfirmDialog');
     const confirmed = await dialog.show(
-      gettext('Really delete all features from layer "{0}"?').replace(
+      this.TranslateService.instant('Really delete all features from layer "{0}"?').replace(
         '{0}',
         layer.get('title')
       ),
-      gettext('Confirm delete')
+      this.TranslateService.instant('Confirm delete')
     );
     if (confirmed == 'yes') {
       if (layer.getSource().getSource) {
