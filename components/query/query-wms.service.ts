@@ -4,10 +4,10 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 import {TileWMS} from 'ol/source';
 
 @Injectable({
@@ -22,7 +22,8 @@ export class HsQueryWmsService {
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLanguageService: HsLanguageService,
     private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HttpClient: HttpClient
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
@@ -59,28 +60,22 @@ export class HsQueryWmsService {
     }
   }
 
-  request(url, infoFormat, coordinate, layer) {
+  async request(url, infoFormat, coordinate, layer) {
     const req_url = this.HsUtilsService.proxify(url, true);
     const reqHash = this.HsQueryBaseService.currentQuery;
-    $http({url: req_url})
-      .then((response) => {
-        if (reqHash != this.HsQueryBaseService.currentQuery) {
-          return;
-        }
-        this.featureInfoReceived(
-          response.data,
-          infoFormat,
-          url,
-          coordinate,
-          layer
-        );
-      })
-      .catch((err) => {
-        if (reqHash != this.HsQueryBaseService.currentQuery) {
-          return;
-        }
-        this.featureInfoError(coordinate);
-      });
+    try {
+      const response = await this.HttpClient.get(req_url).toPromise();
+
+      if (reqHash != this.HsQueryBaseService.currentQuery) {
+        return;
+      }
+      this.featureInfoReceived(response, infoFormat, url, coordinate, layer);
+    } catch (err) {
+      if (reqHash != this.HsQueryBaseService.currentQuery) {
+        return;
+      }
+      this.featureInfoError(coordinate);
+    }
   }
 
   /**
