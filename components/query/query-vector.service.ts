@@ -1,4 +1,5 @@
 import * as extent from 'ol/extent';
+import Feature from 'ol/Feature';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -8,6 +9,7 @@ import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Select} from 'ol/interaction';
+import {Subject} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {click} from 'ol/events/condition';
@@ -19,6 +21,8 @@ import {toLonLat} from 'ol/proj';
 export class HsQueryVectorService {
   exportedFeatureHref: any;
   selector: any;
+  featureRemovals: Subject<Feature> = new Subject();
+
   constructor(
     private HsQueryBaseService: HsQueryBaseService,
     private HsMapService: HsMapService,
@@ -48,7 +52,7 @@ export class HsQueryVectorService {
       map.addInteraction(this.selector);
     });
 
-    $rootScope.$on('queryStatusChanged', () => {
+    this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
       /*if (Base.queryActive) OlMap.map.addInteraction(this.selector);
             else OlMap.map.removeInteraction(this.selector);*/
     });
@@ -72,7 +76,7 @@ export class HsQueryVectorService {
       $rootScope.$broadcast('infopanel.feature_deselected', e.element);
     });
 
-    $rootScope.$on('mapQueryStarted', (e) => {
+    this.HsEventBusService.getFeatureInfoStarted.subscribe((e) => {
       HsQueryBaseService.clearData('features');
       if (!HsQueryBaseService.queryActive) {
         return;
@@ -91,7 +95,7 @@ export class HsQueryVectorService {
       );
     }
     this.HsQueryBaseService.setData(featureDescriptions, 'features');
-    $rootScope.$broadcast('queryVectorResult');
+    this.HsQueryBaseService.getFeatureInfoCollected.next();
   }
 
   exportData(clickedFormat, feature) {
@@ -207,6 +211,7 @@ export class HsQueryVectorService {
     if (this.HsUtilsService.instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
+    this.featureRemovals.next(feature);
   }
 
   /**
