@@ -1,6 +1,12 @@
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsQueryBaseService} from './query-base.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 import {TileWMS} from 'ol/source';
 
 @Injectable({
@@ -17,7 +23,7 @@ export class HsQueryWmsService {
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService
   ) {
-    $rootScope.$on('mapQueryStarted', (e, evt) => {
+    this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
       this.HsMapService.map.getLayers().forEach((layer) => {
         if (layer.get('base') == true || layer.get('queriable') == false) {
@@ -169,19 +175,19 @@ export class HsQueryWmsService {
     if (features.length == 0) {
       features = doc.querySelectorAll('featureMember');
     }
-    for(let feature of features){
+    for (const feature of features) {
       const layerName = layer.get('title') || layer.get('name');
       const layers = feature.getElementsByTagName('Layer');
-      for(let fioLayer of layers){
+      for (const fioLayer of layers) {
         const featureName = fioLayer.attributes[0].nodeValue;
         const attrs = fioLayer.getElementsByTagName('Attribute');
         const attributes = [];
-        for(let attr of attrs){
+        for (const attr of attrs) {
           attributes.push({
             'name': attr.attributes[0].nodeValue,
             'value': attr.innerHTML,
           });
-        };
+        }
         const group = {
           layer: layerName,
           name: featureName,
@@ -194,7 +200,7 @@ export class HsQueryWmsService {
           this.HsQueryBaseService,
           group
         );
-      };
+      }
       const featureNode = feature.firstChild;
       const group = {
         name: 'Feature',
@@ -216,7 +222,7 @@ export class HsQueryWmsService {
         this.HsQueryBaseService,
         group
       );
-    };
+    }
     doc.querySelectorAll('msGMLOutput').forEach(($this) => {
       for (const layer_i in $this.children) {
         const layer = $this.children[layer_i];
@@ -267,7 +273,7 @@ export class HsQueryWmsService {
       this.HsQueryBaseService.data.features.length > 0 ||
       invisiblePopup.contentDocument.body.innerHTML.length > 30
     ) {
-      $rootScope.$broadcast('queryWmsResult', coordinate);
+      this.HsQueryBaseService.getFeatureInfoCollected.next(coordinate);
     }
   }
 

@@ -49,7 +49,6 @@ export class HsQueryFeatureComponent {
 
   removeFeature() {
     this.HsQueryVectorService.removeFeature(this.olFeature());
-    $scope.$emit('infopanel.featureRemoved', this.olFeature());
   }
 
   zoomToFeature() {
