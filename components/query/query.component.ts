@@ -6,6 +6,9 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
+import {HsQueryVectorService} from './query-vector.service';
+import {HsQueryWmsService} from './query-wms.service';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'hs.query',
@@ -13,13 +16,16 @@ import {HsQueryBaseService} from './query-base.service';
 })
 export class HsQueryComponent {
   popup = new Popup();
+  popupOpens: Subject<any> = new Subject();
 
   constructor(
     private HsConfig: HsConfig,
     private HsQueryBaseService: HsQueryBaseService,
     private HsLayoutService: HsLayoutService,
     private HsMapService: HsMapService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsQueryVectorService: HsQueryVectorService,
+    private HsQueryWmsService: HsQueryWmsService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
@@ -43,60 +49,54 @@ export class HsQueryComponent {
       }
     });
 
-    const deregisterQueryStatusChanged = $rootScope.$on(
-      'queryStatusChanged',
-      () => {
-        $scope.$on('mapQueryStarted', (e) => {
-          if (
-            HsConfig.design === 'md' &&
-            this.HsQueryBaseService.data.features.length === 0
-          ) {
-            this.showNoImagesWarning();
+    this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
+      this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
+        if (
+          this.HsConfig.design === 'md' &&
+          this.HsQueryBaseService.data.features.length === 0
+        ) {
+          this.showNoImagesWarning();
+        }
+        if (
+          this.HsConfig.design === 'md' &&
+          this.HsQueryBaseService.data.features.length > 0
+        ) {
+          this.showQueryDialog(e);
+        } else {
+          this.popup.hide();
+          if (this.HsQueryBaseService.currentPanelQueryable()) {
+            this.HsLayoutService.setMainPanel('info');
           }
-          if (
-            this.HsConfig.design === 'md' &&
-            this.HsQueryBaseService.data.features.length > 0
-          ) {
-            this.showQueryDialog(e);
-          } else {
-            this.popup.hide();
-            if (this.HsQueryBaseService.currentPanelQueryable()) {
-              this.HsLayoutService.setMainPanel('info');
+        }
+      });
+
+      this.HsQueryBaseService.getFeatureInfoCollected.subscribe(
+        (coordinate) => {
+          const invisiblePopup = this.HsQueryBaseService.getInvisiblePopup();
+          if (invisiblePopup.contentDocument.body.children.length > 0) {
+            //TODO: dont count style, title, meta towards length
+            if (this.HsQueryBaseService.popupClassname.length > 0) {
+              this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
+            } else {
+              this.popup.getElement().className = 'ol-popup';
             }
+            this.popup.show(
+              coordinate,
+              invisiblePopup.contentDocument.body.innerHTML
+            );
+            this.popupOpens.next('hs.query');
           }
-        });
+        }
+      );
+    });
 
-        $scope.deregisterWmsQuery = $scope.$on(
-          'queryWmsResult',
-          (e, coordinate) => {
-            $timeout(() => {
-              const invisiblePopup = this.HsQueryBaseService.getInvisiblePopup();
-              if (invisiblePopup.contentDocument.body.children.length > 0) {
-                //TODO: dont count style, title, meta towards length
-                if (this.HsQueryBaseService.popupClassname.length > 0) {
-                  this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
-                } else {
-                  this.popup.getElement().className = 'ol-popup';
-                }
-                this.popup.show(
-                  coordinate,
-                  invisiblePopup.contentDocument.body.innerHTML
-                );
-                $rootScope.$broadcast('popupOpened', 'hs.query');
-              }
-            });
-          }
-        );
-      }
-    );
-
-    $scope.$on('popupOpened', (e, source) => {
+    this.popupOpens.subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();
       }
     });
 
-    $scope.$on('infopanel.featureRemoved', (e, feature) => {
+    this.HsQueryVectorService.featureRemovals.subscribe((feature) => {
       this.HsQueryBaseService.data.features.splice(
         this.HsQueryBaseService.data.features.indexOf(feature),
         1
@@ -110,7 +110,7 @@ export class HsQueryComponent {
         scope: this,
         preserveScope: true,
         template: require('./partials/infopanel.html'),
-        parent: angular.element(document.body),
+        parent: document.body,
         targetEvent: ev,
         clickOutsideToClose: true,
       })

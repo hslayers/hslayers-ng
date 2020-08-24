@@ -1,12 +1,15 @@
 import Feature from 'ol/Feature';
+import Map from 'ol/map';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
+import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
@@ -55,12 +58,16 @@ export class HsQueryBaseService {
   ];
   last_coordinate_clicked: any;
   hoverPopup: any;
+  getFeatureInfoStarted: Subject<any> = new Subject();
+  getFeatureInfoCollected: Subject<any> = new Subject();
+  queryStatusChanges: Subject<boolean> = new Subject();
 
   constructor(
     private HsMapService: HsMapService,
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsEventBusService: HsEventBusService
   ) {
     if (this.deregisterVectorSelectorCreated) {
       this.deregisterVectorSelectorCreated();
@@ -99,7 +106,7 @@ export class HsQueryBaseService {
       this.setData(getCoordinate(evt.coordinate), 'coordinates', true);
       this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
       this.data.selectedProj = this.data.coordinates[0].projections[0];
-      $rootScope.$broadcast('mapQueryStarted', evt);
+      this.HsEventBusService.getFeatureInfoStarted.next(evt);
     });
 
     if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
@@ -348,7 +355,7 @@ export class HsQueryBaseService {
     this.queryActive = true;
     this.HsMapService.loaded().then((map) => {
       map.addLayer(this.queryLayer);
-      $rootScope.$broadcast('queryStatusChanged', true);
+      this.queryStatusChanges.next(true);
     });
   }
 
@@ -359,7 +366,7 @@ export class HsQueryBaseService {
     this.queryActive = false;
     this.HsMapService.loaded().then((map) => {
       map.removeLayer(this.queryLayer);
-      $rootScope.$broadcast('queryStatusChanged', false);
+      this.queryStatusChanges.next(false);
     });
   }
 
