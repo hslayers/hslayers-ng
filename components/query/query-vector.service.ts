@@ -46,9 +46,9 @@ export class HsQueryVectorService {
         }
       },
     });
-    $rootScope.$broadcast('vectorSelectorCreated', this.selector);
+    this.HsQueryBaseService.vectorSelectorCreated.next(this.selector);
 
-    HsEventBusService.olMapLoads.subscribe((map) => {
+    this.HsEventBusService.olMapLoads.subscribe((map) => {
       map.addInteraction(this.selector);
     });
 
@@ -58,27 +58,19 @@ export class HsQueryVectorService {
     });
 
     this.selector.getFeatures().on('add', (e) => {
-      HsEventBusService.vectorQueryFeatureSelection.next({
+      this.HsEventBusService.vectorQueryFeatureSelection.next({
         feature: e.element,
         selector: this.selector,
       });
-      //deprecated
-      $rootScope.$broadcast(
-        'infopanel.feature_selected',
-        e.element,
-        this.selector
-      );
     });
 
     this.selector.getFeatures().on('remove', (e) => {
-      $rootScope.$broadcast('vectorQuery.featureDelected', e.element);
-      //deprecated
-      $rootScope.$broadcast('infopanel.feature_deselected', e.element);
+      this.HsEventBusService.vectorQueryFeatureDeselection.next(e.element);
     });
 
-    this.HsEventBusService.getFeatureInfoStarted.subscribe((e) => {
-      HsQueryBaseService.clearData('features');
-      if (!HsQueryBaseService.queryActive) {
+    this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
+      this.HsQueryBaseService.clearData('features');
+      if (!this.HsQueryBaseService.queryActive) {
         return;
       }
       this.createFeatureAttributeList();
