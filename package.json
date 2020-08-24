@@ -93,6 +93,8 @@
     "@angular/platform-browser-dynamic": "^9.1.12",
     "@angular/upgrade": "^9.1.12",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
+    "@ngx-translate/core": "^12.1.2",
+    "@ngx-translate/http-loader": "^5.0.0",
     "@types/cesium": "^1.67.12",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.9",
