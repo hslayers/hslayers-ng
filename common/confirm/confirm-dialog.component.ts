@@ -1,24 +1,24 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, ViewRef} from '@angular/core';
+import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 
 @Component({
   selector: 'hs.confirm-dialog',
   template: require('./confirm-dialog.html'),
 })
-export class HsConfirmDialogComponent {
-  modalVisible: boolean;
-  @Input() message: string;
-  @Input() title: string;
-  @Output() callback: EventEmitter<any> = new EventEmitter();
-
-  constructor() {}
+export class HsConfirmDialogComponent implements HsDialogComponent {
+  dialogItem: any;
+  constructor(private HsDialogContainerService: HsDialogContainerService) {}
+  viewRef: ViewRef;
+  data: any;
 
   yes(): void {
-    this.modalVisible = false;
-    this.callback.emit('yes');
+    this.HsDialogContainerService.destroy(this);
+    this.dialogItem.resolve.resolve('yes');
   }
 
   no(): void {
-    this.modalVisible = false;
-    this.callback.emit('no');
+    this.HsDialogContainerService.destroy(this);
+    this.dialogItem.resolve('no');
   }
 }

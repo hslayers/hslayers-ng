@@ -50,5 +50,6 @@ export class HsDialogContainerComponent implements OnInit {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
+    (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
   }
 }

@@ -11,8 +11,10 @@ export class HsDialogContainerService {
   dialogDestroyObserver: Subject<any> = new Subject();
 
   constructor() {}
-  create(component: Type<any>, data: any): void {
-    this.dialogObserver.next(new HsDialogItem(component, data));
+  create(component: Type<any>, data: any): HsDialogItem {
+    const item = new HsDialogItem(component, data)
+    this.dialogObserver.next(item);
+    return item;
   }
 
   destroy(component: HsDialogComponent) {
