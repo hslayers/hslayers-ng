@@ -31,11 +31,6 @@ export class HsQueryComponent {
       map.addOverlay(this.popup);
     });
 
-    try {
-      this.$mdDialog = $injector.get('$mdDialog');
-      this.$mdToast = $injector.get('$mdToast');
-    } catch (ex) {}
-
     //add current panel queriable - activate/deactivate
     this.HsEventBusService.mainPanelChanges.subscribe((closed) => {
       if (this.HsQueryBaseService.currentPanelQueryable()) {
@@ -105,7 +100,8 @@ export class HsQueryComponent {
   }
 
   showQueryDialog(ev) {
-    this.$mdDialog
+    //TODO Rewrite this to new material design
+    /* this.$mdDialog
       .show({
         scope: this,
         preserveScope: true,
@@ -121,18 +117,18 @@ export class HsQueryComponent {
         () => {
           console.log('Cancelled.');
         }
-      );
+      ); */
   }
 
   cancelQueryDialog() {
-    this.$mdDialog.cancel();
+    //this.$mdDialog.cancel();
   }
 
   showNoImagesWarning() {
-    this.$mdToast.show(
+    /*this.$mdToast.show(
       this.$mdToast.simple().textContent('No images matched the query.')
       // .position(pinTo )
       // .hideDelay(3000)
-    );
+    );*/
   }
 }
