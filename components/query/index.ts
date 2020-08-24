@@ -4,7 +4,6 @@ import '../measure/measure.module';
 import '../utils';
 import 'angular-sanitize';
 import * as angular from 'angular';
-import HsQueryInfoPanelMdDirective from './query-info-panel-md.directive';
 import {HsQueryAttributeRowComponent} from './attribute-row.component';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.directive';
@@ -34,19 +33,7 @@ angular
     'hs.layout',
     'hs.utils',
     'hs.measure',
-  ]) /**
-      
- /**
-      *
-      * @ngdoc directive
-      * @name hs.query.directiveInfopanelMd
-      * @memberOf hs.query
-      * @description Display Infopanel with query results
-      */
-  .directive(
-    'hs.query.directiveInfopanelMd',
-    downgradeComponent({component: HsQueryInfoPanelMdDirective})
-  )
+  ])
   .directive(
     'hs.query.defaultInfoPanelBody',
     downgradeComponent({component: HsQueryDefaultInfoPanelBodyComponent})
@@ -103,7 +90,7 @@ angular
    * @memberOf hs.query
    * @description TODO
    */
-  .directive('HsQuery', downgradeComponent({component: HsQueryComponent}))
+  .directive('hsQuery', downgradeComponent({component: HsQueryComponent}))
 
   .directive(
     'hs.query.featurePopup',
