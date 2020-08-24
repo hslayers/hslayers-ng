@@ -5,7 +5,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
 
 @Component({
-  selector: 'hs.mickaSuggestionsDialog',
+  selector: 'hs-micka-suggestions-dialog',
   template: require('./micka-suggestions-dialog.html'),
 })
 export class HsMickaSuggestionsDialogComponent implements OnInit {

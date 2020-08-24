@@ -12,14 +12,14 @@
     	<!-- <md-icon class="material-icons">expand_more</md-icon> -->
     </md-button>
   </md-toolbar>
-	<hs.layermanager      		ng-if="HsCore.exists('hs.layermanager')" ng-show="panelVisible('layermanager', this)"></hs.layermanager>>
+	<hs.layermanager      		ng-if="HsCore.exists('hs.layermanager')" ng-show="panelVisible('layermanager', this)"></hs.layermanager>
 	<hs.legend              	ng-if="HsCore.exists('hs.legend')" ng-show="panelVisible('legend', this)"></hs.legend>
-	<hs.datasource_selector   	ng-if="HsCore.exists('hs.datasource_selector')" ng-show="panelVisible('datasource_selector', this)"></hs.datasource_selector>>
-	<hs.compositions          	ng-if="HsCore.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>>
+	<hs-datasource-selector   	ng-if="HsCore.exists('hs.datasource_selector')" ng-show="panelVisible('datasource_selector', this)"></hs-datasource-selector>
+	<hs.compositions          	ng-if="HsCore.exists('hs.compositions')" ng-show="panelVisible('composition_browser', this)"></hs.compositions>
 	<div hs.feature_crossfilter.directive   ng-controller="hs.feature_crossfilter.controller"  ng-if="HsCore.exists('hs.feature_crossfilter.controller')" ng-show="panelVisible('feature_crossfilter', this)"></div>
-	<hs.measure   				ng-if="HsCore.exists('hs.measure')" ng-show="panelVisible('measure', this)"></hs.measure>>
+	<hs.measure   				ng-if="HsCore.exists('hs.measure')" ng-show="panelVisible('measure', this)"></hs.measure>
 	<hs.print                 	ng-if="HsCore.exists('hs.print')" ng-show="panelVisible('print', this)"></hs.print>
-	<hs.styler					ng-controller="hs.styler"  ng-if="HsCore.exists('hs.styler.controller')" ng-show="panelVisible('styler', this)"></hs.styler>>
+	<hs.styler					ng-controller="hs.styler"  ng-if="HsCore.exists('hs.styler.controller')" ng-show="panelVisible('styler', this)"></hs.styler>
 	<hs.permalink				ng-if="HsCore.exists('hs.permalink')" ng-show="panelVisible('permalink', this)"></hs.permalink>
 	<div hs.query.directive_infopanel       ng-controller="HsQueryController" ng-if="HsCore.exists('HsQueryController')" ng-show="panelVisible('info', this)"></div>
 	<hs.save-map				ng-controller="hs.save-map" ng-if="HsCore.exists('hs.save-map.controller')" ng-show="panelVisible('saveMap', this)"></hs.save-map>>

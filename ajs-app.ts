@@ -59,7 +59,7 @@ export default angular
     'hs.measure',
     'hs.legend',
     'hs.core',
-    'hs.datasource-selector',
+    'hs.datasource_selector',
     'hs.save-map',
     'hs.addLayers',
     'gettext',
@@ -70,8 +70,9 @@ export default angular
   .directive('hs', (HsConfig, HsCore) => {
     'ngInject';
     return {
-      template: require('hslayers.html'),
-      link: function (_scope, element) {},
+      template: require('./hslayers.html'),
+      link: function (_scope, element) {
+      },
     };
   })
   .value(

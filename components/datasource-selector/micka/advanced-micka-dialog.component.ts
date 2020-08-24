@@ -6,7 +6,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
 
 @Component({
-  selector: 'selector-name',
+  selector: 'hs-advanced-micka-dialog',
   template: require('./advanced-micka-dialog.html'),
 })
 export class HsAdvancedMickaDialogComponent implements OnInit {
@@ -55,7 +55,7 @@ export class HsAdvancedMickaDialogComponent implements OnInit {
         ) === null
       ) {
         //FIXME: $compile
-        /*const el = angular.element('<div hs.micka-suggestions-dialog></span>');
+        /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
         HsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
