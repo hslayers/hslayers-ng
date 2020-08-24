@@ -74,5 +74,13 @@ export class HsEventBusService {
   searchResultsReceived: Subject<any> = new Subject();
   searchZoomTo: Subject<any> = new Subject();
   clearSearchResults: Subject<any> = new Subject();
+  /**
+   * replaces 'query.dataUpdated'
+   */
+  queryDataUpdated: Subject<any> = new Subject();
+  /**
+   * replaces 'mapClicked'
+   */
+  mapClicked: Subject<any> = new Subject();
   constructor() {}
 }
