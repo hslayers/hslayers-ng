@@ -1,5 +1,7 @@
 import Overlay from 'ol/Overlay';
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
+import {HsConfirmDialog} from '../../common/confirm';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
@@ -7,7 +9,7 @@ import {HsQueryVectorService} from './query-vector.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'hs.query.feature',
+  selector: 'hs.query.feature-popup',
   template: require('./partials/feature-popup.html'),
 })
 export class HsQueryFeaturePopupComponent {
@@ -16,11 +18,12 @@ export class HsQueryFeaturePopupComponent {
     private HsMapService: HsMapService,
     private HsQueryVectorService: HsQueryVectorService,
     private HsEventBusService: HsEventBusService,
-    private TranslateService: TranslateService
+    private TranslateService: TranslateService,
+    private HsDialogContainerService: HsDialogContainerService,
+    ElementRef: ElementRef
   ) {
-    const hoverPopupElement = $element[0];
     this.HsQueryBaseService.hoverPopup = new Overlay({
-      element: hoverPopupElement,
+      element: ElementRef,
     });
 
     HsEventBusService.olMapLoads.subscribe((map) => {
@@ -62,11 +65,11 @@ export class HsQueryFeaturePopupComponent {
   }
 
   async removeFeature(feature) {
-    const dialog = $injector.get('HsConfirmDialog');
-    const confirmed = await dialog.show(
-      this.TranslateService.instant('Really delete this feature?'),
-      this.TranslateService.instant('Confirm delete')
-    );
+    const dialog = this.HsDialogContainerService.create(HsConfirmDialog, {
+      message: this.TranslateService.instant('Really delete this feature?'),
+      title: this.TranslateService.instant('Confirm delete')
+    });
+    const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsQueryVectorService.removeFeature(feature);
       this.HsQueryBaseService.featuresUnderMouse = [];
@@ -74,14 +77,13 @@ export class HsQueryFeaturePopupComponent {
   }
 
   async clearLayer(layer) {
-    const dialog = $injector.get('HsConfirmDialog');
-    const confirmed = await dialog.show(
-      this.TranslateService.instant('Really delete all features from layer "{0}"?').replace(
-        '{0}',
-        layer.get('title')
-      ),
-      this.TranslateService.instant('Confirm delete')
-    );
+    const dialog = this.HsDialogContainerService.create(HsConfirmDialog, {
+      message: this.TranslateService.instant(
+        'Really delete all features from layer "{0}"?'
+      ).replace('{0}', layer.get('title')),
+      title: this.TranslateService.instant('Confirm clear'),
+    });
+    const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       if (layer.getSource().getSource) {
         //Clear clustered?
