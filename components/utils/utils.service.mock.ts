@@ -18,7 +18,26 @@ export class HsUtilsServiceMock {
     }
     return false;
   }
-
+  debounce(func, wait, immediate, context) {
+    if (context === undefined) {
+      context = this;
+    }
+    return function (...args) {
+      const later = function () {
+        if (!immediate) {
+          func.apply(context, args);
+        }
+        context.timeout = null;
+      };
+      const callNow = immediate && !context.timeout;
+      clearTimeout(context.timeout);
+      // eslint-disable-next-line angular/timeout-service
+      context.timeout = setTimeout(later, wait);
+      if (callNow) {
+        func.apply(context, args);
+      }
+    };
+  }
   generateUuid() {
     return Math.random().toString();
   }
@@ -32,6 +51,18 @@ export class HsUtilsServiceMock {
 
   proxify(url, toEncoding) {
     return '/proxy/' + url;
+  }
+  hashCode(s: string): number {
+    let hash = 0;
+    if (s.length == 0) {
+      return hash;
+    }
+    for (let i = 0; i < s.length; i++) {
+      const char = s.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
   }
   removeDuplicates(dirtyArray: any, property: string): any {
     const propertyChain = property.split('.');
