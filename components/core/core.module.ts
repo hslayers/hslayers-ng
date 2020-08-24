@@ -8,8 +8,6 @@ import {
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsMapServiceProvider,
-  HsQueryBaseServiceProvider,
-  HsQueryVectorServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
@@ -27,6 +25,7 @@ import {HsLegendModule} from '../legend';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
+import {HsQueryModule} from '../query';
 import {HsSaveMapModule} from '../save-map';
 import {HsSearchModule} from './../search';
 import {HsSearchService} from './../search/search.service';
@@ -80,6 +79,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
       },
     }),
     HsInfoModule,
+    HsQueryModule,
   ],
   exports: [TranslateModule],
   providers: [
@@ -94,8 +94,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsWfsGetCapabilitiesServiceProvider,
     HsWmtsGetCapabilitiesServiceProvider,
     HsDimensionServiceProvider,
-    HsQueryVectorServiceProvider,
-    HsQueryBaseServiceProvider,
     {
       provide: Window,
       useValue: window,
