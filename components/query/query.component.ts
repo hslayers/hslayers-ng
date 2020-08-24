@@ -72,7 +72,7 @@ export class HsQueryComponent {
 
       this.HsQueryBaseService.getFeatureInfoCollected.subscribe(
         (coordinate) => {
-          const invisiblePopup = this.HsQueryBaseService.getInvisiblePopup();
+          const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
           if (invisiblePopup.contentDocument.body.children.length > 0) {
             //TODO: dont count style, title, meta towards length
             if (this.HsQueryBaseService.popupClassname.length > 0) {

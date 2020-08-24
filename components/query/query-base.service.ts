@@ -47,7 +47,7 @@ export class HsQueryBaseService {
     }),
     show_in_manager: false,
     removable: false,
-    style: pointClickedStyle,
+    style: this.pointClickedStyle,
   });
 
   nonQueryablePanels = [
@@ -101,13 +101,13 @@ export class HsQueryBaseService {
       this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
       this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
       this.data.selectedProj = this.data.coordinates[0].projections[0];
-      this.HsEventBusService.getFeatureInfoStarted.next(evt);
+      this.getFeatureInfoStarted.next(evt);
     });
 
     if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
       this.map.on(
         'pointermove',
-        this.HsUtilsService.debounce(this.showPopUp, 500, false, me)
+        this.HsUtilsService.debounce(this.showPopUp, 500, false, this)
       );
     } else if (
       this.HsConfig.popUpDisplay &&
@@ -115,7 +115,7 @@ export class HsQueryBaseService {
     ) {
       this.map.on(
         'singleclick',
-        this.HsUtilsService.debounce(this.showPopUp, 500, false, me)
+        this.HsUtilsService.debounce(this.showPopUp, 500, false, this)
       );
     } /* else none */
   }
@@ -128,51 +128,49 @@ export class HsQueryBaseService {
       return;
     }
     const map = e.map;
-    $timeout((_) => {
-      this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-      if (this.featuresUnderMouse !== null) {
-        this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
-          return (
-            feature.getLayer &&
-            feature.getLayer(map) &&
-            feature.getLayer(map).get('title').length > 0 &&
-            feature.getLayer(map).get('title') !== 'Point clicked'
-          );
-        });
-        this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-          f.getLayer(this.HsMapService.map)
+    this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
+    if (this.featuresUnderMouse !== null) {
+      this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
+        return (
+          feature.getLayer &&
+          feature.getLayer(map) &&
+          feature.getLayer(map).get('title').length > 0 &&
+          feature.getLayer(map).get('title') !== 'Point clicked'
         );
-        this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
-          this.featureLayersUnderMouse,
-          'title'
-        );
-        this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
-          return {
-            title: l.get('title'),
-            layer: l,
-            features: this.featuresUnderMouse.filter(
-              (f) => f.getLayer(HsMapService.map) == l
-            ),
-          };
-        });
-        this.featuresUnderMouse.forEach((feature) => {
-          this.serializeFeatureAttributes(feature);
-          if (feature.get('features')) {
-            feature
-              .get('features')
-              .forEach((subfeature) =>
-                this.serializeFeatureAttributes(subfeature)
-              );
-          }
-        });
-        const pixel = e.pixel;
-        pixel[0] += 2;
-        pixel[1] += 4;
-        this.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
-      } else {
-        this.featuresUnderMouse = [];
-      }
-    }, 0);
+      });
+      this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
+        f.getLayer(this.HsMapService.map)
+      );
+      this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
+        this.featureLayersUnderMouse,
+        'title'
+      );
+      this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
+        return {
+          title: l.get('title'),
+          layer: l,
+          features: this.featuresUnderMouse.filter(
+            (f) => f.getLayer(HsMapService.map) == l
+          ),
+        };
+      });
+      this.featuresUnderMouse.forEach((feature) => {
+        this.serializeFeatureAttributes(feature);
+        if (feature.get('features')) {
+          feature
+            .get('features')
+            .forEach((subfeature) =>
+              this.serializeFeatureAttributes(subfeature)
+            );
+        }
+      });
+      const pixel = e.pixel;
+      pixel[0] += 2;
+      pixel[1] += 4;
+      this.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
+    } else {
+      this.featuresUnderMouse = [];
+    }
   }
 
   /**
@@ -239,7 +237,7 @@ export class HsQueryBaseService {
     }
   }
 
-  setData(data, type, overwrite) {
+  setData(data: any, type: string, overwrite?: boolean): void {
     if (type) {
       if (overwrite) {
         this.data[type].length = 0;
@@ -255,7 +253,7 @@ export class HsQueryBaseService {
     }
   }
 
-  clearData(type) {
+  clearData(type?: string): void {
     if (type) {
       this.data[type].length = 0;
     } else {
@@ -265,7 +263,7 @@ export class HsQueryBaseService {
       this.data.featureInfoHtmls = [];
       this.data.customFeatures = [];
     }
-    const invisiblePopup = this.getInvisiblePopup();
+    const invisiblePopup: any = this.getInvisiblePopup();
     if (invisiblePopup) {
       invisiblePopup.contentDocument.body.innerHTML = '';
       invisiblePopup.style.height = '0px';

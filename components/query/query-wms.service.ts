@@ -1,6 +1,7 @@
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Image as ImageLayer, Tile} from 'ol/layer';
@@ -127,10 +128,10 @@ export class HsQueryWmsService {
         infoFormat == 'text/xml' ||
         infoFormat === 'application/vnd.ogc.wms_xml'
       ) {
-        if (doc.childNodes[1].attributes != undefined) {
+        if (doc.childNodes[1]['attributes'] != undefined) {
           const group = {
             name: 'Feature',
-            attributes: doc.childNodes[1].attributes,
+            attributes: doc.childNodes[1]['attributes'],
             layer: layer.get('title') || layer.get('name'),
             customInfoTemplate: customInfoTemplate,
           };
@@ -268,7 +269,7 @@ export class HsQueryWmsService {
    * @param coordinate
    */
   queriesCollected(coordinate) {
-    const invisiblePopup = this.HsQueryBaseService.getInvisiblePopup();
+    const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
     if (
       this.HsQueryBaseService.data.features.length > 0 ||
       invisiblePopup.contentDocument.body.innerHTML.length > 30
