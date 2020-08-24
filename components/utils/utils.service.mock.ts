@@ -1,6 +1,12 @@
 export class HsUtilsServiceMock {
   constructor() {}
 
+  isPOJO(objectToCheck) {
+    return (
+      objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
+    );
+  }
+
   instOf(obj, type) {
     return this._instanceOf(obj, type);
   }
