@@ -21,7 +21,7 @@ export class HsQueryFeaturePopupComponent {
     ElementRef: ElementRef
   ) {
     this.HsQueryBaseService.hoverPopup = new Overlay({
-      element: ElementRef,
+      element: ElementRef.nativeElement,
     });
 
     this.HsEventBusService.olMapLoads.subscribe((map) => {
