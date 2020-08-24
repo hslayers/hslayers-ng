@@ -49,8 +49,7 @@ export default function (
      * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
      */
     update: function (e) {
-      const view = HsMapService.map.getView();
-      me.id = HsSaveMapService.generateUuid();
+
       const visible_layers = [];
       const added_layers = [];
       HsMapService.map.getLayers().forEach((lyr) => {
@@ -70,40 +69,55 @@ export default function (
       });
       me.added_layers = HsSaveMapService.layers2json(added_layers);
 
-      var currentLayer = HsLayermanagerService.currentLayer;
-      var featureURI = currentLayer.layer.get('featureURI');
+      if (HsConfig.permalinkParameters.featureURI){
+        var currentLayer = HsLayermanagerService.currentLayer;
+        var featureURI = currentLayer.layer.get('featureURI');
+        if (angular.isDefined(currentLayer.selectedFeature)) {
+          location.hash = currentLayer.selectedFeature.get(featureURI);
+        }
+        else if (me.hashtagParam()) {
+          history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+      };
 
-      if (HsLayoutService.mainpanel) {
-        if (HsLayoutService.mainpanel == 'permalink') {
-          me.push('hs_panel', 'layermanager');
-        } else {
-          me.push('hs_panel', HsLayoutService.mainpanel);
+      if (HsConfig.permalinkParameters.center){
+        const view = HsMapService.map.getView();
+        me.id = HsSaveMapService.generateUuid();
+        me.push('hs_x', view.getCenter()[0]);
+        me.push('hs_y', view.getCenter()[1]);
+        me.push('hs_z', view.getZoom());
+        $timeout(() => {
+          $location.search(me.params);
+        }, 0);
+      };
+
+      if (HsConfig.permalinkParameters.hs_panel){
+        if (HsLayoutService.mainpanel) {
+          if (HsLayoutService.mainpanel == 'permalink') {
+            me.push('hs_panel', 'layermanager');
+          } else {
+            me.push('hs_panel', HsLayoutService.mainpanel);
+          }
         }
       }
-      me.push('hs_x', view.getCenter()[0]);
-      me.push('hs_y', view.getCenter()[1]);
-      me.push('hs_z', view.getZoom());
-      if (HsLanguageService.language) {
-        me.push('lang', HsLanguageService.language);
+
+      if (HsConfig.permalinkParameters.language){
+        if (HsLanguageService.language) {
+          me.push('lang', HsLanguageService.language);
+        }
       }
-      me.push('visible_layers', visible_layers.join(';'));
+
+      if (HsConfig.permalinkParameters.layers){
+        me.push('visible_layers', visible_layers.join(';'));
+      }
+
       if (HsCore.puremapApp) {
         me.push('puremap', 'true');
       }
       for (const cP in me.customParams) {
         me.push(cP, me.customParams[cP]);
       }
-      
-      if (angular.isUndefined(featureURI)) {
-        $location.search(me.params);
-      }
-      else if (angular.isDefined(currentLayer.selectedFeature)) {
-        me.featureAsUrl(currentLayer.selectedFeature.get(featureURI));
-      }
-      else if (me.hashtagParam()) {
-        history.pushState("", document.title, window.location.pathname + window.location.search);
-      }
-
+      $location.search(me.params);
     },
 
     /**
@@ -151,15 +165,6 @@ export default function (
     getFeatureByUri: function(features, uri, uriname) {
       const SELECTED = features.find(f => f.getProperties()[uriname] === uri);
       HsQueryVectorService.selector.getFeatures().push(SELECTED);
-    },
-
-    featureAsUrl: function (uri) {
-      me.param_string = uri;
-      me.pathname = window.location.pathname;
-      me.current_url = me.pathname + '#' + uri;
-      location.hash = uri;
-      me.params = {};
-      $location.search(me.params);
     },
 
     hashtagParam: function(){
@@ -300,18 +305,50 @@ export default function (
     if (url_generation) {
       let timer = null;
       // eslint-disable-next-line angular/on-watch
-      $rootScope.$on(
-        'map.extent_changed',
-        HsUtilsService.debounce(
-          (event, data, b) => {
-            me.update();
-            $rootScope.$broadcast('browserurl.updated');
-          },
-          200,
-          false,
-          me
-        )
-      );
+      me.update();
+      if (HsConfig.permalinkParameters.center){
+        $rootScope.$on(
+          'map.extent_changed',
+          HsUtilsService.debounce(
+            (event, data, b) => {
+              me.update();
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            200,
+            false,
+            me
+          )
+        );
+      };
+
+      if (HsConfig.permalinkParameters.featureURI){
+        $rootScope.$on(
+          'vectorQuery.featureSelected',
+          HsUtilsService.debounce(
+            (event, data, b) => {
+              me.update();
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            0,
+            false,
+            me
+          )
+        );
+
+        $rootScope.$on(
+          'vectorQuery.featureDeselected',
+          HsUtilsService.debounce(
+            (event, data, b) => {
+              me.update();
+              $rootScope.$broadcast('browserurl.updated');
+            },
+            0,
+            false,
+            me
+          )
+        );
+      };
+
 
       if(me.hashtagParam()){
         me.uri =  me.hashtagParam();
