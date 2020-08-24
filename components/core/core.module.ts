@@ -1,7 +1,3 @@
-/**
- * @namespace hs.legend
- * @memberOf hs
- */
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {
@@ -18,6 +14,7 @@ import {
   HsWmtsGetCapabilitiesServiceProvider,
 } from '../../ajs-upgraded-providers';
 import {HsCoreService} from './core.service';
+import {HsDatasourcesModule} from '../datasource-selector';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
 import {HsLayerManagerModule} from '../layermanager';
@@ -36,7 +33,6 @@ import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import { HsDatasourcesModule } from '../datasource-selector';
 
 @NgModule({
   declarations: [],

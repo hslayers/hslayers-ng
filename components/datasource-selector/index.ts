@@ -1,6 +1,7 @@
-import '../../common/endpoints/endpoints.module';
 import '../../common/widgets/widgets.module';
-import '../layout';
+import '../layout/layout.module';
+import '../map/map.module';
+import '../permalink';
 import * as angular from 'angular';
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
@@ -135,8 +136,8 @@ angular
     downgradeComponent({component: HsSelectTypeToAddLayerDialogComponent})
   );
 
-  //.filter('endpointsWithDatasources', EndpointsWithDatasourcesPipe);
+//  .filter('endpointsWithDatasources', EndpointsWithDatasourcesPipe);
 
-angular.module('hs.datasource-selector', [downgradedDatasourcesModule]);
+angular.module('hs.datasource_selector', [downgradedDatasourcesModule]);
 
 export {HsDatasourcesModule} from './datasource-selector.module';

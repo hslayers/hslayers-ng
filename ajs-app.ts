@@ -3,16 +3,16 @@
 import './components/add-layers/add-layers.module';
 import './components/core';
 import './components/datasource-selector';
-import './components/draw/draw.module';
+import './components/draw';
 import './components/info/info.module';
 import './components/legend';
 import './components/measure';
-import './components/permalink/share.module';
+import './components/permalink';
 import './components/print';
 import './components/query/query.module';
 import './components/search';
 import './components/sidebar';
-import './components/styles/styles.module';
+import './components/styles';
 import './components/toolbar';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
@@ -71,7 +71,7 @@ export default angular
     'hs.legend',
     'hs.geolocation',
     'hs.core',
-    'hs.datasource-selector',
+    'hs.datasource_selector',
     'hs.save-map',
     'hs.addLayers',
     'gettext',
@@ -82,7 +82,7 @@ export default angular
   .directive('hs', (HsConfig, HsCore) => {
     'ngInject';
     return {
-      template: require('hslayers.html'),
+      template: require('./hslayers.html'),
       link: function (_scope, element) {
         if (
           typeof HsConfig.sizeMode == 'undefined' ||

@@ -1,11 +1,12 @@
 import * as angular from 'angular';
 import {BehaviorSubject} from 'rxjs';
 import {HsConfig} from '../../config.service';
+import {HsEndpoint} from './endpoint.interface';
 
 export class HsCommonEndpointsService {
   endpointsFilled: BehaviorSubject<any> = new BehaviorSubject(null);
   HsConfig: HsConfig;
-  endpoints: Array<any>; //TODO rewrite any to interface
+  endpoints: HsEndpoint[];
 
   constructor(HsConfig, HsCommonLaymanService) {
     'ngInject';

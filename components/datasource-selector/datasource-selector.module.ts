@@ -24,16 +24,24 @@ import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [
+    HsAdvancedMickaDialogComponent,
     HsDatasourcesComponent,
     HsMetadataDialogComponent,
-    HsSelectTypeToAddLayerDialogComponent,
     HsMickaFilterComponent,
     HsMickaSuggestionsDialogComponent,
-    HsAdvancedMickaDialogComponent,
+    HsSelectTypeToAddLayerDialogComponent,
     EndpointsWithDatasourcesPipe,
   ],
   imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
-  exports: [HsDatasourcesComponent, HsSelectTypeToAddLayerDialogComponent],
+  exports: [
+    HsAdvancedMickaDialogComponent,
+    HsDatasourcesComponent,
+    HsMetadataDialogComponent,
+    HsMickaFilterComponent,
+    HsMickaSuggestionsDialogComponent,
+    HsSelectTypeToAddLayerDialogComponent,
+    EndpointsWithDatasourcesPipe,
+  ],
   providers: [
     HsDatasourcesService,
     HsDatasourcesMapService,

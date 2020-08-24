@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 
-import './layman/layman.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
@@ -13,7 +12,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
-  selector: 'hs.datasource-selector',
+  selector: 'hs-datasource-selector',
   template: require('./partials/datasource_selector.html'),
 })
 export class HsDatasourcesComponent {
@@ -115,7 +114,7 @@ export class HsDatasourcesComponent {
       filler = this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
     }
     filler.then(() => {
-      //FIXME: <hs.datasource_selector.metadata_dialog_directive>
+      //FIXME: <hs-datasources-metadata-dialog>
       /*this.metadata = this.decomposeMetadata(layer);
       if (this.HsConfig.design === 'md') {
         this.metadataDialog();
@@ -127,7 +126,7 @@ export class HsDatasourcesComponent {
           previousDialog.parentNode.removeChild(previousDialog);
         }
         const el = angular.element(
-          '<div hs.datasource_selector.metadata_dialog_directive></span>'
+          '<div hs-datasources-metadata-dialog></span>'
         );
         this.HsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
@@ -146,6 +145,8 @@ export class HsDatasourcesComponent {
       return this.decomposeObject(input, prestring);
     } else if (Array.isArray(input)) {
       return this.decomposeArray(input, prestring);
+    } else {
+      return false;
     }
   }
 

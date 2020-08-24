@@ -1,12 +1,12 @@
-import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
 
 import {HsDatasourcesService} from '../datasource-selector.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMickaFilterService} from './micka-filters.service';
 
 @Component({
-  selector: 'selector-name',
+  selector: 'hs-micka-filters',
   template: require('./micka-filters.html'),
 })
 export class HsMickaFilterComponent implements OnInit {
@@ -17,9 +17,9 @@ export class HsMickaFilterComponent implements OnInit {
   modalVisible;
 
   constructor(
-    private $compile: any,
     private hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService,
+    private hsLogService: HsLogService,
     private hsMickaFilterService: HsMickaFilterService
   ) {
     this.mickaFilterService = hsMickaFilterService;
@@ -40,7 +40,8 @@ export class HsMickaFilterComponent implements OnInit {
       HsLayoutService.contentWrapper.querySelector('.hs-ds-advanced-micka') ===
       null
     ) {
-      const el = angular.element('<div hs.advanced-micka-dialog></div>');
+      this.hsLogService.warn('Not implemented');
+      /*const el = angular.element('<div hs-advanced-micka-dialog></div>');
       el[0].setAttribute(
         'micka-dataset-config',
         JSON.stringify(mickaDatasetConfig)
@@ -49,7 +50,7 @@ export class HsMickaFilterComponent implements OnInit {
       this.$compile(el)(this);
       HsLayoutService.contentWrapper
         .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
+        .appendChild(el[0]);*/
     } else {
       this.modalVisible = true;
     }
