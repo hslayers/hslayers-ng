@@ -305,7 +305,19 @@ export default function (
     if (url_generation) {
       let timer = null;
       // eslint-disable-next-line angular/on-watch
-      me.update();
+      if(me.hashtagParam()){
+        me.uri =  me.hashtagParam();
+        var layer = HsLayermanagerService.currentLayer.layer;
+        var source = layer.getSource();
+        source.once('change', function (e) {
+            if (source.getState() === 'ready') {
+                me.getFeatureByUri(source.getFeatures(), me.uri, layer.get('featureURI'));
+            }
+        });
+      }else {
+        me.update();
+      };
+      
       if (HsConfig.permalinkParameters.center){
         $rootScope.$on(
           'map.extent_changed',
@@ -349,17 +361,6 @@ export default function (
         );
       };
 
-
-      if(me.hashtagParam()){
-        me.uri =  me.hashtagParam();
-        var layer = HsLayermanagerService.currentLayer.layer;
-        var source = layer.getSource();
-        source.once('change', function (e) {
-            if (source.getState() === 'ready') {
-                me.getFeatureByUri(source.getFeatures(), me.uri, layer.get('featureURI'));
-            }
-        });
-      };
 
       map.getLayers().on('add', (e) => {
         const layer = e.element;
