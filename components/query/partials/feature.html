@@ -1,34 +1,30 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 m-2"><strong>{{$ctrl.feature.name}} <span ng-if="$ctrl.feature.layer">in layer</span>
-                {{$ctrl.feature.layer}}</strong></div>
+        <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">in layer</span>
+                {{feature.layer}}</strong></div>
     </div>
-    <hs.query.attribute-row ng-repeat="attribute in $ctrl.feature.attributes track by attribute.name | orderBy : 'name'"
-        template='$ctrl.feature.hstemplate' feature="$ctrl.feature" attribute='attribute' readonly=false>
+    <hs.query.attribute-row *ngFor="let attribute of feature.attributes" template="feature.hstemplate" feature="feature" attribute="attribute" readonly="false">
     </hs.query.attribute-row>
-    <hs.query.attribute-row ng-repeat="stat in $ctrl.feature.stats" feature="$ctrl.feature" attribute="stat"
-        readonly=true>
+    <hs.query.attribute-row *ngFor="let stat of feature.stats" feature="feature" attribute="stat" readonly="true">
     </hs.query.attribute-row>
     <div class="row">
-        <div class="input-group m-1" ng-show="$ctrl.newAttribVisible">
+        <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" placeholder="attribute name" ng-model="$ctrl.attributeName"></input>
+                <input class="form-control" placeholder="attribute name" [(ngModel)]="attributeName">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="input-group m-1" ng-show="$ctrl.attributeName && $ctrl.newAttribVisible">
+        <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
             <div class="input-group m-1">
-                <input class="form-control" placeholder="attribute value" ng-model="$ctrl.attributeValue"></input>
+                <input class="form-control" placeholder="attribute value" [(ngModel)]="attributeValue">
             </div>
         </div>
     </div>
-    <div class="row" ng-show="$ctrl.attributeName && $ctrl.attributeValue && $ctrl.newAttribVisible">
+    <div class="row" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
         <div class="col-6 mb-2 text-left">
             <div class="btn-group">
-                <button class="btn btn-primary btn-sm"
-                    ng-click="saveNewAttribute($ctrl.attributeName,$ctrl.attributeValue)"><i
-                        class="icon-save-floppy"></i></button>
+                <button class="btn btn-primary btn-sm" (click)="saveNewAttribute(attributeName,attributeValue)"><i class="icon-save-floppy"></i></button>
             </div>
         </div>
     </div>
@@ -36,19 +32,13 @@
 <div class="row" style="padding-left: 10px">
     <div class="col-6 offset-6 mb-2 text-right">
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm" ng-click="$ctrl.newAttribVisible = !$ctrl.newAttribVisible"><i
-                    class="icon-calcplus"></i></button>
-            <button class="btn btn-primary btn-sm" ng-click="zoomToFeature()"><i class="icon-search"></i></button>
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                aris-haspopup="true" ng-click="exportMenuVisible = !exportMenuVisible"><i
-                    class="icon-download"></i></button>
-            <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': exportMenuVisible}">
-                <a class="dropdown-item" download="{{format.name}}_file.txt"
-                    ng-href="{{queryVectorService.exportedFeatureHref}}" ng-repeat="format in exportFormats"
-                    ng-click="exportData(format.name,$ctrl.feature.feature);">{{format.name}}</a>
+            <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i class="icon-calcplus"></i></button>
+            <button class="btn btn-primary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
+            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aris-haspopup="true" (click)="exportMenuVisible = !exportMenuVisible"><i class="icon-download"></i></button>
+            <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
+                <a class="dropdown-item" download="{{format.name}}_file.txt" href="{{queryVectorService.exportedFeatureHref}}" *ngFor="let format of exportFormats" (click)="exportData(format.name,feature.feature);">{{format.name}}</a>
             </div>
-            <button class="btn btn-danger btn-sm" ng-click="removeFeature()" ng-if="isFeatureRemovable()"><i
-                    class="icon-trash"></i></button>
+            <button class="btn btn-danger btn-sm" (click)="removeFeature()" *ngIf="isFeatureRemovable()"><i class="icon-trash"></i></button>
         </div>
     </div>
 </div>

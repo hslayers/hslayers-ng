@@ -1,45 +1,41 @@
-<div ng-style="popupVisible()" class="hs-hover-popup">
+<div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div ng-repeat="layerDesc in queryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
+        <div *ngFor="let layerDesc of queryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
             <strong style="font-size: small;">{{layerDesc.title}}</strong><br>
-            <div ng-repeat="feature in layerDesc.features">
-                <div ng-show="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
-                    <div ng-repeat="subFeature in feature.get('features')" ng-show="subFeature.attributesForHover.length > 0">
+            <div *ngFor="let feature of layerDesc.features">
+                <div [hidden]="!isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                    <div *ngFor="let subFeature of feature.get('features')" [hidden]="!(subFeature.attributesForHover.length > 0)">
                         {{serializeFeatureName(subFeature)}}
-                        <button class="btn btn-danger float-right btn-sm" ng-if="isFeatureRemovable(subFeature)" ng-click="removeFeature(subFeature)"
-                            translate data-toggle="tooltip" title="{{'Remove feature' | translate}}">
+                        <button class="btn btn-danger float-right btn-sm" *ngIf="isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
                             <i class="icon-remove-circle"></i>
                         </button>
-                        <div ng-repeat="attribute in subFeature.attributesForHover">
+                        <div *ngFor="let attribute of subFeature.attributesForHover">
                             <div class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
-                                    {{attribute.key}}&emsp;
+                                    {{attribute.key}} 
                                 </div>
-                                <div class="p-1" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
+                                <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                             </div>
                         </div>
                         <hr>
                     </div>
                 </div>
-                <div ng-show="!isClustered(feature) && feature.attributesForHover.length > 0" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                <div [hidden]="!(!isClustered(feature) && feature.attributesForHover.length > 0)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
-                    <button class="btn btn-danger float-right btn-sm"
-                        ng-if="isFeatureRemovable(feature)"
-                        ng-click="removeFeature(feature)" translate data-toggle="tooltip" title="{{'Remove feature' | translate}}">
+                    <button class="btn btn-danger float-right btn-sm" *ngIf="isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
                         <i class="icon-remove-circle"></i>
                     </button>
-                    <div ng-repeat="attribute in feature.attributesForHover">
+                    <div *ngFor="let attribute of feature.attributesForHover">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
-                                {{attribute.key}}&emsp;
+                                {{attribute.key}} 
                             </div>
                             <div class="p-1" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-danger btn-block btn-sm"
-            ng-click="clearLayer(layerDesc.layer)" ng-if="isLayerEditable(layerDesc.layer)" translate data-toggle="tooltip" title="{{'Clear clear' | translate}}">
+            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip" i18n-title="Clear clear">
             Clear layer
         </button>
         </div>
