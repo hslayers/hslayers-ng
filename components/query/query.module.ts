@@ -28,6 +28,6 @@ import {HsQueryWmsService} from './query-wms.service';
   imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule],
   exports: [HsQueryComponent],
   providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
-  entryComponents: [HsQueryComponent],
+  entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
 export class HsQueryModule {}
