@@ -105,32 +105,6 @@ export const HsDimensionServiceProvider = {
 /**
  * @param i
  */
-export function hsQueryBaseService(i: any) {
-  return i.get('HsQueryBaseService');
-}
-
-export const HsQueryBaseServiceProvider = {
-  provide: HsQueryBaseService,
-  useFactory: hsQueryBaseService,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
-export function hsQueryVectorService(i: any) {
-  return i.get('HsQueryVectorService');
-}
-
-export const HsQueryVectorServiceProvider = {
-  provide: HsQueryVectorService,
-  useFactory: hsQueryVectorService,
-  deps: ['$injector'],
-};
-
-/**
- * @param i
- */
 export function hsCommonEndpointsService(i: any) {
   return i.get('HsCommonEndpointsService');
 }
