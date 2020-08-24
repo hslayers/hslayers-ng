@@ -1,5 +1,6 @@
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
+import {DomSanitizer} from '@angular/platform-browser';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -30,7 +31,8 @@ export class HsQueryVectorService {
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsMeasureService: HsMeasureService,
     private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private DomSanitizer: DomSanitizer
   ) {
     this.selector = new Select({
       condition: click,
@@ -112,7 +114,7 @@ export class HsQueryVectorService {
     if (feature.getLayer == undefined) {
       return '';
     }
-    const layer = feature.getLayer(HsMapService.map);
+    const layer = feature.getLayer(this.HsMapService.map);
     return this.HsLayerUtilsService.getLayerName(layer);
   }
 
@@ -161,7 +163,7 @@ export class HsQueryVectorService {
    * @returns {ol/source/Source}
    */
   olSource(feature) {
-    const layer = feature.getLayer(HsMapService.map);
+    const layer = feature.getLayer(this.HsMapService.map);
     if (layer == undefined) {
       return;
     } else if (layer.getSource().getSource) {
@@ -180,7 +182,7 @@ export class HsQueryVectorService {
     if (source == undefined) {
       return false;
     }
-    const layer = feature.getLayer(HsMapService.map);
+    const layer = feature.getLayer(this.HsMapService.map);
     return (
       this.HsUtilsService.instOf(source, VectorSource) &&
       this.HsLayerUtilsService.isLayerEditable(layer)
@@ -233,7 +235,7 @@ export class HsQueryVectorService {
         if ((typeof feature.get(key)).toLowerCase() == 'string') {
           obj = {
             name: key,
-            value: $sce.trustAsHtml(feature.get(key)),
+            value: this.DomSanitizer.bypassSecurityTrustHtml(feature.get(key)),
           };
         } else {
           obj = {
@@ -246,10 +248,10 @@ export class HsQueryVectorService {
     });
     if (
       feature.getLayer &&
-      feature.getLayer(HsMapService.map).get('customInfoTemplate')
+      feature.getLayer(this.HsMapService.map).get('customInfoTemplate')
     ) {
       customInfoTemplate = feature
-        .getLayer(HsMapService.map)
+        .getLayer(this.HsMapService.map)
         .get('customInfoTemplate');
     }
 
@@ -260,7 +262,9 @@ export class HsQueryVectorService {
       stats: this.addDefaultStats(feature),
       hstemplate,
       feature,
-      customInfoTemplate: $sce.trustAsHtml(customInfoTemplate),
+      customInfoTemplate: this.DomSanitizer.bypassSecurityTrustHtml(
+        customInfoTemplate
+      ),
     };
     tmp.push(featureDescription);
     return tmp;

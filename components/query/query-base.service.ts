@@ -1,7 +1,8 @@
 import Feature from 'ol/Feature';
-import Map from 'ol/map';
+import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {DomSanitizer} from '@angular/platform-browser';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -69,7 +70,8 @@ export class HsQueryBaseService {
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
     private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private DomSanitizer: DomSanitizer
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
@@ -277,7 +279,9 @@ export class HsQueryBaseService {
   }
 
   pushFeatureInfoHtml(html) {
-    this.data.featureInfoHtmls.push($sce.trustAsHtml(html));
+    this.data.featureInfoHtmls.push(
+      this.DomSanitizer.bypassSecurityTrustHtml(html)
+    );
     this.dataCleared = false;
   }
 
