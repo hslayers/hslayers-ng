@@ -173,10 +173,20 @@ export default function (
       $scope.$apply();
     }
 
-    $scope.lastView = HsMapService.map.getView().getProperties();
+    const currentView = HsMapService.map.getView();
+    const currentZoom = currentView.getZoom();
+    const maxZoom = currentView.getMaxZoom();
+    const zoomStep = 2; // might make this app configurable
+    const zoomAvailable = maxZoom - currentZoom;
+    const newZoom =
+      currentZoom +
+      zoomStep * (zoomAvailable >= zoomStep) +
+      zoomAvailable * (zoomAvailable < zoomStep);
+
+    $scope.lastView = currentView.getState();
 
     HsMapService.map.getView().animate({
-      zoom: 7,
+      zoom: newZoom,
       center: feature.getProperties().geometry.flatCoordinates,
       duration: 300,
     });
@@ -190,7 +200,7 @@ export default function (
     }
 
     HsMapService.map.getView().animate({
-      resolution: $scope.lastView.resolution,
+      zoom: $scope.lastView.zoom,
       center: $scope.lastView.center,
       duration: 300,
     });
