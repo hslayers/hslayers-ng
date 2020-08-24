@@ -9,6 +9,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
+import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
@@ -61,6 +62,7 @@ export class HsQueryBaseService {
   getFeatureInfoStarted: Subject<any> = new Subject();
   getFeatureInfoCollected: Subject<any> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();
+  vectorSelectorCreated: Subject<Select> = new Subject();
 
   constructor(
     private HsMapService: HsMapService,
@@ -69,15 +71,9 @@ export class HsQueryBaseService {
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService
   ) {
-    if (this.deregisterVectorSelectorCreated) {
-      this.deregisterVectorSelectorCreated();
-    }
-    this.deregisterVectorSelectorCreated = $rootScope.$on(
-      'vectorSelectorCreated',
-      (e, selector) => {
-        this.selector = selector;
-      }
-    );
+    this.vectorSelectorCreated.subscribe((selector) => {
+      this.selector = selector;
+    });
 
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -88,8 +84,7 @@ export class HsQueryBaseService {
     this.map = this.HsMapService.map;
     this.activateQueries();
     this.map.on('singleclick', (evt) => {
-      $rootScope.$broadcast(
-        'mapClicked',
+      this.HsEventBusService.mapClicked.next(
         Object.assign(evt, {
           coordinates: this.getCoordinate(evt.coordinate),
         })
@@ -103,7 +98,7 @@ export class HsQueryBaseService {
       }
       this.dataCleared = false;
       this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-      this.setData(getCoordinate(evt.coordinate), 'coordinates', true);
+      this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
       this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
       this.data.selectedProj = this.data.coordinates[0].projections[0];
       this.HsEventBusService.getFeatureInfoStarted.next(evt);
@@ -254,8 +249,7 @@ export class HsQueryBaseService {
       } else {
         this.data[type].push(data);
       }
-      $rootScope.$broadcast('infopanel.updated'); //Compatibility, deprecated
-      $rootScope.$broadcast('query.dataUpdated', this.data);
+      this.HsEventBusService.queryDataUpdated.next(this.data);
     } else if (console) {
       console.log('Query.BaseService.setData type not passed');
     }

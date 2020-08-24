@@ -276,10 +276,10 @@ export default function (
     HsCompositionsParserService.loadUrl(id);
   });
 
-  $rootScope.$on('infopanel.feature_selected', (event, feature, selector) => {
+  HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
     const record = HsCompositionsMapService.getFeatureRecordAndUnhighlight(
-      feature,
-      selector
+      e.feature,
+      e.selector
     );
     if (record) {
       me.loadComposition(me.getRecordLink(record));
