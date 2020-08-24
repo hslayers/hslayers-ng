@@ -48,7 +48,7 @@ export class HsQueryBaseService {
     }),
     show_in_manager: false,
     removable: false,
-    style: this.pointClickedStyle,
+    style: (feature) => this.pointClickedStyle(feature),
   });
 
   nonQueryablePanels = [
