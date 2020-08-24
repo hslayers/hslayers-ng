@@ -3,7 +3,6 @@ import {Component, ElementRef} from '@angular/core';
 import {HsConfirmDialog} from '../../common/confirm';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -15,7 +14,6 @@ import {TranslateService} from '@ngx-translate/core';
 export class HsQueryFeaturePopupComponent {
   constructor(
     private HsQueryBaseService: HsQueryBaseService,
-    private HsMapService: HsMapService,
     private HsQueryVectorService: HsQueryVectorService,
     private HsEventBusService: HsEventBusService,
     private TranslateService: TranslateService,
@@ -26,7 +24,7 @@ export class HsQueryFeaturePopupComponent {
       element: ElementRef,
     });
 
-    HsEventBusService.olMapLoads.subscribe((map) => {
+    this.HsEventBusService.olMapLoads.subscribe((map) => {
       map.addOverlay(this.HsQueryBaseService.hoverPopup);
     });
   }
@@ -67,7 +65,7 @@ export class HsQueryFeaturePopupComponent {
   async removeFeature(feature) {
     const dialog = this.HsDialogContainerService.create(HsConfirmDialog, {
       message: this.TranslateService.instant('Really delete this feature?'),
-      title: this.TranslateService.instant('Confirm delete')
+      title: this.TranslateService.instant('Confirm delete'),
     });
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
