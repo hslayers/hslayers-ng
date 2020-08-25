@@ -1,25 +1,29 @@
-import * as angular from 'angular';
-import geolocationDirective from './geolocation.directive';
-import geolocationService from './geolocation.service';
+import 'angular-cookies';
+import {BrowserModule} from '@angular/platform-browser';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsGeolocationComponent} from './geolocation.component';
+import {HsGeolocationService} from './geolocation.service';
+import {HsLayoutModule} from './../layout/layout.module';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 
-/**
- * @namespace hs.geolocation
- * @memberOf hs
- */
-angular
-  .module('hs.geolocation', ['hs.map'])
-  /**
-   * @memberof hs.geolocation
-   * @ngdoc directive
-   * @name hs.geolocation.directive
-   * @description Add geolocation tracking panel html template to map, add event listeners through link
-   */
-  .directive('hs.geolocation.directive', geolocationDirective)
-
-  /**
-   * @memberof hs.geolocation
-   * @ngdoc service
-   * @name HsGeolocationService
-   * @description Contains geolocation services, for mobile version through navigator.geolocation API, for classic version through OpenLayers ol.Geolocation class
-   */
-  .factory('HsGeolocationService', geolocationService);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsGeolocationComponent],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    CommonModule,
+    HsPanelHelpersModule,
+    HsLayoutModule,
+  ],
+  exports: [HsGeolocationComponent],
+  providers: [HsGeolocationService],
+  entryComponents: [HsGeolocationComponent],
+})
+export class HsGeolocationModule {}
