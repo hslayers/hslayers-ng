@@ -26,7 +26,7 @@ export default function (
       HsLayoutService.layoutElement = element[0];
 
       setTimeout(() => {
-        const hsapp = document.getElementById('hs-app');
+        const hsapp = element[0].parentElement;
         if (getComputedStyle(hsapp).display == 'inline') {
           hsapp.style.display = 'block';
           console.warn(
