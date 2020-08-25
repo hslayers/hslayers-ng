@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {
+  HsAddLayersVectorServiceProvider,
   HsCommonEndpointsServiceProvider,
   HsCommonLaymanServiceProvider,
   HsConfigProvider,
@@ -61,6 +62,7 @@ import {NgModule} from '@angular/core';
     HsCoreService,
     HsSearchService,
     HsDrawService,
+    HsAddLayersVectorServiceProvider,
     HsMapServiceProvider,
     HsConfigProvider,
     HsWmsGetCapabilitiesServiceProvider,

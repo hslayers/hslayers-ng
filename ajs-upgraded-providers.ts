@@ -1,3 +1,4 @@
+import {HsAddLayersVectorService} from './components/add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from './common/layman/layman.service';
 import {HsConfig} from './config.service';
@@ -7,10 +8,20 @@ import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
 import {HsQueryBaseService} from './components/query/query-base.service';
 import {HsQueryVectorService} from './components/query/query-vector.service';
-import {HsShareUrlService} from './components/permalink/share-url.service';
+//import {HsShareUrlService} from './components/permalink/share-url.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
+
+export function hsAddLayersVectorServiceFactory(i: any) {
+  return i.get('HsAddLayersVectorService');
+}
+
+export const HsAddLayersVectorServiceProvider = {
+  provide: HsAddLayersVectorService,
+  useFactory: hsAddLayersVectorServiceFactory,
+  deps: ['$injector'],
+};
 
 /**
  * @param i
