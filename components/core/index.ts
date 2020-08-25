@@ -50,6 +50,7 @@ angular
     'hs.historyList',
     'hs.toolbar',
     'hs.info',
+    'hs.query',
   ])
   /**
    * @module hs.core
