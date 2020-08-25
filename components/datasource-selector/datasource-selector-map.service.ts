@@ -40,7 +40,7 @@ export class HsDatasourcesMapService {
     private HsMapService: HsMapService,
     private HsLogService: HsLogService
   ) {
-    HsMapService.loaded().then(this.init);
+    this.HsMapService.loaded().then((map) => this.init(map));
   }
 
   /**
@@ -77,7 +77,7 @@ export class HsDatasourcesMapService {
    * @param map
    */
   init(map): void {
-    map.on('pointermove', this.mapPointerMoved);
+    map.on('pointermove', (evt) => this.mapPointerMoved(evt));
     map.addLayer(this.extentLayer);
   }
 
