@@ -235,7 +235,10 @@ export class HsQueryVectorService {
         if ((typeof feature.get(key)).toLowerCase() == 'string') {
           obj = {
             name: key,
-            value: this.DomSanitizer.bypassSecurityTrustHtml(feature.get(key)),
+            value: feature.get(key),
+            sanitizedValue: this.DomSanitizer.bypassSecurityTrustHtml(
+              feature.get(key)
+            ),
           };
         } else {
           obj = {
