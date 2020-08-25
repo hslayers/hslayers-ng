@@ -3,10 +3,10 @@
         <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">in layer</span>
                 {{feature.layer}}</strong></div>
     </div>
-    <hs.query.attribute-row *ngFor="let attribute of feature.attributes" template="feature.hstemplate" feature="feature" attribute="attribute" readonly="false">
-    </hs.query.attribute-row>
-    <hs.query.attribute-row *ngFor="let stat of feature.stats" feature="feature" attribute="stat" readonly="true">
-    </hs.query.attribute-row>
+    <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate" [feature]="feature" [attribute]="attribute" readonly="false">
+    </hs-query-attribute-row>
+    <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" readonly="true">
+    </hs-query-attribute-row>
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
@@ -36,7 +36,7 @@
             <button class="btn btn-primary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aris-haspopup="true" (click)="exportMenuVisible = !exportMenuVisible"><i class="icon-download"></i></button>
             <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
-                <a class="dropdown-item" download="{{format.name}}_file.txt" href="{{queryVectorService.exportedFeatureHref}}" *ngFor="let format of exportFormats" (click)="exportData(format.name,feature.feature);">{{format.name}}</a>
+                <a class="dropdown-item" download="{{format.name}}_file.txt" href="{{HsQueryVectorService.exportedFeatureHref}}" *ngFor="let format of exportFormats" (click)="exportData(format.name,feature.feature);">{{format.name}}</a>
             </div>
             <button class="btn btn-danger btn-sm" (click)="removeFeature()" *ngIf="isFeatureRemovable()"><i class="icon-trash"></i></button>
         </div>

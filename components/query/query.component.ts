@@ -1,5 +1,5 @@
 import 'ol-popup/src/ol-popup.css';
-import Popup from 'ol-popup';
+import * as Popup from 'ol-popup';
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -11,7 +11,7 @@ import {HsQueryWmsService} from './query-wms.service';
 import {Subject} from 'rxjs';
 
 @Component({
-  selector: 'hs.query',
+  selector: 'hs-query',
   template: require('./partials/infopanel.html'),
 })
 export class HsQueryComponent {
