@@ -50,7 +50,7 @@ export class HsMickaBrowserService {
     const b = transformExtent(
       this.hsMapService.map
         .getView()
-        .calculateExtent(HsMapService.map.getSize()),
+        .calculateExtent(this.hsMapService.map.getSize()),
       this.hsMapService.map.getView().getProjection(),
       'EPSG:4326'
     );

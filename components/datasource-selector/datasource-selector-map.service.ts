@@ -92,7 +92,7 @@ export class HsDatasourcesMapService {
    * Remove layer extent features from map
    */
   clearDatasetFeatures(dataset): void {
-    dataset.layers.forEach((val) => {
+    dataset.layers?.forEach((val) => {
       try {
         if (val.feature) {
           this.extentLayer.getSource().removeFeature(val.feature);
