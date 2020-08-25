@@ -101,7 +101,9 @@ export class HsQueryVectorService {
       if (this.exportedFeatureHref) {
         URL.revokeObjectURL(this.exportedFeatureHref);
       }
-      this.exportedFeatureHref = url;
+      this.exportedFeatureHref = this.DomSanitizer.bypassSecurityTrustResourceUrl(
+        url
+      );
     } else {
       return;
     }
