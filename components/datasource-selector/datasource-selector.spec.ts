@@ -23,6 +23,11 @@ class emptyMock {
   constructor() {}
 }
 
+class endpointsServiceMock {
+  endpoints = [];
+  constructor() {}
+}
+
 class WindowMock {
   innerWidth: any;
   constructor() {}
@@ -49,7 +54,10 @@ describe('HsDatasources', () => {
       providers: [
         HsDatasourcesService,
         {provide: HsAddLayersVectorService, useValue: new emptyMock()},
-        {provide: HsCommonEndpointsService, useValue: new emptyMock()},
+        {
+          provide: HsCommonEndpointsService,
+          useValue: new endpointsServiceMock(),
+        },
         {provide: HsConfig, useValue: new emptyMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
