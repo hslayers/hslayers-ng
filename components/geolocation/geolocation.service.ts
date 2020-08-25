@@ -1,11 +1,12 @@
+import * as Gyro from '../../lib/gyronorm_updated_206';
 import FULLTILT from './fulltilt';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
-import GyroNorm from '../../lib/gyronorm_updated';
 import Rotate from 'ol/control/Rotate';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
+import {GyroNorm} from '../../lib/gyronorm_updated_206';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './../utils/utils.service';
@@ -33,7 +34,6 @@ export class HsGeolocationService {
   cancelClick: boolean;
   style: any;
   position_layer: any;
-
   constructor(
     private HsMapService: HsMapService,
     private HsLayoutService: HsLayoutService,
@@ -113,7 +113,9 @@ export class HsGeolocationService {
       .element.classList.add('hidden');
     this.HsMapService.map.on('pointermove', this.stopCentering);
     this.geolocation.setTracking(false);
-    this.gn.stop();
+    if (this.gn !== null) {
+      this.gn.stop();
+    }
     this.HsMapService.map.getView().setRotation(0);
   }
 
@@ -144,12 +146,12 @@ export class HsGeolocationService {
       if (this.isCentered()) {
         if (!this.following) {
           //position
-          this.geolocation.on('change:position', this.setNewPosition);
+          this.geolocation.on('change:position', this.setNewPosition());
           this.geolocation.setTracking(true);
           this.following = true;
           //rotation
           this.setRotation();
-          this.geolocation.on('change:heading', this.newRotation);
+          this.geolocation.on('change:heading', this.newRotation());
           this.centering = true;
 
           this.HsMapService.map.on('pointermove', this.stopCentering);
@@ -252,7 +254,7 @@ export class HsGeolocationService {
    * @description Callback function handling geolocation change:heading event
    * @param e
    */
-  newRotation(e: any): void {
+  newRotation(): void {
     const heading = this.geolocation.getHeading()
       ? this.geolocation.getHeading()
       : null;
@@ -263,7 +265,7 @@ export class HsGeolocationService {
 
   setRotation(): void {
     const args = {
-      orientationBase: GyroNorm.WORLD, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
+      orientationBase: Gyro.WORLD, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
       decimalCount: 4, // ( How many digits after the decimal point will there be in the return values )
     };
     this.gn = new GyroNorm();
@@ -281,6 +283,7 @@ export class HsGeolocationService {
       });
   }
   /**
+   * @param map
    * @ngdoc method
    * @name HsGeolocationService#init
    * @public
@@ -309,17 +312,19 @@ export class HsGeolocationService {
     src.addFeature(this.accuracyFeature);
     src.addFeature(this.positionFeature);
     const reset = function () {
-      if (this.gn.isRunning()) {
-        this.gn.stop();
-        map.getView().setRotation(0);
-        this.HsLayoutService.contentWrapper
-          .querySelector('button.ol-rotate')
-          .classList.remove('active');
-      } else {
-        this.setRotation();
-        this.HsLayoutService.contentWrapper
-          .querySelector('button.ol-rotate')
-          .classList.add('active');
+      if (this.gn !== undefined) {
+        if (this.gn.isRunning() && this.gn !== null) {
+          this.gn.stop();
+          map.getView().setRotation(0);
+          this.HsLayoutService.contentWrapper
+            .querySelector('button.ol-rotate')
+            .classList.remove('active');
+        } else {
+          this.setRotation();
+          this.HsLayoutService.contentWrapper
+            .querySelector('button.ol-rotate')
+            .classList.add('active');
+        }
       }
     };
     map.addControl(
