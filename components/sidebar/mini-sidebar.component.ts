@@ -1,3 +1,4 @@
+import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
@@ -12,7 +13,8 @@ export class HsMiniSidebarComponent implements OnInit {
   constructor(
     private HsCoreService: HsCoreService,
     private HsSidebarService: HsSidebarService,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private HsConfig: HsConfig
   ) {}
 
   ngOnInit(): void {
