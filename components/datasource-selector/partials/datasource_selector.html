@@ -13,9 +13,9 @@
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}"
-                *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources)">
-                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+$index}" href="#" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab"
-                    data-toggle="tab" (click)="datasetSelect('ds'+$index)">
+                *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
+                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" href="#" [attr.data-target]="'#ds'+i" aria-controls="context" role="tab"
+                    data-toggle="tab" (click)="datasetSelect('ds'+i)">
                     {{endpoint.title}}
                     <span [hidden]='endpoint.datasourcePaging.matched == 0'>({{endpoint.datasourcePaging.matched}})</span>
                     <span class="icon-refresh icon-spin" [hidden]="endpoint.datasourcePaging.loaded"></span>
