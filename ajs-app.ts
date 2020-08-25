@@ -69,7 +69,6 @@ export default angular
     'hs.permalink',
     'hs.measure',
     'hs.legend',
-    'hs.geolocation',
     'hs.core',
     'hs.datasource_selector',
     'hs.save-map',

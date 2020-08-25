@@ -5,6 +5,7 @@ import 'angular-gettext';
 // eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../drag/drag.module';
 import '../draw';
+import '../geolocation';
 import '../language';
 import '../layermanager';
 import '../layout';
@@ -20,7 +21,7 @@ import {HsCoreModule} from './core.module';
 import {HsCoreService} from './core.service';
 import {HsEventBusService} from './event-bus.service';
 import {downgrade} from '../../common/downgrader';
-import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
+import {downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedCoreModule = downgrade(HsCoreModule);
 /**
@@ -36,6 +37,7 @@ angular
     'gettext',
     'hs.drag',
     'hs.language',
+    'hs.geolocation',
     'hs.layout',
     'hs.utils',
     'hs.legend',
