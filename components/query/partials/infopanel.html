@@ -1,21 +1,21 @@
 <hs-panel-header name="info" title="Info"></hs-panel-header>
-<div class="card panel- hs-main-panel" [hidden]="!(!data.coordinates[0].name.length > 0)">
-    <div class="card-body m-2" i18n>Click on map for (query ;results!;)</div>
+<div class="card panel- hs-main-panel" *ngIf="HsQueryBaseService.data.coordinates.length == 0">
+    <div class="card-body m-2" i18n>Click on map for query results!</div>
 </div>
-<hs.query.default-info-panel-body></hs.query.default-info-panel-body>
-<hs.custom-info-panel-body></hs.custom-info-panel-body>
-<div class="container-fluid" [hidden]="!(data.coordinates[0].name.length > 0)">
+<hs-query-default-info-panel-body></hs-query-default-info-panel-body>
+<hs-custom-info-panel-body></hs-custom-info-panel-body>
+<div class="container-fluid" *ngIf="HsQueryBaseService.data.coordinates.length>0">
     <div class="row">
-        <div class="col-12 m-2"><strong>{{data.coordinates[0].name}}</strong></div>
+        <div class="col-12 m-2"><strong>{{HsQueryBaseService.data.coordinates[0].name}}</strong></div>
     </div>
     <div class="row">
         <div class="input-group m-1">
             <div class="input-group-prepend">
-                <select class="form-control" [(ngModel)]="data.selectedProj" >
-                    <option *ngFor="let projection of data.coordinates[0].projections"  [ngValue]="projection.name">{{projection.name}}</option>
+                <select class="form-control" [(ngModel)]="HsQueryBaseService.data.selectedProj" *ngIf="HsQueryBaseService.data.coordinates.length>0">
+                    <option *ngFor="let projection of HsQueryBaseService.data.coordinates[0].projections"  [ngValue]="projection">{{projection.name}}</option>
                 </select>
             </div>
-            <input class="form-control" [value]="data.selectedProj.value" readonly="">
+            <input class="form-control" [value]="HsQueryBaseService.data.selectedProj.value" readonly="">
         </div>
     </div>
 
