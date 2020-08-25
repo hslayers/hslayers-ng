@@ -24,7 +24,7 @@ export class HsMickaFilterComponent implements OnInit {
   ) {
     this.mickaFilterService = hsMickaFilterService;
     this.query = hsDatasourcesService.data.query;
-    //this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
+    //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
     this.queryCatalogs = hsDatasourcesService.queryCatalogs;
   }
 
