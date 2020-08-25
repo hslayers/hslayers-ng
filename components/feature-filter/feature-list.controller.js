@@ -29,7 +29,8 @@ export default function (
   $scope.map = HsMapService.map;
   $scope.LayMan = HsLayermanagerService;
 
-  $scope.endpoint = angular.isDefined(TESTING_ENDPOINT) ? TESTING_ENDPOINT : '';
+  // define ENPOINT in webpack config
+  $scope.endpoint = angular.isDefined(ENDPOINT) ? ENDPOINT : '';
 
   $scope.youtubeRegex = /^(https?:\/\/(?:www.)?)?youtube.com\/watch\?.*(?:v=(?<id>[^&/\r\n]+))/;
   $scope.vimeoRegex = /^(https?:\/\/(?:www.)?)?vimeo.com\/(?<id>[\d]+)/;
