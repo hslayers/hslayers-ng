@@ -35,7 +35,7 @@ angular
     'hs.measure',
   ])
   .directive(
-    'hs.query.defaultInfoPanelBody',
+    'hsQuerydefaultInfoPanelBody',
     downgradeComponent({component: HsQueryDefaultInfoPanelBodyComponent})
   )
   /**
@@ -45,18 +45,18 @@ angular
    * @description TODO
    */
   .directive(
-    'hs.query.attributeRow',
+    'hsQueryAttributeRow',
     downgradeComponent({component: HsQueryAttributeRowComponent})
   )
 
   /**
    * @ngdoc component
-   * @name hs.query.feature
+   * @name hs-query-feature
    * @memberOf hs.query
    * @description TODO
    */
   .directive(
-    'hs.query.feature',
+    'hsQueryFeature',
     downgradeComponent({component: HsQueryFeatureComponent})
   )
 
@@ -93,7 +93,7 @@ angular
   .directive('hsQuery', downgradeComponent({component: HsQueryComponent}))
 
   .directive(
-    'hs.query.featurePopup',
+    'hsQueryFeaturePopup',
     downgradeComponent({component: HsQueryFeaturePopupComponent})
   )
 

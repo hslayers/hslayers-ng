@@ -8,7 +8,7 @@ import {HsQueryVectorService} from './query-vector.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'hs.query.feature-popup',
+  selector: 'hs-query-feature-popup',
   template: require('./partials/feature-popup.html'),
 })
 export class HsQueryFeaturePopupComponent {

@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {Input} from '@angular/core';
 
 @Component({
-  selector: 'hs.query.feature',
+  selector: 'hs-query-feature',
   template: require('./partials/feature.html'),
 })
-export class HsQueryFeatureComponent {
+export class HsQueryFeatureComponent implements OnInit {
   @Input() feature;
   attributeName = '';
   attributeValue = '';
@@ -17,6 +17,8 @@ export class HsQueryFeatureComponent {
     private HsMapService: HsMapService,
     private HsQueryVectorService: HsQueryVectorService
   ) {}
+
+  ngOnInit(): void {}
 
   olFeature() {
     return this.feature.feature;
