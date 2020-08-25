@@ -1,11 +1,15 @@
-<div class="locate-mobile ol-unselectable ol-control" ng-click="blocateClick()" ng-class="{'ol-collapsed': collapsed}" ng-controller="hs.geolocation.controller">
+<div class="locate-mobile ol-unselectable ol-control" (click)="blocateClick()" [ngClass]="{'ol-collapsed' collapsed}">
 
-<ul>
-<li><translate>Precision</translate>: <span class='value'>{{ accuracy }} m</span></li>
-<li><translate>Speed</translate>: <span class='value'>{{ speed }} km/h</span></li>
-<li><translate>Altitude</translate>: <span class='value'>{{ alt }} m</span></li>
-<!-- <li><translate>Altitude</translate>: <span class='value'>{{ alt }} m (&#177;{{ altitudeAccuracy }} m)</span></li> -->
-<li><button type="button" ng-class="'btn btn-secondary but-xs' + (following() ? ' active' : '')" ng-click="following(!following())" style="font: inherit;background-color: #e6e6e6 !important;">Follow</button>
-<button id="geolocation-switch" type="button" ng-class="'btn btn-secondary but-xs' + (Geolocation.gpsStatus ? ' active' : '')" ng-click="switchGps()" style="font: inherit;background-color: #e6e6e6 !important;">{{ Geolocation.gpsSwitch }}</button></li>
-</ul>
+    <ul>
+        <li i18n>Precision<span class="value">{{ accuracy }} m</span></li>
+        <li i18n>Speed<span class="value">{{ speed }} km/h</span></li>
+        <li i18n>Altitude <span class="value">{{ alt }} m</span></li>
+        <!-- <li><translate>Altitude</translate>: <span class='value'>{{ alt }} m (&#177;{{ altitudeAccuracy }} m)</span></li> -->
+        <li><button type="button" [ngClass]="'btn btn-secondary but-xs' + (following() ? ' active' : '')"
+                (click)="following(!following())"
+                style="font: inherit;background-colore6e6e6 !important;">Follow</button>
+            <button id="geolocation-switch(){}" type="button"
+                [ngClass]="'btn btn-secondary but-xs' + (Geolocation.gpsStatus ? ' active' : '')" (click)="switchGps()"
+                style="font: inherit;background-colore6e6e6 !important;">{{ Geolocation.gpsSwitch }}</button></li>
+    </ul>
 </div>
