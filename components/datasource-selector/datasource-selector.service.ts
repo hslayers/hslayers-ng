@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+//import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
@@ -29,8 +29,8 @@ export class HsDatasourcesService {
     private hsLayoutService: HsLayoutService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
-    private hsDatasourcesMapService: HsDatasourcesMapService,
-    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe
+    private hsDatasourcesMapService: HsDatasourcesMapService /*,
+    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
     'ngInject';
 
@@ -254,8 +254,11 @@ export class HsDatasourcesService {
    */
   dataSourceExistsAndEmpty(): boolean {
     return (
-      this.endpointsWithDatasourcesPipe
-        .transform(this.hsCommonEndpointsService.endpoints)
+      //TODO: This will be possible once we run on ng9 only
+      /*this.endpointsWithDatasourcesPipe
+        .transform(this.hsCommonEndpointsService.endpoints)*/
+      this.hsCommonEndpointsService.endpoints
+        .filter((ep) => ep.type != 'statusmanager')
         .filter((ep) => ep.datasourcePaging.loaded === undefined).length > 0
     );
   }
