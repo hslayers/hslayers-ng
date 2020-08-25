@@ -17,6 +17,7 @@ import {
 import {HsCoreService} from './core.service';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
+import {HsGeolocationModule} from './../geolocation';
 import {HsLanguageModule} from './../language';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerManagerModule} from '../layermanager';
@@ -52,6 +53,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
 @NgModule({
   declarations: [],
   imports: [
+    HsGeolocationModule,
     HttpClientModule,
     HsLayoutModule,
     HsLegendModule,

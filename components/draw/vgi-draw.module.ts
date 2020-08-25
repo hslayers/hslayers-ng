@@ -1,5 +1,5 @@
 import '../core/';
-import '../geolocation/geolocation.module';
+import '../geolocation';
 import '../map/map.module';
 import '../utils';
 import './draw.module';
