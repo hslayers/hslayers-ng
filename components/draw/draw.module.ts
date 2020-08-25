@@ -1,6 +1,3 @@
-import '../core/';
-import '../map/map.module';
-import '../utils';
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
