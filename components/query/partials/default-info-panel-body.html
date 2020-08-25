@@ -1,22 +1,19 @@
-<div ng-show="data.coordinates[0].name.length > 0" class="card panel-default hs-main-panel">
+<div [hidden]="!(HsQueryBaseService.data.coordinates.length > 0)" class="card panel- hs-main-panel">
     <div class="card-body">
-        <div class="dropdown" ng-show="data.featureInfoHtmls.length > 0">
-            <button class="btn btn-light w-100 dropdown-toggle rounded-0" ng-init="featureInfoExpanded = true"
-                data-toggle="dropdown" ng-aria-expanded="featureInfoExpanded"
-                ng-click="featureInfoExpanded = !featureInfoExpanded">
+        <div class="dropdown" [hidden]="!(HsQueryBaseService.data.featureInfoHtmls.length > 0)">
+            <button class="btn btn-light w-100 dropdown-toggle rounded-0" data-toggle="dropdown" [aria-expanded]="featureInfoExpanded" (click)="featureInfoExpanded = !featureInfoExpanded">
                 <translate>Feature info</translate>
             </button>
 
-            <div class="dropdown-menu position-relative w-100" ng-class="{'show': featureInfoExpanded}"
-                ng-repeat="html in data.featureInfoHtmls" ng-bind-html="html"></div>
+            <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of HsQueryBaseService.data.featureInfoHtmls" [innerHtml]="html"></div>
         </div>
-        <hs.query.feature ng-repeat="item in data.features | orderBy : 'name'" feature="item"></hs.query.feature>
-        <table class="table table-striped" style="table-layout:fixed" ng-show="data.attributes.length > 0">
-            <tr ng-repeat="attribute in data.attributes | orderBy : name">
+        <hs-query-feature *ngFor="let item of HsQueryBaseService.data.features" [feature]="item"></hs-query-feature>
+        <table class="table table-striped" style="table-layout:fixed" [hidden]="!(HsQueryBaseService.data.attributes.length > 0)">
+            <tbody><tr *ngFor="let attribute of HsQueryBaseService.data.attributes">
                 <td class="first-col">{{attribute.name}}</td>
-                <td class="second-col" ng-bind-html="attribute.value"></td>
+                <td class="second-col" [innerHtml]="attribute.value"></td>
             </tr>
-        </table>
+        </tbody></table>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
 </div>
