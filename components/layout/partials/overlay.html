@@ -20,7 +20,7 @@
 	<md-icon class="{{fab.primary.icon.classes}} {{fab.primary.icon.iconSet}}">{{fab.primary.icon.text}}</md-icon>
 </md-button>
 
-<md-button ng-if="HsCore.exists('hs.geolocation.controller')" class="md-fab md-mini md-fab-bottom-left geolocation" ng-click="geolocation.toggleGps()">
+<md-button ng-if="HsCore.exists('hs.geolocation')" class="md-fab md-mini md-fab-bottom-left geolocation" ng-click="geolocation.toggleGps()">
 	<md-icon md-icon-set="material-icons" class="geolocation material-icons {{location.status.class}}">{{location.status.icon}}</md-icon>
 </md-button>
 
