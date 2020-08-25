@@ -81,12 +81,16 @@ export default function (
         $scope.ordering.defaultReverse) || ['id'];
       $scope.reverseOrdering =
         $scope.defaultReverse.indexOf($scope.primaryOrder) !== -1;
+      $scope.reverseSecondary =
+        $scope.defaultReverse.indexOf($scope.secondaryOrder) !== -1;
 
       $scope.orderProperties = [
         `${$scope.reverseOrdering ? '-' : ''}getProperties().${
           $scope.primaryOrder
         }`,
-        `getProperties().${$scope.secondaryOrder}`,
+        `${$scope.reverseSecondary ? '-' : ''}getProperties().${
+          $scope.secondaryOrder
+        }`,
       ];
     }
   );
@@ -96,9 +100,16 @@ export default function (
       $scope.primaryOrder === property
         ? !$scope.reverseOrdering
         : $scope.defaultReverse.indexOf(property) !== -1;
-    $scope.orderProperties[0] = `${
-      $scope.reverseOrdering ? '-' : ''
-    }getProperties().${property}`;
+    $scope.reverseSecondary =
+      $scope.primaryOrder === property
+        ? !$scope.reverseSecondary
+        : $scope.defaultReverse.indexOf($scope.secondaryOrder) !== -1;
+    $scope.orderProperties = [
+      `${$scope.reverseOrdering ? '-' : ''}getProperties().${property}`,
+      `${$scope.reverseSecondary ? '-' : ''}getProperties().${
+        $scope.secondaryOrder
+      }`,
+    ];
   };
 
   $scope.applyFilters = HsFeatureFilterService.applyFilters;
