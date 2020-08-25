@@ -1,6 +1,6 @@
-import Observable from 'ol/Observable';
 import VectorLayer from 'ol/layer/Vector';
 import {Style} from 'ol/style';
+import {unByKey} from 'ol/Observable';
 
 /**
  * @param $rootScope
@@ -165,6 +165,29 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       }
     },
   };
+
+  const prepLayerOnLoad = $rootScope.$on(
+    'layermanager.layer_added',
+    (e, layer) => {
+      if (HsUtilsService.instOf(layer.layer, VectorLayer)) {
+        const source = layer.layer.getSource();
+        console.log(source.getFeatures());
+        console.log(source.getState());
+        if (source.getFeatures()) {
+          me.prepLayerFilter(layer);
+          me.applyFilters(layer);
+        }
+        const listenerKey = source.on('change', (e) => {
+          if (source.getState() === 'ready') {
+            console.log(source.getState());
+            unByKey(listenerKey);
+            me.prepLayerFilter(layer);
+            me.applyFilters(layer);
+          }
+        });
+      }
+    }
+  );
 
   return me;
 }
