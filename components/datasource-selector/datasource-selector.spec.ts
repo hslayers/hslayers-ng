@@ -79,8 +79,11 @@ describe('HsDatasources', () => {
   });
 
   it('decompose metadata', () => {
-    const metadata = '';
-    const decomposed = component.decomposeMetadata(metadata);
-    expect(decomposed).toBeTruthy(0);
+    const emptyMetadata = 'empty';
+    const decomposed1 = component.decomposeMetadata(emptyMetadata);
+    expect(decomposed1).toBeDefined();
+    expect(decomposed1).toBeFalse();
+
+    //TODO: add test for some real-life metadata example
   });
 });

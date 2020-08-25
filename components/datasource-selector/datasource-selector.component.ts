@@ -197,7 +197,7 @@ export class HsDatasourcesComponent {
       } else if (Array.isArray(value)) {
         sub = this.decomposeArray(value, substring);
       } else {
-        sub += value;
+        sub += value; //TODO: subtracting string to undefined creates 'undefinedvalue'
       }
       if (this.hsUtilsService.isPOJO(sub)) {
         decomposed = this.hsUtilsService.structuredClone(sub, decomposed);
@@ -213,7 +213,7 @@ export class HsDatasourcesComponent {
    */
   metadataDialog(): void {
     try {
-      //TODO:
+      //FIXME:
       this.hsLogService.error('not implemented');
       //const $mdDialog = this.$injector.get('$mdDialog');
 
