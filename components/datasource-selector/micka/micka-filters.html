@@ -1,8 +1,8 @@
 <form class="form">
     <div class="form-group">
         <div class="input-group" style="margin-bottom: 4px">
-            <input type="text" class="form-control hs-filter" placeholder="Filter:" [(ngModel)]="data.query.title"
-                (change)="queryCatalogs()">
+            <input type="text" class="form-control hs-filter" placeholder="Filter:" [(ngModel)]="query.title"
+                (change)="queryCatalogs()" name="queryTitle">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary" (click)='openMickaAdvancedSearch(mickaDatasetConfig)'
                     i18n>More</button>
@@ -19,7 +19,7 @@
             <div class="btn-group input-group-prepend">
                 <div class="input-group-text">
                     <input type="checkbox" [(ngModel)]="mickaFilterService.filterByExtent"
-                        (change)='queryCatalogs()'><span i18n>Filter by map extent</span>
+                        (change)='queryCatalogs()' name="filterByExtent"><span i18n>Filter by map extent</span>
                 </div>
             </div>
             <div class="btn-group" [hidden]="mickaFilterService.otnKeywords.length == 0">

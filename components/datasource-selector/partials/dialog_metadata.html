@@ -11,10 +11,12 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <dl *ngFor="let (key, value) of selected_layer.entries()" *ngIf="key!='feature'">
-                    <dt>{{key}} </dt>
-                    <dd hs.widgets.object-directive></dd>
-                </dl>
+                <ng-container *ngFor="let key of selected_layer.keys()">
+                    <dl *ngIf="key!='feature'">
+                        <dt>{{key}}</dt>
+                        <dd hs.widgets.object-directive></dd>
+                    </dl>
+                </ng-container>
             </div>
             <div class="modal-footer">
                 <a role="button" class="btn btn-success" href="#" [href]='DS.layerRDF(selected_ds, selected_layer)'
