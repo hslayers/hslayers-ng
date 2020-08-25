@@ -36,7 +36,7 @@
             <button class="btn btn-primary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aris-haspopup="true" (click)="exportMenuVisible = !exportMenuVisible"><i class="icon-download"></i></button>
             <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': exportMenuVisible}">
-                <a class="dropdown-item" download="{{format.name}}_file.txt" href="{{HsQueryVectorService.exportedFeatureHref}}" *ngFor="let format of exportFormats" (click)="exportData(format.name,feature.feature);">{{format.name}}</a>
+                <a class="dropdown-item" download="{{format.name}}_file.txt" [href]="HsQueryVectorService.exportedFeatureHref" *ngFor="let format of exportFormats" (click)="HsQueryVectorService.exportData(format.name,feature.feature);">{{format.name}}</a>
             </div>
             <button class="btn btn-danger btn-sm" (click)="removeFeature()" *ngIf="isFeatureRemovable()"><i class="icon-trash"></i></button>
         </div>
