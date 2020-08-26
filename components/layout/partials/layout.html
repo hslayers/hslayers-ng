@@ -40,7 +40,7 @@
                     <hs.measure hs.draggable ng-show="panelVisible('measure', this)"></hs.measure>
                     <hs.print hs.draggable ng-show="panelVisible('print', this)"></hs.print>
                     <hs.styles hs.draggable ng-show="panelVisible('styler', this)"></hs.styles>
-                    <hs.permalink hs.draggable ng-show="panelVisible('permalink', this)"></hs.permalink>
+                    <hs-share hs.draggable ng-show="panelVisible('permalink', this)"></hs-share>
                     <div hs.query.directive_infopanel hs.draggable ng-controller="HsQueryController"
                         class="hs-infopanel" ng-if="config.design != 'md'" ng-show="panelVisible('info', this)">
                     </div>
