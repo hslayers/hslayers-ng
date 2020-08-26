@@ -100,6 +100,7 @@ export class HsMickaBrowserService {
     //dataset.canceler = $q.defer();
     this.http
       .get(url, {
+        //TODO: dataset must be passed to datasetsReceived
         //timeout: dataset.canceler.promise,
         //dataset,
         //extentFeatureCreated,
@@ -119,6 +120,9 @@ export class HsMickaBrowserService {
    * (PRIVATE) Callback for catalogue http query
    */
   datasetsReceived(j): void {
+    if (!j.config) {
+      return;
+    }
     const dataset = j.config.dataset;
     const extentFeatureCreated = j.config.extentFeatureCreated;
     dataset.loading = false;
