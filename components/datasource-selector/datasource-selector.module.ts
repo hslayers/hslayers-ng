@@ -8,6 +8,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+import {HsAddLayersComponent} from '../add-layers/add-layers.upgraded.component'; //TODO: to be removed and redeclared in HsAddLayersModule
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
@@ -25,6 +26,7 @@ import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [
     HsAdvancedMickaDialogComponent,
+    HsAddLayersComponent, //TODO: to be removed and redeclared in HsAddLayersModule
     HsDatasourcesComponent,
     HsMetadataDialogComponent,
     HsMickaFilterComponent,
