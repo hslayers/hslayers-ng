@@ -1,4 +1,4 @@
-export default {
+export const HsAddLayersComponent = {
   template: (HsConfig) => {
     'ngInject';
     if (HsConfig.design == 'md') {
@@ -97,3 +97,5 @@ export default {
     $scope.$emit('scope_loaded', 'Ows');
   },
 };
+
+export default HsAddLayersComponent;
