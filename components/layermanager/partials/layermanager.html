@@ -1,10 +1,10 @@
 <div class="card panel- hs-main-panel hs-layermanager-card">
     <hs-panel-header name="layermanager" title="Layer manager">
         <extra-buttons>
-            <button type="button" class="but-title-sm" (click)="removeAllLayers()" i18n-title="Remove all layers">
+            <button type="button" class="but-title-sm" (click)="removeAllLayers()" [title]="'LAYERMANAGER.removeAllLayers' | translate">
                 <i class="glyphicon icon-trash"></i>
             </button>
-            <button type="button" class="but-title-sm" (click)="HsCore.resetMap()" i18n-title="Reset map">
+            <button type="button" class="but-title-sm" (click)="HsCore.resetMap()" [title]="'LAYERMANAGER.resetMap' | translate">
                 <i class="glyphicon icon-fatredo"></i>
             </button>
         </extra-buttons>
@@ -23,7 +23,7 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;" i18n>Baselayers</span>
+                        <span class="align-middle" style="line-height: 2em;" i18n>{{'LAYERMANAGER.Baselayers' | translate }}</span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()" [ngClass]="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>

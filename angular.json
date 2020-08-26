@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "hslayers-ng": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "",
+      "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "ru": "src/i18n/messages.ru.xlf"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "main": "main.ts",
+            "tsConfig": "tsconfig.json",
+            "polyfills": "polyfills.ts",
+            "outputPath": "dist/",
+            "index": "hslayers.html",
+          },
+          "configurations": {
+            "es": {
+              "aot": true,
+              "i18nFile": "src/translate/messages.ru.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ru",
+              "i18nMissingTranslation": "error"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hslayers-ng:build"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "hslayers-ng",
+  "cli": {
+    "analytics": false
+  }
+}

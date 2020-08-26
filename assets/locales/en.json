@@ -1,1 +1,7 @@
-{"Json": "Data"}
+{
+    "LAYERMANAGER":  {
+        "Basemap": "Basemaps",
+        "removeAllLayers": "Remove all layers" ,
+        "resetMap": "Reset map"
+    }
+}
