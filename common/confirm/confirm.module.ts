@@ -1,11 +1,11 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 import {HsConfirmDialog} from './confirm-dialog.service';
 import {HsConfirmDialogComponent} from './confirm-dialog.component';
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [HsConfirmDialogComponent],
-  imports: [BrowserModule],
+  imports: [CommonModule],
   providers: [HsConfirmDialog],
   bootstrap: [HsConfirmDialogComponent],
 })

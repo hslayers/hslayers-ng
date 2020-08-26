@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -8,7 +7,7 @@ import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  imports: [BrowserModule],
+  imports: [],
   providers: [HsLayerUtilsService, HsUtilsService],
 })
 export class HsUtilsModule {}

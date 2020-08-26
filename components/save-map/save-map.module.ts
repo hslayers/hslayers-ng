@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -34,7 +33,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     HsPanelHelpersModule,
     FormsModule,
     HsLogModule,

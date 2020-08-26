@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -22,7 +21,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     HsPanelHelpersModule,
     FormsModule,
     NgbModule,

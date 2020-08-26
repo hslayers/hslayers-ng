@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
 import {NgModule} from '@angular/core';
@@ -8,7 +7,7 @@ import {NgModule} from '@angular/core';
  */
 @NgModule({
   declarations: [HsUiExtensionsRecursiveDd],
-  imports: [CommonModule, BrowserModule],
+  imports: [CommonModule],
   providers: [],
   entryComponents: [HsUiExtensionsRecursiveDd],
   exports: [HsUiExtensionsRecursiveDd],

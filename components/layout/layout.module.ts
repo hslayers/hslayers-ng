@@ -1,5 +1,5 @@
 import {BootstrapComponent} from '../../bootstrap.component';
-import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogContainerService} from './dialogs/dialog-container.service';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
@@ -15,7 +15,7 @@ import {NgModule} from '@angular/core';
     HsDialogContainerComponent,
     HsDialogHostDirective,
   ],
-  imports: [BrowserModule],
+  imports: [CommonModule],
   providers: [HsLayoutServiceProvider, HsDialogContainerService],
   entryComponents: [BootstrapComponent, HsDialogContainerComponent],
   exports: [BootstrapComponent],

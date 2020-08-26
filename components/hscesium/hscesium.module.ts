@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -16,7 +15,7 @@ import {WINDOW_PROVIDERS} from '../utils/window';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsCesiumComponent],
-  imports: [CommonModule, BrowserModule, NgbModule],
+  imports: [CommonModule, NgbModule],
   exports: [HsCesiumComponent],
   providers: [
     HsCesiumService,

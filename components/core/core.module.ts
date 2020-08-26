@@ -2,8 +2,6 @@
  * @namespace hs.legend
  * @memberOf hs
  */
-import {BrowserModule} from '@angular/platform-browser';
-import {CommonModule} from '@angular/common';
 import {
   HsCommonEndpointsServiceProvider,
   HsCommonLaymanServiceProvider,
@@ -32,16 +30,14 @@ import {HsSearchService} from './../search/search.service';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
-import {HsToolbarModule} from '../toolbar/toolbar.module';
-import {HsUtilsModule} from './../utils';
+import {HsToolbarModule} from '../toolbar';
+import {HsUtilsModule} from '../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    BrowserModule,
     HttpClientModule,
     HsLayoutModule,
     HsLegendModule,

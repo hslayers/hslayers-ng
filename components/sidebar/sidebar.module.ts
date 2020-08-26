@@ -1,10 +1,10 @@
 import 'angular-cookies';
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
   NgModule,
 } from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HsMiniSidebarComponent} from './mini-sidebar.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
@@ -13,7 +13,7 @@ import {SortByPipe} from './sortByPipe.class';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsMiniSidebarComponent, HsSidebarComponent, SortByPipe],
-  imports: [BrowserModule, HsPanelHelpersModule],
+  imports: [CommonModule, HsPanelHelpersModule],
   exports: [HsMiniSidebarComponent, HsSidebarComponent],
   providers: [HsSidebarService],
   entryComponents: [HsMiniSidebarComponent, HsSidebarComponent],
