@@ -26,7 +26,6 @@ export class HsDatasourcesComponent {
   config;
   advancedSearch;
   endpointsService;
-  datasetSelect;
   selected_layer;
   selected_ds;
   metadata;
@@ -51,7 +50,6 @@ export class HsDatasourcesComponent {
     this.config = hsConfig;
     this.advancedSearch = false;
     this.endpointsService = hsCommonEndpointsService;
-    this.datasetSelect = hsDatasourcesService.datasetSelect;
 
     //FIXME: is it even fired?
     hsEventBusService.wmsConnecting.subscribe(() => {
@@ -136,6 +134,10 @@ export class HsDatasourcesComponent {
     });
   }
 
+  datasetSelect(id_selected): void {
+    this.hsDatasourcesService.datasetSelect(id_selected);
+  }
+
   /**
    * @param input
    * @param prestring
@@ -214,7 +216,7 @@ export class HsDatasourcesComponent {
   metadataDialog(): void {
     try {
       //FIXME:
-      this.hsLogService.error('not implemented');
+      this.hsLogService.warn('not implemented');
       //const $mdDialog = this.$injector.get('$mdDialog');
 
       /*$mdDialog.show({

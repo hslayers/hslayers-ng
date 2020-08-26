@@ -134,8 +134,7 @@ export class HsDatasourcesService {
   layerDownload(ds, layer): string {
     if (ds.download == true) {
       if (
-        ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) >
-          -1 &&
+        ['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase()) &&
         layer.url.length > 0
       ) {
         return layer.url;
@@ -164,7 +163,7 @@ export class HsDatasourcesService {
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
    * Add selected layer to map (into layer manager) if possible
    */
-  async addLayerToMap(ds, layer, type) {
+  async addLayerToMap(ds, layer, type): Promise<void> {
     let describer = Promise.resolve({type: 'none'});
     if (ds.type == 'micka') {
       describer = this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
@@ -213,7 +212,7 @@ export class HsDatasourcesService {
           {extractStyles: whatToAdd.extractStyles}
         );
         this.hsAddLayersVectorService.fitExtent(layer);
-      } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
+      } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
         const layer = await this.hsAddLayersVectorService.addVectorLayer(
           whatToAdd.type.toLowerCase(),
           whatToAdd.link,
