@@ -2,7 +2,6 @@
  * @namespace hs.legend
  * @memberOf hs
  */
-import {BrowserModule} from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsLegendComponent} from './legend.component';
@@ -19,7 +18,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsLegendLayerVectorComponent,
     HsLegendLayerStaticComponent,
   ],
-  imports: [CommonModule, BrowserModule, HsPanelHelpersModule],
+  imports: [CommonModule, HsPanelHelpersModule],
   exports: [HsLegendComponent, HsLegendLayerComponent],
   providers: [HsLegendService],
   entryComponents: [HsLegendComponent, HsLegendLayerComponent],

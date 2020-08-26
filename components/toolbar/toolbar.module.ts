@@ -1,5 +1,4 @@
 import '../core/';
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -17,7 +16,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsToolbarComponent],
-  imports: [CommonModule, BrowserModule, FormsModule, NgbModule, HsDrawModule, HsSearchModule],
+  imports: [CommonModule, FormsModule, NgbModule, HsDrawModule, HsSearchModule],
   exports: [HsToolbarComponent],
   providers: [],
   entryComponents: [HsToolbarComponent],

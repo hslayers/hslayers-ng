@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -16,13 +15,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsStylerComponent, HsStylerColorComponent],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    HsPanelHelpersModule,
-    FormsModule,
-    NgbModule,
-  ],
+  imports: [CommonModule, HsPanelHelpersModule, FormsModule, NgbModule],
   exports: [HsStylerComponent, HsStylerColorComponent],
   providers: [HsStylerService],
   entryComponents: [HsStylerComponent, HsStylerColorComponent],

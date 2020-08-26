@@ -1,11 +1,11 @@
 /* eslint-disable jsdoc/require-returns */
 import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
+import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from './sidebar.service';
-import {HsConfig} from '../../config.service';
 
 @Component({
   selector: 'hs-sidebar',

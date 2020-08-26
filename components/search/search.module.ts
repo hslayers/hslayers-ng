@@ -1,5 +1,4 @@
 import 'angular-cookies';
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -26,7 +25,6 @@ import {limitToPipe} from './limitTo.pipe';
     limitToPipe,
   ],
   imports: [
-    BrowserModule,
     HsStylerModule,
     HsLayoutModule,
     HsShareModule,
