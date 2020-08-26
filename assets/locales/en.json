@@ -1,7 +1,15 @@
 {
-    "LAYERMANAGER":  {
-        "Basemap": "Basemaps",
-        "removeAllLayers": "Remove all layers" ,
-        "resetMap": "Reset map"
-    }
+  "PANEL_HEADER": {
+    "LM": "Layermanager"
+  },
+  "LAYERMANAGER": {
+    "Basemap": "Basemaps",
+    "removeAllLayers": "Remove all layers",
+    "resetMap": "Reset map",
+    "info": "Additional information",
+    "Terrains": "Terrains",
+    "Mapcontent": "Map content",
+    "Other": "Other",
+    "Filter": "Filter:"
+  }
 }

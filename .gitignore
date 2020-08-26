@@ -20,3 +20,5 @@ dependencygraph.svg
 *.bat
 /.vs
 stats.json
+.lingua
+angular.json

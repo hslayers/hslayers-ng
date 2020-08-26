@@ -1,5 +1,5 @@
 <div class="card panel- hs-main-panel hs-layermanager-card">
-    <hs-panel-header name="layermanager" title="Layer manager">
+    <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translate">
         <extra-buttons>
             <button type="button" class="but-title-sm" (click)="removeAllLayers()" [title]="'LAYERMANAGER.removeAllLayers' | translate">
                 <i class="glyphicon icon-trash"></i>
@@ -17,13 +17,13 @@
                 </a>
             </div>
         </div>
-        <div><input type="text" class="form-control hs-filter" placeholder="Filter:" [(ngModel)]="query.title"></div>
+        <div><input type="text" class="form-control hs-filter" [placeholder]="'LAYERMANAGER.Filter' | translate" [(ngModel)]="query.title"></div>
 
         <ul *ngIf="!HsLayoutService.panelVisible('gallery')" class="list-group hs-lm-baselayerlist">
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;" i18n>{{'LAYERMANAGER.Baselayers' | translate }}</span>
+                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.Baselayers' | translate }}</span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()" [ngClass]="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
@@ -39,7 +39,7 @@
                         {{layer.title}}
                     </div>
                     <div class="pl-1 info_btn" style="cursor: pointer;">
-                        <span class="icon-settingsthree-gears text-secondary" (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')" i18n-title="Additional information" data-toggle="tooltip" data-container="body" data-placement="auto"></span>
+                        <span class="icon-settingsthree-gears text-secondary" (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')" [title]="'LAYERMANAGER.info' | translate" data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                     </div>
                 </div>
             </li>
@@ -49,7 +49,7 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span i18n class="align-middle" style="line-height: 2em;">Terrains</span>
+                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.Terrains' | translate }}</span>
                     </div>
                 </div>
             </li>
@@ -73,7 +73,7 @@
 
         <ul class="list-group hs-lm-mapcontentlist">
             <li *ngIf="!HsLayoutService.panelVisible('gallery')" class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item" style="margin-bottom: 0.2em;">
-                <span i18n class="align-middle" style="line-height: 2em;">Map Content</span>
+                <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.Mapcontent' | translate }}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary" (click)="value.visible = !value.visible">
@@ -89,7 +89,7 @@
             </ul>
             <ul class="list-group hs-lm-layerlist">
                 <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)" class="list-group-item list-group-item-primary hs-lm-layerlist-header" (click)="layerlistVisible = !layerlistVisible">
-                    <span i18n class="align-middle">Other&nbsp;</span>
+                    <span class="align-middle">{{ 'LAYERMANAGER.Other' | translate }}&nbsp;</span>
                     <span class="glyphicon" [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
                 <li [hidden]="!layerlistVisible"><hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list></li>

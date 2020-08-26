@@ -12,7 +12,7 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "ru": "src/i18n/messages.ru.xlf"
+          "cz": "src/i18n/messages.ru.xlf"
         }
       },
       "architect": {
@@ -28,7 +28,7 @@
           "configurations": {
             "es": {
               "aot": true,
-              "i18nFile": "src/translate/messages.ru.xlf",
+              "i18nFile": "src/translate/messages.cz.xlf",
               "i18nFormat": "xlf",
               "i18nLocale": "ru",
               "i18nMissingTranslation": "error"

@@ -32,9 +32,8 @@ import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import {TranslateHttpLoader} from '../../node_modules/@ngx-translate/http-loader';
 import {
   TranslateLoader,
   TranslateModule,
