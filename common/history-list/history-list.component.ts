@@ -1,24 +1,29 @@
-import {Component, Input} from '@angular/core';
-import {HsConfig} from './../../config.service';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {HsHistoryListService} from './history-list.service';
 
 @Component({
   selector: 'hs-history-list',
   template: require('./history-list.html'),
 })
-export class HsHistoryListComponent {
-  @Input() what: any; //input
-  @Input() clicked: any; //input
-  historyDropdownVisible: boolean;
-  replace: boolean;
-  transclude: boolean;
-  items: any;
-  constructor(
-    private HsConfig: HsConfig,
-    private HsHistoryListService: HsHistoryListService
-  ) {
-    this.replace = true;
-    this.transclude = true;
-    this.items = this.HsHistoryListService.readSourceHistory(this.what);
+export class HsHistoryListComponent implements OnChanges {
+  @Input() what: string; //input
+  @Output() clicked = new EventEmitter<string>(); //output
+  historyDropdownVisible = false;
+  items: Array<string>;
+  constructor(private HsHistoryListService: HsHistoryListService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.items = this.HsHistoryListService.readSourceHistory(
+      changes.what.currentValue
+    );
+  }
+  historyUrlClicked(value: string): void {
+    this.clicked.emit(value);
   }
 }
