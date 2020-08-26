@@ -71,7 +71,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
-        useFactory: WebpackTranslateLoader,
+        useClass: WebpackTranslateLoader,
         multi: false,
       },
     }),

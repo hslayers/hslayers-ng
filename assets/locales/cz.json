@@ -1,0 +1,7 @@
+{
+    "LAYERMANAGER":  {
+        "Baselayers": "Podkladové vrstvy",
+        "removeAllLayers": "Odstranit všechny vrstvy" ,
+        "resetMap": "Obnoviť mapu"
+    }
+}
