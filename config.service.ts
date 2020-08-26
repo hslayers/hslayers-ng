@@ -43,5 +43,6 @@ export class HsConfig {
   search_provider: any;
   geonamesUser: any;
   searchProvider: any;
+  language: string;
   constructor() {}
 }
