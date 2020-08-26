@@ -7,6 +7,9 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Inject, Injectable} from '@angular/core';
 
+import {TranslateService} from '../../node_modules/@ngx-translate/core';
+import {TranslateStore} from '../../node_modules/@ngx-translate/core';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -45,7 +48,8 @@ export class HsCoreService {
     private window: Window,
     private log: HsLogService,
     @Inject(DOCUMENT) private document: Document,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private translate: TranslateService
   ) {
     /**
      * @ngdoc property
@@ -60,6 +64,13 @@ export class HsCoreService {
       this.HsLayoutService.sidebarLabels = false;
     } else {
       this.HsLayoutService.sidebarExpanded = true;
+    }
+
+    this.translate.addLangs(['en', 'cz']);
+    console.log(this.translate);
+    this.translate.setDefaultLang('en');
+    if (this.HsConfig.language) {
+      this.translate.use(this.HsConfig.language);
     }
   }
 

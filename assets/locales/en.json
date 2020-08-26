@@ -3,7 +3,7 @@
     "LM": "Layermanager"
   },
   "LAYERMANAGER": {
-    "Basemap": "Basemaps",
+    "Baselayers": "Baselayers",
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
     "info": "Additional information",
