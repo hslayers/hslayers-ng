@@ -2,10 +2,10 @@ import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
-
 // HsLanguageService not yet refactored
 /**
  * param HsLanguageService
@@ -22,8 +22,9 @@ export class HsSidebarService {
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
+    private HsLanguageService: HsLanguageService,
     private HsCoreService: HsCoreService,
+    private HsEventBusService: HsEventBusService,
     private HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
@@ -49,7 +50,6 @@ export class HsSidebarService {
      * @memberof HsSidebarService
      * @member buttons
      */
-
     this.buttons = [
       {
         panel: 'layermanager',
@@ -163,8 +163,7 @@ export class HsSidebarService {
         title: 'Change language',
         description: 'Change language',
         content: function (): string {
-          return 'EN';
-          //return HsLanguageService.getCurrentLanguageCode().toUpperCase();
+          return HsLanguageService.getCurrentLanguageCode().toUpperCase();
         },
       },
       {
