@@ -14,6 +14,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -34,6 +35,7 @@ module.exports = merge(common, {
       ],
     }),
   ],
+  externals: [nodeExternals()],
   optimization: {
     namedChunks: true,
     usedExports: true,

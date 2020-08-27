@@ -8,11 +8,13 @@
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   watchOptions: {ignored: /node_modules/},
+  externals: [nodeExternals()],
   optimization: {
     // see https://webpack.js.org/guides/build-performance#avoid-extra-optimization-steps
     removeAvailableModules: false,
