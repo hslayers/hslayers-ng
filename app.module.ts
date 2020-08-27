@@ -16,28 +16,10 @@ import {UpgradeModule} from '@angular/upgrade/static';
 //Old upgraded (not rewritten) services go here:
 import {BootstrapComponent} from './bootstrap.component';
 import {HsCoreModule} from './components/core';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {from} from 'rxjs';
-
-export class WebpackTranslateLoader implements TranslateLoader {
-  getTranslation(lang: string) {
-    return from(import(`../../assets/locales/${lang}.json`));
-  }
-}
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    UpgradeModule,
-    HsCoreModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useClass: WebpackTranslateLoader,
-      },
-    }),
-  ],
-  exports: [TranslateModule],
+  imports: [BrowserModule, UpgradeModule, HsCoreModule],
+  exports: [],
   declarations: [],
   entryComponents: [],
   providers: [
