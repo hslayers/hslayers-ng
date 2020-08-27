@@ -1,5 +1,5 @@
 import '../compositions/compositions.module';
-import '../language/language.module';
+import '../language';
 import * as angular from 'angular';
 import {HsShareComponent} from './share.component';
 import {HsShareModule} from './share.module';

@@ -7,8 +7,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Inject, Injectable} from '@angular/core';
 
-import {TranslateService} from '../../node_modules/@ngx-translate/core';
-import {TranslateStore} from '../../node_modules/@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -66,8 +65,7 @@ export class HsCoreService {
       this.HsLayoutService.sidebarExpanded = true;
     }
 
-    this.translate.addLangs(['en', 'cz']);
-    console.log(this.translate);
+    this.translate.addLangs(['en', 'cs']);
     this.translate.setDefaultLang('en');
     if (this.HsConfig.language) {
       this.translate.use(this.HsConfig.language);

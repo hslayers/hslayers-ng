@@ -1,4 +1,4 @@
-import '../language/language.module';
+import '../language';
 import '../measure/measure.module';
 import '../utils';
 import 'angular-sanitize';
