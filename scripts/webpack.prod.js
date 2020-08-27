@@ -35,7 +35,9 @@ module.exports = merge(common, {
       ],
     }),
   ],
-  externals: [nodeExternals()],
+  externals: [nodeExternals({
+    allowlist: ['bootstrap']
+  })],
   optimization: {
     namedChunks: true,
     usedExports: true,
