@@ -14,7 +14,9 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   watchOptions: {ignored: /node_modules/},
-  externals: [nodeExternals()],
+  externals: [nodeExternals({
+    allowlist: ['bootstrap']
+  })],
   optimization: {
     // see https://webpack.js.org/guides/build-performance#avoid-extra-optimization-steps
     removeAvailableModules: false,
