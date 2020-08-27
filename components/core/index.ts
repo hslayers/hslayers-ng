@@ -5,6 +5,7 @@ import 'angular-gettext';
 // eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../drag/drag.module';
 import '../draw';
+import '../language';
 import '../layermanager';
 import '../layout';
 import '../legend';
@@ -34,6 +35,7 @@ angular
     'hs.map',
     'gettext',
     'hs.drag',
+    'hs.language',
     'hs.layout',
     'hs.utils',
     'hs.legend',
