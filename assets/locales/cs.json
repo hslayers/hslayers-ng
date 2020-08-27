@@ -1,0 +1,15 @@
+{
+  "PANEL_HEADER": {
+    "LM": "Správce vrstev"
+  },
+  "LAYERMANAGER": {
+    "Baselayers": "Podkladové vrstvy",
+    "removeAllLayers": "Odstranit všechny vrstvy",
+    "resetMap": "Obnoviť mapu",
+    "info": "Další informace",
+    "Terrains": "Terény",
+    "Mapcontent": "Mapový obsah",
+    "Other": "Jiné",
+    "Filter": "Filtr:"
+  }
+}
