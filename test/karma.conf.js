@@ -1,5 +1,4 @@
-const webpackCOnf = require('../scripts/webpack.dev.js');
-const webpack = require('webpack');
+const webpackCOnf = require('../scripts/webpack.test.js');
 const process = require('process');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
@@ -24,7 +23,7 @@ module.exports = function (config) {
 
     basePath: '',
     files: ['webpack.karma.context.ts'],
-    preprocessors: {'webpack.karma.context.ts': ['webpack', 'sourcemap']},
+    preprocessors: {'webpack.karma.context.ts': ['webpack']},
     exclude: [],
     webpack: webpackCOnf,
     webpackMiddleware: {
