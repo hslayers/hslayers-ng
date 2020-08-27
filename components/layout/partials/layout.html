@@ -48,8 +48,7 @@
                         class="hs-infopanel" ng-if="config.design == 'md'" ng-show="panelVisible('info', this)">
                     </div>
                     <hs.save-map hs.draggable ng-show="panelVisible('saveMap', this)"></hs.save-map>
-                    <div hs.language.directive hs.draggable ng-controller="HsLanguageController"
-                        ng-show="panelVisible('language', this)"></div>
+                    <hs-language hs.draggable ng-show="panelVisible('language', this)"></hs-language>
                     <!--
         <div hs.routing.directive               hs.draggable ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
                             <div hs.tracking.directive              hs.draggable ng-controller="HsTrackingController" ng-show="panelVisible('tracking', this)"></div>
