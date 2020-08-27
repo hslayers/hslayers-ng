@@ -6,12 +6,12 @@
         <div layout="column" class="md-inline-form">
             <md-input-container>
                 <label translate>Title</label>
-                <input required md-maxlength="100" ng-model="title">
+                <input required md-maxlength="100" [(ngModel)]="title">
             </md-input-container>
         </div>
     </div>
     <md-divider></md-divider>
     <div layout-padding layout="row" layout-align="space-around center">
-        <md-button class="md-raised md-accent" ng-click="print()" translate>Print</md-button>
+        <md-button class="md-raised md-accent" (click)="print()" translate>Print</md-button>
     </div>
 </div>

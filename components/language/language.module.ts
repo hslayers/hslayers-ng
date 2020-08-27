@@ -1,40 +1,20 @@
-import * as angular from 'angular';
-import HsLanguageController from './language.controller';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsLanguageComponent} from './language.component';
 import {HsLanguageService} from './language.service';
-/**
- * @namespace hs.print
- * @memberOf hs
- * @param HsCore
- * @param gettextCatalog
- * @param $scope
- * @param service
- * @param config
- */
-export default angular
-  .module('hs.language', [])
-  /**
-   * @memberof hs.language
-   * @ngdoc directive
-   * @name hs.language.directive
-   * @description Add print dialog template to the app
-   */
-  .directive('hs.language.directive', () => {
-    'ngInject';
-    return {
-      template: require(`./partials/language.html`),
-    };
-  })
+import {TranslateModule} from '@ngx-translate/core';
 
-  /**
-   * @memberof hs.language
-   * @ngdoc service
-   * @name HsLanguageService
-   */
-  .service('HsLanguageService', HsLanguageService)
-
-  /**
-   * @memberof hs.language
-   * @ngdoc controller
-   * @name HsLanguageController
-   */
-  .controller('HsLanguageController', HsLanguageController);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsLanguageComponent],
+  imports: [FormsModule, CommonModule, TranslateModule],
+  exports: [HsLanguageComponent],
+  providers: [HsLanguageService],
+  entryComponents: [HsLanguageComponent],
+})
+export class HsLanguageModule {}
