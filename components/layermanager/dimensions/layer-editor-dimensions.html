@@ -1,5 +1,5 @@
 <div [hidden]="!isLayerWithDimensions()">
-    <p style="text-align: center;font-weight: bold;" i18n>Dimensions</p>
+    <p style="text-align: center;font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
     <div class="form-group" *ngFor="let dimension of dimensions">
         <label class="control-label">{{dimension.label || dimension.name}}:</label>
 

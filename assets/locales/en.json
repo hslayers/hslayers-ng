@@ -3,13 +3,81 @@
     "LM": "Layermanager"
   },
   "LAYERMANAGER": {
-    "Baselayers": "Baselayers",
+    "baselayers": "Baselayers",
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
+    "terrains": "Terrains",
+    "mapContent": "Map content",
+    "other": "Other",
+    "filter": "Filter:",
+    "baseMapGallery": {
+      "noBaseMap": "No basemap",
+      "grayscale": "Grayscale"
+    },
+    "dialogRemoveAll": {
+      "dialogMessage": "Do you really want to remove all layers?",
+      "removeAllAdded": "Remove all added layers",
+      "reloadComposition": "Reload composition"
+    },
+    "layerEditor": {
+      "metadata": "Metadata",
+      "copyright": "Copyright",
+      "zoomToLayer": "Zoom to layer",
+      "styleLayer": "Style layer",
+      "metadataOfLayer": "Metadata of layer in",
+      "metadataOfService": "Metadata of service",
+      "declutter": "Declutter",
+      "cluster": "Cluster",
+      "opacity": "Opacity"
+    },
+    "layerList": {
+      "noAvailableInScale": "This layer is not available in this scale",
+      "layerNotAvailable": "This layer is not available",
+      "sendingToLayman": "Sending to layman",
+      "layerIsQueryable": "This layer is queryable"
+    },
+    "layermanagerMd": {
+      "imageLayer": "Image layer",
+      "pointFeatures": "Point features",
+      "lineFeatures": "Line features",
+      "polygonFeatures": "Polygon features",
+      "aboutLayer": "About layer",
+      "moveLayerUpward": "Move layer upward, SHIFT-click to top",
+      "moveLayerDownward": "Move layer downward, SHIFT-click to bottom",
+      "layerOptions": "Layer options",
+      "filterFeatures": "Filter features",
+      "layerName": "Layer name",
+      "layerOpacity": "Layer Opacity",
+      "layerStyle": "Layer Style",
+      "sidesNumber": "Sides number",
+      "outerRadius": "Outer radius",
+      "innerRadius": "Inner radius",
+      "star": "Star"
+    },
+    "dimensions": "Dimensions"
+  },
+  "COMMON": {
+    "close": "Close",
+    "abstract": "Abstract",
+    "no": "No",
+    "date": "Date",
+    "from": "From",
+    "to": "to",
+    "distance": "Distance",
+    "title": "Title",
+    "scale": "Scale",
     "info": "Additional information",
-    "Terrains": "Terrains",
-    "Mapcontent": "Map content",
-    "Other": "Other",
-    "Filter": "Filter:"
+    "removeLayer": "Remove layer",
+    "renameLayer": "Rename layer",
+    "hide": "Hide",
+    "legend": "Legend",
+    "width": "Width",
+    "circle": "Circle",
+    "fill": "Fill",
+    "stroke": "Stroke",
+    "strokeWidth": "Stroke width",
+    "radius": "Radius",
+    "polygon": "Polygon",
+    "rotation": "Rotation"
   }
 }

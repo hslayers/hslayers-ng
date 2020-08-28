@@ -3,13 +3,81 @@
     "LM": "Správce vrstev"
   },
   "LAYERMANAGER": {
-    "Baselayers": "Podkladové vrstvy",
+    "baselayers": "Podkladové vrstvy",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnoviť mapu",
+    "terrains": "Terény",
+    "mapContent": "Mapový obsah",
+    "other": "Jiné",
+    "filter": "Filtr:",
+    "baseMapGallery": {
+      "noBaseMap": "Bez podkladu",
+      "grayscale": "Šedotón"
+    },
+    "dialogRemoveAll": {
+      "dialogMessage": "Opravdu chcete odstranit všechny vrstvy?",
+      "removeAllAdded": "Odstranění všech přidaných vrstev",
+      "reloadComposition": "Reload složení"
+    },
+    "layerEditor": {
+      "metadata": "Metadata",
+      "copyright": "Autorská práva",
+      "zoomToLayer": "Přiblížení na vrstvu",
+      "styleLayer": "Stylovat vrstvu",
+      "metadataOfLayer": "Metadata vrstvy v",
+      "metadataOfService": "Metadata služby",
+      "declutter": "Declutter",
+      "cluster": "Cluster",
+      "opacity": "Průhlednost"
+    },
+    "layerList": {
+      "noAvailableInScale": "Tato vrstva není v tomto měřítku k dispozici",
+      "layerNotAvailable": "Tato vrstva není k dispozici",
+      "sendingToLayman": "Odesílam na Layman",
+      "layerIsQueryable": "Tato vrstva je dotazovatelná"
+    },
+    "layermanagerMd": {
+      "imageLayer": "Vrstva obrazu",
+      "pointFeatures": "Bodové prvky",
+      "lineFeatures": "Liniové prvky",
+      "polygonFeatures": "Polygonové prvky",
+      "aboutLayer": "O vrstvě",
+      "moveLayerUpward": "Přesunutí vrstvy nahoru, shift-klepněte na začátek",
+      "moveLayerDownward": "Přesunutí vrstvy dolů, shift-klepnout dolů",
+      "layerOptions": "Možnosti vrstvy",
+      "filterFeatures": "Funkce filtru",
+      "layerName": "Název vrstvy",
+      "layerOpacity": "Průhlednost vrstvy",
+      "layerStyle": "Styl vrstvy",
+      "sidesNumber": "Číslo stran",
+      "outerRadius": "Vnější poloměr",
+      "innerRadius": "Vnitřní poloměr",
+      "star": "Hvězda"
+    },
+    "dimensions": "Dimenze"
+  },
+  "COMMON": {
+    "close": "Zavřít",
+    "abstract": "Abstrakt",
+    "no": "Ne",
+    "date": "Datum",
+    "from": "Z",
+    "to": "do",
+    "distance": "Vzdálenost",
+    "title": "Název",
+    "scale": "Měřítko",
     "info": "Další informace",
-    "Terrains": "Terény",
-    "Mapcontent": "Mapový obsah",
-    "Other": "Jiné",
-    "Filter": "Filtr:"
+    "removeLayer": "Odstranit vrstvu",
+    "renameLayer": "Přejmenovat vrstvu",
+    "hide": "Skrýt",
+    "legend": "Legenda",
+    "width": "Šířka",
+    "circle": "Kruh",
+    "fill": "Výplň",
+    "stroke": "Tahu",
+    "strokeWidth": "Šířka tahu",
+    "radius": "Radius",
+    "polygon": "Polygon",
+    "rotation": "Rotace"
   }
 }

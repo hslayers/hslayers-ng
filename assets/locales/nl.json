@@ -1,0 +1,84 @@
+{
+    "PANEL_HEADER": {
+      "LM": "Beheer lagen"
+    },
+    "LAYERMANAGER": {
+      "baselayers": "Basislagen",
+      "removeAllLayers": "Verwijder alle lagen",
+      "resetMap": "Reset kaart",
+      "terrains": "Terreinen",
+      "mapContent": "Mapinhoud",
+      "other": "Andere",
+      "filter": "Filter:",
+      "baseMapGallery": {
+        "noBaseMap": "Geen basiskaart",
+        "grayscale": "Grijstinten"
+      },
+      "dialogRemoveAll": {
+        "dialogMessage": "Bent u zeker dat u alle lagen wilt verwijderen?",
+        "removeAllAdded": "Verwijder alle toegevoegde lagen",
+        "reloadComposition": "Compostie opnieuw uploaden"
+      },
+      "layerEditor": {
+        "metadata": "Metadata",
+        "copyright": "Auteursrechten",
+        "zoomToLayer": "Zoom in op laag",
+        "styleLayer": "Stijllaag",
+        "metadataOfLayer": "Metadata van laag in",
+        "metadataOfService": "Metadata van service",
+        "declutter": "Declutter",
+        "cluster": "Cluster",
+        "opacity": "Doorzichtigheid"
+      },
+      "layerList": {
+        "noAvailableInScale": "Deze laag is niet beschikbaar op deze schaal",
+        "layerNotAvailable": "These laag is niet beschikbaar",
+        "sendingToLayman": "Verzenden naar layman",
+        "layerIsQueryable": "Deze laag is beschikbaar"
+      },
+      "layermanagerMd": {
+        "imageLayer": "Afbeeldingslaag",
+        "pointFeatures": "Puntkenmerken",
+        "lineFeatures": "Lijnkenmerken",
+        "polygonFeatures": "Polygoon-kenmerken",
+        "aboutLayer": "Over laag",
+        "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
+        "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
+        "layerOptions": "Laagopties",
+        "filterFeatures": "Filterfuncties",
+        "layerName": "Laag naam",
+        "layerOpacity": "Laagdekking",
+        "layerStyle": "Laagstijl",
+        "sidesNumber": "Zijkanten nummer",
+        "outerRadius": "Buitenste straal",
+        "innerRadius": "Binnenradius",
+        "star": "Ster"
+      },
+      "dimensions": "Dimensies"
+    },
+    "COMMON": {
+      "close": "Sluit af",
+      "abstract": "Samenvatting",
+      "no": "Nee",
+      "date": "Datum",
+      "from": "Van",
+      "to": "tot",
+      "distance": "Afstand",
+      "title": "Titel",
+      "scale": "Schaal",
+      "info": "Extra informatie",
+      "removeLayer": "Laag verwijderen",
+      "renameLayer": "Hernoem laag",
+      "hide": "Zich verstoppen",
+      "legend": "Legenda",
+      "width": "Breedte",
+      "circle": "Cirkel",
+      "fill": "Vullen",
+      "stroke": "lijn",
+      "strokeWidth": "lijnbreedte",
+      "radius": "Straal",
+      "polygon": "Veelhoek",
+      "rotation": "Rotatie"
+    }
+  }
+  

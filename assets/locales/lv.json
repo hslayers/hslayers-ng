@@ -1,0 +1,84 @@
+{
+    "PANEL_HEADER": {
+      "LM": "Slāņu pārvaldība"
+    },
+    "LAYERMANAGER": {
+      "baselayers": "Pamatslāņi",
+      "removeAllLayers": "Noņemt visus slāņus",
+      "resetMap": "Atiestatīt karti",
+      "terrains": "Reljefi",
+      "mapContent": "Kartes saturs",
+      "other": "Cits",
+      "filter": "Filtrs:",
+      "baseMapGallery": {
+        "noBaseMap": "Nav pamatkartes",
+        "grayscale": "Pelēktoņu"
+      },
+      "dialogRemoveAll": {
+        "dialogMessage": "Vai Jūs tiešām vēlaties noņemt visus slāņus?",
+        "removeAllAdded": "Noņemt visus pievienotos slāņus",
+        "reloadComposition": "Pārlādēt kompozīciju"
+      },
+      "layerEditor": {
+        "metadata": "Metadati",
+        "copyright": "Autortiesības",
+        "zoomToLayer": "Tuvināt līdz slānim",
+        "styleLayer": "Stilizēt slāni",
+        "metadataOfLayer": "Slāņa metadati iekš",
+        "metadataOfService": "Servisa metadati",
+        "declutter": "Izkliedēt datus",
+        "cluster": "Dalīt datu kopās",
+        "opacity": "Necaurredzamība"
+      },
+      "layerList": {
+        "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
+        "layerNotAvailable": "Šis slānis nav pieejams",
+        "sendingToLayman": "Sūta uz layman",
+        "layerIsQueryable": "Šis slānis ir vaicājams"
+      },
+      "layermanagerMd": {
+        "imageLayer": "Attēla slānis",
+        "pointFeatures": "Punkta funkcijas",
+        "lineFeatures": "Līnijas funckijas",
+        "polygonFeatures": "Daudzstūra funkcijas",
+        "aboutLayer": "Par slāni",
+        "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
+        "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
+        "layerOptions": "Slāņa opcijas",
+        "filterFeatures": "Filtra funkcijas",
+        "layerName": "Slāņa nosaukums",
+        "layerOpacity": "Slāņa necaurredzamība",
+        "layerStyle": "Slāņa stils",
+        "sidesNumber": "Sānu numurs",
+        "outerRadius": "Ārējais rādiuss",
+        "innerRadius": "iekšējais rādiuss",
+        "star": "zvaigzne"
+      },
+      "dimensions": "Dimensijas"
+    },
+    "COMMON": {
+      "close": "Aizvērt",
+      "abstract": "Apraksts",
+      "no": "No",
+      "date": "Datums",
+      "from": "No",
+      "to": "līdz",
+      "distance": "Distance",
+      "title": "Virsraksts",
+      "scale": "Mērogs",
+      "info": "Papildu informācija",
+      "removeLayer": "Noņemt slāni",
+      "renameLayer": "Pārsaukt slāni",
+      "hide": "Paslēpt",
+      "legend": "Leģenda",
+      "width": "Platums",
+      "circle": "Aplis",
+      "fill": "Aizpildījums",
+      "stroke": "Līnija",
+      "strokeWidth": "Līnjas platums",
+      "radius": "Rādiuss",
+      "polygon": "Daudzstūris",
+      "rotation": "Rotācija"
+    }
+  }
+  

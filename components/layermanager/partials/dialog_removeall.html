@@ -2,16 +2,21 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" i18n>
-                    Layer manager
+                <h4 class="modal-title">
+                    {{'PANEL_HEADER.LM' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" i18n>Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
+                        aria-hidden="true"></span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto" i18n>Do you really want to remove all layers?</div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translate}}</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" i18n (click)="removeAllLayers(true, false);" data-dismiss="modal">Remove all added layers</button>
-                <button type="button" class="btn btn-primary" *ngIf="composition_id" i18n (click)="removeAllLayers(true)" data-dismiss="modal">Reload composition</button>
-                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal" i18n>No</button>
+                <button type="button" class="btn btn-primary" (click)="removeAllLayers(true, false);"
+                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translate}}</button>
+                <button type="button" class="btn btn-primary" *ngIf="composition_id" (click)="removeAllLayers(true)"
+                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translate}}</button>
+                <button type="button" class="btn btn-secondary" (click)="close()"
+                    data-dismiss="modal">{{'COMMON.no' | translate}}</button>
             </div>
         </div>
     </div>
