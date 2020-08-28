@@ -12,25 +12,32 @@
                 <div class="form-group" *ngIf="HsLayerManagerService.hasMetadata(currentLayer)">
                     <!-- Metadata -->
                     <div class="pt-2">
-                        <a class="card-href" *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)" href="{{metadata.OnlineResource}}" target="_blank" title="Metadata">
-                            <span [hidden]="!metadata.type" i18n>
-                                Metadata of layer in {{metadata.type}}
+                        <a class="card-href"
+                            *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)"
+                            href="{{metadata.OnlineResource}}" target="_blank"
+                            [title]="'LAYERMANAGER.layerEditor.metadata' | translate">
+                            <span [hidden]="!metadata.type">
+                                {{'LAYERMANAGER.layerEditor.metadataOfLayer' | translate}} {{metadata.type}}
                             </span>
-                            <span [hidden]="metadata.type" i18n>
-                                Metadata of service
+                            <span [hidden]="metadata.type">
+                                {{'LAYERMANAGER.layerEditor.metadataOfService' | translate}}
                             </span>
                         </a>
                     </div>
                     <!-- Copyright -->
                     <div *ngIf="hasCopyright(currentLayer)">
-                        <a class="card-href" href="{{currentLayer.layer.get('Attribution').OnlineResource}}" target="_blank" title="Copyright">
-                            Copyright</a>
+                        <a class="card-href" href="{{currentLayer.layer.get('Attribution').OnlineResource}}"
+                            target="_blank" [title]="'LAYERMANAGER.layerEditor.copyright' | translate">
+                            {{'LAYERMANAGER.layerEditor.copyright' | translate}}</a>
                     </div>
                 </div>
                 <!-- Time slider -->
                 <div class="form-group" [hidden]="!layerIsWmsT()">
-                    <label i18n>Date</label>
-                    <input type="range" name="layer-date" step="{{currentLayer.time_step}}" min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control" style="width: 100%;height: 21px;" [(ngModel)]="dateIncrement" (change)="setLayerTime(currentLayer, dateIncrement)">
+                    <label>{{'COMMON.date' | translate}}</label>
+                    <input type="range" name="layer-date" step="{{currentLayer.time_step}}"
+                        min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control"
+                        style="width: 100%;height: 21px;" [(ngModel)]="dateIncrement"
+                        (change)="setLayerTime(currentLayer, dateIncrement)">
                     <div class="row">
                         <div class="col-md-4">
                             <small>{{formatDate(dateToNonUtc(currentLayer.date_from), currentLayer.date_format)}}</small>
@@ -43,68 +50,75 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <!-- Abstract -->
                 <div class="form-group" [hidden]="!abstract">
-                    <label i18n>Abstract</label>
+                    <label>{{'COMMON.abstract' | translate}}</label>
                     <p>
                         {{abstract}}
                     </p>
                 </div>
-    
+
                 <!-- Scale -->
                 <div class="form-group" [hidden]="!isScaleVisible()">
-                    <label i18n>Scale</label>
-                    <span *ngIf="minResolutionValid()"><span i18n class="ml-1">from</span> 1:{{minResolution}}</span>
-                    <span *ngIf="maxResolutionValid()"><span i18n class="ml-1">to</span> 1:{{maxResolution}}</span>
+                    <label>{{'COMMON.scale' | translate}}</label>
+                    <span *ngIf="minResolutionValid()"><span class="ml-1">{{'COMMON.from' | translate}}</span>
+                        1:{{minResolution}}</span>
+                    <span *ngIf="maxResolutionValid()"><span class="ml-1">{{'COMMON.to' | translate}}</span>
+                        1:{{maxResolution}}</span>
                 </div>
                 <div class="d-flex flex-row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125)">
                     <!-- Declutter checkbox  -->
                     <div [hidden]="cluster" *ngIf="isVectorLayer()" class="form-check flex-fill">
                         <input name="layer-declutter" class="form-check-input" type="checkbox" [(ngModel)]="declutter">
-                        <label class="form-check-label" i18n>Declutter</label>
+                        <label class="form-check-label">{{'LAYERMANAGER.layerEditor.declutter' | translate}}</label>
                     </div>
                     <!-- Cluster features checkbox  -->
                     <div *ngIf="isVectorLayer()" [hidden]="declutter" class="form-check flex-fill ">
                         <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster">
-                        <label class="form-check-label" i18n>Cluster</label>
+                        <label class="form-check-label">{{'LAYERMANAGER.layerEditor.cluster' | translate}}</label>
                     </div>
                     <div class="form-group flex-fill" [hidden]="declutter" *ngIf="cluster">
-                        <label i18n>distance</label>
-                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control" style="width: 100%;height: 21px;">        
+                        <label>{{'COMMON.distance' | translate}}</label>
+                        <input name="layer-cluster-distance" type="range" min="0" max="100" step="1"
+                            [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control"
+                            style="width: 100%;height: 21px;">
                     </div>
                 </div>
-                
+
                 <!-- Legends -->
                 <div *ngIf="olLayer()">
                     <div *ngIf="HsLayerEditorService.legendVisible()">
-                        <p style="text-align: center;font-weight: bold;" i18n>Legend</p>
-                        <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor"></hs-legend-layer-directive>
-                        <hr/>
+                        <p style="text-align: center;font-weight: bold;">
+                            {{'COMMON.legend' | translate}}</p>
+                        <hs-legend-layer-directive [layer]="HsLayerEditorService.legendDescriptor">
+                        </hs-legend-layer-directive>
+                        <hr />
                     </div>
                 </div>
                 <hs-layer-editor-dimensions [ol-layer]="olLayer()"></hs-layer-editor-dimensions>
                 <!-- Opacity slider -->
                 <div class="form-group">
-                    <label i18n>Opacity</label>
-                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1" class="form-control" style="width: 100%;height: 21px;" [(ngModel)]="opacity">
+                    <label>{{'LAYERMANAGER.layerEditor.opacity' | translate}}</label>
+                    <input type="range" name="layer-opacity" step="0.01" min="0" max="1" class="form-control"
+                        style="width: 100%;height: 21px;" [(ngModel)]="opacity">
                 </div>
-    
+
                 <!-- Footer -->
             </form>
         </div>
     </div>
     <div class="card-footer" *ngIf="currentLayer != undefined && currentLayer.settings">
         <div class="form-group" [hidden]="!layer_renamer_visible">
-            <label i18n>Title</label>
+            <label>{{'COMMON.title' | translate}}</label>
             <input type="text" class="form-control" [(ngModel)]="title">
             <div class="form">
                 <br>
-                <label i18n>Scale</label>
+                <label>{{'COMMON.scale' | translate}}</label>
                 <div *ngIf="minResolutionValid()">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><span i18n>from</span>&nbsp;1</span>
+                            <span class="input-group-text"><span>{{'COMMON.from' | translate}}</span>&nbsp;1</span>
                         </div>
                         <input class="form-control" style="width:65px" [(ngModel)]="minResolution">
                     </div>
@@ -112,7 +126,7 @@
                 <div *ngIf="maxResolutionValid()">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"> <span i18n>to</span>&nbsp;1</span>
+                            <span class="input-group-text"> <span>{{'COMMON.to' | translate}}</span>&nbsp;1</span>
                         </div>
                         <input class="form-control" style="width:65px" [(ngModel)]="maxResolution">
                     </div>
@@ -120,10 +134,16 @@
             </div>
         </div>
         <div class="btn-group" role="group" aria-label="Editor buttons">
-            <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()" data-toggle="tooltip" i18n-title="Zoom to layer"><i class="icon-search"></i></button>
-            <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()" data-toggle="tooltip" i18n-title="Style layer"><i class="icon-brush"></i></button>
-            <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip" i18n-title="Rename layer"><i class="icon-textfield"></i></button>
-            <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip" i18n-title="Remove layer"><i class="icon-trash"></i></button>
+            <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()"
+                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate"><i
+                    class="icon-search"></i></button>
+            <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()"
+                data-toggle="tooltip" [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate"><i
+                    class="icon-brush"></i></button>
+            <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
+                [title]="'COMMON.renameLayer' | translate"><i class="icon-textfield"></i></button>
+            <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
+                [title]="'COMMON.removeLayer' | translate"><i class="icon-trash"></i></button>
         </div>
     </div>
 

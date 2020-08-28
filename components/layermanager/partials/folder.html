@@ -3,7 +3,11 @@
         <a href="" class="list-group-item list-group-item-warning">
             <span [ngStyle]="{'padding-left': value.indent*15}">{{value.name}}</span>
         </a>
-        <li [hidden]="!folderVisible(value)"><hs-layer-manager-folder [folder]="value"></hs-layer-manager-folder></li>
-        <li><hs-layermanager-layer-list [folder]="value"></hs-layermanager-layer-list></li>
+        <li [hidden]="!folderVisible(value)">
+            <hs-layer-manager-folder [folder]="value"></hs-layer-manager-folder>
+        </li>
+        <li>
+            <hs-layermanager-layer-list [folder]="value"></hs-layermanager-layer-list>
+        </li>
     </ul>
 </div>

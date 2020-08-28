@@ -1,30 +1,44 @@
 <div class="basemapGallery" style="z-index: 991;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with (nested )dropdown">
-        <button type="button" class="button-primary btn-sm  basemap-tile " *ngFor="let layer of fitting(HsLayerManagerService.data.baselayers)" (click)="toggleBasemap(layer)" [ngClass]="{'active': layer.active}">{{layer.title}}</button>
-        <button type="button" *ngIf="fitsInContainer()" class="button-primary btn-sm  basemap-tile " (click)="changeBaseLayerVisibility()" [ngClass]="{'active' : !data.baselayersVisible}" i18n>No basemap</button>
+        <button type="button" class="button-primary btn-sm  basemap-tile "
+            *ngFor="let layer of fitting(HsLayerManagerService.data.baselayers)" (click)="toggleBasemap(layer)"
+            [ngClass]="{'active': layer.active}">{{layer.title}}</button>
+        <button type="button" *ngIf="fitsInContainer()" class="button-primary btn-sm  basemap-tile "
+            (click)="changeBaseLayerVisibility()"
+            [ngClass]="{'active' : !data.baselayersVisible}">{{ 'LAYERMANAGER.baseMapGallery.noBaseMap' | translate}}</button>
 
         <div class="btn-group btn-group-sm" role="group" *ngIf="!fitsInContainer()">
-            <button type="button" (click)="baseLayersExpanded=!baseLayersExpanded" class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" [attr.aria-expanded]="baseLayersExpanded">
+            <button type="button" (click)="baseLayersExpanded=!baseLayersExpanded"
+                class="btn rounded galleryButton pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true"
+                [attr.aria-expanded]="baseLayersExpanded">
                 <i class="glyphicon icon-map x-large p-0"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right p-0" [ngClass]="{'show': baseLayersExpanded}">
-                <div *ngFor="let layer of HsLayerManagerService.data.baselayers" (click)="toggleBasemap(layer)" [ngStyle]="{'position':'relative'}">
-                    <div style="position:absolute;top:5px; right:5px;z-index:5" [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}" *ngIf="layer.active" (click)="toggleMiniMenu(layer)">
+                <div *ngFor="let layer of HsLayerManagerService.data.baselayers" (click)="toggleBasemap(layer)"
+                    [ngStyle]="{'position':'relative'}">
+                    <div style="position:absolute;top:5px; right:5px;z-index:5"
+                        [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}"
+                        *ngIf="layer.active" (click)="toggleMiniMenu(layer)">
                         <span class="glyphicon icon-menu icon-small"></span>
                     </div>
-                    <div class="p-0 hs-miniMenu" [hidden]="!(layer.galleryMiniMenu == true && layer.active)" [ngStyle]="{'position':'absolute'}">
+                    <div class="p-0 hs-miniMenu" [hidden]="!(layer.galleryMiniMenu == true && layer.active)"
+                        [ngStyle]="{'position':'absolute'}">
                         <div class="pl-1 w-100" (click)="setGreyscale(layer)">
-                            <label class="form-check-label m-0" [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
-                            <p class="ml-1 mb-0" [ngStyle]="{'font-size':'medium'}" i18n>Grayscale</p>
+                            <label class="form-check-label m-0"
+                                [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
+                            <p class="ml-1 mb-0" [ngStyle]="{'font-size':'medium'}">
+                                {{'LAYERMANAGER.baseMapGallery.grayscale' | translate}}</p>
                         </div>
                     </div>
 
-                <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" src="{{layer.thumbnail}}" alt="Basemap thumbnail" style="height:4em; width:100%">
+                    <img [ngClass]="{'active': layer.active, 'hs-ale': !layer.active}" src="{{layer.thumbnail}}"
+                        alt="Basemap thumbnail" style="height:4em; width:100%">
                     <a class="dropdown-item" href="" [ngClass]="{'active': layer.active}">{{layer.title}}</a>
                 </div>
                 <div (click)="toggleBasemap()">
                     <div style="height: 4em; width: 100%" [ngClass]="{'active': !data.baselayersVisible}" alt=""></div>
-                    <a class="dropdown-item" href="" [ngClass]="{'active': !data.baselayersVisible}" i18n>No basemap</a>
+                    <a class="dropdown-item" href=""
+                        [ngClass]="{'active': !data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap' | translate}}</a>
                 </div>
             </div>
         </div>
