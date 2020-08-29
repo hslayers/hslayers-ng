@@ -25,6 +25,7 @@ import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.ser
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service.js';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 class HsConfigMock {
@@ -65,7 +66,7 @@ describe('layermanager-layer-list', () => {
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule, FormsModule],
+      imports: [HsPanelHelpersModule, FormsModule, TranslateModule.forRoot()],
       declarations: [HsLayerListComponent],
       providers: [
         HsLayerManagerService,
@@ -75,7 +76,9 @@ describe('layermanager-layer-list', () => {
           useValue: {
             requestGetCapabilities: (service_url) =>
               new Promise((resolve, reject) => {
-                resolve(require('../../test/data/wms-capabilities.data.xml').default);
+                resolve(
+                  require('../../test/data/wms-capabilities.data.xml').default
+                );
               }),
           },
         },
