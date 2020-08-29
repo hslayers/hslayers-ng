@@ -25,6 +25,7 @@ import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 describe('HsLegendLayerComponent', () => {
@@ -43,7 +44,7 @@ describe('HsLegendLayerComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule],
+      imports: [HsPanelHelpersModule, TranslateModule.forRoot()],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,
