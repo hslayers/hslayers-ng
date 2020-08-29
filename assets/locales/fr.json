@@ -1,6 +1,7 @@
 {
     "PANEL_HEADER": {
-      "LM": "Gestionnaire des calques"
+      "LM": "Gestionnaire des calques",
+      "LEGEND": "Légendes"
     },
     "LAYERMANAGER": {
       "baselayers": "Fond de carte de base",
@@ -9,7 +10,6 @@
       "terrains": "Terrains",
       "mapContent": "Contenu des cartes",
       "other": "Autre",
-      "filter": "Filtre:",
       "baseMapGallery": {
         "noBaseMap": "Pas de fond de carte",
         "grayscale": "Niveaux de gris"
@@ -64,6 +64,7 @@
       "from": "de",
       "to": "à",
       "distance": "Distance",
+      "filter": "Filtre:",
       "title": "Titre",
       "scale": "Echelle",
       "info": "Information additionnelle",
@@ -78,7 +79,11 @@
       "strokeWidth": "Largeur du trait",
       "radius": "Rayon",
       "polygon": "Polygone",
-      "rotation": "Rotation"
+      "rotation": "Rotation",
+      "reload": "Recharger"
+    },
+    "LEGEND": {
+      "noLegendExists": "Aucune couche avec légende n'existe!"
     }
   }
   

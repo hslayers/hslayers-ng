@@ -1,6 +1,7 @@
 {
   "PANEL_HEADER": {
-    "LM": "Správce vrstev"
+    "LM": "Správce vrstev",
+    "LEGEND": "Legenda"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -9,7 +10,6 @@
     "terrains": "Terény",
     "mapContent": "Mapový obsah",
     "other": "Jiné",
-    "filter": "Filtr:",
     "baseMapGallery": {
       "noBaseMap": "Bez podkladu",
       "grayscale": "Šedotón"
@@ -62,6 +62,7 @@
     "no": "Ne",
     "date": "Datum",
     "from": "Z",
+    "filter": "Filtr:",
     "to": "do",
     "distance": "Vzdálenost",
     "title": "Název",
@@ -78,6 +79,10 @@
     "strokeWidth": "Šířka tahu",
     "radius": "Radius",
     "polygon": "Polygon",
-    "rotation": "Rotace"
+    "rotation": "Rotace",
+    "reload": "Znovu načíst"
+  },
+  "LEGEND": {
+    "noLegendExists": "Žádná vrstva s legendou neexistuje!"
   }
 }

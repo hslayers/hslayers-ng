@@ -1,6 +1,7 @@
 {
     "PANEL_HEADER": {
-      "LM": "Slāņu pārvaldība"
+      "LM": "Slāņu pārvaldība",
+      "LEGEND": "Leģenda"
     },
     "LAYERMANAGER": {
       "baselayers": "Pamatslāņi",
@@ -9,7 +10,6 @@
       "terrains": "Reljefi",
       "mapContent": "Kartes saturs",
       "other": "Cits",
-      "filter": "Filtrs:",
       "baseMapGallery": {
         "noBaseMap": "Nav pamatkartes",
         "grayscale": "Pelēktoņu"
@@ -27,7 +27,7 @@
         "metadataOfLayer": "Slāņa metadati iekš",
         "metadataOfService": "Servisa metadati",
         "declutter": "Izkliedēt datus",
-        "cluster": "Dalīt datu kopās",
+        "cluster": "Apvienot blakusesošos",
         "opacity": "Necaurredzamība"
       },
       "layerList": {
@@ -70,6 +70,7 @@
       "removeLayer": "Noņemt slāni",
       "renameLayer": "Pārsaukt slāni",
       "hide": "Paslēpt",
+      "filter": "Filtrs:",
       "legend": "Leģenda",
       "width": "Platums",
       "circle": "Aplis",
@@ -78,7 +79,11 @@
       "strokeWidth": "Līnjas platums",
       "radius": "Rādiuss",
       "polygon": "Daudzstūris",
-      "rotation": "Rotācija"
+      "rotation": "Rotācija",
+      "reload": "Pārlādēt"
+    },
+    "LEGEND": {
+      "noLegendExists": "Nav neviena slāņa ar leģendu!"
     }
   }
   

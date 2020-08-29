@@ -1,9 +1,9 @@
 <div class="card panel-default hs-main-panel">
-    <hs-panel-header name="legend" title="Legend"></hs-panel-header>
+    <hs-panel-header name="legend" [title]="'PANEL_HEADER.LEGEND' | translate"></hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title"></p>
+        <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" ng-model="query.title"></p>
         <span *ngIf="noLayerExists()">
-            <p style="text-align: center" i18n>No layer with legend exists!</p>
+            <p style="text-align: center">{{'LEGEND.noLegendExists' | translate}}</p>
         </span>
         <ul class="list-group">
             <li *ngFor="let layer of filterDescriptors()" class="list-group-item" [hidden]= !HsLegendService.legendValid(layer)>
@@ -16,7 +16,7 @@
         </ul>
         <div class="row justify-content-center">
             <div class="col col-md-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-light btn-outline ng-scope" i18n-title="Reload" ng-click="">
+                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translate" ng-click="">
                     <i class="icon-refresh"></i>
                 </button>
             </div>

@@ -1,6 +1,7 @@
 {
     "PANEL_HEADER": {
-      "LM": "Beheer lagen"
+      "LM": "Beheer lagen",
+      "LEGEND": "Legenda"
     },
     "LAYERMANAGER": {
       "baselayers": "Basislagen",
@@ -9,7 +10,6 @@
       "terrains": "Terreinen",
       "mapContent": "Mapinhoud",
       "other": "Andere",
-      "filter": "Filter:",
       "baseMapGallery": {
         "noBaseMap": "Geen basiskaart",
         "grayscale": "Grijstinten"
@@ -64,6 +64,7 @@
       "from": "Van",
       "to": "tot",
       "distance": "Afstand",
+      "filter": "Filter:",
       "title": "Titel",
       "scale": "Schaal",
       "info": "Extra informatie",
@@ -78,7 +79,11 @@
       "strokeWidth": "lijnbreedte",
       "radius": "Straal",
       "polygon": "Veelhoek",
-      "rotation": "Rotatie"
+      "rotation": "Rotatie",
+      "reload": "Herlaad"
+    },
+    "LEGEND": {
+      "noLegendExists": "Er bestaat geen laag met legenda!"
     }
   }
   
