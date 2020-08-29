@@ -22,6 +22,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
+import {TranslateModule} from '@ngx-translate/core';
 
 describe('HsLegendComponent', () => {
   beforeAll(() => {
@@ -38,7 +39,7 @@ describe('HsLegendComponent', () => {
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule],
+      imports: [HsPanelHelpersModule, TranslateModule.forRoot()],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,
