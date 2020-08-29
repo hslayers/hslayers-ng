@@ -1,6 +1,7 @@
 {
   "PANEL_HEADER": {
-    "LM": "Layermanager"
+    "LM": "Layermanager",
+    "LEGEND": "Legend"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -9,7 +10,6 @@
     "terrains": "Terrains",
     "mapContent": "Map content",
     "other": "Other",
-    "filter": "Filter:",
     "baseMapGallery": {
       "noBaseMap": "No basemap",
       "grayscale": "Grayscale"
@@ -63,6 +63,7 @@
     "date": "Date",
     "from": "From",
     "to": "to",
+    "filter": "Filter:",
     "distance": "Distance",
     "title": "Title",
     "scale": "Scale",
@@ -78,6 +79,10 @@
     "strokeWidth": "Stroke width",
     "radius": "Radius",
     "polygon": "Polygon",
-    "rotation": "Rotation"
+    "rotation": "Rotation",
+    "reload": "Reload"
+  },
+  "LEGEND": {
+    "noLegendExists": "No layer with legend exists!"
   }
 }
