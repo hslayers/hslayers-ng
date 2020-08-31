@@ -14,6 +14,7 @@ import {HsSearchResultsComponent} from './search-results.component';
 import {HsSearchService} from './search.service';
 import {HsShareModule} from './../permalink/share.module';
 import {HsStylerModule} from './../styles/styles.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {limitToPipe} from './limitTo.pipe';
 
 @NgModule({
@@ -31,13 +32,14 @@ import {limitToPipe} from './limitTo.pipe';
     FormsModule,
     CommonModule,
     HsPanelHelpersModule,
+    TranslateModule,
   ],
   exports: [
     HsSearchComponent,
     HsSearchResultsComponent,
     HsSearchInputComponent,
   ],
-  providers: [HsSearchService],
+  providers: [HsSearchService, TranslateStore],
   entryComponents: [
     HsSearchComponent,
     HsSearchResultsComponent,

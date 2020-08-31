@@ -50,7 +50,8 @@
     "layers": "Vrstvy",
     "next": "Další",
     "download": "Stažení",
-    "print": "Tisk"
+    "print": "Tisk",
+    "clear": "Průhledná"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -59,7 +60,8 @@
     "PRINT": "Tisk",
     "PERMALINK": "Sdílet mapu",
     "SAVECOMPOSITION": "Uložit aktuální mapu",
-    "LANGUAGE": "Změnit jazyk"
+    "LANGUAGE": "Změnit jazyk",
+    "SEARCH": "Vyhledávání"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -211,5 +213,8 @@
       "specifyApplication": "Zadejte uživatelské nastavení aplikace",
       "applicationSettings": "Nastavení aplikace"
     }
+  },
+  "SEARCH": {
+    "search": "Vyhledávání:"
   }
 }
