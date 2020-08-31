@@ -1,73 +1,77 @@
 <div class="status-creator" layout="column" style="max-height:100%;">
     <md-toolbar class="md-hue-3" flex="none" hide-gt-sm>
-        <h1 class="md-toolbar-tools" translate>Save map</h1>
+        <h1 class="md-toolbar-tools">{{'SAVECOMPOSITION.panelMd.saveMap' | translate}}</h1>
     </md-toolbar>
     <div class="md-padding" flex>
         <div layout="column" class="md-inline-form">
             <md-input-container>
-                <label translate>Name</label>
+                <label>{{'COMMON.name' | translate}}</label>
                 <input required md-maxlength="30" ng-model="compoData.title">
             </md-input-container>
             <md-input-container>
-                <label><translate>Abstract</translate>
-                    <textarea name="bio" ng-model="compoData.abstract" md-maxlength="600" placeholder="{{'Fill in descriptive text about map'|translate}}"></textarea>
+                <label>{{'COMMON.abstract' | translate}}
+                    <textarea name="bio" ng-model="compoData.abstract" md-maxlength="600"
+                        [placeholder]="{{'COMMON.fillInDescriptive' |translate}}"></textarea>
                 </label>
             </md-input-container>
             <div>
                 <md-switch ng-model="thumbnailVisible" aria-label="Thumbnail switch">
-                    <translate>Show thumbnail</translate>
+                    {{'SAVECOMPOSITION.panelMd.showThumbnail' | translate}}
                 </md-switch>
                 <div class="hs-fade" ng-show="thumbnailVisible">
-                    <label for="hs-stc-thumbnail"><translate>Thumbnail</translate>
-                        <img class="hs-stc-thumbnail img-thumbnail" alt="Composition thumbnail" width="256" height="256" ng-show="thumbnailVisible">
+                    <label for="hs-stc-thumbnail">{{'COMMON.thumbnail' | translate}}
+                        <img class="hs-stc-thumbnail img-thumbnail" alt="Composition thumbnail" width="256" height="256"
+                            ng-show="thumbnailVisible">
                     </label>
                 </div>
             </div>
             <div flex-gt-sm="50">
                 <md-checkbox ng-repeat="g in statusData.groups" ng-model="g.r" aria-label="Make public">
-                    <translate>Make public</translate>
+                    {{'SAVECOMPOSITION.panelMd.makePublic' | translate}}
                 </md-checkbox>
             </div>
             <div>
                 <md-switch ng-model="showExpanded" aria-label="Thumbnail switch">
-                    <translate>Advanced options</translate>
+                    {{'COMMON.advancedOptions' | translate}}
                 </md-switch>
                 <div class="hs-fade" ng-show="showExpanded" layout-fill>
                     <md-input-container>
-                        <label translate>Keywords</label>
-                        <textarea name="keywords" ng-model="compoData.keywords" md-maxlength="200" placeholder="{{'Fill keywords'|translate}}"></textarea>
+                        <label>{{'COMMON.keywords' | translate}</label>
+                        <textarea name="keywords" ng-model="compoData.keywords" md-maxlength="200" [placeholder]="{{'SAVECOMPOSITION.panelMd.fillKeywords' |translate}}"></textarea>
                     </md-input-container>
                     <div layout-fill class="no-margin-bottom">
-                        <span class="md-body-2" translate>Extent</span>
+                        <span class="md-body-2">{{'COMMON.extent' | translate}}</span>
                         <div layout="column" layout-align="center center">
                             <div layout="row" layout-align="space-around center">
                                 <md-input-container flex="30">
-                                    <label translate>North</label>
+                                    <label>{{'COMMON.north' | translate}}</label>
                                     <input ng-model="compoData.bbox[3]">
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="space-around center">
                                 <md-input-container flex="20">
-                                    <label translate>West</label>
+                                    <label>{{'COMMON.west' | translate}}</label>
                                     <input ng-model="compoData.bbox[2]">
                                 </md-input-container>
                                 <md-input-container flex="20">
-                                    <label translate>East</label>
+                                    <label>{{'COMMON.east' | translate}}</label>
                                     <input ng-model="compoData.bbox[0]">
                                 </md-input-container>
                             </div>
                             <div layout="row" layout-align="space-around center">
                                 <md-input-container flex="30">
-                                    <label translate>South</label>
+                                    <label>{{'COMMON.south' | translate}}</label>
                                     <input ng-model="compoData.bbox[1]">
                                 </md-input-container>
                             </div>
                         </div>
-                        <md-button ng-click="HsSaveMapManagerService.setCurrentBoundingBox()" translate>Use map extent</md-button>
+                        <md-button ng-click="HsSaveMapManagerService.setCurrentBoundingBox()">
+                            {{'SAVECOMPOSITION.panelMd.useMapExtent' | translate}}</md-button>
                     </div>
                     <div layout-fill layout="column">
-                        <span class="md-body-2">Layers</span>
-                        <md-checkbox ng-repeat="layer in compoData.layers" ng-model="layer.checked" aria-label="Make public">
+                        <span class="md-body-2">{{'COMMON.layers' | translate}}</span>
+                        <md-checkbox ng-repeat="layer in compoData.layers" ng-model="layer.checked"
+                            aria-label="Make public">
                             {{layer.title}}
                             <md-divider></md-divider>
                         </md-checkbox>
@@ -77,8 +81,9 @@
             </div>
             <md-divider></md-divider>
             <div layout-padding layout="row" layout-align="space-around center">
-                <md-button class="md-raised" ng-click="reset();" translate>Reset</md-button>
-                <md-button class="md-raised md-accent" ng-disabled="!compoData.title" ng-click="confirmSave();" translate>Save</md-button>
+                <md-button class="md-raised" ng-click="reset();">{{'COMMON.reset' | translate}}</md-button>
+                <md-button class="md-raised md-accent" ng-disabled="!compoData.title" ng-click="confirmSave();">
+                    {{'COMMON.save' | translate}}</md-button>
             </div>
         </div>
     </div>

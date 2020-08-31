@@ -20,6 +20,7 @@ import {HsSaveMapSimpleFormComponent} from './save-map-simple-form.component';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -37,9 +38,11 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     FormsModule,
     HsLogModule,
     HsUiExtensionsModule,
+    TranslateModule,
   ],
   exports: [HsSaveMapComponent],
   providers: [
+    TranslateStore,
     HsSaveMapManagerService,
     HsSaveMapService,
     HsStatusManagerService,

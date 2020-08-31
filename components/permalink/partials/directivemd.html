@@ -20,13 +20,13 @@
             <h3 layout-fill style="margin-bottom:10px;">{{'PERMALINK.shareOnSocialNetwork' | translate}}</h3>
             <md-input-container layout-fill>
                 <label>{{'COMMON.name' | translate}}</label>
-                <input [placeholder]="{{'PERMALINK.fillInName' |translate}}" ng-change="invalidateShareUrl()"
+                <input [placeholder]="{{'COMMON.fillInName' |translate}}" ng-change="invalidateShareUrl()"
                     ng-model="data.title" />
             </md-input-container>
 
             <md-input-container layout-fill>
                 <label>{{'COMMON.abstract' | translate}}</label>
-                <textarea [placeholder]="{{'PERMALINK.fillInDescriptive' |translate}}" ng-change="invalidateShareUrl()"
+                <textarea [placeholder]="{{'COMMON.fillInDescriptive' |translate}}" ng-change="invalidateShareUrl()"
                     ng-model="data.abstract" md-maxlength="500" rows="2" md-select-on-focus>
                             </textarea>
             </md-input-container>

@@ -1,57 +1,73 @@
 <!-- Nav tabs -->
 <ul class="nav flex-column flex-sm-row stc-tabs" role="tablist">
     <li role="presentation" class="nav-item" *ngFor="let s of steps">
-        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab" data-toggle="tab" (click)="setStep(s)">{{capitalizeFirstLetter(s)}}</a>
+        <a href="#hs-{{s}}" class="nav-link" [ngClass]="{'btn-primary': step == s}" aria-controls="hs-{{s}}" role="tab"
+            data-toggle="tab" (click)="setStep(s)">{{capitalizeFirstLetter(s)}}</a>
     </li>
 </ul><!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='context'}" id="hs-context">
         <form>
             <label class="form-group">
-                <i18n>Title</i18n> *
-                <input type="text" class="form-control" name="hs-save-map-title" [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
+                {{'COMMON.title' | translate}} *
+                <input type="text" class="form-control" name="hs-save-map-title"
+                    [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
             </label>
 
             <label class="form-group">
-                <i18n>Abstract</i18n>
-                <textarea class="form-control" name="hs-save-map-abstract" [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
+                {{'COMMON.abstract' | translate}}
+                <textarea class="form-control" name="hs-save-map-abstract"
+                    [(ngModel)]="HsSaveMapManagerService.compoData.abstract"></textarea>
             </label>
 
             <label class="form-group">
-                <i18n>Keywords</i18n>
-                <input type="text" class="form-control" name="hs-save-map-keywords" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
+                {{'COMMON.keywords' | translate}}
+                <input type="text" class="form-control" name="hs-save-map-keywords"
+                    [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
 
             <div class="form-group">
-                <label for="stc-extent1" class="form-group" i18n>Extent</label>
+                <label for="stc-extent1" class="form-group">{{'COMMON.extent' | translate}}</label>
                 <div class="form-row stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.east" title="East">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.east"
+                            [title]="'COMMON.east' | translate">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.south" title="South">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.south"
+                            [title]="'COMMON.south' | translate">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.west" title="West">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.west"
+                            [title]="'COMMON.west' | translate">
                     </div>
                     <div class="col-sm-3 px-0">
-                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="HsSaveMapManagerService.compoData.bbox.north" title="North">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox.north"
+                            [title]="'COMMON.north' | translate">
                     </div>
                 </div>
-                <button type="button" class="mt-1 btn btn-secondary btn-block" (click)="HsSaveMapManagerService.setCurrentBoundingBox()" i18n>Use current map extent</button>
+                <button type="button" class="mt-1 btn btn-secondary btn-block"
+                    (click)="HsSaveMapManagerService.setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent' | translate}}</button>
             </div>
             <div class="form-group">
                 <ul class="list-group" id="stc-layerlist">
                     <li class="list-group-item" style="padding: 3px">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" checked="" (click)="selectDeselectAllLayers()">
-                            <label class="form-check-label" i18n>Toggle all</label>
-                          </div>
+                            <input class="form-check-input" type="checkbox" checked=""
+                                (click)="selectDeselectAllLayers()">
+                            <label class="form-check-label">{{'SAVECOMPOSITION.form.toggleAll' | translate}}</label>
+                        </div>
                     </li>
 
-                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" style="padding: 3px" class="list-group-item">
+                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" style="padding: 3px"
+                        class="list-group-item">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" [ngModelOptions]="{standalone: true}" [(ngModel)]="layer.checked">
+                            <input type="checkbox" class="form-check-input" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="layer.checked">
                             <label class="form-check-label">{{layer.title}}</label>
                         </div>
                     </li>
@@ -61,67 +77,69 @@
     </div>
     <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='access'}" id="hs-access">
         <table class="table table-condensed">
-            <tbody><tr>
-                <th></th>
-                <th i18n>Read</th>
-                <th i18n>Write</th>
-            </tr>
-            <tr *ngFor="let g of HsSaveMapManagerService.statusData.groups">
-                <td>{{g.roleTitle || g.roleName}}:</td>
-                <td><input type="checkbox" class="form-control" [(ngModel)]="g.r"></td>
-                <td><input type="checkbox" class="form-control" [(ngModel)]="g.w"></td>
-            </tr>
-        </tbody></table>
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th>{{'SAVECOMPOSITION.form.read' | translate}}</th>
+                    <th>{{'SAVECOMPOSITION.form.write' | translate}}</th>
+                </tr>
+                <tr *ngFor="let g of HsSaveMapManagerService.statusData.groups">
+                    <td>{{g.roleTitle || g.roleName}}:</td>
+                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.r"></td>
+                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.w"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div role="tabpanel" class="tab-pane" [ngClass]="{'active': step =='author'}" id="hs-author">
 
         <label class="form-group">
-            <i18n>Person</i18n>
+            {{'SAVECOMPOSITION.form.person' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.name">
         </label>
 
         <label class="form-group">
-            <i18n>Organization</i18n>
+            {{'SAVECOMPOSITION.form.organization' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.organization">
         </label>
 
         <label class="form-group">
-            <i18n>Position</i18n>
+            {{'SAVECOMPOSITION.form.position' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.position">
         </label>
 
         <label class="form-group">
-            <i18n>Address</i18n>
+            {{'SAVECOMPOSITION.form.address' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.address">
         </label>
 
         <label class="form-group">
-            <i18n>City</i18n>
+            {{'SAVECOMPOSITION.form.city' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.city">
         </label>
 
         <label class="form-group">
-            <i18n>State</i18n>
+            {{'SAVECOMPOSITION.form.state' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.state">
         </label>
 
         <label class="form-group">
-            <i18n>Postal code</i18n>
+            {{'SAVECOMPOSITION.form.postalCode' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.postalcode">
         </label>
 
         <label class="form-group">
-            <i18n>Country</i18n>
+            {{'SAVECOMPOSITION.form.country' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.country">
         </label>
 
         <label class="form-group">
-            <i18n>Phone</i18n>
+            {{'SAVECOMPOSITION.form.phone' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.phone">
         </label>
 
         <label class="form-group">
-            <i18n>E-mail</i18n>
+            {{'SAVECOMPOSITION.form.eMail' | translate}}
             <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.email">
         </label>
 
@@ -132,9 +150,13 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-block btn-primary" id="stc-save" [hidden]="!(step == 'end' && isAllowed() && overwrite)" i18n (click)="HsSaveMapManagerService.initiateSave(false)">Overwrite</button>
-    <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())" i18n (click)="HsSaveMapManagerService.initiateSave(true)">Save
-        as</button>
-    <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')" i18n (click)="next()">Next</button>
-    <a class="btn btn-block btn-secondary" [href]="'data:'+downloadableData" id="stc-download" [hidden]="!(step == 'end')" download="context.hsl" i18n>Download</a>
+    <button type="button" class="btn btn-block btn-primary" id="stc-save"
+        [hidden]="!(step == 'end' && isAllowed() && overwrite)"
+        (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button>
+    <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())"
+        (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.saveAs' | translate}}</button>
+    <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"
+        (click)="next()">{{'COMMON.next' | translate}}</button>
+    <a class="btn btn-block btn-secondary" [href]="'data:'+downloadableData" id="stc-download"
+        [hidden]="!(step == 'end')" download="context.hsl">{{'COMMON.download' | translate}}</a>
 </div>
