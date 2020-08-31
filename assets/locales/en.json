@@ -13,6 +13,7 @@
     "info": "Additional information",
     "removeLayer": "Remove layer",
     "renameLayer": "Rename layer",
+    "saveAs": "Save as..",
     "hide": "Hide",
     "legend": "Legend",
     "width": "Width",
@@ -35,14 +36,28 @@
     "cancel": "Cancel",
     "drawNewFeatures": "Draw new features",
     "name": "Name",
-    "thumbnail": "Thumbnail"
+    "thumbnail": "Thumbnail",
+    "fillInDescriptive": "Fill in descriptive text about map",
+    "fillInName": "Fill in name",
+    "keywords": "Keywords",
+    "extent": "Extent",
+    "north": "North",
+    "west": "West",
+    "east": "East",
+    "south": "South",
+    "reset": "Reset",
+    "save": "Save",
+    "layers": "Layers",
+    "next": "Next",
+    "download": "Download"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
     "LEGEND": "Legend",
     "DRAW": "Draw",
     "PRINT": "Print",
-    "PERMALINK": "Share map"
+    "PERMALINK": "Share map",
+    "SAVECOMPOSITION": "Save current map"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -105,7 +120,6 @@
     "disableDrawing": "Disable drawing",
     "activateDrawing": "Activate drawing by choosing a feature type",
     "unsavedDrawing": "Unsaved drawing",
-    "saveAs": "Save as..",
     "drawingTo": "Drawing to:",
     "individualStyle": "Individual style for feature",
     "definedStyle": "Defined style",
@@ -124,8 +138,6 @@
     }
   },
   "PERMALINK": {
-    "fillInName": "Fill in name",
-    "fillInDescriptive": "Fill in descriptive text about map",
     "newShare": "New share",
     "sharePureMap": "Share pure map",
     "sharesOnlyMap": "*Shares only map as picture",
@@ -140,6 +152,54 @@
     "share": "Share",
     "directiveMd": {
       "copyToClipboard": "Copy to clipboard"
+    }
+  },
+  "SAVECOMPOSITION": {
+    "saveTo": "Save to",
+    "panelMd": {
+      "saveMap": "Save map",
+      "fillKeywords": "Fill keywords",
+      "showThumbnail": "Show thumbnail",
+      "makePublic": "Make public",
+      "useMapExtent": "Use map extent",
+      "youAreNotAuthorized": "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
+    },
+    "dialogResult": {
+      "savingCompositionStatus": "Saving composition status",
+      "compositionSavedSuccessfully": "Composition saved successfully",
+      "compositionFailedToSave": "Composition failed to save",
+      "requestWasProcessed": "Request was processed, but map was not saved due to authorization missing",
+      "serverDidNotRespond": "Server didn't respond or other error occurred"
+    },
+    "dialogSave": {
+      "saveComposition": "Save composition",
+      "areYouAttempting": "You are attempting to save map changes to",
+      "wantToOverwrite": "Do you really want to overwrite?",
+      "yesSave": "Yes, save",
+      "noSaveAs": "No, save as",
+      "selectNewNameForMap": "Select new name for map",
+      "youDoNotHave": "You don't have sufficient rights to do so. Maybe the session has ended?",
+      "useDifferentName": "Use a different name to save the map"
+    },
+    "form": {
+      "userCurrentMapExtent": "Use current map extent",
+      "toggleAll": "Toggle all",
+      "read": "Read",
+      "write": "Write",
+      "person": "Person",
+      "organization": "Organization",
+      "position": "Position",
+      "address": "Address",
+      "city": "City",
+      "state": "State",
+      "postalCode": "Postal code",
+      "country": "Country",
+      "phone": "Phone",
+      "eMail": "Email",
+      "overwrite": "Overwrite"
+    },
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Error when syncing"
     }
   }
 }

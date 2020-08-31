@@ -51,14 +51,14 @@
                 <div class="form-group">
                     <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translate}}</label>
                     <input type="text" class="form-control" id="hs-prmlnk-title"
-                        [placeholder]="'PERMALINK.fillInName' | translate" (change)="invalidateShareUrl()"
+                        [placeholder]="'COMMON.fillInName' | translate" (change)="invalidateShareUrl()"
                         [(ngModel)]="HsShareService.data.title">
                 </div>
                 <div class="form-group">
                     <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translate}}</label>
 
                     <textarea class="form-control" id="hs-prmlnk-abstract"
-                        [placeholder]="'PERMALINK.fillInDescriptive' | translate" (change)="invalidateShareUrl()"
+                        [placeholder]="'COMMON.fillInDescriptive' | translate" (change)="invalidateShareUrl()"
                         [(ngModel)]="HsShareService.data.abstract">                    </textarea>
                 </div>
 

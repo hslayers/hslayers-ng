@@ -2,50 +2,57 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" i18n>
-                   Save composition
+                <h4 class="modal-title">
+                    {{'SAVECOMPOSITION.dialogSave.saveComposition' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" i18n>Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
+                        aria-hidden="true"></span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto; text-align: center; font-size: 16px">
-                <div i18n>
-                    You are attempting to save map changes to
+                <div>
+                    {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translate}}
                 </div>
                 <div>
                     <b>{{compoData.title}}</b>
                 </div>
                 <div *ngIf="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
-                    <div i18n>
-                        Do you really want to overwrite <b>{{compoData.title}}</b>
+                    <div>
+                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}} <b>{{compoData.title}}</b>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.save(); close()" i18n>Yes, save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
+                            (click)="HsSaveMapManagerService.save(); close()">{{'SAVECOMPOSITION.dialogSave.yesSave' | translate}}</button>
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" (click)="selectNewTitle()" i18n>No, save as</button>
+                        <button type="button" class="btn btn-secondary btn-lg"
+                            (click)="selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs' | translate}}</button>
                     </p>
                 </div>
 
                 <div *ngIf="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
-                    <div i18n>Select new name for map.</div>
+                    <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translate}}</div>
                     <p>
                         <input type="text" class="form-control hs-stc-title" [(ngModel)]="compoData.title">
                     </p>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.save(true); close()" i18n>Save</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
+                            (click)="HsSaveMapManagerService.save(true); close()">{{'COMMON.save' | translate}}</button>
                     </p>
                 </div>
 
                 <div *ngIf="!statusData.titleFree || !statusData.hasPermission">
                     <div>
-                        <p i18n *ngIf="!statusData.hasPermission">You don't have sufficient rights to do so. Maybe the session has ended?</p>
-                        <p i18n *ngIf="!statusData.titleFree">Use a different name to save the map.</p>
+                        <p *ngIf="!statusData.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' | translate}}
+                        </p>
+                        <p *ngIf="!statusData.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' | translate}}
+                        </p>
                     </div>
                     <p>
-                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" (click)="HsSaveMapManagerService.focusTitle(); close()" i18n>OK</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
+                            (click)="HsSaveMapManagerService.focusTitle(); close()">{{'COMMON.ok' | translate}}</button>
                     </p>
                 </div>
-                
+
             </div>
         </div>
     </div>

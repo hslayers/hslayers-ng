@@ -13,6 +13,7 @@
     "info": "Další informace",
     "removeLayer": "Odstranit vrstvu",
     "renameLayer": "Přejmenovat vrstvu",
+    "saveAs": "Uložit jako..",
     "hide": "Skrýt",
     "legend": "Legenda",
     "width": "Šířka",
@@ -35,14 +36,28 @@
     "cancel": "Zrušení",
     "drawNewFeatures": "Nakreslete nové prvek",
     "name": "Název",
-    "thumbnail": "Miniatura"
+    "thumbnail": "Miniatura",
+    "fillInDescriptive": "Vyplňte popisný text o mapě",
+    "fillInName": "Vyplňte jméno",
+    "keywords": "klíčová slova",
+    "extent": "Rozsah",
+    "north": "Severní",
+    "west": "Západ",
+    "east": "Východní",
+    "south": "Jižní",
+    "reset": "Resetovat",
+    "save": "Uložit",
+    "layers": "Vrstvy",
+    "next": "Další",
+    "download": "Stažení"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
     "LEGEND": "Legenda",
     "DRAW": "Kreslit",
     "PRINT": "Tisk",
-    "PERMALINK": "Sdílet mapu"
+    "PERMALINK": "Sdílet mapu",
+    "SAVECOMPOSITION": "Uložit aktuální mapu"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -105,7 +120,6 @@
     "disableDrawing": "Zakázat kreslení",
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
     "unsavedDrawing": "Neuložená kresba",
-    "saveAs": "Uložit jako..",
     "drawingTo": "Kreslení do:",
     "individualStyle": "Individuální styl pro prvek",
     "definedStyle": "Definovaný styl",
@@ -124,8 +138,6 @@
     }
   },
   "PERMALINK": {
-    "fillInName": "Vyplňte jméno",
-    "fillInDescriptive": "Vyplňte popisný text o mapě",
     "newShare": "Nový sdílet",
     "sharePureMap": "Sdílejte čistou mapu",
     "sharesOnlyMap": "*Sdílí pouze mapu jako obrázek",
@@ -140,6 +152,54 @@
     "share": "Sdílet",
     "directiveMd": {
       "copyToClipboard": "Zkopírovat do schránky"
+    }
+  },
+  "SAVECOMPOSITION": {
+    "saveTo": "Uložit do",
+    "panelMd": {
+      "saveMap": "Uložit mapu",
+      "fillKeywords": "Vyplňte klíčová slova",
+      "showThumbnail": "Zobrazit miniaturu",
+      "makePublic": "Zveřejnit",
+      "useMapExtent": "Použijte rozsah mapy",
+      "youAreNotAuthorized": "Nemáte oprávnění skladovat složení. Přihlaste se nebo se obraťte na administrátora pro vaše přihlašovací údaje."
+    },
+    "dialogResult": {
+      "savingCompositionStatus": "Ukládání stavu složení",
+      "compositionSavedSuccessfully": "Složení bylo úspěšně uloženo",
+      "compositionFailedToSave": "Uložení kompozice se nezdařilo",
+      "requestWasProcessed": "Žádost byla zpracována, ale mapa nebyla uložena kvůli chybějící autorizaci",
+      "serverDidNotRespond": "Server nereagoval nebo došlo k jiné chybě"
+    },
+    "dialogSave": {
+      "saveComposition": "Uložit složení",
+      "areYouAttempting": "Pokoušíte se uložit změny mapy do",
+      "wantToOverwrite": "Opravdu chcete přepsat?",
+      "yesSave": "Ano, uložte",
+      "noSaveAs": "Ne, uložit jako",
+      "selectNewNameForMap": "Vyberte nový název pro mapu",
+      "youDoNotHave": "K tomu nemáte dostatečná práva. Možná relace skončila?",
+      "useDifferentName": "K uložení mapy použijte jiný název"
+    },
+    "form": {
+      "userCurrentMapExtent": "Použít aktuální rozsah mapy",
+      "toggleAll": "Přepnout vše",
+      "read": "Číst",
+      "write": "Psát si",
+      "person": "Osoba",
+      "organization": "Organizace",
+      "position": "Pozice",
+      "address": "Adresa",
+      "city": "Město",
+      "state": "Stát",
+      "postalCode": "Poštovní směrovací číslo",
+      "country": "Země",
+      "phone": "Telefon",
+      "eMail": "E-mailem",
+      "overwrite": "přepsat"
+    },
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Chyba při synchronizaci"
     }
   }
 }

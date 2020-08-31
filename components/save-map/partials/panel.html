@@ -1,12 +1,12 @@
 <div class="card panel- mainpanel hs-stc-mainpanel">
-    <hs-panel-header name="saveMap" title="Save current map">
+    <hs-panel-header name="saveMap" [title]="'PANEL_HEADER.SAVECOMPOSITION' | translate">
         <extra-title>{{title || current_composition_title}}</extra-title>
     </hs-panel-header>
     <div class="card-body">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>Save to</span>
+                    <span class="input-group-text control-label">{{'SAVECOMPOSITION.saveTo' | translate}}</span>
                 </div>
                 <select class="form-control" [(ngModel)]="endpoint" (change)="HsSaveMapManagerService.selectEndpoint(endpoint)">
                     <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>

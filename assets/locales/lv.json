@@ -12,6 +12,7 @@
     "info": "Papildu informācija",
     "removeLayer": "Noņemt slāni",
     "renameLayer": "Pārsaukt slāni",
+    "saveAs": "Saglabāt kā..",
     "hide": "Paslēpt",
     "filter": "Filtrs:",
     "legend": "Leģenda",
@@ -35,14 +36,28 @@
     "cancel": "Atcelt",
     "drawNewFeatures": "Zīmēt jaunas entītijas",
     "name": "Nosaukums",
-    "thumbnail": "Sīktēls"
+    "thumbnail": "Sīktēls",
+    "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
+    "fillInName": "Norādiet nosaukumu",
+    "keywords": "Atslēgvārdi",
+    "extent": "Apjoms",
+    "north": "Ziemeļi",
+    "west": "Rietumi",
+    "east": "Austrumi",
+    "south": "Dienvidi",
+    "reset": "Atiestatīt",
+    "save": "Saglabāt",
+    "layers": "Slāņi",
+    "next": "Nākamais",
+    "download": "Lejuplādēt"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
     "LEGEND": "Leģenda",
     "DRAW": "Zīmēt",
     "PRINT": "Printēt",
-    "PERMALINK": "Kopīgot karti"
+    "PERMALINK": "Kopīgot karti",
+    "SAVECOMPOSITION": "Saglabāt pašreizējo karti"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -105,7 +120,6 @@
     "disableDrawing": "Atspējot zīmēšanu",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties entītijas veidu",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "saveAs": "Saglabāt kā..",
     "drawingTo": "Zīmējums uz:",
     "individualStyle": "Individuāls stils entītijai",
     "definedStyle": "Definētais stils",
@@ -124,8 +138,6 @@
     }
   },
   "PERMALINK": {
-    "fillInName": "Norādiet nosaukumu",
-    "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
     "newShare": "Jauna kopīgošana",
     "sharePureMap": "Kopīgot tikai karti",
     "sharesOnlyMap": "*Kopīgot tikai karti kā attēlu",
@@ -140,6 +152,54 @@
     "share": "Kopīgot",
     "directiveMd": {
       "copyToClipboard": "Kopēt starpliktuvē"
+    }
+  },
+  "SAVECOMPOSITION": {
+    "saveTo": "Saglabāt uz",
+    "panelMd": {
+      "saveMap": "Saglabāt karti",
+      "fillKeywords": "Ievadiet atslēgvārdus",
+      "showThumbnail": "Rādīt sīktēlu",
+      "makePublic": "Publiskot",
+      "useMapExtent": "Izmantot kartes apmēru",
+      "youAreNotAuthorized": "Jums nav atļauts saglabāt kompozīciju. Lūdzu, pierakstieties vai sazinieties ar administratoru, lai iegūtu Jūsu akreditācijas datus."
+    },
+    "dialogResult": {
+      "savingCompositionStatus": "Saglabā kompozīcijas statusu",
+      "compositionSavedSuccessfully": "Kompozīcija veiksmīgi saglabāta",
+      "compositionFailedToSave": "Kompozīciju neizdevās saglabāt",
+      "requestWasProcessed": "Pieprasījums tika apstrādāts, taču karte netika saglabāta, jo trūka autorizācijas",
+      "serverDidNotRespond": "Serveris neatbildēja vai radās cita kļūda"
+    },
+    "dialogSave": {
+      "saveComposition": "Save composition",
+      "areYouAttempting": "Jūs mēģināt saglabāt kartes izmaiņas mapē",
+      "wantToOverwrite": "Vai tiešām vēlaties pārrakstīt?",
+      "yesSave": "Jā, saglabāt",
+      "noSaveAs": "Nē, saglabāt kā",
+      "selectNewNameForMap": "Atlasiet jaunu kartes nosaukumu",
+      "youDoNotHave": "Jums nav pietiekamu tiesību to darīt. Varbūt sesija ir beigusies?",
+      "useDifferentName": "Kartes saglabāšanai izmantojiet citu nosaukumu"
+    },
+    "form": {
+      "userCurrentMapExtent": "Izmantot pašreizējo kartes apmēru",
+      "toggleAll": "Pārslēgt visu",
+      "read": "Lasīt",
+      "write": "Rakstīt",
+      "person": "Persona",
+      "organization": "Organizācija",
+      "position": "Pozīcija",
+      "address": "Adrese",
+      "city": "Pilsēta",
+      "state": "Novads",
+      "postalCode": "Pasta indekss",
+      "country": "Valsts",
+      "phone": "Telefona numurs",
+      "eMail": "E-pasts",
+      "overwrite": "Pārrakstīt"
+    },
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Sinhronizējot radās kļūda"
     }
   }
 }
