@@ -56,7 +56,8 @@
     "lineWidth": "Line width",
     "icon": "Icon",
     "area": "Area",
-    "delete": "Delete"
+    "delete": "Delete",
+    "yes": "Yes"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
