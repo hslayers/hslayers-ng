@@ -1,6 +1,3 @@
-import Feature from 'ol/Feature';
-import Map from 'ol/Map';
-import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
@@ -9,18 +6,18 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
 
-import {HsLayoutService} from '../layout/layout.service.js';
+import {HsConfig} from '../../config.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
-import {HsConfig} from '../../config.service';
-import {HsQueryBaseService} from '../query/query-base.service.js';
-import {HsQueryVectorService} from '../query/query-vector.service.js';
+import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryVectorService} from '../query/query-vector.service';
 
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
@@ -29,17 +26,26 @@ class emptyMock {
   constructor() {}
 }
 class HsConfigMock {
-    constructor() {}
-  }
+  constructor() {}
+}
 
 class HsQueryVectorMock {
-constructor() {}
+  constructor() {}
 }
 
 describe('HsDraw', () => {
-  const mockLayoutService = jasmine.createSpyObj("HsLayoutService", ["sidebarBottom", "panelVisible"]);
-  const mockLayerUtilsService = jasmine.createSpyObj("HsLayerUtilsService", ["isLayerDrawable","isLayerClustered"]);
-  const mockQueryBaseService = jasmine.createSpyObj("HsQueryBaseService", ["activateQueries","deactivateQueries"]);
+  const mockLayoutService = jasmine.createSpyObj('HsLayoutService', [
+    'sidebarBottom',
+    'panelVisible',
+  ]);
+  const mockLayerUtilsService = jasmine.createSpyObj('HsLayerUtilsService', [
+    'isLayerDrawable',
+    'isLayerClustered',
+  ]);
+  const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
+    'activateQueries',
+    'deactivateQueries',
+  ]);
 
   const layer = new VectorLayer({
     title: 'Point',
@@ -61,7 +67,7 @@ describe('HsDraw', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
+      imports: [FormsModule, TranslateModule.forRoot()],
       declarations: [HsDrawComponent],
       providers: [
         HsDrawService,
@@ -71,13 +77,12 @@ describe('HsDraw', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
-
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);
     service = TestBed.get(HsDrawService);
     component = fixture.componentInstance;
-    
+
     fixture.detectChanges();
   });
 
@@ -89,7 +94,7 @@ describe('HsDraw', () => {
     spyOn(service, 'activateDrawing');
 
     component.setType('polygon');
-    
+
     expect(service.tmpDrawLayer).toBeDefined();
     expect(service.type).toBe('polygon');
     expect(service.selectedLayer).toBeDefined();
@@ -100,5 +105,4 @@ describe('HsDraw', () => {
     component.selectLayer(layer);
     expect(service.source).toBeDefined();
   });
-  
 });

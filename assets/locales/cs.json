@@ -1,7 +1,8 @@
 {
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
-    "LEGEND": "Legenda"
+    "LEGEND": "Legenda",
+    "DRAW": "Kreslit"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -45,7 +46,7 @@
       "moveLayerUpward": "Přesunutí vrstvy nahoru, shift-klepněte na začátek",
       "moveLayerDownward": "Přesunutí vrstvy dolů, shift-klepnout dolů",
       "layerOptions": "Možnosti vrstvy",
-      "filterFeatures": "Funkce filtru",
+      "filterFeatures": "Prvek filtru",
       "layerName": "Název vrstvy",
       "layerOpacity": "Průhlednost vrstvy",
       "layerStyle": "Styl vrstvy",
@@ -80,9 +81,42 @@
     "radius": "Radius",
     "polygon": "Polygon",
     "rotation": "Rotace",
-    "reload": "Znovu načíst"
+    "reload": "Znovu načíst",
+    "point": "Směřovat",
+    "line": "Čára",
+    "color": "Barva",
+    "newDrawingLayer": "Nová vrstva kreslení",
+    "advancedOptions": "Pokročilé možnosti",
+    "folder": "Složka",
+    "attribute": "Atribut",
+    "ok": "Ok",
+    "cancel": "Zrušení",
+    "drawNewFeatures": "Nakreslete nové prvek"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
+  },
+  "DRAW": {
+    "drawInfo": "Při kreslení mnohoúhelníku nebo čáry můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou ESC",
+    "disableDrawing": "Zakázat kreslení",
+    "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
+    "unsavedDrawing": "Neuložená kresba",
+    "saveAs": "Uložit jako..",
+    "drawingTo": "Kreslení do:",
+    "individualStyle": "Individuální styl pro prvek",
+    "definedStyle": "Definovaný styl",
+    "fillOpacity": "Vyplňte neprůhlednost:",
+    "drawLayerMetadata": {
+      "layerTitle": "Název vrstvy",
+      "nameOfFolder": "Název složky v hierarchii správce vrstev",
+      "layerWillBeAdded": "*Vrstva bude přidána na mapu a lze ji dále spravovat v panelu \"Správce vrstev\"",
+      "defaultAttributes": "Výchozí atributy",
+      "defaultValue": "Výchozí hodnota"
+    },
+    "drawToolbar": {
+      "addDrawLayer": "Přidejte vrstvu kreslení",
+      "removeLastPoint": "Odebrat poslední bod",
+      "finishFeature": "Ukončit prvek"
+    }
   }
 }

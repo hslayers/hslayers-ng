@@ -1,7 +1,8 @@
 {
     "PANEL_HEADER": {
       "LM": "Slāņu pārvaldība",
-      "LEGEND": "Leģenda"
+      "LEGEND": "Leģenda",
+      "DRAW": "Zīmēt"
     },
     "LAYERMANAGER": {
       "baselayers": "Pamatslāņi",
@@ -38,14 +39,14 @@
       },
       "layermanagerMd": {
         "imageLayer": "Attēla slānis",
-        "pointFeatures": "Punkta funkcijas",
-        "lineFeatures": "Līnijas funckijas",
-        "polygonFeatures": "Daudzstūra funkcijas",
+        "pointFeatures": "Punkta entītija",
+        "lineFeatures": "Līnijas entītija",
+        "polygonFeatures": "Daudzstūra entītija",
         "aboutLayer": "Par slāni",
         "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
         "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
         "layerOptions": "Slāņa opcijas",
-        "filterFeatures": "Filtra funkcijas",
+        "filterFeatures": "Filtrēt entītijas",
         "layerName": "Slāņa nosaukums",
         "layerOpacity": "Slāņa necaurredzamība",
         "layerStyle": "Slāņa stils",
@@ -80,10 +81,43 @@
       "radius": "Rādiuss",
       "polygon": "Daudzstūris",
       "rotation": "Rotācija",
-      "reload": "Pārlādēt"
+      "reload": "Pārlādēt",
+      "point": "Punkts",
+      "line": "Līnija",
+      "color": "Krāsa",
+      "newDrawingLayer": "Jauns zīmēšanas slānis",
+      "advancedOptions": "Advancētas opcijas",
+      "folder": "Datne",
+      "attribute": "Atribūts",
+      "ok": "Labi",
+      "cancel": "Atcelt",
+      "drawNewFeatures": "Zīmēt jaunas entītijas"
     },
     "LEGEND": {
       "noLegendExists": "Nav neviena slāņa ar leģendu!"
+    },
+    "DRAW": {
+      "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
+      "disableDrawing": "Atspējot zīmēšanu",
+      "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties entītijas veidu",
+      "unsavedDrawing": "Nesaglabāts zīmējums",
+      "saveAs": "Saglabāt kā..",
+      "drawingTo": "Zīmējums uz:",
+      "individualStyle": "Individuāls stils entītijai",
+      "definedStyle": "Definētais stils",
+      "fillOpacity": "Aizpildījuma necaurredzamība:",
+      "drawLayerMetadata": {
+        "layerTitle": "Slāņa virsraksts",
+        "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
+        "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
+        "defaultAttributes": "Noklusējuma atribūti",
+        "defaultValue": "Noklusējuma vērtības"
+      },
+      "drawToolbar": {
+        "addDrawLayer": "Pievienot jaunu slāni",
+        "removeLastPoint": "Noņemt pēdējo punktu",
+        "finishFeature": "Pabeigt entītiju"
+      }
     }
   }
   

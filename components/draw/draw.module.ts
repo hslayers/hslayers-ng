@@ -9,6 +9,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsStylerModule} from '../styles/styles.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 import {FormsModule} from '@angular/forms';
 import {HsDrawComponent} from './draw.component';
@@ -30,13 +31,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgbModule,
     HsStylerModule,
+    TranslateModule,
   ],
   exports: [
     HsDrawComponent,
     HsDrawLayerMetadataDialogComponent,
     HsDrawToolbarComponent,
   ],
-  providers: [HsDrawService],
+  providers: [HsDrawService, TranslateStore],
   entryComponents: [
     HsDrawComponent,
     HsDrawLayerMetadataDialogComponent,
