@@ -14,6 +14,7 @@ import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {LineString, Polygon} from 'ol/geom';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 class emptyMock {
   constructor() {}
@@ -35,10 +36,11 @@ describe('HsMeasure', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
+      imports: [FormsModule, TranslateModule.forRoot()],
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
+        TranslateStore,
         {provide: HsLayoutService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
