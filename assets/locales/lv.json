@@ -61,7 +61,8 @@
     "PERMALINK": "Kopīgot karti",
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "LANGUAGE": "Nomainīt valodu",
-    "SEARCH": "Meklēt"
+    "SEARCH": "Meklēt",
+    "SENSORS": "Sensori"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -216,5 +217,11 @@
   },
   "SEARCH": {
     "search": "Meklēt:"
+  },
+  "SENSORS": {
+    "sensors": "Sensori",
+    "phenomena": "Parādība",
+    "measure": "Mērījums",
+    "sensorUnit": "Sensoru vienība"
   }
 }
