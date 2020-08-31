@@ -13,8 +13,8 @@
             <div class="nav-item"
                 *ngIf="this.HsCoreService.exists('hs.measure') && this.HsLayoutService.panelEnabled('measure') && this.HsLayoutService.componentEnabled('measureToolbar')">
                 <div class="btn-group">
-                    <button i18n class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary"
-                        title="'Measure lines and polygon'" (click)="measureButtonClicked()">
+                    <button class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary"
+                        [title]="'TOOLBAR.measureLinesAndPolygon' | translate" (click)="measureButtonClicked()">
                         <i class="icon-design"></i>
                     </button>
                 </div>

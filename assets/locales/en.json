@@ -226,5 +226,8 @@
     "phenomena": "Phenomena",
     "measure": "Measure",
     "sensorUnit": "Sensor unit"
+  },
+  "TOOLBAR": {
+    "measureLinesAndPolygon": "Measure lines and polygon"
   }
 }
