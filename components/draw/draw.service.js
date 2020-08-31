@@ -16,6 +16,7 @@ import {Draw, Modify} from 'ol/interaction';
  * @param HsLayoutService
  * @param $compile
  * @param $timeout
+ * @param HsQueryVectorService
  */
 export default function (
   HsConfig,
@@ -135,11 +136,12 @@ export default function (
     },
     /**
      * (PRIVATE) Helper function which returns currently selected style.
+     *
      * @function useCurrentStyle
      * @memberOf HsDrawService
      */
     useCurrentStyle() {
-      if (!me.currentStyle){
+      if (!me.currentStyle) {
         me.currentStyle = me.defaultStyle;
       }
       return me.currentStyle;
@@ -174,6 +176,17 @@ export default function (
           source: me.source,
           type: /** @type {ol.geom.GeometryType} */ (me.type),
           style: changeStyle ? changeStyle() : undefined,
+          condition: function (e) {
+            if (e.pointerEvent.buttons === 1) {
+              return true;
+            } else if (e.pointerEvent.buttons === 2) {
+              if (me.type == 'Point') {
+                return false;
+              }
+              me.draw.finishDrawing();
+              return false;
+            }
+          },
         });
 
         me.draw.setActive(drawState);
@@ -233,7 +246,7 @@ export default function (
       /*Timeout is necessary because features are not imediately
        * added to the layer and layer can't be retrieved from the
        * feature, so they don't appear in Info panel */
-      if (HsLayoutService.mainpanel != 'draw'){
+      if (HsLayoutService.mainpanel != 'draw') {
         $timeout(() => {
           HsLayoutService.setMainPanel('info');
           HsQueryVectorService.selector.getFeatures().push(e.feature);
