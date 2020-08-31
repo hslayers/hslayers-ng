@@ -186,7 +186,7 @@ export default function (
          * @param event
          */
         function keyUp(event) {
-          if (event.keyCode === 27) {
+          if (event.keyCode === 8) {
             me.removeLastPoint();
           }
         }
