@@ -51,7 +51,10 @@
     "next": "Next",
     "download": "Download",
     "print": "Print",
-    "clear": "Clear"
+    "clear": "Clear",
+    "lineColor": "Line color",
+    "lineWidth": "Line width",
+    "icon": "Icon"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
