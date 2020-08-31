@@ -1,5 +1,5 @@
 <div class="card panel-default hs-main-panel">
-    <hs-panel-header name="language" title="Change language"></hs-panel-header>
+    <hs-panel-header name="language" [title]="'PANEL_HEADER.LANGUAGE' | translate"></hs-panel-header>
     <div class="card-body">
         <ul class="hs-senslog-list list-group">
             <button *ngFor="let lang of available_languages"
