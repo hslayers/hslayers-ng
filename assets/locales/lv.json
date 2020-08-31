@@ -54,7 +54,9 @@
     "clear": "Notīrīt",
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
-    "icon": "Ikona"
+    "icon": "Ikona",
+    "area": "Platība",
+    "delete": "Dzēst"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -65,7 +67,8 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "LANGUAGE": "Nomainīt valodu",
     "SEARCH": "Meklēt",
-    "SENSORS": "Sensori"
+    "SENSORS": "Sensori",
+    "MEASURE": "Mērīt"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -229,5 +232,13 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
+  },
+  "MEASURE": {
+    "multipleShapes": "Vairākas formas",
+    "measureMd": {
+      "measureType": "Mērījuma tips",
+      "saveMeasurementToLayer": "Saglabāt mērījumu slānī",
+      "deleteAllMeasurements": "Dzēst visus mērījumus"
+    }
   }
 }

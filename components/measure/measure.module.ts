@@ -9,13 +9,20 @@ import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsMeasureComponent],
-  imports: [CommonModule, FormsModule, HsPanelHelpersModule, NgbModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HsPanelHelpersModule,
+    NgbModule,
+    TranslateModule,
+  ],
   exports: [HsMeasureComponent],
-  providers: [HsMeasureService],
+  providers: [HsMeasureService, TranslateStore],
   entryComponents: [HsMeasureComponent],
 })
 export class HsMeasureModule {}

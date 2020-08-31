@@ -54,7 +54,9 @@
     "clear": "Clear",
     "lineColor": "Line color",
     "lineWidth": "Line width",
-    "icon": "Icon"
+    "icon": "Icon",
+    "area": "Area",
+    "delete": "Delete"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
@@ -65,7 +67,8 @@
     "SAVECOMPOSITION": "Save current map",
     "LANGUAGE": "Change language",
     "SEARCH": "Search",
-    "SENSORS": "Sensors"
+    "SENSORS": "Sensors",
+    "MEASURE": "Measure"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -229,5 +232,13 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
+  },
+  "MEASURE": {
+    "multipleShapes": "Multiple shapes",
+    "measureMd": {
+      "measureType": "Measure type",
+      "saveMeasurementToLayer": "Save measurement to layer",
+      "deleteAllMeasurements": "Delete all measurements"
+    }
   }
 }
