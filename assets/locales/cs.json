@@ -54,7 +54,9 @@
     "clear": "Průhledná",
     "lineColor": "Barva čáry",
     "lineWidth": "Šířka čáry",
-    "icon": "Ikona"
+    "icon": "Ikona",
+    "area": "Plocha",
+    "delete": "Vymazat"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -65,7 +67,8 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "LANGUAGE": "Změnit jazyk",
     "SEARCH": "Vyhledávání",
-    "SENSORS": "Senzory"
+    "SENSORS": "Senzory",
+    "MEASURE": "Opatření"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -229,5 +232,14 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Změřte čáry a mnohoúhelník"
+  },
+  "MEASURE": {
+    "multipleShapes": "Více tvarů",
+    "measureMd": {
+      "measureType": "Typ měření",
+      "saveMeasurementToLayer": "Uložte měření do vrstvy",
+      "deleteAllMeasurements": "Odstranit všechna měření"
+    }
   }
+  
 }
