@@ -11,8 +11,8 @@
                 {{$ctrl.message}}
             </div>
             <div class="modal-footer" >
-                <button type="button" class="btn btn-primary" translate ng-click="$ctrl.yes()" title="Yes" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" title="No" ng-click="$ctrl.no()" data-dismiss="modal" translate>No</button>
+                <button type="button" class="btn btn-primary" translate ng-click="$ctrl.yes()" [title]="'COMMON.yes' | translate" data-dismiss="modal">{{'COMMON.yes' | translate}}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" ng-click="$ctrl.no()" data-dismiss="modal" translate>{{'COMMON.no' | translate}}</button>
             </div>
         </div>
     </div>

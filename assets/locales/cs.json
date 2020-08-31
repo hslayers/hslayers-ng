@@ -56,7 +56,8 @@
     "lineWidth": "Šířka čáry",
     "icon": "Ikona",
     "area": "Plocha",
-    "delete": "Vymazat"
+    "delete": "Vymazat",
+    "yes": "Ano"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",

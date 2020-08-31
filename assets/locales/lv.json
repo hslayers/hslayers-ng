@@ -56,7 +56,8 @@
     "lineWidth": "Līnijas platums",
     "icon": "Ikona",
     "area": "Platība",
-    "delete": "Dzēst"
+    "delete": "Dzēst",
+    "yes": "Jā"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
