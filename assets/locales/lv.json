@@ -49,7 +49,8 @@
     "save": "Saglabāt",
     "layers": "Slāņi",
     "next": "Nākamais",
-    "download": "Lejuplādēt"
+    "download": "Lejuplādēt",
+    "print": "Printēt"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -57,7 +58,8 @@
     "DRAW": "Zīmēt",
     "PRINT": "Printēt",
     "PERMALINK": "Kopīgot karti",
-    "SAVECOMPOSITION": "Saglabāt pašreizējo karti"
+    "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
+    "LANGUAGE": "Nomainīt valodu"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",

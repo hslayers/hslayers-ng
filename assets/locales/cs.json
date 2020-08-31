@@ -49,7 +49,8 @@
     "save": "Uložit",
     "layers": "Vrstvy",
     "next": "Další",
-    "download": "Stažení"
+    "download": "Stažení",
+    "print": "Tisk"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -57,7 +58,8 @@
     "DRAW": "Kreslit",
     "PRINT": "Tisk",
     "PERMALINK": "Sdílet mapu",
-    "SAVECOMPOSITION": "Uložit aktuální mapu"
+    "SAVECOMPOSITION": "Uložit aktuální mapu",
+    "LANGUAGE": "Změnit jazyk"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
