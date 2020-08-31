@@ -2,7 +2,8 @@
   "PANEL_HEADER": {
     "LM": "Layermanager",
     "LEGEND": "Legend",
-    "DRAW": "Draw"
+    "DRAW": "Draw",
+    "PRINT": "Print"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",

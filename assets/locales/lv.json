@@ -2,7 +2,8 @@
     "PANEL_HEADER": {
       "LM": "Slāņu pārvaldība",
       "LEGEND": "Leģenda",
-      "DRAW": "Zīmēt"
+      "DRAW": "Zīmēt",
+      "PRINT": "Printēt"
     },
     "LAYERMANAGER": {
       "baselayers": "Pamatslāņi",

@@ -1,12 +1,13 @@
 <div class="card panel-default hs-main-panel">
-    <hs-panel-header name="print" title="Print"></hs-panel-header>
+    <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translate"></hs-panel-header>
     <div class="card-body">
         <div class="card-body">
             <div class="form-group">
-                <label for="print-title" class="control-label" i18n>Title</label>
-                <input type="text" class="form-control" id="print-title" ng-model="title"/>
+                <label for="print-title" class="control-label">{{'COMMON.title' | translate}}</label>
+                <input type="text" class="form-control" id="print-title" ng-model="title" />
             </div>
-            <button type="button" class="btn btn-primary" (click)="print()" i18n>Print</button>
+            <button type="button" class="btn btn-primary"
+                (click)="print()">{{'PANEL_HEADER.PRINT' | translate}}</button>
         </div>
     </div>
 </div>
