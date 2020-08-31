@@ -14,14 +14,16 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareComponent} from './share.component';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {WINDOW_PROVIDERS} from '../utils/window';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsShareComponent],
-  imports: [FormsModule, CommonModule, HsPanelHelpersModule],
+  imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsShareComponent],
   providers: [
     HsShareService,
+    TranslateStore,
     HsShareUrlService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     WINDOW_PROVIDERS,

@@ -1,124 +1,145 @@
 {
-    "PANEL_HEADER": {
-      "LM": "Slāņu pārvaldība",
-      "LEGEND": "Leģenda",
-      "DRAW": "Zīmēt",
-      "PRINT": "Printēt"
+  "COMMON": {
+    "close": "Aizvērt",
+    "abstract": "Apraksts",
+    "no": "No",
+    "date": "Datums",
+    "from": "No",
+    "to": "līdz",
+    "distance": "Distance",
+    "title": "Virsraksts",
+    "scale": "Mērogs",
+    "info": "Papildu informācija",
+    "removeLayer": "Noņemt slāni",
+    "renameLayer": "Pārsaukt slāni",
+    "hide": "Paslēpt",
+    "filter": "Filtrs:",
+    "legend": "Leģenda",
+    "width": "Platums",
+    "circle": "Aplis",
+    "fill": "Aizpildījums",
+    "stroke": "Līnija",
+    "strokeWidth": "Līnjas platums",
+    "radius": "Rādiuss",
+    "polygon": "Daudzstūris",
+    "rotation": "Rotācija",
+    "reload": "Pārlādēt",
+    "point": "Punkts",
+    "line": "Līnija",
+    "color": "Krāsa",
+    "newDrawingLayer": "Jauns zīmēšanas slānis",
+    "advancedOptions": "Advancētas opcijas",
+    "folder": "Datne",
+    "attribute": "Atribūts",
+    "ok": "Labi",
+    "cancel": "Atcelt",
+    "drawNewFeatures": "Zīmēt jaunas entītijas",
+    "name": "Nosaukums",
+    "thumbnail": "Sīktēls"
+  },
+  "PANEL_HEADER": {
+    "LM": "Slāņu pārvaldība",
+    "LEGEND": "Leģenda",
+    "DRAW": "Zīmēt",
+    "PRINT": "Printēt",
+    "PERMALINK": "Kopīgot karti"
+  },
+  "LAYERMANAGER": {
+    "baselayers": "Pamatslāņi",
+    "removeAllLayers": "Noņemt visus slāņus",
+    "resetMap": "Atiestatīt karti",
+    "terrains": "Reljefi",
+    "mapContent": "Kartes saturs",
+    "other": "Cits",
+    "baseMapGallery": {
+      "noBaseMap": "Nav pamatkartes",
+      "grayscale": "Pelēktoņu"
     },
-    "LAYERMANAGER": {
-      "baselayers": "Pamatslāņi",
-      "removeAllLayers": "Noņemt visus slāņus",
-      "resetMap": "Atiestatīt karti",
-      "terrains": "Reljefi",
-      "mapContent": "Kartes saturs",
-      "other": "Cits",
-      "baseMapGallery": {
-        "noBaseMap": "Nav pamatkartes",
-        "grayscale": "Pelēktoņu"
-      },
-      "dialogRemoveAll": {
-        "dialogMessage": "Vai Jūs tiešām vēlaties noņemt visus slāņus?",
-        "removeAllAdded": "Noņemt visus pievienotos slāņus",
-        "reloadComposition": "Pārlādēt kompozīciju"
-      },
-      "layerEditor": {
-        "metadata": "Metadati",
-        "copyright": "Autortiesības",
-        "zoomToLayer": "Tuvināt līdz slānim",
-        "styleLayer": "Stilizēt slāni",
-        "metadataOfLayer": "Slāņa metadati iekš",
-        "metadataOfService": "Servisa metadati",
-        "declutter": "Izkliedēt datus",
-        "cluster": "Apvienot blakusesošos",
-        "opacity": "Necaurredzamība"
-      },
-      "layerList": {
-        "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
-        "layerNotAvailable": "Šis slānis nav pieejams",
-        "sendingToLayman": "Sūta uz layman",
-        "layerIsQueryable": "Šis slānis ir vaicājams"
-      },
-      "layermanagerMd": {
-        "imageLayer": "Attēla slānis",
-        "pointFeatures": "Punkta entītija",
-        "lineFeatures": "Līnijas entītija",
-        "polygonFeatures": "Daudzstūra entītija",
-        "aboutLayer": "Par slāni",
-        "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
-        "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
-        "layerOptions": "Slāņa opcijas",
-        "filterFeatures": "Filtrēt entītijas",
-        "layerName": "Slāņa nosaukums",
-        "layerOpacity": "Slāņa necaurredzamība",
-        "layerStyle": "Slāņa stils",
-        "sidesNumber": "Sānu numurs",
-        "outerRadius": "Ārējais rādiuss",
-        "innerRadius": "iekšējais rādiuss",
-        "star": "zvaigzne"
-      },
-      "dimensions": "Dimensijas"
+    "dialogRemoveAll": {
+      "dialogMessage": "Vai Jūs tiešām vēlaties noņemt visus slāņus?",
+      "removeAllAdded": "Noņemt visus pievienotos slāņus",
+      "reloadComposition": "Pārlādēt kompozīciju"
     },
-    "COMMON": {
-      "close": "Aizvērt",
-      "abstract": "Apraksts",
-      "no": "No",
-      "date": "Datums",
-      "from": "No",
-      "to": "līdz",
-      "distance": "Distance",
-      "title": "Virsraksts",
-      "scale": "Mērogs",
-      "info": "Papildu informācija",
-      "removeLayer": "Noņemt slāni",
-      "renameLayer": "Pārsaukt slāni",
-      "hide": "Paslēpt",
-      "filter": "Filtrs:",
-      "legend": "Leģenda",
-      "width": "Platums",
-      "circle": "Aplis",
-      "fill": "Aizpildījums",
-      "stroke": "Līnija",
-      "strokeWidth": "Līnjas platums",
-      "radius": "Rādiuss",
-      "polygon": "Daudzstūris",
-      "rotation": "Rotācija",
-      "reload": "Pārlādēt",
-      "point": "Punkts",
-      "line": "Līnija",
-      "color": "Krāsa",
-      "newDrawingLayer": "Jauns zīmēšanas slānis",
-      "advancedOptions": "Advancētas opcijas",
-      "folder": "Datne",
-      "attribute": "Atribūts",
-      "ok": "Labi",
-      "cancel": "Atcelt",
-      "drawNewFeatures": "Zīmēt jaunas entītijas"
+    "layerEditor": {
+      "metadata": "Metadati",
+      "copyright": "Autortiesības",
+      "zoomToLayer": "Tuvināt līdz slānim",
+      "styleLayer": "Stilizēt slāni",
+      "metadataOfLayer": "Slāņa metadati iekš",
+      "metadataOfService": "Servisa metadati",
+      "declutter": "Izkliedēt datus",
+      "cluster": "Apvienot blakusesošos",
+      "opacity": "Necaurredzamība"
     },
-    "LEGEND": {
-      "noLegendExists": "Nav neviena slāņa ar leģendu!"
+    "layerList": {
+      "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
+      "layerNotAvailable": "Šis slānis nav pieejams",
+      "sendingToLayman": "Sūta uz layman",
+      "layerIsQueryable": "Šis slānis ir vaicājams"
     },
-    "DRAW": {
-      "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
-      "disableDrawing": "Atspējot zīmēšanu",
-      "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties entītijas veidu",
-      "unsavedDrawing": "Nesaglabāts zīmējums",
-      "saveAs": "Saglabāt kā..",
-      "drawingTo": "Zīmējums uz:",
-      "individualStyle": "Individuāls stils entītijai",
-      "definedStyle": "Definētais stils",
-      "fillOpacity": "Aizpildījuma necaurredzamība:",
-      "drawLayerMetadata": {
-        "layerTitle": "Slāņa virsraksts",
-        "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
-        "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
-        "defaultAttributes": "Noklusējuma atribūti",
-        "defaultValue": "Noklusējuma vērtības"
-      },
-      "drawToolbar": {
-        "addDrawLayer": "Pievienot jaunu slāni",
-        "removeLastPoint": "Noņemt pēdējo punktu",
-        "finishFeature": "Pabeigt entītiju"
-      }
+    "layermanagerMd": {
+      "imageLayer": "Attēla slānis",
+      "pointFeatures": "Punkta entītija",
+      "lineFeatures": "Līnijas entītija",
+      "polygonFeatures": "Daudzstūra entītija",
+      "aboutLayer": "Par slāni",
+      "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
+      "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
+      "layerOptions": "Slāņa opcijas",
+      "filterFeatures": "Filtrēt entītijas",
+      "layerName": "Slāņa nosaukums",
+      "layerOpacity": "Slāņa necaurredzamība",
+      "layerStyle": "Slāņa stils",
+      "sidesNumber": "Sānu numurs",
+      "outerRadius": "Ārējais rādiuss",
+      "innerRadius": "Iekšējais rādiuss",
+      "star": "Zvaigzne"
+    },
+    "dimensions": "Dimensijas"
+  },
+  "LEGEND": {
+    "noLegendExists": "Nav neviena slāņa ar leģendu!"
+  },
+  "DRAW": {
+    "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
+    "disableDrawing": "Atspējot zīmēšanu",
+    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties entītijas veidu",
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "saveAs": "Saglabāt kā..",
+    "drawingTo": "Zīmējums uz:",
+    "individualStyle": "Individuāls stils entītijai",
+    "definedStyle": "Definētais stils",
+    "fillOpacity": "Aizpildījuma necaurredzamība:",
+    "drawLayerMetadata": {
+      "layerTitle": "Slāņa virsraksts",
+      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
+      "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
+      "defaultAttributes": "Noklusējuma atribūti",
+      "defaultValue": "Noklusējuma vērtības"
+    },
+    "drawToolbar": {
+      "addDrawLayer": "Pievienot jaunu slāni",
+      "removeLastPoint": "Noņemt pēdējo punktu",
+      "finishFeature": "Pabeigt entītiju"
+    }
+  },
+  "PERMALINK": {
+    "fillInName": "Norādiet nosaukumu",
+    "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
+    "newShare": "Jauna kopīgošana",
+    "sharePureMap": "Kopīgot tikai karti",
+    "sharesOnlyMap": "*Kopīgot tikai karti kā attēlu",
+    "sharesMapWith": "*Kopīgot karti ar (visa) portāla funkcionalitāti",
+    "linkFor": "Saite priekš",
+    "embed": "Fiksētās",
+    "socialShare": "Sociālās kopīgošanas",
+    "permalink": "Pastāvīgā saite",
+    "pureMap": "Tikai karte",
+    "embedCode": "Fiksēt kodu",
+    "shareOnSocialNetwork": "Kopīgot sociālajā tīklā",
+    "share": "Kopīgot",
+    "directiveMd": {
+      "copyToClipboard": "Kopēt starpliktuvē"
     }
   }
-  
+}

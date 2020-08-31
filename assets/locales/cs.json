@@ -1,9 +1,48 @@
 {
+  "COMMON": {
+    "close": "Zavřít",
+    "abstract": "Abstrakt",
+    "no": "Ne",
+    "date": "Datum",
+    "from": "Z",
+    "filter": "Filtr:",
+    "to": "do",
+    "distance": "Vzdálenost",
+    "title": "Název",
+    "scale": "Měřítko",
+    "info": "Další informace",
+    "removeLayer": "Odstranit vrstvu",
+    "renameLayer": "Přejmenovat vrstvu",
+    "hide": "Skrýt",
+    "legend": "Legenda",
+    "width": "Šířka",
+    "circle": "Kruh",
+    "fill": "Výplň",
+    "stroke": "Tahu",
+    "strokeWidth": "Šířka tahu",
+    "radius": "Radius",
+    "polygon": "Polygon",
+    "rotation": "Rotace",
+    "reload": "Znovu načíst",
+    "point": "Směřovat",
+    "line": "Čára",
+    "color": "Barva",
+    "newDrawingLayer": "Nová vrstva kreslení",
+    "advancedOptions": "Pokročilé možnosti",
+    "folder": "Složka",
+    "attribute": "Atribut",
+    "ok": "Ok",
+    "cancel": "Zrušení",
+    "drawNewFeatures": "Nakreslete nové prvek",
+    "name": "Název",
+    "thumbnail": "Miniatura"
+  },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
     "LEGEND": "Legenda",
     "DRAW": "Kreslit",
-    "PRINT": "Tisk"
+    "PRINT": "Tisk",
+    "PERMALINK": "Sdílet mapu"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -58,42 +97,6 @@
     },
     "dimensions": "Dimenze"
   },
-  "COMMON": {
-    "close": "Zavřít",
-    "abstract": "Abstrakt",
-    "no": "Ne",
-    "date": "Datum",
-    "from": "Z",
-    "filter": "Filtr:",
-    "to": "do",
-    "distance": "Vzdálenost",
-    "title": "Název",
-    "scale": "Měřítko",
-    "info": "Další informace",
-    "removeLayer": "Odstranit vrstvu",
-    "renameLayer": "Přejmenovat vrstvu",
-    "hide": "Skrýt",
-    "legend": "Legenda",
-    "width": "Šířka",
-    "circle": "Kruh",
-    "fill": "Výplň",
-    "stroke": "Tahu",
-    "strokeWidth": "Šířka tahu",
-    "radius": "Radius",
-    "polygon": "Polygon",
-    "rotation": "Rotace",
-    "reload": "Znovu načíst",
-    "point": "Směřovat",
-    "line": "Čára",
-    "color": "Barva",
-    "newDrawingLayer": "Nová vrstva kreslení",
-    "advancedOptions": "Pokročilé možnosti",
-    "folder": "Složka",
-    "attribute": "Atribut",
-    "ok": "Ok",
-    "cancel": "Zrušení",
-    "drawNewFeatures": "Nakreslete nové prvek"
-  },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
   },
@@ -118,6 +121,25 @@
       "addDrawLayer": "Přidejte vrstvu kreslení",
       "removeLastPoint": "Odebrat poslední bod",
       "finishFeature": "Ukončit prvek"
+    }
+  },
+  "PERMALINK": {
+    "fillInName": "Vyplňte jméno",
+    "fillInDescriptive": "Vyplňte popisný text o mapě",
+    "newShare": "Nový sdílet",
+    "sharePureMap": "Sdílejte čistou mapu",
+    "sharesOnlyMap": "*Sdílí pouze mapu jako obrázek",
+    "sharesMapWith": "*Sdílí mapu s (všemi) funkcemi portálu",
+    "linkFor": "Odkaz pro",
+    "embed": "vložit",
+    "socialShare": "Sociální sdílet",
+    "permalink": "Trvalý odkaz",
+    "pureMap": "Pouze mapa",
+    "embedCode": "Vložit kód",
+    "shareOnSocialNetwork": "Sdílejte na sociální síti",
+    "share": "Sdílet",
+    "directiveMd": {
+      "copyToClipboard": "Zkopírovat do schránky"
     }
   }
 }
