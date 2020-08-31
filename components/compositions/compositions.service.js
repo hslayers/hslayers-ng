@@ -115,9 +115,7 @@ export default function (
               shareId
           )
             .then((shortUrl) => {
-              shortUrl.then((data) => {
-                me.data.shareUrl = data;
-              });
+              me.data.shareUrl = shortUrl;
             })
             .catch(() => {
               $log.log('Error creating short Url');

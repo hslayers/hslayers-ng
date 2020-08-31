@@ -84,18 +84,12 @@ export class HsShareService {
       ) {
         this.data.shareUrlValid = false;
         try {
-          const promisePureMapUrl = await this.HsUtilsService.shortUrl(
+          this.data.pureMapUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPureMapUrl()
           );
-          promisePureMapUrl.then((data) => {
-            this.data.pureMapUrl = data;
-          });
-          const promisePermalinkUrl = await this.HsUtilsService.shortUrl(
+          this.data.permalinkUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPermalinkUrl()
           );
-          promisePermalinkUrl.then((data) => {
-            this.data.permalinkUrl = data;
-          });
           this.getEmbedCode();
         } catch (ex) {
           this.HsLogService.log('Error creating short Url');
@@ -227,13 +221,10 @@ export class HsShareService {
           })
         );
 
-        const shortUrlPromise = await this.HsUtilsService.shortUrl(
+        const shortUrl = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
         );
-        let shareUrl = '';
-        shortUrlPromise.then((data) => {
-          shareUrl = data;
-        });
+        const shareUrl = shortUrl;
         navigator
           .share({
             title: this.data.title,

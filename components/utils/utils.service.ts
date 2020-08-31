@@ -76,11 +76,11 @@ export class HsUtilsService {
             })
         }
    */
-  shortUrl(url: string): any {
+  async shortUrl(url: string): Promise<any> {
     if (this.HsConfig.shortenUrl != undefined) {
       return this.HsConfig.shortenUrl(url);
     }
-    return this.http
+    return await this.http
       .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url))
       .toPromise();
     // return new Promise((resolve, reject) => {
