@@ -226,5 +226,8 @@
     "phenomena": "Parādība",
     "measure": "Mērījums",
     "sensorUnit": "Sensoru vienība"
+  },
+  "TOOLBAR": {
+    "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
   }
 }

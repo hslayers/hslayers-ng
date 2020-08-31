@@ -226,5 +226,8 @@
     "phenomena": "Jevy",
     "measure": "Opatření",
     "sensorUnit": "Senzorová jednotka"
+  },
+  "TOOLBAR": {
+    "measureLinesAndPolygon": "Změřte čáry a mnohoúhelník"
   }
 }
