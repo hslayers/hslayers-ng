@@ -50,7 +50,8 @@
     "layers": "Slāņi",
     "next": "Nākamais",
     "download": "Lejuplādēt",
-    "print": "Printēt"
+    "print": "Printēt",
+    "clear": "Notīrīt"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -59,7 +60,8 @@
     "PRINT": "Printēt",
     "PERMALINK": "Kopīgot karti",
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
-    "LANGUAGE": "Nomainīt valodu"
+    "LANGUAGE": "Nomainīt valodu",
+    "SEARCH": "Meklēt"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -211,5 +213,8 @@
       "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus",
       "applicationSettings": "Programmas iestatījumi"
     }
+  },
+  "SEARCH": {
+    "search": "Meklēt:"
   }
 }

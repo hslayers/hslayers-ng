@@ -50,7 +50,8 @@
     "layers": "Layers",
     "next": "Next",
     "download": "Download",
-    "print": "Print"
+    "print": "Print",
+    "clear": "Clear"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
@@ -59,7 +60,8 @@
     "PRINT": "Print",
     "PERMALINK": "Share map",
     "SAVECOMPOSITION": "Save current map",
-    "LANGUAGE": "Change language"
+    "LANGUAGE": "Change language",
+    "SEARCH": "Search"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -211,5 +213,8 @@
       "specifyApplication": "Specify application user settings",
       "applicationSettings": "Application settings"
     }
+  },
+  "SEARCH": {
+    "search": "Search:"
   }
 }
