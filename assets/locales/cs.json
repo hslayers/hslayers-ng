@@ -61,7 +61,8 @@
     "PERMALINK": "Sdílet mapu",
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "LANGUAGE": "Změnit jazyk",
-    "SEARCH": "Vyhledávání"
+    "SEARCH": "Vyhledávání",
+    "SENSORS": "Senzory"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -216,5 +217,11 @@
   },
   "SEARCH": {
     "search": "Vyhledávání:"
+  },
+  "SENSORS": {
+    "sensors": "Senzory",
+    "phenomena": "Jevy",
+    "measure": "Opatření",
+    "sensorUnit": "Senzorová jednotka"
   }
 }

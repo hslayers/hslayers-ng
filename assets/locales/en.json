@@ -61,7 +61,8 @@
     "PERMALINK": "Share map",
     "SAVECOMPOSITION": "Save current map",
     "LANGUAGE": "Change language",
-    "SEARCH": "Search"
+    "SEARCH": "Search",
+    "SENSORS": "Sensors"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -216,5 +217,11 @@
   },
   "SEARCH": {
     "search": "Search:"
+  },
+  "SENSORS": {
+    "sensors": "Sensors",
+    "phenomena": "Phenomena",
+    "measure": "Measure",
+    "sensorUnit": "Sensor unit"
   }
 }

@@ -1,7 +1,7 @@
 <div class="card panel-default hs-main-panel">
-    <hs-panel-header name="sensors" title="Sensors"></hs-panel-header>
+    <hs-panel-header name="sensors" [title]="'PANEL_HEADER.SENSORS' | translate"></hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control" placeholder="Filter:" [(ngModel)]="query.description"></p>
+        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="query.description"></p>
         <div class="container">
             <div class="row" style="width: 662;">
                 <div class="col-9">
@@ -9,13 +9,13 @@
                         <!--<li class="nav-item">
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}" href="#"
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
-                                translate>Sensors
+                                    >{{'SENSORS.sensors' | translate}}
                             </a>
                         </li>
                         <li>
                             <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}" href="#"
                                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
-                                translate>Phenomena
+                                >{{'SENSORS.phenomena' | translate}}
                             </a>
                         </li>-->
                     </ul><!-- Tab panes -->
