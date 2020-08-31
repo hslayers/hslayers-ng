@@ -203,5 +203,13 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba při synchronizaci"
     }
+  },
+  "LAYOUT": {
+    "sideNav": {
+      "routing": "Směrování",
+      "tracking": "Sledování",
+      "specifyApplication": "Zadejte uživatelské nastavení aplikace",
+      "applicationSettings": "Nastavení aplikace"
+    }
   }
 }

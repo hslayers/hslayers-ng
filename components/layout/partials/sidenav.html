@@ -5,36 +5,36 @@
             <div ng-repeat="panel in layoutService.data.panels | filter: onlyEnabled | orderBy:'order'">
                 <md-list-item ng-if="(HsCore.exists(panel.controller) || HsCore.exists(panel.directive)) && layoutService.panelEnabled(panel.name)" ng-click="panel.ngClick ? panel.ngClick() : openPanel(panel)">
                     <md-icon md-icon-set="material-icons" title="{{panel.description}}">{{panel.mdicon}}</md-icon>
-                    <p translate>{{panel.title}}</p>
+                    <p>{{panel.title}}</p>
                 </md-list-item>
                 <div panel-creator="panel.controller" directive="panel.directive" ng-if="(HsCore.exists(panel.controller) || HsCore.exists(panel.directive))" ng-show="layoutService.panelVisible(panel.name)" hide-xs hide-sm></div>
             </div>
 
             <md-list-item ng-if="HsCore.exists('HsRoutingController')" ng-click="openPanel('routing')">
                 <md-icon md-icon-set="material-icons">directions</md-icon>
-                <p translate>Routing</p>
+                <p>{{'LAYOUT.sideNav.routing' | translate}}</p>
             </md-list-item>
 
             <md-list-item ng-if="HsCore.exists('HsTrackingController')" ng-click="openPanel('tracking')">
                 <md-icon md-icon-set="material-icons">track_changes</md-icon>
-                <p translate>Tracking</p>
+                <p>{{'LAYOUT.sideNav.tracking' | translate}}</p>
             </md-list-item>
 
             <md-list-item ng-if="HsCore.exists('hs.vgi-draw')" ng-click="openPanel('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
-                <p translate>Draw new features</p>
+                <p>{{'COMMON.drawNewFeatures' | translate}}</p>
             </md-list-item>           
             
             <md-list-item ng-if="HsCore.exists('hs.mobile_settings.controller') && layoutService.panelEnabled('mobile_settings')" ng-click="openPanel('mobile_settings')">
-                <md-icon md-icon-set="material-icons" title="{{'Specify application user settings'||translate}}">settings</md-icon>
-                <p translate>Application settings</p>
+                <md-icon md-icon-set="material-icons" [title]="'LAYOUT.sideNav.specifyApplication' | translate">settings</md-icon>
+                <p>{{'LAYOUT.sideNav.applicationSettings' | translate}}</p>
             </md-list-item>
             
             <md-list-item ng-repeat="but in service.extraButtons" ng-click="but.click()" ng-class="{'active': but.isActive()}" ng-click="console.log('Button clicked.');">
                 <md-icon>
                     <span class="icon_class"></span>
                 </md-icon>
-                <p translate>{{but.title}}</p>
+                <p>{{but.title}}</p>
             </md-list-item>
         </md-list>
     </md-content>
