@@ -17,6 +17,7 @@ import {HsStylerService} from './styler.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {Polygon} from 'ol/geom';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 class emptyMock {
@@ -60,10 +61,15 @@ describe('HsStyler', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, HttpClientTestingModule],
+      imports: [
+        FormsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [HsStylerComponent],
       providers: [
         HsStylerService,
+        TranslateStore,
         {provide: HsLayoutService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
