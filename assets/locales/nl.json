@@ -1,7 +1,8 @@
 {
     "PANEL_HEADER": {
       "LM": "Beheer lagen",
-      "LEGEND": "Legenda"
+      "LEGEND": "Legenda",
+      "DRAW": "Trek"
     },
     "LAYERMANAGER": {
       "baselayers": "Basislagen",
@@ -38,14 +39,14 @@
       },
       "layermanagerMd": {
         "imageLayer": "Afbeeldingslaag",
-        "pointFeatures": "Puntkenmerken",
-        "lineFeatures": "Lijnkenmerken",
-        "polygonFeatures": "Polygoon-kenmerken",
+        "pointFeatures": "Punt entiteiten",
+        "lineFeatures": "Lijnentiteiten",
+        "polygonFeatures": "Polygoon-entiteitenn",
         "aboutLayer": "Over laag",
         "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
         "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
         "layerOptions": "Laagopties",
-        "filterFeatures": "Filterfuncties",
+        "filterFeatures": "Filter entiteiten",
         "layerName": "Laag naam",
         "layerOpacity": "Laagdekking",
         "layerStyle": "Laagstijl",
@@ -80,10 +81,43 @@
       "radius": "Straal",
       "polygon": "Veelhoek",
       "rotation": "Rotatie",
-      "reload": "Herlaad"
+      "reload": "Herlaad",
+      "point": "Punt",
+      "line": "Lijn",
+      "color": "Kleur",
+      "newDrawingLayer": "Nieuwe tekenlaag",
+      "advancedOptions": "Geavanceerde opties",
+      "folder": "Map",
+      "attribute": "Attribuut",
+      "ok": "Ok",
+      "cancel": "Annuleer",
+      "drawNewFeatures": "Teken nieuwe entiteiten"
     },
     "LEGEND": {
       "noLegendExists": "Er bestaat geen laag met legenda!"
+    },
+    "DRAW": {
+      "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de ESC-toets",
+      "disableDrawing": "Schakel tekenen uit",
+      "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
+      "unsavedDrawing": "Niet-opgeslagen tekening",
+      "saveAs": "Opslaan als..",
+      "drawingTo": "Tekenen naar:",
+      "individualStyle": "Individuele stijl voor entiteit",
+      "definedStyle": "Gedefinieerde stijl",
+      "fillOpacity": "Vul de dekking:",
+      "drawLayerMetadata": {
+        "layerTitle": "Laag titel",
+        "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
+        "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
+        "defaultAttributes": "Standaard attributen",
+        "defaultValue": "Standaardwaarde"
+      },
+      "drawToolbar": {
+        "addDrawLayer": "Tekenlaag toevoegen",
+        "removeLastPoint": "Verwijder het laatste punt",
+        "finishFeature": "Afwerking entiteit"
+      }
     }
   }
   

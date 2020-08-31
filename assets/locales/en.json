@@ -1,7 +1,8 @@
 {
   "PANEL_HEADER": {
     "LM": "Layermanager",
-    "LEGEND": "Legend"
+    "LEGEND": "Legend",
+    "DRAW": "Draw"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -80,9 +81,42 @@
     "radius": "Radius",
     "polygon": "Polygon",
     "rotation": "Rotation",
-    "reload": "Reload"
+    "reload": "Reload",
+    "point": "Point",
+    "line": "Line",
+    "color": "Color",
+    "newDrawingLayer": "New drawing layer",
+    "advancedOptions": "Advanced options",
+    "folder": "Folder",
+    "attribute": "Attribute",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "drawNewFeatures": "Draw new features"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
+  },
+  "DRAW": {
+    "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with ESC key",
+    "disableDrawing": "Disable drawing",
+    "activateDrawing": "Activate drawing by choosing a feature type",
+    "unsavedDrawing": "Unsaved drawing",
+    "saveAs": "Save as..",
+    "drawingTo": "Drawing to:",
+    "individualStyle": "Individual style for feature",
+    "definedStyle": "Defined style",
+    "fillOpacity": "Fill opacity:",
+    "drawLayerMetadata": {
+      "layerTitle": "Layer title",
+      "nameOfFolder": "Name of folder in layer-manager hierararchy",
+      "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
+      "defaultAttributes": "Default attributes",
+      "defaultValue": "Default value"
+    },
+    "drawToolbar": {
+      "addDrawLayer": "Add draw layer",
+      "removeLastPoint": "Remove last point",
+      "finishFeature": "Finish feature"
+    }
   }
 }

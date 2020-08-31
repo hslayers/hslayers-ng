@@ -1,7 +1,8 @@
 {
     "PANEL_HEADER": {
       "LM": "Gestionnaire des calques",
-      "LEGEND": "Légendes"
+      "LEGEND": "Légendes",
+      "DRAW": "Dessiner"
     },
     "LAYERMANAGER": {
       "baselayers": "Fond de carte de base",
@@ -38,14 +39,14 @@
       },
       "layermanagerMd": {
         "imageLayer": "Couche d'image",
-        "pointFeatures": "Caractéristiques ponctuelles",
-        "lineFeatures": "Caractéristiques de la ligne",
-        "polygonFeatures": "Fonctionnalités polygonales",
+        "pointFeatures": "Entité ponctuelles",
+        "lineFeatures": "Entité de la ligne",
+        "polygonFeatures": "Entité polygonales",
         "aboutLayer": "À propos de la couche",
         "moveLayerUpward": "Déplacer le calque vers le haut, SHIFT-cliquez vers le haut",
         "moveLayerDownward": "Déplacer le calque vers le bas, SHIFT-cliquez vers le bas",
         "layerOptions": "Options de calque",
-        "filterFeatures": "Fonctionnalités de filtrage",
+        "filterFeatures": "Entité de filtrage",
         "layerName": "Nom du calque",
         "layerOpacity": "Opacité du calque",
         "layerStyle": "Style de calque",
@@ -80,10 +81,43 @@
       "radius": "Rayon",
       "polygon": "Polygone",
       "rotation": "Rotation",
-      "reload": "Recharger"
+      "reload": "Recharger",
+      "point": "Point",
+      "line": "Ligne",
+      "color": "Couleur",
+      "newDrawingLayer": "Nouveau calque de dessin",
+      "advancedOptions": "Options avancées",
+      "folder": "Dossier",
+      "attribute": "Attribut",
+      "ok": "D'accord",
+      "cancel": "Annuler",
+      "drawNewFeatures": "Dessiner de nouvelles Entités"
     },
     "LEGEND": {
       "noLegendExists": "Aucune couche avec légende n'existe!"
+    },
+    "DRAW": {
+      "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche ESC",
+      "disableDrawing": "Désactiver le dessin",
+      "activateDrawing": "Activer le dessin en choisissant un type d'entité",
+      "unsavedDrawing": "Dessin non enregistré",
+      "saveAs": "Enregistrer sous..",
+      "drawingTo": "Dessin à:",
+      "individualStyle": "Style individuel pour entité",
+      "definedStyle": "Style défini",
+      "fillOpacity": "Remplir l'opacité:",
+      "drawLayerMetadata": {
+        "layerTitle": "Titre du calque",
+        "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches",
+        "layerWillBeAdded": "*Le calque sera ajouté à la carte et pourra être géré ultérieurement dans le panneau \"Gestionnaire des calques\"",
+        "defaultAttributes": "Attributs par défaut",
+        "defaultValue": "Valeur par défaut"
+      },
+      "drawToolbar": {
+        "addDrawLayer": "Ajouter un calque de dessin",
+        "removeLastPoint": "Supprimer le dernier point",
+        "finishFeature": "Entité de finition"
+      }
     }
   }
   

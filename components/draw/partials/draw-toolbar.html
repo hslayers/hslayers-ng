@@ -1,20 +1,18 @@
 <div class="btn-group">
-    <button class="btn rounded-0 btn-light btn-outline-secondary hs-toolbar-button" (click)="toggleDrawToolbar()"
-        >
+    <button class="btn rounded-0 btn-light btn-outline-secondary hs-toolbar-button" (click)="toggleDrawToolbar()">
         <i [ngClass]="{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}" data-toggle="tooltip"
-            title="Draw"></i></button>
+            [title]="'PANEL_HEADER.DRAW' | translate"></i></button>
     <div class="btn-group" *ngIf="drawToolbarExpanded">
         <button type="button" class="btn btn-light btn-outline-danger btn-secondary dropdown-toggle"
             data-toggle="dropdown" aria-haspopup="true"
             [hidden]="!(HsDrawService.drawableLayers.length == 0 && HsDrawService.type)"
-            (click)="HsDrawService.saveDrawingLayer()"
-            style="max-width: 125px; overflow: hidden; font-size: smaller">
-            Unsaved drawing
+            (click)="HsDrawService.saveDrawingLayer()" style="max-width: 125px; overflow: hidden; font-size: smaller">
+            {{'DRAW.unsavedDrawing' | translate}}
         </button>
         <button type="button" class="btn btn-light btn-secondary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" [hidden]="HsDrawService.drawableLayers.length == 0"
-            (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() " [attr.aria-expanded]="layersExpanded"
-            style="max-width: 125px; overflow: hidden; font-size: smaller"
+            (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
+            [attr.aria-expanded]="layersExpanded" style="max-width: 125px; overflow: hidden; font-size: smaller"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
             {{HsDrawService.selectedLayerString()}}
         </button>
@@ -23,30 +21,31 @@
                 (click)="selectLayer(layer)">{{layer.get('title')}}</a>
         </div>
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary" [hidden]="HsDrawService.tmpDrawLayer"
-            (click)="HsDrawService.saveDrawingLayer(true)"  data-toggle="tooltip"
-            title="Add draw layer">
+            (click)="HsDrawService.saveDrawingLayer(true)" data-toggle="tooltip"
+            [title]="'DRAW.drawToolbar.addDrawLayer' | translate">
             <i class="icon-plus"></i></button>
         <!-- <button class="btn btn-light hs-toolbar-button btn-outline-secondary" [hidden]="HsDrawService.tmpDrawLayer"
             (click)="HsDrawService.saveDrawingLayer($scope)"  data-toggle="tooltip"
-            title="{{'Add draw layer' | }}">
+            [title]="'DRAW.drawToolbar.addDrawLayer' | translate">
             <i class="icon-save-floppy"></i></button> -->
     </div>
     <div class="btn-group" *ngIf="drawToolbarExpanded">
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-            [ngClass]="{active: HsDrawService.type=='Point' }" (click)="setType('Point')"  data-toggle="tooltip"
-            title="Point"><i class="icon-pin"></i></button>
+            [ngClass]="{active: HsDrawService.type=='Point' }" (click)="setType('Point')" data-toggle="tooltip"
+            [title]="'COMMON.point' | translate"><i class="icon-pin"></i></button>
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-            [ngClass]="{active: HsDrawService.type=='Polygon' }" (click)="setType('Polygon')"  data-toggle="tooltip"
-            title="Polygon"><i class="icon-polygonlasso"></i></button>
+            [ngClass]="{active: HsDrawService.type=='Polygon' }" (click)="setType('Polygon')" data-toggle="tooltip"
+            [title]="'COMMON.polygon' | translate"><i class="icon-polygonlasso"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
             [ngClass]="{active: HsDrawService.type=='LineString' }" (click)="setType('LineString')"
-            data-toggle="tooltip" title="Line">
+            data-toggle="tooltip" [title]="'COMMON.line' | translate">
             <i class="icon-line"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary" *ngIf="HsDrawService.drawActive"
-            (click)="HsDrawService.removeLastPoint()"  data-toggle="tooltip" title="Remove last point">
+            (click)="HsDrawService.removeLastPoint()" data-toggle="tooltip"
+            [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
             <i class="icon-remove-circle"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary" *ngIf="HsDrawService.drawActive"
-            (click)="finishDrawing()"  data-toggle="tooltip" title="Finish feature">
+            (click)="finishDrawing()" data-toggle="tooltip" [title]="'DRAW.drawToolbar.finishFeature' | translate">
             <i class="icon-check"></i></button>
     </div>
 </div>
