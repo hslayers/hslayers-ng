@@ -5,6 +5,7 @@ import {HsDialogContainerService} from './dialogs/dialog-container.service';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
 import {HsLayoutServiceProvider} from '../../ajs-upgraded-providers';
 import {NgModule} from '@angular/core';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 /**
  * @namespace hs.layout
  * @memberOf hs
@@ -15,8 +16,12 @@ import {NgModule} from '@angular/core';
     HsDialogContainerComponent,
     HsDialogHostDirective,
   ],
-  imports: [CommonModule],
-  providers: [HsLayoutServiceProvider, HsDialogContainerService],
+  imports: [CommonModule, TranslateModule],
+  providers: [
+    HsLayoutServiceProvider,
+    HsDialogContainerService,
+    TranslateStore,
+  ],
   entryComponents: [BootstrapComponent, HsDialogContainerComponent],
   exports: [BootstrapComponent],
 })

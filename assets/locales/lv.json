@@ -203,5 +203,13 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     }
+  },
+  "LAYOUT": {
+    "sideNav": {
+      "routing": "Maršrutēšana",
+      "tracking": "Izsekošana",
+      "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus",
+      "applicationSettings": "Programmas iestatījumi"
+    }
   }
 }

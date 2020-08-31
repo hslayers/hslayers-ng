@@ -203,5 +203,13 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     }
+  },
+  "LAYOUT": {
+    "sideNav": {
+      "routing": "Routing",
+      "tracking": "Tracking",
+      "specifyApplication": "Specify application user settings",
+      "applicationSettings": "Application settings"
+    }
   }
 }
