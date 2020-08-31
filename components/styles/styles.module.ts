@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 import {FormsModule} from '@angular/forms';
 import {HsStylerColorComponent} from './styler-color.component';
@@ -15,9 +16,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsStylerComponent, HsStylerColorComponent],
-  imports: [CommonModule, HsPanelHelpersModule, FormsModule, NgbModule],
+  imports: [
+    CommonModule,
+    HsPanelHelpersModule,
+    FormsModule,
+    NgbModule,
+    TranslateModule,
+  ],
   exports: [HsStylerComponent, HsStylerColorComponent],
-  providers: [HsStylerService],
+  providers: [HsStylerService, TranslateStore],
   entryComponents: [HsStylerComponent, HsStylerColorComponent],
 })
 export class HsStylerModule {}

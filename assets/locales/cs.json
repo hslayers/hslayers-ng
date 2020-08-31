@@ -51,7 +51,10 @@
     "next": "Další",
     "download": "Stažení",
     "print": "Tisk",
-    "clear": "Průhledná"
+    "clear": "Průhledná",
+    "lineColor": "Barva čáry",
+    "lineWidth": "Šířka čáry",
+    "icon": "Ikona"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
