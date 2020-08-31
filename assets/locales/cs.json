@@ -2,7 +2,8 @@
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
     "LEGEND": "Legenda",
-    "DRAW": "Kreslit"
+    "DRAW": "Kreslit",
+    "PRINT": "Tisk"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",

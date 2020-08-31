@@ -1,17 +1,17 @@
 <div class="print" layout="column" style="max-height100%;">
     <md-toolbar class="md-hue-3" flex="none" hide-gt-sm="">
-        <h1 class="md-toolbar-tools" translate="">Print</h1>
+        <h1 class="md-toolbar-tools">{{'PANEL_HEADER.PRINT' | translate}}</h1>
     </md-toolbar>
     <div class="md-padding" flex="">
         <div layout="column" class="md-inline-form">
             <md-input-container>
-                <label translate="">Title</label>
+                <label>{{'COMMON.title' | translate}}</label>
                 <input required="" md-maxlength="100" ng-model="title">
             </md-input-container>
         </div>
     </div>
     <md-divider></md-divider>
     <div layout-padding="" layout="row" layout-align="space-around center">
-        <md-button class="md-raised md-accent" (click)="print()" translate="">Print</md-button>
+        <md-button class="md-raised md-accent" (click)="print()">{{'PANEL_HEADER.PRINT' | translate}}</md-button>
     </div>
 </div>
