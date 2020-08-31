@@ -1,72 +1,83 @@
 <div class="card panel- hs-main-panel">
-    <hs-panel-header name="permalink" title="Share map"></hs-panel-header>
+    <hs-panel-header name="permalink" [title]="'PANEL_HEADER.PERMALINK' | translate"></hs-panel-header>
     <div class="card-body">
         <div class="card-body">
-            
+
             <div class="form-group">
-                <label for="pure-map-link" class="control-label" i18n>Share pure map</label>
-                <a [href]="HsShareService.data.pureMapUrl" target="_blank" id="pure-map-link">{{HsShareService.data.pureMapUrl}}</a>
-                <p><sub class="text-danger" i18n>*Shares only map as picture</sub></p>
+                <label for="pure-map-link" class="control-label">{{'PERMALINK.sharePureMap' | translate}}</label>
+                <a [href]="HsShareService.data.pureMapUrl" target="_blank"
+                    id="pure-map-link">{{HsShareService.data.pureMapUrl}}</a>
+                <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translate}}</sub></p>
             </div>
             <br>
             <div class="form-group">
-                <label for="permalink-link" class="control-label" i18n>Permalink</label><br/>
-                <a [href]="HsShareService.data.permalinkUrl" target="_blank" id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
-                <p><sub class="text-danger" i18n>*Shares map with (all )portal functionality</sub></p>
+                <label for="permalink-link" class="control-label">{{'PERMALINK.permalink' | translate}}</label><br />
+                <a [href]="HsShareService.data.permalinkUrl" target="_blank"
+                    id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
+                <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translate}}</sub></p>
             </div>
             <hr>
-            
+
             <fieldset class="form-group">
-                <h4 for="share-link"><i18n>Link for</i18n>&nbsp;<span [hidden]="!HsCore.embededEnabled" i18n>embed/</span><i18n>social share</i18n></h4>
+                <h4 for="share-link">{{'PERMALINK.linkFor' | translate}}&nbsp;<span
+                        [hidden]="!HsCore.embededEnabled">{{'PERMALINK.embed' | translate}}/</span>{{'PERMALINK.socialShare' | translate}}
+                </h4>
                 <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="share-link" value="puremap" [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
-                    <i18n>Pure map</i18n>
-                  </label>
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="share-link" value="puremap"
+                            [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
+                        {{'PERMALINK.pureMap' | translate}}
+                    </label>
                 </div>
                 <div class="form-check">
-                <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="share-link" value="permalink" [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()" i18n>
-                    Permalink
-                  </label>
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="share-link" value="permalink"
+                            [(ngModel)]="HsShareService.data.shareLink" (click)="updateEmbedCode()">
+                        {{'PERMALINK.permalink' | translate}}
+                    </label>
                 </div>
             </fieldset>
             <div class="form-group" [hidden]="!HsCore.embededEnabled">
-                <label for="permalink-embed" class="control-label" i18n>Embed code</label>
-                <textarea class="form-control" style="height: 80px" id="permalink-embed" [(ngModel)]="HsShareService.data.embedCode"></textarea>
+                <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translate}}</label>
+                <textarea class="form-control" style="height: 80px" id="permalink-embed"
+                    [(ngModel)]="HsShareService.data.embedCode"></textarea>
                 <br>
             </div>
 
             <hr>
-            
+
             <fieldset>
-            <h4 i18n>Share on social network</h4>
-            <div class="form-group">
-                <label for="hs-prmlnk-title" class="control-label" i18n>Name</label>
-                    <input type="text" class="form-control" id="hs-prmlnk-title" i18n-placeholder="Fill in name" (change)="invalidateShareUrl()" [(ngModel)]="HsShareService.data.title">
-            </div>
-            
-            <div class="form-group">
-                <label for="hs-prmlnk-abstract" class="control-label" i18n>Abstract</label>
-
-                    <textarea class="form-control" id="hs-prmlnk-abstract" i18n-placeholder="Fill in descriptive text about map" (change)="invalidateShareUrl()" [(ngModel)]="HsShareService.data.abstract">                    </textarea>
-            </div>
-
-            <div class="form-group">
+                <h4>{{'PERMALINK.shareOnSocialNetwork' | translate}}</h4>
                 <div class="form-group">
-                    <label class="control-label"><input type="checkbox" [(ngModel)]="new_share"/><span class="ng-scope" translate> New share</span></label>
+                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translate}}</label>
+                    <input type="text" class="form-control" id="hs-prmlnk-title"
+                        [placeholder]="'PERMALINK.fillInName' | translate" (change)="invalidateShareUrl()"
+                        [(ngModel)]="HsShareService.data.title">
                 </div>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-secondary" href="#" (click)="shareOnSocial()">
-                        <i class="icon-share-alt"></i> Share
-                    </button>
+                <div class="form-group">
+                    <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translate}}</label>
+
+                    <textarea class="form-control" id="hs-prmlnk-abstract"
+                        [placeholder]="'PERMALINK.fillInDescriptive' | translate" (change)="invalidateShareUrl()"
+                        [(ngModel)]="HsShareService.data.abstract">                    </textarea>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="control-label" i18n>Thumbnail</label>
-                <img class="img-thumbnail hs-permalink-thumbnail" alt="Thumbnail" width="256" height="256">
-            </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label"><input type="checkbox" [(ngModel)]="new_share" /><span
+                                class="ng-scope">{{'PERMALINK.newShare' | translate}}</span></label>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-secondary" href="#" (click)="shareOnSocial()">
+                            <i class="icon-share-alt"></i> {{'PERMALINK.share' | translate}}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">{{'COMMON.thumbnail'   | translate}}</label>
+                    <img class="img-thumbnail hs-permalink-thumbnail" alt="Thumbnail" width="256" height="256">
+                </div>
             </fieldset>
         </div>
     </div>

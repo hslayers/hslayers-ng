@@ -1,9 +1,48 @@
 {
+  "COMMON": {
+    "close": "Close",
+    "abstract": "Abstract",
+    "no": "No",
+    "date": "Date",
+    "from": "From",
+    "to": "to",
+    "filter": "Filter:",
+    "distance": "Distance",
+    "title": "Title",
+    "scale": "Scale",
+    "info": "Additional information",
+    "removeLayer": "Remove layer",
+    "renameLayer": "Rename layer",
+    "hide": "Hide",
+    "legend": "Legend",
+    "width": "Width",
+    "circle": "Circle",
+    "fill": "Fill",
+    "stroke": "Stroke",
+    "strokeWidth": "Stroke width",
+    "radius": "Radius",
+    "polygon": "Polygon",
+    "rotation": "Rotation",
+    "reload": "Reload",
+    "point": "Point",
+    "line": "Line",
+    "color": "Color",
+    "newDrawingLayer": "New drawing layer",
+    "advancedOptions": "Advanced options",
+    "folder": "Folder",
+    "attribute": "Attribute",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "drawNewFeatures": "Draw new features",
+    "name": "Name",
+    "thumbnail": "Thumbnail"
+  },
   "PANEL_HEADER": {
     "LM": "Layermanager",
     "LEGEND": "Legend",
     "DRAW": "Draw",
-    "PRINT": "Print"
+    "PRINT": "Print",
+    "PERMALINK": "Share map"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -58,42 +97,6 @@
     },
     "dimensions": "Dimensions"
   },
-  "COMMON": {
-    "close": "Close",
-    "abstract": "Abstract",
-    "no": "No",
-    "date": "Date",
-    "from": "From",
-    "to": "to",
-    "filter": "Filter:",
-    "distance": "Distance",
-    "title": "Title",
-    "scale": "Scale",
-    "info": "Additional information",
-    "removeLayer": "Remove layer",
-    "renameLayer": "Rename layer",
-    "hide": "Hide",
-    "legend": "Legend",
-    "width": "Width",
-    "circle": "Circle",
-    "fill": "Fill",
-    "stroke": "Stroke",
-    "strokeWidth": "Stroke width",
-    "radius": "Radius",
-    "polygon": "Polygon",
-    "rotation": "Rotation",
-    "reload": "Reload",
-    "point": "Point",
-    "line": "Line",
-    "color": "Color",
-    "newDrawingLayer": "New drawing layer",
-    "advancedOptions": "Advanced options",
-    "folder": "Folder",
-    "attribute": "Attribute",
-    "ok": "Ok",
-    "cancel": "Cancel",
-    "drawNewFeatures": "Draw new features"
-  },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
   },
@@ -118,6 +121,25 @@
       "addDrawLayer": "Add draw layer",
       "removeLastPoint": "Remove last point",
       "finishFeature": "Finish feature"
+    }
+  },
+  "PERMALINK": {
+    "fillInName": "Fill in name",
+    "fillInDescriptive": "Fill in descriptive text about map",
+    "newShare": "New share",
+    "sharePureMap": "Share pure map",
+    "sharesOnlyMap": "*Shares only map as picture",
+    "sharesMapWith": "*Shares map with (all )portal functionality",
+    "linkFor": "Link for",
+    "embed": "embed",
+    "socialShare": "Social share",
+    "permalink": "Permalink",
+    "pureMap": "Pure map",
+    "embedCode": "Embed code",
+    "shareOnSocialNetwork": "Share on social network",
+    "share": "Share",
+    "directiveMd": {
+      "copyToClipboard": "Copy to clipboard"
     }
   }
 }
