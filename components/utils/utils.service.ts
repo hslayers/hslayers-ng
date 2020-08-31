@@ -80,9 +80,9 @@ export class HsUtilsService {
     if (this.HsConfig.shortenUrl != undefined) {
       return this.HsConfig.shortenUrl(url);
     }
-    return this.http.get(
-      this.proxify('http://tinyurl.com/api-create.php?url=' + url)
-    );
+    return this.http
+      .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url))
+      .toPromise();
     // return new Promise((resolve, reject) => {
     //   this.http
     //     .get(

@@ -20,6 +20,7 @@ import 'angular';
  * @param $window
  * @param HsCommonEndpointsService
  * @param HsCompositionsMapService
+ * @param HsEventBusService
  */
 export default function (
   $rootScope,
@@ -114,7 +115,9 @@ export default function (
               shareId
           )
             .then((shortUrl) => {
-              me.data.shareUrl = shortUrl;
+              shortUrl.then((data) => {
+                me.data.shareUrl = data;
+              });
             })
             .catch(() => {
               $log.log('Error creating short Url');

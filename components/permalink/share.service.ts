@@ -31,9 +31,7 @@ export class HsShareService {
     abstract: '',
     shareUrl: '',
   };
-  notAvailableImage = require(
-    /* webpackChunkName: "img" */ '../../img/notAvailable.png'
-  );
+  notAvailableImage = require(/* webpackChunkName: "img" */ '../../img/notAvailable.png');
   private renderer: Renderer2;
 
   constructor(
@@ -86,12 +84,18 @@ export class HsShareService {
       ) {
         this.data.shareUrlValid = false;
         try {
-          this.data.pureMapUrl = await this.HsUtilsService.shortUrl(
+          const promisePureMapUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPureMapUrl()
           );
-          this.data.permalinkUrl = await this.HsUtilsService.shortUrl(
+          promisePureMapUrl.then((data) => {
+            this.data.pureMapUrl = data;
+          });
+          const promisePermalinkUrl = await this.HsUtilsService.shortUrl(
             this.HsShareUrlService.getPermalinkUrl()
           );
+          promisePermalinkUrl.then((data) => {
+            this.data.permalinkUrl = data;
+          });
           this.getEmbedCode();
         } catch (ex) {
           this.HsLogService.log('Error creating short Url');
@@ -223,11 +227,13 @@ export class HsShareService {
           })
         );
 
-        const shortUrl = await this.HsUtilsService.shortUrl(
+        const shortUrlPromise = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
         );
-
-        const shareUrl = shortUrl;
+        let shareUrl = '';
+        shortUrlPromise.then((data) => {
+          shareUrl = data;
+        });
         navigator
           .share({
             title: this.data.title,
