@@ -31,9 +31,7 @@ export class HsShareService {
     abstract: '',
     shareUrl: '',
   };
-  notAvailableImage = require(
-    /* webpackChunkName: "img" */ '../../img/notAvailable.png'
-  );
+  notAvailableImage = require(/* webpackChunkName: "img" */ '../../img/notAvailable.png');
   private renderer: Renderer2;
 
   constructor(
@@ -226,7 +224,6 @@ export class HsShareService {
         const shortUrl = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
         );
-
         const shareUrl = shortUrl;
         navigator
           .share({

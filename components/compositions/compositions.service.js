@@ -20,6 +20,7 @@ import 'angular';
  * @param $window
  * @param HsCommonEndpointsService
  * @param HsCompositionsMapService
+ * @param HsEventBusService
  */
 export default function (
   $rootScope,
