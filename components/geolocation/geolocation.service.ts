@@ -257,7 +257,7 @@ export class HsGeolocationService {
 
   setRotation(): void {
     const args = {
-      orientationBase: Gyro.WORLD, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
+      orientationBase: Gyro.GyroNorm.WORLD, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
       decimalCount: 4, // ( How many digits after the decimal point will there be in the return values )
     };
     this.gn = new GyroNorm();
