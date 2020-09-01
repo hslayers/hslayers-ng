@@ -22,13 +22,27 @@ import {toRadians} from 'ol/math';
  * @param HsUtilsService
  */
 export class HsGeolocationService {
-  localization: boolean;
-  following: boolean;
-  gn: any;
+  /**
+   * @ngdoc property
+   * @name HsGeolocationService#localization
+   * @public
+   * @type {boolean} false
+   * @description Represents geolocalization state (on/off)
+   */
+  localization = false;
+  /**
+   * @ngdoc property
+   * @name HsGeolocationService#following
+   * @public
+   * @type {boolean} false
+   * @description Represents geolocalization tracking option (on/off).
+   * Used to deremine state of tracking in directive's html
+   */
+  following = false;
+  gn = null;
   positionFeature: Feature;
   centering: boolean;
   accuracyFeature: Feature;
-  stopCentering: any;
   geolocation: any;
   clicked: any;
   cancelClick: boolean;
@@ -39,39 +53,6 @@ export class HsGeolocationService {
     private HsLayoutService: HsLayoutService,
     private HsUtilsService: HsUtilsService
   ) {
-    /**
-     * @ngdoc property
-     * @name HsGeolocationService#localization
-     * @public
-     * @type {boolean} false
-     * @description Represents geolocalization state (on/off)
-     */
-    this.localization = false;
-    /**
-     * @ngdoc property
-     * @name HsGeolocationService#following
-     * @public
-     * @type {boolean} false
-     * @description Represents geolocalization tracking option (on/off).
-     * Used to deremine state of tracking in directive's html
-     */
-    this.following = false;
-    this.gn = null;
-    /**
-     * @ngdoc method
-     * @name HsGeolocationService#stopCentering
-     * @public
-     * @description Turns off position centering while 'following'.
-     */
-    this.stopCentering = this.HsUtilsService.debounce(
-      () => {
-        this.centering = false;
-      },
-      150,
-      false,
-      this
-    );
-
     this.accuracyFeature = new Feature({
       known: false,
       geometry: new CircleGeom([0, 0], 1),
@@ -101,6 +82,17 @@ export class HsGeolocationService {
   }
   /**
    * @ngdoc method
+   * @name HsGeolocationService#stopCentering
+   * @public
+   * @description Turns off position centering while 'following'.
+   */
+  stopCentering(): void {
+    setTimeout(() => {
+      this.centering = false;
+    }, 150);
+  }
+  /**
+   * @ngdoc method
    * @name HsGeolocationService#stopTracking
    * @public
    * @description Reset all geolocalization parameters concerning position tracking
@@ -111,7 +103,7 @@ export class HsGeolocationService {
       .getControls()
       .getArray()[4]
       .element.classList.add('hidden');
-    this.HsMapService.map.on('pointermove', this.stopCentering);
+    this.HsMapService.map.on('pointermove', () => this.stopCentering());
     this.geolocation.setTracking(false);
     if (this.gn !== null) {
       this.gn.stop();
@@ -146,15 +138,15 @@ export class HsGeolocationService {
       if (this.isCentered()) {
         if (!this.following) {
           //position
-          this.geolocation.on('change:position', this.setNewPosition());
+          this.geolocation.on('change:position', () => this.setNewPosition());
           this.geolocation.setTracking(true);
           this.following = true;
           //rotation
           this.setRotation();
-          this.geolocation.on('change:heading', this.newRotation());
+          this.geolocation.on('change:heading', () => this.newRotation());
           this.centering = true;
 
-          this.HsMapService.map.on('pointermove', this.stopCentering);
+          this.HsMapService.map.on('pointermove', () => this.stopCentering());
 
           this.HsMapService.map
             .getControls()
