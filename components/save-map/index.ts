@@ -107,7 +107,7 @@ angular
    * @description Service for sending and retrieving data from Layman
    * (compositions, layers) (https://github.com/jirik/gspld)
    */
-  .service('HsLaymanService', HsLaymanService)
+  .service('HsLaymanService', downgradeInjectable(HsLaymanService))
 
   /**
    * @ngdoc service
