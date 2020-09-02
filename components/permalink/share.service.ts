@@ -148,7 +148,7 @@ export class HsShareService {
    * @description Get correct Embed code with correct share link type
    * @returns {string} embeddable iframe html code
    */
-  getEmbedCode() {
+  getEmbedCode(): string {
     this.data.embedCode =
       '<iframe src="' +
       this.getShareUrl() +
@@ -163,7 +163,7 @@ export class HsShareService {
    * @returns {string} Share URL
    * @description Get share Url based on app choice
    */
-  getShareUrl() {
+  getShareUrl(): string {
     let tmp;
     if (this.data.shareLink == 'permalink') {
       tmp = this.data.permalinkUrl;
@@ -180,7 +180,7 @@ export class HsShareService {
    * @returns {string} Encoded share URL
    * @description Get encoded share Url based on app choice
    */
-  getShareUrlEncoded() {
+  getShareUrlEncoded(): string {
     return encodeURIComponent(this.getShareUrl());
   }
 
@@ -190,7 +190,7 @@ export class HsShareService {
    * @public
    * @description Make current share url invalid for social sharing
    */
-  invalidateShareUrl() {
+  invalidateShareUrl(): void {
     this.data.shareUrlValid = false;
   }
 
@@ -202,7 +202,7 @@ export class HsShareService {
    * @param {boolean} newShare If new share record on server should be created
    * @description Share map on social network
    */
-  async shareOnSocial(newShare) {
+  async shareOnSocial(newShare: boolean): Promise<void> {
     if (!this.data.shareUrlValid) {
       if (this.HsShareUrlService.shareId === null || newShare) {
         this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
@@ -265,7 +265,7 @@ export class HsShareService {
    * @param {boolean} newRender Force synchronous rendering again or use last canvas state
    * @description Generate thumbnail of current map and save it to variable and selected element
    */
-  generateThumbnail($element, newRender: boolean) {
+  generateThumbnail($element, newRender: boolean): void {
     this.rendered($element, newRender);
     if (
       this.HsLayoutService.mainpanel == 'saveMap' ||
@@ -295,7 +295,7 @@ export class HsShareService {
    * @param width
    * @param height
    */
-  setCanvasSize(canvas, width, height) {
+  setCanvasSize(canvas, width: number, height: number): void {
     canvas.width = width;
     canvas.height = height;
     canvas.style.width = width + 'px';
@@ -305,14 +305,14 @@ export class HsShareService {
   /**
    * @param ctx
    */
-  setupContext(ctx) {
+  setupContext(ctx): void {
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
     ctx.msImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
   }
 
-  rendered($element, newRender?) {
+  rendered($element, newRender?): void {
     const collectorCanvas = this.renderer.createElement('canvas');
     const targetCanvas = this.renderer.createElement('canvas');
     const width = 256,

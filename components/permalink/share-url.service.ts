@@ -1,3 +1,9 @@
+import {Inject, Injectable} from '@angular/core';
+import {Location} from '@angular/common';
+import {Subject} from 'rxjs';
+
+import {Map} from 'ol';
+
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -6,11 +12,9 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Inject} from '@angular/core';
-import {Location} from '@angular/common';
-import {Subject} from 'rxjs';
 import {WINDOW} from '../utils/window';
 
+@Injectable({providedIn: 'root'})
 export class HsShareUrlService {
   url_generation = true;
   //some of the code is taken from http://stackoverflow.com/questions/22258793/set-url-parameters-without-causing-page-refresh
@@ -18,7 +22,7 @@ export class HsShareUrlService {
   shareId = null;
   current_url = '';
   permalinkRequestUrl = '';
-  //TODO remove keeping track of added layers, because permalink should also be generated on other cases like remove layer, visibility change etc.
+  //TODO: remove keeping track of added layers, because permalink should also be generated on other cases like remove layer, visibility change etc.
   added_layers = [];
   params = {};
   customParams = {};
@@ -46,8 +50,7 @@ export class HsShareUrlService {
   /**
    * @function update
    * @memberof HsPermalinkUrlService
-   * @param {object} e Event changing map state
-   * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
+   * @description Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are ommited from permalink url).
    */
   update(): void {
     const view = this.HsMapService.map.getView();
@@ -56,7 +59,7 @@ export class HsShareUrlService {
     const added_layers = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (
-        lyr.get('show_in_manager') &&
+        lyr.get('show_in_manager') !== undefined &&
         lyr.get('show_in_manager') !== null &&
         lyr.get('show_in_manager') == false
       ) {
@@ -114,9 +117,9 @@ export class HsShareUrlService {
    * @function getPermalinkUrl
    * @memberof HsPermalinkUrlService
    * @returns {string} Permalink url
-   * Create permalink Url to map
+   * @description Create permalink Url to map
    */
-  getPermalinkUrl() {
+  getPermalinkUrl(): string {
     if (this.HsCore.isMobile() && this.HsConfig.permalinkLocation) {
       return (
         this.HsConfig.permalinkLocation.origin +
@@ -128,10 +131,9 @@ export class HsShareUrlService {
         encodeURIComponent(this.permalinkRequestUrl)
       ).replace(this.Location.path(), this.HsConfig.permalinkLocation.pathname);
     } else {
-      const portIfNeeded =
-        ['80', '443'].indexOf(this.window.location.port) > -1
-          ? ''
-          : `:${this.window.location.port}`;
+      const portIfNeeded = ['80', '443'].includes(this.window.location.port)
+        ? ''
+        : `:${this.window.location.port}`;
       return `${this.window.location.protocol}://${
         this.window.location.host
       }${portIfNeeded}/${this.current_url}&permalink=${encodeURIComponent(
@@ -144,9 +146,9 @@ export class HsShareUrlService {
    * @function getPureMapUrl
    * @memberof HsPermalinkUrlService
    * @returns {string} Embeded url
-   * Create Url for PureMap version of map
+   * @description Create Url for PureMap version of map
    */
-  getPureMapUrl() {
+  getPureMapUrl(): string {
     const params: any = {puremap: 'true'};
     return (
       this.getPermalinkUrl() +
@@ -160,9 +162,9 @@ export class HsShareUrlService {
    * @memberof HsPermalinkUrlService
    * @param {string} str Parameter string to parse
    * @returns {object} Parsed parameter object
-   * Parse parameter string from Url into key-value(s) pairs
+   * @description Parse parameter string from Url into key-value(s) pairs
    */
-  parse(str) {
+  parse(str: string) {
     if (typeof str != 'string') {
       return {};
     }
@@ -176,7 +178,7 @@ export class HsShareUrlService {
     return str
       .trim()
       .split('&')
-      .reduce((ret, param) => {
+      .reduce((paramDict, param) => {
         const parts = param.replace(/\+/g, ' ').split('=');
         let key = parts[0];
         let val = parts[1];
@@ -186,15 +188,15 @@ export class HsShareUrlService {
         // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
         val = val == undefined ? null : decodeURIComponent(val);
 
-        if (!ret.hasOwnProperty(key)) {
-          ret[key] = val;
-        } else if (Array.isArray(ret[key])) {
-          ret[key].push(val);
+        if (!paramDict.hasOwnProperty(key)) {
+          paramDict[key] = val;
+        } else if (Array.isArray(paramDict[key])) {
+          paramDict[key].push(val);
         } else {
-          ret[key] = [ret[key], val];
+          paramDict[key] = [paramDict[key], val];
         }
 
-        return ret;
+        return paramDict;
       }, {});
   }
 
@@ -203,28 +205,27 @@ export class HsShareUrlService {
    * @memberof HsPermalinkUrlService
    * @param {object} obj Parameter object to stringify
    * @returns {string} Encoded parameter string or "" if no parameter object is given
-   * Create encoded parameter string from parameter object
+   * @description Create encoded parameter string from parameter object
    */
-  stringify(obj) {
-    return obj
-      ? Object.keys(obj)
-          .map((key) => {
-            const val = obj[key];
+  stringify(obj): string {
+    if (!obj) {
+      return '';
+    }
+    return Object.keys(obj)
+      .map((key) => {
+        const val = obj[key];
 
-            if (Array.isArray(val)) {
-              return val
-                .map((val2) => {
-                  return (
-                    encodeURIComponent(key) + '=' + encodeURIComponent(val2)
-                  );
-                })
-                .join('&');
-            }
+        if (Array.isArray(val)) {
+          return val
+            .map((val2) => {
+              return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+            })
+            .join('&');
+        }
 
-            return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-          })
-          .join('&')
-      : '';
+        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+      })
+      .join('&');
   }
 
   /**
@@ -234,11 +235,11 @@ export class HsShareUrlService {
    * @param {object} new_value Value for pushed parameter
    * Push new key-value pair into paramater object and update Url string with new params
    */
-  push(key, new_value) {
+  push(key, new_value): void {
     this.params[key] = new_value;
     const new_params_string = this.stringify(this.params);
     this.param_string = new_params_string;
-    this.pathname = this.Location.path();
+    this.pathname = location.origin;
     this.current_url = this.pathname + '?' + new_params_string;
   }
 
@@ -246,15 +247,15 @@ export class HsShareUrlService {
    * @function getParamValue
    * @memberof HsPermalinkUrlService
    * @param {string} param Param to get current value
-   * @returns {string} Current value for requested param or null if param doesn´t exist
-   * Find current param value from Url
+   * @returns {string} Current value for requested param or null if param doesn't exist
+   * @description Find current param value from Url
    */
-  getParamValue(param) {
+  getParamValue(param: string): string {
     const tmp = this.parse(location.search);
     if (tmp[param]) {
       return tmp[param];
     } else {
-      return null;
+      return;
     }
   }
 
@@ -262,9 +263,9 @@ export class HsShareUrlService {
    * @function updateCustomParams
    * @memberof HsPermalinkUrlService
    * @param {object} params A dictionary of custom parameters which get added to the generated url
-   * Update values for custom parameters which get added to the url and usually are application speciffic
+   * @description Update values for custom parameters which get added to the url and usually are application speciffic
    */
-  updateCustomParams(params) {
+  updateCustomParams(params): void {
     for (const param in params) {
       this.customParams[param] = params[param];
     }
@@ -279,18 +280,17 @@ export class HsShareUrlService {
   /**
    * @function init
    * @memberof HsPermalinkUrlService
-   * @param {ol/Map} map Openlayers map
+   * @param {Map} map Openlayers map
    * @private
    */
-  init(map) {
+  init(map: Map): void {
     if (this.url_generation) {
       let timer = null;
-      // eslint-disable-next-line angular/on-watch
       this.HsEventBusService.mapExtentChanges.subscribe(
         this.HsUtilsService.debounce(
           (data) => {
             this.update();
-            this.browserUrlUpdated.next();
+            //this.browserUrlUpdated.next();
           },
           200,
           false,
@@ -311,7 +311,7 @@ export class HsShareUrlService {
           }
           timer = setTimeout(() => {
             this.update();
-            this.browserUrlUpdated.next();
+            //this.browserUrlUpdated.next();
           }, 1000);
         });
       });

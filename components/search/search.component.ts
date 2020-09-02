@@ -15,7 +15,7 @@ export class HsSearchComponent implements OnInit {
   replace = false;
   clearvisible = false;
   searchInputVisible: boolean;
-  query: '';
+  query = '';
   constructor(
     private HsSearchService: HsSearchService,
     private HsEventBusService: HsEventBusService,

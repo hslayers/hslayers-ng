@@ -1,22 +1,23 @@
+import {Injectable} from '@angular/core';
+
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
+import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
+import {Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS, XYZ} from 'ol/source';
+import {Map} from 'ol';
+
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS, XYZ} from 'ol/source';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  notAvailableImage = require(
-    /* webpackChunkName: "img" */ './notAvailable.png'
-  );
+  notAvailableImage = require(/* webpackChunkName: "img" */ './notAvailable.png');
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
@@ -114,10 +115,10 @@ export class HsSaveMapService {
    *
    * @memberof HsSaveMapService
    * @function getCurrentBaseLayer
-   * @param {Ol.map} map Selected map object
+   * @param {Map} map Selected map object
    * @returns {object} Returns object with current current selected base layers title as attribute
    */
-  getCurrentBaseLayer(map) {
+  getCurrentBaseLayer(map: Map) {
     let current_base_layer = null;
     for (const lyr of map.getLayers().getArray()) {
       if (
@@ -191,7 +192,7 @@ export class HsSaveMapService {
    *
    * @memberof HsSaveMapService
    * @function serializeStyle
-   * @param {ol.style.Style} s Style to convert
+   * @param {Style} s Style to convert
    * @returns {object} Converted JSON object for style
    */
   serializeStyle(s: Style) {
