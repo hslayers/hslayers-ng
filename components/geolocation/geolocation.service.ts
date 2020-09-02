@@ -41,6 +41,12 @@ export class HsGeolocationService {
   following = false;
   gn = null;
   positionFeature: Feature;
+  /**
+   * @ngdoc method
+   * @name HsGeolocationService#stopCentering
+   * @public
+   * @description Turns off position centering while 'following'.
+   */
   centering: boolean;
   accuracyFeature: Feature;
   geolocation: any;
@@ -82,17 +88,6 @@ export class HsGeolocationService {
   }
   /**
    * @ngdoc method
-   * @name HsGeolocationService#stopCentering
-   * @public
-   * @description Turns off position centering while 'following'.
-   */
-  stopCentering(): void {
-    setTimeout(() => {
-      this.centering = false;
-    }, 150);
-  }
-  /**
-   * @ngdoc method
    * @name HsGeolocationService#stopTracking
    * @public
    * @description Reset all geolocalization parameters concerning position tracking
@@ -103,7 +98,9 @@ export class HsGeolocationService {
       .getControls()
       .getArray()[4]
       .element.classList.add('hidden');
-    this.HsMapService.map.on('pointermove', () => this.stopCentering());
+    this.HsMapService.map.on('pointermove', () => {
+      this.centering = false;
+    });
     this.geolocation.setTracking(false);
     if (this.gn !== null) {
       this.gn.stop();
@@ -146,7 +143,9 @@ export class HsGeolocationService {
           this.geolocation.on('change:heading', () => this.newRotation());
           this.centering = true;
 
-          this.HsMapService.map.on('pointermove', () => this.stopCentering());
+          this.HsMapService.map.on('pointermove', () => {
+            this.centering = false;
+          });
 
           this.HsMapService.map
             .getControls()
@@ -247,12 +246,19 @@ export class HsGeolocationService {
    * @param e
    */
   newRotation(): void {
-    const heading = this.geolocation.getHeading()
-      ? this.geolocation.getHeading()
-      : null;
-    if (heading) {
-      this.HsMapService.map.getView().setRotation(heading);
-    }
+    this.HsUtilsService.debounce(
+      () => {
+        const heading = this.geolocation.getHeading()
+          ? this.geolocation.getHeading()
+          : null;
+        if (heading) {
+          this.HsMapService.map.getView().setRotation(heading);
+        }
+      },
+      150,
+      false,
+      this
+    );
   }
 
   setRotation(): void {
