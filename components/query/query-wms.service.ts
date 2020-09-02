@@ -2,10 +2,11 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
@@ -24,7 +25,8 @@ export class HsQueryWmsService {
     private HsLanguageService: HsLanguageService,
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService,
-    private HttpClient: HttpClient
+    private HttpClient: HttpClient,
+    private HsLogService: HsLogService
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
@@ -65,28 +67,35 @@ export class HsQueryWmsService {
     const req_url = this.HsUtilsService.proxify(url, true);
     const reqHash = this.HsQueryBaseService.currentQuery;
     try {
-      const response = await this.HttpClient.get(req_url).toPromise();
+      const headers = new Headers({'Content-Type': 'text'});
+      headers.set('Accept', 'text');
+      const response = await this.HttpClient.get(req_url, {
+        headers: new HttpHeaders().set('Content-Type', 'text'),
+        responseType: 'text',
+      }).toPromise();
 
       if (reqHash != this.HsQueryBaseService.currentQuery) {
         return;
       }
       this.featureInfoReceived(response, infoFormat, url, coordinate, layer);
-    } catch (err) {
+    } catch (exception) {
       if (reqHash != this.HsQueryBaseService.currentQuery) {
         return;
       }
-      this.featureInfoError(coordinate);
+      this.featureInfoError(coordinate, exception);
     }
   }
 
   /**
    * @function featureInfoError
+   * @param exception
    * @memberOf hs.query.service_getwmsfeatureinfo
    * @description Error callback to decrease infoCounter
    * @param coordinate
    */
-  featureInfoError(coordinate) {
+  featureInfoError(coordinate, exception) {
     this.infoCounter--;
+    this.HsLogService.warn(exception);
     if (this.infoCounter === 0) {
       this.queriesCollected(coordinate);
     }
