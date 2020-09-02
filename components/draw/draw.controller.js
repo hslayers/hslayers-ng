@@ -12,6 +12,7 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param gettext
  * @param HsMapService
  * @param HsCommonEndpointsService
+ * @param $http
  */
 export default function (
   $scope,
@@ -183,7 +184,12 @@ export default function (
         (HsCommonEndpointsService.endpoints || [])
           .filter((ds) => ds.type == 'layman')
           .forEach((ds) => {
-            $http.delete(`${ds.url}/${ds.user}/layers/${HsDrawService.selectedLayer.get('title')}`);
+            $http.delete(
+              `${ds.url}/${ds.user}/layers/${HsDrawService.selectedLayer
+                .get('title')
+                .toLowerCase()
+                .replace(/\s+/g, '')}`
+            );
           });
       }
       HsDrawService.selectedLayer = null;
