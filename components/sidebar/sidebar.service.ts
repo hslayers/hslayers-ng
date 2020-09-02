@@ -209,7 +209,7 @@ export class HsSidebarService {
     });
   }
 
-  translateButtonTitle(button) {
+  getButtonTitle(button) {
     return typeof button.title == 'function' ? button.title() : button.title;
   }
 
