@@ -18,6 +18,7 @@ import {HsCoreService} from './core.service';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
 import {HsGeolocationModule} from './../geolocation';
+import {HsInfoModule} from './../info';
 import {HsLanguageModule} from './../language';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
@@ -76,6 +77,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
         multi: false,
       },
     }),
+    HsInfoModule,
   ],
   exports: [TranslateModule],
   providers: [
