@@ -185,7 +185,7 @@ export default function (
           .filter((ds) => ds.type == 'layman')
           .forEach((ds) => {
             $http.delete(
-              `${ds.url}/${ds.user}/layers/${HsDrawService.selectedLayer
+              `${ds.url}/rest/${ds.user}/layers/${HsDrawService.selectedLayer
                 .get('title')
                 .toLowerCase()
                 .replace(/\s+/g, '')}`
