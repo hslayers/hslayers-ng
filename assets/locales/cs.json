@@ -73,7 +73,7 @@
     "SENSORS": "Senzory",
     "MEASURE": "Měření",
     "ADDLAYERS": "Přidejte vrstvy",
-    "FILTERFEATURES": "Filtrovat entity",
+    "FILTERFEATURES": "Filtrovat subjekt",
     "ROUTING": "Směrování",
     "TRACKING": "Sledování",
     "APPLICATIONSETTINGS": "Nastavení aplikace"
@@ -264,7 +264,7 @@
       "LANGUAGE": "Změnit jazyk",
       "APPLICATIONSETTINGS": "Zadejte uživatelské nastavení aplikace",
       "SEARCH": "Vyhledejte umístění",
-      "DRAW": "Nakreslete nové geografické objekty"
+      "DRAW": "Nakreslete nové funkce"
     }
   }
 }
