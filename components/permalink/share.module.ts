@@ -1,14 +1,15 @@
 import 'angular-cookies';
 import {
+  APP_BASE_HREF,
+  CommonModule,
+  LocationStrategy,
+  PathLocationStrategy,
+} from '@angular/common';
+import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
   NgModule,
 } from '@angular/core';
-import {
-  CommonModule,
-  HashLocationStrategy,
-  LocationStrategy,
-} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareComponent} from './share.component';
@@ -25,7 +26,9 @@ import {WINDOW_PROVIDERS} from '../utils/window';
     HsShareService,
     TranslateStore,
     HsShareUrlService,
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    Location,
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
+    {provide: APP_BASE_HREF, useValue: '/'},
     WINDOW_PROVIDERS,
   ],
   entryComponents: [HsShareComponent],
