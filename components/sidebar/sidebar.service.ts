@@ -56,7 +56,7 @@ export class HsSidebarService {
         panel: 'layermanager',
         module: 'hs.layermanager',
         order: 0,
-        title: this.getTranslation('PANEL_HEADER.LM'),
+        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
         description: 'Manage and style your layers in composition',
         icon: 'icon-layers',
       },
@@ -64,7 +64,8 @@ export class HsSidebarService {
         panel: 'legend',
         module: 'hs.legend',
         order: 1,
-        title: this.getTranslation('PANEL_HEADER.LEGEND'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
         description: 'Legend',
         icon: 'icon-dotlist',
       },
@@ -72,7 +73,7 @@ export class HsSidebarService {
         panel: 'info',
         module: 'hs.query',
         order: 7,
-        title: this.getTranslation('PANEL_HEADER.INFO'),
+        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.INFO'),
         description: 'Display map-query result information',
         icon: 'icon-info-sign',
       },
@@ -80,7 +81,8 @@ export class HsSidebarService {
         panel: 'composition_browser',
         module: 'hs.compositions',
         order: 3,
-        title: this.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
         description: 'List available map compositions',
         icon: 'icon-map',
       },
@@ -88,7 +90,8 @@ export class HsSidebarService {
         panel: 'datasource_selector',
         module: 'hs.datasource_selector',
         order: 4,
-        title: this.getTranslation('PANEL_HEADER.ADDLAYERS'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
         description: 'Select data or services for your map composition',
         icon: 'icon-database',
       },
@@ -96,7 +99,8 @@ export class HsSidebarService {
         panel: 'feature_crossfilter',
         module: 'hs.feature_crossfilter.controller',
         order: 5,
-        title: this.getTranslation('PANEL_HEADER.FILTERFEATURES'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.FILTERFEATURES'),
         description: 'Crossfilter',
         icon: 'icon-analytics-piechart',
       },
@@ -104,7 +108,8 @@ export class HsSidebarService {
         panel: 'sensors',
         module: 'hs.sensors',
         order: 6,
-        title: this.getTranslation('PANEL_HEADER.SENSORS'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.SENSORS'),
         description: '',
         icon: 'icon-weightscale',
       },
@@ -112,7 +117,8 @@ export class HsSidebarService {
         panel: 'measure',
         module: 'hs.measure',
         order: 2,
-        title: this.getTranslation('PANEL_HEADER.MEASURE'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
         description: 'Measure distance or area at map',
         icon: 'icon-design',
         condition: true,
@@ -153,7 +159,8 @@ export class HsSidebarService {
         panel: 'saveMap',
         module: 'hs.save-map',
         order: 12,
-        title: this.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
         description: 'Save content of map to composition',
         icon: 'icon-save-floppy',
       },
@@ -192,6 +199,7 @@ export class HsSidebarService {
         icon: 'icon-pencil',
       },
     ];
+
     this.HsEventBusService.mainPanelChanges.subscribe(() => {
       if (!HsLayoutService.sidebarExpanded) {
         setTimeout(() => {
@@ -200,13 +208,11 @@ export class HsSidebarService {
       }
     });
   }
-  getTranslation(str: string): string {
-    let translatedTitle = '';
-    this.TranslateService.get([str]).subscribe((value) => {
-      translatedTitle = value[str];
-    });
-    return translatedTitle;
+
+  translateButtonTitle(button) {
+    return typeof button.title == 'function' ? button.title() : button.title;
   }
+
   /**
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded

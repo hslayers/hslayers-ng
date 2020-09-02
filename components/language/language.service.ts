@@ -66,4 +66,13 @@ export class HsLanguageService {
     }
     return langs;
   }
+
+  /**
+   *
+   * @param {string} str  Identifier of the string to be translated
+   * @returns {string} Translation
+   */
+  getTranslation(str: string): string {
+    return this.TranslateService.instant(str);
+  }
 }
