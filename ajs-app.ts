@@ -3,17 +3,7 @@
 import './components/add-layers/add-layers.module';
 import './components/core';
 import './components/datasource-selector/datasource-selector.module';
-import './components/draw';
-import './components/info/info.module';
-import './components/legend';
-import './components/measure';
-import './components/permalink';
-import './components/print';
 import './components/query/query.module';
-import './components/search';
-import './components/sidebar';
-import './components/styles';
-import './components/toolbar';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -82,8 +72,7 @@ export default angular
     'ngInject';
     return {
       template: require('hslayers.html'),
-      link: function (_scope, element) {
-      },
+      link: function (_scope, element) {},
     };
   })
   .value(
