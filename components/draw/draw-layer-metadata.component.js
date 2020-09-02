@@ -3,7 +3,7 @@ export default {
   bindings: {
     layer: '<',
   },
-  controller: function ($scope, $timeout, HsDrawService, HsMapService,HsLayerSynchronizerService) {
+  controller: function ($scope, $timeout, HsDrawService, HsMapService) {
     'ngInject';
     this.modalVisible = true;
     const vm = this;

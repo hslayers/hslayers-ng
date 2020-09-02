@@ -22,9 +22,7 @@ export default function (
   $timeout,
   HsLayoutService,
   gettext,
-  HsMapService,
-  HsCommonEndpointsService,
-  $http
+  $compile
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -179,21 +177,13 @@ export default function (
       };
     },
     removeSelectedLayer() {
-      HsMapService.map.removeLayer(HsDrawService.selectedLayer);
-      if (HsDrawService.selectedLayer.get('synchronize') == true) {
-        (HsCommonEndpointsService.endpoints || [])
-          .filter((ds) => ds.type == 'layman')
-          .forEach((ds) => {
-            $http.delete(
-              `${ds.url}/rest/${ds.user}/layers/${HsDrawService.selectedLayer
-                .get('title')
-                .toLowerCase()
-                .replace(/\s+/g, '')}`
-            );
-          });
-      }
-      HsDrawService.selectedLayer = null;
-      HsDrawService.fillDrawableLayers();
+      const el = angular.element(
+        '<hs.remove-layer-dialog></draw-layer-metadata>'
+      );
+      HsLayoutService.contentWrapper
+        .querySelector('.hs-dialog-area')
+        .appendChild(el[0]);
+      $compile(el)($scope);
     },
   });
 

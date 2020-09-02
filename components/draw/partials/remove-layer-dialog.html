@@ -1,0 +1,19 @@
+<div ng-class="{'in': $ctrl.modalVisible}" class="modal hs-remove-all-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" translate="">
+                   Drawing
+                </h4>
+                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto" translate>
+                    Do you really want to remove selected draw layer?
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" translate ng-click="$ctrl.remove(); $ctrl.modalVisible = false" data-dismiss="modal">Remove all added layers</button>
+                <button type="button" class="btn btn-secondary" ng-click="$ctrl.modalVisible = false" data-dismiss="modal" translate>No</button>
+            </div>
+        </div>
+    </div>
+</div>
