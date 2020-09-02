@@ -246,10 +246,10 @@ export class HsSidebarService {
     });
   }
 
-  translateButtonTitle(button): any {
+  getButtonTitle(button): any {
     return typeof button.title == 'function' ? button.title() : button.title;
   }
-  translateButtonDescription(button): any {
+  getButtonDescription(button): any {
     return typeof button.description == 'function'
       ? button.description()
       : button.description;
