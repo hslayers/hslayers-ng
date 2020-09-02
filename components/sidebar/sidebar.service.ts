@@ -57,7 +57,8 @@ export class HsSidebarService {
         module: 'hs.layermanager',
         order: 0,
         title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
-        description: 'Manage and style your layers in composition',
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
         icon: 'icon-layers',
       },
       {
@@ -66,7 +67,8 @@ export class HsSidebarService {
         order: 1,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
-        description: 'Legend',
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.LEGEND'),
         icon: 'icon-dotlist',
       },
       {
@@ -74,7 +76,8 @@ export class HsSidebarService {
         module: 'hs.query',
         order: 7,
         title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.INFO'),
-        description: 'Display map-query result information',
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
         icon: 'icon-info-sign',
       },
       {
@@ -83,7 +86,10 @@ export class HsSidebarService {
         order: 3,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
-        description: 'List available map compositions',
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.MAPCOMPOSITIONS'
+          ),
         icon: 'icon-map',
       },
       {
@@ -92,7 +98,10 @@ export class HsSidebarService {
         order: 4,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
-        description: 'Select data or services for your map composition',
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.ADDLAYERS'
+          ),
         icon: 'icon-database',
       },
       {
@@ -101,7 +110,10 @@ export class HsSidebarService {
         order: 5,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.FILTERFEATURES'),
-        description: 'Crossfilter',
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.FILTERFEATURES'
+          ),
         icon: 'icon-analytics-piechart',
       },
       {
@@ -119,7 +131,8 @@ export class HsSidebarService {
         order: 2,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
-        description: 'Measure distance or area at map',
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.MEASURE'),
         icon: 'icon-design',
         condition: true,
       },
@@ -127,7 +140,8 @@ export class HsSidebarService {
         panel: 'routing',
         module: 'HsRoutingController',
         order: 8,
-        title: 'Routing',
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.ROUTING'),
         description: '',
         icon: 'icon-road',
       },
@@ -135,7 +149,8 @@ export class HsSidebarService {
         panel: 'tracking',
         module: 'HsTrackingController',
         order: 9,
-        title: 'Tracking',
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.TRACKING'),
         description: '',
         icon: 'icon-screenshot',
       },
@@ -143,16 +158,22 @@ export class HsSidebarService {
         panel: 'print',
         module: 'hs.print',
         order: 10,
-        title: 'Print',
-        description: 'Print map',
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.PRINT'),
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.PRINT'),
         icon: 'icon-print',
       },
       {
         panel: 'permalink',
         module: 'hs.permalink',
         order: 11,
-        title: 'Share map',
-        description: 'Share map',
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.PERMALINK'
+          ),
         icon: 'icon-share-alt',
       },
       {
@@ -161,41 +182,57 @@ export class HsSidebarService {
         order: 12,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
-        description: 'Save content of map to composition',
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.SAVECOMPOSITION'
+          ),
         icon: 'icon-save-floppy',
       },
       {
         panel: 'language',
         module: 'HsLanguageController',
         order: 13,
-        title: 'Change language',
-        description: 'Change language',
-        content: function (): string {
-          return HsLanguageService.getCurrentLanguageCode().toUpperCase();
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.LANGUAGE'),
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.LANGUAGE'
+          ),
+        content: () => {
+          return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
         },
       },
       {
         panel: 'mobile_settings',
         module: 'hs.mobile_settings.controller',
         order: 14,
-        title: 'Application settings',
-        description: 'Specify application user settings',
+        title: () =>
+          this.HsLanguageService.getTranslation(
+            'PANEL_HEADER.APPLICATIONSETTINGS'
+          ),
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.APPLICATIONSETTINGS'
+          ),
         icon: 'icon-settingsandroid',
       },
       {
         panel: 'search',
         module: 'HsSearchController',
         order: 15,
-        title: 'Search',
-        description: 'Search for location',
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.SEARCH'),
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.SEARCH'),
         icon: 'icon-search',
       },
       {
         panel: 'draw',
         module: 'hs.draw',
         order: 16,
-        title: 'Draw',
-        description: 'Draw new features',
+        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
+        description: () =>
+          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
         icon: 'icon-pencil',
       },
     ];
@@ -209,8 +246,13 @@ export class HsSidebarService {
     });
   }
 
-  getButtonTitle(button) {
+  translateButtonTitle(button): any {
     return typeof button.title == 'function' ? button.title() : button.title;
+  }
+  translateButtonDescription(button): any {
+    return typeof button.description == 'function'
+      ? button.description()
+      : button.description;
   }
 
   /**

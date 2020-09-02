@@ -3,7 +3,7 @@ export interface HsButton {
   module?: string;
   order?: number;
   title?;
-  description?: string;
+  description?;
   icon?: string;
   condition?: boolean;
   content?;

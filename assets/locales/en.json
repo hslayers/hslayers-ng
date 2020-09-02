@@ -73,7 +73,10 @@
     "SENSORS": "Sensors",
     "MEASURE": "Measurement",
     "ADDLAYERS": "Add layers",
-    "FILTERFEATURES": "Filter features"
+    "FILTERFEATURES": "Filter features",
+    "ROUTING": "Routing",
+    "TRACKING": "Tracking",
+    "APPLICATIONSETTINGS": "Application settings"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
@@ -244,6 +247,24 @@
       "measureType": "Measure type",
       "saveMeasurementToLayer": "Save measurement to layer",
       "deleteAllMeasurements": "Delete all measurements"
+    }
+  },
+  "SIDEBAR": {
+    "descriptions": {
+      "LM": "Manage and style your layers in composition",
+      "LEGEND": "Legend",
+      "INFO": "Display map-query result information",
+      "MAPCOMPOSITIONS": "List available map compositions",
+      "ADDLAYERS": "Select data or services for your map composition",
+      "FILTERFEATURES": "Crossfilter",
+      "MEASURE": "Measure distance or area at map",
+      "PRINT": "Print map",
+      "PERMALINK": "Share map",
+      "SAVECOMPOSITION": "Save content of map to composition",
+      "LANGUAGE": "Change language",
+      "APPLICATIONSETTINGS": "Specify application user settings",
+      "SEARCH": "Search for location",
+      "DRAW": "Draw new features"
     }
   }
 }

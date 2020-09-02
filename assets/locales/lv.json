@@ -34,7 +34,7 @@
     "attribute": "Atribūts",
     "ok": "Labi",
     "cancel": "Atcelt",
-    "drawNewFeatures": "Zīmēt jaunas entītijas",
+    "drawNewFeatures": "Zīmēt jaunus ģeogrāfiskos objektus",
     "name": "Nosaukums",
     "thumbnail": "Sīktēls",
     "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
@@ -64,12 +64,19 @@
     "LEGEND": "Leģenda",
     "DRAW": "Zīmēt",
     "PRINT": "Printēt",
+    "INFO": "Informācija",
     "PERMALINK": "Kopīgot karti",
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
+    "MAPCOMPOSITIONS": "Kartes kompozīcijas",
     "LANGUAGE": "Nomainīt valodu",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "MEASURE": "Mērījumi"
+    "MEASURE": "Mērījumi",
+    "ADDLAYERS": "Pievienot slāņus",
+    "FILTERFEATURES": "Filtrēt ģeogrāfiskos objektus",
+    "ROUTING": "Maršrutēšana",
+    "TRACKING": "Izsekošna",
+    "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -106,14 +113,14 @@
     },
     "layermanagerMd": {
       "imageLayer": "Attēla slānis",
-      "pointFeatures": "Punkta entītija",
-      "lineFeatures": "Līnijas entītija",
-      "polygonFeatures": "Daudzstūra entītija",
+      "pointFeatures": "Punkta tipa ģeogrāfiskais objekts",
+      "lineFeatures": "Līnijas tipa ģeogrāfiskais objekts",
+      "polygonFeatures": "Daudzstūra tipa ģeogrāfiskais objekts",
       "aboutLayer": "Par slāni",
       "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
       "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
       "layerOptions": "Slāņa opcijas",
-      "filterFeatures": "Filtrēt entītijas",
+      "filterFeatures": "Filtrēt ģeogrāfiskos objektus",
       "layerName": "Slāņa nosaukums",
       "layerOpacity": "Slāņa necaurredzamība",
       "layerStyle": "Slāņa stils",
@@ -130,10 +137,10 @@
   "DRAW": {
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
     "disableDrawing": "Atspējot zīmēšanu",
-    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties entītijas veidu",
+    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties ģeogrāfiskā objekta tipu",
     "unsavedDrawing": "Nesaglabāts zīmējums",
     "drawingTo": "Zīmējums uz:",
-    "individualStyle": "Individuāls stils entītijai",
+    "individualStyle": "Individuāls stils ģeogrāfiskajam objektam",
     "definedStyle": "Definētais stils",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "drawLayerMetadata": {
@@ -146,7 +153,7 @@
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
       "removeLastPoint": "Noņemt pēdējo punktu",
-      "finishFeature": "Pabeigt entītiju"
+      "finishFeature": "Pabeigt ģeogrāfisko objektu"
     }
   },
   "PERMALINK": {
@@ -240,6 +247,24 @@
       "measureType": "Mērījuma tips",
       "saveMeasurementToLayer": "Saglabāt mērījumu slānī",
       "deleteAllMeasurements": "Dzēst visus mērījumus"
+    }
+  },
+  "SIDEBAR": {
+    "descriptions": {
+      "LM": "Pārvaldīt un noformēt slāņus kompozīcijā",
+      "LEGEND": "Leģenda",
+      "INFO": "Parādīt kartes vaicājuma rezultātu informāciju",
+      "MAPCOMPOSITIONS": "Uzskaitīt pieejamās karšu kompozīcijas",
+      "ADDLAYERS": "Atlasīt kartes sastāva datus vai pakalpojumus",
+      "FILTERFEATURES": "Šķērsfiltrs",
+      "MEASURE": "Izmērīt attālumu vai platību kartē",
+      "PRINT": "Printēt karti",
+      "PERMALINK": "Kopīgot karti",
+      "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
+      "LANGUAGE": "Nomainīt valodu",
+      "APPLICATIONSETTINGS": "Norādīt lietojumprogrammas lietotāja iestatījumus",
+      "SEARCH": "Meklēt atrašanās vietu",
+      "DRAW": "Zīmēt jaunus ģeogrāfiskos objektus"
     }
   }
 }
