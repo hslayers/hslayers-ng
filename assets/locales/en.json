@@ -64,12 +64,16 @@
     "LEGEND": "Legend",
     "DRAW": "Draw",
     "PRINT": "Print",
+    "INFO": "Info",
     "PERMALINK": "Share map",
     "SAVECOMPOSITION": "Save current map",
+    "MAPCOMPOSITIONS": "Map compositions",
     "LANGUAGE": "Change language",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "MEASURE": "Measure"
+    "MEASURE": "Measurement",
+    "ADDLAYERS": "Add layers",
+    "FILTERFEATURES": "Filter features"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",

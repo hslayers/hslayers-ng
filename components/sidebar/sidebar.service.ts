@@ -6,6 +6,7 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 // HsLanguageService not yet refactored
 /**
  * param HsLanguageService
@@ -16,7 +17,14 @@ import {Injectable} from '@angular/core';
 export class HsSidebarService {
   extraButtons: Array<HsButton> = [];
   buttons: Array<HsButton> = [];
-  unimportantExist: boolean;
+  /**
+   * If buttons with importancy property exist.
+   * If not, don't display expansion +/- icon
+   *
+   * @memberof HsSidebarService
+   * @member buttons
+   */
+  unimportantExist = false;
   visibleButtons: Array<HsButton> = [];
   showUnimportant: boolean;
   constructor(
@@ -25,17 +33,10 @@ export class HsSidebarService {
     private HsLanguageService: HsLanguageService,
     private HsCoreService: HsCoreService,
     private HsEventBusService: HsEventBusService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private TranslateService: TranslateService
   ) {
     this.extraButtons = [];
-    /**
-     * If buttons with importancy property exist.
-     * If not, don't display expansion +/- icon
-     *
-     * @memberof HsSidebarService
-     * @member buttons
-     */
-    this.unimportantExist = false;
     /**
      * List of visible buttons taking into acount viewport size
      *
@@ -55,7 +56,7 @@ export class HsSidebarService {
         panel: 'layermanager',
         module: 'hs.layermanager',
         order: 0,
-        title: 'Layer Manager',
+        title: this.getTranslation('PANEL_HEADER.LM'),
         description: 'Manage and style your layers in composition',
         icon: 'icon-layers',
       },
@@ -63,7 +64,7 @@ export class HsSidebarService {
         panel: 'legend',
         module: 'hs.legend',
         order: 1,
-        title: 'Legend',
+        title: this.getTranslation('PANEL_HEADER.LEGEND'),
         description: 'Legend',
         icon: 'icon-dotlist',
       },
@@ -71,7 +72,7 @@ export class HsSidebarService {
         panel: 'info',
         module: 'hs.query',
         order: 7,
-        title: 'Info panel',
+        title: this.getTranslation('PANEL_HEADER.INFO'),
         description: 'Display map-query result information',
         icon: 'icon-info-sign',
       },
@@ -79,7 +80,7 @@ export class HsSidebarService {
         panel: 'composition_browser',
         module: 'hs.compositions',
         order: 3,
-        title: 'Map Compositions',
+        title: this.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
         description: 'List available map compositions',
         icon: 'icon-map',
       },
@@ -87,7 +88,7 @@ export class HsSidebarService {
         panel: 'datasource_selector',
         module: 'hs.datasource_selector',
         order: 4,
-        title: 'Add layers',
+        title: this.getTranslation('PANEL_HEADER.ADDLAYERS'),
         description: 'Select data or services for your map composition',
         icon: 'icon-database',
       },
@@ -95,7 +96,7 @@ export class HsSidebarService {
         panel: 'feature_crossfilter',
         module: 'hs.feature_crossfilter.controller',
         order: 5,
-        title: 'Filter features',
+        title: this.getTranslation('PANEL_HEADER.FILTERFEATURES'),
         description: 'Crossfilter',
         icon: 'icon-analytics-piechart',
       },
@@ -103,7 +104,7 @@ export class HsSidebarService {
         panel: 'sensors',
         module: 'hs.sensors',
         order: 6,
-        title: 'Sensors',
+        title: this.getTranslation('PANEL_HEADER.SENSORS'),
         description: '',
         icon: 'icon-weightscale',
       },
@@ -111,7 +112,7 @@ export class HsSidebarService {
         panel: 'measure',
         module: 'hs.measure',
         order: 2,
-        title: 'Measurements',
+        title: this.getTranslation('PANEL_HEADER.MEASURE'),
         description: 'Measure distance or area at map',
         icon: 'icon-design',
         condition: true,
@@ -152,7 +153,7 @@ export class HsSidebarService {
         panel: 'saveMap',
         module: 'hs.save-map',
         order: 12,
-        title: 'Save composition',
+        title: this.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
         description: 'Save content of map to composition',
         icon: 'icon-save-floppy',
       },
@@ -199,7 +200,13 @@ export class HsSidebarService {
       }
     });
   }
-
+  getTranslation(str: string): string {
+    let translatedTitle = '';
+    this.TranslateService.get([str]).subscribe((value) => {
+      translatedTitle = value[str];
+    });
+    return translatedTitle;
+  }
   /**
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded
