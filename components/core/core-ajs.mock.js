@@ -15,4 +15,6 @@ export default angular
     this.mainPanelChanges = new Subject();
     this.mapExtentChanges = new Subject();
     this.olMapLoads = new Subject();
+    this.vectorQueryFeatureSelection = new Subject();
+    this.vectorQueryFeatureDeselection = new Subject();
   });
