@@ -6,6 +6,7 @@ import 'angular-gettext';
 import '../drag/drag.module';
 import '../draw';
 import '../geolocation';
+import '../info';
 import '../language';
 import '../layermanager';
 import '../layout';
@@ -46,6 +47,7 @@ angular
     'hs.save-map',
     'hs.permalink',
     'hs.toolbar',
+    'hs.info',
   ])
   /**
    * @module hs.core
