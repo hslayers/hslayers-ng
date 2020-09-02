@@ -9,12 +9,12 @@
         class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))"
         (click)="HsSidebarService.buttonClicked(button)"
         [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}"
-        title="{{HsSidebarService.translateButtonDescription(button)}}">
+        title="{{HsSidebarService.getButtonDescription(button)}}">
 
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
             data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
-            title="{{HsSidebarService.translateButtonDescription(button)}}">{{button.content()}}</span>
+            title="{{HsSidebarService.getButtonDescription(button)}}">{{button.content()}}</span>
         <span class="hs-sidebar-item-title">{{HsSidebarService.translateButtonTitle(button)}}</span>
     </a>
 
