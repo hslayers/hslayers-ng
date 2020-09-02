@@ -11,6 +11,7 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param HsLayoutService
  * @param gettext
  * @param HsMapService
+ * @param HsCommonEndpointsService
  */
 export default function (
   $scope,
@@ -20,7 +21,9 @@ export default function (
   $timeout,
   HsLayoutService,
   gettext,
-  HsMapService
+  HsMapService,
+  HsCommonEndpointsService,
+  $http
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -162,7 +165,7 @@ export default function (
           }),
         }),
       });
-      return newStyle
+      return newStyle;
     },
     drawStyle() {
       return {
@@ -173,6 +176,18 @@ export default function (
         border:
           $scope.linewidth + 'px solid ' + $scope.fillcolor['background-color'],
       };
+    },
+    removeSelectedLayer() {
+      HsMapService.map.removeLayer(HsDrawService.selectedLayer);
+      if (HsDrawService.selectedLayer.get('synchronize') == true) {
+        (HsCommonEndpointsService.endpoints || [])
+          .filter((ds) => ds.type == 'layman')
+          .forEach((ds) => {
+            $http.delete(`${ds.url}/${ds.user}/layers/${HsDrawService.selectedLayer.get('title')}`);
+          });
+      }
+      HsDrawService.selectedLayer = null;
+      HsDrawService.fillDrawableLayers();
     },
   });
 
