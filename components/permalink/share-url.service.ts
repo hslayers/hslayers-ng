@@ -233,7 +233,7 @@ export class HsShareUrlService {
    * @memberof HsPermalinkUrlService
    * @param {object} key Key name for pushed parameter
    * @param {object} new_value Value for pushed parameter
-   * Push new key-value pair into paramater object and update Url string with new params
+   * @description Push new key-value pair into paramater object and update Url string with new params
    */
   push(key, new_value): void {
     this.params[key] = new_value;
@@ -290,7 +290,6 @@ export class HsShareUrlService {
         this.HsUtilsService.debounce(
           (data) => {
             this.update();
-            //this.browserUrlUpdated.next();
           },
           200,
           false,
@@ -311,7 +310,6 @@ export class HsShareUrlService {
           }
           timer = setTimeout(() => {
             this.update();
-            //this.browserUrlUpdated.next();
           }, 1000);
         });
       });
