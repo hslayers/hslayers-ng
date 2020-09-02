@@ -80,11 +80,9 @@ export class HsInfoComponent {
         this.composition_abstract = data.abstract;
         this.composition_title = data.title;
         this.info_image = 'icon-warning-sign';
-        setTimeout(() => {
-          this.composition_title = temp_title;
-          this.composition_abstract = temp_abstract;
-          this.info_image = 'icon-map';
-        }, 3000);
+        this.composition_title = temp_title;
+        this.composition_abstract = temp_abstract;
+        this.info_image = 'icon-map';
       }
       this.composition_loaded = true;
       /**
@@ -96,44 +94,23 @@ export class HsInfoComponent {
        */
       this.composition_edited = false;
     });
-
-    const layerLoadingContext = {};
-
     this.HsEventBusService.layerLoadings.subscribe((layer) => {
-      let somethingChanged = false;
       if (!(layer.get('title') in this.layer_loading)) {
         this.layer_loading.push(layer.get('title'));
-        somethingChanged = true;
       }
       this.composition_loaded = false;
-      if (somethingChanged) {
-        this.HsUtilsService.debounce(
-          () => {
-            this.forceRedraw();
-          },
-          300,
-          false,
-          layerLoadingContext
-        );
-      }
     });
     this.HsEventBusService.layerLoads.subscribe((layer) => {
-      let somethingChanged = false;
       for (let i = 0; i < this.layer_loading.length; i++) {
         if (this.layer_loading[i] == layer.get('title')) {
           this.layer_loading.splice(i, 1);
-          somethingChanged = true;
         }
       }
 
       if (this.layer_loading.length == 0) {
         if (!this.composition_loaded) {
           this.composition_loaded = true;
-          somethingChanged = true;
         }
-      }
-      if (somethingChanged) {
-        this.forceRedraw();
       }
     });
 
@@ -145,22 +122,15 @@ export class HsInfoComponent {
     });
 
     this.HsEventBusService.mapResets.subscribe(() => {
-      setTimeout(() => {
-        delete this.composition_title;
-        delete this.composition_abstract;
-        this.layer_loading.length = 0;
-        this.composition_loaded = true;
-        this.composition_edited = false;
-      });
+      delete this.composition_title;
+      delete this.composition_abstract;
+      this.layer_loading.length = 0;
+      this.composition_loaded = true;
+      this.composition_edited = false;
     });
     this.HsEventBusService.compositionEdits.subscribe(() => {
       this.composition_edited = true;
     });
-  }
-  forceRedraw(): void {
-    setTimeout(() => {
-      //Nothing
-    }, 0);
   }
   trackByFn(index: number): number {
     return index; // or item.id
