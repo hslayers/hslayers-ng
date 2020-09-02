@@ -13,7 +13,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
   template: require('./partials/searchinput.html'),
 })
 export class HsSearchInputComponent implements OnInit {
-  query: '';
+  query = '';
   searchInputVisible: boolean;
   clearvisible = false;
   constructor(

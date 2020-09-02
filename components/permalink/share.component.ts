@@ -7,7 +7,7 @@ import {HsShareService} from './share.service';
   template: require('./partials/directive.html'),
 })
 export class HsShareComponent {
-  new_share: false;
+  new_share = false;
 
   constructor(
     private HsShareService: HsShareService,
@@ -20,7 +20,7 @@ export class HsShareComponent {
    * @returns {string} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
    * @description Create Iframe tag for embeded map
    */
-  updateEmbedCode() {
+  updateEmbedCode(): string {
     return this.HsShareService.getEmbedCode();
   }
 
@@ -30,7 +30,7 @@ export class HsShareComponent {
    * @returns {string} Right share Url
    * @description Select right share Url based on shareLink property (either Permalink Url or PureMap url)
    */
-  getShareUrl() {
+  getShareUrl(): string {
     return this.HsShareService.getShareUrl();
   }
 
@@ -39,7 +39,7 @@ export class HsShareComponent {
    * @memberof hs.permalink
    * @description Set share Url state invalid
    */
-  invalidateShareUrl() {
+  invalidateShareUrl(): void {
     this.HsShareService.invalidateShareUrl();
   }
 
@@ -48,7 +48,7 @@ export class HsShareComponent {
    * @memberof hs.permalink
    * @description Create share post on selected social network
    */
-  shareOnSocial() {
+  shareOnSocial(): void {
     this.HsShareService.shareOnSocial(this.new_share);
   }
 }

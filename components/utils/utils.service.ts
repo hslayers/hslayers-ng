@@ -233,7 +233,7 @@ export class HsUtilsService {
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
    */
-  debounce(func, wait, immediate, context) {
+  debounce(func, wait: number, immediate: boolean, context) {
     if (context === undefined) {
       context = this;
     }
