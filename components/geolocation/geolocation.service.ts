@@ -16,11 +16,6 @@ import {toRadians} from 'ol/math';
 @Injectable({
   providedIn: 'root',
 })
-/**
- * @param HsMapService
- * @param HsLayoutService
- * @param HsUtilsService
- */
 export class HsGeolocationService {
   /**
    * @ngdoc property
