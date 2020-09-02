@@ -182,9 +182,20 @@ export default function (
             } else if (e.originalEvent.buttons === 2) {
               if (me.type == 'Point') {
                 return false;
+              } else if (me.type == 'Polygon') {
+                const vertexCount = me.draw.sketchLineCoords_.length;
+                if (vertexCount >= 3) {
+                  setTimeout(() => {
+                    me.draw.finishDrawing();
+                  }, 250);
+                  return true;
+                }
+                return false;
               }
-              me.draw.finishDrawing();
-              return false;
+              setTimeout(() => {
+                me.draw.finishDrawing();
+              }, 250);
+              return true;
             }
           },
         });
