@@ -22,11 +22,11 @@ export class HsCesiumComponent implements OnInit {
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService //Used in template
   ) {}
-  
+
   ngOnInit(): void {
     this.HsCesiumService.init();
     const view = this.HsPermalinkUrlService.getParamValue('view');
-    if (view != '2d' || view == '3d') {
+    if (view != '2d') {
       this.HsPermalinkUrlService.updateCustomParams({view: '3d'});
       this.HsMapService.visible = false;
     } else {
