@@ -177,9 +177,9 @@ export default function (
           type: /** @type {ol.geom.GeometryType} */ (me.type),
           style: changeStyle ? changeStyle() : undefined,
           condition: function (e) {
-            if (e.pointerEvent.buttons === 1) {
+            if (e.originalEvent.buttons === 1) {
               return true;
-            } else if (e.pointerEvent.buttons === 2) {
+            } else if (e.originalEvent.buttons === 2) {
               if (me.type == 'Point') {
                 return false;
               }
