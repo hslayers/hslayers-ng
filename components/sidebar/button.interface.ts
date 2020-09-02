@@ -2,7 +2,7 @@ export interface HsButton {
   panel?;
   module?: string;
   order?: number;
-  title?: string;
+  title?;
   description?: string;
   icon?: string;
   condition?: boolean;
