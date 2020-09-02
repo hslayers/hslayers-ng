@@ -34,7 +34,7 @@
     "attribute": "Atribūts",
     "ok": "Labi",
     "cancel": "Atcelt",
-    "drawNewFeatures": "Zīmēt jaunus ģeogrāfiskos objektus",
+    "drawNewFeatures": "Zīmēt jaunus grafiskos objektus",
     "name": "Nosaukums",
     "thumbnail": "Sīktēls",
     "fillInDescriptive": "Aizpildiet aprakstošu tekstu par karti",
@@ -73,7 +73,7 @@
     "SENSORS": "Sensori",
     "MEASURE": "Mērījumi",
     "ADDLAYERS": "Pievienot slāņus",
-    "FILTERFEATURES": "Filtrēt ģeogrāfiskos objektus",
+    "FILTERFEATURES": "Filtrēt grafiskos objektus",
     "ROUTING": "Maršrutēšana",
     "TRACKING": "Izsekošna",
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi"
@@ -113,14 +113,14 @@
     },
     "layermanagerMd": {
       "imageLayer": "Attēla slānis",
-      "pointFeatures": "Punkta tipa ģeogrāfiskais objekts",
-      "lineFeatures": "Līnijas tipa ģeogrāfiskais objekts",
-      "polygonFeatures": "Daudzstūra tipa ģeogrāfiskais objekts",
+      "pointFeatures": "Punkta grafiskais objekts",
+      "lineFeatures": "Līnijas grafiskais objekts",
+      "polygonFeatures": "Daudzstūra grafiskais objekts",
       "aboutLayer": "Par slāni",
       "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
       "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
       "layerOptions": "Slāņa opcijas",
-      "filterFeatures": "Filtrēt ģeogrāfiskos objektus",
+      "filterFeatures": "Filtrēt grafiskais objektus",
       "layerName": "Slāņa nosaukums",
       "layerOpacity": "Slāņa necaurredzamība",
       "layerStyle": "Slāņa stils",
@@ -137,10 +137,10 @@
   "DRAW": {
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
     "disableDrawing": "Atspējot zīmēšanu",
-    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties ģeogrāfiskā objekta tipu",
+    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",
     "unsavedDrawing": "Nesaglabāts zīmējums",
     "drawingTo": "Zīmējums uz:",
-    "individualStyle": "Individuāls stils ģeogrāfiskajam objektam",
+    "individualStyle": "Individuāls stils grafiskajam objektam",
     "definedStyle": "Definētais stils",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "drawLayerMetadata": {
@@ -153,7 +153,7 @@
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
       "removeLastPoint": "Noņemt pēdējo punktu",
-      "finishFeature": "Pabeigt ģeogrāfisko objektu"
+      "finishFeature": "Pabeigt grafisko objektu"
     }
   },
   "PERMALINK": {
@@ -264,7 +264,7 @@
       "LANGUAGE": "Nomainīt valodu",
       "APPLICATIONSETTINGS": "Norādīt lietojumprogrammas lietotāja iestatījumus",
       "SEARCH": "Meklēt atrašanās vietu",
-      "DRAW": "Zīmēt jaunus ģeogrāfiskos objektus"
+      "DRAW": "Zīmēt jaunus grafiskos objektus"
     }
   }
 }
