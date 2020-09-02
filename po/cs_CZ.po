@@ -1602,3 +1602,7 @@ msgstr "Vrstva bude přidána do mapy a lze ji dále spravovat v panelu 'Správc
 #: components/draw/partials/draw.directive.html:22
 msgid "Activate drawing by choosing a feature type"
 msgstr "Aktivujte kreslení výběrem typu prvku"
+
+#: components/draw/partials/remove-layer-dialog.html:11
+msgid "Do you really want to remove selected draw layer?"
+msgstr "Naozaj chcete odstraniť vybranou kreslíci vrstvu?"
