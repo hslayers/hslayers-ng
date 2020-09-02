@@ -64,12 +64,19 @@
     "LEGEND": "Legenda",
     "DRAW": "Kreslit",
     "PRINT": "Tisk",
+    "INFO": "Info",
     "PERMALINK": "Sdílet mapu",
     "SAVECOMPOSITION": "Uložit aktuální mapu",
+    "MAPCOMPOSITIONS": "Mapové kompozice",
     "LANGUAGE": "Změnit jazyk",
     "SEARCH": "Vyhledávání",
     "SENSORS": "Senzory",
-    "MEASURE": "Měření"
+    "MEASURE": "Měření",
+    "ADDLAYERS": "Přidejte vrstvy",
+    "FILTERFEATURES": "Filtrovat entity",
+    "ROUTING": "Směrování",
+    "TRACKING": "Sledování",
+    "APPLICATIONSETTINGS": "Nastavení aplikace"
   },
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
@@ -241,6 +248,23 @@
       "saveMeasurementToLayer": "Uložte měření do vrstvy",
       "deleteAllMeasurements": "Odstranit všechna měření"
     }
+  },
+  "SIDEBAR": {
+    "descriptions": {
+      "LM": "Spravujte a stylujte své vrstvy ve složení",
+      "LEGEND": "Legenda",
+      "INFO": "Zobrazit informace o výsledku dotazu na mapu",
+      "MAPCOMPOSITIONS": "Seznam dostupných mapových kompozic",
+      "ADDLAYERS": "Vyberte data nebo služby pro vaši mapovou kompozici",
+      "FILTERFEATURES": "Crossfilter",
+      "MEASURE": "Změřte vzdálenost nebo oblast na mapě",
+      "PRINT": "Tisk mapy",
+      "PERMALINK": "Sdílet mapu",
+      "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
+      "LANGUAGE": "Změnit jazyk",
+      "APPLICATIONSETTINGS": "Zadejte uživatelské nastavení aplikace",
+      "SEARCH": "Vyhledejte umístění",
+      "DRAW": "Nakreslete nové geografické objekty"
+    }
   }
-  
 }
