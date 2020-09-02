@@ -1,20 +1,19 @@
-import '../core/';
-import '../map/map.module';
-import * as angular from 'angular';
-import infoComponent from './info.component';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsInfoComponent} from './info.component';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 
-/**
- * @ngdoc module
- * @module hs.info
- * @name hs.info
- * @description Module responsible for info application status information window. Contain HS-Layers default info template and its controller. When included, it also updates webpage meta tags with current map information.
- */
-angular
-  .module('hs.info', ['hs.map', 'hs.core'])
-  /**
-   * @module info
-   * @name hs.info
-   * @ngdoc component
-   * @description Automatically updates composition abstract and status when composition is changed through appropriete composition / layermanager events. Shows mainly current composition status. Also display loading sign when composition is loading.
-   */
-  .component('hs.info', infoComponent);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsInfoComponent],
+  imports: [FormsModule, CommonModule, HsPanelHelpersModule],
+  exports: [HsInfoComponent],
+  providers: [],
+  entryComponents: [HsInfoComponent],
+})
+export class HsInfoModule {}

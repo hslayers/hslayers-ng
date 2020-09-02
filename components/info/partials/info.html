@@ -1,22 +1,23 @@
-<div class="hs-info-composition" ng-show="!compositionLoaded()">
-    <div class="hs-info-composition-image" ng-show="!composition_loaded">
-        <span class="icon-refresh icon-spin" ></span>
-        <span class="glyphicon" ng-class="info_image" ng-show="composition_loaded"></span>
+<div class="hs-info-composition" [hidden]="!!compositionLoaded()">
+    <div class="hs-info-composition-image" [hidden]="!!composition_loaded">
+        <span class="icon-refresh icon-spin"></span>
+        <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
     </div>
-    <div class="hs-info-composition-container" ng-if="!composition_edited">
+    <div class="hs-info-composition-container" *ngIf="!composition_edited">
         <div class="hs-info-composition-title" translate>New map</div>
         <div class="hs-info-composition-abstract" translate>View, Compose and analyse spatial data</div>
     </div>
-    <div class="hs-info-composition-container" ng-if="composition_edited">
+    <div class="hs-info-composition-container" *ngIf="composition_edited">
         <div class="hs-info-composition-title" translate>Unsaved map</div>
-        <div class="hs-info-composition-abstract" translate ng-show="!(!layer_loading.length && composition_edited)">You have unsaved changes!</div>
+        <div class="hs-info-composition-abstract" translate [hidden]="!!(!layer_loading.length && composition_edited)">
+            You have unsaved changes!</div>
     </div>
 </div>
 
-<div class="hs-info-composition" ng-show="compositionLoaded()">
+<div class="hs-info-composition" [hidden]="!compositionLoaded()">
     <div class="hs-info-composition-image">
-        <span class="icon-refresh icon-spin" ng-show="!composition_loaded"></span>
-        <span class="glyphicon" ng-class="info_image" ng-show="composition_loaded"></span>
+        <span class="icon-refresh icon-spin" [hidden]="!!composition_loaded"></span>
+        <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
     </div>
     <div class="hs-info-composition-container">
         <div class="hs-info-composition-title">{{composition_title}}</div>
@@ -24,12 +25,12 @@
     </div>
 </div>
 
-<div class="hs-info-layers" ng-show="layer_loading.length">
-<span translate>Loading: </span>
-<span ng-repeat="layer in layer_loading track by $index">{{layer}} </span>
+<div class="hs-info-layers" [hidden]="!layer_loading.length">
+    <span translate>Loading: </span>
+    <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
 </div>
 
-<div class="hs-info-composition-edited"  ng-show="!layer_loading.length && composition_edited">
+<div class="hs-info-composition-edited" [hidden]="!(!layer_loading.length && composition_edited)">
     <span translate>You have unsaved changes!</span>
 </div>
 
