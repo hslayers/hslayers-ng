@@ -97,7 +97,7 @@ export class HsShareUrlService {
     this.HsUtilsService.debounce(
       () => {
         this.Location.replaceState(
-          '',
+          this.Location.path(),
           Object.keys(this.params)
             .map((key) => {
               return {key, value: this.params[key]};
