@@ -303,6 +303,7 @@ export class HsCompositionsParserService {
   jsonToLayer(lyr_def) {
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
+      case 'WMS':
         return this.HsCompositionsLayerParserService.createWmsLayer(lyr_def);
       case 'ArcGISRest':
         return this.HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
@@ -313,6 +314,7 @@ export class HsCompositionsParserService {
           lyr_def
         );
       case 'OpenLayers.Layer.Vector':
+      case 'Vector':
         return this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
       default:
         return;
