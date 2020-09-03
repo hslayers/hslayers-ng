@@ -12,7 +12,7 @@
                         <div *ngFor="let attribute of subFeature.attributesForHover">
                             <div class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
-                                    {{attribute.key}} 
+                                    {{attribute.key}}&emsp; 
                                 </div>
                                 <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                             </div>
@@ -20,7 +20,7 @@
                         <hr>
                     </div>
                 </div>
-                <div [hidden]="!(!isClustered(feature) && feature.attributesForHover.length > 0)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                <div [hidden]="isClustered(feature) || !(feature.attributesForHover.length > 0)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
                     <button class="btn btn-danger float-right btn-sm" *ngIf="isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
                         <i class="icon-remove-circle"></i>
@@ -28,7 +28,7 @@
                     <div *ngFor="let attribute of feature.attributesForHover">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
-                                {{attribute.key}} 
+                                {{attribute.key}}&emsp;
                             </div>
                             <div class="p-1" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
                         </div>
