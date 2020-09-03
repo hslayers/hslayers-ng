@@ -187,5 +187,10 @@ export default function (
     },
   });
 
+  $scope.$on('core.mainpanel_changed', (event) => {
+    if (HsLayoutService.mainpanel == 'draw') {
+      HsDrawService.fillDrawableLayers();
+    } 
+  });
   $scope.$emit('scope_loaded', 'DrawToolbar');
 }
