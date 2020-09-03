@@ -16,6 +16,7 @@
  * @param HsDataSourceSelectorMapService
  * @param forDatasourceBrowserFilter
  * @param $compile
+ * @param HsDrawService
  */
 export default function (
   $rootScope,
@@ -30,7 +31,8 @@ export default function (
   HsUtilsService,
   HsDataSourceSelectorMapService,
   forDatasourceBrowserFilter,
-  $compile
+  $compile,
+  HsDrawService
 ) {
   'ngInject';
   const me = this;
@@ -179,6 +181,7 @@ export default function (
           whatToAdd.projection,
           {extractStyles: whatToAdd.extractStyles}
         );
+        HsDrawService.fillDrawableLayers();
         HsAddLayersVectorService.fitExtent(layer);
       } else if (['KML', 'GEOJSON'].indexOf(whatToAdd.type) > -1) {
         const layer = await HsAddLayersVectorService.addVectorLayer(
