@@ -11,6 +11,7 @@ import {HsGeolocationComponent} from './geolocation.component';
 import {HsGeolocationService} from './geolocation.service';
 import {HsLayoutModule} from './../layout/layout.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -21,9 +22,10 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     CommonModule,
     HsPanelHelpersModule,
     HsLayoutModule,
+    TranslateModule,
   ],
   exports: [HsGeolocationComponent],
-  providers: [HsGeolocationService],
+  providers: [HsGeolocationService, TranslateStore],
   entryComponents: [HsGeolocationComponent],
 })
 export class HsGeolocationModule {}

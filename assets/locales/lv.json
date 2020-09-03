@@ -282,5 +282,12 @@
   },
   "MAP": {
     "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
+  },
+  "GEOLOCATION": {
+    "locateMe": "Mana atrašanās vieta",
+    "precision": "Precizitāte",
+    "speed": "Ātrums",
+    "altitude": "Augstums",
+    "follow": "Sekot"
   }
 }
