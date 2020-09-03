@@ -149,6 +149,7 @@
     "individualStyle": "Individuální styl pro prvek",
     "definedStyle": "Definovaný styl",
     "fillOpacity": "Vyplňte neprůhlednost:",
+    
     "drawLayerMetadata": {
       "layerTitle": "Název vrstvy",
       "nameOfFolder": "Název složky v hierarchii správce vrstev",
@@ -161,7 +162,8 @@
       "removeLastPoint": "Odebrat poslední bod",
       "selectType": "Zvolte type",
       "finishFeature": "Ukončit prvek"
-    }
+    },
+    "drawLayer": "Nakreslete vrstvu"  
   },
   "PERMALINK": {
     "newShare": "Nové sdílení",
@@ -273,5 +275,14 @@
       "SEARCH": "Vyhledejte lokaci",
       "DRAW": "Nakreslete nové prvky"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Opravdu tuto prvek smažte?",
+    "confirmDelete": "Potvrďte smazání",
+    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvek z vrstvy",
+    "coordinates": "Souřadnice"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Přiblížit počáteční okno"
   }
 }
