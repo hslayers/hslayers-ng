@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {Input} from '@angular/core';
@@ -7,7 +7,7 @@ import {Input} from '@angular/core';
   selector: 'hs-query-feature',
   template: require('./partials/feature.html'),
 })
-export class HsQueryFeatureComponent implements OnInit {
+export class HsQueryFeatureComponent {
   @Input() feature;
   attributeName = '';
   attributeValue = '';
@@ -17,8 +17,6 @@ export class HsQueryFeatureComponent implements OnInit {
     private HsMapService: HsMapService,
     private HsQueryVectorService: HsQueryVectorService
   ) {}
-
-  ngOnInit(): void {}
 
   olFeature() {
     return this.feature.feature;
@@ -33,7 +31,7 @@ export class HsQueryFeatureComponent implements OnInit {
   }
 
   saveNewAttribute(attributeName, attributeValue) {
-    if (this.feature && this.feature.feature) {
+    if (this.feature.feature !== undefined) {
       const feature = this.feature.feature;
       const getDuplicates = this.feature.attributes.filter(
         (duplicate) => duplicate.name == attributeName
