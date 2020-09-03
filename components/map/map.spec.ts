@@ -26,26 +26,17 @@ describe('hs.map', function () {
       .service('HsLayerUtilsService', function () {});
 
     angular.module('hs.layout', []).service('HsLayoutService', function () {});
-
-    angular.module('gettext').filter('translate', (gettextCatalog) => {
-      /**
-       * @param input
-       * @param context
-       */
-      function filter(input, context) {
-        return gettextCatalog.getString(input, null, context);
-      }
-      filter.$stateful = true;
-      return filter;
+    angular.module('hs.language', []).service('HsLanguageService', function () {
+      this.getTranslation = function () {};
     });
-    /* Mocks end ===== */
+
     angular
       .module('hs.map', [
         'hs',
         'ng',
         'hs.utils',
         'hs.layout',
-        'gettext',
+        'hs.language',
         'hs.core',
       ])
       .service('HsMapService', HsMapService);

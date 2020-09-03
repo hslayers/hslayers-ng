@@ -7,7 +7,7 @@ export default {
     HsMapService,
     HsQueryVectorService,
     $element,
-    gettext,
+    HsLanguageService,
     $injector,
     HsEventBusService
   ) {
@@ -51,8 +51,8 @@ export default {
       async removeFeature(feature) {
         const dialog = $injector.get('HsConfirmDialog');
         const confirmed = await dialog.show(
-          gettext('Really delete this feature?'),
-          gettext('Confirm delete')
+          HsLanguageService.getTraslation('QUERY.reallyDelete'),
+          HsLanguageService.getTraslation('QUERY.confirmDelete')
         );
         if (confirmed == 'yes') {
           HsQueryVectorService.removeFeature(feature);
@@ -63,11 +63,10 @@ export default {
       async clearLayer(layer) {
         const dialog = $injector.get('HsConfirmDialog');
         const confirmed = await dialog.show(
-          gettext('Really delete all features from layer "{0}"?').replace(
-            '{0}',
-            layer.get('title')
-          ),
-          gettext('Confirm delete')
+          HsLanguageService.getTraslation(
+            'QUERY.reallyDeleteAllFeaturesFrom' + '{0} ?'
+          ).replace('{0}', layer.get('title')),
+          HsLanguageService.getTraslation('QUERY.confirmDelete')
         );
         if (confirmed == 'yes') {
           if (layer.getSource().getSource) {

@@ -1,3 +1,4 @@
+import '../language';
 import '../permalink/share.module';
 import * as angular from 'angular';
 import mapController from './map.controller';
@@ -11,7 +12,7 @@ import {HsMapService} from './map.service';
  * @description Module containing service and controller for main map object (ol.Map).
  */
 angular
-  .module('hs.map', ['hs'])
+  .module('hs.map', ['hs.language'])
 
   /**
    * @module hs.map

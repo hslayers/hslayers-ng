@@ -4,6 +4,7 @@ import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {HsLanguageService} from './../language/language.service';
 import {Layer} from 'ol/layer';
 
 import {HsConfig} from '../../config.service';
@@ -77,7 +78,8 @@ export class HsDrawService {
     private HsLogService: HsLogService,
     private HsConfig: HsConfig,
     private HsQueryBaseService: HsQueryBaseService,
-    private HsQueryVectorService: HsQueryVectorService
+    private HsQueryVectorService: HsQueryVectorService,
+    private HsLanguageService: HsLanguageService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -115,7 +117,7 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(addNewLayer = false): void {
-    let tmpTitle = 'Draw layer'; //this.gettext()
+    let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
     const tmpLayer =
       addNewLayer === true
         ? null

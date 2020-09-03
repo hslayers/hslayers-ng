@@ -45,8 +45,8 @@ import {transform, transformExtent} from 'ol/proj';
  * @param $rootScope
  * @param HsUtilsService
  * @param HsLayoutService
+ * @param HsLanguageService
  * @param $timeout
- * @param gettext
  * @param $log
  */
 export class HsMapService {
@@ -55,8 +55,8 @@ export class HsMapService {
     $rootScope,
     HsUtilsService,
     HsLayoutService,
+    HsLanguageService,
     $timeout,
-    gettext,
     $log,
     HsEventBusService
   ) {
@@ -66,8 +66,8 @@ export class HsMapService {
       $rootScope,
       HsUtilsService,
       HsLayoutService,
+      HsLanguageService,
       $timeout,
-      gettext,
       $log,
       HsEventBusService,
     });
@@ -165,7 +165,7 @@ export class HsMapService {
       'ng-if',
       "layoutService.componentEnabled('defaultViewButton')"
     );
-    element.title = gettext('Zoom to initial window');
+    element.title = HsLanguageService.getTranslation('MAP.zoomToInitialWindow');
 
     button.appendChild(icon);
     element.appendChild(button);

@@ -13,9 +13,9 @@ import {transform} from 'ol/proj';
  * @param $sce
  * @param HsConfig
  * @param HsLayoutService
+ * @param HsLanguageService
  * @param HsUtilsService
  * @param $timeout
- * @param gettext
  */
 export const HsQueryBaseService = function (
   $rootScope,
@@ -24,9 +24,9 @@ export const HsQueryBaseService = function (
   $sce,
   HsConfig,
   HsLayoutService,
+  HsLanguageService,
   HsUtilsService,
-  $timeout,
-  gettext
+  $timeout
 ) {
   'ngInject';
   const me = this;
@@ -87,7 +87,7 @@ export const HsQueryBaseService = function (
       me.currentQuery = (Math.random() + 1).toString(36).substring(7);
       me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
       me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-      me.data.selectedProj = me.data.coordinates[0].projections[0]
+      me.data.selectedProj = me.data.coordinates[0].projections[0];
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
@@ -315,7 +315,7 @@ export const HsQueryBaseService = function (
       'EPSG:4326'
     );
     const coords = {
-      name: gettext('Coordinates'),
+      name: HsLanguageService.getTranslation('QUERY.coordinates'),
       mapProjCoordinate: coordinate,
       epsg4326Coordinate,
       projections: [
@@ -363,7 +363,7 @@ export const HsQueryBaseService = function (
     'composition_browser',
     'analysis',
     'sensors',
-    'draw'
+    'draw',
   ];
 
   this.currentPanelQueryable = function () {
@@ -411,4 +411,4 @@ export const HsQueryBaseService = function (
     }
   );
   return me;
-}
+};

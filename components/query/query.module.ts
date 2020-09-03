@@ -7,12 +7,12 @@ import attributeRowComponent from './attribute-row.component';
 import defaultInfoPanelBody from './default-info-panel-body.directive';
 import featureComponent from './feature.component';
 import featurePopupComponent from './feature-popup.component';
-import {HsQueryBaseService} from './query-base.service';
 import queryController from './query.controller';
 import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
-import {HsQueryVectorService} from './query-vector.service';
 import queryWmsService from './query-wms.service';
+import {HsQueryBaseService} from './query-base.service';
+import {HsQueryVectorService} from './query-vector.service';
 //import '../../common/confirm';
 import '../layout';
 
@@ -98,7 +98,7 @@ export const HsQueryModule = angular
 
   .component('hs.query.featurePopup', featurePopupComponent)
 
-  .config(function ($compileProvider) {
+  .config(($compileProvider) => {
     'ngInject';
     $compileProvider.aHrefSanitizationWhitelist(
       /^\s*(https?|ftp|mailto|file|blob):/
