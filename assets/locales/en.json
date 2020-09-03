@@ -276,5 +276,12 @@
   },
   "MAP": {
     "zoomToInitialWindow": "Zoom to initial window"
+  },
+  "GEOLOCATION": {
+    "locateMe": "Locate me",
+    "precision": "Precision",
+    "speed": "Speed",
+    "altitude": "Altitude",
+    "follow": "Follow"
   }
 }
