@@ -143,12 +143,13 @@ export class HsCompositionsParserService {
     }
     this.current_composition = obj;
     this.current_composition_title = titleFromContainer || obj.title;
-    this.HsMapService.map
-      .getView()
-      .fit(
-        this.parseExtent(extentFromContainer || obj.extent),
-        this.HsMapService.map.getSize()
-      );
+    const possibleExtent = extentFromContainer || obj.extent;
+    if (possibleExtent !== undefined) {
+      this.HsMapService.map
+        .getView()
+        .fit(this.parseExtent(), this.HsMapService.map.getSize());
+    }
+
     const layers = this.jsonToLayers(obj);
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, true);
