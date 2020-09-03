@@ -5,6 +5,7 @@
 import {
   HsCommonEndpointsServiceProvider,
   HsCommonLaymanServiceProvider,
+  HsCompositionsParserServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsMapServiceProvider,
@@ -90,6 +91,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     TranslateService,
     HsMapServiceProvider,
     HsConfigProvider,
+    HsCompositionsParserServiceProvider,
     HsWmsGetCapabilitiesServiceProvider,
     HsWfsGetCapabilitiesServiceProvider,
     HsWmtsGetCapabilitiesServiceProvider,

@@ -1,5 +1,6 @@
 import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from './common/layman/layman.service';
+import {HsCompositionsParserService} from './components/compositions/compositions-parser.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayoutService} from './components/layout/layout.service';
@@ -150,5 +151,18 @@ export function hsCommonLaymanService(i: any) {
 export const HsCommonLaymanServiceProvider = {
   provide: HsCommonLaymanService,
   useFactory: hsCommonLaymanService,
+  deps: ['$injector'],
+};
+
+/**
+ * @param i
+ */
+export function hsCompositionsParserService(i: any) {
+  return i.get('HsCompositionsParserService');
+}
+
+export const HsCompositionsParserServiceProvider = {
+  provide: HsCompositionsParserService,
+  useFactory: hsCompositionsParserService,
   deps: ['$injector'],
 };

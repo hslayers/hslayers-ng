@@ -12,8 +12,8 @@ import compositionsService from './compositions.service';
 import deleteDialogDirective from './delete-dialog.directive';
 import infoDialogDirective from './info-dialog.directive';
 import overwriteDialogDirective from './overwrite-dialog.directive';
-import parserService from './compositions-parser.service';
 import shareDialogDirective from './share-dialog.directive';
+import {HsCompositionsParserService} from './compositions-parser.service';
 
 /**
  * @ngdoc module
@@ -91,7 +91,7 @@ angular
    * @ngdoc service
    * @description Contains function of managing composition (loading, removing Layers)
    */
-  .factory('HsCompositionsParserService', parserService)
+  .service('HsCompositionsParserService', HsCompositionsParserService)
 
   /**
    * @module hs.compositions
