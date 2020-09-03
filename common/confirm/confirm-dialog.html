@@ -1,18 +1,18 @@
-<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
+<div [ngClass]="{'in': modalVisible}" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.title}}
+                    {{title}}
                 </h4>
                 <button type="button" (click)="no()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
-                {{data.message}}
+                {{message}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translate" data-dismiss="modal">{{'COMMON.yes' | translate}}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate}}</button>      
             </div>
         </div>
     </div>

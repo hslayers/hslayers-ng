@@ -44,8 +44,7 @@ export class HsLanguageService {
    * @memberof HsLanguageService
    * @public
    * @returns {Object} Returns available languages
-   * @description Get array of available languages based on translations.js
-   * or translations_extended.js files which have gettextCatalog services in them
+   * @description Get array of available languages based
    */
   listAvailableLanguages(): any {
     const language_code_name_map = {
