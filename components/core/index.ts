@@ -15,6 +15,7 @@ import '../legend';
 import '../map/map.module';
 import '../permalink';
 import '../print';
+import '../query';
 import '../save-map/';
 import '../toolbar';
 import '../translations/js/translations';

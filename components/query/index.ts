@@ -1,6 +1,6 @@
 /* eslint-disable angular/file-name */
-import '../language/language.module';
-import '../measure/measure.module';
+import '../language';
+import '../measure';
 import '../utils';
 import 'angular-sanitize';
 import * as angular from 'angular';
