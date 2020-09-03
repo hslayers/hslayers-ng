@@ -1,16 +1,19 @@
+import '../../language';
 import * as angular from 'angular';
 import addLayersVectorUrlParserService from './add-layers-vector-url-parser.service';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 
 /**
+ * @param service
+ * @param layoutService
  * @namespace hs.addLayersVector
  * @memberOf hs
  */
 angular
   .module('hs.addLayersVector', [
     'hs.styles',
-    'gettext',
     'hs.utils',
+    'hs.language',
     'hs.layout',
     'hs.map',
   ])
@@ -63,6 +66,7 @@ angular
 
       /**
        * Handler for adding nonwms service, file in template.
+       *
        * @memberof hs.addLayersVector.controller
        * @function add
        */

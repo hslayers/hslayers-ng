@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -25,7 +24,7 @@ import {HsQueryWmsService} from './query-wms.service';
     HsQueryDefaultInfoPanelBodyComponent,
     HsQueryAttributeRowComponent,
   ],
-  imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule],
+  imports: [CommonModule, HsPanelHelpersModule, FormsModule],
   exports: [HsQueryComponent, HsQueryFeaturePopupComponent],
   providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
