@@ -3,17 +3,17 @@
     <hs.add-layers-url type="vector" url="vm.url"></hs.add-layers-url>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Title</label>
+        <label class="capabilities_label control-label" >Title</label>
         <input class="form-control" ng-model="vm.title"/>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Abstract</label>
-        <textarea class="form-control" id='hs-ows-abstract' placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="vm.abstract">
+        <label class="capabilities_label control-label" >Abstract</label>
+        <textarea class="form-control" id='hs-ows-abstract' placeholder="Fill in descriptive text about map" ng-model="vm.abstract">
         </textarea>
     </div>
 
-    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="vm.advancedPanelVisible = !vm.advancedPanelVisible" data-target=".hs-ows-vector-advanced" translate>
+    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="vm.advancedPanelVisible = !vm.advancedPanelVisible" data-target=".hs-ows-vector-advanced" >
         Advanced options
     </button>
 
@@ -24,16 +24,16 @@
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label" translate>Folder name</label>
+            <label class="capabilities_label control-label" >Folder name</label>
             <input class="form-control" ng-model="vm.folder_name"/>
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label" translate>Extract styles</label>
+            <label class="capabilities_label control-label" >Extract styles</label>
             <input type="checkbox" ng-model="vm.extract_styles"/>
         </div>
     </div>
 
-    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus"></i> <translate>Add</translate></button>
+    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus"></i> <>Add</></button>
     </a>
 </form>
