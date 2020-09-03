@@ -154,7 +154,8 @@
       "addDrawLayer": "Pievienot jaunu slāni",
       "removeLastPoint": "Noņemt pēdējo punktu",
       "finishFeature": "Pabeigt grafisko objektu"
-    }
+    },
+    "drawLayer": "Zīmēt slāni"
   },
   "PERMALINK": {
     "newShare": "Jauna kopīgošana",
@@ -266,5 +267,14 @@
       "SEARCH": "Meklēt atrašanās vietu",
       "DRAW": "Zīmēt jaunus grafiskos objektus"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Vai tiešām vēlaties dzēst šo grafisko objektu?",
+    "confirmDelete": "Apstiprināt dzēšanu",
+    "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus grafiskos objektus no slāņa",
+    "coordinates": "Koordinātes"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
   }
 }

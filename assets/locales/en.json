@@ -154,7 +154,8 @@
       "addDrawLayer": "Add draw layer",
       "removeLastPoint": "Remove last point",
       "finishFeature": "Finish feature"
-    }
+    },
+    "drawLayer": "Draw layer"
   },
   "PERMALINK": {
     "newShare": "New share",
@@ -266,5 +267,14 @@
       "SEARCH": "Search for location",
       "DRAW": "Draw new features"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Really delete this feature?",
+    "confirmDelete": "Confirm delete",
+    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer",
+    "coordinates": "Coordinates"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Zoom to initial window"
   }
 }
