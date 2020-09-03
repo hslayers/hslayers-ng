@@ -96,15 +96,14 @@ export class HsShareUrlService {
     }
     this.HsUtilsService.debounce(
       () => {
-        this.Location.replaceState(
-          this.Location.path(),
-          Object.keys(this.params)
-            .map((key) => {
-              return {key, value: this.params[key]};
-            })
-            .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
-            .join('&')
-        );
+        const locationPath = this.pathName();
+        const paramsSerialized = Object.keys(this.params)
+          .map((key) => {
+            return {key, value: this.params[key]};
+          })
+          .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
+          .join('&');
+        this.Location.replaceState(locationPath, paramsSerialized);
         this.browserUrlUpdated.next();
       },
       300,
@@ -124,12 +123,12 @@ export class HsShareUrlService {
       return (
         this.HsConfig.permalinkLocation.origin +
         this.current_url.replace(
-          this.Location.path(),
+          this.pathName(),
           this.HsConfig.permalinkLocation.pathname
         ) +
         '&permalink=' +
         encodeURIComponent(this.permalinkRequestUrl)
-      ).replace(this.Location.path(), this.HsConfig.permalinkLocation.pathname);
+      ).replace(this.pathName(), this.HsConfig.permalinkLocation.pathname);
     } else {
       const portIfNeeded = ['80', '443'].includes(this.window.location.port)
         ? ''
@@ -140,6 +139,10 @@ export class HsShareUrlService {
         this.permalinkRequestUrl
       )}`;
     }
+  }
+
+  private pathName(): string {
+    return this.Location.path().split('?')[0];
   }
 
   /**
