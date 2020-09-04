@@ -1,4 +1,3 @@
-import 'angular-cookies';
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
@@ -10,13 +9,14 @@ import {CookieService} from 'ngx-cookie-service';
 import {FormsModule} from '@angular/forms';
 import {HsHistoryListComponent} from './history-list.component';
 import {HsHistoryListService} from './history-list.service';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsHistoryListComponent],
-  imports: [BrowserModule, FormsModule, CommonModule],
+  imports: [BrowserModule, FormsModule, CommonModule, TranslateModule],
   exports: [HsHistoryListComponent],
-  providers: [HsHistoryListService, CookieService],
+  providers: [HsHistoryListService, CookieService, TranslateStore],
   entryComponents: [HsHistoryListComponent],
 })
 export class HsHistoryListModule {}
