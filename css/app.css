@@ -1629,3 +1629,4 @@ li.hs-lm-header {
 .bsi hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
 hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}
+.hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)}
