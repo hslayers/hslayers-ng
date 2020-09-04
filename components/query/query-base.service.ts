@@ -131,7 +131,7 @@ export class HsQueryBaseService {
     }
     const map = e.map;
     this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-    if (this.featuresUnderMouse !== null) {
+    if (this.featuresUnderMouse.length) {
       this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
         return (
           feature.getLayer &&
@@ -148,13 +148,14 @@ export class HsQueryBaseService {
         'title'
       );
       this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
-        return {
+        const layer = {
           title: l.get('title'),
           layer: l,
           features: this.featuresUnderMouse.filter(
-            (f) => f.getLayer(HsMapService.map) == l
+            (f) => f.getLayer(this.HsMapService.map) == l
           ),
         };
+        return layer;
       });
       this.featuresUnderMouse.forEach((feature) => {
         this.serializeFeatureAttributes(feature);
@@ -179,10 +180,11 @@ export class HsQueryBaseService {
    * @param feature
    */
   serializeFeatureAttributes(feature) {
+    feature.attributesForHover = [];
     if (feature.getLayer == undefined) {
       return;
     }
-    const layer = feature.getLayer(HsMapService.map);
+    const layer = feature.getLayer(this.HsMapService.map);
     let attrsConfig = [];
     if (layer.get('popUp')?.attributes) {
       //must be an array
@@ -210,7 +212,6 @@ export class HsQueryBaseService {
       // Layer is not configured to show pop-ups
       return;
     }
-    feature.attributesForHover = [];
     for (const attr of attrsConfig) {
       let attrName, attrLabel;
       let attrFunction = (x) => x;

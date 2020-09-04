@@ -192,14 +192,6 @@ export class HsQueryVectorService {
   }
 
   /**
-   * @param {ol/layer/Layer} layer
-   * @returns {boolean}
-   */
-  isLayerEditable(layer) {
-    return this.HsLayerUtilsService.isLayerEditable(layer);
-  }
-
-  /**
    * @param {ol/Feature} feature
    */
   removeFeature(feature) {
