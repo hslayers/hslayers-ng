@@ -1,6 +1,6 @@
 import Overlay from 'ol/Overlay';
 import {Component, ElementRef} from '@angular/core';
-import {HsConfirmDialog} from '../../common/confirm';
+import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
@@ -57,10 +57,13 @@ export class HsQueryFeaturePopupComponent {
   }
 
   async removeFeature(feature) {
-    const dialog = this.HsDialogContainerService.create(HsConfirmDialog, {
-      message: this.TranslateService.instant('Really delete this feature?'),
-      title: this.TranslateService.instant('Confirm delete'),
-    });
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.TranslateService.instant('Really delete this feature?'),
+        title: this.TranslateService.instant('Confirm delete'),
+      }
+    );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsQueryVectorService.removeFeature(feature);
@@ -69,12 +72,15 @@ export class HsQueryFeaturePopupComponent {
   }
 
   async clearLayer(layer) {
-    const dialog = this.HsDialogContainerService.create(HsConfirmDialog, {
-      message: this.TranslateService.instant(
-        'Really delete all features from layer "{0}"?'
-      ).replace('{0}', layer.get('title')),
-      title: this.TranslateService.instant('Confirm clear'),
-    });
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.TranslateService.instant(
+          'Really delete all features from layer "{0}"?'
+        ).replace('{0}', layer.get('title')),
+        title: this.TranslateService.instant('Confirm clear'),
+      }
+    );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       if (layer.getSource().getSource) {
