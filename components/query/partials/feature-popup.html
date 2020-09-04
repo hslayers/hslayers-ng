@@ -3,16 +3,20 @@
         <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
             <strong style="font-size: small;">{{layerDesc.title}}</strong><br>
             <div *ngFor="let feature of layerDesc.features">
-                <div [hidden]="!isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
-                    <div *ngFor="let subFeature of feature.get('features')" [hidden]="!(subFeature.attributesForHover.length > 0)">
+                <div [hidden]="!isClustered(feature)"
+                    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                    <div *ngFor="let subFeature of feature.get('features')"
+                        [hidden]="!(subFeature.attributesForHover.length > 0)">
                         {{serializeFeatureName(subFeature)}}
-                        <button class="btn btn-danger float-right btn-sm" *ngIf="isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
+                        <button class="btn btn-danger float-right btn-sm"
+                            *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)"
+                            (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
                             <i class="icon-remove-circle"></i>
                         </button>
                         <div *ngFor="let attribute of subFeature.attributesForHover">
                             <div class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
-                                    {{attribute.key}}&emsp; 
+                                    {{attribute.key}} 
                                 </div>
                                 <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                             </div>
@@ -20,24 +24,29 @@
                         <hr>
                     </div>
                 </div>
-                <div [hidden]="isClustered(feature) || !(feature.attributesForHover.length > 0)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
+                <div [hidden]="isClustered(feature) || !(feature.attributesForHover.length > 0)"
+                    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
                     {{serializeFeatureName(feature)}}
-                    <button class="btn btn-danger float-right btn-sm" *ngIf="isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
+                    <button class="btn btn-danger float-right btn-sm"
+                        *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n
+                        data-toggle="tooltip" i18n-title="Remove feature">
                         <i class="icon-remove-circle"></i>
                     </button>
                     <div *ngFor="let attribute of feature.attributesForHover">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
-                                {{attribute.key}}&emsp;
+                                {{attribute.key}}
                             </div>
                             <div class="p-1" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip" i18n-title="Clear clear">
-            Clear layer
-        </button>
+            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)"
+                *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip"
+                i18n-title="Clear clear">
+                Clear layer
+            </button>
         </div>
     </div>
 </div>

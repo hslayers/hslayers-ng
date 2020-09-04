@@ -31,7 +31,7 @@ export class HsQueryFeatureComponent {
   }
 
   saveNewAttribute(attributeName, attributeValue) {
-    if (this.feature.feature !== undefined) {
+    if (this.feature?.feature) {
       const feature = this.feature.feature;
       const getDuplicates = this.feature.attributes.filter(
         (duplicate) => duplicate.name == attributeName

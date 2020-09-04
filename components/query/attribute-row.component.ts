@@ -11,7 +11,7 @@ export class HsQueryAttributeRowComponent {
   @Input() template;
 
   change() {
-    if (this.feature.feature !== undefined) {
+    if (this.feature?.feature) {
       const feature = this.feature.feature;
       feature.set(this.attribute.name, this.attribute.value);
     }
