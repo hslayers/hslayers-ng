@@ -39,7 +39,7 @@ export class HsStylerComponent {
   imagetype = this.imagetypes[0].name;
   radius = 5;
   linewidth = 2;
-  iconlinewidth = 2;
+  iconlinewidth = 1;
   iconimage: any;
   fillcolor: any;
   linecolor: any;
@@ -247,23 +247,24 @@ export class HsStylerComponent {
     const iconPreview = document.getElementsByClassName(
       'hs-styler-selected-icon-box'
     )[0];
-    const svgPath: any = iconPreview.querySelector('path');
-    if (!svgPath) {
-      return;
+    const svgPath: any = iconPreview.querySelectorAll('path');
+    for (const path of svgPath) {
+      if (!path) {
+        return;
+      }
+      if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
+        path.style.fill = this.iconfillcolor['background-color'];
+      }
+      if (this.iconlinecolor !== undefined && this.iconlinecolor !== null) {
+        path.style.stroke = this.iconlinecolor['background-color'];
+      }
+      if (this.iconlinewidth !== undefined && this.iconlinewidth !== null) {
+        path.style.strokeWidth = this.iconlinewidth;
+      }
+      this.serialized_icon =
+        'data:image/svg+xml;base64,' + window.btoa(iconPreview.innerHTML);
     }
-    if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
-      svgPath.style.fill = this.iconfillcolor['background-color'];
-    }
-    if (this.iconlinecolor !== undefined && this.iconlinecolor !== null) {
-      svgPath.style.stroke = this.iconlinecolor['background-color'];
-    }
-    if (this.iconlinewidth !== undefined && this.iconlinewidth !== null) {
-      svgPath.style.strokeWidth = this.iconlinewidth;
-    }
-    this.serialized_icon =
-      'data:image/svg+xml;base64,' + window.btoa(iconPreview.innerHTML);
   }
-
   /**
    * @function setImageType
    * @memberof hs.styler.controller
