@@ -248,7 +248,6 @@ export class HsDrawService {
       this.draw.setActive(false);
     }
     this.drawActive = false;
-    this.HsQueryBaseService.activateQueries();
   }
 
   removeLastPoint(): void {
@@ -306,6 +305,7 @@ export class HsDrawService {
     }
     this.draw.setActive(false);
     this.modify.setActive(false);
+    this.HsQueryBaseService.activateQueries();
   }
 
   startDrawing(): void {
