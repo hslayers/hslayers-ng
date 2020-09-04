@@ -12,7 +12,7 @@ export class HsDialogContainerService {
 
   constructor() {}
   create(component: Type<any>, data: any): HsDialogItem {
-    const item = new HsDialogItem(component, data)
+    const item = new HsDialogItem(component, data);
     this.dialogObserver.next(item);
     return item;
   }

@@ -13,12 +13,13 @@ import {
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
 } from '../../ajs-upgraded-providers';
+import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
 import {HsGeolocationModule} from './../geolocation';
-import {HsInfoModule} from './../info';
 import {HsHistoryListModule} from './../../common/history-list';
+import {HsInfoModule} from './../info';
 import {HsLanguageModule} from './../language';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
@@ -81,6 +82,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     }),
     HsInfoModule,
     HsQueryModule,
+    HsConfirmModule,
   ],
   exports: [TranslateModule],
   providers: [
