@@ -26,7 +26,7 @@ import {HsQueryWmsService} from './query-wms.service';
     HsQueryAttributeRowComponent,
   ],
   imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule],
-  exports: [HsQueryComponent],
+  exports: [HsQueryComponent, HsQueryFeaturePopupComponent],
   providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
