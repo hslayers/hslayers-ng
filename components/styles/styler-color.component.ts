@@ -102,7 +102,7 @@ export class HsStylerColorComponent {
   ];
 
   blank = {
-    'background-color': 'rgba(244, 235, 55, 0)',
+    'background-color': 'rgba(125, 125, 125, 1)',
   };
 
   constructor() {}
