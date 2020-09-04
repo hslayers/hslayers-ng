@@ -1,5 +1,6 @@
 import {BootstrapComponent} from '../../bootstrap.component';
 import {CommonModule} from '@angular/common';
+import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogContainerService} from './dialogs/dialog-container.service';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
@@ -16,14 +17,14 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsDialogContainerComponent,
     HsDialogHostDirective,
   ],
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, HsConfirmModule],
   providers: [
     HsLayoutServiceProvider,
     HsDialogContainerService,
     TranslateStore,
   ],
   entryComponents: [BootstrapComponent, HsDialogContainerComponent],
-  exports: [BootstrapComponent],
+  exports: [BootstrapComponent, HsDialogContainerComponent],
 })
 export class HsLayoutModule {
   ngDoBootstrap(): void {}
