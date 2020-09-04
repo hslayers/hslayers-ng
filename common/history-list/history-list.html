@@ -1,5 +1,5 @@
 <button type="button" (click)="historyDropdownVisible=!historyDropdownVisible"
-    class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" title="Toggle dropdown"
+    class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" [title]="'HISTORY.toggleDropdown' | translate"
     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <div class="dropdown-menu" style="left: auto; right:0; width:325px; overflow: hidden"
         [ngClass]="{'show': historyDropdownVisible}">

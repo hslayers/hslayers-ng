@@ -283,5 +283,8 @@
     "speed": "Speed",
     "altitude": "Altitude",
     "follow": "Follow"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Toggle dropdown"
   }
 }
