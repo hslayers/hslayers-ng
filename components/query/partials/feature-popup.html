@@ -8,7 +8,7 @@
                     <div *ngFor="let subFeature of feature.get('features')"
                         [hidden]="!(subFeature.attributesForHover.length > 0)">
                         {{serializeFeatureName(subFeature)}}
-                        <button class="btn btn-danger float-right btn-sm"
+                        <button class="btn btn-sm btn-danger float-right "
                             *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)"
                             (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
                             <i class="icon-remove-circle"></i>
@@ -16,7 +16,7 @@
                         <div *ngFor="let attribute of subFeature.attributesForHover">
                             <div class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
-                                    {{attribute.key}} 
+                                    {{attribute.key}}:
                                 </div>
                                 <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                             </div>
@@ -35,9 +35,9 @@
                     <div *ngFor="let attribute of feature.attributesForHover">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
-                                {{attribute.key}}
+                                {{attribute.key}}:
                             </div>
-                            <div class="p-1" ng-bind-html="attribute.displayFunction(attribute.value)"></div>
+                            <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                         </div>
                     </div>
                 </div>
