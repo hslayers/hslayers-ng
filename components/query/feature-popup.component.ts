@@ -3,6 +3,7 @@ import {Component, ElementRef} from '@angular/core';
 import {HsConfirmDialog} from '../../common/confirm';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -17,6 +18,7 @@ export class HsQueryFeaturePopupComponent {
     private HsQueryVectorService: HsQueryVectorService,
     private HsEventBusService: HsEventBusService,
     private TranslateService: TranslateService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     private HsDialogContainerService: HsDialogContainerService,
     ElementRef: ElementRef
   ) {
@@ -52,14 +54,6 @@ export class HsQueryFeaturePopupComponent {
     if (feature.get('label')) {
       return feature.get('label');
     }
-  }
-
-  isFeatureRemovable(feature) {
-    return this.HsQueryVectorService.isFeatureRemovable(feature);
-  }
-
-  isLayerEditable(layer) {
-    return this.HsQueryVectorService.isLayerEditable(layer);
   }
 
   async removeFeature(feature) {
