@@ -3,50 +3,42 @@
         <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
             <strong style="font-size: small;">{{layerDesc.title}}</strong><br>
             <div *ngFor="let feature of layerDesc.features">
-                <div [hidden]="!isClustered(feature)"
-                    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
-                    <div *ngFor="let subFeature of feature.get('features')"
-                        [hidden]="!(subFeature.attributesForHover.length > 0)">
-                        {{serializeFeatureName(subFeature)}}
-                        <button class="btn btn-sm btn-danger float-right "
-                            *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)"
-                            (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" i18n-title="Remove feature">
-                            <i class="icon-remove-circle"></i>
-                        </button>
-                        <div *ngFor="let attribute of subFeature.attributesForHover">
-                            <div class="d-flex flex-row">
+                <div *ngIf="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
+                    <div *ngFor="let subFeature of feature.get('features')" [hidden]="!(subFeature.attributesForHover.length > 0)" class="d-flex flex-column" class="hs-hover-popup-feature">
+                        <div class="d-flex flex-row">
+                            <div class="p-1 flex-grow-1">{{serializeFeatureName(subFeature)}}</div>
+                            <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" title="Remove cluster part">
+                                <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+                            </a>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div *ngFor="let attribute of subFeature.attributesForHover" class="d-flex flex-row">
                                 <div class="p-1 flex-grow-1">
-                                    {{attribute.key}}:
+                                    {{attribute.key}} 
                                 </div>
                                 <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
                             </div>
                         </div>
-                        <hr>
                     </div>
                 </div>
-                <div [hidden]="isClustered(feature) || !(feature.attributesForHover.length > 0)"
-                    style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)">
-                    {{serializeFeatureName(feature)}}
-                    <button class="btn btn-danger float-right btn-sm"
-                        *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n
-                        data-toggle="tooltip" i18n-title="Remove feature">
-                        <i class="icon-remove-circle"></i>
-                    </button>
-                    <div *ngFor="let attribute of feature.attributesForHover">
-                        <div class="d-flex flex-row">
-                            <div class="p-1 flex-grow-1">
-                                {{attribute.key}}:
-                            </div>
-                            <div class="p-1" [innerHTML]="attribute.displayFunction(attribute.value)"></div>
+                <div *ngIf="!isClustered(feature) && feature.attributesForHover.length > 0" class="d-flex hs-hover-popup-feature">
+                    <div class="flex-row">
+                        <div class="p-1 flex-grow-1">{{serializeFeatureName(feature)}}</div>
+                        <button class="btn btn-danger btn-sm" *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" title="Remove feature">
+                            <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+                        </button>
+                    </div>
+                    <div *ngFor="let attribute of feature.attributesForHover" class="flex-row">
+                        <div class="p-1 flex-grow-1">
+                            {{attribute.key}} 
                         </div>
+                        <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)"
-                *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip"
-                i18n-title="Clear clear">
-                Clear layer
-            </button>
+            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip" title="Clear layer">
+            Clear layer
+        </button>
         </div>
     </div>
 </div>
