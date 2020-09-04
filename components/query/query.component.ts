@@ -2,6 +2,7 @@ import 'ol-popup/src/ol-popup.css';
 import * as Popup from 'ol-popup';
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
+import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -25,7 +26,8 @@ export class HsQueryComponent {
     private HsMapService: HsMapService,
     private HsEventBusService: HsEventBusService,
     private HsQueryVectorService: HsQueryVectorService,
-    private HsQueryWmsService: HsQueryWmsService
+    private HsQueryWmsService: HsQueryWmsService,
+    private HsDrawService: HsDrawService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);
@@ -34,7 +36,10 @@ export class HsQueryComponent {
     //add current panel queriable - activate/deactivate
     this.HsEventBusService.mainPanelChanges.subscribe((closed) => {
       if (this.HsQueryBaseService.currentPanelQueryable()) {
-        if (!this.HsQueryBaseService.queryActive) {
+        if (
+          !this.HsQueryBaseService.queryActive &&
+          !this.HsDrawService.drawActive
+        ) {
           this.HsQueryBaseService.activateQueries();
         }
       } else {
