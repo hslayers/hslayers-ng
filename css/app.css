@@ -1614,7 +1614,7 @@ li.hs-lm-header {
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
-.hs-hover-popup{max-height: 20em; max-width: 30em; overflow-y: scroll; visibility: visible;}
+.hs-hover-popup{max-height: 20em; min-width: 10em; max-width: 40em; overflow-y: scroll; visibility: visible;}
 
 .hs-toolbar-button{height: 2.4em}
 .bsi .dropdown-menu.datetime-picker-menu {min-width: 22rem;}
