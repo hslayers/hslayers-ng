@@ -290,5 +290,8 @@
     "speed": "Rychlost",
     "altitude": "Nadmořská výška",
     "follow": "Následovat"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Přepnout rozbalovací nabídku"
   }
 }
