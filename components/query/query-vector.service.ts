@@ -251,19 +251,20 @@ export class HsQueryVectorService {
         .getLayer(this.HsMapService.map)
         .get('customInfoTemplate');
     }
-
-    const featureDescription = {
-      layer: this.getFeatureLayerName(feature),
-      name: 'Feature',
-      attributes: attributes,
-      stats: this.addDefaultStats(feature),
-      hstemplate,
-      feature,
-      customInfoTemplate: this.DomSanitizer.bypassSecurityTrustHtml(
-        customInfoTemplate
-      ),
-    };
-    tmp.push(featureDescription);
+    if (!feature.get('features')) {
+      const featureDescription = {
+        layer: this.getFeatureLayerName(feature),
+        name: 'Feature',
+        attributes: attributes,
+        stats: this.addDefaultStats(feature),
+        hstemplate,
+        feature,
+        customInfoTemplate: this.DomSanitizer.bypassSecurityTrustHtml(
+          customInfoTemplate
+        ),
+      };
+      tmp.push(featureDescription);
+    }
     return tmp;
   }
 }
