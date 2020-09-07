@@ -20,6 +20,7 @@ export class HsDrawToolbarComponent {
   ) {}
 
   toggleDrawToolbar(e): void {
+    this.HsDrawService.highlightDrawButton = false;
     if (
       this.HsLayoutService.layoutElement.clientWidth > 767 &&
       this.HsLayoutService.layoutElement.clientWidth < 870 &&
@@ -32,7 +33,6 @@ export class HsDrawToolbarComponent {
       this.HsDrawService.stopDrawing();
     }
   }
-
   selectLayer(layer): void {
     if (layer != this.HsDrawService.selectedLayer) {
       this.HsDrawService.selectedLayer = layer;

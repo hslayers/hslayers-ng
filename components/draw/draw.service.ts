@@ -47,6 +47,7 @@ export class HsDrawService {
   selectedFeatures: any = new Collection();
   onSelected: any;
   currentStyle: any;
+  highlightDrawButton = false; // Toggles toolbar button 'Draw' class
   defaultStyle: Style = new Style({
     stroke: new Stroke({
       color: 'rgba(0, 153, 255, 1)',
@@ -148,7 +149,6 @@ export class HsDrawService {
       this
     );
   }
-
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
