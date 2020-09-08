@@ -47,6 +47,12 @@ export default function (
   function fillProjections(caps, response) {
     if (angular.isDefined(caps.Capability.Layer.CRS)) {
       me.data.srss = caps.Capability.Layer.CRS;
+    } else if (
+      caps.Capability.Layer.Layer &&
+      caps.Capability.Layer.Layer.length > 0 &&
+      caps.Capability.Layer.Layer[0].CRS
+    ) {
+      me.data.srss = caps.Capability.Layer.Layer[0].CRS;
     } else {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
@@ -77,24 +83,19 @@ export default function (
       me.data.srss = [];
       fillProjections(caps, response);
       //TODO: WHY?
-      if (me.data.srss.indexOf('CRS:84') > -1) {
+      if (me.data.srss.includes('CRS:84')) {
         me.data.srss.splice(me.data.srss.indexOf('CRS:84'), 1);
       }
 
       if (
         HsWmsGetCapabilitiesService.currentProjectionSupported(me.data.srss)
       ) {
-        me.data.srs =
-          me.data.srss.indexOf(
-            HsMapService.map.getView().getProjection().getCode()
-          ) > -1
-            ? HsMapService.map.getView().getProjection().getCode()
-            : HsMapService.map
-                .getView()
-                .getProjection()
-                .getCode()
-                .toLowerCase();
-      } else if (me.data.srss.indexOf('EPSG:4326') > -1) {
+        me.data.srs = me.data.srss.includes(
+          HsMapService.map.getView().getProjection().getCode()
+        )
+          ? HsMapService.map.getView().getProjection().getCode()
+          : HsMapService.map.getView().getProjection().getCode().toLowerCase();
+      } else if (me.data.srss.includes('EPSG:4326')) {
         me.data.srs = 'EPSG:4326';
       } else {
         me.data.srs = me.data.srss[0];
@@ -191,7 +192,7 @@ export default function (
 
   /**
    * @function addLayers
-   * @memberOf add-layers-wms.controller
+   * @memberof add-layers-wms.controller
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
    */
