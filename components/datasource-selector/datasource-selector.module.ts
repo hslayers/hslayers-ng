@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -21,6 +20,7 @@ import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsMickaSuggestionsDialogComponent} from './micka/micka-suggestions-dialog.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -34,7 +34,7 @@ import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-
     HsSelectTypeToAddLayerDialogComponent,
     EndpointsWithDatasourcesPipe,
   ],
-  imports: [BrowserModule, CommonModule, FormsModule, HsPanelHelpersModule],
+  imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
   exports: [
     HsAdvancedMickaDialogComponent,
     HsDatasourcesComponent,
@@ -50,6 +50,7 @@ import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-
     HsLaymanBrowserService,
     HsMickaBrowserService,
     HsMickaFilterService,
+    TranslateStore,
   ],
   entryComponents: [HsDatasourcesComponent],
 })
