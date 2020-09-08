@@ -6,6 +6,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
@@ -49,7 +50,7 @@ describe('HsDatasources', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
+      imports: [FormsModule, TranslateModule.forRoot()],
       declarations: [HsDatasourcesComponent, EndpointsWithDatasourcesPipe],
       providers: [
         HsDatasourcesService,
