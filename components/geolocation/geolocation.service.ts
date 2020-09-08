@@ -81,6 +81,14 @@ export class HsGeolocationService {
     });
     this.HsMapService.loaded().then((map) => this.init(map));
   }
+  getRotate(): Rotate {
+    for (const control of this.HsMapService.map.getControls().getArray()) {
+      if (control instanceof Rotate) {
+        return control;
+      }
+    }
+  }
+
   /**
    * @ngdoc method
    * @name HsGeolocationService#stopTracking
@@ -89,10 +97,8 @@ export class HsGeolocationService {
    */
   stopTracking(): void {
     this.following = false;
-    this.HsMapService.map
-      .getControls()
-      .getArray()[4]
-      .element.classList.add('hidden');
+    const rotate = this.getRotate()
+    rotate.element.classList.add('hidden');
     this.HsMapService.map.on('pointermove', () => {
       this.centering = false;
     });
@@ -141,11 +147,8 @@ export class HsGeolocationService {
           this.HsMapService.map.on('pointermove', () => {
             this.centering = false;
           });
-
-          this.HsMapService.map
-            .getControls()
-            .getArray()[4]
-            .element.classList.remove('hidden');
+          const rotate = this.getRotate()
+          rotate.element.classList.remove('hidden');
           this.HsLayoutService.contentWrapper
             .querySelector('button.ol-rotate')
             .classList.add('active');
