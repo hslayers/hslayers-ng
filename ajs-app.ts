@@ -2,7 +2,6 @@
 
 import './components/add-layers/add-layers.module';
 import './components/core';
-import './components/datasource-selector';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -71,8 +70,7 @@ export default angular
     'ngInject';
     return {
       template: require('./hslayers.html'),
-      link: function (_scope, element) {
-      },
+      link: function (_scope, element) {},
     };
   })
   .value(
