@@ -6,7 +6,7 @@
             <hs.map></hs.map>
             <hs.cesium></hs.cesium>
 
-            <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
+            <hs.layermanager.gallery ng-if="layoutService.componentEnabled('basemapGallery')"></hs.layermanager.gallery>
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
                 ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
             </hs.toolbar>
