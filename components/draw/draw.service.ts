@@ -1,11 +1,9 @@
 import * as GeometryType from 'ol/geom/GeometryType';
+import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
-import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
-import {Layer} from 'ol/layer';
-
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
@@ -16,9 +14,11 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {Layer} from 'ol/layer';
 
+import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
-
+import {Subject} from 'rxjs';
 type activateParams = {
   onDrawStart?;
   onDrawEnd?;
@@ -67,6 +67,10 @@ export class HsDrawService {
     }),
   });
   onDeselected: any;
+  public drawingLayerChanges: Subject<{
+    layer: BaseLayer;
+    source: VectorSource;
+  }> = new Subject();
 
   constructor(
     private HsMapService: HsMapService,
@@ -121,7 +125,7 @@ export class HsDrawService {
         ? null
         : this.HsMapService.findLayerByTitle('tmpDrawLayer');
     const tmpSource =
-      addNewLayer === true ? new Vector() : tmpLayer.getSource();
+      addNewLayer === true ? new VectorSource() : tmpLayer.getSource();
 
     let i = 1;
     while (this.HsMapService.findLayerByTitle(tmpTitle)) {
@@ -162,7 +166,7 @@ export class HsDrawService {
     if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
       const drawLayer = new VectorLayer({
         title: 'tmpDrawLayer',
-        source: new Vector(),
+        source: new VectorSource(),
         show_in_manager: false,
         visible: true,
         removable: true,
@@ -256,6 +260,10 @@ export class HsDrawService {
     } else {
       this.source = this.selectedLayer.getSource();
     }
+    this.drawingLayerChanges.next({
+      layer: this.selectedLayer,
+      source: this.source,
+    });
     if (this.draw) {
       this.activateDrawing({
         changeStyle: () => this.useCurrentStyle(),
