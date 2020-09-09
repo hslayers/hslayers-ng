@@ -9,7 +9,7 @@ import {HsMickaFilterService} from './micka-filters.service';
   selector: 'hs-micka-filters',
   template: require('./micka-filters.html'),
 })
-export class HsMickaFilterComponent implements OnInit {
+export class HsMickaFilterComponent {
   mickaFilterService;
   query;
   mickaDatasetConfig;
@@ -27,8 +27,6 @@ export class HsMickaFilterComponent implements OnInit {
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
     this.queryCatalogs = hsDatasourcesService.queryCatalogs;
   }
-
-  ngOnInit() {}
 
   /**
    * @function openMickaAdvancedSearch

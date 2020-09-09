@@ -9,7 +9,7 @@ import {HsMickaFilterService} from './micka-filters.service';
   selector: 'hs-advanced-micka-dialog',
   template: require('./advanced-micka-dialog.html'),
 })
-export class HsAdvancedMickaDialogComponent implements OnInit {
+export class HsAdvancedMickaDialogComponent {
   query;
   modalVisible = true;
   datasourceSelectorService;
@@ -29,8 +29,6 @@ export class HsAdvancedMickaDialogComponent implements OnInit {
     this.query = hsDatasourcesService.data.query;
     this.mickaDatasetConfig; // = scope.$eval(attrs['mickaDatasetConfig']);
   }
-
-  ngOnInit() {}
 
   /**
    * @function showSuggestions
