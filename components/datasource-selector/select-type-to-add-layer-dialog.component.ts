@@ -6,7 +6,7 @@ import {HsDatasourcesService} from './datasource-selector.service';
   selector: 'hs-select-type-to-add-layer-dialog',
   template: require('./partials/select-type-to-add-layer-dialog.html'),
 })
-export class HsSelectTypeToAddLayerDialogComponent implements OnInit {
+export class HsSelectTypeToAddLayerDialogComponent {
   @Input() layer;
   @Input() types;
   @Input() endpoint;
@@ -32,6 +32,4 @@ export class HsSelectTypeToAddLayerDialogComponent implements OnInit {
       );
     }
   }
-
-  ngOnInit(): void {}
 }
