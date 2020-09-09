@@ -32,15 +32,11 @@ export class HsDatasourcesMapService {
     },
   });
 
-  /**
-   * @param HsMapService
-   * @param HsLogService
-   */
   constructor(
-    private HsMapService: HsMapService,
-    private HsLogService: HsLogService
+    private hsMapService: HsMapService,
+    private hsLogService: HsLogService
   ) {
-    this.HsMapService.loaded().then((map) => this.init(map));
+    this.hsMapService.loaded().then((map) => this.init(map));
   }
 
   /**
@@ -98,7 +94,7 @@ export class HsDatasourcesMapService {
           this.extentLayer.getSource().removeFeature(val.feature);
         }
       } catch (ex) {
-        this.HsLogService.warn(ex);
+        this.hsLogService.warn(ex);
       }
     });
   }
@@ -153,12 +149,12 @@ export class HsDatasourcesMapService {
     first_pair = transform(
       first_pair,
       'EPSG:4326',
-      this.HsMapService.map.getView().getProjection()
+      this.hsMapService.map.getView().getProjection()
     );
     second_pair = transform(
       second_pair,
       'EPSG:4326',
-      this.HsMapService.map.getView().getProjection()
+      this.hsMapService.map.getView().getProjection()
     );
     if (
       isNaN(first_pair[0]) ||
@@ -174,8 +170,8 @@ export class HsDatasourcesMapService {
       second_pair[0],
       second_pair[1],
     ];
-    this.HsMapService.map
+    this.hsMapService.map
       .getView()
-      .fit(extent, this.HsMapService.map.getSize());
+      .fit(extent, this.hsMapService.map.getSize());
   }
 }

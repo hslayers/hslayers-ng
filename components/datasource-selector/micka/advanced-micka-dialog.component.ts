@@ -50,19 +50,19 @@ export class HsAdvancedMickaDialogComponent implements OnInit {
       );
     } else {
       if (
-        HsLayoutService.contentWrapper.querySelector(
+        this.hsLayoutService.contentWrapper.querySelector(
           '.hs-ds-suggestions-micka'
         ) === null
       ) {
         //FIXME: $compile
         /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
-        HsLayoutService.contentWrapper
+        this.hsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
         $compile(el)(scope);*/
       } else {
         this.suggestionsModalVisible = true;
-        const filterElement = HsLayoutService.contentWrapper.querySelector(
+        const filterElement = this.hsLayoutService.contentWrapper.querySelector(
           '.hs-ds-sug-filter'
         );
         this.hsMickaFilterService.suggestionFilter = this.query[input];

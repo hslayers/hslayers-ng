@@ -17,12 +17,6 @@ export class HsMickaFilterService {
   filterByExtent = true;
   otnKeywords = [];
 
-  /**
-   * @param $http
-   * @param $q
-   * @param HsUtilsService
-   * @param HsCommonEndpointsService
-   */
   constructor(
     private http: HttpClient,
     private hsUtilsService: HsUtilsService,

@@ -13,14 +13,6 @@ import {HsUtilsService} from '../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
-  /**
-   * @param HsMapService
-   * @param $http
-   * @param $q
-   * @param HsUtilsService
-   * @param HsMickaFiltersService
-   * @param $log
-   */
   constructor(
     private http: HttpClient,
     private log: HsLogService,
@@ -192,7 +184,7 @@ export class HsMickaBrowserService {
     }
     let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
     let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-    const mapProjectionExtent = HsMapService.map
+    const mapProjectionExtent = this.hsMapService.map
       .getView()
       .getProjection()
       .getExtent();

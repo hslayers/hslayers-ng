@@ -37,8 +37,9 @@ export class HsMickaFilterComponent implements OnInit {
    */
   openMickaAdvancedSearch(mickaDatasetConfig): void {
     if (
-      HsLayoutService.contentWrapper.querySelector('.hs-ds-advanced-micka') ===
-      null
+      this.hsLayoutService.contentWrapper.querySelector(
+        '.hs-ds-advanced-micka'
+      ) === null
     ) {
       this.hsLogService.warn('Not implemented');
       /*const el = angular.element('<div hs-advanced-micka-dialog></div>');
@@ -48,7 +49,7 @@ export class HsMickaFilterComponent implements OnInit {
       );
       //FIXME: $compile
       this.$compile(el)(this);
-      HsLayoutService.contentWrapper
+      this.hsLayoutService.contentWrapper
         .querySelector('.hs-dialog-area')
         .appendChild(el[0]);*/
     } else {
