@@ -4,6 +4,7 @@ import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.co
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
+import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -20,6 +21,7 @@ export class HsQueryFeaturePopupComponent {
     private TranslateService: TranslateService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsDialogContainerService: HsDialogContainerService,
+    private HsMapService: HsMapService,
     ElementRef: ElementRef
   ) {
     this.HsQueryBaseService.hoverPopup = new Overlay({
@@ -32,11 +34,12 @@ export class HsQueryFeaturePopupComponent {
   }
 
   popupVisible() {
+    const featuresWithPopup = this.HsQueryBaseService.featuresUnderMouse.filter(
+      (f) => f.getLayer(this.HsMapService.map).get('popUp') != undefined
+    );
+    const featureCount = featuresWithPopup.length;
     return {
-      'visibility':
-        this.HsQueryBaseService.featuresUnderMouse.length > 0
-          ? 'visible'
-          : 'hidden',
+      'visibility': featureCount > 0 ? 'visible' : 'hidden',
     };
   }
 
