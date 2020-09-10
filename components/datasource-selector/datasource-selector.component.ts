@@ -16,8 +16,6 @@ import {HsUtilsService} from '../utils/utils.service';
   template: require('./partials/datasource_selector.html'),
 })
 export class HsDatasourcesComponent {
-  $scope;
-  $injector;
   metadataModalVisible;
   data;
   HsCore;
