@@ -1,7 +1,7 @@
 <div class="card hs-main-panel">
     <hs-panel-header name="datasource_selector" title="Datasources"></hs-panel-header>
     <div class="card-body">
-        <!--        <div *ngIf="config.allowAddExternalDatasets" ng-include="'./datasource_search.html'">
+        <!--        <div *ngIf="hsConfig.allowAddExternalDatasets" ng-include="'./datasource_search.html'">
             <div class="input-group col-lg-8 col-sm-12 col-xs-12" style="margin-bottom: 4px">
                 <input type="text" class="form-control hs-filter" placeholder="Filter:" ng-model="query.title" ng-change="queryCatalogs(datasources)">
                 <span class="input-group-btn">
@@ -21,7 +21,7 @@
                     <span class="icon-refresh icon-spin" [hidden]="endpoint.datasourcePaging.loaded"></span>
                 </a>
             </li>
-            <li class="nav-item hs-tab-single-datasources" *ngIf="HsCore.exists('hs.addLayers') && config.allowAddExternalDatasets">
+            <li class="nav-item hs-tab-single-datasources" *ngIf="hsCore.exists('hs.addLayers') && hsConfig.allowAddExternalDatasets">
                 <a class="nav-link" href="#" aria-controls="OWS" [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}"
                     role="tab" (click)="datasetSelect('OWS')" data-toggle="tab" i18n>
                     External data
@@ -42,22 +42,22 @@
                             <li [hidden]='endpoint.layers.length > 0' class='list-group-item' i18n>No results</li>
                             <li *ngFor="let layer of endpoint.layers" class="clearfix"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')"
-                                (mouseover)="DS.highlightComposition(layer, true)"
-                                (mouseleave)="DS.highlightComposition(layer, false)">
+                                (mouseover)="hsDatasourcesService.highlightComposition(layer, true)"
+                                (mouseleave)="hsDatasourcesService.highlightComposition(layer, false)">
                                 <span class="datasources_item">
                                     <strong><a href="#" data-toggle="tooltip" [title]="layer.description"
                                             (click)="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></strong>
                                 </span>
                                 <span class="float-right">
-                                    <a class="btn btn-sm btn-secondary" [href]='DS.layerDownload(endpoint, layer)'
+                                    <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerDownload(endpoint, layer)'
                                         data-toggle="tooltip" title="Download"
-                                        [hidden]='DS.layerDownload(endpoint,layer) == "#"'><i
+                                        [hidden]='hsDatasourcesService.layerDownload(endpoint,layer) == "#"'><i
                                             class="icon-download"></i></a>
-                                    <a class="btn btn-sm btn-secondary" [href]='DS.layerRDF(endpoint, layer)'
+                                    <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerRDF(endpoint, layer)'
                                         data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
-                                        [hidden]='endpoint.type!="micka" || DS.layerRDF(endpoint, layer) == "#"'><i class="icon-share-alt"></i></a>
+                                        [hidden]='endpoint.type!="micka" || hsDatasourcesService.layerRDF(endpoint, layer) == "#"'><i class="icon-share-alt"></i></a>
                                     <button type="button" class="btn btn-sm btn-primary"
-                                        (click)="addLayerToMap(endpoint, layer)" [hidden]='config.dss_disallow_add == true'
+                                        (click)="addLayerToMap(endpoint, layer)" [hidden]='hsConfig.dss_disallow_add == true'
                                         data-toggle="tooltip" title="Add to map"><i
                                             class="icon-plus"></i></button>
                                 </span>
@@ -90,7 +90,7 @@
             </div>
             <hs-add-layers role="tabpanel" class="tab-pane"
                 [ngClass]="{'active': data.wms_connecting || hsCommonEndpointsService.endpoints.length==0 || data.id_selected == 'OWS'}"
-                *ngIf="config.allowAddExternalDatasets" id="OWS"></hs-add-layers>
+                *ngIf="hsConfig.allowAddExternalDatasets" id="OWS"></hs-add-layers>
         </div>
     </div>
 </div>

@@ -13,19 +13,19 @@
                     <label class="form-group">
                         <i18n class="control-label">Fulltext</i18n>
                         <input type="text" class="form-control"
-                            [(ngModel)]="datasourceSelectorService.data.query.textFilter" />
+                            [(ngModel)]="hsDatasourcesService.data.query.textFilter" />
                     </label>
                     <div>
                         <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="AnyText">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="AnyText">
                             All
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="title">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="title">
                             Title
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="datasourceSelectorService.data.textField" value="abstract">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="abstract">
                             Abstract
                         </label>
                     </div>
@@ -34,7 +34,7 @@
                         <i18n class="control-label">Keywords</i18n>
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                [(ngModel)]="datasourceSelectorService.data.query.keywords" />
+                                [(ngModel)]="hsDatasourcesService.data.query.keywords" />
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
                                     (click)="showSuggestions('keywords', 'keyword', 'value')">...</button>
@@ -46,7 +46,7 @@
                         <i18n class="control-label">Organization name</i18n>
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                [(ngModel)]="datasourceSelectorService.data.query.OrganisationName" />
+                                [(ngModel)]="hsDatasourcesService.data.query.OrganisationName" />
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
                                     (click)="showSuggestions('OrganisationName', 'org', 'name')">...</button>
@@ -57,8 +57,8 @@
                     <label class="form-group" [hidden]='true'>
                         <!-- TODO: wtf?-->
                         <i18n class="control-label">Type</i18n>
-                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.type"
-                            (change)='mickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, datasourceSelectorService.data.query.type)'>
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.type"
+                            (change)='hsMickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, hsDatasourcesService.data.query.type)'>
                             <option value=""></option>
                             <option value="data" i18n>Data</option>
                             <option value="service" i18n>Service</option>
@@ -78,18 +78,18 @@
                     </div>
                     -->
 
-                    <label class="form-group" [hidden]="datasourceSelectorService.data.query.type != 'data'">
+                    <label class="form-group" [hidden]="hsDatasourcesService.data.query.type != 'data'">
                         <i18n class="control-label">Topic category</i18n>
 
-                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.TopicCategory">
-                            <option *ngFor="let type of mickaFilterService.mickaDS.code_lists.topicCategory"
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory">
+                            <option *ngFor="let type of hsMickaFilterService.mickaDS.code_lists.topicCategory"
                                 [attr.value]="type.value">{{type.name}}</option>
                         </select>
                     </label>
 
-                    <label class="form-group" [hidden]="datasourceSelectorService.data.query.type != 'data'">
+                    <label class="form-group" [hidden]="hsDatasourcesService.data.query.type != 'data'">
                         <i18n class="control-label">Scale</i18n> 1:
-                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.Denominator">
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.Denominator">
                             <option value="2000">2000</option>
                             <option value="2500">2500</option>
                             <option value="2880">2880</option>
@@ -104,7 +104,7 @@
                     <label class="form-group" [hidden]='true'>
                         <!-- TODO: wtf?-->
                         <i18n class="control-label">Order by</i18n>
-                        <select class="form-control" [(ngModel)]="datasourceSelectorService.data.query.sortby">
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.sortby">
                             <option value="title" i18n>Title</option>
                             <option value="date" i18n>Date stamp</option>
                             <option value="bbox" i18n>Extent similarity</option>
@@ -115,7 +115,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" i18n
-                    (click)="datasourceSelectorService.queryCatalogs(); modalVisible = false"
+                    (click)="hsDatasourcesService.queryCatalogs(); modalVisible = false"
                     data-dismiss="modal">Search</button>
                 <button type="button" class="btn btn-secondary" (click)="DS.clear()">
                     <i18n>Clear</i18n>
