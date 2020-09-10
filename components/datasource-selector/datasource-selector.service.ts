@@ -28,7 +28,7 @@ export class HsDatasourcesService {
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLayoutService: HsLayoutService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    private HsUtilsService: HsUtilsService,
+    private hsUtilsService: HsUtilsService,
     private hsDatasourcesMapService: HsDatasourcesMapService /*,
     private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
@@ -56,7 +56,7 @@ export class HsDatasourcesService {
     }
 
     this.hsEventBusService.mapExtentChanges.subscribe(
-      HsUtilsService.debounce(
+      this.hsUtilsService.debounce(
         (e) => {
           if (!this.panelVisible()) {
             return;
