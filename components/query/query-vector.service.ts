@@ -245,7 +245,7 @@ export class HsQueryVectorService {
     });
     if (
       feature.getLayer &&
-      feature.getLayer(this.HsMapService.map).get('customInfoTemplate')
+      feature.getLayer(this.HsMapService.map)?.get('customInfoTemplate')
     ) {
       customInfoTemplate = feature
         .getLayer(this.HsMapService.map)
