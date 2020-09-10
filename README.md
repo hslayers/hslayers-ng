@@ -8,8 +8,10 @@ Check out the examples to get an idea:
 * http://sdi4apps.eu/spoi/
 
 ## Before You Start
+**This page describes how to create a HSLayers-NG based application with hslayers-ng 2.0 and newer. For a guide for older, but still supported version 1.x see [[Getting started (for HSLayers NG 1.x)]]. If you are looking for an upgrade guide then check [[Upgrading from version 1.x]].**  
+
 HSLayers-NG is built on top of two major things: [OpenLayers](openlayers.org) library and [AngularJS](angularjs.org) framework. So in order to work with HSLayers you should have some understanding of both.
-OpenLayers has a nice [tutorial workshop](https://openlayers.org/workshop/) to start with.
+OpenLayers has a nice [tutorial workshop](https://openlayers.org/workshop/) to start with.  
 
 ## Getting Started
 
@@ -20,11 +22,12 @@ After successfully installing [Node](https://nodejs.org/en/) along with [npm](ht
 
 Include the bundle file
 
-```<script src="node_modules/hslayers-ng/dist/hslayers-ng.js"></script>```
+```<script src="https://ng.hslayers.org/bundles/latest/hslayers-ng.main.js"></script>```
 
 ### Configure the application
 
-A global hslayersNgConfig function, which returns a configuration object, needs to be created before loading the hslayers-ng.js script. It returns a json object to configure applications looks, behaviour and data. See [Configuration options](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) for the available options.
+A global hslayersNgConfig function, which returns a configuration object, NEEDS TO BE CREATED BEFORE loading the hslayers-ng.js script (insert it before the bundle script in the html head section).
+It returns a JSON object that describes the application's looks, behaviour and data it displays. See [Configuration options](Config-parameters) for the list of available config options.
 
 ```
 <script>
@@ -53,7 +56,7 @@ A global hslayersNgConfig function, which returns a configuration object, needs 
 Include in your html file, where the map should appear. 
 
 ```
-<div hs ng-controller="Main" style="position: relative;"></div>
+<hs ng-controller="Main" style="position: relative;"></hs>
 ```
 
 To have more customization options which require programming you can also write your own entry module which in this example is named app.js, but can have any other file name. 
