@@ -10,7 +10,6 @@ import {HsMickaFilterService} from './micka-filters.service';
   template: require('./micka-filters.html'),
 })
 export class HsMickaFilterComponent {
-  mickaFilterService;
   query;
   mickaDatasetConfig;
   queryCatalogs;
@@ -20,9 +19,8 @@ export class HsMickaFilterComponent {
     private hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService,
     private hsLogService: HsLogService,
-    private hsMickaFilterService: HsMickaFilterService
+    private hsMickaFilterService: HsMickaFilterService // used in template
   ) {
-    this.mickaFilterService = hsMickaFilterService;
     this.query = hsDatasourcesService.data.query;
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
     this.queryCatalogs = hsDatasourcesService.queryCatalogs;

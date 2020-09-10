@@ -3,7 +3,6 @@ import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
-import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
@@ -18,39 +17,28 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsDatasourcesComponent {
   metadataModalVisible;
   data;
-  HsCore;
-  DS;
-  mapService;
-  config;
   advancedSearch;
-  endpointsService;
   selected_layer;
   selected_ds;
   metadata;
 
   constructor(
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsConfig: HsConfig,
-    private hsCore: HsCoreService,
+    private hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
+    private hsConfig: HsConfig, //Used in template
+    private hsCore: HsCoreService, //Used in template
     private hsDatasourcesService: HsDatasourcesService,
-    private hsDatasourcesMapService: HsDatasourcesMapService,
     private hsEventBusService: HsEventBusService,
     private hsLaymanBrowserService: HsLaymanBrowserService,
-    private HsLayoutService: HsLayoutService,
+    private hsLayoutService: HsLayoutService,
     private hsLogService: HsLogService,
     private hsUtilsService: HsUtilsService
   ) {
     'ngInject';
-    this.HsCore = hsCore;
     this.data = hsDatasourcesService.data;
-    this.DS = hsDatasourcesService;
-    this.mapService = hsDatasourcesMapService;
-    this.config = hsConfig;
     this.advancedSearch = false;
-    this.endpointsService = hsCommonEndpointsService;
 
     //FIXME: is it even fired?
-    hsEventBusService.wmsConnecting.subscribe(() => {
+    this.hsEventBusService.wmsConnecting.subscribe(() => {
       this.data.wms_connecting = true;
     });
   }
@@ -59,7 +47,7 @@ export class HsDatasourcesComponent {
    * @function getPreviousRecords
    * @memberof hs.datasource_selector
    * @param {object} endpoint Selected datasource
-   * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
+   * @description Loads previous records of datasets from selected datasource (based on number of results per page and current start)
    */
   getPreviousRecords(endpoint): void {
     const paging = endpoint.datasourcePaging;
@@ -99,7 +87,7 @@ export class HsDatasourcesComponent {
    * @memberof hs.datasource_selector
    * @param {object} endpoint Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * Show metadata record dialog window for selected layer.
+   * @description Show metadata record dialog window for selected layer.
    */
   showMetadata(endpoint, layer): void {
     this.selected_layer = layer;
@@ -112,10 +100,10 @@ export class HsDatasourcesComponent {
     filler.then(() => {
       //FIXME: <hs-datasources-metadata-dialog>
       /*this.metadata = this.decomposeMetadata(layer);
-      if (this.HsConfig.design === 'md') {
+      if (this.hsConfig.design === 'md') {
         this.metadataDialog();
       } else {
-        const previousDialog = this.HsLayoutService.contentWrapper.querySelector(
+        const previousDialog = this.hsLayoutService.contentWrapper.querySelector(
           '.hs-datasource_selector-metadata-dialog'
         );
         if (previousDialog) {
@@ -124,7 +112,7 @@ export class HsDatasourcesComponent {
         const el = angular.element(
           '<div hs-datasources-metadata-dialog></span>'
         );
-        this.HsLayoutService.contentWrapper
+        this.hsLayoutService.contentWrapper
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
         $compile(el)($scope);
@@ -241,8 +229,8 @@ export class HsDatasourcesComponent {
    * @memberof hs.datasource_selector
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    * @param type
+   * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    */
   addLayerToMap(ds, layer, type): void {
     this.hsDatasourcesService.addLayerToMap(ds, layer, type);

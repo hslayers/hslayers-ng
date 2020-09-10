@@ -18,18 +18,18 @@
         <div class="input-group">
             <div class="btn-group input-group-prepend">
                 <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="mickaFilterService.filterByExtent"
+                    <input type="checkbox" [(ngModel)]="hsMickaFilterService.filterByExtent"
                         (change)='queryCatalogs()' name="filterByExtent"><span i18n>Filter by map extent</span>
                 </div>
             </div>
-            <div class="btn-group" [hidden]="mickaFilterService.otnKeywords.length == 0">
+            <div class="btn-group" [hidden]="hsMickaFilterService.otnKeywords.length == 0">
                 <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"
                     (click)="keywordsDropdownVisible =! keywordsDropdownVisible">
                     Theme <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" [ngClass]="{'show': keywordsDropdownVisible}">
-                    <a *ngFor="let keyword of mickaFilterService.otnKeywords" class="dropdown-item"
+                    <a *ngFor="let keyword of hsMickaFilterService.otnKeywords" class="dropdown-item"
                         [ngClass]="{'active': query.Subject==keyword.title}" href="#"
                         (click)="setOtnKeyword(keyword.title)">{{keyword.title}}</a>
 

@@ -12,9 +12,7 @@ import {HsMickaFilterService} from './micka-filters.service';
 export class HsAdvancedMickaDialogComponent {
   query;
   modalVisible = true;
-  datasourceSelectorService;
   mickaDatasetConfig;
-  mickaFilterService;
   suggestionsModalVisible;
 
   constructor(
@@ -24,10 +22,8 @@ export class HsAdvancedMickaDialogComponent {
     private hsLayoutService: HsLayoutService
   ) {
     'ngInject';
-    this.mickaFilterService = hsMickaFilterService;
-    this.datasourceSelectorService = hsDatasourcesService;
     this.query = hsDatasourcesService.data.query;
-    this.mickaDatasetConfig; // = scope.$eval(attrs['mickaDatasetConfig']);
+    this.mickaDatasetConfig; // FIXME: = scope.$eval(attrs['mickaDatasetConfig']);
   }
 
   /**
