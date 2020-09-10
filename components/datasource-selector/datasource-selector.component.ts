@@ -33,7 +33,6 @@ export class HsDatasourcesComponent {
     private hsLogService: HsLogService,
     private hsUtilsService: HsUtilsService
   ) {
-    'ngInject';
     this.data = hsDatasourcesService.data;
     this.advancedSearch = false;
 

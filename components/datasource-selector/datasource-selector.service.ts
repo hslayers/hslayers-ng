@@ -32,8 +32,6 @@ export class HsDatasourcesService {
     private hsDatasourcesMapService: HsDatasourcesMapService /*,
     private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
-    'ngInject';
-
     this.data.query = {
       textFilter: '',
       title: '',
