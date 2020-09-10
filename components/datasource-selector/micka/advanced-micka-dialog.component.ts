@@ -21,7 +21,6 @@ export class HsAdvancedMickaDialogComponent {
     private hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService
   ) {
-    'ngInject';
     this.query = hsDatasourcesService.data.query;
     this.mickaDatasetConfig; // FIXME: = scope.$eval(attrs['mickaDatasetConfig']);
   }

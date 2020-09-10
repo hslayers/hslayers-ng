@@ -16,7 +16,6 @@ export class HsSelectTypeToAddLayerDialogComponent {
   layerType; //do not rename to 'type', would clash in the template
 
   constructor(private hsDatasourcesService: HsDatasourcesService) {
-    'ngInject';
     this.modalVisible = true;
   }
 

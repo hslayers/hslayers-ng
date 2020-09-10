@@ -10,13 +10,11 @@ export class HsLaymanBrowserService {
   constructor(
     private http: HttpClient,
     private hsUtilsService: HsUtilsService
-  ) {
-    'ngInject';
-  }
+  ) {}
 
   /**
    * @function queryCatalog
-   * @param {object} endpoint Configuration of selected datasource (from app config)
+   * @param {HsEndpoint} endpoint Configuration of selected datasource (from app config)
    * extent feature is created. Has one parameter: feature
    * @description Loads datasets metadata from Layman
    */
