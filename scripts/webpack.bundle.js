@@ -37,16 +37,6 @@ module.exports = merge(common, {
   ],
   optimization: {
     namedChunks: true,
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'initial',
-          name: 'vendors',
-          enforce: true,
-        },
-      },
-    },
     usedExports: true,
     minimizer: [
       // JS minifier/uglifier
