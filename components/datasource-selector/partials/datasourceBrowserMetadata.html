@@ -18,12 +18,12 @@
 
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-secondary" href="#" [href]='DS.layerRDF(selectedDS, selectedLayer)'
+            <md-button class="md-raised md-secondary" href="#" [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)'
                 title="GeoDCAT-AP" target="_blank"
-                [hidden]='selectedDS.type!="micka" || DS.layerRDF(selectedDS, selectedLayer) == "#"'>
+                [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
                 Layer RDF
             </md-button>
-            <md-button class="md-raised md-secondary md-hue-2" i18n [hidden]="!DS.isZoomable(selectedLayer)"
+            <md-button class="md-raised md-secondary md-hue-2" i18n [hidden]="!hsDatasourcesService.isZoomable(selectedLayer)"
                 (click)="mapService.zoomTo(selectedLayer.bbox)">
                 Zoom to
             </md-button>
