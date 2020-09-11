@@ -109,9 +109,9 @@ export class HsMickaBrowserService {
    * @function datasetsReceived
    * @memberof HsMickaBrowserService
    * @param {Object} j HTTP response containing all the layers
-   * (PRIVATE) Callback for catalogue http query
+   * @description Callback for catalogue http query
    */
-  datasetsReceived(j): void {
+  private datasetsReceived(j): void {
     if (!j.config) {
       return;
     }
@@ -142,10 +142,12 @@ export class HsMickaBrowserService {
    * @private
    * @function param2Query
    * @memberof HsMickaBrowserService
-   * @param {String} which Parameter name to parse
-   * (PRIVATE) Parse query parameter into encoded key value pair.
+   * @param {string} which Parameter name to parse
+   * @param query
+   * @returns {string}
+   * @description Parse query parameter into encoded key value pair.
    */
-  param2Query(which: string, query): string {
+  private param2Query(which: string, query): string {
     if (query[which] !== undefined) {
       if (which == 'type' && query[which] == 'data') {
         //Special case for type 'data' because it can contain many things
@@ -166,9 +168,10 @@ export class HsMickaBrowserService {
    * @function addExtentFeature
    * @memberof HsMickaBrowserService
    * @param {Object} record Record of one dataset from Get Records response
-   * (PRIVATE) Create extent features for displaying extent of loaded dataset records in map
+   * @returns {Feature | undefined}
+   * @description Create extent features for displaying extent of loaded dataset records in map
    */
-  addExtentFeature(record): Feature | undefined {
+  private addExtentFeature(record): Feature | undefined {
     const attributes = {
       record: record,
       hs_notqueryable: true,
@@ -240,7 +243,7 @@ export class HsMickaBrowserService {
    * @returns {string} Url of service or resource
    */
   getLayerLink(layer): string {
-    if (layer?.links?.length > 0) {
+    if (layer.links?.length > 0) {
       if (layer.links[0].url !== undefined) {
         return layer.links[0].url;
       } else {
@@ -256,14 +259,14 @@ export class HsMickaBrowserService {
   /**
    * @function describeWhatToAdd
    * @memberof HsMickaBrowserService
-   * @param {object} ds Configuration of selected datasource (from app config)
+   * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
    * @param {object} layer Micka layer for which to get metadata
    * @description Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component
    * @returns {Promise} promise which describes layer
    * in a common format for use in add-layers component
    */
-  describeWhatToAdd(ds, layer): Promise<any> {
+  describeWhatToAdd(ds: HsEndpoint, layer): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;
     return new Promise((resolve, reject) => {

@@ -19,9 +19,9 @@
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-success" href="#" [href]='DS.layerRDF(selected_ds, selected_layer)'
+                <a role="button" class="btn btn-success" href="#" [href]='hsDatasourcesService.layerRDF(selected_ds, selected_layer)'
                     data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
-                    [hidden]='selected_ds.type!="micka" || DS.layerRDF(selected_ds, selected_layer) == "#"'>
+                    [hidden]='selected_ds.type!="micka" || hsDatasourcesService.layerRDF(selected_ds, selected_layer) == "#"'>
                     <i class="icon-share-alt"></i> RDF
                 </a>
                 <button type="button" class="btn btn-success" i18n [hidden]="!mapService.isZoomable(selected_layer)"

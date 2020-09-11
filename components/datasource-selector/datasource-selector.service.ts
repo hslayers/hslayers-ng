@@ -124,12 +124,12 @@ export class HsDatasourcesService {
   /**
    * @function layerDownload
    * @memberof hs.datasource_selector
-   * @param {object} ds Datasource of selected layer
+   * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} Download url of layer if possible
-   * Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
+   * @description Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
    */
-  layerDownload(ds, layer): string {
+  layerDownload(ds: HsEndpoint, layer): string {
     if (ds.download == true) {
       if (
         ['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase()) &&
@@ -144,24 +144,24 @@ export class HsDatasourcesService {
   /**
    * @function layerRDF
    * @memberof hs.datasource_selector
-   * @param {object} ds Datasource of selected layer
+   * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} URL to record file
-   * Get URL for RDF-DCAT record of selected layer
+   * @description Get URL for RDF-DCAT record of selected layer
    */
-  layerRDF(ds, layer): string {
+  layerRDF(ds: HsEndpoint, layer): string {
     return `${ds.url}?request=GetRecordById&id=${layer.id}&outputschema=http://www.w3.org/ns/dcat%23`;
   }
 
   /**
    * @function addLayerToMap
    * @memberof hs.datasource_selector
-   * @param {object} ds Datasource of selected layer
+   * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
-   * Add selected layer to map (into layer manager) if possible
+   * @description Add selected layer to map (into layer manager) if possible
    */
-  async addLayerToMap(ds, layer, type): Promise<void> {
+  async addLayerToMap(ds: HsEndpoint, layer, type?: string): Promise<void> {
     let describer = Promise.resolve({type: 'none'});
     if (ds.type == 'micka') {
       describer = this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
@@ -226,7 +226,7 @@ export class HsDatasourcesService {
     });
   }
 
-  datasetSelect(id_selected): void {
+  datasetSelect(id_selected: string): void {
     this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
     this.calcExtentLayerVisibility();
@@ -235,7 +235,7 @@ export class HsDatasourcesService {
   /**
    * @function clear
    * @memberof HsDatasourceBrowserService
-   * Clear query variable
+   * @description Clear query variable
    */
   clear(): void {
     this.data.query.textFilter = '';

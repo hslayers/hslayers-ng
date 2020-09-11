@@ -70,13 +70,13 @@ export class HsLaymanBrowserService {
 
   /**
    * @function fillLayerMetadata
-   * @param {object} dataset Configuration of selected datasource (from app config)
+   * @param {HsEndpoint} dataset Configuration of selected datasource (from app config)
    * @param {object} layer Layman layer for which to get metadata
    * @returns {Promise} Promise which is resolved when layer metadata is filled
    * @description Fills metadata about layer, because layman layer list API provides
    * just name and uuid
    */
-  fillLayerMetadata(dataset, layer): Promise<any> {
+  fillLayerMetadata(dataset: HsEndpoint, layer): Promise<void> {
     let url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
     url = this.hsUtilsService.proxify(url);
     return new Promise((resolve, reject) => {
@@ -100,13 +100,13 @@ export class HsLaymanBrowserService {
 
   /**
    * @function describeWhatToAdd
-   * @param {object} ds Configuration of selected datasource (from app config)
+   * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
    * @param {object} layer Layman layer for which to get metadata
-   * @returns {Promise}
-   * @description Gets layer metadata and returns promise which describes layer
+   * @returns {Promise} Promise which describes layer
    * in a common format for use in add-layers component
+   * @description Gets layer metadata and returns promise which describes layer
    */
-  describeWhatToAdd(ds, layer): Promise<any> {
+  describeWhatToAdd(ds: HsEndpoint, layer): Promise<any> {
     return new Promise((resolve, reject) => {
       this.fillLayerMetadata(ds, layer).then(() => {
         resolve({

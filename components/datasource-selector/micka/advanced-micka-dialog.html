@@ -117,11 +117,11 @@
                 <button type="button" class="btn btn-primary" i18n
                     (click)="hsDatasourcesService.queryCatalogs(); modalVisible = false"
                     data-dismiss="modal">Search</button>
-                <button type="button" class="btn btn-secondary" (click)="DS.clear()">
+                <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()">
                     <i18n>Clear</i18n>
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    (click)="DS.clear(); modalVisible = false" i18n>Close</button>
+                    (click)="hsDatasourcesService.clear(); modalVisible = false" i18n>Close</button>
             </div>
         </div>
     </div>

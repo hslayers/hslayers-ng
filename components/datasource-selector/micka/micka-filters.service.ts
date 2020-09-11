@@ -1,3 +1,4 @@
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
@@ -49,11 +50,9 @@ export class HsMickaFilterService {
 
   /**
    * @function fillCodesets
-   * @memberof HsDatasourceBrowserService
-   * @param {object} datasets Input datasources
-   * Download codelists for all "micka" type datasources from Url specified in app config.
+   * @description Download codelists for all "micka" type datasources from Url specified in app config.
    */
-  fillCodesets() {
+  fillCodesets(): void {
     this.hsCommonEndpointsService.endpoints
       .filter((ep) => ep.type == 'micka')
       .forEach((ep) => this.fillCodeset(ep));
@@ -62,10 +61,10 @@ export class HsMickaFilterService {
   /**
    * @function fillCodeset
    * @memberof HsDatasourceBrowserService
-   * @param {object} ds Single datasource
+   * @param {HsEndpoint} ds Single datasource
    * Download code-list for micka type source from Url specifiead in app config.
    */
-  fillCodeset(ds) {
+  fillCodeset(ds: HsEndpoint): void {
     if (ds.type == 'micka') {
       let url = ds.code_list_url;
       if (url === undefined) {
@@ -134,7 +133,7 @@ export class HsMickaFilterService {
    * @param {string} type Micka query type
    * Sets Micka source level types according to current query type (service/appilication). Deprecated?
    */
-  advancedMickaTypeChanged(mickaDS, type) {
+  advancedMickaTypeChanged(mickaDS, type: string): void {
     if (mickaDS.code_lists === undefined) {
       return;
     }
@@ -161,9 +160,9 @@ export class HsMickaFilterService {
    * @function suggestionFilterChanged
    * @memberof HsDatasourceBrowserService
    * @param {object} mickaDS Micka catalogue config passed here from directive
-   * Send suggestion request to Micka CSW server and parse response
+   * @description Send suggestion request to Micka CSW server and parse response
    */
-  suggestionFilterChanged(mickaDS) {
+  suggestionFilterChanged(mickaDS): void {
     let url =
       mickaDS.url +
       '../util/suggest.php?' +

@@ -4,6 +4,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDatasourcesService} from './datasource-selector.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -45,10 +46,10 @@ export class HsDatasourcesComponent {
   /**
    * @function getPreviousRecords
    * @memberof hs.datasource_selector
-   * @param {object} endpoint Selected datasource
+   * @param {HsEndpoint} endpoint Selected datasource
    * @description Loads previous records of datasets from selected datasource (based on number of results per page and current start)
    */
-  getPreviousRecords(endpoint): void {
+  getPreviousRecords(endpoint: HsEndpoint): void {
     const paging = endpoint.datasourcePaging;
     const itemsPerPage = endpoint.paging.itemsPerPage;
     if (paging.start - itemsPerPage < 0) {
@@ -64,10 +65,10 @@ export class HsDatasourcesComponent {
   /**
    * @function getNextRecords
    * @memberof hs.datasource_selector
-   * @param {object} endpoint Selected datasource
-   * Loads next records of datasets from selected datasource (based on number of results per page and current start)
+   * @param {HsEndpoint} endpoint Selected datasource
+   * @description Loads next records of datasets from selected datasource (based on number of results per page and current start)
    */
-  getNextRecords(endpoint): void {
+  getNextRecords(endpoint: HsEndpoint): void {
     const paging = endpoint.datasourcePaging;
     const itemsPerPage = endpoint.paging.itemsPerPage;
     if (paging.next != 0) {
@@ -84,11 +85,11 @@ export class HsDatasourcesComponent {
   /**
    * @function showMetadata
    * @memberof hs.datasource_selector
-   * @param {object} endpoint Datasource of selected layer
+   * @param {HsEndpoint} endpoint Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @description Show metadata record dialog window for selected layer.
    */
-  showMetadata(endpoint, layer): void {
+  showMetadata(endpoint: HsEndpoint, layer): void {
     this.selected_layer = layer;
     this.selected_ds = endpoint;
     let filler = Promise.resolve();
@@ -119,7 +120,7 @@ export class HsDatasourcesComponent {
     });
   }
 
-  datasetSelect(id_selected): void {
+  datasetSelect(id_selected: string): void {
     this.hsDatasourcesService.datasetSelect(id_selected);
   }
 
@@ -231,7 +232,9 @@ export class HsDatasourcesComponent {
    * @param type
    * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    */
-  addLayerToMap(ds, layer, type): void {
+  addLayerToMap(ds: HsEndpoint, layer, type?: string): void {
+    console.log(layer);
+    console.log(type);
     this.hsDatasourcesService.addLayerToMap(ds, layer, type);
     this.metadataModalVisible = false;
   }
