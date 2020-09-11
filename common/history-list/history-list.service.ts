@@ -9,12 +9,18 @@ export class HsHistoryListService {
   constructor(private CookieService: CookieService) {}
   readSourceHistory(forWhat: string): Array<string> {
     if (forWhat !== undefined) {
-      const sourceString = this.CookieService.get(`last${forWhat}Sources`);
+      let sourceString = this.CookieService.get(`last${forWhat}Sources`);
       if (sourceString !== undefined) {
         this.items[forWhat] = {
           history: [],
         };
-        this.items[forWhat].history.push(sourceString);
+        if (sourceString !== '') {
+          sourceString = sourceString.replace(/[\[\]\"]/gi, '');
+          const historyArray = sourceString.split(',');
+          for (const item of historyArray) {
+            this.items[forWhat].history.push(item);
+          }
+        }
       } else {
         this.items[forWhat].history = [];
       }
@@ -37,7 +43,7 @@ export class HsHistoryListService {
       this.items[forWhat].history.push(url);
       this.CookieService.set(
         `last${forWhat}Sources`,
-        this.items[forWhat].history
+        JSON.stringify(this.items[forWhat].history)
       );
     }
   }
