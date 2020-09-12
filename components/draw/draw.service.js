@@ -84,6 +84,7 @@ export default function (
       }),
     }),
     saveDrawingLayer($scope, addNewLayer = false) {
+      me.previouslySelected = me.selectedLayer;
       let tmpTitle = gettext('Draw layer');
       const tmpLayer =
         addNewLayer === true
