@@ -133,15 +133,15 @@ export class HsQueryBaseService {
     this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
     if (this.featuresUnderMouse.length) {
       this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
+        const layer = this.HsMapService.getLayerForFeature(feature);
         return (
-          feature.getLayer &&
-          feature.getLayer(map) &&
-          feature.getLayer(map).get('title').length > 0 &&
-          feature.getLayer(map).get('title') !== 'Point clicked'
+          layer &&
+          layer.get('title').length > 0 &&
+          layer.get('title') !== 'Point clicked'
         );
       });
       this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-        f.getLayer(this.HsMapService.map)
+        this.HsMapService.getLayerForFeature(f)
       );
       this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
         this.featureLayersUnderMouse,
@@ -152,7 +152,7 @@ export class HsQueryBaseService {
           title: l.get('title'),
           layer: l,
           features: this.featuresUnderMouse.filter(
-            (f) => f.getLayer(this.HsMapService.map) == l
+            (f) => this.HsMapService.getLayerForFeature(f) == l
           ),
         };
         return layer;
@@ -184,7 +184,7 @@ export class HsQueryBaseService {
     if (feature.getLayer == undefined) {
       return;
     }
-    const layer = feature.getLayer(this.HsMapService.map);
+    const layer = this.HsMapService.getLayerForFeature(feature);
     let attrsConfig = [];
     if (layer.get('popUp')?.attributes) {
       //must be an array

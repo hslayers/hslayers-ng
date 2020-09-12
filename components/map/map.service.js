@@ -76,55 +76,6 @@ export class HsMapService {
     this.timer = null;
 
     /**
-     * This is a workaround.
-     * Returns the associated layer.
-     * This is used in query-vector.service to get the layer of clicked
-     * feature when features are listed in info panel.
-     *
-     * @param {ol.Map} map
-     * @returns {ol.layer.Vector} Layer.
-     */
-    Feature.prototype.getLayer = function (map) {
-      const this_ = this;
-      let layer_;
-      const layersToLookFor = [];
-      const check = function (layer) {
-        let features = [];
-        let source = layer.getSource();
-        if (HsUtilsService.instOf(source, Vector)) {
-          features = source.getFeatures();
-        }
-        if (HsUtilsService.instOf(source, Cluster)) {
-          source = source.getSource();
-          features = features.concat(source.getFeatures());
-        }
-        if (HsUtilsService.instOf(source, Vector)) {
-          if (features.length > 0) {
-            layersToLookFor.push({
-              layer: layer,
-              features: features,
-            });
-          }
-        }
-      };
-      map.getLayers().forEach((layer) => {
-        if (HsUtilsService.instOf(layer, Group)) {
-          layer.getLayers().forEach(check);
-        } else {
-          check(layer);
-        }
-      });
-      layersToLookFor.forEach((obj) => {
-        const found = obj.features.some((feature) => {
-          return this_ === feature;
-        });
-        if (found) {
-          layer_ = obj.layer;
-        }
-      });
-      return layer_;
-    };
-    /**
      * @ngdoc property
      * @name HsMapService#duration
      * @public
@@ -288,6 +239,56 @@ export class HsMapService {
         }
       }
     });
+  }
+
+  /**
+   * Returns the associated layer for feature.
+   * This is used in query-vector.service to get the layer of clicked
+   * feature when features are listed in info panel.
+   *
+   * @param {ol.Map} map
+   * @param feature
+   * @returns {ol.layer.Vector} Layer.
+   */
+  getLayerForFeature(feature) {
+    let layer_;
+    const layersToLookFor = [];
+    const check = (layer) => {
+      let features = [];
+      let source = layer.getSource();
+      if (this.HsUtilsService.instOf(source, Vector)) {
+        features = source.getFeatures();
+      }
+      if (this.HsUtilsService.instOf(source, Cluster)) {
+        source = source.getSource();
+        features = features.concat(source.getFeatures());
+      }
+      if (this.HsUtilsService.instOf(source, Vector)) {
+        if (features.length > 0) {
+          layersToLookFor.push({
+            layer: layer,
+            features: features,
+          });
+        }
+      }
+    };
+    this.map.getLayers().forEach((layer) => {
+      if (this.HsUtilsService.instOf(layer, Group)) {
+        layer.getLayers().forEach(check);
+      } else {
+        check(layer);
+      }
+    });
+    for (const obj of layersToLookFor) {
+      const found = obj.features.some((layer_feature) => {
+        return layer_feature === feature;
+      });
+      if (found) {
+        layer_ = obj.layer;
+        break;
+      }
+    }
+    return layer_;
   }
 
   /**

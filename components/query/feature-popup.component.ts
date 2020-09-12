@@ -35,7 +35,13 @@ export class HsQueryFeaturePopupComponent {
 
   popupVisible() {
     const featuresWithPopup = this.HsQueryBaseService.featuresUnderMouse.filter(
-      (f) => f.getLayer(this.HsMapService.map).get('popUp') != undefined
+      (f) => {
+        const layer = this.HsMapService.getLayerForFeature(f);
+        if (!layer) {
+          return false;
+        }
+        return layer.get('popUp') != undefined;
+      }
     );
     const featureCount = featuresWithPopup.length;
     return {
