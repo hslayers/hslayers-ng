@@ -5,8 +5,6 @@ import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayoutService} from './components/layout/layout.service';
 import {HsMapService} from './components/map/map.service';
-import {HsQueryBaseService} from './components/query/query-base.service';
-import {HsQueryVectorService} from './components/query/query-vector.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
