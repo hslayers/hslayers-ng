@@ -83,6 +83,7 @@ export class HsMapService {
      * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
      */
     this.duration = 400;
+    this.featureLayerMapping = {};
 
     /**
      * @ngdoc property
@@ -251,6 +252,13 @@ export class HsMapService {
    * @returns {ol.layer.Vector} Layer.
    */
   getLayerForFeature(feature) {
+    if (typeof feature.getId() == 'undefined') {
+      feature.setId(this.HsUtilsService.generateUuid());
+    }
+    const fid = feature.getId();
+    if (this.featureLayerMapping[fid]) {
+      return this.featureLayerMapping[fid];
+    }
     let layer_;
     const layersToLookFor = [];
     const check = (layer) => {
@@ -287,6 +295,10 @@ export class HsMapService {
         layer_ = obj.layer;
         break;
       }
+    }
+    if (layer_ && !this.featureLayerMapping[fid]) {
+      //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
+      this.featureLayerMapping[fid] = layer_;
     }
     return layer_;
   }

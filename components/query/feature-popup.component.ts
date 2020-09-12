@@ -63,6 +63,9 @@ export class HsQueryFeaturePopupComponent {
     if (feature.get('label')) {
       return feature.get('label');
     }
+    if(feature.get('features')){
+      return 'Cluster containing ' + feature.get('features').length + ' ' + 'features';
+    }
   }
 
   async removeFeature(feature) {
