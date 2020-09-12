@@ -205,7 +205,7 @@ export default function (
         HsMapService.map.removeLayer(HsDrawService.selectedLayer);
         if (HsDrawService.selectedLayer.get('synchronize') == true) {
           (HsCommonEndpointsService.endpoints || [])
-            .filter((ds) => ds.type == 'layman')
+            .filter((ds) => ds.type === 'layman')
             .forEach((ds) => {
               console.log(ds);
               $http.delete(

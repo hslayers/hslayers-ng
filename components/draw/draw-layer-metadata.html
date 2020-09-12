@@ -12,7 +12,7 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;" translate>*Layer will be added to the map and
                     can be further managed in "Layermanager" panel</p>
             </div>
-            <div ng-if="$ctrl.isAuthorized()" class="alert alert-danger" role="alert">
+            <div ng-show="$ctrl.isAuthorized()" class="alert alert-danger" role="alert">
                 <p class="text-center"> 
                     {{'User not authorized, drawings cannot be saved' | translate}}
                 </p>
@@ -58,7 +58,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button"  ng-if="!$ctrl.isAuthorized()" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
+                <button type="button"  ng-show="!$ctrl.isAuthorized()" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
                     translate>OK</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.cancel()"
                     translate>Cancel</button>

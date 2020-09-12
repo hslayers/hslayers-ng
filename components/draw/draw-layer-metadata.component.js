@@ -22,7 +22,7 @@ export default {
 
       if (HsCommonEndpointsService.endpoints.length > 0) {
         for (const endpoint of HsCommonEndpointsService.endpoints) {
-          if ((endpoint.type = 'layman')) {
+          if ((endpoint.type === 'layman')) {
             vm.endpoint = endpoint;
           }
         }
