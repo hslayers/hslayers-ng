@@ -18,12 +18,12 @@ msgstr ""
 
 #: components/sensors/partials/unit-dialog.html:14
 msgid ""
-"<div class=\"container-fluid\">\r\n"
-"                    <div class=\"row\">\r\n"
-"                        <div class=\"col-12\">\r\n"
-"                            <div class=\"hs-chartplace\" style=\"min-width: 400px; min-height:50px\"></div>\r\n"
-"                        </div>\r\n"
-"                    </div>\r\n"
+"<div class=\"container-fluid\">\n"
+"                    <div class=\"row\">\n"
+"                        <div class=\"col-12\">\n"
+"                            <div class=\"hs-chartplace\" style=\"min-width: 400px; min-height:50px\"></div>\n"
+"                        </div>\n"
+"                    </div>\n"
 "                </div>"
 msgstr ""
 
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Choose type of layer"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:64
+#: components/draw/partials/draw.directive.html:68
 #: components/layermanager/partials/layermanagermd.html:95
 msgid "Circle"
 msgstr ""
@@ -263,7 +263,7 @@ msgstr ""
 msgid "Cluster"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:81
+#: components/draw/partials/draw.directive.html:85
 msgid "Color"
 msgstr ""
 
@@ -296,6 +296,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
+#: components/draw/draw.controller.js:200
 #: components/query/feature-popup.component.js:53
 #: components/query/feature-popup.component.js:67
 msgid "Confirm delete"
@@ -307,8 +308,8 @@ msgstr ""
 
 #: components/add-layers/wms/add-wms-layer.directive.html:49
 msgid ""
-"Consider using tiles. Some servers\r\n"
-"            have\r\n"
+"Consider using tiles. Some servers\n"
+"            have\n"
 "            restricted max size of picture."
 msgstr ""
 
@@ -372,7 +373,7 @@ msgstr ""
 msgid "Default value"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:77
+#: components/draw/partials/draw.directive.html:81
 msgid "Defined style"
 msgstr ""
 
@@ -436,8 +437,8 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
-#: components/draw/draw.service.js:65
-#: components/draw/draw.service.js:75
+#: components/draw/draw.service.js:87
+#: components/draw/draw.service.js:97
 msgid "Draw layer"
 msgstr ""
 
@@ -527,7 +528,7 @@ msgstr ""
 msgid "Fill keywords"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:84
+#: components/draw/partials/draw.directive.html:88
 msgid "Fill opacity: {{opacity}}"
 msgstr ""
 
@@ -606,9 +607,9 @@ msgstr ""
 msgid "Import composition from a file on device"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:71
+#: components/draw/partials/draw.directive.html:75
 msgid ""
-"Individual style for\r\n"
+"Individual style for\n"
 "                feature"
 msgstr ""
 
@@ -676,7 +677,7 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:60
+#: components/draw/partials/draw.directive.html:64
 #: components/draw/partials/shape-toolbar.html:43
 #: components/styles/partials/styler.html:29
 msgid "Line"
@@ -732,8 +733,8 @@ msgstr ""
 
 #: components/add-layers/wms/add-wms-layer.directive.html:38
 msgid ""
-"Map and layer projection do\r\n"
-"            not\r\n"
+"Map and layer projection do\n"
+"            not\n"
 "            match! Resampling will be used. This may lead to unexpectable results."
 msgstr ""
 
@@ -926,7 +927,7 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:52
+#: components/draw/partials/draw.directive.html:56
 #: components/draw/partials/shape-toolbar.html:37
 #: components/styles/partials/styler.html:48
 msgid "Point"
@@ -936,7 +937,7 @@ msgstr ""
 msgid "Point features"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:56
+#: components/draw/partials/draw.directive.html:60
 #: components/draw/partials/shape-toolbar.html:40
 #: components/layermanager/partials/layermanagermd.html:112
 msgid "Polygon"
@@ -1001,6 +1002,10 @@ msgstr ""
 msgid "Really delete all features from layer \"{0}\"?"
 msgstr ""
 
+#: components/draw/draw.controller.js:199
+msgid "Really delete selected draw layer?"
+msgstr ""
+
 #: components/query/feature-popup.component.js:52
 msgid "Really delete this feature?"
 msgstr ""
@@ -1040,6 +1045,7 @@ msgstr ""
 msgid "Remove last point"
 msgstr ""
 
+#: components/draw/partials/draw.directive.html:46
 #: components/layermanager/partials/layer-editor.html:141
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
@@ -1096,7 +1102,7 @@ msgstr ""
 
 #: components/save-map/partials/panel.html:21
 msgid ""
-"Save\r\n"
+"Save\n"
 "                as"
 msgstr ""
 
@@ -1177,7 +1183,7 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/draw.controller.js:131
+#: components/draw/draw.controller.js:116
 msgid "Select layer"
 msgstr ""
 
@@ -1291,7 +1297,7 @@ msgstr ""
 msgid "Stroke width"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:88
+#: components/draw/partials/draw.directive.html:92
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 
@@ -1403,7 +1409,7 @@ msgstr ""
 
 #: components/save-map/partials/simpleform.html:58
 msgid ""
-"Use current map\r\n"
+"Use current map\n"
 "                    extent"
 msgstr ""
 
@@ -1424,8 +1430,8 @@ msgstr ""
 msgid "Use tiles"
 msgstr ""
 
-#: components/draw/draw.controller.js:77
-#: components/draw/draw.service.js:85
+#: components/draw/draw.controller.js:62
+#: components/draw/draw.service.js:107
 msgid "User generated"
 msgstr ""
 
@@ -1502,7 +1508,7 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: components/map/map.service.js:305
+#: components/map/map.service.js:310
 msgid "Zoom to initial window"
 msgstr ""
 
