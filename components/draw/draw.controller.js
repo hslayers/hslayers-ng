@@ -22,7 +22,11 @@ export default function (
   $timeout,
   HsLayoutService,
   gettext,
-  $compile
+  $compile,
+  HsConfirmDialogService,
+  HsCommonEndpointsService,
+  HsMapService,
+  $http
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -184,6 +188,36 @@ export default function (
         .querySelector('.hs-dialog-area')
         .appendChild(el[0]);
       $compile(el)($scope);
+    },
+    /**
+     * @function changeStyle
+     * @memberOf HsDrawController
+     * @description Removes selected drawing layer from both Layermanager and Layman
+     */
+    async removeLayer() {
+      const confirmed = await HsConfirmDialogService.show(
+        gettext('Really delete this layer?'),
+        gettext('Confirm delete')
+      );
+      if (confirmed == 'yes') {
+        HsMapService.map.removeLayer(HsDrawService.selectedLayer);
+        if (HsDrawService.selectedLayer.get('synchronize') == true) {
+          (HsCommonEndpointsService.endpoints || [])
+            .filter((ds) => ds.type == 'layman')
+            .forEach((ds) => {
+              $http.delete(
+                `${ds.url}/rest/${
+                  ds.user
+                }/layers/${HsDrawService.selectedLayer
+                  .get('title')
+                  .toLowerCase()
+                  .replace(/\s+/g, '')}`
+              );
+            });
+        }
+        HsDrawService.selectedLayer = null;
+        HsDrawService.fillDrawableLayers();
+      }
     },
   });
 

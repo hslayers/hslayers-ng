@@ -42,7 +42,7 @@
                             ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
                     </div>
                 </div>
-                <button type="button" ng-if="service.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm" ng-click="removeSelectedLayer()"
+                <button type="button" ng-if="service.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm" ng-click="removeLayer()"
                 title="{{'Remove layer' | translate}}" style="border: none !important;">
                 <i class="glyphicon icon-trash"></i>
             </button>
