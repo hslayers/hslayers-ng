@@ -10,7 +10,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row.component';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryComponent} from './query.component';
-import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.directive';
+import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';

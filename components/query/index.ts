@@ -6,7 +6,7 @@ import 'angular-sanitize';
 import * as angular from 'angular';
 import {HsQueryAttributeRowComponent} from './attribute-row.component';
 import {HsQueryBaseService} from './query-base.service';
-import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.directive';
+import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryModule} from './query.module';
