@@ -3,6 +3,7 @@ import Map from 'ol/Map';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLaymanService} from './layman.service';
+import {HsMapService} from '../map/map.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -21,7 +22,8 @@ export class HsLayerSynchronizerService {
     private HsUtilsService: HsUtilsService,
     private HsLaymanService: HsLaymanService,
     private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsDialogContainerService: HsDialogContainerService
+    private HsDialogContainerService: HsDialogContainerService,
+    private HsMapService: HsMapService
   ) {}
 
   init(map: Map): void {
@@ -140,7 +142,12 @@ export class HsLayerSynchronizerService {
    * @param e
    */
   handleFeatureChange(e): void {
-    this.sync([], [e.target || e], [], e.target.getLayer());
+    this.sync(
+      [],
+      [e.target || e],
+      [],
+      this.HsMapService.getLayerForFeature(e.target)
+    );
   }
 
   /**

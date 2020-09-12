@@ -116,7 +116,7 @@ export class HsQueryVectorService {
     if (feature.getLayer == undefined) {
       return '';
     }
-    const layer = feature.getLayer(this.HsMapService.map);
+    const layer = this.HsMapService.getLayerForFeature(feature);
     return this.HsLayerUtilsService.getLayerName(layer);
   }
 
@@ -165,7 +165,7 @@ export class HsQueryVectorService {
    * @returns {ol/source/Source}
    */
   olSource(feature) {
-    const layer = feature.getLayer(this.HsMapService.map);
+    const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer == undefined) {
       return;
     } else if (layer.getSource().getSource) {
@@ -184,7 +184,7 @@ export class HsQueryVectorService {
     if (source == undefined) {
       return false;
     }
-    const layer = feature.getLayer(this.HsMapService.map);
+    const layer = this.HsMapService.getLayerForFeature(feature);
     return (
       this.HsUtilsService.instOf(source, VectorSource) &&
       this.HsLayerUtilsService.isLayerEditable(layer)
@@ -244,12 +244,11 @@ export class HsQueryVectorService {
       }
     });
     if (
-      feature.getLayer &&
-      feature.getLayer(this.HsMapService.map)?.get('customInfoTemplate')
+      this.HsMapService.getLayerForFeature(feature)?.get('customInfoTemplate')
     ) {
-      customInfoTemplate = feature
-        .getLayer(this.HsMapService.map)
-        .get('customInfoTemplate');
+      customInfoTemplate = this.HsMapService.getLayerForFeature(feature).get(
+        'customInfoTemplate'
+      );
     }
     if (!feature.get('features')) {
       const featureDescription = {

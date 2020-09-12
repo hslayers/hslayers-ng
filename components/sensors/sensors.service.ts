@@ -88,7 +88,9 @@ export class HsSensorsService {
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       HsUtilsService.debounce(
         () => {
-          if (event.feature.getLayer(HsMapService.map) == this.layer) {
+          if (
+            this.HsMapService.getLayerForFeature(event.feature) == this.layer
+          ) {
             HsLayoutService.setMainPanel('sensors');
             this.units.forEach((unit: HsSensorUnit) => (unit.expanded = false));
             this.selectUnit(
