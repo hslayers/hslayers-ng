@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="!isClustered(feature)" class="d-flex hs-hover-popup-feature">
+                <div *ngIf="!isClustered(feature)" class="hs-hover-popup-feature">
                     <div class="d-flex flex-row">
                         <div class="p-1 flex-grow-1">{{serializeFeatureName(feature)}}</div>
                         <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" title="Remove feature">

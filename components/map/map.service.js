@@ -262,22 +262,21 @@ export class HsMapService {
     let layer_;
     const layersToLookFor = [];
     const check = (layer) => {
-      let features = [];
-      let source = layer.getSource();
-      if (this.HsUtilsService.instOf(source, Vector)) {
-        features = source.getFeatures();
-      }
+      const source = layer.getSource();
       if (this.HsUtilsService.instOf(source, Cluster)) {
-        source = source.getSource();
-        features = features.concat(source.getFeatures());
-      }
-      if (this.HsUtilsService.instOf(source, Vector)) {
-        if (features.length > 0) {
-          layersToLookFor.push({
-            layer: layer,
-            features: features,
-          });
-        }
+        layersToLookFor.push({
+          layer,
+          source,
+        });
+        layersToLookFor.push({
+          layer,
+          source: source.getSource(),
+        });
+      } else if (this.HsUtilsService.instOf(source, Vector)) {
+        layersToLookFor.push({
+          layer,
+          source,
+        });
       }
     };
     this.map.getLayers().forEach((layer) => {
@@ -288,9 +287,17 @@ export class HsMapService {
       }
     });
     for (const obj of layersToLookFor) {
-      const found = obj.features.some((layer_feature) => {
-        return layer_feature === feature;
-      });
+      let found = false;
+      if (obj.source.getFeatureById) {
+        //For ordinary vector layers we can search by Id
+        found = obj.source.getFeatureById(fid);
+      } else {
+        //For cluster layers we need to loop through features
+        found = obj.source.getFeatures().some((layer_feature) => {
+          return layer_feature === feature;
+        });
+      }
+
       if (found) {
         layer_ = obj.layer;
         break;

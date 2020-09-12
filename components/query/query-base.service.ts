@@ -130,16 +130,13 @@ export class HsQueryBaseService {
       return;
     }
     const map = e.map;
-    this.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-    if (this.featuresUnderMouse.length) {
-      this.featuresUnderMouse = this.featuresUnderMouse.filter((feature) => {
+    this.featuresUnderMouse = map
+      .getFeaturesAtPixel(e.pixel)
+      .filter((feature) => {
         const layer = this.HsMapService.getLayerForFeature(feature);
-        return (
-          layer &&
-          layer.get('title').length > 0 &&
-          layer.get('title') !== 'Point clicked'
-        );
+        return layer && layer != this.queryLayer;
       });
+    if (this.featuresUnderMouse.length) {
       this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
         this.HsMapService.getLayerForFeature(f)
       );
