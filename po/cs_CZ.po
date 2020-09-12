@@ -215,6 +215,8 @@ msgstr "Vyčistit vrstvu"
 msgid "Click on map for query results!"
 msgstr "Kliknutím do mapy proveďte identifikaci"
 
+#: common/confirm/confirm-dialog.html:8
+#: common/layman/layman-login.html:8
 #: components/add-layers/partials/dialog_getcapabilities_error.html:15
 #: components/add-layers/partials/dialog_getcapabilities_error.html:8
 #: components/add-layers/partials/dialog_proxyconfirm.html:8
@@ -276,6 +278,7 @@ msgstr "Kompozice {{compStart + 1}} - {{data.compositionsCount}}"
 msgid "Confirm"
 msgstr "Potvrdit"
 
+#: components/draw/draw.controller.js:200
 #: components/query/feature-popup.component.js:53
 #: components/query/feature-popup.component.js:67
 msgid "Confirm delete"
@@ -774,6 +777,7 @@ msgid "Next composition page"
 msgstr "Další stránka kompozice"
 
 #: components/layermanager/partials/dialog_removeall.html:16
+#: common/confirm/confirm-dialog.html:15
 msgid "No"
 msgstr "Ne"
 
@@ -962,6 +966,7 @@ msgstr "Odstranění všech přidaných vrstev"
 msgid "Remove all layers"
 msgstr "Odstranit všechny vrstvy"
 
+#: components/draw/partials/draw.directive.html:46
 #: components/layermanager/partials/layer-editor.html:141
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
@@ -1413,6 +1418,7 @@ msgstr "Máte neuložené změny!"
 
 #: components/datasource-selector/partials/datasourceBrowserMetadata.html:24
 #: components/datasource-selector/partials/dialog_metadata.html:18
+#: common/widgets/object.html:5
 msgid "Zoom to"
 msgstr "Přiblížení"
 
@@ -1603,6 +1609,33 @@ msgstr "Vrstva bude přidána do mapy a lze ji dále spravovat v panelu 'Správc
 msgid "Activate drawing by choosing a feature type"
 msgstr "Aktivujte kreslení výběrem typu prvku"
 
-#: components/draw/partials/remove-layer-dialog.html:11
-msgid "Do you really want to remove selected draw layer?"
+#: components/draw/draw.controller.js:199
+msgid "Really delete selected draw layer?"
 msgstr "Naozaj chcete odstraniť vybranou kreslíci vrstvu?"
+
+#: common/layman/layman-current-user.html:2
+msgid "Log in"
+msgstr "Přihlásit se"
+
+#: common/layman/layman-current-user.html:5
+msgid ""
+"Log out\n"
+"        {{$ctrl.endpoint.user}}"
+msgstr ""
+
+#: common/layman/layman-login.html:5
+msgid "Login"
+msgstr "Přihlásit se"
+
+#: common/confirm/confirm-dialog.html:10
+msgid "{{$ctrl.message}}"
+msgstr ""
+
+#: common/confirm/confirm-dialog.html:5
+msgid "{{$ctrl.title}}"
+msgstr ""
+
+#: common/confirm/confirm-dialog.html:14
+msgid "Yes"
+msgstr "Ano"
+

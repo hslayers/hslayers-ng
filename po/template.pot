@@ -227,6 +227,8 @@ msgstr ""
 msgid "Click on map for query results!"
 msgstr ""
 
+#: common/confirm/confirm-dialog.html:8
+#: common/layman/layman-login.html:8
 #: components/add-layers/partials/dialog_getcapabilities_error.html:15
 #: components/add-layers/partials/dialog_getcapabilities_error.html:8
 #: components/add-layers/partials/dialog_proxyconfirm.html:8
@@ -714,6 +716,20 @@ msgstr ""
 msgid "Locate me"
 msgstr ""
 
+#: common/layman/layman-current-user.html:2
+msgid "Log in"
+msgstr ""
+
+#: common/layman/layman-current-user.html:5
+msgid ""
+"Log out\n"
+"        {{$ctrl.endpoint.user}}"
+msgstr ""
+
+#: common/layman/layman-login.html:5
+msgid "Login"
+msgstr ""
+
 #: components/save-map/partials/panelmd.html:28
 #: components/save-map/partials/simpleform.html:22
 msgid "Make public"
@@ -842,6 +858,7 @@ msgstr ""
 msgid "Next composition page"
 msgstr ""
 
+#: common/confirm/confirm-dialog.html:15
 #: components/layermanager/partials/dialog_removeall.html:16
 msgid "No"
 msgstr ""
@@ -1468,6 +1485,10 @@ msgstr ""
 msgid "Write"
 msgstr ""
 
+#: common/confirm/confirm-dialog.html:14
+msgid "Yes"
+msgstr ""
+
 #: components/save-map/partials/dialog_save.html:22
 msgid "Yes, save"
 msgstr ""
@@ -1503,6 +1524,7 @@ msgstr ""
 msgid "You have unsaved changes!"
 msgstr ""
 
+#: common/widgets/object.html:5
 #: components/datasource-selector/partials/datasourceBrowserMetadata.html:24
 #: components/datasource-selector/partials/dialog_metadata.html:18
 msgid "Zoom to"
@@ -1548,6 +1570,10 @@ msgstr ""
 
 #: components/layout/partials/bottom-sheet.html:4
 msgid "{{ bottomSheetTitle }}"
+msgstr ""
+
+#: common/confirm/confirm-dialog.html:10
+msgid "{{$ctrl.message | translate}}"
 msgstr ""
 
 #: components/layout/partials/sidenav.html:37

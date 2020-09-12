@@ -196,7 +196,7 @@ export default function (
      */
     async removeLayer() {
       const confirmed = await HsConfirmDialogService.show(
-        gettext('Really delete this layer?'),
+        gettext('Really delete selected draw layer?'),
         gettext('Confirm delete')
       );
       if (confirmed == 'yes') {
