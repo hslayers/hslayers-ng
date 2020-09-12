@@ -12,14 +12,14 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;" translate>*Layer will be added to the map and
                     can be further managed in "Layermanager" panel</p>
             </div>
-            <div class="alert alert-danger" role="alert">
+            <div ng-if="$ctrl.isAuthorized()" class="alert alert-danger" role="alert">
                 <p class="text-center"> 
                     {{'User not authorized, drawings cannot be saved' | translate}}
                 </p>
                 <hs.layman.current-user class="draw_laymanLogin" endpoint="$ctrl.endpoint"></hs.layman.current-user>
         
             </div>
-            <div class="modal-body"  ng-if="!$ctrl.isAuthorized() " style="max-height:400px; overflow-y:auto">
+            <div class="modal-body"  ng-if="!$ctrl.isAuthorized()" style="max-height:400px; overflow-y:auto">
                 <form>
                     <div class="form-group">
                         <label class="control-label" translate>Layer title</label>
