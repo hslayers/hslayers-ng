@@ -80,9 +80,6 @@ export default function (
           import(
             /* webpackChunkName: "lazy-material" */ 'angular-material/angular-material.css'
           );
-         /*import(
-            'angular-material-bottom-sheet-collapsible/bottomSheetCollapsible.css'
-          );*/
         } else {
           import(
             /* webpackChunkName: "lazy-bootstrap" */ 'bootstrap/dist/css/bootstrap.isolated.css'
