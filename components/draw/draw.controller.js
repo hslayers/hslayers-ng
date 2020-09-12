@@ -10,6 +10,8 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param $timeout
  * @param HsLayoutService
  * @param gettext
+ * @param $compile
+ * @param HsConfirmDialogService
  * @param HsMapService
  * @param HsCommonEndpointsService
  * @param $http
@@ -224,7 +226,7 @@ export default function (
   $scope.$on('core.mainpanel_changed', (event) => {
     if (HsLayoutService.mainpanel == 'draw') {
       HsDrawService.fillDrawableLayers();
-    } 
+    }
   });
   $scope.$emit('scope_loaded', 'DrawToolbar');
 }

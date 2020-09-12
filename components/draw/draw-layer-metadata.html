@@ -2,16 +2,24 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex flex-column">
-                <div class="d-flex w-100 align-items-center"> 
+                <div class="d-flex w-100 align-items-center">
                     <h4 class="modal-title" translate>
                         New drawing layer
                     </h4>
-                    <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span
+                    <button type="button" ng-click="$ctrl.cancel()" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
                 </div>
-                <p class="m-0 p-0" style="font-size: x-small; color: red;" translate>*Layer will be added to the map and can be further managed in "Layermanager" panel</p>
+                <p class="m-0 p-0" style="font-size: x-small; color: red;" translate>*Layer will be added to the map and
+                    can be further managed in "Layermanager" panel</p>
             </div>
-            <div class="modal-body" style="max-height:400px; overflow-y:auto">
+            <div class="alert alert-danger" role="alert">
+                <p class="text-center"> 
+                    {{'User not authorized, drawings cannot be saved' | translate}}
+                </p>
+                <hs.layman.current-user class="draw_laymanLogin" endpoint="$ctrl.endpoint"></hs.layman.current-user>
+        
+            </div>
+            <div class="modal-body"  ng-if="!$ctrl.isAuthorized() " style="max-height:400px; overflow-y:auto">
                 <form>
                     <div class="form-group">
                         <label class="control-label" translate>Layer title</label>
@@ -20,7 +28,8 @@
                         </div>
                     </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
-                        <a href="" class="p-1 mb-1" ng-click="folderVisible = !folderVisible" translate>Advanced options</a>
+                        <a href="" class="p-1 mb-1" ng-click="folderVisible = !folderVisible" translate>Advanced
+                            options</a>
                     </div>
                     <div ng-show="folderVisible">
                         <div class="form-group">
@@ -49,9 +58,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
+                <button type="button"  ng-if="!$ctrl.isAuthorized()" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
                     translate>OK</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.modalVisible = false"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.cancel()"
                     translate>Cancel</button>
             </div>
         </div>

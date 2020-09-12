@@ -84,7 +84,11 @@ msgstr ""
 msgid "Abstract"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:22
+#: components/draw/partials/draw.directive.html:11
+msgid "Access not authorized, drawings wont be saved"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:26
 msgid "Activate drawing by choosing a feature type"
 msgstr ""
 
@@ -196,7 +200,7 @@ msgstr ""
 msgid "Choose type of layer"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:68
+#: components/draw/partials/draw.directive.html:72
 #: components/layermanager/partials/layermanagermd.html:95
 msgid "Circle"
 msgstr ""
@@ -265,7 +269,7 @@ msgstr ""
 msgid "Cluster"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:85
+#: components/draw/partials/draw.directive.html:89
 msgid "Color"
 msgstr ""
 
@@ -298,7 +302,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: components/draw/draw.controller.js:200
+#: components/draw/draw.controller.js:202
 #: components/query/feature-popup.component.js:53
 #: components/query/feature-popup.component.js:67
 msgid "Confirm delete"
@@ -375,7 +379,7 @@ msgstr ""
 msgid "Default value"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:81
+#: components/draw/partials/draw.directive.html:85
 msgid "Defined style"
 msgstr ""
 
@@ -399,7 +403,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:17
+#: components/draw/partials/draw.directive.html:21
 msgid "Disable drawing"
 msgstr ""
 
@@ -451,7 +455,7 @@ msgstr ""
 msgid "Draw new features"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:33
+#: components/draw/partials/draw.directive.html:37
 msgid "Drawing to:"
 msgstr ""
 
@@ -530,7 +534,7 @@ msgstr ""
 msgid "Fill keywords"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:88
+#: components/draw/partials/draw.directive.html:92
 msgid "Fill opacity: {{opacity}}"
 msgstr ""
 
@@ -609,7 +613,7 @@ msgstr ""
 msgid "Import composition from a file on device"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:75
+#: components/draw/partials/draw.directive.html:79
 msgid ""
 "Individual style for\n"
 "                feature"
@@ -679,7 +683,7 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:64
+#: components/draw/partials/draw.directive.html:68
 #: components/draw/partials/shape-toolbar.html:43
 #: components/styles/partials/styler.html:29
 msgid "Line"
@@ -837,7 +841,7 @@ msgid "New GPS"
 msgstr ""
 
 #: components/draw/draw-layer-metadata.html:6
-#: components/draw/partials/draw.directive.html:13
+#: components/draw/partials/draw.directive.html:17
 msgid "New drawing layer"
 msgstr ""
 
@@ -944,7 +948,7 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:56
+#: components/draw/partials/draw.directive.html:60
 #: components/draw/partials/shape-toolbar.html:37
 #: components/styles/partials/styler.html:48
 msgid "Point"
@@ -954,7 +958,7 @@ msgstr ""
 msgid "Point features"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:60
+#: components/draw/partials/draw.directive.html:64
 #: components/draw/partials/shape-toolbar.html:40
 #: components/layermanager/partials/layermanagermd.html:112
 msgid "Polygon"
@@ -1019,7 +1023,7 @@ msgstr ""
 msgid "Really delete all features from layer \"{0}\"?"
 msgstr ""
 
-#: components/draw/draw.controller.js:199
+#: components/draw/draw.controller.js:201
 msgid "Really delete selected draw layer?"
 msgstr ""
 
@@ -1062,7 +1066,7 @@ msgstr ""
 msgid "Remove last point"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:46
+#: components/draw/partials/draw.directive.html:50
 #: components/layermanager/partials/layer-editor.html:141
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
@@ -1127,7 +1131,7 @@ msgstr ""
 msgid "Save as"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:29
+#: components/draw/partials/draw.directive.html:33
 msgid "Save as.."
 msgstr ""
 
@@ -1200,7 +1204,7 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/draw.controller.js:116
+#: components/draw/draw.controller.js:118
 msgid "Select layer"
 msgstr ""
 
@@ -1314,7 +1318,7 @@ msgstr ""
 msgid "Stroke width"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:92
+#: components/draw/partials/draw.directive.html:96
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 
@@ -1408,7 +1412,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:28
+#: components/draw/partials/draw.directive.html:32
 msgid "Unsaved drawing"
 msgstr ""
 
@@ -1447,7 +1451,7 @@ msgstr ""
 msgid "Use tiles"
 msgstr ""
 
-#: components/draw/draw.controller.js:62
+#: components/draw/draw.controller.js:64
 #: components/draw/draw.service.js:107
 msgid "User generated"
 msgstr ""

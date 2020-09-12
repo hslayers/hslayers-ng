@@ -1639,3 +1639,9 @@ msgstr ""
 msgid "Yes"
 msgstr "Ano"
 
+#: components/draw/partials/draw.directive.html:11
+msgid "User not authorized, drawings cannot be saved"
+msgstr "Uživatel neautorizován, kresby nemohou být uloženy"
+
+
+

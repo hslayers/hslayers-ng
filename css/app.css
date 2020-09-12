@@ -1333,7 +1333,12 @@ button.hs_draw_new_extended {
 .hsl-search-result {
 	z-index: 2;
 }
-
+.draw_laymanLogin div a {
+	background-color: #dc3545 !important;
+	color: white !important;
+	margin: auto;
+	width: 50% !important;
+}
 
 /**************/
 /** MATERIAL **/
