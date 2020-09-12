@@ -129,7 +129,6 @@
     "angular-lazy-image": "^0.3.4",
     "angular-loader": "1.8.x",
     "angular-material": "^1.1.21",
-    "angular-material-bottom-sheet-collapsible": "git+https://github.com/SLeitgeb/angular-material-bottom-sheet-collapsible.git#7e22ce4",
     "angular-messages": "^1.7.9",
     "angular-mocks": "^1.7.x",
     "angular-sanitize": "^1.7.9",
