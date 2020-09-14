@@ -1,4 +1,3 @@
-import 'angular-cookies';
 import {
   APP_BASE_HREF,
   CommonModule,
