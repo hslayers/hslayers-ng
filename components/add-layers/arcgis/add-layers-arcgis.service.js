@@ -1,6 +1,5 @@
 import '../../../common/get-capabilities.module';
 import '../../utils';
-import 'angular-cookies';
 import {Attribution} from 'ol/control';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';

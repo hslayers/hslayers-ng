@@ -1,4 +1,3 @@
-import 'angular-cookies';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
