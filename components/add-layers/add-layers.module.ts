@@ -27,7 +27,6 @@ export const AddLayersModule = angular
     'hs.addLayersWmts',
     'hs.addLayersVector',
     'hs.addLayersShp',
-    'ngCookies',
     'hs.historyList',
     'hs.getCapabilities',
   ])

@@ -4,7 +4,6 @@ import '../../common/get-capabilities.module';
 import '../../common/layman/layman.module';
 import '../../common/widgets/widgets.module';
 import '../utils';
-import 'angular-cookies';
 import * as angular from 'angular';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
@@ -29,7 +28,6 @@ export const downgradedModule = downgrade(HsSaveMapModule);
 angular
   .module(downgradedModule, [
     'hs.map',
-    'ngCookies',
     'hs.widgets',
     'hs.utils',
     'hs.common.layman',

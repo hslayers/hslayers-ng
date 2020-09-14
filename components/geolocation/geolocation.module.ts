@@ -1,4 +1,3 @@
-import 'angular-cookies';
 import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
