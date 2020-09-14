@@ -247,9 +247,8 @@ export class HsMapService {
    * This is used in query-vector.service to get the layer of clicked
    * feature when features are listed in info panel.
    *
-   * @param {ol.Map} map
    * @param feature
-   * @returns {ol.layer.Vector} Layer.
+   * @returns {Vector} Layer.
    */
   getLayerForFeature(feature) {
     if (typeof feature.getId() == 'undefined') {
