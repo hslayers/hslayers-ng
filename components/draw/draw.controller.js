@@ -207,7 +207,6 @@ export default function (
           (HsCommonEndpointsService.endpoints || [])
             .filter((ds) => ds.type === 'layman')
             .forEach((ds) => {
-              console.log(ds);
               $http.delete(
                 `${ds.url}/rest/${
                   ds.user
