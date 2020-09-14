@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <label class="control-label" translate>Layer title</label>
                         <div class="mb-3">
-                            <input class="form-control" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
+                            <input class="form-control drawModalInput" ng-keypress="$ctrl.keyHandler($event)" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
                         </div>
                     </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">

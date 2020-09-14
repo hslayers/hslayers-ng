@@ -8,7 +8,8 @@ export default {
     $timeout,
     HsDrawService,
     HsMapService,
-    HsCommonEndpointsService
+    HsCommonEndpointsService,
+    $element,
   ) {
     'ngInject';
     this.modalVisible = true;
@@ -22,7 +23,7 @@ export default {
 
       if (HsCommonEndpointsService.endpoints.length > 0) {
         for (const endpoint of HsCommonEndpointsService.endpoints) {
-          if ((endpoint.type === 'layman')) {
+          if (endpoint.type === 'layman') {
             vm.endpoint = endpoint;
           }
         }
@@ -34,6 +35,12 @@ export default {
       },
       newLayerPath: '',
       attributes: [],
+
+      keyHandler(e) {
+        if (e.keyCode == 13) {
+          vm.confirm();
+        }
+      },
 
       isAuthorized() {
         return vm.endpoint.user == 'anonymous' || vm.endpoint.user == 'browser';
