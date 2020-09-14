@@ -57,7 +57,10 @@
     "icon": "Ikona",
     "area": "Platība",
     "delete": "Dzēst",
-    "yes": "Jā"
+    "yes": "Jā",
+    "value": "Vērtība",
+    "attributes": "Atribūts",
+    "projection": "Projekcija"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -278,7 +281,22 @@
     "reallyDelete": "Vai tiešām vēlaties dzēst šo grafisko objektu?",
     "confirmDelete": "Apstiprināt dzēšanu",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus grafiskos objektus no slāņa",
-    "coordinates": "Koordinātes"
+    "coordinates": "Koordinātes",
+    "featureInfo": "Grafisko objektu informācija",
+    "featurePopup": {
+      "closePopup": "Aizvērt uznirstošo logu",
+      "removeClusterPart": "Noņemt blakusesošo grafisko objektu apvienošanu",
+      "removeFeature": "Noņemt grafisko objektu",
+      "clearLayer": "Notīrīt slāni"
+    },
+    "feature": {
+      "attributeName": "Atribūtu nosaukums",
+      "attributeValue": "Atribūta vērtība"
+    },
+    "infoPanel": {
+      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus!"
+    },
+    "confirmClear": "Apstiprināt notīrīšanu"
   },
   "MAP": {
     "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
