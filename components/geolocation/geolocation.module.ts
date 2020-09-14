@@ -1,5 +1,4 @@
 import 'angular-cookies';
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -17,7 +16,6 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsGeolocationComponent],
   imports: [
-    BrowserModule,
     FormsModule,
     CommonModule,
     HsPanelHelpersModule,

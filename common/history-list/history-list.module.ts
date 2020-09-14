@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -14,7 +13,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsHistoryListComponent],
-  imports: [BrowserModule, FormsModule, CommonModule, TranslateModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   exports: [HsHistoryListComponent],
   providers: [HsHistoryListService, CookieService, TranslateStore],
   entryComponents: [HsHistoryListComponent],
