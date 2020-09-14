@@ -176,12 +176,12 @@ export class HsQueryBaseService {
   /**
    * @param feature
    */
-  serializeFeatureAttributes(feature) {
+  serializeFeatureAttributes(feature): void {
     feature.attributesForHover = [];
-    if (feature.getLayer == undefined) {
+    const layer = this.HsMapService.getLayerForFeature(feature);
+    if (layer === undefined) {
       return;
     }
-    const layer = this.HsMapService.getLayerForFeature(feature);
     let attrsConfig = [];
     if (layer.get('popUp')?.attributes) {
       //must be an array

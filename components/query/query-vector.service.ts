@@ -113,9 +113,6 @@ export class HsQueryVectorService {
    * @param feature
    */
   getFeatureLayerName(feature) {
-    if (feature.getLayer == undefined) {
-      return '';
-    }
     const layer = this.HsMapService.getLayerForFeature(feature);
     return this.HsLayerUtilsService.getLayerName(layer);
   }
