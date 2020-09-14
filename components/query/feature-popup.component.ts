@@ -48,10 +48,12 @@ export class HsQueryFeaturePopupComponent {
       'visibility': featureCount > 0 ? 'visible' : 'hidden',
     };
   }
+  
   closePopup() {
     this.HsQueryBaseService.featuresUnderMouse = [];
     this.popupVisible();
   }
+
   isClustered(feature) {
     return feature.get('features') && feature.get('features').length > 0;
   }

@@ -1,11 +1,13 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
         <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
+
             <a class="p-1" href="#" (click)="closePopup()" i18n data-toggle="tooltip" title="close popup">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{layerDesc.title}}</strong>
             <br>
+
             <div *ngFor="let feature of layerDesc.features">
                 <!-- Layout for clustered layers -->
                 <div *ngIf="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
