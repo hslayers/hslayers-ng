@@ -2,9 +2,8 @@
     <div class="card-body">
         <div class="dropdown" [hidden]="!(HsQueryBaseService.data.featureInfoHtmls.length > 0)">
             <button class="btn btn-light w-100 dropdown-toggle rounded-0" data-toggle="dropdown" [aria-expanded]="featureInfoExpanded" (click)="featureInfoExpanded = !featureInfoExpanded">
-                <translate>Feature info</translate>
+                {{'QUERY.featureInfo' | translate}}
             </button>
-
             <div class="dropdown-menu position-relative w-100" [ngClass]="{'show': featureInfoExpanded}" *ngFor="let html of HsQueryBaseService.data.featureInfoHtmls" [innerHtml]="html"></div>
         </div>
         <hs-query-feature *ngFor="let item of HsQueryBaseService.data.features" [feature]="item"></hs-query-feature>

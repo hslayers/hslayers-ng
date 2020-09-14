@@ -57,7 +57,10 @@
     "icon": "Ikona",
     "area": "Plocha",
     "delete": "Vymazat",
-    "yes": "Ano"
+    "yes": "Ano",
+    "value": "Hodnota",
+    "attributes": "Atributy",
+    "projection": "Projekce"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -279,7 +282,22 @@
     "reallyDelete": "Opravdu tuto prvek smažte?",
     "confirmDelete": "Potvrďte smazání",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvek z vrstvy",
-    "coordinates": "Souřadnice"
+    "coordinates": "Souřadnice",
+    "featureInfo": "Informace o funkci",
+    "featurePopup": {
+      "closePopup": "Zavřít vyskakovací okno",
+      "removeClusterPart": "Odstraňte část clusteru",
+      "removeFeature": "Odebrat funkci",
+      "clearLayer": "Průhledná vrstva"
+    },
+    "feature": {
+      "attributeName": "Název atributu",
+      "attributeValue": "Hodnota atributu"
+    },
+    "infoPanel": {
+      "clickOnMap": "Kliknutím na mapu zobrazíte výsledky dotazu!"
+    },
+    "confirmClear": "Potvrďte vymazání"
   },
   "MAP": {
     "zoomToInitialWindow": "Přiblížit počáteční okno"

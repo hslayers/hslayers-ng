@@ -2,7 +2,7 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Info</h2>
+        <h2>{{'PANEL_HEADER.INFO' | translate}}</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancelQueryDialog()">
           <md-icon md-icon-set="material-icons" aria-label="Close dialog">close</md-icon>
@@ -17,14 +17,16 @@
             <table>
               <thead>
                 <tr>
-                  <th>Attribute</th>
-                  <th>Value</th>
+                  <th>{{'COMMON.attribute' | translate}}</th>
+                  <th>{{'COMMON.value' | translate}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="attribute in group.attributes | orderBy : 'name'">
-                  <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' class="first-col"></td>
-                  <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}' value='{{attribute.value}}' class="second-col"></td>
+                  <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'
+                    class="first-col"></td>
+                  <td hs.query.infovalue template='{{group.hstemplate}}' attribute='{{attribute.name}}'
+                    value='{{attribute.value}}' class="second-col"></td>
                 </tr>
               </tbody>
             </table>
@@ -32,12 +34,12 @@
         </md-tab>
         <md-tab label="attributes" ng-show="data.attributes.length > 0">
           <md-content class="md-padding">
-            <h3 class="md-display-2">Attributes</h3>
+            <h3 class="md-display-2">{{'COMMON.attributes' | translate}}</h3>
             <table>
               <thead>
                 <tr>
-                  <th>Attribute</th>
-                  <th>Value</th>
+                  <th>{{'COMMON.attribute' | translate}}</th>
+                  <th>{{'COMMON.value' | translate}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -55,8 +57,8 @@
             <table>
               <thead>
                 <tr>
-                  <th>Projection</th>
-                  <th>Value</th>
+                  <th>{{'COMMON.projection' | translate}}</th>
+                  <th>{{'COMMON.value' | translate}}</th>
                 </tr>
               </thead>
               <tbody>

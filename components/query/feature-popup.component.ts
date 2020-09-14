@@ -3,11 +3,11 @@ import {Component, ElementRef} from '@angular/core';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-query-feature-popup',
@@ -18,7 +18,7 @@ export class HsQueryFeaturePopupComponent {
     private HsQueryBaseService: HsQueryBaseService,
     private HsQueryVectorService: HsQueryVectorService,
     private HsEventBusService: HsEventBusService,
-    private TranslateService: TranslateService,
+    private HsLanguageService: HsLanguageService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsDialogContainerService: HsDialogContainerService,
     private HsMapService: HsMapService,
@@ -66,8 +66,13 @@ export class HsQueryFeaturePopupComponent {
     if (feature.get('label')) {
       return feature.get('label');
     }
-    if(feature.get('features')){
-      return 'Cluster containing ' + feature.get('features').length + ' ' + 'features';
+    if (feature.get('features')) {
+      return (
+        'Cluster containing ' +
+        feature.get('features').length +
+        ' ' +
+        'features'
+      );
     }
   }
 
@@ -75,8 +80,8 @@ export class HsQueryFeaturePopupComponent {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.TranslateService.instant('Really delete this feature?'),
-        title: this.TranslateService.instant('Confirm delete'),
+        message: this.HsLanguageService.getTranslation('QUERY.reallyDelete'),
+        title: this.HsLanguageService.getTranslation('QUERY.confirmDelete'),
       }
     );
     const confirmed = await dialog.waitResult();
@@ -90,10 +95,10 @@ export class HsQueryFeaturePopupComponent {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.TranslateService.instant(
-          'Really delete all features from layer "{0}"?'
+        message: this.HsLanguageService.getTranslation(
+          'QUERY.reallyDeleteAllFeaturesFrom' + '{0}' + '?'
         ).replace('{0}', layer.get('title')),
-        title: this.TranslateService.instant('Confirm clear'),
+        title: this.HsLanguageService.getTranslation('QUERY.confirmClear'),
       }
     );
     const confirmed = await dialog.waitResult();
