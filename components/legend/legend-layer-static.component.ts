@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'hs-legend-layer-static',
@@ -10,7 +10,7 @@ export class HsLegendLayerStaticComponent {
   lastLegendImage: any;
   legendType: string;
   svgContent: SafeHtml;
-  legendImage: string;
+  legendImage: SafeResourceUrl;
 
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -23,7 +23,9 @@ export class HsLegendLayerStaticComponent {
         this.svgContent = this.sanitizer.bypassSecurityTrustHtml(legendImage);
       } else {
         this.legendType = 'image';
-        this.legendImage = legendImage;
+        this.legendImage = this.sanitizer.bypassSecurityTrustResourceUrl(
+          legendImage
+        );
       }
     }
   }
