@@ -142,7 +142,11 @@ export class HsShareUrlService {
   }
 
   private pathName(): string {
-    return this.Location.path().split('?')[0];
+    let tmp = this.Location.path().split('?')[0];
+    if (!tmp.endsWith('/')) {
+      tmp = tmp + '/';
+    }
+    return tmp;
   }
 
   /**
