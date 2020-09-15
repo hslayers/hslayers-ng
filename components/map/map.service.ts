@@ -307,7 +307,10 @@ export class HsMapService {
     // If the MouseWheelInteraction is set to behave only with CTRL pressed,
     // then also notify the user when he tries to zoom,
     // but the CTRL is not pressed
-    if (this.HsConfig.zoomWithModifierKeyOnly) {
+    if (
+      this.HsConfig.zoomWithModifierKeyOnly &&
+      this.HsConfig.mapInteractionsEnabled != false
+    ) {
       this.map.on('wheel', (e) => {
         //ctrlKey works for Win and Linux, metaKey for Mac
         if (
