@@ -1,3 +1,4 @@
+/* eslint-disable no-eq-null */
 /* eslint-disable angular/timeout-service */
 import Control from 'ol/control/Control';
 import Feature from 'ol/Feature';
@@ -436,18 +437,15 @@ export class HsMapService {
     const existingSourceType = typeof existingSource;
     const newSourceType = typeof newSource;
     const existingLAYERS =
-      existingSource.getParams === 'undefined'
-        ? ''
-        : existingSource.getParams().LAYERS;
+      existingSource.getParams == null ? '' : existingSource.getParams().LAYERS;
     const newLAYERS =
-      newSource.getParams === 'undefined' ? '' : newSource.getParams().LAYERS;
+      newSource.getParams == null ? '' : newSource.getParams().LAYERS;
     const existingUrl =
-      existingSource.getUrl === 'undefined' ? '' : existingSource.getUrl();
-    const newUrl = newSource.getUrl === 'undefined' ? '' : newSource.getUrl();
+      existingSource.getUrl == null ? '' : existingSource.getUrl();
+    const newUrl = newSource.getUrl == null ? '' : newSource.getUrl();
     const existingUrls =
-      existingSource.getUrls === 'undefined' ? '' : existingSource.getUrls();
-    const newUrls =
-      newSource.getUrls === 'undefined' ? [''] : newSource.getUrls();
+      existingSource.getUrls == null ? '' : existingSource.getUrls();
+    const newUrls = newSource.getUrls == null ? [''] : newSource.getUrls();
     const urlsEqual =
       existingUrls == newUrls ||
       (newUrls.length > 0 && existingUrls.indexOf(newUrls[0]) > -1);
