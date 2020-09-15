@@ -10,6 +10,7 @@
             <hs.toolbar ng-if="HsCore.exists('hs.toolbar')"
                 ng-show="panelEnabled('toolbar') && layoutService.componentEnabled('toolbar')">
             </hs.toolbar>
+            <hs-geolocation ng-show="layoutService.componentEnabled('geolocationButton')"></hs-geolocation>
             <div class="hs-info-container"
                 ng-show="panelEnabled('compositionLoadingProgress')"
                 >
