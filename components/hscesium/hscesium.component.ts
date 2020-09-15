@@ -60,7 +60,7 @@ export class HsCesiumComponent implements OnInit {
     this.HsMapService.visible = !this.HsMapService.visible;
     this.visible = !this.HsMapService.visible;
     this.HsPermalinkUrlService.updateCustomParams({
-      view: HsMapService.visible ? '2d' : '3d',
+      view: this.HsMapService.visible ? '2d' : '3d',
     });
     if (this.HsMapService.visible) {
       this.HsCesiumService.viewer.destroy();
