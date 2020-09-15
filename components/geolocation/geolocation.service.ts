@@ -97,7 +97,7 @@ export class HsGeolocationService {
    */
   stopTracking(): void {
     this.following = false;
-    const rotate = this.getRotate()
+    const rotate = this.getRotate();
     rotate.element.classList.add('hidden');
     this.HsMapService.map.on('pointermove', () => {
       this.centering = false;
@@ -147,7 +147,7 @@ export class HsGeolocationService {
           this.HsMapService.map.on('pointermove', () => {
             this.centering = false;
           });
-          const rotate = this.getRotate()
+          const rotate = this.getRotate();
           rotate.element.classList.remove('hidden');
           this.HsLayoutService.contentWrapper
             .querySelector('button.ol-rotate')
