@@ -3,7 +3,7 @@
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': config.sidebarPosition == 'right' && layoutService.sidebarVisible(), 'hs-sb-left': config.sidebarPosition == 'left' && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
         <!-- ng-if="layoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space">
-            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map h-100"></div>
+            <hs.map></hs.map>
             <hs.cesium></hs.cesium>
 
             <hs.layermanager.gallery ng-if="panelVisible('gallery')"></hs.layermanager.gallery>
