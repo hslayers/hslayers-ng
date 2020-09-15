@@ -14,7 +14,8 @@ export const HsAddLayersComponent = {
     HsConfig,
     $rootScope,
     $timeout,
-    HsLayoutService
+    HsLayoutService,
+    HsEventBusService
   ) {
     'ngInject';
     $scope.HsCore = HsCore;
@@ -84,7 +85,7 @@ export const HsAddLayersComponent = {
       }
     }
 
-    $scope.$on('ows.filling', (event, type, url, layer) => {
+    HsEventBusService.owsFilling.subscribe((type, url, layer) => {
       $scope.type = type.toLowerCase();
       $timeout(() => {
         $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);

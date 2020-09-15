@@ -87,5 +87,9 @@ export class HsEventBusService {
    * FIXME: unused?
    */
   wmsConnecting: Subject<any> = new Subject();
+  /**
+   * replaces 'ows.filling'
+   */
+  owsFilling: Subject<{type: any; uri: any; layer: any}> = new Subject();
   constructor() {}
 }

@@ -192,13 +192,11 @@ export class HsDatasourcesService {
       if (whatToAdd.type == 'WMS') {
         this.datasetSelect('OWS');
         setTimeout(() => {
-          //FIXME: $rootScope.broadcast
-          /*this.$rootScope.$broadcast(
-            'ows.filling',
-            whatToAdd.type.toLowerCase(),
-            decodeURIComponent(whatToAdd.link),
-            whatToAdd.layer
-          );*/
+          this.hsEventBusService.owsFilling.next({
+            type: whatToAdd.type.toLowerCase(),
+            uri: decodeURIComponent(whatToAdd.link),
+            layer: whatToAdd.layer,
+          });
         });
       } else if (whatToAdd.type == 'WFS') {
         const layer = await this.hsAddLayersVectorService.addVectorLayer(
