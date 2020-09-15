@@ -327,8 +327,8 @@ export class HsCoreService {
       this.HsConfig.componentsEnabled.toolbar = false;
       this.HsConfig.componentsEnabled.sidebar = false;
       this.HsConfig.componentsEnabled.geolocationButton = false;
-      this.HsConfig.mapInteractionsEnabled = false;
-      this.HsConfig.componentsEnabled.mapControls = false;
+      this.HsMapService.removeAllInteractions();
+      this.HsMapService.removeAllControls();
       this.HsLayoutService.sidebarVisible(false);
     }
   }

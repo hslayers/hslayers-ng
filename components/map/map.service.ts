@@ -276,7 +276,6 @@ export class HsMapService {
       view: this.cloneView(
         this.HsConfig.default_view || this.createPlaceholderView()
       ),
-      pixelRatio: 1,
     });
 
     this.map.getView().on('change:center', (e) => {
