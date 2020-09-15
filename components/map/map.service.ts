@@ -144,6 +144,12 @@ export class HsMapService {
     rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
+
+    this.defaultDesktopControls.removeAt(1);
+    this.defaultDesktopControls.push(new ScaleLine());
+    if (HsConfig.componentsEnabled?.defaultViewButton) {
+      this.createDefaultViewButton();
+    }
   }
   /**
    * Returns the associated layer for feature.
