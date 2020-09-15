@@ -49,5 +49,6 @@ export class HsConfig {
   queryPoint: string;
   popUpDisplay: string;
   preserveLastSketchPoint: boolean;
+  zoomWithModifierKeyOnly: boolean;
   constructor() {}
 }
