@@ -4,23 +4,10 @@ import {HsCompositionsParserService} from './components/compositions/composition
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayoutService} from './components/layout/layout.service';
-import {HsMapService} from './components/map/map.service';
 import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
 
-/**
- * @param i
- */
-export function hsMapServiceFactory(i: any) {
-  return i.get('HsMapService');
-}
-
-export const HsMapServiceProvider = {
-  provide: HsMapService,
-  useFactory: hsMapServiceFactory,
-  deps: ['$injector'],
-};
 
 /**
  * @param i
