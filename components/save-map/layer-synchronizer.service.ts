@@ -87,35 +87,42 @@ export class HsLayerSynchronizerService {
   pull(layer: Layer, source: Source): void {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
-      .forEach((ds) => {
+      .forEach(async (ds) => {
         layer.set('hs-layman-synchronizing', true);
-        this.HsLaymanService.pullVectorSource(
+        if ((!ds.user || ds.user == 'browser') && ds.type == 'layman') {
+          await ds.getCurrentUserIfNeeded();
+        }
+        const response: string = await this.HsLaymanService.pullVectorSource(
           ds,
           this.getLayerName(layer)
-        ).then((response: string) => {
-          let featureString;
-          if (response) {
-            featureString = response;
+        );
+        let featureString;
+        if (response) {
+          featureString = response;
+        }
+        layer.set('hs-layman-synchronizing', false);
+        if (featureString) {
+          source.loading = true;
+          const format = new WFS();
+          featureString = featureString.replace(
+            /urn:x-ogc:def:crs:EPSG:3857/gm,
+            'EPSG:3857'
+          );
+          try {
+            const features = format.readFeatures(featureString);
+            source.addFeatures(features);
+          } catch (ex) {
+            console.warn(featureString, ex);
           }
-          layer.set('hs-layman-synchronizing', false);
-          if (featureString) {
-            source.loading = true;
-            const format = new WFS();
-            featureString = featureString.replace(
-              '/urn:x-ogc:def:crs:EPSG:3857/gm',
-              'EPSG:3857'
-            );
-            source.addFeatures(format.readFeatures(featureString));
-            source.loading = false;
-          }
+          source.loading = false;
+        }
 
-          source.forEachFeature((f) => this.observeFeature(f));
-          source.on('addfeature', (e) => {
-            this.sync([e.feature], [], [], layer);
-          });
-          source.on('removefeature', (e) => {
-            this.sync([], [], [e.feature], layer);
-          });
+        source.forEachFeature((f) => this.observeFeature(f));
+        source.on('addfeature', (e) => {
+          this.sync([e.feature], [], [], layer);
+        });
+        source.on('removefeature', (e) => {
+          this.sync([], [], [e.feature], layer);
         });
       });
   }

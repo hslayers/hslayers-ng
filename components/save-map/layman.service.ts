@@ -256,52 +256,50 @@ export class HsLaymanService implements HsSaverService {
    * with features for a specified layer
    * @description Retrieve layers features from server
    */
-  pullVectorSource(endpoint, layerName) {
-    return new Promise(async (resolve, reject) => {
-      const descr: HsLaymanLayerDescriptor = await this.describeLayer(
-        endpoint,
-        layerName
-      );
-      if (descr === null) {
-        resolve();
-        return;
-      }
-      if (
-        descr.wfs.status == 'NOT_AVAILABLE' &&
-        descr.wms.status == 'NOT_AVAILABLE'
-      ) {
-        resolve();
-        return;
-      }
-      if (descr.wfs.status == 'NOT_AVAILABLE') {
-        setTimeout(() => {
-          this.pullVectorSource(endpoint, layerName).then((response) =>
-            resolve(response)
-          );
-        }, 2000);
-        return;
-      }
-      try {
-        /* When OL will support GML3.2, then we can use WFS
+  async pullVectorSource(endpoint, layerName): Promise<string> {
+    const descr: HsLaymanLayerDescriptor = await this.describeLayer(
+      endpoint,
+      layerName
+    );
+    if (descr === null) {
+      return null;
+      return;
+    }
+    if (
+      descr.wfs.status == 'NOT_AVAILABLE' &&
+      descr.wms.status == 'NOT_AVAILABLE'
+    ) {
+      return null;
+      return;
+    }
+    if (descr.wfs.status == 'NOT_AVAILABLE') {
+      setTimeout(async () => {
+        const response = await this.pullVectorSource(endpoint, layerName);
+        return response;
+      }, 2000);
+      return;
+    }
+    try {
+      /* When OL will support GML3.2, then we can use WFS
                         version 2.0.0. Currently only 3.1.1 is possible */
-        const response = await this.http
-          .get(
-            descr.wfs.url +
-              '?' +
-              this.HsUtilsService.paramsToURL({
-                service: 'wfs',
-                version: '1.1.0',
-                request: 'GetFeature',
-                typeNames: `${endpoint.user}:${descr.name}`,
-                r: Math.random(),
-              })
-          )
-          .toPromise();
-        resolve(response);
-      } catch (ex) {
-        resolve(null);
-      }
-    });
+      const response: string = await this.http
+        .get(
+          descr.wfs.url +
+            '?' +
+            this.HsUtilsService.paramsToURL({
+              service: 'wfs',
+              version: '1.1.0',
+              request: 'GetFeature',
+              typeNames: `${endpoint.user}:${descr.name}`,
+              r: Math.random(),
+            }),
+          {responseType: 'text'}
+        )
+        .toPromise();
+      return response;
+    } catch (ex) {
+      return null;
+    }
   }
 
   /**
@@ -315,26 +313,25 @@ export class HsLaymanService implements HsSaverService {
    * description containig name, file, wms, wfs urls etc.
    * @description Try getting layer description from layman.
    */
-  describeLayer(endpoint, layerName) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response: any = await this.http
-          .get(
-            `${endpoint.url}/rest/${
-              endpoint.user
-            }/layers/${layerName}?${Math.random()}`
-          )
-          .toPromise();
-        if (response?.code == 15) {
-          resolve(null);
-        }
-        if (response.name) {
-          resolve(response);
-        }
-      } catch (ex) {
-        resolve(null);
+  async describeLayer(endpoint, layerName: string): Promise<any> {
+    try {
+      const response: any = await this.http
+        .get(
+          `${endpoint.url}/rest/${
+            endpoint.user
+          }/layers/${layerName}?${Math.random()}`
+        )
+        .toPromise();
+      if (response?.code == 15) {
+        return null;
       }
-    });
+      if (response.name) {
+        return response;
+      }
+    } catch (ex) {
+      console.warn(ex);
+      return null;
+    }
   }
 
   /**
