@@ -1,7 +1,7 @@
 /* eslint-disable angular/definedundefined */
+import {ElementRef, Injectable} from '@angular/core';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import moment = require('moment');
 import {HsConfig} from '../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -28,6 +28,7 @@ export class HsSensorsUnitDialogService {
     {name: '1M', amount: 1, unit: 'months'},
     {name: '6M', amount: 6, unit: 'months'},
   ];
+  dialogElement: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -159,14 +160,14 @@ export class HsSensorsUnitDialogService {
     });
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     const chartData: any = {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v4.0.2.json',
+      '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
       'HsConfig': {
         'mark': {
           'tooltip': null,
         },
       },
       'width':
-        this.HsLayoutService.contentWrapper.querySelector('.hs-chartplace')
+        this.dialogElement.nativeElement.querySelector('.hs-chartplace')
           .parentElement.offsetWidth - 40,
       'autosize': {
         'type': 'fit',
@@ -215,7 +216,7 @@ export class HsSensorsUnitDialogService {
     };
     try {
       vegaEmbed(
-        this.HsLayoutService.contentWrapper.querySelector('.hs-chartplace'),
+        this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
         chartData
       );
     } catch (ex) {

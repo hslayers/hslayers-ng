@@ -1,10 +1,9 @@
 /* eslint-disable angular/definedundefined */
-import {Component, Inject, ViewRef} from '@angular/core';
+import {Component, ElementRef, Inject, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
-import moment = require('moment');
-import { HsDialogContainerService } from '../layout/dialogs/dialog-container.service';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -17,9 +16,11 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsDialogContainerService: HsDialogContainerService,
-    private HsSensorsUnitDialogService: HsSensorsUnitDialogService
+    private HsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    elementRef: ElementRef
   ) {
     this.HsSensorsUnitDialogService.unitDialogVisible = true;
+    this.HsSensorsUnitDialogService.dialogElement = elementRef;
   }
   viewRef: ViewRef;
   data: any;
