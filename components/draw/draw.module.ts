@@ -1,5 +1,4 @@
 import '../core/';
-import '../map/map.module';
 import '../utils';
 import {
   CUSTOM_ELEMENTS_SCHEMA,

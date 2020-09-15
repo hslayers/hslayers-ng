@@ -1,7 +1,6 @@
 /* eslint-disable angular/file-name */
 import '../core/';
 import '../layout';
-import '../map/map.module';
 import '../permalink/share.module';
 import 'angular-cookies';
 import * as angular from 'angular';
@@ -18,7 +17,7 @@ export const downgradedModule = downgrade(HsSidebarModule);
  * @namespace hs.sidebar  * @memberOf hs
  */
 angular
-  .module(downgradedModule, ['hs.map', 'hs.core', 'ngCookies', 'hs.layout'])
+  .module(downgradedModule, ['hs.core', 'ngCookies', 'hs.layout'])
   .service('HsSidebarService', downgradeInjectable(HsSidebarService))
   .directive('hsSidebar', downgradeComponent({component: HsSidebarComponent}))
   .directive(
