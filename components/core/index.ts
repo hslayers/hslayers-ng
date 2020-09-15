@@ -13,7 +13,7 @@ import '../language';
 import '../layermanager';
 import '../layout';
 import '../legend';
-import '../map/map.module';
+import '../map';
 import '../permalink';
 import '../print';
 import '../query';
