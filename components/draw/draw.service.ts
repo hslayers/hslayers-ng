@@ -2,16 +2,15 @@ import * as GeometryType from 'ol/geom/GeometryType';
 import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
-import {HsLanguageService} from './../language/language.service';
-import {Layer} from 'ol/layer';
-
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -19,11 +18,9 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {Layer} from 'ol/layer';
 import {TranslateService} from '@ngx-translate/core';
-
-import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 type activateParams = {
   onDrawStart?;
