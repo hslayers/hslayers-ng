@@ -1,6 +1,5 @@
 import '../core/';
 import '../geolocation';
-import '../map/map.module';
 import '../utils';
 import './draw.module';
 import vgiDrawComponent from './vgi-draw.component';
@@ -13,7 +12,6 @@ import * as angular from 'angular';
 
 angular
   .module('hs.vgi-draw', [
-    'hs.map',
     'hs.core',
     'hs.utils',
     'hs.geolocation',

@@ -4,7 +4,6 @@ export const downgradedLayoutModule = downgrade(HsLayoutModule);
 import '../core/';
 import '../geolocation';
 import '../layermanager/';
-import '../map/map.module';
 import * as angular from 'angular';
 import layoutController from './layout.controller';
 import layoutDirective from './layout.directive';
@@ -30,7 +29,6 @@ import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 angular
   .module(downgradedLayoutModule, [
     'hs.core',
-    'hs.map',
     'hs.geolocation',
     'hs.layermanager',
   ]) // 'material.components.bottomSheetCollapsible'

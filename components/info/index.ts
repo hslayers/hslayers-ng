@@ -1,5 +1,4 @@
 import '../core/';
-import '../map/map.module';
 import * as angular from 'angular';
 import {HsInfoComponent} from './info.component';
 import {HsInfoModule} from './info.module';
@@ -14,7 +13,7 @@ export const downgradedModule = downgrade(HsInfoModule);
  * @description Module responsible for info application status information window. Contain HS-Layers default info template and its controller. When included, it also updates webpage meta tags with current map information.
  */
 angular
-  .module(downgradedModule, ['hs.map', 'hs.core'])
+  .module(downgradedModule, ['hs.core'])
   /**
    * @module info
    * @name hs.info

@@ -1,5 +1,4 @@
 import '../layermanager/';
-import '../map/map.module';
 import * as angular from 'angular';
 import featureFilterController from './feature-filter.controller';
 import featureFilterDirective from './feature-filter.directive';
@@ -21,7 +20,7 @@ import featureListDirective from './feature-list.directive';
 }]);
  */
 angular
-  .module('hs.featureFilter', ['hs.map', 'hs.core', 'hs.layermanager'])
+  .module('hs.featureFilter', ['hs.core', 'hs.layermanager'])
 
   /**
    * @memberof hs.featureFilter

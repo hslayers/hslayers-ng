@@ -1,5 +1,4 @@
 import '../../common/history-list/history-list.module';
-import '../map/map.module';
 import '../permalink/share.module';
 import './arcgis/add-layers-arcgis.module';
 import './shp/add-layers-shp.module';
@@ -20,7 +19,6 @@ import nestedLayersTableDirective from './nested-layers-table.directive';
  */
 export const AddLayersModule = angular
   .module('hs.addLayers', [
-    'hs.map',
     'hs.addLayersWms',
     'hs.addLayersArcgis',
     'hs.addLayersWfs',
