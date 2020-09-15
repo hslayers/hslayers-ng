@@ -3,6 +3,8 @@
 'use strict';
 import '../../core/core-ajs.mock';
 import 'angular-mocks';
+import Map from 'ol/Map';
+
 import * as angular from 'angular';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -23,7 +25,14 @@ describe('add-layers-vector', () => {
       })
       .factory('HsLayerUtilsService', HsLayerUtilsService);
 
-    angular.module('hs.map', []).service('HsMapService', HsMapService);
+      angular.module('hs.map', []).service('HsMapService', function () {
+        this.map = new Map({
+          target: 'div',
+        });
+        this.addLayer = function(lyr){
+          this.map.addLayer(lyr);
+        }
+      });
 
     angular
       .module('hs.layout', ['hs.core'])
