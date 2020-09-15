@@ -8,7 +8,6 @@ import {
   HsCompositionsParserServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
-  HsMapServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
@@ -25,6 +24,7 @@ import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLegendModule} from '../legend';
 import {HsLogModule} from '../../common/log/log.module';
+import {HsMapModule} from '../map';
 import {HsMeasureModule} from '../measure';
 import {HsPrintModule} from '../print';
 import {HsQueryModule} from '../query';
@@ -83,6 +83,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsInfoModule,
     HsQueryModule,
     HsConfirmModule,
+    HsMapModule,
   ],
   exports: [TranslateModule],
   providers: [
@@ -91,7 +92,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsDrawService,
     TranslateStore,
     TranslateService,
-    HsMapServiceProvider,
     HsConfigProvider,
     HsCompositionsParserServiceProvider,
     HsWmsGetCapabilitiesServiceProvider,
