@@ -50,5 +50,6 @@ export class HsConfig {
   popUpDisplay: string;
   preserveLastSketchPoint: boolean;
   zoomWithModifierKeyOnly: boolean;
+  pureMap: boolean;
   constructor() {}
 }
