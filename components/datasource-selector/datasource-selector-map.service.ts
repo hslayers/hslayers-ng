@@ -46,26 +46,20 @@ export class HsDatasourcesMapService {
     const features = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    let somethingChanged = false;
     this.extentLayer
       .getSource()
       .getFeatures()
       .forEach((feature) => {
         if (feature.get('record').highlighted) {
           feature.get('record').highlighted = false;
-          somethingChanged = true;
         }
       });
     if (features.length) {
       features.forEach((feature) => {
         if (!feature.get('record').highlighted) {
           feature.get('record').highlighted = true;
-          somethingChanged = true;
         }
       });
-    }
-    if (somethingChanged) {
-      setTimeout(() => {}, 0);
     }
   }
 
