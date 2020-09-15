@@ -1,5 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {DomSanitizer, SafeHtml, SafeResourceUrl} from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml,
+  SafeResourceUrl,
+} from '@angular/platform-browser';
 
 @Component({
   selector: 'hs-legend-layer-static',
