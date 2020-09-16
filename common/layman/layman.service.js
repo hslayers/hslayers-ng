@@ -1,9 +1,12 @@
+import {Subject} from 'rxjs';
+
 export class HsCommonLaymanService {
   constructor($http, $rootScope) {
     'ngInject';
     Object.assign(this, {
       $http,
       $rootScope,
+      authChange: new Subject(),
     });
     angular.extend(this, {
       getCurrentUser(endpoint) {
@@ -16,10 +19,7 @@ export class HsCommonLaymanService {
                 if (endpoint.user != res.data.username) {
                   endpoint.user = res.data.username;
                   somethingChanged = true;
-                  this.$rootScope.$broadcast(
-                    'datasource-selector.layman_auth',
-                    endpoint
-                  );
+                  this.authChange.next(endpoint);
                 }
               } else {
                 if (endpoint.user != endpoint.originalConfiguredUser) {
@@ -44,6 +44,18 @@ export class HsCommonLaymanService {
       ['anonymous', 'browser'].indexOf(endpoint.user) > -1
     ) {
       await this.getCurrentUser(endpoint);
+    }
+  }
+
+  async logout(endpoint) {
+    const url = `${endpoint.url}/authn/logout`;
+    try {
+      const response = await this.$http.get(url);
+    } catch (ex) {
+      console.warn(ex);
+    } finally {
+      endpoint.user = 'anonymous';
+      this.authChange.next(endpoint);
     }
   }
 }

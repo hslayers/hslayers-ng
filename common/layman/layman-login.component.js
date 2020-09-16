@@ -3,10 +3,10 @@ export default {
   bindings: {
     url: '=',
   },
-  controller: function ($scope) {
+  controller: function ($scope, HsCommonLaymanService) {
     'ngInject';
     this.modalVisible = true;
-    $scope.$on('datasource-selector.layman_auth', () => {
+    HsCommonLaymanService.authenticated.subscribe((endpoint) => {
       this.modalVisible = false;
     });
   },
