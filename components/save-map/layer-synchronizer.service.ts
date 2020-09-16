@@ -1,6 +1,7 @@
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLaymanService} from './layman.service';
 import {HsMapService} from '../map/map.service';
@@ -23,7 +24,8 @@ export class HsLayerSynchronizerService {
     private HsLaymanService: HsLaymanService,
     private HsCommonEndpointsService: HsCommonEndpointsService,
     private HsDialogContainerService: HsDialogContainerService,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private HsCommonLaymanService: HsCommonLaymanService
   ) {}
 
   init(map: Map): void {
@@ -37,8 +39,21 @@ export class HsLayerSynchronizerService {
         element: lyr,
       });
     });
+    this.HsCommonLaymanService.authChange.subscribe((_) => {
+      this.reloadLayersOnAuthChange();
+    });
     this.crs = map.getView().getProjection().getCode();
     this.HsLaymanService.crs = this.crs;
+  }
+
+  private async reloadLayersOnAuthChange() {
+    for (const layer of this.syncedLayers) {
+      const layerSource = layer.getSource();
+      layer.set('events-suspended', true);
+      layerSource.clear();
+      await this.pull(layer, layerSource);
+      layer.set('events-suspended', false);
+    }
   }
 
   /**
@@ -49,7 +64,7 @@ export class HsLayerSynchronizerService {
    * @param {object} layer Layer to add
    */
   addLayer(layer: Layer): void {
-    const synchronizable = this.startMonitoring(layer);
+    const synchronizable = this.startMonitoringIfNeeded(layer);
     if (synchronizable) {
       this.syncedLayers.push(layer);
     }
@@ -64,13 +79,20 @@ export class HsLayerSynchronizerService {
    * @param {object} layer Layer to add
    * @returns {boolean} If layer is synchronizable
    */
-  startMonitoring(layer: Layer): boolean {
+  startMonitoringIfNeeded(layer: Layer): boolean {
     if (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       layer.get('synchronize') === true
     ) {
       const layerSource = layer.getSource();
       this.pull(layer, layerSource);
+      layerSource.forEachFeature((f) => this.observeFeature(f));
+      layerSource.on('addfeature', (e) => {
+        this.sync([e.feature], [], [], layer);
+      });
+      layerSource.on('removefeature', (e) => {
+        this.sync([], [], [e.feature], layer);
+      });
       return true;
     }
   }
@@ -84,47 +106,41 @@ export class HsLayerSynchronizerService {
    * @param {Ol.layer} layer Layer to get Layman friendly name for
    * @param {Ol.source} source Openlayers VectorSource to store features in
    */
-  pull(layer: Layer, source: Source): void {
-    (this.HsCommonEndpointsService.endpoints || [])
-      .filter((ds) => ds.type == 'layman')
-      .forEach(async (ds) => {
-        layer.set('hs-layman-synchronizing', true);
-        if ((!ds.user || ds.user == 'browser') && ds.type == 'layman') {
-          await ds.getCurrentUserIfNeeded();
-        }
-        const response: string = await this.HsLaymanService.pullVectorSource(
-          ds,
-          this.getLayerName(layer)
+  async pull(layer: Layer, source: Source): Promise<void> {
+    const laymanEndpoints = (
+      this.HsCommonEndpointsService.endpoints || []
+    ).filter((ds) => ds.type == 'layman');
+    if (laymanEndpoints.length > 0) {
+      const ds = laymanEndpoints[0];
+      layer.set('hs-layman-synchronizing', true);
+      if ((!ds.user || ds.user == 'browser') && ds.type == 'layman') {
+        await ds.getCurrentUserIfNeeded();
+      }
+      const response: string = await this.HsLaymanService.pullVectorSource(
+        ds,
+        this.getLayerName(layer)
+      );
+      let featureString;
+      if (response) {
+        featureString = response;
+      }
+      layer.set('hs-layman-synchronizing', false);
+      if (featureString) {
+        source.loading = true;
+        const format = new WFS();
+        featureString = featureString.replace(
+          /urn:x-ogc:def:crs:EPSG:3857/gm,
+          'EPSG:3857'
         );
-        let featureString;
-        if (response) {
-          featureString = response;
+        try {
+          const features = format.readFeatures(featureString);
+          source.addFeatures(features);
+        } catch (ex) {
+          console.warn(featureString, ex);
         }
-        layer.set('hs-layman-synchronizing', false);
-        if (featureString) {
-          source.loading = true;
-          const format = new WFS();
-          featureString = featureString.replace(
-            /urn:x-ogc:def:crs:EPSG:3857/gm,
-            'EPSG:3857'
-          );
-          try {
-            const features = format.readFeatures(featureString);
-            source.addFeatures(features);
-          } catch (ex) {
-            console.warn(featureString, ex);
-          }
-          source.loading = false;
-        }
-
-        source.forEachFeature((f) => this.observeFeature(f));
-        source.on('addfeature', (e) => {
-          this.sync([e.feature], [], [], layer);
-        });
-        source.on('removefeature', (e) => {
-          this.sync([], [], [e.feature], layer);
-        });
-      });
+        source.loading = false;
+      }
+    }
   }
 
   /**
@@ -169,6 +185,9 @@ export class HsLayerSynchronizerService {
     deleted: Feature[],
     layer: Layer
   ): void {
+    if (layer.get('events-suspended')) {
+      return;
+    }
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
