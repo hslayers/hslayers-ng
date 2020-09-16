@@ -23,11 +23,8 @@ export default {
         return vm.endpoint.user == 'anonymous' || vm.endpoint.user == 'browser';
       },
       logout() {
-        const url = `${vm.endpoint.url}/authn/logout`;
         vm.monitorUser();
-        $http.get(url).then((res) => {
-          vm.endpoint.user = 'anonymous';
-        });
+        HsCommonLaymanService.logout(vm.endpoint);
       },
       protocolsMatch() {
         return $location.protocol() == vm.endpoint.liferayProtocol;
