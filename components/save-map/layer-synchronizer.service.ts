@@ -224,7 +224,7 @@ export class HsLayerSynchronizerService {
    * @returns {string} Layer title
    */
   getLayerName(layer: Layer): string {
-    return layer.get('title').toLowerCase().replace('/ /gm', '');
+    return layer.get('title').toLowerCase().replace(/ /gm, '');
   }
 
   /**

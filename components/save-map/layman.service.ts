@@ -71,7 +71,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   urlFriendly(text) {
-    return text.replace('/ /gm', '').toLowerCase();
+    return text.split(' ').join('').toLowerCase();
   }
 
   /**
@@ -132,7 +132,7 @@ export class HsLaymanService implements HsSaverService {
   }
 
   getLayerName(layer) {
-    return layer.get('title').toLowerCase().replace('/ /gm', '');
+    return layer.get('title').toLowerCase().split(' ').join('');
   }
 
   /**
