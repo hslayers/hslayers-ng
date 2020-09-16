@@ -175,7 +175,7 @@ export class HsLayerListComponent {
   sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
     const minus = this.order().indexOf('-') == 0;
-    const attribute = this.order().replace('-', '');
+    const attribute = this.order().split('-').join('');
     this.filtered_layers.sort((a, b) => {
       a = a.layer.get(attribute);
       b = b.layer.get(attribute);

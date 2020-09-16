@@ -72,7 +72,7 @@ export class HsWmtsGetCapabilitiesService {
    * @returns {Promise} Promise object -  Response to GetCapabalities request
    */
   requestGetCapabilities(service_url) {
-    service_url = service_url.replace('&amp;', '&');
+    service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (

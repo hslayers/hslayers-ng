@@ -224,8 +224,8 @@ export class HsLaymanService implements HsSaverService {
                 responseType: 'text',
               };
               const body = serializedFeature.outerHTML
-                .replace('/<geometry>/gm', '<wkb_geometry>')
-                .replace('/</geometry>/gm', '</wkb_geometry>');
+                .replace(/<geometry>/gm, '<wkb_geometry>')
+                .replace(/<\/geometry>/gm, '</wkb_geometry>');
               this.http
                 .post(layerDesc.wfs.url, body, httpOptions)
                 .subscribe((response) => {
