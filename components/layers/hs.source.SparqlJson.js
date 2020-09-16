@@ -233,7 +233,7 @@ export default function (options) {
             'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
         ) +
         tmp[1];
-      p = p.replace('<extent>', s_extent);
+      p = p.replace(/<extent>/g, s_extent);
       if (options.hsproxy) {
         p =
           '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
@@ -263,7 +263,7 @@ export default function (options) {
                 'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
             ) +
             tmp[1];
-          updates_query = updates_query.replace('<extent>', s_extent);
+          updates_query = updates_query.replace(/<extent>/g, s_extent);
           src.loadCounter += 1;
           src.loadTotal += 1;
           const $injector = angular.injector(['ng']);

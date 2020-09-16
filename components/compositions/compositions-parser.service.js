@@ -78,7 +78,7 @@ export class HsCompositionsParserService {
   loadUrl(url, overwrite, callback, pre_parse) {
     return new Promise((resolve, reject) => {
       this.current_composition_url = url;
-      url = url.replace('&amp;', '&');
+      url = url.replace(/&amp;/g, '&');
       url = this.HsUtilsService.proxify(url);
       this.$http({url: url, overwrite, callback, pre_parse})
         .then(this.loaded, (err) => {
@@ -225,7 +225,7 @@ export class HsCompositionsParserService {
    */
   loadInfo(url, cb) {
     let info = {};
-    url = url.replace('&amp;', '&');
+    url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
     this.$http({url: url}).then(
       (response) => {

@@ -106,7 +106,7 @@ export class HsCesiumLayersService {
           }
         }
       }
-      resource = resource.replace('/fromcrs/gm', 'FROMCRS');
+      resource = resource.replace(/fromcrs/gm, 'FROMCRS');
       if (resource.indexOf('proxy4ows') > -1) {
         return resource;
       }

@@ -224,7 +224,7 @@ export class HsCesiumService {
                 : iframe.contentWindow.document;
               innerDoc.querySelector(
                 '.cesium-infoBox-description'
-              ).innerHTML = s.replace('/\n/gm', '<br/>');
+              ).innerHTML = s.replace(/\n/gm, '<br/>');
               iframe.style.height = 200 + 'px';
             }, 1000);
           }
