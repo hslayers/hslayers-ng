@@ -71,7 +71,7 @@
     "ng-annotate-loader": "^0.7.0",
     "ng-cache-loader": "0.0.26",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss": "^7.0.26",
+    "postcss": "^8.0.3",
     "postcss-prefix-selector": "^1.7.2",
     "protractor": "^7.0.0",
     "puppeteer": "^5.0.0",
