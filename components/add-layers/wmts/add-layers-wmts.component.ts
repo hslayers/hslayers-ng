@@ -8,7 +8,8 @@ import {WMTS} from 'ol/source';
 import {addAnchors} from '../../../common/attribution-utils';
 import {get} from 'ol/proj';
 import {getTopLeft, getWidth} from 'ol/extent';
-export default {
+
+export const HsAddLayersWmtsComponent = {
   template: function (HsConfig) {
     'ngInject';
     return {

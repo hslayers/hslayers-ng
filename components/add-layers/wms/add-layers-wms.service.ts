@@ -21,7 +21,7 @@ import {getPreferedFormat} from '../../../common/format-utils';
  * @param HsUtilsService
  * @param HsConfig
  */
-export default function (
+export const HsAddLayersWmsService = function (
   $rootScope,
   HsMapService,
   HsWmsGetCapabilitiesService,
@@ -413,4 +413,4 @@ export default function (
   };
 
   return me;
-}
+};

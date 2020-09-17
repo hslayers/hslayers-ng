@@ -4,7 +4,7 @@ import '../../styles/styles.module';
  * @param HsPermalinkUrlService
  * @param HsAddLayersVectorService
  */
-export default function (
+export const HsVectorUrlParserService = function (
   HsMapService,
   HsPermalinkUrlService,
   HsAddLayersVectorService
@@ -58,4 +58,4 @@ export default function (
   });
 
   return me;
-}
+};

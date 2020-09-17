@@ -2,14 +2,14 @@ import '../../../common/endpoints/endpoints.module';
 import '../../save-map/';
 import '../../styles/styles.module';
 import * as angular from 'angular';
-import HsShpController from './shp.controller';
-import addLayersShpService from './add-layers-shp.service';
 import forShapefileUploadFilter from './for-shapefile-upload.filter';
+import {HsAddLayersShpComponent} from './add-layers-shp.component';
+import {HsAddLayersShpService} from './add-layers-shp.service';
 
 /**
  * @param config
  * @namespace hs.addLayersShp
- * @memberOf hs
+ * @memberof hs
  */
 angular
   .module('hs.addLayersShp', [
@@ -20,19 +20,12 @@ angular
     'hs.common.endpoints',
   ])
   /**
-   * @memberof hs.ows
+   * @memberof hs.addLayersShp
    * @ngdoc directive
    * @name hs.addLayersShp
    * @description TODO
    */
-  .directive('hs.addLayersShp', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./add-shp-layer.directive.html'),
-      };
-    },
-  ])
+  .component('hs.addLayersShp', HsAddLayersShpComponent)
 
   .directive('fileread', [
     function () {
@@ -69,13 +62,6 @@ angular
    * @name HsAddLayersShpService
    * @description Service for adding shape files through layman.
    */
-  .factory('HsAddLayersShpService', addLayersShpService)
-
-  /**
-   * @memberof hs.addLayersShp
-   * @ngdoc controller
-   * @name HsAddLayersShpController
-   */
-  .controller('HsAddLayersShpController', HsShpController)
+  .factory('HsAddLayersShpService', HsAddLayersShpService)
 
   .filter('forShapeFileUpload', forShapefileUploadFilter);

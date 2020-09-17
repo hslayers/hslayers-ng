@@ -1,10 +1,10 @@
 import '../../../common/get-capabilities.module';
 import '../../utils';
 import * as angular from 'angular';
-import addLayersWmtsComponent from './add-layers-wmts.component';
-import addLayersWmtsService from './add-layers-wmts.service';
-import capabilitiesErrorDirective from '../capabilities-error.directive';
-import resampleDialogDirective from '../resample-dialog.directive';
+import {HsAddLayersWmtsComponent} from './add-layers-wmts.component';
+import {HsAddLayersWmtsService} from './add-layers-wmts.service';
+import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsResampleDialogComponent} from '../resample-dialog.component';
 
 /**
  * @namespace hs.addLayersWmts
@@ -15,34 +15,37 @@ angular
   /**
    * @name hs.addLayersWmts.resampleDialogDirective
    * @ngdoc directive
-   * @memberOf hs.addLayersWmts
+   * @memberof hs.addLayersWmts
    * @description Directive for displaying warning dialog about resampling (proxying) wmts service
    */
-  .directive(
+  .component(
     'hs.addLayersWmts.resampleDialogDirective',
-    resampleDialogDirective
+    HsResampleDialogComponent
   )
 
   /**
    * @name hs.addLayersWmts.capabilitiesErrorDirective
    * @ngdoc directive
-   * @memberOf hs.addLayersWmts
+   * @memberof hs.addLayersWmts
    * @description Directive for displaying dialog about getCapabilities request error
    */
-  .directive('hs.wmts.capabilitiesErrorDirective', capabilitiesErrorDirective)
+  .component(
+    'hs.wmts.capabilitiesErrorDirective',
+    HsGetCapabilitiesErrorComponent
+  )
 
   /**
    * @name hs.addLayersWmts.service_layer_producer
-   * @memberOf hs.addLayersWmts
+   * @memberof hs.addLayersWmts
    * @ngdoc service
    * @description Service for querying what layers are available in a wmts and adding them to map
    */
-  .factory('HsAddLayersWmtsAddLayerService', addLayersWmtsService)
+  .factory('HsAddLayersWmtsAddLayerService', HsAddLayersWmtsService)
 
   /**
    * @name hs.addLayersWmts.controller
    * @ngdoc controller
-   * @memberOf hs.addLayersWmts
+   * @memberof hs.addLayersWmts
    * @description Controller for displaying and setting parameters for wmts and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWmts', addLayersWmtsComponent);
+  .component('hs.addLayersWmts', HsAddLayersWmtsComponent);
