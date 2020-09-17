@@ -78,11 +78,11 @@ export default class {
         this.sourceClass = VectorSource;
         break;
       default:
-        if (angular.isDefined(options.features)) {
+        if (options.features !== undefined) {
           this.sourceClass = VectorSourceFromFeatures;
           const format = new GeoJSON();
           let features = options.features;
-          if (angular.isString(features)) {
+          if (typeof features === 'string') {
             features = format.readFeatures(options.features, {
               dataProjection: srs,
               featureProjection: this.mapProjection,

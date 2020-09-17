@@ -19,7 +19,7 @@ export const HsAddLayersComponent = {
   ) {
     'ngInject';
     $scope.HsCore = HsCore;
-    if (angular.isArray(HsConfig.connectTypes)) {
+    if (Array.isArray(HsConfig.connectTypes)) {
       $scope.types = HsConfig.connectTypes;
     } else {
       $scope.types = [

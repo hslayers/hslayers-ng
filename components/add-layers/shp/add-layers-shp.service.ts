@@ -45,7 +45,6 @@ export default function ($http) {
         url: `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
         method: 'POST',
         data: formdata,
-        transformRequest: angular.identity,
         headers: {'Content-Type': undefined},
       }).then(
         (response) => {
