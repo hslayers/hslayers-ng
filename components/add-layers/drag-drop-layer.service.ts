@@ -9,7 +9,7 @@ import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format';
  * @param $log
  * @param HsAddLayersVectorService
  */
-export default function (
+export const HsDragDropLayerService = function (
   HsMapService,
   HsStatusManagerService,
   $http,
@@ -89,4 +89,4 @@ export default function (
     }
   });
   return me;
-}
+};

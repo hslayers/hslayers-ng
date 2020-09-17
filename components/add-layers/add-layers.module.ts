@@ -7,11 +7,11 @@ import './wfs/add-layers-wfs.module';
 import './wms/add-layers-wms.module';
 import './wmts/add-layers-wmts.module';
 import * as angular from 'angular';
-import addLayersComponent from './add-layers.component';
-import addLayersUrlDirective from './add-layers-url.directive';
 import compileDirective from '../../common/compile.directive';
-import dragDropLayerService from './drag-drop-layer.service';
-import nestedLayersTableDirective from './nested-layers-table.directive';
+import {HsAddLayersComponent} from './add-layers.component';
+import {HsAddLayersUrlComponent} from './add-layers-url.component';
+import {HsDragDropLayerService} from './drag-drop-layer.service';
+import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 
 /**
  * @namespace hs.addLayers
@@ -42,20 +42,20 @@ export const AddLayersModule = angular
    * @ngdoc directive
    * @name hs.addLayersUrl
    */
-  .directive('hs.addLayersUrl', addLayersUrlDirective)
+  .component('hs.addLayersUrl', HsAddLayersUrlComponent)
 
   /**
    * @memberof hs.addLayers
    * @ngdoc directive
    * @name hs.addLayersUrl
    */
-  .directive('hs.nestedLayersTable', nestedLayersTableDirective)
+  .component('hs.nestedLayersTable', HsNestedLayersTableComponent)
 
   /**
    * @memberof hs.addLayers
    * @ngdoc component
    * @name hs.addLayers
    */
-  .component('hs.addLayers', addLayersComponent)
+  .component('hs.addLayers', HsAddLayersComponent)
 
-  .factory('HsDragDropLayerService', dragDropLayerService);
+  .factory('HsDragDropLayerService', HsDragDropLayerService);

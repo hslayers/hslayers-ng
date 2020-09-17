@@ -1,7 +1,7 @@
 import '../../utils';
 import * as angular from 'angular';
-import addLayersArcgisComponent from './add-layers-arcgis.component';
-import addLayersArcgisService from './add-layers-arcgis.service';
+import {HsAddLayersArcGisComponent} from './add-layers-arcgis.component';
+import {HsAddLayersArcGisService} from './add-layers-arcgis.service';
 
 /**
  * @namespace hs.addLayersArcgis
@@ -10,8 +10,7 @@ import addLayersArcgisService from './add-layers-arcgis.service';
 angular
   .module('hs.addLayersArcgis', ['hs.utils', 'hs.getCapabilities'])
 
-  //TODO missing description
-  .factory('HsAddLayersArcgisAddLayerService', addLayersArcgisService)
+  .factory('HsAddLayersArcgisAddLayerService', HsAddLayersArcGisService)
 
   /**
    * @name hs.addLayersArcgis.controller
@@ -19,4 +18,4 @@ angular
    * @memberOf hs.addLayersArcgis
    * @description Controller for displaying and setting parameters for Arcgis and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersArcgis', addLayersArcgisComponent);
+  .component('hs.addLayersArcgis', HsAddLayersArcGisComponent);

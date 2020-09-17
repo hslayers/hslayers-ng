@@ -5,7 +5,10 @@ global.moment = moment;
  * @param HsMapService
  * @param HsWmtsGetCapabilitiesService
  */
-export default function (HsMapService, HsWmtsGetCapabilitiesService) {
+export const HsAddLayersWmtsService = function (
+  HsMapService,
+  HsWmtsGetCapabilitiesService
+) {
   'ngInject';
   /**
    * Add service and its layers to project TODO
@@ -27,4 +30,4 @@ export default function (HsMapService, HsWmtsGetCapabilitiesService) {
     });
   };
   return this;
-}
+};
