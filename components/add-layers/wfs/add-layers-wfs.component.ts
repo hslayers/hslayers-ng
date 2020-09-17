@@ -10,7 +10,7 @@ import {WFS} from 'ol/format';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
 
-export default {
+export const HsAddLayersWfsComponent = {
   template: function (HsConfig) {
     'ngInject';
     return {

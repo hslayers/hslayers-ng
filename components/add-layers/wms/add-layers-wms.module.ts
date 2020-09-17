@@ -1,14 +1,15 @@
+import * as angular from 'angular';
+
 import '../../../common/get-capabilities.module';
 import '../../utils';
-import * as angular from 'angular';
-import addLayersWmsComponent from './add-layers-wms.component';
-import addLayersWmsService from './add-layers-wms.service';
-import capabilitiesErrorDirective from '../capabilities-error.directive';
-import resampleDialogDirective from '../resample-dialog.directive';
+import {HsAddLayersWmsComponent} from './add-layers-wms.component';
+import {HsAddLayersWmsService} from './add-layers-wms.service';
+import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsResampleDialogComponent} from '../resample-dialog.component';
 
 /**
  * @namespace hs.addLayersWms
- * @memberOf hs
+ * @memberof hs
  */
 angular
   .module('hs.addLayersWms', ['hs.utils', 'hs.getCapabilities'])
@@ -16,29 +17,32 @@ angular
   /**
    * @name hs.addLayersWms.resampleDialogDirective
    * @ngdoc directive
-   * @memberOf hs.addLayersWms
+   * @memberof hs.addLayersWms
    * @description Directive for displaying warning dialog about resampling (proxying) wms service
    */
-  .directive('hs.addLayersWms.resampleDialogDirective', resampleDialogDirective)
+  .component(
+    'hs.addLayersWms.resampleDialogDirective',
+    HsResampleDialogComponent
+  )
 
   /**
    * @name hs.addLayersWms.capabilitiesErrorDirective
    * @ngdoc directive
-   * @memberOf hs.addLayersWms
+   * @memberof hs.addLayersWms
    * @description Directive for displaying dialog about getCapabilities request error
    */
-  .directive(
+  .component(
     'hs.addLayersWms.capabilitiesErrorDirective',
-    capabilitiesErrorDirective
+    HsGetCapabilitiesErrorComponent
   )
 
   //TODO missing description
-  .factory('HsAddLayersWmsAddLayerService', addLayersWmsService)
+  .factory('HsAddLayersWmsAddLayerService', HsAddLayersWmsService)
 
   /**
    * @name hs.addLayersWms.controller
    * @ngdoc controller
-   * @memberOf hs.addLayersWms
+   * @memberof hs.addLayersWms
    * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWms', addLayersWmsComponent);
+  .component('hs.addLayersWms', HsAddLayersWmsComponent);

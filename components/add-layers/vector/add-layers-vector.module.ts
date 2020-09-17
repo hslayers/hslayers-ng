@@ -1,13 +1,14 @@
 import '../../language';
 import * as angular from 'angular';
-import addLayersVectorUrlParserService from './add-layers-vector-url-parser.service';
+import {HsAddLayersVectorComponent} from './add-layers-vector.component';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
+import {HsVectorUrlParserService} from './add-layers-vector-url-parser.service';
 
 /**
  * @param service
  * @param layoutService
  * @namespace hs.addLayersVector
- * @memberOf hs
+ * @memberof hs
  */
 angular
   .module('hs.addLayersVector', [
@@ -18,18 +19,12 @@ angular
     'hs.map'
   ])
   /**
-   * @memberof hs.ows
+   * @memberof hs.addLayersVector
    * @ngdoc directive
    * @name hs.addLayersVector
    * @description TODO
    */
-  .directive('hs.addLayersVector', [
-    function () {
-      return {
-        template: require('./add-vector-layer.directive.html'),
-      };
-    },
-  ])
+  .component('hs.addLayersVector', HsAddLayersVectorComponent)
 
   /**
    * @memberof hs.addLayersVector
@@ -45,43 +40,4 @@ angular
    * @name hs.ddLayersVectorUrlParser.service
    * @description Service handling loading of vector layers through url params
    */
-  .factory(
-    'hs.addLayersVectorUrlParser.service',
-    addLayersVectorUrlParserService
-  )
-
-  /**
-   * @memberof hs.addLayersVector
-   * @ngdoc controller
-   * @name HsAddLayersVectorController
-   */
-  .controller('HsAddLayersVectorController', [
-    'HsAddLayersVectorService',
-    'HsLayoutService',
-    function (service, layoutService) {
-      const vm = this;
-      vm.srs = 'EPSG:4326';
-      vm.title = '';
-      vm.extract_styles = false;
-
-      /**
-       * Handler for adding nonwms service, file in template.
-       *
-       * @memberof hs.addLayersVector.controller
-       * @function add
-       */
-      vm.add = async function () {
-        const layer = await service.addVectorLayer(
-          '',
-          vm.url,
-          vm.title,
-          vm.abstract,
-          vm.srs,
-          {extractStyles: vm.extract_styles}
-        );
-        service.fitExtent(layer);
-        layoutService.setMainPanel('layermanager');
-        return layer;
-      };
-    },
-  ]);
+  .factory('hs.addLayersVectorUrlParser.service', HsVectorUrlParserService);

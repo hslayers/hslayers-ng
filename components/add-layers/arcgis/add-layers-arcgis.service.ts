@@ -5,7 +5,7 @@ import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
-import { HsUtilsService } from '../../utils/utils.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 /**
  * @param $rootScope
@@ -16,7 +16,7 @@ import { HsUtilsService } from '../../utils/utils.service';
  * @param $timeout
  * @param HsLayoutService
  */
-export default function (
+export const HsAddLayersArcGisService = function (
   $rootScope,
   HsMapService,
   HsArcgisGetCapabilitiesService,
@@ -272,4 +272,4 @@ export default function (
   };
 
   return me;
-}
+};

@@ -1,8 +1,8 @@
 import '../../../common/get-capabilities.module';
 import '../../utils';
 import * as angular from 'angular';
-import addLayersWfsComponent from './add-layers-wfs.component';
-import capabilitiesErrorDirective from '../capabilities-error.directive';
+import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
+import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 
 /**
  * @namespace hs.addLayersWfs
@@ -17,9 +17,9 @@ angular
    * @memberOf hs.addLayersWfs
    * @description Display GetCapabilities error dialog template
    */
-  .directive(
+  .component(
     'hs.addLayersWfs.capabilitiesErrorDirective',
-    capabilitiesErrorDirective
+    HsGetCapabilitiesErrorComponent
   )
 
   /**
@@ -28,4 +28,4 @@ angular
    * @memberOf hs.addLayersWfs
    * @description Controller for displaying and setting parameters for Wfs and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWfs', addLayersWfsComponent);
+  .component('hs.addLayersWfs', HsAddLayersWfsComponent);
