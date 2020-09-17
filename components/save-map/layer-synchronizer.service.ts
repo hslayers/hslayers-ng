@@ -135,6 +135,7 @@ export class HsLayerSynchronizerService {
         try {
           const features = format.readFeatures(featureString);
           source.addFeatures(features);
+          features.forEach((f) => this.observeFeature(f));
         } catch (ex) {
           console.warn(featureString, ex);
         }
@@ -158,19 +159,15 @@ export class HsLayerSynchronizerService {
         this
       )
     );
-    f.on('propertychange', this.handleFeatureChange);
+    f.on('propertychange', (e) => this.handleFeatureChange(e.target));
   }
 
   /**
-   * @param e
+   * @param Feature
+   * @param feature
    */
-  handleFeatureChange(e): void {
-    this.sync(
-      [],
-      [e.target || e],
-      [],
-      this.HsMapService.getLayerForFeature(e.target)
-    );
+  handleFeatureChange(feature: Feature): void {
+    this.sync([], [feature], [], this.HsMapService.getLayerForFeature(feature));
   }
 
   /**
