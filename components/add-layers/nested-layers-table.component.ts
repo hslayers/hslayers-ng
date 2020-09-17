@@ -1,7 +1,10 @@
-export const HsNestedLayersTableComponent = {
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'hs-nested-layers-table',
   template: require('./partials/nested-layers-table.directive.html'),
-  scope: {
-    layers: '=layers',
-  },
-  controller: ['$scope', function ($scope) {}],
-};
+})
+export class HsNestedLayersTableComponent {
+  layers;
+  constructor() {}
+}

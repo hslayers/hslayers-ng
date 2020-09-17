@@ -1,6 +1,14 @@
-export const HsGetCapabilitiesErrorComponent = {
+import {Component, OnInit} from '@angular/core';
+
+@Component({
+  selector: 'hs-get-capabilities-error',
   template: require('./partials/dialog_getcapabilities_error.html'),
-  controller: function (scope, element, attrs) {
-    scope.capabilitiesErrorModalVisible = true;
-  },
-};
+})
+export class HsGetCapabilitiesErrorComponent implements OnInit {
+  capabilitiesErrorModalVisible;
+  constructor() {}
+
+  ngOnInit(): void {
+    this.capabilitiesErrorModalVisible = true;
+  }
+}

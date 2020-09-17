@@ -1,6 +1,14 @@
-export const HsResampleDialogComponent = {
+import {Component, OnInit} from '@angular/core';
+
+@Component({
+  selector: 'hs-resample-dialog',
   template: require('./partials/dialog_proxyconfirm.html'),
-  controller: function (scope, element, attrs) {
-    scope.resampleModalVisible = true;
-  },
-};
+})
+export class HsResampleDialogComponent implements OnInit {
+  resampleModalVisible: boolean;
+  constructor() {}
+
+  ngOnInit(): void {
+    this.resampleModalVisible = true;
+  }
+}
