@@ -10,9 +10,12 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMickaFilterService} from './micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {Subscription} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
+  httpCall: Subscription;
+
   constructor(
     private http: HttpClient,
     private log: HsLogService,
@@ -85,23 +88,26 @@ export class HsMickaBrowserService {
       });
     url = this.hsUtilsService.proxify(url);
     dataset.datasourcePaging.loaded = false;
-    /*if (dataset.canceler !== undefined) {
-      dataset.canceler.resolve();
-      delete dataset.canceler;
-    }*/
+    if (this.httpCall !== undefined) {
+      this.httpCall.unsubscribe();
+      delete this.httpCall;
+    }
     //dataset.canceler = $q.defer();
-    this.http
+    this.httpCall = this.http
       .get(url, {
-        //TODO: dataset must be passed to datasetsReceived
+        //FIXME: dataset must be passed to datasetsReceived
         //timeout: dataset.canceler.promise,
         //dataset,
         //extentFeatureCreated,
         responseType: 'json',
       })
-      .toPromise()
-      .then(this.datasetsReceived, (e) => {
-        dataset.datasourcePaging.loaded = true;
-      });
+      .subscribe(
+        (data) => this.datasetsReceived(data),
+        (e) => {
+          console.log(e);
+          dataset.datasourcePaging.loaded = true;
+        }
+      );
   }
 
   /**
@@ -112,6 +118,7 @@ export class HsMickaBrowserService {
    * @description Callback for catalogue http query
    */
   private datasetsReceived(j): void {
+    console.log(j);
     if (!j.config) {
       return;
     }
