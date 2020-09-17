@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import '../../../common/get-capabilities.module';
 import '../../utils';
 

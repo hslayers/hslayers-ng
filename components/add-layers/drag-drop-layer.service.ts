@@ -43,7 +43,7 @@ export default function (
         const response = await $http({
           url: url,
           method: 'POST',
-          data: angular.toJson({
+          data: JSON.stringify({
             project: HsConfig.project_name,
             title: event.file.name,
             request: 'saveData',

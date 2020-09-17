@@ -2,6 +2,7 @@ import '../../utils';
 import moment from 'moment';
 global.moment = moment;
 import '../../../common/get-capabilities.module';
+import * as angular from 'angular';
 
 export default {
   template: function (HsConfig) {
