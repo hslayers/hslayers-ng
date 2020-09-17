@@ -4,7 +4,7 @@ global.moment = moment;
 import '../../../common/get-capabilities.module';
 import * as angular from 'angular';
 
-export default {
+export const HsAddLayersArcGisComponent = {
   template: function (HsConfig) {
     'ngInject';
     return HsConfig.design == 'md'

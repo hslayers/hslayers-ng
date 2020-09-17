@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import '../../../common/get-capabilities.module';
 import '../../utils';
 
-export default {
+export const HsAddLayersWmsComponent = {
   template: function (HsConfig) {
     'ngInject';
     return HsConfig.design == 'md'

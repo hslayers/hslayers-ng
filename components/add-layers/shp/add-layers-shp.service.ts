@@ -1,7 +1,7 @@
 /**
  * @param $http
  */
-export default function ($http) {
+export const HsAddLayersShpService = function ($http) {
   'ngInject';
   const me = this;
 
@@ -61,4 +61,4 @@ export default function ($http) {
     });
   };
   return me;
-}
+};
