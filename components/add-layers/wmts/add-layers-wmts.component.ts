@@ -1,22 +1,22 @@
 import * as angular from 'angular';
+import {Component, OnInit} from '@angular/core';
 
 import '../../../common/get-capabilities.module';
+import {addAnchors} from '../../../common/attribution-utils';
+
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
-import {addAnchors} from '../../../common/attribution-utils';
 import {get} from 'ol/proj';
 import {getTopLeft, getWidth} from 'ol/extent';
 
-export const HsAddLayersWmtsComponent = {
-  template: function (HsConfig) {
-    'ngInject';
-    return {
-      template: require('./add-wmts-layer.directive.html'),
-    };
-  },
-  controller: function ($scope, HsMapService, $compile, HsLayoutService, $log) {
+@Component({
+  selector: 'hs-add-layers-wmts',
+  template: require('./add-wmts-layer.directive.html'),
+})
+export class HsAddLayersWmtsComponent {
+  constructor($scope, HsMapService, $compile, HsLayoutService, $log) {
     'ngInject';
     $scope.map_projection = HsMapService.map
       .getView()
@@ -161,5 +161,5 @@ export const HsAddLayersWmtsComponent = {
 
       HsMapService.addLayer(new_layer, true);
     };
-  },
-};
+  }
+}

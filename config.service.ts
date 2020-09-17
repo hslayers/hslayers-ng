@@ -53,5 +53,6 @@ export class HsConfig {
   pureMap: boolean;
   translationOverrides: any;
   layersInFeatureTable: any;
+  connectTypes?: any;
   constructor() {}
 }
