@@ -90,5 +90,9 @@ export class HsEventBusService {
    * replaces 'ows.filling'
    */
   owsFilling: Subject<{type: any; uri: any; layer: any}> = new Subject();
+  /**
+   * replaces `ows.${type}_connecting`
+   */
+  owsConnecting: Subject<{type: string; uri: any; layer?: any}> = new Subject();
   constructor() {}
 }
