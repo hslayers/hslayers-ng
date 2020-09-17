@@ -19,7 +19,7 @@ export default function (HsMapService, HsWmtsGetCapabilitiesService) {
     HsWmtsGetCapabilitiesService.requestGetCapabilities(url, (resp) => {
       const ol_layers = HsWmtsGetCapabilitiesService.service2layers(resp);
       ol_layers.forEach((layer) => {
-        if (angular.isDefined(box)) {
+        if (box !== undefined) {
           box.get('layers').push(layer);
         }
         HsMapService.addLayer(layer, true);
