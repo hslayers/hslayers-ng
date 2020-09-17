@@ -64,18 +64,18 @@ export class HsAddLayersVectorService {
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
   createVectorLayer(type, url, title, abstract, srs, options) {
-    if (angular.isUndefined(options)) {
+    if (options === undefined) {
       options = {};
     }
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&
-      angular.isDefined(url)
+      url !== undefined
     ) {
       url = this.HsUtilsService.proxify(url);
     }
 
-    if (angular.isUndefined(type) || type == '') {
+    if (type === undefined || type == '') {
       type = this.tryGuessTypeFromUrl(url);
     }
 
@@ -141,7 +141,7 @@ export class HsAddLayersVectorService {
   }
 
   tryGuessTypeFromUrl(url) {
-    if (angular.isDefined(url)) {
+    if (url !== undefined) {
       if (url.toLowerCase().endsWith('kml')) {
         return 'kml';
       }

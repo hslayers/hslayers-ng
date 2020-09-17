@@ -1,6 +1,8 @@
 import '../../../common/get-capabilities.module';
 import '../../utils';
 import 'angular-cookies';
+import * as angular from 'angular';
+
 import {Attribution} from 'ol/control';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
@@ -45,7 +47,7 @@ export default function (
    * @param response
    */
   function fillProjections(caps, response) {
-    if (angular.isDefined(caps.Capability.Layer.CRS)) {
+    if (caps.Capability.Layer.CRS !== undefined) {
       me.data.srss = caps.Capability.Layer.CRS;
     } else if (
       caps.Capability.Layer.Layer &&
@@ -101,7 +103,7 @@ export default function (
         me.data.srs = me.data.srss[0];
       }
       me.srsChanged();
-      if (angular.isArray(caps.Capability.Layer)) {
+      if (Array.isArray(caps.Capability.Layer)) {
         me.data.services = caps.Capability.Layer;
       } else if (typeof caps.Capability.Layer == 'object') {
         me.data.services = [caps.Capability.Layer];
@@ -148,7 +150,7 @@ export default function (
    * @returns {string} Url without proxy services port added to it.
    */
   function removePortIfProxified(url) {
-    if (angular.isUndefined(HsConfig.proxyPrefix)) {
+    if (HsConfig.proxyPrefix === undefined) {
       return url;
     }
     const proxyPort = parseInt(
@@ -202,7 +204,7 @@ export default function (
      */
     function recurse(layer) {
       if (!checked || layer.checked) {
-        if (angular.isUndefined(layer.Layer)) {
+        if (layer.Layer === undefined) {
           addLayer(
             layer,
             layer.Title.replace(/\//g, '&#47;'),
@@ -214,8 +216,7 @@ export default function (
             getSublayerNames(layer)
           );
         } else {
-          const clone = {};
-          angular.copy(layer, clone);
+          const clone = HsUtilsService.structuredClone(layer);
           delete clone.Layer;
           addLayer(
             layer,
@@ -267,10 +268,10 @@ export default function (
   me.getDimensionValues = HsDimensionService.getDimensionValues;
 
   me.hasNestedLayers = function (layer) {
-    if (angular.isUndefined(layer)) {
+    if (layer === undefined) {
       return false;
     }
-    return angular.isDefined(layer.Layer);
+    return layer.Layer !== undefined;
   };
 
   /**
@@ -318,8 +319,8 @@ export default function (
     }
 
     let boundingbox = layer.BoundingBox;
-    if (angular.isDefined(crs)) {
-      if (angular.isDefined(layer.EX_GeographicBoundingBox)) {
+    if (crs !== undefined) {
+      if (layer.EX_GeographicBoundingBox !== undefined) {
         boundingbox = layer.EX_GeographicBoundingBox;
       }
     } else {
@@ -402,7 +403,7 @@ export default function (
         );
       }
       ol_layers.forEach((layer) => {
-        if (angular.isDefined(group)) {
+        if (group !== undefined) {
           group.addLayer(layer);
         } else {
           HsMapService.addLayer(layer, true);

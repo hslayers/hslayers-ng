@@ -6,6 +6,7 @@ import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
+import { HsUtilsService } from '../../utils/utils.service';
 
 /**
  * @param $rootScope
@@ -22,7 +23,8 @@ export default function (
   HsArcgisGetCapabilitiesService,
   HsDimensionService,
   $timeout,
-  HsLayoutService
+  HsLayoutService,
+  HsUtilsService
 ) {
   'ngInject';
   const me = this;
@@ -112,7 +114,7 @@ export default function (
      */
     function recurse(layer) {
       if (!checked || layer.checked) {
-        if (angular.isUndefined(layer.Layer)) {
+        if (layer.Layer === undefined) {
           addLayer(
             layer,
             layer.name.replace(/\//g, '&#47;'),
@@ -122,8 +124,7 @@ export default function (
             getSublayerNames(layer)
           );
         } else {
-          const clone = {};
-          angular.copy(layer, clone);
+          const clone = HsUtilsService.structuredClone(layer);
           delete clone.Layer;
           addLayer(
             layer,
@@ -170,10 +171,10 @@ export default function (
   me.getDimensionValues = HsDimensionService.getDimensionValues;
 
   me.hasNestedLayers = function (layer) {
-    if (angular.isUndefined(layer)) {
+    if (layer === undefined) {
       return false;
     }
-    return angular.isDefined(layer.layer);
+    return layer.layer !== undefined;
   };
 
   /**
@@ -262,7 +263,7 @@ export default function (
     HsArcgisGetCapabilitiesService.requestGetCapabilities(url).then((resp) => {
       const ol_layers = HsArcgisGetCapabilitiesService.service2layers(resp);
       ol_layers.forEach((layer) => {
-        if (angular.isDefined(group)) {
+        if (group !== undefined) {
           group.addLayer(layer);
         } else {
           HsMapService.addLayer(layer, true);

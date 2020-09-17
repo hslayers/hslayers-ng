@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import '../../utils';
 import moment from 'moment';
 global.moment = moment;
