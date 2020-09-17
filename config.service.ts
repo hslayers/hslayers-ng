@@ -57,5 +57,6 @@ export class HsConfig {
   layersInFeatureTable: any;
   open_lm_after_comp_loaded: any;
   draggable_windows: boolean;
+  connectTypes?: any;
   constructor() {}
 }
