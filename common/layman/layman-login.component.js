@@ -6,7 +6,7 @@ export default {
   controller: function ($scope, HsCommonLaymanService) {
     'ngInject';
     this.modalVisible = true;
-    HsCommonLaymanService.authenticated.subscribe((endpoint) => {
+    HsCommonLaymanService.authChange.subscribe((endpoint) => {
       this.modalVisible = false;
     });
   },
