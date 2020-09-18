@@ -77,25 +77,10 @@ To start it run:
 
 ```npm explore hslayers-ng -- npm run start-hsl-proxy```
 
-Another possibility is to use a python cgi script, which you have to copy from `lib/hsproxy.cgi` 
-to your cgi-bin directory. It might be located in /usr/lib/ if you use Apache.
-
-```
-cp lib/hsproxy.cgi /usr/lib/cgi-bin/hsproxy.cgi
-```
-
-To enable cgi on ubuntu, use
-
-```
-sudo a2enmod cgi
-sudo service apache2 restart
-```
-
-If you are using nginx, see [HsProxy configuration with uwsgi](https://github.com/hslayers/hslayers-ng/wiki/Hsproxy-configuration)
-
+You might want to change the proxy code and not use the bundled one to include API keys and other secrets in your requests to map service, geonames search queries etc.
 ### Run the Application
 
-If you dont plan to develop hslayers-ng, dont want to run tests and and server files through npm managed 
+If you dont plan to develop hslayers-ng, don't want to run tests and and server files through npm managed 
 http server, then you can skip all the following `npm` related steps.
 
 We have preconfigured the project with a simple development web server, but you can always use a different web server.  
@@ -111,32 +96,6 @@ Now browse to the app at `http://localhost:8000/`.
 ### Running Unit Tests
 
 See [Testing](https://github.com/hslayers/hslayers-ng/wiki/Testing).
-
-## Translating
-Run 
-```
-grunt nggettext_extract
-```
-from terminal to generate po file template in /po/template.po and for each example eg. examples/pilsen_traffic/template.pot .
-Rename it to *.po, translate, generate mo file and compile it.
-If you are using specific translations for your app or example merge the global po file into the specific one with msgcat before compiling. 
-Compiling is done with 
-```
-grunt nggettext_compile
-```
-It will generate components/translations/js/translations.js or examples/pilsen_traffic/translations.js files.
-
-translations.js which contains the strings and also translating functionality is loaded by default like any other angular module from components/translations/js/translations.js in HsCore module. To have it use your own generated translations.js file override the path in hslayers.js file:
-```
-translations: hsl_path + 'examples/pilsen_traffic/translations' 
-```
-## Updating AngularJS
-
-You can update all dependencies by running:
-
-```
-npm update
-```
 
 ## Contact
 
