@@ -171,7 +171,7 @@ export class HsDrawService {
         visible: true,
         removable: true,
         editable: true,
-        synchronize: true,
+        synchronize: false,
         path: this.HsConfig.defaultDrawLayerPath || 'User generated',
       });
       this.tmpDrawLayer = true;
