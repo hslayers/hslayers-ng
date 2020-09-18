@@ -340,7 +340,7 @@ export class HsDrawService {
    * @param event
    */
   keyUp(event) {
-    if (event.keyCode === 27) {
+    if (event.keyCode === 8) {
       this.removeLastPoint();
     }
   }
