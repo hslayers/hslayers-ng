@@ -107,6 +107,12 @@ export class HsDrawService {
     this.HsEventBusService.vectorQueryFeatureDeselection.subscribe((event) => {
       this.selectedFeatures.remove(event.feature);
     });
+
+    this.HsEventBusService.mainPanelChanges.subscribe((event) => {
+      if (event === 'draw' && this.HsMapService.map){
+        this.fillDrawableLayers();
+      }
+    });
   }
 
   selectedLayerString(): string {
@@ -376,9 +382,11 @@ export class HsDrawService {
         type: /** @type {GeometryType} */ this.type,
         style: changeStyle ? changeStyle() : undefined,
         condition: (e) => {
-          if (e.originalEvent.buttons === 1) { //left click
+          if (e.originalEvent.buttons === 1) {
+            //left click
             return true;
-          } else if (e.originalEvent.buttons === 2) { //right click
+          } else if (e.originalEvent.buttons === 2) {
+            //right click
             if (this.type == 'Point') {
               return false;
             } else if (this.type == 'Polygon') {
