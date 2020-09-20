@@ -9,6 +9,10 @@ export default {
     'ngInject';
     this.modalVisible = true;
     const vm = this;
+    vm.selectType = function (type) {
+      vm.type = type;
+      vm.alertChoose = false;
+    };
     vm.add = function () {
       if (angular.isUndefined(vm.type)) {
         vm.alertChoose = true;
