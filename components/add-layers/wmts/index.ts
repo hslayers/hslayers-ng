@@ -45,7 +45,7 @@ angular
    * @ngdoc service
    * @description Service for querying what layers are available in a wmts and adding them to map
    */
-  .factory(
+  .service(
     'HsAddLayersWmtsAddLayerService',
     downgradeInjectable(HsAddLayersWmtsService)
   )
@@ -56,7 +56,7 @@ angular
    * @memberof hs.addLayersWmts
    * @description Controller for displaying and setting parameters for wmts and its layers, which will be added to map afterwards
    */
-  .component(
+  .directive(
     'hs.addLayersWmts',
     downgradeComponent({component: HsAddLayersWmtsComponent})
   );

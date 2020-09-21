@@ -1,143 +1,147 @@
-import '../../../common/get-capabilities.module';
-import '../../utils';
-import 'angular-cookies';
+//import 'angular-cookies';
 import * as angular from 'angular';
 
-import {Attribution} from 'ol/control';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
-import {TileWMS} from 'ol/source';
-import {WMSCapabilities} from 'ol/format';
+import {HsConfig} from '../../../config.service';
+import {HsDimensionService} from '../../../common/dimension.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
+import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsWmsGetCapabilitiesService
- * @param HsDimensionService
- * @param $timeout
- * @param HsLayoutService
- * @param HsUtilsService
- * @param HsConfig
- */
-export const HsAddLayersWmsService = function (
-  $rootScope,
-  HsMapService,
-  HsWmsGetCapabilitiesService,
-  HsDimensionService,
-  $timeout,
-  HsLayoutService,
-  HsUtilsService,
-  HsConfig
-) {
-  'ngInject';
-  const me = this;
+import {Attribution} from 'ol/control';
+import {Group} from 'ol/layer';
+import {Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {TileWMS} from 'ol/source';
+import {WMSCapabilities} from 'ol/format';
 
-  this.data = {
-    useResampling: false,
-    useTiles: true,
-    mapProjection: undefined,
-    registerMetadata: true,
-    tileSize: 512,
-  };
+@Injectable({providedIn: 'root'})
+export class HsAddLayersWmsService {
+  getDimensionValues;
+  data;
+
+  constructor(
+    private hsMapService: HsMapService,
+    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private hsDimensionService: HsDimensionService,
+    private hsLayoutService: HsLayoutService,
+    private hsUtilsService: HsUtilsService,
+    private hsConfig: HsConfig
+  ) {
+    this.data = {
+      useResampling: false,
+      useTiles: true,
+      mapProjection: undefined,
+      registerMetadata: true,
+      tileSize: 512,
+    };
+    //TODO: all dimension related things need to be refactored into seperate module
+    this.getDimensionValues = hsDimensionService.getDimensionValues;
+  }
 
   /**
    * @param caps
    * @param response
    */
-  function fillProjections(caps, response) {
+  fillProjections(caps, response): void {
     if (caps.Capability.Layer.CRS !== undefined) {
-      me.data.srss = caps.Capability.Layer.CRS;
+      this.data.srss = caps.Capability.Layer.CRS;
     } else if (
       caps.Capability.Layer.Layer &&
       caps.Capability.Layer.Layer.length > 0 &&
       caps.Capability.Layer.Layer[0].CRS
     ) {
-      me.data.srss = caps.Capability.Layer.Layer[0].CRS;
+      this.data.srss = caps.Capability.Layer.Layer[0].CRS;
     } else {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
       doc.querySelectorAll('Capability>Layer>CRS').forEach((srs) => {
-        me.data.srss.push(srs.innerHTML);
+        this.data.srss.push(srs.innerHTML);
       });
     }
   }
 
-  this.capabilitiesReceived = function (response, layerToSelect) {
+  capabilitiesReceived(response, layerToSelect): void {
     try {
       const parser = new WMSCapabilities();
       const caps = parser.read(response);
-      me.data.mapProjection = HsMapService.map
+      this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
-      me.data.title = caps.Service.Title;
-      me.data.description = addAnchors(caps.Service.Abstract);
-      me.data.version = caps.Version || caps.version;
-      me.data.image_formats = caps.Capability.Request.GetMap.Format;
-      me.data.query_formats = caps.Capability.Request.GetFeatureInfo
+      this.data.title = caps.Service.Title;
+      this.data.description = addAnchors(caps.Service.Abstract);
+      this.data.version = caps.Version || caps.version;
+      this.data.image_formats = caps.Capability.Request.GetMap.Format;
+      this.data.query_formats = caps.Capability.Request.GetFeatureInfo
         ? caps.Capability.Request.GetFeatureInfo.Format
         : [];
-      me.data.exceptions = caps.Capability.Exception;
-      me.data.srss = [];
-      fillProjections(caps, response);
+      this.data.exceptions = caps.Capability.Exception;
+      this.data.srss = [];
+      this.fillProjections(caps, response);
       //TODO: WHY?
-      if (me.data.srss.includes('CRS:84')) {
-        me.data.srss.splice(me.data.srss.indexOf('CRS:84'), 1);
+      if (this.data.srss.includes('CRS:84')) {
+        this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       }
 
       if (
-        HsWmsGetCapabilitiesService.currentProjectionSupported(me.data.srss)
-      ) {
-        me.data.srs = me.data.srss.includes(
-          HsMapService.map.getView().getProjection().getCode()
+        this.hsWmsGetCapabilitiesService.currentProjectionSupported(
+          this.data.srss
         )
-          ? HsMapService.map.getView().getProjection().getCode()
-          : HsMapService.map.getView().getProjection().getCode().toLowerCase();
-      } else if (me.data.srss.includes('EPSG:4326')) {
-        me.data.srs = 'EPSG:4326';
+      ) {
+        this.data.srs = this.data.srss.includes(
+          this.hsMapService.map.getView().getProjection().getCode()
+        )
+          ? this.hsMapService.map.getView().getProjection().getCode()
+          : this.hsMapService.map
+              .getView()
+              .getProjection()
+              .getCode()
+              .toLowerCase();
+      } else if (this.data.srss.includes('EPSG:4326')) {
+        this.data.srs = 'EPSG:4326';
       } else {
-        me.data.srs = me.data.srss[0];
+        this.data.srs = this.data.srss[0];
       }
-      me.srsChanged();
+      this.srsChanged();
       if (Array.isArray(caps.Capability.Layer)) {
-        me.data.services = caps.Capability.Layer;
+        this.data.services = caps.Capability.Layer;
       } else if (typeof caps.Capability.Layer == 'object') {
-        me.data.services = [caps.Capability.Layer];
+        this.data.services = [caps.Capability.Layer];
       }
 
-      selectLayerByName(layerToSelect);
+      this.selectLayerByName(layerToSelect);
 
-      HsDimensionService.fillDimensionValues(caps.Capability.Layer);
+      this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
-      me.data.getMapUrl = removePortIfProxified(
+      this.data.getMapUrl = this.removePortIfProxified(
         caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
       );
-      me.data.image_format = getPreferedFormat(me.data.image_formats, [
+      this.data.image_format = getPreferedFormat(this.data.image_formats, [
         'image/png; mode=8bit',
         'image/png',
         'image/gif',
         'image/jpeg',
       ]);
-      me.data.query_format = getPreferedFormat(me.data.query_formats, [
+      this.data.query_format = getPreferedFormat(this.data.query_formats, [
         'application/vnd.esri.wms_featureinfo_xml',
         'application/vnd.ogc.gml',
         'application/vnd.ogc.wms_xml',
         'text/plain',
         'text/html',
       ]);
-      $rootScope.$broadcast('wmsCapsParsed');
+      //FIXME: $rootScope.$broadcast('wmsCapsParsed');
     } catch (e) {
-      $rootScope.$broadcast('wmsCapsParseError', e);
+      //FIXME: $rootScope.$broadcast('wmsCapsParseError', e);
     }
-  };
+  }
 
   /**
-   * removePortIfProxified
-   *
    * @description Removes extra port which is added to the getMap request when
    * GetCapabilities is queried through proxy. <GetMap><DCPType><HTTP><Get>
    * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/>
@@ -149,12 +153,12 @@ export const HsAddLayersWmsService = function (
    * @private
    * @returns {string} Url without proxy services port added to it.
    */
-  function removePortIfProxified(url) {
-    if (HsConfig.proxyPrefix === undefined) {
+  removePortIfProxified(url: string): string {
+    if (this.hsConfig.proxyPrefix === undefined) {
       return url;
     }
     const proxyPort = parseInt(
-      HsUtilsService.getPortFromUrl(HsConfig.proxyPrefix)
+      this.hsUtilsService.getPortFromUrl(this.hsConfig.proxyPrefix)
     );
     if (proxyPort > 0) {
       return url.replace(':' + proxyPort.toString(), '');
@@ -165,16 +169,16 @@ export const HsAddLayersWmsService = function (
   /**
    * @param layerToSelect
    */
-  function selectLayerByName(layerToSelect) {
+  selectLayerByName(layerToSelect): void {
     if (layerToSelect) {
-      me.data.services.forEach((service) => {
+      this.data.services.forEach((service) => {
         service.Layer.forEach((layer) => {
           if (layer.Name == layerToSelect) {
             layer.checked = true;
           }
-          $timeout(() => {
+          setTimeout(() => {
             const id = `#hs-add-layer-${layer.Name}`;
-            const el = HsLayoutService.contentWrapper.querySelector(id);
+            const el = this.hsLayoutService.contentWrapper.querySelector(id);
             if (el) {
               el.scrollIntoView();
             }
@@ -184,49 +188,46 @@ export const HsAddLayersWmsService = function (
     }
   }
 
-  me.srsChanged = function () {
-    $timeout(() => {
-      me.data.resample_warning = !HsWmsGetCapabilitiesService.currentProjectionSupported(
-        [me.data.srs]
-      );
-    }, 0);
-  };
+  srsChanged(): void {
+    this.data.resample_warning = !this.hsWmsGetCapabilitiesService.currentProjectionSupported(
+      [this.data.srs]
+    );
+  }
 
   /**
    * @function addLayers
-   * @memberof add-layers-wms.controller
-   * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+   * @description Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
+   * @param {boolean} checked Add all available layers or ony checked ones. checked=false=all
    */
-  me.addLayers = function (checked) {
+  addLayers(checked: boolean): void {
     /**
      * @param layer
      */
-    function recurse(layer) {
+    const recurse = (layer) => {
       if (!checked || layer.checked) {
         if (layer.Layer === undefined) {
-          addLayer(
+          this.addLayer(
             layer,
             layer.Title.replace(/\//g, '&#47;'),
-            me.data.path,
-            me.data.image_format,
-            me.data.query_format,
-            me.data.tile_size,
-            me.data.srs,
-            getSublayerNames(layer)
+            this.data.path,
+            this.data.image_format,
+            this.data.query_format,
+            this.data.tile_size,
+            this.data.srs,
+            this.getSublayerNames(layer)
           );
         } else {
-          const clone = HsUtilsService.structuredClone(layer);
+          const clone = this.hsUtilsService.structuredClone(layer);
           delete clone.Layer;
-          addLayer(
+          this.addLayer(
             layer,
             layer.Title.replace(/\//g, '&#47;'),
-            me.data.path,
-            me.data.image_format,
-            me.data.query_format,
-            me.data.tile_size,
-            me.data.srs,
-            getSublayerNames(layer)
+            this.data.path,
+            this.data.image_format,
+            this.data.query_format,
+            this.data.tile_size,
+            this.data.srs,
+            this.getSublayerNames(layer)
           );
         }
       }
@@ -234,20 +235,20 @@ export const HsAddLayersWmsService = function (
       angular.forEach(layer.Layer, (sublayer) => {
         recurse(sublayer);
       });
-    }
-    angular.forEach(me.data.services, (layer) => {
+    };
+    angular.forEach(this.data.services, (layer) => {
       recurse(layer);
     });
-    HsLayoutService.setMainPanel('layermanager');
-  };
+    this.hsLayoutService.setMainPanel('layermanager');
+  }
 
   /**
    * @param service
    */
-  function getSublayerNames(service) {
+  getSublayerNames(service) {
     if (service.Layer) {
       return service.Layer.map((l) => {
-        const tmp = {};
+        const tmp: any = {};
         if (l.Name) {
           tmp.name = l.Name;
         }
@@ -255,7 +256,7 @@ export const HsAddLayersWmsService = function (
           tmp.title = l.Title;
         }
         if (l.Layer) {
-          tmp.children = getSublayerNames(l);
+          tmp.children = this.getSublayerNames(l);
         }
         return tmp;
       });
@@ -264,39 +265,35 @@ export const HsAddLayersWmsService = function (
     }
   }
 
-  //TODO all dimension related things need to be refactored into seperate module
-  me.getDimensionValues = HsDimensionService.getDimensionValues;
-
-  me.hasNestedLayers = function (layer) {
+  hasNestedLayers(layer): boolean {
     if (layer === undefined) {
       return false;
     }
     return layer.Layer !== undefined;
-  };
+  }
 
   /**
    * @function addLayer
-   * @memberOf add-layers-wms.service
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
    * @param {string} path Path name
    * @param {string} imageFormat Format in which to serve image. Usually: image/png
    * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
-   * @param {OpenLayers.Size} tileSize Tile size in pixels
-   * @param {OpenLayers.Projection} crs of the layer
+   * @param {import('ol/Size')} tileSize Tile size in pixels
+   * @param {import('ol/proj/Projection')} crs of the layer
    * @param {Array} subLayers Static sub-layers of the layer
    * @description Add selected layer to map
    */
-  function addLayer(
+  addLayer(
     layer,
-    layerName,
-    path,
-    imageFormat,
-    queryFormat,
+    layerName: string,
+    path: string,
+    imageFormat: string,
+    queryFormat: string,
     tileSize,
     crs,
-    subLayers
-  ) {
+    subLayers: any[]
+  ): void {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -313,7 +310,7 @@ export const HsAddLayersWmsService = function (
     let layer_class = Tile;
     let source_class = TileWMS;
 
-    if (!me.data.useTiles) {
+    if (!this.data.useTiles) {
       layer_class = ImageLayer;
       source_class = ImageWMS;
     }
@@ -324,7 +321,7 @@ export const HsAddLayersWmsService = function (
         boundingbox = layer.EX_GeographicBoundingBox;
       }
     } else {
-      if (me.data.map_projection != crs) {
+      if (this.data.map_projection != crs) {
         boundingbox = layer.LatLonBoundingBox;
       }
     }
@@ -346,19 +343,19 @@ export const HsAddLayersWmsService = function (
         layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : 'default';
     }
     const source = new source_class({
-      url: me.data.getMapUrl,
+      url: this.data.getMapUrl,
       attributions,
-      projection: me.data.crs || me.data.srs,
+      projection: this.data.crs || this.data.srs,
       params: Object.assign(
         {
           LAYERS: layer.Name || layer.Layer[0].Name,
           INFO_FORMAT: layer.queryable ? queryFormat : undefined,
           FORMAT: imageFormat,
-          FROMCRS: me.data.srs,
-          VERSION: me.data.version,
+          FROMCRS: this.data.srs,
+          VERSION: this.data.version,
           STYLES: styles,
         },
-        HsDimensionService.paramsFromDimensions(layer)
+        this.hsDimensionService.paramsFromDimensions(layer)
       ),
       crossOrigin: 'anonymous',
     });
@@ -378,39 +375,37 @@ export const HsAddLayersWmsService = function (
       legends: legends,
       subLayers: subLayers,
     });
-    HsMapService.proxifyLayerLoader(new_layer, me.data.useTiles);
-    HsMapService.map.addLayer(new_layer);
+    this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
+    this.hsMapService.map.addLayer(new_layer);
   }
 
   /**
-   * Add service and its layers to project
-   *
-   * @memberof hs.addLayersWms.service_layer_producer
+   * @description Add service and its layers to project
    * @function addService
    * @param {string} url Service url
-   * @param {ol/Group} group Group layer to which add layer to
+   * @param {Group} group Group layer to which add layer to
    * @param {string} layerName Name of layer to add. If not specified then all layers are added
    */
-  me.addService = function (url, group, layerName) {
-    HsWmsGetCapabilitiesService.requestGetCapabilities(url).then((resp) => {
-      let ol_layers = HsWmsGetCapabilitiesService.service2layers(resp);
-      if (layerName) {
-        ol_layers = ol_layers.filter(
-          (layer) =>
-            layer.get('name') == layerName ||
-            (typeof layer.get('name') == 'undefined' && //Backwards compatibility with layman when title==name
-              layer.get('title') == layerName)
-        );
-      }
-      ol_layers.forEach((layer) => {
-        if (group !== undefined) {
-          group.addLayer(layer);
-        } else {
-          HsMapService.addLayer(layer, true);
+  addService(url: string, group: Group, layerName: string): void {
+    this.hsWmsGetCapabilitiesService
+      .requestGetCapabilities(url)
+      .then((resp) => {
+        let ol_layers = HsWmsGetCapabilitiesService.service2layers(resp);
+        if (layerName) {
+          ol_layers = ol_layers.filter(
+            (layer) =>
+              layer.get('name') == layerName ||
+              (typeof layer.get('name') == 'undefined' && //Backwards compatibility with layman when title==name
+                layer.get('title') == layerName)
+          );
         }
+        ol_layers.forEach((layer) => {
+          if (group !== undefined) {
+            group.addLayer(layer);
+          } else {
+            this.hsMapService.addLayer(layer, true);
+          }
+        });
       });
-    });
-  };
-
-  return me;
-};
+  }
+}
