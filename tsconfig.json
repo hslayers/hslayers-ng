@@ -6,6 +6,7 @@
         "lib": ["esnext", "dom"],
         "sourceMap": true,
         "declaration": false,
+        "esModuleInterop": true
     },
     "types": ["jasmine"],
 }
