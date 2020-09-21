@@ -17,7 +17,7 @@
         <div class="card-body">
             <form>
                 <div class="form-group">
-                    <label for="imageFormat" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
+                    <label for="imageFormat" class="capabilities_label col-sm-4 control-label" i18n>Image format</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" [(ngModel)="imageFormat">
                             <option *ngFor="let i of currentLayer.Format">{{i}}</option>
@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="capabilities_label col-sm-4 control-label" translate>Style</label>
+                    <label class="capabilities_label col-sm-4 control-label" i18n>Style</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" [(ngModel)="style">
                             <option *ngFor="let i of currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
