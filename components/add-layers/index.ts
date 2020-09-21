@@ -15,6 +15,7 @@ import {HsAddLayersUrlComponent} from './add-layers-url.component';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 import {downgrade} from '../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedAddLayersModule = downgrade(HsAddLayersModule);
 
@@ -49,23 +50,35 @@ angular
    * @ngdoc directive
    * @name hs.addLayersUrl
    */
-  .component('hs.addLayersUrl', HsAddLayersUrlComponent)
+  .directive(
+    'hs.addLayersUrl',
+    downgradeComponent({component: HsAddLayersUrlComponent})
+  )
 
   /**
    * @memberof hs.addLayers
    * @ngdoc directive
    * @name hs.addLayersUrl
    */
-  .component('hs.nestedLayersTable', HsNestedLayersTableComponent)
+  .directive(
+    'hs.nestedLayersTable',
+    downgradeComponent({component: HsNestedLayersTableComponent})
+  )
 
   /**
    * @memberof hs.addLayers
    * @ngdoc component
    * @name hs.addLayers
    */
-  .component('hs.addLayers', HsAddLayersComponent)
+  .component(
+    'hs.addLayers',
+    downgradeComponent({component: HsAddLayersComponent})
+  )
 
-  .factory('HsDragDropLayerService', HsDragDropLayerService);
+  .service(
+    'HsDragDropLayerService',
+    downgradeInjectable(HsDragDropLayerService)
+  );
 
 angular.module('hs.addLayers', [downgradedAddLayersModule]);
 
