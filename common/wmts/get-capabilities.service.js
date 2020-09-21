@@ -11,9 +11,9 @@ import {getPreferedFormat} from '../format-utils';
  * @param $rootScope
  */
 export class HsWmtsGetCapabilitiesService {
-  constructor($http, HsMapService, HsUtilsService, $rootScope) {
+  constructor($http, HsMapService, HsUtilsService, $rootScope, HsEventBusService) {
     'ngInject';
-    Object.assign(this, {$http, HsMapService, HsUtilsService, $rootScope});
+    Object.assign(this, {$http, HsMapService, HsUtilsService, $rootScope, HsEventBusService});
   }
 
   /**
@@ -102,7 +102,10 @@ export class HsWmtsGetCapabilitiesService {
     url = this.HsUtilsService.proxify(url);
     const promise = this.$http.get(url);
     promise.then((r) => {
-      this.$rootScope.$broadcast('ows_wmts.capabilities_received', r);
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'WMTS',
+        response: r,
+      });
     });
     return promise;
   }
