@@ -13,6 +13,7 @@ import {getPreferedFormat} from '../format-utils';
  */
 export default function (
   $http,
+  HsEventBusService,
   HsMapService,
   HsUtilsService,
   $rootScope,
@@ -88,7 +89,10 @@ export default function (
       $http
         .get(url)
         .then((r) => {
-          $rootScope.$broadcast('ows.capabilities_received', r);
+          HsEventBusService.owsCapabilitiesReceived.next({
+            type: 'ArcGIS',
+            response: r,
+          });
           resolve(r.data);
         })
         .catch((e) => {

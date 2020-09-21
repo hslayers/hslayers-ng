@@ -19,6 +19,7 @@ export const HsAddLayersWfsComponent = {
   },
   controller: function (
     $scope,
+    HsEventBusService,
     HsMapService,
     HsWfsGetCapabilitiesService,
     $compile,
@@ -31,7 +32,10 @@ export const HsAddLayersWfsComponent = {
       .getProjection()
       .getCode()
       .toUpperCase();
-    $scope.$on('ows_wfs.capabilities_received', (event, response) => {
+    HsEventBusService.owsCapabilitiesReceived.subscibe(({type, response}) => {
+      if (type !== 'WFS') {
+        return;
+      }
       try {
         const caps = new WFSCapabilities(response.data);
         $scope.title = caps.ServiceIdentification.Title;
