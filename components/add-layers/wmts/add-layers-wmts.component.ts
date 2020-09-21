@@ -47,7 +47,7 @@ export class HsAddLayersWmtsComponent {
       .toUpperCase();
 
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      ({type: type, response: response}) => {
+      ({type, response}) => {
         if (type === 'WMTS') {
           this.capabilitiesReceived(response.data);
         }

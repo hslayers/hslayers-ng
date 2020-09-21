@@ -94,5 +94,16 @@ export class HsEventBusService {
    * replaces `ows.${type}_connecting`
    */
   owsConnecting: Subject<{type: string; uri: any; layer?: any}> = new Subject();
+  /**
+   * replaces 'ows_wmts.capabilities_received'
+   * and
+   * 'ows_wfs.capabilities_received'
+   * and
+   * 'ows.capabilities_received'
+   */
+  owsCapabilitiesReceived: Subject<{
+    type: string;
+    response: any;
+  }> = new Subject();
   constructor() {}
 }
