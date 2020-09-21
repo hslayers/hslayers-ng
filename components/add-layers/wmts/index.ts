@@ -7,7 +7,7 @@ import {HsAddLayersWmtsService} from './add-layers-wmts.service';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsResampleDialogComponent} from '../resample-dialog.component';
 import {downgrade} from '../../../common/downgrader';
-import {downgradeComponent} from '@angular/upgrade/static';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedAddLayersWmtsModule = downgrade(HsAddLayersWmtsModule);
 
@@ -45,7 +45,10 @@ angular
    * @ngdoc service
    * @description Service for querying what layers are available in a wmts and adding them to map
    */
-  .factory('HsAddLayersWmtsAddLayerService', HsAddLayersWmtsService)
+  .factory(
+    'HsAddLayersWmtsAddLayerService',
+    downgradeInjectable(HsAddLayersWmtsService)
+  )
 
   /**
    * @name hs.addLayersWmts.controller

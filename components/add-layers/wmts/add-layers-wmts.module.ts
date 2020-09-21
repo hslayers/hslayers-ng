@@ -4,12 +4,13 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersWmtsComponent} from './add-layers-wmts.component';
+import {HsAddLayersWmtsService} from './add-layers-wmts.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule],
   exports: [HsAddLayersWmtsComponent],
   declarations: [HsAddLayersWmtsComponent],
-  providers: [],
+  providers: [HsAddLayersWmtsService],
 })
 export class HsAddLayersWmtsModule {}
