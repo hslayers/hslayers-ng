@@ -1,4 +1,6 @@
+import Feature from 'ol/Feature';
 import Static from 'ol/source/ImageStatic';
+import StyleFunction from 'ol/style/Style';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon} from 'ol/style';
 import {Fill, Image as ImageStyle, Stroke, Style} from 'ol/style';
@@ -60,37 +62,49 @@ export class HsLegendService {
     if (currentLayer === undefined) {
       return;
     }
-    let foundPoint = false;
-    let foundLine = false;
-    let foundPolygon = false;
-    for (const feature of currentLayer.getSource().getFeatures()) {
+    const found = this.findFeatureGeomTypes(
+      currentLayer.getSource().getFeatures()
+    );
+    if (currentLayer.getSource().getSource) {
+      //Clustered layer?
+      const subFeatureTypes = this.findFeatureGeomTypes(
+        currentLayer.getSource().getSource().getFeatures()
+      );
+      for (const type of Object.keys(subFeatureTypes)) {
+        found[type] = subFeatureTypes[type] || found[type];
+      }
+    }
+
+    const tmp = Object.keys(found).filter((key) => found[key]);
+    return tmp;
+  }
+
+  findFeatureGeomTypes(
+    features: Array<Feature>
+  ): {line: boolean; polygon: boolean; point: boolean} {
+    const found = {
+      line: false,
+      point: false,
+      polygon: false,
+    };
+    for (const feature of features) {
       if (feature.getGeometry()) {
         const type = feature.getGeometry().getType();
         switch (type) {
           case 'LineString' || 'MultiLineString':
-            foundLine = true;
+            found.line = true;
             break;
           case 'Polygon' || 'MultiPolygon':
-            foundPolygon = true;
+            found.polygon = true;
             break;
           case 'Point' || 'MultiPoint':
-            foundPoint = true;
+            found.point = true;
             break;
           default:
         }
       }
     }
-    const tmp = [];
-    if (foundLine) {
-      tmp.push('line');
-    }
-    if (foundPolygon) {
-      tmp.push('polygon');
-    }
-    if (foundPoint) {
-      tmp.push('point');
-    }
-    return tmp;
+    return found;
   }
 
   /**
@@ -101,7 +115,7 @@ export class HsLegendService {
    * @param {Layer} currentLayer Layer of interest
    * @returns {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
    */
-  getStyleVectorLayer(currentLayer: Layer): Array<any> {
+  getStyleVectorLayer(currentLayer: VectorLayer): Array<any> {
     if (currentLayer === undefined) {
       return;
     }
@@ -111,17 +125,21 @@ export class HsLegendService {
       styleArray.push(layerStyle);
     } else {
       if (currentLayer.getSource().getFeatures().length > 0) {
-        let featureStyle = currentLayer
-          .getSource()
-          .getFeatures()
-          .map((feature) => layerStyle(feature));
-        if (featureStyle.length > 1000) {
-          featureStyle = featureStyle.slice(0, 100);
+        styleArray = styleArray.concat(
+          this.stylesForFeatures(
+            currentLayer.getSource().getFeatures(),
+            layerStyle
+          )
+        );
+        if (currentLayer.getSource().getSource) {
+          //Clustered layer?
+          styleArray = styleArray.concat(
+            this.stylesForFeatures(
+              currentLayer.getSource().getSource().getFeatures(),
+              layerStyle
+            )
+          );
         }
-        if (featureStyle[0].length) {
-          featureStyle = [...featureStyle];
-        }
-        styleArray = styleArray.concat(featureStyle);
       }
     }
     const filtered = styleArray.filter(
@@ -133,6 +151,20 @@ export class HsLegendService {
       'hashcode'
     );
     return serializedStyles;
+  }
+
+  stylesForFeatures(
+    features: Array<Feature>,
+    layerStyle: StyleFunction
+  ): Array<Style> {
+    let featureStyles = features.map((feature) => layerStyle(feature));
+    if (featureStyles.length > 1000) {
+      featureStyles = featureStyles.slice(0, 100);
+    }
+    if (featureStyles[0].length) {
+      featureStyles = [...featureStyles];
+    }
+    return featureStyles;
   }
 
   /**
