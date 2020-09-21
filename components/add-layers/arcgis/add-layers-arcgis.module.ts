@@ -1,21 +1,15 @@
-import '../../utils';
-import * as angular from 'angular';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsAddLayersArcGisComponent} from './add-layers-arcgis.component';
-import {HsAddLayersArcGisService} from './add-layers-arcgis.service';
 
-/**
- * @namespace hs.addLayersArcgis
- * @memberOf hs
- */
-angular
-  .module('hs.addLayersArcgis', ['hs.utils', 'hs.getCapabilities'])
-
-  .factory('HsAddLayersArcgisAddLayerService', HsAddLayersArcGisService)
-
-  /**
-   * @name hs.addLayersArcgis.controller
-   * @ngdoc controller
-   * @memberOf hs.addLayersArcgis
-   * @description Controller for displaying and setting parameters for Arcgis and its layers, which will be added to map afterwards
-   */
-  .component('hs.addLayersArcgis', HsAddLayersArcGisComponent);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [CommonModule, FormsModule, TranslateModule],
+  exports: [],
+  declarations: [/*HsAddLayersArcGisComponent*/],
+  providers: [],
+})
+export class HsAddLayersArcGisModule {}
