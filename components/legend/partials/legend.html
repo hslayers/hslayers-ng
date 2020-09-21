@@ -16,7 +16,7 @@
         </ul>
         <div class="row justify-content-center">
             <div class="col col-md-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translate" ng-click="">
+                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translate" (click)="rebuildLegends()">
                     <i class="icon-refresh"></i>
                 </button>
             </div>
