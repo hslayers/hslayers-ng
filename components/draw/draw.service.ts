@@ -306,6 +306,8 @@ export class HsDrawService {
     this.draw.setActive(false);
     this.modify.setActive(false);
     this.HsQueryBaseService.activateQueries();
+    this.type = null;
+    this.drawActive = false;
   }
 
   startDrawing(): void {

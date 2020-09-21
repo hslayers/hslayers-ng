@@ -49,6 +49,6 @@ export class HsDrawToolbarComponent {
   }
 
   finishDrawing(): void {
-    this.HsDrawService.draw.finishDrawing();
+    this.HsDrawService.stopDrawing();
   }
 }
