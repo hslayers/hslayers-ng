@@ -1,106 +1,100 @@
 import * as angular from 'angular';
 
-import '../../../common/get-capabilities.module';
-import '../../utils';
+import {Component} from '@angular/core';
+import {HsAddLayersWmsService} from './add-layers-wms.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsHistoryListService} from '../../../common/history-list/history-list.service';
+import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
 
-export const HsAddLayersWmsComponent = {
-  template: function (HsConfig) {
-    'ngInject';
-    return HsConfig.design == 'md'
-      ? require('./add-wms-layer.md.directive.html')
-      : require('./add-wms-layer.directive.html');
-  },
-  controller: function (
-    $scope,
-    HsWmsGetCapabilitiesService,
-    HsAddLayersWmsAddLayerService,
-    HsEventBusService,
-    HsHistoryListService,
-    $timeout
+@Component({
+  selector: 'hs-add-layers-wms',
+  template: require('./add-wms-layer.directive.html'),
+  //TODO: require('./add-wms-layer.md.directive.html')
+})
+export class HsAddLayersWmsComponent {
+  data;
+  hasNestedLayers;
+  getDimensionValues;
+  sourceHistory;
+  showDetails: boolean;
+  url: string;
+
+  constructor(
+    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private hsAddLayersWmsService: HsAddLayersWmsService,
+    private hsEventBusService: HsEventBusService,
+    private hsHistoryListService: HsHistoryListService
   ) {
-    'ngInject';
-    $scope.data = HsAddLayersWmsAddLayerService.data;
-
-    /**
-     * Clear Url and hide detailsWms
-     *
-     * @memberof hs.addLayers
-     * @function clear
-     */
-    $scope.clear = function () {
-      $scope.url = '';
-      $scope.showDetails = false;
-    };
-
-    $scope.connect = function (layerToSelect) {
-      HsHistoryListService.addSourceHistory('Wms', $scope.url);
-      HsWmsGetCapabilitiesService.requestGetCapabilities($scope.url).then(
-        (capabilities) => {
-          $timeout((_) => {
-            HsAddLayersWmsAddLayerService.capabilitiesReceived(
-              capabilities,
-              layerToSelect
-            );
-          }, 0);
-        }
-      );
-      $scope.showDetails = true;
-    };
-
-    HsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
+    this.data = hsAddLayersWmsService.data;
+    //FIXME: is it even fired?
+    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'WMS') {
-        $scope.setUrlAndConnect(uri, layer);
+        this.setUrlAndConnect(uri, layer);
       }
     });
+    //this.sourceHistory = hsAddLayersWmsService.sourceHistory;
+    this.getDimensionValues = hsAddLayersWmsService.getDimensionValues;
+    this.hasNestedLayers = hsAddLayersWmsService.hasNestedLayers;
+  }
 
-    /**
-     * @function selectAllLayers
-     * @memberOf hs.addLayersWms.controller
-     * @description Select all layers from service.
-     */
-    $scope.selectAllLayers = function () {
-      /**
-       * @param layer
-       */
-      function recurse(layer) {
-        layer.checked = true;
+  /**
+   * @description Clear Url and hide detailsWms
+   */
+  clear(): void {
+    this.url = '';
+    this.showDetails = false;
+  }
 
-        angular.forEach(layer.Layer, (sublayer) => {
-          recurse(sublayer);
-        });
-      }
-      angular.forEach($scope.data.services.Layer, (layer) => {
-        recurse(layer);
+  connect(layerToSelect): void {
+    this.hsHistoryListService.addSourceHistory('Wms', this.url);
+    this.hsWmsGetCapabilitiesService
+      .requestGetCapabilities(this.url)
+      .then((capabilities) => {
+        this.hsAddLayersWmsService.capabilitiesReceived(
+          capabilities,
+          layerToSelect
+        );
       });
-    };
+    this.showDetails = true;
+  }
 
-    $scope.addLayers = function (checked) {
-      HsAddLayersWmsAddLayerService.addLayers(checked);
-    };
-
-    $scope.srsChanged = function () {
-      HsAddLayersWmsAddLayerService.srsChanged();
-    };
-
+  /**
+   * @function selectAllLayers
+   * @description Select all layers from service.
+   */
+  selectAllLayers(): void {
     /**
-     * Connect to service of specified Url
-     *
-     * @memberof hs.addLayersWms
-     * @function setUrlAndConnect
-     * @param {string} url Url of requested service
-     * @param {string} layer Optional layer to select, when
-     * getCapabilities arrives
+     * @param layer
      */
-    $scope.setUrlAndConnect = function (url, layer) {
-      $scope.url = url;
-      $scope.connect(layer);
-    };
+    function recurse(layer) {
+      layer.checked = true;
 
-    $scope.sourceHistory = HsAddLayersWmsAddLayerService.sourceHistory;
+      angular.forEach(layer.Layer, (sublayer) => {
+        recurse(sublayer);
+      });
+    }
+    angular.forEach(this.data.services.Layer, (layer) => {
+      recurse(layer);
+    });
+  }
 
-    $scope.getDimensionValues =
-      HsAddLayersWmsAddLayerService.getDimensionValues;
+  addLayers(checked): void {
+    this.hsAddLayersWmsService.addLayers(checked);
+  }
 
-    $scope.hasNestedLayers = HsAddLayersWmsAddLayerService.hasNestedLayers;
-  },
-};
+  srsChanged(): void {
+    this.hsAddLayersWmsService.srsChanged();
+  }
+
+  /**
+   * @description Connect to service of specified Url
+   * @function setUrlAndConnect
+   * @param {string} url Url of requested service
+   * @param {string} layer Optional layer to select, when
+   * getCapabilities arrives
+   */
+  setUrlAndConnect(url: string, layer): void {
+    this.url = url;
+    this.connect(layer);
+  }
+}

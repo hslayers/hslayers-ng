@@ -1,14 +1,14 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs.add-layers-url type="Wms" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
 
-    <div ng-show="showDetails">
+    <div [hidden]="!showDetails">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Image format</span>
+                    <span class="input-group-text control-label" i18n>Image format</span>
                 </div>
-                <select class="form-control" ng-model="data.image_format">
-                    <option ng-repeat="i in data.image_formats">{{i}}</option>
+                <select class="form-control" [(ngModel)]="data.image_format">
+                    <option *ngFor="let format of data.image_formats">{{format}}</option>
                 </select>
             </div>
         </div>
@@ -16,76 +16,76 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Query format</span>
+                    <span class="input-group-text control-label" i18n>Query format</span>
                 </div>
-                <select class="form-control" ng-model="data.query_format">
-                    <option ng-repeat="i in data.query_formats">{{i}}</option>
+                <select class="form-control" [(ngModel)]="data.query_format">
+                    <option *ngFor="let format of data.query_formats">{{format}}</option>
                 </select>
             </div>
         </div>
 
-        <div class="form-group" ng-show="data.srs.toUpperCase() != data.mapProjection">
+        <div class="form-group" [hidden]="data.srs.toUpperCase() === data.mapProjection">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>SRS</span>
+                    <span class="input-group-text control-label" i18n>SRS</span>
                 </div>
-                <select class="form-control" ng-model="data.srs" ng-change="srsChanged()">
-                    <option ng-repeat="i in data.srss | limitTo: 50">{{i}}</option>
+                <select class="form-control" [(ngModel)]="data.srs" (change)="srsChanged()">
+                    <option *ngFor="let srs of data.srss | slice:0:50">{{srs}}</option>
                 </select>
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-danger" ng-show="data.useResampling" translate>
+        <p class="col-sm-12 alert alert-danger" [hidden]="!data.useResampling" i18n>
             Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.
         </p>
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox" ng-model="data.useTiles" />
+                <label class="capabilities_label control-label"> <input type="checkbox" [(ngModel)]="data.useTiles" />
                     Use tiles
                 </label>
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-warning" ng-show="!data.useTiles" translate>
+        <p class="col-sm-12 alert alert-warning" [hidden]="data.useTiles" i18n>
             Consider using tiles. Some servers have restricted max size of picture.
         </p>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Tile size</span>
+                    <span class="input-group-text control-label" i18n>Tile size</span>
                 </div>
-                <input class="form-control" ng-model="data.tileSize" />
+                <input class="form-control" [(ngModel)]="data.tileSize" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Folder name</span>
+                    <span class="input-group-text control-label" i18n>Folder name</span>
                 </div>
-                <input class="form-control" ng-model="data.path" />
+                <input class="form-control" [(ngModel)]="data.path" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label" translate> <input type="checkbox"
-                    ng-model="data.registerMetadata" />Register metadata</label>
+                <label class="capabilities_label control-label" i18n> <input type="checkbox"
+                    [(ngModel)]="data.registerMetadata" />Register metadata</label>
             </div>
         </div>
         <hr />
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <th style="width:1em">&nbsp;</th>
-                <th style="width:30%" translate>Name</th>
-                <th style="width:40%" translate>Title</th>
-                <th translate>Abstract</th>
+                <th style="width:30%" i18n>Name</th>
+                <th style="width:40%" i18n>Title</th>
+                <th i18n>Abstract</th>
             </thead>
-            <tbody ng-repeat="service in data.services">
+            <tbody *ngFor="let service of data.services">
                 <tr>
-                    <td><input type="checkbox"ng-model="service.checked" /></td>
+                    <td><input type="checkbox" [(ngModel)]="service.checked" /></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
@@ -98,6 +98,6 @@
             </tbody>
         </table>
         <button class="btn btn-primary btn-sm" style="position: sticky;
-        bottom: 1.5rem; float: right;" ng-click="addLayers(true)"><i class="icon-plus"></i></button>
+        bottom: 1.5rem; float: right;" (click)="addLayers(true)"><i class="icon-plus"></i></button>
     </div>
 </form>

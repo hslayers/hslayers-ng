@@ -8,6 +8,7 @@ import {HsAddLayersWmsService} from './add-layers-wms.service';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsResampleDialogComponent} from '../resample-dialog.component';
 import {downgrade} from '../../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedAddLayersWmsModule = downgrade(HsAddLayersWmsModule);
 
@@ -40,8 +41,10 @@ angular
     HsGetCapabilitiesErrorComponent
   )
 
-  //TODO missing description
-  .factory('HsAddLayersWmsAddLayerService', HsAddLayersWmsService)
+  .service(
+    'HsAddLayersWmsAddLayerService',
+    downgradeInjectable(HsAddLayersWmsService)
+  )
 
   /**
    * @name hs.addLayersWms.controller
@@ -49,7 +52,10 @@ angular
    * @memberof hs.addLayersWms
    * @description Controller for displaying and setting parameters for Wms and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWms', HsAddLayersWmsComponent);
+  .directive(
+    'hs.addLayersWms',
+    downgradeComponent({component: HsAddLayersWmsComponent})
+  );
 
 angular.module('hs.addLayersWms', [downgradedAddLayersWmsModule]);
 
