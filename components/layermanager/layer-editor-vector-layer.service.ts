@@ -70,7 +70,7 @@ export class HsLayerEditorVectorLayerService {
         const styleCache = {};
         layer.setSource(this.createClusteredSource(layer, distance));
         layer.setStyle((feature, resolution) => {
-          const size = feature.get('features').length;
+          const size = feature.get('features')?.length || 0;
           if (size > 1) {
             let textStyle = styleCache[size];
             if (!textStyle) {
@@ -101,7 +101,7 @@ export class HsLayerEditorVectorLayerService {
             } else {
               originalStyle = layer.hsOriginalStyle;
             }
-            const originalFeature = feature.get('features');
+            const originalFeature = feature.get('features') || [feature];
             let newStyle;
             if (originalStyle.length) {
               newStyle = originalStyle[0].clone();

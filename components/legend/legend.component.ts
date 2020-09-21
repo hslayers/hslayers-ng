@@ -1,3 +1,4 @@
+import Map from 'ol/Map';
 import {Component} from '@angular/core';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
@@ -32,6 +33,11 @@ export class HsLegendComponent {
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }
+  }
+
+  rebuildLegends() {
+    this.layerDescriptors = [];
+    this.buildLegendsForLayers(this.HsMapService.map);
   }
 
   filterDescriptors(): any[] {
@@ -71,11 +77,15 @@ export class HsLegendComponent {
   /**
    * @param map
    */
-  init(map) {
+  init(map: Map): void {
     map.getLayers().on('add', (e) => this.layerAdded(e));
     map.getLayers().on('remove', (e) => {
       this.removeLayerFromLegends(e.element);
     });
+    this.buildLegendsForLayers(map);
+  }
+
+  buildLegendsForLayers(map: Map): void {
     map.getLayers().forEach((lyr) => {
       this.layerAdded({
         element: lyr,
