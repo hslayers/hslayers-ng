@@ -108,7 +108,7 @@ export class HsStylerComponent {
           require(/* webpackChunkName: "img" */ './img/svg/university2.svg'),
           require(/* webpackChunkName: "img" */ './img/svg/warning.svg'),
           require(/* webpackChunkName: "img" */ './img/svg/wifi8.svg'),
-        ];
+        ].map((icon) => this.sanitizer.bypassSecurityTrustResourceUrl(icon));
       }
       this.updateHasVectorFeatures();
     });
