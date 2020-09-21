@@ -11,9 +11,21 @@ import {getPreferedFormat} from '../format-utils';
  * @param $rootScope
  */
 export class HsWmsGetCapabilitiesService {
-  constructor($http, HsMapService, HsUtilsService, $rootScope) {
+  constructor(
+    $http,
+    HsEventBusService,
+    HsMapService,
+    HsUtilsService,
+    $rootScope
+  ) {
     'ngInject';
-    Object.assign(this, {$http, HsMapService, HsUtilsService, $rootScope});
+    Object.assign(this, {
+      $http,
+      HsEventBusService,
+      HsMapService,
+      HsUtilsService,
+      $rootScope,
+    });
   }
 
   /**
@@ -104,7 +116,10 @@ export class HsWmsGetCapabilitiesService {
       this.$http
         .get(url)
         .then((r) => {
-          this.$rootScope.$broadcast('ows.capabilities_received', r);
+          this.HsEventBusService.owsCapabilitiesReceived.next({
+            type: 'WMS',
+            response: r,
+          });
           resolve(r.data);
         })
         .catch((e) => {

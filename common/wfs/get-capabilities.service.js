@@ -5,10 +5,17 @@
  * @param $rootScope
  */
 export class HsWfsGetCapabilitiesService {
-  constructor($http, HsMapService, HsUtilsService, $rootScope) {
+  constructor(
+    $http,
+    HsEventBusService,
+    HsMapService,
+    HsUtilsService,
+    $rootScope
+  ) {
     'ngInject';
     Object.assign(this, {
       $http,
+      HsEventBusService,
       HsMapService,
       HsUtilsService,
       $rootScope,
@@ -102,7 +109,10 @@ export class HsWfsGetCapabilitiesService {
     url = this.HsUtilsService.proxify(url);
     const promise = this.$http.get(url);
     promise.then((r) => {
-      this.$rootScope.$broadcast('ows_wfs.capabilities_received', r);
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'WFS',
+        response: r,
+      });
     });
     return promise;
   }
