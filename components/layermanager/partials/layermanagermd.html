@@ -99,7 +99,7 @@
                     ng-if="layer.layer.getSource().styleAble">{{'LAYERMANAGER.layermanagerMd.layerStyle' | translate}}</label>
                 <div ng-if="layer.layer.getSource().hasPoly">
                     <div md-color-picker ng-model="layer.style.fillColor" label="Fill"
-                        ng-change="HsLayerEditorStylesService.HsLayerEditorStylesService.saveStyle(layer)"
+                        ng-change="HsLayerEditorStylesService.saveStyle(layer)"
                         icon="format_color_fill" type="1" md-color-sliders="false" md-color-history="false"
                         md-color-default-tab="1"></div>
                 </div>

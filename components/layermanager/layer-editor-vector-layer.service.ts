@@ -61,62 +61,17 @@ export class HsLayerEditorVectorLayerService {
    * @param {Layer} layer
    * @param {number} distance
    */
-  cluster(newValue: boolean, layer: Layer, distance: number) {
-    if (!layer.hsOriginalStyle) {
-      layer.hsOriginalStyle = layer.getStyle();
+  cluster(newValue: boolean, layer: Layer, distance: number): void {
+    if (!layer.get('hsOriginalStyle')) {
+      layer.set('hsOriginalStyle', layer.getStyle());
     }
     if (newValue == true && !layer.get('declutter')) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
-        const styleCache = {};
         layer.setSource(this.createClusteredSource(layer, distance));
-        layer.setStyle((feature, resolution) => {
-          const size = feature.get('features')?.length || 0;
-          if (size > 1) {
-            let textStyle = styleCache[size];
-            if (!textStyle) {
-              textStyle = new Style({
-                image: new Circle({
-                  radius: 10,
-                  stroke: new Stroke({
-                    color: '#fff',
-                  }),
-                  fill: new Fill({
-                    color: '#3399CC',
-                  }),
-                }),
-                text: new Text({
-                  text: size.toString(),
-                  fill: new Fill({
-                    color: '#000',
-                  }),
-                }),
-              });
-              styleCache[size] = textStyle;
-            }
-            return textStyle;
-          } else {
-            let originalStyle;
-            if (typeof layer.hsOriginalStyle == 'function') {
-              originalStyle = layer.hsOriginalStyle(feature, resolution);
-            } else {
-              originalStyle = layer.hsOriginalStyle;
-            }
-            const originalFeature = feature.get('features') || [feature];
-            let newStyle;
-            if (originalStyle.length) {
-              newStyle = originalStyle[0].clone();
-              newStyle.setGeometry(originalFeature[0].getGeometry());
-              return [newStyle];
-            } else {
-              newStyle = originalStyle.clone();
-              newStyle.setGeometry(originalFeature[0].getGeometry());
-              return newStyle;
-            }
-          }
-        });
+        this.styleLayer(layer);
       }
     } else {
-      layer.setStyle(layer.hsOriginalStyle);
+      layer.setStyle(layer.get('hsOriginalStyle'));
       layer.setSource(layer.getSource().getSource());
     }
   }
@@ -139,6 +94,69 @@ export class HsLayerEditorVectorLayerService {
             return null;
         }
       },
+    });
+  }
+  styleLayer(layer: Layer, customStyle?: Style): void {
+    const styleCache = {};
+    layer.setStyle((feature, resolution) => {
+      const size = feature.get('features')?.length || 0;
+      if (size > 1) {
+        let textStyle = styleCache[size];
+        if (!textStyle) {
+          textStyle = new Style({
+            image: new Circle({
+              radius: 10,
+              stroke: new Stroke({
+                color: '#fff',
+              }),
+              fill: new Fill({
+                color: '#3399CC',
+              }),
+            }),
+            text: new Text({
+              text: size.toString(),
+              fill: new Fill({
+                color: '#000',
+              }),
+            }),
+          });
+          styleCache[size] = textStyle;
+        }
+        return textStyle;
+      } else {
+        if (customStyle !== undefined) {
+          const customFeature = feature.get('features') || [feature];
+          let newStyle;
+          if (customStyle.length) {
+            newStyle = customStyle[0].clone();
+            newStyle.setGeometry(customFeature[0].getGeometry());
+            return [newStyle];
+          } else {
+            newStyle = customStyle.clone();
+            newStyle.setGeometry(customFeature[0].getGeometry());
+            return newStyle;
+          }
+        } else {
+          let originalStyle;
+          if (typeof layer.get('hsOriginalStyle') == 'function') {
+            originalStyle = layer.get('hsOriginalStyle');
+            originalStyle = originalStyle(feature, resolution);
+          } else {
+            originalStyle = layer.get('hsOriginalStyle');
+          }
+          const originalFeature = feature.get('features') || [feature];
+          let newStyle;
+          if (originalStyle.length) {
+            newStyle = originalStyle[0].clone();
+            newStyle.setGeometry(originalFeature[0].getGeometry());
+            return [newStyle];
+          } else {
+            newStyle = originalStyle.clone();
+            newStyle.setGeometry(originalFeature[0].getGeometry());
+            return newStyle;
+          }
+        }
+      }
     });
   }
 }
