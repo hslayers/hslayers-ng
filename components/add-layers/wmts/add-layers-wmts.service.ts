@@ -1,33 +1,32 @@
-import moment from 'moment';
-global.moment = moment;
+import {Injectable} from '@angular/core';
 
-/**
- * @param HsMapService
- * @param HsWmtsGetCapabilitiesService
- */
-export const HsAddLayersWmtsService = function (
-  HsMapService,
-  HsWmtsGetCapabilitiesService
-) {
-  'ngInject';
+import {HsMapService} from '../../map/map.service';
+import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
+
+import {Group} from 'ol/layer';
+
+@Injectable({providedIn: 'root'})
+export class HsAddLayersWmtsService {
+  constructor(
+    private HsMapService: HsMapService,
+    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService
+  ) {}
+
   /**
-   * Add service and its layers to project TODO
-   *
-   * @memberof add-layers-wms.service_layer_producer
+   * @description Add service and its layers to project
    * @function addService
    * @param {string} url Service url
-   * @param {ol/Group} box Openlayers layer group to add the layer to
+   * @param {Group} box Openlayers layer group to add the layer to
    */
-  this.addService = function (url, box) {
-    HsWmtsGetCapabilitiesService.requestGetCapabilities(url, (resp) => {
-      const ol_layers = HsWmtsGetCapabilitiesService.service2layers(resp);
+  addService(url: string, box: Group): void {
+    this.HsWmtsGetCapabilitiesService.requestGetCapabilities(url, (resp) => {
+      const ol_layers = this.HsWmtsGetCapabilitiesService.service2layers(resp);
       ol_layers.forEach((layer) => {
         if (box !== undefined) {
           box.get('layers').push(layer);
         }
-        HsMapService.addLayer(layer, true);
+        this.HsMapService.addLayer(layer, true);
       });
     });
-  };
-  return this;
-};
+  }
+}
