@@ -181,9 +181,9 @@ export default function (
   $scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
     $scope.featureDetails = feature.getProperties();
     HsLayermanagerService.currentLayer.selectedFeature = feature;
-    if (!$scope.$$phase) {
-      $scope.$apply();
-    }
+
+    $scope.highlightFeature(feature);
+    if (!$scope.$$phase) $scope.$apply();
 
     const currentView = HsMapService.map.getView();
     const currentZoom = currentView.getZoom();
