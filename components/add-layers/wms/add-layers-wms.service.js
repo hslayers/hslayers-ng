@@ -169,6 +169,7 @@ export default function (
         service.Layer.forEach((layer) => {
           if (layer.Name == layerToSelect) {
             layer.checked = true;
+            me.checkboxChange(layer);
           }
           $timeout(() => {
             const id = `#hs-add-layer-${layer.Name}`;
@@ -196,7 +197,7 @@ export default function (
    * @param {boolean} changed - Layer or sublayer of service to be added to map
    */
   me.checkboxChange = function (changed) {
-    me.checkedLayers[changed.$$hashKey] = changed.checked;
+    me.checkedLayers[changed.name] = changed.checked;
     me.checked = Object.keys(me.checkedLayers).some((k) => {
       return me.checkedLayers[k] == true;
     });
