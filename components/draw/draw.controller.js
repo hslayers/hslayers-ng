@@ -217,6 +217,9 @@ export default function (
               );
             });
         }
+        if (this.selectedLayer.get('title') == 'tmpDrawLayer'){
+          this.tmpDrawLayer = false;
+        }
         HsDrawService.selectedLayer = null;
         HsDrawService.fillDrawableLayers();
       }
