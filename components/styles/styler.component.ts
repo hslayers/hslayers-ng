@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {HsEventBusService} from '../core/event-bus.service';
@@ -221,20 +221,21 @@ export class HsStylerComponent {
   /**
    * @function iconSelected
    * @memberof hs.styler.controller
-   * @param {string} i Icon name
-   * @description Load selected SVG icon from folder and use it for layer
+   * @param {SafeResourceUrl} i Sanitized icon resource
+   * @description Load selected SVG icon and use it for layer
    */
-  iconSelected(i: string): void {
+  iconSelected(i: SafeResourceUrl): void {
     const headers = new HttpHeaders();
     headers.set('Accept', 'image/svg+xml');
     this.http
-      .get('' + i, {headers, responseType: 'text'})
+      .get(i['changingThisBreaksApplicationSecurity'], {
+        headers,
+        responseType: 'text',
+      })
       .subscribe((response) => {
         this.iconimage = this.sanitizer.bypassSecurityTrustHtml(response);
-        setTimeout(() => {
-          this.colorIcon();
-          this.save();
-        }, 0);
+        this.colorIcon();
+        this.save();
       });
   }
 
