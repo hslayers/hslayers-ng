@@ -182,15 +182,6 @@ export default function (
           $scope.linewidth + 'px solid ' + $scope.fillcolor['background-color'],
       };
     },
-    removeSelectedLayer() {
-      const el = angular.element(
-        '<hs.remove-layer-dialog></draw-layer-metadata>'
-      );
-      HsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
-      $compile(el)($scope);
-    },
     /**
      * @function changeStyle
      * @memberOf HsDrawController
@@ -217,11 +208,14 @@ export default function (
               );
             });
         }
-        if (this.selectedLayer.get('title') == 'tmpDrawLayer'){
-          this.tmpDrawLayer = false;
+        if (HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer'){
+          HsDrawService.tmpDrawLayer = false;
         }
         HsDrawService.selectedLayer = null;
         HsDrawService.fillDrawableLayers();
+        if (!$scope.$$phase) {
+          $scope.$digest();
+        }
       }
     },
   });

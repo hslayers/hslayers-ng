@@ -5,11 +5,15 @@
             title="{{'Draw' | translate}}"></i></button>
     <div class="btn-group" ng-if="drawToolbarExpanded">
         <button type="button" class="btn btn-light btn-outline-danger btn-secondary dropdown-toggle"
-            data-toggle="dropdown" aria-haspopup="true"
-            ng-show="service.drawableLayers.length == 0 && service.type"
+            data-toggle="dropdown" aria-haspopup="true" ng-show="(service.drawableLayers.length == 0 && service.type) || service.tmpDrawLayer"
             ng-click="service.saveDrawingLayer($scope)"
             ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}">
-            Unsaved drawing
+            {{ 'Unsaved drawing' | translate}}
+        </button>
+        <button type="button" ng-if="service.selectedLayer"
+        class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="removeLayer()"
+        title="{{'Remove layer' | translate}}">
+        <i class="glyphicon icon-trash"></i>
         </button>
         <button type="button" class="btn btn-light btn-secondary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" ng-show="service.drawableLayers.length != 0"
@@ -32,22 +36,38 @@
             <i class="icon-save-floppy"></i></button> -->
     </div>
     <div class="btn-group" ng-if="drawToolbarExpanded">
-        <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-            ng-class="{active: service.type=='Point' }" ng-click="setType('Point')" translate data-toggle="tooltip"
-            title="{{'Point' | translate}}"><i class="icon-pin"></i></button>
-        <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
-            ng-class="{active: service.type=='Polygon' }" ng-click="setType('Polygon')" translate data-toggle="tooltip"
-            title="{{'Polygon' | translate}}"><i class="icon-polygonlasso"></i></button>
-        <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary"
-            ng-class="{active: service.type=='LineString' }" ng-click="setType('LineString')" translate
-            data-toggle="tooltip" title="{{'Line' | translate}}">
-            <i class="icon-line"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary" ng-if="service.drawActive"
             ng-click="removeLastPoint()" translate data-toggle="tooltip" title="{{'Remove last point' | translate}}">
             <i class="icon-remove-circle"></i></button>
         <button class="btn btn-light hs-toolbar-button rounded-0 btn-outline-secondary" ng-if="service.drawActive"
             ng-click="finishDrawing()" translate data-toggle="tooltip" title="{{'Finish feature' | translate}}">
             <i class="icon-check"></i></button>
+        <button type="button" ng-click="drawTypeExpanded = !drawTypeExpanded" style="line-height: 1 !important;"
+            class="btn btn-light dropright rounded-0 btn-outline-secondary dropdown-toggle" aria-haspopup="true">
+            <label ng-if="!service.type" class="m-0">{{'Select type' | translate}}</label>
+            <i ng-class="{
+                            'icon-pin': service.type=='Point',
+                            'icon-polygonlasso': service.type=='Polygon',
+                            'icon-line': service.type=='LineString'
+                        }"></i>
+        </button>
+        <div class="dropdown-menu  p-0" style="min-width: unset;" ng-class="{'show': drawTypeExpanded}">
+            <div class="btn-group">
+                <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
+                    ng-class="{active: service.type=='Point' }"
+                    ng-click="setType('Point');drawTypeExpanded = !drawTypeExpanded" data-toggle="tooltip"
+                    title="{{'Point' | translate}}"><i class="icon-pin"></i></button>
+                <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
+                    ng-class="{active: service.type=='Polygon' }"
+                    ng-click="setType('Polygon');drawTypeExpanded = !drawTypeExpanded" data-toggle="tooltip"
+                    title="{{'Polygon' | translate}}"><i class="icon-polygonlasso"></i></button>
+                <button class="btn btn-light hs-toolbar-button btn-outline-secondary"
+                    ng-class="{active: service.type=='LineString' }"
+                    ng-click="setType('LineString');drawTypeExpanded = !drawTypeExpanded" data-toggle="tooltip"
+                    title="{{'Line' | translate}}">
+                    <i class="icon-line"></i></button>
+            </div>
+        </div>
     </div>
 </div>
 
