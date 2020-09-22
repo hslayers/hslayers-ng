@@ -3,6 +3,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
 import {Cluster} from 'ol/source';
 import {HsMapService} from '../map/map.service';
+import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
@@ -14,7 +15,8 @@ import {Point} from 'ol/geom';
 export class HsLayerEditorVectorLayerService {
   constructor(
     private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsQueryVectorService: HsQueryVectorService
   ) {}
 
   /**
@@ -133,13 +135,39 @@ export class HsLayerEditorVectorLayerService {
       } else {
         originalStyle = layer.get('hsOriginalStyle');
       }
-      originalStyle = this.applyStyleIfNeeded(
+      const appliedStyle = this.applyStyleIfNeeded(
         originalStyle,
         feature,
         resolution
       );
-      return this.useStyleOnFirstFeature(originalStyle, feature);
+      if (this.isSelectedFeature(feature)) {
+        appliedStyle[0] = appliedStyle[0].clone();
+        appliedStyle[0].setFill(
+          new Fill({
+            color: [255, 255, 255, 0.5],
+          })
+        );
+        appliedStyle[0].setStroke(
+          new Stroke({
+            color: [0, 153, 255, 1],
+            width: 3,
+          })
+        );
+      }
+      return this.useStyleOnFirstFeature(appliedStyle, feature);
     }
+  }
+
+  isSelectedFeature(feature: Feature): boolean {
+    if (feature.get('features')) {
+      return this.isSelectedFeature(feature.get('features')[0]);
+    }
+    return (
+      this.HsQueryVectorService.selector
+        .getFeatures()
+        .getArray()
+        .indexOf(feature) > -1
+    );
   }
 
   private makeClusterMarker(styleCache: {}, size: any) {
