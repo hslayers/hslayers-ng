@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style, Text} from 'ol/style';
 import {Cluster} from 'ol/source';
@@ -96,67 +97,104 @@ export class HsLayerEditorVectorLayerService {
       },
     });
   }
-  styleLayer(layer: Layer, customStyle?: Style): void {
+
+  styleLayer(layer: VectorLayer, customStyle?: Style): void {
     const styleCache = {};
-    layer.setStyle((feature, resolution) => {
+    layer.setStyle((feature: Feature, resolution: number) => {
       const size = feature.get('features')?.length || 0;
       if (size > 1) {
-        let textStyle = styleCache[size];
-        if (!textStyle) {
-          textStyle = new Style({
-            image: new Circle({
-              radius: 10,
-              stroke: new Stroke({
-                color: '#fff',
-              }),
-              fill: new Fill({
-                color: '#3399CC',
-              }),
-            }),
-            text: new Text({
-              text: size.toString(),
-              fill: new Fill({
-                color: '#000',
-              }),
-            }),
-          });
-          styleCache[size] = textStyle;
-        }
-        return textStyle;
+        return this.makeClusterMarker(styleCache, size);
       } else {
-        if (customStyle !== undefined) {
-          const customFeature = feature.get('features') || [feature];
-          let newStyle;
-          if (customStyle.length) {
-            newStyle = customStyle[0].clone();
-            newStyle.setGeometry(customFeature[0].getGeometry());
-            return [newStyle];
-          } else {
-            newStyle = customStyle.clone();
-            newStyle.setGeometry(customFeature[0].getGeometry());
-            return newStyle;
-          }
-        } else {
-          let originalStyle;
-          if (typeof layer.get('hsOriginalStyle') == 'function') {
-            originalStyle = layer.get('hsOriginalStyle');
-            originalStyle = originalStyle(feature, resolution);
-          } else {
-            originalStyle = layer.get('hsOriginalStyle');
-          }
-          const originalFeature = feature.get('features') || [feature];
-          let newStyle;
-          if (originalStyle.length) {
-            newStyle = originalStyle[0].clone();
-            newStyle.setGeometry(originalFeature[0].getGeometry());
-            return [newStyle];
-          } else {
-            newStyle = originalStyle.clone();
-            newStyle.setGeometry(originalFeature[0].getGeometry());
-            return newStyle;
-          }
-        }
+        return this.makeSingleFeatureClusterMarker(
+          feature,
+          resolution,
+          layer,
+          customStyle
+        );
       }
     });
+  }
+
+  private makeSingleFeatureClusterMarker(
+    feature: Feature,
+    resolution: number,
+    layer: VectorLayer,
+    customStyle?: Style
+  ) {
+    if (customStyle !== undefined) {
+      return this.useStyleOnFirstFeature(customStyle, feature);
+    } else {
+      let originalStyle;
+      const featureStyle = feature.get('features')
+        ? feature.get('features')[0].getStyle()
+        : feature.getStyle();
+      if (featureStyle) {
+        originalStyle = featureStyle;
+      } else {
+        originalStyle = layer.get('hsOriginalStyle');
+      }
+      originalStyle = this.applyStyleIfNeeded(
+        originalStyle,
+        feature,
+        resolution
+      );
+      return this.useStyleOnFirstFeature(originalStyle, feature);
+    }
+  }
+
+  private makeClusterMarker(styleCache: {}, size: any) {
+    let textStyle = styleCache[size];
+    if (!textStyle) {
+      textStyle = new Style({
+        image: new Circle({
+          radius: 10,
+          stroke: new Stroke({
+            color: '#fff',
+          }),
+          fill: new Fill({
+            color: '#3399CC',
+          }),
+        }),
+        text: new Text({
+          text: size.toString(),
+          fill: new Fill({
+            color: '#000',
+          }),
+        }),
+      });
+      styleCache[size] = textStyle;
+    }
+    return textStyle;
+  }
+
+  private applyStyleIfNeeded(
+    style: any,
+    feature: Feature,
+    resolution: number
+  ): any {
+    if (typeof style == 'function') {
+      return style(feature, resolution);
+    } else {
+      return style;
+    }
+  }
+
+  private useStyleOnFirstFeature(
+    style: any,
+    clusteredContainerFeature: Feature
+  ): Style | Style[] {
+    const originalFeature = clusteredContainerFeature.get('features') || [
+      clusteredContainerFeature,
+    ];
+    let newStyle;
+    if (style.length) {
+      newStyle = style[0].clone();
+      newStyle.setGeometry(originalFeature[0].getGeometry());
+      return [newStyle];
+    } else {
+      newStyle = style.clone();
+      newStyle.setGeometry(originalFeature[0].getGeometry());
+      return newStyle;
+    }
   }
 }
