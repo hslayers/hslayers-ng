@@ -1,7 +1,9 @@
 import VectorSource from 'ol/source/Vector';
 import {Component} from '@angular/core';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorVectorLayerService} from './../layermanager/layer-editor-vector-layer.service';
+import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -57,7 +59,9 @@ export class HsStylerComponent {
     private HsLayoutService: HsLayoutService,
     private http: HttpClient,
     private HsEventBusService: HsEventBusService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler' && !this.icons) {
@@ -128,9 +132,13 @@ export class HsStylerComponent {
     }
     const style_json: StyleJson = {};
     //FILL
-    if (this.fillcolor !== undefined && this.fillcolor !== null) {
+    if (this.fillcolor !== undefined) {
       style_json.fill = new Fill({
         color: this.fillcolor['background-color'],
+      });
+    } else {
+      style_json.fill = new Fill({
+        color: 'rgb(0,0,255)',
       });
     }
     //STROKE WIDTH
@@ -141,6 +149,11 @@ export class HsStylerComponent {
     ) {
       style_json.stroke = new Stroke({
         color: this.linecolor['background-color'],
+        width: this.linewidth !== undefined ? this.linewidth : 1,
+      });
+    } else {
+      style_json.stroke = new Stroke({
+        color: 'rgb(44,0,200)',
         width: this.linewidth !== undefined ? this.linewidth : 1,
       });
     }
@@ -161,7 +174,6 @@ export class HsStylerComponent {
         if (
           this.iconlinecolor !== undefined &&
           this.iconlinecolor !== null &&
-          this.iconlinewidth !== undefined &&
           this.iconlinewidth > 0
         ) {
           circle_json.stroke = new Stroke({
@@ -198,10 +210,10 @@ export class HsStylerComponent {
   setStyleByJson(style_json: StyleJson): void {
     const style = new Style(style_json);
     const layer = this.HsStylerService.layer;
+    const isClustered = layer.getSource().getSource != undefined;
     switch (this.level) {
       case 'feature':
         const source = this.HsStylerService.getLayerSource(layer);
-        const isClustered = layer.getSource().getSource != undefined;
         if (isClustered) {
           layer.getSource().setSource(new VectorSource());
         }
@@ -215,6 +227,9 @@ export class HsStylerComponent {
         break;
       case 'layer':
       default:
+        if (isClustered) {
+          this.HsStylerService.layer.set('hsOriginalStyle', style);
+        }
         layer.setStyle(style);
         break;
     }
