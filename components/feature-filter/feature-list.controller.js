@@ -182,7 +182,6 @@ export default function (
     $scope.featureDetails = feature.getProperties();
     HsLayermanagerService.currentLayer.selectedFeature = feature;
 
-    $scope.highlightFeature(feature);
     if (!$scope.$$phase) $scope.$apply();
 
     const currentView = HsMapService.map.getView();

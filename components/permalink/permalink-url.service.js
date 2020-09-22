@@ -165,7 +165,6 @@ export default function (
     getFeatureByUri: function(features, uri, uriname) {
       const SELECTED = features.find(f => f.getProperties()[uriname] === uri);
       HsQueryVectorService.selector.getFeatures().push(SELECTED);
-      $rootScope.$broadcast('vectorQuery.featureSelected', SELECTED, HsQueryVectorService.selector);
     },
 
     hashtagParam: function(){
