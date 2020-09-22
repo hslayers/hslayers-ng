@@ -40,7 +40,7 @@ export default function (
     tileSize: 512,
   };
   this.checkedLayers = {};
-  this.checked = Boolean;
+  this.checked = false;
   /**
    * @param caps
    * @param response
