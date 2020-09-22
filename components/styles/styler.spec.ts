@@ -85,7 +85,7 @@ describe('HsStyler', () => {
   });
 
   it('HasLinePointPoly', () => {
-    component.updateHasVectorFeatures();
+    component.refreshLayerDefinition();
     expect(component.hasLine).toBe(false);
     expect(component.hasPoly).toBe(true);
     expect(component.hasPoint).toBe(true);

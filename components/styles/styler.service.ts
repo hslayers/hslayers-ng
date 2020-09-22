@@ -1,13 +1,14 @@
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
-
 import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: any = null;
+  layer: VectorLayer = null;
   measure_style = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 1)',
@@ -61,5 +62,21 @@ export class HsStylerService {
         }),
       }),
     ];
+  }
+
+  /**
+   * @function save
+   * @memberof hs.styler.controller
+   * @description Get current style variables value and style current layer accordingly
+   * @param {Layer} layer
+   */
+  getLayerSource(layer: VectorLayer): VectorSource {
+    let src = [];
+    if (layer.getSource().getSource !== undefined) {
+      src = layer.getSource().getSource();
+    } else {
+      src = layer.getSource();
+    }
+    return src;
   }
 }

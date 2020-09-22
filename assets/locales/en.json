@@ -4,6 +4,8 @@
     "abstract": "Abstract",
     "no": "No",
     "date": "Date",
+    "layer": "Layer",
+    "feature": "Feature",
     "from": "From",
     "to": "to",
     "filter": "Filter:",
@@ -77,6 +79,9 @@
     "ROUTING": "Routing",
     "TRACKING": "Tracking",
     "APPLICATIONSETTINGS": "Application settings"
+  },
+  "STYLER": {
+    "level": "Level"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",

@@ -1,15 +1,15 @@
+import VectorSource from 'ol/source/Vector';
 import {Component} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerService} from '../styles/styler.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Layer} from 'ol/layer';
 
-type styleJson = {
+type StyleJson = {
   fill?: any;
   stroke?: any;
   image?: any;
@@ -50,6 +50,7 @@ export class HsStylerComponent {
   hasPoly: any;
   hasPoint: any;
   layerTitle: string;
+  level: 'feature' | 'layer' = 'layer';
 
   constructor(
     private HsStylerService: HsStylerService,
@@ -110,24 +111,8 @@ export class HsStylerComponent {
           require(/* webpackChunkName: "img" */ './img/svg/wifi8.svg'),
         ].map((icon) => this.sanitizer.bypassSecurityTrustResourceUrl(icon));
       }
-      this.updateHasVectorFeatures();
+      this.refreshLayerDefinition();
     });
-  }
-
-  /**
-   * @function save
-   * @memberof hs.styler.controller
-   * @description Get current style variables value and style current layer accordingly
-   * @param {Layer} layer
-   */
-  getLayerSource(layer: Layer) {
-    let src = [];
-    if (layer.getSource().getSource !== undefined) {
-      src = layer.getSource().getSource();
-    } else {
-      src = layer.getSource();
-    }
-    return src;
   }
 
   toDecimal2(n: number) {
@@ -141,8 +126,7 @@ export class HsStylerComponent {
     if (this.imagetype == 'icon') {
       this.colorIcon();
     }
-    const source: any = this.getLayerSource(this.HsStylerService.layer);
-    const style_json: styleJson = {};
+    const style_json: StyleJson = {};
     //FILL
     if (this.fillcolor !== undefined && this.fillcolor !== null) {
       style_json.fill = new Fill({
@@ -166,7 +150,7 @@ export class HsStylerComponent {
         this.imagetype == 'circle' &&
         (this.iconfillcolor !== undefined || this.iconlinecolor !== undefined)
       ) {
-        const circle_json: styleJson = {
+        const circle_json: StyleJson = {
           radius: this.radius !== undefined ? this.toDecimal2(this.radius) : 5,
         };
         if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
@@ -198,10 +182,7 @@ export class HsStylerComponent {
             crossOrigin: 'anonymous',
           };
           style_json.image = new Icon(icon_json);
-          source.getFeatures().forEach((f) => {
-            f.setStyle(null);
-          });
-          this.HsStylerService.layer.setStyle(new Style(style_json));
+          this.setStyleByJson(style_json);
         };
       }
     }
@@ -210,17 +191,38 @@ export class HsStylerComponent {
       style_json.stroke !== undefined ||
       style_json.image !== undefined
     ) {
-      const style = new Style(style_json);
-      source.getFeatures().forEach((f) => {
-        f.setStyle(null);
-      });
-      this.HsStylerService.layer.setStyle(style);
+      this.setStyleByJson(style_json);
+    }
+  }
+
+  setStyleByJson(style_json: StyleJson): void {
+    const style = new Style(style_json);
+    const layer = this.HsStylerService.layer;
+    switch (this.level) {
+      case 'feature':
+        const source = this.HsStylerService.getLayerSource(layer);
+        const isClustered = layer.getSource().getSource != undefined;
+        if (isClustered) {
+          layer.getSource().setSource(new VectorSource());
+        }
+        for (const f of source.getFeatures()) {
+          f.setStyle(style);
+        }
+        if (isClustered) {
+          layer.getSource().setSource(source);
+          layer.setStyle(layer.getStyle());
+        }
+        break;
+      case 'layer':
+      default:
+        layer.setStyle(style);
+        break;
     }
   }
 
   /**
    * @function iconSelected
-   * @memberof hs.styler.controller
+   * @memberof HsStylerComponent
    * @param {SafeResourceUrl} i Sanitized icon resource
    * @description Load selected SVG icon and use it for layer
    */
@@ -241,7 +243,7 @@ export class HsStylerComponent {
 
   /**
    * @function colorIcon
-   * @memberof hs.styler.controller
+   * @memberof HsStylerComponent
    * @description Change colors of selected icon based on user input. Decode modifyied icon into Base-64
    */
   colorIcon(): void {
@@ -268,7 +270,7 @@ export class HsStylerComponent {
   }
   /**
    * @function setImageType
-   * @memberof hs.styler.controller
+   * @memberof HsStylerComponent
    * @params {string} t New image type
    * @description Change image type for point geometry and redraw style
    * @param t
@@ -283,15 +285,17 @@ export class HsStylerComponent {
   }
 
   /**
-   * @function updateHasVectorFeatures
-   * @memberof hs.styler.controller
+   * @function refreshLayerDefinition
+   * @memberof HsStylerComponent
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
-  updateHasVectorFeatures(): void {
+  refreshLayerDefinition(): void {
     if (this.HsStylerService.layer === null) {
       return;
     }
-    const src: any = this.getLayerSource(this.HsStylerService.layer);
+    const src: any = this.HsStylerService.getLayerSource(
+      this.HsStylerService.layer
+    );
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
@@ -307,7 +311,7 @@ export class HsStylerComponent {
 
   /**
    * @function calculateHasLinePointPoly
-   * @memberof hs.styler.controller
+   * @memberof HsStylerComponent
    * @private
    * @description (PRIVATE) Calculate vector type if not specified in layer metadata
    * @param src

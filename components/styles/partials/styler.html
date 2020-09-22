@@ -8,6 +8,19 @@
         </button>
     </div>
     <div class="card-body">
+        <div class="btn-group btn-group-toggle m-1">
+            <label class="btn btn-outline-dark disabled">
+            {{'STYLER.level' | translate}}:
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active': level == 'layer'}" for="hs-styler-layer">
+              {{'COMMON.layer' | translate}}
+              <input type="radio" name="level" id="hs-styler-layer" value="layer" [(ngModel)]="level">
+            </label>
+            <label class="btn btn-secondary" [ngClass]="{'active': level == 'feature'}"  for="hs-styler-feature">
+              {{'COMMON.feature' | translate}}
+              <input type="radio" name="level" id="hs-styler-feature" value="feature" [(ngModel)]="level">
+            </label>
+        </div>
         <form class="form-inline">
             <div class="card panel-info" [hidden]="!hasPoly">
                 <div class="card-header">
