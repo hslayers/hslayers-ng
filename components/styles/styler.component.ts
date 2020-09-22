@@ -123,7 +123,7 @@ export class HsStylerComponent {
     return Math.round(n * 100) / 100;
   }
 
-  save(): void {
+  async save(): Promise<void> {
     if (!this.HsStylerService.layer) {
       return;
     }
@@ -184,27 +184,32 @@ export class HsStylerComponent {
         style_json.image = new Circle(circle_json);
       }
       if (this.imagetype == 'icon' && this.serialized_icon !== undefined) {
-        const img = new Image();
-        img.src = this.serialized_icon;
-        img.onload = () => {
-          const icon_json = {
-            img: img,
-            imgSize: [img.width, img.height],
-            anchor: [0.5, 1],
-            crossOrigin: 'anonymous',
-          };
-          style_json.image = new Icon(icon_json);
-          this.setStyleByJson(style_json);
+        const img = await this.loadImage(this.serialized_icon);
+        const icon_json = {
+          img: img,
+          imgSize: [img.width, img.height],
+          anchor: [0.5, 1],
+          crossOrigin: 'anonymous',
         };
+        style_json.image = new Icon(icon_json);
+        this.setStyleByJson(style_json);
       }
-    }
-    if (
+    } else if (
       style_json.fill !== undefined ||
       style_json.stroke !== undefined ||
       style_json.image !== undefined
     ) {
       this.setStyleByJson(style_json);
     }
+  }
+
+  loadImage(src): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.addEventListener('load', () => resolve(img));
+      img.addEventListener('error', (err) => reject(err));
+      img.src = src;
+    });
   }
 
   setStyleByJson(style_json: StyleJson): void {
@@ -253,8 +258,12 @@ export class HsStylerComponent {
       })
       .subscribe((response) => {
         this.iconimage = this.sanitizer.bypassSecurityTrustHtml(response);
-        this.colorIcon();
-        this.save();
+        //Timeout is needed even in angular 9, because svg is loaded on
+        // next digest and used in marker generation
+        setTimeout(() => {
+          this.colorIcon();
+          this.save();
+        }, 0);
       });
   }
 
