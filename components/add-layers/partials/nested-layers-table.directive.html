@@ -1,7 +1,7 @@
 <table class="table table-sm table-striped table-bordered" style="width:100%">
     <tbody ng-repeat="sub_layer in layers">
         <tr>
-            <td style="width: 1em"><input type="checkbox"ng-model="sub_layer.checked" /></td>
+            <td style="width: 1em"><input type="checkbox"ng-model="sub_layer.checked" ng-change="checkboxChange(sub_layer)" /></td>
             <td id="hs-add-layer-{{sub_layer.Name}}" style="width: 30%; padding-left:1em">{{sub_layer.Name}}</td>
             <td style="width: 40%;"> {{sub_layer.Title}}</td>
             <td>{{sub_layer.Abstract}}</td>

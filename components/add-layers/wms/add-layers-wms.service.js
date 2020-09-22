@@ -39,7 +39,8 @@ export default function (
     registerMetadata: true,
     tileSize: 512,
   };
-
+  this.checkedLayers = {};
+  this.checked = Boolean;
   /**
    * @param caps
    * @param response
@@ -188,7 +189,18 @@ export default function (
       );
     }, 0);
   };
-
+    /**
+   * @function checkboxChange
+   * @memberOf add-layers-wms.service
+   * @description Determines whether any of checkboxes (layer/sublayer) of add-layer-wms directive is checked. 
+   * @param {boolean} changed - Layer or sublayer of service to be added to map
+   */
+  me.checkboxChange = function (changed) {
+    me.checkedLayers[changed.$$hashKey] = changed.checked;
+    me.checked = Object.keys(me.checkedLayers).some((k) => {
+      return me.checkedLayers[k] == true;
+    });
+  };
   /**
    * @function addLayers
    * @memberOf add-layers-wms.controller
