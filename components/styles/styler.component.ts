@@ -1,6 +1,6 @@
 import VectorSource from 'ol/source/Vector';
 import {Component} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerEditorVectorLayerService} from './../layermanager/layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
