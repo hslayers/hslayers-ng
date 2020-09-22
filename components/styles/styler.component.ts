@@ -210,7 +210,7 @@ export class HsStylerComponent {
   setStyleByJson(style_json: StyleJson): void {
     const style = new Style(style_json);
     const layer = this.HsStylerService.layer;
-    const isClustered = layer.getSource().getSource != undefined;
+    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
     switch (this.level) {
       case 'feature':
         const source = this.HsStylerService.getLayerSource(layer);
@@ -229,8 +229,10 @@ export class HsStylerComponent {
       default:
         if (isClustered) {
           this.HsStylerService.layer.set('hsOriginalStyle', style);
+          layer.setStyle(layer.getStyle());
+        } else {
+          layer.setStyle(style);
         }
-        layer.setStyle(style);
         break;
     }
   }
