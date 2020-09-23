@@ -159,6 +159,7 @@ export class HsStylerComponent {
     }
     //
     if (this.imagetype != 'none') {
+      style_json.image = null;
       if (
         this.imagetype == 'circle' &&
         (this.iconfillcolor !== undefined || this.iconlinecolor !== undefined)
@@ -182,6 +183,7 @@ export class HsStylerComponent {
           });
         }
         style_json.image = new Circle(circle_json);
+        this.setStyleByJson(style_json);
       }
       if (this.imagetype == 'icon' && this.serialized_icon !== undefined) {
         const img = await this.loadImage(this.serialized_icon);
