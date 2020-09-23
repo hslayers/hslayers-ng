@@ -65,10 +65,8 @@ export class HsLayerEditorVectorLayerService {
    * @param {number} distance
    */
   cluster(newValue: boolean, layer: Layer, distance: number): void {
-    if (!layer.get('hsOriginalStyle')) {
-      layer.set('hsOriginalStyle', layer.getStyle());
-    }
     if (newValue == true && !layer.get('declutter')) {
+      layer.set('hsOriginalStyle', layer.getStyle());
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         this.styleLayer(layer);
@@ -100,19 +98,14 @@ export class HsLayerEditorVectorLayerService {
     });
   }
 
-  styleLayer(layer: VectorLayer, customStyle?: Style): void {
+  styleLayer(layer: VectorLayer): void {
     const styleCache = {};
     layer.setStyle((feature: Feature, resolution: number) => {
       const size = feature.get('features')?.length || 0;
       if (size > 1) {
         return this.makeClusterMarker(styleCache, size);
       } else {
-        return this.makeSingleFeatureClusterMarker(
-          feature,
-          resolution,
-          layer,
-          customStyle
-        );
+        return this.makeSingleFeatureClusterMarker(feature, resolution, layer);
       }
     });
   }
@@ -120,42 +113,64 @@ export class HsLayerEditorVectorLayerService {
   private makeSingleFeatureClusterMarker(
     feature: Feature,
     resolution: number,
-    layer: VectorLayer,
-    customStyle?: Style
+    layer: VectorLayer
   ) {
-    if (customStyle !== undefined) {
-      return this.useStyleOnFirstFeature(customStyle, feature);
+    let originalStyle;
+    const featureStyle = feature.get('features')
+      ? feature.get('features')[0].getStyle()
+      : feature.getStyle();
+    if (featureStyle) {
+      originalStyle = featureStyle;
     } else {
-      let originalStyle;
-      const featureStyle = feature.get('features')
-        ? feature.get('features')[0].getStyle()
-        : feature.getStyle();
-      if (featureStyle) {
-        originalStyle = featureStyle;
-      } else {
+      if (layer.get('hsOriginalStyle')) {
         originalStyle = layer.get('hsOriginalStyle');
+      } else {
+        const defaultStyle = new Style({
+          stroke: new Stroke({
+            color: 'rgba(0, 153, 255, 1)',
+            width: 1.25,
+          }),
+          fill: new Fill({
+            color: 'rgba(255,255,255,0.5)',
+          }),
+          image: new Circle({
+            radius: 5,
+            fill: new Fill({
+              color: 'rgba(255,255,255,0.5)',
+            }),
+            stroke: new Stroke({
+              color: 'rgba(0, 153, 255, 1)',
+              width: 1.25,
+            }),
+          }),
+        });
+        originalStyle = defaultStyle;
+        layer.set('hsOriginalStyle', defaultStyle);
       }
-      const appliedStyle = this.applyStyleIfNeeded(
-        originalStyle,
-        feature,
-        resolution
-      );
-      if (this.isSelectedFeature(feature)) {
-        appliedStyle[0] = appliedStyle[0].clone();
-        appliedStyle[0].setFill(
-          new Fill({
-            color: [255, 255, 255, 0.5],
-          })
-        );
-        appliedStyle[0].setStroke(
-          new Stroke({
-            color: [0, 153, 255, 1],
-            width: 3,
-          })
-        );
-      }
-      return this.useStyleOnFirstFeature(appliedStyle, feature);
     }
+    let appliedStyle = this.applyStyleIfNeeded(
+      originalStyle,
+      feature,
+      resolution
+    );
+    if (this.isSelectedFeature(feature)) {
+      if (Array.isArray(appliedStyle)) {
+        appliedStyle = appliedStyle[0];
+      }
+      appliedStyle = appliedStyle.clone();
+      appliedStyle.setFill(
+        new Fill({
+          color: [255, 255, 255, 0.5],
+        })
+      );
+      appliedStyle.setStroke(
+        new Stroke({
+          color: [0, 153, 255, 1],
+          width: 3,
+        })
+      );
+    }
+    return this.useStyleOnFirstFeature(appliedStyle, feature);
   }
 
   isSelectedFeature(feature: Feature): boolean {
