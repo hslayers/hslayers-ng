@@ -247,7 +247,7 @@ export class HsStylerComponent {
         break;
     }
     if (isClustered) {
-      layer.setStyle(layer.getStyle());
+      this.repaintCluster(layer);
     }
   }
 
