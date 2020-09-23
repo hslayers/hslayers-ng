@@ -230,35 +230,46 @@ export class HsStylerComponent {
     const style = new Style(style_json);
     const layer = this.HsStylerService.layer;
     const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
-    const source = this.HsStylerService.getLayerSource(layer);
     switch (this.level) {
       case 'feature':
+        this.setStyleForFeatures(layer, style);
         if (isClustered) {
-          layer.getSource().setSource(new VectorSource());
-        }
-        for (const f of source.getFeatures()) {
-          f.setStyle(style);
-        }
-        if (isClustered) {
-          layer.getSource().setSource(source);
           layer.setStyle(layer.getStyle());
         }
         break;
       case 'layer':
       default:
+        this.setStyleForFeatures(layer, null);
         if (isClustered) {
-          layer.getSource().setSource(new VectorSource());
-          for (const f of source.getFeatures().filter((f) => f.getStyle())) {
-            f.setStyle(null);
-          }
           this.HsStylerService.layer.set('hsOriginalStyle', style);
-          layer.getSource().setSource(source);
           layer.setStyle(layer.getStyle());
         } else {
           layer.setStyle(style);
         }
         break;
     }
+  }
+
+  /**
+   * Sets style for all features in a given layer.
+   * For cluster layers the style is set for underlying sources features.
+   *
+   * @param {VectorLayer} layer Layer for whose features is the style set.
+   * @param {StyleLike|null} style Style to set for the feature. Can be null
+   */
+  private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
+    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+    const underlyingSource = this.HsStylerService.getLayerSource(layer);
+    /**
+     * We set a blank VectorSource temporarily
+     * to disable change event broadcasting and linked
+     * repainting on each call of setStyle for all features.
+     */
+    (isClustered ? layer.getSource() : layer).setSource(new VectorSource());
+    for (const f of underlyingSource.getFeatures()) {
+      f.setStyle(style);
+    }
+    (isClustered ? layer.getSource() : layer).setSource(underlyingSource);
   }
 
   /**
@@ -373,7 +384,7 @@ export class HsStylerComponent {
       for (const subStyle of resolvedStyle) {
         this.parseStyle(subStyle);
       }
-    } else if (this.HsUtilsService.instOf(resolvedStyle, Style)){
+    } else if (this.HsUtilsService.instOf(resolvedStyle, Style)) {
       this.parseStyle(resolvedStyle);
     }
   }
