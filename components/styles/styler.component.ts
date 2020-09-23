@@ -233,21 +233,32 @@ export class HsStylerComponent {
     switch (this.level) {
       case 'feature':
         this.setStyleForFeatures(layer, style);
-        if (isClustered) {
-          layer.setStyle(layer.getStyle());
-        }
         break;
       case 'layer':
       default:
         this.setStyleForFeatures(layer, null);
         if (isClustered) {
+          /* hsOriginalStyle is used only for cluster layers 
+          when styling clusters with just one feature in it */
           this.HsStylerService.layer.set('hsOriginalStyle', style);
-          layer.setStyle(layer.getStyle());
         } else {
           layer.setStyle(style);
         }
         break;
     }
+    if (isClustered) {
+      layer.setStyle(layer.getStyle());
+    }
+  }
+
+  /**
+   * Force repainting of clusters by reapplying cluster style which
+   * was created in cluster method
+   *
+   * @param {VectorLayer} layer Vector layer
+   */
+  repaintCluster(layer: VectorLayer): void {
+    layer.setStyle(layer.getStyle());
   }
 
   /**
