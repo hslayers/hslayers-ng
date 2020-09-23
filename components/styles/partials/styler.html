@@ -76,7 +76,7 @@
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)'>
                             <input type="radio" class="form-control" [value]="m.name"
-                                name="imagetype" />{{m.hrname}}
+                                name="imagetype" [attr.checked]="m.name == imagetype ? '' : null" />{{m.hrname}}
                         </label>
                     </div>
 

@@ -39,7 +39,7 @@ export class HsStylerComponent {
       hrname: 'Circle',
     },
   ];
-  imagetype = this.imagetypes[0].name;
+  imagetype = this.imagetypes[2].name;
   radius = 5;
   linewidth = 2;
   iconlinewidth = 1;
@@ -141,7 +141,11 @@ export class HsStylerComponent {
       return;
     }
     if (this.imagetype == 'icon') {
-      this.colorIcon();
+      // When no icon is selected yet, then pick one randomly
+      if (this.iconimage === undefined || this.iconimage === null) {
+        const randomIconIdx = Math.floor(Math.random() * this.icons.length);
+        this.iconSelected(this.icons[randomIconIdx]);
+      }
     }
     const style_json: StyleJson = {};
     //FILL
@@ -311,7 +315,7 @@ export class HsStylerComponent {
   /**
    * @function colorIcon
    * @memberof HsStylerComponent
-   * @description Change colors of selected icon based on user input. Decode modifyied icon into Base-64
+   * @description Change colors of selected icon based on user input. Decode modified icon into Base-64
    */
   colorIcon(): void {
     const iconPreview = document.getElementsByClassName(
@@ -338,11 +342,10 @@ export class HsStylerComponent {
   /**
    * @function setImageType
    * @memberof HsStylerComponent
-   * @params {string} t New image type
+   * @param {string} t New image type
    * @description Change image type for point geometry and redraw style
-   * @param t
    */
-  setImageType(t): void {
+  setImageType(t: string): void {
     this.imagetype = t;
     this.save();
   }
