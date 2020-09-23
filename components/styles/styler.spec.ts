@@ -15,10 +15,13 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Polygon} from 'ol/geom';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
+import {createDefaultStyle} from 'ol/style/Style';
 
 class emptyMock {
   constructor() {}
@@ -77,6 +80,7 @@ describe('HsStyler', () => {
         HsStylerService,
         TranslateStore,
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
@@ -91,13 +95,21 @@ describe('HsStyler', () => {
     expect(component).toBeTruthy();
   });
 
-  it('HasLinePointPoly', () => {
+  it('detect geometry types', () => {
     component.refreshLayerDefinition();
     expect(component.hasLine).toBe(false);
     expect(component.hasPoly).toBe(true);
     expect(component.hasPoint).toBe(true);
   });
-  it('styleChange', () => {
+  it('should resolve style function', () => {
+    service.layer.setStyle(createDefaultStyle);
+    component.refreshLayerDefinition();
+    expect(component.linecolor).toBeDefined();
+    expect(component.linecolor['background-color']).toBe(
+      'rgba(51, 153, 204, 1)'
+    );
+  });
+  it('change style', () => {
     component.fillcolor = {
       'background-color': 'rgba(244, 235, 55, 1)',
     };

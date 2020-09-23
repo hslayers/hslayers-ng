@@ -1,15 +1,16 @@
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 type StyleJson = {
   fill?: any;
@@ -61,7 +62,8 @@ export class HsStylerComponent {
     private HsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
     private HsLayerUtilsService: HsLayerUtilsService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsStylerColorService: HsStylerColorService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler' && !this.icons) {
@@ -123,97 +125,96 @@ export class HsStylerComponent {
     return Math.round(n * 100) / 100;
   }
 
-  save(): void {
+  debounceSave() {
     this.HsUtilsService.debounce(
-      async () => {
-        if (!this.HsStylerService.layer) {
-          return;
-        }
-        if (this.imagetype == 'icon') {
-          this.colorIcon();
-        }
-        const style_json: StyleJson = {};
-        //FILL
-        if (this.fillcolor !== undefined) {
-          style_json.fill = new Fill({
-            color: this.fillcolor['background-color'],
-          });
-        } else {
-          style_json.fill = new Fill({
-            color: 'rgb(0,0,255)',
-          });
-        }
-        //STROKE WIDTH
-        if (
-          this.linecolor !== undefined &&
-          this.linecolor !== null &&
-          this.linewidth > 0
-        ) {
-          style_json.stroke = new Stroke({
-            color: this.linecolor['background-color'],
-            width: this.linewidth !== undefined ? this.linewidth : 1,
-          });
-        } else {
-          style_json.stroke = new Stroke({
-            color: 'rgb(44,0,200)',
-            width: this.linewidth !== undefined ? this.linewidth : 1,
-          });
-        }
-        //
-        if (this.imagetype != 'none') {
-          style_json.image = null;
-          if (
-            this.imagetype == 'circle' &&
-            (this.iconfillcolor !== undefined ||
-              this.iconlinecolor !== undefined)
-          ) {
-            const circle_json: StyleJson = {
-              radius:
-                this.radius !== undefined ? this.toDecimal2(this.radius) : 5,
-            };
-            if (
-              this.iconfillcolor !== undefined &&
-              this.iconfillcolor !== null
-            ) {
-              circle_json.fill = new Fill({
-                color: this.iconfillcolor['background-color'],
-              });
-            }
-            if (
-              this.iconlinecolor !== undefined &&
-              this.iconlinecolor !== null &&
-              this.iconlinewidth > 0
-            ) {
-              circle_json.stroke = new Stroke({
-                color: this.iconlinecolor['background-color'],
-                width: this.iconlinewidth,
-              });
-            }
-            style_json.image = new Circle(circle_json);
-          }
-          if (this.imagetype == 'icon' && this.serialized_icon !== undefined) {
-            const img = await this.loadImage(this.serialized_icon);
-            const icon_json = {
-              img: img,
-              imgSize: [img.width, img.height],
-              anchor: [0.5, 1],
-              crossOrigin: 'anonymous',
-            };
-            style_json.image = new Icon(icon_json);
-          }
-        }
-        if (
-          style_json.fill !== undefined ||
-          style_json.stroke !== undefined ||
-          style_json.image !== undefined
-        ) {
-          this.setStyleByJson(style_json);
-        }
+      () => {
+        this.save();
       },
       200,
       false,
       this
     )();
+  }
+
+  async save(): Promise<void> {
+    if (!this.HsStylerService.layer) {
+      return;
+    }
+    if (this.imagetype == 'icon') {
+      this.colorIcon();
+    }
+    const style_json: StyleJson = {};
+    //FILL
+    if (this.fillcolor !== undefined) {
+      style_json.fill = new Fill({
+        color: this.fillcolor['background-color'],
+      });
+    } else {
+      style_json.fill = new Fill({
+        color: 'rgb(0,0,255)',
+      });
+    }
+    //STROKE WIDTH
+    if (
+      this.linecolor !== undefined &&
+      this.linecolor !== null &&
+      this.linewidth > 0
+    ) {
+      style_json.stroke = new Stroke({
+        color: this.linecolor['background-color'],
+        width: this.linewidth !== undefined ? this.linewidth : 1,
+      });
+    } else {
+      style_json.stroke = new Stroke({
+        color: 'rgb(44,0,200)',
+        width: this.linewidth !== undefined ? this.linewidth : 1,
+      });
+    }
+    //
+    if (this.imagetype != 'none') {
+      style_json.image = null;
+      if (
+        this.imagetype == 'circle' &&
+        (this.iconfillcolor !== undefined || this.iconlinecolor !== undefined)
+      ) {
+        const circle_json: StyleJson = {
+          radius: this.radius !== undefined ? this.toDecimal2(this.radius) : 5,
+        };
+        if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
+          circle_json.fill = new Fill({
+            color: this.iconfillcolor['background-color'],
+          });
+        }
+        if (
+          this.iconlinecolor !== undefined &&
+          this.iconlinecolor !== null &&
+          this.iconlinewidth > 0
+        ) {
+          circle_json.stroke = new Stroke({
+            color: this.iconlinecolor['background-color'],
+            width: this.iconlinewidth,
+          });
+        }
+        style_json.image = new Circle(circle_json);
+      }
+      if (this.imagetype == 'icon' && this.serialized_icon !== undefined) {
+        const img = await this.loadImage(this.serialized_icon);
+        const icon_json = {
+          img: img,
+          imgSize: [img.width, img.height],
+          anchor: [0.5, 1],
+          crossOrigin: 'anonymous',
+        };
+        style_json.image = new Icon(icon_json);
+      }
+    }
+    if (
+      style_json.fill !== undefined ||
+      style_json.stroke !== undefined ||
+      style_json.image !== undefined
+    ) {
+      this.setStyleByJson(style_json);
+    }
   }
 
   loadImage(src): Promise<HTMLImageElement> {
@@ -246,18 +247,13 @@ export class HsStylerComponent {
       case 'layer':
       default:
         if (isClustered) {
-          console.log('step 1', new Date());
           layer.getSource().setSource(new VectorSource());
-          console.log('step 2', new Date());
           for (const f of source.getFeatures().filter((f) => f.getStyle())) {
             f.setStyle(null);
           }
-          console.log('step 3', new Date());
           this.HsStylerService.layer.set('hsOriginalStyle', style);
           layer.getSource().setSource(source);
-          console.log('step 4', new Date());
           layer.setStyle(layer.getStyle());
-          console.log('step 5', new Date());
         } else {
           layer.setStyle(style);
         }
@@ -352,10 +348,49 @@ export class HsStylerComponent {
       return;
     }
     this.calculateHasLinePointPoly(src);
+    this.readCurrentStyle(this.HsStylerService.layer);
     this.hasLine = src.hasLine;
     this.hasPoly = src.hasPoly;
     this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
+  }
+
+  readCurrentStyle(layer: VectorLayer): void {
+    let style = layer.getStyle();
+    if (this.HsLayerUtilsService.isLayerClustered(layer)) {
+      style = layer.get('hsOriginalStyle');
+    }
+    if (typeof style == 'function') {
+      const resolvedStyle: Style | Style[] = style(new Feature());
+      this.parseStyles(resolvedStyle);
+    } else if (this.HsUtilsService.instOf(style, Style)) {
+      this.parseStyle(style);
+    }
+  }
+
+  private parseStyles(resolvedStyle: Style | Style[]) {
+    if (Array.isArray(resolvedStyle)) {
+      for (const subStyle of resolvedStyle) {
+        this.parseStyle(subStyle);
+      }
+    } else if (this.HsUtilsService.instOf(resolvedStyle, Style)){
+      this.parseStyle(resolvedStyle);
+    }
+  }
+
+  private parseStyle(subStyle: Style) {
+    if (subStyle.getStroke()?.getColor()) {
+      this.linecolor = this.HsStylerColorService.findAndParseColor(
+        subStyle.getStroke().getColor()
+      );
+      this.iconlinecolor = this.linecolor;
+    }
+    if (subStyle.getFill()?.getColor()) {
+      this.fillcolor = this.HsStylerColorService.findAndParseColor(
+        subStyle.getFill().getColor()
+      );
+      this.iconfillcolor = this.fillcolor;
+    }
   }
 
   /**

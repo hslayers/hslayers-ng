@@ -5,10 +5,11 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {FormsModule} from '@angular/forms';
 import {HsStylerColorComponent} from './styler-color.component';
+import {HsStylerColorService} from './styler-color.service';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +25,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     TranslateModule,
   ],
   exports: [HsStylerComponent, HsStylerColorComponent],
-  providers: [HsStylerService, TranslateStore],
+  providers: [HsStylerService, HsStylerColorService],
   entryComponents: [HsStylerComponent, HsStylerColorComponent],
 })
 export class HsStylerModule {}

@@ -97,8 +97,8 @@
     "STYLER": {
       "features": "Prvky",
       "layer": "Vrstva",
-      "level": "Rovina",
-      "selection": "Izv. objekts"
+      "level": "Úroveň",
+      "selection": "Výber"
     },
     "layerEditor": {
       "metadata": "Metadata",

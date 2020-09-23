@@ -1,13 +1,13 @@
 <div class="d-flex flex-row">
     <div class="d-flex flex-wrap">
-        <div *ngFor="let col of colors | slice:15" [ngStyle]="col" class="hs-styler-colorbox"
+        <div *ngFor="let col of HsStylerColorService.colors | slice:15" [ngStyle]="col" class="hs-styler-colorbox"
             (click)="colorSelected(col)">
         </div><br />
-        <div *ngFor="let col of colors | slice:0:16" [ngStyle]="col" class="hs-styler-colorbox"
+        <div *ngFor="let col of HsStylerColorService.colors | slice:0:16" [ngStyle]="col" class="hs-styler-colorbox"
             (click)="colorSelected(col)">
         </div>
     </div>
-    <div class="hs-styler-remove p-1" style="font-size: 17px;" (click)="colorSelected(blank)">
+    <div class="hs-styler-remove p-1" style="font-size: 17px;" (click)="colorSelected(HsStylerColorService.blank)">
         <span class="icon-remove" aria-hidden="false"></span>
     </div>
 </div>
