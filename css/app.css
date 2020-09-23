@@ -776,9 +776,11 @@ hs-sidebar {
 }
 
 .hs-styler-colorbox:hover {
-	width: 20px;
-	height: 20px;
-	margin: -3px 0px;
+	width: 25px;
+    height: 25px;
+    margin: -5px -4.5px;
+    border: 1px solid black;
+    z-index: 10;
 }
 .hs-styler-remove:hover {
 	color: #007bff;

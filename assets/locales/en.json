@@ -4,8 +4,6 @@
     "abstract": "Abstract",
     "no": "No",
     "date": "Date",
-    "layer": "Layer",
-    "feature": "Feature",
     "from": "From",
     "to": "to",
     "filter": "Filter:",
@@ -81,7 +79,10 @@
     "APPLICATIONSETTINGS": "Application settings"
   },
   "STYLER": {
-    "level": "Level"
+    "level": "Level",
+    "layer": "Layer",
+    "features": "Features",
+    "selection": "Selection"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",

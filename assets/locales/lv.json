@@ -4,8 +4,6 @@
     "abstract": "Apraksts",
     "no": "No",
     "date": "Datums",
-    "layer": "Slānis",
-    "feature": "Objekts",
     "from": "No",
     "to": "līdz",
     "distance": "Distance",
@@ -81,7 +79,10 @@
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi"
   },
   "STYLER": {
-    "level": "Līmenis"
+    "level": "Līmenis",
+    "layer": "Slānis",
+    "features": "Objekti",
+    "selection": "Izv. objekts"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
