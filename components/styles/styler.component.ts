@@ -405,13 +405,23 @@ export class HsStylerComponent {
       this.linecolor = this.HsStylerColorService.findAndParseColor(
         subStyle.getStroke().getColor()
       );
-      this.iconlinecolor = this.linecolor;
     }
     if (subStyle.getFill()?.getColor()) {
       this.fillcolor = this.HsStylerColorService.findAndParseColor(
         subStyle.getFill().getColor()
       );
-      this.iconfillcolor = this.fillcolor;
+    }
+    if (subStyle.image) {
+      if (subStyle.image.getStroke()?.getColor()) {
+        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
+          subStyle.getStroke().getColor()
+        );
+      }
+      if (subStyle.image.getFill()?.getColor()) {
+        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
+          subStyle.getFill().getColor()
+        );
+      }
     }
   }
 
