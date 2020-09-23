@@ -2,7 +2,6 @@ import VectorSource from 'ol/source/Vector';
 import {Component} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerEditorVectorLayerService} from './../layermanager/layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerService} from '../styles/styler.service';
@@ -60,7 +59,6 @@ export class HsStylerComponent {
     private http: HttpClient,
     private HsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
@@ -159,6 +157,7 @@ export class HsStylerComponent {
     }
     //
     if (this.imagetype != 'none') {
+      style_json.image = null;
       if (
         this.imagetype == 'circle' &&
         (this.iconfillcolor !== undefined || this.iconlinecolor !== undefined)
@@ -192,9 +191,9 @@ export class HsStylerComponent {
           crossOrigin: 'anonymous',
         };
         style_json.image = new Icon(icon_json);
-        this.setStyleByJson(style_json);
       }
-    } else if (
+    }
+    if (
       style_json.fill !== undefined ||
       style_json.stroke !== undefined ||
       style_json.image !== undefined
