@@ -25,8 +25,21 @@ type StyleJson = {
 })
 export class HsStylerComponent {
   icons: any;
-  imagetypes: string[] = ['none', 'icon', 'circle'];
-  imagetype = this.imagetypes[2];
+  imagetypes: Array<any> = [
+    {
+      name: 'none',
+      hrname: 'None',
+    },
+    {
+      name: 'icon',
+      hrname: 'Icon',
+    },
+    {
+      name: 'circle',
+      hrname: 'Circle',
+    },
+  ];
+  imagetype = this.imagetypes[2].name;
   radius = 5;
   linewidth = 2;
   iconlinewidth = 1;

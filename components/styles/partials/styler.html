@@ -13,19 +13,19 @@
             {{'STYLER.level' | translate}}:
             </label>
             <label class="btn btn-secondary" [ngClass]="{'active': level == 'layer'}" for="hs-styler-layer">
-                {{'STYLER.layer' | translate}}
-                <input type="radio" name="level" id="hs-styler-layer" value="layer" [(ngModel)]="level">
+              {{'STYLER.layer' | translate}}
+              <input type="radio" name="level" id="hs-styler-layer" value="layer" [(ngModel)]="level">
             </label>
             <label class="btn btn-secondary" [ngClass]="{'active': level == 'feature'}"  for="hs-styler-features">
-                {{'STYLER.features' | translate}}
-                <input type="radio" name="level" id="hs-styler-features" value="feature" [(ngModel)]="level">
+              {{'STYLER.features' | translate}}
+              <input type="radio" name="level" id="hs-styler-features" value="feature" [(ngModel)]="level">
             </label>
-            <!--
+           <!--
 <label class="btn btn-secondary" [ngClass]="{'active': level == 'selection'}"  for="hs-styler-selection">
                 {{'STYLER.selection' | translate}}
                 <input type="radio" name="level" id="hs-styler-selection" value="selection" [(ngModel)]="level">
             </label>
-            --> 
+           --> 
         </div>
         <form class="form-inline">
             <div class="card panel-info" [hidden]="!hasPoly">
@@ -74,9 +74,9 @@
                 <div class="card-body">
 
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" *ngFor="let type of imagetypes" (click)='setImageType(type)'>
-                            <input type="radio" class="form-control" [value]="type"
-                                name="imagetype" [attr.checked]="type == imagetype ? '' : null" />{{type[0].toUpperCase() + type.slice(1)}}
+                        <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)'>
+                            <input type="radio" class="form-control" [value]="m.name"
+                                name="imagetype" [attr.checked]="m.name == imagetype ? '' : null" />{{m.hrname}}
                         </label>
                     </div>
 
