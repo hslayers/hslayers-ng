@@ -20,6 +20,10 @@
               {{'STYLER.features' | translate}}
               <input type="radio" name="level" id="hs-styler-features" value="feature" [(ngModel)]="level">
             </label>
+            <label class="btn btn-secondary" *ngIf="isClustered" [ngClass]="{'active': level == 'cluster'}"  for="hs-styler-cluster">
+                Cluster
+                <input type="radio" name="level" id="hs-styler-cluster" value="cluster" [(ngModel)]="level">
+              </label>
            <!--
 <label class="btn btn-secondary" [ngClass]="{'active': level == 'selection'}"  for="hs-styler-selection">
                 {{'STYLER.selection' | translate}}
@@ -74,8 +78,8 @@
                 <div class="card-body">
 
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)'>
-                            <input type="radio" class="form-control" [value]="m.name"
+                        <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)' [hidden]="level == 'cluster'">
+                            <input type="radio" class="form-control" [value]="m.name" 
                                 name="imagetype" [attr.checked]="m.name == imagetype ? '' : null" />{{m.hrname}}
                         </label>
                     </div>
@@ -92,7 +96,7 @@
                         <hs-styler-color-component (click)="colorIcon(); debounceSave()" [(color)]="iconlinecolor"></hs-styler-color-component>
                     </div>
 
-                    <div class="d-flex flex-row" *ngIf="imagetype == 'circle'">
+                    <div class="d-flex flex-row" *ngIf="imagetype == 'circle' && level != 'cluster'">
                         <div class="flex-grow-1 p-1">
                             {{'COMMON.radius' | translate}}
                         </div>
@@ -105,7 +109,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex flex-row">
+                    <div class="d-flex flex-row" *ngIf="level != 'cluster'">
                         <div class="flex-grow-1 p-1">
                             {{'COMMON.lineWidth' | translate}}
                         </div>

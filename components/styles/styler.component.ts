@@ -5,6 +5,7 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerEditorVectorLayerService} from '../layermanager/layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerColorService} from './styler-color.service';
@@ -53,7 +54,8 @@ export class HsStylerComponent {
   hasPoly: any;
   hasPoint: any;
   layerTitle: string;
-  level: 'feature' | 'layer' = 'layer';
+  level: 'feature' | 'cluster' | 'layer' = 'layer';
+  isClustered: boolean;
 
   constructor(
     private HsStylerService: HsStylerService,
@@ -63,59 +65,65 @@ export class HsStylerComponent {
     public sanitizer: DomSanitizer,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService,
-    private HsStylerColorService: HsStylerColorService
+    private HsStylerColorService: HsStylerColorService,
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (this.HsLayoutService.mainpanel == 'styler' && !this.icons) {
-        this.icons = [
-          require(/* webpackChunkName: "img" */ './img/svg/bag1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/banking4.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/bar.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/beach17.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/bicycles.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/building103.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/bus4.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/cabinet9.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/camping13.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/caravan.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/church15.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/church1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/coffee-shop1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/disabled.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/favourite28.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/football1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/footprint.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gift-shop.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gps40.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gps41.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gps42.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gps43.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/gps5.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/hospital.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/hot-air-balloon2.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/information78.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/library21.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/location6.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/luggage13.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/monument1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/mountain42.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/museum35.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/park11.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/parking28.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/pharmacy17.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/port2.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/restaurant52.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/road-sign1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/sailing-boat2.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/ski1.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/swimming26.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/telephone119.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/toilets2.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/train-station.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/university2.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/warning.svg'),
-          require(/* webpackChunkName: "img" */ './img/svg/wifi8.svg'),
-        ].map((icon) => this.sanitizer.bypassSecurityTrustResourceUrl(icon));
+      if (this.HsLayoutService.mainpanel == 'styler') {
+        if (!this.icons){
+          this.icons = [
+            require(/* webpackChunkName: "img" */ './img/svg/bag1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/banking4.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/bar.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/beach17.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/bicycles.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/building103.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/bus4.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/cabinet9.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/camping13.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/caravan.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/church15.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/church1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/coffee-shop1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/disabled.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/favourite28.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/football1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/footprint.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gift-shop.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gps40.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gps41.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gps42.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gps43.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/gps5.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/hospital.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/hot-air-balloon2.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/information78.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/library21.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/location6.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/luggage13.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/monument1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/mountain42.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/museum35.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/park11.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/parking28.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/pharmacy17.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/port2.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/restaurant52.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/road-sign1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/sailing-boat2.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/ski1.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/swimming26.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/telephone119.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/toilets2.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/train-station.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/university2.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/warning.svg'),
+            require(/* webpackChunkName: "img" */ './img/svg/wifi8.svg'),
+          ].map((icon) => this.sanitizer.bypassSecurityTrustResourceUrl(icon));
+        }
+        this.isClustered = this.HsLayerUtilsService.isLayerClustered(
+          HsStylerService.layer
+        );
       }
       this.refreshLayerDefinition();
     });
@@ -233,15 +241,23 @@ export class HsStylerComponent {
   setStyleByJson(style_json: StyleJson): void {
     const style = new Style(style_json);
     const layer = this.HsStylerService.layer;
-    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+    // const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
     switch (this.level) {
       case 'feature':
         this.setStyleForFeatures(layer, style);
         break;
+      case 'cluster':
+        this.HsLayerEditorVectorLayerService.clusterStyle.setFill(
+          style.getImage().getFill()
+        );
+        this.HsLayerEditorVectorLayerService.clusterStyle.setStroke(
+          style.getImage().getStroke()
+        );
+        this.HsLayerEditorVectorLayerService.styleLayer(layer);
+        break;
       case 'layer':
-      default:
         this.setStyleForFeatures(layer, null);
-        if (isClustered) {
+        if (this.isClustered) {
           /* hsOriginalStyle is used only for cluster layers 
           when styling clusters with just one feature in it */
           this.HsStylerService.layer.set('hsOriginalStyle', style);
@@ -249,8 +265,9 @@ export class HsStylerComponent {
           layer.setStyle(style);
         }
         break;
+      default:
     }
-    if (isClustered) {
+    if (this.isClustered) {
       this.repaintCluster(layer);
     }
   }
@@ -273,18 +290,18 @@ export class HsStylerComponent {
    * @param {StyleLike|null} style Style to set for the feature. Can be null
    */
   private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
-    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+    // const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
     const underlyingSource = this.HsStylerService.getLayerSource(layer);
     /**
      * We set a blank VectorSource temporarily
      * to disable change event broadcasting and linked
      * repainting on each call of setStyle for all features.
      */
-    (isClustered ? layer.getSource() : layer).setSource(new VectorSource());
+    (this.isClustered ? layer.getSource() : layer).setSource(new VectorSource());
     for (const f of underlyingSource.getFeatures()) {
       f.setStyle(style);
     }
-    (isClustered ? layer.getSource() : layer).setSource(underlyingSource);
+    (this.isClustered ? layer.getSource() : layer).setSource(underlyingSource);
   }
 
   /**
