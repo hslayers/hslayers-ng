@@ -78,6 +78,12 @@
     "TRACKING": "Izsekošna",
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi"
   },
+  "STYLER": {
+    "level": "Līmenis",
+    "layer": "Slānis",
+    "features": "Objekti",
+    "selection": "Izv. objekts"
+  },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
     "removeAllLayers": "Noņemt visus slāņus",

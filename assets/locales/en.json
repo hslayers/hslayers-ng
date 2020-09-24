@@ -78,6 +78,12 @@
     "TRACKING": "Tracking",
     "APPLICATIONSETTINGS": "Application settings"
   },
+  "STYLER": {
+    "level": "Level",
+    "layer": "Layer",
+    "features": "Features",
+    "selection": "Selection"
+  },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
     "removeAllLayers": "Remove all layers",

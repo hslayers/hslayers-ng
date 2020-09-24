@@ -21,7 +21,7 @@ import {toLonLat} from 'ol/proj';
 })
 export class HsQueryVectorService {
   exportedFeatureHref: any;
-  selector: any;
+  selector: Select;
   featureRemovals: Subject<Feature> = new Subject();
 
   constructor(

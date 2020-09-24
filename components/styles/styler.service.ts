@@ -1,13 +1,14 @@
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
-
 import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: any = null;
+  layer: VectorLayer = null;
   measure_style = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 1)',
@@ -61,5 +62,20 @@ export class HsStylerService {
         }),
       }),
     ];
+  }
+
+  /**
+   * @description Get a Source for any vector layer. Both clustered and un-clustered.
+   * @param {VectorLayer} layer Any vector layer
+   * @returns {VectorSource} Source of the input layer or source of its cluster's source
+   */
+  getLayerSource(layer: VectorLayer): VectorSource {
+    let src = [];
+    if (layer.getSource().getSource !== undefined) {
+      src = layer.getSource().getSource();
+    } else {
+      src = layer.getSource();
+    }
+    return src;
   }
 }

@@ -4,13 +4,13 @@
   </hs-panel-header>
   <div class="card-body p-2">
     <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">
-      <label class="btn btn-secondary" [ngClass]="{'active': type == 'distance'}" for="distance">
+      <label class="btn btn-secondary" [ngClass]="{'active': type == 'distance'}" for="hs-measure-distance">
         {{'COMMON.distance' | translate}}
-        <input type="radio" name="type" id="distance" value="distance" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
+        <input type="radio" name="type" id="hs-measure-distance" value="distance" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
-      <label class="btn btn-secondary" [ngClass]="{'active': type == 'area'}" for="area">
+      <label class="btn btn-secondary" [ngClass]="{'active': type == 'area'}" for="hs-measure-area">
         {{'COMMON.area' | translate}}
-        <input type="radio" name="type" id="area" value="area" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
+        <input type="radio" name="type" id="hs-measure-area" value="area" [(ngModel)]="type" (ngModelChange)="changeMeasureParams()">
       </label>
     </div>
     <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translate}}</button>

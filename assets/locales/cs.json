@@ -94,6 +94,12 @@
       "removeAllAdded": "Odstranění všech přidaných vrstev",
       "reloadComposition": "Obnovit kompozici"
     },
+    "STYLER": {
+      "features": "Prvky",
+      "layer": "Vrstva",
+      "level": "Úroveň",
+      "selection": "Výber"
+    },
     "layerEditor": {
       "metadata": "Metadata",
       "copyright": "Autorská práva",
