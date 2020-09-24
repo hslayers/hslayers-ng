@@ -8,6 +8,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Point} from 'ol/geom';
+import {createDefaultStyle} from 'ol/style/Style';
 
 @Injectable({
   providedIn: 'root',
@@ -115,39 +116,16 @@ export class HsLayerEditorVectorLayerService {
     resolution: number,
     layer: VectorLayer
   ) {
-    let originalStyle;
     const featureStyle = feature.get('features')
       ? feature.get('features')[0].getStyle()
       : feature.getStyle();
-    if (featureStyle) {
-      originalStyle = featureStyle;
-    } else {
-      if (layer.get('hsOriginalStyle')) {
-        originalStyle = layer.get('hsOriginalStyle');
-      } else {
-        const defaultStyle = new Style({
-          stroke: new Stroke({
-            color: 'rgba(0, 153, 255, 1)',
-            width: 1.25,
-          }),
-          fill: new Fill({
-            color: 'rgba(255,255,255,0.5)',
-          }),
-          image: new Circle({
-            radius: 5,
-            fill: new Fill({
-              color: 'rgba(255,255,255,0.5)',
-            }),
-            stroke: new Stroke({
-              color: 'rgba(0, 153, 255, 1)',
-              width: 1.25,
-            }),
-          }),
-        });
-        originalStyle = defaultStyle;
-        layer.set('hsOriginalStyle', defaultStyle);
-      }
-    }
+
+    const originalStyle = featureStyle
+      ? featureStyle
+      : layer.get('hsOriginalStyle')
+      ? layer.get('hsOriginalStyle')
+      : createDefaultStyle;
+
     let appliedStyle = this.applyStyleIfNeeded(
       originalStyle,
       feature,
