@@ -248,10 +248,10 @@ export class HsStylerComponent {
         break;
       case 'cluster':
         this.HsLayerEditorVectorLayerService.clusterStyle.setFill(
-          style.getImage().getFill()
+          style.getImage() ? style.getImage().getFill() : style.getFill()
         );
         this.HsLayerEditorVectorLayerService.clusterStyle.setStroke(
-          style.getImage().getStroke()
+          style.getImage() ? style.getImage().getStroke() : style.getStroke()
         );
         this.HsLayerEditorVectorLayerService.styleLayer(layer);
         break;

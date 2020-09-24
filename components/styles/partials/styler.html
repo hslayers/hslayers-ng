@@ -56,7 +56,7 @@
                         <hs-styler-color-component (click)="debounceSave()" [(color)]="linecolor"></hs-styler-color-component>
                     </div>
 
-                    <div class="d-flex flex-row">
+                    <div class="d-flex flex-row" *ngIf="level != 'cluster'">
                         <div class="flex-grow-1 p-1">
                             {{'COMMON.lineWidth' | translate}}
                         </div>
