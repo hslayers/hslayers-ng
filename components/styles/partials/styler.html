@@ -83,13 +83,13 @@
                     <div class="form-group">
                         <label for="hs-styler-iconfillcolor" class="control-label">{{'COMMON.color' | translate}}</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="iconfillcolor"></div>
-                        <hs-styler-color-component  (click)="debounceSave()" [(color)]="iconfillcolor"></hs-styler-color-component>
+                        <hs-styler-color-component  (click)="colorIcon(); debounceSave()" [(color)]="iconfillcolor"></hs-styler-color-component>
                     </div>
 
                     <div class="form-group">
                         <label for="hs-styler-linecolor" class="control-label">{{'COMMON.lineColor' | translate}}</label>
                         <div class="hs-styler-selected-color-box" [ngStyle]="iconlinecolor"></div>
-                        <hs-styler-color-component (click)="debounceSave()" [(color)]="iconlinecolor"></hs-styler-color-component>
+                        <hs-styler-color-component (click)="colorIcon(); debounceSave()" [(color)]="iconlinecolor"></hs-styler-color-component>
                     </div>
 
                     <div class="d-flex flex-row" *ngIf="imagetype == 'circle'">
