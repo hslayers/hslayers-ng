@@ -111,7 +111,7 @@
                         </div>
                         <div class="p-1">
                             <input type="range" step="0.5" min="0" max="10" class="form-control" style="height: 21px;"
-                            [(ngModel)]="iconlinewidth" (ngModelChange)='debounceSave()' [ngModelOptions]="{standalone: true}"/>
+                            [(ngModel)]="iconlinewidth" (ngModelChange)='colorIcon(); debounceSave()' [ngModelOptions]="{standalone: true}"/>
                         </div>
                         <div class="p-1">
                             <div style="width: 2em">{{iconlinewidth}}</div>
