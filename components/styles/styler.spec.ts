@@ -22,6 +22,8 @@ import {Polygon} from 'ol/geom';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {createDefaultStyle} from 'ol/style/Style';
+import {HsLayerEditorVectorLayerService} from '../layermanager/layer-editor-vector-layer.service';
+
 
 class emptyMock {
   constructor() {}
@@ -82,6 +84,7 @@ describe('HsStyler', () => {
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
+        {provide: HsLayerEditorVectorLayerService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);
