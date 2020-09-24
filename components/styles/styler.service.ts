@@ -65,10 +65,9 @@ export class HsStylerService {
   }
 
   /**
-   * @function save
-   * @memberof hs.styler.controller
-   * @description Get current style variables value and style current layer accordingly
-   * @param {Layer} layer
+   * @description Get a Source for any vector layer. Both clustered and un-clustered.
+   * @param {VectorLayer} layer Any vector layer
+   * @returns {VectorSource} Source of the input layer or source of its cluster's source
    */
   getLayerSource(layer: VectorLayer): VectorSource {
     let src = [];
