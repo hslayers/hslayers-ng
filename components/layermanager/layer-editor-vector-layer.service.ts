@@ -14,6 +14,14 @@ import {createDefaultStyle} from 'ol/style/Style';
   providedIn: 'root',
 })
 export class HsLayerEditorVectorLayerService {
+  clusterStyle = new Style ({
+    stroke: new Stroke({
+      color: '#fff',
+    }),
+    fill: new Fill({
+      color: '#3399CC',
+    }),
+  });
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
@@ -169,12 +177,8 @@ export class HsLayerEditorVectorLayerService {
       textStyle = new Style({
         image: new Circle({
           radius: 10,
-          stroke: new Stroke({
-            color: '#fff',
-          }),
-          fill: new Fill({
-            color: '#3399CC',
-          }),
+          stroke: this.clusterStyle.getStroke(),
+          fill: this.clusterStyle.getFill(),
         }),
         text: new Text({
           text: size.toString(),
