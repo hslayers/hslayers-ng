@@ -280,8 +280,21 @@ export default function (
 
     removeLastPoint() {
       me.draw.removeLastPoint();
+      me.checkSketch();
     },
+    /**
+     * After the removal of sketch point checks wheather it was the last point or not
+     * If all of the sketch points were deleted, finishes drawing and removes eventListener
+     */
+    checkSketch(){
+      if(me.type === "Polygon" && me.draw.sketchCoords_[0].length == 1){
+        me.draw.finishDrawing();
 
+      }
+      else if (me.type === "LineString" && me.draw.sketchCoords_.length == 1){
+        me.draw.finishDrawing();
+      }
+    },
     changeDrawSource() {
       if (HsLayerUtilsService.isLayerClustered(me.selectedLayer)) {
         me.source = me.selectedLayer.getSource().getSource();
