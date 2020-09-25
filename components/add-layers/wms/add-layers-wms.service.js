@@ -362,6 +362,7 @@ export default function (
     });
     const new_layer = new layer_class({
       title: layerName,
+      name: layerName,
       source,
       minResolution: layer.MinScaleDenominator,
       maxResolution: layer.MaxScaleDenominator,
@@ -390,10 +391,15 @@ export default function (
    */
   me.addService = function (url, group, layerName) {
     HsWmsGetCapabilitiesService.requestGetCapabilities(url).then((resp) => {
-      const ol_layers = HsWmsGetCapabilitiesService.service2layers(resp).filter(
-        (layer) =>
-          angular.isUndefined(layerName) || layer.get('title') == layerName
-      );
+      let ol_layers = HsWmsGetCapabilitiesService.service2layers(resp);
+      if (layerName) {
+        ol_layers = ol_layers.filter(
+          (layer) =>
+            layer.get('name') == layerName ||
+            (typeof layer.get('name') == 'undefined' && //Backwards compatibility with layman when title==name
+              layer.get('title') == layerName)
+        );
+      }
       ol_layers.forEach((layer) => {
         if (angular.isDefined(group)) {
           group.addLayer(layer);

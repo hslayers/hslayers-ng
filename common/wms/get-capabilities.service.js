@@ -168,6 +168,7 @@ export class HsWmsGetCapabilitiesService {
         }
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
+          name: layer.Name.replace(/\//g, '&#47;'),
           source: new TileWMS({
             url:
               caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
