@@ -159,6 +159,7 @@
     "drawToolbar": {
       "addDrawLayer": "Add draw layer",
       "removeLastPoint": "Remove last point",
+      "selectType": "Select type",
       "finishFeature": "Finish feature"
     }
   },
