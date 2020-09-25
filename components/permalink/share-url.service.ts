@@ -28,7 +28,7 @@ export class HsShareUrlService {
   customParams = {};
   updateDebouncer = {};
   id: any;
-  pathname: any;
+  urlUntilParams: string;
   param_string: string;
   public browserUrlUpdated: Subject<any> = new Subject();
 
@@ -130,12 +130,7 @@ export class HsShareUrlService {
         encodeURIComponent(this.permalinkRequestUrl)
       ).replace(this.pathName(), this.HsConfig.permalinkLocation.pathname);
     } else {
-      const portIfNeeded = ['80', '443'].includes(this.window.location.port)
-        ? ''
-        : `:${this.window.location.port}`;
-      return `${this.window.location.protocol}://${
-        this.window.location.host
-      }${portIfNeeded}/${this.current_url}&permalink=${encodeURIComponent(
+      return `${this.current_url}&permalink=${encodeURIComponent(
         this.permalinkRequestUrl
       )}`;
     }
@@ -246,8 +241,8 @@ export class HsShareUrlService {
     this.params[key] = new_value;
     const new_params_string = this.stringify(this.params);
     this.param_string = new_params_string;
-    this.pathname = location.origin;
-    this.current_url = this.pathname + '?' + new_params_string;
+    this.urlUntilParams = location.origin + location.pathname;
+    this.current_url = this.urlUntilParams + '?' + new_params_string;
   }
 
   /**
