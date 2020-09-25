@@ -376,6 +376,9 @@ export class HsDrawService {
             ).toPromise();
           });
       }
+      if (this.selectedLayer.get('title') == 'tmpDrawLayer'){
+        this.tmpDrawLayer = false;
+      }
       this.selectedLayer = null;
       this.fillDrawableLayers();
     }
