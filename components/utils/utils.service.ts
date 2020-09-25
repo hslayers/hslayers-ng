@@ -34,7 +34,8 @@ export class HsUtilsService {
     if (
       windowUrlPosition == -1 ||
       windowUrlPosition > 7 ||
-      this.getPortFromUrl(url) != this.window.location.port
+      this.getPortFromUrl(url) !=
+        this.getPortFromUrl(this.window.location.origin)
     ) {
       if (
         this.HsConfig.useProxy === undefined ||
