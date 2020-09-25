@@ -313,6 +313,9 @@ export class HsShareService {
   }
 
   rendered($element, newRender?): void {
+    if (!$element) {
+      return;
+    }
     const collectorCanvas = this.renderer.createElement('canvas');
     const targetCanvas = this.renderer.createElement('canvas');
     const width = 256,
