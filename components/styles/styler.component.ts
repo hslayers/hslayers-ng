@@ -255,6 +255,7 @@ export class HsStylerComponent {
         );
         this.HsLayerEditorVectorLayerService.styleLayer(layer);
         break;
+      default:
       case 'layer':
         this.setStyleForFeatures(layer, null);
         if (this.isClustered) {
@@ -265,7 +266,6 @@ export class HsStylerComponent {
           layer.setStyle(style);
         }
         break;
-      default:
     }
     if (this.isClustered) {
       this.repaintCluster(layer);
