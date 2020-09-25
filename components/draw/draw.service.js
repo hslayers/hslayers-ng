@@ -181,22 +181,29 @@ export default function (
             if (e.originalEvent.buttons === 1) {
               return true;
             } else if (e.originalEvent.buttons === 2) {
-              if (me.type == 'Point') {
-                return false;
-              } else if (me.type == 'Polygon') {
+              if (me.type == 'Polygon') {
                 const vertexCount = me.draw.sketchLineCoords_.length;
-                if (vertexCount >= 3) {
+                if (vertexCount >= 4) {
                   setTimeout(() => {
+                    me.removeLastPoint();
                     me.draw.finishDrawing();
                   }, 250);
                   return true;
                 }
                 return false;
+              } else if (me.type == 'LineString') {
+                const vertexCount = me.draw.sketchCoords_.length;
+                if (vertexCount > 2) {
+                  setTimeout(() => {
+                    me.removeLastPoint();
+                    me.draw.finishDrawing();
+                  }, 250);
+                  return true;
+                }
+                return false;
+              } else {
+                return false;
               }
-              setTimeout(() => {
-                me.draw.finishDrawing();
-              }, 250);
-              return true;
             }
           },
         });
@@ -286,12 +293,13 @@ export default function (
      * After the removal of sketch point checks wheather it was the last point or not
      * If all of the sketch points were deleted, finishes drawing and removes eventListener
      */
-    checkSketch(){
-      if(me.type === "Polygon" && me.draw.sketchCoords_[0].length == 1){
+    checkSketch() {
+      if (me.type === 'Polygon' && me.draw.sketchCoords_[0].length == 1) {
         me.draw.finishDrawing();
-
-      }
-      else if (me.type === "LineString" && me.draw.sketchCoords_.length == 1){
+      } else if (
+        me.type === 'LineString' &&
+        me.draw.sketchCoords_.length == 1
+      ) {
         me.draw.finishDrawing();
       }
     },
