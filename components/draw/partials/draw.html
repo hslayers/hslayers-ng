@@ -45,6 +45,11 @@
 
                     </div>
                 </div>
+                <button type="button" *ngIf="HsDrawService.selectedLayer"
+                    class="btn btn-light  btn-outline-danger btn-sm" (click)="HsDrawService.removeLayer()"
+                    [title]="'COMMON.removeLayer' | translate" style="border: none !important;">
+                    <i class="glyphicon icon-trash"></i>
+                </button>
             </div>
         </div>
     </div>

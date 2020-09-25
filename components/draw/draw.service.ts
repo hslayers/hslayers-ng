@@ -15,6 +15,10 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {Layer} from 'ol/layer';
+import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HttpClient} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
 
 import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
@@ -82,7 +86,10 @@ export class HsDrawService {
     private HsLogService: HsLogService,
     private HsConfig: HsConfig,
     private HsQueryBaseService: HsQueryBaseService,
-    private HsQueryVectorService: HsQueryVectorService
+    private HsQueryVectorService: HsQueryVectorService,
+    private TranslateService: TranslateService,
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private HttpClient: HttpClient
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -340,6 +347,38 @@ export class HsDrawService {
       this.deactivateDrawing();
     }
     this.drawableLayers = drawables;
+  }
+   /**
+   * @function removeLayer
+   * @memberOf HsDrawController
+   * @description Removes selected drawing layer from both Layermanager and Layman
+   */
+  async removeLayer() {
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.TranslateService.instant('Really delete this layer?'),
+        title: this.TranslateService.instant('Confirm delete'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      this.HsMapService.map.removeLayer(this.selectedLayer);
+      if (this.selectedLayer.get('synchronize') == true) {
+        (this.HsCommonEndpointsService.endpoints || [])
+          .filter((ds) => ds.type == 'layman')
+          .forEach((ds) => {
+            this.HttpClient.delete(
+              `${ds.url}/rest/${ds.user}/layers/${this.selectedLayer
+                .get('title')
+                .toLowerCase()
+                .replace(/\s+/g, '')}`
+            ).toPromise();
+          });
+      }
+      this.selectedLayer = null;
+      this.fillDrawableLayers();
+    }
   }
 
   /**
