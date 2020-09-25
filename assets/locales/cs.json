@@ -25,7 +25,7 @@
     "polygon": "Polygon",
     "rotation": "Rotace",
     "reload": "Znovu načíst",
-    "point": "Směřovat",
+    "point": "Bod",
     "line": "Linie",
     "color": "Barva",
     "newDrawingLayer": "Nová vrstva kreslení",
@@ -159,6 +159,7 @@
     "drawToolbar": {
       "addDrawLayer": "Přidejte vrstvu kreslení",
       "removeLastPoint": "Odebrat poslední bod",
+      "selectType": "Zvolte type",
       "finishFeature": "Ukončit prvek"
     }
   },
