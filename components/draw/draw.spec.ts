@@ -7,10 +7,10 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
-
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
-
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -67,7 +67,11 @@ describe('HsDraw', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [
+        FormsModule,
+        TranslateModule.forRoot(),
+        HttpClientTestingModule,
+      ],
       declarations: [HsDrawComponent],
       providers: [
         HsDrawService,
@@ -77,6 +81,7 @@ describe('HsDraw', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
+        {provide: HsCommonEndpointsService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);
