@@ -48,5 +48,6 @@ export class HsConfig {
   query: any;
   queryPoint: string;
   popUpDisplay: string;
+  preserveLastSketchPoint: boolean;
   constructor() {}
 }

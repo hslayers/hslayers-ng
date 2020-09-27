@@ -4,7 +4,9 @@ import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
+import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -14,10 +16,8 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {Layer} from 'ol/layer';
-import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HttpClient} from '@angular/common/http';
+import {Layer} from 'ol/layer';
 import {TranslateService} from '@ngx-translate/core';
 
 import VectorSource from 'ol/source/Vector';
@@ -116,7 +116,7 @@ export class HsDrawService {
     });
 
     this.HsEventBusService.mainPanelChanges.subscribe((event) => {
-      if (event === 'draw' && this.HsMapService.map){
+      if (event === 'draw' && this.HsMapService.map) {
         this.fillDrawableLayers();
       }
     });
@@ -348,7 +348,7 @@ export class HsDrawService {
     }
     this.drawableLayers = drawables;
   }
-   /**
+  /**
    * @function removeLayer
    * @memberOf HsDrawController
    * @description Removes selected drawing layer from both Layermanager and Layman
@@ -376,7 +376,7 @@ export class HsDrawService {
             ).toPromise();
           });
       }
-      if (this.selectedLayer.get('title') == 'tmpDrawLayer'){
+      if (this.selectedLayer.get('title') == 'tmpDrawLayer') {
         this.tmpDrawLayer = false;
       }
       this.selectedLayer = null;
@@ -429,22 +429,33 @@ export class HsDrawService {
             return true;
           } else if (e.originalEvent.buttons === 2) {
             //right click
-            if (this.type == 'Point') {
-              return false;
-            } else if (this.type == 'Polygon') {
+            const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
+            if (this.type == 'Polygon') {
               const vertexCount = this.draw.sketchLineCoords_.length;
-              if (vertexCount >= 3) {
+              if (vertexCount >= 4 - minPoints) {
                 setTimeout(() => {
+                  if (minPoints == 0) {
+                    this.removeLastPoint();
+                  }
+                  this.draw.finishDrawing();
+                }, 250);
+                return true;
+              }
+              return false;
+            } else if (this.type == 'LineString') {
+              const vertexCount = this.draw.sketchCoords_.length;
+              if (vertexCount > 2 - minPoints) {
+                setTimeout(() => {
+                  if (minPoints == 0) {
+                    this.removeLastPoint();
+                  }
                   this.draw.finishDrawing();
                 }, 250);
                 return true;
               }
               return false;
             }
-            setTimeout(() => {
-              this.draw.finishDrawing();
-            }, 250);
-            return true;
+            return false;
           }
         },
       });
