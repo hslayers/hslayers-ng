@@ -81,9 +81,12 @@ export class HsCompositionsParserService {
       url = url.replace(/&amp;/g, '&');
       url = this.HsUtilsService.proxify(url);
       this.$http({url: url, overwrite, callback, pre_parse})
-        .then(this.loaded, (err) => {
-          //Do nothing
-        })
+        .then(
+          (response) => this.loaded(response),
+          (err) => {
+            //Do nothing
+          }
+        )
         .then(() => {
           resolve();
         });
