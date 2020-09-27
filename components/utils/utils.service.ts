@@ -82,7 +82,9 @@ export class HsUtilsService {
       return this.HsConfig.shortenUrl(url);
     }
     return await this.http
-      .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url))
+      .get(this.proxify('http://tinyurl.com/api-create.php?url=' + url), {
+        responseType: 'text',
+      })
       .toPromise();
     // return new Promise((resolve, reject) => {
     //   this.http
