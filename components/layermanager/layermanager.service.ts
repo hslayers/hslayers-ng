@@ -213,7 +213,7 @@ export class HsLayerManagerService {
         return require('../../img/' + thumbnail);
       }
     } else {
-      return require(/* webpackChunkName: "img" */'../../img/default.png');
+      return require(/* webpackChunkName: "img" */ '../../img/default.png');
     }
   }
   /**
@@ -345,6 +345,9 @@ export class HsLayerManagerService {
    * @description Remove layer from layer folder structure a clean empty folder
    */
   cleanFolders(lyr: Layer): void {
+    if (lyr.get('show_in_manager') == false) {
+      return;
+    }
     if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
       const path = lyr.get('path');
       const parts = path.split('/');
