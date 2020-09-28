@@ -431,7 +431,7 @@ export class HsDrawService {
             //right click
             const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
             if (this.type == 'Polygon') {
-              const vertexCount = this.draw.sketchLineCoords_.length;
+              const vertexCount = this.draw.sketchLineCoords_?.length;
               if (vertexCount >= 4 - minPoints) {
                 setTimeout(() => {
                   if (minPoints == 0) {
@@ -443,7 +443,7 @@ export class HsDrawService {
               }
               return false;
             } else if (this.type == 'LineString') {
-              const vertexCount = this.draw.sketchCoords_.length;
+              const vertexCount = this.draw.sketchCoords_?.length;
               if (vertexCount > 2 - minPoints) {
                 setTimeout(() => {
                   if (minPoints == 0) {
