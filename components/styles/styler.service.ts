@@ -1,9 +1,10 @@
+import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Feature} from 'ol';
+import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {HsQueryVectorService} from '../query/query-vector.service';
 import {Injectable} from '@angular/core';
-
+import {createDefaultStyle} from 'ol/style/Style';
 @Injectable({
   providedIn: 'root',
 })
@@ -48,7 +49,15 @@ export class HsStylerService {
       anchor: [0.5, 1],
     }),
   });
-  constructor() {}
+  clusterStyle = new Style({
+    stroke: new Stroke({
+      color: '#fff',
+    }),
+    fill: new Fill({
+      color: '#3399CC',
+    }),
+  });
+  constructor(private HsQueryVectorService: HsQueryVectorService) {}
 
   pin_white_blue_highlight(feature: Feature, resolution): Array<Style> {
     return [
@@ -77,5 +86,129 @@ export class HsStylerService {
       src = layer.getSource();
     }
     return src;
+  }
+  /**
+   * @description Style clustered layer features using cluster style or induvidual feature style.
+   * @param {VectorLayer} layer Any vector layer
+   */
+  styleClusteredLayer(layer: VectorLayer): void {
+    const styleCache = {};
+    layer.setStyle((feature: Feature, resolution: number) => {
+      const size = feature.get('features')?.length || 0;
+      if (size > 1) {
+        return this.makeClusterMarker(styleCache, size);
+      } else {
+        return this.makeSingleFeatureClusterMarker(feature, resolution, layer);
+      }
+    });
+  }
+  /**
+   * @description Create marker for single feature.
+   * @param {VectorLayer} layer Any vector layer
+   * @param {number} resolution Displayed feature resolution
+   * @param {Feature} feature Any vector layer feature
+   */
+  private makeSingleFeatureClusterMarker(
+    feature: Feature,
+    resolution: number,
+    layer: VectorLayer
+  ) {
+    const featureStyle = feature.get('features')
+      ? feature.get('features')[0].getStyle()
+      : feature.getStyle();
+
+    const originalStyle = featureStyle
+      ? featureStyle
+      : layer.get('hsOriginalStyle')
+      ? layer.get('hsOriginalStyle')
+      : createDefaultStyle;
+
+    let appliedStyle = this.applyStyleIfNeeded(
+      originalStyle,
+      feature,
+      resolution
+    );
+    if (this.isSelectedFeature(feature)) {
+      if (Array.isArray(appliedStyle)) {
+        appliedStyle = appliedStyle[0];
+      }
+      appliedStyle = appliedStyle.clone();
+      appliedStyle.setFill(
+        new Fill({
+          color: [255, 255, 255, 0.5],
+        })
+      );
+      appliedStyle.setStroke(
+        new Stroke({
+          color: [0, 153, 255, 1],
+          width: 3,
+        })
+      );
+    }
+    return this.useStyleOnFirstFeature(appliedStyle, feature);
+  }
+
+  private isSelectedFeature(feature: Feature): boolean {
+    if (feature.get('features')) {
+      return this.isSelectedFeature(feature.get('features')[0]);
+    }
+    return (
+      this.HsQueryVectorService.selector
+        .getFeatures()
+        .getArray()
+        .indexOf(feature) > -1
+    );
+  }
+
+  private makeClusterMarker(styleCache: any, size: any) {
+    let textStyle = styleCache[size];
+    if (!textStyle) {
+      textStyle = new Style({
+        image: new Circle({
+          radius: 10,
+          stroke: this.clusterStyle.getStroke(),
+          fill: this.clusterStyle.getFill(),
+        }),
+        text: new Text({
+          text: size.toString(),
+          fill: new Fill({
+            color: '#000',
+          }),
+        }),
+      });
+      styleCache[size] = textStyle;
+    }
+    return textStyle;
+  }
+
+  private applyStyleIfNeeded(
+    style: any,
+    feature: Feature,
+    resolution: number
+  ): any {
+    if (typeof style == 'function') {
+      return style(feature, resolution);
+    } else {
+      return style;
+    }
+  }
+
+  private useStyleOnFirstFeature(
+    style: any,
+    clusteredContainerFeature: Feature
+  ): Style | Style[] {
+    const originalFeature = clusteredContainerFeature.get('features') || [
+      clusteredContainerFeature,
+    ];
+    let newStyle;
+    if (style.length) {
+      newStyle = style[0].clone();
+      newStyle.setGeometry(originalFeature[0].getGeometry());
+      return [newStyle];
+    } else {
+      newStyle = style.clone();
+      newStyle.setGeometry(originalFeature[0].getGeometry());
+      return newStyle;
+    }
   }
 }
