@@ -150,7 +150,7 @@ export class HsCompositionsParserService {
     if (possibleExtent !== undefined) {
       this.HsMapService.map
         .getView()
-        .fit(this.parseExtent(), this.HsMapService.map.getSize());
+        .fit(this.parseExtent(possibleExtent), this.HsMapService.map.getSize());
     }
 
     const layers = this.jsonToLayers(obj);
