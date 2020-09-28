@@ -1,5 +1,4 @@
 import Feature from 'ol/Feature';
-import Map from 'ol/Map';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import {
@@ -11,8 +10,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -22,8 +20,6 @@ import {Polygon} from 'ol/geom';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {createDefaultStyle} from 'ol/style/Style';
-import {HsLayerEditorVectorLayerService} from '../layermanager/layer-editor-vector-layer.service';
-
 
 class emptyMock {
   constructor() {}
@@ -84,7 +80,7 @@ describe('HsStyler', () => {
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
-        {provide: HsLayerEditorVectorLayerService, useValue: new emptyMock()},
+        {provide: HsQueryVectorService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);
