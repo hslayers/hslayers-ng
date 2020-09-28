@@ -5,7 +5,6 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerEditorVectorLayerService} from '../layermanager/layer-editor-vector-layer.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsStylerColorService} from './styler-color.service';
@@ -65,12 +64,11 @@ export class HsStylerComponent {
     public sanitizer: DomSanitizer,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService,
-    private HsStylerColorService: HsStylerColorService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService
+    private HsStylerColorService: HsStylerColorService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler') {
-        if (!this.icons){
+        if (!this.icons) {
           this.icons = [
             require(/* webpackChunkName: "img" */ './img/svg/bag1.svg'),
             require(/* webpackChunkName: "img" */ './img/svg/banking4.svg'),
@@ -247,13 +245,13 @@ export class HsStylerComponent {
         this.setStyleForFeatures(layer, style);
         break;
       case 'cluster':
-        this.HsLayerEditorVectorLayerService.clusterStyle.setFill(
+        this.HsStylerService.clusterStyle.setFill(
           style.getImage() ? style.getImage().getFill() : style.getFill()
         );
-        this.HsLayerEditorVectorLayerService.clusterStyle.setStroke(
+        this.HsStylerService.clusterStyle.setStroke(
           style.getImage() ? style.getImage().getStroke() : style.getStroke()
         );
-        this.HsLayerEditorVectorLayerService.styleLayer(layer);
+        this.HsStylerService.styleClusteredLayer(layer);
         break;
       default:
       case 'layer':
@@ -297,7 +295,9 @@ export class HsStylerComponent {
      * to disable change event broadcasting and linked
      * repainting on each call of setStyle for all features.
      */
-    (this.isClustered ? layer.getSource() : layer).setSource(new VectorSource());
+    (this.isClustered ? layer.getSource() : layer).setSource(
+      new VectorSource()
+    );
     for (const f of underlyingSource.getFeatures()) {
       f.setStyle(style);
     }
