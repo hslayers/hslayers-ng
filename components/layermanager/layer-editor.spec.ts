@@ -22,7 +22,8 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsStylerService} from '../styles/styler.service';
+import {HsStylerService} from './../styles/styler.service';
+import {HsStylerServiceMock} from './../styles/styler.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service.js';
@@ -69,7 +70,7 @@ describe('layermanager', () => {
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
-        {provide: HsStylerService, useValue: new emptyMock()},
+        {provide: HsStylerService, useValue: new HsStylerServiceMock()},
         {provide: HsDrawService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
