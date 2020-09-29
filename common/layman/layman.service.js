@@ -12,7 +12,6 @@ export class HsCommonLaymanService {
 
   async getCurrentUser(endpoint) {
     const url = `${endpoint.url}/rest/current-user`;
-    console.log(url);
     return this.$http.get(url).then(
       (res) => {
         let somethingChanged = false;

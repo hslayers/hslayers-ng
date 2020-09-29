@@ -75,13 +75,11 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @ngdoc method
    * @function pushVectorSource
-   * @memberof HsLaymanService
    * @public
    * @param {object} endpoint Endpoint description
    * @param {string} geojson Geojson object with features to send to server
-   * @param {string} description Object containing {name, title, crs} of
+   * @param {object} description Object containing {name, title, crs} of
    * layer to retrieve
    * @param {object} layerDesc Previously fetched layer descriptor
    * @returns {Promise<boolean>} Promise result of POST/PATCH
@@ -170,7 +168,6 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @ngdoc method
    * @function addFeature
    * @memberof HsLaymanService
    * @public
@@ -188,7 +185,7 @@ export class HsLaymanService implements HsSaverService {
     featuresToAdd,
     featuresToUpd,
     featuresToDel,
-    name,
+    name: string,
     layer
   ) {
     return new Promise((resolve, reject) => {
@@ -197,7 +194,7 @@ export class HsLaymanService implements HsSaverService {
         name,
         layer.get('laymanLayerDescriptor')
       )
-        .then((layerDesc: any) => {
+        .then((layerDesc: HsLaymanLayerDescriptor) => {
           if (layerDesc.exists) {
             layer.set('laymanLayerDescriptor', layerDesc);
             try {
@@ -303,17 +300,18 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @ngdoc method
    * @function describeLayer
-   * @memberof HsLaymanService
    * @public
    * @param {object} endpoint Endpoint description
    * @param {string} layerName Layer name
-   * @returns {Promise<boolean>} Promise which returns layers
+   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns layers
    * description containig name, file, wms, wfs urls etc.
    * @description Try getting layer description from layman.
    */
-  async describeLayer(endpoint, layerName: string): Promise<any> {
+  async describeLayer(
+    endpoint,
+    layerName: string
+  ): Promise<HsLaymanLayerDescriptor> {
     try {
       const response: any = await this.http
         .get(
@@ -335,14 +333,12 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @ngdoc method
    * @function checkIfLayerExists
-   * @memberof HsLaymanService
    * @public
    * @param {object} endpoint Endpoint description
    * @param {string} layerName Name of layer
    * @param {object} layerDesc Previously loaded layer descriptor
-   * @returns {Promise<boolean>} Promise which returns boolean if layer
+   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns boolean if layer
    * exists in Layman
    * @description Try getting layer description from layman. If it
    * succeeds, that means that layer is there and can be updated
@@ -350,7 +346,7 @@ export class HsLaymanService implements HsSaverService {
    */
   checkIfLayerExists(
     endpoint,
-    layerName,
+    layerName: string,
     layerDesc
   ): Promise<HsLaymanLayerDescriptor> {
     return new Promise((resolve, reject) => {

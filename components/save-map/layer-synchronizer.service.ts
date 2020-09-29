@@ -98,13 +98,12 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Get features from Layman endpoint as WFS string, parse and add
+   * @description Get features from Layman endpoint as WFS string, parse and add
    * them to Openlayers VectorSource
-   *
    * @memberof HsLayerSynchronizerService
    * @function pull
-   * @param {Ol.layer} layer Layer to get Layman friendly name for
-   * @param {Ol.source} source Openlayers VectorSource to store features in
+   * @param {Layer} layer Layer to get Layman friendly name for
+   * @param {Source} source Openlayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
     const laymanEndpoints = (
@@ -118,7 +117,7 @@ export class HsLayerSynchronizerService {
       }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,
-        this.getLayerName(layer)
+        this.getLaymanFriendlyLayerName(layer)
       );
       let featureString;
       if (response) {
@@ -194,7 +193,7 @@ export class HsLayerSynchronizerService {
           inserted,
           updated,
           deleted,
-          this.getLayerName(layer),
+          this.getLaymanFriendlyLayerName(layer),
           layer
         ).then((response: string) => {
           if (response.indexOf('Exception') > -1) {
@@ -212,24 +211,22 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Get Layman friendly name for layer based on its title by
+   * @description Get Layman friendly name for layer based on its title by
    * removing spaces, converting to lowercase
-   *
    * @memberof HsLayerSynchronizerService
    * @function getLayerName
-   * @param {Ol.layer} layer Layer to get Layman friendly name for
+   * @param {Layer} layer Layer to get Layman-friendly name for
    * @returns {string} Layer title
    */
-  getLayerName(layer: Layer): string {
-    return layer.get('title').toLowerCase().replace(/ /gm, '');
+  getLaymanFriendlyLayerName(layer: Layer): string {
+    return layer.get('title').toLowerCase().replace(/ /gm, '_');
   }
 
   /**
-   * Stop synchronizing layer to database
-   *
+   * @description Stop synchronizing layer to database
    * @memberof HsLayerSynchronizerService
    * @function removeLayer
-   * @param {Ol.layer} layer Layer to remove from legend
+   * @param {Layer} layer Layer to remove from legend
    */
   removeLayer(layer: Layer): void {
     for (let i = 0; i < this.syncedLayers.length; i++) {
