@@ -118,7 +118,7 @@ export class HsLayerSynchronizerService {
       }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,
-        this.HsLaymanService.getLaymanFriendlyLayerName(layer)
+        this.HsLaymanService.getLaymanFriendlyLayerName(layer.get('title'))
       );
       let featureString;
       if (response) {
@@ -194,7 +194,7 @@ export class HsLayerSynchronizerService {
           inserted,
           updated,
           deleted,
-          this.HsLaymanService.getLaymanFriendlyLayerName(layer),
+          this.HsLaymanService.getLaymanFriendlyLayerName(layer.get('title')),
           layer
         ).then((response: string) => {
           if (response.indexOf('Exception') > -1) {

@@ -376,11 +376,11 @@ export class HsLaymanService implements HsSaverService {
    * replacing spaces with underscores, converting to lowercase, etc.
    * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
    * @function getLaymanFriendlyLayerName
-   * @param {Layer} layer Layer to get Layman-friendly name for
-   * @returns {string} Layer title
+   * @param {string} layerName Name to get Layman-friendly name for
+   * @returns {string} New layer title
    */
-  getLaymanFriendlyLayerName(layer: Layer): string {
-    return unidecode(layer.get('title'))
+  getLaymanFriendlyLayerName(layerName: string): string {
+    return unidecode(layerName)
       .toLowerCase()
       .replace(/[^\w\s\-\.]/gm, '')
       .trim()
