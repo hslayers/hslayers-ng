@@ -113,7 +113,6 @@ export default function (
           angular.isDefined(response.data.name))
       );
     },
-
     loadCompositionObject: function (
       obj,
       overwrite,
@@ -125,12 +124,18 @@ export default function (
       }
       me.current_composition = obj;
       me.current_composition_title = titleFromContainer || obj.title;
-      HsMapService.map
-        .getView()
-        .fit(
-          me.parseExtent(extentFromContainer || obj.extent),
-          HsMapService.map.getSize()
-        );
+      const extent = me.parseExtent(extentFromContainer || obj.extent);
+      if (
+        !isNaN(extent[0]) &&
+        !isNaN(extent[1]) &&
+        !isNaN(extent[2]) &&
+        !isNaN(extent[3]) &&
+        HsMapService.map
+      ) {
+        HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+      } else {
+        console.warn('Compostion extent invalid! Map extent wont be changed');
+      }
       const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
         HsMapService.addLayer(lyr, true);
