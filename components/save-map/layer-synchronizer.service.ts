@@ -1,4 +1,3 @@
-import * as unidecode from 'unidecode';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import {Injectable} from '@angular/core';
@@ -119,7 +118,7 @@ export class HsLayerSynchronizerService {
       }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,
-        this.getLaymanFriendlyLayerName(layer)
+        this.HsLaymanService.getLaymanFriendlyLayerName(layer)
       );
       let featureString;
       if (response) {
@@ -195,7 +194,7 @@ export class HsLayerSynchronizerService {
           inserted,
           updated,
           deleted,
-          this.getLaymanFriendlyLayerName(layer),
+          this.HsLaymanService.getLaymanFriendlyLayerName(layer),
           layer
         ).then((response: string) => {
           if (response.indexOf('Exception') > -1) {
@@ -210,23 +209,6 @@ export class HsLayerSynchronizerService {
     this.HsDialogContainerService.create(HsSyncErrorDialogComponent, {
       exception: error,
     });
-  }
-
-  /**
-   * @description Get Layman friendly name for layer based on its title by
-   * replacing spaces with underscores, converting to lowercase, etc.
-   * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
-   * @memberof HsLayerSynchronizerService
-   * @function getLaymanFriendlyLayerName
-   * @param {Layer} layer Layer to get Layman-friendly name for
-   * @returns {string} Layer title
-   */
-  getLaymanFriendlyLayerName(layer: Layer): string {
-    return unidecode(layer.get('title'))
-      .toLowerCase()
-      .replace(/[^\w\s\-\.]/gm, '')
-      .trim()
-      .replace(/[\s\-\._]+/gm, '_');
   }
 
   /**
