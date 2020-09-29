@@ -137,8 +137,8 @@ export class HsShareUrlService {
   }
 
   private pathName(): string {
-    let tmp = this.Location.path().split('?')[0];
-    if (!tmp.endsWith('/')) {
+    let tmp = this.window.location.pathname.split('?')[0];
+    if (!tmp.endsWith('/') && !tmp.split('/').pop().includes('.')) {
       tmp = tmp + '/';
     }
     return tmp;
