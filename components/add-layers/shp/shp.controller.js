@@ -54,19 +54,23 @@ export default function (
    */
   function describeNewLayer(endpoint, layerName) {
     return new Promise((resolve, reject) => {
-      HsLaymanService.describeLayer(endpoint, layerName).then((descriptor) => {
-        if (
-          ['STARTED', 'PENDING', 'SUCCESS'].indexOf(descriptor.wms.status) > -1
-        ) {
-          $timeout(() => {
-            describeNewLayer(endpoint, layerName).then((response) =>
-              resolve(response)
-            );
-          }, 2000);
-        } else {
-          resolve(descriptor);
-        }
-      });
+      HsLaymanService.describeLayer(endpoint, layerName)
+        .then((descriptor) => {
+          if (
+            ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
+          ) {
+            $timeout(() => {
+              describeNewLayer(endpoint, layerName).then((response) =>
+                resolve(response)
+              );
+            }, 2000);
+          } else {
+            resolve(descriptor);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
@@ -89,15 +93,22 @@ export default function (
       vm.sld
     )
       .then((data) => {
-        describeNewLayer(vm.endpoint, vm.name).then((descriptor) => {
-          HsAddLayersWmsAddLayerService.addService(
-            descriptor.wms.url,
-            undefined,
-            vm.name
-          );
-          vm.loading = false;
-          HsLayoutService.setMainPanel('layermanager');
-        });
+        describeNewLayer(vm.endpoint, vm.name)
+          .then((descriptor) => {
+            HsAddLayersWmsAddLayerService.addService(
+              descriptor.wms.url,
+              undefined,
+              vm.name
+            );
+            vm.loading = false;
+            HsLayoutService.setMainPanel('layermanager');
+          })
+          .catch((err) => {
+            vm.loading = false;
+            vm.resultCode = 'error';
+            vm.errorMessage = err.message;
+            vm.errorDetails = err.detail;
+          });
         vm.resultCode = 'success';
       })
       .catch((err) => {
