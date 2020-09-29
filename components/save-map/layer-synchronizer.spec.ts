@@ -6,7 +6,6 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
@@ -15,7 +14,6 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerSynchronizerService} from './layer-synchronizer.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -60,7 +58,7 @@ describe('HsSaveMap', () => {
 
   let fixture: ComponentFixture<HsSaveMapComponent>;
   let component: HsSaveMapComponent;
-  let service: HsLayerSynchronizerService;
+  let service: HsLaymanService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -72,7 +70,7 @@ describe('HsSaveMap', () => {
       ],
       declarations: [HsSaveMapComponent],
       providers: [
-        HsLayerSynchronizerService,
+        HsLaymanService,
         TranslateStore,
         {
           provide: HsSaveMapManagerService,
@@ -82,7 +80,6 @@ describe('HsSaveMap', () => {
           provide: HsEventBusService,
           useValue: new HsEventBusServiceMock(),
         },
-        {provide: HsLaymanService, useValue: new emptyMock()},
         {provide: HsConfig, useValue: new emptyMock()},
         {
           provide: HsCommonEndpointsService,
@@ -100,29 +97,26 @@ describe('HsSaveMap', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsSaveMapComponent);
-    service = TestBed.inject(HsLayerSynchronizerService);
+    service = TestBed.inject(HsLaymanService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('format layer name into a Layman-friendly form', () => {
     // Safe value should not be changed
-    let layer = new Layer({});
-    layer.set('title', 'some_safe_name');
-    let laymanName = service.getLaymanFriendlyLayerName(layer);
-    expect(laymanName).toEqual(layer.get('title'));
+    let name = 'some_safe_name';
+    let laymanName = service.getLaymanFriendlyLayerName(name);
+    expect(laymanName).toEqual(name);
 
     // Capitals should ne lowercased adn spaces replaced with underscores
-    layer = new Layer({});
-    layer.set('title', 'Some Unsafe English Name');
-    laymanName = service.getLaymanFriendlyLayerName(layer);
+    name = 'Some Unsafe English Name';
+    laymanName = service.getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_unsafe_english_name');
 
     // Non-ASCII characters should be replaced by their closest ASCII representations
     // and "" should be ommitted
-    layer = new Layer({});
-    layer.set('title', 'Some Czech Name Like "Vážně hustý název"');
-    laymanName = service.getLaymanFriendlyLayerName(layer);
+    name = 'Some Czech Name Like "Vážně hustý název"';
+    laymanName = service.getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_czech_name_like_vazne_husty_nazev');
   });
 });
