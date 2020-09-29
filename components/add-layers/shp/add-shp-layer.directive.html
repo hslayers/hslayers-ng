@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus" ng-show="!loading"></i><img ng-src="{{vm.loaderImage}}" ng-show="vm.loading" /> <translate>Add</translate></button>
+    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus" ng-show="!vm.loading"></i><img ng-src="{{vm.loaderImage}}" ng-show="vm.loading" /> <translate>Add</translate></button>
 
 
     <div class="alert alert-danger" ng-show="vm.resultCode == 'error'">
