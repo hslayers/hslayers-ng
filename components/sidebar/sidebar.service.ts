@@ -6,6 +6,7 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 // HsLanguageService not yet refactored
 /**
@@ -17,6 +18,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class HsSidebarService {
   extraButtons: Array<HsButton> = [];
   buttons: Array<HsButton> = [];
+  sidebarLoad: Subject<any> = new Subject();
   /**
    * If buttons with importancy property exist.
    * If not, don't display expansion +/- icon
