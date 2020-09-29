@@ -82,7 +82,6 @@
     "ts-ng-annotate-loader": "^0.2.1",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2",
-    "unidecode": "^0.1.8",
     "url-loader": "^4.0.0",
     "webpack": "^4.41.5",
     "webpack-build-notifier": "^2.0.0",
@@ -165,6 +164,7 @@
     "share-api-polyfill": "^1.0.18",
     "tinycolor2": "^1.4.1",
     "ttf2eot": "^2.0.0",
+    "unidecode": "^0.1.8",
     "vega": "5.15.0",
     "vega-embed": "6.12.2",
     "zone.js": "^0.10.3"
