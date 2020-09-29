@@ -7,9 +7,8 @@ export default function ($http, $q, HsUtilsService) {
   'ngInject';
   const me = this;
   angular.extend(me, {
-    /*
+    /**
      * @function queryCatalog
-     * @memberOf HsLaymanBrowserService
      * @param {Object} endpoint Configuration of selected datasource (from app config)
      * extent feature is created. Has one parameter: feature
      * @description Loads datasets metadata from Layman
@@ -35,10 +34,10 @@ export default function ($http, $q, HsUtilsService) {
     },
 
     /**
+     * @private
      * @function datasetsReceived
-     * @memberOf HsLaymanBrowserService
      * @param {object} j HTTP response containing all the layers
-     * (PRIVATE) Callback for catalogue http query
+     * @description (PRIVATE) Callback for catalogue http query
      */
     datasetsReceived(j) {
       const dataset = j.config.dataset;
@@ -65,11 +64,10 @@ export default function ($http, $q, HsUtilsService) {
 
     /**
      * @function fillLayerMetadata
-     * @memberOf HsLaymanBrowserService
      * @param {object} dataset Configuration of selected datasource (from app config)
      * @param {object} layer Layman layer for which to get metadata
      * @returns {Promise} Promise which is resolved when layer metadata is filled
-     * Fills metadata about layer, because layman layer list API provides
+     * @description Fills metadata about layer, because layman layer list API provides
      * just name and uuid
      */
     fillLayerMetadata(dataset, layer) {
@@ -94,12 +92,12 @@ export default function ($http, $q, HsUtilsService) {
       });
     },
 
-    /*
+    /**
      * @function describeWhatToAdd
-     * @memberOf HsLaymanBrowserService
-     * @param {Object} dataset Configuration of selected datasource (from app config)
+     * @param {Object} ds Configuration of selected datasource (from app config)
      * @param {Object} layer Layman layer for which to get metadata
-     * Gets layer metadata and returns promise which describes layer
+     * @returns {Promise}
+     * @description Gets layer metadata and returns promise which describes layer
      * in a common format for use in add-layers component
      */
     describeWhatToAdd(ds, layer) {

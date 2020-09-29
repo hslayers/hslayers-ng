@@ -38,10 +38,6 @@ export default {
         }
         monitorTries = 0;
         timerInterval = DEFAULT_TIMER_INTERVAL;
-        // eslint-disable-next-line angular/interval-service
-        /**
-         *
-         */
         function poll() {
           HsCommonLaymanService.getCurrentUser(vm.endpoint).then(
             (somethingChanged) => {
