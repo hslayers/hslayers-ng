@@ -1,5 +1,11 @@
+import * as unidecode from 'unidecode';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
+import {WFS} from 'ol/format';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -7,10 +13,6 @@ import {HsLaymanService} from './layman.service';
 import {HsMapService} from '../map/map.service';
 import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
-import {WFS} from 'ol/format';
 
 @Injectable({
   providedIn: 'root',
@@ -212,14 +214,19 @@ export class HsLayerSynchronizerService {
 
   /**
    * @description Get Layman friendly name for layer based on its title by
-   * removing spaces, converting to lowercase
+   * replacing spaces with underscores, converting to lowercase, etc.
+   * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
    * @memberof HsLayerSynchronizerService
-   * @function getLayerName
+   * @function getLaymanFriendlyLayerName
    * @param {Layer} layer Layer to get Layman-friendly name for
    * @returns {string} Layer title
    */
   getLaymanFriendlyLayerName(layer: Layer): string {
-    return layer.get('title').toLowerCase().replace(/ /gm, '_');
+    return unidecode(layer.get('title'))
+      .toLowerCase()
+      .replace(/[^\w\s\-\.]/gm, '')
+      .trim()
+      .replace(/[\s\-\._]+/gm, '_');
   }
 
   /**

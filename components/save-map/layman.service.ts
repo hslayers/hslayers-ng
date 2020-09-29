@@ -260,14 +260,12 @@ export class HsLaymanService implements HsSaverService {
     );
     if (descr === null) {
       return null;
-      return;
     }
     if (
       descr.wfs.status == 'NOT_AVAILABLE' &&
       descr.wms.status == 'NOT_AVAILABLE'
     ) {
       return null;
-      return;
     }
     if (descr.wfs.status == 'NOT_AVAILABLE') {
       setTimeout(async () => {
@@ -278,7 +276,7 @@ export class HsLaymanService implements HsSaverService {
     }
     try {
       /* When OL will support GML3.2, then we can use WFS
-                        version 2.0.0. Currently only 3.1.1 is possible */
+        version 2.0.0. Currently only 3.1.1 is possible */
       const response: string = await this.http
         .get(
           descr.wfs.url +
