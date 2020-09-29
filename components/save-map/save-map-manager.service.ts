@@ -121,7 +121,7 @@ export class HsSaveMapManagerService {
     });
   }
 
-  //TODO Add interface to describe Endpoint instead of any
+  //TODO: Add interface to describe Endpoint instead of any
   selectEndpoint(endpoint: any) {
     this.endpointSelected.next(endpoint);
   }
