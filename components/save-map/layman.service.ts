@@ -1,12 +1,16 @@
+import * as unidecode from 'unidecode';
+
 import {GeoJSON, WFS} from 'ol/format';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -311,6 +315,7 @@ export class HsLaymanService implements HsSaverService {
     layerName: string
   ): Promise<HsLaymanLayerDescriptor> {
     try {
+      layerName = this.getLaymanFriendlyLayerName(layerName);
       const response: any = await this.http
         .get(
           `${endpoint.url}/rest/${
@@ -364,5 +369,21 @@ export class HsLaymanService implements HsSaverService {
         resolve(layerDesc);
       }
     });
+  }
+
+  /**
+   * @description Get Layman friendly name for layer based on its title by
+   * replacing spaces with underscores, converting to lowercase, etc.
+   * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
+   * @function getLaymanFriendlyLayerName
+   * @param {Layer} layer Layer to get Layman-friendly name for
+   * @returns {string} Layer title
+   */
+  getLaymanFriendlyLayerName(layer: Layer): string {
+    return unidecode(layer.get('title'))
+      .toLowerCase()
+      .replace(/[^\w\s\-\.]/gm, '')
+      .trim()
+      .replace(/[\s\-\._]+/gm, '_');
   }
 }
