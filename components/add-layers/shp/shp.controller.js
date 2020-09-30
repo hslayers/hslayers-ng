@@ -112,10 +112,15 @@ export default function (
         vm.resultCode = 'success';
       })
       .catch((err) => {
+        console.warn(err);
         vm.loading = false;
         vm.resultCode = 'error';
-        vm.errorMessage = err.message;
-        vm.errorDetails = err.detail;
+        vm.errorMessage = err.message
+          ? err.message
+          : typeof err === 'string'
+          ? err
+          : 'Unspecified error';
+        vm.errorDetails = err.detail ? err.detail : '';
       });
   };
 }
