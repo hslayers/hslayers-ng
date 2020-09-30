@@ -149,6 +149,7 @@ angular
     vm.add = function () {
       vm.loading = true;
       vm.name = HsLaymanService.getLaymanFriendlyLayerName(vm.name);
+      vm.title = HsLaymanService.getLaymanFriendlyLayerName(vm.title);
       HsAddLayersShpService.add(
         vm.endpoint,
         vm.files,
