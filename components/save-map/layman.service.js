@@ -1,3 +1,4 @@
+import * as unidecode from 'unidecode';
 import {GeoJSON, WFS} from 'ol/format';
 /**
  * @param HsUtilsService
@@ -118,8 +119,20 @@ export default function (
       });
     },
 
-    getLayerName(layer) {
-      return layer.get('title').toLowerCase().replaceAll(' ', '');
+    /**
+     * @description Get Layman friendly name for layer based on its title by
+     * replacing spaces with underscores, converting to lowercase, etc.
+     * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
+     * @function getLaymanFriendlyLayerName
+     * @param {string} layerName Name to get Layman-friendly name for
+     * @returns {string} New layer title
+     */
+    getLaymanFriendlyLayerName(layerName) {
+      return unidecode(layerName)
+        .toLowerCase()
+        .replace(/[^\w\s\-\.]/gm, '')
+        .trim()
+        .replace(/[\s\-\._]+/gm, '_');
     },
 
     /**
@@ -142,15 +155,16 @@ export default function (
           layer.set('hs-layman-synchronizing', true);
           me.pushVectorSource(ds, geojson, {
             title: layer.get('title'),
-            name: me.getLayerName(layer),
+            name: me.getLaymanFriendlyLayerName(layer.get('title')),
             crs: me.crs,
           }).then((response) => {
             $timeout(() => {
-              me.pullVectorSource(ds, me.getLayerName(layer)).then(
-                (response) => {
-                  layer.set('hs-layman-synchronizing', false);
-                }
-              );
+              me.pullVectorSource(
+                ds,
+                me.getLaymanFriendlyLayerName(layer.get('title'))
+              ).then((response) => {
+                layer.set('hs-layman-synchronizing', false);
+              });
             }, 2000);
           });
         });

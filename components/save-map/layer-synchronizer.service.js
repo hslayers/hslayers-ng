@@ -87,7 +87,7 @@ export default function (
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
           layer.set('hs-layman-synchronizing', true);
-          HsLaymanService.pullVectorSource(ds, me.getLayerName(layer)).then(
+          HsLaymanService.pullVectorSource(ds, HsLaymanService.getLaymanFriendlyLayerName(layer.get('title'))).then(
             (response) => {
               let featureString;
               if (response) {
@@ -125,7 +125,7 @@ export default function (
                       inserted,
                       updated,
                       deleted,
-                      me.getLayerName(layer),
+                      HsLaymanService.getLaymanFriendlyLayerName(layer.get('title')),
                       layer
                     ).then((response) => {
                       if (response.data.indexOf('Exception') > -1) {
@@ -176,19 +176,6 @@ export default function (
         .querySelector('.hs-dialog-area')
         .appendChild(el[0]);
       $compile(el)(scope);
-    },
-
-    /**
-     * Get Layman friendly name for layer based on its title by
-     * removing spaces, converting to lowercase
-     *
-     * @memberof HsLayerSynchronizerService
-     * @function getLayerName
-     * @param {Ol.layer} layer Layer to get Layman friendly name for
-     * @returns {string} Layer title
-     */
-    getLayerName(layer) {
-      return layer.get('title').toLowerCase().replaceAll(' ', '');
     },
 
     /**

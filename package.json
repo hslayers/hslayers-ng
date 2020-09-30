@@ -110,6 +110,7 @@
     "ol-popup-umd": "^1.3.1",
     "proj4": "^2.6.0",
     "tinycolor2": "^1.4.1",
-    "ttf2eot": "^2.0.0"
+    "ttf2eot": "^2.0.0",
+    "unidecode": "^0.1.8"
   }
 }
