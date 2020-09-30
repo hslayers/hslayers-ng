@@ -158,6 +158,7 @@ angular
         vm.sld
       )
         .then((data) => {
+          vm.name = HsLaymanService.getLaymanFriendlyLayerName(vm.name);
           describeNewLayer(vm.endpoint, vm.name).then((descriptor) => {
             HsAddLayersWmsAddLayerService.addService(
               descriptor.wms.url,
