@@ -148,6 +148,7 @@ angular
      */
     vm.add = function () {
       vm.loading = true;
+      vm.name = HsLaymanService.getLaymanFriendlyLayerName(vm.name);
       HsAddLayersShpService.add(
         vm.endpoint,
         vm.files,
@@ -158,7 +159,6 @@ angular
         vm.sld
       )
         .then((data) => {
-          vm.name = HsLaymanService.getLaymanFriendlyLayerName(vm.name);
           describeNewLayer(vm.endpoint, vm.name).then((descriptor) => {
             HsAddLayersWmsAddLayerService.addService(
               descriptor.wms.url,
