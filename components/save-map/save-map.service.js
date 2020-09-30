@@ -392,7 +392,7 @@ export default function (
           }
         }
         if (layer.get('synchronize')) {
-          json.protocol = {format: 'hs.format.LaymanWfs'};
+          json.protocol = {format: 'hs.format.WFS'};
           delete json.features;
         }
         if (angular.isDefined(src.defOptions)) {
