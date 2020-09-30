@@ -26,19 +26,18 @@ export class HsLaymanService implements HsSaverService {
   ) {}
 
   /**
-   * @ngdoc method
    * @function save
    * @memberof HsLaymanService
    * @public
-   * @param {string} compositionJson Json with composition definition
+   * @param {JSON} compositionJson Json with composition definition
    * @param {object} endpoint Endpoint description
-   * @param {string} compoData Additional fields for composition such
+   * @param {object} compoData Additional fields for composition such
    * @param {boolean} saveAsNew Save as new composition
    * as title, name
-   * @returns {Promise<boolean>} Promise result of POST
+   * @returns {Promise<any>} Promise result of POST
    * @description Save composition to Layman
    */
-  save(compositionJson, endpoint, compoData, saveAsNew) {
+  save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
     return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
@@ -62,7 +61,7 @@ export class HsLaymanService implements HsSaverService {
           `${endpoint.url}/rest/${endpoint.user}/maps${
             saveAsNew
               ? `?${Math.random()}`
-              : '/' + this.urlFriendly(compoData.title)
+              : '/' + this.getLaymanFriendlyLayerName(compoData.title)
           }`,
           formdata,
           options
@@ -72,10 +71,6 @@ export class HsLaymanService implements HsSaverService {
         reject(err);
       }
     });
-  }
-
-  urlFriendly(text) {
-    return text.split(' ').join('').toLowerCase();
   }
 
   /**
@@ -133,7 +128,7 @@ export class HsLaymanService implements HsSaverService {
     });
   }
 
-  getLayerName(layer) {
+  getLayerName(layer: Layer): string {
     return layer.get('title').toLowerCase().split(' ').join('');
   }
 
@@ -142,10 +137,10 @@ export class HsLaymanService implements HsSaverService {
    *
    * @memberof HsLayerSynchronizerService
    * @function push
-   * @param {Ol.layer} layer Layer to get Layman friendly name for
+   * @param {Layer} layer Layer to get Layman friendly name for
    * get features
    */
-  push(layer) {
+  push(layer: Layer): void {
     if (layer.getSource().loading) {
       return;
     }
@@ -180,7 +175,7 @@ export class HsLaymanService implements HsSaverService {
    * @param {Array} featuresToUpd Array of features to update
    * @param {Array} featuresToDel Array of features to delete
    * @param {string} name Name of layer
-   * @param {ol/Layer} layer Openlayers layer
+   * @param {Layer} layer Openlayers layer
    * @returns {Promise<boolean>} Promise result of POST
    * @description Insert a feature
    */
@@ -190,8 +185,8 @@ export class HsLaymanService implements HsSaverService {
     featuresToUpd,
     featuresToDel,
     name: string,
-    layer
-  ) {
+    layer: Layer
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       this.checkIfLayerExists(
         endpoint,
@@ -246,18 +241,17 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @ngdoc method
    * @function pullVectorSource
    * @memberof HsLaymanService
    * @public
    * @param {object} endpoint Endpoint description
    * @param {string} layerName Object containing {name, title, crs} of
    * layer to retrieve
-   * @returns {Promise<boolean>} Promise which WFS xml (GML3.1) response
+   * @returns {Promise<string>} Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    * @description Retrieve layers features from server
    */
-  async pullVectorSource(endpoint, layerName): Promise<string> {
+  async pullVectorSource(endpoint, layerName: string): Promise<string> {
     const descr: HsLaymanLayerDescriptor = await this.describeLayer(
       endpoint,
       layerName
