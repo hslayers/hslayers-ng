@@ -104,9 +104,10 @@ export default function (
             HsLayoutService.setMainPanel('layermanager');
           })
           .catch((err) => {
+            console.warn(err);
             vm.loading = false;
             vm.resultCode = 'error';
-            vm.errorMessage = err.message;
+            vm.errorMessage = getNiceErrorMessage(err);
             vm.errorDetails = err.detail;
           });
         vm.resultCode = 'success';
@@ -115,12 +116,25 @@ export default function (
         console.warn(err);
         vm.loading = false;
         vm.resultCode = 'error';
-        vm.errorMessage = err.message
-          ? err.message
-          : typeof err === 'string'
-          ? err
-          : 'Unspecified error';
-        vm.errorDetails = err.detail ? err.detail : '';
+        vm.errorMessage = getNiceErrorMessage(err);
+        vm.errorDetails = err.detail;
       });
   };
+
+  /**
+   * @private
+   * @param {object | string} error Error object
+   * @returns {string} Nice error message
+   */
+  function getNiceErrorMessage(error) {
+    if (error.message) {
+      return error.message;
+    } else if (typeof error === 'string') {
+      if (error.startsWith('<html>')) {
+        return error.match(/<h1>(.*?)<\/h1>/im)[1];
+      }
+      return error;
+    }
+    return 'Unspecified error';
+  }
 }
