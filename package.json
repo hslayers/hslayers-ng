@@ -165,7 +165,7 @@
     "tinycolor2": "^1.4.1",
     "ttf2eot": "^2.0.0",
     "unidecode": "^0.1.8",
-    "vega": "5.15.0",
+    "vega": "5.17.0",
     "vega-embed": "6.12.2",
     "zone.js": "^0.10.3"
   }
