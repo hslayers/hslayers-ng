@@ -223,10 +223,9 @@ export default function (
    */
   function dataSourceExistsAndEmpty() {
     return (
-      forDatasourceBrowserFilter(
-        HsCommonEndpointsService.endpoints
-      ).filter((ep) => angular.isUndefined(ep.datasourcePaging.loaded)).length >
-      0
+      forDatasourceBrowserFilter(HsCommonEndpointsService.endpoints).filter(
+        (ep) => !ep.datasourcePaging.loaded
+      ).length > 0
     );
   }
 
