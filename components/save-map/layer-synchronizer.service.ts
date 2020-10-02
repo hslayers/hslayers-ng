@@ -113,7 +113,7 @@ export class HsLayerSynchronizerService {
       const ds = laymanEndpoints[0];
       layer.set('hs-layman-synchronizing', true);
       if ((!ds.user || ds.user == 'browser') && ds.type == 'layman') {
-        await ds.getCurrentUserIfNeeded();
+        await ds.getCurrentUserIfNeeded(ds);
       }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,

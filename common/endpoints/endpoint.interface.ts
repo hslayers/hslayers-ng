@@ -24,5 +24,5 @@ export interface HsEndpoint {
   paging?: {
     itemsPerPage: number;
   };
-  getCurrentUserIfNeeded?(endpoint: HsEndpoint): void;
+  getCurrentUserIfNeeded?(endpoint: HsEndpoint): Promise<void>;
 }
