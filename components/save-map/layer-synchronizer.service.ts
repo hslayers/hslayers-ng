@@ -50,10 +50,8 @@ export class HsLayerSynchronizerService {
   private async reloadLayersOnAuthChange() {
     for (const layer of this.syncedLayers) {
       const layerSource = layer.getSource();
-      layer.set('events-suspended', true);
       layerSource.clear();
       await this.pull(layer, layerSource);
-      layer.set('events-suspended', false);
     }
   }
 
@@ -64,8 +62,8 @@ export class HsLayerSynchronizerService {
    * @function addLayer
    * @param {object} layer Layer to add
    */
-  addLayer(layer: Layer): void {
-    const synchronizable = this.startMonitoringIfNeeded(layer);
+  async addLayer(layer: Layer): Promise<void> {
+    const synchronizable = await this.startMonitoringIfNeeded(layer);
     if (synchronizable) {
       this.syncedLayers.push(layer);
     }
@@ -80,13 +78,13 @@ export class HsLayerSynchronizerService {
    * @param {object} layer Layer to add
    * @returns {boolean} If layer is synchronizable
    */
-  startMonitoringIfNeeded(layer: Layer): boolean {
+  async startMonitoringIfNeeded(layer: Layer): Promise<boolean> {
     if (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       layer.get('synchronize') === true
     ) {
       const layerSource = layer.getSource();
-      this.pull(layer, layerSource);
+      await this.pull(layer, layerSource);
       layerSource.forEachFeature((f) => this.observeFeature(f));
       layerSource.on('addfeature', (e) => {
         this.sync([e.feature], [], [], layer);
@@ -107,6 +105,7 @@ export class HsLayerSynchronizerService {
    * @param {Source} source Openlayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
+    layer.set('events-suspended', true);
     const laymanEndpoints = (
       this.HsCommonEndpointsService.endpoints || []
     ).filter((ds) => ds.type == 'layman');
@@ -142,6 +141,7 @@ export class HsLayerSynchronizerService {
         source.loading = false;
       }
     }
+    layer.set('events-suspended', false);
   }
 
   /**
