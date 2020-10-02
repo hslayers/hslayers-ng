@@ -392,7 +392,27 @@ export class HsDrawService {
       this.removeLastPoint();
     }
   }
-
+  /**
+   * @function rightClickCondition
+   * @memberOf HsDrawService
+   * @description Determines whether rightclick should finish the drawing or not
+   * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
+   * @param vertexCount Number of vertexes the sketch has
+   */
+  rightClickCondition(typeNum: number, vertexCount: number): boolean {
+    const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
+    const minVertexCount = typeNum - minPoints;
+    if (vertexCount >= minVertexCount) {
+      setTimeout(() => {
+        if (minPoints == 0) {
+          this.removeLastPoint();
+        }
+        this.draw.finishDrawing();
+      }, 250);
+      return true;
+    }
+    return false;
+  }
   /**
    * @function activateDrawing
    * @memberof HsDrawService
@@ -429,33 +449,13 @@ export class HsDrawService {
             return true;
           } else if (e.originalEvent.buttons === 2) {
             //right click
-            const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
             if (this.type == 'Polygon') {
               const vertexCount = this.draw.sketchLineCoords_?.length;
-              if (vertexCount >= 4 - minPoints) {
-                setTimeout(() => {
-                  if (minPoints == 0) {
-                    this.removeLastPoint();
-                  }
-                  this.draw.finishDrawing();
-                }, 250);
-                return true;
-              }
-              return false;
+              return this.rightClickCondition(4, vertexCount);
             } else if (this.type == 'LineString') {
               const vertexCount = this.draw.sketchCoords_?.length;
-              if (vertexCount > 2 - minPoints) {
-                setTimeout(() => {
-                  if (minPoints == 0) {
-                    this.removeLastPoint();
-                  }
-                  this.draw.finishDrawing();
-                }, 250);
-                return true;
-              }
-              return false;
+              return this.rightClickCondition(2, vertexCount - 1);
             }
-            return false;
           }
         },
       });
