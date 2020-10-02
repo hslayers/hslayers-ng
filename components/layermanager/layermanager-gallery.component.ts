@@ -60,8 +60,8 @@ export class HsLayerManagerGalleryComponent {
   }
 
   setGreyscale(layer: Layer): void {
-    const layerContainer = document.querySelector(
-      '.ol-unselectable > div:first-child'
+    const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
+      '.ol-layers > div:first-child'
     );
     if (layerContainer.classList.contains('hs-grayscale')) {
       layerContainer.classList.remove('hs-grayscale');
