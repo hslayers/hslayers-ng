@@ -194,7 +194,7 @@ export class HsLaymanService implements HsSaverService {
         layer.get('laymanLayerDescriptor')
       )
         .then((layerDesc: HsLaymanLayerDescriptor) => {
-          if (layerDesc.exists) {
+          if (layerDesc?.name) {
             layer.set('laymanLayerDescriptor', layerDesc);
             try {
               const wfsFormat = new WFS();
@@ -261,11 +261,12 @@ export class HsLaymanService implements HsSaverService {
       endpoint,
       layerName
     );
-    if (descr.exists) {
-      layer.set('laymanLayerDescriptor', descr);
-    }
     if (descr === null) {
+      //In case of response?.code == 15
       return null;
+    }
+    if (descr?.name) {
+      layer.set('laymanLayerDescriptor', descr);
     }
     if (
       descr.wfs.status == 'NOT_AVAILABLE' &&
@@ -363,11 +364,11 @@ export class HsLaymanService implements HsSaverService {
         this.describeLayer(endpoint, layerName).then(
           (description: HsLaymanLayerDescriptor) => {
             if (description?.code == 15) {
-              resolve({exists: false});
+              resolve();
             } else if (description?.name) {
-              resolve(Object.assign(description, {exists: true}));
+              resolve(description);
             } else {
-              resolve({exists: false});
+              resolve();
             }
           }
         );
