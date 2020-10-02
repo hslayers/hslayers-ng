@@ -117,7 +117,8 @@ export class HsLayerSynchronizerService {
       }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,
-        this.HsLaymanService.getLaymanFriendlyLayerName(layer.get('title'))
+        this.HsLaymanService.getLaymanFriendlyLayerName(layer.get('title')),
+        layer
       );
       let featureString;
       if (response) {

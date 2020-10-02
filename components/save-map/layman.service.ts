@@ -1,16 +1,17 @@
 import * as unidecode from 'unidecode';
 
+import {DomSanitizer} from '@angular/platform-browser';
 import {GeoJSON, WFS} from 'ol/format';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCommonEndpointsServiceProvider} from '../../ajs-upgraded-providers';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 
 @Injectable({
   providedIn: 'root',
@@ -128,10 +129,6 @@ export class HsLaymanService implements HsSaverService {
     });
   }
 
-  getLayerName(layer: Layer): string {
-    return layer.get('title').toLowerCase().split(' ').join('');
-  }
-
   /**
    * Send all features to Layman endpoint as WFS string
    *
@@ -144,23 +141,26 @@ export class HsLaymanService implements HsSaverService {
     if (layer.getSource().loading) {
       return;
     }
+    const layerName = this.getLaymanFriendlyLayerName(layer.get('title'));
+    let layerTitle = layer.get('title');
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
+        if (ds.version === undefined || ds.version.split('.').join() < 171) {
+          layerTitle = this.getLaymanFriendlyLayerName(layerTitle);
+        }
         layer.set('hs-layman-synchronizing', true);
         this.pushVectorSource(ds, geojson, {
-          title: layer.get('title'),
-          name: this.getLayerName(layer),
+          title: layerTitle,
+          name: layerName,
           crs: this.crs,
         }).then((response) => {
           setTimeout(() => {
-            this.pullVectorSource(ds, this.getLayerName(layer)).then(
-              (response) => {
-                layer.set('hs-layman-synchronizing', false);
-              }
-            );
+            this.pullVectorSource(ds, layerName, layer).then((response) => {
+              layer.set('hs-layman-synchronizing', false);
+            });
           }, 2000);
         });
       });
@@ -243,6 +243,7 @@ export class HsLaymanService implements HsSaverService {
   /**
    * @function pullVectorSource
    * @memberof HsLaymanService
+   * @param layer
    * @public
    * @param {object} endpoint Endpoint description
    * @param {string} layerName Object containing {name, title, crs} of
@@ -251,11 +252,18 @@ export class HsLaymanService implements HsSaverService {
    * with features for a specified layer
    * @description Retrieve layers features from server
    */
-  async pullVectorSource(endpoint, layerName: string): Promise<string> {
+  async pullVectorSource(
+    endpoint,
+    layerName: string,
+    layer: Layer
+  ): Promise<string> {
     const descr: HsLaymanLayerDescriptor = await this.describeLayer(
       endpoint,
       layerName
     );
+    if (descr.exists) {
+      layer.set('laymanLayerDescriptor', descr);
+    }
     if (descr === null) {
       return null;
     }
@@ -267,7 +275,11 @@ export class HsLaymanService implements HsSaverService {
     }
     if (descr.wfs.status == 'NOT_AVAILABLE') {
       setTimeout(async () => {
-        const response = await this.pullVectorSource(endpoint, layerName);
+        const response = await this.pullVectorSource(
+          endpoint,
+          layerName,
+          layer
+        );
         return response;
       }, 2000);
       return;
