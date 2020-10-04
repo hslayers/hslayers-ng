@@ -151,7 +151,7 @@ export class HsDrawService {
       removable: true,
       style: this.defaultStyle,
       editable: true,
-      synchronize: true,
+      synchronize: this.HsLaymanService.laymanEndpointExists() ? true : false,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
     });
     this.selectedLayer = drawLayer;
