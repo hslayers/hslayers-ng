@@ -19,6 +19,7 @@ export default function (
   const FILTERS = {
     'dictionary': require('./partials/dictionary-filter-md.html'),
     'fieldset': require('./partials/fieldset-filter-md.html'),
+    'arrayset': require('./partials/fieldset-filter-md.html'),
     'slider': require('./partials/slider-filter-md.html'),
   };
 
@@ -70,6 +71,7 @@ export default function (
     switch (filter.type.type) {
       case 'fieldset':
       case 'dictionary':
+      case 'arrayset':
         return filter.selected && !$scope.allSelected(filter);
     }
   };
@@ -79,6 +81,7 @@ export default function (
     switch (filter.type.type) {
       case 'fieldset':
       case 'dictionary':
+      case 'arrayset':
         filter.selected = filter.values.slice(0);
         break;
     }

@@ -49,6 +49,20 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
               );
             };
             break;
+          case 'arrayset':
+            displayFeature = function (feature) {
+              var arrayset = feature.getProperties()[filter.valueField];
+              var d = false;
+              arrayset.forEach((item) => {
+                if (filter.selected.indexOf(
+                  item
+                ) !== -1) {
+                  d = true;
+                }
+              });
+              return d;
+            };
+            break;
           case 'slider':
             switch (filter.type.parameters) {
               case 'lt':
@@ -139,6 +153,35 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
                 });
 
                 break;
+              case 'arrayset':
+                const layersource = layer.layer.getSource();
+                layersource.forEachFeature((feature) => {
+                  if (Array.isArray(feature.getProperties()[filter.valueField])){
+                    var arrayset = feature.getProperties()[filter.valueField];
+                    arrayset.forEach((item) => {
+                      if (
+                        filter.values.indexOf(
+                          item
+                        ) === -1
+                      ) {
+                        filter.values.push(
+                          item
+                        );
+                      }
+                    });
+
+                  }
+                });
+                filter.values.sort((a, b) => {
+                  return (
+                    (a.replace('the ', '').replace('The ', '') >
+                      b.replace('the', '').replace('The ', '')) *
+                      2 -
+                    1
+                  );
+                });
+
+                break;
               case 'dateExtent':
                 // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
                 // if (filter.range === undefined) filter.range = [];
@@ -157,7 +200,7 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
           }
 
           if (
-            filter.type.type === 'fieldset' &&
+            (filter.type.type === 'fieldset' || filter.type.type === 'arrayset') &&
             filter.selected === undefined &&
             filter.values.length > 0
           ) {

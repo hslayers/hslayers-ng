@@ -19,6 +19,7 @@ export default function () {
         if (config.design == 'md') {
           switch ($scope.filter.type) {
             case 'fieldset':
+            case 'arrayset':
               return `components/feature-filter/partials/fieldsetmd.html`;
             case 'slider':
               return `components/feature-filter/partials/slidermd.html`;
@@ -26,6 +27,7 @@ export default function () {
         } else {
           switch ($scope.filter.type) {
             case 'fieldset':
+            case 'arrayset':
               return `components/feature-filter/partials/fieldset.html`;
             case 'slider':
               return `components/feature-filter/partials/slider.html`;
