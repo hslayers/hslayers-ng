@@ -382,15 +382,12 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @function describeLayer
+   * @function removeLayer
    * @param layer
    * @public
-   * @param {string} layerName Layer name
-   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns layers
-   * description containig name, file, wms, wfs urls etc.
-   * @description Try getting layer description from layman.
+   * @description Removes selected layer from layman.
    */
-  removeLayer(layer) {
+  removeLayer(layer: Layer) {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
