@@ -380,4 +380,28 @@ export class HsLaymanService implements HsSaverService {
       .trim()
       .replace(/[\s\-\._]+/gm, '_');
   }
+
+  /**
+   * @function describeLayer
+   * @param layer
+   * @public
+   * @param {string} layerName Layer name
+   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns layers
+   * description containig name, file, wms, wfs urls etc.
+   * @description Try getting layer description from layman.
+   */
+  removeLayer(layer) {
+    (this.HsCommonEndpointsService.endpoints || [])
+      .filter((ds) => ds.type == 'layman')
+      .forEach((ds) => {
+        this.http
+          .delete(
+            `${ds.url}/rest/${ds.user}/layers/${layer
+              .get('title')
+              .toLowerCase()
+              .replace(/\s+/g, '')}`
+          )
+          .toPromise();
+      });
+  }
 }
