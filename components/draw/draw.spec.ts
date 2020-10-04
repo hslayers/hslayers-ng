@@ -6,18 +6,17 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule} from '@ngx-translate/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
@@ -67,11 +66,7 @@ describe('HsDraw', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        FormsModule,
-        TranslateModule.forRoot(),
-        HttpClientTestingModule,
-      ],
+      imports: [FormsModule, TranslateModule.forRoot()],
       declarations: [HsDrawComponent],
       providers: [
         HsDrawService,
@@ -81,7 +76,7 @@ describe('HsDraw', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
-        {provide: HsCommonEndpointsService, useValue: new emptyMock()},
+        {provide: HsLaymanService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);

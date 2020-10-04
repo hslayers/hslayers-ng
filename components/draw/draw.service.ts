@@ -4,19 +4,18 @@ import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {HttpClient} from '@angular/common/http';
 import {Layer} from 'ol/layer';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -88,8 +87,7 @@ export class HsDrawService {
     private HsQueryBaseService: HsQueryBaseService,
     private HsQueryVectorService: HsQueryVectorService,
     private TranslateService: TranslateService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HttpClient: HttpClient
+    private HsLaymanService: HsLaymanService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -365,16 +363,7 @@ export class HsDrawService {
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
       if (this.selectedLayer.get('synchronize') == true) {
-        (this.HsCommonEndpointsService.endpoints || [])
-          .filter((ds) => ds.type == 'layman')
-          .forEach((ds) => {
-            this.HttpClient.delete(
-              `${ds.url}/rest/${ds.user}/layers/${this.selectedLayer
-                .get('title')
-                .toLowerCase()
-                .replace(/\s+/g, '')}`
-            ).toPromise();
-          });
+        this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (this.selectedLayer.get('title') == 'tmpDrawLayer') {
         this.tmpDrawLayer = false;
