@@ -1,318 +1,318 @@
 {
   "COMMON": {
-    "close": "Close",
     "abstract": "Abstract",
-    "no": "No",
-    "date": "Date",
-    "from": "From",
-    "to": "to",
-    "filter": "Filter:",
-    "distance": "Distance",
-    "title": "Title",
-    "scale": "Scale",
-    "info": "Additional information",
-    "removeLayer": "Remove layer",
-    "renameLayer": "Rename layer",
-    "saveAs": "Save as..",
-    "hide": "Hide",
-    "legend": "Legend",
-    "width": "Width",
-    "circle": "Circle",
-    "fill": "Fill",
-    "stroke": "Stroke",
-    "strokeWidth": "Stroke width",
-    "radius": "Radius",
-    "polygon": "Polygon",
-    "rotation": "Rotation",
-    "reload": "Reload",
-    "point": "Point",
-    "line": "Line",
-    "color": "Color",
-    "newDrawingLayer": "New drawing layer",
     "advancedOptions": "Advanced options",
-    "folder": "Folder",
+    "area": "Area",
     "attribute": "Attribute",
-    "ok": "Ok",
+    "attributes": "Attributes",
     "cancel": "Cancel",
+    "circle": "Circle",
+    "clear": "Clear",
+    "close": "Close",
+    "color": "Color",
+    "confirmDelete": "Confirm delete",
+    "date": "Date",
+    "delete": "Delete",
+    "distance": "Distance",
+    "download": "Download",
     "drawNewFeatures": "Draw new features",
-    "name": "Name",
-    "thumbnail": "Thumbnail",
+    "east": "East",
+    "extent": "Extent",
+    "fill": "Fill",
     "fillInDescriptive": "Fill in descriptive text about map",
     "fillInName": "Fill in name",
+    "filter": "Filter:",
+    "folder": "Folder",
+    "from": "From",
+    "hide": "Hide",
+    "icon": "Icon",
+    "info": "Additional information",
     "keywords": "Keywords",
-    "extent": "Extent",
-    "north": "North",
-    "west": "West",
-    "east": "East",
-    "south": "South",
-    "reset": "Reset",
-    "save": "Save",
     "layers": "Layers",
-    "next": "Next",
-    "download": "Download",
-    "print": "Print",
-    "clear": "Clear",
+    "legend": "Legend",
+    "line": "Line",
     "lineColor": "Line color",
     "lineWidth": "Line width",
-    "icon": "Icon",
-    "area": "Area",
-    "delete": "Delete",
-    "yes": "Yes",
-    "value": "Value",
-    "attributes": "Attributes",
+    "name": "Name",
+    "newDrawingLayer": "New drawing layer",
+    "next": "Next",
+    "no": "No",
+    "north": "North",
+    "ok": "Ok",
+    "point": "Point",
+    "polygon": "Polygon",
+    "print": "Print",
     "projection": "Projection",
-    "confirmDelete": "Confirm delete"
+    "radius": "Radius",
+    "reload": "Reload",
+    "removeLayer": "Remove layer",
+    "renameLayer": "Rename layer",
+    "reset": "Reset",
+    "rotation": "Rotation",
+    "save": "Save",
+    "saveAs": "Save as..",
+    "scale": "Scale",
+    "south": "South",
+    "stroke": "Stroke",
+    "strokeWidth": "Stroke width",
+    "thumbnail": "Thumbnail",
+    "title": "Title",
+    "to": "to",
+    "value": "Value",
+    "west": "West",
+    "width": "Width",
+    "yes": "Yes"
   },
-  "PANEL_HEADER": {
-    "LM": "Layermanager",
-    "LEGEND": "Legend",
-    "DRAW": "Draw",
-    "PRINT": "Print",
-    "INFO": "Info",
-    "PERMALINK": "Share map",
-    "SAVECOMPOSITION": "Save current map",
-    "MAPCOMPOSITIONS": "Map compositions",
-    "LANGUAGE": "Change language",
-    "SEARCH": "Search",
-    "SENSORS": "Sensors",
-    "MEASURE": "Measurement",
-    "ADDLAYERS": "Add layers",
-    "FILTERFEATURES": "Filter features",
-    "ROUTING": "Routing",
-    "TRACKING": "Tracking",
-    "APPLICATIONSETTINGS": "Application settings"
+  "DRAW": {
+    "activateDrawing": "Activate drawing by choosing a feature type",
+    "definedStyle": "Defined style",
+    "disableDrawing": "Disable drawing",
+    "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
+    "drawingTo": "Drawing to:",
+    "drawLayer": "Draw layer",
+    "drawLayerMetadata": {
+      "defaultAttributes": "Default attributes",
+      "defaultValue": "Default value",
+      "layerTitle": "Layer title",
+      "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
+      "nameOfFolder": "Name of folder in layer-manager hierararchy"
+    },
+    "drawToolbar": {
+      "addDrawLayer": "Add draw layer",
+      "finishFeature": "Finish feature",
+      "removeLastPoint": "Remove last point",
+      "selectType": "Select type"
+    },
+    "fillOpacity": "Fill opacity:",
+    "individualStyle": "Individual style for feature",
+    "reallyDeleteThisLayer": "Really delete this layer?",
+    "unsavedDrawing": "Unsaved drawing"
   },
-  "STYLER": {
-    "level": "Level",
-    "layer": "Layer",
-    "features": "Features",
-    "selection": "Selection"
+  "GEOLOCATION": {
+    "altitude": "Altitude",
+    "follow": "Follow",
+    "locateMe": "Locate me",
+    "precision": "Precision",
+    "speed": "Speed"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Toggle dropdown"
   },
   "LAYERMANAGER": {
     "baselayers": "Baselayers",
-    "removeAllLayers": "Remove all layers",
-    "resetMap": "Reset map",
-    "terrains": "Terrains",
-    "mapContent": "Map content",
-    "other": "Other",
     "baseMapGallery": {
-      "noBaseMap": "No basemap",
-      "grayscale": "Grayscale"
+      "grayscale": "Grayscale",
+      "noBaseMap": "No basemap"
     },
     "dialogRemoveAll": {
       "dialogMessage": "Do you really want to remove all layers?",
-      "removeAllAdded": "Remove all added layers",
-      "reloadComposition": "Reload composition"
+      "reloadComposition": "Reload composition",
+      "removeAllAdded": "Remove all added layers"
     },
+    "dimensions": "Dimensions",
     "layerEditor": {
-      "metadata": "Metadata",
+      "cluster": "Cluster",
       "copyright": "Copyright",
-      "zoomToLayer": "Zoom to layer",
-      "styleLayer": "Style layer",
+      "declutter": "Declutter",
+      "metadata": "Metadata",
       "metadataOfLayer": "Metadata of layer in",
       "metadataOfService": "Metadata of service",
-      "declutter": "Declutter",
-      "cluster": "Cluster",
-      "opacity": "Opacity"
+      "opacity": "Opacity",
+      "styleLayer": "Style layer",
+      "zoomToLayer": "Zoom to layer"
     },
     "layerList": {
-      "noAvailableInScale": "This layer is not available in this scale",
+      "layerIsQueryable": "This layer is queryable",
       "layerNotAvailable": "This layer is not available",
-      "sendingToLayman": "Sending to layman",
-      "layerIsQueryable": "This layer is queryable"
+      "noAvailableInScale": "This layer is not available in this scale",
+      "sendingToLayman": "Sending to layman"
     },
     "layermanagerMd": {
-      "imageLayer": "Image layer",
-      "pointFeatures": "Point features",
-      "lineFeatures": "Line features",
-      "polygonFeatures": "Polygon features",
       "aboutLayer": "About layer",
-      "moveLayerUpward": "Move layer upward, SHIFT-click to top",
-      "moveLayerDownward": "Move layer downward, SHIFT-click to bottom",
-      "layerOptions": "Layer options",
       "filterFeatures": "Filter features",
+      "imageLayer": "Image layer",
+      "innerRadius": "Inner radius",
       "layerName": "Layer name",
       "layerOpacity": "Layer Opacity",
+      "layerOptions": "Layer options",
       "layerStyle": "Layer Style",
-      "sidesNumber": "Sides number",
+      "lineFeatures": "Line features",
+      "moveLayerDownward": "Move layer downward, SHIFT-click to bottom",
+      "moveLayerUpward": "Move layer upward, SHIFT-click to top",
       "outerRadius": "Outer radius",
-      "innerRadius": "Inner radius",
+      "pointFeatures": "Point features",
+      "polygonFeatures": "Polygon features",
+      "sidesNumber": "Sides number",
       "star": "Star"
     },
-    "dimensions": "Dimensions"
+    "mapContent": "Map content",
+    "other": "Other",
+    "removeAllLayers": "Remove all layers",
+    "resetMap": "Reset map",
+    "terrains": "Terrains"
+  },
+  "LAYOUT": {
+    "sideNav": {
+      "applicationSettings": "Application settings",
+      "routing": "Routing",
+      "specifyApplication": "Specify application user settings",
+      "tracking": "Tracking"
+    }
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
   },
-  "DRAW": {
-    "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
-    "disableDrawing": "Disable drawing",
-    "activateDrawing": "Activate drawing by choosing a feature type",
-    "unsavedDrawing": "Unsaved drawing",
-    "drawingTo": "Drawing to:",
-    "individualStyle": "Individual style for feature",
-    "definedStyle": "Defined style",
-    "fillOpacity": "Fill opacity:",
-    "drawLayerMetadata": {
-      "layerTitle": "Layer title",
-      "nameOfFolder": "Name of folder in layer-manager hierararchy",
-      "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
-      "defaultAttributes": "Default attributes",
-      "defaultValue": "Default value"
+  "MAP": {
+    "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map",
+    "zoomToInitialWindow": "Zoom to initial window"
+  },
+  "MEASURE": {
+    "measureMd": {
+      "deleteAllMeasurements": "Delete all measurements",
+      "measureType": "Measure type",
+      "saveMeasurementToLayer": "Save measurement to layer"
     },
-    "drawToolbar": {
-      "addDrawLayer": "Add draw layer",
-      "removeLastPoint": "Remove last point",
-      "selectType": "Select type",
-      "finishFeature": "Finish feature"
-    },
-    "drawLayer": "Draw layer",
-    "reallyDeleteThisLayer": "Really delete this layer?"
+    "multipleShapes": "Multiple shapes"
+  },
+  "PANEL_HEADER": {
+    "ADDLAYERS": "Add layers",
+    "APPLICATIONSETTINGS": "Application settings",
+    "DRAW": "Draw",
+    "FILTERFEATURES": "Filter features",
+    "INFO": "Info",
+    "LANGUAGE": "Change language",
+    "LEGEND": "Legend",
+    "LM": "Layermanager",
+    "MAPCOMPOSITIONS": "Map compositions",
+    "MEASURE": "Measurement",
+    "PERMALINK": "Share map",
+    "PRINT": "Print",
+    "ROUTING": "Routing",
+    "SAVECOMPOSITION": "Save current map",
+    "SEARCH": "Search",
+    "SENSORS": "Sensors",
+    "TRACKING": "Tracking"
   },
   "PERMALINK": {
-    "newShare": "New share",
-    "sharePureMap": "Share pure map",
-    "sharesOnlyMap": "*Shares only map as picture",
-    "sharesMapWith": "*Shares map with (all )portal functionality",
-    "linkFor": "Link for",
-    "embed": "embed",
-    "socialShare": "Social share",
-    "permalink": "Permalink",
-    "pureMap": "Pure map",
-    "embedCode": "Embed code",
-    "shareOnSocialNetwork": "Share on social network",
-    "share": "Share",
     "directiveMd": {
       "copyToClipboard": "Copy to clipboard"
-    }
+    },
+    "embed": "embed",
+    "embedCode": "Embed code",
+    "linkFor": "Link for",
+    "newShare": "New share",
+    "permalink": "Permalink",
+    "pureMap": "Pure map",
+    "share": "Share",
+    "shareOnSocialNetwork": "Share on social network",
+    "sharePureMap": "Share pure map",
+    "sharesMapWith": "*Shares map with (all )portal functionality",
+    "sharesOnlyMap": "*Shares only map as picture",
+    "socialShare": "Social share"
+  },
+  "QUERY": {
+    "confirmClear": "Confirm clear",
+    "confirmDelete": "Confirm delete",
+    "coordinates": "Coordinates",
+    "feature": {
+      "attributeName": "Attribute name",
+      "attributeValue": "Attribute value"
+    },
+    "featureInfo": "Feature info",
+    "featurePopup": {
+      "clearLayer": "Clear layer",
+      "closePopup": "Close popup",
+      "removeClusterPart": "Remove cluster part",
+      "removeFeature": "Remove feature"
+    },
+    "infoPanel": {
+      "clickOnMap": "Click on map for query results!"
+    },
+    "reallyDelete": "Really delete this feature?",
+    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer"
   },
   "SAVECOMPOSITION": {
-    "saveTo": "Save to",
-    "panelMd": {
-      "saveMap": "Save map",
-      "fillKeywords": "Fill keywords",
-      "showThumbnail": "Show thumbnail",
-      "makePublic": "Make public",
-      "useMapExtent": "Use map extent",
-      "youAreNotAuthorized": "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
-    },
     "dialogResult": {
-      "savingCompositionStatus": "Saving composition status",
-      "compositionSavedSuccessfully": "Composition saved successfully",
       "compositionFailedToSave": "Composition failed to save",
+      "compositionSavedSuccessfully": "Composition saved successfully",
       "requestWasProcessed": "Request was processed, but map was not saved due to authorization missing",
+      "savingCompositionStatus": "Saving composition status",
       "serverDidNotRespond": "Server didn't respond or other error occurred"
     },
     "dialogSave": {
-      "saveComposition": "Save composition",
       "areYouAttempting": "You are attempting to save map changes to",
+      "noSaveAs": "No, save as",
+      "saveComposition": "Save composition",
+      "selectNewNameForMap": "Select new name for map",
+      "useDifferentName": "Use a different name to save the map",
       "wantToOverwrite": "Do you really want to overwrite?",
       "yesSave": "Yes, save",
-      "noSaveAs": "No, save as",
-      "selectNewNameForMap": "Select new name for map",
-      "youDoNotHave": "You don't have sufficient rights to do so. Maybe the session has ended?",
-      "useDifferentName": "Use a different name to save the map"
+      "youDoNotHave": "You don't have sufficient rights to do so. Maybe the session has ended?"
     },
     "form": {
-      "userCurrentMapExtent": "Use current map extent",
-      "toggleAll": "Toggle all",
-      "read": "Read",
-      "write": "Write",
-      "person": "Person",
-      "organization": "Organization",
-      "position": "Position",
       "address": "Address",
       "city": "City",
-      "state": "State",
-      "postalCode": "Postal code",
       "country": "Country",
-      "phone": "Phone",
       "eMail": "Email",
-      "overwrite": "Overwrite"
+      "organization": "Organization",
+      "overwrite": "Overwrite",
+      "person": "Person",
+      "phone": "Phone",
+      "position": "Position",
+      "postalCode": "Postal code",
+      "read": "Read",
+      "state": "State",
+      "toggleAll": "Toggle all",
+      "userCurrentMapExtent": "Use current map extent",
+      "write": "Write"
     },
+    "panelMd": {
+      "fillKeywords": "Fill keywords",
+      "makePublic": "Make public",
+      "saveMap": "Save map",
+      "showThumbnail": "Show thumbnail",
+      "useMapExtent": "Use map extent",
+      "youAreNotAuthorized": "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
+    },
+    "saveTo": "Save to",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
-    }
-  },
-  "LAYOUT": {
-    "sideNav": {
-      "routing": "Routing",
-      "tracking": "Tracking",
-      "specifyApplication": "Specify application user settings",
-      "applicationSettings": "Application settings"
     }
   },
   "SEARCH": {
     "search": "Search:"
   },
   "SENSORS": {
-    "sensors": "Sensors",
-    "phenomena": "Phenomena",
     "measure": "Measure",
+    "phenomena": "Phenomena",
+    "sensors": "Sensors",
     "sensorUnit": "Sensor unit"
-  },
-  "TOOLBAR": {
-    "measureLinesAndPolygon": "Measure lines and polygon"
-  },
-  "MEASURE": {
-    "multipleShapes": "Multiple shapes",
-    "measureMd": {
-      "measureType": "Measure type",
-      "saveMeasurementToLayer": "Save measurement to layer",
-      "deleteAllMeasurements": "Delete all measurements"
-    }
   },
   "SIDEBAR": {
     "descriptions": {
-      "LM": "Manage and style your layers in composition",
-      "LEGEND": "Legend",
-      "INFO": "Display map-query result information",
-      "MAPCOMPOSITIONS": "List available map compositions",
       "ADDLAYERS": "Select data or services for your map composition",
-      "FILTERFEATURES": "Crossfilter",
-      "MEASURE": "Measure distance or area at map",
-      "PRINT": "Print map",
-      "PERMALINK": "Share map",
-      "SAVECOMPOSITION": "Save content of map to composition",
-      "LANGUAGE": "Change language",
       "APPLICATIONSETTINGS": "Specify application user settings",
-      "SEARCH": "Search for location",
-      "DRAW": "Draw new features"
+      "DRAW": "Draw new features",
+      "FILTERFEATURES": "Crossfilter",
+      "INFO": "Display map-query result information",
+      "LANGUAGE": "Change language",
+      "LEGEND": "Legend",
+      "LM": "Manage and style your layers in composition",
+      "MAPCOMPOSITIONS": "List available map compositions",
+      "MEASURE": "Measure distance or area at map",
+      "PERMALINK": "Share map",
+      "PRINT": "Print map",
+      "SAVECOMPOSITION": "Save content of map to composition",
+      "SEARCH": "Search for location"
     }
   },
-  "QUERY": {
-    "reallyDelete": "Really delete this feature?",
-    "confirmDelete": "Confirm delete",
-    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer",
-    "coordinates": "Coordinates",
-    "featureInfo": "Feature info",
-    "featurePopup": {
-      "closePopup": "Close popup",
-      "removeClusterPart": "Remove cluster part",
-      "removeFeature": "Remove feature",
-      "clearLayer": "Clear layer"
-    },
-    "feature": {
-      "attributeName": "Attribute name",
-      "attributeValue": "Attribute value"
-    },
-    "infoPanel": {
-      "clickOnMap": "Click on map for query results!"
-    },
-    "confirmClear": "Confirm clear"
+  "STYLER": {
+    "features": "Features",
+    "layer": "Layer",
+    "level": "Level",
+    "selection": "Selection"
   },
-  "MAP": {
-    "zoomToInitialWindow": "Zoom to initial window",
-    "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map"
-  },
-  "GEOLOCATION": {
-    "locateMe": "Locate me",
-    "precision": "Precision",
-    "speed": "Speed",
-    "altitude": "Altitude",
-    "follow": "Follow"
-  },
-  "HISTORY": {
-    "toggleDropdown": "Toggle dropdown"
+  "TOOLBAR": {
+    "measureLinesAndPolygon": "Measure lines and polygon"
   }
 }
