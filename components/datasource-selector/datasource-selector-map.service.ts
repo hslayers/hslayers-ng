@@ -95,10 +95,9 @@ export class HsDatasourcesMapService {
 
   /**
    * @function isZoomable
-   * @memberof HsDataSourceSelectorMapService
    * @param {unknown} layer TODO
    * @returns {boolean} Returns if bbox is specified and thus layer is zoomable
-   * Test if it possible to zoom to layer overview (bbox has to be defined
+   * @description Test if it possible to zoom to layer overview (bbox has to be defined
    * in metadata of selected layer)
    */
   isZoomable(layer): boolean {
@@ -107,7 +106,6 @@ export class HsDatasourcesMapService {
 
   /**
    * @function addExtentFeature
-   * @memberof HsDataSourceSelectorMapService
    * @param {Feature} extentFeature Openlayers Feature
    * @description Callback function which gets executed when extent feature
    * is created. It should add the feature to vector layer source
@@ -124,9 +122,8 @@ export class HsDatasourcesMapService {
 
   /**
    * @function zoomTo
-   * @memberof HsDataSourceSelectorMapService
    * @param {string} bbox Bounding box of selected layer
-   * ZoomTo / MoveTo to selected layer overview
+   * @description ZoomTo / MoveTo to selected layer overview
    */
   zoomTo(bbox): void {
     if (bbox === undefined) {

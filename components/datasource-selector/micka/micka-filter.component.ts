@@ -29,7 +29,7 @@ export class HsMickaFilterComponent {
   /**
    * @function openMickaAdvancedSearch
    * @param {object} mickaDatasetConfig Micka datasource config
-   * Opens Micka Advanced Search dialog, might pass current search string.
+   * @description Opens Micka Advanced Search dialog, might pass current search string.
    */
   openMickaAdvancedSearch(mickaDatasetConfig): void {
     if (
@@ -59,7 +59,7 @@ export class HsMickaFilterComponent {
   /**
    * @function setOtnKeyword
    * @param {string} theme Selected Otn theme keyword
-   * Select Otn Keyword as query subject (used with dropdown list in Gui)
+   * @description Select Otn Keyword as query subject (used with dropdown list in Gui)
    */
   setOtnKeyword(theme: string): void {
     if (theme == '-') {
