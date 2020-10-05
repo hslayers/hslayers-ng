@@ -60,7 +60,8 @@
     "yes": "Ano",
     "value": "Hodnota",
     "attributes": "Atributy",
-    "projection": "Projekce"
+    "projection": "Projekce",
+    "confirmDelete": "Potvrďte smazání"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -165,7 +166,8 @@
       "selectType": "Zvolte type",
       "finishFeature": "Ukončit prvek"
     },
-    "drawLayer": "Nakreslete vrstvu"
+    "drawLayer": "Nakreslete vrstvu",
+    "reallyDeleteThisLayer": "Opravdu tuto vrstvu smažte?"
   },
   "PERMALINK": {
     "newShare": "Nové sdílení",

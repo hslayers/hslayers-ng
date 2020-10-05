@@ -1,4 +1,3 @@
-import * as GeometryType from 'ol/geom/GeometryType';
 import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
@@ -85,7 +84,6 @@ export class HsDrawService {
     private HsConfig: HsConfig,
     private HsQueryBaseService: HsQueryBaseService,
     private HsQueryVectorService: HsQueryVectorService,
-    private TranslateService: TranslateService,
     private HsLaymanService: HsLaymanService,
     private HsLanguageService: HsLanguageService
   ) {
@@ -355,8 +353,10 @@ export class HsDrawService {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.TranslateService.instant('Really delete this layer?'),
-        title: this.TranslateService.instant('Confirm delete'),
+        message: this.HsLanguageService.getTranslation(
+          'DRAW.reallyDeleteThisLayer'
+        ),
+        title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
     const confirmed = await dialog.waitResult();

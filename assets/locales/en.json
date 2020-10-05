@@ -60,7 +60,8 @@
     "yes": "Yes",
     "value": "Value",
     "attributes": "Attributes",
-    "projection": "Projection"
+    "projection": "Projection",
+    "confirmDelete": "Confirm delete"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
@@ -165,7 +166,8 @@
       "selectType": "Select type",
       "finishFeature": "Finish feature"
     },
-    "drawLayer": "Draw layer"
+    "drawLayer": "Draw layer",
+    "reallyDeleteThisLayer": "Really delete this layer?"
   },
   "PERMALINK": {
     "newShare": "New share",
