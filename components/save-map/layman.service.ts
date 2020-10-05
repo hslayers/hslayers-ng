@@ -114,10 +114,10 @@ export class HsLaymanService implements HsSaverService {
           layerDesc
         );
         const response: any = await this.http[
-          layerDesc2.exists ? 'patch' : 'post'
+          layerDesc2?.name ? 'patch' : 'post'
         ](
           `${endpoint.url}/rest/${endpoint.user}/layers${
-            layerDesc2.exists ? '/' + description.name : ''
+            layerDesc2?.name ? '/' + description.name : ''
           }?${Math.random()}`,
           formdata,
           options
@@ -406,15 +406,14 @@ export class HsLaymanService implements HsSaverService {
       .forEach((ds) => {
         this.http
           .delete(
-            `${ds.url}/rest/${ds.user}/layers/${layer
-              .get('title')
-              .toLowerCase()
-              .replace(/\s+/g, '')}`
+            `${ds.url}/rest/${ds.user}/layers/${this.getLaymanFriendlyLayerName(
+              layer.get('title')
+            )}`
           )
           .toPromise();
       });
   }
-    /**
+  /**
    * @function removeLayer
    * @param layer
    * @public
