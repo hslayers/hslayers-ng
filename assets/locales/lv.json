@@ -302,7 +302,7 @@
   },
   "MAP": {
     "zoomToInitialWindow": "Pietuvināt sākotnējo logu",
-    "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map"
+    "zoomKeyModifier": "Lietojiet {{platformModifierKey}} + peles rullīti, lai pietuvinātu karti"
   },
   "GEOLOCATION": {
     "locateMe": "Mana atrašanās vieta",
