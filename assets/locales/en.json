@@ -145,7 +145,7 @@
     "noLegendExists": "No layer with legend exists!"
   },
   "DRAW": {
-    "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with ESC key",
+    "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
     "disableDrawing": "Disable drawing",
     "activateDrawing": "Activate drawing by choosing a feature type",
     "unsavedDrawing": "Unsaved drawing",

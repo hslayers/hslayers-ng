@@ -130,7 +130,7 @@
       "moveLayerUpward": "Přesunutí vrstvy nahoru, shift-klik na začátek",
       "moveLayerDownward": "Přesunutí vrstvy dolů, shift-klik dolů",
       "layerOptions": "Možnosti vrstvy",
-      "filterFeatures": "Prvek filtru",
+      "filterFeatures": "Filtrovat prvky",
       "layerName": "Název vrstvy",
       "layerOpacity": "Průhlednost vrstvy",
       "layerStyle": "Styl vrstvy",
@@ -145,7 +145,7 @@
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
   },
   "DRAW": {
-    "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou ESC",
+    "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
     "disableDrawing": "Vypnout kreslení",
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
     "unsavedDrawing": "Neuložená kresba",
@@ -163,16 +163,16 @@
     "drawToolbar": {
       "addDrawLayer": "Přidejte vrstvu kreslení",
       "removeLastPoint": "Odebrat poslední bod",
-      "selectType": "Zvolte type",
+      "selectType": "Zvolte typ",
       "finishFeature": "Ukončit prvek"
     },
     "drawLayer": "Nakreslete vrstvu",
-    "reallyDeleteThisLayer": "Opravdu tuto vrstvu smažte?"
+    "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?"
   },
   "PERMALINK": {
     "newShare": "Nové sdílení",
     "sharePureMap": "Sdílet pouze mapu",
-    "sharesOnlyMap": "*Sdílí pouze mapu jako obrázek",
+    "sharesOnlyMap": "*Sdílí mapu pouze jako obrázek",
     "sharesMapWith": "*Sdílí mapu se (všemi) funkcemi portálu",
     "linkFor": "Odkaz pro",
     "embed": "vložit",
@@ -194,7 +194,7 @@
       "showThumbnail": "Zobrazit miniaturu",
       "makePublic": "Zveřejnit",
       "useMapExtent": "Použijte rozsah mapy",
-      "youAreNotAuthorized": "Nemáte oprávnění skladovat kompozici. Přihlaste se nebo se obraťte na administrátora pro vaše přihlašovací údaje."
+      "youAreNotAuthorized": "Nemáte oprávnění k uložení kompozic. Přihlaste se nebo se obraťte na administrátora pro vaše přihlašovací údaje."
     },
     "dialogResult": {
       "savingCompositionStatus": "Ukládání kompozice",
@@ -252,7 +252,7 @@
     "sensorUnit": "Senzorová jednotka"
   },
   "TOOLBAR": {
-    "measureLinesAndPolygon": "Změřte čáry a mnohoúhelník"
+    "measureLinesAndPolygon": "Změřte linie a polygony"
   },
   "MEASURE": {
     "multipleShapes": "Více tvarů",
@@ -281,16 +281,16 @@
     }
   },
   "QUERY": {
-    "reallyDelete": "Opravdu tuto prvek smažte?",
+    "reallyDelete": "Opravdu smazat tenhle prvek?",
     "confirmDelete": "Potvrďte smazání",
-    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvek z vrstvy",
+    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy",
     "coordinates": "Souřadnice",
     "featureInfo": "Informace o funkci",
     "featurePopup": {
       "closePopup": "Zavřít vyskakovací okno",
       "removeClusterPart": "Odstraňte část clusteru",
-      "removeFeature": "Odebrat funkci",
-      "clearLayer": "Průhledná vrstva"
+      "removeFeature": "Odebrat prvek",
+      "clearLayer": "Vyčistit vrstvu"
     },
     "feature": {
       "attributeName": "Název atributu",
@@ -302,16 +302,16 @@
     "confirmClear": "Potvrďte vymazání"
   },
   "MAP": {
-    "zoomToInitialWindow": "Přiblížit počáteční okno"
+    "zoomToInitialWindow": "Přiblížit na počáteční pohled"
   },
   "GEOLOCATION": {
-    "locateMe": "Najděte mě",
+    "locateMe": "Najdi mě",
     "precision": "Přesnost",
     "speed": "Rychlost",
     "altitude": "Nadmořská výška",
     "follow": "Následovat"
   },
   "HISTORY": {
-    "toggleDropdown": "Přepnout rozbalovací nabídku"
+    "toggleDropdown": "Rozbalovací nabídku"
   }
 }
