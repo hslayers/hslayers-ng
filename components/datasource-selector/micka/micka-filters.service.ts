@@ -60,9 +60,8 @@ export class HsMickaFilterService {
 
   /**
    * @function fillCodeset
-   * @memberof HsDatasourceBrowserService
    * @param {HsEndpoint} ds Single datasource
-   * Download code-list for micka type source from Url specifiead in app config.
+   * @description Download code-list for micka type source from Url specifiead in app config.
    */
   fillCodeset(ds: HsEndpoint): void {
     if (ds.type == 'micka') {
@@ -128,10 +127,9 @@ export class HsMickaFilterService {
 
   /**
    * @function advancedMickaTypeChanged
-   * @memberof HsDatasourceBrowserService
    * @param {object} mickaDS Micka dataset definition
    * @param {string} type Micka query type
-   * Sets Micka source level types according to current query type (service/appilication). Deprecated?
+   * @description Sets Micka source level types according to current query type (service/application). Deprecated?
    */
   advancedMickaTypeChanged(mickaDS, type: string): void {
     if (mickaDS.code_lists === undefined) {
@@ -158,7 +156,6 @@ export class HsMickaFilterService {
 
   /**
    * @function suggestionFilterChanged
-   * @memberof HsDatasourceBrowserService
    * @param {object} mickaDS Micka catalogue config passed here from directive
    * @description Send suggestion request to Micka CSW server and parse response
    */

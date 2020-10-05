@@ -45,7 +45,6 @@ export class HsDatasourcesComponent {
 
   /**
    * @function getPreviousRecords
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} endpoint Selected datasource
    * @description Loads previous records of datasets from selected datasource (based on number of results per page and current start)
    */
@@ -64,7 +63,6 @@ export class HsDatasourcesComponent {
 
   /**
    * @function getNextRecords
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} endpoint Selected datasource
    * @description Loads next records of datasets from selected datasource (based on number of results per page and current start)
    */
@@ -84,7 +82,6 @@ export class HsDatasourcesComponent {
 
   /**
    * @function showMetadata
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} endpoint Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @description Show metadata record dialog window for selected layer.
@@ -226,10 +223,9 @@ export class HsDatasourcesComponent {
 
   /**
    * @function addLayerToMap
-   * @memberof hs.datasource_selector
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * @param type
+   * @param {string} type
    * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    */
   addLayerToMap(ds: HsEndpoint, layer, type?: string): void {

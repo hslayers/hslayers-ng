@@ -30,7 +30,7 @@ export class HsAdvancedMickaDialogComponent {
    * @param {string} input Suggestion class type name (e.g. "Organisation Name")
    * @param {string} param Suggestion paramater of Micka service (e.g. "org")
    * @param {string} field Expected property name in response object (e.g. "value")
-   * Shows suggestions dialog and edits suggestion config.
+   * @description Shows suggestions dialog and edits suggestion config.
    */
   showSuggestions(input: string, param: string, field: string): void {
     this.hsMickaFilterService.changeSuggestionConfig(input, param, field);
@@ -70,7 +70,7 @@ export class HsAdvancedMickaDialogComponent {
   /**
    * @function addSuggestion
    * @param {string} text Selected property value from suggestions
-   * Save suggestion into Query object
+   * @description Save suggestion into Query object
    */
   addSuggestion(text: string): void {
     this.hsDatasourcesService.data.query[

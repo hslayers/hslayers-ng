@@ -80,7 +80,6 @@ export class HsDatasourcesService {
 
   /**
    * @function queryCatalogs
-   * @memberof HsDatasourceBrowserService
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(): void {
@@ -95,7 +94,6 @@ export class HsDatasourcesService {
 
   /**
    * @function queryCatalog
-   * @memberof HsDatasourceBrowserService
    * @param {HsEndpoint} catalog Configuration of selected datasource (from app config)
    * @description Loads datasets metadata from selected source (CSW server).
    * Uses pagination set by 'start' attribute of 'dataset' param.
@@ -123,7 +121,6 @@ export class HsDatasourcesService {
 
   /**
    * @function layerDownload
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} Download url of layer if possible
@@ -143,7 +140,6 @@ export class HsDatasourcesService {
 
   /**
    * @function layerRDF
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @returns {string} URL to record file
@@ -155,7 +151,6 @@ export class HsDatasourcesService {
 
   /**
    * @function addLayerToMap
-   * @memberof hs.datasource_selector
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
@@ -232,7 +227,6 @@ export class HsDatasourcesService {
 
   /**
    * @function clear
-   * @memberof HsDatasourceBrowserService
    * @description Clear query variable
    */
   clear(): void {

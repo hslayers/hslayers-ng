@@ -26,7 +26,6 @@ export class HsMickaBrowserService {
 
   /**
    * @function queryCatalog
-   * @memberof HsMickaBrowserService
    * @param {object} dataset Configuration of selected datasource (from app config)
    * @param {object} query Container for all query filter values
    * @param {Function} extentFeatureCreated Function which gets called
@@ -113,7 +112,6 @@ export class HsMickaBrowserService {
   /**
    * @private
    * @function datasetsReceived
-   * @memberof HsMickaBrowserService
    * @param {Object} j HTTP response containing all the layers
    * @description Callback for catalogue http query
    */
@@ -148,9 +146,8 @@ export class HsMickaBrowserService {
   /**
    * @private
    * @function param2Query
-   * @memberof HsMickaBrowserService
    * @param {string} which Parameter name to parse
-   * @param query
+   * @param {object} query
    * @returns {string}
    * @description Parse query parameter into encoded key value pair.
    */
@@ -173,7 +170,6 @@ export class HsMickaBrowserService {
   /**
    * @private
    * @function addExtentFeature
-   * @memberof HsMickaBrowserService
    * @param {Object} record Record of one dataset from Get Records response
    * @returns {Feature | undefined}
    * @description Create extent features for displaying extent of loaded dataset records in map
@@ -242,12 +238,11 @@ export class HsMickaBrowserService {
 
   /**
    * @function getLayerLink
-   * @memberof HsMickaBrowserService
    * @param {object} layer Micka layer for which to get metadata
+   * @returns {string} Url of service or resource
    * @description Get first link from records links array or link
    * property of record in older Micka versions
    * in a common format for use in add-layers component
-   * @returns {string} Url of service or resource
    */
   getLayerLink(layer): string {
     if (layer.links?.length > 0) {
@@ -265,12 +260,11 @@ export class HsMickaBrowserService {
 
   /**
    * @function describeWhatToAdd
-   * @memberof HsMickaBrowserService
    * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
    * @param {object} layer Micka layer for which to get metadata
-   * @description Gets layer metadata and returns promise which describes layer
-   * in a common format for use in add-layers component
    * @returns {Promise} promise which describes layer
+   * in a common format for use in add-layers component
+   * @description Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component
    */
   describeWhatToAdd(ds: HsEndpoint, layer): Promise<any> {
