@@ -1,123 +1,122 @@
 {
-    "PANEL_HEADER": {
-      "LM": "Gestionnaire des calques",
-      "LEGEND": "Légendes",
-      "DRAW": "Dessiner"
-    },
-    "LAYERMANAGER": {
-      "baselayers": "Fond de carte de base",
-      "removeAllLayers": "Supprimer toutes les couches",
-      "resetMap": "Réinitialiser la carte",
-      "terrains": "Terrains",
-      "mapContent": "Contenu des cartes",
-      "other": "Autre",
-      "baseMapGallery": {
-        "noBaseMap": "Pas de fond de carte",
-        "grayscale": "Niveaux de gris"
-      },
-      "dialogRemoveAll": {
-        "dialogMessage": "Voulez-vous vraiment enlever tous les fonds de carte?",
-        "removeAllAdded": "Supprimer les calques ajoutés",
-        "reloadComposition": "Recharger la composition"
-      },
-      "layerEditor": {
-        "metadata": "Métadonnées",
-        "copyright": "Droits d'auteur",
-        "zoomToLayer": "Zoom sur le calque",
-        "styleLayer": "Couche de style",
-        "metadataOfLayer": "Métadonnées de la couche dans",
-        "metadataOfService": "Métadonnées de service",
-        "declutter": "Désencombrer",
-        "cluster": "Grappe",
-        "opacity": "Opacité"
-      },
-      "layerList": {
-        "noAvailableInScale": "Ce calque n'est pas disponible à cette échelle",
-        "layerNotAvailable": "Ce calque n'est pas disponible",
-        "sendingToLayman": "Envoi à un profane",
-        "layerIsQueryable": "Vous pouvez sélectionner ce calque"
-      },
-      "layermanagerMd": {
-        "imageLayer": "Couche d'image",
-        "pointFeatures": "Entité ponctuelles",
-        "lineFeatures": "Entité de la ligne",
-        "polygonFeatures": "Entité polygonales",
-        "aboutLayer": "À propos de la couche",
-        "moveLayerUpward": "Déplacer le calque vers le haut, SHIFT-cliquez vers le haut",
-        "moveLayerDownward": "Déplacer le calque vers le bas, SHIFT-cliquez vers le bas",
-        "layerOptions": "Options de calque",
-        "filterFeatures": "Entité de filtrage",
-        "layerName": "Nom du calque",
-        "layerOpacity": "Opacité du calque",
-        "layerStyle": "Style de calque",
-        "sidesNumber": "Numéro de côtés",
-        "outerRadius": "Rayon extérieur",
-        "innerRadius": "Rayon intérieur",
-        "star": "Étoile"
-      },
-      "dimensions": ""
-    },
     "COMMON": {
-      "close": "Fermer",
-      "abstract": "Résumé",
-      "no": "Non",
-      "date": "Date",
-      "from": "de",
-      "to": "à",
-      "distance": "Distance",
-      "filter": "Filtre:",
-      "title": "Titre",
-      "scale": "Echelle",
-      "info": "Information additionnelle",
-      "removeLayer": "Supprimer le calque",
-      "renameLayer": "Renommer le calque",
-      "saveAs": "Enregistrer sous..",
-      "hide": "Cacher",
-      "legend": "Légendes",
-      "width": "Largeur",
-      "circle": "Cercle",
-      "fill": "Remplir",
-      "stroke": "le trait",
-      "strokeWidth": "Largeur du trait",
-      "radius": "Rayon",
-      "polygon": "Polygone",
-      "rotation": "Rotation",
-      "reload": "Recharger",
-      "point": "Point",
-      "line": "Ligne",
-      "color": "Couleur",
-      "newDrawingLayer": "Nouveau calque de dessin",
-      "advancedOptions": "Options avancées",
-      "folder": "Dossier",
-      "attribute": "Attribut",
-      "ok": "D'accord",
-      "cancel": "Annuler",
-      "drawNewFeatures": "Dessiner de nouvelles Entités"
-    },
-    "LEGEND": {
-      "noLegendExists": "Aucune couche avec légende n'existe!"
+        "abstract": "Résumé",
+        "advancedOptions": "Options avancées",
+        "attribute": "Attribut",
+        "cancel": "Annuler",
+        "circle": "Cercle",
+        "close": "Fermer",
+        "color": "Couleur",
+        "date": "Date",
+        "distance": "Distance",
+        "drawNewFeatures": "Dessiner de nouvelles Entités",
+        "fill": "Remplir",
+        "filter": "Filtre:",
+        "folder": "Dossier",
+        "from": "de",
+        "hide": "Cacher",
+        "info": "Information additionnelle",
+        "legend": "Légendes",
+        "line": "Ligne",
+        "newDrawingLayer": "Nouveau calque de dessin",
+        "no": "Non",
+        "ok": "D'accord",
+        "point": "Point",
+        "polygon": "Polygone",
+        "radius": "Rayon",
+        "reload": "Recharger",
+        "removeLayer": "Supprimer le calque",
+        "renameLayer": "Renommer le calque",
+        "rotation": "Rotation",
+        "saveAs": "Enregistrer sous..",
+        "scale": "Echelle",
+        "stroke": "le trait",
+        "strokeWidth": "Largeur du trait",
+        "title": "Titre",
+        "to": "à",
+        "width": "Largeur"
     },
     "DRAW": {
-      "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche Backspace",
-      "disableDrawing": "Désactiver le dessin",
-      "activateDrawing": "Activer le dessin en choisissant un type d'entité",
-      "unsavedDrawing": "Dessin non enregistré",
-      "drawingTo": "Dessin à:",
-      "individualStyle": "Style individuel pour entité",
-      "definedStyle": "Style défini",
-      "fillOpacity": "Remplir l'opacité:",
-      "drawLayerMetadata": {
-        "layerTitle": "Titre du calque",
-        "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches",
-        "layerWillBeAdded": "*Le calque sera ajouté à la carte et pourra être géré ultérieurement dans le panneau \"Gestionnaire des calques\"",
-        "defaultAttributes": "Attributs par défaut",
-        "defaultValue": "Valeur par défaut"
-      },
-      "drawToolbar": {
-        "addDrawLayer": "Ajouter un calque de dessin",
-        "removeLastPoint": "Supprimer le dernier point",
-        "finishFeature": "Entité de finition"
-      }
+        "activateDrawing": "Activer le dessin en choisissant un type d'entité",
+        "definedStyle": "Style défini",
+        "disableDrawing": "Désactiver le dessin",
+        "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche Backspace",
+        "drawingTo": "Dessin à:",
+        "drawLayerMetadata": {
+            "defaultAttributes": "Attributs par défaut",
+            "defaultValue": "Valeur par défaut",
+            "layerTitle": "Titre du calque",
+            "layerWillBeAdded": "*Le calque sera ajouté à la carte et pourra être géré ultérieurement dans le panneau \"Gestionnaire des calques\"",
+            "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches"
+        },
+        "drawToolbar": {
+            "addDrawLayer": "Ajouter un calque de dessin",
+            "finishFeature": "Entité de finition",
+            "removeLastPoint": "Supprimer le dernier point"
+        },
+        "fillOpacity": "Remplir l'opacité:",
+        "individualStyle": "Style individuel pour entité",
+        "unsavedDrawing": "Dessin non enregistré"
+    },
+    "LAYERMANAGER": {
+        "baselayers": "Fond de carte de base",
+        "baseMapGallery": {
+            "grayscale": "Niveaux de gris",
+            "noBaseMap": "Pas de fond de carte"
+        },
+        "dialogRemoveAll": {
+            "dialogMessage": "Voulez-vous vraiment enlever tous les fonds de carte?",
+            "reloadComposition": "Recharger la composition",
+            "removeAllAdded": "Supprimer les calques ajoutés"
+        },
+        "dimensions": "",
+        "layerEditor": {
+            "cluster": "Grappe",
+            "copyright": "Droits d'auteur",
+            "declutter": "Désencombrer",
+            "metadata": "Métadonnées",
+            "metadataOfLayer": "Métadonnées de la couche dans",
+            "metadataOfService": "Métadonnées de service",
+            "opacity": "Opacité",
+            "styleLayer": "Couche de style",
+            "zoomToLayer": "Zoom sur le calque"
+        },
+        "layerList": {
+            "layerIsQueryable": "Vous pouvez sélectionner ce calque",
+            "layerNotAvailable": "Ce calque n'est pas disponible",
+            "noAvailableInScale": "Ce calque n'est pas disponible à cette échelle",
+            "sendingToLayman": "Envoi à un profane"
+        },
+        "layermanagerMd": {
+            "aboutLayer": "À propos de la couche",
+            "filterFeatures": "Entité de filtrage",
+            "imageLayer": "Couche d'image",
+            "innerRadius": "Rayon intérieur",
+            "layerName": "Nom du calque",
+            "layerOpacity": "Opacité du calque",
+            "layerOptions": "Options de calque",
+            "layerStyle": "Style de calque",
+            "lineFeatures": "Entité de la ligne",
+            "moveLayerDownward": "Déplacer le calque vers le bas, SHIFT-cliquez vers le bas",
+            "moveLayerUpward": "Déplacer le calque vers le haut, SHIFT-cliquez vers le haut",
+            "outerRadius": "Rayon extérieur",
+            "pointFeatures": "Entité ponctuelles",
+            "polygonFeatures": "Entité polygonales",
+            "sidesNumber": "Numéro de côtés",
+            "star": "Étoile"
+        },
+        "mapContent": "Contenu des cartes",
+        "other": "Autre",
+        "removeAllLayers": "Supprimer toutes les couches",
+        "resetMap": "Réinitialiser la carte",
+        "terrains": "Terrains"
+    },
+    "LEGEND": {
+        "noLegendExists": "Aucune couche avec légende n'existe!"
+    },
+    "PANEL_HEADER": {
+        "DRAW": "Dessiner",
+        "LEGEND": "Légendes",
+        "LM": "Gestionnaire des calques"
     }
-  }
-  
+}

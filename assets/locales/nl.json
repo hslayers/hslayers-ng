@@ -1,123 +1,122 @@
 {
-    "PANEL_HEADER": {
-      "LM": "Beheer lagen",
-      "LEGEND": "Legenda",
-      "DRAW": "Trek"
-    },
-    "LAYERMANAGER": {
-      "baselayers": "Basislagen",
-      "removeAllLayers": "Verwijder alle lagen",
-      "resetMap": "Reset kaart",
-      "terrains": "Terreinen",
-      "mapContent": "Mapinhoud",
-      "other": "Andere",
-      "baseMapGallery": {
-        "noBaseMap": "Geen basiskaart",
-        "grayscale": "Grijstinten"
-      },
-      "dialogRemoveAll": {
-        "dialogMessage": "Bent u zeker dat u alle lagen wilt verwijderen?",
-        "removeAllAdded": "Verwijder alle toegevoegde lagen",
-        "reloadComposition": "Compostie opnieuw uploaden"
-      },
-      "layerEditor": {
-        "metadata": "Metadata",
-        "copyright": "Auteursrechten",
-        "zoomToLayer": "Zoom in op laag",
-        "styleLayer": "Stijllaag",
-        "metadataOfLayer": "Metadata van laag in",
-        "metadataOfService": "Metadata van service",
-        "declutter": "Declutter",
-        "cluster": "Cluster",
-        "opacity": "Doorzichtigheid"
-      },
-      "layerList": {
-        "noAvailableInScale": "Deze laag is niet beschikbaar op deze schaal",
-        "layerNotAvailable": "These laag is niet beschikbaar",
-        "sendingToLayman": "Verzenden naar layman",
-        "layerIsQueryable": "Deze laag is beschikbaar"
-      },
-      "layermanagerMd": {
-        "imageLayer": "Afbeeldingslaag",
-        "pointFeatures": "Punt entiteiten",
-        "lineFeatures": "Lijnentiteiten",
-        "polygonFeatures": "Polygoon-entiteitenn",
-        "aboutLayer": "Over laag",
-        "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
-        "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
-        "layerOptions": "Laagopties",
-        "filterFeatures": "Filter entiteiten",
-        "layerName": "Laag naam",
-        "layerOpacity": "Laagdekking",
-        "layerStyle": "Laagstijl",
-        "sidesNumber": "Zijkanten nummer",
-        "outerRadius": "Buitenste straal",
-        "innerRadius": "Binnenradius",
-        "star": "Ster"
-      },
-      "dimensions": "Dimensies"
-    },
     "COMMON": {
-      "close": "Sluit af",
-      "abstract": "Samenvatting",
-      "no": "Nee",
-      "date": "Datum",
-      "from": "Van",
-      "to": "tot",
-      "distance": "Afstand",
-      "filter": "Filter:",
-      "title": "Titel",
-      "scale": "Schaal",
-      "info": "Extra informatie",
-      "removeLayer": "Laag verwijderen",
-      "renameLayer": "Hernoem laag",
-      "saveAs": "Opslaan als..",
-      "hide": "Zich verstoppen",
-      "legend": "Legenda",
-      "width": "Breedte",
-      "circle": "Cirkel",
-      "fill": "Vullen",
-      "stroke": "lijn",
-      "strokeWidth": "lijnbreedte",
-      "radius": "Straal",
-      "polygon": "Veelhoek",
-      "rotation": "Rotatie",
-      "reload": "Herlaad",
-      "point": "Punt",
-      "line": "Lijn",
-      "color": "Kleur",
-      "newDrawingLayer": "Nieuwe tekenlaag",
-      "advancedOptions": "Geavanceerde opties",
-      "folder": "Map",
-      "attribute": "Attribuut",
-      "ok": "Ok",
-      "cancel": "Annuleer",
-      "drawNewFeatures": "Teken nieuwe entiteiten"
-    },
-    "LEGEND": {
-      "noLegendExists": "Er bestaat geen laag met legenda!"
+        "abstract": "Samenvatting",
+        "advancedOptions": "Geavanceerde opties",
+        "attribute": "Attribuut",
+        "cancel": "Annuleer",
+        "circle": "Cirkel",
+        "close": "Sluit af",
+        "color": "Kleur",
+        "date": "Datum",
+        "distance": "Afstand",
+        "drawNewFeatures": "Teken nieuwe entiteiten",
+        "fill": "Vullen",
+        "filter": "Filter:",
+        "folder": "Map",
+        "from": "Van",
+        "hide": "Zich verstoppen",
+        "info": "Extra informatie",
+        "legend": "Legenda",
+        "line": "Lijn",
+        "newDrawingLayer": "Nieuwe tekenlaag",
+        "no": "Nee",
+        "ok": "Ok",
+        "point": "Punt",
+        "polygon": "Veelhoek",
+        "radius": "Straal",
+        "reload": "Herlaad",
+        "removeLayer": "Laag verwijderen",
+        "renameLayer": "Hernoem laag",
+        "rotation": "Rotatie",
+        "saveAs": "Opslaan als..",
+        "scale": "Schaal",
+        "stroke": "lijn",
+        "strokeWidth": "lijnbreedte",
+        "title": "Titel",
+        "to": "tot",
+        "width": "Breedte"
     },
     "DRAW": {
-      "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
-      "disableDrawing": "Schakel tekenen uit",
-      "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
-      "unsavedDrawing": "Niet-opgeslagen tekening",
-      "drawingTo": "Tekenen naar:",
-      "individualStyle": "Individuele stijl voor entiteit",
-      "definedStyle": "Gedefinieerde stijl",
-      "fillOpacity": "Vul de dekking:",
-      "drawLayerMetadata": {
-        "layerTitle": "Laag titel",
-        "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
-        "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
-        "defaultAttributes": "Standaard attributen",
-        "defaultValue": "Standaardwaarde"
-      },
-      "drawToolbar": {
-        "addDrawLayer": "Tekenlaag toevoegen",
-        "removeLastPoint": "Verwijder het laatste punt",
-        "finishFeature": "Afwerking entiteit"
-      }
+        "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
+        "definedStyle": "Gedefinieerde stijl",
+        "disableDrawing": "Schakel tekenen uit",
+        "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
+        "drawingTo": "Tekenen naar:",
+        "drawLayerMetadata": {
+            "defaultAttributes": "Standaard attributen",
+            "defaultValue": "Standaardwaarde",
+            "layerTitle": "Laag titel",
+            "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
+            "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder"
+        },
+        "drawToolbar": {
+            "addDrawLayer": "Tekenlaag toevoegen",
+            "finishFeature": "Afwerking entiteit",
+            "removeLastPoint": "Verwijder het laatste punt"
+        },
+        "fillOpacity": "Vul de dekking:",
+        "individualStyle": "Individuele stijl voor entiteit",
+        "unsavedDrawing": "Niet-opgeslagen tekening"
+    },
+    "LAYERMANAGER": {
+        "baselayers": "Basislagen",
+        "baseMapGallery": {
+            "grayscale": "Grijstinten",
+            "noBaseMap": "Geen basiskaart"
+        },
+        "dialogRemoveAll": {
+            "dialogMessage": "Bent u zeker dat u alle lagen wilt verwijderen?",
+            "reloadComposition": "Compostie opnieuw uploaden",
+            "removeAllAdded": "Verwijder alle toegevoegde lagen"
+        },
+        "dimensions": "Dimensies",
+        "layerEditor": {
+            "cluster": "Cluster",
+            "copyright": "Auteursrechten",
+            "declutter": "Declutter",
+            "metadata": "Metadata",
+            "metadataOfLayer": "Metadata van laag in",
+            "metadataOfService": "Metadata van service",
+            "opacity": "Doorzichtigheid",
+            "styleLayer": "Stijllaag",
+            "zoomToLayer": "Zoom in op laag"
+        },
+        "layerList": {
+            "layerIsQueryable": "Deze laag is beschikbaar",
+            "layerNotAvailable": "These laag is niet beschikbaar",
+            "noAvailableInScale": "Deze laag is niet beschikbaar op deze schaal",
+            "sendingToLayman": "Verzenden naar layman"
+        },
+        "layermanagerMd": {
+            "aboutLayer": "Over laag",
+            "filterFeatures": "Filter entiteiten",
+            "imageLayer": "Afbeeldingslaag",
+            "innerRadius": "Binnenradius",
+            "layerName": "Laag naam",
+            "layerOpacity": "Laagdekking",
+            "layerOptions": "Laagopties",
+            "layerStyle": "Laagstijl",
+            "lineFeatures": "Lijnentiteiten",
+            "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
+            "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
+            "outerRadius": "Buitenste straal",
+            "pointFeatures": "Punt entiteiten",
+            "polygonFeatures": "Polygoon-entiteitenn",
+            "sidesNumber": "Zijkanten nummer",
+            "star": "Ster"
+        },
+        "mapContent": "Mapinhoud",
+        "other": "Andere",
+        "removeAllLayers": "Verwijder alle lagen",
+        "resetMap": "Reset kaart",
+        "terrains": "Terreinen"
+    },
+    "LEGEND": {
+        "noLegendExists": "Er bestaat geen laag met legenda!"
+    },
+    "PANEL_HEADER": {
+        "DRAW": "Trek",
+        "LEGEND": "Legenda",
+        "LM": "Beheer lagen"
     }
-  }
-  
+}
