@@ -17,7 +17,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {TranslateService} from '@ngx-translate/core';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
