@@ -23,7 +23,8 @@ export class HsLaymanService implements HsSaverService {
     private http: HttpClient,
     private HsMapService: HsMapService,
     private HsLogService: HsLogService,
-    private HsCommonEndpointsService: HsCommonEndpointsService
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private $log: HsLogService
   ) {}
 
   /**
@@ -141,7 +142,7 @@ export class HsLaymanService implements HsSaverService {
     if (layer.getSource().loading) {
       return;
     }
-    const layerName = this.getLaymanFriendlyLayerName(layer.get('title'));
+    const layerName = this.getLayerName(layer);
     let layerTitle = layer.get('title');
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
@@ -246,8 +247,7 @@ export class HsLaymanService implements HsSaverService {
    * @param layer
    * @public
    * @param {object} endpoint Endpoint description
-   * @param {string} layerName Object containing {name, title, crs} of
-   * layer to retrieve
+   * @param {string} layerName Escaped name of layer
    * @returns {Promise<string>} Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    * @description Retrieve layers features from server
@@ -322,7 +322,7 @@ export class HsLaymanService implements HsSaverService {
     layerName: string
   ): Promise<HsLaymanLayerDescriptor> {
     try {
-      layerName = this.getLaymanFriendlyLayerName(layerName);
+      layerName = this.getLaymanFriendlyLayerName(layerName); //Better safe than sorry
       const response: any = await this.http
         .get(
           `${endpoint.url}/rest/${
@@ -383,15 +383,29 @@ export class HsLaymanService implements HsSaverService {
    * replacing spaces with underscores, converting to lowercase, etc.
    * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
    * @function getLaymanFriendlyLayerName
-   * @param {string} layerName Name to get Layman-friendly name for
-   * @returns {string} New layer title
+   * @param {string} title Title to get Layman-friendly name for
+   * @returns {string} New layer name
    */
-  getLaymanFriendlyLayerName(layerName: string): string {
-    return unidecode(layerName)
+  getLaymanFriendlyLayerName(title: string): string {
+    return unidecode(title)
       .toLowerCase()
       .replace(/[^\w\s\-\.]/gm, '')
       .trim()
       .replace(/[\s\-\._]+/gm, '_');
+  }
+
+  /**
+   * Get layman friendly name of layer based primary on name
+   * and secondary on title attributes.
+   *
+   * @param layer Layr to get the name for
+   */
+  getLayerName(layer: Layer): string {
+    const layerName = layer.get('name') || layer.get('title');
+    if (layerName == undefined) {
+      this.$log.warn('Layer title/name not set for', layer);
+    }
+    return this.getLaymanFriendlyLayerName(layerName);
   }
 
   /**
@@ -406,9 +420,7 @@ export class HsLaymanService implements HsSaverService {
       .forEach((ds) => {
         this.http
           .delete(
-            `${ds.url}/rest/${ds.user}/layers/${this.getLaymanFriendlyLayerName(
-              layer.get('title')
-            )}`
+            `${ds.url}/rest/${ds.user}/layers/${this.getLayerName(layer)}`
           )
           .toPromise();
       });
