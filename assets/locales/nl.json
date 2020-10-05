@@ -98,7 +98,7 @@
       "noLegendExists": "Er bestaat geen laag met legenda!"
     },
     "DRAW": {
-      "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de ESC-toets",
+      "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
       "disableDrawing": "Schakel tekenen uit",
       "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
       "unsavedDrawing": "Niet-opgeslagen tekening",

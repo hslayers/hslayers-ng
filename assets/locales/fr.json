@@ -98,7 +98,7 @@
       "noLegendExists": "Aucune couche avec légende n'existe!"
     },
     "DRAW": {
-      "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche ESC",
+      "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche Backspace",
       "disableDrawing": "Désactiver le dessin",
       "activateDrawing": "Activer le dessin en choisissant un type d'entité",
       "unsavedDrawing": "Dessin non enregistré",

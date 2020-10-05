@@ -145,7 +145,7 @@
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
   },
   "DRAW": {
-    "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar ESC taustiņu",
+    "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
     "disableDrawing": "Atspējot zīmēšanu",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",
     "unsavedDrawing": "Nesaglabāts zīmējums",
