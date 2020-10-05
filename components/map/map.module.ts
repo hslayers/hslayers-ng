@@ -1,4 +1,3 @@
-import {HsMapService} from './map.service';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -6,7 +5,8 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsMapComponent} from './map.component';
-import {HsMapHostDirective} from './map.directive'
+import {HsMapHostDirective} from './map.directive';
+import {HsMapService} from './map.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

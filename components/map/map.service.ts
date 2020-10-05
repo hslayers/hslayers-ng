@@ -43,6 +43,7 @@ import {transform, transformExtent} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
@@ -142,6 +143,7 @@ export class HsMapService {
     private HsLayoutService: HsLayoutService,
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService,
+    private HsLanguageService: HsLanguageService,
     rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -237,7 +239,11 @@ export class HsMapService {
     this.renderer.addClass(this.element, 'ol-unselectable');
     this.renderer.addClass(this.element, 'ol-control');
 
-    this.renderer.setAttribute(this.element, 'title', 'Zoom to initial window');
+    this.renderer.setAttribute(
+      this.element,
+      'title',
+      this.HsLanguageService.getTranslation('MAP.zoomToInitialWindow')
+    );
 
     this.renderer.appendChild(button, icon);
     this.renderer.appendChild(this.element, button);

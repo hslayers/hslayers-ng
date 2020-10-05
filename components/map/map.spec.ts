@@ -25,6 +25,7 @@ import {HsMapHostDirective} from './map.directive';
 import {HsMapService} from './map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {HsLanguageService} from '../language/language.service';
 
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -67,6 +68,7 @@ describe('HsMapService', () => {
         HsEventBusService,
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsLanguageService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMapComponent);
