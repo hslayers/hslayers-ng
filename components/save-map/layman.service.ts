@@ -426,8 +426,7 @@ export class HsLaymanService implements HsSaverService {
       });
   }
   /**
-   * @function removeLayer
-   * @param layer
+   * @function laymanEndpointExists
    * @public
    * @description Checks whether the layman endpoint exists or not
    */
