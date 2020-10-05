@@ -5,7 +5,7 @@
             [ngClass]="HsLayoutService.sidebarExpanded ? (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </a>
 
-    <a href="" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': propertyName: 'order'"
+    <a href="" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'"
         class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))"
         (click)="HsSidebarService.buttonClicked(button)"
         [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}"
