@@ -67,11 +67,11 @@ export class HsLanguageService {
   }
 
   /**
-   *
    * @param {string} str  Identifier of the string to be translated
+   * @param params
    * @returns {string} Translation
    */
-  getTranslation(str: string): string {
-    return this.TranslateService.instant(str);
+  getTranslation(str: string, params?: object): string {
+    return this.TranslateService.instant(str, params);
   }
 }
