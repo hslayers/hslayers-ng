@@ -302,7 +302,8 @@
     "confirmClear": "Confirm clear"
   },
   "MAP": {
-    "zoomToInitialWindow": "Zoom to initial window"
+    "zoomToInitialWindow": "Zoom to initial window",
+    "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map"
   },
   "GEOLOCATION": {
     "locateMe": "Locate me",

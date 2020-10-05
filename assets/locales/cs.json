@@ -302,7 +302,8 @@
     "confirmClear": "Potvrďte vymazání"
   },
   "MAP": {
-    "zoomToInitialWindow": "Přiblížit na počáteční pohled"
+    "zoomToInitialWindow": "Přiblížit na počáteční pohled",
+    "zoomKeyModifier": "Stlačte {{platformModifierKey}} + použite kolečko myši pro přiblížení mapy."
   },
   "GEOLOCATION": {
     "locateMe": "Najdi mě",
