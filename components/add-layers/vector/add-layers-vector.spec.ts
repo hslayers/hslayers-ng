@@ -28,17 +28,8 @@ describe('add-layers-vector', () => {
     angular
       .module('hs.layout', ['hs.core'])
       .service('HsLayoutService', HsLayoutService);
-
-    angular.module('gettext').filter('translate', (gettextCatalog) => {
-      /**
-       * @param input
-       * @param context
-       */
-      function filter(input, context) {
-        return gettextCatalog.getString(input, null, context);
-      }
-      filter.$stateful = true;
-      return filter;
+    angular.module('hs.language', []).service('HsLanguageService', function () {
+      this.getTranslation = function () {};
     });
 
     angular.mock.module('hs.addLayersVector');

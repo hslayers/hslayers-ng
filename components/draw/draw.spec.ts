@@ -18,6 +18,7 @@ import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsLanguageService} from '../language/language.service';
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -25,6 +26,9 @@ class emptyMock {
   constructor() {}
 }
 class HsConfigMock {
+  constructor() {}
+}
+class HsLanguageMock {
   constructor() {}
 }
 
@@ -71,6 +75,7 @@ describe('HsDraw', () => {
       providers: [
         HsDrawService,
         {provide: HsLayoutService, useValue: mockLayoutService},
+        {provide: HsLanguageService, useValue: new HsLanguageMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         {provide: HsConfig, useValue: new HsConfigMock()},

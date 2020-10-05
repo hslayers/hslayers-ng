@@ -1,6 +1,6 @@
-<hs-panel-header name="info" title="Info"></hs-panel-header>
+<hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translate"></hs-panel-header>
 <div class="card hs-main-panel" *ngIf="HsQueryBaseService.data.coordinates === undefined || HsQueryBaseService.data.coordinates.length == 0">
-    <div class="card-body m-2" i18n>Click on map for query results!</div>
+    <div class="card-body m-2">{{'QUERY.infoPanel.clickOnMap' | translate}}</div>
 </div>
 <hs-query-default-info-panel-body></hs-query-default-info-panel-body>
 <hs-custom-info-panel-body></hs-custom-info-panel-body>
@@ -18,5 +18,4 @@
             <input class="form-control" [value]="HsQueryBaseService.data.selectedProj.value" readonly="">
         </div>
     </div>
-
 </div>

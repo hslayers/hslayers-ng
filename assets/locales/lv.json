@@ -57,7 +57,11 @@
     "icon": "Ikona",
     "area": "Platība",
     "delete": "Dzēst",
-    "yes": "Jā"
+    "yes": "Jā",
+    "value": "Vērtība",
+    "attributes": "Atribūts",
+    "projection": "Projekcija",
+    "confirmDelete": "Aptipriniet dzēšanu"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -160,7 +164,9 @@
       "addDrawLayer": "Pievienot jaunu slāni",
       "removeLastPoint": "Noņemt pēdējo punktu",
       "finishFeature": "Pabeigt grafisko objektu"
-    }
+    },
+    "drawLayer": "Zīmēt slāni",
+    "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?"
   },
   "PERMALINK": {
     "newShare": "Jauna kopīgošana",
@@ -272,5 +278,39 @@
       "SEARCH": "Meklēt atrašanās vietu",
       "DRAW": "Zīmēt jaunus grafiskos objektus"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Vai tiešām vēlaties dzēst šo grafisko objektu?",
+    "confirmDelete": "Apstiprināt dzēšanu",
+    "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus grafiskos objektus no slāņa",
+    "coordinates": "Koordinātes",
+    "featureInfo": "Grafisko objektu informācija",
+    "featurePopup": {
+      "closePopup": "Aizvērt uznirstošo logu",
+      "removeClusterPart": "Noņemt blakusesošo grafisko objektu apvienošanu",
+      "removeFeature": "Noņemt grafisko objektu",
+      "clearLayer": "Notīrīt slāni"
+    },
+    "feature": {
+      "attributeName": "Atribūtu nosaukums",
+      "attributeValue": "Atribūta vērtība"
+    },
+    "infoPanel": {
+      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus!"
+    },
+    "confirmClear": "Apstiprināt notīrīšanu"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
+  },
+  "GEOLOCATION": {
+    "locateMe": "Mana atrašanās vieta",
+    "precision": "Precizitāte",
+    "speed": "Ātrums",
+    "altitude": "Augstums",
+    "follow": "Sekot"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Pārslēgt nolaižamo izvēlni"
   }
 }

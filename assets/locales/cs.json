@@ -57,7 +57,11 @@
     "icon": "Ikona",
     "area": "Plocha",
     "delete": "Vymazat",
-    "yes": "Ano"
+    "yes": "Ano",
+    "value": "Hodnota",
+    "attributes": "Atributy",
+    "projection": "Projekce",
+    "confirmDelete": "Potvrďte smazání"
   },
   "PANEL_HEADER": {
     "LM": "Správce vrstev",
@@ -161,7 +165,9 @@
       "removeLastPoint": "Odebrat poslední bod",
       "selectType": "Zvolte type",
       "finishFeature": "Ukončit prvek"
-    }
+    },
+    "drawLayer": "Nakreslete vrstvu",
+    "reallyDeleteThisLayer": "Opravdu tuto vrstvu smažte?"
   },
   "PERMALINK": {
     "newShare": "Nové sdílení",
@@ -273,5 +279,39 @@
       "SEARCH": "Vyhledejte lokaci",
       "DRAW": "Nakreslete nové prvky"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Opravdu tuto prvek smažte?",
+    "confirmDelete": "Potvrďte smazání",
+    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvek z vrstvy",
+    "coordinates": "Souřadnice",
+    "featureInfo": "Informace o funkci",
+    "featurePopup": {
+      "closePopup": "Zavřít vyskakovací okno",
+      "removeClusterPart": "Odstraňte část clusteru",
+      "removeFeature": "Odebrat funkci",
+      "clearLayer": "Průhledná vrstva"
+    },
+    "feature": {
+      "attributeName": "Název atributu",
+      "attributeValue": "Hodnota atributu"
+    },
+    "infoPanel": {
+      "clickOnMap": "Kliknutím na mapu zobrazíte výsledky dotazu!"
+    },
+    "confirmClear": "Potvrďte vymazání"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Přiblížit počáteční okno"
+  },
+  "GEOLOCATION": {
+    "locateMe": "Najděte mě",
+    "precision": "Přesnost",
+    "speed": "Rychlost",
+    "altitude": "Nadmořská výška",
+    "follow": "Následovat"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Přepnout rozbalovací nabídku"
   }
 }

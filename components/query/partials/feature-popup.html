@@ -1,7 +1,7 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
         <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
-            <a class="p-1" href="#" (click)="closePopup()" i18n data-toggle="tooltip" title="close popup">
+            <a class="p-1" href="#" (click)="closePopup()" data-toggle="tooltip" [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{layerDesc.title}}</strong>
@@ -12,7 +12,7 @@
                     <div *ngFor="let subFeature of feature.get('features')" class="d-flex flex-column" class="hs-hover-popup-feature">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(subFeature)}}</em></div>
-                            <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" i18n data-toggle="tooltip" title="Remove cluster part">
+                            <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.removeClusterPart' | translate">
                                 <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
                             </a>
                         </div>
@@ -30,7 +30,7 @@
                 <div *ngIf="!isClustered(feature)" class="hs-hover-popup-feature">
                     <div class="d-flex flex-row">
                         <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(feature)}}</em></div>
-                        <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" i18n data-toggle="tooltip" title="Remove feature">
+                        <a class="p-1" href="#" *ngIf="HsQueryVectorService.isFeatureRemovable(feature)" (click)="removeFeature(feature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.removeFeature' | translate">
                             <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
                         </a>
                     </div>
@@ -44,8 +44,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" i18n data-toggle="tooltip" title="Clear layer">
-            Clear layer
+            <button class="btn btn-danger btn-block btn-sm" (click)="clearLayer(layerDesc.layer)" *ngIf="HsLayerUtilsService.isLayerEditable(layerDesc.layer)" data-toggle="tooltip" title="Clear layer">
+            {{'QUERY.featurePopup.clearLayer' | translate}}
         </button>
         </div>
     </div>

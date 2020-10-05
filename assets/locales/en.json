@@ -57,7 +57,11 @@
     "icon": "Icon",
     "area": "Area",
     "delete": "Delete",
-    "yes": "Yes"
+    "yes": "Yes",
+    "value": "Value",
+    "attributes": "Attributes",
+    "projection": "Projection",
+    "confirmDelete": "Confirm delete"
   },
   "PANEL_HEADER": {
     "LM": "Layermanager",
@@ -161,7 +165,9 @@
       "removeLastPoint": "Remove last point",
       "selectType": "Select type",
       "finishFeature": "Finish feature"
-    }
+    },
+    "drawLayer": "Draw layer",
+    "reallyDeleteThisLayer": "Really delete this layer?"
   },
   "PERMALINK": {
     "newShare": "New share",
@@ -273,5 +279,39 @@
       "SEARCH": "Search for location",
       "DRAW": "Draw new features"
     }
+  },
+  "QUERY": {
+    "reallyDelete": "Really delete this feature?",
+    "confirmDelete": "Confirm delete",
+    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer",
+    "coordinates": "Coordinates",
+    "featureInfo": "Feature info",
+    "featurePopup": {
+      "closePopup": "Close popup",
+      "removeClusterPart": "Remove cluster part",
+      "removeFeature": "Remove feature",
+      "clearLayer": "Clear layer"
+    },
+    "feature": {
+      "attributeName": "Attribute name",
+      "attributeValue": "Attribute value"
+    },
+    "infoPanel": {
+      "clickOnMap": "Click on map for query results!"
+    },
+    "confirmClear": "Confirm clear"
+  },
+  "MAP": {
+    "zoomToInitialWindow": "Zoom to initial window"
+  },
+  "GEOLOCATION": {
+    "locateMe": "Locate me",
+    "precision": "Precision",
+    "speed": "Speed",
+    "altitude": "Altitude",
+    "follow": "Follow"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Toggle dropdown"
   }
 }

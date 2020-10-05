@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
@@ -15,6 +14,7 @@ import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -25,9 +25,14 @@ import {HsQueryWmsService} from './query-wms.service';
     HsQueryDefaultInfoPanelBodyComponent,
     HsQueryAttributeRowComponent,
   ],
-  imports: [CommonModule, BrowserModule, HsPanelHelpersModule, FormsModule],
+  imports: [CommonModule, HsPanelHelpersModule, FormsModule, TranslateModule],
   exports: [HsQueryComponent, HsQueryFeaturePopupComponent],
-  providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
+  providers: [
+    HsQueryBaseService,
+    HsQueryVectorService,
+    HsQueryWmsService,
+    TranslateStore,
+  ],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
 export class HsQueryModule {}

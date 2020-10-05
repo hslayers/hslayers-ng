@@ -1,7 +1,7 @@
-import * as GeometryType from 'ol/geom/GeometryType';
 import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
 import {HsConfig} from '../../config.service';
@@ -9,6 +9,7 @@ import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.co
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -16,11 +17,8 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {Layer} from 'ol/layer';
-import {TranslateService} from '@ngx-translate/core';
-
-import VectorSource from 'ol/source/Vector';
 import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 type activateParams = {
   onDrawStart?;
@@ -86,8 +84,8 @@ export class HsDrawService {
     private HsConfig: HsConfig,
     private HsQueryBaseService: HsQueryBaseService,
     private HsQueryVectorService: HsQueryVectorService,
-    private TranslateService: TranslateService,
-    private HsLaymanService: HsLaymanService
+    private HsLaymanService: HsLaymanService,
+    private HsLanguageService: HsLanguageService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -131,7 +129,7 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(addNewLayer = false): void {
-    let tmpTitle = 'Draw layer'; //this.gettext()
+    let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
     const tmpLayer =
       addNewLayer === true
         ? null
@@ -355,8 +353,10 @@ export class HsDrawService {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.TranslateService.instant('Really delete this layer?'),
-        title: this.TranslateService.instant('Confirm delete'),
+        message: this.HsLanguageService.getTranslation(
+          'DRAW.reallyDeleteThisLayer'
+        ),
+        title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
     const confirmed = await dialog.waitResult();
