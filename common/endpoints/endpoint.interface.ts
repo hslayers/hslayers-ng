@@ -9,6 +9,7 @@ export interface HsEndpoint {
   user?;
   code_list_url?: string;
   code_lists?;
+  version?: string;
   datasourcePaging?: {
     start?: number;
     limit: number;
