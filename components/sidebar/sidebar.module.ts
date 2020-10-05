@@ -9,7 +9,7 @@ import {HsMiniSidebarComponent} from './mini-sidebar.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
 import {HsSidebarService} from './sidebar.service';
-import {SortByPipe} from './sortByPipe.class';
+import {SortByPipe} from './sortBy.pipe';
 import {TranslateStore} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
