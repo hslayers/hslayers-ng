@@ -9,11 +9,13 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Subject} from 'rxjs';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
+import VectorLayer from 'ol/layer/Vector';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -118,5 +120,17 @@ describe('HsSaveMap', () => {
     name = 'Some Czech Name Like "Vážně hustý název"';
     laymanName = service.getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_czech_name_like_vazne_husty_nazev');
+  });
+
+  it('read layer title/name attributes and escape for layman', () => {
+    let laymanName = service.getLayerName(
+      new VectorLayer({title: 'Areas of interest'})
+    );
+    expect(laymanName).toBe('areas_of_interest');
+
+    laymanName = service.getLayerName(
+      new VectorLayer({name: 'Aoi', title: 'Areas of interest'})
+    );
+    expect(laymanName).toBe('aoi');
   });
 });

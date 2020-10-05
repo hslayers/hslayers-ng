@@ -212,6 +212,13 @@ export class HsLayerUtilsService {
     return editorConfig.editable;
   }
 
+  /**
+   * Get user friendly name of layer based primary on title
+   * and secondary on name attributes.
+   * Is used in query service and hover popup.
+   *
+   * @param layer Layer to get the name for
+   */
   getLayerName(layer: Layer): string {
     if (
       layer === undefined ||
