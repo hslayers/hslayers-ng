@@ -47,8 +47,8 @@ export class HsCommonEndpointsService {
             user: ds.user,
             liferayProtocol: ds.liferayProtocol,
             originalConfiguredUser: ds.user,
-            getCurrentUserIfNeeded: () =>
-              HsCommonLaymanService.getCurrentUserIfNeeded(tmp),
+            getCurrentUserIfNeeded: async () =>
+              await HsCommonLaymanService.getCurrentUserIfNeeded(tmp),
           };
           return tmp;
         }),
