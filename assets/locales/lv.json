@@ -301,7 +301,8 @@
     "confirmClear": "Apstiprināt notīrīšanu"
   },
   "MAP": {
-    "zoomToInitialWindow": "Pietuvināt sākotnējo logu"
+    "zoomToInitialWindow": "Pietuvināt sākotnējo logu",
+    "zoomKeyModifier": "Use {{platformModifierKey}} + mouse-wheel to zoom the map"
   },
   "GEOLOCATION": {
     "locateMe": "Mana atrašanās vieta",

@@ -151,7 +151,10 @@ export class HsMapService {
     this.defaultDesktopControls.removeAt(1);
     this.defaultDesktopControls.push(new ScaleLine());
     if (HsConfig.componentsEnabled?.defaultViewButton) {
-      this.createDefaultViewButton();
+      //make sure translations are loaded
+      setTimeout(() => {
+        this.createDefaultViewButton();
+      }, 500);
     }
   }
   /**
@@ -327,7 +330,7 @@ export class HsMapService {
           )
         ) {
           //TODO: change the name of platform modifier key dynamically based on OS
-          const platformModifierKey = 'CTRL or META';
+          const platformModifierKey = 'CTRL/META';
           //Following styles would be better written as ng-styles...
           const html = this.renderer.createElement('div');
           this.renderer.setAttribute(
@@ -341,7 +344,9 @@ export class HsMapService {
             `position: absolute; right:15px; top:0.6em;z-index:1000`
           );
           const text = this.renderer.createText(
-            `Use ${platformModifierKey} key + mouse-wheel to zoom the map.`
+            `${this.HsLanguageService.getTranslation('MAP.zoomKeyModifier', {
+              platformModifierKey: platformModifierKey,
+            })}`
           );
           this.renderer.appendChild(html, text);
           this.renderer.appendChild(
@@ -352,7 +357,7 @@ export class HsMapService {
             this.HsLayoutService.contentWrapper
               .querySelector('.hs-zoom-info-dialog')
               .remove();
-          }, 3000);
+          }, 4000);
         }
       });
     }
