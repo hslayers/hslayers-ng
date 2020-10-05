@@ -60,7 +60,8 @@
     "yes": "Jā",
     "value": "Vērtība",
     "attributes": "Atribūts",
-    "projection": "Projekcija"
+    "projection": "Projekcija",
+    "confirmDelete": "Aptipriniet dzēšanu"
   },
   "PANEL_HEADER": {
     "LM": "Slāņu pārvaldība",
@@ -164,7 +165,8 @@
       "removeLastPoint": "Noņemt pēdējo punktu",
       "finishFeature": "Pabeigt grafisko objektu"
     },
-    "drawLayer": "Zīmēt slāni"
+    "drawLayer": "Zīmēt slāni",
+    "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?"
   },
   "PERMALINK": {
     "newShare": "Jauna kopīgošana",
