@@ -18,6 +18,9 @@ import {Draw, Modify} from 'ol/interaction';
  * @param $timeout
  * @param HsQueryVectorService
  * @param HsLaymanService
+ * @param HsConfirmDialogService
+ * @param HsCommonEndpointsService
+ * @param $http
  */
 export default function (
   HsConfig,
@@ -182,32 +185,18 @@ export default function (
           source: me.source,
           type: /** @type {ol.geom.GeometryType} */ (me.type),
           style: changeStyle ? changeStyle() : undefined,
-          condition: function (e) {
+          condition: (e) => {
             if (e.originalEvent.buttons === 1) {
+              //left click
               return true;
             } else if (e.originalEvent.buttons === 2) {
+              //right click
               if (me.type == 'Polygon') {
                 const vertexCount = me.draw.sketchLineCoords_.length;
-                if (vertexCount >= 4) {
-                  setTimeout(() => {
-                    me.removeLastPoint();
-                    me.draw.finishDrawing();
-                  }, 250);
-                  return true;
-                }
-                return false;
+                return me.rightClickCondition(4, vertexCount);
               } else if (me.type == 'LineString') {
                 const vertexCount = me.draw.sketchCoords_.length;
-                if (vertexCount > 2) {
-                  setTimeout(() => {
-                    me.removeLastPoint();
-                    me.draw.finishDrawing();
-                  }, 250);
-                  return true;
-                }
-                return false;
-              } else {
-                return false;
+                return me.rightClickCondition(2, vertexCount - 1);
               }
             }
           },
@@ -321,6 +310,27 @@ export default function (
           onDrawEnd: me.onDrawEnd,
         });
       }
+    },
+    /**
+     * @function rightClickCondition
+     * @memberOf HsDrawService
+     * @description Determines whether rightclick should finish the drawing or not
+     * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
+     * @param vertexCount Number of vertexes the sketch has
+     */
+    rightClickCondition(typeNum, vertexCount) {
+      const minPoints = HsConfig.preserveLastSketchPoint ? 1 : 0;
+      const minVertexCount = typeNum - minPoints;
+      if (vertexCount >= minVertexCount) {
+        setTimeout(() => {
+          if (minPoints == 0) {
+            me.removeLastPoint();
+          }
+          me.draw.finishDrawing();
+        }, 250);
+        return true;
+      }
+      return false;
     },
     /**
      * @function removeLayer
