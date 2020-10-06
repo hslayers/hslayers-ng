@@ -1,4 +1,4 @@
-<div ng-if="isAllowed()">
+<div>
     <form class="form">
         <label class="form-group"><translate>Name</translate>
             <input type="text" class="form-control" placeholder="{{'Fill in name'|translate}}"
@@ -81,10 +81,5 @@
             <button type="button" class="btn btn-primary" ng-show="step=='context'" translate
                 ng-disabled="!compoData.title" ng-click="confirmSave()">Save</button>
         </div>
-    </div>
-</div>
-<div ng-if="isAllowed()">
-    <div class="alert alert-info" translate>
-        You are not authorized to store composition. Please sign in or contact administrator for your credentials.
     </div>
 </div>

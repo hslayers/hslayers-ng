@@ -1391,7 +1391,7 @@ msgstr "Pokoušíte uložit změny mapy do"
 
 #: components/save-map/partials/simpleform.html:87
 msgid "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
-msgstr "Nejste oprávněni skladovat složení. Přihlaste se nebo kontaktujte správce svých přihlašovacích údajů."
+msgstr "Nejste oprávněni  ukládat kompozice. Přihlaste se nebo kontaktujte správce svých přihlašovacích údajů."
 
 #: components/compositions/partials/compositionLoadUnsavedDialog.html:16
 #: components/compositions/partials/dialog_overwriteconfirmmd.html:16
