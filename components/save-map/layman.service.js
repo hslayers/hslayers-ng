@@ -103,9 +103,9 @@ export default function (
           .then((layerDesc) => {
             $http({
               url: `${endpoint.url}/rest/${endpoint.user}/layers${
-                layerDesc.exists ? '/' + description.name : ''
+                layerDesc && layerDesc.name ? '/' + description.name : ''
               }?${Math.random()}`,
-              method: layerDesc.exists ? 'PATCH' : 'POST',
+              method: layerDesc && layerDesc.name ? 'PATCH' : 'POST',
               data: formdata,
               transformRequest: angular.identity,
               headers: {'Content-Type': undefined},
@@ -118,23 +118,25 @@ export default function (
           });
       });
     },
-  /**
-   * Get layman friendly name of layer based primary on name
-   * and secondary on title attributes.
-   *
-   * @param layer Layr to get the name for
-   */ 
-  getLayerName(layer) {
-    const layerName = layer.get('name') || layer.get('title');
-    if (layerName == undefined) {
-      console.warn('Layer title/name not set for', layer);
-    }
-    return me.getLaymanFriendlyLayerName(layerName);
-  },
+    /**
+     * Get layman friendly name of layer based primary on name
+     * and secondary on title attributes.
+     *
+     * @param layer Layr to get the name for
+     */
+
+    getLayerName(layer) {
+      const layerName = layer.get('name') || layer.get('title');
+      if (layerName == undefined) {
+        console.warn('Layer title/name not set for', layer);
+      }
+      return me.getLaymanFriendlyLayerName(layerName);
+    },
     /**
      * @description Get Layman friendly name for layer based on its title by
      * replacing spaces with underscores, converting to lowercase, etc.
      * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
+     * @param title
      * @function getLaymanFriendlyLayerName
      * @param {string} layerName Name to get Layman-friendly name for
      * @returns {string} New layer title
@@ -160,7 +162,7 @@ export default function (
         return;
       }
       const layerName = me.getLayerName(layer);
-      let layerTitle = layer.get('title');  
+      let layerTitle = layer.get('title');
       const f = new GeoJSON();
       const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
       (HsCommonEndpointsService.endpoints || [])
@@ -176,10 +178,7 @@ export default function (
             crs: me.crs,
           }).then((response) => {
             $timeout(() => {
-              me.pullVectorSource(
-                ds,
-                layerName
-              ).then((response) => {
+              me.pullVectorSource(ds, layerName, layer).then((response) => {
                 layer.set('hs-layman-synchronizing', false);
               });
             }, 2000);
@@ -216,7 +215,7 @@ export default function (
           layer.get('laymanLayerDescriptor')
         )
           .then((layerDesc) => {
-            if (layerDesc.exists) {
+            if (layerDesc && layerDesc.name) {
               layer.set('laymanLayerDescriptor', layerDesc);
               try {
                 const wfsFormat = new WFS();
@@ -270,12 +269,15 @@ export default function (
      * with features for a specified layer
      * @description Retrieve layers features from server
      */
-    pullVectorSource(endpoint, layerName) {
+    pullVectorSource(endpoint, layerName, layer) {
       return new Promise((resolve, reject) => {
         me.describeLayer(endpoint, layerName).then((descr) => {
           if (descr === null) {
             resolve();
             return;
+          }
+          if (descr && descr.name) {
+            layer.set('laymanLayerDescriptor', descr);
           }
           if (
             descr.wfs.status == 'NOT_AVAILABLE' &&
@@ -286,7 +288,7 @@ export default function (
           }
           if (descr.wfs.status == 'NOT_AVAILABLE') {
             $timeout(() => {
-              me.pullVectorSource(endpoint, layerName).then((response) =>
+              me.pullVectorSource(endpoint, layerName,layer).then((response) =>
                 resolve(response)
               );
             }, 2000);
@@ -376,14 +378,14 @@ export default function (
               angular.isDefined(description.code) &&
               description.code == 15
             ) {
-              resolve({exists: false});
+              resolve();
             } else if (
               description !== null &&
               angular.isDefined(description.name)
             ) {
-              resolve(angular.extend(description, {exists: true}));
+              resolve(description);
             } else {
-              resolve({exists: false});
+              resolve();
             }
           });
         } else {

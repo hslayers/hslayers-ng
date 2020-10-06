@@ -90,7 +90,8 @@ export default function (
           layer.set('hs-layman-synchronizing', true);
           HsLaymanService.pullVectorSource(
             ds,
-            HsLaymanService.getLayerName(layer)
+            HsLaymanService.getLayerName(layer),
+            layer
           ).then((response) => {
             let featureString;
             if (response) {
