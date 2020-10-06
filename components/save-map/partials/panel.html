@@ -19,7 +19,7 @@
                 You are not authorized to store composition. Please sign in or contact administrator for your credentials.
             </div>
         </div>
-        <div ng-if="!isAllowed()">
+        <div ng-show="!isAllowed()">
             <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
             <div class="modal-footer"  ng-if="config.advanced_form">
                 <button type="button" class="btn btn-block btn-primary" id="stc-save" ng-show="step=='end' && !isAllowed() && overwrite" translate=""
