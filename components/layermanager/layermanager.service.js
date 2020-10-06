@@ -331,6 +331,9 @@ export default function (
    * @description Remove layer from layer folder structure a clean empty folder
    */
   function cleanFolders(lyr) {
+    if (lyr.get('show_in_manager') == false) {
+      return;
+    }
     if (angular.isDefined(lyr.get('path')) && lyr.get('path') !== 'undefined') {
       const path = lyr.get('path');
       const parts = path.split('/');
