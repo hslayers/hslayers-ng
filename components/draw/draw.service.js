@@ -191,13 +191,14 @@ export default function (
               return true;
             } else if (e.originalEvent.buttons === 2) {
               //right click
-              if (me.type == 'Polygon') {
+              if (me.type == 'Polygon' && me.draw.sketchLineCoords_) {
                 const vertexCount = me.draw.sketchLineCoords_.length;
                 return me.rightClickCondition(4, vertexCount);
-              } else if (me.type == 'LineString') {
+              } else if (me.type == 'LineString' && me.draw.sketchCoords_) {
                 const vertexCount = me.draw.sketchCoords_.length;
                 return me.rightClickCondition(2, vertexCount - 1);
               }
+              return false;
             }
           },
         });
