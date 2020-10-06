@@ -393,6 +393,20 @@ export default function (
         }
       });
     },
+
+        /**
+   * @function removeLayer
+   * @param layer
+   * @public
+   * @description Checks whether the layman endpoint exists or not
+   */
+  laymanEndpointExists() {
+    return (
+      this.HsCommonEndpointsService.endpoints.findIndex(
+        (endpoint) => endpoint.type === 'layman'
+      ) >= 0
+    );
+  }
   });
   return me;
 }

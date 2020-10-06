@@ -17,6 +17,7 @@ import {Draw, Modify} from 'ol/interaction';
  * @param $compile
  * @param $timeout
  * @param HsQueryVectorService
+ * @param HsLaymanService
  */
 export default function (
   HsConfig,
@@ -30,7 +31,11 @@ export default function (
   HsLayoutService,
   $compile,
   $timeout,
-  HsQueryVectorService
+  HsQueryVectorService,
+  HsLaymanService,
+  HsConfirmDialogService,
+  HsCommonEndpointsService,
+  $http
 ) {
   'ngInject';
   const me = this;
@@ -104,7 +109,7 @@ export default function (
         visible: true,
         removable: true,
         editable: true,
-        synchronize: true,
+        synchronize: HsLaymanService.laymanEndpointExists() ? true : false,
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
       });
       me.selectedLayer = drawLayer;
@@ -317,7 +322,37 @@ export default function (
         });
       }
     },
-
+    /**
+     * @function removeLayer
+     * @memberOf HsDrawController
+     * @description Removes selected drawing layer from both Layermanager and Layman
+     */
+    async removeLayer() {
+      const confirmed = await HsConfirmDialogService.show(
+        gettext('Really delete selected draw layer?'),
+        gettext('Confirm delete')
+      );
+      if (confirmed == 'yes') {
+        HsMapService.map.removeLayer(me.selectedLayer);
+        if (me.selectedLayer.get('synchronize') == true) {
+          (HsCommonEndpointsService.endpoints || [])
+            .filter((ds) => ds.type === 'layman')
+            .forEach((ds) => {
+              $http.delete(
+                `${ds.url}/rest/${ds.user}/layers/${me.selectedLayer
+                  .get('title')
+                  .toLowerCase()
+                  .replace(/\s+/g, '')}`
+              );
+            });
+        }
+        if (me.selectedLayer.get('title') == 'tmpDrawLayer') {
+          me.tmpDrawLayer = false;
+        }
+        me.selectedLayer = null;
+        me.fillDrawableLayers();
+      }
+    },
     /**
      * @function deactivateDrawing
      * @memberOf HsDrawService

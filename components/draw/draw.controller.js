@@ -21,14 +21,8 @@ export default function (
   HsConfig,
   HsDrawService,
   HsLayerUtilsService,
-  $timeout,
   HsLayoutService,
-  gettext,
-  $compile,
-  HsConfirmDialogService,
-  HsCommonEndpointsService,
-  HsMapService,
-  $http
+  gettext
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -183,39 +177,14 @@ export default function (
       };
     },
     /**
-     * @function changeStyle
+     * @function removeLayer
      * @memberOf HsDrawController
      * @description Removes selected drawing layer from both Layermanager and Layman
      */
-    async removeLayer() {
-      const confirmed = await HsConfirmDialogService.show(
-        gettext('Really delete selected draw layer?'),
-        gettext('Confirm delete')
-      );
-      if (confirmed == 'yes') {
-        HsMapService.map.removeLayer(HsDrawService.selectedLayer);
-        if (HsDrawService.selectedLayer.get('synchronize') == true) {
-          (HsCommonEndpointsService.endpoints || [])
-            .filter((ds) => ds.type === 'layman')
-            .forEach((ds) => {
-              $http.delete(
-                `${ds.url}/rest/${
-                  ds.user
-                }/layers/${HsDrawService.selectedLayer
-                  .get('title')
-                  .toLowerCase()
-                  .replace(/\s+/g, '')}`
-              );
-            });
-        }
-        if (HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer'){
-          HsDrawService.tmpDrawLayer = false;
-        }
-        HsDrawService.selectedLayer = null;
-        HsDrawService.fillDrawableLayers();
-        if (!$scope.$$phase) {
-          $scope.$digest();
-        }
+    removeLayer() {
+      HsDrawService.removeLayer();
+      if (!$scope.$$phase) {
+        $scope.$digest();
       }
     },
   });
