@@ -90,7 +90,7 @@ export default function (
           layer.set('hs-layman-synchronizing', true);
           HsLaymanService.pullVectorSource(
             ds,
-            HsLaymanService.getLaymanFriendlyLayerName(layer.get('title'))
+            HsLaymanService.getLayerName(layer)
           ).then((response) => {
             let featureString;
             if (response) {
@@ -131,9 +131,7 @@ export default function (
                     inserted,
                     updated,
                     deleted,
-                    HsLaymanService.getLaymanFriendlyLayerName(
-                      layer.get('title')
-                    ),
+                    HsLaymanService.getLayerName(layer),
                     layer
                   ).then((response) => {
                     if (response.data.indexOf('Exception') > -1) {

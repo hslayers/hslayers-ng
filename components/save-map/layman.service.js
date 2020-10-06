@@ -118,7 +118,19 @@ export default function (
           });
       });
     },
-
+  /**
+   * Get layman friendly name of layer based primary on name
+   * and secondary on title attributes.
+   *
+   * @param layer Layr to get the name for
+   */ 
+  getLayerName(layer) {
+    const layerName = layer.get('name') || layer.get('title');
+    if (layerName == undefined) {
+      console.warn('Layer title/name not set for', layer);
+    }
+    return me.getLaymanFriendlyLayerName(layerName);
+  },
     /**
      * @description Get Layman friendly name for layer based on its title by
      * replacing spaces with underscores, converting to lowercase, etc.
@@ -127,8 +139,8 @@ export default function (
      * @param {string} layerName Name to get Layman-friendly name for
      * @returns {string} New layer title
      */
-    getLaymanFriendlyLayerName(layerName) {
-      return unidecode(layerName)
+    getLaymanFriendlyLayerName(title) {
+      return unidecode(title)
         .toLowerCase()
         .replace(/[^\w\s\-\.]/gm, '')
         .trim()
@@ -147,21 +159,26 @@ export default function (
       if (layer.getSource().loading) {
         return;
       }
+      const layerName = me.getLayerName(layer);
+      let layerTitle = layer.get('title');  
       const f = new GeoJSON();
       const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
+          if (ds.version === undefined || ds.version.split('.').join() < 171) {
+            layerTitle = this.getLaymanFriendlyLayerName(layerTitle);
+          }
           layer.set('hs-layman-synchronizing', true);
           me.pushVectorSource(ds, geojson, {
-            title: layer.get('title'),
-            name: me.getLaymanFriendlyLayerName(layer.get('title')),
+            title: layerTitle,
+            name: layerName,
             crs: me.crs,
           }).then((response) => {
             $timeout(() => {
               me.pullVectorSource(
                 ds,
-                me.getLaymanFriendlyLayerName(layer.get('title'))
+                layerName
               ).then((response) => {
                 layer.set('hs-layman-synchronizing', false);
               });
