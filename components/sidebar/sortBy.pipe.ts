@@ -3,19 +3,22 @@ import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({name: 'sortBy'})
 export class SortByPipe implements PipeTransform {
   transform(value: any[], order = '', column = ''): any[] {
-    if (!value || order === '' || !order) {
-      return this.ascendingOrder(value, column);
-    } // no array
     if (value.length <= 1) {
       return value;
     } // array with only one item
-    if (!column || column !== '') {
-      if (order === 'asc') {
-        return this.ascendingOrder(value, column);
-      } else {
-        return this.descendingOrder(value, column);
-      }
-    } else {
+    if (order === undefined || order == '') {
+      value ? (column ? this.ascendingOrder(value, column) : value) : [];
+      return value;
+    }
+    if (column === undefined || column == '') {
+      return value;
+    }
+    if (column || column !== '') {
+      value
+        ? order === 'asc'
+          ? this.ascendingOrder(value, column)
+          : this.descendingOrder(value, column)
+        : [];
       return value;
     }
   }
