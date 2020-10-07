@@ -211,4 +211,65 @@ export class HsStylerService {
       return newStyle;
     }
   }
+
+  /**
+   * @ngdoc method
+   * @public
+   * @param {object} j Style definition object
+   * @returns {ol.style.Style} Valid Ol style object
+   * @description Parse style definition object to create valid Style
+   */
+  parseStyle(j) {
+    const style_json: any = {};
+    if (j.fill) {
+      style_json.fill = new Fill({
+        color: j.fill,
+      });
+    }
+    if (j.stroke) {
+      style_json.stroke = new Stroke({
+        color: j.stroke.color,
+        width: j.stroke.width,
+      });
+    }
+    if (j.image) {
+      if (j.image.type == 'circle') {
+        const circle_json: any = {};
+
+        if (j.image.radius) {
+          circle_json.radius = j.image.radius;
+        }
+
+        if (j.image.fill) {
+          circle_json.fill = new Fill({
+            color: j.image.fill,
+          });
+        }
+        if (j.image.stroke) {
+          circle_json.stroke = new Stroke({
+            color: j.image.stroke.color,
+            width: j.image.stroke.width,
+          });
+        }
+        style_json.image = new Circle(circle_json);
+      }
+      if (j.image.type == 'icon') {
+        const img = new Image();
+        img.src = j.image.src;
+        if (img.width == 0) {
+          img.width = 43;
+        }
+        if (img.height == 0) {
+          img.height = 41;
+        }
+        const icon_json = {
+          img: img,
+          imgSize: [img.width, img.height],
+          crossOrigin: 'anonymous',
+        };
+        style_json.image = new Icon(icon_json);
+      }
+    }
+    return new Style(style_json);
+  }
 }
