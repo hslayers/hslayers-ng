@@ -3,7 +3,6 @@ import ImageLayer from 'ol/layer/Image';
 import SparqlJson from '../layers/hs.source.SparqlJson';
 import VectorLayer from 'ol/layer/Vector';
 import {Attribution} from 'ol/control';
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
@@ -12,8 +11,13 @@ import {Vector as VectorSource} from 'ol/source';
 /**
  * @param HsMapService
  * @param HsAddLayersVectorService
+ * @param HsStylerService
  */
-export default function (HsMapService, HsAddLayersVectorService, HsStylerService) {
+export default function (
+  HsMapService,
+  HsAddLayersVectorService,
+  HsStylerService
+) {
   'ngInject';
   const me = {
     /**
