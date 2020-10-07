@@ -339,7 +339,7 @@ hr {
 	bottom: 9.2em;
 	right: 5px;
 	max-width: calc(100% - 1.3em);
-	z-index: 991;
+	z-index: 101;
 }
 .hs-locate ul {
 	float: left;
@@ -723,7 +723,7 @@ hs-sidebar {
 	left: 10px;
 	max-width: 636px;
 	display: inline-block;
-	z-index: 999;
+	z-index: 101;
 }
 /********************/
 /** STATUS CREATOR **/
@@ -1346,7 +1346,7 @@ body {
 	/*pointer-events: none;*/
 	overflow: hidden;
 	position: absolute;
-	z-index: 991;
+	z-index: 100;
 }
 
 .sidenav-swipe-overlay {

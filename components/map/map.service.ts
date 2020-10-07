@@ -341,7 +341,7 @@ export class HsMapService {
           this.renderer.setAttribute(
             html,
             'style',
-            `position: absolute; right:15px; top:0.6em;z-index:1000`
+            `position: absolute; right:15px; top:0.6em;z-index:101`
           );
           const text = this.renderer.createText(
             `${this.HsLanguageService.getTranslation('MAP.zoomKeyModifier', {
