@@ -413,7 +413,7 @@ export class HsMapService {
    * @description Find layer object by title of layer
    */
   findLayerByTitle(title) {
-    const layers = this.map.getLayers();
+    const layers = this.map.getLayers().getArray();
     let tmp = null;
     for (const layer of layers) {
       if (layer.get('title') == title) {
