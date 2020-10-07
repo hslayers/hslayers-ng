@@ -8,9 +8,7 @@ import Map from 'ol/Map';
 import * as angular from 'angular';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {HsMapService} from '../../map/map.service';
-import {HsUtilsService} from '../../utils/utils.service';
-import { HsStylerService } from '../../styles/styler.service';
+import {HsStylerService} from '../../styles/styler.service';
 describe('add-layers-vector', () => {
   let el, scope, vm;
 
@@ -26,18 +24,18 @@ describe('add-layers-vector', () => {
       })
       .factory('HsLayerUtilsService', HsLayerUtilsService);
 
-      angular.module('hs.map', []).service('HsMapService', function () {
-        this.map = new Map({
-          target: 'div',
-        });
-        this.addLayer = function(lyr){
-          this.map.addLayer(lyr);
-        }
+    angular.module('hs.map', []).service('HsMapService', function () {
+      this.map = new Map({
+        target: 'div',
       });
+      this.addLayer = function (lyr) {
+        this.map.addLayer(lyr);
+      };
+    });
 
-      angular.module('hs.styles', []).service('HsStylerService', function () {
-        this.parseStyle = (new HsStylerService(null)).parseStyle;
-      });
+    angular.module('hs.styles', []).service('HsStylerService', function () {
+      this.parseStyle = new HsStylerService(null).parseStyle;
+    });
 
     angular
       .module('hs.layout', ['hs.core'])

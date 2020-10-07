@@ -4,8 +4,7 @@ import './compositions.module';
 import 'angular-mocks';
 import * as angular from 'angular';
 import Map from 'ol/Map';
-import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import { HsStylerService } from '../styles/styler.service';
+import {HsStylerService} from '../styles/styler.service';
 
 /* eslint-disable angular/no-service-method */
 /* eslint-disable angular/di */
@@ -57,7 +56,7 @@ describe('compositions', function () {
       });
 
     angular.module('hs.styles', []).service('HsStylerService', function () {
-      this.parseStyle = (new HsStylerService(null)).parseStyle;
+      this.parseStyle = new HsStylerService(null).parseStyle;
     });
 
     angular.module('hs.map', []).service('HsMapService', function () {
@@ -72,7 +71,7 @@ describe('compositions', function () {
       };
       this.addLayer = (lyr) => {
         addedLayers.push(lyr);
-      }
+      };
       this.getMapExtentInEpsg4326 = function () {};
     });
     angular.mock.module('hs.compositions');
@@ -314,7 +313,10 @@ describe('compositions', function () {
     expect(scope.query.editable).toBeUndefined();
   });
 
-  function loadComposition(scope){
+  /**
+   * @param scope
+   */
+  function loadComposition(scope) {
     addedLayers = [];
     scope.HsCompositionsParserService.loadCompositionObject(
       {
@@ -392,7 +394,7 @@ describe('compositions', function () {
   it('if should load composition from json', function () {
     $componentController('hs.compositions', {$scope: scope}, {});
     loadComposition(scope);
-    expect(addedLayers.length).toBe(4); 
+    expect(addedLayers.length).toBe(4);
     expect(addedLayers[0].get('title')).toBe('Measurement sketches');
   });
 
