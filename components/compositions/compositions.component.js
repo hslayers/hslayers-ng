@@ -34,6 +34,8 @@ export default {
     $scope.config = HsConfig;
     $scope.mickaEndpointService = HsCompositionsMickaService;
     $scope.endpointsService = HsCommonEndpointsService;
+    $scope.HsCompositionsParserService = HsCompositionsParserService;
+
     HsCommonEndpointsService.endpoints.forEach((ep) => (ep.next = ep.limit));
     /**
      * @ngdoc property
