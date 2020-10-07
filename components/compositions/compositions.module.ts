@@ -2,6 +2,7 @@ import '../../common/endpoints/endpoints.module';
 import '../layout/layout.module';
 import '../permalink/share.module';
 import '../save-map/save-map.module';
+import '../styles';
 import '../utils';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser.module';
@@ -32,6 +33,7 @@ angular
     'hs.layout',
     'hs.permalink',
     'hs.save-map',
+    'hs.styles',
     'hs',
   ])
   /**

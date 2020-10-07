@@ -7,10 +7,11 @@ import VectorLayerDescriptor from './VectorLayerDescriptor';
  * @param HsUtilsService
  */
 export class HsAddLayersVectorService {
-  constructor(HsMapService, HsUtilsService) {
+  constructor(HsMapService, HsUtilsService, HsStylerService) {
     'ngInject';
     this.HsMapService = HsMapService;
     this.HsUtilsService = HsUtilsService;
+    this.HsStylerService = HsStylerService;
   }
 
   /**
@@ -93,6 +94,11 @@ export class HsAddLayersVectorService {
 
     const src = new descriptor.sourceClass(descriptor);
     descriptor.layerParams.source = src;
+    if (descriptor.layerParams.style) {
+      descriptor.layerParams.style = this.HsStylerService.parseStyle(
+        descriptor.layerParams.style
+      );
+    }
     const lyr = new VectorLayer(descriptor.layerParams);
     return lyr;
   }

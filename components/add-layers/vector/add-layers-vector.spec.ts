@@ -10,6 +10,7 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import { HsStylerService } from '../../styles/styler.service';
 describe('add-layers-vector', () => {
   let el, scope, vm;
 
@@ -32,6 +33,10 @@ describe('add-layers-vector', () => {
         this.addLayer = function(lyr){
           this.map.addLayer(lyr);
         }
+      });
+
+      angular.module('hs.styles', []).service('HsStylerService', function () {
+        this.parseStyle = (new HsStylerService(null)).parseStyle;
       });
 
     angular

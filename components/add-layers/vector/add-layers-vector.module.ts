@@ -15,7 +15,7 @@ angular
     'hs.utils',
     'hs.language',
     'hs.layout',
-    'hs.map',
+    'hs.map'
   ])
   /**
    * @memberof hs.ows

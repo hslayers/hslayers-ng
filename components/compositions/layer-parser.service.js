@@ -13,7 +13,7 @@ import {Vector as VectorSource} from 'ol/source';
  * @param HsMapService
  * @param HsAddLayersVectorService
  */
-export default function (HsMapService, HsAddLayersVectorService) {
+export default function (HsMapService, HsAddLayersVectorService, HsStylerService) {
   'ngInject';
   const me = {
     /**
@@ -283,7 +283,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
 
       let style = null;
       if (angular.isDefined(lyr_def.style)) {
-        style = me.parseStyle(lyr_def.style);
+        style = HsStylerService.parseStyle(lyr_def.style);
       }
 
       const src = new SparqlJson({
@@ -305,67 +305,6 @@ export default function (HsMapService, HsAddLayersVectorService) {
     },
     /**
      * @ngdoc method
-     * @name hs.compositions.config_parsers.service#parseStyle
-     * @public
-     * @param {object} j Style definition object
-     * @returns {ol.style.Style} Valid Ol style object
-     * @description Parse style definition object to create valid Style
-     */
-    parseStyle: function (j) {
-      const style_json = {};
-      if (angular.isDefined(j.fill)) {
-        style_json.fill = new Fill({
-          color: j.fill,
-        });
-      }
-      if (angular.isDefined(j.stroke)) {
-        style_json.stroke = new Stroke({
-          color: j.stroke.color,
-          width: j.stroke.width,
-        });
-      }
-      if (angular.isDefined(j.image)) {
-        if (j.image.type == 'circle') {
-          const circle_json = {};
-
-          if (angular.isDefined(j.image.radius)) {
-            circle_json.radius = j.image.radius;
-          }
-
-          if (angular.isDefined(j.image.fill)) {
-            circle_json.fill = new Fill({
-              color: j.image.fill,
-            });
-          }
-          if (angular.isDefined(j.image.stroke)) {
-            circle_json.stroke = new Stroke({
-              color: j.image.stroke.color,
-              width: j.image.stroke.width,
-            });
-          }
-          style_json.image = new Circle(circle_json);
-        }
-        if (j.image.type == 'icon') {
-          const img = new Image();
-          img.src = j.image.src;
-          if (img.width == 0) {
-            img.width = 43;
-          }
-          if (img.height == 0) {
-            img.height = 41;
-          }
-          const icon_json = {
-            img: img,
-            imgSize: [img.width, img.height],
-            crossOrigin: 'anonymous',
-          };
-          style_json.image = new Icon(icon_json);
-        }
-      }
-      return new Style(style_json);
-    },
-    /**
-     * @ngdoc method
      * @name hs.compositions.config_parsers.service#createVectorLayer
      * @public
      * @param {object} lyr_def Layer definition object
@@ -383,7 +322,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
 
       let extractStyles = true;
       if (angular.isDefined(lyr_def.style)) {
-        options.style = me.parseStyle(lyr_def.style);
+        options.style = HsStylerService.parseStyle(lyr_def.style);
         extractStyles = false;
       }
       let layer;
