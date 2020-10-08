@@ -821,7 +821,27 @@ export class HsLayerManagerService {
       return layer.layer.get('MetadataURL') ? true : false;
     }
   }
-
+  /**
+   * @function setGreyscale
+   * @memberOf hs.layermanager.service
+   * @description Makes layer grayscale
+   * @param {Layer} layer Selected layer (currentLayer)
+   */
+  setGreyscale(layer: Layer): void {
+    const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
+      '.ol-layers > div:first-child'
+    );
+    if (layerContainer.classList.contains('hs-grayscale')) {
+      layerContainer.classList.remove('hs-grayscale');
+      layer.grayscale = false;
+    } else {
+      layerContainer.classList.add('hs-grayscale');
+      layer.grayscale = true;
+    }
+    setTimeout(() => {
+      layer.galleryMiniMenu = false;
+    }, 100);
+  }
   /**
    * (PRIVATE)
    *
