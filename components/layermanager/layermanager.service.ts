@@ -94,6 +94,7 @@ export class HsLayerManagerService {
   timer: any;
   currentLayer: HsLayerDescriptor;
   composition_id: string;
+  menuExpanded = false;
 
   constructor(
     private HsMapService: HsMapService,
@@ -751,8 +752,8 @@ export class HsLayerManagerService {
    * @memberOf hs.layermanager.controller
    * @description Toggles Additional information panel for current layer.
    * @param {Layer} layer Selected layer (HsLayerManagerService.currentLayer)
-   * @param {Layer} toToggle Part of layer editor to be toggled
-   * @param {Layer} control Part of layer editor to be controlled for state.
+   * @param {string} toToggle Part of layer editor to be toggled
+   * @param {string} control Part of layer editor to be controlled for state.
    * Determines whether only toggled part or whole layereditor would be closed
    */
   toggleLayerEditor(layer: HsLayerDescriptor, toToggle, control): void {
@@ -761,6 +762,7 @@ export class HsLayerManagerService {
     }
     if (this.currentLayer != layer) {
       this.toggleCurrentLayer(layer);
+      if(this.menuExpanded)this.menuExpanded  = false;
       layer[toToggle] = true;
     } else {
       layer[toToggle] = !layer[toToggle];
@@ -804,7 +806,9 @@ export class HsLayerManagerService {
       '.hs-layerpanel'
     );
     const layerNode = document.getElementById(layer.idString());
-    this.HsUtilsService.insertAfter(layerPanel, layerNode);
+    if(layerNode){
+      this.HsUtilsService.insertAfter(layerPanel, layerNode);
+    }
     return false;
   }
 
