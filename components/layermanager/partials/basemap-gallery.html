@@ -23,7 +23,7 @@
                     </div>
                     <div class="p-0 hs-miniMenu" [hidden]="!(layer.galleryMiniMenu == true && layer.active)"
                         [ngStyle]="{'position':'absolute'}">
-                        <div class="pl-1 w-100" (click)="setGreyscale(layer)">
+                        <div class="pl-1 w-100" (click)="HsLayerManagerService.setGreyscale(layer)">
                             <label class="form-check-label m-0"
                                 [ngClass]="{'hs-checkmark': layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
                             <p class="ml-1 mb-0" [ngStyle]="{'font-size':'medium'}">

@@ -58,20 +58,4 @@ export class HsLayerManagerGalleryComponent {
         450
     );
   }
-
-  setGreyscale(layer: Layer): void {
-    const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
-      '.ol-layers > div:first-child'
-    );
-    if (layerContainer.classList.contains('hs-grayscale')) {
-      layerContainer.classList.remove('hs-grayscale');
-      layer.grayscale = false;
-    } else {
-      layerContainer.classList.add('hs-grayscale');
-      layer.grayscale = true;
-    }
-    setTimeout(() => {
-      layer.galleryMiniMenu = false;
-    }, 100);
-  }
 }
