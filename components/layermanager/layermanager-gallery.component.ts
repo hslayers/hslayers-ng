@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
+import {HsConfig} from '../../config.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsConfig} from '../../config.service';
 
 import {Layer} from 'ol/layer';
 
@@ -11,13 +11,14 @@ import {Layer} from 'ol/layer';
 })
 export class HsLayerManagerGalleryComponent {
   baseLayersExpanded = false;
+  menuExpanded = false;
   data: any;
 
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
     private Window: Window,
-    private HsConfig: HsConfig,
+    private HsConfig: HsConfig
   ) {
     this.data = this.HsLayerManagerService.data;
   }
@@ -46,6 +47,8 @@ export class HsLayerManagerGalleryComponent {
       }
     } else {
       this.baseLayersExpanded = false;
+      this.HsLayerManagerService.currentLayer = null;
+
       this.HsLayerManagerService.changeBaseLayerVisibility();
     }
   }
@@ -57,5 +60,19 @@ export class HsLayerManagerGalleryComponent {
         this.HsLayoutService.panelSpaceWidth() -
         450
     );
+  }
+  expandMenu(e, layer) {
+    const parent = (e.target as Element).parentElement;
+    this.HsLayerManagerService.toggleLayerEditor(
+      layer,
+      'settings',
+      'sublayers'
+    );
+
+    if (parent.classList.contains('expanded')) {
+      this.HsLayerManagerService.menuExpanded = false;
+    } else {
+      this.HsLayerManagerService.menuExpanded = true;
+    }
   }
 }

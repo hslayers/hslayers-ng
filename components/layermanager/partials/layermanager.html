@@ -135,7 +135,7 @@
         </div> -->
         </ul>
         <hs-layer-editor [current-layer]="HsLayerManagerService.currentLayer"
-            [hidden]="!(HsLayerManagerService.currentLayer != null)" class="hs-layerpanel">
+            [hidden]="!(HsLayerManagerService.currentLayer != null) || HsLayerManagerService.menuExpanded" class="hs-layerpanel">
         </hs-layer-editor>
     </div>
 </div>
