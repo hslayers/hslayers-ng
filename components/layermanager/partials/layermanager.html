@@ -1,45 +1,59 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card">
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translate">
         <extra-buttons>
-            <button type="button" class="but-title-sm" (click)="removeAllLayers()" [title]="'LAYERMANAGER.removeAllLayers' | translate">
+            <button type="button" class="but-title-sm" (click)="removeAllLayers()"
+                [title]="'LAYERMANAGER.removeAllLayers' | translate">
                 <i class="glyphicon icon-trash"></i>
             </button>
-            <button type="button" class="but-title-sm" (click)="HsCore.resetMap()" [title]="'LAYERMANAGER.resetMap' | translate">
+            <button type="button" class="but-title-sm" (click)="HsCore.resetMap()"
+                [title]="'LAYERMANAGER.resetMap' | translate">
                 <i class="glyphicon icon-fatredo"></i>
             </button>
         </extra-buttons>
     </hs-panel-header>
     <div class="card-body hs-lm-panel">
         <div class="nav nav-pills" [hidden]="!hasBoxImages()">
-            <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary" style="padding-right: 2px; padding-left: 2px;">
-                <a href="" [ngClass]="{ 'thumbnail': true, 'alert-info': box.get('active')}" title="{{box.get('title')}}" (click)="activateTheme(box)">
+            <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
+                style="padding-right: 2px; padding-left: 2px;">
+                <a href="" [ngClass]="{ 'thumbnail': true, 'alert-info': box.get('active')}"
+                    title="{{box.get('title')}}" (click)="activateTheme(box)">
                     <img src="{{box.get('img')}}" alt="{{box.get('title')}}">
                 </a>
             </div>
         </div>
-        <div><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="query.title"></div>
+        <div><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate"
+                [(ngModel)]="query.title"></div>
 
         <ul *ngIf="!HsLayoutService.componentEnabled('basemapGallery')" class="list-group hs-lm-baselayerlist">
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex ">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translate }}</span>
+                        <span class="align-middle"
+                            style="line-height: 2em;">{{'LAYERMANAGER.baselayers' | translate }}</span>
                     </div>
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()" [ngClass]="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                        <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
+                            [ngClass]="data.baselayersVisible  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item" *ngFor="let layer of data.baselayers" [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
+            <li class="list-group-item hs-lm-item" *ngFor="let layer of data.baselayers"
+                [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" id="{{layer.idString()}}">
                 <div class="d-flex ">
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" (click)="changeBaseLayerVisibility($event, layer);" [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                            (click)="changeBaseLayerVisibility($event, layer);"
+                            [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
-                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu" [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}">
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
+                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}">
                         {{layer.title}}
                     </div>
                     <div class="pl-1 info_btn" style="cursor: pointer;">
-                        <span class="icon-settingsthree-gears text-secondary" (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')" [title]="'COMMON.info' | translate" data-toggle="tooltip" data-container="body" data-placement="auto"></span>
+                        <span class="icon-settingsthree-gears text-secondary"
+                            (click)="HsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
+                            [title]="'COMMON.info' | translate" data-toggle="tooltip" data-container="body"
+                            data-placement="auto"></span>
                     </div>
                 </div>
             </li>
@@ -49,22 +63,27 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translate }}</span>
+                        <span class="align-middle"
+                            style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' | translate }}</span>
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item" *ngFor="let layer of data.terrainlayers" (click)="changeTerrainLayerVisibility($event, layer)" (mouseenter)="hovering=true" (mouseleave)="hovering=false" [ngClass]="{'hovering': (hovering && !layer.active)}">
+            <li class="list-group-item hs-lm-item" *ngFor="let layer of data.terrainlayers"
+                (click)="changeTerrainLayerVisibility($event, layer)" (mouseenter)="hovering=true"
+                (mouseleave)="hovering=false" [ngClass]="{'hovering': (hovering && !layer.active)}">
                 <div class="d-flex ">
-                        <!-- <div class="p-0" ng-show="layer.active || hovering"
+                    <!-- <div class="p-0" ng-show="layer.active || hovering"
                         ng-style="hovering && !layer.active && {'opacity':'0.5'}">
                         <button class="btn btn-sm btn-link hs-lm-baseitem-visibility"><i
                                 class="icon-globe"></i></button>
                     </div> -->
                     <div class="p-0">
-                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                        <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                            [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
 
-                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
+                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
                         {{layer.title}}
                     </div>
                 </div>
@@ -72,27 +91,38 @@
         </ul>
 
         <ul class="list-group hs-lm-mapcontentlist">
-            <li *ngIf="!HsLayoutService.componentEnabled('basemapGallery')" class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item" style="margin-bottom: 0.2em;">
+            <li *ngIf="!HsLayoutService.componentEnabled('basemapGallery')"
+                class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
+                style="margin-bottom: 0.2em;">
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate }}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
-                <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary" (click)="value.visible = !value.visible">
+                <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary"
+                    (click)="value.visible = !value.visible">
                     <span>{{value.name}}&nbsp;</span>
-                    <span class="glyphicon" [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+                    <span class="glyphicon"
+                        [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
                 <div [hidden]="!value.visible">
                     <li [hidden]="!(value.sub_folders.length > 0)">
                         <hs-layer-manager-folder [folder]="value"></hs-layer-manager-folder>
                     </li>
-                    <li><hs-layermanager-layer-list [folder]="value"></hs-layermanager-layer-list></li>
+                    <li>
+                        <hs-layermanager-layer-list [folder]="value"></hs-layermanager-layer-list>
+                    </li>
                 </div>
             </ul>
             <ul class="list-group hs-lm-layerlist">
-                <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)" class="list-group-item list-group-item-primary hs-lm-layerlist-header" (click)="layerlistVisible = !layerlistVisible">
+                <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)"
+                    class="list-group-item list-group-item-primary hs-lm-layerlist-header"
+                    (click)="layerlistVisible = !layerlistVisible">
                     <span class="align-middle">{{ 'LAYERMANAGER.other' | translate }}&nbsp;</span>
-                    <span class="glyphicon" [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+                    <span class="glyphicon"
+                        [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
-                <li [hidden]="!layerlistVisible"><hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list></li>
+                <li [hidden]="!layerlistVisible">
+                    <hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list>
+                </li>
             </ul>
             <!--
         <div class="btn-group" data-toggle="buttons">
@@ -104,7 +134,8 @@
             </label>
         </div> -->
         </ul>
-        <hs-layer-editor [current-layer]="HsLayerManagerService.currentLayer" [hidden]="!(HsLayerManagerService.currentLayer != null)" class="hs-layerpanel">
+        <hs-layer-editor [current-layer]="HsLayerManagerService.currentLayer"
+            [hidden]="!(HsLayerManagerService.currentLayer != null)" class="hs-layerpanel">
         </hs-layer-editor>
     </div>
 </div>
