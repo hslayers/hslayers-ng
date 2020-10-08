@@ -7,14 +7,7 @@
  * @param $log
  */
 export class HsLayoutService {
-  constructor(
-    HsConfig,
-    HsEventBusService,
-    $window,
-    $document,
-    $timeout,
-    $log
-  ) {
+  constructor(HsConfig, HsEventBusService, $window, $document, $timeout, $log) {
     'ngInject';
     Object.assign(this, {
       HsConfig,
@@ -261,6 +254,12 @@ export class HsLayoutService {
         HsConfig.componentsEnabled.geolocationButton =
           HsConfig.locationButtonVisible;
       }
+    }
+    if (
+      angular.isUndefined(HsConfig.componentsEnabled) ||
+      angular.isUndefined(HsConfig.componentsEnabled.basemapGallery)
+    ) {
+      HsConfig.componentsEnabled.basemapGallery = false;
     }
   }
 
