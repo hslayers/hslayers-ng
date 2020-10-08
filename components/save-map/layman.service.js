@@ -260,6 +260,7 @@ export default function (
     /**
      * @ngdoc method
      * @function pullVectorSource
+     * @param layer
      * @memberof HsLaymanService
      * @public
      * @param {object} endpoint Endpoint description
@@ -288,7 +289,7 @@ export default function (
           }
           if (descr.wfs.status == 'NOT_AVAILABLE') {
             $timeout(() => {
-              me.pullVectorSource(endpoint, layerName,layer).then((response) =>
+              me.pullVectorSource(endpoint, layerName, layer).then((response) =>
                 resolve(response)
               );
             }, 2000);
@@ -394,19 +395,19 @@ export default function (
       });
     },
 
-        /**
-   * @function removeLayer
-   * @param layer
-   * @public
-   * @description Checks whether the layman endpoint exists or not
-   */
-  laymanEndpointExists() {
-    return (
-      this.HsCommonEndpointsService.endpoints.findIndex(
-        (endpoint) => endpoint.type === 'layman'
-      ) >= 0
-    );
-  }
+    /**
+     * @function removeLayer
+     * @param layer
+     * @public
+     * @description Checks whether the layman endpoint exists or not
+     */
+    laymanEndpointExists() {
+      return (
+        HsCommonEndpointsService.endpoints.findIndex(
+          (endpoint) => endpoint.type === 'layman'
+        ) >= 0
+      );
+    },
   });
   return me;
 }
