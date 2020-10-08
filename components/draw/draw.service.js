@@ -19,8 +19,6 @@ import {Draw, Modify} from 'ol/interaction';
  * @param HsQueryVectorService
  * @param HsLaymanService
  * @param HsConfirmDialogService
- * @param HsCommonEndpointsService
- * @param $http
  */
 export default function (
   HsConfig,
@@ -37,8 +35,6 @@ export default function (
   HsQueryVectorService,
   HsLaymanService,
   HsConfirmDialogService,
-  HsCommonEndpointsService,
-  $http
 ) {
   'ngInject';
   const me = this;
@@ -346,16 +342,7 @@ export default function (
       if (confirmed == 'yes') {
         HsMapService.map.removeLayer(me.selectedLayer);
         if (me.selectedLayer.get('synchronize') == true) {
-          (HsCommonEndpointsService.endpoints || [])
-            .filter((ds) => ds.type === 'layman')
-            .forEach((ds) => {
-              $http.delete(
-                `${ds.url}/rest/${ds.user}/layers/${me.selectedLayer
-                  .get('title')
-                  .toLowerCase()
-                  .replace(/\s+/g, '')}`
-              );
-            });
+          HsLaymanService.removeLayer(this.selectedLayer);
         }
         if (me.selectedLayer.get('title') == 'tmpDrawLayer') {
           me.tmpDrawLayer = false;

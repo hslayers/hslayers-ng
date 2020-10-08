@@ -396,7 +396,7 @@ export default function (
     },
 
     /**
-     * @function removeLayer
+     * @function laymanEndpointExists
      * @param layer
      * @public
      * @description Checks whether the layman endpoint exists or not
@@ -407,6 +407,21 @@ export default function (
           (endpoint) => endpoint.type === 'layman'
         ) >= 0
       );
+    },
+    /**
+     * @function removeLayer
+     * @param layer
+     * @public
+     * @description Removes selected layer from layman.
+     */
+    removeLayer(layer) {
+      (HsCommonEndpointsService.endpoints || [])
+        .filter((ds) => ds.type == 'layman')
+        .forEach((ds) => {
+          $http.delete(
+            `${ds.url}/rest/${ds.user}/layers/${me.getLayerName(layer)}`
+          );
+        });
     },
   });
   return me;
