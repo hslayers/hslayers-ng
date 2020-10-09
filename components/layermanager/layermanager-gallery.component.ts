@@ -36,10 +36,6 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  fitting(a) {
-    return a.filter((element) => this.fitsInContainer());
-  }
-
   toggleBasemap(layer: Layer): void {
     if (arguments.length > 0) {
       if (!layer.active) {
@@ -56,15 +52,6 @@ export class HsLayerManagerGalleryComponent {
 
       this.HsLayerManagerService.changeBaseLayerVisibility();
     }
-  }
-
-  fitsInContainer(): boolean {
-    return (
-      (this.HsLayerManagerService.data.baselayers.length + 1) * 150 <
-      this.HsLayoutService.layoutElement.clientWidth -
-        this.HsLayoutService.panelSpaceWidth() -
-        450
-    );
   }
   expandMenu(layer) {
     this.HsLayerManagerService.toggleLayerEditor(
