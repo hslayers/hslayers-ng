@@ -13,7 +13,6 @@ export class HsLayerManagerGalleryComponent {
   baseLayersExpanded = false;
   menuExpanded = false;
   data: any;
-  layerImgTile: Element;
 
   constructor(
     private HsLayoutService: HsLayoutService,
