@@ -13,6 +13,7 @@ export class HsLayerManagerGalleryComponent {
   baseLayersExpanded = false;
   menuExpanded = false;
   data: any;
+  layerImgTile: Element;
 
   constructor(
     private HsLayoutService: HsLayoutService,
@@ -44,6 +45,7 @@ export class HsLayerManagerGalleryComponent {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.baseLayersExpanded = false;
+        this.HsLayerManagerService.menuExpanded = false;
       }
     } else {
       this.baseLayersExpanded = false;
@@ -61,18 +63,13 @@ export class HsLayerManagerGalleryComponent {
         450
     );
   }
-  expandMenu(e, layer) {
-    const parent = (e.target as Element).parentElement;
+  expandMenu(layer) {
     this.HsLayerManagerService.toggleLayerEditor(
       layer,
       'settings',
       'sublayers'
     );
-
-    if (parent.classList.contains('expanded')) {
-      this.HsLayerManagerService.menuExpanded = false;
-    } else {
-      this.HsLayerManagerService.menuExpanded = true;
-    }
+    this.HsLayerManagerService.menuExpanded = !this.HsLayerManagerService
+      .menuExpanded;
   }
 }
