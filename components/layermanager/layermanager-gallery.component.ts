@@ -46,6 +46,9 @@ export class HsLayerManagerGalleryComponent {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.baseLayersExpanded = false;
         this.HsLayerManagerService.menuExpanded = false;
+        if (this.HsLayerManagerService.currentLayer?.layer.get('base')) {
+          this.HsLayerManagerService.currentLayer = null;
+        }
       }
     } else {
       this.baseLayersExpanded = false;
