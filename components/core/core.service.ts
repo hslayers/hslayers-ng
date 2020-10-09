@@ -290,12 +290,6 @@ export class HsCoreService {
     }
   }
 
-  createComponentsEnabledConfigIfNeeded(): void {
-    if (this.HsConfig.componentsEnabled === undefined) {
-      this.HsConfig.componentsEnabled = {};
-    }
-  }
-
   /**
    * @deprecated Replaced by panelsEnabled config
    */
@@ -323,7 +317,7 @@ export class HsCoreService {
   set puremapApp(value) {
     this._puremapApp = value;
     if (value) {
-      this.createComponentsEnabledConfigIfNeeded();
+      this.HsLayoutService.createComponentsEnabledConfigIfNeeded();
       this.HsConfig.componentsEnabled.toolbar = false;
       this.HsConfig.componentsEnabled.sidebar = false;
       this.HsConfig.componentsEnabled.geolocationButton = false;
