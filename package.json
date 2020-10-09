@@ -127,6 +127,7 @@
     "proj4": "^2.6.0",
     "tinycolor2": "^1.4.2",
     "ttf2eot": "^2.0.0",
-    "unidecode": "^0.1.8"
+    "unidecode": "^0.1.8",
+    "xml-js": "^1.6.11"
   }
 }

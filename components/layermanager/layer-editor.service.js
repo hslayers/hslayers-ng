@@ -152,6 +152,10 @@ export default function (
     const bbox = layer.get('BoundingBox');
     if (angular.isArray(bbox) && bbox.length == 4) {
       extent = transformToCurrentProj(bbox);
+      if (!bbox.some(isNaN)) {
+        layer.unset('BoundingBox');
+        extent = layer.getSource().getExtent();
+      }
     } else {
       for (let ix = 0; ix < bbox.length; ix++) {
         if (
