@@ -1237,7 +1237,7 @@ msgstr "Terény"
 
 #: components/add-layers/partials/dialog_getcapabilities_error.html:11
 msgid "There was error while parsing Capabilities response from given URL"
-msgstr "Při analýzě odezvy schopností z dané adresy URL došlo k chybě."
+msgstr "Při zpracovávání odezvy z dané adresy URL došlo k chybě."
 
 #: components/add-layers/partials/add-layers.md.directive.html:16
 msgid "This is required!"
@@ -1643,5 +1643,9 @@ msgstr "Ano"
 msgid "User not authorized, drawings cannot be saved"
 msgstr "Uživatel neautorizován, kresby nemohou být uloženy"
 
+#: components/add-layers/wfs/add-wfs-layer.directive.html:45
+msgid "Loading features, please wait"
+msgstr "Načítání prvku, prosím čekejte"
+"
 
 

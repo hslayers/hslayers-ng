@@ -13,7 +13,8 @@ export default {
     $injector,
     HsCommonEndpointsService,
     HsDataSourceSelectorMapService,
-    HsAddLayersWmsAddLayerService
+    HsAddLayersWmsAddLayerService,
+    $rootScope
   ) {
     'ngInject';
     $scope.HsCore = HsCore;
@@ -27,7 +28,6 @@ export default {
     $scope.$on('ows.wms_connecting', () => {
       $scope.data.wms_connecting = true;
     });
-
     /**
      * @function getPreviousRecords
      * @memberOf hs.datasource_selector
@@ -212,7 +212,6 @@ export default {
       $scope.metadataModalVisible = false;
       HsAddLayersWmsAddLayerService.checkedLayers = {};
     };
-
     $scope.datasetSelect = HsDatasourceBrowserService.datasetSelect;
 
     $scope.$emit('scope_loaded', 'DatasourceSelector');

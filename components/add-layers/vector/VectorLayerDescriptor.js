@@ -68,7 +68,7 @@ export default class {
         break;
       case 'wfs':
         Object.assign(this.layerParams, {
-          synchronize: true,
+          synchronize: options.dsType == 'layman' ? true : false,
           editor: {
             editable: true,
             defaultAttributes: {

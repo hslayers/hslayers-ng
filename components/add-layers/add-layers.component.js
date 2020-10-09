@@ -26,6 +26,7 @@ export default {
         {id: 'arcgis', text: 'ArcGIS Map Server'},
         {id: 'vector', text: 'Vector file (GeoJson, KML)'},
         {id: 'shp', text: 'Shapefile'},
+        {id: 'wfs', text: 'Web feature service (WFS)'},
       ];
     }
     $scope.type = '';

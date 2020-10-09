@@ -4,6 +4,7 @@ module.exports = function (grunt) {
       pot: {
         files: {
           'po/template.pot': [
+            'components/**/**/*.html',
             'components/**/*.html',
             'components/**/*.js',
             'common/**/*.html',

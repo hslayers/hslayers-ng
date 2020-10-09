@@ -274,8 +274,13 @@ export default function (
             layer.serviceType == 'OGC:WFS' ||
             layer.serviceType == 'download'
           ) {
-            whatToAdd.type = 'WFS';
-            whatToAdd.link = me.getLayerLink(layer);
+            whatToAdd = {
+              type: 'WFS',
+              link: me.getLayerLink(layer),
+              title: layer.title || 'Layer',
+              abstract: layer.abstract || 'Layer',
+              dsType: ds.type,
+            };
           } else if (
             layer.formats &&
             ['kml', 'geojson', 'json'].indexOf(layer.formats[0].toLowerCase()) >

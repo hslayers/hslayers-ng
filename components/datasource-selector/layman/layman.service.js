@@ -110,6 +110,7 @@ export default function ($http, $q, HsUtilsService) {
             link: layer.wms.url,
             layer: layer.name,
             title: layer.name,
+            dsType: ds.type,
           });
         });
       });
