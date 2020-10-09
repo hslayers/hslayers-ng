@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {HsConfig} from '../../../config.service';
 import {HsDimensionDescriptor} from './dimension.class';
 import {HsDimensionService} from '../../../common/dimension.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -14,16 +13,13 @@ import {Layer} from 'ol/layer';
 export class HsLayerEditorDimensionsComponent {
   @Input('ol-layer') olLayer: Layer;
   dimensions: Array<HsDimensionDescriptor> = [];
-  gallery: boolean;
+
   constructor(
     private HsDimensionService: HsDimensionService,
     private HsUtilsService: HsUtilsService,
     private HsMapService: HsMapService,
-    private HsEventBusService: HsEventBusService,
-    private HsConfig: HsConfig
-  ) {
-    this.gallery = HsConfig.componentsEnabled.basemapGallery;
-  }
+    private HsEventBusService: HsEventBusService
+  ) {}
 
   ngOnChanges(): void {
     const layer = this.olLayer;
