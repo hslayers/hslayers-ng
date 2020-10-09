@@ -482,24 +482,12 @@ button.but-title-sm {
 	right: 15px;
 }
 .basemapGallery .galleryDropdown{
-	width: 12.5em;
+	width: 11.5em;
 }
 .basemapGallery .galleryDropdown img{
-	height: 6em;
 	height:4.5em; 
 }
-.basemapGallery .basemap-tile {
-	background: rgba(0, 60, 136, 0.5);
-	text-align: center;
-	color: white;
-	font-weight: 500;
-	padding: 0.25em;
-	margin: 0.2em !important;
-	border: none;
-}
-.basemapGallery .basemap-tile.active {
-	background: rgba(0, 59, 136, 0.788);
-}
+
 .basemapGallery .dropdown-item:not(.active){
 	background: #cccccc82;
 }
