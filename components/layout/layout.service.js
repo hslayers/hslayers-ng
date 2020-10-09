@@ -242,27 +242,32 @@ export class HsLayoutService {
     angular.forEach(HsConfig.panelsEnabled, (value, key) => {
       this.panelEnabled(key, value);
     });
+    this.createComponentsEnabledConfigIfNeeded();
     // For backwards-compatibility
     if (angular.isDefined(HsConfig.locationButtonVisible)) {
       $log.warn(
         'config.locationButtonVisible parameter is deprecated. Use config.panelsEnabled.geolocationButton instead'
       );
-      if (angular.isUndefined(HsConfig.componentsEnabled)) {
-        HsConfig.componentsEnabled = {};
-      }
       if (angular.isUndefined(HsConfig.componentsEnabled.geolocationButton)) {
         HsConfig.componentsEnabled.geolocationButton =
           HsConfig.locationButtonVisible;
       }
     }
-    if (
-      angular.isUndefined(HsConfig.componentsEnabled) ||
-      angular.isUndefined(HsConfig.componentsEnabled.basemapGallery)
-    ) {
+    if (angular.isUndefined(HsConfig.componentsEnabled.basemapGallery)) {
       HsConfig.componentsEnabled.basemapGallery = false;
     }
   }
-
+    /**
+   * @ngdoc method
+   * @name HsLayoutService#createComponentsEnabledConfigIfNeeded
+   * @public
+   * @description Creates componentsEnabled config if Needed
+   */
+  createComponentsEnabledConfigIfNeeded() {
+    if (this.HsConfig.componentsEnabled === undefined) {
+      this.HsConfig.componentsEnabled = {};
+    }
+  }
   /**
    * @ngdoc method
    * @name HsLayoutService#panelVisible
