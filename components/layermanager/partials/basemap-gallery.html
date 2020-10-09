@@ -33,7 +33,7 @@
                                 {{'LAYERMANAGER.baseMapGallery.grayscale' | translate}}</p>
                         </div>
                         <label class="pl-2 mb-0 w-100" [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}"
-                            (click)="expandMenu($event,layer)">
+                            (click)="expandMenu(layer)">
 
                             {{HsLayerManagerService.menuExpanded ? 'Less ': 'More'}}</label>
                         <hs-layer-editor [current-layer]="layer" *ngIf="HsLayerManagerService.menuExpanded"

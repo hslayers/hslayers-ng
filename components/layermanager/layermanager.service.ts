@@ -762,7 +762,7 @@ export class HsLayerManagerService {
     }
     if (this.currentLayer != layer) {
       this.toggleCurrentLayer(layer);
-      if(this.menuExpanded)this.menuExpanded  = false;
+      if (this.menuExpanded){this.menuExpanded = false}
       layer[toToggle] = true;
     } else {
       layer[toToggle] = !layer[toToggle];
