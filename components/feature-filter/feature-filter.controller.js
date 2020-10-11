@@ -19,7 +19,7 @@ export default function (
   const FILTERS = {
     'dictionary': require('./partials/dictionary-filter-md.html'),
     'fieldset': require('./partials/fieldset-filter-md.html'),
-    'arrayset': require('./partials/fieldset-filter-md.html'),
+    'arrayset': require('./partials/multiplefields-filter-md.html'),
     'slider': require('./partials/slider-filter-md.html'),
   };
 
@@ -59,10 +59,22 @@ export default function (
   };
 
   $scope.toggleAll = function (filter) {
-    if (filter.selected.length === filter.values.length) {
-      filter.selected = [];
-    } else {
-      filter.selected = filter.values.slice(0);
+    switch (filter.type.type) {
+      case 'fieldset':
+      case 'dictionary':
+        if (filter.selected.length === filter.values.length) {
+          filter.selected = [];
+        } else {
+          filter.selected = filter.values.slice(0);
+        }
+        break;
+      case 'arrayset':
+        if (filter.selected.length === 0) {
+          filter.selected = filter.values.slice(0)
+        } else {
+          filter.selected = [];
+        }
+        break;
     }
     $scope.applyFilters();
   };
@@ -71,8 +83,11 @@ export default function (
     switch (filter.type.type) {
       case 'fieldset':
       case 'dictionary':
-      case 'arrayset':
         return filter.selected && !$scope.allSelected(filter);
+        break;
+      case 'arrayset':
+        return filter.selected.length > 0
+        break;
     }
   };
 
@@ -81,8 +96,10 @@ export default function (
     switch (filter.type.type) {
       case 'fieldset':
       case 'dictionary':
-      case 'arrayset':
         filter.selected = filter.values.slice(0);
+        break;
+      case 'arrayset':
+        filter.selected = [];
         break;
     }
     $scope.applyFilters();

@@ -1,0 +1,25 @@
+<md-button aria-label="Select All" ng-checked="allSelected(selectedFilter)" md-indeterminate="isIndeterminate(selectedFilter)"
+	ng-click="toggleAll(selectedFilter)" class="md-raised md-primary">
+	<span ng-if="selectedFilter.selected.length>0">Unselect</span><span ng-if="!selectedFilter.selected.length>0">Select</span>
+	All
+</md-button>
+<fieldset style="border: none">
+	<!-- <legend class="legend">{{selectedFilter.title}}</legend> -->
+	<div layout="column" layout-wrap flex>
+		<!-- <div>
+			<md-checkbox    aria-label="Select All"
+							ng-checked="allSelected(selectedFilter)"
+							md-indeterminate="isIndeterminate(selectedFilter)"
+							ng-click="toggleAll(selectedFilter)">
+				<b><span ng-if="allSelected(selectedFilter)">Un-</span>Select All</b>
+			</md-checkbox>
+		</div> -->
+		<!-- <div class="select-all-checkboxes" flex="100" ng-repeat="value in selectedFilter.values"> -->
+		<div ng-repeat="value in selectedFilter.values">
+			<md-checkbox ng-checked="exists(value, selectedFilter.selected)" ng-click="toggle(value, selectedFilter.selected)"
+				style="margin: 3px 1em 3px 0;">
+				{{ value }}
+			</md-checkbox>
+		</div>
+	</div>
+</fieldset>

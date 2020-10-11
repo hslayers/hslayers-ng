@@ -51,15 +51,29 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
             break;
           case 'arrayset':
             displayFeature = function (feature) {
+              if(!filter.selected || filter.selected.length === 0){
+                return true;
+              };
               var arrayset = feature.getProperties()[filter.valueField];
-              var d = false;
-              arrayset.forEach((item) => {
-                if (filter.selected.indexOf(
-                  item
-                ) !== -1) {
-                  d = true;
-                }
-              });
+              switch (filter.type.parameters) {
+                case 'or':
+                  var d = false;
+                  arrayset.forEach((item) => {
+                    if (filter.selected.indexOf(item) !== -1) {
+                      d = true;
+                    }
+                  });
+                  break;
+                case 'and':
+                default:
+                  var d = true;
+                  filter.selected.forEach((item) => {
+                    if (arrayset.indexOf(item) == -1){
+                      d = false;
+                    }
+                  });
+                  break;
+              };
               return d;
             };
             break;
@@ -200,11 +214,18 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
           }
 
           if (
-            (filter.type.type === 'fieldset' || filter.type.type === 'arrayset') &&
             filter.selected === undefined &&
             filter.values.length > 0
           ) {
-            filter.selected = filter.values.slice(0);
+            switch (filter.type.type) {
+              case 'fieldset':
+                filter.selected = filter.values.slice(0);
+                break;
+              case 'arrayset':
+                filter.selected = [];
+                break;
+            }
+
           }
         }
       }
