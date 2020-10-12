@@ -1,6 +1,6 @@
 import '../layout';
-import '../permalink/share.module';
-import '../styles/styles.module';
+import '../permalink/';
+import '../styles/';
 import * as angular from 'angular';
 import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
