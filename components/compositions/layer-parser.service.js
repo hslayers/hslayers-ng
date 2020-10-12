@@ -352,6 +352,7 @@ export default function (
           );
           break;
         case 'hs.format.WFS':
+        case 'WFS':
           options.defOptions = lyr_def.defOptions;
           layer = HsAddLayersVectorService.createVectorLayer(
             'wfs',
@@ -365,8 +366,9 @@ export default function (
         case 'hs.format.LaymanWfs':
           layer = new VectorLayer({
             title: lyr_def.title,
-            name: lyr_def.title,
+            name: lyr_def.name || lyr_def.title,
             visibility: lyr_def.visibility,
+            from_composition: true,
             synchronize: true,
             editor: {
               editable: true,
