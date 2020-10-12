@@ -14,10 +14,12 @@ import '../layermanager';
 import '../layout';
 import '../legend';
 import '../map';
+import '../measure';
 import '../permalink';
 import '../print';
 import '../query';
 import '../save-map/';
+import '../styles';
 import '../toolbar';
 import '../translations/js/translations';
 import '../utils';
@@ -54,6 +56,7 @@ angular
     'hs.toolbar',
     'hs.info',
     'hs.query',
+    'hs.measure',
   ])
   /**
    * @module hs.core
