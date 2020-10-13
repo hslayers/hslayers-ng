@@ -124,8 +124,7 @@ angular
         HsLaymanService.describeLayer(endpoint, layerName).then(
           (descriptor) => {
             if (
-              ['STARTED', 'PENDING', 'SUCCESS'].indexOf(descriptor.wms.status) >
-              -1
+              ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
             ) {
               $timeout(() => {
                 describeNewLayer(endpoint, layerName).then((response) =>
@@ -149,6 +148,7 @@ angular
      */
     vm.add = function () {
       vm.loading = true;
+      vm.name = HsLaymanService.getLaymanFriendlyLayerName(vm.name);
       HsAddLayersShpService.add(
         vm.endpoint,
         vm.files,

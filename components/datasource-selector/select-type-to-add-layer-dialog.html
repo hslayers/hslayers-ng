@@ -1,22 +1,25 @@
-<div ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog"  aria-hidden="true">
+<div ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" translate>
-                   Choose type of layer
+                    Choose type of layer
                 </h4>
-                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
                 <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-                    <label class="btn" ng-class="{'active': type == $ctrl.type, 'btn-light': !$ctrl.alertChoose, 'btn-danger': $ctrl.alertChoose}" ng-repeat="type in $ctrl.types">
-                      <input type="radio" name="options" ng-click="$ctrl.type = type; $ctrl.alertChoose = false"> {{type}}
-                    </label>
-                  </div>              
+                    <button type="button" class="btn"
+                        ng-class="{'active': type == $ctrl.type, 'btn-light': !$ctrl.alertChoose, 'btn-danger': $ctrl.alertChoose}"
+                        ng-click="$ctrl.selectType(type)" ng-repeat="type in $ctrl.types">{{type}}</button>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.add()" translate>Add</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="$ctrl.modalVisible = false" translate>Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.add()"
+                    translate>Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    ng-click="$ctrl.modalVisible = false" translate>Cancel</button>
             </div>
         </div>
     </div>

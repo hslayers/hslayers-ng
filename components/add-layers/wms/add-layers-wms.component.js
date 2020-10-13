@@ -17,7 +17,7 @@ export default {
   ) {
     'ngInject';
     $scope.data = HsAddLayersWmsAddLayerService.data;
-
+    $scope.HsAddLayersWmsAddLayerService = HsAddLayersWmsAddLayerService;
     /**
      * Clear Url and hide detailsWms
      *
@@ -76,7 +76,9 @@ export default {
     $scope.srsChanged = function () {
       HsAddLayersWmsAddLayerService.srsChanged();
     };
-
+    $scope.checkboxChange = function (changed) {
+      HsAddLayersWmsAddLayerService.checkboxChange(changed);
+    };
     /**
      * Connect to service of specified Url
      *

@@ -10,17 +10,19 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param $timeout
  * @param HsLayoutService
  * @param gettext
+ * @param $compile
+ * @param HsConfirmDialogService
  * @param HsMapService
+ * @param HsCommonEndpointsService
+ * @param $http
  */
 export default function (
   $scope,
   HsConfig,
   HsDrawService,
   HsLayerUtilsService,
-  $timeout,
   HsLayoutService,
-  gettext,
-  HsMapService
+  gettext
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -162,7 +164,7 @@ export default function (
           }),
         }),
       });
-      return newStyle
+      return newStyle;
     },
     drawStyle() {
       return {
@@ -174,7 +176,23 @@ export default function (
           $scope.linewidth + 'px solid ' + $scope.fillcolor['background-color'],
       };
     },
+    /**
+     * @function removeLayer
+     * @memberOf HsDrawController
+     * @description Removes selected drawing layer from both Layermanager and Layman
+     */
+    removeLayer() {
+      HsDrawService.removeLayer();
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    },
   });
 
+  $scope.$on('core.mainpanel_changed', (event) => {
+    if (HsLayoutService.mainpanel == 'draw') {
+      HsDrawService.fillDrawableLayers();
+    }
+  });
   $scope.$emit('scope_loaded', 'DrawToolbar');
 }

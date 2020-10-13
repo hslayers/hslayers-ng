@@ -43,7 +43,7 @@ body {
     bottom: 0;
     /*bottom: 3px;*/
     width: 100%;
-    z-index: 999;
+    z-index: 101;
 }
 
 .mobile .hs-toolbar.show {
@@ -352,7 +352,7 @@ body {
 div#hs-loading-logo {
   display: block;
   position: absolute;
-  z-index: 999;
+  z-index: 101;
   max-width: 95%;
   height: auto;
 }

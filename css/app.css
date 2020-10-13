@@ -55,7 +55,7 @@ div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 }
 
 .hs-gui-overlay {
-	z-index: 1000;
+	z-index: 101;
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -331,7 +331,7 @@ hr {
 	bottom: 9.2em;
 	right: 5px;
 	max-width: calc(100% - 1.3em);
-	z-index: 991;
+	z-index: 101;
 }
 .hs-locate ul {
 	float: left;
@@ -1333,7 +1333,12 @@ button.hs_draw_new_extended {
 .hsl-search-result {
 	z-index: 2;
 }
-
+.draw_laymanLogin div a {
+	background-color: #dc3545 !important;
+	color: white !important;
+	margin: auto;
+	width: 50% !important;
+}
 
 /**************/
 /** MATERIAL **/
@@ -1359,7 +1364,7 @@ body {
 	/*pointer-events: none;*/
 	overflow: hidden;
 	position: absolute;
-	z-index: 991;
+	z-index: 101;
 }
 
 .sidenav-swipe-overlay {

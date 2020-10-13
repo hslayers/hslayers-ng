@@ -12,7 +12,8 @@ export default {
     HsLayoutService,
     $injector,
     HsCommonEndpointsService,
-    HsDataSourceSelectorMapService
+    HsDataSourceSelectorMapService,
+    HsAddLayersWmsAddLayerService
   ) {
     'ngInject';
     $scope.HsCore = HsCore;
@@ -209,6 +210,7 @@ export default {
     $scope.addLayerToMap = function (ds, layer, type) {
       HsDatasourceBrowserService.addLayerToMap(ds, layer, type);
       $scope.metadataModalVisible = false;
+      HsAddLayersWmsAddLayerService.checkedLayers = {};
     };
 
     $scope.datasetSelect = HsDatasourceBrowserService.datasetSelect;

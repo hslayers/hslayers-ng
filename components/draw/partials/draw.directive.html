@@ -7,7 +7,6 @@
             </button>
         </extra-buttons>
     </hs.layout.panel-header>
-
     <div>
         <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
             <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
@@ -25,8 +24,15 @@
 
             <div ng-show="service.drawableLayers.length == 0" class="flex-row w-75 m-auto justify-content-around align-items-center"
                 style="display: flex;">
-                <p class="m-0 p-0" style="color:crimson" translate>Unsaved drawing</p>
-                <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)" translate>Save as..</a>
+                <div class="d-flex justify-content-around">
+                    <p class="m-0 p-0" style="color:crimson" translate>Unsaved drawing</p>
+                    <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)" translate>Save as..</a>
+                </div>
+                <button type="button" ng-if="service.selectedLayer"
+                class="btn btn-light btn-outline-danger btn-sm" ng-click="removeLayer()"
+                title="{{'Remove layer' | translate}}" style="border: none !important;">
+                <i class="glyphicon icon-trash"></i>
+                </button>
             </div>
             <div class="flex-row w-75 m-auto justify-content-center align-items-center"
                 ng-show="service.drawableLayers.length != 0" style="display: flex;">
@@ -42,6 +48,10 @@
                             ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
                     </div>
                 </div>
+                <button type="button" ng-if="service.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm" ng-click="removeLayer()"
+                title="{{'Remove layer' | translate}}" style="border: none !important;">
+                <i class="glyphicon icon-trash"></i>
+            </button>
             </div>
         </div>
     </div>

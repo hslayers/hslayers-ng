@@ -2,7 +2,7 @@
     <div class="hs-content-wrapper"
         ng-class="{'hs-open': layoutService.sidebarExpanded && layoutService.sidebarVisible(), 'hs-sb-right': layoutService.sidebarRight && layoutService.sidebarVisible(), 'hs-sb-left': !layoutService.sidebarRight && layoutService.sidebarVisible(),'hs-sb-bottom':layoutService.sidebarBottom()}">
         <div class="hs-page-content">
-            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map" style="z-index:990"
+            <div hs.map.directive ng-controller="HsMapController" class="hs-ol-map" style="z-index:100"
                 ng-style="mapStyle()"></div>
   
             <div class="hs-gui-overlay" ng-if="layoutService.componentEnabled('guiOverlay')">

@@ -183,7 +183,10 @@ export default {
         if ($scope.endpoint.type == 'statusmanager') {
           return !HsCore.isAuthorized();
         } else if ($scope.endpoint.type == 'layman') {
-          return true;
+          return (
+            $scope.endpoint.user == 'anonymous' ||
+            $scope.endpoint.user == 'browser'
+          );
         }
       },
     });

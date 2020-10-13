@@ -228,6 +228,9 @@ export default function (
           external,
           layerTitles
         ) {
+          if (index > layerTitles.length){
+            index--;
+          } //If added after the last item
           if (layerTitles.indexOf(item) < index) {
             index--;
           } //Must take into acount that this item will be removed and list will shift
@@ -243,9 +246,6 @@ export default function (
             if (layers.item(i).get('title') == item) {
               item_index = i;
             }
-            if (index > layerTitles.length) {
-              to_index = i + 1;
-            } //If dragged after the last item
           }
           const layerPanel = HsLayoutService.contentWrapper.querySelector(
             '.hs-layerpanel'

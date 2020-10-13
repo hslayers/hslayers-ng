@@ -14,15 +14,22 @@
             </div>
         </div>
         <hs.layman.current-user ng-if="endpoint.type == 'layman'" endpoint="endpoint"></hs.layman.current-user>
-        <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
-        <div class="modal-footer"  ng-if="config.advanced_form">
-            <button type="button" class="btn btn-block btn-primary" id="stc-save" ng-show="step=='end' && isAllowed() && overwrite" translate=""
-                ng-click="save(false)">Overwrite</button>
-            <button type="button" class="btn btn-block btn-primary" id="stc-saveas" ng-show="step=='end' && isAllowed()" translate="" ng-click="save(true)">Save
-                as</button>
-            <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" ng-show="step!='end'" translate="" ng-click="next()">Next</button>
-            <a class="btn btn-block btn-secondary" ng-href="data:{downloadableData}" id="stc-download" ng-show="step=='end'" download="context.hsl" translate>Download</a>
+        <div ng-if="isAllowed()">
+            <div class="alert alert-info" translate>
+                You are not authorized to store composition. Please sign in or contact administrator for your credentials.
+            </div>
         </div>
-        <div hs.save-map.directive_simpleform ng-if="!config.advanced_form"></div>
+        <div ng-show="!isAllowed()">
+            <div hs.save-map.directive_form ng-if="config.advanced_form"></div>
+            <div class="modal-footer"  ng-if="config.advanced_form">
+                <button type="button" class="btn btn-block btn-primary" id="stc-save" ng-show="step=='end' && !isAllowed() && overwrite" translate=""
+                    ng-click="save(false)">Overwrite</button>
+                <button type="button" class="btn btn-block btn-primary" id="stc-saveas" ng-show="step=='end' && !isAllowed()" translate="" ng-click="save(true)">Save
+                    as</button>
+                <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" ng-show="step!='end'" translate="" ng-click="next()">Next</button>
+                <a class="btn btn-block btn-secondary" ng-href="data:{downloadableData}" id="stc-download" ng-show="step=='end'" download="context.hsl" translate>Download</a>
+            </div>
+            <div hs.save-map.directive_simpleform ng-if="!config.advanced_form"></div>
+        </div>
     </div>
 </div>

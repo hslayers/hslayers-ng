@@ -16,6 +16,9 @@ import {Draw, Modify} from 'ol/interaction';
  * @param HsLayoutService
  * @param $compile
  * @param $timeout
+ * @param HsQueryVectorService
+ * @param HsLaymanService
+ * @param HsConfirmDialogService
  */
 export default function (
   HsConfig,
@@ -29,7 +32,9 @@ export default function (
   HsLayoutService,
   $compile,
   $timeout,
-  HsQueryVectorService
+  HsQueryVectorService,
+  HsLaymanService,
+  HsConfirmDialogService,
 ) {
   'ngInject';
   const me = this;
@@ -83,6 +88,7 @@ export default function (
       }),
     }),
     saveDrawingLayer($scope, addNewLayer = false) {
+      me.previouslySelected = me.selectedLayer;
       let tmpTitle = gettext('Draw layer');
       const tmpLayer =
         addNewLayer === true
@@ -102,7 +108,7 @@ export default function (
         visible: true,
         removable: true,
         editable: true,
-        synchronize: true,
+        synchronize: HsLaymanService.laymanEndpointExists() ? true : false,
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
       });
       me.selectedLayer = drawLayer;
@@ -135,11 +141,12 @@ export default function (
     },
     /**
      * (PRIVATE) Helper function which returns currently selected style.
+     *
      * @function useCurrentStyle
      * @memberOf HsDrawService
      */
     useCurrentStyle() {
-      if (!me.currentStyle){
+      if (!me.currentStyle) {
         me.currentStyle = me.defaultStyle;
       }
       return me.currentStyle;
@@ -174,6 +181,22 @@ export default function (
           source: me.source,
           type: /** @type {ol.geom.GeometryType} */ (me.type),
           style: changeStyle ? changeStyle() : undefined,
+          condition: (e) => {
+            if (e.originalEvent.buttons === 1) {
+              //left click
+              return true;
+            } else if (e.originalEvent.buttons === 2) {
+              //right click
+              if (me.type == 'Polygon' && me.draw.sketchLineCoords_) {
+                const vertexCount = me.draw.sketchLineCoords_.length;
+                return me.rightClickCondition(4, vertexCount);
+              } else if (me.type == 'LineString' && me.draw.sketchCoords_) {
+                const vertexCount = me.draw.sketchCoords_.length;
+                return me.rightClickCondition(2, vertexCount - 1);
+              }
+              return false;
+            }
+          },
         });
 
         me.draw.setActive(drawState);
@@ -186,7 +209,7 @@ export default function (
          * @param event
          */
         function keyUp(event) {
-          if (event.keyCode === 27) {
+          if (event.keyCode === 8) {
             me.removeLastPoint();
           }
         }
@@ -233,7 +256,7 @@ export default function (
       /*Timeout is necessary because features are not imediately
        * added to the layer and layer can't be retrieved from the
        * feature, so they don't appear in Info panel */
-      if (HsLayoutService.mainpanel != 'draw'){
+      if (HsLayoutService.mainpanel != 'draw') {
         $timeout(() => {
           HsLayoutService.setMainPanel('info');
           HsQueryVectorService.selector.getFeatures().push(e.feature);
@@ -255,8 +278,22 @@ export default function (
 
     removeLastPoint() {
       me.draw.removeLastPoint();
+      me.checkSketch();
     },
-
+    /**
+     * After the removal of sketch point checks wheather it was the last point or not
+     * If all of the sketch points were deleted, finishes drawing and removes eventListener
+     */
+    checkSketch() {
+      if (me.type === 'Polygon' && me.draw.sketchCoords_[0].length == 1) {
+        me.draw.finishDrawing();
+      } else if (
+        me.type === 'LineString' &&
+        me.draw.sketchCoords_.length == 1
+      ) {
+        me.draw.finishDrawing();
+      }
+    },
     changeDrawSource() {
       if (HsLayerUtilsService.isLayerClustered(me.selectedLayer)) {
         me.source = me.selectedLayer.getSource().getSource();
@@ -271,7 +308,49 @@ export default function (
         });
       }
     },
-
+    /**
+     * @function rightClickCondition
+     * @memberOf HsDrawService
+     * @description Determines whether rightclick should finish the drawing or not
+     * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
+     * @param vertexCount Number of vertexes the sketch has
+     */
+    rightClickCondition(typeNum, vertexCount) {
+      const minPoints = HsConfig.preserveLastSketchPoint ? 1 : 0;
+      const minVertexCount = typeNum - minPoints;
+      if (vertexCount >= minVertexCount) {
+        setTimeout(() => {
+          if (minPoints == 0) {
+            me.removeLastPoint();
+          }
+          me.draw.finishDrawing();
+        }, 250);
+        return true;
+      }
+      return false;
+    },
+    /**
+     * @function removeLayer
+     * @memberOf HsDrawController
+     * @description Removes selected drawing layer from both Layermanager and Layman
+     */
+    async removeLayer() {
+      const confirmed = await HsConfirmDialogService.show(
+        gettext('Really delete selected draw layer?'),
+        gettext('Confirm delete')
+      );
+      if (confirmed == 'yes') {
+        HsMapService.map.removeLayer(me.selectedLayer);
+        if (me.selectedLayer.get('synchronize') == true) {
+          HsLaymanService.removeLayer(this.selectedLayer);
+        }
+        if (me.selectedLayer.get('title') == 'tmpDrawLayer') {
+          me.tmpDrawLayer = false;
+        }
+        me.selectedLayer = null;
+        me.fillDrawableLayers();
+      }
+    },
     /**
      * @function deactivateDrawing
      * @memberOf HsDrawService

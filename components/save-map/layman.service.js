@@ -1,3 +1,4 @@
+import * as unidecode from 'unidecode';
 import {GeoJSON, WFS} from 'ol/format';
 /**
  * @param HsUtilsService
@@ -102,9 +103,9 @@ export default function (
           .then((layerDesc) => {
             $http({
               url: `${endpoint.url}/rest/${endpoint.user}/layers${
-                layerDesc.exists ? '/' + description.name : ''
+                layerDesc && layerDesc.name ? '/' + description.name : ''
               }?${Math.random()}`,
-              method: layerDesc.exists ? 'PATCH' : 'POST',
+              method: layerDesc && layerDesc.name ? 'PATCH' : 'POST',
               data: formdata,
               transformRequest: angular.identity,
               headers: {'Content-Type': undefined},
@@ -117,9 +118,35 @@ export default function (
           });
       });
     },
+    /**
+     * Get layman friendly name of layer based primary on name
+     * and secondary on title attributes.
+     *
+     * @param layer Layr to get the name for
+     */
 
     getLayerName(layer) {
-      return layer.get('title').toLowerCase().replaceAll(' ', '');
+      const layerName = layer.get('name') || layer.get('title');
+      if (layerName == undefined) {
+        console.warn('Layer title/name not set for', layer);
+      }
+      return me.getLaymanFriendlyLayerName(layerName);
+    },
+    /**
+     * @description Get Layman friendly name for layer based on its title by
+     * replacing spaces with underscores, converting to lowercase, etc.
+     * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
+     * @param title
+     * @function getLaymanFriendlyLayerName
+     * @param {string} layerName Name to get Layman-friendly name for
+     * @returns {string} New layer title
+     */
+    getLaymanFriendlyLayerName(title) {
+      return unidecode(title)
+        .toLowerCase()
+        .replace(/[^\w\s\-\.]/gm, '')
+        .trim()
+        .replace(/[\s\-\._]+/gm, '_');
     },
 
     /**
@@ -134,23 +161,26 @@ export default function (
       if (layer.getSource().loading) {
         return;
       }
+      const layerName = me.getLayerName(layer);
+      let layerTitle = layer.get('title');
       const f = new GeoJSON();
       const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
+          if (ds.version === undefined || ds.version.split('.').join() < 171) {
+            layerTitle = this.getLaymanFriendlyLayerName(layerTitle);
+          }
           layer.set('hs-layman-synchronizing', true);
           me.pushVectorSource(ds, geojson, {
-            title: layer.get('title'),
-            name: me.getLayerName(layer),
+            title: layerTitle,
+            name: layerName,
             crs: me.crs,
           }).then((response) => {
             $timeout(() => {
-              me.pullVectorSource(ds, me.getLayerName(layer)).then(
-                (response) => {
-                  layer.set('hs-layman-synchronizing', false);
-                }
-              );
+              me.pullVectorSource(ds, layerName, layer).then((response) => {
+                layer.set('hs-layman-synchronizing', false);
+              });
             }, 2000);
           });
         });
@@ -185,7 +215,7 @@ export default function (
           layer.get('laymanLayerDescriptor')
         )
           .then((layerDesc) => {
-            if (layerDesc.exists) {
+            if (layerDesc && layerDesc.name) {
               layer.set('laymanLayerDescriptor', layerDesc);
               try {
                 const wfsFormat = new WFS();
@@ -230,6 +260,7 @@ export default function (
     /**
      * @ngdoc method
      * @function pullVectorSource
+     * @param layer
      * @memberof HsLaymanService
      * @public
      * @param {object} endpoint Endpoint description
@@ -239,12 +270,15 @@ export default function (
      * with features for a specified layer
      * @description Retrieve layers features from server
      */
-    pullVectorSource(endpoint, layerName) {
+    pullVectorSource(endpoint, layerName, layer) {
       return new Promise((resolve, reject) => {
         me.describeLayer(endpoint, layerName).then((descr) => {
           if (descr === null) {
             resolve();
             return;
+          }
+          if (descr && descr.name) {
+            layer.set('laymanLayerDescriptor', descr);
           }
           if (
             descr.wfs.status == 'NOT_AVAILABLE' &&
@@ -255,7 +289,7 @@ export default function (
           }
           if (descr.wfs.status == 'NOT_AVAILABLE') {
             $timeout(() => {
-              me.pullVectorSource(endpoint, layerName).then((response) =>
+              me.pullVectorSource(endpoint, layerName, layer).then((response) =>
                 resolve(response)
               );
             }, 2000);
@@ -345,20 +379,49 @@ export default function (
               angular.isDefined(description.code) &&
               description.code == 15
             ) {
-              resolve({exists: false});
+              resolve();
             } else if (
               description !== null &&
               angular.isDefined(description.name)
             ) {
-              resolve(angular.extend(description, {exists: true}));
+              resolve(description);
             } else {
-              resolve({exists: false});
+              resolve();
             }
           });
         } else {
           resolve(layerDesc);
         }
       });
+    },
+
+    /**
+     * @function laymanEndpointExists
+     * @param layer
+     * @public
+     * @description Checks whether the layman endpoint exists or not
+     */
+    laymanEndpointExists() {
+      return (
+        HsCommonEndpointsService.endpoints.findIndex(
+          (endpoint) => endpoint.type === 'layman'
+        ) >= 0
+      );
+    },
+    /**
+     * @function removeLayer
+     * @param layer
+     * @public
+     * @description Removes selected layer from layman.
+     */
+    removeLayer(layer) {
+      (HsCommonEndpointsService.endpoints || [])
+        .filter((ds) => ds.type == 'layman')
+        .forEach((ds) => {
+          $http.delete(
+            `${ds.url}/rest/${ds.user}/layers/${me.getLayerName(layer)}`
+          );
+        });
     },
   });
   return me;

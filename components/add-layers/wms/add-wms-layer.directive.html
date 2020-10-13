@@ -84,7 +84,7 @@
             </thead>
             <tbody ng-repeat="service in data.services">
                 <tr>
-                    <td><input type="checkbox"ng-model="service.checked" /></td>
+                    <td><input type="checkbox" ng-model="service.checked" ng-change="checkboxChange(service)" /></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
@@ -97,6 +97,6 @@
             </tbody>
         </table>
         <button class="btn btn-primary btn-sm" style="position: sticky;
-        bottom: 1.5rem; float: right;" ng-click="addLayers(true)"><i class="icon-plus"></i></button>
+        bottom: 1.5rem; float: right;" ng-click="addLayers(HsAddLayersWmsAddLayerService.checked)"><i class="icon-plus"></i></button>
     </div>
 </form>
