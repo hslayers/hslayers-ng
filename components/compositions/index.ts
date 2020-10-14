@@ -5,7 +5,7 @@ import '../save-map/';
 import '../styles';
 import '../utils';
 import './endpoints/compositions-endpoints.module';
-import './layer-parser.module';
+import './layer-parser/layer-parser.module';
 import * as angular from 'angular';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
