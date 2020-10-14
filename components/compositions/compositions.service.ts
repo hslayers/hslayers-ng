@@ -1,240 +1,257 @@
-/* eslint-disable angular/on-watch */
-import './layer-parser.module';
-import 'angular';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCompositionsParserService} from './compositions-parser.service';
+import {HsConfig} from '../../config.service';
+import {HsCoreService} from '../core/core.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsStatusManagerService} from '../save-map/status-manager.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
-/**
- * @param $rootScope
- * @param $location
- * @param $http
- * @param HsMapService
- * @param HsCore
- * @param HsCompositionsParserService
- * @param HsConfig
- * @param HsPermalinkUrlService
- * @param HsUtilsService
- * @param HsStatusManagerService
- * @param HsCompositionsMickaService
- * @param HsCompositionsStatusManagerMickaJointService
- * @param HsCompositionsLaymanService
- * @param $log
- * @param $window
- * @param HsCommonEndpointsService
- * @param HsCompositionsMapService
- * @param HsEventBusService
- */
-export default function (
-  $rootScope,
-  $location,
-  $http,
-  HsMapService,
-  HsCore,
-  HsCompositionsParserService,
-  HsConfig,
-  HsPermalinkUrlService,
-  HsUtilsService,
-  HsStatusManagerService,
-  HsCompositionsMickaService,
-  HsCompositionsStatusManagerMickaJointService,
-  HsCompositionsLaymanService,
-  $log,
-  $window,
-  HsCommonEndpointsService,
-  HsCompositionsMapService,
-  HsEventBusService
-) {
-  'ngInject';
-  const me = this;
-  angular.extend(me, {
-    data: {},
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCompositionsService {
+  data: any = {};
+  constructor(
+    $location,
+    private http: HttpClient,
+    private HsMapService: HsMapService,
+    private HsCore: HsCoreService,
+    private HsCompositionsParserService: HsCompositionsParserService,
+    private HsConfig: HsConfig,
+    private HsPermalinkUrlService: HsShareUrlService,
+    private HsUtilsService: HsUtilsService,
+    private HsStatusManagerService: HsStatusManagerService,
+    private HsCompositionsMickaService: HsCompositionsMickaService,
+    private HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
+    private HsCompositionsLaymanService: HsCompositionsLaymanService,
+    private $log: HsLogService,
+    private $window: Window,
+    private HsCommonEndpointsService: HsCommonEndpointsService,
+    private HsCompositionsMapService: HsCompositionsMapService,
+    private HsEventBusService: HsEventBusService
+  ) {
+    this.tryParseCompositionFromCookie();
+    this.tryParseCompositionFromUrlParam();
+    if (HsPermalinkUrlService.getParamValue('permalink')) {
+      this.parsePermalinkLayers();
+    }
 
-    datasetSelect(id_selected) {
-      me.data.id_selected = id_selected;
-    },
+    HsEventBusService.mapResets.subscribe(() => {
+      this.HsCompositionsParserService.composition_loaded = null;
+      this.HsCompositionsParserService.composition_edited = false;
+    });
 
-    loadCompositions(ds, params) {
-      return new Promise((resolve, reject) => {
-        HsCompositionsMapService.clearExtentLayer();
-        const bbox = HsMapService.getMapExtentInEpsg4326();
-        me.managerByType(ds)
-          .loadList(ds, params, bbox, HsCompositionsMapService.extentLayer)
-          .then((_) => {
-            resolve();
-          });
-      });
-    },
+    HsEventBusService.compositionEdits.subscribe(() => {
+      this.HsCompositionsParserService.composition_edited = true;
+    });
 
-    resetCompositionCounter() {
-      HsCommonEndpointsService.endpoints.forEach((ds) => {
-        if (ds.type == 'micka') {
-          HsCompositionsMickaService.resetCompositionCounter(ds);
-        }
-      });
-    },
+    HsEventBusService.compositionLoadStarts.subscribe((id) => {
+      id = `${this.HsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
+      this.HsCompositionsParserService.loadUrl(id);
+    });
 
-    managerByType(endpoint) {
-      switch (endpoint.type) {
-        case 'micka':
-          return HsCompositionsStatusManagerMickaJointService;
-        case 'layman':
-          return HsCompositionsLaymanService;
-        default:
-          $log.warn(`Endpoint type '${endpoint.type} not supported`);
-      }
-    },
-
-    deleteComposition(composition) {
-      const endpoint = composition.endpoint;
-      me.managerByType(endpoint).delete(endpoint, composition);
-    },
-
-    shareComposition(record) {
-      const compositionUrl =
-        (HsCore.isMobile() && HsConfig.permalinkLocation
-          ? HsConfig.permalinkLocation.origin +
-            HsConfig.permalinkLocation.pathname
-          : $location.protocol() + '://' + location.host + location.pathname) +
-        '?composition=' +
-        encodeURIComponent(me.getRecordLink(record));
-      const shareId = HsUtilsService.generateUuid();
-      $http({
-        method: 'POST',
-        url: HsStatusManagerService.endpointUrl(),
-        data: angular.toJson({
-          request: 'socialShare',
-          id: shareId,
-          url: encodeURIComponent(compositionUrl),
-          title: record.title,
-          description: record.abstract,
-          image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
-        }),
-      }).then(
-        (response) => {
-          HsUtilsService.shortUrl(
-            HsStatusManagerService.endpointUrl() +
-              '?request=socialshare&id=' +
-              shareId
-          )
-            .then((shortUrl) => {
-              me.data.shareUrl = shortUrl;
-            })
-            .catch(() => {
-              $log.log('Error creating short Url');
-            });
-          me.data.shareTitle = record.title;
-          if (
-            HsConfig.social_hashtag &&
-            me.data.shareTitle.indexOf(HsConfig.social_hashtag) <= 0
-          ) {
-            me.data.shareTitle += ' ' + HsConfig.social_hashtag;
-          }
-
-          me.data.shareDescription = record.abstract;
-          $rootScope.$broadcast('composition.shareCreated', me.data);
-        },
-        (err) => {}
+    HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
+      const record = this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
+        e.feature,
+        e.selector
       );
-    },
+      if (record) {
+        this.loadComposition(this.getRecordLink(record));
+      }
+    });
+  }
 
-    getCompositionInfo(composition, cb) {
-      me.managerByType(composition.endpoint)
-        .getInfo(composition)
-        .then((info) => {
-          me.data.info = info;
-          cb(info);
+  datasetSelect(id_selected) {
+    this.data.id_selected = id_selected;
+  }
+
+  loadCompositions(ds, params) {
+    return new Promise((resolve, reject) => {
+      this.HsCompositionsMapService.clearExtentLayer();
+      const bbox = this.HsMapService.getMapExtentInEpsg4326();
+      this.managerByType(ds)
+        .loadList(ds, params, bbox, this.HsCompositionsMapService.extentLayer)
+        .then((_) => {
+          resolve();
         });
-    },
+    });
+  }
 
-    getRecordLink(record) {
-      let url;
-      if (angular.isDefined(record.link)) {
-        url = record.link;
-      } else if (angular.isDefined(record.links)) {
-        url = record.links.filter((l) => l.url.indexOf('/file') > -1)[0].url;
+  resetCompositionCounter() {
+    this.HsCommonEndpointsService.endpoints.forEach((ds) => {
+      if (ds.type == 'micka') {
+        this.HsCompositionsMickaService.resetCompositionCounter(ds);
       }
-      return url;
-    },
+    });
+  }
 
-    loadCompositionParser(record) {
-      return new Promise((resolve, reject) => {
-        let url;
-        switch (record.endpoint.type) {
-          case 'micka':
-            url = me.getRecordLink(record);
-            break;
-          case 'layman':
-            url =
-              record.url.replace('http://', $location.protocol() + '://') +
-              '/file';
-            break;
-          default:
-            $log.warn(`Endpoint type '${record.endpoint.type} not supported`);
-        }
-        if (HsCompositionsParserService.composition_edited == true) {
-          $rootScope.$broadcast('loadComposition.notSaved', url);
-          reject();
-        } else {
-          me.loadComposition(url, true).then(() => {
-            resolve();
+  managerByType(endpoint) {
+    switch (endpoint.type) {
+      case 'micka':
+        return this.HsCompositionsStatusManagerMickaJointService;
+      case 'layman':
+        return this.HsCompositionsLaymanService;
+      default:
+        this.$log.warn(`Endpoint type '${endpoint.type} not supported`);
+    }
+  }
+
+  deleteComposition(composition) {
+    const endpoint = composition.endpoint;
+    this.managerByType(endpoint).delete(endpoint, composition);
+  }
+
+  shareComposition(record) {
+    const compositionUrl =
+      (this.HsCore.isMobile() && this.HsConfig.permalinkLocation
+        ? this.HsConfig.permalinkLocation.origin +
+          this.HsConfig.permalinkLocation.pathname
+        : $location.protocol() + '://' + location.host + location.pathname) +
+      '?composition=' +
+      encodeURIComponent(this.getRecordLink(record));
+    const shareId = this.HsUtilsService.generateUuid();
+    $http({
+      method: 'POST',
+      url: this.HsStatusManagerService.endpointUrl(),
+      data: JSON.stringify({
+        request: 'socialShare',
+        id: shareId,
+        url: encodeURIComponent(compositionUrl),
+        title: record.title,
+        description: record.abstract,
+        image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
+      }),
+    }).then(
+      (response) => {
+        this.HsUtilsService.shortUrl(
+          this.HsStatusManagerService.endpointUrl() +
+            '?request=socialshare&id=' +
+            shareId
+        )
+          .then((shortUrl) => {
+            this.data.shareUrl = shortUrl;
+          })
+          .catch(() => {
+            $log.log('Error creating short Url');
           });
+        this.data.shareTitle = record.title;
+        if (
+          this.HsConfig.social_hashtag &&
+          this.data.shareTitle.indexOf(this.HsConfig.social_hashtag) <= 0
+        ) {
+          this.data.shareTitle += ' ' + this.HsConfig.social_hashtag;
         }
+
+        this.data.shareDescription = record.abstract;
+        $rootScope.$broadcast('composition.shareCreated', this.data);
+      },
+      (err) => {}
+    );
+  }
+
+  getCompositionInfo(composition, cb) {
+    this.managerByType(composition.endpoint)
+      .getInfo(composition)
+      .then((info) => {
+        this.data.info = info;
+        cb(info);
       });
-    },
+  }
 
-    /**
-     * @function parsePermalinkLayers
-     * @memberof HsCompositionsService
-     * Load layers received through permalink to map
-     */
-    async parsePermalinkLayers() {
-      await HsMapService.loaded();
-      const layersUrl = HsUtilsService.proxify(
-        HsPermalinkUrlService.getParamValue('permalink')
-      );
-      const response = await $http({url: layersUrl});
-      if (response.data.success == true) {
-        const data = {};
-        data.data = {};
-        if (angular.isDefined(response.data.data.layers)) {
-          data.data.layers = response.data.data.layers;
-        } else {
-          //Some old structure, where layers are stored in data
-          data.data.layers = response.data.data;
-        }
-        HsCompositionsParserService.removeCompositionLayers();
-        const layers = HsCompositionsParserService.jsonToLayers(data);
-        for (let i = 0; i < layers.length; i++) {
-          HsMapService.addLayer(layers[i], true);
-        }
-      } else {
-        if (console) {
-          $log.log('Error loading permalink layers');
-        }
+  getRecordLink(record) {
+    let url;
+    if (record.link !== undefined) {
+      url = record.link;
+    } else if (record.links !== undefined) {
+      url = record.links.filter((l) => l.url.indexOf('/file') > -1)[0].url;
+    }
+    return url;
+  }
+
+  loadCompositionParser(record) {
+    return new Promise((resolve, reject) => {
+      let url;
+      switch (record.endpoint.type) {
+        case 'micka':
+          url = this.getRecordLink(record);
+          break;
+        case 'layman':
+          url =
+            record.url.replace('http://', $location.protocol() + '://') +
+            '/file';
+          break;
+        default:
+          this.$log.warn(
+            `Endpoint type '${record.endpoint.type} not supported`
+          );
       }
-    },
+      if (this.HsCompositionsParserService.composition_edited == true) {
+        $rootScope.$broadcast('loadComposition.notSaved', url);
+        reject();
+      } else {
+        this.loadComposition(url, true).then(() => {
+          resolve();
+        });
+      }
+    });
+  }
 
-    loadComposition(url, overwrite) {
-      return HsCompositionsParserService.loadUrl(url, overwrite);
-    },
-  });
+  /**
+   * @function parsePermalinkLayers
+   * @memberof HsCompositionsService
+   * Load layers received through permalink to map
+   */
+  async parsePermalinkLayers() {
+    await HsMapService.loaded();
+    const layersUrl = HsUtilsService.proxify(
+      this.HsPermalinkUrlService.getParamValue('permalink')
+    );
+    const response = await $http({url: layersUrl});
+    if (response.data.success == true) {
+      const data: any = {};
+      data.data = {};
+      if (response.data.data.layers) {
+        data.data.layers = response.data.data.layers;
+      } else {
+        //Some old structure, where layers are stored in data
+        data.data.layers = response.data.data;
+      }
+      this.HsCompositionsParserService.removeCompositionLayers();
+      const layers = this.HsCompositionsParserService.jsonToLayers(data);
+      for (let i = 0; i < layers.length; i++) {
+        this.HsMapService.addLayer(layers[i], true);
+      }
+    } else {
+      if (console) {
+        this.$log.log('Error loading permalink layers');
+      }
+    }
+  }
+
+  loadComposition(url, overwrite) {
+    return this.HsCompositionsParserService.loadUrl(url, overwrite);
+  }
 
   /**
    *
    */
-  async function tryParseCompositionFromCookie() {
-    if (
-      angular.isDefined(localStorage.getItem('hs_layers')) &&
-      $window.permalinkApp != true
-    ) {
-      await HsMapService.loaded();
+  async tryParseCompositionFromCookie() {
+    if (localStorage.getItem('hs_layers') && $window.permalinkApp != true) {
+      await this.HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
       if (!data) {
         return;
       }
-      const layers = HsCompositionsParserService.jsonToLayers(
-        angular.fromJson(data)
+      const layers = this.HsCompositionsParserService.jsonToLayers(
+        JSON.parse(data)
       );
       for (let i = 0; i < layers.length; i++) {
-        HsMapService.addLayer(layers[i], false);
+        this.HsMapService.addLayer(layers[i], false);
       }
       localStorage.removeItem('hs_layers');
     }
@@ -243,48 +260,17 @@ export default function (
   /**
    *
    */
-  function tryParseCompositionFromUrlParam() {
-    if (HsPermalinkUrlService.getParamValue('composition')) {
-      let id = HsPermalinkUrlService.getParamValue('composition');
+  tryParseCompositionFromUrlParam() {
+    if (this.HsPermalinkUrlService.getParamValue('composition')) {
+      let id = this.HsPermalinkUrlService.getParamValue('composition');
       if (
         id.indexOf('http') == -1 &&
-        id.indexOf(HsConfig.status_manager_url) == -1
+        id.indexOf(this.HsConfig.status_manager_url) == -1
       ) {
-        id = HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
+        id =
+          this.HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
-      HsCompositionsParserService.loadUrl(id);
+      this.HsCompositionsParserService.loadUrl(id);
     }
   }
-
-  tryParseCompositionFromCookie();
-  tryParseCompositionFromUrlParam();
-  if (HsPermalinkUrlService.getParamValue('permalink')) {
-    me.parsePermalinkLayers();
-  }
-
-  HsEventBusService.mapResets.subscribe(() => {
-    HsCompositionsParserService.composition_loaded = null;
-    HsCompositionsParserService.composition_edited = false;
-  });
-
-  HsEventBusService.compositionEdits.subscribe(() => {
-    HsCompositionsParserService.composition_edited = true;
-  });
-
-  HsEventBusService.compositionLoadStarts.subscribe((id) => {
-    id = `${HsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
-    HsCompositionsParserService.loadUrl(id);
-  });
-
-  HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-    const record = HsCompositionsMapService.getFeatureRecordAndUnhighlight(
-      e.feature,
-      e.selector
-    );
-    if (record) {
-      me.loadComposition(me.getRecordLink(record));
-    }
-  });
-
-  return me;
 }
