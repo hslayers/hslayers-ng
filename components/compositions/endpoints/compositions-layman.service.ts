@@ -1,91 +1,88 @@
-/**
- * @param $rootScope
- * @param $q
- * @param $http
- * @param HsUtilsService
- * @param HsCompositionsParserService
- */
-export default function (
-  $rootScope,
-  $q,
-  $http,
-  HsUtilsService,
-  HsCompositionsParserService,
-  HsEventBusService
-) {
-  'ngInject';
-  const me = this;
-  angular.extend(me, {
-    data: {},
-    loadList(endpoint, params, bbox, extentLayer) {
-      endpoint.getCurrentUserIfNeeded(endpoint);
-      endpoint.compositionsPaging.loaded = false;
-      if (angular.isUndefined(params.sortBy)) {
-        params.sortBy = '';
-      }
-      return new Promise(async (resolve, reject) => {
-        try {
-          if (angular.isDefined(me.canceler)) {
-            me.canceler.resolve();
-            delete me.canceler;
-          }
-          me.canceler = $q.defer();
-          let response = await $http.get(
-            `${endpoint.url}/rest/${endpoint.user}/maps`,
-            {
-              timeout: me.canceler.promise,
-            }
-          );
+import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsUtilsService} from '../../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
-          endpoint.compositionsPaging.loaded = true;
-          response = response.data;
-          endpoint.compositions = response;
-          if (response && response.length > 0) {
-            endpoint.compositionsPaging.compositionsCount = response.length;
-          } else {
-            endpoint.compositionsPaging.compositionsCount = 0;
-          }
-          angular.forEach(endpoint.compositions, (record) => {
-            record.editable = true;
-            record.endpoint = endpoint;
-          });
-          $rootScope.$broadcast('CompositionsLoaded');
-          resolve();
-        } catch (ex) {
-          reject(ex);
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCompositionsLaymanService {
+  data: any = {};
+  constructor(
+    private $http: HttpClient,
+    private HsUtilsService: HsUtilsService,
+    private HsCompositionsParserService: HsCompositionsParserService,
+    private HsEventBusService: HsEventBusService
+  ) {}
+
+  loadList(endpoint, params, bbox, extentLayer) {
+    endpoint.getCurrentUserIfNeeded(endpoint);
+    endpoint.compositionsPaging.loaded = false;
+    if (params.sortBy == undefined) {
+      params.sortBy = '';
+    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (angular.isDefined(this.canceler)) {
+          this.canceler.resolve();
+          delete this.canceler;
         }
-      });
-    },
-
-    async delete(endpoint, composition) {
-      let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-      const method = 'DELETE';
-      url = HsUtilsService.proxify(url);
-      await $http({url, method});
-      HsEventBusService.compositionDeletes.next(composition);
-    },
-
-    getInfo(composition) {
-      return new Promise((resolve, reject) => {
-        const endpoint = composition.endpoint;
-        const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-        HsCompositionsParserService.loadInfo(url, (info) => {
-          if (
-            angular.isDefined(info.thumbnail.status) &&
-            info.thumbnail.status == 'NOT_AVAILABLE'
-          ) {
-            delete info.thumbnail;
+        this.canceler = $q.defer();
+        let response = await $http.get(
+          `${endpoint.url}/rest/${endpoint.user}/maps`,
+          {
+            timeout: this.canceler.promise,
           }
-          info.abstract = info.description;
-          resolve(info);
-        });
-      });
-    },
+        );
 
-    resetCompositionCounter(endpoint) {
-      endpoint.compositionsPaging.start = 0;
-      endpoint.compositionsPaging.next = me.data.limit;
-    },
-  });
-  return me;
+        endpoint.compositionsPaging.loaded = true;
+        response = response.data;
+        endpoint.compositions = response;
+        if (response && response.length > 0) {
+          endpoint.compositionsPaging.compositionsCount = response.length;
+        } else {
+          endpoint.compositionsPaging.compositionsCount = 0;
+        }
+        for (const record of endpoint.compositions) {
+          record.editable = true;
+          record.endpoint = endpoint;
+        }
+        $rootScope.$broadcast('CompositionsLoaded');
+        resolve();
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  }
+
+  async delete(endpoint, composition) {
+    let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+    const method = 'DELETE';
+    url = this.HsUtilsService.proxify(url);
+    await $http({url, method});
+    this.HsEventBusService.compositionDeletes.next(composition);
+  }
+
+  getInfo(composition) {
+    return new Promise((resolve, reject) => {
+      const endpoint = composition.endpoint;
+      const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+      this.HsCompositionsParserService.loadInfo(url, (info) => {
+        if (
+          info.thumbnail.status !== undefined &&
+          info.thumbnail.status == 'NOT_AVAILABLE'
+        ) {
+          delete info.thumbnail;
+        }
+        info.abstract = info.description;
+        resolve(info);
+      });
+    });
+  }
+
+  resetCompositionCounter(endpoint) {
+    endpoint.compositionsPaging.start = 0;
+    endpoint.compositionsPaging.next = this.data.limit;
+  }
 }

@@ -1,6 +1,9 @@
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
+import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from './compositions-parser.service';
+import {HsCompositionsStatusManagerMickaJointService} from './endpoints/status-manager-micka-joint.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -42,21 +45,21 @@ export class HsCompositionsService {
       this.parsePermalinkLayers();
     }
 
-    HsEventBusService.mapResets.subscribe(() => {
+    this.HsEventBusService.mapResets.subscribe(() => {
       this.HsCompositionsParserService.composition_loaded = null;
       this.HsCompositionsParserService.composition_edited = false;
     });
 
-    HsEventBusService.compositionEdits.subscribe(() => {
+    this.HsEventBusService.compositionEdits.subscribe(() => {
       this.HsCompositionsParserService.composition_edited = true;
     });
 
-    HsEventBusService.compositionLoadStarts.subscribe((id) => {
+    this.HsEventBusService.compositionLoadStarts.subscribe((id) => {
       id = `${this.HsStatusManagerService.endpointUrl()}?request=load&id=${id}`;
       this.HsCompositionsParserService.loadUrl(id);
     });
 
-    HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
+    this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       const record = this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
         e.feature,
         e.selector
