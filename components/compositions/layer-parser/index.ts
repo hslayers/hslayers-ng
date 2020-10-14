@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import configParsersService from './layer-parser.service';
+import {HsCompositionsLayerParserService} from './layer-parser.service';
 
 /**
  * @ngdoc module
@@ -19,4 +19,4 @@ angular
    * @name HsCompositionsLayerParserService
    * @description Service for parsing object definition which are invalid for direct use as layers
    */
-  .factory('HsCompositionsLayerParserService', configParsersService);
+  .service('HsCompositionsLayerParserService', HsCompositionsLayerParserService);
