@@ -1,4 +1,5 @@
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';

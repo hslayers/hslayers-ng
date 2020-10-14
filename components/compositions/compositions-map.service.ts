@@ -1,114 +1,108 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Fill, Stroke, Style} from 'ol/style';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
 
-/* eslint-disable angular/on-watch */
-/**
- * @param $timeout
- * @param HsEventBusService
- * @param HsMapService
- * @param HsLayoutService
- */
-export default function (
-  $timeout,
-  HsEventBusService,
-  HsMapService,
-  HsLayoutService
-) {
-  'ngInject';
-  const me = this;
+@Injectable({
+  providedIn: 'root',
+})
+export class HsCompositionsMapService {
+  extentLayer = new VectorLayer({
+    title: 'Composition extents',
+    show_in_manager: false,
+    source: new Vector(),
+    removable: false,
+    style: function (feature, resolution) {
+      return [
+        new Style({
+          stroke: new Stroke({
+            color: '#005CB6',
+            width: feature.get('highlighted') ? 4 : 1,
+          }),
+          fill: new Fill({
+            color: 'rgba(0, 0, 255, 0.01)',
+          }),
+        }),
+      ];
+    },
+  });
+
+  constructor(
+    private HsEventBusService: HsEventBusService,
+    private HsMapService: HsMapService,
+    private HsLayoutService: HsLayoutService
+  ) {
+    /**
+     * @param map
+     */
+    function init(map) {
+      map.on('pointermove', (e) => this.mapPointerMoved(e));
+      map.addLayer(this.extentLayer);
+    }
+
+    this.HsMapService.loaded().then(init);
+
+    this.HsEventBusService.mainPanelChanges.subscribe(() => {
+      if (this.extentLayer) {
+        if (
+          this.HsLayoutService.mainpanel === 'composition_browser' ||
+          this.HsLayoutService.mainpanel === 'composition'
+        ) {
+          this.extentLayer.setVisible(true);
+        } else {
+          this.extentLayer.setVisible(false);
+        }
+      }
+    });
+  }
 
   /**
    * @param evt
    */
-  function mapPointerMoved(evt) {
-    const features = me.extentLayer
+  mapPointerMoved(evt) {
+    const features = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     let somethingDone = false;
-    angular.forEach(me.extentLayer.getSource().getFeatures(), (feature) => {
+    for (const feature of this.extentLayer.getSource().getFeatures()) {
       if (feature.get('record').highlighted) {
         feature.get('record').highlighted = false;
         somethingDone = true;
       }
-    });
+    }
     if (features.length) {
-      angular.forEach(features, (feature) => {
+      for (const feature of features) {
         if (!feature.get('record').highlighted) {
           feature.get('record').highlighted = true;
           somethingDone = true;
         }
-      });
+      }
     }
     if (somethingDone) {
-      $timeout(() => {}, 0);
+      //NOTE: Probably not needed in ng9
+      //$timeout(() => {}, 0);
     }
   }
 
-  /**
-   * @param map
-   */
-  function init(map) {
-    map.on('pointermove', mapPointerMoved);
-    map.addLayer(me.extentLayer);
+  highlightComposition(composition, state) {
+    if (composition.feature) {
+      composition.feature.set('highlighted', state);
+    }
   }
 
-  HsMapService.loaded().then(init);
+  clearExtentLayer() {
+    this.extentLayer.getSource().clear();
+  }
 
-  HsEventBusService.mainPanelChanges.subscribe(() => {
-    if (angular.isDefined(me.extentLayer)) {
-      if (
-        HsLayoutService.mainpanel === 'composition_browser' ||
-        HsLayoutService.mainpanel === 'composition'
-      ) {
-        me.extentLayer.setVisible(true);
-      } else {
-        me.extentLayer.setVisible(false);
-      }
+  getFeatureRecordAndUnhighlight(feature, selector) {
+    if (feature.get('is_hs_composition_extent') && feature.get('record')) {
+      const record = feature.get('record');
+      feature.set('highlighted', false);
+      selector.getFeatures().clear();
+      return record;
     }
-  });
-
-  return angular.extend(me, {
-    extentLayer: new VectorLayer({
-      title: 'Composition extents',
-      show_in_manager: false,
-      source: new Vector(),
-      removable: false,
-      style: function (feature, resolution) {
-        return [
-          new Style({
-            stroke: new Stroke({
-              color: '#005CB6',
-              width: feature.get('highlighted') ? 4 : 1,
-            }),
-            fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.01)',
-            }),
-          }),
-        ];
-      },
-    }),
-
-    highlightComposition(composition, state) {
-      if (angular.isDefined(composition.feature)) {
-        composition.feature.set('highlighted', state);
-      }
-    },
-
-    clearExtentLayer() {
-      me.extentLayer.getSource().clear();
-    },
-
-    getFeatureRecordAndUnhighlight(feature, selector) {
-      if (
-        angular.isDefined(feature.get('is_hs_composition_extent')) &&
-        angular.isDefined(feature.get('record'))
-      ) {
-        const record = feature.get('record');
-        feature.set('highlighted', false);
-        selector.getFeatures().clear();
-        return record;
-      }
-    },
-  });
+  }
 }
