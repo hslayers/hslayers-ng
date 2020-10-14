@@ -1,69 +1,53 @@
-import '../layers/hs.source.SparqlJson';
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLogService} from '../../common/log/log.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {transform} from 'ol/proj';
 
-/**
- * @param HsMapService
- * @param HsConfig
- * @param $rootScope
- * @param $http
- * @param HsUtilsService
- * @param HsCompositionsLayerParserService
- * @param HsLayoutService
- * @param $log
- */
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCompositionsParserService {
+  /**
+   * @ngdoc property
+   * @name HsCompositionsParserService#composition_loaded
+   * @public
+   * @type {string} null
+   * @description Stores current composition URL if there is one or NULL
+   */
+  composition_loaded = null;
+  /**
+   * @ngdoc property
+   * @name HsCompositionsParserService#composition_edited
+   * @public
+   * @type {boolean} null
+   * @description Stores whether current composition was edited (for composition changes, saving etc.)
+   */
+  composition_edited = false;
+  /**
+   * @ngdoc property
+   * @name HsCompositionsParserService#current_composition_title
+   * @public
+   * @type {string} ""
+   * @description Stores title of current composition
+   */
+  current_composition_title = '';
+  current_composition_url: string;
+  current_composition: any;
+
   constructor(
-    HsMapService,
-    HsConfig,
-    $rootScope,
-    $http,
-    HsUtilsService,
-    HsCompositionsLayerParserService,
-    HsLayoutService,
-    $log,
-    HsEventBusService
-  ) {
-    'ngInject';
-
-    Object.assign(this, {
-      HsMapService,
-      HsConfig,
-      $rootScope,
-      $http,
-      HsUtilsService,
-      HsCompositionsLayerParserService,
-      HsLayoutService,
-      $log,
-      HsEventBusService,
-    });
-
-    Object.assign(this, {
-      /**
-       * @ngdoc property
-       * @name HsCompositionsParserService#composition_loaded
-       * @public
-       * @type {string} null
-       * @description Stores current composition URL if there is one or NULL
-       */
-      composition_loaded: null,
-      /**
-       * @ngdoc property
-       * @name HsCompositionsParserService#composition_edited
-       * @public
-       * @type {boolean} null
-       * @description Stores whether current composition was edited (for composition changes, saving etc.)
-       */
-      composition_edited: false,
-      /**
-       * @ngdoc property
-       * @name HsCompositionsParserService#current_composition_title
-       * @public
-       * @type {string} ""
-       * @description Stores title of current composition
-       */
-      current_composition_title: '',
-    });
-  }
+    private HsMapService: HsMapService,
+    private HsConfig: HsConfig,
+    private $http: HttpClient,
+    private HsUtilsService: HsUtilsService,
+    private HsCompositionsLayerParserService: HsCompositionsLayerParserService,
+    private HsLayoutService: HsLayoutService,
+    private $log: HsLogService,
+    private HsEventBusService: HsEventBusService
+  ) {}
 
   /**
    * @ngdoc method
@@ -103,7 +87,7 @@ export class HsCompositionsParserService {
     this.HsEventBusService.compositionLoading.next(response.data);
     if (this.checkLoadSuccess(response)) {
       this.composition_loaded = response.config.url;
-      if (angular.isDefined(response.config.pre_parse)) {
+      if (this.HsUtilsService.isFunction(response.config.pre_parse)) {
         response = response.config.pre_parse(response.data);
       }
       /*
@@ -119,7 +103,7 @@ export class HsCompositionsParserService {
         response.extent
       );
       this.finalizeCompositionLoading(response.data);
-      if (angular.isFunction(response.config.callback)) {
+      if (this.HsUtilsService.isFunction(response.config.callback)) {
         response.config.callback();
       }
     } else {
@@ -130,8 +114,8 @@ export class HsCompositionsParserService {
   checkLoadSuccess(response) {
     return (
       response.data.success == true /*micka*/ ||
-      (angular.isUndefined(response.data.success) /*layman*/ &&
-        angular.isDefined(response.data.name))
+      (response.data.success == undefined /*layman*/ &&
+        response.data.name !== undefined)
     );
   }
 
@@ -158,9 +142,12 @@ export class HsCompositionsParserService {
       this.HsMapService.addLayer(lyr, true);
     });
 
-    if (angular.isObject(obj.current_base_layer)) {
+    if (obj.current_base_layer) {
       this.HsMapService.map.getLayers().forEach((lyr) => {
-        if (lyr.get('title') == obj.current_base_layer.title) {
+        if (
+          lyr.get('title') == obj.current_base_layer.title ||
+          lyr.get('title') == obj.current_base_layer
+        ) {
           lyr.setVisible(true);
         }
       });
@@ -182,7 +169,7 @@ export class HsCompositionsParserService {
   }
 
   raiseCompositionLoadError(response) {
-    const respError = {};
+    const respError: any = {};
     respError.error = response.error;
     switch (response.error) {
       case 'no data':
@@ -286,7 +273,7 @@ export class HsCompositionsParserService {
     for (let i = 0; i < j.layers.length; i++) {
       const lyr_def = j.layers[i];
       const layer = this.jsonToLayer(lyr_def);
-      if (angular.isUndefined(layer)) {
+      if (layer == undefined) {
         this.$log.warn('Was not able to parse layer from composition', lyr_def);
       } else {
         layers.push(layer);

@@ -54,5 +54,6 @@ export class HsConfig {
   pureMap: boolean;
   translationOverrides: any;
   layersInFeatureTable: any;
+  open_lm_after_comp_loaded: any;
   constructor() {}
 }
