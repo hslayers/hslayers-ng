@@ -16,6 +16,7 @@ import {HsLayoutService} from './../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { HsLogService } from '../../common/log/log.service';
 @Component({
   selector: 'hs.print',
   template: require('./compositions.html'),
@@ -80,7 +81,8 @@ export class HsCompositionsComponent implements OnInit {
     private HsEventBusService: HsEventBusService,
     private HsSaveMapManagerService: HsSaveMapManagerService,
     private HsDialogContainerService: HsDialogContainerService,
-    private $window: Window
+    private $window: Window,
+    private HsLogService: HsLogService
   ) {
     this.filteredEndpointsForCompositions().forEach(
       (ep: HsEndpoint) =>
@@ -325,19 +327,30 @@ export class HsCompositionsComponent implements OnInit {
    * @param $event
    * @description Prepare share object on server and display share dialog to share composition
    */
-  shareComposition(record, $event) {
-    this.HsCompositionsService.shareComposition(record);
-    this.shareDialogBootstrap();
+  async shareComposition(record): Promise<void> {
+    try {
+      const url = await this.HsCompositionsService.shareComposition(record);
+      this.shareDialogBootstrap(record, url);
+    } catch (ex) {
+      this.HsLogService.error(ex);
+    }
   }
 
   /**
    * @param $event
+   * @param record
+   * @param url
    */
-  shareDialogBootstrap() {
-    this.HsDialogContainerService.create(
-      HsCompositionsShareDialogComponent,
-      {}
-    );
+  shareDialogBootstrap(record, url) {
+    this.HsDialogContainerService.create(HsCompositionsShareDialogComponent, {
+      url,
+      title:
+        this.HsConfig.social_hashtag &&
+        record.title.indexOf(this.HsConfig.social_hashtag) <= 0
+          ? record.title + ' ' + this.HsConfig.social_hashtag
+          : record.title,
+      abstract: record.abstract,
+    });
   }
 
   /**
@@ -368,7 +381,9 @@ export class HsCompositionsComponent implements OnInit {
    * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
    */
   startLoadComposition(record) {
-    this.HsCompositionsService.loadCompositionParser(record);
+    this.HsCompositionsService.loadCompositionParser(record).catch(() => {
+      //Do nothing, probably now asking for overwrite of composition
+    });
   }
 
   addCompositionUrl(url) {
