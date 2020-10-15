@@ -234,7 +234,7 @@ export class HsCompositionsService {
     }
   }
 
-  loadComposition(url, overwrite) {
+  loadComposition(url, overwrite?) {
     return this.HsCompositionsParserService.loadUrl(url, overwrite);
   }
 
@@ -242,7 +242,10 @@ export class HsCompositionsService {
    *
    */
   async tryParseCompositionFromCookie() {
-    if (localStorage.getItem('hs_layers') && $window.permalinkApp != true) {
+    if (
+      localStorage.getItem('hs_layers') &&
+      (<any>this.$window).permalinkApp != true
+    ) {
       await this.HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
       if (!data) {

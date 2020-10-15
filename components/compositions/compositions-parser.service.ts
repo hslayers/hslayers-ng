@@ -61,7 +61,7 @@ export class HsCompositionsParserService {
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
    * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
    */
-  async loadUrl(url, overwrite, callback?, pre_parse?) {
+  async loadUrl(url, overwrite?, callback?, pre_parse?) {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);

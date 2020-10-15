@@ -6,11 +6,13 @@ import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsMickaService {
+  listLoading: Subscription;
   constructor(
     private HsCompositionsParserService: HsCompositionsParserService,
     private $http: HttpClient,
@@ -82,17 +84,14 @@ export class HsCompositionsMickaService {
       params.limit = endpoint.compositionsPaging.limit;
     }
     return new Promise((resolve, reject) => {
-      if (angular.isDefined(this.canceler)) {
-        this.canceler.resolve();
-        delete this.canceler;
+      if (this.listLoading) {
+        this.listLoading.unsubscribe();
+        delete this.listLoading;
       }
-      this.canceler = $q.defer();
-      this.$http
-        .get(this.getCompositionsQueryUrl(endpoint, params, bbox), {
-          timeout: this.canceler.promise,
-        })
-        .then(
-          (response) => {
+      this.listLoading = this.$http
+        .get(this.getCompositionsQueryUrl(endpoint, params, bbox))
+        .subscribe(
+          (response: any) => {
             endpoint.compositionsPaging.loaded = true;
             response = response.data;
             endpoint.compositions = response.records;
