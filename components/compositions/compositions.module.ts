@@ -5,6 +5,7 @@ import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserModule} from './layer-parser/layer-parser.module';
 import {HsCompositionsService} from './compositions.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -15,6 +16,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsPanelHelpersModule,
     TranslateModule,
     HsCompositionsLayerParserModule,
+    NgbModule,
   ],
   exports: [HsCompositionsComponent],
   providers: [HsCompositionsService],

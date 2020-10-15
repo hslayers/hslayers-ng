@@ -66,7 +66,7 @@ export class HsCompositionsComponent implements OnInit {
   filterByExtent = true;
   selectedCompId: any;
   query: {editable: boolean; title: string} = {editable: false, title: ''};
-
+  activeTab = 0;
   constructor(
     private HsMapService: HsMapService,
     private HsCompositionsService: HsCompositionsService,

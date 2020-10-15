@@ -54,7 +54,6 @@ export class HsCompositionsStatusManagerService {
     }
     this.listLoading = this.$http.get(url).subscribe(
       (response: any) => {
-        response = response.data;
         if (ds.compositions == undefined) {
           ds.compositions = [];
           ds.matched = 0;

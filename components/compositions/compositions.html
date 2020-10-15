@@ -37,7 +37,7 @@
                             {{'Sort' | translate}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': sortMenuOpen}">
-                            <li><a class="dropdown-item" (click)="setSortAttribute('bbox')" href="">Bounding box</a>
+                            <li><a class="dropdown-item" (click)="setSortAttribute('bbox')" href="#">Bounding box</a>
                             </li>
                             <li><a class="dropdown-item" (click)="setSortAttribute('title')">Title</a></li>
                             <li><a class="dropdown-item" (click)="setSortAttribute('date')">Date</a></li>
@@ -59,60 +59,59 @@
                 </div>
             </div>
         </form>
-        <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" *ngFor="let endpoint of filteredEndpointsForCompositions()">
-                <a class="nav-link" [ngClass]="{'btn-primary': HsCompositionsMickaService.dataid_selected == 'ds'+$index}" href="" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+$index)">
+        <ul ngbNav [(activeId)]="activeTab" #nav="ngbNav" class="nav-tabs flex-column flex-sm-row">
+            <li class="nav-item" [ngbNavItem]="$index" *ngFor="let endpoint of filteredEndpointsForCompositions(); index as $index">
+                <a ngbNavLink (click)="HsCompositionsService.datasetSelect('ds'+$index)">
                     {{endpoint.title}}
                     <span [hidden]="!(endpoint.compositionsPaging.matched > 0)">({{endpoint.compositionsPaging.matched}})</span>
                     <i class="icon-refresh icon-spin" [hidden]="!(endpoint.compositionsPaging.loaded == false)"></i>
                 </a>
-            </li>
-        </ul><!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == HsCompositionsMickaService.dataid_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of filteredEndpointsForCompositions()">
-                <div class="card">
-                    <div class="card-body">
-                        <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
-                        <ul class="hs-comp-list list-group">
-                            <li *ngFor="let composition of endpoint.compositions" class="list-group-item hs-comp-item" style="cursor: pointer" [ngClass]="composition.highlighted ?  'active' : ''" (mouseover)="highlightComposition(composition, true)" (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)" data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
-                                <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
-                                <div class="btn-group btn-block" [ngClass]="{'d-none': commonId(composition) != selectedCompId}" role="group">
-                                    <a class="btn btn-secondary" (click)="$event.stopPropagation();shareComposition(composition)" href="">
-                                        <i class="icon-share-alt"></i>
-                                    </a>
-                                    <a class="btn btn-secondary" href="" (click)="$event.stopPropagation();edit(composition)">
-                                        <i class="icon-edit"></i>
-                                    </a>
-                                    <a class="btn btn-secondary" href="" (click)="$event.stopPropagation();detailComposition(composition)">
-                                        <i class="icon-info-sign"></i>
-                                    </a>
-                                    <a class="btn btn-secondary" href="" [hidden]="!composition.editable" (click)="$event.stopPropagation();confirmDelete(composition)">
-                                        <i class="icon-trash"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-
-                    <div class="card-footer" [hidden]="!(endpoint.matched > 0)">
-                        <nav>
-                            <ul class="pagination d-flex justify-content-center">
-                                <li class="page-item" [ngClass]="{'disabled': compStart == 0 }">
-                                    <a href="" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true"></span></a>
-                                </li>
-                                <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
-                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
-                                <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
-                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
-                                <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
-                                    <a href="" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
+                <ng-template ngbNavContent>
+                    <div class="card">
+                        <div class="card-body">
+                            <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
+                            <ul class="hs-comp-list list-group">
+                                <li *ngFor="let composition of endpoint.compositions" class="list-group-item hs-comp-item" style="cursor: pointer" [ngClass]="composition.highlighted ?  'active' : ''" (mouseover)="highlightComposition(composition, true)" (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)" data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
+                                    <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
+                                    <div class="btn-group btn-block" [ngClass]="{'d-none': commonId(composition) != selectedCompId}" role="group">
+                                        <a class="btn btn-secondary" (click)="$event.stopPropagation();shareComposition(composition)" href="#">
+                                            <i class="icon-share-alt"></i>
+                                        </a>
+                                        <a class="btn btn-secondary" href="#" (click)="$event.stopPropagation();edit(composition)">
+                                            <i class="icon-edit"></i>
+                                        </a>
+                                        <a class="btn btn-secondary" href="#" (click)="$event.stopPropagation();detailComposition(composition)">
+                                            <i class="icon-info-sign"></i>
+                                        </a>
+                                        <a class="btn btn-secondary" href="#" [hidden]="!composition.editable" (click)="$event.stopPropagation();confirmDelete(composition)">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </div>
                                 </li>
                             </ul>
-                        </nav>
+                        </div>
+    
+    
+                        <div class="card-footer" [hidden]="!(endpoint.matched > 0)">
+                            <nav>
+                                <ul class="pagination d-flex justify-content-center">
+                                    <li class="page-item" [ngClass]="{'disabled': compStart == 0 }">
+                                        <a href="#" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true"></span></a>
+                                    </li>
+                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
+                                            {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
+                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
+                                            {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
+                                    <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
+                                        <a href="#" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>
 </div>
