@@ -15,7 +15,7 @@
         <div class="nav nav-pills" [hidden]="!hasBoxImages()">
             <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
-                <a href="" [ngClass]="{ 'thumbnail': true, 'alert-info': box.get('active')}"
+                <a href="#" [ngClass]="{ 'thumbnail': true, 'alert-info': box.get('active')}"
                     title="{{box.get('title')}}" (click)="activateTheme(box)">
                     <img src="{{box.get('img')}}" alt="{{box.get('title')}}">
                 </a>
