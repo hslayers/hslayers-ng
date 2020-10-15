@@ -10,7 +10,7 @@ import * as angular from 'angular';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
 import compositionsService from './compositions.service';
-import deleteDialogDirective from './delete-dialog.component';
+import deleteDialogDirective from './dialogs/delete-dialog.component';
 import infoDialogDirective from './info-dialog.component';
 import overwriteDialogDirective from './overwrite-dialog.component';
 import shareDialogDirective from './share-dialog.component';
