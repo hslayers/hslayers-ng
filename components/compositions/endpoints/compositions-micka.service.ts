@@ -93,7 +93,6 @@ export class HsCompositionsMickaService {
         .subscribe(
           (response: any) => {
             endpoint.compositionsPaging.loaded = true;
-            response = response.data;
             endpoint.compositions = response.records;
             if (response.records && response.records.length > 0) {
               endpoint.compositionsPaging.matched = response.matched;
