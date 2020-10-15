@@ -1,20 +1,18 @@
-<div ng-class="{'in': overwriteModalVisible}" class="modal hs-composition-overwrite-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal in hs-composition-overwrite-dialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" translate="">
-                   Overwrite existing map?
-                </h4>
-                <button type="button" ng-click="overwriteModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <h4 class="modal-title" translate>
+                   Overwrite existing map?:                </h4>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate>Close</span></button>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto" translate>
-                    You are opening map <b>{{composition_name_to_be_loaded}}</b>.<br/>There are currently unsaved changes.<br/>What do you want to do before opening the selected map composition?
-            </div>
-            <div class="modal-footer" >
-                <button type="button" class="btn btn-primary compositions-btn-overwrite" translate ng-click="overwrite()" data-dismiss="modal">Continue</button>
-                <button type="button" class="btn btn-primary compositions-btn-add" translate ng-click="add();" data-dismiss="modal">Merge compositions</button>
-                <button type="button" class="btn btn-primary compositions-btn-save" translate ng-click="save()" data-dismiss="modal">Save changes first</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" ng-click="overwriteModalVisible = false" data-dismiss="modal" translate>Cancel</button>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto" translate>
+                    You are opening map <b>{{composition_name_to_be_loaded}}</b><br>There are currently unsaved changes.<br>What do you while(want)to do before while(opening)the selected map composition?:            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary compositions-btn-overwrite" translate (click)="overwrite()" data-dismiss="modal">Continue</button>
+                <button type="button" class="btn btn-primary compositions-btn-add" translate (click)="add();" data-dismiss="modal">Merge compositions</button>
+                <button type="button" class="btn btn-primary compositions-btn-save" translate (click)="save()" data-dismiss="modal">Save changes first</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()" data-dismiss="modal" translate>Cancel</button>
             </div>
         </div>
     </div>

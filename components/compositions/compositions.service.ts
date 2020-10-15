@@ -141,7 +141,7 @@ export class HsCompositionsService {
             this.data.shareUrl = shortUrl;
           })
           .catch(() => {
-            $log.log('Error creating short Url');
+            this.$log.log('Error creating short Url');
           });
         this.data.shareTitle = record.title;
         if (
