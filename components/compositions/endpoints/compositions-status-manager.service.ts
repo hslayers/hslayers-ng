@@ -4,11 +4,13 @@ import {HsStatusManagerService} from '../../save-map/status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsStatusManagerService {
+  listLoading: Subscription;
   constructor(
     private HsStatusManagerService: HsStatusManagerService,
     private HsConfig: HsConfig,
@@ -46,13 +48,12 @@ export class HsCompositionsStatusManagerService {
       '&start=0&limit=1000&sort=' +
       getStatusSortAttr(params.sortBy);
     url = this.HsUtilsService.proxify(url);
-    if (me.canceler) {
-      me.canceler.resolve();
-      delete me.canceler;
+    if (this.listLoading) {
+      this.listLoading.unsubscribe();
+      delete this.listLoading;
     }
-    me.canceler = $q.defer();
-    this.$http.get(url, {timeout: me.canceler.promise}).then(
-      (response) => {
+    this.listLoading = this.$http.get(url).subscribe(
+      (response: any) => {
         response = response.data;
         if (ds.compositions == undefined) {
           ds.compositions = [];
@@ -110,16 +111,9 @@ export class HsCompositionsStatusManagerService {
       composition.id +
       '&project=' +
       encodeURIComponent(this.HsConfig.project_name);
-    const method = 'GET';
     url = this.HsUtilsService.proxify(url);
-    $http({url, method}).then(
-      (response) => {
-        this.HsEventBusService.compositionDeletes.next(composition);
-      },
-      (err) => {
-        //Do nothing
-      }
-    );
+    this.$http.get(url).toPromise();
+    this.HsEventBusService.compositionDeletes.next(composition);
   }
 }
 
