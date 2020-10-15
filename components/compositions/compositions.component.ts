@@ -245,13 +245,17 @@ export class HsCompositionsComponent {
   filterChanged() {
     this.HsCompositionsService.resetCompositionCounter();
     let ds: HsEndpoint;
-    for (ds of this.HsEndpointsForCompositionsPipe.transform(
-      this.HsCommonEndpointsService.endpoints
-    )) {
+    for (ds of this.filteredEndpointsForCompositions()) {
       ds.compositionsPaging.start = 0;
       ds.compositionsPaging.next = ds.compositionsPaging.limit;
       this.loadCompositions(ds);
     }
+  }
+
+  private filteredEndpointsForCompositions() {
+    return this.HsEndpointsForCompositionsPipe.transform(
+      this.HsCommonEndpointsService.endpoints
+    );
   }
 
   /**
