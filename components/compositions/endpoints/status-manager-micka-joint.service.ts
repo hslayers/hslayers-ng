@@ -42,14 +42,10 @@ export class HsCompositionsStatusManagerMickaJointService {
     });
   }
 
-  getInfo(composition) {
-    return new Promise((resolve, reject) => {
-      const url = composition.link;
-      this.HsCompositionsParserService.loadInfo(url, (info) => {
-        info.thumbnail = composition.thumbnail;
-        resolve(info);
-      });
-    });
+  async getInfo(composition): Promise<any> {
+    const url = composition.link;
+    const info = await this.HsCompositionsParserService.loadInfo(url);
+    info.thumbnail = composition.thumbnail;
   }
 
   delete(endpoint, composition) {
