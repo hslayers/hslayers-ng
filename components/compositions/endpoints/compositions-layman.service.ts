@@ -48,7 +48,6 @@ export class HsCompositionsLaymanService {
           record.editable = true;
           record.endpoint = endpoint;
         }
-        $rootScope.$broadcast('CompositionsLoaded');
         resolve();
       } catch (ex) {
         reject(ex);
