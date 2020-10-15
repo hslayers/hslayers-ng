@@ -111,7 +111,7 @@ export class HsCompositionsService {
     this.managerByType(endpoint).delete(endpoint, composition);
   }
 
-  async shareComposition(record) {
+  async shareComposition(record): Promise<any> {
     const recordLink = encodeURIComponent(this.getRecordLink(record));
     const permalinkOverride = this.HsConfig.permalinkLocation;
     const compositionUrl =
@@ -132,27 +132,15 @@ export class HsCompositionsService {
         })
       )
       .toPromise();
-
-    this.HsUtilsService.shortUrl(
-      this.HsStatusManagerService.endpointUrl() +
-        '?request=socialshare&id=' +
-        shareId
-    )
-      .then((shortUrl) => {
-        this.data.shareUrl = shortUrl;
-      })
-      .catch(() => {
-        this.$log.log('Error creating short Url');
-      });
-    this.data.shareTitle = record.title;
-    if (
-      this.HsConfig.social_hashtag &&
-      this.data.shareTitle.indexOf(this.HsConfig.social_hashtag) <= 0
-    ) {
-      this.data.shareTitle += ' ' + this.HsConfig.social_hashtag;
+    try {
+      return await this.HsUtilsService.shortUrl(
+        this.HsStatusManagerService.endpointUrl() +
+          '?request=socialshare&id=' +
+          shareId
+      );
+    } catch (ex) {
+      this.$log.log('Error creating short Url');
     }
-
-    this.data.shareDescription = record.abstract;
   }
 
   getCompositionInfo(composition, cb) {

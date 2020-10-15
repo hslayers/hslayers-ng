@@ -225,36 +225,33 @@ export class HsShareService {
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
         );
         const shareUrl = shortUrl;
-        navigator
-          .share({
-            title: this.data.title,
-            text: this.data.title,
-            url: shareUrl,
-          })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        this.openInShareApi(this.data.title, this.data.abstract, shareUrl);
         this.data.shareUrlValid = true;
       } catch (ex) {
         this.HsLogService.log('Error creating short Url', ex);
       }
     } else {
-      navigator
-        .share({
-          title: this.data.title,
-          text: this.data.title,
-          url: this.getShareUrl(),
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      this.openInShareApi(
+        this.data.title,
+        this.data.abstract,
+        this.getShareUrl()
+      );
     }
+  }
+
+  openInShareApi(title, abstract, url): void {
+    navigator
+      .share({
+        title,
+        text: abstract || title,
+        url,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   /**

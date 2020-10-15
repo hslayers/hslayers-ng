@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <translate>Share map </translate> {{data.shareTitle}}
+                    <span>Share map </span> {{data.shareTitle}}
                 </h4>
                 <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
             </div>
@@ -14,20 +14,16 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3"><b translate="">URL</b></div>
-                    <div class="col-md-9"><a [href]="{{data.shareUrl}}">{{data.shareUrl}}</a></div>
+                    <div class="col-md-9"><a [href]="data.shareUrl">{{data.shareUrl}}</a></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" href="#" socialshare="" [socialshare-provider]="twitter" [socialshare-text]="{{data.shareTitle}}" [socialshare-hashtags]="map, gis" [socialshare-url]="{{data.shareUrl}}">
-                    <i class="icon-twitter"></i> Twitter
-                </button>
-                <button class="btn btn-secondary" socialshare="" [socialshare-provider]="facebook" [socialshare-text]="{{data.shareTitle}}" [socialshare-description]="{{data.shareDescription}}" [socialshare-url]="{{data.shareUrl}}">
-                    <i class="icon-facebook"></i> Facebook
-                </button>
-                <button class="btn btn-secondary" socialshare="" [socialshare-provider]="google" [socialshare-url]="{{data.shareUrl}}">
-                    <i class="icon-googleplus"></i> Google
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="shareModalVisible = false" data-dismiss="modal" translate="">Close</button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-secondary" href="#" (click)="shareOnSocial()">
+                        <i class="icon-share-alt"></i> {{'PERMALINK.share' | translate}}
+                    </button>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
     </div>
