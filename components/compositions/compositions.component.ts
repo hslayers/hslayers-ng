@@ -1,22 +1,25 @@
 import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
+import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
-import {HsCompositionsOverwriteDialogComponent} from './overwrite-dialog.component';
+import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsCompositionsShareDialogComponent} from './share-dialog.component';
+import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
+import {HsEndpointsForCompositionsPipe} from './endpoints/for-composition.filter';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayoutService} from './../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { HsCompositionsInfoDialogComponent } from './info-dialog.component';
 @Component({
   selector: 'hs.print',
-  template: require('./partials/compositions.html'),
+  template: require('./compositions.html'),
 })
 export class HsCompositionsComponent {
   /**
@@ -62,13 +65,8 @@ export class HsCompositionsComponent {
    * @description Store whether filter compositions by current window extent during composition search
    */
   filterByExtent = true;
-  /**
-   * @ngdoc method
-   * @name hs.compositions.controller#getPreviousCompositions
-   * @public
-   * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
-   * @param ds
-   */
+  selectedCompId: any;
+  query: {editable: boolean};
 
   constructor(
     private HsMapService: HsMapService,
@@ -80,13 +78,15 @@ export class HsCompositionsComponent {
     private HsCommonEndpointsService: HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
     private HsCompositionsMapService: HsCompositionsMapService,
-    private forCompositionsFilter: forCompositionsFilter,
+    private HsEndpointsForCompositionsPipe: HsEndpointsForCompositionsPipe,
     private HsEventBusService: HsEventBusService,
     private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsDialogContainerService: HsDialogContainerService
+    private HsDialogContainerService: HsDialogContainerService,
+    private $window: Window
   ) {
     this.HsCommonEndpointsService.endpoints.forEach(
-      (ep) => (ep.next = ep.limit)
+      (ep: HsEndpoint) =>
+        (ep.compositionsPaging.next = ep.compositionsPaging.limit)
     );
     HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
@@ -101,18 +101,9 @@ export class HsCompositionsComponent {
     this.$window.addEventListener('resize', () => {
       this.getPageSize();
     });
-    this.$on('HsCore_sizeChanged', () => {
+    this.HsEventBusService.layoutResizes.subscribe(() => {
       this.getPageSize();
     });
-
-    let el = document.getElementsByClassName('mid-pane');
-    if (el.length > 0) {
-      el[0].style.marginTop = '0px';
-    }
-    el = document.getElementsByClassName('keywords-panel');
-    if (el.length > 0) {
-      el[0].style.display = 'none';
-    }
 
     const extendChangeDebouncer = {};
     this.HsEventBusService.mapExtentChanges.subscribe(
@@ -135,6 +126,7 @@ export class HsCompositionsComponent {
     );
 
     this.HsEventBusService.compositionDeletes.subscribe((composition) => {
+      //TODO rewrite
       const deleteDialog = this.HsLayoutService.contentWrapper.querySelector(
         '.hs-composition-delete-dialog'
       );
@@ -144,25 +136,31 @@ export class HsCompositionsComponent {
       this.loadCompositions(composition.endpoint);
     });
 
-    this.$on('loadComposition.notSaved', (event, url, title) => {
-      this.HsCompositionsService.compositionToLoad = {url, title};
-      this.loadUnsavedDialogBootstrap(url, title);
+    this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
+      this.HsCompositionsService.compositionToLoad = {url, title: ''};
+      this.loadUnsavedDialogBootstrap(url, '');
     });
-
-    this.$emit('scope_loaded', 'Compositions');
   }
 
   changeUrlButtonVisible() {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
 
-  getPreviousCompositions(ds) {
-    if (ds.start - ds.limit < 0) {
-      ds.start = 0;
-      ds.next = ds.limit;
+  /**
+   * @ngdoc method
+   * @name hs.compositions.controller#getPreviousCompositions
+   * @public
+   * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
+   * @param ds
+   */
+  getPreviousCompositions(ds: HsEndpoint) {
+    const paging = ds.compositionsPaging;
+    if (paging.start - paging.limit < 0) {
+      paging.start = 0;
+      paging.next = paging.limit;
     } else {
-      ds.start -= ds.limit;
-      ds.next = ds.start + ds.limit;
+      paging.start -= paging.limit;
+      paging.next = paging.start + paging.limit;
     }
     this.loadCompositions(ds);
   }
@@ -174,14 +172,15 @@ export class HsCompositionsComponent {
    * @description Load next list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
    */
-  getNextCompositions(ds) {
-    if (ds.next != 0) {
-      ds.start = Math.floor(ds.next / ds.limit) * ds.limit;
+  getNextCompositions(ds: HsEndpoint) {
+    const paging = ds.compositionsPaging;
+    if (paging.next != 0) {
+      paging.start = Math.floor(paging.next / paging.limit) * paging.limit;
 
-      if (ds.next + ds.limit > ds.compositionsCount) {
-        ds.next = ds.compositionsCount;
+      if (paging.next + paging.limit > paging.matched) {
+        paging.next = paging.matched;
       } else {
-        ds.next += ds.limit;
+        paging.next += paging.limit;
       }
       this.loadCompositions(ds);
     }
@@ -194,7 +193,7 @@ export class HsCompositionsComponent {
    * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param ds
    */
-  loadCompositions(ds) {
+  loadCompositions(ds: HsEndpoint) {
     return new Promise((resolve, reject) => {
       this.HsMapService.loaded()
         .then((map) => {
@@ -203,8 +202,8 @@ export class HsCompositionsComponent {
             sortBy: this.sortBy,
             filterExtent: this.filterByExtent,
             keywords: this.keywords,
-            start: ds.start,
-            limit: ds.limit,
+            start: ds.compositionsPaging.start,
+            limit: ds.compositionsPaging.limit,
           }).then((_) => {
             resolve();
           });
@@ -229,19 +228,12 @@ export class HsCompositionsComponent {
   }
 
   getPageSize() {
-    let listHeight = screen.height;
-    try {
-      const $mdMedia = $injector.get('$mdMedia');
-      if ($mdMedia('gt-sm')) {
-        const panel = document.getElementById('sidenav-right');
-        if (panel) {
-          listHeight = panel.clientHeight;
-        }
-      }
-    } catch (ex) {}
-    this.HsCommonEndpointsService.endpoints.forEach((ds) => {
-      ds.limit = Math.round((listHeight - 180) / 60);
-    });
+    const listHeight = this.HsLayoutService.contentWrapper.querySelector(
+      '.hs-comp-list'
+    ).innerHeight;
+    for (const ds of this.HsCommonEndpointsService.endpoints) {
+      ds.compositionsPaging.limit = Math.round((listHeight - 180) / 60);
+    }
   }
 
   /**
@@ -252,13 +244,14 @@ export class HsCompositionsComponent {
    */
   filterChanged() {
     this.HsCompositionsService.resetCompositionCounter();
-    this.forCompositionsFilter(this.HsCommonEndpointsService.endpoints).forEach(
-      (ds) => {
-        ds.start = 0;
-        ds.next = ds.limit;
-        this.loadCompositions(ds);
-      }
-    );
+    let ds: HsEndpoint;
+    for (ds of this.HsEndpointsForCompositionsPipe.transform(
+      this.HsCommonEndpointsService.endpoints
+    )) {
+      ds.compositionsPaging.start = 0;
+      ds.compositionsPaging.next = ds.compositionsPaging.limit;
+      this.loadCompositions(ds);
+    }
   }
 
   /**
@@ -312,11 +305,11 @@ export class HsCompositionsComponent {
   }
 
   loadCompositionsForAllEndpoints() {
-    this.forCompositionsFilter(this.HsCommonEndpointsService.endpoints).forEach(
-      (ds) => {
-        this.loadCompositions(ds);
-      }
-    );
+    this.HsEndpointsForCompositionsPipe.transform(
+      this.HsCommonEndpointsService.endpoints
+    ).forEach((ds) => {
+      this.loadCompositions(ds);
+    });
   }
 
   /**
@@ -375,7 +368,7 @@ export class HsCompositionsComponent {
 
   addCompositionUrl(url) {
     if (this.HsCompositionsParserService.composition_edited == true) {
-      $rootScope.$broadcast('loadComposition.notSaved', url);
+      this.HsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
       this.HsCompositionsService.loadComposition(url, true).then((_) => {
         this.addCompositionUrlVisible = false;
@@ -403,7 +396,7 @@ export class HsCompositionsComponent {
       }
       const reader = new FileReader();
       reader.onload = (theFile) => {
-        const json = JSON.parse(reader.result);
+        const json = JSON.parse(<string>reader.result);
         this.HsCompositionsParserService.loadCompositionObject(json, true);
       };
       reader.readAsText(f);

@@ -97,9 +97,9 @@ export class HsCompositionsMickaService {
             response = response.data;
             endpoint.compositions = response.records;
             if (response.records && response.records.length > 0) {
-              endpoint.compositionsPaging.compositionsCount = response.matched;
+              endpoint.compositionsPaging.matched = response.matched;
             } else {
-              endpoint.compositionsPaging.compositionsCount = 0;
+              endpoint.compositionsPaging.matched = 0;
             }
             //TODO: Needs refactoring
             endpoint.compositionsPaging.next = response.next;

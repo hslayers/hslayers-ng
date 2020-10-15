@@ -285,7 +285,7 @@ msgid "Composition {{compStart + 1}} - {{compNext}}"
 msgstr ""
 
 #: components/compositions/partials/compositionsmd.html:40
-msgid "Composition {{compStart + 1}} - {{data.compositionsCount}}"
+msgid "Composition {{compStart + 1}} - {{data.matched}}"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:2

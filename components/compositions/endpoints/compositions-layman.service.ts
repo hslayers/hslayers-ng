@@ -40,9 +40,9 @@ export class HsCompositionsLaymanService {
         response = response.data;
         endpoint.compositions = response;
         if (response && response.length > 0) {
-          endpoint.compositionsPaging.compositionsCount = response.length;
+          endpoint.compositionsPaging.matched = response.length;
         } else {
-          endpoint.compositionsPaging.compositionsCount = 0;
+          endpoint.compositionsPaging.matched = 0;
         }
         for (const record of endpoint.compositions) {
           record.editable = true;

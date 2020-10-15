@@ -56,7 +56,7 @@ export class HsCompositionsStatusManagerService {
         response = response.data;
         if (ds.compositions == undefined) {
           ds.compositions = [];
-          ds.compositionsCount = 0;
+          ds.matched = 0;
         }
         for (const record of response.results) {
           let found = false;
@@ -92,7 +92,7 @@ export class HsCompositionsStatusManagerService {
             };
             if (record) {
               ds.compositions.push(record);
-              ds.compositionsCount = ds.compositionsCount + 1;
+              ds.matched = ds.matched + 1;
             }
           }
         }

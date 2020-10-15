@@ -1,8 +1,5 @@
 <div class="card mainpanel hs-comp-mainpanel">
     <hs-panel-header name="composition_browser" title="Compositions">
-        <extra-title>
-            <span [hidden]="!(data.compositionsCount > 0)">({{data.compositionsCount}})</span>
-        </extra-title>
         <extra-buttons>
             <label class="btn btn-sm btn-secondary btn-file" title="{{'Import composition from a file on device' | translate}}" style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
                 <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept="json" style="display: none;">
@@ -46,7 +43,7 @@
                             <li><a class="dropdown-item" (click)="setSortAttribute('date')">Date</a></li>
                         </ul>
                     </div>
-                    <div class="input-group-append dropleft" *ngIf="config.comp_keywords">
+                    <div class="input-group-append dropleft" *ngIf="HsConfig.comp_keywords">
                         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" (click)="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
                             Keywords<span class="caret"></span>
                         </button>
@@ -63,16 +60,16 @@
             </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" *ngFor="let endpoint of endpointsService.endpoints | forCompositions">
-                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+$index}" href="" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+$index)">
+            <li class="nav-item" *ngFor="let endpoint of HsCommonEndpointsService.endpoints | forCompositions">
+                <a class="nav-link" [ngClass]="{'btn-primary': HsCompositionsMickaService.dataid_selected == 'ds'+$index}" href="" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
-                    <span [hidden]="!(endpoint.compositionsPaging.compositionsCount > 0)">({{endpoint.compositionsPaging.compositionsCount}})</span>
+                    <span [hidden]="!(endpoint.compositionsPaging.matched > 0)">({{endpoint.compositionsPaging.matched}})</span>
                     <i class="icon-refresh icon-spin" [hidden]="!(endpoint.compositionsPaging.loaded == false)"></i>
                 </a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of endpointsService.endpoints | forCompositions">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == HsCompositionsMickaService.dataid_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of HsCommonEndpointsService.endpoints | forCompositions">
                 <div class="card">
                     <div class="card-body">
                         <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
@@ -98,7 +95,7 @@
                     </div>
 
 
-                    <div class="card-footer" [hidden]="!(endpoint.compositionsCount > 0)">
+                    <div class="card-footer" [hidden]="!(endpoint.matched > 0)">
                         <nav>
                             <ul class="pagination d-flex justify-content-center">
                                 <li class="page-item" [ngClass]="{'disabled': compStart == 0 }">
@@ -107,7 +104,7 @@
                                 <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
                                         {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
                                 <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
-                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.compositionsCount}}</span></li>
+                                        {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
                                 <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
                                     <a href="" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
                                 </li>
