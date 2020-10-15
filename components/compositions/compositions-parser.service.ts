@@ -61,63 +61,52 @@ export class HsCompositionsParserService {
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
    * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
    */
-  loadUrl(url, overwrite, callback, pre_parse) {
-    return new Promise((resolve, reject) => {
-      this.current_composition_url = url;
-      url = url.replace(/&amp;/g, '&');
-      url = this.HsUtilsService.proxify(url);
-      this.$http({url: url, overwrite, callback, pre_parse})
-        .then(
-          (response) => this.loaded(response),
-          (err) => {
-            //Do nothing
-          }
-        )
-        .then(() => {
-          resolve();
-        });
-    });
+  async loadUrl(url, overwrite, callback?, pre_parse?) {
+    this.current_composition_url = url;
+    url = url.replace(/&amp;/g, '&');
+    url = this.HsUtilsService.proxify(url);
+    const response = await this.$http.get(url).toPromise();
+    this.loaded(response, pre_parse, url, overwrite, callback);
   }
 
-  loaded(response) {
+  loaded(response, pre_parse, url, overwrite, callback) {
     /**
      * @ngdoc event
      * @name HsCompositionsParserService#compositions.composition_loading
      * @eventType broadcast on $rootScope
      * @description Fires when composition is downloaded from server and parsing begins
      */
-    this.HsEventBusService.compositionLoading.next(response.data);
+    this.HsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
-      this.composition_loaded = response.config.url;
-      if (this.HsUtilsService.isFunction(response.config.pre_parse)) {
-        response = response.config.pre_parse(response.data);
+      this.composition_loaded = url;
+      if (this.HsUtilsService.isFunction(pre_parse)) {
+        response = pre_parse(response);
       }
       /*
-                    Response might contain {data:{abstract:...}} or {abstract:}
-                    directly. If there is data object,
-                    that means composition is enclosed in
-                    container which itself might contain title or extent
-                    properties */
+      Response might contain {data:{abstract:...}} or {abstract:}
+      directly. If there is data object,
+      that means composition is enclosed in
+      container which itself might contain title or extent
+      properties */
       this.loadCompositionObject(
-        response.data.data || response.data,
-        response.config.overwrite,
+        response.data || response,
+        overwrite,
         response.title,
         response.extent
       );
-      this.finalizeCompositionLoading(response.data);
-      if (this.HsUtilsService.isFunction(response.config.callback)) {
-        response.config.callback();
+      this.finalizeCompositionLoading(response);
+      if (this.HsUtilsService.isFunction(callback)) {
+        callback();
       }
     } else {
-      this.raiseCompositionLoadError(response.data);
+      this.raiseCompositionLoadError(response);
     }
   }
 
   checkLoadSuccess(response) {
     return (
-      response.data.success == true /*micka*/ ||
-      (response.data.success == undefined /*layman*/ &&
-        response.data.name !== undefined)
+      response.success == true /*micka*/ ||
+      (response.success == undefined /*layman*/ && response.name !== undefined)
     );
   }
 
@@ -219,7 +208,7 @@ export class HsCompositionsParserService {
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
     const response: any = await this.$http.get(url).toPromise();
-    return response.data.data || response.data;
+    return response.data || response;
   }
 
   parseExtent(b: string | Array<number>): Array<number> {

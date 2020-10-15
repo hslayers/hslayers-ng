@@ -3,12 +3,14 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsLaymanService {
   data: any = {};
+  listLoading: Subscription;
   constructor(
     private $http: HttpClient,
     private HsUtilsService: HsUtilsService,
@@ -16,39 +18,34 @@ export class HsCompositionsLaymanService {
     private HsEventBusService: HsEventBusService
   ) {}
 
-  loadList(endpoint, params, bbox, extentLayer) {
-    endpoint.getCurrentUserIfNeeded(endpoint);
-    endpoint.compositionsPaging.loaded = false;
-    if (params.sortBy == undefined) {
-      params.sortBy = '';
-    }
-    return new Promise(async (resolve, reject) => {
+  loadList(endpoint, params, bbox, extentLayer): Promise<any> {
+    return new Promise((resolve, reject) => {
+      endpoint.getCurrentUserIfNeeded(endpoint);
+      endpoint.compositionsPaging.loaded = false;
+      if (params.sortBy == undefined) {
+        params.sortBy = '';
+      }
       try {
-        if (angular.isDefined(this.canceler)) {
-          this.canceler.resolve();
-          delete this.canceler;
+        if (this.listLoading) {
+          this.listLoading.unsubscribe();
+          delete this.listLoading;
         }
-        this.canceler = $q.defer();
-        let response = await $http.get(
-          `${endpoint.url}/rest/${endpoint.user}/maps`,
-          {
-            timeout: this.canceler.promise,
-          }
-        );
-
-        endpoint.compositionsPaging.loaded = true;
-        response = response.data;
-        endpoint.compositions = response;
-        if (response && response.length > 0) {
-          endpoint.compositionsPaging.matched = response.length;
-        } else {
-          endpoint.compositionsPaging.matched = 0;
-        }
-        for (const record of endpoint.compositions) {
-          record.editable = true;
-          record.endpoint = endpoint;
-        }
-        resolve();
+        this.listLoading = this.$http
+          .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
+          .subscribe((response: any) => {
+            endpoint.compositionsPaging.loaded = true;
+            endpoint.compositions = response;
+            if (response && response.length > 0) {
+              endpoint.compositionsPaging.matched = response.length;
+            } else {
+              endpoint.compositionsPaging.matched = 0;
+            }
+            for (const record of endpoint.compositions) {
+              record.editable = true;
+              record.endpoint = endpoint;
+            }
+            resolve();
+          });
       } catch (ex) {
         reject(ex);
       }
@@ -57,9 +54,8 @@ export class HsCompositionsLaymanService {
 
   async delete(endpoint, composition) {
     let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-    const method = 'DELETE';
     url = this.HsUtilsService.proxify(url);
-    await $http({url, method});
+    await this.$http.delete(url).toPromise();
     this.HsEventBusService.compositionDeletes.next(composition);
   }
 
