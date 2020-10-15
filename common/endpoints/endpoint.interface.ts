@@ -20,6 +20,8 @@ export interface HsEndpoint {
   compositionsPaging?: {
     start?: number;
     limit: number;
+    next?;
+    matched?;
     loaded?: number;
   };
   paging?: {

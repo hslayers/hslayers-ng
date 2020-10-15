@@ -14,12 +14,15 @@ import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsService {
   data: any = {};
+  compositionToLoad: {url: string; title: string};
+  notSavedCompositionLoading: Subject<string> = new Subject();
   constructor(
     $location,
     private http: HttpClient,
@@ -195,7 +198,7 @@ export class HsCompositionsService {
           );
       }
       if (this.HsCompositionsParserService.composition_edited == true) {
-        $rootScope.$broadcast('loadComposition.notSaved', url);
+        this.notSavedCompositionLoading.next(url);
         reject();
       } else {
         this.loadComposition(url, true).then(() => {
