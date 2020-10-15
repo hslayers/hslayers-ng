@@ -181,6 +181,7 @@ export default function (
   $scope.$on('vectorQuery.featureSelected', (e, feature, selector) => {
     $scope.featureDetails = feature.getProperties();
     HsLayermanagerService.currentLayer.selectedFeature = feature;
+    $scope.highlightFeature(feature);
 
     if (!$scope.$$phase) $scope.$apply();
 
