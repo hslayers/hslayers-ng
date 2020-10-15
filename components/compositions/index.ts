@@ -7,14 +7,18 @@ import '../utils';
 import './endpoints/compositions-endpoints.module';
 import './layer-parser/layer-parser.module';
 import * as angular from 'angular';
-import compositionsComponent from './compositions.component';
-import compositionsMapService from './compositions-map.service';
-import compositionsService from './compositions.service';
-import deleteDialogDirective from './dialogs/delete-dialog.component';
-import infoDialogDirective from './info-dialog.component';
-import overwriteDialogDirective from './overwrite-dialog.component';
-import shareDialogDirective from './share-dialog.component';
+import {HsCompositionsComponent} from './compositions.component';
+import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
+import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
+import {HsCompositionsMapService} from './compositions-map.service';
+import {HsCompositionsModule} from './compositions.module';
+import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
+import {HsCompositionsService} from './compositions.service';
+import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
+import {downgrade} from '../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
+export const downgradedModule = downgrade(HsCompositionsModule);
 
 /**
  * @ngdoc module
@@ -23,7 +27,7 @@ import {HsCompositionsParserService} from './compositions-parser.service';
  * @description Test composition module
  */
 angular
-  .module('hs.compositions', [
+  .module(downgradedModule, [
     'hs.map',
     'hs.core',
     'hs.compositions.layerParser',
@@ -44,7 +48,7 @@ angular
    */
   .directive(
     'hs.compositions.overwriteDialogDirective',
-    overwriteDialogDirective
+    downgradeComponent({component: HsCompositionsOverwriteDialogComponent})
   )
 
   /**
@@ -53,7 +57,10 @@ angular
    * @ngdoc directive
    * @description Display dialog window for confiriming deletion of selected composition
    */
-  .directive('hs.compositions.deleteDialogDirective', deleteDialogDirective)
+  .directive(
+    'hs.compositions.deleteDialogDirective',
+    downgradeComponent({component: HsCompositionsDeleteDialogComponent})
+  )
 
   /**
    * @module hs.compositions
@@ -61,7 +68,10 @@ angular
    * @ngdoc directive
    * @description Display dialog of sharing composition (URL / Social networks)
    */
-  .directive('hs.compositions.shareDialogDirective', shareDialogDirective)
+  .directive(
+    'hs.compositions.shareDialogDirective',
+    downgradeComponent({component: HsCompositionsShareDialogComponent})
+  )
 
   /**
    * @module hs.compositions
@@ -69,7 +79,10 @@ angular
    * @ngdoc directive
    * @description Display dialog of composition info (name, abstract, thumbnail, extent, layers)
    */
-  .directive('hs.compositions.infoDialogDirective', infoDialogDirective)
+  .directive(
+    'hs.compositions.infoDialogDirective',
+    downgradeComponent({component: HsCompositionsInfoDialogComponent})
+  )
 
   /**
    * @module hs.compositions
@@ -77,7 +90,7 @@ angular
    * @ngdoc controller
    * @description Service of composition module
    */
-  .factory('HsCompositionsService', compositionsService)
+  .service('HsCompositionsService', downgradeInjectable(HsCompositionsService))
 
   /**
    * @module hs.compositions
@@ -85,7 +98,10 @@ angular
    * @ngdoc controller
    * @description Service of composition module which deal ith Openlayers map objects
    */
-  .factory('HsCompositionsMapService', compositionsMapService)
+  .service(
+    'HsCompositionsMapService',
+    downgradeInjectable(HsCompositionsMapService)
+  )
 
   /**
    * @module hs.compositions
@@ -93,7 +109,10 @@ angular
    * @ngdoc service
    * @description Contains function of managing composition (loading, removing Layers)
    */
-  .service('HsCompositionsParserService', HsCompositionsParserService)
+  .service(
+    'HsCompositionsParserService',
+    downgradeInjectable(HsCompositionsParserService)
+  )
 
   /**
    * @module hs.compositions
@@ -101,4 +120,11 @@ angular
    * @ngdoc component
    * @description Main controller of composition module
    */
-  .component('hs.compositions', compositionsComponent);
+  .directive(
+    'hs.compositions',
+    downgradeComponent({component: HsCompositionsComponent})
+  );
+
+angular.module('hs.compositions', [downgradedModule]);
+
+export {HsCompositionsModule} from './compositions.module';
