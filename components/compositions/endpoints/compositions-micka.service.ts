@@ -136,7 +136,6 @@ export class HsCompositionsMickaService {
                 //Composition not in extent
               }
             }
-            $rootScope.$broadcast('CompositionsLoaded');
             resolve();
           },
           (err) => {}
