@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCompositionsDeleteDialogComponent} from './delete-dialog.component';
+import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsOverwriteDialogComponent} from './overwrite-dialog.component';
@@ -280,17 +280,6 @@ export class HsCompositionsComponent {
     this.HsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
       compositionToDelete: composition,
     });
-  }
-
-  /**
-   * @ngdoc method
-   * @name hs.compositions.controller#delete
-   * @public
-   * @param {object} composition Composition selected for deletion
-   * @description Delete selected composition from project (including deletion from composition server, useful for user created compositions)
-   */
-  delete(composition) {
-    this.HsCompositionsService.deleteComposition(composition);
   }
 
   /**

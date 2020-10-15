@@ -1,10 +1,10 @@
 import {Component, ViewRef} from '@angular/core';
-import {HsCompositionsService} from './compositions.service';
-import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsCompositionsService} from '../compositions.service';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 @Component({
   selector: 'hs.compositions-overwrite-dialog',
-  template: require('./partials/dialog_overwriteconfirm.html'),
+  template: require('./dialog_overwriteconfirm.html'),
 })
 export class HsCompositionsOverwriteDialogComponent
   implements HsDialogComponent {
