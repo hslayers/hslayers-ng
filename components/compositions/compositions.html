@@ -48,9 +48,9 @@
                             Keywords<span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" [ngClass]="{'show': keywordsMenuOpen}">
-                            <li class="dropdown-item" *ngFor="let (keyword, enabled) of keywords">
+                            <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue">
                                 <label>
-                                    <input type="checkbox" [(ngModel)]="keywords[keyword]" (click)="loadCompositions()">
+                                    <input type="checkbox" [(ngModel)]="keyword.value" (click)="loadCompositions()">
                                     {{keyword}}
                                 </label>
                             </li>
@@ -60,7 +60,7 @@
             </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" *ngFor="let endpoint of HsCommonEndpointsService.endpoints | forCompositions">
+            <li class="nav-item" *ngFor="let endpoint of filteredEndpointsForCompositions()">
                 <a class="nav-link" [ngClass]="{'btn-primary': HsCompositionsMickaService.dataid_selected == 'ds'+$index}" href="" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
                     <span [hidden]="!(endpoint.compositionsPaging.matched > 0)">({{endpoint.compositionsPaging.matched}})</span>
@@ -69,7 +69,7 @@
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == HsCompositionsMickaService.dataid_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of HsCommonEndpointsService.endpoints | forCompositions">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == HsCompositionsMickaService.dataid_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of filteredEndpointsForCompositions()">
                 <div class="card">
                     <div class="card-body">
                         <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>

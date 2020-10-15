@@ -1,5 +1,9 @@
 import * as angular from 'angular';
+import {HsCompositionsLayerParserModule} from './layer-parser.module';
 import {HsCompositionsLayerParserService} from './layer-parser.service';
+import {downgrade} from '../../../common/downgrader';
+import {downgradeInjectable} from '@angular/upgrade/static';
+export const downgradedModule = downgrade(HsCompositionsLayerParserModule);
 
 /**
  * @ngdoc module
@@ -7,11 +11,7 @@ import {HsCompositionsLayerParserService} from './layer-parser.service';
  * @name hs.compositions.layerParser
  */
 angular
-  .module('hs.compositions.layerParser', [
-    'hs.map',
-    'hs.core',
-    'hs.addLayersVector',
-  ])
+  .module(downgradedModule, ['hs.map', 'hs.core', 'hs.addLayersVector'])
 
   /**
    * @module HsCompositionsLayerParserService
@@ -19,4 +19,9 @@ angular
    * @name HsCompositionsLayerParserService
    * @description Service for parsing object definition which are invalid for direct use as layers
    */
-  .service('HsCompositionsLayerParserService', HsCompositionsLayerParserService);
+  .service(
+    'HsCompositionsLayerParserService',
+    downgradeInjectable(HsCompositionsLayerParserService)
+  );
+
+angular.module('hs.compositions.layerParser', []);

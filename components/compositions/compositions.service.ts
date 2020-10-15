@@ -24,7 +24,6 @@ export class HsCompositionsService {
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
   constructor(
-    $location,
     private http: HttpClient,
     private HsMapService: HsMapService,
     private HsCore: HsCoreService,
