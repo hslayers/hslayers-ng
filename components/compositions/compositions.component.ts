@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
@@ -11,7 +11,6 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsEndpointsForCompositionsPipe} from './endpoints/for-composition.filter';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -21,7 +20,7 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs.print',
   template: require('./compositions.html'),
 })
-export class HsCompositionsComponent {
+export class HsCompositionsComponent implements OnInit {
   /**
    * @ngdoc property
    * @name hs.compositions.controller#keywords
@@ -66,7 +65,7 @@ export class HsCompositionsComponent {
    */
   filterByExtent = true;
   selectedCompId: any;
-  query: {editable: boolean};
+  query: {editable: boolean; title: string} = {editable: false, title: ''};
 
   constructor(
     private HsMapService: HsMapService,
@@ -78,13 +77,12 @@ export class HsCompositionsComponent {
     private HsCommonEndpointsService: HsCommonEndpointsService,
     private HsUtilsService: HsUtilsService,
     private HsCompositionsMapService: HsCompositionsMapService,
-    private HsEndpointsForCompositionsPipe: HsEndpointsForCompositionsPipe,
     private HsEventBusService: HsEventBusService,
     private HsSaveMapManagerService: HsSaveMapManagerService,
     private HsDialogContainerService: HsDialogContainerService,
     private $window: Window
   ) {
-    this.HsCommonEndpointsService.endpoints.forEach(
+    this.filteredEndpointsForCompositions().forEach(
       (ep: HsEndpoint) =>
         (ep.compositionsPaging.next = ep.compositionsPaging.limit)
     );
@@ -95,14 +93,6 @@ export class HsCompositionsComponent {
       ) {
         this.loadCompositionsForAllEndpoints();
       }
-    });
-
-    this.getPageSize();
-    this.$window.addEventListener('resize', () => {
-      this.getPageSize();
-    });
-    this.HsEventBusService.layoutResizes.subscribe(() => {
-      this.getPageSize();
     });
 
     const extendChangeDebouncer = {};
@@ -139,6 +129,16 @@ export class HsCompositionsComponent {
     this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
       this.HsCompositionsService.compositionToLoad = {url, title: ''};
       this.loadUnsavedDialogBootstrap(url, '');
+    });
+  }
+
+  ngOnInit() {
+    this.getPageSize();
+    this.$window.addEventListener('resize', () => {
+      this.getPageSize();
+    });
+    this.HsEventBusService.layoutResizes.subscribe(() => {
+      this.getPageSize();
     });
   }
 
@@ -228,11 +228,14 @@ export class HsCompositionsComponent {
   }
 
   getPageSize() {
-    const listHeight = this.HsLayoutService.contentWrapper.querySelector(
+    const compList = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-comp-list'
-    ).innerHeight;
-    for (const ds of this.HsCommonEndpointsService.endpoints) {
-      ds.compositionsPaging.limit = Math.round((listHeight - 180) / 60);
+    );
+    if (compList) {
+      const listHeight = compList.innerHeight;
+      for (const ds of this.HsCommonEndpointsService.endpoints) {
+        ds.compositionsPaging.limit = Math.round((listHeight - 180) / 60);
+      }
     }
   }
 
@@ -252,9 +255,9 @@ export class HsCompositionsComponent {
     }
   }
 
-  private filteredEndpointsForCompositions() {
-    return this.HsEndpointsForCompositionsPipe.transform(
-      this.HsCommonEndpointsService.endpoints
+  private filteredEndpointsForCompositions(): Array<HsEndpoint> {
+    return this.HsCommonEndpointsService.endpoints.filter(
+      (ep) => ep.type != 'statusmanager'
     );
   }
 
@@ -309,9 +312,7 @@ export class HsCompositionsComponent {
   }
 
   loadCompositionsForAllEndpoints() {
-    this.HsEndpointsForCompositionsPipe.transform(
-      this.HsCommonEndpointsService.endpoints
-    ).forEach((ds) => {
+    this.filteredEndpointsForCompositions().forEach((ds) => {
       this.loadCompositions(ds);
     });
   }

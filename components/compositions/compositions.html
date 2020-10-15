@@ -18,7 +18,7 @@
        </div>
         <form style="text-align: center;">
             <div class="form-group">
-                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" [(ngModel)]="query.title" (change)="filterChanged()">
+                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" name="hs-filter-by-name" [(ngModel)]="query.title" (change)="filterChanged()">
             </div>
 
             <div class="form-group">
@@ -26,10 +26,10 @@
                 <div class="input-group">
                     <div class="btn-group input-group-prepend">
                         <div class="input-group-text">
-                            <input type="checkbox" [(ngModel)]="filterByExtent" (change)="filterChanged()"><span translate="">Filter by map extent</span>
+                            <input type="checkbox" [(ngModel)]="filterByExtent" name="hs-filter-by-extent" (change)="filterChanged()"><span translate="">Filter by map extent</span>
                         </div>
                         <div class="input-group-text">
-                            <input type="checkbox" [(ngModel)]="query.editable" (change)="mineFilterChanged()"><span translate="">Only mine</span>
+                            <input type="checkbox" [(ngModel)]="query.editable" name="hs-filter-by-editable" (change)="mineFilterChanged()"><span translate="">Only mine</span>
                         </div>
                     </div>
                     <div class="input-group-append dropdown">

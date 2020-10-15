@@ -4,7 +4,7 @@ import '../permalink/';
 import '../save-map/';
 import '../styles';
 import '../utils';
-import './endpoints/compositions-endpoints.module';
+import './endpoints/';
 import './layer-parser/';
 import * as angular from 'angular';
 import {HsCompositionsComponent} from './compositions.component';

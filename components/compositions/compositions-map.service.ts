@@ -35,15 +35,10 @@ export class HsCompositionsMapService {
     private HsMapService: HsMapService,
     private HsLayoutService: HsLayoutService
   ) {
-    /**
-     * @param map
-     */
-    function init(map) {
+    this.HsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
       map.addLayer(this.extentLayer);
-    }
-
-    this.HsMapService.loaded().then(init);
+    });
 
     this.HsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.extentLayer) {
