@@ -1,33 +1,27 @@
 <div class="card mainpanel hs-comp-mainpanel">
     <hs-panel-header name="composition_browser" title="Compositions">
         <extra-title>
-            <span ng-show='data.compositionsCount>0'>({{data.compositionsCount}})</span>
+            <span [hidden]="!(data.compositionsCount > 0)">({{data.compositionsCount}})</span>
         </extra-title>
         <extra-buttons>
-            <label class="btn btn-sm btn-secondary btn-file" title="{{'Import composition from a file on device' | translate}}"
-                style="margin-bottom:0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
-                <span class="icon-upload"></span><input type="file" ng-on-change="handleFileSelect($event)"
-                    accept=".json" style="display: none;">
+            <label class="btn btn-sm btn-secondary btn-file" title="{{'Import composition from a file on device' | translate}}" style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 1em; cursor: pointer;">
+                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept="json" style="display: none;">
             </label>
-            <button class="btn btn-sm btn-secondary" title="{{'Add composition by address' | translate}}"
-                style="margin-bottom:0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;" ng-click="changeUrlButtonVisible()">
+            <button class="btn btn-sm btn-secondary" title="{{'Add composition by address' | translate}}" style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;" (click)="changeUrlButtonVisible()">
                 <span class="icon-plus"></span>
             </button>
         </extra-buttons>
     </hs-panel-header>
     <div class="card-body">
-        <div class="input-group" ng-show="addCompositionUrlVisible">
-            <input type="text" class="form-control" placeholder="{{'Address'|translate}}"
-        ng-model="urlToAdd">
+        <div class="input-group" [hidden]="!addCompositionUrlVisible">
+            <input type="text" class="form-control" placeholder="{{'Address'|translate}}" [(ngModel)]="urlToAdd">
             <div class="input-group-append">
-                <button type="button" class="btn btn-secondary" ng-click="addCompositionUrl(urlToAdd)"><i
-                    class="icon-link"></i></button>
+                <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i class="icon-link"></i></button>
             </div>
        </div>
         <form style="text-align: center;">
             <div class="form-group">
-                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}"
-                    ng-model="query.title" ng-change="filterChanged()">
+                <input type="text" class="form-control hs-filter" placeholder="{{'Filter'|translate}}" [(ngModel)]="query.title" (change)="filterChanged()">
             </div>
 
             <div class="form-group">
@@ -35,35 +29,31 @@
                 <div class="input-group">
                     <div class="btn-group input-group-prepend">
                         <div class="input-group-text">
-                            <input type="checkbox" ng-model="filterByExtent" ng-change='filterChanged()'><span
-                                translate>Filter by map extent</span>
+                            <input type="checkbox" [(ngModel)]="filterByExtent" (change)="filterChanged()"><span translate="">Filter by map extent</span>
                         </div>
                         <div class="input-group-text">
-                            <input type="checkbox" ng-model="query.editable" ng-change='mineFilterChanged()'><span
-                                translate>Only mine</span>
+                            <input type="checkbox" [(ngModel)]="query.editable" (change)="mineFilterChanged()"><span translate="">Only mine</span>
                         </div>
                     </div>
                     <div class="input-group-append dropdown">
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" ng-click="sortMenuOpen=!sortMenuOpen">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="sortMenuOpen=!sortMenuOpen">
                             {{'Sort' | translate}} <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-right" ng-class="{'show': sortMenuOpen}">
-                            <li><a class="dropdown-item" ng-click="setSortAttribute('bbox')" href="#">Bounding box</a>
+                        <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': sortMenuOpen}">
+                            <li><a class="dropdown-item" (click)="setSortAttribute('bbox')" href="">Bounding box</a>
                             </li>
-                            <li><a class="dropdown-item" ng-click="setSortAttribute('title')">Title</a></li>
-                            <li><a class="dropdown-item" ng-click="setSortAttribute('date')">Date</a></li>
+                            <li><a class="dropdown-item" (click)="setSortAttribute('title')">Title</a></li>
+                            <li><a class="dropdown-item" (click)="setSortAttribute('date')">Date</a></li>
                         </ul>
                     </div>
-                    <div class="input-group-append dropleft" ng-if="config.comp_keywords">
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"
-                            ng-click="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
+                    <div class="input-group-append dropleft" *ngIf="config.comp_keywords">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" (click)="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
                             Keywords<span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" ng-class="{'show': keywordsMenuOpen}">
-                            <li class="dropdown-item" ng-repeat="(keyword, enabled) in keywords">
+                        <ul class="dropdown-menu" [ngClass]="{'show': keywordsMenuOpen}">
+                            <li class="dropdown-item" *ngFor="let (keyword, enabled) of keywords">
                                 <label>
-                                    <input type="checkbox" ng-model="keywords[keyword]" ng-click="loadCompositions()">
+                                    <input type="checkbox" [(ngModel)]="keywords[keyword]" (click)="loadCompositions()">
                                     {{keyword}}
                                 </label>
                             </li>
@@ -73,47 +63,33 @@
             </div>
         </form>
         <ul class="nav flex-column flex-sm-row" role="tablist">
-            <li class="nav-item" ng-repeat="endpoint in endpointsService.endpoints | forCompositions">
-                <a class="nav-link" ng-class="{'btn-primary': data.id_selected == 'ds'+$index}" href="#"
-                    data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab"
-                    ng-click="datasetSelect('ds'+$index)">
+            <li class="nav-item" *ngFor="let endpoint of endpointsService.endpoints | forCompositions">
+                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+$index}" href="" data-target="{{'#ds'+$index}}" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+$index)">
                     {{endpoint.title}}
-                    <span ng-show='endpoint.compositionsPaging.compositionsCount>0'>({{endpoint.compositionsPaging.compositionsCount}})</span>
-                    <i class="icon-refresh icon-spin" ng-show="endpoint.compositionsPaging.loaded == false"></i>
+                    <span [hidden]="!(endpoint.compositionsPaging.compositionsCount > 0)">({{endpoint.compositionsPaging.compositionsCount}})</span>
+                    <i class="icon-refresh icon-spin" [hidden]="!(endpoint.compositionsPaging.loaded == false)"></i>
                 </a>
             </li>
         </ul><!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane"
-                ng-class="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}"
-                ng-repeat="endpoint in endpointsService.endpoints | forCompositions">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+$index == data.id_selected}" id="{{'ds'+$index}}" *ngFor="let endpoint of endpointsService.endpoints | forCompositions">
                 <div class="card">
                     <div class="card-body">
                         <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
                         <ul class="hs-comp-list list-group">
-                            <li ng-repeat="composition in endpoint.compositions" class="list-group-item hs-comp-item"
-                                style="cursor: pointer" ng-class="composition.highlighted ?  'active' : ''"
-                                ng-mouseover="highlightComposition(composition, true)"
-                                ng-mouseleave="highlightComposition(composition, false)"
-                                ng-click="compositionClicked(composition)" data-container="body"
-                                data-placement="bottom" ng-attr-title="{{composition.mdAbstract}}">
+                            <li *ngFor="let composition of endpoint.compositions" class="list-group-item hs-comp-item" style="cursor: pointer" [ngClass]="composition.highlighted ?  'active' : ''" (mouseover)="highlightComposition(composition, true)" (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)" data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
                                 <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
-                                <div class="btn-group btn-block"
-                                    ng-class="{'d-none': commonId(composition) != selectedCompId}" role="group">
-                                    <a class="btn btn-secondary"
-                                        ng-click='$event.stopPropagation();shareComposition(composition)' href="#">
+                                <div class="btn-group btn-block" [ngClass]="{'d-none': commonId(composition) != selectedCompId}" role="group">
+                                    <a class="btn btn-secondary" (click)="$event.stopPropagation();shareComposition(composition)" href="">
                                         <i class="icon-share-alt"></i>
                                     </a>
-                                    <a class="btn btn-secondary" href="#"
-                                        ng-click='$event.stopPropagation();edit(composition)'>
+                                    <a class="btn btn-secondary" href="" (click)="$event.stopPropagation();edit(composition)">
                                         <i class="icon-edit"></i>
                                     </a>
-                                    <a class="btn btn-secondary" href="#"
-                                        ng-click='$event.stopPropagation();detailComposition(composition)'>
+                                    <a class="btn btn-secondary" href="" (click)="$event.stopPropagation();detailComposition(composition)">
                                         <i class="icon-info-sign"></i>
                                     </a>
-                                    <a class="btn btn-secondary" href="#" ng-show="composition.editable"
-                                        ng-click='$event.stopPropagation();confirmDelete(composition)'>
+                                    <a class="btn btn-secondary" href="" [hidden]="!composition.editable" (click)="$event.stopPropagation();confirmDelete(composition)">
                                         <i class="icon-trash"></i>
                                     </a>
                                 </div>
@@ -122,20 +98,18 @@
                     </div>
 
 
-                    <div class="card-footer" ng-show='endpoint.compositionsCount>0'>
+                    <div class="card-footer" [hidden]="!(endpoint.compositionsCount > 0)">
                         <nav>
                             <ul class="pagination d-flex justify-content-center">
-                                <li class="page-item" ng-class="{'disabled': compStart == 0 }">
-                                    <a href="#" class="page-link" ng-click='getPreviousCompositions(endpoint)'><span
-                                            aria-hidden="true">&laquo;</span></a>
+                                <li class="page-item" [ngClass]="{'disabled': compStart == 0 }">
+                                    <a href="" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true"></span></a>
                                 </li>
-                                <li class="page-item" ng-if="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
+                                <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> Results
                                         {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
-                                <li class="page-item" ng-if="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
+                                <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> Results
                                         {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.compositionsCount}}</span></li>
-                                <li class="page-item" ng-class="{'disabled': endpoint.compositionsPaging.next == 0 }">
-                                    <a href="#" class="page-link" ng-click='getNextCompositions(endpoint)'><span
-                                            aria-hidden="true">&raquo;</span></a>
+                                <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
+                                    <a href="" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
                                 </li>
                             </ul>
                         </nav>
