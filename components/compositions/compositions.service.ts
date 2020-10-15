@@ -14,7 +14,7 @@ import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { Subject } from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -77,16 +77,15 @@ export class HsCompositionsService {
     this.data.id_selected = id_selected;
   }
 
-  loadCompositions(ds, params) {
-    return new Promise((resolve, reject) => {
-      this.HsCompositionsMapService.clearExtentLayer();
-      const bbox = this.HsMapService.getMapExtentInEpsg4326();
-      this.managerByType(ds)
-        .loadList(ds, params, bbox, this.HsCompositionsMapService.extentLayer)
-        .then((_) => {
-          resolve();
-        });
-    });
+  async loadCompositions(ds, params) {
+    this.HsCompositionsMapService.clearExtentLayer();
+    const bbox = this.HsMapService.getMapExtentInEpsg4326();
+    await this.managerByType(ds).loadList(
+      ds,
+      params,
+      bbox,
+      this.HsCompositionsMapService.extentLayer
+    );
   }
 
   resetCompositionCounter() {
@@ -113,52 +112,48 @@ export class HsCompositionsService {
     this.managerByType(endpoint).delete(endpoint, composition);
   }
 
-  shareComposition(record) {
+  async shareComposition(record) {
+    const recordLink = encodeURIComponent(this.getRecordLink(record));
+    const permalinkOverride = this.HsConfig.permalinkLocation;
     const compositionUrl =
-      (this.HsCore.isMobile() && this.HsConfig.permalinkLocation
-        ? this.HsConfig.permalinkLocation.origin +
-          this.HsConfig.permalinkLocation.pathname
-        : $location.protocol() + '://' + location.host + location.pathname) +
-      '?composition=' +
-      encodeURIComponent(this.getRecordLink(record));
+      this.HsCore.isMobile() && permalinkOverride
+        ? permalinkOverride.origin + permalinkOverride.pathname
+        : `${location.origin}${location.pathname}?composition=${recordLink}`;
     const shareId = this.HsUtilsService.generateUuid();
-    $http({
-      method: 'POST',
-      url: this.HsStatusManagerService.endpointUrl(),
-      data: JSON.stringify({
-        request: 'socialShare',
-        id: shareId,
-        url: encodeURIComponent(compositionUrl),
-        title: record.title,
-        description: record.abstract,
-        image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
-      }),
-    }).then(
-      (response) => {
-        this.HsUtilsService.shortUrl(
-          this.HsStatusManagerService.endpointUrl() +
-            '?request=socialshare&id=' +
-            shareId
-        )
-          .then((shortUrl) => {
-            this.data.shareUrl = shortUrl;
-          })
-          .catch(() => {
-            this.$log.log('Error creating short Url');
-          });
-        this.data.shareTitle = record.title;
-        if (
-          this.HsConfig.social_hashtag &&
-          this.data.shareTitle.indexOf(this.HsConfig.social_hashtag) <= 0
-        ) {
-          this.data.shareTitle += ' ' + this.HsConfig.social_hashtag;
-        }
+    const response: any = await this.http
+      .post(
+        this.HsStatusManagerService.endpointUrl(),
+        JSON.stringify({
+          request: 'socialShare',
+          id: shareId,
+          url: encodeURIComponent(compositionUrl),
+          title: record.title,
+          description: record.abstract,
+          image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
+        })
+      )
+      .toPromise();
 
-        this.data.shareDescription = record.abstract;
-        $rootScope.$broadcast('composition.shareCreated', this.data);
-      },
-      (err) => {}
-    );
+    this.HsUtilsService.shortUrl(
+      this.HsStatusManagerService.endpointUrl() +
+        '?request=socialshare&id=' +
+        shareId
+    )
+      .then((shortUrl) => {
+        this.data.shareUrl = shortUrl;
+      })
+      .catch(() => {
+        this.$log.log('Error creating short Url');
+      });
+    this.data.shareTitle = record.title;
+    if (
+      this.HsConfig.social_hashtag &&
+      this.data.shareTitle.indexOf(this.HsConfig.social_hashtag) <= 0
+    ) {
+      this.data.shareTitle += ' ' + this.HsConfig.social_hashtag;
+    }
+
+    this.data.shareDescription = record.abstract;
   }
 
   getCompositionInfo(composition, cb) {
@@ -189,8 +184,7 @@ export class HsCompositionsService {
           break;
         case 'layman':
           url =
-            record.url.replace('http://', $location.protocol() + '://') +
-            '/file';
+            record.url.replace('http://', location.protocol + '://') + '/file';
           break;
         default:
           this.$log.warn(
@@ -214,19 +208,19 @@ export class HsCompositionsService {
    * Load layers received through permalink to map
    */
   async parsePermalinkLayers() {
-    await HsMapService.loaded();
-    const layersUrl = HsUtilsService.proxify(
+    await this.HsMapService.loaded();
+    const layersUrl = this.HsUtilsService.proxify(
       this.HsPermalinkUrlService.getParamValue('permalink')
     );
-    const response = await $http({url: layersUrl});
-    if (response.data.success == true) {
+    const response: any = await this.http.get(layersUrl).toPromise();
+    if (response.success == true) {
       const data: any = {};
       data.data = {};
-      if (response.data.data.layers) {
-        data.data.layers = response.data.data.layers;
+      if (response.data.layers) {
+        data.data.layers = response.data.layers;
       } else {
         //Some old structure, where layers are stored in data
-        data.data.layers = response.data.data;
+        data.data.layers = response.data;
       }
       this.HsCompositionsParserService.removeCompositionLayers();
       const layers = this.HsCompositionsParserService.jsonToLayers(data);
