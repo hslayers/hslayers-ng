@@ -1,5 +1,5 @@
 <div>
-    <a href="" (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
+    <a href="#" (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
             <a href="" (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type" style="line-height: 2em;">{{translate(sensorType.name)}}</a>

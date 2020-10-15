@@ -3,6 +3,6 @@
     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <div class="dropdown-menu" style="left: auto; right:0; width:325px; overflow: hidden"
         [ngClass]="{'show': historyDropdownVisible}">
-        <a class="dropdown-item" *ngFor="let item of items | keyvalue" (click)="historyUrlClicked(item.value)" href="">{{item.value}}</a>
+        <a class="dropdown-item" *ngFor="let item of items | keyvalue" (click)="historyUrlClicked(item.value)" href="#">{{item.value}}</a>
     </div>
 </button>
