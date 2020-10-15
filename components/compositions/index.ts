@@ -5,7 +5,7 @@ import '../save-map/';
 import '../styles';
 import '../utils';
 import './endpoints/compositions-endpoints.module';
-import './layer-parser/layer-parser.module';
+import './layer-parser/';
 import * as angular from 'angular';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';

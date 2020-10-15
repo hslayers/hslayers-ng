@@ -4,6 +4,7 @@ import 'angular-gettext';
 // eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../../common/confirm';
 import '../../common/history-list';
+import '../compositions';
 import '../drag/drag.module';
 import '../draw';
 import '../feature-table';
@@ -58,6 +59,7 @@ angular
     'hs.info',
     'hs.query',
     'hs.measure',
+    'hs.compositions',
   ])
   /**
    * @module hs.core
