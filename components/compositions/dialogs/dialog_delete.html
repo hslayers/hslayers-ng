@@ -2,13 +2,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">
-                    <translate>Confirm</translate>
+                <h4 class="modal-title" translate>
+                    Confirm
                 </h4>
                 <button type="button" (click)="close()" class="close()" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate>Close</span></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
-                    <translate>Do you want to delete map</translate> {{compositionToDelete.title}}
+                    <span>Do you want to delete map</span> {{compositionToDelete.title}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" (click)="delete(compositionToDelete)" translate>OK</button>
