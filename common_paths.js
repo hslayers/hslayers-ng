@@ -34,6 +34,7 @@ exports.paths = [
   __dirname + '/components/floating_action_button',
   __dirname + '/components/format',
   __dirname + '/components/geolocation',
+  __dirname + '/components/gallery',
   __dirname + '/components/info',
   __dirname + '/components/language',
   __dirname + '/components/layermanager',

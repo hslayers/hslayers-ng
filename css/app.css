@@ -1476,6 +1476,71 @@ md-bottom-sheet .content {
 	color: #0062bf;
 }
 
+.hs-gallery-slideshow {
+	position: relative;
+	overflow: hidden;
+	background: #222;
+	padding-top: calc(2 / 3 * 100%);
+	height: 0;
+}
+
+.hs-gallery-track {
+	display: flex;
+	align-items: center;
+	transition: transform 0.5s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.hs-gallery-slide {
+	position: relative;
+	margin: 0;
+	flex-shrink: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.hs-gallery-slide img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.hs-gallery-prev {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	z-index: 1;
+	transform: translateY(-50%);
+}
+
+.hs-gallery-next {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	z-index: 1;
+	transform: translateY(-50%);
+}
+
+.hs-gallery-slideshow .md-icon-button {
+	width: 56px;
+	height: 56px;
+	background: rgba(0,0,0, 45%);
+}
+
+.hs-gallery-slideshow md-icon {
+	color: silver;
+	font-size: 40px;
+	width: 40px;
+	height: 40px;
+}
+
 @media only screen and (min-width: 600px) {
 	md-sidenav {
 		width: 100%;
@@ -1575,7 +1640,7 @@ div.feature-list md-content img {
 	max-width: 100%;
 	display: block;
 	margin-left: auto;
-	margin-right: 0;
+	margin-right: auto;
 }
 
 div.feature-list md-content .img-float {
@@ -1694,6 +1759,13 @@ md-checkbox {
 
 .select-all-checkboxes {
 	padding-left: 30px;
+}
+
+@media screen and (max-width: 959px) {
+	div.feature-list md-content .img-float {
+		width: 100%;
+		margin: 16px 0;
+	}
 }
 
 @media (min-width: 960px) {

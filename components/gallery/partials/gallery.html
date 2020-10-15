@@ -1,0 +1,13 @@
+<div class="hs-gallery-slideshow">
+  <md-button ng-if="$ctrl.images.length > 1" class="md-icon-button hs-gallery-prev" aria-label="Previous image" ng-click="$ctrl.prevSlide()">
+    <md-icon class="material-icons">keyboard_arrow_left</md-icon>
+  </md-button>
+  <md-button ng-if="$ctrl.images.length > 1" class="md-icon-button hs-gallery-next" aria-label="Next image" ng-click="$ctrl.nextSlide()">
+    <md-icon class="material-icons">keyboard_arrow_right</md-icon>
+  </md-button>
+  <div class="hs-gallery-track" ng-style="{transform: 'translateX(-' + (100 * $ctrl.curImg) + '%)'}">
+    <figure ng-repeat="image in $ctrl.images" class="hs-gallery-slide">
+      <img ng-src="{{ $ctrl.endpoint + image }}">
+    </figure>
+  </div>
+</div>
