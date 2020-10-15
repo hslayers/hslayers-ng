@@ -123,10 +123,10 @@ export class HsCompositionsParserService {
   loadCompositionObject(
     obj,
     overwrite,
-    titleFromContainer,
-    extentFromContainer
-  ) {
-    if (angular.isUndefined(overwrite) || overwrite == true) {
+    titleFromContainer?: boolean,
+    extentFromContainer?: string | Array<number>
+  ): void {
+    if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers();
     }
     this.current_composition = obj;
@@ -239,7 +239,7 @@ export class HsCompositionsParserService {
     );
   }
 
-  parseExtent(b) {
+  parseExtent(b: string | Array<number>) {
     if (typeof b == 'string') {
       b = b.split(' ');
     }
