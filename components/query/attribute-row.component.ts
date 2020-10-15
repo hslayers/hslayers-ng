@@ -7,7 +7,7 @@ import {Component, Input} from '@angular/core';
 export class HsQueryAttributeRowComponent {
   @Input() attribute;
   @Input() feature;
-  @Input() readonly;
+  @Input() readonly: boolean;
   @Input() template;
 
   change() {

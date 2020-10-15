@@ -4,9 +4,9 @@
                 {{feature.layer}}</strong></div>
     </div>
     <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate"
-        [feature]="feature" [attribute]="attribute" readonly="false">
+        [feature]="feature" [attribute]="attribute" [readonly]="false">
     </hs-query-attribute-row>
-    <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" readonly="true">
+    <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" [readonly]="true">
     </hs-query-attribute-row>
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
