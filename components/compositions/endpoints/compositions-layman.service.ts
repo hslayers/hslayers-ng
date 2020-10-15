@@ -63,21 +63,17 @@ export class HsCompositionsLaymanService {
     this.HsEventBusService.compositionDeletes.next(composition);
   }
 
-  getInfo(composition) {
-    return new Promise((resolve, reject) => {
-      const endpoint = composition.endpoint;
-      const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-      this.HsCompositionsParserService.loadInfo(url, (info) => {
-        if (
-          info.thumbnail.status !== undefined &&
-          info.thumbnail.status == 'NOT_AVAILABLE'
-        ) {
-          delete info.thumbnail;
-        }
-        info.abstract = info.description;
-        resolve(info);
-      });
-    });
+  async getInfo(composition) {
+    const endpoint = composition.endpoint;
+    const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+    const info = await this.HsCompositionsParserService.loadInfo(url);
+    if (
+      info.thumbnail.status !== undefined &&
+      info.thumbnail.status == 'NOT_AVAILABLE'
+    ) {
+      delete info.thumbnail;
+    }
+    info.abstract = info.description;
   }
 
   resetCompositionCounter(endpoint) {

@@ -1,3 +1,4 @@
+import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -214,37 +215,22 @@ export class HsCompositionsParserService {
    * @returns {object} Object containing composition info
    * @description Send Ajax request to selected server to gain information about composition
    */
-  loadInfo(url, cb) {
-    let info = {};
+  async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    this.$http({url: url}).then(
-      (response) => {
-        info = response.data.data || response.data;
-        /**
-         * @ngdoc event
-         * @name HsCompositionsParserService#compositions.composition_info_loaded
-         * @eventType broadcast on $rootScope
-         * @description Fires when metadata about selected composition are loaded
-         */
-        this.$rootScope.$broadcast(
-          'compositions.composition_info_loaded',
-          response.data
-        );
-        cb(info);
-      },
-      (err) => {
-        //Nothing
-      }
-    );
+    const response: any = await this.$http.get(url).toPromise();
+    return response.data.data || response.data;
   }
 
-  parseExtent(b: string | Array<number>) {
+  parseExtent(b: string | Array<number>): Array<number> {
+    let boundArray;
     if (typeof b == 'string') {
-      b = b.split(' ');
+      boundArray = b.split(' ');
+    } else {
+      boundArray = b;
     }
-    let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-    let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
+    let first_pair = [parseFloat(boundArray[0]), parseFloat(boundArray[1])];
+    let second_pair = [parseFloat(boundArray[2]), parseFloat(boundArray[3])];
     first_pair = transform(
       first_pair,
       'EPSG:4326',
