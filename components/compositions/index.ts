@@ -10,10 +10,10 @@ import * as angular from 'angular';
 import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
 import compositionsService from './compositions.service';
-import deleteDialogDirective from './delete-dialog.directive';
-import infoDialogDirective from './info-dialog.directive';
-import overwriteDialogDirective from './overwrite-dialog.directive';
-import shareDialogDirective from './share-dialog.directive';
+import deleteDialogDirective from './delete-dialog.component';
+import infoDialogDirective from './info-dialog.component';
+import overwriteDialogDirective from './overwrite-dialog.component';
+import shareDialogDirective from './share-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 
 /**

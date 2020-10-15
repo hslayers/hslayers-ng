@@ -1,33 +1,33 @@
-<div ng-class="{'in': shareModalVisible}" class="modal hs-composition-share-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal in hs-composition-share-dialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
                     <translate>Share map </translate> {{data.shareTitle}}
                 </h4>
-                <button type="button" ng-click="shareModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
             </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
-                    <div class="col-md-3"><b translate>Abstract</b></div>
+                    <div class="col-md-3"><b translate="">Abstract</b></div>
                     <div class="col-md-9">{{data.shareDescription}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b translate>URL</b></div>
-                    <div class="col-md-9"><a href="{{data.shareUrl}}">{{data.shareUrl}}</a></div>
+                    <div class="col-md-3"><b translate="">URL</b></div>
+                    <div class="col-md-9"><a [href]="{{data.shareUrl}}">{{data.shareUrl}}</a></div>
                 </div>
             </div>
-            <div class="modal-footer" >
-                <button class="btn btn-secondary" href="#" socialshare socialshare-provider="twitter" socialshare-text="{{data.shareTitle}}" socialshare-hashtags="map, gis" socialshare-url="{{data.shareUrl}}">
+            <div class="modal-footer">
+                <button class="btn btn-secondary" href="" socialshare="" [socialshare-provider]="twitter" [socialshare-text]="{{data.shareTitle}}" [socialshare-hashtags]="map, gis" [socialshare-url]="{{data.shareUrl}}">
                     <i class="icon-twitter"></i> Twitter
                 </button>
-                <button class="btn btn-secondary" socialshare socialshare-provider="facebook" socialshare-text="{{data.shareTitle}}" socialshare-description="{{data.shareDescription}}" socialshare-url="{{data.shareUrl}}">
+                <button class="btn btn-secondary" socialshare="" [socialshare-provider]="facebook" [socialshare-text]="{{data.shareTitle}}" [socialshare-description]="{{data.shareDescription}}" [socialshare-url]="{{data.shareUrl}}">
                     <i class="icon-facebook"></i> Facebook
                 </button>
-                <button class="btn btn-secondary" socialshare socialshare-provider="google" socialshare-url="{{data.shareUrl}}">
+                <button class="btn btn-secondary" socialshare="" [socialshare-provider]="google" [socialshare-url]="{{data.shareUrl}}">
                     <i class="icon-googleplus"></i> Google
                 </button>
-                <button type="button" class="btn btn-secondary" ng-click="shareModalVisible = false" data-dismiss="modal" translate="">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="shareModalVisible = false" data-dismiss="modal" translate="">Close</button>
             </div>
         </div>
     </div>

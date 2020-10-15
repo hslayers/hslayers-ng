@@ -1,14 +1,19 @@
 import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCompositionsDeleteDialogComponent} from './delete-dialog.component';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
+import {HsCompositionsOverwriteDialogComponent} from './overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
+import {HsCompositionsShareDialogComponent} from './share-dialog.component';
 import {HsConfig} from '../../config.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import { HsCompositionsInfoDialogComponent } from './info-dialog.component';
 @Component({
   selector: 'hs.print',
   template: require('./partials/compositions.html'),
@@ -77,7 +82,8 @@ export class HsCompositionsComponent {
     private HsCompositionsMapService: HsCompositionsMapService,
     private forCompositionsFilter: forCompositionsFilter,
     private HsEventBusService: HsEventBusService,
-    private HsSaveMapManagerService: HsSaveMapManagerService
+    private HsSaveMapManagerService: HsSaveMapManagerService,
+    private HsDialogContainerService: HsDialogContainerService
   ) {
     this.HsCommonEndpointsService.endpoints.forEach(
       (ep) => (ep.next = ep.limit)
@@ -263,27 +269,17 @@ export class HsCompositionsComponent {
    * @description Display delete dialog of composition
    */
   confirmDelete(composition) {
-    this.compositionToDelete = composition;
-    this.deleteDialogBootstrap();
+    this.deleteDialogBootstrap(composition);
   }
 
   /**
    * @param ev
+   * @param composition
    */
-  deleteDialogBootstrap() {
-    const previousDialog = this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-composition-delete-dialog'
-    );
-    if (previousDialog) {
-      previousDialog.parentNode.removeChild(previousDialog);
-    }
-    const el = angular.element(
-      '<div hs.compositions.delete_dialog_directive></div>'
-    );
-    this.HsLayoutService.contentWrapper
-      .querySelector('.hs-dialog-area')
-      .appendChild(el[0]);
-    $compile(el)($scope);
+  deleteDialogBootstrap(composition) {
+    this.HsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
+      compositionToDelete: composition,
+    });
   }
 
   /**
@@ -351,19 +347,10 @@ export class HsCompositionsComponent {
    * @param $event
    */
   shareDialogBootstrap() {
-    const previousDialog = this.HsLayoutService.contentWrapper.querySelector(
-      '.composition-share-dialog'
+    this.HsDialogContainerService.create(
+      HsCompositionsShareDialogComponent,
+      {}
     );
-    if (previousDialog) {
-      previousDialog.parentNode.removeChild(previousDialog);
-    }
-    const el = angular.element(
-      '<div hs.compositions.share_dialog_directive></div>'
-    );
-    $compile(el)($scope);
-    this.HsLayoutService.contentWrapper
-      .querySelector('.hs-dialog-area')
-      .appendChild(el[0]);
   }
 
   /**
@@ -376,28 +363,14 @@ export class HsCompositionsComponent {
    */
   detailComposition(record, $event) {
     this.HsCompositionsService.getCompositionInfo(record, (info) => {
-      this.info = info;
-      this.infoDialogBootstrap();
+      this.infoDialogBootstrap(info);
     });
   }
 
-  /**
-   *
-   */
-  infoDialogBootstrap() {
-    const previousDialog = this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-composition-info-dialog'
-    );
-    if (previousDialog) {
-      previousDialog.parentNode.removeChild(previousDialog);
-    }
-    const el = angular.element(
-      '<div hs.compositions.info_dialog_directive></div>'
-    );
-    this.HsLayoutService.contentWrapper
-      .querySelector('.hs-dialog-area')
-      .appendChild(el[0]);
-    $compile(el)($scope);
+  infoDialogBootstrap(info) {
+    this.HsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
+      info,
+    });
   }
 
   /**
@@ -408,35 +381,7 @@ export class HsCompositionsComponent {
    * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
    */
   startLoadComposition(record) {
-    this.HsCompositionsService.loadCompositionParser(record)
-  }
-
-  /**
-   * @ngdoc method
-   * @name hs.compositions.controller#overwrite
-   * @public
-   * @description Load new composition without saving old composition
-   */
-  overwrite() {
-    this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
-      true
-    );
-    this.overwriteModalVisible = false;
-  }
-
-  /**
-   * @ngdoc method
-   * @name hs.compositions.controller#add
-   * @public
-   * @description Load new composition (with service_parser Load function) and merge it with old composition
-   */
-  add() {
-    this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
-      false
-    );
-    this.overwriteModalVisible = false;
+    this.HsCompositionsService.loadCompositionParser(record);
   }
 
   addCompositionUrl(url) {
@@ -481,21 +426,12 @@ export class HsCompositionsComponent {
    * @param title
    */
   loadUnsavedDialogBootstrap(url, title) {
-    const dialog_id = 'hs-composition-overwrite-dialog';
-    this.composition_name_to_be_loaded = title;
-    if (
-      this.HsLayoutService.contentWrapper.querySelector('.' + dialog_id) === null
-    ) {
-      const el = angular.element(
-        '<div hs.compositions.overwrite_dialog_directive></span>'
-      );
-      this.HsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
-      $compile(el)($scope);
-    } else {
-      this.overwriteModalVisible = true;
-    }
+    this.HsDialogContainerService.create(
+      HsCompositionsOverwriteDialogComponent,
+      {
+        composition_name_to_be_loaded: title,
+      }
+    );
   }
 
   commonId(composition) {
