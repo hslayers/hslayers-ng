@@ -47,7 +47,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-
+import {Layer} from 'ol/layer';
 @Injectable({
   providedIn: 'root',
 })
@@ -512,7 +512,11 @@ export class HsMapService {
    * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
    * @returns {ol/Layer} OL layer
    */
-  addLayer(lyr, removeIfExists, visibilityOverrides) {
+  addLayer(
+    lyr: Layer,
+    removeIfExists: boolean,
+    visibilityOverrides?: Array<string>
+  ): Layer {
     if (removeIfExists && this.layerAlreadyExists(lyr)) {
       this.removeDuplicate(lyr);
     }
