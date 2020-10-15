@@ -1,5 +1,4 @@
 import * as angular from 'angular';
-import forCompositionFilter from './for-composition.filter';
 import {HsCompositionsEndpointsModule} from './compositions-endpoints.module';
 import {HsCompositionsLaymanService} from './compositions-layman.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
@@ -60,8 +59,6 @@ angular
   .service(
     'HsCompositionsStatusManagerMickaJointService',
     downgradeInjectable(HsCompositionsStatusManagerMickaJointService)
-  )
-
-  .filter('forCompositions', forCompositionFilter);
+  );
 
 angular.module('hs.compositions.endpoints', [downgradedModule]);
