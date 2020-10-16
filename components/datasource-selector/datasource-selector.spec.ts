@@ -74,7 +74,7 @@ describe('HsDatasources', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDatasourcesComponent);
-    service = TestBed.get(HsDatasourcesService);
+    service = TestBed.inject(HsDatasourcesService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

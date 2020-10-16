@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsDatasourcesService} from '../datasource-selector.service';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
 
@@ -8,9 +9,12 @@ import {HsMickaFilterService} from './micka-filters.service';
   selector: 'hs-micka-suggestions-dialog',
   template: require('./micka-suggestions-dialog.html'),
 })
-export class HsMickaSuggestionsDialogComponent implements OnInit {
-  suggestionsModalVisible;
+export class HsMickaSuggestionsDialogComponent
+  implements HsDialogComponent, OnInit {
+  @Input() data;
   loaderImage;
+  suggestionsModalVisible;
+  viewRef: ViewRef;
 
   constructor(
     private hsDatasourcesService: HsDatasourcesService,

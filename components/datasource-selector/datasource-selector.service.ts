@@ -1,9 +1,11 @@
+import {Feature} from 'ol';
 import {Injectable} from '@angular/core';
 
 //import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
+import {HsDatasourceLayerDescriptor} from './datasource-layer-descriptor.interface';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -12,6 +14,17 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsUtilsService} from '../utils/utils.service';
+
+//TODO: Find a better name and possibly turn it into a public interface
+type WhatToAddDescriptor = {
+  type: string;
+  layer?;
+  link?;
+  title?;
+  abstract?;
+  projection?;
+  extractStyles?;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -107,7 +120,8 @@ export class HsDatasourcesService {
         this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data.query,
-          this.hsDatasourcesMapService.addExtentFeature,
+          (feature: Feature) =>
+            this.hsDatasourcesMapService.addExtentFeature(feature),
           this.data.textField
         );
         break;
@@ -154,22 +168,45 @@ export class HsDatasourcesService {
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
+   * @returns {any[] | any} Type or array of types in which this layer can be added to map
    * @description Add selected layer to map (into layer manager) if possible
    */
-  async addLayerToMap(ds: HsEndpoint, layer, type?: string): Promise<void> {
-    let describer = Promise.resolve({type: 'none'});
+  async addLayerToMap(
+    ds: HsEndpoint,
+    layer: HsDatasourceLayerDescriptor,
+    type?: string
+  ): Promise<any[] | any> {
+    let whatToAdd: WhatToAddDescriptor;
     if (ds.type == 'micka') {
-      describer = this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
+      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type == 'layman') {
-      describer = this.hsLaymanBrowserService.describeWhatToAdd(ds, layer);
+      whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
+        ds,
+        layer
+      );
+    } else {
+      whatToAdd = {type: 'none'};
     }
-    describer.then(async (whatToAdd: any) => {
-      if (type !== undefined) {
-        whatToAdd.type = type;
-      }
-      if (Array.isArray(whatToAdd.type)) {
-        //FIXME: $compile
-        /*const scope = this.$rootScope.$new();
+    if (!whatToAdd) {
+      return;
+    }
+    if (type !== undefined) {
+      whatToAdd.type = type;
+    }
+    console.log(whatToAdd);
+    if (Array.isArray(whatToAdd.type)) {
+      console.log('ARRY!');
+      return whatToAdd.type;
+      //TODO: test it! And then delete the lines below
+      /*this.hsDialogContainerService.create(
+          HsSelectTypeToAddLayerDialogComponent,
+          {
+            types: whatToAdd.type,
+            layer,
+            endpoint: ds,
+          }
+        );*/
+      /*const scope = this.$rootScope.$new();
         Object.assign(scope, {
           types: whatToAdd.type,
           layer,
@@ -182,41 +219,41 @@ export class HsDatasourcesService {
           .querySelector('.hs-dialog-area')
           .appendChild(el[0]);
         this.$compile(el)(scope);*/
-        return;
-      }
-      if (whatToAdd.type == 'WMS') {
-        this.datasetSelect('OWS');
-        setTimeout(() => {
-          this.hsEventBusService.owsFilling.next({
-            type: whatToAdd.type.toLowerCase(),
-            uri: decodeURIComponent(whatToAdd.link),
-            layer: whatToAdd.layer,
-          });
+    }
+    if (whatToAdd.type == 'WMS') {
+      this.datasetSelect('OWS');
+      setTimeout(() => {
+        this.hsEventBusService.owsFilling.next({
+          type: whatToAdd.type.toLowerCase(),
+          uri: decodeURIComponent(whatToAdd.link),
+          layer: layer.title || layer.name || '',
         });
-      } else if (whatToAdd.type == 'WFS') {
-        const layer = await this.hsAddLayersVectorService.addVectorLayer(
-          'wfs',
-          whatToAdd.link,
-          whatToAdd.title,
-          whatToAdd.abstract,
-          whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles}
-        );
-        this.hsAddLayersVectorService.fitExtent(layer);
-      } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
-        const layer = await this.hsAddLayersVectorService.addVectorLayer(
-          whatToAdd.type.toLowerCase(),
-          whatToAdd.link,
-          whatToAdd.title,
-          whatToAdd.abstract,
-          whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles}
-        );
-        this.hsAddLayersVectorService.fitExtent(layer);
-      } else {
-        this.hsLayoutService.setMainPanel('layermanager');
-      }
-    });
+      });
+    } else if (whatToAdd.type == 'WFS') {
+      const layer = await this.hsAddLayersVectorService.addVectorLayer(
+        'wfs',
+        whatToAdd.link,
+        whatToAdd.title,
+        whatToAdd.abstract,
+        whatToAdd.projection,
+        {extractStyles: whatToAdd.extractStyles}
+      );
+      console.log(layer);
+      this.hsAddLayersVectorService.fitExtent(layer);
+    } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
+      const layer = await this.hsAddLayersVectorService.addVectorLayer(
+        whatToAdd.type.toLowerCase(),
+        whatToAdd.link,
+        whatToAdd.title,
+        whatToAdd.abstract,
+        whatToAdd.projection,
+        {extractStyles: whatToAdd.extractStyles}
+      );
+      this.hsAddLayersVectorService.fitExtent(layer);
+    } else {
+      this.hsLayoutService.setMainPanel('layermanager');
+    }
+    return whatToAdd.type;
   }
 
   datasetSelect(id_selected: string): void {

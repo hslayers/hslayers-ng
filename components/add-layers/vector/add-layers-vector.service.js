@@ -28,6 +28,7 @@ export class HsAddLayersVectorService {
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
   addVectorLayer(type, url, title, abstract, srs, options) {
+    console.log(type, url, title, abstract, srs, options);
     return new Promise((resolve, reject) => {
       try {
         const lyr = this.createVectorLayer(
@@ -39,6 +40,7 @@ export class HsAddLayersVectorService {
           options
         );
         if (this.HsMapService.map) {
+          console.log('adding layer', lyr);
           this.HsMapService.addLayer(lyr, true);
         }
         resolve(lyr);

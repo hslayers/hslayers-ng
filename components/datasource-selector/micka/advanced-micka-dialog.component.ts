@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesService} from '../datasource-selector.service';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
+import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.component';
 
 @Component({
   selector: 'hs-advanced-micka-dialog',
@@ -19,6 +21,7 @@ export class HsAdvancedMickaDialogComponent {
     private hsConfig: HsConfig,
     private hsMickaFilterService: HsMickaFilterService,
     private hsDatasourcesService: HsDatasourcesService,
+    private hsDialogContainerService: HsDialogContainerService,
     private hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
@@ -47,6 +50,10 @@ export class HsAdvancedMickaDialogComponent {
           '.hs-ds-suggestions-micka'
         ) === null
       ) {
+        this.hsDialogContainerService.create(
+          HsMickaSuggestionsDialogComponent,
+          null
+        );
         //FIXME: $compile
         /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
         this.hsLayoutService.contentWrapper

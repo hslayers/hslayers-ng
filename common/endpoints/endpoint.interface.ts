@@ -1,9 +1,12 @@
+import {HsDatasourceLayerDescriptor} from '../../components/datasource-selector/datasource-layer-descriptor.interface';
+
 export interface HsEndpoint {
   type: string;
   title: string;
   url: string;
   download?: boolean;
   language?;
+  layers?: HsDatasourceLayerDescriptor[];
   liferayProtocol?;
   originalConfiguredUser?;
   user?;

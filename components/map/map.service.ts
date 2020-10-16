@@ -503,14 +503,14 @@ export class HsMapService {
   /**
    * @ngdoc method
    * @name HsMapService#addLayer
-   * @param {ol/Layer} lyr Layer to add
+   * @param {Layer} lyr Layer to add
    * @param {boolean} removeIfExists True if we want to remove a layer with the same title in case it exists
    * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
    * @description Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
    * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
-   * @returns {ol/Layer} OL layer
+   * @returns {Layer} OL layer
    */
   addLayer(lyr, removeIfExists, visibilityOverrides) {
     if (removeIfExists && this.layerAlreadyExists(lyr)) {
