@@ -199,7 +199,7 @@
     "SEARCH": "Vyhledávání",
     "SENSORS": "Senzory",
     "TRACKING": "Sledování",
-    "FEATURE_TABLE": "Tabulka prvky"
+    "FEATURE_TABLE": "Tabulka prvků"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -312,13 +312,13 @@
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
       "SEARCH": "Vyhledejte lokaci",
-      "FEATURE_TABLE": "Zobrazit prvky vrstvy v html tabulce"
+      "FEATURE_TABLE": "Zobrazite prvky vrstvy v html tabulce"
     }
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Změřte linie a polygony"
   },
   "FEATURE_TABLE": {
-    "showFeatureStats": "Zobrazit statistiky prvky"
+    "showFeatureStats": "Zobrazte statistiky prvku"
   }
 }
