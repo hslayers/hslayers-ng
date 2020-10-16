@@ -37,7 +37,7 @@
                         <div *ngIf="endpoint.type == 'micka'">
                             <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
                         </div>
-                        <hs-layman-current-user endpoint="endpoint"></hs-layman-current-user>
+                        <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
                         <ul class="list-group" *ngIf="endpoint.layers">
                             <li [hidden]='endpoint.layers.length > 0' class='list-group-item' i18n>No results</li>
                             <li *ngFor="let layer of endpoint.layers" class="clearfix"

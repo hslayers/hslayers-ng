@@ -1,6 +1,5 @@
 import {HsAddLayersVectorService} from './components/add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from './common/layman/layman.service';
 import {HsConfig} from './config.service';
 import {HsDimensionService} from './common/dimension.service';
 import {HsLayoutService} from './components/layout/layout.service';
@@ -108,16 +107,3 @@ export const HsCommonEndpointsServiceProvider = {
   useFactory: hsCommonEndpointsService,
   deps: ['$injector'],
 };
-
-/**
- * @param i
- */
-export function hsCommonLaymanService(i: any) {
-  return i.get('HsCommonLaymanService');
-}
-
-export const HsCommonLaymanServiceProvider = {
-  provide: HsCommonLaymanService,
-  useFactory: hsCommonLaymanService,
-  deps: ['$injector'],
-}

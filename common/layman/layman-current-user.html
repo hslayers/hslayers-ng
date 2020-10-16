@@ -1,7 +1,6 @@
-<div ng-if="$ctrl.endpoint && $ctrl.endpoint.type == 'layman'">
-    <a class="btn btn-block btn-light" ng-click="$ctrl.login()" ng-if="$ctrl.isAuthorized()" translate
-        href="{{$ctrl.protocolsMatch() ? '#' : $ctrl.authUrl()}}" target="{{$ctrl.protocolsMatch() ? '' : '_blank'}}">
+<div *ngIf="endpoint && endpoint.type == 'layman'">
+    <a class="btn btn-block btn-light" (click)="login()" *ngIf="isAuthorized()" translate="" href="{{protocolsMatch() ? '#' : authUrl()}}" target="{{protocolsMatch() ? '' : '_blank'}}">
         Log in</a>
-    <a class="btn btn-block btn-light" ng-click="$ctrl.logout()" ng-if="!$ctrl.isAuthorized()" translate>Log out
-        {{$ctrl.endpoint.user}}</a>
+    <a class="btn btn-block btn-light" (click)="logout()" *ngIf="!isAuthorized()" translate="">Log out
+        {{endpoint.user}}</a>
 </div>
