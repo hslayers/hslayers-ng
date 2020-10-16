@@ -13,6 +13,7 @@ import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsLaymanModule} from '../../common/layman';
 import {HsMetadataDialogComponent} from './metadata-dialog.component';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterComponent} from './micka/micka-filter.component';
@@ -34,7 +35,13 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsSelectTypeToAddLayerDialogComponent,
     EndpointsWithDatasourcesPipe,
   ],
-  imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HsPanelHelpersModule,
+    TranslateModule,
+    HsLaymanModule,
+  ],
   exports: [
     HsAdvancedMickaDialogComponent,
     HsDatasourcesComponent,

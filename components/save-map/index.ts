@@ -1,7 +1,7 @@
 /* eslint-disable angular/file-name */
 import '../../common/endpoints/endpoints.module';
 import '../../common/get-capabilities.module';
-import '../../common/layman/layman.module';
+import '../../common/layman/';
 import '../../common/widgets/widgets.module';
 import '../utils';
 import 'angular-cookies';

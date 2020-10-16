@@ -1,14 +1,14 @@
-<div ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" translate>
+                <h4 class="modal-title" translate="">
                     Login
                 </h4>
-                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only" translate="">Close</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; height: 35em; overflow-y:auto">
-                <iframe src="{{$ctrl.url}}" style="width:100%; height:100%;border:0"></iframe>
+                <iframe src="{{url}}" style="width:100%; height:100%;border:0"></iframe>
             </div>
         </div>
     </div>

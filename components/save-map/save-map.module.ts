@@ -6,6 +6,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
+import {HsLaymanModule} from '../../common/layman';
 import {HsLaymanService} from './layman.service';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -39,6 +40,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsLogModule,
     HsUiExtensionsModule,
     TranslateModule,
+    HsLaymanModule,
   ],
   exports: [HsSaveMapComponent],
   providers: [

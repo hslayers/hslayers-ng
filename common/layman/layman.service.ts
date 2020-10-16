@@ -1,23 +1,22 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCommonLaymanService {
-  constructor($http, $rootScope) {
-    'ngInject';
-    Object.assign(this, {
-      $http,
-      $rootScope,
-      authChange: new Subject(),
-    });
-  }
+  authChange = new Subject();
+  constructor(private $http: HttpClient) {}
 
   async getCurrentUser(endpoint) {
     const url = `${endpoint.url}/rest/current-user`;
-    return this.$http.get(url).then(
-      (res) => {
+    return this.$http.get(url).subscribe(
+      (res: any) => {
         let somethingChanged = false;
-        if (res.data.username) {
-          if (endpoint.user != res.data.username) {
-            endpoint.user = res.data.username;
+        if (res.username) {
+          if (endpoint.user != res.username) {
+            endpoint.user = res.username;
             somethingChanged = true;
             this.authChange.next(endpoint);
           }
@@ -48,7 +47,7 @@ export class HsCommonLaymanService {
   async logout(endpoint) {
     const url = `${endpoint.url}/authn/logout`;
     try {
-      const response = await this.$http.get(url);
+      const response = await this.$http.get(url).toPromise();
     } catch (ex) {
       console.warn(ex);
     } finally {

@@ -13,12 +13,12 @@ import {HsDialogContainerService} from '../layout/dialogs/dialog-container.servi
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import { HsLogService } from '../../common/log/log.service';
 @Component({
-  selector: 'hs.print',
+  selector: 'hs.compositions',
   template: require('./compositions.html'),
 })
 export class HsCompositionsComponent implements OnInit {

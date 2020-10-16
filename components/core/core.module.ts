@@ -2,7 +2,6 @@ import * as merge from 'deepmerge';
 import {
   HsAddLayersVectorServiceProvider,
   HsCommonEndpointsServiceProvider,
-  HsCommonLaymanServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
   HsWfsGetCapabilitiesServiceProvider,
@@ -22,6 +21,7 @@ import {HsHistoryListModule} from './../../common/history-list';
 import {HsInfoModule} from './../info';
 import {HsLanguageModule} from './../language';
 import {HsLayerManagerModule} from '../layermanager';
+import {HsLaymanModule} from '../../common/layman';
 import {HsLayoutModule} from '../layout/layout.module';
 import {HsLegendModule} from '../legend';
 import {HsLogModule} from '../../common/log/log.module';
@@ -111,6 +111,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsQueryModule,
     HsConfirmModule,
     HsMapModule,
+    HsLaymanModule,
   ],
   exports: [TranslateModule],
   providers: [
@@ -130,7 +131,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
       useValue: window,
     },
     HsCommonEndpointsServiceProvider,
-    HsCommonLaymanServiceProvider,
   ],
   entryComponents: [],
 })

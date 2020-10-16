@@ -69,7 +69,7 @@
                 <ng-template ngbNavContent>
                     <div class="card">
                         <div class="card-body">
-                            <hs.layman.current-user endpoint="endpoint"></hs.layman.current-user>
+                            <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
                             <ul class="hs-comp-list list-group">
                                 <li *ngFor="let composition of endpoint.compositions" class="list-group-item hs-comp-item" style="cursor: pointer" [ngClass]="composition.highlighted ?  'active' : ''" (mouseover)="highlightComposition(composition, true)" (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)" data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
                                     <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
