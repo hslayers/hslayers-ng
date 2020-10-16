@@ -235,7 +235,7 @@ export class HsCompositionsComponent implements OnInit {
     );
     if (compList) {
       const listHeight = compList.innerHeight;
-      for (const ds of this.HsCommonEndpointsService.endpoints) {
+      for (const ds of this.filteredEndpointsForCompositions()) {
         ds.compositionsPaging.limit = Math.round((listHeight - 180) / 60);
       }
     }
