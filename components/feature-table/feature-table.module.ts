@@ -1,0 +1,23 @@
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+
+import {HsFeatureTableComponent} from './feature-table.component';
+import {HsFeatureTableService} from './feature-table.service';
+import {HsLayerFeaturesComponent} from './layer-features.component';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsFeatureTableComponent, HsLayerFeaturesComponent],
+  imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
+  exports: [HsFeatureTableComponent, HsLayerFeaturesComponent],
+  providers: [HsFeatureTableService, TranslateStore],
+  entryComponents: [HsFeatureTableComponent, HsLayerFeaturesComponent],
+})
+export class HsFeatureTableModule {}
