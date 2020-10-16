@@ -6,6 +6,7 @@ import '../../common/confirm';
 import '../../common/history-list';
 import '../drag/drag.module';
 import '../draw';
+import '../feature-table';
 import '../geolocation';
 import '../info';
 import '../language';
@@ -47,6 +48,7 @@ angular
     'hs.utils',
     'hs.legend',
     'hs.print',
+    'hs.feature-table',
     'hs.layermanager',
     'hs.save-map',
     'hs.permalink',
