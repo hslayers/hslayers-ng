@@ -8,9 +8,9 @@ Check out the examples to get an idea:
 * http://sdi4apps.eu/spoi/
 
 ## Before You Start
-**This page describes how to create a HSLayers-NG based application with hslayers-ng 2.0 and newer. For a guide for older, but still supported version 1.x see [[Getting started (for HSLayers NG 1.x)]]. If you are looking for an upgrade guide then check [[Upgrading from version 1.x]].**  
+*This page describes how to create a HSLayers-NG based application with hslayers-ng 2.0 and newer. For a guide for older, but still supported version 1.x see [Getting-started-(for-HSLayers-NG-1.x)](https://github.com/hslayers/hslayers-ng/wiki/Getting-started-(for-HSLayers-NG-1.x)). If you are looking for an upgrade guide then check [Upgrading from version 1.x](https://github.com/hslayers/hslayers-ng/wiki/Upgrading-from-version-1.x).*
 
-HSLayers-NG is built on top of two major things: [OpenLayers](openlayers.org) library and [AngularJS](angularjs.org) framework. So in order to work with HSLayers you should have some understanding of both.
+HSLayers-NG is built on top of two major things: [OpenLayers](openlayers.org) library and [Angular](https://angular.io/) framework. So in order to work with HSLayers you should have some understanding of both.
 OpenLayers has a nice [tutorial workshop](https://openlayers.org/workshop/) to start with.  
 
 ## Getting Started
