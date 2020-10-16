@@ -93,7 +93,7 @@ export class HsDatasourcesComponent {
   showMetadata(endpoint: HsEndpoint, layer): void {
     this.selected_layer = layer;
     this.selected_ds = endpoint;
-    let filler = Promise.resolve();
+    let filler = Promise.resolve({});
 
     if (endpoint.type == 'layman') {
       filler = this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
@@ -229,25 +229,23 @@ export class HsDatasourcesComponent {
    * @function addLayerToMap
    * @param {object} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * @param {string} type
+   * @param {string} type One of 'WMS', 'WFS', 'KML', 'GEOJSON'
    * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    */
-  addLayerToMap(
+  async addLayerToMap(
     ds: HsEndpoint,
     layer: HsDatasourceLayerDescriptor,
     type?: string
-  ): void {
-    const addLayerPromise = this.hsDatasourcesService.addLayerToMap(
+  ): Promise<void> {
+    const selectedType = await this.hsDatasourcesService.addLayerToMap(
       ds,
       layer,
       type
     );
-    addLayerPromise.then((type) => {
-      if (Array.isArray(type)) {
-        this.whatToAddTypes = type;
-        this.selectTypeToAddLayerVisible = true;
-      }
-    });
+    if (Array.isArray(selectedType)) {
+      this.whatToAddTypes = selectedType;
+      this.selectTypeToAddLayerVisible = true;
+    }
     this.metadataModalVisible = false;
   }
 }
