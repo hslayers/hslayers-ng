@@ -8,6 +8,7 @@
     -moz-font-feature-settings: "calt=0,liga=0";
 }
 [class^="icon-"], [class*=" icon-"] {font-family:'WebHostingHub-Glyphs';background:none;width:auto;height:auto;font-style:normal}
+.icon-indexmanager:before{content:'\f09e'}
 .icon-alertpay:before{content:'\f269'}
 .icon-brush:before{content:'\f1b8'}
 .icon-analytics-piechart:before{content:'\f000'}
