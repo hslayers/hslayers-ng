@@ -175,7 +175,7 @@ export class HsDatasourcesService {
     ds: HsEndpoint,
     layer: HsDatasourceLayerDescriptor,
     type?: string
-  ): Promise<any[] | any> {
+  ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
     if (ds.type == 'micka') {
       whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
@@ -193,9 +193,7 @@ export class HsDatasourcesService {
     if (type !== undefined) {
       whatToAdd.type = type;
     }
-    console.log(whatToAdd);
     if (Array.isArray(whatToAdd.type)) {
-      console.log('ARRY!');
       return whatToAdd.type;
       //TODO: test it! And then delete the lines below
       /*this.hsDialogContainerService.create(
@@ -238,7 +236,6 @@ export class HsDatasourcesService {
         whatToAdd.projection,
         {extractStyles: whatToAdd.extractStyles}
       );
-      console.log(layer);
       this.hsAddLayersVectorService.fitExtent(layer);
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(

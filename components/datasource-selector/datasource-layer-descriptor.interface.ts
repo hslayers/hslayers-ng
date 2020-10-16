@@ -3,6 +3,7 @@ export interface HsDatasourceLayerDescriptor {
   formats?;
   name?: string;
   serviceType?;
+  thumbnail?;
   title?: string;
   trida?;
   type: string;
