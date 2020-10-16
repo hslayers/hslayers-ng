@@ -190,7 +190,8 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRACKING": "Izsekošna"
+    "TRACKING": "Izsekošna",
+    "FEATURE_TABLE": "Grafisko objektu tabula"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -302,7 +303,8 @@
       "PERMALINK": "Kopīgot karti",
       "PRINT": "Printēt karti",
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
-      "SEARCH": "Meklēt atrašanās vietu"
+      "SEARCH": "Meklēt atrašanās vietu",
+      "FEATURE_TABLE": "Parādīt slāņa grafiskos objektus tabulā"
     }
   },
   "STYLER": {
@@ -313,5 +315,8 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
+  },
+  "FEATURE_TABLE": {
+    "showFeatureStats": "Rādīt objektu statistikas datus"
   }
 }
