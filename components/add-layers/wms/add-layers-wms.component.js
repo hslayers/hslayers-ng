@@ -45,9 +45,8 @@ export default {
       $scope.showDetails = true;
     };
 
-    //FIXME: is it even fired?
-    HsEventBusService.wmsConnecting.subscribe((event, wms, layer) => {
-      $scope.setUrlAndConnect(wms, layer);
+    HsEventBusService.wmsConnecting.subscribe(({uri, layer}) => {
+      $scope.setUrlAndConnect(uri, layer);
     });
 
     /**

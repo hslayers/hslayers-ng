@@ -79,7 +79,7 @@ export class HsDatasourcesMapService {
    * @function clearDatasetFeatures
    * @memberof HsDatasourceBrowserService
    * @param {object} dataset Configuration of selected datasource (from app config)
-   * Remove layer extent features from map
+   * @description Remove layer extent features from map
    */
   clearDatasetFeatures(dataset): void {
     dataset.layers?.forEach((val) => {

@@ -84,9 +84,8 @@ export class HsEventBusService {
   mapClicked: Subject<any> = new Subject();
   /**
    * replaces 'ows.wms_connecting'
-   * FIXME: unused?
    */
-  wmsConnecting: Subject<any> = new Subject();
+  wmsConnecting: Subject<{uri: any; layer?: any}> = new Subject();
   /**
    * replaces 'ows.filling'
    */
