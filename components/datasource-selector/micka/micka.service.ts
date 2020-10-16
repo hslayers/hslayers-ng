@@ -293,7 +293,6 @@ export class HsMickaBrowserService {
         whatToAdd = {
           type: 'sparql',
           link: layerLink,
-          abstract: layer.abstract || 'Layer',
           projection: 'EPSG:4326',
         };
       } else if (
@@ -303,6 +302,7 @@ export class HsMickaBrowserService {
       ) {
         whatToAdd.type = 'WFS';
         whatToAdd.link = layerLink;
+        whatToAdd.dsType = ds.type;
       } else if (
         layer.formats &&
         ['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase())
@@ -310,7 +310,6 @@ export class HsMickaBrowserService {
         whatToAdd = {
           type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
           link: layerLink,
-          abstract: layer.abstract || 'Layer',
           projection: 'EPSG:4326',
           extractStyles: layer.formats[0].toLowerCase() == 'kml',
         };
@@ -323,7 +322,6 @@ export class HsMickaBrowserService {
         whatToAdd = {
           type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
           link: layerLink,
-          abstract: layer.abstract || 'Layer',
           projection: 'EPSG:4326',
           extractStyles: layer.formats[0].toLowerCase() == 'kml',
         };
@@ -335,6 +333,7 @@ export class HsMickaBrowserService {
       return false;
     }
     whatToAdd.title = layer.title || 'Layer';
+    whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;
   }
 }
