@@ -18,10 +18,11 @@ import {HsUtilsService} from '../utils/utils.service';
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
   type: string;
+  dsType?: string;
   layer?;
   link?;
-  title?;
-  abstract?;
+  title?: string;
+  abstract?: string;
   projection?;
   extractStyles?;
 };
@@ -234,7 +235,7 @@ export class HsDatasourcesService {
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles}
+        {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
       );
       this.hsAddLayersVectorService.fitExtent(layer);
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
