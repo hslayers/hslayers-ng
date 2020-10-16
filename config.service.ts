@@ -52,5 +52,6 @@ export class HsConfig {
   zoomWithModifierKeyOnly: boolean;
   pureMap: boolean;
   translationOverrides: any;
+  layersInFeatureTable: any;
   constructor() {}
 }
