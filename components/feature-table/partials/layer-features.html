@@ -1,0 +1,22 @@
+<h3 style="text-align: center">{{layer.title}}</h3>
+<div style="text-align: right">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="showFeatureStats = !showFeatureStats">Show feature
+        stats</button>
+</div>
+<table style="width:100%;" *ngFor="let feature of featureAttributes">
+    <thead>
+        <tr style="text-align: center">
+            <th colspan="2">{{feature.name}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let attr of feature.attributes">
+            <td class="tdbreak">{{attr.name}}</td>
+            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">{{attr.value}}</td>
+        </tr>
+        <tr [hidden]="!showFeatureStats" class="tdbreak" *ngFor="let stat of feature.stats">
+            <td class="tdbreak">{{stat.name}}</td>
+            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">{{stat.value}}</td>
+        </tr>
+    </tbody>
+</table>
