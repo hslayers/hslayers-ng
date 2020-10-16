@@ -1659,6 +1659,12 @@ div.feature-list:not(.card-list) md-content .content-body div > * {
 	padding-right: 16px;
 }
 
+md-content .additional-content {
+	clear: both;
+    max-width: 50em;
+    margin: 2em auto;
+}
+
 md-content .additional-content div.video {
     padding-top: 16px;
 }
