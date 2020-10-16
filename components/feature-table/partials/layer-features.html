@@ -1,7 +1,6 @@
 <h3 style="text-align: center">{{layer.title}}</h3>
 <div style="text-align: right">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="showFeatureStats = !showFeatureStats">Show feature
-        stats</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</button>
 </div>
 <table style="width:100%;" *ngFor="let feature of featureAttributes">
     <thead>

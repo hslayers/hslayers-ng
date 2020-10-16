@@ -192,7 +192,8 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRACKING": "Tracking"
+    "TRACKING": "Tracking",
+    "FEATURE_TABLE": "Feature table"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -304,7 +305,8 @@
       "PERMALINK": "Share map",
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
-      "SEARCH": "Search for location"
+      "SEARCH": "Search for location",
+      "FEATURE_TABLE": "Display layer features in html table"
     }
   },
   "STYLER": {
@@ -315,5 +317,8 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
+  },
+  "FEATURE_TABLE": {
+    "showFeatureStats": "Show feature  stats"
   }
 }
