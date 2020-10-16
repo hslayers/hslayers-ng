@@ -51,5 +51,6 @@ export class HsConfig {
   preserveLastSketchPoint: boolean;
   zoomWithModifierKeyOnly: boolean;
   pureMap: boolean;
+  layersInFeatureTable: any;
   constructor() {}
 }
