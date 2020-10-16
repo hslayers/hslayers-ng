@@ -3,6 +3,8 @@ import {Component} from '@angular/core';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
+import {HsDatasourceLayerDescriptor} from './datasource-layer-descriptor.interface';
+import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -17,17 +19,20 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDatasourcesComponent {
   metadataModalVisible;
+  selectTypeToAddLayerVisible: boolean;
   data;
   advancedSearch;
   selected_layer;
   selected_ds;
   metadata;
+  whatToAddTypes;
 
   constructor(
     private hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
     private hsConfig: HsConfig, //Used in template
     private hsCore: HsCoreService, //Used in template
     private hsDatasourcesService: HsDatasourcesService,
+    private hsDatasourcesMapService: HsDatasourcesMapService, //Used in template
     private hsEventBusService: HsEventBusService,
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLayoutService: HsLayoutService,
@@ -37,7 +42,6 @@ export class HsDatasourcesComponent {
     this.data = hsDatasourcesService.data;
     this.advancedSearch = false;
 
-    //FIXME: is it even fired?
     this.hsEventBusService.wmsConnecting.subscribe(() => {
       this.data.wms_connecting = true;
     });
@@ -95,7 +99,7 @@ export class HsDatasourcesComponent {
       filler = this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
     }
     filler.then(() => {
-      //FIXME: <hs-datasources-metadata-dialog>
+      //FIXME: Create new dialog <hs-datasources-metadata-dialog>
       /*this.metadata = this.decomposeMetadata(layer);
       if (this.hsConfig.design === 'md') {
         this.metadataDialog();
@@ -228,10 +232,22 @@ export class HsDatasourcesComponent {
    * @param {string} type
    * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    */
-  addLayerToMap(ds: HsEndpoint, layer, type?: string): void {
-    console.log(layer);
-    console.log(type);
-    this.hsDatasourcesService.addLayerToMap(ds, layer, type);
+  addLayerToMap(
+    ds: HsEndpoint,
+    layer: HsDatasourceLayerDescriptor,
+    type?: string
+  ): void {
+    const addLayerPromise = this.hsDatasourcesService.addLayerToMap(
+      ds,
+      layer,
+      type
+    );
+    addLayerPromise.then((type) => {
+      if (Array.isArray(type)) {
+        this.whatToAddTypes = type;
+        this.selectTypeToAddLayerVisible = true;
+      }
+    });
     this.metadataModalVisible = false;
   }
 }

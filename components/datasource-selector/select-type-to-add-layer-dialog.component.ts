@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsDatasourcesService} from './datasource-selector.service';
 
 @Component({
-  selector: 'hs-select-type-to-add-layer-dialog',
+  selector: 'hs-select-type-to-add-layer',
   template: require('./partials/select-type-to-add-layer-dialog.html'),
 })
 export class HsSelectTypeToAddLayerDialogComponent {

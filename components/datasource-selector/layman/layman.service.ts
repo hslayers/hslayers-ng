@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError} from 'rxjs/operators';
 
+import {HsDatasourceLayerDescriptor} from '../datasource-layer-descriptor.interface';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsUtilsService} from '../../utils/utils.service';
 
@@ -106,7 +107,10 @@ export class HsLaymanBrowserService {
    * in a common format for use in add-layers component
    * @description Gets layer metadata and returns promise which describes layer
    */
-  describeWhatToAdd(ds: HsEndpoint, layer): Promise<any> {
+  describeWhatToAdd(
+    ds: HsEndpoint,
+    layer: HsDatasourceLayerDescriptor
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       this.fillLayerMetadata(ds, layer).then(() => {
         resolve({

@@ -80,15 +80,23 @@ export const HsAddLayersComponent = {
         HsLayoutService.setMainPanel('datasource_selector');
         $scope.type = type.toUpperCase();
         $timeout(() => {
-          $rootScope.$broadcast(`ows.${type}_connecting`, url);
+          if (type == 'wms') {
+            HsEventBusService.wmsConnecting.next({uri: url});
+          } else {
+            $rootScope.$broadcast(`ows.${type}_connecting`, url);
+          }
         });
       }
     }
 
-    HsEventBusService.owsFilling.subscribe((type, url, layer) => {
+    HsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
       $scope.type = type.toLowerCase();
       $timeout(() => {
-        $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);
+        if (type == 'wms') {
+          HsEventBusService.wmsConnecting.next({uri, layer});
+        } else {
+          $rootScope.$broadcast(`ows.${type}_connecting`, uri, layer);
+        }
       });
     });
 

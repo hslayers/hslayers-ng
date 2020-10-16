@@ -42,10 +42,10 @@
                             <li [hidden]='endpoint.layers.length > 0' class='list-group-item' i18n>No results</li>
                             <li *ngFor="let layer of endpoint.layers" class="clearfix"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')"
-                                (mouseover)="hsDatasourcesService.highlightComposition(layer, true)"
-                                (mouseleave)="hsDatasourcesService.highlightComposition(layer, false)">
+                                (mouseover)="hsDatasourcesMapService.highlightComposition(layer, true)"
+                                (mouseleave)="hsDatasourcesMapService.highlightComposition(layer, false)">
                                 <span class="datasources_item">
-                                    <strong><a href="#" data-toggle="tooltip" [title]="layer.description"
+                                    <strong><a href="#" data-toggle="tooltip" [title]="layer.description || ''"
                                             (click)="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></strong>
                                 </span>
                                 <span class="float-right">
@@ -57,9 +57,13 @@
                                         data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
                                         [hidden]='endpoint.type!="micka" || hsDatasourcesService.layerRDF(endpoint, layer) == "#"'><i class="icon-share-alt"></i></a>
                                     <button type="button" class="btn btn-sm btn-primary"
-                                        (click)="addLayerToMap(endpoint, layer)" [hidden]='hsConfig.dss_disallow_add == true'
+                                        (click)="addLayerToMap(endpoint, layer)" [hidden]='hsConfig.dss_disallow_add == true || selectTypeToAddLayerVisible'
                                         data-toggle="tooltip" title="Add to map"><i
                                             class="icon-plus"></i></button>
+                                    <hs-select-type-to-add-layer [hidden]="!selectTypeToAddLayerVisible"
+                                        [layer]="layer"
+                                        [types]="whatToAddTypes"
+                                        [endpoint]="endpoint"></hs-select-type-to-add-layer>
                                 </span>
                             </li>
                         </ul>
