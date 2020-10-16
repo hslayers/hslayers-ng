@@ -49,6 +49,7 @@
                                             (click)="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></strong>
                                 </span>
                                 <span class="float-right">
+                                    <!-- refactor to hs-datasource-list-options -->
                                     <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerDownload(endpoint, layer)'
                                         data-toggle="tooltip" title="Download"
                                         [hidden]='hsDatasourcesService.layerDownload(endpoint,layer) == "#"'><i
@@ -64,6 +65,7 @@
                                         [layer]="layer"
                                         [types]="whatToAddTypes"
                                         [endpoint]="endpoint"></hs-select-type-to-add-layer>
+                                    <!-- refactor to hs-datasource-list-options -->
                                 </span>
                             </li>
                         </ul>
