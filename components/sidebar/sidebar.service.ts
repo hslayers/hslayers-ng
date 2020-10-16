@@ -192,7 +192,7 @@ export class HsSidebarService {
       },
       {
         panel: 'language',
-        module: 'HsLanguageController',
+        module: 'hs.language',
         order: 13,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.LANGUAGE'),
@@ -203,6 +203,18 @@ export class HsSidebarService {
         content: () => {
           return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
         },
+      },
+      {
+        panel: 'feature_table',
+        module: 'hs.feature-table',
+        order: 14,
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.FEATURE_TABLE'
+          ),
+        icon: 'icon-indexmanager',
       },
       {
         panel: 'mobile_settings',
