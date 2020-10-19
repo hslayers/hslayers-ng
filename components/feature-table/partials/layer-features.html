@@ -1,7 +1,4 @@
 <h3 style="text-align: center">{{layer.title}}</h3>
-<div style="text-align: right">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</button>
-</div>
 <table style="width:100%;" *ngFor="let feature of featureAttributes">
     <thead>
         <tr style="text-align: center">
@@ -11,7 +8,15 @@
     <tbody>
         <tr *ngFor="let attr of feature.attributes">
             <td class="tdbreak">{{attr.name}}</td>
-            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">{{attr.value}}</td>
+            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
+                <span *ngIf="!attr.sanitizedValue && !attr.value.operations">
+                    {{attr.value}}
+                </span>
+                <span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span>
+                <div *ngIf="attr.value.operations">
+                    <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)">{{operation.action}}</a>
+                </div>
+            </td>
         </tr>
         <tr [hidden]="!showFeatureStats" class="tdbreak" *ngFor="let stat of feature.stats">
             <td class="tdbreak">{{stat.name}}</td>
@@ -19,3 +24,7 @@
         </tr>
     </tbody>
 </table>
+<p class="p-2">
+    <small><a href="#" (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</a></small>
+</p>
+<hr/>
