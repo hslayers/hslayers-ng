@@ -70,7 +70,7 @@ export class HsSensorsUnitListItemComponent {
   }
 
   translate(text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonexisting(
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(
       'SENSORS',
       text
     );
