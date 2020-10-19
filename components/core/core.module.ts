@@ -56,7 +56,14 @@ export class WebpackTranslateLoader implements TranslateLoader {
       from(import(`../../assets/locales/${lang}.json`)),
       from(
         new Promise((resolve) => {
-          resolve(this.HsConfig.translationOverrides[lang] || {});
+          if (
+            this.HsConfig.translationOverrides &&
+            this.HsConfig.translationOverrides[lang]
+          ) {
+            resolve(this.HsConfig.translationOverrides[lang]);
+          } else {
+            resolve({});
+          }
         })
       ),
     ];
