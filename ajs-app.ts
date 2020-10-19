@@ -8,7 +8,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import View from 'ol/View';
 import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
-import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
 import {Vector} from 'ol/source';
@@ -40,6 +40,7 @@ window.ol = {
     Fill,
     Stroke,
     Circle,
+    Icon,
   },
   View,
   proj,
