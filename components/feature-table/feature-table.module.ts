@@ -27,7 +27,11 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     TranslateModule,
     NgbModule,
   ],
-  exports: [HsFeatureTableComponent, HsLayerFeaturesComponent],
+  exports: [
+    HsFeatureTableComponent,
+    HsLayerFeaturesComponent,
+    HsFeatureFilterPipe,
+  ],
   providers: [HsFeatureTableService, TranslateStore],
   entryComponents: [HsFeatureTableComponent, HsLayerFeaturesComponent],
 })
