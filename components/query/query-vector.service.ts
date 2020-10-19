@@ -240,12 +240,19 @@ export class HsQueryVectorService {
         attributes.push(obj);
       }
     });
-    if (
-      this.HsMapService.getLayerForFeature(feature)?.get('customInfoTemplate')
-    ) {
-      customInfoTemplate = this.HsMapService.getLayerForFeature(feature).get(
-        'customInfoTemplate'
-      );
+    const layer = this.HsMapService.getLayerForFeature(feature);
+    if (layer?.get('customInfoTemplate')) {
+      customInfoTemplate = layer.get('customInfoTemplate');
+    }
+    if (layer?.get('virtualAttributes')) {
+      const virtualAttributes = layer.get('virtualAttributes');
+      for (const key of Object.keys(virtualAttributes)) {
+        const obj = {
+          name: key,
+          value: virtualAttributes[key](feature),
+        };
+        attributes.push(obj);
+      }
     }
     if (!feature.get('features')) {
       const featureDescription = {
