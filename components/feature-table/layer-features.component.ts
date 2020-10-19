@@ -1,8 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import Feature from 'ol/Feature';
 import {Component, Input, OnInit} from '@angular/core';
 import {HsFeatureTableService} from './feature-table.service';
+import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
+
+type Operation = {
+  action: 'zoom to' | 'delete';
+  feature: Feature;
+};
+
 /**
  * @memberof hs.layerFeatures
  * @ngdoc component
@@ -33,7 +41,8 @@ export class HsLayerFeaturesComponent implements OnInit {
   showFeatureStats = false; //Toggle for showing feature statistics
   constructor(
     private HsFeatureTableService: HsFeatureTableService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsMapService: HsMapService
   ) {}
   /**
    * @ngdoc method
@@ -72,6 +81,18 @@ export class HsLayerFeaturesComponent implements OnInit {
     );
     if (layerFeatureAttributes) {
       this.featureAttributes = layerFeatureAttributes;
+    }
+  }
+
+  executeOperation(operation: Operation): void {
+    switch (operation.action) {
+      case 'zoom to':
+        const extent = operation.feature.getGeometry().getExtent();
+        this.HsMapService.map
+          .getView()
+          .fit(extent, this.HsMapService.map.getSize());
+        break;
+      default:
     }
   }
 }

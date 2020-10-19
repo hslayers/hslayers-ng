@@ -317,6 +317,6 @@
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
   },
   "FEATURE_TABLE": {
-    "showFeatureStats": "Rādīt objektu statistikas datus"
+    "showFeatureStats": "Izvērst"
   }
 }
