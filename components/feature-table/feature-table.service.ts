@@ -8,6 +8,7 @@ import {Layer} from 'ol/layer';
   providedIn: 'root',
 })
 export class HsFeatureTableService {
+  sortByAttributeNames: any;
   constructor(
     private HsUtilsService: HsUtilsService,
     private HsQueryVectorService: HsQueryVectorService
@@ -54,6 +55,7 @@ export class HsFeatureTableService {
   getFeatureAttributes(layer: Layer): any {
     let features = [];
     const featureAttributes = [];
+    this.sortByAttributeNames = ['name'];
     if (layer.getSource().getSource) {
       features = layer.getSource().getSource().getFeatures();
     } else {
@@ -75,6 +77,7 @@ export class HsFeatureTableService {
           });
           attributesFromQuery = attributesFromQuery[0];
           featureAttributes.push(attributesFromQuery);
+          this.ceateSortingValueArray(attributesFromQuery);
         }
       }
       return featureAttributes;
@@ -109,5 +112,27 @@ export class HsFeatureTableService {
    */
   attributesWithoutFeatureName(attributes: any): any {
     return attributes.filter((attr) => attr.name !== 'name');
+  }
+  ceateSortingValueArray(feature): void {
+    if (feature?.attributes && feature.attributes.length > 0) {
+      this.getSortingValueNames(feature.attributes);
+    }
+  }
+  getSortingValueNames(attributes: Array<unknown>): void {
+    if (Array.isArray(attributes)) {
+      for (const attribute of attributes) {
+        if (
+          this.sortByAttributeNames.length > 0 &&
+          this.sortByAttributeNames !== undefined
+        ) {
+          this.sortByAttributeNames.filter((name) => name === attribute.name)
+            .length == 0
+            ? this.sortByAttributeNames.push(attribute.name)
+            : [];
+        } else {
+          this.sortByAttributeNames.push(attribute.name);
+        }
+      }
+    }
   }
 }
