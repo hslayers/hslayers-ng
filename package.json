@@ -140,6 +140,7 @@
     "cesium": "^1.71.0",
     "clipboard": "^2.0.4",
     "cors-anywhere": "^0.4.1",
+    "deepmerge": "^4.2.2",
     "dynamic-pub-path-plugin": "0.0.4",
     "gyronorm": "^2.0.6",
     "hammerjs": "^2.0.8",

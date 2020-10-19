@@ -1,3 +1,4 @@
+import * as merge from 'deepmerge';
 import {
   HsAddLayersVectorServiceProvider,
   HsCommonEndpointsServiceProvider,
@@ -9,6 +10,7 @@ import {
   HsWmsGetCapabilitiesServiceProvider,
   HsWmtsGetCapabilitiesServiceProvider,
 } from '../../ajs-upgraded-providers';
+import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
 import {HsDatasourcesModule} from '../datasource-selector';
@@ -36,17 +38,30 @@ import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {Observable, forkJoin, from} from 'rxjs';
 import {
   TranslateLoader,
   TranslateModule,
   TranslateService,
   TranslateStore,
 } from '@ngx-translate/core';
-import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 export class WebpackTranslateLoader implements TranslateLoader {
+  constructor(private HsConfig: HsConfig) {}
+
   getTranslation(lang: string): any {
-    return from(import(`../../assets/locales/${lang}.json`));
+    //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
+    const requests: Observable<any>[] = [
+      from(import(`../../assets/locales/${lang}.json`)),
+      from(
+        new Promise((resolve) => {
+          resolve(this.HsConfig.translationOverrides || {});
+        })
+      ),
+    ];
+    const tmp = forkJoin(requests).pipe(map((response) => merge.all(response)));
+    return tmp;
   }
 }
 
@@ -75,8 +90,11 @@ export class WebpackTranslateLoader implements TranslateLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: WebpackTranslateLoader,
+        useFactory: (HsConfig: HsConfig) => {
+          return new WebpackTranslateLoader(HsConfig);
+        },
         multi: false,
+        deps: [HsConfig],
       },
     }),
     HsInfoModule,
