@@ -9,6 +9,9 @@ import {Layer} from 'ol/layer';
 })
 export class HsFeatureTableService {
   sortByAttributeNames: any;
+  sortReverse = false;
+  lastSortValue = '';
+  featureAttributeList: any = [];
   constructor(
     private HsUtilsService: HsUtilsService,
     private HsQueryVectorService: HsQueryVectorService
@@ -50,9 +53,8 @@ export class HsFeatureTableService {
    * @ngdoc method
    * @name HsFeatureTableService#getFeatureAttributes
    * @description Search all layers feature attributes and map them into new objects for html table
-   * @returns {any} Array of feature attributes
    */
-  getFeatureAttributes(layer: Layer): any {
+  getFeatureAttributes(layer: Layer): void {
     let features = [];
     const featureAttributes = [];
     this.sortByAttributeNames = ['name'];
@@ -80,7 +82,7 @@ export class HsFeatureTableService {
           this.ceateSortingValueArray(attributesFromQuery);
         }
       }
-      return featureAttributes;
+      this.featureAttributeList = featureAttributes;
     }
   }
   /**
@@ -134,5 +136,61 @@ export class HsFeatureTableService {
         }
       }
     }
+  }
+  sortFeaturesBy(valueName) {
+    if (
+      this.featureAttributeList !== undefined &&
+      this.featureAttributeList.length > 1
+    ) {
+      this.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
+        ? (this.sortReverse = !this.sortReverse)
+        : (this.sortReverse = false);
+      this.featureAttributeList = this.featureAttributeList.sort((a, b) =>
+        this.sortFeatures(a, b, valueName)
+      );
+    }
+  }
+  sortFeatures(a, b, valueName) {
+    let aFeature, bFeature: any;
+    let position: number;
+    if (valueName === 'name') {
+      //check if table is being sorted by name
+      aFeature = a[valueName];
+      bFeature = b[valueName];
+    } else {
+      aFeature = this.getSortingValue(a.attributes, valueName); //get requested attribute value
+      bFeature = this.getSortingValue(b.attributes, valueName);
+    }
+    if (aFeature === null) {
+      position = 1;
+    }
+    if (bFeature === null) {
+      position = -1;
+    }
+    if (typeof aFeature == 'string' && typeof bFeature == 'string') {
+      position =
+        aFeature.charAt(0) > bFeature.charAt(0)
+          ? 1
+          : aFeature.charAt(0) < bFeature.charAt(0)
+          ? -1
+          : 0;
+    }
+    if (typeof aFeature == 'number' && typeof bFeature == 'number') {
+      position = aFeature - bFeature;
+    }
+    this.sortReverse ? (position = position * -1) : position;
+    this.lastSortValue = valueName;
+    return position;
+  }
+  getSortingValue(attributes: any, valueName: string): string | number {
+    let value = attributes //get requested attribute value
+      .filter((attr) => attr.name == valueName)
+      .map((attr) => attr.value);
+    if (value.length == 0 || value === undefined) {
+      value = null;
+    } else {
+      value = value[0];
+    }
+    return value;
   }
 }

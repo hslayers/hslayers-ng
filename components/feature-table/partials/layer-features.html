@@ -5,13 +5,11 @@
             <button class="btn btn-sm btn-outline-dark" ngbDropdownToggle title="Sort features by value">Sort By</button>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <button *ngFor="let valueName of HsFeatureTableService.sortByAttributeNames" ngbDropdownItem
-                    (click)="sortFeaturesBy(valueName)">
+                    (click)="HsFeatureTableService.sortFeaturesBy(valueName)">
                     {{valueName}}
                 </button>
             </div>
         </div>
-        <button type="button" class="btn btn-sm btn-outline-dark"
-            (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</button>
     </div>
 </div>
 <div class="form-group mt-1 mb-1">
@@ -20,10 +18,10 @@
             name="FeatureName">
     </div>
 </div>
-<table style="width:100%;" *ngFor="let feature of featureAttributes | featureFilter: searchedFeatures">
+<table style="width:100%;" *ngFor="let feature of HsFeatureTableService.featureAttributeList | featureFilter: searchedFeatures">
     <thead>
         <tr style="text-align: center">
-            <th colspan="2"><a style="cursor: pointer;" (click)="zoomToFeature(feature)">{{feature.name}}</a></th>
+            <th colspan="2">{{feature.name}}</th>
         </tr>
     </thead>
     <tbody>
