@@ -145,7 +145,6 @@
       "star": "Zvaigzne"
     },
     "User generated": "Lietotāja ģenerēti",
-    "Other": "Citi",
     "mapContent": "Kartes saturs",
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
@@ -287,7 +286,6 @@
     "measure": "mēra",
     "phenomena": "Parādība",
     "sensors": "Sensori",
-    "Sensors": "Sensori",
     "Filter": "Filtrs",
     "sensorUnit": "Sensoru vienība"
   },
