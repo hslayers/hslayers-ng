@@ -1,10 +1,15 @@
 import {Component, Input} from '@angular/core';
+import {HsLanguageService} from '../language/language.service';
 @Component({
   selector: 'hs-layer-manager-folder',
   template: require('./partials/folder.html'),
 })
 export class HsLayerManagerFolderComponent {
   @Input() folder: any;
+
+  constructor(
+    private HsLanguageService: HsLanguageService /* Used in template */
+  ) {}
 
   /**
    * @ngdoc method
