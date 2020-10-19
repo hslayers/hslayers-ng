@@ -75,9 +75,9 @@ export class HsLanguageService {
     return this.TranslateService.instant(str, params);
   }
 
-  getTranslationIgnoreNonexisting(module: string, text: string): string {
+  getTranslationIgnoreNonExisting(module: string, text: string): string {
     const tmp = this.getTranslation(module + '.' + text);
-    if (tmp.indexOf(module + '.') > -1) {
+    if (tmp.includes(module + '.')) {
       return text;
     }
     return tmp;

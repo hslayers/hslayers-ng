@@ -99,7 +99,7 @@
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary"
                     (click)="value.visible = !value.visible">
-                    <span>{{HsLanguageService.getTranslationIgnoreNonexisting('LAYERMANAGER', value.name)}}&nbsp;</span>
+                    <span>{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
