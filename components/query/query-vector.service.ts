@@ -16,6 +16,12 @@ import {WKT} from 'ol/format';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
+type AttributeValuePair = {
+  name;
+  value;
+  sanitizedValue?;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -222,21 +228,11 @@ export class HsQueryVectorService {
           tmp = tmp.concat(this.getFeatureAttributes(subFeature));
         }
       } else {
-        let obj;
-        if ((typeof feature.get(key)).toLowerCase() == 'string') {
-          obj = {
-            name: key,
-            value: feature.get(key),
-            sanitizedValue: this.DomSanitizer.bypassSecurityTrustHtml(
-              feature.get(key)
-            ),
-          };
-        } else {
-          obj = {
-            name: key,
-            value: feature.get(key),
-          };
-        }
+        const obj: AttributeValuePair = {
+          name: key,
+          value: feature.get(key),
+        };
+        obj.sanitizedValue = this.sanitizeAttributeValue(feature.get(key));
         attributes.push(obj);
       }
     });
@@ -247,10 +243,12 @@ export class HsQueryVectorService {
     if (layer?.get('virtualAttributes')) {
       const virtualAttributes = layer.get('virtualAttributes');
       for (const key of Object.keys(virtualAttributes)) {
-        const obj = {
+        const value = virtualAttributes[key](feature);
+        const obj: AttributeValuePair = {
           name: key,
-          value: virtualAttributes[key](feature),
+          value,
         };
+        obj.sanitizedValue = this.sanitizeAttributeValue(value);
         attributes.push(obj);
       }
     }
@@ -269,5 +267,13 @@ export class HsQueryVectorService {
       tmp.push(featureDescription);
     }
     return tmp;
+  }
+
+  sanitizeAttributeValue(value) {
+    if ((typeof value).toLowerCase() == 'string') {
+      return this.DomSanitizer.bypassSecurityTrustHtml(value);
+    } else {
+      return;
+    }
   }
 }
