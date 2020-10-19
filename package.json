@@ -2,10 +2,10 @@
   "name": "hslayers-ng",
   "private": false,
   "version": "1.25.0",
-  "description": "Hslayers-ng mapping library",
+  "description": "HSLayers-NG mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",
-  "main": "dist/hslayers-ng.js",
+  "main": "dist/hslayers-ng.main.js",
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
