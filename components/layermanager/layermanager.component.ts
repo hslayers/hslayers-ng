@@ -14,6 +14,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
+import { HsLanguageService } from '../language/language.service';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -87,7 +88,8 @@ export class HsLayerManagerComponent implements OnInit {
     private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerSynchronizerService: HsLayerSynchronizerService,
     private HsEventBusService: HsEventBusService,
-    private HsDialogContainerService: HsDialogContainerService
+    private HsDialogContainerService: HsDialogContainerService,
+    private HsLanguageService: HsLanguageService
   ) {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
