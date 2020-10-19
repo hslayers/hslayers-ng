@@ -44,29 +44,7 @@
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')"
                                 (mouseover)="hsDatasourcesMapService.highlightComposition(layer, true)"
                                 (mouseleave)="hsDatasourcesMapService.highlightComposition(layer, false)">
-                                <span class="datasources_item">
-                                    <strong><a href="#" data-toggle="tooltip" [title]="layer.description || ''"
-                                            (click)="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></strong>
-                                </span>
-                                <span class="float-right">
-                                    <!-- refactor to hs-datasource-list-options -->
-                                    <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerDownload(endpoint, layer)'
-                                        data-toggle="tooltip" title="Download"
-                                        [hidden]='hsDatasourcesService.layerDownload(endpoint,layer) == "#"'><i
-                                            class="icon-download"></i></a>
-                                    <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerRDF(endpoint, layer)'
-                                        data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"
-                                        [hidden]='endpoint.type!="micka" || hsDatasourcesService.layerRDF(endpoint, layer) == "#"'><i class="icon-share-alt"></i></a>
-                                    <button type="button" class="btn btn-sm btn-primary"
-                                        (click)="addLayerToMap(endpoint, layer)" [hidden]='hsConfig.dss_disallow_add == true || selectTypeToAddLayerVisible'
-                                        data-toggle="tooltip" title="Add to map"><i
-                                            class="icon-plus"></i></button>
-                                    <hs-select-type-to-add-layer [hidden]="!selectTypeToAddLayerVisible"
-                                        [layer]="layer"
-                                        [types]="whatToAddTypes"
-                                        [endpoint]="endpoint"></hs-select-type-to-add-layer>
-                                    <!-- refactor to hs-datasource-list-options -->
-                                </span>
+                                <hs-datasource-list-item [layer]="layer" [endpoint]="endpoint"></hs-datasource-list-item>
                             </li>
                         </ul>
                     </div>

@@ -15,17 +15,14 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-datasource-selector',
-  template: require('./partials/datasource_selector.html'),
+  template: require('./partials/datasource-selector.html'),
 })
 export class HsDatasourcesComponent {
-  metadataModalVisible;
-  selectTypeToAddLayerVisible: boolean;
   data;
   advancedSearch;
   selected_layer;
   selected_ds;
   metadata;
-  whatToAddTypes;
 
   constructor(
     private hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -223,29 +220,5 @@ export class HsDatasourcesComponent {
       //this.HsLogService.error('Failed to create metadataDialog.');
       // continue regardless of error
     }
-  }
-
-  /**
-   * @function addLayerToMap
-   * @param {object} ds Datasource of selected layer
-   * @param {object} layer Metadata record of selected layer
-   * @param {string} type One of 'WMS', 'WFS', 'KML', 'GEOJSON'
-   * @description Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
-   */
-  async addLayerToMap(
-    ds: HsEndpoint,
-    layer: HsDatasourceLayerDescriptor,
-    type?: string
-  ): Promise<void> {
-    const selectedType = await this.hsDatasourcesService.addLayerToMap(
-      ds,
-      layer,
-      type
-    );
-    if (Array.isArray(selectedType)) {
-      this.whatToAddTypes = selectedType;
-      this.selectTypeToAddLayerVisible = true;
-    }
-    this.metadataModalVisible = false;
   }
 }
