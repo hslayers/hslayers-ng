@@ -39,6 +39,9 @@ export class HsLayerFeaturesComponent implements OnInit {
   @Input('layer') layer: any; //Input layer from HsConfig.layersInFeatureTable property array
   featureAttributes: any = []; //mapped each layer features attribute array
   showFeatureStats = false; //Toggle for showing feature statistics
+  searchedFeatures = '';
+  sortReverse = false;
+  lastSortValue = '';
   constructor(
     private HsFeatureTableService: HsFeatureTableService,
     private HsUtilsService: HsUtilsService,
@@ -83,7 +86,6 @@ export class HsLayerFeaturesComponent implements OnInit {
       this.featureAttributes = layerFeatureAttributes;
     }
   }
-
   executeOperation(operation: Operation): void {
     switch (operation.action) {
       case 'zoom to':
@@ -94,5 +96,61 @@ export class HsLayerFeaturesComponent implements OnInit {
         break;
       default:
     }
+  }
+  zoomToFeature(feature) {
+    console.log('Zooming' + feature.name);
+  }
+  sortFeaturesBy(valueName) {
+    if (
+      this.featureAttributes !== undefined &&
+      this.featureAttributes.length > 1
+    ) {
+      this.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
+        ? (this.sortReverse = !this.sortReverse)
+        : (this.sortReverse = false);
+      this.featureAttributes = this.featureAttributes.sort((a, b) => {
+        let aFeature, bFeature: any;
+        let position: number;
+        if (valueName === 'name') {
+          //check if table is being sorted by name
+          aFeature = a[valueName];
+          bFeature = b[valueName];
+        } else {
+          aFeature = this.getSortingValue(a.attributes, valueName); //get requested attribute value
+          bFeature = this.getSortingValue(b.attributes, valueName);
+        }
+        if (aFeature === null) {
+          position = 1;
+        }
+        if (bFeature === null) {
+          position = -1;
+        }
+        if (typeof aFeature == 'string' && typeof bFeature == 'string') {
+          position =
+            aFeature.charAt(0) > bFeature.charAt(0)
+              ? 1
+              : aFeature.charAt(0) < bFeature.charAt(0)
+              ? -1
+              : 0;
+        }
+        if (typeof aFeature == 'number' && typeof bFeature == 'number') {
+          position = aFeature - bFeature;
+        }
+        this.sortReverse ? (position = position * -1) : position;
+        return position;
+      });
+      this.lastSortValue = valueName;
+    }
+  }
+  getSortingValue(attributes: any, valueName: string): string | number {
+    let value = attributes //get requested attribute value
+      .filter((attr) => attr.name == valueName)
+      .map((attr) => attr.value);
+    if (value.length == 0 || value === undefined) {
+      value = null;
+    } else {
+      value = value[0];
+    }
+    return value;
   }
 }
