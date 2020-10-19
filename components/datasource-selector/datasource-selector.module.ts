@@ -5,10 +5,12 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsAddLayersComponent} from '../add-layers/add-layers.upgraded.component'; //TODO: to be removed and redeclared in HsAddLayersModule
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
+import {HsDatasourceListItemComponent} from './datasource-list-item.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
 import {HsDatasourcesService} from './datasource-selector.service';
@@ -19,8 +21,6 @@ import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsMickaSuggestionsDialogComponent} from './micka/micka-suggestions-dialog.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsSelectTypeToAddLayerDialogComponent} from './select-type-to-add-layer-dialog.component';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -31,7 +31,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsMetadataDialogComponent,
     HsMickaFilterComponent,
     HsMickaSuggestionsDialogComponent,
-    HsSelectTypeToAddLayerDialogComponent,
+    HsDatasourceListItemComponent,
     EndpointsWithDatasourcesPipe,
   ],
   imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
@@ -41,7 +41,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsMetadataDialogComponent,
     HsMickaFilterComponent,
     HsMickaSuggestionsDialogComponent,
-    HsSelectTypeToAddLayerDialogComponent,
+    HsDatasourceListItemComponent,
     EndpointsWithDatasourcesPipe,
   ],
   providers: [

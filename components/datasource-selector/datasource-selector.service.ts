@@ -191,33 +191,11 @@ export class HsDatasourcesService {
     if (!whatToAdd) {
       return;
     }
-    if (type !== undefined) {
+    if (type) {
       whatToAdd.type = type;
     }
     if (Array.isArray(whatToAdd.type)) {
       return whatToAdd.type;
-      //TODO: test it! And then delete the lines below
-      /*this.hsDialogContainerService.create(
-          HsSelectTypeToAddLayerDialogComponent,
-          {
-            types: whatToAdd.type,
-            layer,
-            endpoint: ds,
-          }
-        );*/
-      /*const scope = this.$rootScope.$new();
-        Object.assign(scope, {
-          types: whatToAdd.type,
-          layer,
-          endpoint: ds,
-        });
-        const el = angular.element(
-          '<hs-select-type-to-add-layer-dialog layer="layer" endpoint="endpoint" types="types"></hs-select-type-to-add-layer-dialog>'
-        );
-        this.hsLayoutService.contentWrapper
-          .querySelector('.hs-dialog-area')
-          .appendChild(el[0]);
-        this.$compile(el)(scope);*/
     }
     if (whatToAdd.type == 'WMS') {
       this.datasetSelect('OWS');
