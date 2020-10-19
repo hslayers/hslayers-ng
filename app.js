@@ -61,7 +61,7 @@ import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
 import {Vector} from 'ol/source';
-import {Style, Fill, Stroke, Circle} from 'ol/style';
+import {Style, Fill, Stroke, Circle, Icon} from 'ol/style';
 import {register} from 'ol/proj/proj4';
 
 window.ol = {
@@ -89,7 +89,8 @@ window.ol = {
     Style,
     Fill,
     Stroke,
-    Circle
+    Circle,
+    Icon
   },
   View,
   proj
