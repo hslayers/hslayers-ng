@@ -71,7 +71,15 @@ export class HsLanguageService {
    * @param params
    * @returns {string} Translation
    */
-  getTranslation(str: string, params?: object): string {
+  getTranslation(str: string, params?: any): string {
     return this.TranslateService.instant(str, params);
+  }
+
+  getTranslationIgnoreNonexisting(module: string, text: string): string {
+    const tmp = this.getTranslation(module + '.' + text);
+    if (tmp.indexOf(module + '.') > -1) {
+      return text;
+    }
+    return tmp;
   }
 }
