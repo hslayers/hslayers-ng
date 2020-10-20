@@ -10,7 +10,7 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
   template: require('./partials/unit-dialog.html'),
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent {
-  customInterval = {name: 'Custom', fromTime: new Date()};
+  customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   loaderImage = require('../../img/ajax-loader.gif');
 
   constructor(
@@ -56,9 +56,13 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
    */
   timeButtonClicked(interval): void {
     this.HsSensorsUnitDialogService.currentInterval = interval;
-    this.customInterval.fromTime = this.HsSensorsUnitDialogService.getTimeForInterval(
+    const momentInterval = this.HsSensorsUnitDialogService.getTimeForInterval(
       interval
-    ).toDate();
+    );
+    Object.assign(this.customInterval, {
+      fromTime: momentInterval.from_time.toDate(),
+      toTime: momentInterval.to_time.toDate(),
+    });
     this.HsSensorsUnitDialogService.getObservationHistory(
       this.HsSensorsUnitDialogService.unit,
       interval

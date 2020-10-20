@@ -59,19 +59,35 @@ export class HsSensorsUnitDialogService {
     }
   }
 
-  getTimeForInterval(interval) {
-    if (interval.fromTime != undefined) {
+  getTimeForInterval(interval): {from_time; to_time} {
+    const tmp = {
+      from_time: moment().subtract(interval.amount, interval.unit),
+      to_time: moment(),
+    };
+    this.convertPartToMoment('from', interval, tmp);
+    this.convertPartToMoment('to', interval, tmp);
+    return tmp;
+  }
+
+  private convertPartToMoment(
+    part: string,
+    interval: any,
+    result: {
+      from_time;
+      to_time;
+    }
+  ) {
+    const momentTime = moment(interval[part + 'Time']);
+    if (interval[part + 'Time'] != undefined) {
       if (
-        interval.fromTime.year &&
-        interval.fromTime.month &&
-        interval.fromTime.day
+        interval[part + 'Time'].year &&
+        interval[part + 'Time'].month &&
+        interval[part + 'Time'].day
       ) {
-        return moment(interval.fromTime).subtract(1, 'month');
+        result[part + '_time'] = momentTime.subtract(1, 'month');
       } else {
-        return moment(interval.fromTime);
+        result[part + '_time'] = momentTime;
       }
-    } else {
-      return moment().subtract(interval.amount, interval.unit);
     }
   }
 
@@ -93,15 +109,20 @@ export class HsSensorsUnitDialogService {
         `${this.endpoint.url}/senslog-lite/rest/observation`
       );
       const time = this.getTimeForInterval(interval);
-      const from_time = `${time.format('YYYY-MM-DD')} ${time.format(
-        'HH:mm:ssZ'
-      )}`;
+      const from_time = `${time.from_time.format(
+        'YYYY-MM-DD'
+      )} ${time.from_time.format('HH:mm:ssZ')}`;
+      const to_time = `${time.to_time.format(
+        'YYYY-MM-DD'
+      )} ${time.to_time.format('HH:mm:ssZ')}`;
       interval.loading = true;
       this.http
         .get(
           `${url}?user_id=${encodeURIComponent(
             this.endpoint.user_id
-          )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(from_time)}`
+          )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(
+            from_time
+          )}&to_time=${encodeURIComponent(to_time)}`
         )
         .subscribe(
           (response) => {
