@@ -319,6 +319,10 @@
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
   },
   "FEATURE_TABLE": {
-    "showFeatureStats": "Izvērst"
+    "showFeatureStats": "Izvērst",
+    "sortFeaturesByValue": "Kārtot pēc grafisko objektu vērtības",
+    "sortBy": "Kārtot pēc",
+    "zoom to": "Pietuvināt",
+    "delete": "dzēst"
   }
 }

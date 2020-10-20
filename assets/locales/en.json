@@ -319,6 +319,10 @@
     "measureLinesAndPolygon": "Measure lines and polygon"
   },
   "FEATURE_TABLE": {
-    "showFeatureStats": "Expand"
+    "showFeatureStats": "Expand",
+    "sortFeaturesByValue": "Sort features by value",
+    "sortBy": "Sort by",
+    "zoom to": "zoom to",
+    "delete": "delete"
   }
 }

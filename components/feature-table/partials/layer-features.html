@@ -2,9 +2,9 @@
 <div style="text-align: right">
     <div class="btn-group" role="group">
         <div class="btn-group" ngbDropdown role="group" aria-label="Select sorting value">
-            <button class="btn btn-sm btn-outline-dark" ngbDropdownToggle title="Sort features by value">Sort By</button>
+            <button class="btn btn-sm btn-outline-dark" ngbDropdownToggle [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">{{'FEATURE_TABLE.sortBy' | translate}}</button>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <button *ngFor="let valueName of HsFeatureTableService.sortByAttributeNames" ngbDropdownItem
+                <button *ngFor="let valueName of HsFeatureTableService.sortingByButtonList" ngbDropdownItem
                     (click)="HsFeatureTableService.sortFeaturesBy(valueName)">
                     {{valueName}}
                 </button>
@@ -14,7 +14,7 @@
 </div>
 <div class="form-group mt-1 mb-1">
     <div class="input-group" style="margin-bottom: 4px">
-        <input type="text" class="form-control hs-filter" placeholder="Filter:" [(ngModel)]="searchedFeatures"
+        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="searchedFeatures"
             name="FeatureName">
     </div>
 </div>
@@ -33,7 +33,7 @@
                 </span>
                 <span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span>
                 <div *ngIf="attr.value.operations">
-                    <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)">{{operation.action}}</a>
+                    <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)">{{translate(operation.action)}}</a>
                 </div>
             </td>
         </tr>

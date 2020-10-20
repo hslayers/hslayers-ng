@@ -2,9 +2,9 @@
 import Feature from 'ol/Feature';
 import {Component, Input, OnInit} from '@angular/core';
 import {HsFeatureTableService} from './feature-table.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
 type Operation = {
   action: 'zoom to' | 'delete';
   feature: Feature;
@@ -36,13 +36,13 @@ type Operation = {
 })
 export class HsLayerFeaturesComponent implements OnInit {
   @Input('layer') layer: any; //Input layer from HsConfig.layersInFeatureTable property array
-  featureAttributes: any = []; //mapped each layer features attribute array
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
   constructor(
     private HsFeatureTableService: HsFeatureTableService,
     private HsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private HsLanguageService: HsLanguageService
   ) {}
   /**
    * @ngdoc method
@@ -69,11 +69,11 @@ export class HsLayerFeaturesComponent implements OnInit {
     }
   }
   /**
-   * @param layer
+   * @param operation Action for html table
    * @ngdoc method
-   * @name HsLayerFeaturesComponent#getFeatureAttributes
+   * @name HsLayerFeaturesComponent#executeOperation
    * @public
-   * @description Get all layer feature attributes and stats
+   * @description zoom to feature from html table after triggering zoom action
    */
   executeOperation(operation: Operation): void {
     switch (operation.action) {
@@ -85,5 +85,12 @@ export class HsLayerFeaturesComponent implements OnInit {
         break;
       default:
     }
+  }
+  translate(text: string): string {
+    const translation: string = this.HsLanguageService.getTranslationIgnoreNonExisting(
+      'FEATURE_TABLE',
+      text
+    );
+    return translation;
   }
 }
