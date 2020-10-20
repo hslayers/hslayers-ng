@@ -136,9 +136,6 @@ export class HsCompositionsComponent implements OnInit {
 
   ngOnInit() {
     this.getPageSize();
-    this.$window.addEventListener('resize', () => {
-      this.getPageSize();
-    });
     this.HsEventBusService.layoutResizes.subscribe(() => {
       this.getPageSize();
     });
