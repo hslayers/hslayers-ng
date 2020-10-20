@@ -25,7 +25,8 @@ export default function (
   HsLayerUtilsService,
   $window,
   HsMeasureService,
-  HsUtilsService
+  HsUtilsService,
+  HsQueryWmsService
 ) {
   'ngInject';
   const me = this;
