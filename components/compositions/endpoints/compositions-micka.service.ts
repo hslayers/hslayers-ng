@@ -72,72 +72,80 @@ export class HsCompositionsMickaService {
     return tmp;
   }
 
-  loadList(endpoint, params, bbox, extentLayer) {
-    endpoint.compositionsPaging.loaded = false;
-    if (params.sortBy == undefined) {
-      params.sortBy = 'title';
-    }
-    if (params.start == undefined) {
-      params.start = endpoint.compositionsPaging.start;
-    }
-    if (params.limit == undefined || isNaN(params.limit)) {
-      params.limit = endpoint.compositionsPaging.limit;
-    }
+  getCompositions(endpoint, params, bbox) {
     return new Promise((resolve, reject) => {
+      this.listLoading = this.$http
+        .get(this.getCompositionsQueryUrl(endpoint, params, bbox))
+        .subscribe((response: any) => {
+          resolve(response);
+        });
+    });
+  }
+
+  loadList(endpoint, params, bbox, extentLayer) {
+    return new Promise((resolve, reject) => {
+      endpoint.compositionsPaging.loaded = false;
+      if (params.sortBy == undefined) {
+        params.sortBy = 'title';
+      }
+      if (params.start == undefined) {
+        params.start = endpoint.compositionsPaging.start;
+      }
+      if (params.limit == undefined || isNaN(params.limit)) {
+        params.limit = endpoint.compositionsPaging.limit;
+      }
       if (this.listLoading) {
         this.listLoading.unsubscribe();
         delete this.listLoading;
       }
-      this.listLoading = this.$http
-        .get(this.getCompositionsQueryUrl(endpoint, params, bbox))
-        .subscribe(
-          (response: any) => {
-            endpoint.compositionsPaging.loaded = true;
-            endpoint.compositions = response.records;
-            if (response.records && response.records.length > 0) {
-              endpoint.compositionsPaging.matched = response.matched;
+      this.getCompositions(endpoint, params, bbox).then(
+        (response: any) => {
+          endpoint.compositionsPaging.loaded = true;
+          endpoint.compositions = response.records;
+          if (response.records && response.records.length > 0) {
+            endpoint.compositionsPaging.matched = response.matched;
+          } else {
+            endpoint.compositionsPaging.matched = 0;
+          }
+          //TODO: Needs refactoring
+          endpoint.compositionsPaging.next = response.next;
+          const mapExtent = this.HsMapService.getMapExtent();
+          for (const record of endpoint.compositions) {
+            const attributes: any = {
+              record: record,
+              hs_notqueryable: true,
+              highlighted: false,
+              title: record.title || record.name,
+            };
+            record.editable = false;
+            record.endpoint = endpoint;
+            if (record.thumbnail == undefined) {
+              record.thumbnail =
+                endpoint.url + '?request=loadthumb&id=' + record.id;
+            }
+            const extent = this.HsCompositionsParserService.parseExtent(
+              record.bbox
+            );
+            //Check if height or Width covers the whole screen
+            if (
+              !(
+                (extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) ||
+                (extent[1] < mapExtent[1] && extent[3] > mapExtent[3])
+              )
+            ) {
+              attributes.geometry = polygonFromExtent(extent);
+              attributes.is_hs_composition_extent = true;
+              const newFeature = new Feature(attributes);
+              record.feature = newFeature;
+              extentLayer.getSource().addFeatures([newFeature]);
             } else {
-              endpoint.compositionsPaging.matched = 0;
+              //Composition not in extent
             }
-            //TODO: Needs refactoring
-            endpoint.compositionsPaging.next = response.next;
-            const mapExtent = this.HsMapService.getMapExtent();
-            for (const record of endpoint.compositions) {
-              const attributes: any = {
-                record: record,
-                hs_notqueryable: true,
-                highlighted: false,
-                title: record.title || record.name,
-              };
-              record.editable = false;
-              record.endpoint = endpoint;
-              if (record.thumbnail == undefined) {
-                record.thumbnail =
-                  endpoint.url + '?request=loadthumb&id=' + record.id;
-              }
-              const extent = this.HsCompositionsParserService.parseExtent(
-                record.bbox
-              );
-              //Check if height or Width covers the whole screen
-              if (
-                !(
-                  (extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) ||
-                  (extent[1] < mapExtent[1] && extent[3] > mapExtent[3])
-                )
-              ) {
-                attributes.geometry = polygonFromExtent(extent);
-                attributes.is_hs_composition_extent = true;
-                const newFeature = new Feature(attributes);
-                record.feature = newFeature;
-                extentLayer.getSource().addFeatures([newFeature]);
-              } else {
-                //Composition not in extent
-              }
-            }
-            resolve();
-          },
-          (err) => {}
-        );
+          }
+          resolve();
+        },
+        (err) => {}
+      );
     });
   }
 

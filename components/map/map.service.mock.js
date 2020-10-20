@@ -13,4 +13,16 @@ export class HsMapServiceMock {
       resolve(this.map);
     });
   }
+
+  getMapExtentInEpsg4326() {
+    return [0, 0, 100, 100];
+  }
+
+  addLayer(layer) {
+    this.map.addLayer(layer);
+  }
+
+  getMapExtent() {
+    return [0, 0, 100, 100];
+  }
 }
