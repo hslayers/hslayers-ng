@@ -19,19 +19,25 @@
                 </div>
             </div>
             <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of HsSensorsUnitDialogService.intervals" aria-label="1 hour">{{interval.name}}<img src="{{loaderImage}}" [hidden]="!interval.loading"></button>
+                <div class="d-flex w-100">
+                    <div class="m-1">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of HsSensorsUnitDialogService.intervals" aria-label="1 hour">{{interval.name}}<img src="{{loaderImage}}" [hidden]="!interval.loading"></button>
+                        </div>
+                    </div>
+                    <div class="m-1">
+                        <div class="input-group">
+                            <input type="text" style="width: 6em;" ngbDatepicker [placeholder]="'COMMON.from' | translate" #d="ngbDatepicker" [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged($event)"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 input-group mb-3">
-                            <div class="input-group">
-                                <input type="text" style="width: 6em;" ngbDatepicker [placeholder]="'COMMON.from' | translate" #d="ngbDatepicker" [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged($event)"/>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
-                                </div>
+                    </div>
+                    <div class="m-1">
+                        <div class="input-group">
+                            <input type="text" style="width: 6em;" ngbDatepicker [placeholder]="'COMMON.until' | translate" #d2="ngbDatepicker" [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged($event)"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i class="icon-calendarthree"></i></button>
                             </div>
                         </div>
                     </div>
