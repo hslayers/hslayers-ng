@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from './../utils/utils.service';
 @Component({
@@ -20,7 +21,8 @@ export class HsSaveMapAdvancedFormComponent {
     private HsSaveMapManagerService: HsSaveMapManagerService,
     private HsEventBusService: HsEventBusService,
     private HsCoreService: HsCoreService,
-    private HsUtilsService: HsUtilsService
+    private HsUtilsService: HsUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';

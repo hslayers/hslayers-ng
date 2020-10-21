@@ -5,6 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
 import {HsDrawService} from './draw.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
@@ -16,7 +17,8 @@ export class HsDrawToolbarComponent {
   layersExpanded: boolean;
   constructor(
     private HsDrawService: HsDrawService,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
 
   toggleDrawToolbar(e): void {

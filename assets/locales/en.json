@@ -86,7 +86,8 @@
     "fillOpacity": "Fill opacity:",
     "individualStyle": "Individual style for feature",
     "reallyDeleteThisLayer": "Really delete this layer?",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "Select layer": "Select layer"
   },
   "GEOLOCATION": {
     "altitude": "Altitude",

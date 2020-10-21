@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import {Component, Input, OnInit} from '@angular/core';
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from './../language/language.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 type Operation = {
@@ -42,7 +43,8 @@ export class HsLayerFeaturesComponent implements OnInit {
     private HsFeatureTableService: HsFeatureTableService,
     private HsUtilsService: HsUtilsService,
     private HsMapService: HsMapService,
-    private HsLanguageService: HsLanguageService
+    private HsLanguageService: HsLanguageService,
+    private HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
   /**
    * @ngdoc method

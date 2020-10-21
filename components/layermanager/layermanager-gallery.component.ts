@@ -3,6 +3,7 @@ import {HsConfig} from '../../config.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {Layer} from 'ol/layer';
 
 @Component({
@@ -18,7 +19,8 @@ export class HsLayerManagerGalleryComponent {
     private HsLayoutService: HsLayoutService,
     private HsLayerManagerService: HsLayerManagerService,
     private Window: Window,
-    private HsConfig: HsConfig
+    private HsConfig: HsConfig,
+    private HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.data = this.HsLayerManagerService.data;
   }

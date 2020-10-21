@@ -68,7 +68,7 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" [ngModelOptions]="{standalone: true}"
                                 [(ngModel)]="layer.checked">
-                            <label class="form-check-label">{{layer.title}}</label>
+                            <label class="form-check-label">{{HsLayerUtilsService.translateTitle(layer.title)}}</label>
                         </div>
                     </li>
                 </ul>

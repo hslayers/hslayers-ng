@@ -20,7 +20,7 @@
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
             <a class="dropdown-item" href="#" *ngFor="let layer of HsDrawService.drawableLayers"
-                (click)="selectLayer(layer)">{{layer.get('title')}}</a>
+                (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(layer.get('title'))}}</a>
         </div>
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary" [hidden]="HsDrawService.tmpDrawLayer"
             (click)="HsDrawService.saveDrawingLayer(true)" data-toggle="tooltip"

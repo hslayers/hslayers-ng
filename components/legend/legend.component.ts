@@ -1,5 +1,6 @@
 import Map from 'ol/Map';
 import {Component} from '@angular/core';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
 import {Layer} from 'ol/layer';
@@ -12,7 +13,8 @@ export class HsLegendComponent {
 
   constructor(
     private HsLegendService: HsLegendService,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
     //this.$emit('scope_loaded', 'Legend');

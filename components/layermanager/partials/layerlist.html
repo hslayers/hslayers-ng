@@ -12,7 +12,7 @@
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
                     style="word-break:break-all" [ngClass]="{'hover': layer.layer.hasSublayers == true}">
-                    {{layer.title}}
+                    {{HsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
                 <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers"
                     style="font-size:x-small; flex-grow: 20;"
