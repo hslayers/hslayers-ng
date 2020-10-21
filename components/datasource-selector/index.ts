@@ -6,10 +6,10 @@ import * as angular from 'angular';
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsDatasourcesMetadataDialogComponent} from './datasource-metadata-dialog.component';
 import {HsDatasourcesModule} from './datasource-selector.module';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
-import {HsMetadataDialogComponent} from './metadata-dialog.component';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
@@ -38,7 +38,7 @@ angular
    */
   .directive(
     'hs.datasourceSelector.metadataDialogDirective',
-    downgradeComponent({component: HsMetadataDialogComponent})
+    downgradeComponent({component: HsDatasourcesMetadataDialogComponent})
   )
 
   /**

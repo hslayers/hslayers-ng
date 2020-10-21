@@ -13,14 +13,16 @@ import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.comp
 import {HsDatasourceListItemComponent} from './datasource-list-item.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
 import {HsDatasourcesMapService} from './datasource-selector-map.service';
+import {HsDatasourcesMetadataDialogComponent} from './datasource-metadata-dialog.component';
+import {HsDatasourcesMetadataService} from './datasource-selector-metadata.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
-import {HsMetadataDialogComponent} from './metadata-dialog.component';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsMickaSuggestionsDialogComponent} from './micka/micka-suggestions-dialog.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -28,17 +30,23 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsAdvancedMickaDialogComponent,
     HsAddLayersComponent, //TODO: to be removed and redeclared in HsAddLayersModule
     HsDatasourcesComponent,
-    HsMetadataDialogComponent,
+    HsDatasourcesMetadataDialogComponent,
     HsMickaFilterComponent,
     HsMickaSuggestionsDialogComponent,
     HsDatasourceListItemComponent,
     EndpointsWithDatasourcesPipe,
   ],
-  imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HsPanelHelpersModule,
+    TranslateModule,
+    HsUiExtensionsModule,
+  ],
   exports: [
     HsAdvancedMickaDialogComponent,
     HsDatasourcesComponent,
-    HsMetadataDialogComponent,
+    HsDatasourcesMetadataDialogComponent,
     HsMickaFilterComponent,
     HsMickaSuggestionsDialogComponent,
     HsDatasourceListItemComponent,
@@ -47,11 +55,15 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
   providers: [
     HsDatasourcesService,
     HsDatasourcesMapService,
+    HsDatasourcesMetadataService,
     HsLaymanBrowserService,
     HsMickaBrowserService,
     HsMickaFilterService,
     TranslateStore,
   ],
-  entryComponents: [HsDatasourcesComponent],
+  entryComponents: [
+    HsDatasourcesComponent,
+    HsDatasourcesMetadataDialogComponent,
+  ],
 })
 export class HsDatasourcesModule {}
