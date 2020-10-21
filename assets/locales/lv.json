@@ -85,7 +85,8 @@
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils grafiskajam objektam",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "Select layer": "Izvēlieties slāni"
   },
   "GEOLOCATION": {
     "altitude": "Augstums",

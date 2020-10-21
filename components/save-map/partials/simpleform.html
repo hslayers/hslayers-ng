@@ -62,7 +62,7 @@
                 <ul class="list-group">
                     <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" id="layer-{{$index}}"
                         class="list-group-item">
-                        <span>{{layer.title}}</span>
+                        <span>{{HsLayerUtilsService.translateTitle(layer.title)}}</span>
                         <span class="pull-right">
                             <input type="checkbox" [(ngModel)]="layer.checked">
                         </span>

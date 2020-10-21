@@ -47,7 +47,7 @@
                     </div>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}">
-                        {{layer.title}}
+                        {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                     <div class="pl-1 info_btn" style="cursor: pointer;">
                         <span class="icon-settingsthree-gears text-secondary"
@@ -84,7 +84,7 @@
 
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
-                        {{layer.title}}
+                        {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                 </div>
             </li>

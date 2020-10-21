@@ -1,5 +1,6 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster, Vector as VectorSource} from 'ol/source';
+import {HsLanguageService} from '../language/language.service';
 import {HsUtilsService} from './utils.service';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
@@ -9,7 +10,10 @@ import {isEmpty} from 'ol/extent';
 
 @Injectable()
 export class HsLayerUtilsService {
-  constructor(private HsUtilsService: HsUtilsService) {}
+  constructor(
+    private HsUtilsService: HsUtilsService,
+    private HsLanguageService: HsLanguageService
+  ) {}
 
   /**
    * @ngdoc method
@@ -261,6 +265,13 @@ export class HsLayerUtilsService {
     return this.isLayerVectorLayer(layer) && layer.get('cluster')
       ? true
       : false;
+  }
+
+  translateTitle(title) {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(
+      'LAYERS',
+      title
+    );
   }
 
   /**

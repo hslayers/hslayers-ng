@@ -762,7 +762,9 @@ export class HsLayerManagerService {
     }
     if (this.currentLayer != layer) {
       this.toggleCurrentLayer(layer);
-      if (this.menuExpanded){this.menuExpanded = false}
+      if (this.menuExpanded) {
+        this.menuExpanded = false;
+      }
       layer[toToggle] = true;
     } else {
       layer[toToggle] = !layer[toToggle];
@@ -806,7 +808,7 @@ export class HsLayerManagerService {
       '.hs-layerpanel'
     );
     const layerNode = document.getElementById(layer.idString());
-    if(layerNode){
+    if (layerNode) {
       this.HsUtilsService.insertAfter(layerPanel, layerNode);
     }
     return false;

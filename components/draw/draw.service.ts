@@ -121,10 +121,12 @@ export class HsDrawService {
   selectedLayerString(): string {
     if (this.selectedLayer) {
       return this.selectedLayer.get('title') == 'tmpDrawLayer'
-        ? 'Unsaved drawing'
-        : this.selectedLayer.get('title') || this.selectedLayer.get('name');
+        ? this.HsLanguageService.getTranslation('DRAW.unsavedDrawing')
+        : this.HsLayerUtilsService.translateTitle(
+            this.selectedLayer.get('title')
+          ) || this.selectedLayer.get('name');
     } else {
-      return 'Select layer';
+      return this.HsLanguageService.getTranslation('DRAW.Select layer');
     }
   }
 
