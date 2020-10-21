@@ -342,6 +342,18 @@ export default {
           }
 
           const srs = options.srs.toUpperCase();
+          const calcExtent = options.map
+            .getView()
+            .calculateExtent(options.map.getSize());
+          if (srs.includes('4326') || srs.includes('4258')) {
+            extent = [
+              calcExtent[1],
+              calcExtent[0],
+              calcExtent[3],
+              calcExtent[2],
+            ];
+          }
+
           let url = [
             options.url,
             HsUtilsService.paramsToURLWoEncode({
@@ -351,12 +363,13 @@ export default {
               typeName: options.layer.Name,
               srsName: srs,
               output_format: options.output_format,
-              count: options.layer.limitFeatureCount ? 1000 : '',
-              bbox: extent.join(',') + ',EPSG:3857',
+              // count: options.layer.limitFeatureCount ? 1000 : '',
+              BBOX:
+                transformExtent(extent, projection.getCode(), srs) + ',' + srs,
             }),
           ].join('?');
+
           url = HsUtilsService.proxify(url);
-          // transformExtent(extent,'EPSG:3857',srs) + ',' +srs,
           $http({
             url: url,
             method: 'GET',
