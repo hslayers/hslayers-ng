@@ -13,6 +13,7 @@ import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.s
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDatasourcesComponent} from './datasource-selector.component';
+import {HsDatasourcesMetadataService} from './datasource-selector-metadata.service';
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -44,8 +45,9 @@ describe('HsDatasources', () => {
   });
 
   let fixture: ComponentFixture<HsDatasourcesComponent>;
-  let component: HsDatasourcesComponent;
-  let service: HsDatasourcesService;
+  //let component: HsDatasourcesComponent;
+  //let service: HsDatasourcesService;
+  let metadataService: HsDatasourcesMetadataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -74,17 +76,26 @@ describe('HsDatasources', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDatasourcesComponent);
-    service = TestBed.inject(HsDatasourcesService);
-    component = fixture.componentInstance;
+    //service = TestBed.inject(HsDatasourcesService);
+    metadataService = TestBed.inject(HsDatasourcesMetadataService);
+    //component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('decompose metadata', () => {
     const emptyMetadata = 'empty';
-    const decomposed1 = component.decomposeMetadata(emptyMetadata);
+    const decomposed1 = metadataService.decomposeMetadata(emptyMetadata);
     expect(decomposed1).toBeDefined();
     expect(decomposed1).toBeFalse();
 
-    //TODO: add test for some real-life metadata example
+    //TODO: make it work with this real-life metadata example
+    /*const sampleMetadata = {
+      'title': 'borders',
+      'type': ['WMS', 'WFS'],
+      'name': 'borders',
+    };
+    const decomposed2 = metadataService.decomposeMetadata(sampleMetadata);
+    expect(decomposed2).toBeDefined();
+    expect(decomposed2).toBeTruthy();*/
   });
 });
