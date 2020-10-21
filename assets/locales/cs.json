@@ -86,7 +86,9 @@
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "Select layer": "Vybrat vrstvu"
+
   },
   "GEOLOCATION": {
     "altitude": "Nadmořská výška",
