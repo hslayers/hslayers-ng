@@ -12,11 +12,15 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TestBed} from '@angular/core/testing';
 
+class EmptyMock {
+  constructor() {}
+}
 describe('HsLayerUtilsService', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -35,6 +39,10 @@ describe('HsLayerUtilsService', () => {
         {
           provide: HsUtilsService,
           useValue: new HsUtilsServiceMock(),
+        },
+        {
+          provide: HsLanguageService,
+          useValue: new EmptyMock(),
         },
       ],
     });
