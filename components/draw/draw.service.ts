@@ -141,7 +141,9 @@ export class HsDrawService {
 
     let i = 1;
     while (this.HsMapService.findLayerByTitle(tmpTitle)) {
-      tmpTitle = `${'Draw layer'} ${i++}`;
+      tmpTitle = `${this.HsLanguageService.getTranslation(
+        'DRAW.drawLayer'
+      )} ${i++}`;
     }
     const drawLayer = new VectorLayer({
       title: tmpTitle,

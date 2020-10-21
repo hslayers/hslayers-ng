@@ -69,7 +69,7 @@
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
     "drawingTo": "Kreslím do:",
-    "drawLayer": "Nakreslete vrstvu",
+    "drawLayer": "Kreslící vrstva",
     "drawLayerMetadata": {
       "defaultAttributes": "Výchozí atributy",
       "defaultValue": "Výchozí hodnota",
