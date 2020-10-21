@@ -341,6 +341,7 @@ export class HsDrawService {
       .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
     if (drawables.length > 0 && !this.selectedLayer) {
       this.selectedLayer = drawables[0];
+      this.changeDrawSource();
     }
     if (drawables.length == 0 && !this.selectedLayer) {
       this.type = null;
