@@ -27,6 +27,8 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
+import { HsLayerUtilsServiceMock } from '../utils/layer-utils.service.mock';
+import { HsLayerUtilsService } from '../utils/layer-utils.service';
 
 describe('HsLegendLayerComponent', () => {
   beforeAll(() => {
@@ -54,6 +56,7 @@ describe('HsLegendLayerComponent', () => {
       providers: [
         HsLegendService,
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],

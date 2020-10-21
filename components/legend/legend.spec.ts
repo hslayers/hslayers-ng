@@ -23,6 +23,8 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {TranslateModule} from '@ngx-translate/core';
+import { HsLayerUtilsServiceMock } from '../utils/layer-utils.service.mock';
+import { HsLayerUtilsService } from '../utils/layer-utils.service';
 
 describe('HsLegendComponent', () => {
   beforeAll(() => {
@@ -48,6 +50,7 @@ describe('HsLegendComponent', () => {
       ],
       providers: [
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
       ],
