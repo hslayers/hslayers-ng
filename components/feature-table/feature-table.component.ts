@@ -19,7 +19,7 @@ export class HsFeatureTableComponent implements OnInit {
     private HsConfig: HsConfig
   ) {}
   ngOnInit(): void {
-    for (const layer of this.HsConfig.layersInFeatureTable) {
+    for (const layer of this.HsConfig.layersInFeatureTable || []) {
       this.addLayerToTable(layer);
     }
   }
