@@ -2,6 +2,7 @@ import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
 import addLayersWfsComponent from './add-layers-wfs.component';
 import capabilitiesErrorDirective from '../capabilities-error.directive';
+import {HsAddLayersWfsService} from '../wfs/add-layers-wfs-service';
 
 /**
  * @namespace hs.addLayersWfs
@@ -27,4 +28,5 @@ angular
    * @memberOf hs.addLayersWfs
    * @description Controller for displaying and setting parameters for Wfs and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWfs', addLayersWfsComponent);
+  .component('hs.addLayersWfs', addLayersWfsComponent)
+  .factory('HsAddLayersWfsService', HsAddLayersWfsService);
