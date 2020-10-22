@@ -19,6 +19,7 @@ export default {
   ) {
     'ngInject';
     $scope.showDetails = false;
+    $scope.path = 'WFS'
     $scope.loaderImage = require('../../../img/ajax-loader.gif');
     $scope.service = HsAddLayersWfsService;
     $scope.map_projection = HsMapService.map
