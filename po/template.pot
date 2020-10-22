@@ -110,6 +110,7 @@ msgstr ""
 msgid "Add layers"
 msgstr ""
 
+#: components/add-layers/wfs/add-wfs-layer.directive.html:30
 #: components/datasource-selector/partials/datasource_selector.html:59
 msgid "Add to map"
 msgstr ""
@@ -567,14 +568,10 @@ msgstr ""
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:40
 #: components/add-layers/shp/add-shp-layer.directive.html:51
 #: components/add-layers/vector/add-vector-layer.directive.html:27
-#: components/add-layers/wfs/add-wfs-layer.directive.html:26
+#: components/add-layers/wfs/add-wfs-layer.directive.html:7
 #: components/add-layers/wms/add-wms-layer.directive.html:65
 #: components/add-layers/wms/add-wms-layer.md.directive.html:40
 msgid "Folder name"
-msgstr ""
-
-#: components/add-layers/wfs/add-wfs-layer.directive.html:8
-msgid "Format"
 msgstr ""
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:15
@@ -711,7 +708,7 @@ msgstr ""
 msgid "List available map compositions"
 msgstr ""
 
-#: components/add-layers/wfs/add-wfs-layer.directive.html:45
+#: components/add-layers/wfs/add-wfs-layer.directive.html:34
 msgid "Loading features, please wait"
 msgstr ""
 
@@ -1201,7 +1198,7 @@ msgid "Search:"
 msgstr ""
 
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:54
-#: components/add-layers/wfs/add-wfs-layer.directive.html:41
+#: components/add-layers/wfs/add-wfs-layer.directive.html:28
 #: components/add-layers/wms/add-wms-layer.md.directive.html:54
 msgid "Select All Layers"
 msgstr ""
@@ -1220,6 +1217,10 @@ msgstr ""
 
 #: components/draw/partials/shape-toolbar.html:47
 msgid "Select type"
+msgstr ""
+
+#: components/add-layers/wfs/add-wfs-layer.directive.html:20
+msgid "Selected layer contains {{layer.featureCount}} features. Loading too many at once (while zoomed out) may affect app performance"
 msgstr ""
 
 #: components/layermanager/partials/layerlist.html:37
@@ -1549,7 +1550,7 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: components/map/map.service.js:314
+#: components/map/map.service.js:315
 msgid "Zoom to initial window"
 msgstr ""
 

@@ -41,7 +41,12 @@ export class HsAddLayersWfsService {
       $rootScope,
     });
 
-    this.definedProjections = ['EPSG:3857', 'EPSG:5514', 'EPSG:4258']; //4326 to be added after transforamtion is corrected
+    this.definedProjections = [
+      'EPSG:3857',
+      'EPSG:5514',
+      'EPSG:4258',
+      'EPSG:4326',
+    ]; //4326 to be added after transforamtion is corrected
   }
 
   createWfsSource(options) {
@@ -58,11 +63,10 @@ export class HsAddLayersWfsService {
         }
 
         const srs = options.srs.toUpperCase();
-        const calcExtent = me.HsMapService.map
-          .getView()
-          .calculateExtent(me.HsMapService.map.getSize());
+
+        extent = transformExtent(extent, projection.getCode(), srs);
         if (srs.includes('4326') || srs.includes('4258')) {
-          extent = [calcExtent[1], calcExtent[0], calcExtent[3], calcExtent[2]];
+          extent = [extent[1], extent[0], extent[3], extent[2]];
         }
 
         let url = [
@@ -75,8 +79,7 @@ export class HsAddLayersWfsService {
             srsName: srs,
             output_format: me.output_format,
             // count: options.layer.limitFeatureCount ? 1000 : '',
-            BBOX:
-              transformExtent(extent, projection.getCode(), srs) + ',' + srs,
+            BBOX: extent.join(',') + ',' + srs,
           }),
         ].join('?');
 
@@ -180,7 +183,16 @@ export class HsAddLayersWfsService {
     if (this.srss.length == 0) {
       this.srss = ['EPSG:3857'];
     }
-    this.srs = this.srss[0];
+
+    this.srs = (() => {
+      for (const srs of this.srss) {
+        if(srs.includes('3857')){
+          return srs;
+        }
+      }
+      return this.srss[0];
+    })();
+
     this.$timeout(() => {
       try {
         this.parseFeatureCount();

@@ -17,8 +17,7 @@
                 </div>
                 <div class="alert alert-primary d-flex" role="alert" ng-if="layer.featureCount > 1000 && layer.checked">
                     <div class="w-100">
-                        <p class="mb-0" ng-show="layer.limitFeatureCount"> Selected layer contains
-                            {{layer.featureCount}} features. Loading too many at once (while zoomed out) may affect app performance
+                        <p class="mb-0" ng-show="layer.limitFeatureCount" translate>Selected layer contains {{layer.featureCount}} features. Loading too many at once (while zoomed out) may affect app performance
                         </p>
                     </div>
                 </div>
@@ -26,8 +25,7 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix">
                 <div class="d-flex justify-content-center">
                     <div class="d-flex justify-content-between w-100" ng-if="!loadingFeatures">
-                        <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All
-                            Layers</button>
+                        <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
                         <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"
                             title="{{'Add to map'|translate}}" ng-disabled="!isChecked"><i
                                 class="icon-plus"></i></button>
