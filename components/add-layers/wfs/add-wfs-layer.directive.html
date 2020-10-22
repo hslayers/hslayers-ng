@@ -3,25 +3,6 @@
     <div ng-show="showDetails" class="card">
 
         <div class="card-title text-center font-weight-bold">{{title}}</div>
-
-        <div class="form-group">
-            <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Format</label>
-            <div class="capabilities_input col-sm-8">
-                <select class="form-control" ng-model="output_format">
-                    <option ng-repeat="i in output_formats">{{i}}</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group" ng-show="srs.toUpperCase() != map_projection">
-            <label class="capabilities_label col-sm-4 control-label">SRS</label>
-            <div class="capabilities_input col-sm-8">
-                <select class="form-control" ng-model="srs">
-                    <option ng-repeat="i in srss">{{i}}</option>
-                </select>
-            </div>
-        </div>
-
         <div class="form-group">
             <label class="capabilities_label col-sm-4 control-label" translate>Folder name</label>
             <div class="capabilities_input col-sm-8">
@@ -30,12 +11,12 @@
         </div>
         <hr />
         <ul class="list-group">
-            <li ng-repeat="layer in services" class="list-group-item py-2 clearfix">
+            <li ng-repeat="layer in service.services" class="list-group-item py-2 clearfix">
                 <div>
                     <input type="checkbox" ng-model="layer.checked" ng-change="changed()" /> {{layer.Title}}
                 </div>
                 <div class="alert alert-primary d-flex" role="alert" ng-if="layer.featureCount > 1000 && layer.checked">
-                    <div class="w-75">
+                    <div class="w-100">
                         <p class="mb-0" ng-show="layer.limitFeatureCount"> Selected layer contains
                             {{layer.featureCount}} features. Loading too many at once (while zoomed out) may affect app performance
                         </p>
