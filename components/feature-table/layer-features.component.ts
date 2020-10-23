@@ -7,8 +7,9 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 type Operation = {
-  action: 'zoom to' | 'delete';
+  action: 'zoom to' | 'delete' | 'custom action';
   feature: Feature;
+  customActionName?: string;
 };
 
 /**
@@ -85,6 +86,11 @@ export class HsLayerFeaturesComponent implements OnInit {
           .getView()
           .fit(extent, this.HsMapService.map.getSize());
         break;
+      case 'custom action':
+        if (operation.customActionName === 'ndvi') {
+          this.customActionOperationNdvi(operation.feature);
+        }
+        break;
       default:
     }
   }
@@ -94,5 +100,8 @@ export class HsLayerFeaturesComponent implements OnInit {
       text
     );
     return translation;
+  }
+  customActionOperationNdvi(Feature: Feature): void {
+    //Will be implemented in the near future
   }
 }
