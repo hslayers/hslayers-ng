@@ -10,6 +10,7 @@ type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';
   feature: Feature;
   customActionName?: string;
+  customAction?: any;
 };
 
 /**
@@ -87,9 +88,7 @@ export class HsLayerFeaturesComponent implements OnInit {
           .fit(extent, this.HsMapService.map.getSize());
         break;
       case 'custom action':
-        if (operation.customActionName === 'ndvi') {
-          this.customActionOperationNdvi(operation.feature);
-        }
+        operation.customAction(operation.feature);
         break;
       default:
     }
@@ -100,8 +99,5 @@ export class HsLayerFeaturesComponent implements OnInit {
       text
     );
     return translation;
-  }
-  customActionOperationNdvi(Feature: Feature): void {
-    //Will be implemented in the near future
   }
 }
