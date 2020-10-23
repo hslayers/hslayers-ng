@@ -8,7 +8,6 @@ import {Layer} from 'ol/layer';
   providedIn: 'root',
 })
 export class HsFeatureTableService {
-  // sortingByButtonList: any; //array filled with unique feature attribute names for sorting
   sortReverse = false; //trigger for reverse sorting
   lastSortValue = ''; //last sorting value selected
   featureAttributeList: any = []; //all feature attributes for html table
@@ -57,7 +56,6 @@ export class HsFeatureTableService {
   getFeatureAttributes(layer: Layer): void {
     let features = [];
     const featureAttributes = [];
-    //this.sortingByButtonList = ['name'];
     if (layer.getSource().getSource) {
       features = layer.getSource().getSource().getFeatures();
     } else {
@@ -73,13 +71,11 @@ export class HsFeatureTableService {
             return {
               name: this.setFeatureName(attr.attributes),
               attributes: this.attributesWithoutFeatureName(attr.attributes),
-              // feature: attr.feature,
               stats: attr.stats,
             };
           });
           attributesFromQuery = attributesFromQuery[0];
           featureAttributes.push(attributesFromQuery);
-          //this.ceateSortingValueArray(attributesFromQuery);
         }
       }
       this.featureAttributeList = featureAttributes;
@@ -115,40 +111,6 @@ export class HsFeatureTableService {
   attributesWithoutFeatureName(attributes: any): any {
     return attributes.filter((attr) => attr.name !== 'name');
   }
-  /**
-   * @param feature layers feature from this.featureAttributeList
-   * @ngdoc method
-   * @name HsFeatureTableService#ceateSortingValueArray
-   * @description Create sorting value array from all layers features
-   */
-  // ceateSortingValueArray(feature): void {
-  //   if (feature?.attributes && feature.attributes.length > 0) {
-  //     this.getSortingValueNames(feature.attributes);
-  //   }
-  // }
-  /**
-   * @param attributes features attributes array
-   * @ngdoc method
-   * @name HsFeatureTableService#getSortingValueNames
-   * @description get sorting values from each individual feature attributes, if value does not already exist in the this.sortingByButtonList array
-   */
-  // getSortingValueNames(attributes: Array<unknown>): void {
-  //   if (Array.isArray(attributes)) {
-  //     for (const attribute of attributes) {
-  //       if (
-  //         this.sortingByButtonList.length > 0 &&
-  //         this.sortingByButtonList !== undefined
-  //       ) {
-  //         this.sortingByButtonList.filter((name) => name === attribute.name)
-  //           .length == 0
-  //           ? this.sortingByButtonList.push(attribute.name)
-  //           : [];
-  //       } else {
-  //         this.sortingByButtonList.push(attribute.name);
-  //       }
-  //     }
-  //   }
-  // }
   /**
    * @param valueName Requested value to sort the feature table list
    * @ngdoc method
