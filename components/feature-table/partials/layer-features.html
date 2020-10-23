@@ -1,8 +1,9 @@
 <h3 class="mt-1" style="text-align: center">{{HsLayerUtilsService.translateTitle(layer.title)}}</h3>
-<div style="text-align: right">
+<!-- <div style="text-align: right">
     <div class="btn-group" role="group">
         <div class="btn-group" ngbDropdown role="group" aria-label="Select sorting value">
-            <button class="btn btn-sm btn-outline-dark" ngbDropdownToggle [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">{{'FEATURE_TABLE.sortBy' | translate}}</button>
+            <button class="btn btn-sm btn-outline-dark" ngbDropdownToggle
+                [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">{{'FEATURE_TABLE.sortBy' | translate}}</button>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <button *ngFor="let valueName of HsFeatureTableService.sortingByButtonList" ngbDropdownItem
                     (click)="HsFeatureTableService.sortFeaturesBy(valueName)">
@@ -11,39 +12,44 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="form-group mt-1 mb-1">
     <div class="input-group" style="margin-bottom: 4px">
-        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="searchedFeatures"
-            name="FeatureName">
+        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate"
+            [(ngModel)]="searchedFeatures" name="FeatureName">
     </div>
 </div>
-<table style="width:100%;" *ngFor="let feature of HsFeatureTableService.featureAttributeList | featureFilter: searchedFeatures">
+<table style="width:100%;"
+    *ngFor="let feature of HsFeatureTableService.featureAttributeList | featureFilter: searchedFeatures">
     <thead>
-        <tr style="text-align: center">
+        <tr style="text-align: center; background-color: rgba(0,0,0,0.03);">
             <th colspan="2">{{feature.name}}</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let attr of feature.attributes">
-            <td class="tdbreak">{{attr.name}}</td>
+        <tr *ngFor="let attr of feature.attributes" rowspan="3">
+            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{attr.name}}<a href="#"
+                    style="float: right;" (click)="HsFeatureTableService.sortFeaturesBy(attr.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
+            </th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
                 <span *ngIf="!attr.sanitizedValue && !attr.value.operations">
-                    {{attr.value}}
+                    <i>{{attr.value}}</i>
                 </span>
-                <span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span>
+                <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>
                 <div *ngIf="attr.value.operations">
-                    <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)">{{translate(operation.action)}}</a>
+                    <a href="#" *ngFor="let operation of attr.value.operations"
+                        (click)="executeOperation(operation)"><span><i> {{translate(operation.customActionName) || translate(operation.action)}};</i></span></a>
                 </div>
             </td>
         </tr>
         <tr [hidden]="!showFeatureStats" class="tdbreak" *ngFor="let stat of feature.stats">
-            <td class="tdbreak">{{stat.name}}</td>
-            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">{{stat.value}}</td>
+            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{stat.name}}</th>
+            <td class="tdbreak" style="min-width: 200px; max-width: 200px;"><span><i>{{stat.value}}</i></span></td>
         </tr>
     </tbody>
 </table>
 <p class="p-2">
-    <small><a href="#" (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</a></small>
+    <small><a href="#"
+            (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translate}}</a></small>
 </p>
-<hr/>
+<hr />
