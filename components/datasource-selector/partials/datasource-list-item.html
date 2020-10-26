@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex align-items-center">
   <div class="mr-auto p-2">
     <strong><a href="#" data-toggle="tooltip" [title]="layer.description || ''"
         (click)="showMetadata(endpoint, layer)">{{layer.title || layer.description}}</a></strong>
@@ -11,17 +11,17 @@
     <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerRDF(endpoint, layer)' data-toggle="tooltip"
       title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
   </div>
-  <div class="p-1" [hidden]="!selectTypeToAddLayerVisible">
+  <div class="p-0" [hidden]="!selectTypeToAddLayerVisible">
     <span class="btn btn-sm" disabled="true" aria-disabled="true">Add as&nbsp;</span>
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <div class="btn-group btn-group-toggle h-100 pr-2 align-items-center" data-toggle="buttons">
       <label class="btn btn-sm btn-outline-primary" [ngClass]="{'active': type == selectedType}"
         *ngFor="let type of whatToAddTypes">
         <input type="radio" name="options" (click)="selectedType = type; addLayerToMap(endpoint, layer)">
         {{type}}
       </label>
+      <i class="btn btn-sm icon-question-sign btn-light btn-outline-primary" (click)="toggleExplanations()" data-toggle="tooltip"
+      title="What does it mean?"></i>
     </div>
-    <i class="btn but-title-sm icon-question-sign" (click)="toggleExplanations()" data-toggle="tooltip"
-    title="What does it mean?"></i>
   </div>
   <div class="p-0" [hidden]="hsConfig.dss_disallow_add == true || (selectTypeToAddLayerVisible)">
     <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(endpoint, layer)" data-toggle="tooltip"
