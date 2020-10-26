@@ -69,8 +69,20 @@ export class HsDatasourceListItemComponent {
     this.selectedType = null;
   }
 
+  /**
+   * @description For a stringified type of service, it returns its description
+   * @param type One of 'WMS', 'WFS'
+   * @returns A brief description of a given type with its main advantage and disadvantage notes
+   */
   getTypeDescription(type: string): string {
-    return '?';
+    switch (type.toLowerCase()) {
+      case 'wms':
+        return 'Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features.';
+      case 'wfs':
+        return 'Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.';
+      default:
+        return 'this type is unknown to HSLayers-NG ...';
+    }
   }
 
   toggleExplanations(): void {
