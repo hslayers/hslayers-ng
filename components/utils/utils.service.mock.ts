@@ -73,6 +73,7 @@ export class HsUtilsServiceMock {
     }
     return hash;
   }
+  resolveEsModule(module) {}
   removeDuplicates(dirtyArray: any, property: string): any {
     const propertyChain = property.split('.');
     const flatArray = [...dirtyArray];
