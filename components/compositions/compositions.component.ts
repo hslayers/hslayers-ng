@@ -23,8 +23,6 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent implements OnInit {
   /**
-   * @ngdoc property
-   * @name hs.compositions.controller#keywords
    * @public
    * @type {object}
    * @description List of keywords (currently hard-coded selection), with their selection status (Boolean value) which sets if keyword will be applied in compositions lookup
@@ -50,16 +48,12 @@ export class HsCompositionsComponent implements OnInit {
   };
   addCompositionUrlVisible = false;
   /**
-   * @ngdoc property
-   * @name hs.compositions.controller#sortBy
    * @public
    * @type {string} bbox
    * @description Store current rule for sorting compositions in composition list (supported values: bbox, title, date)
    */
   sortBy = 'title';
   /**
-   * @ngdoc property
-   * @name hs.compositions.controller#filterByExtent
    * @public
    * @type {boolean} true
    * @description Store whether filter compositions by current window extent during composition search
@@ -146,8 +140,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#getPreviousCompositions
    * @public
    * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
@@ -165,8 +157,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#getNextCompositions
    * @public
    * @description Load next list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
@@ -186,8 +176,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#loadCompositions
    * @public
    * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param ds
@@ -216,7 +204,6 @@ export class HsCompositionsComponent implements OnInit {
   /**
    * Handler of "Only mine" filter change, delete editable variable if needed
    *
-   * @module hs.compositions.controller
    * @function miniFilterChanged
    * DEPRECATED?
    */
@@ -239,8 +226,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#filterChanged
    * @public
    * @description Reloads compositions from start, used as callback when filters are changed in view
    */
@@ -261,8 +246,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#confirmDelete
    * @public
    * @param {object} composition Composition selected for deletion
    * @description Display delete dialog of composition
@@ -284,7 +267,6 @@ export class HsCompositionsComponent implements OnInit {
   /**
    * Load selected composition for editing
    *
-   * @module hs.compositions.controller
    * @function edit
    * @param {object} composition Selected composition
    */
@@ -299,8 +281,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#highlightComposition
    * @public
    * @param {object} composition Composition to highlight
    * @param {boolean} state Target state of composition ( True - highlighted, False - normal)
@@ -317,8 +297,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#shareComposition
    * @public
    * @param {object} record Composition to share
    * @param $event
@@ -351,8 +329,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#detailComposition
    * @public
    * @param {object} record Composition to show details
    * @param $event
@@ -371,8 +347,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#loadComposition
    * @public
    * @param {object} record Composition to be loaded
    * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
@@ -394,8 +368,6 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.compositions.controller#setSortAttribute
    * @public
    * @param {string} attribute Attribute by which compositions should be sorted (expected values: bbox, title, date)
    * @description Set sort attribute for sorting composition list and reload compositions
