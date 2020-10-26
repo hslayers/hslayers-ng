@@ -425,10 +425,6 @@ button.but-title-sm {
 	color: #fff;
 }
 
-.datasources_item_description {
-	display: inline-block;
-	word-break: break-all;
-}
 .thumbnail {
 	margin-top: 3px;
 	margin-bottom: 3px;

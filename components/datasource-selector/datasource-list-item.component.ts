@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsConfig} from '../../config.service';
 import {HsDatasourceLayerDescriptor} from './datasource-layer-descriptor.interface';
@@ -15,10 +15,11 @@ import {HsLogService} from '../../common/log/log.service';
   selector: 'hs-datasource-list-item',
   template: require('./partials/datasource-list-item.html'),
 })
-export class HsDatasourceListItemComponent implements OnInit {
+export class HsDatasourceListItemComponent {
   @Input() layer;
   @Input() endpoint;
 
+  explanationsVisible: boolean;
   metadata;
   metadataModalVisible: boolean;
   selected_ds;
@@ -35,8 +36,6 @@ export class HsDatasourceListItemComponent implements OnInit {
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLogService: HsLogService
   ) {}
-
-  ngOnInit() {}
 
   /**
    * @function addLayerToMap
@@ -61,11 +60,21 @@ export class HsDatasourceListItemComponent implements OnInit {
       this.selectedType = null;
     }
     this.metadataModalVisible = false;
+    this.explanationsVisible = false;
   }
 
   abortAdd(): void {
     this.selectTypeToAddLayerVisible = false;
+    this.explanationsVisible = false;
     this.selectedType = null;
+  }
+
+  getTypeDescription(type: string): string {
+    return '?';
+  }
+
+  toggleExplanations(): void {
+    this.explanationsVisible = !this.explanationsVisible;
   }
 
   /**
