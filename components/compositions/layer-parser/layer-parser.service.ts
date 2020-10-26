@@ -34,14 +34,9 @@ export class HsCompositionsLayerParserService {
     const source_class = lyr_def.singleTile ? ImageWMS : TileWMS;
     const layer_class = lyr_def.singleTile ? ImageLayer : Tile;
     const params = lyr_def.params;
-    const legends = [];
+    const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    if (lyr_def.legends) {
-      for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-        legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
-      }
-    }
     const source = new source_class({
       url: decodeURIComponent(lyr_def.url),
       attributions: lyr_def.attribution
@@ -99,16 +94,11 @@ export class HsCompositionsLayerParserService {
     const source_class = lyr_def.singleTile ? ImageArcGISRest : TileArcGISRest;
     const layer_class = lyr_def.singleTile ? ImageLayer : Tile;
     const params = lyr_def.params;
-    const legends = [];
+    const legends = this.getLegends(lyr_def);
     if (params) {
       delete params.REQUEST;
     }
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    if (lyr_def.legends) {
-      for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-        legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
-      }
-    }
     const source = new source_class({
       url: decodeURIComponent(lyr_def.url),
       attributions: lyr_def.attribution
@@ -164,12 +154,7 @@ export class HsCompositionsLayerParserService {
   createXYZLayer(lyr_def) {
     const source_class = XYZ;
     const layer_class = Tile;
-    const legends = [];
-    if (lyr_def.legends) {
-      for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-        legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
-      }
-    }
+    const legends = this.getLegends(lyr_def);
     const source = new source_class({
       url: decodeURIComponent(lyr_def.url),
       attributions: lyr_def.attribution
@@ -225,12 +210,7 @@ export class HsCompositionsLayerParserService {
   createStaticImageLayer(lyr_def) {
     const source_class = ImageStatic;
     const layer_class = ImageLayer;
-    const legends = [];
-    if (lyr_def.legends) {
-      for (let idx_leg = 0; idx_leg < lyr_def.legends.length; idx_leg++) {
-        legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
-      }
-    }
+    const legends = this.getLegends(lyr_def);
     const source = new source_class({
       url: decodeURIComponent(lyr_def.url),
       attributions: lyr_def.attribution
@@ -308,6 +288,13 @@ export class HsCompositionsLayerParserService {
       title: lyr_def.title,
     });
     lyr.setVisible(lyr_def.visibility);
+  }
+
+  getLegends(lyr_def): string[] {
+    if (lyr_def.legends) {
+      return lyr_def.legends.map((legend) => decodeURIComponent(legend));
+    }
+    return [];
   }
 
   /**
