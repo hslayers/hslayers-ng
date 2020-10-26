@@ -23,7 +23,7 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerManagerService} from '../layermanager';
+import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
