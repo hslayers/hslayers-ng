@@ -1,6 +1,6 @@
 import stylerColorDirective from './styler-color.directive';
 import stylerComponent from './styler.component';
-import stylesService from './styles.service';
+import {HsStylerService} from './styles.service';
 
 /**
  * @namespace hs.styles
@@ -15,7 +15,7 @@ angular
    * @name HsStylesService
    * @description Service with definition of basic styles used througout HS-LayersNG
    */
-  .factory('HsStylesService', stylesService)
+  .factory('HsStylesService', HsStylerService)
 
   /**
    * @memberof hs.styles
