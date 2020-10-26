@@ -46,7 +46,7 @@ export class HsDatasourceListItemComponent implements OnInit {
    */
   async addLayerToMap(
     ds: HsEndpoint,
-    layer: HsDatasourceLayerDescriptor,
+    layer: HsDatasourceLayerDescriptor
   ): Promise<void> {
     const availableTypes = await this.hsDatasourcesService.addLayerToMap(
       ds,
