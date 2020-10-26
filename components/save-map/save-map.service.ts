@@ -17,7 +17,9 @@ import {HsUtilsService} from '../utils/utils.service';
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  notAvailableImage = require(/* webpackChunkName: "img" */ './notAvailable.png');
+  notAvailableImage = this.HsUtilsService.resolveEsModule(
+    require(/* webpackChunkName: "img" */ './notAvailable.png')
+  );
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,

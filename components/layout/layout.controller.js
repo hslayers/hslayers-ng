@@ -417,8 +417,13 @@ export default function (
     }
   }
 
-  $scope.defaultBaselayerThumbnail = require('../../img/default.png');
-  $scope.defaultTerrainlayerThumbnail = require('../../img/default.png');
+  $scope.defaultBaselayerThumbnail = HsUtilsService.resolveEsModule(
+    require('../../img/default.png')
+  );
+
+  $scope.defaultTerrainlayerThumbnail = HsUtilsService.resolveEsModule(
+    require('../../img/default.png')
+  );
 
   $scope.removeLayer = function (layer) {
     const active = layer.active;

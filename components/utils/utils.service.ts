@@ -355,6 +355,7 @@ export class HsUtilsService {
 
   /**
    * Check if object is a function
+   *
    * @param {object} functionToCheck
    * @returns {boolean}
    */
@@ -367,6 +368,7 @@ export class HsUtilsService {
 
   /**
    * Check if object is plain object (not function, not array, not class)
+   *
    * @param {object} objectToCheck
    * @returns {boolean}
    * @memberof HsUtilsService
@@ -493,6 +495,13 @@ export class HsUtilsService {
   replaceAll(target: string, search: string, replacement: string): string {
     if (!String.prototype.replaceAll) {
       return target.replace(new RegExp(search, 'g'), replacement);
+    }
+  }
+  resolveEsModule(module) {
+    if (module.default) {
+      return module.default;
+    } else {
+      return module;
     }
   }
   /**

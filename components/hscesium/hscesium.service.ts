@@ -104,12 +104,12 @@ export class HsCesiumService {
         // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
         skyBox: new SkyBox({
           sources: {
-            positiveX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg'),
-            negativeX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg'),
-            positiveY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg'),
-            negativeY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg'),
-            positiveZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg'),
-            negativeZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'),
+            positiveX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg').default,
+            negativeX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg').default,
+            positiveY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg').default,
+            negativeY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg').default,
+            positiveZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg').default,
+            negativeZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg').default,
           },
         }),
         // Show Columbus View map with Web Mercator projection
