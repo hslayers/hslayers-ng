@@ -25,6 +25,7 @@ import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.ser
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service.js';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -66,7 +67,12 @@ describe('layermanager-layer-list', () => {
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule, FormsModule, TranslateModule.forRoot()],
+      imports: [
+        HsPanelHelpersModule,
+        FormsModule,
+        NgbModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [HsLayerListComponent],
       providers: [
         HsLayerManagerService,

@@ -29,6 +29,7 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service.js';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service.js';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service.js';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 class HsConfigMock {
@@ -59,7 +60,12 @@ describe('layermanager', () => {
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule, FormsModule, TranslateModule.forRoot()],
+      imports: [
+        HsPanelHelpersModule,
+        FormsModule,
+        NgbModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [HsLayerEditorComponent],
       providers: [
         HsLayerEditorSublayerService,
