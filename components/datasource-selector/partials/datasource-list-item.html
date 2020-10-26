@@ -14,15 +14,15 @@
     <span class="btn btn-sm" disabled="true" aria-disabled="true">Add as&nbsp;</span>
     <!--i class="btn but-title-sm icon-fatredo" [hidden]="!selectedType" (click)="selectedType = null"></i-->
     <label class="btn btn-sm btn-outline-primary" [ngClass]="{'active': type == selectedType}"
-      *ngFor="let type of whatToAddTypes" [hidden]="selectedType && type != selectedType">
+      *ngFor="let type of whatToAddTypes">
       <input type="radio" name="options"
-      (click)="!selectedType ? selectedType = type : selectedType = null" data-dismiss="modal">
+      (click)="selectedType = type; addLayerToMap(endpoint, layer)" data-dismiss="modal">
       {{type}}
     </label>
     &nbsp;
   </div>
   <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(endpoint, layer)"
-    [hidden]="hsConfig.dss_disallow_add == true || (selectTypeToAddLayerVisible && !selectedType)"
+    [hidden]="hsConfig.dss_disallow_add == true || (selectTypeToAddLayerVisible)"
     data-toggle="tooltip" title="Add to map">
     <i class="icon-plus"></i>
   </button>
