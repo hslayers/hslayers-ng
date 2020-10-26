@@ -97,7 +97,7 @@ export class HsCompositionsComponent implements OnInit {
       }
     });
 
-    const extendChangeDebouncer = {};
+    const extentChangeDebouncer = {};
     this.HsEventBusService.mapExtentChanges.subscribe(
       HsUtilsService.debounce(
         (data) => {
@@ -113,7 +113,7 @@ export class HsCompositionsComponent implements OnInit {
         },
         400,
         false,
-        extendChangeDebouncer
+        extentChangeDebouncer
       )
     );
 
