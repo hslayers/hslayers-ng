@@ -62,3 +62,5 @@ angular
   );
 
 angular.module('hs.compositions.endpoints', [downgradedModule]);
+
+export {HsCompositionsEndpointsModule} from './compositions-endpoints.module';
