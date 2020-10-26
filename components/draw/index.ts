@@ -1,5 +1,4 @@
 /* eslint-disable angular/no-service-method */
-import '../layout';
 import * as angular from 'angular';
 
 import {HsDrawComponent} from './draw.component';

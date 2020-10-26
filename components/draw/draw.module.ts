@@ -1,4 +1,3 @@
-import '../core/';
 import '../utils';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
