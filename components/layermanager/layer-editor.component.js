@@ -30,6 +30,7 @@ export default {
     angular.extend($scope, {
       layer_renamer_visible: false,
       legendService: HsLegendService,
+      layermanagerService: HsLayermanagerService,
       legendDescriptors: [],
       layoutService: HsLayoutService,
       layerIsWmsT() {

@@ -59,21 +59,6 @@ export default function (
               450
           );
         };
-        $scope.setGreyscale = function (layer) {
-          const layerContainer = document.querySelector(
-            '.ol-unselectable > div:first-child'
-          );
-          if (layerContainer.classList.contains('hs-grayscale')) {
-            layerContainer.classList.remove('hs-grayscale');
-            layer.grayscale = false;
-          } else {
-            layerContainer.classList.add('hs-grayscale');
-            layer.grayscale = true;
-          }
-          $timeout(() => {
-            layer.galleryMiniMenu = false;
-          }, 100);
-        };
       },
     ],
   };

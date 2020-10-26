@@ -27,7 +27,8 @@ export default function (
   HsLayermanagerWmstService,
   HsLayerEditorVectorLayerService,
   HsLayermanagerMetadata,
-  $timeout
+  $timeout,
+  HsLayoutService
 ) {
   'ngInject';
   const me = {};
@@ -733,6 +734,22 @@ export default function (
         lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
       );
     }
+  };
+
+  me.setGreyscale = function (layer) {
+    const layerContainer = HsLayoutService.contentWrapper.querySelector(
+      '.ol-layers > div:first-child'
+    );
+    if (layerContainer.classList.contains('hs-grayscale')) {
+      layerContainer.classList.remove('hs-grayscale');
+      layer.grayscale = false;
+    } else {
+      layerContainer.classList.add('hs-grayscale');
+      layer.grayscale = true;
+    }
+    $timeout(() => {
+      layer.galleryMiniMenu = false;
+    }, 100);
   };
 
   let timer = null;
