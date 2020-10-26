@@ -81,7 +81,7 @@ export const HsAddLayersComponent = {
         $scope.type = type.toUpperCase();
         $timeout(() => {
           if (type == 'wms') {
-            HsEventBusService.wmsConnecting.next({uri: url});
+            HsEventBusService.owsConnecting.next({type: 'WMS', uri: url});
           } else {
             $rootScope.$broadcast(`ows.${type}_connecting`, url);
           }
@@ -93,7 +93,7 @@ export const HsAddLayersComponent = {
       $scope.type = type.toLowerCase();
       $timeout(() => {
         if (type == 'wms') {
-          HsEventBusService.wmsConnecting.next({uri, layer});
+          HsEventBusService.owsConnecting.next({type: 'WMS', uri, layer});
         } else {
           $rootScope.$broadcast(`ows.${type}_connecting`, uri, layer);
         }

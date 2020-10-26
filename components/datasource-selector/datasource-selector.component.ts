@@ -31,8 +31,10 @@ export class HsDatasourcesComponent {
     this.data = hsDatasourcesService.data;
     this.advancedSearch = false;
 
-    this.hsEventBusService.wmsConnecting.subscribe(() => {
-      this.data.wms_connecting = true;
+    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
+      if (type == 'WMS') {
+        this.data.wms_connecting = true;
+      }
     });
   }
 

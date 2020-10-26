@@ -85,7 +85,7 @@ export class HsEventBusService {
   /**
    * replaces 'ows.wms_connecting'
    */
-  wmsConnecting: Subject<{uri: any; layer?: any}> = new Subject();
+  owsConnecting: Subject<{type: string; uri: any; layer?: any}> = new Subject();
   /**
    * replaces 'ows.filling'
    */
