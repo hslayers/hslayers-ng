@@ -25,3 +25,5 @@ angular
   );
 
 angular.module('hs.compositions.layerParser', []);
+
+export {HsCompositionsLayerParserModule} from './layer-parser.module';
