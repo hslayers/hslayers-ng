@@ -203,9 +203,6 @@ export class HsCompositionsComponent implements OnInit {
 
   /**
    * Handler of "Only mine" filter change, delete editable variable if needed
-   *
-   * @function miniFilterChanged
-   * DEPRECATED?
    */
   mineFilterChanged() {
     if (this.query.editable !== undefined && this.query.editable == false) {
@@ -231,8 +228,7 @@ export class HsCompositionsComponent implements OnInit {
    */
   filterChanged() {
     this.HsCompositionsService.resetCompositionCounter();
-    let ds: HsEndpoint;
-    for (ds of this.filteredEndpointsForCompositions()) {
+    for (const ds of this.filteredEndpointsForCompositions()) {
       ds.compositionsPaging.start = 0;
       ds.compositionsPaging.next = ds.compositionsPaging.limit;
       this.loadCompositions(ds);
@@ -298,7 +294,7 @@ export class HsCompositionsComponent implements OnInit {
 
   /**
    * @public
-   * @param {object} record Composition to share
+   * @param {any} record Composition to share
    * @param $event
    * @description Prepare share object on server and display share dialog to share composition
    */
@@ -321,7 +317,7 @@ export class HsCompositionsComponent implements OnInit {
       url,
       title:
         this.HsConfig.social_hashtag &&
-        record.title.indexOf(this.HsConfig.social_hashtag) <= 0
+        !record.title.includes(this.HsConfig.social_hashtag)
           ? record.title + ' ' + this.HsConfig.social_hashtag
           : record.title,
       abstract: record.abstract,
