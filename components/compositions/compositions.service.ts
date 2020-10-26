@@ -177,6 +177,8 @@ export class HsCompositionsService {
           this.$log.warn(
             `Endpoint type '${record.endpoint.type} not supported`
           );
+          reject();
+          return;
       }
       if (this.HsCompositionsParserService.composition_edited == true) {
         this.notSavedCompositionLoading.next(url);
@@ -215,9 +217,7 @@ export class HsCompositionsService {
         this.HsMapService.addLayer(layers[i], true);
       }
     } else {
-      if (console) {
-        this.$log.log('Error loading permalink layers');
-      }
+      this.$log.log('Error loading permalink layers');
     }
   }
 
