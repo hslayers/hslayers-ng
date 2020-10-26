@@ -45,8 +45,10 @@ export default {
       $scope.showDetails = true;
     };
 
-    HsEventBusService.wmsConnecting.subscribe(({uri, layer}) => {
-      $scope.setUrlAndConnect(uri, layer);
+    HsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
+      if (type == 'WMS') {
+        $scope.setUrlAndConnect(uri, layer);
+      }
     });
 
     /**
