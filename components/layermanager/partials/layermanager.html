@@ -45,8 +45,13 @@
                             (click)="changeBaseLayerVisibility($event, layer);"
                             [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
+                    <ng-template #abstractTooltip>
+                        <span [innerHtml]="HsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                    </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
-                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}">
+                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}"
+                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" 
+                        closeDelay="2000">
                         {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                     <div class="pl-1 info_btn" style="cursor: pointer;">
@@ -81,9 +86,13 @@
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                             [ngClass]="(data.baselayersVisible && layer.visible)  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
-
+                    <ng-template #abstractTooltip>
+                        <span [innerHtml]="HsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                    </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
-                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}">
+                        [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}"
+                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" 
+                        closeDelay="2000">
                         {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                 </div>
