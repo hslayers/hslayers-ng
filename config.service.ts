@@ -40,6 +40,7 @@ export class HsConfig {
   social_hashtag: any;
   useProxy: boolean;
   shortenUrl: any;
+  layerTooltipDelay?: number;
   search_provider: any;
   geonamesUser: any;
   searchProvider: any;

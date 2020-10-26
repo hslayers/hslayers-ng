@@ -51,7 +51,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'font-weight-bold': layer.active, 'text-muted' : layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" 
-                        closeDelay="2000">
+                        closeDelay="HsConfig.layerTooltipDelay || 0">
                         {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                     <div class="pl-1 info_btn" style="cursor: pointer;">
@@ -92,7 +92,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
                         [ngClass]="{'font-weight-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" 
-                        closeDelay="2000">
+                        closeDelay="HsConfig.layerTooltipDelay || 0">
                         {{HsLayerUtilsService.translateTitle(layer.title)}}
                     </div>
                 </div>
