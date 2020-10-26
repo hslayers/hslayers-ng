@@ -5,6 +5,7 @@
     "area": "Area",
     "attribute": "Attribute",
     "attributes": "Attributes",
+    "boundingBox": "Bounding box",
     "cancel": "Cancel",
     "circle": "Circle",
     "clear": "Clear",
@@ -32,6 +33,8 @@
     "layers": "Layers",
     "legend": "Legend",
     "line": "Line",
+    "Login": "Log in",
+    "Logout": "Log out",
     "lineColor": "Line color",
     "lineWidth": "Line width",
     "name": "Name",
@@ -54,6 +57,7 @@
     "saveAs": "Save as..",
     "scale": "Scale",
     "south": "South",
+    "Sort": "Sort",
     "stroke": "Stroke",
     "strokeWidth": "Stroke width",
     "thumbnail": "Thumbnail",
@@ -63,6 +67,14 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes"
+  },
+  "COMPOSITIONS": {
+    "Address": "Address",
+    "import": "Import composition from a file on device",
+    "addByAddress": "Add composition by address",
+    "results": "Results",
+    "onlyMine": "Only mine",
+    "filterByMap": "Filter by map extent"
   },
   "DRAW": {
     "activateDrawing": "Activate drawing by choosing a feature type",
@@ -195,7 +207,8 @@
     "SEARCH": "Search",
     "SENSORS": "Sensors",
     "TRACKING": "Tracking",
-    "FEATURE_TABLE": "Feature table"
+    "FEATURE_TABLE": "Feature table",
+    "COMPOSITIONS": "Compositions"
   },
   "PERMALINK": {
     "directiveMd": {
