@@ -108,7 +108,7 @@ export class HsCompositionsService {
 
   deleteComposition(composition) {
     const endpoint = composition.endpoint;
-    this.managerByType(endpoint).delete(endpoint, composition);
+    this.managerByType(endpoint)?.delete(endpoint, composition);
   }
 
   async shareComposition(record): Promise<any> {
