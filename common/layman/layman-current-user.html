@@ -1,6 +1,6 @@
 <div *ngIf="endpoint && endpoint.type == 'layman'">
-    <a class="btn btn-block btn-light" (click)="login()" *ngIf="isAuthorized()" translate="" href="{{protocolsMatch() ? '#' : authUrl()}}" target="{{protocolsMatch() ? '' : '_blank'}}">
-        Log in</a>
-    <a class="btn btn-block btn-light" (click)="logout()" *ngIf="!isAuthorized()" translate="">Log out
+    <a class="btn btn-block btn-light" (click)="login()" *ngIf="isAuthorized()" href="{{protocolsMatch() ? '#' : authUrl()}}" target="{{protocolsMatch() ? '' : '_blank'}}">
+        {{'COMMON.Login' | translate }}</a>
+    <a class="btn btn-block btn-light" (click)="logout()" *ngIf="!isAuthorized()">{{'COMMON.Logout' | translate }}
         {{endpoint.user}}</a>
 </div>

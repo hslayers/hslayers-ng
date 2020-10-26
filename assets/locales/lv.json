@@ -5,6 +5,7 @@
     "area": "Platība",
     "attribute": "Atribūts",
     "attributes": "Atribūts",
+    "boundingBox": "Robežu taisnstūris",
     "cancel": "Atcelt",
     "circle": "Aplis",
     "clear": "Notīrīt",
@@ -34,6 +35,8 @@
     "line": "Līnija",
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
+    "Login": "Autorizēties",
+    "Logout": "Atteikties",
     "name": "Nosaukums",
     "newDrawingLayer": "Jauns zīmēšanas slānis",
     "next": "Nākamais",
@@ -54,6 +57,7 @@
     "saveAs": "Saglabāt kā..",
     "scale": "Mērogs",
     "south": "Dienvidi",
+    "Sort": "Kārtot",
     "stroke": "Līnija",
     "strokeWidth": "Līnjas platums",
     "thumbnail": "Sīktēls",
@@ -63,6 +67,14 @@
     "west": "Rietumi",
     "width": "Platums",
     "yes": "Jā"
+  },
+  "COMPOSITIONS": {
+    "Address": "Adrese",
+    "import": "Importēt kompozīciju no faila vai ierīces",
+    "addByAddress": "Pievienot kompozīciju pēc adreses",
+    "results": "Rezultāti",
+    "onlyMine": "Tikai manas",
+    "filterByMap": "Filtrēt pēc kartes"
   },
   "DRAW": {
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",
@@ -194,7 +206,8 @@
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
     "TRACKING": "Izsekošna",
-    "FEATURE_TABLE": "Grafisko objektu tabula"
+    "FEATURE_TABLE": "Grafisko objektu tabula",
+    "COMPOSITIONS": "Kompozīcijas"
   },
   "PERMALINK": {
     "directiveMd": {
