@@ -61,6 +61,18 @@ export class HsCompositionsLaymanService {
 
   async getInfo(composition) {
     const endpoint = composition.endpoint;
+    if (composition.name == undefined) {
+      console.error('Compositions name attribute is not defined!');
+      return;
+    }
+    if (endpoint.user == undefined) {
+      console.error('Endpoint user is not defined!');
+      return;
+    }
+    if (endpoint.url == undefined) {
+      console.error('Endpoint url is not defined!');
+      return;
+    }
     const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
     const info = await this.HsCompositionsParserService.loadInfo(url);
     if (
