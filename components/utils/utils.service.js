@@ -4,6 +4,7 @@
  * @param $window
  * @param $document
  * @param $location
+ * @param $log
  */
 export default function (HsConfig, $http, $window, $document, $location, $log) {
   'ngInject';
