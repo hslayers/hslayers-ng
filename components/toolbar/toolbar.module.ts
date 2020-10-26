@@ -8,8 +8,8 @@ import {CommonModule} from '@angular/common';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 import {FormsModule} from '@angular/forms';
-import {HsDrawModule} from '../draw/draw.module';
-import {HsSearchModule} from '../search/search.module';
+import {HsDrawModule} from '../draw/';
+import {HsSearchModule} from '../search/';
 import {HsToolbarComponent} from './toolbar.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
