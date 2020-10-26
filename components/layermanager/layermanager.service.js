@@ -125,10 +125,7 @@ export default function (
     ) {
       layer.set('declutter', false);
     }
-    if (
-      HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      layer.get('cluster')
-    ) {
+    if (HsLayerUtilsService.isLayerVectorLayer(layer) && layer.get('cluster')) {
       HsLayerEditorVectorLayerService.cluster(true, layer, '40');
     }
     if (typeof layer.get('position') == 'undefined') {
@@ -713,9 +710,12 @@ export default function (
    * @function isLayerInResolutionInterval
    * @memberOf HsLayermanagerService
    * @param {Ol.layer} lyr Selected layer
-   * @description Test if layer (WMS) resolution is within map resolution interval
+   * @description Test if layer (WMS) resolution is NOT within map resolution interval. True = out of the interval
    */
   me.isLayerInResolutionInterval = function (lyr) {
+    if (!lyr.get('visible')) {
+      return false;
+    }
     const src = lyr.getSource();
     if (me.isWms(lyr)) {
       const view = HsMapService.map.getView();

@@ -346,7 +346,8 @@ export default {
         }
         return (
           angular.isDefined(layer.getMaxResolution()) &&
-          layer.getMaxResolution() != Infinity
+          layer.getMaxResolution() != Infinity &&
+          layer.getMaxResolution() !== null
         );
       },
 

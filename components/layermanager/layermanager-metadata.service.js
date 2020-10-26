@@ -62,6 +62,33 @@ export default function (
       }
     }
   };
+
+  /**
+   * Round number to hundrets
+   *
+   * @param {number} num
+   * @returns {number}
+   */
+  me.roundToHundrets = function (num) {
+    return Math.ceil(num / 100) * 100;
+  };
+
+  me.searchForScaleDenominator = function (layer) {
+    let maxScale = layer.MaxScaleDenominator ? layer.MaxScaleDenominator : null;
+    const layers = layer.Layer;
+    for (const index in layers) {
+      if (
+        layers[index].MaxScaleDenominator &&
+        maxScale < layers[index].MaxScaleDenominator
+      ) {
+        maxScale = layers[index].MaxScaleDenominator;
+      } else if (layers[index].Layer) {
+        const subScale = me.searchForScaleDenominator(layers[index]);
+        maxScale = subScale > maxScale ? subScale : maxScale;
+      }
+    }
+    return maxScale;
+  };
   /**
    * @function queryMetadata
    * @memberOf HsLayermanagerMetadata.service
@@ -143,7 +170,21 @@ export default function (
               '0': caps.Service,
             });
           }
-
+          //Identify max resolution of layer. If layer has sublayers the heighest value is selected
+          $timeout(() => {
+            if (layer.get('MaxScaleDenominator')) {
+              layer.set(
+                'maxResolution',
+                me.roundToHundrets(layer.get('MaxScaleDenominator'))
+              );
+              return;
+            }
+            const maxScale = me.searchForScaleDenominator(
+              layer.getProperties()
+            );
+            console.log('final', maxScale);
+            layer.set('maxResolution', me.roundToHundrets(maxScale));
+          });
           return true;
         })
         .catch((e) => {
