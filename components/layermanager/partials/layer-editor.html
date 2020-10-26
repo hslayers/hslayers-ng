@@ -102,6 +102,12 @@
     
                 <!-- Footer -->
             </form>
+            <div class="btn-group m-auto d-flex w-75" ng-if="$ctrl.currentLayer.visible && $ctrl.currentLayer.layer.get('base')">
+                <button class="btn btn-sm btn-outline-primary  w-50" ng-click="layermanagerService.setGreyscale($ctrl.currentLayer)" ng-class="{'active' : !$ctrl.currentLayer.grayscale}"
+                data-toggle="tooltip" >Color</button>
+                <button class="btn btn-sm btn-outline-primary  w-50" ng-click="layermanagerService.setGreyscale($ctrl.currentLayer)" ng-class="{'active' : $ctrl.currentLayer.grayscale}"
+                data-toggle="tooltip" >Grayscale</button>
+            </div>
         </div>
     </div>
     <div class="card-footer" ng-if="$ctrl.currentLayer.settings">

@@ -24,7 +24,7 @@
                     </div>
                     <div class="p-0 hs-miniMenu" ng-show="layer.galleryMiniMenu == true && layer.active"
                         ng-style="{'position':'absolute'}">
-                        <div class="pl-1 w-100" ng-click="setGreyscale(layer)">
+                        <div class="pl-1 w-100" ng-click="HsLayermanagerService.setGreyscale(layer)">
                             <label class="form-check-label m-0"
                                 ng-class="{'hs-checkmark':layer.grayscale,'hs-uncheckmark':!layer.grayscale}"></label>
                             <p class="ml-1 mb-0" ng-style="{'font-size':'medium'}" translate="">Grayscale</p>
