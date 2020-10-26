@@ -5,8 +5,10 @@ import {Point} from 'ol/geom';
 
 /**
  * @param HsMapService
+ * @param HsUtilsService
+ * @param HsStylesService
  */
-export default function (HsMapService) {
+export default function (HsMapService, HsUtilsService, HsStylesService) {
   'ngInject';
   const me = {};
   /**
@@ -53,64 +55,18 @@ export default function (HsMapService) {
    * @param {number} distance
    */
   me.cluster = function (newValue, layer, distance) {
-    if (!layer.hsOriginalStyle) {
-      layer.hsOriginalStyle = layer.getStyle();
-    }
     if (newValue == true && !layer.get('declutter')) {
-      const styleCache = {};
-      layer.setSource(me.createClusteredSource(layer, distance));
-      layer.setStyle((feature, resolution) => {
-        const size = feature.get('features').length;
-        if (size > 1) {
-          let textStyle = styleCache[size];
-          if (!textStyle) {
-            textStyle = new Style({
-              image: new Circle({
-                radius: 10,
-                stroke: new Stroke({
-                  color: '#fff',
-                }),
-                fill: new Fill({
-                  color: '#3399CC',
-                }),
-              }),
-              text: new Text({
-                text: size.toString(),
-                fill: new Fill({
-                  color: '#000',
-                }),
-              }),
-            });
-            styleCache[size] = textStyle;
-          }
-          return textStyle;
-        } else {
-          let tmp;
-          if (typeof layer.hsOriginalStyle == 'function') {
-            tmp = layer.hsOriginalStyle(feature, resolution);
-          } else {
-            tmp = layer.hsOriginalStyle;
-          }
-          const originalFeature = feature.get('features');
-          if (tmp.length) {
-            tmp[0].setGeometry(originalFeature[0].getGeometry());
-          } else {
-            tmp.setGeometry(originalFeature[0].getGeometry());
-          }
-          return tmp;
-        }
-      });
+      layer.set('hsOriginalStyle', layer.getStyle());
+      if (!HsUtilsService.instOf(layer.getSource(), Cluster)) {
+        layer.setSource(me.createClusteredSource(layer, distance));
+        HsStylesService.styleClusteredLayer(layer);
+      }
     } else {
-      layer.setStyle(() => {
-        if (typeof layer.hsOriginalStyle == 'function') {
-          return layer.hsOriginalStyle();
-        } else {
-          return layer.hsOriginalStyle;
-        }
-      });
+      layer.setStyle(layer.get('hsOriginalStyle'));
       layer.setSource(layer.getSource().getSource());
     }
   };
+
   me.createClusteredSource = function (layer, distance) {
     return new Cluster({
       distance: distance,

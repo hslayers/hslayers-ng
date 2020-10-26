@@ -40,12 +40,12 @@ export default {
       return src;
     };
     $scope.save = function () {
-      if (HsStylerService.layer == null) {
+      if (HsStylerService.layer === null) {
         return;
       }
       const source = $scope.getLayerSource(HsStylerService.layer);
       const style_json = {};
-      if (angular.isDefined($scope.fillcolor) && $scope.fillcolor != null) {
+      if (angular.isDefined($scope.fillcolor) && $scope.fillcolor !== null) {
         style_json.fill = new Fill({
           color: $scope.fillcolor['background-color'],
         });
