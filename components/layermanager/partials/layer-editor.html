@@ -54,8 +54,7 @@
                 <!-- Abstract -->
                 <div class="form-group" [hidden]="!abstract">
                     <label>{{'COMMON.abstract' | translate}}</label>
-                    <p>
-                        {{abstract}}
+                    <p [innerHtml]="HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)">
                     </p>
                 </div>
 

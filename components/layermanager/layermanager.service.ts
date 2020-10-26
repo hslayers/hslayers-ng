@@ -2,9 +2,11 @@ import '../layers/hs.source.SparqlJson';
 import ImageLayer from 'ol/layer/Image';
 import VectorLayer from 'ol/layer/Vector';
 import {CollectionEvent} from 'ol/Collection';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Group, Tile} from 'ol/layer';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -107,7 +109,9 @@ export class HsLayerManagerService {
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
     private HsLayerEditorStylesService: HsLayerEditorStylesService,
-    private HsLayerSelectorService: HsLayerSelectorService
+    private HsLayerSelectorService: HsLayerSelectorService,
+    private sanitizer: DomSanitizer,
+    private HsLanguageService: HsLanguageService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -157,6 +161,7 @@ export class HsLayerManagerService {
      */
     const new_layer: any = {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
+      abstract: layer.get('abstract'),
       layer: layer,
       grayed: this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
@@ -897,6 +902,18 @@ export class HsLayerManagerService {
       layer.expanded = true;
     } else {
       layer.expanded = !layer.expanded;
+    }
+  }
+
+  makeSafeAndTranslate(group: string, input: string): SafeHtml {
+    const translation = this.HsLanguageService.getTranslationIgnoreNonExisting(
+      group,
+      input
+    );
+    if (translation) {
+      return this.sanitizer.bypassSecurityTrustHtml(translation);
+    } else {
+      return '';
     }
   }
 
