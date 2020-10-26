@@ -79,6 +79,10 @@ export default function (HsMapService, HsUtilsService, HsStylesService) {
             return new Point(feature.getGeometry().getCenter());
           case 'Polygon':
             return feature.getGeometry().getInteriorPoint();
+          case 'MultiPolygon':
+            return new Point(
+              feature.getGeometry().getInteriorPoints().getFirstCoordinate()
+            );
           case 'LineString':
             return new Point(feature.getGeometry().getFirstCoordinate());
           default:
