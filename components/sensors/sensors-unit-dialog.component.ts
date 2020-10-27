@@ -4,6 +4,7 @@ import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -11,12 +12,16 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
-  loaderImage = require('../../img/ajax-loader.gif');
+  loaderImage = this.HsUtilsService.resolveEsModule(
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('../../img/ajax-loader.gif')
+  );
 
   constructor(
     private HsLayoutService: HsLayoutService,
     private HsDialogContainerService: HsDialogContainerService,
     private HsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    private HsUtilsService: HsUtilsService,
     elementRef: ElementRef
   ) {
     this.HsSensorsUnitDialogService.unitDialogVisible = true;

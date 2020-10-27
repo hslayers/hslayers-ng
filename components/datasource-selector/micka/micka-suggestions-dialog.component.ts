@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {HsDatasourcesService} from '../datasource-selector.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-micka-suggestions-dialog',
@@ -15,10 +16,14 @@ export class HsMickaSuggestionsDialogComponent implements OnInit {
   constructor(
     private hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService,
-    private hsMickaFilterService: HsMickaFilterService
+    private hsMickaFilterService: HsMickaFilterService,
+    private HsUtilsService: HsUtilsService
   ) {
     this.suggestionsModalVisible = true;
-    this.loaderImage = require('../../../img/ajax-loader.gif');
+    this.loaderImage = this.HsUtilsService.resolveEsModule(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('../../../img/ajax-loader.gif')
+    );
     this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
       this.hsMickaFilterService.suggestionConfig.input
     ];
