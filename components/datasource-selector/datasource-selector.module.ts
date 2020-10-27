@@ -18,7 +18,6 @@ import {HsDatasourcesMetadataService} from './datasource-selector-metadata.servi
 import {HsDatasourcesService} from './datasource-selector.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../common/layman';
-import {HsMetadataDialogComponent} from './metadata-dialog.component';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterComponent} from './micka/micka-filter.component';
 import {HsMickaFilterService} from './micka/micka-filters.service';
