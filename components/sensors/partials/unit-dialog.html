@@ -17,6 +17,15 @@
                         </div>
                     </div>
                 </div>
+                <table class="table table-sm table-striped table-hover">
+                    <tr><th>{{'SENSORS.sensors' | translate}}</th><th>{{'SENSORS.min' | translate}}</th><th>{{'SENSORS.max' | translate}}</th><th>{{'SENSORS.avg' | translate}}</th></tr>
+                    <tr *ngFor="let aggr of HsSensorsUnitDialogService.aggregations">
+                        <td>{{HsSensorsUnitDialogService.translate(aggr.sensor_name)}}</td>
+                        <td>{{aggr.min}}</td>
+                        <td>{{aggr.max}}</td>
+                        <td>{{aggr.avg}}</td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
                 <div class="d-flex w-100">

@@ -4,10 +4,18 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import moment = require('moment');
 import {HsConfig} from '../../config.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsSensorUnit} from './sensor-unit.class';
 import {default as vegaEmbed} from 'vega-embed';
+type Aggregate = {
+  sensor_id;
+  max;
+  min;
+  avg;
+  sensor_name;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -29,13 +37,15 @@ export class HsSensorsUnitDialogService {
     {name: '6M', amount: 6, unit: 'months'},
   ];
   dialogElement: ElementRef;
+  aggregations: Aggregate[];
 
   constructor(
     private http: HttpClient,
     private HsUtilsService: HsUtilsService,
     private HsLogService: HsLogService,
     private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private HsLanguageService: HsLanguageService
   ) {
     this.endpoint = this.HsConfig.senslog;
   }
@@ -170,6 +180,7 @@ export class HsSensorsUnitDialogService {
         ),
       []
     );
+    this.aggregations = this.calculateAggregates(unit, observations);
     observations.sort((a, b) => {
       if (a.time_stamp > b.time_stamp) {
         return 1;
@@ -243,5 +254,48 @@ export class HsSensorsUnitDialogService {
     } catch (ex) {
       this.HsLogService.warn('Could not create vega chart:', ex);
     }
+  }
+
+  private calculateAggregates(unit: any, observations: any): Aggregate[] {
+    const aggregates: Aggregate[] = unit.sensors
+      .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+      .map(
+        (sensor): Aggregate => {
+          const tmp: Aggregate = {
+            min: 0,
+            max: 0,
+            avg: 0,
+            sensor_id: sensor.sensor_id,
+            sensor_name: sensor.sensor_name,
+          };
+          const filteredObs = observations
+            .filter((obs) => obs.sensor_id == sensor.sensor_id)
+            .map((obs) => {
+              return {value: obs.value, time: obs.time_stamp};
+            });
+          tmp.max = Math.max(
+            ...filteredObs.map((o) => {
+              return o.value;
+            })
+          );
+          tmp.min = Math.min(
+            ...filteredObs.map((o) => {
+              return o.value;
+            })
+          );
+          tmp.avg =
+            filteredObs.reduce((p, c) => p + c.value, 0) / filteredObs.length;
+          tmp.avg = Math.round(tmp.avg * Math.pow(10, 2)) / Math.pow(10, 2);
+          return tmp;
+        }
+      );
+    return aggregates;
+  }
+
+  translate(text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(
+      'SENSORS',
+      text
+    );
   }
 }
