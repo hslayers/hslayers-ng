@@ -117,7 +117,11 @@ export class HsStylerComponent {
             require(/* webpackChunkName: "img" */ './img/svg/university2.svg'),
             require(/* webpackChunkName: "img" */ './img/svg/warning.svg'),
             require(/* webpackChunkName: "img" */ './img/svg/wifi8.svg'),
-          ].map((icon) => this.sanitizer.bypassSecurityTrustResourceUrl(icon));
+          ].map((icon) =>
+            this.sanitizer.bypassSecurityTrustResourceUrl(
+              this.HsUtilsService.resolveEsModule(icon)
+            )
+          );
         }
         this.isClustered = this.HsLayerUtilsService.isLayerClustered(
           HsStylerService.layer

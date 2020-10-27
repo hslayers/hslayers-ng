@@ -76,7 +76,7 @@ export class HsSensorsService {
           width: 2,
         }),
         image: new Icon({
-          src: require('../../components/styles/img/svg/wifi8.svg'),
+          src: this.HsUtilsService.resolveEsModule(require('../../components/styles/img/svg/wifi8.svg')),
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),
