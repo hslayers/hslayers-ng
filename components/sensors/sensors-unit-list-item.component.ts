@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
@@ -18,8 +17,7 @@ export class HsSensorsUnitListItemComponent {
   constructor(
     private HsSensorsService: HsSensorsService,
     private HsDialogContainerService: HsDialogContainerService,
-    private HsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private HsLanguageService: HsLanguageService
+    private HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {}
 
   /**
@@ -67,12 +65,5 @@ export class HsSensorsUnitListItemComponent {
         this.HsSensorsUnitDialogService.unit
       );
     }
-  }
-
-  translate(text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(
-      'SENSORS',
-      text
-    );
   }
 }

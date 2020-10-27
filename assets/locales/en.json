@@ -303,7 +303,10 @@
     "measure": "Measure",
     "phenomena": "Phenomena",
     "sensors": "Sensors",
-    "sensorUnit": "Sensor unit"
+    "sensorUnit": "Sensor unit",
+    "min": "Min",
+    "max": "Max",
+    "avg": "Avg."
   },
   "SIDEBAR": {
     "descriptions": {

@@ -303,7 +303,10 @@
     "phenomena": "Parādība",
     "sensors": "Sensori",
     "Filter": "Filtrs",
-    "sensorUnit": "Sensoru vienība"
+    "sensorUnit": "Sensoru vienība",
+    "min": "Min",
+    "max": "Maks.",
+    "avg": "Vid."
   },
   "SIDEBAR": {
     "descriptions": {
