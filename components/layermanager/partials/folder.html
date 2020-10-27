@@ -1,6 +1,6 @@
 <div>
     <ul class="list-group" *ngFor="let value of folder.sub_folders">
-        <a href="" class="list-group-item list-group-item-warning">
+        <a href="#" class="list-group-item list-group-item-warning">
             <span [ngStyle]="{'padding-left': value.indent*15}">{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}</span>
         </a>
         <li [hidden]="!folderVisible(value)">

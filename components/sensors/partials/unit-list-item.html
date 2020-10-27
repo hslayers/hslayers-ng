@@ -2,7 +2,7 @@
     <a href="#" (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
-            <a href="" (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type" style="line-height: 2em;">{{translate(sensorType.name)}}</a>
+            <a href="#" (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type" style="line-height: 2em;">{{translate(sensorType.name)}}</a>
             <ul class="list-group" [hidden]="!sensorType.expanded">
                 <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
                     <div class="d-flex ">
@@ -10,9 +10,9 @@
                             <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)" [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                         </div>
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
-                            <a *ngIf="viewMode == 'sensors'" class="hs-sensor" href="" (click)="sensorClicked(sensor)">
+                            <a *ngIf="viewMode == 'sensors'" class="hs-sensor" href="#" (click)="sensorClicked(sensor)">
                                 <b>{{translate(sensor.sensor_name)}}</b><span class="ml-1">{{'SENSORS.measure' | translate}}</span> {{translate(sensor.phenomenon_name)}}</a>
-                            <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" href="" (click)="sensorClicked(sensor)">
+                            <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" href="#" (click)="sensorClicked(sensor)">
                                 {{translate(sensor.phenomenon_name)}}</a>
                         </div>
                         <div class="p-0">
