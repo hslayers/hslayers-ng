@@ -1,10 +1,9 @@
 import {Component, ViewRef} from '@angular/core';
-import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsShareService} from '../../permalink/share.service';
 @Component({
-  selector: 'hs.compositions-share-dialog',
+  selector: 'hs-compositions-share-dialog',
   template: require('./dialog_share.html'),
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
@@ -13,7 +12,6 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
 
   constructor(
     private HsDialogContainerService: HsDialogContainerService,
-    private HsCompositionsService: HsCompositionsService,
     private HsShareService: HsShareService
   ) {}
 
