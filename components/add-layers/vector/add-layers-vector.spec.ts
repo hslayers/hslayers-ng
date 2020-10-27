@@ -9,6 +9,7 @@ import * as angular from 'angular';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsStylerService} from '../../styles/styler.service';
+import { HsUtilsService } from '../../utils/utils.service';
 describe('add-layers-vector', () => {
   let el, scope, vm;
 
@@ -21,6 +22,7 @@ describe('add-layers-vector', () => {
         this.proxify = function (url) {
           return url;
         };
+        this.resolveEsModule = (m) => m;
       })
       .factory('HsLayerUtilsService', HsLayerUtilsService);
 
@@ -34,7 +36,11 @@ describe('add-layers-vector', () => {
     });
 
     angular.module('hs.styles', []).service('HsStylerService', function () {
-      this.parseStyle = new HsStylerService(null).parseStyle;
+      this.parseStyle = new HsStylerService(null, <HsUtilsService>{
+        resolveEsModule: (m) => {
+          return m || m.default;
+        },
+      }).parseStyle;
     });
 
     angular
