@@ -104,7 +104,11 @@ describe('compositions', () => {
           useValue: new HsAddLayersVectorService(
             mockedMapService,
             new HsUtilsServiceMock(),
-            new HsStylerService(null)
+            new HsStylerService(null, <HsUtilsService>{
+              resolveEsModule: (m) => {
+                return m || m.default;
+              },
+            })
           ),
         },
         {
