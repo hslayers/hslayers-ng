@@ -3,7 +3,7 @@ import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 @Component({
-  selector: 'hs.compositions-delete-dialog',
+  selector: 'hs-compositions-delete-dialog',
   template: require('./dialog_delete.html'),
 })
 export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {

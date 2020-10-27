@@ -3,7 +3,7 @@ import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 @Component({
-  selector: 'hs.compositions-info-dialog',
+  selector: 'hs-compositions-info-dialog',
   template: require('./dialog_info.html'),
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {

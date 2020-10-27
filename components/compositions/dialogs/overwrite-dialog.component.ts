@@ -4,7 +4,7 @@ import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
 @Component({
-  selector: 'hs.compositions-overwrite-dialog',
+  selector: 'hs-compositions-overwrite-dialog',
   template: require('./dialog_overwriteconfirm.html'),
 })
 export class HsCompositionsOverwriteDialogComponent

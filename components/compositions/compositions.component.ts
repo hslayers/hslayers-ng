@@ -294,8 +294,7 @@ export class HsCompositionsComponent implements OnInit {
 
   /**
    * @public
-   * @param {any} record Composition to share
-   * @param $event
+   * @param {object} record Composition to share
    * @description Prepare share object on server and display share dialog to share composition
    */
   async shareComposition(record): Promise<void> {
