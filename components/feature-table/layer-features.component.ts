@@ -67,6 +67,7 @@ export class HsLayerFeaturesComponent implements OnInit {
         false,
         this
       );
+
       source.on('changefeature', changeHandler);
       source.on('addfeature', changeHandler);
       source.on('removefeature', changeHandler);
