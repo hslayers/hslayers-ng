@@ -1,3 +1,4 @@
+/* eslint-disable angular/module-getter */
 'use strict';
 
 import './components/add-layers/add-layers.module';
@@ -42,7 +43,7 @@ mainModuleBs.directive('hs', (HsConfig, HsCore) => {
     template: require('hslayers.html'),
     link: function (scope, element, attrs) {
       if (
-        typeof HsConfig.sizeMode == 'undefined' ||
+        typeof HsConfig.sizeMode === 'undefined' ||
         HsConfig.sizeMode == 'fullscreen'
       ) {
         HsCore.fullScreenMap(element);
@@ -57,11 +58,12 @@ import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import View from 'ol/View';
 import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
-import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
+import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {LineString, Point, Polygon} from 'ol/geom';
+import {SparqlJson} from './components/layers/hs.source.SparqlJson';
 import {Vector} from 'ol/source';
-import {Style, Fill, Stroke, Circle, Icon} from 'ol/style';
 import {register} from 'ol/proj/proj4';
 
 window.ol = {
@@ -69,7 +71,7 @@ window.ol = {
     Tile,
     Group,
     Image: ImageLayer,
-    Vector: VectorLayer
+    Vector: VectorLayer,
   },
   source: {
     OSM,
@@ -80,20 +82,21 @@ window.ol = {
     TileArcGISRest,
     BingMaps,
     ImageWMS,
-    ImageArcGISRest
+    ImageArcGISRest,
+    SparqlJson,
   },
   format: {
-    GeoJSON
+    GeoJSON,
   },
   style: {
     Style,
     Fill,
     Stroke,
     Circle,
-    Icon
+    Icon,
   },
   View,
-  proj
+  proj,
 };
 
 if (window.hslayersNgConfig) {
