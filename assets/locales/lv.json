@@ -66,7 +66,11 @@
     "value": "Vērtība",
     "west": "Rietumi",
     "width": "Platums",
-    "yes": "Jā"
+    "yes": "Jā",
+    "confirm": "Apstiprināt",
+    "url": "URL",
+    "layer": "slānis",
+    "continue": "turpināt"
   },
   "COMPOSITIONS": {
     "Address": "Adrese",
@@ -74,7 +78,24 @@
     "addByAddress": "Pievienot kompozīciju pēc adreses",
     "results": "Rezultāti",
     "onlyMine": "Tikai manas",
-    "filterByMap": "Filtrēt pēc kartes"
+    "filterByMap": "Filtrēt pēc kartes",
+    "dialogDelete": {
+      "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
+    },
+    "dialogInfo": {
+      "details": "detaļas"
+    },
+    "dialogoverwriteConfirm": {
+      "overwriteExistingMap": "Pārrakstīt esošo karti?",
+      "youAreOpeningMap": "Jūs atverat karti",
+      "thereAreCurrentlyUnsavedChanges": "Pašlaik ir nesaglabātas izmaiņas.",
+      "whatDoYouWant": "Ko Jūs vēlaties izdarīt pirms atlasītās kartes kompozīcijas atvēršanas?",
+      "mergeCompositions": "Apvienot kompozīcijas",
+      "saveChangesFirst": "Vispirms saglabājiet izmaiņas"
+    },
+    "dialogShare": {
+      "shareMap": "Koplietot karti"
+    }
   },
   "DRAW": {
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",

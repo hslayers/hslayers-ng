@@ -3,17 +3,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>Share map </span> {{data.shareTitle}}
+                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translate}}</span> {{data.shareTitle}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
-                    <div class="col-md-3"><b translate="">Abstract</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.abstract' | translate}}</b></div>
                     <div class="col-md-9">{{data.shareDescription}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b translate="">URL</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>
                     <div class="col-md-9"><a [href]="data.shareUrl">{{data.shareUrl}}</a></div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                         <i class="icon-share-alt"></i> {{'PERMALINK.share' | translate}}
                     </button>
                 </div>
-                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal" translate="">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close' | translate}}</button>
             </div>
         </div>
     </div>

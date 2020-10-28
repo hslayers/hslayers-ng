@@ -2,17 +2,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" translate>
-                   Overwrite existing map?:                </h4>
+                <h4 class="modal-title">{{'COMPOSITIONS.dialogoverwriteConfirm.overwriteExistingMap' | translate}}:</h4>
                 <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
             </div>
-            <div class="modal-body" style="max-height: 600px; overflow-y: auto" translate>
-                    You are opening map <b>{{composition_name_to_be_loaded}}</b><br>There are currently unsaved changes.<br>What do you want to do before opening the selected map composition?:</div>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto">
+                {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translate}}
+                <b>{{composition_name_to_be_loaded}}</b>
+                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.thereAreCurrentlyUnsavedChanges' | translate}}
+                <br>{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translate}}:</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary compositions-btn-overwrite" translate (click)="overwrite()" data-dismiss="modal">Continue</button>
-                <button type="button" class="btn btn-primary compositions-btn-add" translate (click)="add();" data-dismiss="modal">Merge compositions</button>
-                <button type="button" class="btn btn-primary compositions-btn-save" translate (click)="save()" data-dismiss="modal">Save changes first</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()" data-dismiss="modal" translate>Cancel</button>
+                <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="overwrite()" data-dismiss="modal">{{'COMMON.continue' | translate}}</button>
+                <button type="button" class="btn btn-primary compositions-btn-add" (click)="add();" data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' | translate}}</button>
+                <button type="button" class="btn btn-primary compositions-btn-save" (click)="save()" data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' | translate}}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()" data-dismiss="modal" >{{'COMMON.cancel' | translate}}</button>
             </div>
         </div>
     </div>

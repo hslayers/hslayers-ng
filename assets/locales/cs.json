@@ -61,7 +61,36 @@
     "value": "Hodnota",
     "west": "Západní",
     "width": "Šířka",
-    "yes": "Ano"
+    "yes": "Ano",
+    "confirm": "Potvrdit",
+    "url": "URL",
+    "layer": "vrstva",
+    "continue": "pokračovat"
+  },
+  "COMPOSITIONS": {
+    "Address": "Address",
+    "import": "Import composition from a file on device",
+    "addByAddress": "Add composition by address",
+    "results": "Results",
+    "onlyMine": "Only mine",
+    "filterByMap": "Filter by map extent",
+    "dialogDelete": {
+      "doYouWantToDeleteMap": "Do you want to delete map?"
+    },
+    "dialogInfo": {
+      "details": "details"
+    },
+    "dialogoverwriteConfirm": {
+      "overwriteExistingMap": "Overwrite existing map?",
+      "youAreOpeningMap": "You are opening map",
+      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
+      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
+      "mergeCompositions": "Merge compositions",
+      "saveChangesFirst": "Save changes first"
+    },
+    "dialogShare": {
+      "shareMap": "Share map"
+    }
   },
   "DRAW": {
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",

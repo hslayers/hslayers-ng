@@ -66,7 +66,11 @@
     "value": "Value",
     "west": "West",
     "width": "Width",
-    "yes": "Yes"
+    "yes": "Yes",
+    "confirm": "Confirm",
+    "url": "url",
+    "layer": "layer",
+    "continue": "continue"
   },
   "COMPOSITIONS": {
     "Address": "Address",
@@ -74,7 +78,24 @@
     "addByAddress": "Add composition by address",
     "results": "Results",
     "onlyMine": "Only mine",
-    "filterByMap": "Filter by map extent"
+    "filterByMap": "Filter by map extent",
+    "dialogDelete": {
+      "doYouWantToDeleteMap": "Do you want to delete map?"
+    },
+    "dialogInfo": {
+      "details": "details"
+    },
+    "dialogoverwriteConfirm": {
+      "overwriteExistingMap": "Overwrite existing map?",
+      "youAreOpeningMap": "You are opening map",
+      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
+      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
+      "mergeCompositions": "Merge compositions",
+      "saveChangesFirst": "Save changes first"
+    },
+    "dialogShare": {
+      "shareMap": "Share map"
+    }
   },
   "DRAW": {
     "activateDrawing": "Activate drawing by choosing a feature type",
