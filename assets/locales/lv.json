@@ -271,7 +271,8 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRACKING": "Izsekošna"
+    "TRACKING": "Izsekošna",
+    "TRIP_PLANNER": "Maršruta plānotājs"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -398,5 +399,9 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
+  },
+  "TRIP_PLANNER": {
+    "totalDistance": "Kopējais attālums",
+    "waypoints": "pieturas punkts"
   }
 }

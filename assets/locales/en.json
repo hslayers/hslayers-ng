@@ -271,7 +271,8 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRACKING": "Tracking"
+    "TRACKING": "Tracking",
+    "TRIP_PLANNER": "Trip planner"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -398,5 +399,9 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
+  },
+  "TRIP_PLANNER": {
+    "totalDistance": "Total distance",
+    "waypoints": "Waypoints"
   }
 }
