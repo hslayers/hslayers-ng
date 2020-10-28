@@ -172,7 +172,7 @@ function extendAttributes(options, objects) {
 const $http = angular.injector(['ng']).get('$http');
 
 /**
- * @param options
+ * @param {object} options
  * @param {boolean} [options.clear_on_move]
  * @param {boolean} [options.hsproxy]
  * @param {string} [options.geom_attribute]
