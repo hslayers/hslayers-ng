@@ -1,20 +1,28 @@
+/* eslint-disable angular/definedundefined */
 import * as loadingstrategy from 'ol/loadingstrategy';
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
-import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
+import {LineString, Point, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
+/**
+ * based on http://stackoverflow.com/a/7419630
+ * This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
+ * Adam Cole, 2011-Sept-14
+ * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+ * @param {number} numOfSteps
+ * @param {number} step
+ * @param opacity
+ * @returns {string} RGBA color
+ */
 function rainbow(numOfSteps, step, opacity) {
-  // based on http://stackoverflow.com/a/7419630
-  // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
-  // Adam Cole, 2011-Sept-14
-  // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
   let r, g, b;
   const h = step / (numOfSteps * 1.00000001);
   const i = ~~(h * 4);
   const f = h * 4 - i;
   const q = 1 - f;
+  // eslint-disable-next-line default-case
   switch (i % 4) {
     case 2:
       (r = f), (g = 1), (b = 0);
@@ -89,12 +97,12 @@ function loadFeatures(
         objects[key]['http://www.w3.org/2003/01/geo/wgs84_pos#lat']
       );
       if (!isNaN(x) && !isNaN(y)) {
-        var coord = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+        const coord = transform([x, y], 'EPSG:4326', 'EPSG:3857');
         if (typeof occupied_xy[coord] !== 'undefined') {
           continue;
         }
         objects[key].geometry = new Point(coord);
-        var feature = new Feature(objects[key]);
+        const feature = new Feature(objects[key]);
         registerCategoryForStatistics(
           objects[key],
           options,
@@ -114,12 +122,12 @@ function loadFeatures(
       objects[key].geometry = g_feature.getGeometry();
       objects[key].geometry.transform('EPSG:4326', options.projection);
       delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
-      var coord = objects[key].geometry.getCoordinates();
+      const coord = objects[key].geometry.getCoordinates();
 
       if (typeof occupied_xy[coord] !== 'undefined') {
         continue;
       }
-      var feature = new Feature(objects[key]);
+      const feature = new Feature(objects[key]);
       registerCategoryForStatistics(
         objects[key],
         options,
@@ -149,11 +157,11 @@ function loadFeatures(
 }
 
 function extendAttributes(options, objects) {
-  if (typeof options.extend_with_attribs != 'undefined') {
+  if (typeof options.extend_with_attribs !== 'undefined') {
     for (const attr_i in options.extend_with_attribs) {
       for (const i in objects) {
         if (
-          typeof objects[i][options.extend_with_attribs[attr_i]] == 'undefined'
+          typeof objects[i][options.extend_with_attribs[attr_i]] === 'undefined'
         ) {
           objects[i][options.extend_with_attribs[attr_i]] = '';
         }
@@ -164,11 +172,23 @@ function extendAttributes(options, objects) {
 
 const $http = angular.injector(['ng']).get('$http');
 
-export default function (options) {
+/**
+ * @param options
+ * @param {boolean} [options.clear_on_move]
+ * @param {boolean} [options.hsproxy]
+ * @param {string} [options.geom_attribute]
+ * @param {string} options.url
+ * @param {string} [options.updates_url]
+ * @param {string} [options.category]
+ * @param {any} [options.strategy]
+ * @param {any} options.projection
+ * @returns {Vector} New vector source
+ */
+export const SparqlJson = function (options) {
   const category_map = {};
   const category_id = 0;
   const occupied_xy = {};
-  var src = new Vector({
+  const src = new Vector({
     format: new GeoJSON(),
     loader: function (extent, resolution, projection) {
       this.set('loaded', false);
@@ -178,10 +198,10 @@ export default function (options) {
       ) {
         this.clear();
       }
-      if (typeof options.hsproxy == 'undefined') {
+      if (typeof options.hsproxy === 'undefined') {
         options.hsproxy = false;
       }
-      if (typeof options.geom_attribute == 'undefined') {
+      if (typeof options.geom_attribute === 'undefined') {
         options.geom_attribute =
           'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
       }
@@ -193,12 +213,7 @@ export default function (options) {
       let second_pair = [extent[2], extent[3]];
       first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
       second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
-      var extent = [
-        first_pair[0],
-        first_pair[1],
-        second_pair[0],
-        second_pair[1],
-      ];
+      extent = [...first_pair, ...second_pair];
       const s_extent = encodeURIComponent(
         'FILTER(geof:sfIntersects("POLYGON((' +
           extent[0] +
@@ -238,7 +253,7 @@ export default function (options) {
         p =
           '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
       }
-      if (console && typeof src.get('geoname') != 'undefined') {
+      if (console && typeof src.get('geoname') !== 'undefined') {
         console.log('Get ', src.get('geoname'));
       }
       this.loadCounter += 1;
@@ -305,7 +320,7 @@ export default function (options) {
               }
               objects[item.o.value][attribute_name] = item.value.value;
             }
-            if (typeof options.category != 'undefined') {
+            if (typeof options.category !== 'undefined') {
               for (const i in objects) {
                 objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
                   options.category;
@@ -334,17 +349,16 @@ export default function (options) {
           });
         } else {
           const objects = {};
-          for (var i = 0; i < response.data.results.bindings.length; i++) {
-            const b = response.data.results.bindings[i];
-            if (typeof objects[b.o.value] === 'undefined') {
-              objects[b.o.value] = {
-                'poi_id': b.o.value,
+          for (const triple of response.data.results.bindings) {
+            if (typeof objects[triple.o.value] === 'undefined') {
+              objects[triple.o.value] = {
+                'poi_id': triple.o.value,
               };
             }
-            objects[b.o.value][b.p.value] = b.s.value;
+            objects[triple.o.value][triple.p.value] = triple.s.value;
           }
-          if (typeof options.category != 'undefined') {
-            for (var i in objects) {
+          if (typeof options.category !== 'undefined') {
+            for (const i in objects) {
               objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
                 options.category;
             }
@@ -392,4 +406,6 @@ export default function (options) {
   console.log('src');
   console.log(src);
   return src;
-}
+};
+
+export default SparqlJson;
