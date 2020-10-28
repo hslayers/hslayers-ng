@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -10,9 +12,10 @@ import {Layer} from 'ol/layer';
 export class HsFeatureTableService {
   sortReverse = false; //trigger for reverse sorting
   lastSortValue = ''; //last sorting value selected
-  featureAttributeList: any = []; //all feature attributes for html table
+  features: any = []; //all feature attributes for html table
   constructor(
     private HsUtilsService: HsUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     private HsQueryVectorService: HsQueryVectorService
   ) {}
   /**
@@ -54,32 +57,29 @@ export class HsFeatureTableService {
    * @description Search all layers feature attributes and map them into new objects for html table
    */
   getFeatureAttributes(layer: Layer): void {
-    let features = [];
-    const featureAttributes = [];
-    if (layer.getSource().getSource) {
-      features = layer.getSource().getSource().getFeatures();
-    } else {
-      features = layer.getSource().getFeatures();
-    }
-    if (features.length) {
-      for (const feature of features) {
-        let attributesFromQuery = this.HsQueryVectorService.getFeatureAttributes(
-          feature
-        );
-        if (attributesFromQuery.length) {
-          attributesFromQuery = attributesFromQuery.map((attr) => {
-            return {
-              name: this.setFeatureName(attr.attributes),
-              attributes: this.attributesWithoutFeatureName(attr.attributes),
-              stats: attr.stats,
-            };
-          });
-          attributesFromQuery = attributesFromQuery[0];
-          featureAttributes.push(attributesFromQuery);
+    const source: VectorSource = this.HsLayerUtilsService.isLayerClustered(
+      layer
+    )
+      ? layer.getSource().getSource()
+      : layer.getSource();
+    this.features = source
+      .getFeatures()
+      .map((f) => {
+        const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
+          f
+        ).pop();
+        if (!attribWrapper) {
+          return null;
         }
-      }
-      this.featureAttributeList = featureAttributes;
-    }
+        return {
+          name: this.setFeatureName(attribWrapper.attributes),
+          attributes: this.attributesWithoutFeatureName(
+            attribWrapper.attributes
+          ),
+          stats: attribWrapper.stats,
+        };
+      })
+      .filter((f) => f?.attributes?.length > 0);
   }
   /**
    * @param attributes layers feature attributes
@@ -118,14 +118,11 @@ export class HsFeatureTableService {
    * @description Sort features by requested value
    */
   sortFeaturesBy(valueName): void {
-    if (
-      this.featureAttributeList !== undefined &&
-      this.featureAttributeList.length > 1
-    ) {
+    if (this.features !== undefined && this.features.length > 1) {
       this.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
         ? (this.sortReverse = !this.sortReverse)
         : (this.sortReverse = false);
-      this.featureAttributeList = this.featureAttributeList.sort((a, b) =>
+      this.features = this.features.sort((a, b) =>
         this.sortFeatures(a, b, valueName)
       );
     }

@@ -6,7 +6,7 @@
     </div>
 </div>
 <table style="width:100%;"
-    *ngFor="let feature of HsFeatureTableService.featureAttributeList | featureFilter: searchedFeatures">
+    *ngFor="let feature of HsFeatureTableService.features | featureFilter: searchedFeatures">
     <thead>
         <tr style="text-align: center; background-color: rgba(0,0,0,0.03);">
             <th colspan="2">{{feature.name}}</th>
