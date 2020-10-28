@@ -1,6 +1,10 @@
 {
   "COMMON": {
+    "Login": "Přihlásit se",
+    "Logout": "Odhlásit se",
+    "Sort": "Třídit",
     "abstract": "Abstrakt",
+    "addAs": "Add as", 
     "advancedOptions": "Pokročilé možnosti",
     "area": "Plocha",
     "attribute": "Atribut",
@@ -11,7 +15,9 @@
     "clear": "Vyčistit",
     "close": "Zavřít",
     "color": "Barva",
+    "confirm": "Potvrdit",
     "confirmDelete": "Potvrďte smazání",
+    "continue": "pokračovat",
     "date": "Datum",
     "delete": "Vymazat",
     "distance": "Vzdálenost",
@@ -25,18 +31,17 @@
     "filter": "Filtr:",
     "folder": "Složka",
     "from": "Z",
-    "until": "Až do",
     "hide": "Skrýt",
     "icon": "Ikona",
     "info": "Další informace",
     "keywords": "klíčová slova",
+    "layer": "vrstva",
     "layers": "Vrstvy",
     "legend": "Legenda",
     "line": "Linie",
-    "Login": "Přihlásit se",
-    "Logout": "Odhlásit se",
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
+    "more": "Více",
     "name": "Název",
     "newDrawingLayer": "Nová vrstva kreslení",
     "next": "Další",
@@ -53,56 +58,66 @@
     "renameLayer": "Přejmenovat vrstvu",
     "reset": "Resetovat",
     "rotation": "Rotace",
+    "results": "Výsledek",
     "save": "Uložit",
     "saveAs": "Uložit jako..",
     "scale": "Měřítko",
     "south": "Jižní",
-    "Sort": "Třídit",
     "stroke": "Tah",
     "strokeWidth": "Šířka tahu",
     "thumbnail": "Miniatura",
     "title": "Název",
     "to": "do",
+    "until": "Až do",
+    "url": "URL",
     "value": "Hodnota",
     "west": "Západní",
     "width": "Šířka",
     "yes": "Ano",
-    "confirm": "Potvrdit",
-    "url": "URL",
-    "layer": "vrstva",
-    "continue": "pokračovat"
+    "zoomTo": "zvětšit na"
   },
   "COMPOSITIONS": {
     "Address": "Address",
-    "import": "Import composition from a file on device",
     "addByAddress": "Add composition by address",
-    "results": "Results",
-    "onlyMine": "Only mine",
-    "filterByMap": "Filter by map extent",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },
     "dialogInfo": {
       "details": "details"
     },
-    "dialogoverwriteConfirm": {
-      "overwriteExistingMap": "Overwrite existing map?",
-      "youAreOpeningMap": "You are opening map",
-      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
-      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
-      "mergeCompositions": "Merge compositions",
-      "saveChangesFirst": "Save changes first"
-    },
     "dialogShare": {
       "shareMap": "Share map"
-    }
+    },
+    "dialogoverwriteConfirm": {
+      "mergeCompositions": "Merge compositions",
+      "overwriteExistingMap": "Overwrite existing map?",
+      "saveChangesFirst": "Save changes first",
+      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
+      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
+      "youAreOpeningMap": "You are opening map"
+    },
+    "filterByMap": "Filter by map extent",
+    "import": "Import composition from a file on device",
+    "onlyMine": "Only mine"
+  },
+  "DATASOURCE_SELECTOR": {
+    "addToMapAs": "Add to map as",
+    "datasourceListItem": {
+      "abortAdd": "Abort add",
+      "addToMap": "Add to map",
+      "whatDoesItMean": "What does it mean?"
+    },
+    "externalData": "External data",
+    "layerRDF": "Layer RDF",
+    "metadataFor": "Metadata for",
+    "noResults": "No results"
   },
   "DRAW": {
+    "Select layer": "Vybrat vrstvu",
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
     "definedStyle": "Definovaný styl",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
-    "drawingTo": "Kreslím do:",
     "drawLayer": "Kreslící vrstva",
     "drawLayerMetadata": {
       "defaultAttributes": "Výchozí atributy",
@@ -117,11 +132,18 @@
       "removeLastPoint": "Odebrat poslední bod",
       "selectType": "Zvolte typ"
     },
+    "drawingTo": "Kreslím do:",
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
-    "unsavedDrawing": "Neuložená kresba",
-    "Select layer": "Vybrat vrstvu"
+    "unsavedDrawing": "Neuložená kresba"
+  },
+  "FEATURE_TABLE": {
+    "delete": "delete",
+    "showFeatureStats": "Expand",
+    "sortBy": "Sort by",
+    "sortFeaturesByValue": "Zobrazte statistiky prvku",
+    "zoom to": "zoom to"
   },
   "GEOLOCATION": {
     "altitude": "Nadmořská výška",
@@ -134,11 +156,12 @@
     "toggleDropdown": "Rozbalovací nabídku"
   },
   "LAYERMANAGER": {
-    "baselayers": "Podkladové vrstvy",
+    "User generated": "Uživatelské",
     "baseMapGallery": {
       "grayscale": "Šedotón",
       "noBaseMap": "Bez podkladu"
     },
+    "baselayers": "Podkladové vrstvy",
     "dialogRemoveAll": {
       "dialogMessage": "Opravdu chcete odstranit všechny vrstvy?",
       "reloadComposition": "Obnovit kompozici",
@@ -180,7 +203,6 @@
       "sidesNumber": "Číslo stran",
       "star": "Hvězda"
     },
-    "User generated": "Uživatelské",
     "mapContent": "Mapový obsah",
     "other": "Jiné",
     "removeAllLayers": "Odstranit všechny vrstvy",
@@ -213,7 +235,10 @@
   "PANEL_HEADER": {
     "ADDLAYERS": "Přidejte vrstvy",
     "APPLICATIONSETTINGS": "Nastavení aplikace",
+    "COMPOSITIONS": "Skladby",
+    "DATASOURCE_SELECTOR": "Datasources",
     "DRAW": "Kreslit",
+    "FEATURE_TABLE": "Tabulka prvků",
     "FILTERFEATURES": "Filtrovat subjekt",
     "INFO": "Info",
     "LANGUAGE": "Změnit jazyk",
@@ -227,9 +252,7 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "SEARCH": "Vyhledávání",
     "SENSORS": "Senzory",
-    "TRACKING": "Sledování",
-    "FEATURE_TABLE": "Tabulka prvků",
-    "COMPOSITIONS": "Skladby"
+    "TRACKING": "Sledování"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -321,19 +344,20 @@
     "search": "Vyhledávání:"
   },
   "SENSORS": {
-    "measure": "Opatření",
-    "phenomena": "Jevy",
-    "sensors": "Senzory",
-    "sensorUnit": "Senzorová jednotka",
-    "min": "Min",
+    "avg": "Avg.",
     "max": "Max",
-    "avg": "Avg."
+    "measure": "Opatření",
+    "min": "Min",
+    "phenomena": "Jevy",
+    "sensorUnit": "Senzorová jednotka",
+    "sensors": "Senzory"
   },
   "SIDEBAR": {
     "descriptions": {
       "ADDLAYERS": "Vyberte data nebo služby pro vaši mapovou kompozici",
       "APPLICATIONSETTINGS": "Zadejte uživatelské nastavení aplikace",
       "DRAW": "Nakreslete nové prvky",
+      "FEATURE_TABLE": "Zobrazite prvky vrstvy v html tabulce",
       "FILTERFEATURES": "Crossfilter",
       "INFO": "Zobrazite informace o výsledku dotazu na mapu",
       "LANGUAGE": "Změnte jazyk",
@@ -344,8 +368,7 @@
       "PERMALINK": "Sdílejte mapu",
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
-      "SEARCH": "Vyhledejte lokaci",
-      "FEATURE_TABLE": "Zobrazite prvky vrstvy v html tabulce"
+      "SEARCH": "Vyhledejte lokaci"
     }
   },
   "STYLER": {
@@ -356,12 +379,5 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Změřte linie a polygony"
-  },
-  "FEATURE_TABLE": {
-    "showFeatureStats": "Expand",
-    "sortFeaturesByValue": "Zobrazte statistiky prvku",
-    "sortBy": "Sort by",
-    "zoom to": "zoom to",
-    "delete": "delete"
   }
 }

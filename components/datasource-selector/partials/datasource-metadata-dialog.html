@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          <i18n>Metadata for</i18n> {{selectedLayer.title}}
+          {{'DATASOURCE_SELECTOR.metadataFor' | translate}} {{ selectedLayer.title}}
         </h4>
         <button type="button" (click)="close()" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
@@ -26,12 +26,12 @@
           [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
           <i class="icon-share-alt"></i> RDF
         </a>
-        <button type="button" class="btn btn-success" i18n [hidden]="!hsDatasourcesMapService.isZoomable(selectedLayer)"
-          (click)="hsDatasourcesMapService.zoomTo(selectedLayer.bbox)">Zoom to</button>
+        <button type="button" class="btn btn-success" [hidden]="!hsDatasourcesMapService.isZoomable(selectedLayer)"
+          (click)="hsDatasourcesMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' | translate}}</button>
         <button type="button" class="btn btn-primary" *ngFor="let type of selectedLayer.type"
           (click)="addLayerToMap(selectedDS, selectedLayer, type)"
           [hidden]='hsConfig.dss_disallow_add == true' data-dismiss="modal">
-          <span class="icon-plus"></span><span i18n>Add to map as {{type}}</span>
+          <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate}} {{type}}</span>
         </button>
         <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">
           {{'COMMON.close' | translate}}

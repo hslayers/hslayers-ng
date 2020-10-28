@@ -1,6 +1,10 @@
 {
   "COMMON": {
+    "Login": "Log in",
+    "Logout": "Log out",
+    "Sort": "Sort",
     "abstract": "Abstract",
+    "addAs": "Add as",
     "advancedOptions": "Advanced options",
     "area": "Area",
     "attribute": "Attribute",
@@ -11,7 +15,9 @@
     "clear": "Clear",
     "close": "Close",
     "color": "Color",
+    "confirm": "Confirm",
     "confirmDelete": "Confirm delete",
+    "continue": "continue",
     "date": "Date",
     "delete": "Delete",
     "distance": "Distance",
@@ -25,18 +31,17 @@
     "filter": "Filter:",
     "folder": "Folder",
     "from": "From",
-    "until": "Until",
     "hide": "Hide",
     "icon": "Icon",
     "info": "Additional information",
     "keywords": "Keywords",
+    "layer": "layer",
     "layers": "Layers",
     "legend": "Legend",
     "line": "Line",
-    "Login": "Log in",
-    "Logout": "Log out",
     "lineColor": "Line color",
     "lineWidth": "Line width",
+    "more": "More",
     "name": "Name",
     "newDrawingLayer": "New drawing layer",
     "next": "Next",
@@ -52,57 +57,67 @@
     "removeLayer": "Remove layer",
     "renameLayer": "Rename layer",
     "reset": "Reset",
+    "results": "Results",
     "rotation": "Rotation",
     "save": "Save",
     "saveAs": "Save as..",
     "scale": "Scale",
     "south": "South",
-    "Sort": "Sort",
     "stroke": "Stroke",
     "strokeWidth": "Stroke width",
     "thumbnail": "Thumbnail",
     "title": "Title",
     "to": "to",
+    "until": "Until",
+    "url": "URL",
     "value": "Value",
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "confirm": "Confirm",
-    "url": "url",
-    "layer": "layer",
-    "continue": "continue"
+    "zoomTo": "zoom to"
   },
   "COMPOSITIONS": {
     "Address": "Address",
-    "import": "Import composition from a file on device",
     "addByAddress": "Add composition by address",
-    "results": "Results",
-    "onlyMine": "Only mine",
-    "filterByMap": "Filter by map extent",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },
     "dialogInfo": {
       "details": "details"
     },
-    "dialogoverwriteConfirm": {
-      "overwriteExistingMap": "Overwrite existing map?",
-      "youAreOpeningMap": "You are opening map",
-      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
-      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
-      "mergeCompositions": "Merge compositions",
-      "saveChangesFirst": "Save changes first"
-    },
     "dialogShare": {
       "shareMap": "Share map"
-    }
+    },
+    "dialogoverwriteConfirm": {
+      "mergeCompositions": "Merge compositions",
+      "overwriteExistingMap": "Overwrite existing map?",
+      "saveChangesFirst": "Save changes first",
+      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
+      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
+      "youAreOpeningMap": "You are opening map"
+    },
+    "filterByMap": "Filter by map extent",
+    "import": "Import composition from a file on device",
+    "onlyMine": "Only mine"
+  },
+  "DATASOURCE_SELECTOR": {
+    "addToMapAs": "Add to map as",
+    "datasourceListItem": {
+      "abortAdd": "Abort add",
+      "addToMap": "Add to map",
+      "whatDoesItMean": "What does it mean?"
+    },
+    "externalData": "External data",
+    "layerRDF": "Layer RDF",
+    "metadataFor": "Metadata for",
+    "noResults": "No results"
   },
   "DRAW": {
+    "Select layer": "Select layer",
     "activateDrawing": "Activate drawing by choosing a feature type",
     "definedStyle": "Defined style",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
-    "drawingTo": "Drawing to:",
     "drawLayer": "Draw layer",
     "drawLayerMetadata": {
       "defaultAttributes": "Default attributes",
@@ -117,11 +132,18 @@
       "removeLastPoint": "Remove last point",
       "selectType": "Select type"
     },
+    "drawingTo": "Drawing to:",
     "fillOpacity": "Fill opacity:",
     "individualStyle": "Individual style for feature",
     "reallyDeleteThisLayer": "Really delete this layer?",
-    "unsavedDrawing": "Unsaved drawing",
-    "Select layer": "Select layer"
+    "unsavedDrawing": "Unsaved drawing"
+  },
+  "FEATURE_TABLE": {
+    "delete": "delete",
+    "showFeatureStats": "Expand",
+    "sortBy": "Sort by",
+    "sortFeaturesByValue": "Sort features by value",
+    "zoom to": "zoom to"
   },
   "GEOLOCATION": {
     "altitude": "Altitude",
@@ -134,11 +156,12 @@
     "toggleDropdown": "Toggle dropdown"
   },
   "LAYERMANAGER": {
-    "baselayers": "Baselayers",
+    "User generated": "User generated",
     "baseMapGallery": {
       "grayscale": "Grayscale",
       "noBaseMap": "No basemap"
     },
+    "baselayers": "Baselayers",
     "dialogRemoveAll": {
       "dialogMessage": "Do you really want to remove all layers?",
       "reloadComposition": "Reload composition",
@@ -180,7 +203,6 @@
       "sidesNumber": "Sides number",
       "star": "Star"
     },
-    "User generated": "User generated",
     "mapContent": "Map content",
     "other": "Other",
     "removeAllLayers": "Remove all layers",
@@ -213,7 +235,10 @@
   "PANEL_HEADER": {
     "ADDLAYERS": "Add layers",
     "APPLICATIONSETTINGS": "Application settings",
+    "COMPOSITIONS": "Compositions",
+    "DATASOURCE_SELECTOR": "Datasources",
     "DRAW": "Draw",
+    "FEATURE_TABLE": "Feature table",
     "FILTERFEATURES": "Filter features",
     "INFO": "Info",
     "LANGUAGE": "Change language",
@@ -227,9 +252,7 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRACKING": "Tracking",
-    "FEATURE_TABLE": "Feature table",
-    "COMPOSITIONS": "Compositions"
+    "TRACKING": "Tracking"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -321,19 +344,20 @@
     "search": "Search:"
   },
   "SENSORS": {
-    "measure": "Measure",
-    "phenomena": "Phenomena",
-    "sensors": "Sensors",
-    "sensorUnit": "Sensor unit",
-    "min": "Min",
+    "avg": "Avg.",
     "max": "Max",
-    "avg": "Avg."
+    "measure": "Measure",
+    "min": "Min",
+    "phenomena": "Phenomena",
+    "sensorUnit": "Sensor unit",
+    "sensors": "Sensors"
   },
   "SIDEBAR": {
     "descriptions": {
       "ADDLAYERS": "Select data or services for your map composition",
       "APPLICATIONSETTINGS": "Specify application user settings",
       "DRAW": "Draw new features",
+      "FEATURE_TABLE": "Display layer features in html table",
       "FILTERFEATURES": "Crossfilter",
       "INFO": "Display map-query result information",
       "LANGUAGE": "Change language",
@@ -344,8 +368,7 @@
       "PERMALINK": "Share map",
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
-      "SEARCH": "Search for location",
-      "FEATURE_TABLE": "Display layer features in html table"
+      "SEARCH": "Search for location"
     }
   },
   "STYLER": {
@@ -356,12 +379,5 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
-  },
-  "FEATURE_TABLE": {
-    "showFeatureStats": "Expand",
-    "sortFeaturesByValue": "Sort features by value",
-    "sortBy": "Sort by",
-    "zoom to": "zoom to",
-    "delete": "delete"
   }
 }

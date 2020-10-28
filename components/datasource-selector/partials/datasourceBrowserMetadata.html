@@ -2,7 +2,7 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2 i18n>Metadata for {{selectedLayer.title}}</h2>
+                <h2> {{'DATASOURCE_SELECTOR.metadataFor' | translate}} {{selectedLayer.title}}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" (click)="closeDialog()">
                     <md-icon>close</md-icon>
@@ -21,15 +21,15 @@
             <md-button class="md-raised md-secondary" href="#" [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)'
                 title="GeoDCAT-AP" target="_blank"
                 [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
-                Layer RDF
+                {{'DATASOURCE_SELECTOR.layerRDF' | translate}}
             </md-button>
-            <md-button class="md-raised md-secondary md-hue-2" i18n [hidden]="!hsDatasourcesService.isZoomable(selectedLayer)"
+            <md-button class="md-raised md-secondary md-hue-2" [hidden]="!hsDatasourcesService.isZoomable(selectedLayer)"
                 (click)="mapService.zoomTo(selectedLayer.bbox)">
-                Zoom to
+                {{'COMMON.zoomTo' | translate}}
             </md-button>
             <md-button class="md-raised md-primary" *ngFor="let type of selectedLayer.type"
                 (click)="addLayerToMap(selectedDS, selectedLayer, type)" [hidden]='config.dss_disallow_add == true'>
-                Add to map as {{type}}
+                {{'DATASOURCE_SELECTOR.addToMapAs' | translate}} {{type}}
             </md-button>
         </md-dialog-actions>
     </form>

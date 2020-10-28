@@ -1,6 +1,10 @@
 {
   "COMMON": {
+    "Login": "Autorizēties",
+    "Logout": "Atteikties",
+    "Sort": "Kārtot",
     "abstract": "Apraksts",
+    "addAs": "Pievienot kā",
     "advancedOptions": "Advancētas opcijas",
     "area": "Platība",
     "attribute": "Atribūts",
@@ -11,7 +15,9 @@
     "clear": "Notīrīt",
     "close": "Aizvērt",
     "color": "Krāsa",
+    "confirm": "Apstiprināt",
     "confirmDelete": "Aptipriniet dzēšanu",
+    "continue": "turpināt",
     "date": "Datums",
     "delete": "Dzēst",
     "distance": "Distance",
@@ -25,18 +31,17 @@
     "filter": "Filtrs:",
     "folder": "Datne",
     "from": "No",
-    "until": "Līdz",
     "hide": "Paslēpt",
     "icon": "Ikona",
     "info": "Papildu informācija",
     "keywords": "Atslēgvārdi",
+    "layer": "slānis",
     "layers": "Slāņi",
     "legend": "Leģenda",
     "line": "Līnija",
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
-    "Login": "Autorizēties",
-    "Logout": "Atteikties",
+    "more": "vairāk",
     "name": "Nosaukums",
     "newDrawingLayer": "Jauns zīmēšanas slānis",
     "next": "Nākamais",
@@ -52,57 +57,67 @@
     "removeLayer": "Noņemt slāni",
     "renameLayer": "Pārsaukt slāni",
     "reset": "Atiestatīt",
+    "results": "Rezultāti",
     "rotation": "Rotācija",
     "save": "Saglabāt",
     "saveAs": "Saglabāt kā..",
     "scale": "Mērogs",
     "south": "Dienvidi",
-    "Sort": "Kārtot",
     "stroke": "Līnija",
     "strokeWidth": "Līnjas platums",
     "thumbnail": "Sīktēls",
     "title": "Virsraksts",
     "to": "līdz",
+    "until": "Līdz",
+    "url": "URL",
     "value": "Vērtība",
     "west": "Rietumi",
     "width": "Platums",
     "yes": "Jā",
-    "confirm": "Apstiprināt",
-    "url": "URL",
-    "layer": "slānis",
-    "continue": "turpināt"
+    "zoomTo": "pietuvināt"
   },
   "COMPOSITIONS": {
     "Address": "Adrese",
-    "import": "Importēt kompozīciju no faila vai ierīces",
     "addByAddress": "Pievienot kompozīciju pēc adreses",
-    "results": "Rezultāti",
-    "onlyMine": "Tikai manas",
-    "filterByMap": "Filtrēt pēc kartes",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
     },
     "dialogInfo": {
       "details": "detaļas"
     },
-    "dialogoverwriteConfirm": {
-      "overwriteExistingMap": "Pārrakstīt esošo karti?",
-      "youAreOpeningMap": "Jūs atverat karti",
-      "thereAreCurrentlyUnsavedChanges": "Pašlaik ir nesaglabātas izmaiņas.",
-      "whatDoYouWant": "Ko Jūs vēlaties izdarīt pirms atlasītās kartes kompozīcijas atvēršanas?",
-      "mergeCompositions": "Apvienot kompozīcijas",
-      "saveChangesFirst": "Vispirms saglabājiet izmaiņas"
-    },
     "dialogShare": {
       "shareMap": "Koplietot karti"
-    }
+    },
+    "dialogoverwriteConfirm": {
+      "mergeCompositions": "Apvienot kompozīcijas",
+      "overwriteExistingMap": "Pārrakstīt esošo karti?",
+      "saveChangesFirst": "Vispirms saglabājiet izmaiņas",
+      "thereAreCurrentlyUnsavedChanges": "Pašlaik ir nesaglabātas izmaiņas.",
+      "whatDoYouWant": "Ko Jūs vēlaties izdarīt pirms atlasītās kartes kompozīcijas atvēršanas?",
+      "youAreOpeningMap": "Jūs atverat karti"
+    },
+    "filterByMap": "Filtrēt pēc kartes",
+    "import": "Importēt kompozīciju no faila vai ierīces",
+    "onlyMine": "Tikai manas"
+  },
+  "DATASOURCE_SELECTOR": {
+    "addToMapAs": "Pievienot kartē kā",
+    "datasourceListItem": {
+      "abortAdd": "Atcelt pievienošanu",
+      "addToMap": "Pievienot kartei",
+      "whatDoesItMean": "Ko tas nozīmē?"
+    },
+    "externalData": "Ārējie resursi",
+    "layerRDF": "Slāņa RDF",
+    "metadataFor": "Metadati priekš",
+    "noResults": "Nav rezultātu"
   },
   "DRAW": {
+    "Select layer": "Izvēlieties slāni",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",
     "definedStyle": "Definētais stils",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
-    "drawingTo": "Zīmējums uz:",
     "drawLayer": "Zīmēt slāni",
     "drawLayerMetadata": {
       "defaultAttributes": "Noklusējuma atribūti",
@@ -117,11 +132,18 @@
       "removeLastPoint": "Noņemt pēdējo punktu",
       "selectType": "Izvēlieties tipu"
     },
+    "drawingTo": "Zīmējums uz:",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils grafiskajam objektam",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
-    "Select layer": "Izvēlieties slāni"
+    "unsavedDrawing": "Nesaglabāts zīmējums"
+  },
+  "FEATURE_TABLE": {
+    "delete": "dzēst",
+    "showFeatureStats": "Izvērst",
+    "sortBy": "Kārtot pēc",
+    "sortFeaturesByValue": "Kārtot pēc grafisko objektu vērtības",
+    "zoom to": "Pietuvināt"
   },
   "GEOLOCATION": {
     "altitude": "Augstums",
@@ -134,11 +156,12 @@
     "toggleDropdown": "Pārslēgt nolaižamo izvēlni"
   },
   "LAYERMANAGER": {
-    "baselayers": "Pamatslāņi",
+    "User generated": "Lietotāja ģenerēti",
     "baseMapGallery": {
       "grayscale": "Pelēktoņu",
       "noBaseMap": "Nav pamatkartes"
     },
+    "baselayers": "Pamatslāņi",
     "dialogRemoveAll": {
       "dialogMessage": "Vai Jūs tiešām vēlaties noņemt visus slāņus?",
       "reloadComposition": "Pārlādēt kompozīciju",
@@ -180,7 +203,6 @@
       "sidesNumber": "Sānu numurs",
       "star": "Zvaigzne"
     },
-    "User generated": "Lietotāja ģenerēti",
     "mapContent": "Kartes saturs",
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
@@ -213,7 +235,10 @@
   "PANEL_HEADER": {
     "ADDLAYERS": "Pievienot slāņus",
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi",
+    "COMPOSITIONS": "Kompozīcijas",
+    "DATASOURCE_SELECTOR": "Datu avoti",
     "DRAW": "Zīmēt",
+    "FEATURE_TABLE": "Grafisko objektu tabula",
     "FILTERFEATURES": "Filtrēt grafiskos objektus",
     "INFO": "Informācija",
     "LANGUAGE": "Nomainīt valodu",
@@ -227,9 +252,7 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRACKING": "Izsekošna",
-    "FEATURE_TABLE": "Grafisko objektu tabula",
-    "COMPOSITIONS": "Kompozīcijas"
+    "TRACKING": "Izsekošna"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -321,19 +344,20 @@
     "search": "Meklēt:"
   },
   "SENSORS": {
-    "measure": "mēra",
-    "phenomena": "Parādība",
-    "sensors": "Sensori",
-    "sensorUnit": "Sensoru vienība",
-    "min": "Min",
+    "avg": "Vid.",
     "max": "Maks.",
-    "avg": "Vid."
+    "measure": "mēra",
+    "min": "Min",
+    "phenomena": "Parādība",
+    "sensorUnit": "Sensoru vienība",
+    "sensors": "Sensori"
   },
   "SIDEBAR": {
     "descriptions": {
       "ADDLAYERS": "Atlasīt kartes sastāva datus vai pakalpojumus",
       "APPLICATIONSETTINGS": "Norādīt lietojumprogrammas lietotāja iestatījumus",
       "DRAW": "Zīmēt jaunus grafiskos objektus",
+      "FEATURE_TABLE": "Parādīt slāņa grafiskos objektus tabulā",
       "FILTERFEATURES": "Šķērsfiltrs",
       "INFO": "Parādīt kartes vaicājuma rezultātu informāciju",
       "LANGUAGE": "Nomainīt valodu",
@@ -344,8 +368,7 @@
       "PERMALINK": "Kopīgot karti",
       "PRINT": "Printēt karti",
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
-      "SEARCH": "Meklēt atrašanās vietu",
-      "FEATURE_TABLE": "Parādīt slāņa grafiskos objektus tabulā"
+      "SEARCH": "Meklēt atrašanās vietu"
     }
   },
   "STYLER": {
@@ -356,12 +379,5 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
-  },
-  "FEATURE_TABLE": {
-    "showFeatureStats": "Izvērst",
-    "sortFeaturesByValue": "Kārtot pēc grafisko objektu vērtības",
-    "sortBy": "Kārtot pēc",
-    "zoom to": "Pietuvināt",
-    "delete": "dzēst"
   }
 }

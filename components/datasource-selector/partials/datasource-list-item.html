@@ -5,7 +5,7 @@
   </div>
   <div class="p-0" [hidden]='hsDatasourcesService.layerDownload(endpoint,layer) == "#"'>
     <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerDownload(endpoint, layer)'
-      data-toggle="tooltip" title="Download"><i class="icon-download"></i></a>
+      data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
   </div>
   <div class="p-0" [hidden]='endpoint.type != "micka" || hsDatasourcesService.layerRDF(endpoint, layer) == "#"'>
     <a class="btn btn-sm btn-secondary" [href]='hsDatasourcesService.layerRDF(endpoint, layer)' data-toggle="tooltip"
@@ -20,18 +20,18 @@
         {{type}}
       </label>
       <i class="btn btn-sm icon-question-sign btn-light btn-outline-secondary" (click)="toggleExplanations()" data-toggle="tooltip"
-      title="What does it mean?"></i>
+      [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translate"></i>
     </div>
   </div>
   <div class="p-0" [hidden]="hsConfig.dss_disallow_add == true || (selectTypeToAddLayerVisible)">
     <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(endpoint, layer)" data-toggle="tooltip"
-      title="Add to map">
+      [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate">
       <i class="icon-plus"></i>
     </button>
   </div>
   <div class="p-0" [hidden]="!selectTypeToAddLayerVisible || selectedType">
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="abortAdd()" data-toggle="tooltip"
-      title="Abort add">
+      [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translate">
       <i class="icon-remove"></i>
     </button>
   </div>

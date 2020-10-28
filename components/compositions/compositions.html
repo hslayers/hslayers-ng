@@ -98,9 +98,9 @@
                                     <li class="page-item" [ngClass]="{'disabled': compStart == 0 }">
                                         <a href="#" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true"></span></a>
                                     </li>
-                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> {{'COMPOSITIONS.results' | translate}}
+                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
-                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> {{'COMPOSITIONS.results' | translate}}
+                                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
                                     <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
                                         <a href="#" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
