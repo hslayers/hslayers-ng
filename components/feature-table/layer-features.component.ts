@@ -57,20 +57,17 @@ export class HsLayerFeaturesComponent implements OnInit {
   ngOnInit(): void {
     const olLayer = this.layer.lyr;
     if (olLayer.getSource()) {
-      this.HsFeatureTableService.getFeatureAttributes(olLayer);
+      this.HsFeatureTableService.fillFeatureList(olLayer);
       const source = olLayer.getSource();
-      const changeHandler = this.HsUtilsService.debounce(
-        (e) => {
-          this.HsFeatureTableService.getFeatureAttributes(olLayer);
-        },
-        200,
-        false,
-        this
-      );
-
-      source.on('changefeature', changeHandler);
-      source.on('addfeature', changeHandler);
-      source.on('removefeature', changeHandler);
+      source.on('changefeature', (e) => {
+        this.HsFeatureTableService.updateFeatureDescription(e.feature);
+      });
+      source.on('addfeature', (e) => {
+        this.HsFeatureTableService.addFeatureDescription(e.feature);
+      });
+      source.on('removefeature', (e) => {
+        this.HsFeatureTableService.removeFeatureDescription(e.feature);
+      });
     }
   }
   /**
