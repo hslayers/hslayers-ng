@@ -1,57 +1,21 @@
-import 'focusIf';
-import * as angular from 'angular';
-import {HsTripPlannerController} from './trip-planner.controller';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerService} from './trip-planner.service';
-/**
- * @namespace hs.trip_planner
- * @memberOf hs
- * @param $scope
- * @param OlMap
- * @param HsCore
- * @param service
- * @param config
- * @param layoutService
- */
-angular
-  .module('hs.trip_planner', ['hs.map', 'hs.core', 'focus-if'])
-  /**
-   * @memberof hs.trip_planner
-   * @ngdoc directive
-   * @name hs.trip_planner.directive
-   * @description Add trip planner panel html template to the map
-   */
-  .directive('hs.tripPlanner.directive', [
-    'HsConfig',
-    function (config) {
-      return {
-        template: require('./partials/trip_planner.html'),
-      };
-    },
-  ])
+import {HsTripPlannerToolbarButtonComponent} from './trip-planner-toolbar-button.component';
+import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
-  /**
-   * @memberof hs.trip_planner
-   * @ngdoc service
-   * @name HsTripPlannerService
-   * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
-   */
-  .factory('HsTripPlannerService', HsTripPlannerService)
-
-  /**
-   * @memberof hs.trip_planner
-   * @ngdoc directive
-   * @name hs.tripPlanner.toolbarButtonDirective
-   * @description Add trip planner button html template to the map
-   */
-  .directive('hs.tripPlanner.toolbarButtonDirective', () => {
-    return {
-      template: require('./partials/toolbar_button_directive.html'),
-    };
-  })
-
-  /**
-   * @memberof hs.trip_planner
-   * @ngdoc controller
-   * @name HsTripPlannerController
-   */
-  .controller('HsTripPlannerController', HsTripPlannerController);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsTripPlannerComponent, HsTripPlannerToolbarButtonComponent],
+  imports: [FormsModule, CommonModule, TranslateModule],
+  exports: [HsTripPlannerComponent, HsTripPlannerToolbarButtonComponent],
+  providers: [TranslateStore, HsTripPlannerService],
+  entryComponents: [],
+})
+export class HsTripPlannerModule {}
