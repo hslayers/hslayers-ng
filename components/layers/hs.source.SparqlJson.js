@@ -115,7 +115,6 @@ function loadFeatures(
       }
     }
     if (objects[key]['http://www.opengis.net/ont/geosparql#asWKT']) {
-      console.log('foo');
       const g_feature = format.readFeature(
         objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase()
       );
@@ -152,7 +151,7 @@ function loadFeatures(
       features[i].color = rainbow(category_id, features[i].category_id, 0.7);
     }
   }
-  console.log(features);
+  //console.log(features);
   return features;
 }
 
@@ -254,17 +253,17 @@ export const SparqlJson = function (options) {
           '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
       }
       if (console && typeof src.get('geoname') !== 'undefined') {
-        console.log('Get ', src.get('geoname'));
+        //console.log('Get ', src.get('geoname'));
       }
       this.loadCounter += 1;
       this.loadTotal += 1;
       $http({url: p}).then((response) => {
         if (console) {
-          console.log(
+          /*console.log(
             'Finish ',
             this.get('geoname'),
             response.data.results.bindings.length
-          );
+          );*/
         }
         src.loadCounter -= 1;
         if (this.options.updates_url) {
@@ -285,12 +284,12 @@ export const SparqlJson = function (options) {
           const $http = $injector.get('$http');
           $http({url: updates_query}).then((updates_response) => {
             if (console && typeof this.get('geoname') != 'undefined') {
-              console.log(
+              /*console.log(
                 'Finish updates ',
                 this.get('geoname'),
                 response.data.results.bindings.length,
                 updates_response.data.results.bindings.length
-              );
+              );*/
             }
             const objects = {};
             for (const item of response.data.results.bindings) {
@@ -328,7 +327,7 @@ export const SparqlJson = function (options) {
             }
             extendAttributes(options, objects);
             if (console) {
-              console.log('Add features', objects);
+              //console.log('Add features', objects);
             }
             this.addFeatures(
               loadFeatures(
@@ -403,8 +402,8 @@ export const SparqlJson = function (options) {
   src.loadTotal = 0;
   src.options = options;
   src.legend_categories = category_map;
-  console.log('src');
-  console.log(src);
+  //console.log('src');
+  //console.log(src);
   return src;
 };
 
