@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -6,13 +7,25 @@ import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+
+type FeatureDescriptor = {
+  name: string;
+  feature: Feature;
+  attributes: {
+    name;
+    value;
+    sanitizedValue?;
+  }[];
+  stats: any[];
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsFeatureTableService {
   sortReverse = false; //trigger for reverse sorting
   lastSortValue = ''; //last sorting value selected
-  features: any = []; //all feature attributes for html table
+  features: FeatureDescriptor[] = []; //all feature attributes for html table
   constructor(
     private HsUtilsService: HsUtilsService,
     private HsLayerUtilsService: HsLayerUtilsService,
@@ -56,7 +69,7 @@ export class HsFeatureTableService {
    * @name HsFeatureTableService#getFeatureAttributes
    * @description Search all layers feature attributes and map them into new objects for html table
    */
-  getFeatureAttributes(layer: Layer): void {
+  fillFeatureList(layer: Layer): void {
     const source: VectorSource = this.HsLayerUtilsService.isLayerClustered(
       layer
     )
@@ -64,23 +77,47 @@ export class HsFeatureTableService {
       : layer.getSource();
     this.features = source
       .getFeatures()
-      .map((f) => {
-        const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
-          f
-        ).pop();
-        if (!attribWrapper) {
-          return null;
-        }
-        return {
-          name: this.setFeatureName(attribWrapper.attributes),
-          attributes: this.attributesWithoutFeatureName(
-            attribWrapper.attributes
-          ),
-          stats: attribWrapper.stats,
-        };
-      })
+      .map((f) => this.describeFeature(f))
       .filter((f) => f?.attributes?.length > 0);
   }
+
+  updateFeatureDescription(feature: Feature): void {
+    const newDescriptor = this.describeFeature(feature);
+    const currentIx = this.features.findIndex((f) => f.feature == feature);
+    if (newDescriptor && currentIx > -1) {
+      this.features[currentIx] = newDescriptor;
+    }
+  }
+
+  addFeatureDescription(feature: Feature): void {
+    const newDescriptor = this.describeFeature(feature);
+    if (newDescriptor) {
+      this.features.push(newDescriptor);
+    }
+  }
+
+  removeFeatureDescription(feature: Feature): void {
+    const currentIx = this.features.findIndex((f) => f.feature == feature);
+    if (currentIx > -1) {
+      this.features.splice(currentIx, 1);
+    }
+  }
+
+  describeFeature(feature: Feature): FeatureDescriptor {
+    const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
+      feature
+    ).pop();
+    if (!attribWrapper) {
+      return null;
+    }
+    return {
+      name: this.setFeatureName(attribWrapper.attributes),
+      feature,
+      attributes: this.attributesWithoutFeatureName(attribWrapper.attributes),
+      stats: attribWrapper.stats,
+    };
+  }
+
   /**
    * @param attributes layers feature attributes
    * @ngdoc method
