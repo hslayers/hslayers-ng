@@ -114,7 +114,8 @@
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
       "finishFeature": "Pabeigt grafisko objektu",
-      "removeLastPoint": "Noņemt pēdējo punktu"
+      "removeLastPoint": "Noņemt pēdējo punktu",
+      "selectType": "Izvēlieties tipu"
     },
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils grafiskajam objektam",
@@ -323,7 +324,6 @@
     "measure": "mēra",
     "phenomena": "Parādība",
     "sensors": "Sensori",
-    "Filter": "Filtrs",
     "sensorUnit": "Sensoru vienība",
     "min": "Min",
     "max": "Maks.",

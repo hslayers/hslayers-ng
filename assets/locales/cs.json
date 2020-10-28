@@ -5,6 +5,7 @@
     "area": "Plocha",
     "attribute": "Atribut",
     "attributes": "Atributy",
+    "boundingBox": "Ohraničující rámeček",
     "cancel": "Zrušit",
     "circle": "Kruh",
     "clear": "Vyčistit",
@@ -24,6 +25,7 @@
     "filter": "Filtr:",
     "folder": "Složka",
     "from": "Z",
+    "until": "Až do",
     "hide": "Skrýt",
     "icon": "Ikona",
     "info": "Další informace",
@@ -31,6 +33,8 @@
     "layers": "Vrstvy",
     "legend": "Legenda",
     "line": "Linie",
+    "Login": "Přihlásit se",
+    "Logout": "Odhlásit se",
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
     "name": "Název",
@@ -53,6 +57,7 @@
     "saveAs": "Uložit jako..",
     "scale": "Měřítko",
     "south": "Jižní",
+    "Sort": "Třídit",
     "stroke": "Tah",
     "strokeWidth": "Šířka tahu",
     "thumbnail": "Miniatura",
@@ -117,7 +122,6 @@
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "unsavedDrawing": "Neuložená kresba",
     "Select layer": "Vybrat vrstvu"
-
   },
   "GEOLOCATION": {
     "altitude": "Nadmořská výška",
@@ -181,12 +185,6 @@
     "other": "Jiné",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "STYLER": {
-      "features": "Prvky",
-      "layer": "Vrstva",
-      "level": "Úroveň",
-      "selection": "Výber"
-    },
     "terrains": "Terény"
   },
   "LAYOUT": {
@@ -230,7 +228,8 @@
     "SEARCH": "Vyhledávání",
     "SENSORS": "Senzory",
     "TRACKING": "Sledování",
-    "FEATURE_TABLE": "Tabulka prvků"
+    "FEATURE_TABLE": "Tabulka prvků",
+    "COMPOSITIONS": "Skladby"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -325,7 +324,10 @@
     "measure": "Opatření",
     "phenomena": "Jevy",
     "sensors": "Senzory",
-    "sensorUnit": "Senzorová jednotka"
+    "sensorUnit": "Senzorová jednotka",
+    "min": "Min",
+    "max": "Max",
+    "avg": "Avg."
   },
   "SIDEBAR": {
     "descriptions": {
@@ -346,10 +348,20 @@
       "FEATURE_TABLE": "Zobrazite prvky vrstvy v html tabulce"
     }
   },
+  "STYLER": {
+    "features": "Prvky",
+    "layer": "Vrstva",
+    "level": "Úroveň",
+    "selection": "Výber"
+  },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Změřte linie a polygony"
   },
   "FEATURE_TABLE": {
-    "showFeatureStats": "Zobrazte statistiky prvku"
+    "showFeatureStats": "Expand",
+    "sortFeaturesByValue": "Zobrazte statistiky prvku",
+    "sortBy": "Sort by",
+    "zoom to": "zoom to",
+    "delete": "delete"
   }
 }
