@@ -1,31 +1,31 @@
 <div class="card hs-main-panel">
-    <div class="card-header"><span class="title"><translate>Trip planner</translate></span>
-        <button type="button" class="close" ng-click="HsCore.closePanel(this);">
-            <span aria-hidden="true">×</span>
+    <div class="card-header"><span class="title">{{'PANEL_HEADER.TRIP_PLANNER' | translate}}</span>
+        <button type="button" class="close" (click)="HsCore.closePanel(this)">
+            <span aria-hidden="true"></span>
             <span class="sr-only" translate>Close</span>
         </button>
     </div>
     <div class="card-body">
-        <button class="btn btn-secondary" style="float:right" ng-click="clearAll()" translate>Clear</button>
+        <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.close' | translate}}</button>
         <ul class="list-group">
             <li class="list-group-item clearfix active">
-                <span ><button class="btn btn-secondary btn-sm" ng-click="prevPanel()"><span class="icon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope" translate>Waypoints</span></span>
+                <span><button class="btn btn-secondary btn-sm" (click)="prevPanel()"><span class="icon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope">{{'TRIP_PLANNER.waypoints' |translate}}</span></span>
             </li>
-            <li ng-repeat="waypoint in service.waypoints" class="list-group-item">
-                <a href="#" ng-click="toggleEdit(waypoint)" ng-show="!waypoint.name_editing">{{waypoint.name}}</a> 
-                <input ng-model="waypoint.name" class="form-control hs-waypoint-name" ng-show="waypoint.name_editing" focus-if="waypoint.name_editing" ng-blur="toggleEdit(waypoint)"/>
-                <img ng-show="waypoint.loading" ng-src="{{loaderImage}}"/>   
+            <li *ngFor="let waypoint of HsTripPlannerService.waypoints" class="list-group-item">
+                <a href="#" (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing">{{waypoint.name}}</a>
+                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [hidden]="!waypoint.name_editing" focus-if="waypoint.name_editing" (blur)="toggleEdit(waypoint)">
+                <img [hidden]="!waypoint.loading" src="{{loaderImage}}">
                 {{ formatDistance(waypoint) }}
                 <span class="pull-right">
-                    <button type="button" class="btn btn-secondary btn-sm icon-trash" ng-click="service.removeWaypoint(waypoint);">
+                    <button type="button" class="btn btn-secondary btn-sm icon-trash" (click)="HsTripPlannerService.removeWaypoint(waypoint)">
                     </button>
                 <span>
-            </li>
+            </span></span></li>
         </ul>
-        <br/>
+        <br>
         <div class="container-fluid">
             <dl class="dl-horizontal">
-                <dt>Total distance: </dt>
+                <dt>{{'TRIP_PLANNER.totalDistance' | translate}}: </dt>
                 <dd>{{totalDistance()}}</dd>
             </dl>
         </div>
