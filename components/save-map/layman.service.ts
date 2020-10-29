@@ -1,9 +1,8 @@
 import * as unidecode from 'unidecode';
 
-import {DomSanitizer} from '@angular/platform-browser';
 import {GeoJSON, WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonEndpointsServiceProvider} from '../../ajs-upgraded-providers';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
@@ -175,6 +174,7 @@ export class HsLaymanService implements HsSaverService {
    * @memberof HsLaymanService
    * @public
    * @param {object} endpoint Endpoint description
+   * @param _endpoint
    * @param {Array} featuresToAdd Array of features to add
    * @param {Array} featuresToUpd Array of features to update
    * @param {Array} featuresToDel Array of features to delete
@@ -184,13 +184,17 @@ export class HsLaymanService implements HsSaverService {
    * @description Insert a feature
    */
   createWfsTransaction(
-    endpoint,
+    _endpoint: HsEndpoint,
     featuresToAdd,
     featuresToUpd,
     featuresToDel,
     name: string,
     layer: Layer
   ): Promise<any> {
+    /* Clone because endpoint.user can change while the request is processed
+    and then description might get cached even if anonymous user was set before.
+    Should not cache anonymous layers, because layer can be authorized any moment */
+    const endpoint = {..._endpoint};
     return new Promise((resolve, reject) => {
       this.checkIfLayerExists(
         endpoint,
@@ -199,7 +203,7 @@ export class HsLaymanService implements HsSaverService {
       )
         .then((layerDesc: HsLaymanLayerDescriptor) => {
           if (layerDesc?.name) {
-            layer.set('laymanLayerDescriptor', layerDesc);
+            this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
             try {
               const wfsFormat = new WFS();
               const serializedFeature = wfsFormat.writeTransaction(
@@ -244,6 +248,16 @@ export class HsLaymanService implements HsSaverService {
     });
   }
 
+  cacheLaymanDescriptor(
+    layer: Layer,
+    desc: HsLaymanLayerDescriptor,
+    endpoint: HsEndpoint
+  ): void {
+    if (endpoint.user != 'browser') {
+      layer.set('laymanLayerDescriptor', desc);
+    }
+  }
+
   /**
    * @function pullVectorSource
    * @memberof HsLaymanService
@@ -256,10 +270,14 @@ export class HsLaymanService implements HsSaverService {
    * @description Retrieve layers features from server
    */
   async pullVectorSource(
-    endpoint,
+    _endpoint: HsEndpoint,
     layerName: string,
     layer: Layer
   ): Promise<string> {
+    /* Clone because endpoint.user can change while the request is processed
+    and then description might get cached even if anonymous user was set before.
+    Should not cache anonymous layers, because layer can be authorized any moment */
+    const endpoint = {..._endpoint};
     const descr: HsLaymanLayerDescriptor = await this.describeLayer(
       endpoint,
       layerName
@@ -269,7 +287,7 @@ export class HsLaymanService implements HsSaverService {
       return null;
     }
     if (descr?.name) {
-      layer.set('laymanLayerDescriptor', descr);
+      this.cacheLaymanDescriptor(layer, descr, endpoint);
     }
     if (
       descr.wfs.status == 'NOT_AVAILABLE' &&

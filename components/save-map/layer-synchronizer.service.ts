@@ -47,11 +47,12 @@ export class HsLayerSynchronizerService {
     this.HsLaymanService.crs = this.crs;
   }
 
-  private async reloadLayersOnAuthChange() {
+  private reloadLayersOnAuthChange() {
     for (const layer of this.syncedLayers) {
       const layerSource = layer.getSource();
+      layer.set('laymanLayerDescriptor', undefined);
       layerSource.clear();
-      await this.pull(layer, layerSource);
+      this.pull(layer, layerSource);
     }
   }
 
@@ -62,11 +63,18 @@ export class HsLayerSynchronizerService {
    * @function addLayer
    * @param {object} layer Layer to add
    */
-  async addLayer(layer: Layer): Promise<void> {
-    const synchronizable = await this.startMonitoringIfNeeded(layer);
-    if (synchronizable) {
+  addLayer(layer: Layer): void {
+    if (this.isLayerSinhronizable(layer)) {
       this.syncedLayers.push(layer);
+      this.startMonitoringIfNeeded(layer);
     }
+  }
+
+  isLayerSinhronizable(layer: Layer): boolean {
+    return (
+      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+      layer.get('synchronize') === true
+    );
   }
 
   /**
@@ -79,21 +87,16 @@ export class HsLayerSynchronizerService {
    * @returns {boolean} If layer is synchronizable
    */
   async startMonitoringIfNeeded(layer: Layer): Promise<boolean> {
-    if (
-      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      layer.get('synchronize') === true
-    ) {
-      const layerSource = layer.getSource();
-      await this.pull(layer, layerSource);
-      layerSource.forEachFeature((f) => this.observeFeature(f));
-      layerSource.on('addfeature', (e) => {
-        this.sync([e.feature], [], [], layer);
-      });
-      layerSource.on('removefeature', (e) => {
-        this.sync([], [], [e.feature], layer);
-      });
-      return true;
-    }
+    const layerSource = layer.getSource();
+    await this.pull(layer, layerSource);
+    layerSource.forEachFeature((f) => this.observeFeature(f));
+    layerSource.on('addfeature', (e) => {
+      this.sync([e.feature], [], [], layer);
+    });
+    layerSource.on('removefeature', (e) => {
+      this.sync([], [], [e.feature], layer);
+    });
+    return true;
   }
 
   /**
@@ -105,16 +108,13 @@ export class HsLayerSynchronizerService {
    * @param {Source} source Openlayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
-    layer.set('events-suspended', true);
+    layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
     const laymanEndpoints = (
       this.HsCommonEndpointsService.endpoints || []
     ).filter((ds) => ds.type == 'layman');
     if (laymanEndpoints.length > 0) {
       const ds = laymanEndpoints[0];
       layer.set('hs-layman-synchronizing', true);
-      if ((!ds.user || ds.user == 'browser') && ds.type == 'layman') {
-        await ds.getCurrentUserIfNeeded(ds);
-      }
       const response: string = await this.HsLaymanService.pullVectorSource(
         ds,
         this.HsLaymanService.getLayerName(layer),
@@ -142,7 +142,7 @@ export class HsLayerSynchronizerService {
         source.loading = false;
       }
     }
-    layer.set('events-suspended', false);
+    layer.set('events-suspended', (layer.get('events-suspended') || 0) - 1);
   }
 
   /**
@@ -183,7 +183,7 @@ export class HsLayerSynchronizerService {
     deleted: Feature[],
     layer: Layer
   ): void {
-    if (layer.get('events-suspended')) {
+    if ((layer.get('events-suspended') || 0) > 0) {
       return;
     }
     (this.HsCommonEndpointsService.endpoints || [])
