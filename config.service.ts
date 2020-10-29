@@ -20,6 +20,7 @@ export class HsConfig {
   cesiumAnimation: boolean;
   creditContainer: any;
   cesiumInfoBox: any;
+  clusteringDistance: number;
   imageryProvider: any;
   terrainExaggeration: number;
   cesiumBingKey: string;
