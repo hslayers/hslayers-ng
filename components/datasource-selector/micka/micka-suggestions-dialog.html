@@ -12,7 +12,8 @@
             <div class="modal-body" style="max-height:525px; overflow-y:auto">
                 <form>
                     <label class="form-group">{{'COMMON.filter' | translate}}
-                        <input type="text" class="hs-ds-sug-filter form-control" (change)="mickaFilterService.suggestionFilterChanged(mickaDatasetConfig)" [(ngModel)]="mickaFilterService.suggestionFilter">
+                        <input type="text" class="hs-ds-sug-filter form-control" (change)="mickaFilterService.suggestionFilterChanged(mickaDatasetConfig)" 
+                        [(ngModel)]="mickaFilterService.suggestionFilter">
                     </label>
                 </form>
                 <ul class="list-group">

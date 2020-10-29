@@ -1,7 +1,8 @@
 <form class="form">
     <div class="form-group">
         <div class="input-group" style="margin-bottom: 4px">
-            <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="query.title" (change)="queryCatalogs()" name="queryTitle">
+            <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="query.title" 
+            (change)="queryCatalogs()" name="queryTitle">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary" (click)='openMickaAdvancedSearch(mickaDatasetConfig)'>{{'COMMON.more' | translate}}</button>
                 <button type="button" class="btn btn-secondary" (click)="datasourceSelectorService.clear()"><span aria-hidden="true"
@@ -16,15 +17,18 @@
         <div class="input-group">
             <div class="btn-group input-group-prepend">
                 <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="hsMickaFilterService.filterByExtent" (change)='queryCatalogs()' name="filterByExtent"><span>{{'COMPOSITIONS.filterByMap' | translate}}</span>
+                    <input type="checkbox" [(ngModel)]="hsMickaFilterService.filterByExtent" (change)='queryCatalogs()' name="filterByExtent">
+                    <span>{{'COMPOSITIONS.filterByMap' | translate}}</span>
                 </div>
             </div>
             <div class="btn-group" [hidden]="hsMickaFilterService.otnKeywords.length == 0">
-                <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="keywordsDropdownVisible =! keywordsDropdownVisible">
+                <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
+                (click)="keywordsDropdownVisible =! keywordsDropdownVisible">
                     {{'COMMON.theme' | translate}} <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" [ngClass]="{'show': keywordsDropdownVisible}">
-                    <a *ngFor="let keyword of hsMickaFilterService.otnKeywords" class="dropdown-item" [ngClass]="{'active': query.Subject==keyword.title}" href="#" (click)="setOtnKeyword(keyword.title)">{{keyword.title}}</a>
+                    <a *ngFor="let keyword of hsMickaFilterService.otnKeywords" class="dropdown-item" [ngClass]="{'active': query.Subject==keyword.title}" 
+                    href="#" (click)="setOtnKeyword(keyword.title)">{{keyword.title}}</a>
 
                 </ul>
             </div>
