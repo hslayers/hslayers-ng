@@ -1,8 +1,8 @@
-import { HsMapService } from './../map/map.service';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
+import {HsMapService} from './../map/map.service';
 import {Layer} from 'ol/layer';
 /**
  * @memberof hs.featureTable
