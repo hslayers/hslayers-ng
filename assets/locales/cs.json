@@ -388,7 +388,8 @@
       "PERMALINK": "Sdílejte mapu",
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
-      "SEARCH": "Vyhledejte lokaci"
+      "SEARCH": "Vyhledejte lokaci",
+      "TRIP_PLANNER": "Create new trip routes"
     }
   },
   "STYLER": {
@@ -401,10 +402,10 @@
     "measureLinesAndPolygon": "Změřte linie a polygony"
   },
   "TRIP_PLANNER": {
-    "totalDistance": "Total distance",
-    "waypoints": "Waypoints",
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
-    "waypointDrawingHint": "Please click on map to add waypoints"
+    "totalDistance": "Total distance",
+    "waypointDrawingHint": "Please click on map to add waypoints",
+    "waypoints": "Waypoints"
   }
 }

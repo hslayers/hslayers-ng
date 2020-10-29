@@ -388,7 +388,8 @@
       "PERMALINK": "Share map",
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
-      "SEARCH": "Search for location"
+      "SEARCH": "Search for location",
+      "TRIP_PLANNER": "Create new trip routes"
     }
   },
   "STYLER": {
@@ -401,10 +402,10 @@
     "measureLinesAndPolygon": "Measure lines and polygon"
   },
   "TRIP_PLANNER": {
-    "totalDistance": "Total distance",
-    "waypoints": "Waypoints",
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
-    "waypointDrawingHint": "Please click on map to add waypoints"
+    "totalDistance": "Total distance",
+    "waypointDrawingHint": "Please click on map to add waypoints",
+    "waypoints": "Waypoints"
   }
 }
