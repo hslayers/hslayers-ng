@@ -1,5 +1,6 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Cluster} from 'ol/source';
+import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -14,7 +15,8 @@ export class HsLayerEditorVectorLayerService {
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
-    private HsStylerService: HsStylerService
+    private HsStylerService: HsStylerService,
+    private HsConfig: HsConfig
   ) {}
 
   /**
@@ -68,6 +70,7 @@ export class HsLayerEditorVectorLayerService {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         this.HsStylerService.styleClusteredLayer(layer);
+        this.updateFeatureTableLayers(layer);
       }
     } else {
       layer.setStyle(layer.get('hsOriginalStyle'));
@@ -94,5 +97,13 @@ export class HsLayerEditorVectorLayerService {
         }
       },
     });
+  }
+  updateFeatureTableLayers(layer: Layer): void {
+    const currentLayerIndex = this.HsConfig.layersInFeatureTable.findIndex(
+      (l) => l == layer
+    );
+    if (layer && currentLayerIndex > -1) {
+      this.HsConfig.layersInFeatureTable[currentLayerIndex] = layer;
+    }
   }
 }
