@@ -1,21 +1,20 @@
 <h3 class="mt-1" style="text-align: center">{{HsLayerUtilsService.translateTitle(layer.title)}}</h3>
 <div class="form-group mt-1 mb-1">
     <div class="input-group" style="margin-bottom: 4px">
-        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate"
-            [(ngModel)]="searchedFeatures" name="FeatureName">
+        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate" [(ngModel)]="searchedFeatures" name="FeatureName">
     </div>
 </div>
-<table style="width:100%;"
-    *ngFor="let feature of HsFeatureTableService.features | featureFilter: searchedFeatures">
+<table style="width:100%;" *ngFor="let feature of HsFeatureTableService.features | featureFilter: searchedFeatures">
     <thead>
-        <tr style="text-align: center; background-color: rgba(0,0,0,0.03);">
-            <th colspan="2">{{feature.name}}</th>
+        <tr style="text-align: center; background-color: rgba(0,0,0,0.05);">
+            <th colspan="2">{{feature.name}}
+                <a href="#" style="float: center;" (click)="HsFeatureTableService.sortFeaturesBy(feature.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
+            </th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let attr of feature.attributes" rowspan="3">
-            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{attr.name}}<a href="#"
-                    style="float: right;" (click)="HsFeatureTableService.sortFeaturesBy(attr.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
+            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{attr.name}}<a href="#" style="float: right;" (click)="HsFeatureTableService.sortFeaturesBy(attr.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
             </th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
                 <span *ngIf="!attr.sanitizedValue && !attr.value.operations">
@@ -23,8 +22,7 @@
                 </span>
                 <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>
                 <div *ngIf="attr.value.operations">
-                    <a href="#" *ngFor="let operation of attr.value.operations"
-                        (click)="executeOperation(operation)"><span><i> {{translate(operation.customActionName) || translate(operation.action)}};</i></span></a>
+                    <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)"><span><i> {{translate(operation.customActionName) || translate(operation.action)}};</i></span></a>
                 </div>
             </td>
         </tr>
