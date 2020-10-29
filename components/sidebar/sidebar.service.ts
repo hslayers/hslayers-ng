@@ -223,7 +223,7 @@ export class HsSidebarService {
       },
       {
         panel: 'search',
-        module: 'HsSearchController',
+        module: 'hs.search',
         order: 15,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.SEARCH'),
