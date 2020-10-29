@@ -1,4 +1,4 @@
-import 'focusIf';
+import 'ng-focus-if';
 import * as angular from 'angular';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerModule} from './trip-planner.module';
