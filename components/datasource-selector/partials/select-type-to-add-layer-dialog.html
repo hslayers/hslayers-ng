@@ -7,8 +7,9 @@
     </div-->
     <div class="modal-body" style="overflow-y:auto">
         <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            {{'COMMON.addAs' | translate}}&nbsp;<label class="btn" 
-            [ngClass]="{'active': type == layerType, 'btn-light': !alertChoose, 'btn-danger': alertChoose}" *ngFor="let type of types">
+            {{'COMMON.addAs' | translate}}&nbsp;<label class="btn"
+                [ngClass]="{'active': type == layerType, 'btn-light': !alertChoose, 'btn-danger': alertChoose}"
+                *ngFor="let type of types">
                 <input type="radio" name="options" (click)="layerType = type; add()" data-dismiss="modal">
                 {{type}}
             </label>

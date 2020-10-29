@@ -6,7 +6,8 @@
                     {{'DATASOURCE_SELECTOR.advancedMicka.extendedSearchParameters' | translate}}
                 </h4>
                 <button type="button" (click)="modalVisible = false" class="close" data-dismiss="modal"><span
-                        aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
@@ -40,7 +41,8 @@
                         </div>
                     </label>
 
-                    <label class="form-group control-label">{{'DATASOURCE_SELECTOR.advancedMicka.organizationName' | translate}}
+                    <label
+                        class="form-group control-label">{{'DATASOURCE_SELECTOR.advancedMicka.organizationName' | translate}}
                         <div class="input-group">
                             <input type="text" class="form-control"
                                 [(ngModel)]="hsDatasourcesService.data.query.OrganisationName" />
@@ -59,7 +61,8 @@
                             <option value="data">{{'COMMON.data' | translate}}</option>
                             <option value="service">{{'COMMON.service' | translate}}</option>
                             <option value="application">{{'COMMON.application' | translate}}</option>
-                            <option value="featureCatalogue">{{'DATASOURCE_SELECTOR.advancedMicka.featureCatalogue' | translate}}</option>
+                            <option value="featureCatalogue">
+                                {{'DATASOURCE_SELECTOR.advancedMicka.featureCatalogue' | translate}}</option>
                         </select>
                     </label>
                     <!--
@@ -74,7 +77,8 @@
                     </div>
                     -->
 
-                    <label class="form-group control-label" [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
+                    <label class="form-group control-label"
+                        [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
 
                         <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory">
                             <option *ngFor="let type of hsMickaFilterService.mickaDS.code_lists.topicCategory"
@@ -82,7 +86,8 @@
                         </select>
                     </label>
 
-                    <label class="form-group control-label" [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'COMMON.scale' | translate}} 1:
+                    <label class="form-group control-label"
+                        [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'COMMON.scale' | translate}} 1:
                         <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.Denominator">
                             <option value="2000">2000</option>
                             <option value="2500">2500</option>
@@ -101,18 +106,22 @@
                         <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.sortby">
                             <option value="title">{{'COMMON.title' | translate}}</option>
                             <option value="date">{{'DATASOURCE_SELECTOR.advancedMicka.dateStamp' | translate}}</option>
-                            <option value="bbox">{{'DATASOURCE_SELECTOR.advancedMicka.extentSimilarity' | translate}}</option>
+                            <option value="bbox">{{'DATASOURCE_SELECTOR.advancedMicka.extentSimilarity' | translate}}
+                            </option>
                         </select>
                     </label>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="hsDatasourcesService.queryCatalogs(); modalVisible = false" data-dismiss="modal">{{'SEARCH.search' | translate}}</button>
+                <button type="button" class="btn btn-primary"
+                    (click)="hsDatasourcesService.queryCatalogs(); modalVisible = false"
+                    data-dismiss="modal">{{'SEARCH.search' | translate}}</button>
                 <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()">
-                {{'COMMON.clear' | translate}}
+                    {{'COMMON.clear' | translate}}
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hsDatasourcesService.clear(); modalVisible = false">{{'COMMON.close' | translate}}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="hsDatasourcesService.clear(); modalVisible = false">{{'COMMON.close' | translate}}</button>
             </div>
         </div>
     </div>
