@@ -32,7 +32,10 @@ import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.s
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
+
 class HsConfigMock {
+  layer_order = '-position';
+  layersInFeatureTable = [];
   constructor() {}
 }
 
