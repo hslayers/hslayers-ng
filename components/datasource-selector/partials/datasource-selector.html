@@ -12,26 +12,26 @@
         </div>-->
 
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
-            <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}"
-                *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
-                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" href="#" [attr.data-target]="'#ds'+i" aria-controls="context" role="tab"
-                    data-toggle="tab" (click)="datasetSelect('ds'+i)">
+            <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}" 
+            *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
+                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" 
+                href="#" [attr.data-target]="'#ds'+i" aria-controls="context" role="tab" data-toggle="tab" (click)="datasetSelect('ds'+i)">
                     {{endpoint.title}}
                     <span [hidden]='!(endpoint.datasourcePaging.matched > 0)'>({{endpoint.datasourcePaging.matched}})</span>
                     <span class="icon-refresh icon-spin" [hidden]="endpoint.datasourcePaging.loaded"></span>
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources" *ngIf="hsCore.exists('hs.addLayers') && hsConfig.allowAddExternalDatasets">
-                <a class="nav-link" href="#" aria-controls="OWS" [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}"
-                    role="tab" (click)="datasetSelect('OWS')" data-toggle="tab">
+                <a class="nav-link" href="#" aria-controls="OWS" [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab" 
+                (click)="datasetSelect('OWS')" data-toggle="tab">
                     {{'DATASOURCE_SELECTOR.externalData' | translate}}
                 </a>
             </li>
-        </ul><!-- Tab panes -->
+        </ul>
+        <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="hs-dataset-panel tab-pane"
-                [ngClass]="{'active': 'ds'+i == data.id_selected && !data.wms_connecting}"
-                id="{{'ds'+i}}" *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
+            <div role="tabpanel" class="hs-dataset-panel tab-pane" [ngClass]="{'active': 'ds'+i == data.id_selected && !data.wms_connecting}" 
+            id="{{'ds'+i}}" *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
                 <div class="card">
                     <div class="card-body">
                         <div *ngIf="endpoint.type == 'micka'">
@@ -40,17 +40,15 @@
                         <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
                         <ul class="list-group" *ngIf="endpoint.layers">
                             <li [hidden]='endpoint.layers.length > 0' class='list-group-item'>{{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                            <li *ngFor="let layer of endpoint.layers" class="clearfix"
-                                [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')"
-                                (mouseover)="hsDatasourcesMapService.highlightComposition(layer, true)"
-                                (mouseleave)="hsDatasourcesMapService.highlightComposition(layer, false)">
+                            <li *ngFor="let layer of endpoint.layers" class="clearfix" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')" 
+                            (mouseover)="hsDatasourcesMapService.highlightComposition(layer, true)" (mouseleave)="hsDatasourcesMapService.highlightComposition(layer, false)">
                                 <hs-datasource-list-item [layer]="layer" [endpoint]="endpoint"></hs-datasource-list-item>
                             </li>
                         </ul>
                     </div>
                     <div class="card-footer" [hidden]="endpoint.datasourcePaging.matched==0 || endpoint.type != 'micka'">
                         <nav>
-                            <ul class="pagination d-flex justify-content-center" >
+                            <ul class="pagination d-flex justify-content-center">
                                 <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.start == 0 }">
                                     <a href="#" class="page-link" (click)='getPreviousRecords(endpoint)'><span
                                             aria-hidden="true">&laquo;</span></a>
@@ -62,7 +60,8 @@
                                     {{'COMMON.results' | translate}} {{endpoint.datasourcePaging.start+ 1}} - {{endpoint.datasourcePaging.matched}}
                                 </span></li>
                                 <li class="page-item" [hidden]="endpoint.datasourcePaging.loaded">
-                                    <span class="page-link"><span class="icon-refresh icon-spin" ></span></span></li>
+                                    <span class="page-link"><span class="icon-refresh icon-spin" ></span></span>
+                                </li>
                                 <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.next == 0 }">
                                     <a href="#" class="page-link" (click)='getNextRecords(endpoint)'><span
                                             aria-hidden="true">&raquo;</span></a>
@@ -72,9 +71,8 @@
                     </div>
                 </div>
             </div>
-            <hs-add-layers role="tabpanel" class="tab-pane"
-                [ngClass]="{'active': data.wms_connecting || hsCommonEndpointsService.endpoints.length==0 || data.id_selected == 'OWS'}"
-                *ngIf="hsConfig.allowAddExternalDatasets" id="OWS"></hs-add-layers>
+            <hs-add-layers role="tabpanel" class="tab-pane" [ngClass]="{'active': data.wms_connecting || hsCommonEndpointsService.endpoints.length==0 || data.id_selected == 'OWS'}" 
+            *ngIf="hsConfig.allowAddExternalDatasets" id="OWS"></hs-add-layers>
         </div>
     </div>
 </div>
