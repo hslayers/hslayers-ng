@@ -13,7 +13,7 @@
             </li>
             <li *ngFor="let waypoint of HsTripPlannerService.waypoints" class="list-group-item">
                 <a href="#" (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing">{{waypoint.name}}</a>
-                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [hidden]="!waypoint.name_editing" focus-if="waypoint.name_editing" (blur)="toggleEdit(waypoint)">
+                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
                 <img [hidden]="!waypoint.loading" src="{{loaderImage}}">
                 {{ formatDistance(waypoint) }}
                 <span class="pull-right">

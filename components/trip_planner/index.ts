@@ -1,4 +1,3 @@
-import 'ng-focus-if';
 import * as angular from 'angular';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerModule} from './trip-planner.module';
@@ -15,7 +14,7 @@ export const downgradedModule = downgrade(HsTripPlannerModule);
  */
 
 angular
-  .module(downgradedModule, ['hs.map', 'hs.core', 'focus-if'])
+  .module(downgradedModule, ['hs.map', 'hs.core'])
   /**
    * @memberof hs.trip_planner
    * @ngdoc component
