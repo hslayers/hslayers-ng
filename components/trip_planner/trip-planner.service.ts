@@ -315,12 +315,17 @@ export class HsTripPlannerService {
    * @param {object} wp Waypoint object to remove
    */
   removeWaypoint(wp) {
-    const prev_index = this.waypoints.indexOf(wp) - 1;
-    this.routeRemoved(this.waypoints[prev_index].routes.from);
-    this.routeRemoved(this.waypoints[prev_index].routes.to);
-    this.waypoints[prev_index].routes = {from: null, to: null};
+    const wpIndex = this.waypoints.indexOf(wp);
+    const prev_index = wpIndex - 1;
+    if (prev_index > -1) {
+      this.waypoints[prev_index].routes.from = null;
+    }
     this.routeRemoved(wp.routes.from);
     this.routeRemoved(wp.routes.to);
+    const next_index = wpIndex + 1;
+    if (next_index < this.waypoints.length) {
+      this.waypoints[next_index].routes.to = null;
+    }
     this.waypointRemoved(wp);
     this.waypoints.splice(this.waypoints.indexOf(wp), 1);
     this.storeWaypoints();
