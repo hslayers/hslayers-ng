@@ -231,9 +231,7 @@
   "LAYOUT": {
     "sideNav": {
       "applicationSettings": "Nastavení aplikace",
-      "routing": "Směrování",
       "specifyApplication": "Zadejte uživatelské nastavení aplikace",
-      "tracking": "Sledování"
     }
   },
   "LEGEND": {

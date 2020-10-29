@@ -10,16 +10,6 @@
                 <div panel-creator="panel.controller" directive="panel.directive" ng-if="(HsCore.exists(panel.controller) || HsCore.exists(panel.directive))" ng-show="layoutService.panelVisible(panel.name)" hide-xs hide-sm></div>
             </div>
 
-            <md-list-item ng-if="HsCore.exists('HsRoutingController')" ng-click="openPanel('routing')">
-                <md-icon md-icon-set="material-icons">directions</md-icon>
-                <p>{{'LAYOUT.sideNav.routing' | translate}}</p>
-            </md-list-item>
-
-            <md-list-item ng-if="HsCore.exists('HsTrackingController')" ng-click="openPanel('tracking')">
-                <md-icon md-icon-set="material-icons">track_changes</md-icon>
-                <p>{{'LAYOUT.sideNav.tracking' | translate}}</p>
-            </md-list-item>
-
             <md-list-item ng-if="HsCore.exists('hs.vgi-draw')" ng-click="openPanel('draw')">
                 <md-icon md-icon-set="material-icons">add_location</md-icon>
                 <p>{{'COMMON.drawNewFeatures' | translate}}</p>

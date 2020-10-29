@@ -231,7 +231,6 @@
   "LAYOUT": {
     "sideNav": {
       "applicationSettings": "Programmas iestatījumi",
-      "routing": "Maršrutēšana",
       "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus",
       "tracking": "Izsekošana"
     }

@@ -139,15 +139,6 @@ export class HsSidebarService {
         condition: true,
       },
       {
-        panel: 'routing',
-        module: 'HsRoutingController',
-        order: 8,
-        title: () =>
-          this.HsLanguageService.getTranslation('PANEL_HEADER.ROUTING'),
-        description: '',
-        icon: 'icon-road',
-      },
-      {
         panel: 'tracking',
         module: 'HsTrackingController',
         order: 9,
