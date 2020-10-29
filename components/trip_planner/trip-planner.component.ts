@@ -8,6 +8,7 @@ import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from './../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsTripPlannerService} from './trip-planner.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Modify} from 'ol/interaction';
 import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
@@ -32,10 +33,14 @@ export class HsTripPlannerComponent implements OnInit {
     private HsCoreService: HsCoreService,
     private HsTripPlannerService: HsTripPlannerService,
     private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
+    private HsUtilsService: HsUtilsService
   ) {}
   ngOnInit(): void {
-    this.loaderImage = this.HsConfig.hsl_path + 'img/ajax-loader.gif';
+    this.loaderImage = this.HsUtilsService.resolveEsModule(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('../../img/ajax-loader.gif')
+    );
     const style = function (feature, resolution) {
       return [
         new Style({
