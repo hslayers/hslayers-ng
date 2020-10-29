@@ -146,7 +146,11 @@ export class HsLayerManagerService {
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       layer.get('cluster')
     ) {
-      this.HsLayerEditorVectorLayerService.cluster(true, layer, 40);
+      this.HsLayerEditorVectorLayerService.cluster(
+        true,
+        layer,
+        this.HsConfig.clusteringDistance
+      );
     }
     if (typeof layer.get('position') == 'undefined') {
       layer.set('position', this.getMyLayerPosition(layer));
