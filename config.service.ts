@@ -55,6 +55,5 @@ export class HsConfig {
   translationOverrides: any;
   layersInFeatureTable: any;
   open_lm_after_comp_loaded: any;
-  hsl_path: string;
   constructor() {}
 }
