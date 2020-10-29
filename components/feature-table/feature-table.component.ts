@@ -1,3 +1,4 @@
+import { HsMapService } from './../map/map.service';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
@@ -16,12 +17,15 @@ export class HsFeatureTableComponent implements OnInit {
   layers: Layer[] = [];
   constructor(
     private HsFeatureTableService: HsFeatureTableService,
-    private HsConfig: HsConfig
+    private HsConfig: HsConfig,
+    private HsMapService: HsMapService
   ) {}
   ngOnInit(): void {
-    for (const layer of this.HsConfig.layersInFeatureTable || []) {
-      this.addLayerToTable(layer);
-    }
+    this.HsMapService.loaded().then(() => {
+      for (const layer of this.HsConfig.layersInFeatureTable || []) {
+        this.addLayerToTable(layer);
+      }
+    });
   }
   addLayerToTable(layer: Layer): void {
     const layerDiscriptor = this.HsFeatureTableService.addLayer(layer);
