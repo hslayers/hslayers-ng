@@ -56,9 +56,11 @@ export class HsLayerFeaturesComponent implements OnInit {
    */
   ngOnInit(): void {
     const olLayer = this.layer.lyr;
-    if (olLayer.getSource()) {
+    const source = this.HsLayerUtilsService.isLayerClustered(olLayer)
+      ? olLayer.getSource().getSource()
+      : olLayer.getSource();
+    if (source) {
       this.HsFeatureTableService.fillFeatureList(olLayer);
-      const source = olLayer.getSource();
       source.on('changefeature', (e) => {
         this.HsFeatureTableService.updateFeatureDescription(e.feature);
       });
