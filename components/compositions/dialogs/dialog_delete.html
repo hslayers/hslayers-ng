@@ -5,14 +5,19 @@
                 <h4 class="modal-title">
                     {{'COMMON.confirm' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
-                <span>{{'COMPOSITIONS.dialogDelete.doYouWantToDeleteMap' | translate}}</span> {{compositionToDelete.title}}
+                <span>{{'COMPOSITIONS.dialogDelete.doYouWantToDeleteMap' | translate}}</span>
+                {{compositionToDelete.title}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" (click)="delete(compositionToDelete)">{{'COMMON.ok' | translate}}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">{{'COMMON.close' | translate}}</button>
+                <button type="button" class="btn btn-danger"
+                    (click)="delete(compositionToDelete)">{{'COMMON.ok' | translate}}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="close()">{{'COMMON.close' | translate}}</button>
             </div>
         </div>
     </div>

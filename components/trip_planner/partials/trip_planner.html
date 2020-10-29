@@ -4,7 +4,8 @@
         <div *ngFor="let waypoint of HsTripPlannerService.waypoints" class="d-flex flex-row">
             <div class="p-1 flex-grow-1">
                 <a href="#" (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing">{{waypoint.name}}</a>
-                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
+                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name"
+                    [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
             </div>
             <div class="p-1">
                 <img [hidden]="!waypoint.loading" src="{{loaderImage}}">
@@ -13,12 +14,13 @@
                 <div style="margin-top: 1em; ">{{ formatDistance(waypoint) }}</div>
             </div>
             <div class="p-1">
-                <a class="p-1" href="#" (click)="HsTripPlannerService.removeWaypoint(waypoint)" data-toggle="tooltip" [title]="'TRIP_PLANNER.removeWaypoint' | translate">
+                <a class="p-1" href="#" (click)="HsTripPlannerService.removeWaypoint(waypoint)" data-toggle="tooltip"
+                    [title]="'TRIP_PLANNER.removeWaypoint' | translate">
                     <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
                 </a>
             </div>
         </div>
-        <div  class="alert alert-primary" role="alert" *ngIf="HsTripPlannerService.waypoints.length==0">
+        <div class="alert alert-primary" role="alert" *ngIf="HsTripPlannerService.waypoints.length==0">
             {{'TRIP_PLANNER.waypointDrawingHint' | translate}}
         </div>
         <br/>
