@@ -27,16 +27,6 @@ angular
   )
   /**
    * @memberof hs.trip_planner
-   * @ngdoc component
-   * @name hsTripPlannerToolbarButtonComponent
-   * @description Add trip planner button html template to the map
-   */
-  .directive(
-    'hsTripPlannerToolbarButton',
-    downgradeComponent({component: HsTripPlannerToolbarButtonComponent})
-  )
-  /**
-   * @memberof hs.trip_planner
    * @ngdoc service
    * @name HsTripPlannerService
    * @description Service managing trip planning functions - loading, adding, storing, removing waypoints and calculating route
