@@ -41,7 +41,7 @@ export class HsTripPlannerComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../img/ajax-loader.gif')
     );
-    const style = function (feature, resolution) {
+    const style = (feature, resolution) => {
       return [
         new Style({
           fill: new Fill({
@@ -53,8 +53,12 @@ export class HsTripPlannerComponent implements OnInit {
           }),
           image: new Icon({
             src: feature.get('highlighted')
-              ? this.HsConfig.hsl_path + 'img/pin_white_red32.png'
-              : this.HsConfig.hsl_path + 'img/pin_white_blue32.png',
+              ? this.HsUtilsService.resolveEsModule(
+                  require('../../img/pin_white_red32.png')
+                )
+              : this.HsUtilsService.resolveEsModule(
+                  require('../../img/pin_white_blue32.png')
+                ),
             crossOrigin: 'anonymous',
             anchor: [0.5, 1],
           }),
