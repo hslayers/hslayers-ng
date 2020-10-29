@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+import Collection from 'ol/Collection';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './../map/map.service';
@@ -5,17 +11,82 @@ import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Modify} from 'ol/interaction';
+import {Point} from 'ol/geom';
+import {transform} from 'ol/proj';
+
+export type Waypoint = {
+  name: string;
+  lon: number;
+  lat: number;
+  hash: number;
+  routes: {from: Feature; to: Feature};
+  feature;
+  loading: boolean;
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsTripPlannerService {
-  waypoints: any = [];
+  waypoints: Waypoint[] = [];
   trip: any = {};
-  waypointAdded: any;
-  waypointRemoved: any;
-  routeRemoved: any;
-  routeAdded: any;
+  movable_features = new Collection();
+  modify = new Modify({
+    features: this.movable_features,
+  });
+
+  waypointRouteStyle = (feature, resolution) => {
+    return [
+      new Style({
+        fill: new Fill({
+          color: 'rgba(255, 255, 255, 0.6)',
+        }),
+        stroke: new Stroke({
+          color: '#337AB7',
+          width: 3,
+        }),
+        image: new Icon({
+          src: feature.get('highlighted')
+            ? this.HsUtilsService.resolveEsModule(
+                require('../../img/pin_white_red32.png')
+              )
+            : this.HsUtilsService.resolveEsModule(
+                require('../../img/pin_white_blue32.png')
+              ),
+          crossOrigin: 'anonymous',
+          anchor: [0.5, 1],
+        }),
+        text: new Text({
+          font: '12px Calibri,sans-serif',
+          overflow: true,
+          fill: new Fill({
+            color: '#000',
+          }),
+          stroke: new Stroke({
+            color: '#fff',
+            width: 3,
+          }),
+          offsetY: -10,
+          text: this.getTextOnFeature(feature),
+        }),
+      }),
+    ];
+  };
+
+  waypointSource = new VectorSource();
+  waypointLayer = new VectorLayer({
+    source: this.waypointSource,
+    style: this.waypointRouteStyle,
+  });
+  routeSource = new VectorSource();
+  routeLayer = new VectorLayer({
+    title: 'Travel route',
+    source: this.routeSource,
+    style: this.waypointRouteStyle,
+  });
+  timer: any;
+
   constructor(
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
@@ -37,6 +108,19 @@ export class HsTripPlannerService {
       });
     });
   }
+
+  getTextOnFeature(feature: Feature): string {
+    let tmp = '';
+    const wp: Waypoint = feature.get('wp');
+    if (wp) {
+      tmp = wp.name;
+      if (wp.routes.to) {
+        tmp += ` (${this.formatDistance(wp, 'to')})`;
+      }
+    }
+    return tmp;
+  }
+
   /**
    * Load selected trip data from plan4all server and calculate routes
    *
@@ -80,22 +164,107 @@ export class HsTripPlannerService {
       this.HsShareUrlService.push('trip', this.trip);
       this.HsShareUrlService.update();
     }
-    const wp = {
-      lon: lon,
-      lat: lat,
+    const wp: Waypoint = {
+      lon,
+      lat,
       name: 'Waypoint ' + (this.waypoints.length + 1),
       hash: this.HsUtilsService.hashCode(
         JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
       ),
-      routes: [],
+      routes: {from: null, to: null},
+      feature: null,
+      loading: false,
     };
+    wp.feature = new Feature({
+      'wp': wp,
+      geometry: new Point([x, y]),
+    });
+    this.waypointSource.addFeature(wp.feature);
+    this.waypoints.push(wp);
     if (this.waypointAdded !== undefined) {
       this.waypointAdded(wp);
     }
-    this.waypoints.push(wp);
     this.storeWaypoints();
     this.calculateRoutes();
   }
+
+  /**
+   * Handler of adding waypoint in connected service
+   *
+   * @function waypointAdded
+   * @param {object} wp Waypoint ojbect, with lat, lon and routes array
+   */
+  waypointAdded(wp: Waypoint): void {
+    this.movable_features.push(wp.feature);
+    wp.feature.getGeometry().on(
+      'change',
+      (e) => {
+        this.removeRoutesForWaypoint(wp);
+        const new_cords = transform(
+          wp.feature.getGeometry().getCoordinates(),
+          this.HsMapService.map.getView().getProjection().getCode(),
+          'EPSG:4326'
+        );
+        wp.lon = new_cords[0];
+        wp.lat = new_cords[1];
+        const prev_index = this.waypoints.indexOf(wp) - 1;
+        if (prev_index > -1) {
+          this.waypoints[prev_index].routes.from = null;
+          this.routeRemoved(this.waypoints[prev_index].routes.from);
+        }
+        if (this.timer !== null) {
+          clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(() => {
+          this.calculateRoutes();
+        }, 500);
+      },
+      wp.feature
+    );
+  }
+
+  /**
+   * Remove selected route from source
+   *
+   * @function routeRemoved
+   * @param {object} feature Route feature to remove
+   */
+  routeRemoved(feature: Feature): void {
+    try {
+      if (feature) {
+        this.routeSource.removeFeature(feature);
+      }
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
+  /**
+   * (PRIVATE) Remove routes from selected waypoint
+   *
+   * @function removeRoutesForWaypoint
+   * @param {object} wp Waypoint to remove routes
+   */
+  removeRoutesForWaypoint(wp: Waypoint): void {
+    this.routeRemoved(wp.routes.from);
+    this.routeRemoved(wp.routes.to);
+    wp.routes = {from: null, to: null};
+  }
+
+  /**
+   * Remove selected waypoint from source
+   *
+   * @function waypointRemoved
+   * @param {object} wp Waypoint feature to remove
+   */
+  waypointRemoved(wp: Waypoint): void {
+    try {
+      this.waypointSource.removeFeature(wp.feature);
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
   /**
    * Store current waypoints on remote Plan4All server if possible
    *
@@ -147,25 +316,38 @@ export class HsTripPlannerService {
    */
   removeWaypoint(wp) {
     const prev_index = this.waypoints.indexOf(wp) - 1;
-    if (prev_index > -1 && this.waypoints[prev_index].routes.length > 0) {
-      this.waypoints[prev_index].routes.forEach((route) => {
-        if (this.routeRemoved !== undefined) {
-          this.routeRemoved(route);
-        }
-      });
-      this.waypoints[prev_index].routes = [];
-    }
-
-    wp.routes.forEach((route) => {
-      if (this.routeRemoved !== undefined) {
-        this.routeRemoved(route);
-      }
-      this.waypointRemoved(wp);
-    });
+    this.routeRemoved(this.waypoints[prev_index].routes.from);
+    this.routeRemoved(this.waypoints[prev_index].routes.to);
+    this.waypoints[prev_index].routes = {from: null, to: null};
+    this.routeRemoved(wp.routes.from);
+    this.routeRemoved(wp.routes.to);
+    this.waypointRemoved(wp);
     this.waypoints.splice(this.waypoints.indexOf(wp), 1);
     this.storeWaypoints();
     this.calculateRoutes();
   }
+
+  /**
+   * Clear all waypoints from service and layer
+   *
+   * @function clearAll
+   */
+  clearAll(): void {
+    this.waypoints = [];
+    this.waypointSource.clear();
+    this.routeSource.clear();
+  }
+
+  /**
+   * Handler of adding computed route to layer
+   *
+   * @function routeAdded
+   * @param {GeoJSON} feature Route to add
+   */
+  routeAdded(feature: Feature): void {
+    this.routeSource.addFeatures(feature);
+  }
+
   /**
    * Calculate routes between stored waypoints
    *
@@ -176,7 +358,7 @@ export class HsTripPlannerService {
     for (let i = 0; i < this.waypoints.length - 1; i++) {
       const wpf = this.waypoints[i];
       const wpt = this.waypoints[i + 1];
-      if (wpf.routes.length == 0) {
+      if (wpf.routes.from === null) {
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
           'http://www.yournavigation.org/api/1.0/gosmore.php?flat=' +
@@ -196,7 +378,7 @@ export class HsTripPlannerService {
             const wpf = this.waypoints[i];
             wpt.loading = false;
             const format = new GeoJSON();
-            const feature = format.readFeatures(
+            const features = format.readFeatures(
               {
                 'type': 'Feature',
                 'geometry': response,
@@ -210,11 +392,33 @@ export class HsTripPlannerService {
                   .getCode(),
               }
             );
-            wpf.routes.push(feature[0]);
+            wpf.routes.from = features[0];
+            wpt.routes.to = features[0];
             if (this.routeAdded !== undefined) {
-              this.routeAdded(feature);
+              this.routeAdded(features);
             }
           });
+      }
+    }
+  }
+
+  /**
+   * Format waypoint route distance in a human friendly way
+   *
+   * @function formatDistance
+   * @param which
+   * @param {float} wp Wayoint
+   * @returns {string} Distance
+   */
+  formatDistance(wp: Waypoint, which?: string): string {
+    which = which !== undefined ? which : 'from';
+    if (wp.routes[which]) {
+      const route = wp.routes[which];
+      const distance = route?.get('distance');
+      if (distance == undefined) {
+        return '';
+      } else {
+        return parseFloat(distance).toFixed(2) + 'km';
       }
     }
   }
