@@ -118,5 +118,12 @@
         "DRAW": "Trek",
         "LEGEND": "Legenda",
         "LM": "Beheer lagen"
+    },
+    "TRIP_PLANNER": {
+        "totalDistance": "Total distance",
+        "waypoints": "Waypoints",
+        "clearWaypoints": "Clear waypoints",
+        "removeWaypoint": "Remove waypoint",
+        "waypointDrawingHint": "Please click on map to add waypoints"
     }
 }

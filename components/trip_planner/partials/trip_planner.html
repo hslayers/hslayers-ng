@@ -1,33 +1,32 @@
 <div class="card hs-main-panel">
-    <div class="card-header"><span class="title">{{'PANEL_HEADER.TRIP_PLANNER' | translate}}</span>
-        <button type="button" class="close" (click)="HsCore.closePanel(this)">
-            <span aria-hidden="true"></span>
-            <span class="sr-only">{{'COMMON.close' | translate}}</span>
-        </button>
-    </div>
+    <hs-panel-header name="tripPlaner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translate"></hs-panel-header>
     <div class="card-body">
-        <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.close' | translate}}</button>
-        <ul class="list-group">
-            <li class="list-group-item clearfix active">
-                <span><button class="btn btn-secondary btn-sm" (click)="prevPanel()"><span class="icon-arrow-left" aria-hidden="true"></span></button>&nbsp;<span class="ng-scope">{{'TRIP_PLANNER.waypoints' |translate}}</span></span>
-            </li>
-            <li *ngFor="let waypoint of HsTripPlannerService.waypoints" class="list-group-item">
+        <div *ngFor="let waypoint of HsTripPlannerService.waypoints" class="d-flex flex-row">
+            <div class="p-1 flex-grow-1">
                 <a href="#" (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing">{{waypoint.name}}</a>
                 <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
+            </div>
+            <div class="p-1">
                 <img [hidden]="!waypoint.loading" src="{{loaderImage}}">
-                {{ formatDistance(waypoint) }}
-                <span class="pull-right">
-                    <button type="button" class="btn btn-secondary btn-sm icon-trash" (click)="HsTripPlannerService.removeWaypoint(waypoint)">
-                    </button>
-                <span>
-            </span></span></li>
-        </ul>
-        <br>
-        <div class="container-fluid">
-            <dl class="dl-horizontal">
-                <dt>{{'TRIP_PLANNER.totalDistance' | translate}}: </dt>
-                <dd>{{totalDistance()}}</dd>
-            </dl>
+            </div>
+            <div class="p-1" style="height: 1.7em">
+                <div style="margin-top: 1em; ">{{ formatDistance(waypoint) }}</div>
+            </div>
+            <div class="p-1">
+                <a class="p-1" href="#" (click)="HsTripPlannerService.removeWaypoint(waypoint)" data-toggle="tooltip" [title]="'TRIP_PLANNER.removeWaypoint' | translate">
+                    <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+                </a>
+            </div>
+        </div>
+        <div  class="alert alert-primary" role="alert" *ngIf="HsTripPlannerService.waypoints.length==0">
+            {{'TRIP_PLANNER.waypointDrawingHint' | translate}}
+        </div>
+        <br/>
+        <a href="#" (click)="clearAll()">{{'TRIP_PLANNER.clearWaypoints' | translate}}</a>
+        <br/>
+        <div class="d-flex flex-row">
+            <div class="p-1 flex-grow-1"><strong>{{'TRIP_PLANNER.totalDistance' | translate}}:</strong></div>
+            <div class="p-1">{{totalDistance()}}</div>
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import {GeoJSON} from 'ol/format';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsUtilsService} from './../utils/utils.service';
@@ -19,13 +20,22 @@ export class HsTripPlannerService {
     private HsMapService: HsMapService,
     private HsUtilsService: HsUtilsService,
     private $http: HttpClient,
-    private HsShareUrlService: HsShareUrlService
+    private HsShareUrlService: HsShareUrlService,
+    private HsEventBusService: HsEventBusService
   ) {
     if (this.HsShareUrlService.getParamValue('trip') !== null) {
       this.trip = this.HsShareUrlService.getParamValue('trip');
       this.loadWaypoints(this.trip);
       this.HsShareUrlService.push('trip', this.trip);
     }
+    this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
+      this.addWaypoint({
+        x: coordinates.mapProjCoordinate[0],
+        y: coordinates.mapProjCoordinate[1],
+        lon: coordinates.epsg4326Coordinate[0],
+        lat: coordinates.epsg4326Coordinate[1],
+      });
+    });
   }
   /**
    * Load selected trip data from plan4all server and calculate routes
@@ -64,7 +74,7 @@ export class HsTripPlannerService {
    * @param {number} lon Longitude number (part of Ol.coordinate Array)
    * @param {number} lat Latitude number (part of Ol.coordinate Array)
    */
-  addWaypoint(lon, lat) {
+  addWaypoint({x, y, lon, lat}) {
     if (this.HsShareUrlService.getParamValue('trip') === null) {
       this.trip = this.HsUtilsService.generateUuid();
       this.HsShareUrlService.push('trip', this.trip);
