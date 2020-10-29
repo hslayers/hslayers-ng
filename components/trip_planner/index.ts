@@ -2,7 +2,6 @@ import * as angular from 'angular';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerModule} from './trip-planner.module';
 import {HsTripPlannerService} from './trip-planner.service';
-import {HsTripPlannerToolbarButtonComponent} from './trip-planner-toolbar-button.component';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 

@@ -251,7 +251,7 @@ export class HsSidebarService {
       },
       {
         panel: 'tripPlanner',
-        module: 'HsTripPlanner',
+        module: 'hs.trip_planner',
         order: 17,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),

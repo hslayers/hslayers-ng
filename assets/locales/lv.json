@@ -388,7 +388,8 @@
       "PERMALINK": "Kopīgot karti",
       "PRINT": "Printēt karti",
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
-      "SEARCH": "Meklēt atrašanās vietu"
+      "SEARCH": "Meklēt atrašanās vietu",
+      "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus"
     }
   },
   "STYLER": {
@@ -401,10 +402,10 @@
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
   },
   "TRIP_PLANNER": {
-    "totalDistance": "Kopējais attālums",
-    "waypoints": "Pieturas punkti",
     "clearWaypoints": "Dzēst pieturas",
     "removeWaypoint": "Dzēst pieturu",
-    "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus"
+    "totalDistance": "Kopējais attālums",
+    "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
+    "waypoints": "Pieturas punkti"
   }
 }
