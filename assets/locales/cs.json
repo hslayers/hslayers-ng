@@ -402,6 +402,9 @@
   },
   "TRIP_PLANNER": {
     "totalDistance": "Total distance",
-    "waypoints": "Waypoints"
+    "waypoints": "Waypoints",
+    "clearWaypoints": "Clear waypoints",
+    "removeWaypoint": "Remove waypoint",
+    "waypointDrawingHint": "Please click on map to add waypoints"
   }
 }

@@ -57,6 +57,7 @@ export class HsQueryBaseService {
     'analysis',
     'sensors',
     'draw',
+    'tripPlanner',
   ];
   last_coordinate_clicked: any;
   hoverPopup: any;

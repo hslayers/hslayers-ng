@@ -402,6 +402,9 @@
   },
   "TRIP_PLANNER": {
     "totalDistance": "Kopējais attālums",
-    "waypoints": "pieturas punkts"
+    "waypoints": "Pieturas punkti",
+    "clearWaypoints": "Dzēst pieturas",
+    "removeWaypoint": "Dzēst pieturu",
+    "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus"
   }
 }
