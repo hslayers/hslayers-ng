@@ -36,6 +36,7 @@ import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
+import {HsTripPlannerModule} from '../trip_planner';
 import {HsUtilsModule} from './../utils';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
@@ -112,6 +113,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsConfirmModule,
     HsMapModule,
     HsLaymanModule,
+    HsTripPlannerModule,
   ],
   exports: [TranslateModule],
   providers: [

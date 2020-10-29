@@ -24,6 +24,7 @@ import '../save-map/';
 import '../styles';
 import '../toolbar';
 import '../translations/js/translations';
+import '../trip_planner';
 import '../utils';
 import {HsCoreModule} from './core.module';
 import {HsCoreService} from './core.service';
@@ -62,6 +63,7 @@ angular
     'hs.measure',
     'hs.compositions',
     'hs.common.layman',
+    'hs.trip_planner',
   ])
   /**
    * @module hs.core
