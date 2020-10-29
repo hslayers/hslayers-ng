@@ -1,33 +1,21 @@
 <div class="hs-sidebar-list list-group">
-    <a href="#" class="hs-sidebar-item list-group-item" *ngIf="HsLayoutService.sidebarToggleable"
-        (click)="toggleSidebar()">
-        <i class="menu-icon"
-            [ngClass]="HsLayoutService.sidebarExpanded ? (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
+    <a href="#" class="hs-sidebar-item list-group-item" *ngIf="HsLayoutService.sidebarToggleable" (click)="toggleSidebar()">
+        <i class="menu-icon" [ngClass]="HsLayoutService.sidebarExpanded ? (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </a>
 
-    <a href="#" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'"
-        class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))"
-        (click)="HsSidebarService.buttonClicked(button)"
-        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}"
-        title="{{HsSidebarService.getButtonDescription(button)}}">
+    <a href="#" *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'" class="flex-fill hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))" (click)="HsSidebarService.buttonClicked(button)"
+        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}" title="{{HsSidebarService.getButtonDescription(button)}}">
 
-        <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body"
-            data-placement="auto"></i>
-        <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class=""
-            title="{{HsSidebarService.getButtonDescription(button)}}">{{button.content()}}</span>
+        <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
+        <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{HsSidebarService.getButtonDescription(button)}}">{{button.content()}}</span>
         <span class="hs-sidebar-item-title">{{HsSidebarService.getButtonTitle(button)}}</span>
     </a>
 
-    <a href="#" class="flex-fill hs-sidebar-item  list-group-item"
-        *ngIf="HsSidebarService.unimportantExist && !HsLayoutService.sidebarBottom()" (click)="toggleUnimportant()">
-        <i class="menu-icon" [ngClass]="{'icon-minus' : showUnimportant, 'icon-plus': !showUnimportant}"
-            data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
+    <a href="#" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsSidebarService.unimportantExist && !HsLayoutService.sidebarBottom()" (click)="toggleUnimportant()">
+        <i class="menu-icon" [ngClass]="{'icon-minus' : showUnimportant, 'icon-plus': !showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
     </a>
 
-    <a href="#" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar"
-        (click)="HsLayoutService.setMainPanel('sidebar')"
-        [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">
-        <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto"
-            title="Menu"></i>
+    <a href="#" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="HsLayoutService.setMainPanel('sidebar')" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">
+        <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"></i>
     </a>
 </div>

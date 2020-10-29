@@ -49,7 +49,7 @@ export class HsSearchComponent implements OnInit {
   // /**
   //  * Set property highlighted of result to state
   //  *
-  //  * @memberof HsSearchController
+  //  * @memberof HsSearcComponent
   //  * @function highlightResult
   //  * @param {object} result Record to highlight
   //  * @param {string} state To highlight or not to highlight
