@@ -231,7 +231,6 @@
   "LAYOUT": {
     "sideNav": {
       "applicationSettings": "Application settings",
-      "routing": "Routing",
       "specifyApplication": "Specify application user settings",
       "tracking": "Tracking"
     }

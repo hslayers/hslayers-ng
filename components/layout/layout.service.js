@@ -225,7 +225,6 @@ export class HsLayoutService {
       permalink: true,
       compositionLoadingProgress: false,
       sensors: true,
-      routing: true,
       tracking: true,
       filter: false,
       search: false,
