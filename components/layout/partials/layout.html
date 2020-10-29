@@ -53,6 +53,8 @@
                     <hs.sensors hs.draggable ng-show="panelVisible('sensors', this)"></hs.sensors>
                     <hs-search hs.draggable ng-if="panelVisible('search')" ng-show="panelVisible('search', this)">
                     </hs-search>
+                    <hs-trip-planner hs.draggable ng-if="panelVisible('tripPlanner')" ng-show="panelVisible('tripPlanner', this)">
+                    </hs-trip-planner>
                     <hs-mini-sidebar hs.draggable ng-if="layoutService.minisidebar"
                         ng-show="panelVisible('sidebar', this)"></hs-mini-sidebar>
                     <hs.draw hs.draggable ng-show="panelVisible('draw', this)"></hs.draw>

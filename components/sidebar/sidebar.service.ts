@@ -249,6 +249,18 @@ export class HsSidebarService {
           this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
         icon: 'icon-pencil',
       },
+      {
+        panel: 'tripPlanner',
+        module: 'HsTripPlanner',
+        order: 17,
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),
+        description: () =>
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.TRIP_PLANNER'
+          ),
+        icon: 'icon-sextant',
+      },
     ];
 
     this.HsEventBusService.mainPanelChanges.subscribe(() => {

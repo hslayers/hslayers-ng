@@ -229,6 +229,7 @@ export class HsLayoutService {
       tracking: true,
       filter: false,
       search: false,
+      tripPlanner: false,
     };
 
     angular.forEach(panelsEnabledDefaults, (value, key) => {
