@@ -271,7 +271,8 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "SEARCH": "Vyhledávání",
     "SENSORS": "Senzory",
-    "TRACKING": "Sledování"
+    "TRACKING": "Sledování",
+    "TRIP_PLANNER": "Trip planner"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -398,5 +399,9 @@
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Změřte linie a polygony"
+  },
+  "TRIP_PLANNER": {
+    "totalDistance": "Total distance",
+    "waypoints": "Waypoints"
   }
 }
