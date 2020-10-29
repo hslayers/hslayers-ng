@@ -18,17 +18,15 @@
 
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-secondary" href="#" [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)'
-                title="GeoDCAT-AP" target="_blank"
-                [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
+            <md-button class="md-raised md-secondary" href="#" [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)' 
+            title="GeoDCAT-AP" target="_blank" [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
                 {{'DATASOURCE_SELECTOR.layerRDF' | translate}}
             </md-button>
-            <md-button class="md-raised md-secondary md-hue-2" [hidden]="!hsDatasourcesService.isZoomable(selectedLayer)"
-                (click)="mapService.zoomTo(selectedLayer.bbox)">
+            <md-button class="md-raised md-secondary md-hue-2" [hidden]="!hsDatasourcesService.isZoomable(selectedLayer)" (click)="mapService.zoomTo(selectedLayer.bbox)">
                 {{'COMMON.zoomTo' | translate}}
             </md-button>
-            <md-button class="md-raised md-primary" *ngFor="let type of selectedLayer.type"
-                (click)="addLayerToMap(selectedDS, selectedLayer, type)" [hidden]='config.dss_disallow_add == true'>
+            <md-button class="md-raised md-primary" *ngFor="let type of selectedLayer.type" (click)="addLayerToMap(selectedDS, selectedLayer, type)" 
+            [hidden]='config.dss_disallow_add == true'>
                 {{'DATASOURCE_SELECTOR.addToMapAs' | translate}} {{type}}
             </md-button>
         </md-dialog-actions>
