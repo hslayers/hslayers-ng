@@ -183,7 +183,9 @@ export default function (
               layer.getProperties()
             );
             console.log('final', maxScale);
-            layer.set('maxResolution', me.roundToHundrets(maxScale));
+            if(maxScale){
+              layer.set('maxResolution', me.roundToHundrets(maxScale));
+            }
           });
           return true;
         })
