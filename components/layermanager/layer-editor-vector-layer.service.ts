@@ -99,7 +99,7 @@ export class HsLayerEditorVectorLayerService {
     });
   }
   updateFeatureTableLayers(layer: Layer): void {
-    const currentLayerIndex = this.HsConfig.layersInFeatureTable.findIndex(
+    const currentLayerIndex = this.HsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer
     );
     if (layer && currentLayerIndex > -1) {
