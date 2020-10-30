@@ -64,13 +64,13 @@ export class HsLayerSynchronizerService {
    * @param {object} layer Layer to add
    */
   addLayer(layer: Layer): void {
-    if (this.isLayerSinhronizable(layer)) {
+    if (this.isLayerSynchronizable(layer)) {
       this.syncedLayers.push(layer);
       this.startMonitoringIfNeeded(layer);
     }
   }
 
-  isLayerSinhronizable(layer: Layer): boolean {
+  isLayerSynchronizable(layer: Layer): boolean {
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       layer.get('synchronize') === true
