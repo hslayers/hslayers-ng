@@ -45,12 +45,11 @@ export class HsQueryFeaturePopupComponent {
     );
     const featureCount = featuresWithPopup.length;
     return {
-      'visibility': featureCount > 0 ? 'visible' : 'hidden',
+      'display': featureCount > 0 ? 'block' : 'none',
     };
   }
   closePopup() {
     this.HsQueryBaseService.featuresUnderMouse = [];
-    this.popupVisible();
   }
   isClustered(feature) {
     return feature.get('features') && feature.get('features').length > 0;
