@@ -66,7 +66,7 @@ export default function (
         url = url.replace('&amp;', '&');
         url = HsUtilsService.proxify(url);
 
-        if (url.indexOf('.wmc')) {
+        if (url.includes('.wmc')) {
           $http({url: url, overwrite, callback, pre_parse})
             .then((response) => {
               const res = xml2Json.xml2js(response.data, {compact: true})
