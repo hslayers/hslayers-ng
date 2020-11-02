@@ -5,7 +5,7 @@
   "description": "Hslayers-ng mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",
-  "main": "dist/hslayers-ng.main.js",
+  "main": "index.js",
   "files": [
     "/assets",
     "/common",
