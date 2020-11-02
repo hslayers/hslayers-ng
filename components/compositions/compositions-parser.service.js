@@ -71,7 +71,6 @@ export default function (
             .then((response) => {
               const res = xml2Json.xml2js(response.data, {compact: true})
                 .ViewContext;
-              console.log(res)
                 const compositionJSON = {
                 'current_base_layer': {
                   'title': 'Composite_base_layer',
