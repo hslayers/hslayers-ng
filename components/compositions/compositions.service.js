@@ -143,15 +143,19 @@ export default function (
     },
 
     getRecordLink(record) {
-      let url;
-      if (angular.isDefined(record.link)) {
-        url = record.link;
-      } else if (angular.isDefined(record.links)) {
-        url = record.links.filter(
-          (l) => l.url.indexOf('/file') > -1 || l.url.indexOf('.wmc') > -1
-        )[0].url;
+      try {
+        let url;
+        if (angular.isDefined(record.link)) {
+          url = record.link;
+        } else if (angular.isDefined(record.links)) {
+          url = record.links.filter(
+            (l) => l.url.indexOf('/file') > -1 || l.url.indexOf('.wmc') > -1
+          )[0].url;
+        }
+        return url;
+      } catch (e) {
+        $log.warn(e);
       }
-      return url;
     },
 
     loadCompositionParser(record) {
@@ -169,13 +173,15 @@ export default function (
           default:
             $log.warn(`Endpoint type '${record.endpoint.type} not supported`);
         }
-        if (HsCompositionsParserService.composition_edited == true) {
-          $rootScope.$broadcast('loadComposition.notSaved', url);
-          reject();
-        } else {
-          me.loadComposition(url, true).then(() => {
-            resolve();
-          });
+        if (url) {
+          if (HsCompositionsParserService.composition_edited == true) {
+            $rootScope.$broadcast('loadComposition.notSaved', url);
+            reject();
+          } else {
+            me.loadComposition(url, true).then(() => {
+              resolve();
+            });
+          }
         }
       });
     },
