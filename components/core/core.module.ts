@@ -13,6 +13,7 @@ import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
 import {HsDatasourcesModule} from '../datasource-selector';
+import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw';
 import {HsDrawService} from '../draw/draw.service';
 import {HsFeatureTableModule} from './../feature-table';
@@ -85,6 +86,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsLegendModule,
     HsMeasureModule,
     HsDrawModule,
+    HsDragModule,
     HsSidebarModule,
     HsHistoryListModule,
     HsStylerModule,
