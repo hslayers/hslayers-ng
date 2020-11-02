@@ -1,17 +1,17 @@
 {
   "COMMON": {
     "Login": "Přihlásit se",
-    "Logout": "Odhlásit se",
-    "Sort": "Třídit",
+    "Logout": "Odhlásit",
+    "Sort": "Seřadit",
     "abstract": "Abstrakt",
-    "addAs": "Add as",
+    "addAs": "Přidat jako",
     "advancedOptions": "Pokročilé možnosti",
-    "all": "All",
-    "application": "Application",
+    "all": "Vše",
+    "application": "Aplikace",
     "area": "Plocha",
     "attribute": "Atribut",
     "attributes": "Atributy",
-    "boundingBox": "Ohraničující rámeček",
+    "boundingBox": "Ohraničující obdélník",
     "cancel": "Zrušit",
     "circle": "Kruh",
     "clear": "Vyčistit",
@@ -19,7 +19,7 @@
     "color": "Barva",
     "confirm": "Potvrdit",
     "confirmDelete": "Potvrďte smazání",
-    "continue": "pokračovat",
+    "continue": "Pokračovat",
     "data": "Data",
     "date": "Datum",
     "delete": "Vymazat",
@@ -29,12 +29,12 @@
     "east": "Východní",
     "extent": "Rozsah",
     "fill": "Výplň",
-    "fillInDescriptive": "Vyplňte popisný text o mapě",
-    "fillInName": "Vyplňte jméno",
+    "fillInDescriptive": "Vyplňte stručný popis mapy",
+    "fillInName": "Vyplňte název",
     "filter": "Filtr:",
     "folder": "Složka",
-    "from": "Z",
-    "fullText": "Full text",
+    "from": "Od",
+    "fullText": "Plný text",
     "hide": "Skrýt",
     "icon": "Ikona",
     "info": "Další informace",
@@ -47,35 +47,35 @@
     "lineWidth": "Šířka linie",
     "more": "Více",
     "name": "Název",
-    "newDrawingLayer": "Nová vrstva kreslení",
+    "newDrawingLayer": "Nová vrstva pro kreslení",
     "next": "Další",
     "no": "Ne",
     "north": "Severní",
     "ok": "Ok",
-    "orderBy": "Order by",
+    "orderBy": "Seřadit podle",
     "point": "Bod",
     "polygon": "Polygon",
     "print": "Tisk",
-    "projection": "Projekce",
-    "radius": "Radius",
+    "projection": "Zobrazení",
+    "radius": "Poloměr",
     "reload": "Znovu načíst",
     "removeLayer": "Odstranit vrstvu",
     "renameLayer": "Přejmenovat vrstvu",
     "reset": "Resetovat",
-    "results": "Výsledek",
+    "results": "Výsledky",
     "rotation": "Rotace",
     "save": "Uložit",
     "saveAs": "Uložit jako..",
     "scale": "Měřítko",
-    "service": "Service",
+    "service": "Služba",
     "south": "Jižní",
-    "stroke": "Tah",
-    "strokeWidth": "Šířka tahu",
-    "theme": "Theme",
+    "stroke": "Obrys",
+    "strokeWidth": "Šířka obrysu",
+    "theme": "Téma",
     "thumbnail": "Miniatura",
     "title": "Název",
     "to": "do",
-    "type": "Type",
+    "type": "Typ",
     "until": "Až do",
     "url": "URL",
     "value": "Hodnota",
@@ -85,31 +85,31 @@
     "zoomTo": "zvětšit na"
   },
   "COMPOSITIONS": {
-    "Address": "Address",
-    "addByAddress": "Add composition by address",
+    "Address": "Adresa",
+    "addByAddress": "Přidat kompozici z adresy",
     "dialogDelete": {
-      "doYouWantToDeleteMap": "Do you want to delete map?"
+      "doYouWantToDeleteMap": "Chcete smazat tuto mapu?"
     },
     "dialogInfo": {
-      "details": "details"
+      "details": "detaily"
     },
     "dialogShare": {
-      "shareMap": "Share map"
+      "shareMap": "Sdílet mapu"
     },
     "dialogoverwriteConfirm": {
-      "mergeCompositions": "Merge compositions",
-      "overwriteExistingMap": "Overwrite existing map?",
-      "saveChangesFirst": "Save changes first",
-      "thereAreCurrentlyUnsavedChanges": "There are currently unsaved changes.",
-      "whatDoYouWant": "What do you want to do before opening the selected map composition?",
-      "youAreOpeningMap": "You are opening map"
+      "mergeCompositions": "Spojit kompozice",
+      "overwriteExistingMap": "Přepsat existující mapu?",
+      "saveChangesFirst": "Nejprve uložit změny",
+      "thereAreCurrentlyUnsavedChanges": "V mapovém okně jsou neuložené změny.",
+      "whatDoYouWant": "Co chcete provést před otevřením vybrané mapové kompozice?",
+      "youAreOpeningMap": "Otevíráte mapu."
     },
-    "filterByMap": "Filter by map extent",
-    "import": "Import composition from a file on device",
-    "onlyMine": "Only mine"
+    "filterByMap": "Filtrovat na rozsah okna",
+    "import": "Importovat kompozici ze souboru v tomto zařízení",
+    "onlyMine": "Jen moje vlastní"
   },
   "DATASOURCE_SELECTOR": {
-    "addToMapAs": "Add to map as",
+    "addToMapAs": "Přidat do mapy jako",
     "advancedMicka": {
       "applicationType": "Application type",
       "dateStamp": "Date stamp",
@@ -121,14 +121,14 @@
       "topicCategory": "Topic category"
     },
     "datasourceListItem": {
-      "abortAdd": "Abort add",
-      "addToMap": "Add to map",
-      "whatDoesItMean": "What does it mean?"
+      "abortAdd": "Zrušit přidání",
+      "addToMap": "Přidat do mapy",
+      "whatDoesItMean": "Co to znamená?"
     },
-    "externalData": "External data",
-    "layerRDF": "Layer RDF",
-    "metadataFor": "Metadata for",
-    "noResults": "No results",
+    "externalData": "Externí data",
+    "layerRDF": "RDF vrstva",
+    "metadataFor": "Metadata o",
+    "noResults": "Žádné výsledky",
     "suggestions": "Suggestions"
   },
   "DRAW": {
@@ -137,7 +137,7 @@
     "definedStyle": "Definovaný styl",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
-    "drawLayer": "Kreslící vrstva",
+    "drawLayer": "Kreslicí vrstva",
     "drawLayerMetadata": {
       "defaultAttributes": "Výchozí atributy",
       "defaultValue": "Výchozí hodnota",
@@ -146,7 +146,7 @@
       "nameOfFolder": "Název složky v hierarchii správce vrstev"
     },
     "drawToolbar": {
-      "addDrawLayer": "Přidejte vrstvu kreslení",
+      "addDrawLayer": "Přidat vrstvu pro kreslení",
       "finishFeature": "Ukončit prvek",
       "removeLastPoint": "Odebrat poslední bod",
       "selectType": "Zvolte typ"
@@ -172,10 +172,10 @@
     "speed": "Rychlost"
   },
   "HISTORY": {
-    "toggleDropdown": "Rozbalovací nabídku"
+    "toggleDropdown": "Rozbalovací nabídka"
   },
   "LAYERMANAGER": {
-    "User generated": "Uživatelské",
+    "User generated": "Uživatelský",
     "baseMapGallery": {
       "grayscale": "Šedotón",
       "noBaseMap": "Bez podkladu"
@@ -184,19 +184,19 @@
     "dialogRemoveAll": {
       "dialogMessage": "Opravdu chcete odstranit všechny vrstvy?",
       "reloadComposition": "Obnovit kompozici",
-      "removeAllAdded": "Odstranění všech přidaných vrstev"
+      "removeAllAdded": "Odstranit všechny přidané vrstvy"
     },
     "dimensions": "Dimenze",
     "layerEditor": {
-      "cluster": "Cluster",
+      "cluster": "Shlukovat",
       "copyright": "Autorská práva",
-      "declutter": "Declutter",
+      "declutter": "Procedit",
       "metadata": "Metadata",
       "metadataOfLayer": "Metadata vrstvy v ",
       "metadataOfService": "Metadata služby",
       "opacity": "Průhlednost",
       "styleLayer": "Stylovat vrstvu",
-      "zoomToLayer": "Přiblížení na vrstvu"
+      "zoomToLayer": "Přiblížit na vrstvu"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
@@ -223,7 +223,7 @@
       "star": "Hvězda"
     },
     "mapContent": "Mapový obsah",
-    "other": "Jiné",
+    "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
     "terrains": "Terény"
@@ -231,15 +231,16 @@
   "LAYOUT": {
     "sideNav": {
       "applicationSettings": "Nastavení aplikace",
-      "specifyApplication": "Zadejte uživatelské nastavení aplikace"
+      "specifyApplication": "Zadejte uživatelské nastavení aplikace",
+      "tracking": "Sledování"
     }
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
   },
   "MAP": {
-    "zoomKeyModifier": "Stlačte {{platformModifierKey}} + použite kolečko myši pro přiblížení mapy.",
-    "zoomToInitialWindow": "Přiblížit na počáteční pohled"
+    "zoomKeyModifier": "Stiskněte {{platformModifierKey}} + použijte kolečko myši pro přiblížení mapy.",
+    "zoomToInitialWindow": "Přiblížit na úvodní pohled"
   },
   "MEASURE": {
     "measureMd": {
@@ -250,13 +251,13 @@
     "multipleShapes": "Více tvarů"
   },
   "PANEL_HEADER": {
-    "ADDLAYERS": "Přidejte vrstvy",
+    "ADDLAYERS": "Přidat vrstvy",
     "APPLICATIONSETTINGS": "Nastavení aplikace",
-    "COMPOSITIONS": "Skladby",
-    "DATASOURCE_SELECTOR": "Datasources",
+    "COMPOSITIONS": "Kompozice",
+    "DATASOURCE_SELECTOR": "Datové zdroje",
     "DRAW": "Kreslit",
     "FEATURE_TABLE": "Tabulka prvků",
-    "FILTERFEATURES": "Filtrovat subjekt",
+    "FILTERFEATURES": "Filtrovat prvky",
     "INFO": "Info",
     "LANGUAGE": "Změnit jazyk",
     "LEGEND": "Legenda",
@@ -267,16 +268,16 @@
     "PRINT": "Tisk",
     "ROUTING": "Směrování",
     "SAVECOMPOSITION": "Uložit aktuální mapu",
-    "SEARCH": "Vyhledávání",
+    "SEARCH": "Hledání",
     "SENSORS": "Senzory",
     "TRACKING": "Sledování",
-    "TRIP_PLANNER": "Trip planner"
+    "TRIP_PLANNER": "Plánovač výletů"
   },
   "PERMALINK": {
     "directiveMd": {
       "copyToClipboard": "Zkopírovat do schránky"
     },
-    "embed": "vložit",
+    "embed": "vložení",
     "embedCode": "Vložit kód",
     "linkFor": "Odkaz pro",
     "newShare": "Nové sdílení",
@@ -287,7 +288,7 @@
     "sharePureMap": "Sdílet pouze mapu",
     "sharesMapWith": "*Sdílí mapu se (všemi) funkcemi portálu",
     "sharesOnlyMap": "*Sdílí mapu pouze jako obrázek",
-    "socialShare": "Sdílení"
+    "socialShare": "sdílení"
   },
   "QUERY": {
     "confirmClear": "Potvrďte vymazání",
@@ -301,13 +302,13 @@
     "featurePopup": {
       "clearLayer": "Vyčistit vrstvu",
       "closePopup": "Zavřít vyskakovací okno",
-      "removeClusterPart": "Odstraňte část clusteru",
+      "removeClusterPart": "Odstranit část shluku",
       "removeFeature": "Odebrat prvek"
     },
     "infoPanel": {
-      "clickOnMap": "Kliknutím na mapu zobrazíte výsledky dotazu!"
+      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu!"
     },
-    "reallyDelete": "Opravdu smazat tenhle prvek?",
+    "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
     "untitledFeature": "Prvek bez názvu"
   },
@@ -360,12 +361,12 @@
     }
   },
   "SEARCH": {
-    "search": "Vyhledávání:"
+    "search": "Vyhledat:"
   },
   "SENSORS": {
-    "avg": "Avg.",
+    "avg": "Prům.",
     "max": "Max",
-    "measure": "Opatření",
+    "measure": "Měření",
     "min": "Min",
     "phenomena": "Jevy",
     "sensorUnit": "Senzorová jednotka",
@@ -376,35 +377,35 @@
       "ADDLAYERS": "Vyberte data nebo služby pro vaši mapovou kompozici",
       "APPLICATIONSETTINGS": "Zadejte uživatelské nastavení aplikace",
       "DRAW": "Nakreslete nové prvky",
-      "FEATURE_TABLE": "Zobrazite prvky vrstvy v html tabulce",
+      "FEATURE_TABLE": "Zobrazte prvky vrstvy v tabulce",
       "FILTERFEATURES": "Crossfilter",
-      "INFO": "Zobrazite informace o výsledku dotazu na mapu",
-      "LANGUAGE": "Změnte jazyk",
-      "LEGEND": "Legenda",
+      "INFO": "Zobrazte informace o výsledku mapového dotazu",
+      "LANGUAGE": "Změňte jazyk",
+      "LEGEND": "Zobrazte legendu",
       "LM": "Spravujte a stylujte své vrstvy",
       "MAPCOMPOSITIONS": "Seznam dostupných mapových kompozic",
-      "MEASURE": "Změřte vzdálenost nebo plochu na mapě",
+      "MEASURE": "Měřte vzdálenost nebo plochu na mapě",
       "PERMALINK": "Sdílejte mapu",
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
-      "SEARCH": "Vyhledejte lokaci",
-      "TRIP_PLANNER": "Create new trip routes"
+      "SEARCH": "Vyhledejte místo",
+      "TRIP_PLANNER": "Vytvořte novou trasu výletu"
     }
   },
   "STYLER": {
     "features": "Prvky",
     "layer": "Vrstva",
     "level": "Úroveň",
-    "selection": "Výber"
+    "selection": "Výběr"
   },
   "TOOLBAR": {
-    "measureLinesAndPolygon": "Změřte linie a polygony"
+    "measureLinesAndPolygon": "Měřit linie a polygony"
   },
   "TRIP_PLANNER": {
-    "clearWaypoints": "Clear waypoints",
-    "removeWaypoint": "Remove waypoint",
-    "totalDistance": "Total distance",
-    "waypointDrawingHint": "Please click on map to add waypoints",
-    "waypoints": "Waypoints"
+    "clearWaypoints": "Vyčistit body trasy",
+    "removeWaypoint": "Odebrat bod trasy",
+    "totalDistance": "Celková vzdálenost",
+    "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
+    "waypoints": "Body trasy"
   }
 }

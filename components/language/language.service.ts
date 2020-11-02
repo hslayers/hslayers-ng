@@ -49,7 +49,7 @@ export class HsLanguageService {
   listAvailableLanguages(): any {
     const language_code_name_map = {
       'en': 'English',
-      'cs': 'Český',
+      'cs': 'Česky',
       'fr': 'Français',
       'lv': 'Latviski',
       'nl': 'Nederlands',
