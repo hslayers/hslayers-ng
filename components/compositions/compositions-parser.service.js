@@ -1,6 +1,7 @@
 import '../layers/hs.source.SparqlJson';
 import 'angular-socialshare';
-import {transform} from 'ol/proj';
+import * as xml2Json from 'xml-js';
+import {transform, transformExtent} from 'ol/proj';
 
 /**
  * @param HsMapService
@@ -64,11 +65,84 @@ export default function (
         me.current_composition_url = url;
         url = url.replace('&amp;', '&');
         url = HsUtilsService.proxify(url);
-        $http({url: url, overwrite, callback, pre_parse})
-          .then(me.loaded, (err) => {})
-          .then(() => {
-            resolve();
-          });
+
+        if (url.indexOf('.wmc')) {
+          $http({url: url, overwrite, callback, pre_parse})
+            .then((response) => {
+              const res = xml2Json.xml2js(response.data, {compact: true})
+                .ViewContext;
+              console.log(res)
+                const compositionJSON = {
+                'current_base_layer': {
+                  'title': 'Composite_base_layer',
+                },
+                'extent': [
+                  parseFloat(res.General.BoundingBox._attributes['maxx']),
+                  parseFloat(res.General.BoundingBox._attributes['maxy']),
+                  parseFloat(res.General.BoundingBox._attributes['minx']),
+                  parseFloat(res.General.BoundingBox._attributes['miny']),
+                ],
+                layers: [],
+                'units': res.LayerList.Layer[0].Extension['ol:units']._text,
+                scale: 1,
+              };
+
+              compositionJSON.name = res.General.Title._text;
+              compositionJSON.projection =
+                res.General.BoundingBox._attributes.SRS;
+              compositionJSON.projection =
+                compositionJSON.projection == 'EPSG:102067'
+                  ? 'EPSG:5514'
+                  : compositionJSON.projection;
+
+              compositionJSON.extent = transformExtent(
+                compositionJSON.extent,
+                compositionJSON.projection,
+                'EPSG:4326'
+              );
+
+              for (const layer of res.LayerList.Layer) {
+                const layerToAdd = {
+                  'className': 'HSLayers.Layer.WMS',
+                  'dimensions': {},
+                  'legends': [''],
+                  'maxResolution': null,
+                  'metadata': {},
+                  'minResolution': 0,
+                  'opacity': layer.Extension['ol:opacity']
+                    ? parseFloat(layer.Extension['ol:opacity']._text)
+                    : 1,
+                  "base": layer.Extension["ol:displayInLayerSwitcher"]._text,
+                  'params': {
+                    'FORMAT': 'image/png',
+                    'FROMCRS': 'EPSG:3857',
+                    'INFO_FORMAT': 'text/html',
+                    'LAYERS': layer.Name._text,
+                    'VERSION': layer.Server._attributes.version,
+                  },
+                  'ratio': 1.5,
+                  'singleTile': true,
+                  'title': layer.Extension['hsl:layer_title']._text,
+                  'url': layer.Server.OnlineResource._attributes['xlink:href'],
+                  'visibility': true,
+                  'wmsMaxScale': 0,
+                };
+                compositionJSON.layers.push(layerToAdd);
+              }
+              response.data = compositionJSON;
+              return response;
+            })
+            .then(me.loaded, (err) => {})
+            .then(() => {
+              resolve();
+            });
+        } else {
+          $http({url: url, overwrite, callback, pre_parse})
+            .then(me.loaded, (err) => {})
+            .then(() => {
+              resolve();
+            });
+        }
       });
     },
 

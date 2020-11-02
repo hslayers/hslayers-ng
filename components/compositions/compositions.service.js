@@ -147,7 +147,9 @@ export default function (
       if (angular.isDefined(record.link)) {
         url = record.link;
       } else if (angular.isDefined(record.links)) {
-        url = record.links.filter((l) => l.url.indexOf('/file') > -1)[0].url;
+        url = record.links.filter(
+          (l) => l.url.indexOf('/file') > -1 || l.url.indexOf('.wmc') > -1
+        )[0].url;
       }
       return url;
     },
