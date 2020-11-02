@@ -309,7 +309,8 @@
       "clickOnMap": "Click on map for query results!"
     },
     "reallyDelete": "Really delete this feature?",
-    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer"
+    "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
+    "untitledFeature": "Untitled feature"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

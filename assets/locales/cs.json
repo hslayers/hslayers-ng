@@ -231,7 +231,7 @@
   "LAYOUT": {
     "sideNav": {
       "applicationSettings": "Nastavení aplikace",
-      "specifyApplication": "Zadejte uživatelské nastavení aplikace",
+      "specifyApplication": "Zadejte uživatelské nastavení aplikace"
     }
   },
   "LEGEND": {
@@ -308,7 +308,8 @@
       "clickOnMap": "Kliknutím na mapu zobrazíte výsledky dotazu!"
     },
     "reallyDelete": "Opravdu smazat tenhle prvek?",
-    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy"
+    "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
+    "untitledFeature": "Prvek bez názvu"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {

@@ -4,7 +4,7 @@
             <a class="p-1" href="#" (click)="closePopup()" data-toggle="tooltip" [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
-            <strong style="font-size: small;">{{layerDesc.title}}</strong>
+            <strong style="font-size: small;">{{HsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
             <br>
             <div *ngFor="let feature of layerDesc.features">
                 <!-- Layout for clustered layers -->

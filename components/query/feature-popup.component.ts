@@ -19,7 +19,7 @@ export class HsQueryFeaturePopupComponent {
     private HsQueryVectorService: HsQueryVectorService,
     private HsEventBusService: HsEventBusService,
     private HsLanguageService: HsLanguageService,
-    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsLayerUtilsService: HsLayerUtilsService, //Used in template
     private HsDialogContainerService: HsDialogContainerService,
     private HsMapService: HsMapService,
     ElementRef: ElementRef
@@ -74,6 +74,7 @@ export class HsQueryFeaturePopupComponent {
         'features'
       );
     }
+    return this.HsLanguageService.getTranslation('QUERY.untitledFeature');
   }
 
   async removeFeature(feature) {
@@ -96,7 +97,7 @@ export class HsQueryFeaturePopupComponent {
       HsConfirmDialogComponent,
       {
         message: this.HsLanguageService.getTranslation(
-          'QUERY.reallyDeleteAllFeaturesFrom' + '{0}' + '?'
+          'QUERY.reallyDeleteAllFeaturesFrom'
         ).replace('{0}', layer.get('title')),
         title: this.HsLanguageService.getTranslation('QUERY.confirmClear'),
       }

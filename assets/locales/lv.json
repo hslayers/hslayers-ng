@@ -25,7 +25,7 @@
     "delete": "Dzēst",
     "distance": "Distance",
     "download": "Lejuplādēt",
-    "drawNewFeatures": "Zīmēt jaunus grafiskos objektus",
+    "drawNewFeatures": "Zīmēt jaunus objektus",
     "east": "Austrumi",
     "extent": "Apjoms",
     "fill": "Aizpildījums",
@@ -133,7 +133,7 @@
   },
   "DRAW": {
     "Select layer": "Izvēlieties slāni",
-    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties grafiskā objekta tipu",
+    "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
     "definedStyle": "Definētais stils",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
@@ -147,13 +147,13 @@
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
-      "finishFeature": "Pabeigt grafisko objektu",
+      "finishFeature": "Pabeigt objektu",
       "removeLastPoint": "Noņemt pēdējo punktu",
       "selectType": "Izvēlieties tipu"
     },
     "drawingTo": "Zīmējums uz:",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
-    "individualStyle": "Individuāls stils grafiskajam objektam",
+    "individualStyle": "Individuāls stils objektam",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "unsavedDrawing": "Nesaglabāts zīmējums"
   },
@@ -161,7 +161,7 @@
     "delete": "dzēst",
     "showFeatureStats": "Izvērst",
     "sortBy": "Kārtot pēc",
-    "sortFeaturesByValue": "Kārtot pēc grafisko objektu vērtības",
+    "sortFeaturesByValue": "Kārtot pēc objektu vērtības",
     "zoom to": "Pietuvināt"
   },
   "GEOLOCATION": {
@@ -206,19 +206,19 @@
     },
     "layermanagerMd": {
       "aboutLayer": "Par slāni",
-      "filterFeatures": "Filtrēt grafiskais objektus",
+      "filterFeatures": "Filtrēt objektus",
       "imageLayer": "Attēla slānis",
       "innerRadius": "Iekšējais rādiuss",
       "layerName": "Slāņa nosaukums",
       "layerOpacity": "Slāņa necaurredzamība",
       "layerOptions": "Slāņa opcijas",
       "layerStyle": "Slāņa stils",
-      "lineFeatures": "Līnijas grafiskais objekts",
+      "lineFeatures": "Līnijas objekts",
       "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
       "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
       "outerRadius": "Ārējais rādiuss",
-      "pointFeatures": "Punkta grafiskais objekts",
-      "polygonFeatures": "Daudzstūra grafiskais objekts",
+      "pointFeatures": "Punkta objekts",
+      "polygonFeatures": "Daudzstūra objekts",
       "sidesNumber": "Sānu numurs",
       "star": "Zvaigzne"
     },
@@ -257,7 +257,7 @@
     "DATASOURCE_SELECTOR": "Datu avoti",
     "DRAW": "Zīmēt",
     "FEATURE_TABLE": "Grafisko objektu tabula",
-    "FILTERFEATURES": "Filtrēt grafiskos objektus",
+    "FILTERFEATURES": "Filtrēt objektus",
     "INFO": "Informācija",
     "LANGUAGE": "Nomainīt valodu",
     "LEGEND": "Leģenda",
@@ -298,18 +298,19 @@
       "attributeName": "Atribūtu nosaukums",
       "attributeValue": "Atribūta vērtība"
     },
-    "featureInfo": "Grafisko objektu informācija",
+    "featureInfo": "Objektu informācija",
     "featurePopup": {
       "clearLayer": "Notīrīt slāni",
       "closePopup": "Aizvērt uznirstošo logu",
-      "removeClusterPart": "Noņemt blakusesošo grafisko objektu apvienošanu",
-      "removeFeature": "Noņemt grafisko objektu"
+      "removeClusterPart": "Noņemt blakusesošo objektu apvienošanu",
+      "removeFeature": "Noņemt objektu"
     },
     "infoPanel": {
       "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus!"
     },
-    "reallyDelete": "Vai tiešām vēlaties dzēst šo grafisko objektu?",
-    "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus grafiskos objektus no slāņa"
+    "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
+    "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",
+    "untitledFeature": "Objekts bez nosaukuma"
   },
   "SAVECOMPOSITION": {
     "dialogResult": {
@@ -375,8 +376,8 @@
     "descriptions": {
       "ADDLAYERS": "Atlasīt kartes sastāva datus vai pakalpojumus",
       "APPLICATIONSETTINGS": "Norādīt lietojumprogrammas lietotāja iestatījumus",
-      "DRAW": "Zīmēt jaunus grafiskos objektus",
-      "FEATURE_TABLE": "Parādīt slāņa grafiskos objektus tabulā",
+      "DRAW": "Zīmēt jaunus objektus",
+      "FEATURE_TABLE": "Parādīt slāņa objektus tabulā",
       "FILTERFEATURES": "Šķērsfiltrs",
       "INFO": "Parādīt kartes vaicājuma rezultātu informāciju",
       "LANGUAGE": "Nomainīt valodu",
