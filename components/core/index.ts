@@ -6,7 +6,7 @@ import '../../common/confirm';
 import '../../common/history-list';
 import '../../common/layman';
 import '../compositions';
-import '../drag/drag.module';
+import '../drag';
 import '../draw';
 import '../feature-table';
 import '../geolocation';
