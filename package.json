@@ -53,8 +53,6 @@
     "eslint-stats": "^1.0.1",
     "extract-loader": "^5.0.1",
     "file-loader": "^6.0.0",
-    "grunt": "^1.0.4",
-    "grunt-angular-gettext": "^2.5.1",
     "html-loader": "^1.0.0",
     "html-webpack-plugin": "^4.0.0",
     "http-server": "^0.12.1",
