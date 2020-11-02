@@ -1,16 +1,16 @@
-import * as angular from 'angular';
-import dragDirective from './drag.directive';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  NgModule,
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsDragDirective} from './drag.directive';
 
-/**
- * @namespace hs.drag
- * @memberOf hs
- */
-angular
-  .module('hs.drag', [])
-  /**
-   * @name hs.draggable
-   * @ngdoc directive
-   * @memberof hs.drag
-   * @description Directive which allows dragging of application element
-   */
-  .directive('hs.draggable', dragDirective);
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  declarations: [HsDragDirective],
+  imports: [FormsModule, CommonModule],
+  exports: [HsDragDirective],
+})
+export class HsDragModule {}
