@@ -143,7 +143,6 @@ export default function (
     const new_layer = {
       title: HsLayerUtilsService.getLayerTitle(layer),
       layer: layer,
-      grayed: !me.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),
       hsFilters: layer.get('hsFilters'),
@@ -166,7 +165,11 @@ export default function (
       }
       me.data.layers.push(new_layer);
       if (layer.get('queryCapabilities') != false) {
-        HsLayermanagerMetadata.fillMetadata(layer);
+        HsLayermanagerMetadata.fillMetadata(layer).then(() => {
+          setTimeout(() => {
+            new_layer.grayed = !me.isLayerInResolutionInterval(layer);
+          },50);
+        });
       }
     } else {
       new_layer.active = layer.getVisible();
@@ -730,6 +733,7 @@ export default function (
       cur_res = HsMapService.map.getView().getResolution();
     }
     me.currentResolution = cur_res;
+    console.log(cur_res, lyr.getMaxResolution());
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
     );
