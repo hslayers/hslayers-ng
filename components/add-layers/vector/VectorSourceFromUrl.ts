@@ -3,6 +3,14 @@ import VectorSource from 'ol/source/Vector';
 import {get as getProj} from 'ol/proj';
 
 export class VectorSourceFromUrl extends VectorSource {
+  featureProjection: any;
+  mapProjection: any;
+  hasPoint: boolean;
+  hasPoly: boolean;
+  hasLine: boolean;
+  styleAble: boolean;
+  error: boolean;
+  errorMessage: any;
   constructor(descriptor) {
     super({
       format: descriptor.sourceParams.format,
@@ -12,16 +20,15 @@ export class VectorSourceFromUrl extends VectorSource {
     });
     this.featureProjection = getProj(descriptor.sourceParams.srs);
     this.mapProjection = descriptor.mapProjection;
-    this.setLoader(this.loaderFunction);
+    super.setLoader(this.loaderFunction);
   }
 
   async loaderFunction(extent, resolution, projection) {
-    const me = this;
     try {
-      me.set('loaded', false);
-      const response = await fetch(me.getUrl());
+      super.set('loaded', false);
+      const response = await fetch(super.getUrl());
 
-      let data = await response.text();
+      let data: any = await response.text();
       if (data.type == 'GeometryCollection') {
         const temp = {
           type: 'Feature',
@@ -29,42 +36,42 @@ export class VectorSourceFromUrl extends VectorSource {
         };
         data = temp;
       }
-      me.addFeatures(
-        me.getFormat().readFeatures(data, {
-          dataProjection: me.featureProjection,
-          featureProjection: me.mapProjection,
+      super.addFeatures(
+        super.getFormat().readFeatures(data, {
+          dataProjection: this.featureProjection,
+          featureProjection: this.mapProjection,
         })
       );
 
       //TODO probably we should not do this. Have to check when styler is operational
-      me.hasLine = false;
-      me.hasPoly = false;
-      me.hasPoint = false;
-      angular.forEach(me.getFeatures(), (f) => {
+      this.hasLine = false;
+      this.hasPoly = false;
+      this.hasPoint = false;
+      for (const f of super.getFeatures()) {
         if (f.getGeometry()) {
           switch (f.getGeometry().getType()) {
             case 'LineString' || 'MultiLineString':
-              me.hasLine = true;
+              this.hasLine = true;
               break;
             case 'Polygon' || 'MultiPolygon':
-              me.hasPoly = true;
+              this.hasPoly = true;
               break;
             case 'Point' || 'MultiPoint':
-              me.hasPoint = true;
+              this.hasPoint = true;
               break;
             default:
           }
         }
-      });
-
-      if (me.hasLine || me.hasPoly || me.hasPoint) {
-        me.styleAble = true;
       }
-      me.set('loaded', true);
+
+      if (this.hasLine || this.hasPoly || this.hasPoint) {
+        this.styleAble = true;
+      }
+      super.set('loaded', true);
     } catch (err) {
-      me.error = true;
-      me.errorMessage = err.status;
-      me.set('loaded', true);
+      this.error = true;
+      this.errorMessage = err.status;
+      super.set('loaded', true);
     }
   }
 }
