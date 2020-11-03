@@ -1,8 +1,7 @@
 import * as angular from 'angular';
 
 import '../../utils';
-import moment from 'moment';
-global.moment = moment;
+import moment = require('moment');
 import '../../../common/get-capabilities.module';
 import VectorLayer from 'ol/layer/Vector';
 import WfsSource from '../../layers/hs.source.Wfs';
@@ -37,7 +36,8 @@ export const HsAddLayersWfsComponent = {
         return;
       }
       try {
-        const caps = new WFSCapabilities(response.data);
+        //TODO: create WFSCapabilities if possible
+        const caps: any = null; // = new WFSCapabilities(response.data);
         $scope.title = caps.ServiceIdentification.Title;
         $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
         $scope.version = caps.Version || caps.version;
@@ -215,7 +215,7 @@ export const HsAddLayersWfsComponent = {
      */
     function addLayer(layer, layerName, folder, srs) {
       const url = HsWfsGetCapabilitiesService.service_url.split('?')[0];
-      const definition = {};
+      const definition: any = {};
       definition.url = url;
       definition.format = 'hs.format.WFS';
 
