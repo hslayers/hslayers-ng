@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature';
 import SparqlJson from '../../layers/hs.source.SparqlJson';
 import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
@@ -5,14 +6,37 @@ import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 
 export default class {
-  constructor(type, title, abstract, url, srs, options, mapProjection) {
+  layerParams: {
+    abstract: any;
+    definition: any;
+    saveState: boolean;
+    title: any;
+    opacity: any;
+    from_composition: boolean;
+    style: any;
+    source?: VectorSource;
+  };
+  sourceParams: {
+    from_composition?: boolean;
+    srs?: any;
+    url?: string;
+    format?: any;
+    geom_attribute?: string;
+    options?: any;
+    category_field?: string;
+    projection?: any;
+    minResolution?: number;
+    maxResolution?: number;
+    features?: Feature[];
+  };
+  sourceClass: typeof VectorSourceFromUrl | typeof VectorSourceFromFeatures;
+
+  constructor(type, title, abstract, url, srs, options, private mapProjection) {
     /**
      * Artificial object which is used when layer is saved to composition.
      * It describes format (ol.format.KML, )
      */
-    const definition = {};
-
-    this.mapProjection = mapProjection;
+    const definition: {format?: string; url?: string} = {};
 
     this.layerParams = {
       abstract,
