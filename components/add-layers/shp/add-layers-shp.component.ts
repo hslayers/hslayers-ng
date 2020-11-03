@@ -1,116 +1,122 @@
-/**
- * @param HsAddLayersShpService
- * @param HsLayoutService
- * @param HsLaymanService
- * @param HsAddLayersWmsAddLayerService
- * @param $timeout
- * @param HsCommonEndpointsService
- * @param $scope
- */
-export const HsAddLayersShpComponent = {
+import {Component} from '@angular/core';
+
+import {HsAddLayersShpService} from './add-layers-shp.service';
+import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsLaymanService} from '../../save-map/layman.service';
+import {HsLayoutService} from '../../layout/layout.service';
+
+@Component({
+  selector: 'hs-add-layers-shp',
   template: require('./add-shp-layer.directive.html'),
-  controller: function (
-    HsAddLayersShpService,
-    HsLayoutService,
-    HsLaymanService,
-    HsAddLayersWmsAddLayerService,
-    $timeout,
-    HsCommonEndpointsService,
-    $scope
+})
+export class HsAddLayersShpComponent {
+  abstract: string;
+  endpoint = null;
+  errorDetails = {};
+  errorMessage: any;
+  extract_styles = false;
+  files = null;
+  loaderImage = require('../../../img/ajax-loader.gif');
+  loading: boolean;
+  name: string;
+  resultCode: string;
+  sld = null;
+  srs = 'EPSG:4326';
+  title = '';
+
+  constructor(
+    private hsAddLayersShpService: HsAddLayersShpService,
+    private hsLayoutService: HsLayoutService,
+    private hsLaymanService: HsLaymanService,
+    private hsAddLayersWmsService: HsAddLayersWmsService,
+    private hsCommonEndpointsService: HsCommonEndpointsService
   ) {
-    'ngInject';
-    const vm = this;
-    vm.srs = 'EPSG:4326';
-    vm.title = '';
-    vm.extract_styles = false;
-    vm.files = null;
-    vm.sld = null;
-    vm.errorDetails = {};
-    vm.endpoint = null;
-    vm.loaderImage = require('../../../img/ajax-loader.gif');
+    //vm.endpointsService = HsCommonEndpointsService;
+  }
 
-    vm.endpointsService = HsCommonEndpointsService;
-
-    $scope.$watch(
-      () => {
-        return HsCommonEndpointsService.endpoints;
-      },
-      (value) => {
-        if (value && vm.endpoint === null && value.length > 0) {
-          const laymans = value.filter((ep) => ep.type == 'layman');
-          if (laymans.length > 0) {
-            vm.endpoint = laymans[0];
-          } else {
-            vm.endpoint = value[0];
-          }
-          if (vm.endpoint && vm.endpoint.type == 'layman') {
-            vm.endpoint.getCurrentUserIfNeeded(vm.endpoint);
-          }
-        }
+  /**
+   * @description From available endpoints picks one
+   * - either Layman enpoint if available or any other if not
+   */
+  pickEndpoint(): void {
+    const endpoints = this.hsCommonEndpointsService.endpoints;
+    if (endpoints && endpoints.length > 0) {
+      const laymans = endpoints.filter((ep) => ep.type == 'layman');
+      if (laymans.length > 0) {
+        this.endpoint = laymans[0];
+      } else {
+        this.endpoint = endpoints[0];
       }
-    );
-
-    /**
-     * @param endpoint
-     * @param layerName
-     */
-    function describeNewLayer(endpoint, layerName) {
-      return new Promise((resolve, reject) => {
-        HsLaymanService.describeLayer(endpoint, layerName).then(
-          (descriptor) => {
-            if (
-              ['STARTED', 'PENDING', 'SUCCESS'].indexOf(descriptor.wms.status) >
-              -1
-            ) {
-              $timeout(() => {
-                describeNewLayer(endpoint, layerName).then((response) =>
-                  resolve(response)
-                );
-              }, 2000);
-            } else {
-              resolve(descriptor);
-            }
-          }
-        );
-      });
+      if (this.endpoint && this.endpoint.type == 'layman') {
+        this.endpoint.getCurrentUserIfNeeded(this.endpoint);
+      }
     }
+  }
 
-    /**
-     * Handler for button click to send shape file to layman and wait for
-     * answer with wms service url to add to map
-     *
-     * @memberof HsAddLayersShpController
-     * @function add
-     */
-    vm.add = function () {
-      vm.loading = true;
-      HsAddLayersShpService.add(
-        vm.endpoint,
-        vm.files,
-        vm.name,
-        vm.title,
-        vm.abstract,
-        vm.srs,
-        vm.sld
+  /**
+   * @param endpoint
+   * @param layerName
+   */
+  describeNewLayer(endpoint, layerName): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.hsLaymanService
+        .describeLayer(endpoint, layerName)
+        .then((descriptor) => {
+          if (
+            ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
+          ) {
+            setTimeout(() => {
+              this.describeNewLayer(endpoint, layerName).then((response) =>
+                resolve(response)
+              );
+            }, 2000);
+          } else {
+            resolve(descriptor);
+          }
+        });
+    });
+  }
+
+  /**
+   * @function add
+   * @description Handler for button click to send shape file to layman and wait for
+   * answer with wms service url to add to map
+   */
+  add(): void {
+    this.loading = true;
+    if (!this.endpoint) {
+      this.pickEndpoint();
+    }
+    this.hsAddLayersShpService
+      .add(
+        this.endpoint,
+        this.files,
+        this.name,
+        this.title,
+        this.abstract,
+        this.srs,
+        this.sld
       )
-        .then((data) => {
-          describeNewLayer(vm.endpoint, vm.name).then((descriptor) => {
-            HsAddLayersWmsAddLayerService.addService(
+      .then((data) => {
+        this.describeNewLayer(this.endpoint, this.name).then(
+          (descriptor: any) => {
+            this.hsAddLayersWmsService.addService(
               descriptor.wms.url,
               undefined,
-              vm.name
+              this.name
             );
-            vm.loading = false;
+            this.loading = false;
             HsLayoutService.setMainPanel('layermanager');
-          });
-          vm.resultCode = 'success';
-        })
-        .catch((err) => {
-          vm.loading = false;
-          vm.resultCode = 'error';
-          vm.errorMessage = err.message;
-          vm.errorDetails = err.detail;
-        });
-    };
-  },
-};
+          }
+        );
+        this.resultCode = 'success';
+      })
+      .catch((err) => {
+        this.loading = false;
+        this.resultCode = 'error';
+        this.errorMessage = err.message;
+        this.errorDetails = err.detail;
+      });
+  }
+}

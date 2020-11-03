@@ -29,7 +29,7 @@ angular
    * @memberof hs.addLayersArcgis
    * @description Controller for displaying and setting parameters for Arcgis and its layers, which will be added to map afterwards
    */
-  .component(
+  .directive(
     'hs.addLayersArcgis',
     downgradeComponent({component: HsAddLayersArcGisComponent})
   );

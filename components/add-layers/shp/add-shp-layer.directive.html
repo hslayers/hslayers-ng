@@ -1,66 +1,73 @@
-<form class="form-horizontal" role="form" ng-controller="HsAddLayersShpController as vm">
+<form class="form-horizontal" role="form">
 
     <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text control-label" translate>Save to</span>
             </div>
-            <select class="form-control" ng-model="vm.endpoint">
-                <option ng-repeat="endpoint in vm.endpointsService.endpoints | forShapeFileUpload" ng-value="endpoint">{{endpoint.title}}</option>
+            <select class="form-control" [(ngModel)]="endpoint">
+                <option *ngFor="let endpoint of hsCommonEndpointsService.endpoints | endpointsWithDatasources:'layman'"
+                    [value]="endpoint">{{endpoint.title}}</option>
             </select>
         </div>
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label" translate>Shape file (shp+dbf+shx)</label>
-        <input name="file" type="file" fileread="vm.files" multiple>
+        <input name="file" type="file" fileread="files" multiple>
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label" translate>Name</label>
-        <input class="form-control" ng-model="vm.name"/>
+        <input class="form-control" [(ngModel)]="name" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label" translate>Title</label>
-        <input class="form-control" ng-model="vm.title"/>
+        <input class="form-control" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label" translate>Abstract</label>
-        <textarea class="form-control" id='hs-ows-abstract' placeholder="{{'Fill in descriptive text about map'|translate}}" ng-model="vm.abstract">
+        <textarea class="form-control" id='hs-ows-abstract'
+            placeholder="{{'Fill in descriptive text about map'|translate}}" [(ngModel)]="abstract">
         </textarea>
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label" translate>SLD style file</label>
-        <input name="file" type="file" fileread="vm.sld">
+        <input name="file" type="file" fileread="sld">
     </div>
 
-    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="collapse" ng-click="vm.advancedPanelVisible = !vm.advancedPanelVisible" data-target=".hs-ows-shp-advanced" translate>
+    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+        data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-shp-advanced"
+        translate>
         Advanced options
     </button>
 
-    <div class="collapse hs-ows-shp-advanced" ng-class="{'show': vm.advancedPanelVisible}">
+    <div class="collapse hs-ows-shp-advanced" [ngClass]="{'show': advancedPanelVisible}">
         <div class="form-group">
             <label class="capabilities_label control-label">SRS</label>
-            <input class="form-control" ng-model="vm.srs"/>
+            <input class="form-control" [(ngModel)]="srs" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label" translate>Folder name</label>
-            <input class="form-control" ng-model="vm.folder_name"/>
+            <input class="form-control" [(ngModel)]="folder_name" />
         </div>
     </div>
 
-    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus" ng-show="!vm.loading"></i><img ng-src="{{vm.loaderImage}}" ng-show="vm.loading" /> <translate>Add</translate></button>
+    <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"
+            [hidden]="loading"></i><img src="{{loaderImage}}" [hidden]="!loading" />
+        <translate>Add</translate>
+    </button>
 
 
-    <div class="alert alert-danger" ng-show="vm.resultCode == 'error'">
-        <div translate class="alert alert-danger">{{vm.errorMessage}}</div>
-        <dl ng-repeat="(key, value) in vm.errorDetails">
-            <dt>{{key}} </dt>
-            <dd hs.widgets.object-directive></dd>
+    <div class="alert alert-danger" [hidden]="resultCode != 'error'">
+        <div translate class="alert alert-danger">{{errorMessage}}</div>
+        <dl *ngFor="let key of errorDetails">
+            <dt>{{key}}</dt>
+            <hs-widgets-recursive-dd></hs-widgets-recursive-dd>
         </dl>
     </div>
 </form>
