@@ -69,22 +69,26 @@ export default function (
    * @param {number} num
    * @returns {number}
    */
-  me.roundToHundrets = function (num) {
+  me.roundToHundreds = function (num) {
     return Math.ceil(num / 100) * 100;
   };
 
-  me.searchForScaleDenominator = function (layer) {
-    let maxScale = layer.MaxScaleDenominator ? layer.MaxScaleDenominator : null;
-    const layers = layer.Layer;
-    for (const index in layers) {
-      if (
-        layers[index].MaxScaleDenominator &&
-        maxScale < layers[index].MaxScaleDenominator
-      ) {
-        maxScale = layers[index].MaxScaleDenominator;
-      } else if (layers[index].Layer) {
-        const subScale = me.searchForScaleDenominator(layers[index]);
-        maxScale = subScale > maxScale ? subScale : maxScale;
+  me.searchForScaleDenominator = function (properties) {
+    let maxScale = properties.MaxScaleDenominator
+      ? properties.MaxScaleDenominator
+      : null;
+    const layers = properties.Layer;
+    if (layers) {
+      for (const sublayer of layers) {
+        if (
+          sublayer.MaxScaleDenominator &&
+          maxScale < sublayer.MaxScaleDenominator
+        ) {
+          maxScale = sublayer.MaxScaleDenominator;
+        } else if (sublayer.Layer) {
+          const subScale = me.searchForScaleDenominator(sublayer);
+          maxScale = subScale > maxScale ? subScale : maxScale;
+        }
       }
     }
     return maxScale;
@@ -175,16 +179,15 @@ export default function (
             if (layer.get('MaxScaleDenominator')) {
               layer.set(
                 'maxResolution',
-                me.roundToHundrets(layer.get('MaxScaleDenominator'))
+                me.roundToHundreds(layer.get('MaxScaleDenominator'))
               );
               return;
             }
             const maxScale = me.searchForScaleDenominator(
               layer.getProperties()
             );
-            console.log('final', maxScale);
-            if(maxScale){
-              layer.set('maxResolution', me.roundToHundrets(maxScale));
+            if (maxScale) {
+              layer.set('maxResolution', me.roundToHundreds(maxScale));
             }
           });
           return true;
