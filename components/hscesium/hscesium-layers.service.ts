@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment = require('moment');
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
