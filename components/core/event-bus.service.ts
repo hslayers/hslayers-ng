@@ -83,10 +83,6 @@ export class HsEventBusService {
    */
   mapClicked: Subject<any> = new Subject();
   /**
-   * replaces 'ows.wms_connecting'
-   */
-  owsConnecting: Subject<{type: string; uri: any; layer?: any}> = new Subject();
-  /**
    * replaces 'ows.filling'
    */
   owsFilling: Subject<{type: any; uri: any; layer: any}> = new Subject();
