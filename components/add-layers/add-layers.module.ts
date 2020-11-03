@@ -4,8 +4,11 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersComponent} from './add-layers.component';
+import {HsAddLayersShpModule} from './shp';
 import {HsAddLayersUrlComponent} from './add-layers-url.component';
 import {HsAddLayersVectorModule} from './vector';
+import {HsAddLayersWmsModule} from './wms';
+import {HsAddLayersWmtsModule} from './wmts';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
@@ -18,6 +21,9 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
     FormsModule,
     TranslateModule,
     HsAddLayersVectorModule,
+    HsAddLayersShpModule,
+    HsAddLayersWmsModule,
+    HsAddLayersWmtsModule,
   ],
   exports: [
     HsAddLayersComponent,

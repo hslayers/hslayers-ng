@@ -7,6 +7,7 @@ import {HsAddLayersShpComponent} from './add-layers-shp.component';
 import {HsAddLayersShpModule} from './add-layers-shp.module';
 import {HsAddLayersShpService} from './add-layers-shp.service';
 import {downgrade} from '../../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedAddLayersShpModule = downgrade(HsAddLayersShpModule);
 
@@ -27,9 +28,11 @@ angular
    * @memberof hs.addLayersShp
    * @ngdoc directive
    * @name hs.addLayersShp
-   * @description TODO
    */
-  .component('hs.addLayersShp', HsAddLayersShpComponent)
+  .directive(
+    'hs.addLayersShp',
+    downgradeComponent({component: HsAddLayersShpComponent})
+  )
 
   .directive('fileread', [
     function () {
@@ -66,7 +69,7 @@ angular
    * @name HsAddLayersShpService
    * @description Service for adding shape files through layman.
    */
-  .factory('HsAddLayersShpService', HsAddLayersShpService)
+  .service('HsAddLayersShpService', downgradeInjectable(HsAddLayersShpService))
 
   .filter('forShapeFileUpload', forShapefileUploadFilter);
 
