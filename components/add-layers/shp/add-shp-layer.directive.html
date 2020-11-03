@@ -3,7 +3,7 @@
     <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text control-label" translate>Save to</span>
+                <span class="input-group-text control-label">Save to</span>
             </div>
             <select class="form-control" [(ngModel)]="endpoint">
                 <option *ngFor="let endpoint of hsCommonEndpointsService.endpoints | endpointsWithDatasources:'layman'"
@@ -13,35 +13,34 @@
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Shape file (shp+dbf+shx)</label>
+        <label class="capabilities_label control-label">Shape file (shp+dbf+shx)</label>
         <input name="file" type="file" fileread="files" multiple>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Name</label>
+        <label class="capabilities_label control-label">Name</label>
         <input class="form-control" [(ngModel)]="name" />
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Title</label>
+        <label class="capabilities_label control-label">Title</label>
         <input class="form-control" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>Abstract</label>
+        <label class="capabilities_label control-label">Abstract</label>
         <textarea class="form-control" id='hs-ows-abstract'
             placeholder="{{'Fill in descriptive text about map'|translate}}" [(ngModel)]="abstract">
         </textarea>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label" translate>SLD style file</label>
+        <label class="capabilities_label control-label">SLD style file</label>
         <input name="file" type="file" fileread="sld">
     </div>
 
     <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-        data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-shp-advanced"
-        translate>
+        data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-shp-advanced">
         Advanced options
     </button>
 
@@ -52,19 +51,19 @@
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label" translate>Folder name</label>
+            <label class="capabilities_label control-label">Folder name</label>
             <input class="form-control" [(ngModel)]="folder_name" />
         </div>
     </div>
 
     <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"
             [hidden]="loading"></i><img src="{{loaderImage}}" [hidden]="!loading" />
-        <translate>Add</translate>
+        Add
     </button>
 
 
     <div class="alert alert-danger" [hidden]="resultCode != 'error'">
-        <div translate class="alert alert-danger">{{errorMessage}}</div>
+        <div class="alert alert-danger">{{errorMessage}}</div>
         <dl *ngFor="let key of errorDetails">
             <dt>{{key}}</dt>
             <hs-widgets-recursive-dd></hs-widgets-recursive-dd>

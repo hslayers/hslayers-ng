@@ -4,8 +4,8 @@
         <form role="form" class="form">
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-prepend"><span class="input-group-text" translate>Choose type</span></div>
-                    <select class="form-control" [(ngModel)]="type">
+                    <div class="input-group-prepend"><span class="input-group-text">Choose type</span></div>
+                    <select class="form-control" [(ngModel)]="type" [ngModelOptions]="{standalone: true}">
                         <option *ngFor="let type of types" [value]="type.id">{{type.text}}</option>
                     </select>
                 </div>
