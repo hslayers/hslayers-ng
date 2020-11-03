@@ -7,16 +7,6 @@ import {HsWfsGetCapabilitiesService} from './common/wfs/get-capabilities.service
 import {HsWmsGetCapabilitiesService} from './common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from './common/wmts/get-capabilities.service';
 
-export function hsAddLayersVectorServiceFactory(i: any) {
-  return i.get('HsAddLayersVectorService');
-}
-
-export const HsAddLayersVectorServiceProvider = {
-  provide: HsAddLayersVectorService,
-  useFactory: hsAddLayersVectorServiceFactory,
-  deps: ['$injector'],
-};
-
 /**
  * @param i
  */
