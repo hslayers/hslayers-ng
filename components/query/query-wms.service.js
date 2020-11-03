@@ -88,12 +88,12 @@ export default function (
      */
     const customInfoTemplate = layer.get('customInfoTemplate') || false;
 
-    if (infoFormat.indexOf('xml') > 0 || infoFormat.indexOf('gml') > 0) {
+    if (infoFormat.includes('xml')  || infoFormat.includes('gml')) {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (infoFormat.indexOf('gml') > 0) {
+      if (infoFormat.includes('gml')) {
         me.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
@@ -117,7 +117,7 @@ export default function (
         }
       }
     }
-    if (infoFormat.indexOf('html') > 0) {
+    if (infoFormat.includes('html')) {
       if (response.length <= 1) {
         return;
       }
