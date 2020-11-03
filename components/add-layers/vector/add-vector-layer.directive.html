@@ -1,45 +1,44 @@
 <p><sub class="text-danger">*Note: if you link a file with coordinates other than World Geodetic System (lon/lat),
         please set the SRS in the "ADVANCED OPTIONS"</sub></p>
-<form class="form-horizontal" role="form" ng-controller="HsAddLayersVectorController as vm">
-    <hs.add-layers-url type="vector" url="vm.url"></hs.add-layers-url>
+<form class="form-horizontal" role="form">
+    <hs-add-layers-url [type]="vector" [url]="url"></hs-add-layers-url>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Title</label>
-        <input class="form-control" ng-model="vm.title" />
+        <input class="form-control" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Abstract</label>
         <textarea class="form-control" id='hs-ows-abstract' placeholder="Fill in descriptive text about map"
-            ng-model="vm.abstract">
+            [(ngModel)]="abstract">
         </textarea>
     </div>
 
     <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-        data-toggle="collapse" ng-click="vm.advancedPanelVisible = !vm.advancedPanelVisible"
+        data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible"
         data-target=".hs-ows-vector-advanced">
         Advanced options
     </button>
 
-    <div class="collapse hs-ows-vector-advanced" ng-class="{'show': vm.advancedPanelVisible}">
+    <div class="collapse hs-ows-vector-advanced" [ngClass]="{'show': advancedPanelVisible}">
         <div class="form-group">
             <label class="capabilities_label control-label">SRS</label>
-            <input class="form-control" ng-model="vm.srs" />
+            <input class="form-control" [(ngModel)]="srs" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label">Folder name</label>
-            <input class="form-control" ng-model="vm.folder_name" />
+            <input class="form-control" [(ngModel)]="folder_name" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label">Extract styles</label>
-            <input type="checkbox" ng-model="vm.extract_styles" />
+            <input type="checkbox" [(ngModel)]="extract_styles" />
         </div>
     </div>
 
-    <button class="btn btn-primary btn-block" ng-disabled="!vm.title" ng-click="vm.add()"><i class="icon-plus"></i>
+    <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
         Add
     </button>
-    </a>
 </form>
