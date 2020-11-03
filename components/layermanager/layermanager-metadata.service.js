@@ -6,6 +6,7 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
  * @param HsWmsGetCapabilitiesService
  * @param $timeout
  * @param HsLayerUtilsService
+ * @param HsMapService
  */
 export default function (
   HsWmtsGetCapabilitiesService,
@@ -61,6 +62,7 @@ export default function (
         }, 0);
       }
     }
+    return true;
   };
 
   /**
