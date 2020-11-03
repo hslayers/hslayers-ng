@@ -512,7 +512,7 @@ export class HsMapService {
    * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
    * @returns {Layer} OL layer
    */
-  addLayer(lyr, removeIfExists, visibilityOverrides) {
+  addLayer(lyr, removeIfExists, visibilityOverrides?) {
     if (removeIfExists && this.layerAlreadyExists(lyr)) {
       this.removeDuplicate(lyr);
     }
