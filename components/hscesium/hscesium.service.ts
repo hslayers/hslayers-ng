@@ -1,6 +1,5 @@
 import '../permalink/share.module';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import BingMapsApi from 'cesium/Source/Core/BingMapsApi';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
 import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
@@ -26,6 +25,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -45,7 +45,8 @@ export class HsCesiumService {
     private HsCesiumCameraService: HsCesiumCameraService,
     private HsCesiumLayersService: HsCesiumLayersService,
     private HsCesiumTimeService: HsCesiumTimeService,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
+    private HsUtilsService: HsUtilsService
   ) {
     'ngInject';
     if (this.HsConfig.cesiumBingKey) {
@@ -75,12 +76,10 @@ export class HsCesiumService {
 
     this.HsCesiumCameraService.setDefaultViewport();
 
-    BingMapsApi.defaultKey = this.BING_KEY;
-
     //TODO: research if this must be used or ignored
     const bing = new BingMapsImageryProvider({
       url: '//dev.virtualearth.net',
-      key: BingMapsApi.defaultKey,
+      key: this.BING_KEY,
       mapStyle: BingMapsStyle.AERIAL,
     });
     const viewer = new Viewer(
@@ -104,12 +103,12 @@ export class HsCesiumService {
         // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
         skyBox: new SkyBox({
           sources: {
-            positiveX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg').default,
-            negativeX: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg').default,
-            positiveY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg').default,
-            negativeY: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg').default,
-            positiveZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg').default,
-            negativeZ: require('cesium/Build/Cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg').default,
+            positiveX: loadSkyBoxSide('tycho2t3_80_px.jpg'),
+            negativeX: loadSkyBoxSide('tycho2t3_80_mx.jpg'),
+            positiveY: loadSkyBoxSide('tycho2t3_80_py.jpg'),
+            negativeY: loadSkyBoxSide('tycho2t3_80_my.jpg'),
+            positiveZ: loadSkyBoxSide('tycho2t3_80_pz.jpg'),
+            negativeZ: loadSkyBoxSide('tycho2t3_80_mz.jpg'),
           },
         }),
         // Show Columbus View map with Web Mercator projection
@@ -120,6 +119,16 @@ export class HsCesiumService {
         sceneModePicker: false,
       }
     );
+
+    /**
+     * @param file
+     */
+    function loadSkyBoxSide(file) {
+      return this.HsUtilsService.resolveEsModule(
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('cesium/Build/Cesium/Assets/Textures/SkyBox/' + file)
+      );
+    }
 
     viewer.scene.debugShowFramesPerSecond = this.HsConfig
       .cesiumdDebugShowFramesPerSecond
