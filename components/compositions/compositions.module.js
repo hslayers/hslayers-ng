@@ -7,6 +7,7 @@ import compositionsComponent from './compositions.component';
 import compositionsMapService from './compositions-map.service';
 import compositionsService from './compositions.service';
 import deleteDialogDirective from './delete-dialog.directive';
+import errorDialogComponent from './error-dialog.component';
 import infoDialogDirective from './info-dialog.directive';
 import overwriteDialogDirective from './overwrite-dialog.directive';
 import parserService from './compositions-parser.service';
@@ -85,6 +86,13 @@ angular
    * @description Contains function of managing composition (loading, removing Layers)
    */
   .factory('HsCompositionsParserService', parserService)
+  /**
+   * @module hs.compositions
+   * @name hs.compositions
+   * @ngdoc component
+   * @description Error dialog component
+   */
+  .component('hs.compositions.errorDialogComponent', errorDialogComponent)
 
   /**
    * @module hs.compositions

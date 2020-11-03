@@ -12,6 +12,7 @@ import {transform, transformExtent} from 'ol/proj';
  * @param HsCompositionsLayerParserService
  * @param HsLayoutService
  * @param $log
+ * @param $compile
  */
 export default function (
   HsMapService,
@@ -21,7 +22,8 @@ export default function (
   HsUtilsService,
   HsCompositionsLayerParserService,
   HsLayoutService,
-  $log
+  $log,
+  $compile
 ) {
   'ngInject';
   const me = {
@@ -50,6 +52,26 @@ export default function (
      * @description Stores title of current composition
      */
     current_composition_title: '',
+
+    createErrorDialog: function (
+      text = 'Unspecified processing error',
+      e = ''
+    ) {
+      const error = e.message ? e.message : e;
+      const scope = $rootScope.$new();
+      Object.assign(scope, {
+        text,
+        error
+      });
+      const el = angular.element(
+        '<hs.compositions.error_dialog_component error="text" msg = "error" ></hs.compositions.error_dialog_component>'
+      );
+      HsLayoutService.contentWrapper
+        .querySelector('.hs-dialog-area')
+        .appendChild(el[0]);
+      $compile(el)(scope);
+    },
+
     /**
      * @ngdoc method
      * @name HsCompositionsParserService#load
@@ -216,7 +238,9 @@ export default function (
       ) {
         HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
       } else {
-        console.warn('Compostion extent invalid! Map extent wont be changed');
+        const error = 'Compostion extent invalid! Map extent wont be changed';
+        $log.warn(error);
+        me.createErrorDialog(error);
       }
       const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
@@ -347,7 +371,9 @@ export default function (
       for (const lyr_def of j.layers) {
         const layer = me.jsonToLayer(lyr_def);
         if (angular.isUndefined(layer)) {
-          $log.warn('Was not able to parse layer from composition', lyr_def);
+          const error = `Was not able to parse layer from composition: ${lyr_def.name}`;
+          $log.warn(error);
+          me.createErrorDialog(error);
         } else {
           layers.push(layer);
         }
