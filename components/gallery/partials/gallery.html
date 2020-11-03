@@ -10,4 +10,9 @@
       <img ng-src="{{ $ctrl.endpoint + image }}">
     </figure>
   </div>
+  <div class="hs-preview-row" ng-if="$ctrl.images.length > 1">
+    <div ng-repeat="image in $ctrl.images" class="hs-preview-column">
+      <img class="hs-preview-cursor" ng-click="$ctrl.goToSlide($index)" ng-src="{{ $ctrl.endpoint + image }}">
+    </div>
+  </div>
 </div>

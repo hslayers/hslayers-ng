@@ -12,4 +12,8 @@ export default function () {
   ctrl.nextSlide = function() {
     ctrl.curImg = (ctrl.curImg + 1) % ctrl.images.length;
   }
+
+  ctrl.goToSlide = function(slideIdx){
+    ctrl.curImg = slideIdx
+  }
 };
