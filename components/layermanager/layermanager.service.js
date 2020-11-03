@@ -17,6 +17,7 @@ import {TileWMS} from 'ol/source';
  * @param HsLayerEditorVectorLayerService
  * @param HsLayermanagerMetadata
  * @param $timeout
+ * @param HsLayoutService
  */
 export default function (
   $rootScope,
@@ -142,7 +143,7 @@ export default function (
     const new_layer = {
       title: HsLayerUtilsService.getLayerTitle(layer),
       layer: layer,
-      grayed: me.isLayerInResolutionInterval(layer),
+      grayed: !me.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),
       hsFilters: layer.get('hsFilters'),
@@ -711,29 +712,26 @@ export default function (
    * @function isLayerInResolutionInterval
    * @memberOf HsLayermanagerService
    * @param {Ol.layer} lyr Selected layer
-   * @description Test if layer (WMS) resolution is NOT within map resolution interval. True = out of the interval
+   * @description Test if layer (WMS) resolution is within map resolution interval.
    */
   me.isLayerInResolutionInterval = function (lyr) {
     if (!lyr.get('visible')) {
-      return false;
+      return true;
     }
-    const src = lyr.getSource();
+    let cur_res;
     if (me.isWms(lyr)) {
       const view = HsMapService.map.getView();
       const resolution = view.getResolution();
       const units = map.getView().getProjection().getUnits();
       const dpi = 25.4 / 0.28;
       const mpu = METERS_PER_UNIT[units];
-      var cur_res = resolution * mpu * 39.37 * dpi;
-      return (
-        lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution()
-      );
+      cur_res = resolution * mpu * 39.37 * dpi;
     } else {
-      var cur_res = HsMapService.map.getView().getResolution();
-      return (
-        lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
-      );
+      cur_res = HsMapService.map.getView().getResolution();
     }
+    return (
+      lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
+    );
   };
 
   me.setGreyscale = function (layer) {
@@ -777,7 +775,7 @@ export default function (
       timer = setTimeout(() => {
         let somethingChanged = false;
         for (let i = 0; i < me.data.layers.length; i++) {
-          const tmp = me.isLayerInResolutionInterval(me.data.layers[i].layer);
+          const tmp = !me.isLayerInResolutionInterval(me.data.layers[i].layer);
           if (me.data.layers[i].grayed != tmp) {
             me.data.layers[i].grayed = tmp;
             somethingChanged = true;
