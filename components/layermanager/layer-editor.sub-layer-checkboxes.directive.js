@@ -1,7 +1,7 @@
 /**
  * @param HsLayerEditorSublayerService
  */
-export default function (HsLayerEditorSublayerService) {
+export default function (HsLayerEditorSublayerService, HsLayermanagerService) {
   'ngInject';
   return {
     template: require('./partials/sub-layer-checkboxes.html'),
@@ -12,7 +12,7 @@ export default function (HsLayerEditorSublayerService) {
         $scope.checkedSubLayers = HsLayerEditorSublayerService.checkedSubLayers;
         $scope.withChildren = HsLayerEditorSublayerService.withChildren;
         $scope.expanded = false;
-
+        $scope.HsLayermanagerService = HsLayermanagerService;
         $scope.getSubLayers = function () {
           return HsLayerEditorSublayerService.getSubLayers();
         };
