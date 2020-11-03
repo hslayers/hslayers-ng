@@ -1,27 +1,27 @@
-<table class="table table-sm table-striped table-bordered" style="width:100%">
-    <tbody ng-repeat="sub_layer in layers">
+<table class="table table-sm table-striped table-bordered" style="width: 100%">
+    <tbody *ngFor="let sub_layer of layers">
         <tr>
-            <td style="width: 1em"><input type="checkbox"ng-model="sub_layer.checked" /></td>
-            <td id="hs-add-layer-{{sub_layer.Name}}" style="width: 30%; padding-left:1em">{{sub_layer.Name}}</td>
-            <td style="width: 40%;"> {{sub_layer.Title}}</td>
+            <td style="width: 1em"><input type="checkbox" [(ngModel)]="sub_layer.checked" /></td>
+            <td id="hs-add-layer-{{sub_layer.Name}}" style="width: 30%; padding-left: 1em">{{sub_layer.Name}}</td>
+            <td style="width: 40%;">{{sub_layer.Title}}</td>
             <td>{{sub_layer.Abstract}}</td>
         </tr>
-        <tr ng-if="!!sub_layer.Style && sub_layer.Style.length>1">
+        <tr *ngIf="!!sub_layer.Style && sub_layer.Style.length > 1">
             <td colspan="4">
                 <label class="control-label" translate>Style:</label>
-                <select class="form-control" ng-model="sub_layer.styleSelected" >
-                    <option ng-repeat="style in sub_layer.Style">{{style.Name}}</option>
+                <select class="form-control" [(ngModel)]="sub_layer.styleSelected">
+                    <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
                 </select>
             </td>
         </tr>
-        <tr ng-if="!!sub_layer.Dimension">
+        <tr *ngIf="!!sub_layer.Dimension">
             <td colspan="4">
                 <form class="form">
-                    <div class="form-group" ng-repeat="dimension in sub_layer.Dimension">
+                    <div class="form-group" *ngFor="let dimension of sub_layer.Dimension">
                         <label class="control-label">{{dimension.name}}:</label>
                         <div>
-                            <select class="form-control" ng-model="dimension.value">
-                                <option ng-value="dimension_value" ng-repeat="dimension_value in dimension.values">
+                            <select class="form-control" [(ngModel)]="dimension.value">
+                                <option [value]="dimension_value" *ngFor="let dimension_value of dimension.values">
                                     {{dimension_value}}</option>
                             </select>
                         </div>
@@ -30,9 +30,9 @@
             </td>
         </tr>
 
-        <tr ng-if="!!sub_layer.Layer">
+        <tr *ngIf="!!sub_layer.Layer">
             <td colspan="4" style="padding-left: 1em">
-                <hs.nested-layers-table layers="sub_layer.Layer"></hs.nested-layers-table>
+                <hs-nested-layers-table [layers]="sub_layer.Layer"></hs-nested-layers-table>
             </td>
         </tr>
     </tbody>
