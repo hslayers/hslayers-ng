@@ -4,7 +4,7 @@
         <li class="list-group-item hs-ows-layerlistheading clearfix">
             <div>{{title}}</div>
         </li>
-        <li *ngFor="let layer of services.Layer; idx = index" class="list-group-item clearfix" (click)="setCurrentLayer(layer, idx)" id="wmtslayer-{{idx}}">
+        <li *ngFor="let layer of services.Layer; let idx = index" class="list-group-item clearfix" (click)="setCurrentLayer(layer, idx)" id="wmtslayer-{{idx}}">
             <div class="hs-lm-item-status">
                 <span class="icon-chevron-right" [hidden]="currentLayer == layer"></span>
                 <span class="icon-chevron-down" [hidden]="currentLayer != layer"></span>
