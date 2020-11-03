@@ -1,5 +1,7 @@
 import '../../utils';
 import * as angular from 'angular';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
+
 import {HsAddLayersArcGisComponent} from './add-layers-arcgis.component';
 import {HsAddLayersArcGisModule} from './add-layers-arcgis.module';
 import {HsAddLayersArcGisService} from './add-layers-arcgis.service';
@@ -16,7 +18,10 @@ export const downgradedAddLayersArcGisModule = downgrade(
 angular
   .module(downgradedAddLayersArcGisModule, ['hs.utils', 'hs.getCapabilities'])
 
-  .factory('HsAddLayersArcgisAddLayerService', HsAddLayersArcGisService)
+  .service(
+    'HsAddLayersArcgisAddLayerService',
+    downgradeInjectable(HsAddLayersArcGisService)
+  )
 
   /**
    * @name hs.addLayersArcgis.controller
@@ -24,7 +29,10 @@ angular
    * @memberof hs.addLayersArcgis
    * @description Controller for displaying and setting parameters for Arcgis and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersArcgis', HsAddLayersArcGisComponent);
+  .component(
+    'hs.addLayersArcgis',
+    downgradeComponent({component: HsAddLayersArcGisComponent})
+  );
 
 angular.module('hs.addLayersArcgis', [downgradedAddLayersArcGisModule]);
 
