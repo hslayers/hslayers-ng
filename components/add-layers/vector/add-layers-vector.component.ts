@@ -1,32 +1,40 @@
-export const HsAddLayersVectorComponent = {
-  template: require('./add-vector-layer.directive.html'),
-  constroller: [
-    'HsAddLayersVectorService',
-    'HsLayoutService',
-    function (service, layoutService) {
-      const vm = this;
-      vm.srs = 'EPSG:4326';
-      vm.title = '';
-      vm.extract_styles = false;
+import {Component} from '@angular/core';
 
-      /**
-       * Handler for adding nonwms service, file in template.
-       * @memberof hs.addLayersVector.controller
-       * @function add
-       */
-      vm.add = async function () {
-        const layer = await service.addVectorLayer(
-          '',
-          vm.url,
-          vm.title,
-          vm.abstract,
-          vm.srs,
-          {extractStyles: vm.extract_styles}
-        );
-        service.fitExtent(layer);
-        layoutService.setMainPanel('layermanager');
-        return layer;
-      };
-    },
-  ],
-};
+import {HsAddLayersVectorService} from './add-layers-vector.service';
+import {HsLayoutService} from '../../layout/layout.service';
+
+@Component({
+  selector: 'hs.addLayersVector',
+  template: require('./add-vector-layer.directive.html'),
+})
+export class HsAddLayersVectorComponent {
+  srs = 'EPSG:4326';
+  title = '';
+  extract_styles = false;
+  abstract: string;
+  url: string;
+
+  constructor(
+    private HsAddLayersVectorService: HsAddLayersVectorService,
+    private HsLayoutService: HsLayoutService
+  ) {}
+
+  /**
+   * Handler for adding nonwms service, file in template.
+   *
+   * @function add
+   */
+  async add() {
+    const layer = await this.HsAddLayersVectorService.addVectorLayer(
+      '',
+      this.url,
+      this.title,
+      this.abstract,
+      this.srs,
+      {extractStyles: this.extract_styles}
+    );
+    this.HsAddLayersVectorService.fitExtent(layer);
+    HsLayoutService.setMainPanel('layermanager');
+    return layer;
+  }
+}

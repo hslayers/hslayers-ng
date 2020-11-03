@@ -4,12 +4,14 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersVectorComponent} from './add-layers-vector.component';
+import {HsAddLayersVectorService} from './add-layers-vector.service';
+import {HsVectorUrlParserService} from './add-layers-vector-url-parser.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule],
-  exports: [],
-  declarations: [/*HsAddLayersVectorComponent*/],
-  providers: [],
+  exports: [HsAddLayersVectorComponent],
+  declarations: [HsAddLayersVectorComponent],
+  providers: [HsAddLayersVectorService, HsVectorUrlParserService],
 })
 export class HsAddLayersVectorModule {}

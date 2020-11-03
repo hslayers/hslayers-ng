@@ -1,6 +1,10 @@
 import VectorSource from 'ol/source/Vector';
 
 export class VectorSourceFromFeatures extends VectorSource {
+  hasLine: boolean;
+  hasPoly: boolean;
+  hasPoint: boolean;
+  styleAble: boolean;
   constructor(params) {
     super({
       projection: params.sourceParams.srs,
@@ -10,7 +14,7 @@ export class VectorSourceFromFeatures extends VectorSource {
     this.hasLine = false;
     this.hasPoly = false;
     this.hasPoint = false;
-    this.getFeatures().forEach((f) => {
+    for (const f of super.getFeatures()) {
       if (f.getGeometry()) {
         switch (f.getGeometry().getType()) {
           case 'LineString' || 'MultiLineString':
@@ -25,7 +29,7 @@ export class VectorSourceFromFeatures extends VectorSource {
           default:
         }
       }
-    });
+    }
 
     if (this.hasLine || this.hasPoly || this.hasPoint) {
       this.styleAble = true;
