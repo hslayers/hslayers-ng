@@ -11,7 +11,7 @@ import {getPreferedFormat} from '../format-utils';
  * @param $rootScope
  * @param $log
  */
-export default function (
+export const HsArcgisGetCapabilitiesService = function (
   $http,
   HsEventBusService,
   HsMapService,
@@ -200,4 +200,6 @@ export default function (
   };
 
   return me;
-}
+};
+
+export default HsArcgisGetCapabilitiesService;
