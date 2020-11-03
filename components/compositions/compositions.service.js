@@ -20,6 +20,8 @@ import 'angular';
  * @param $window
  * @param HsCommonEndpointsService
  * @param HsCompositionsMapService
+ * @param HsLayoutService
+ * @param $compile
  */
 export default function (
   $rootScope,
@@ -76,7 +78,9 @@ export default function (
         case 'layman':
           return HsCompositionsLaymanService;
         default:
-          $log.warn(`Endpoint type '${endpoint.type} not supported`);
+          const error = `Endpoint type '${endpoint.type} not supported`;
+          $log.warn(error);
+          HsCompositionsParserService.createErrorDialog(error);
       }
     },
 
@@ -154,7 +158,8 @@ export default function (
         }
         return url;
       } catch (e) {
-        $log.warn(e);
+        const text = 'Selected compostion format not supported';
+        HsCompositionsParserService.createErrorDialog(text, e);
       }
     },
 
@@ -171,7 +176,9 @@ export default function (
               '/file';
             break;
           default:
-            $log.warn(`Endpoint type '${record.endpoint.type} not supported`);
+            const error = `Endpoint type '${record.endpoint.type} not supported`;
+            $log.warn(error);
+            HsCompositionsParserService.createErrorDialog(error);
         }
         if (url) {
           if (HsCompositionsParserService.composition_edited == true) {
