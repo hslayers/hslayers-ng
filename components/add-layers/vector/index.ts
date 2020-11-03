@@ -4,6 +4,7 @@ import {HsAddLayersVectorModule} from './add-layers-vector.module';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsVectorUrlParserService} from './add-layers-vector-url-parser.service';
 import {downgrade} from '../../../common/downgrader';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 export const downgradedAddLayersVectorModule = downgrade(
   HsAddLayersVectorModule
@@ -27,7 +28,10 @@ angular
    * @name hs.addLayersVector
    * @description TODO
    */
-  .component('hs.addLayersVector', HsAddLayersVectorComponent)
+  .directive(
+    'hs.addLayersVector',
+    downgradeComponent({component: HsAddLayersVectorComponent})
+  )
 
   /**
    * @memberof hs.addLayersVector
@@ -35,7 +39,10 @@ angular
    * @name HsAddLayersVectorService
    * @description Service handling adding nonwms OWS services or files. Handles also drag and drop addition.
    */
-  .service('HsAddLayersVectorService', HsAddLayersVectorService)
+  .service(
+    'HsAddLayersVectorService',
+    downgradeInjectable(HsAddLayersVectorService)
+  )
 
   /**
    * @memberof hs.addLayersVector
@@ -43,7 +50,10 @@ angular
    * @name hs.ddLayersVectorUrlParser.service
    * @description Service handling loading of vector layers through url params
    */
-  .factory('hs.addLayersVectorUrlParser.service', HsVectorUrlParserService);
+  .service(
+    'hs.addLayersVectorUrlParser.service',
+    downgradeInjectable(HsVectorUrlParserService)
+  );
 
 angular.module('hs.addLayersVector', [downgradedAddLayersVectorModule]);
 

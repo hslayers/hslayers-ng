@@ -1,27 +1,33 @@
 import '../../styles/styles.module';
-/**
- * @param HsMapService
- * @param HsPermalinkUrlService
- * @param HsAddLayersVectorService
- */
-export const HsVectorUrlParserService = function (
-  HsMapService,
-  HsPermalinkUrlService,
-  HsAddLayersVectorService
-) {
-  'ngInject';
-  const me = this;
+import {HsAddLayersVectorService} from './add-layers-vector.service';
+import {HsMapService} from '../../map/map.service';
+import {HsShareUrlService} from '../../permalink/share-url.service';
+import {Injectable} from '@angular/core';
 
-  me.checkUrlParamsAndAdd = async function () {
+@Injectable({
+  providedIn: 'root',
+})
+export class HsVectorUrlParserService {
+  constructor(
+    private HsMapService: HsMapService,
+    private HsShareUrlService: HsShareUrlService,
+    private HsAddLayersVectorService: HsAddLayersVectorService
+  ) {
+    this.HsMapService.loaded().then((map) => {
+      this.checkUrlParamsAndAdd();
+    });
+  }
+
+  checkUrlParamsAndAdd = async function () {
     const title =
-      decodeURIComponent(HsPermalinkUrlService.getParamValue('title')) ||
+      decodeURIComponent(this.HsShareUrlService.getParamValue('title')) ||
       'Layer';
     const abstract = decodeURIComponent(
-      HsPermalinkUrlService.getParamValue('abstract')
+      this.HsShareUrlService.getParamValue('abstract')
     );
 
-    if (HsPermalinkUrlService.getParamValue('geojson_to_connect')) {
-      const url = HsPermalinkUrlService.getParamValue('geojson_to_connect');
+    if (this.HsShareUrlService.getParamValue('geojson_to_connect')) {
+      const url = this.HsShareUrlService.getParamValue('geojson_to_connect');
       let type = 'geojson';
       if (url.indexOf('gpx') > 0) {
         type = 'gpx';
@@ -29,19 +35,19 @@ export const HsVectorUrlParserService = function (
       if (url.indexOf('kml') > 0) {
         type = 'kml';
       }
-      const lyr = await HsAddLayersVectorService.addVectorLayer(
+      const lyr = await this.HsAddLayersVectorService.addVectorLayer(
         type,
         url,
         title,
         abstract,
         'EPSG:4326'
       );
-      HsAddLayersVectorService.fitExtent(lyr);
+      this.HsAddLayersVectorService.fitExtent(lyr);
     }
 
-    if (HsPermalinkUrlService.getParamValue('kml_to_connect')) {
-      const url = HsPermalinkUrlService.getParamValue('kml_to_connect');
-      const lyr = await HsAddLayersVectorService.addVectorLayer(
+    if (this.HsShareUrlService.getParamValue('kml_to_connect')) {
+      const url = this.HsShareUrlService.getParamValue('kml_to_connect');
+      const lyr = await this.HsAddLayersVectorService.addVectorLayer(
         'kml',
         url,
         title,
@@ -49,13 +55,7 @@ export const HsVectorUrlParserService = function (
         'EPSG:4326',
         {extractStyles: true}
       );
-      HsAddLayersVectorService.fitExtent(lyr);
+      this.HsAddLayersVectorService.fitExtent(lyr);
     }
   };
-
-  HsMapService.loaded().then((map) => {
-    me.checkUrlParamsAndAdd();
-  });
-
-  return me;
-};
+}

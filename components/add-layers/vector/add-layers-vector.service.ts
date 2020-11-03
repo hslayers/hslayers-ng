@@ -1,18 +1,20 @@
 import '../../styles/styles.module';
 import VectorLayer from 'ol/layer/Vector';
 import VectorLayerDescriptor from './VectorLayerDescriptor';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from '../../styles/styler.service';
+import {HsUtilsService} from '../../utils/utils.service';
+import {Injectable} from '@angular/core';
 
-/**
- * @param HsMapService
- * @param HsUtilsService
- */
+@Injectable({
+  providedIn: 'root',
+})
 export class HsAddLayersVectorService {
-  constructor(HsMapService, HsUtilsService, HsStylerService) {
-    'ngInject';
-    this.HsMapService = HsMapService;
-    this.HsUtilsService = HsUtilsService;
-    this.HsStylerService = HsStylerService;
-  }
+  constructor(
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService,
+    private HsStylerService: HsStylerService
+  ) {}
 
   /**
    * Load nonwms OWS data and create layer
@@ -41,7 +43,7 @@ export class HsAddLayersVectorService {
         );
         if (this.HsMapService.map) {
           console.log('adding layer', lyr);
-          this.HsMapService.addLayer(lyr, true);
+          this.HsMapService.addLayer(lyr, true, null);
         }
         resolve(lyr);
       } catch (ex) {
