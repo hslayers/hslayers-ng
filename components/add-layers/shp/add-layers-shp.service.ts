@@ -1,15 +1,13 @@
-/**
- * @param $http
- */
-export const HsAddLayersShpService = function ($http) {
-  'ngInject';
-  const me = this;
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+@Injectable({providedIn: 'root'})
+export class HsAddLayersShpService {
+  constructor(private httpClient: HttpClient) {}
 
   /**
-   * Load nonwms OWS data and create layer
-   *
-   * @memberof hs.addLayers
    * @function add
+   * @description Load nonwms OWS data and create layer
    * @param {object} endpoint Layman endpoint description (url, name, user)
    * @param {Array} files Array of shp files (shp, dbf, shx)
    * @param {string} name Name of new layer
@@ -17,8 +15,17 @@ export const HsAddLayersShpService = function ($http) {
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {Array} sld Array of sld files
+   * @returns {Promise}
    */
-  me.add = function (endpoint, files, name, title, abstract, srs, sld) {
+  add(
+    endpoint,
+    files,
+    name: string,
+    title: string,
+    abstract: string,
+    srs: string,
+    sld
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       const formdata = new FormData();
       files.forEach((file) => {
@@ -41,24 +48,25 @@ export const HsAddLayersShpService = function ($http) {
       formdata.append('title', title);
       formdata.append('abstract', abstract);
       formdata.append('crs', srs);
-      $http({
-        url: `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
-        method: 'POST',
-        data: formdata,
-        headers: {'Content-Type': undefined},
-      }).then(
-        (response) => {
-          if (response.data && response.data.length > 0) {
-            resolve(response.data);
-          } else {
-            reject(response.data);
+      this.httpClient
+        .post(
+          `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
+          formdata,
+          {headers: {'Content-Type': undefined}}
+        )
+        .toPromise()
+        .then(
+          (data: any) => {
+            if (data && data.length > 0) {
+              resolve(data);
+            } else {
+              reject(data);
+            }
+          },
+          (err) => {
+            reject(err.data);
           }
-        },
-        (err) => {
-          reject(err.data);
-        }
-      );
+        );
     });
-  };
-  return me;
-};
+  }
+}
