@@ -153,7 +153,7 @@ export default function (
           url = record.link;
         } else if (angular.isDefined(record.links)) {
           url = record.links.filter(
-            (l) => l.url.indexOf('/file') > -1 || l.url.indexOf('.wmc') > -1
+            (l) => l.url.includes('/file') || l.url.includes('.wmc')
           )[0].url;
         }
         return url;
