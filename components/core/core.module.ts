@@ -1,6 +1,6 @@
 import * as merge from 'deepmerge';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {
-  HsAddLayersVectorServiceProvider,
   HsCommonEndpointsServiceProvider,
   HsConfigProvider,
   HsDimensionServiceProvider,
@@ -122,7 +122,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsDrawService,
     TranslateStore,
     TranslateService,
-    HsAddLayersVectorServiceProvider,
+    HsAddLayersVectorService,
     HsConfigProvider,
     HsWmsGetCapabilitiesServiceProvider,
     HsWfsGetCapabilitiesServiceProvider,
