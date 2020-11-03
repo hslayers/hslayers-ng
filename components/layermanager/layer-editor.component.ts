@@ -1,5 +1,5 @@
 /* eslint-disable angular/definedundefined */
-import * as moment from 'moment';
+import moment = require('moment');
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
