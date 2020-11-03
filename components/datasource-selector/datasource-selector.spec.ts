@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+import {EndpointsWithDatasourcesPipe} from '../../common/widgets/endpoints-with-datasources.pipe';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';

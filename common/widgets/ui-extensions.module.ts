@@ -1,15 +1,17 @@
 import {CommonModule} from '@angular/common';
-import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
 import {NgModule} from '@angular/core';
+
+import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
+import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
 /**
- * @namespace HsMiscModule
- * @memberOf hs
+ * @namespace HsUiExtensionsModule
+ * @memberof hs
  */
 @NgModule({
-  declarations: [HsUiExtensionsRecursiveDd],
+  declarations: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
   imports: [CommonModule],
   providers: [],
   entryComponents: [HsUiExtensionsRecursiveDd],
-  exports: [HsUiExtensionsRecursiveDd],
+  exports: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
 })
 export class HsUiExtensionsModule {}
