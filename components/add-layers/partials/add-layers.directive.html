@@ -5,13 +5,13 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text" translate>Choose type</span></div>
-                    <select class="form-control" ng-model="type">
-                        <option ng-repeat="type in types" ng-value="type.id">{{type.text}}</option>
+                    <select class="form-control" [(ngModel)]="type">
+                        <option *ngFor="let type of types" [value]="type.id">{{type.text}}</option>
                     </select>
                 </div>
             </div>
         </form>
-        <hr/>
+        <hr />
         <div compile="templateByType()"></div>
     </div>
 </div>
