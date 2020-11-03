@@ -77,19 +77,27 @@ export default function (
     let maxScale = properties.MaxScaleDenominator
       ? properties.MaxScaleDenominator
       : null;
+
     const layers = properties.Layer;
     if (layers) {
       for (const sublayer of layers) {
-        if (
-          sublayer.MaxScaleDenominator &&
-          maxScale < sublayer.MaxScaleDenominator
-        ) {
-          maxScale = sublayer.MaxScaleDenominator;
-        } else if (sublayer.Layer) {
+        if (sublayer.Layer) {
           const subScale = me.searchForScaleDenominator(sublayer);
           maxScale = subScale > maxScale ? subScale : maxScale;
+        } else {
+          if (sublayer.MaxScaleDenominator) {
+            sublayer.maxResolution = sublayer.MaxScaleDenominator;
+            if (maxScale < sublayer.MaxScaleDenominator) {
+              maxScale = sublayer.MaxScaleDenominator;
+            }
+          } else {
+            sublayer.maxResolution = maxScale;
+          }
         }
       }
+    }
+    if (maxScale) {
+      properties.maxResolution = maxScale;
     }
     return maxScale;
   };

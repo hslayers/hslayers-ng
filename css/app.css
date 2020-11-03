@@ -450,7 +450,7 @@ button.but-title-sm {
 	border-color: var(--sidebar-active-color,#007bff);
  }
 
-.hs-lm-deactivated-layer {
+.hs-lm-deactivated-layer, .grayed {
 	color: #cccccc;
 }
 
