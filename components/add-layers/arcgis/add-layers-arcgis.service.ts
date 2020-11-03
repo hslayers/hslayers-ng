@@ -1,90 +1,94 @@
-import '../../../common/get-capabilities.module';
-import '../../utils';
-import 'angular-cookies';
+import * as angular from 'angular';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import {Attribution} from 'ol/control';
+import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
+
+import '../../../common/get-capabilities.module';
+import {HsArcgisGetCapabilitiesService} from '../../../common/arcgis/get-capabilities.service';
+import {HsDimensionService} from '../../../common/dimension.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
-import {HsUtilsService} from '../../utils/utils.service';
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsArcgisGetCapabilitiesService
- * @param HsCore
- * @param HsDimensionService
- * @param $timeout
- * @param HsLayoutService
- */
-export const HsAddLayersArcGisService = function (
-  $rootScope,
-  HsMapService,
-  HsArcgisGetCapabilitiesService,
-  HsDimensionService,
-  $timeout,
-  HsLayoutService,
-  HsUtilsService
-) {
-  'ngInject';
-  const me = this;
+@Injectable({providedIn: 'root'})
+export class HsAddLayersArcGisService {
+  data;
+  arcgisCapsParsed = new Subject();
+  arcgisCapsParseError = new Subject();
 
-  this.data = {
-    useResampling: false,
-    useTiles: true,
-    mapProjection: undefined,
-    registerMetadata: true,
-    tileSize: 512,
-  };
+  constructor(
+    private hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
+    private hsDimensionService: HsDimensionService,
+    private hsLayoutService: HsLayoutService,
+    private hsMapService: HsMapService,
+    private hsUtilsService: HsUtilsService
+  ) {
+    this.data = {
+      useResampling: false,
+      useTiles: true,
+      mapProjection: undefined,
+      registerMetadata: true,
+      tileSize: 512,
+    };
+  }
 
-  this.capabilitiesReceived = function (response, layerToSelect) {
+  //TODO: all dimension related things need to be refactored into seperate module
+  getDimensionValues = this.hsDimensionService.getDimensionValues;
+
+  capabilitiesReceived(response, layerToSelect): void {
     try {
       const caps = response;
-      me.data.mapProjection = HsMapService.map
+      this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
-      me.data.title = caps.mapName;
-      me.data.description = addAnchors(caps.description);
-      me.data.version = caps.currentVersion;
-      me.data.image_formats = caps.supportedImageFormatTypes.split(',');
-      me.data.query_formats = caps.supportedQueryFormats
+      this.data.title = caps.mapName;
+      this.data.description = addAnchors(caps.description);
+      this.data.version = caps.currentVersion;
+      this.data.image_formats = caps.supportedImageFormatTypes.split(',');
+      this.data.query_formats = caps.supportedQueryFormats
         ? caps.supportedQueryFormats.split(',')
         : [];
-      me.data.srss = [caps.spatialReference.wkid];
-      me.data.services = caps.layers;
-      selectLayerByName(layerToSelect);
+      this.data.srss = [caps.spatialReference.wkid];
+      this.data.services = caps.layers;
+      this.selectLayerByName(layerToSelect);
 
-      me.data.image_format = getPreferedFormat(me.data.image_formats, [
+      this.data.image_format = getPreferedFormat(this.data.image_formats, [
         'PNG32',
         'PNG',
         'GIF',
         'JPG',
       ]);
-      me.data.query_format = getPreferedFormat(me.data.query_formats, [
+      this.data.query_format = getPreferedFormat(this.data.query_formats, [
         'geoJSON',
         'JSON',
       ]);
-      $rootScope.$broadcast('arcgisCapsParsed');
+      this.arcgisCapsParsed.next();
     } catch (e) {
-      $rootScope.$broadcast('arcgisCapsParseError', e);
+      this.arcgisCapsParseError.next(e);
     }
-  };
+  }
 
   /**
    * @param layerToSelect
    */
-  function selectLayerByName(layerToSelect) {
+  selectLayerByName(layerToSelect): void {
     if (layerToSelect) {
-      me.data.services.forEach((service) => {
+      this.data.services.forEach((service) => {
         service.Layer.forEach((layer) => {
           if (layer.name == layerToSelect) {
             layer.checked = true;
           }
-          $timeout(() => {
+          setTimeout(() => {
             const id = `#hs-add-layer-${layer.Name}`;
-            const el = HsLayoutService.contentWrapper.querySelector(id);
+            const el = this.hsLayoutService.contentWrapper.querySelector(id);
             if (el) {
               el.scrollIntoView();
             }
@@ -94,45 +98,44 @@ export const HsAddLayersArcGisService = function (
     }
   }
 
-  me.srsChanged = function () {
-    $timeout(() => {
-      me.data.resample_warning = !HsArcgisGetCapabilitiesService.currentProjectionSupported(
-        [me.data.srs]
+  srsChanged(): void {
+    setTimeout(() => {
+      this.data.resample_warning = !this.hsArcgisGetCapabilitiesService.currentProjectionSupported(
+        [this.data.srs]
       );
     }, 0);
-  };
+  }
 
   /**
    * @function addLayers
-   * @memberOf add-layers-wms.controller
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
    */
-  me.addLayers = function (checked) {
+  addLayers(checked: boolean): void {
     /**
      * @param layer
      */
     function recurse(layer) {
       if (!checked || layer.checked) {
         if (layer.Layer === undefined) {
-          addLayer(
+          this.addLayer(
             layer,
             layer.name.replace(/\//g, '&#47;'),
-            me.data.path,
-            me.data.image_format,
-            me.data.query_format,
-            getSublayerNames(layer)
+            this.data.path,
+            this.data.image_format,
+            this.data.query_format,
+            this.getSublayerNames(layer)
           );
         } else {
-          const clone = HsUtilsService.structuredClone(layer);
+          const clone = this.hsUtilsService.structuredClone(layer);
           delete clone.Layer;
-          addLayer(
+          this.addLayer(
             layer,
             layer.name.replace(/\//g, '&#47;'),
-            me.data.path,
-            me.data.image_format,
-            me.data.query_format,
-            getSublayerNames(layer)
+            this.data.path,
+            this.data.image_format,
+            this.data.query_format,
+            this.getSublayerNames(layer)
           );
         }
       }
@@ -141,24 +144,24 @@ export const HsAddLayersArcGisService = function (
         recurse(sublayer);
       });
     }
-    angular.forEach(me.data.services, (layer) => {
+    angular.forEach(this.data.services, (layer) => {
       recurse(layer);
     });
-    HsLayoutService.setMainPanel('layermanager');
-  };
+    this.hsLayoutService.setMainPanel('layermanager');
+  }
 
   /**
    * @param service
    */
-  function getSublayerNames(service) {
+  getSublayerNames(service): any[] {
     if (service.layerToSelect) {
       return service.layers.map((l) => {
-        const tmp = {};
+        const tmp: any = {};
         if (l.name) {
           tmp.name = l.name;
         }
         if (l.layer) {
-          tmp.children = getSublayerNames(l);
+          tmp.children = this.getSublayerNames(l);
         }
         return tmp;
       });
@@ -167,19 +170,16 @@ export const HsAddLayersArcGisService = function (
     }
   }
 
-  //TODO all dimension related things need to be refactored into seperate module
-  me.getDimensionValues = HsDimensionService.getDimensionValues;
-
-  me.hasNestedLayers = function (layer) {
+  hasNestedLayers(layer): boolean {
     if (layer === undefined) {
       return false;
     }
     return layer.layer !== undefined;
-  };
+  }
 
   /**
    * @function addLayer
-   * @memberOf HsAddLayersArcgisAddLayerService
+   * @description Add selected layer to map
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
    * @param {string} path Path name
@@ -188,18 +188,17 @@ export const HsAddLayersArcGisService = function (
    * @param {OpenLayers.Size} tileSize Tile size in pixels
    * @param {OpenLayers.Projection} crs of the layer
    * @param {Array} subLayers Static sub-layers of the layer
-   * @description Add selected layer to map
    */
-  function addLayer(
+  addLayer(
     layer,
-    layerName,
-    path,
-    imageFormat,
-    queryFormat,
+    layerName: string,
+    path: string,
+    imageFormat: string,
+    queryFormat: string,
     tileSize,
     crs,
-    subLayers
-  ) {
+    subLayers: any[]
+  ): void {
     let attributions = [];
     if (layer.Attribution) {
       attributions = [
@@ -224,7 +223,7 @@ export const HsAddLayersArcGisService = function (
       legends.push(layer.Style[0].LegendURL[0].OnlineResource);
     }
     const source = new TileArcGISRest({
-      url: me.data.getMapUrl,
+      url: this.data.getMapUrl,
       attributions,
       //projection: me.data.crs || me.data.srs,
       params: Object.assign(
@@ -248,29 +247,29 @@ export const HsAddLayersArcGisService = function (
       path,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
-    HsMapService.map.addLayer(new_layer);
+    this.hsMapService.map.addLayer(new_layer);
   }
 
   /**
-   * Add service and its layers to project TODO
-   *
-   * @memberof hs.addLayersArcgis.service_layer_producer
    * @function addService
+   * @description Add service and its layers to project TODO
    * @param {string} url Service url
-   * @param {ol/Group} group Group layer to which add layer to
+   * @param {Group} group Group layer to which add layer to
    */
-  me.addService = function (url, group) {
-    HsArcgisGetCapabilitiesService.requestGetCapabilities(url).then((resp) => {
-      const ol_layers = HsArcgisGetCapabilitiesService.service2layers(resp);
-      ol_layers.forEach((layer) => {
-        if (group !== undefined) {
-          group.addLayer(layer);
-        } else {
-          HsMapService.addLayer(layer, true);
-        }
+  addService(url: string, group: Group): void {
+    this.hsArcgisGetCapabilitiesService
+      .requestGetCapabilities(url)
+      .then((resp) => {
+        const ol_layers = this.hsArcgisGetCapabilitiesService.service2layers(
+          resp
+        );
+        ol_layers.forEach((layer) => {
+          if (group !== undefined) {
+            group.addLayer(layer);
+          } else {
+            this.hsMapService.addLayer(layer, true);
+          }
+        });
       });
-    });
-  };
-
-  return me;
-};
+  }
+}
