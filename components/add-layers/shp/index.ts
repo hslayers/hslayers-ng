@@ -1,6 +1,7 @@
 import '../../../common/endpoints/endpoints.module';
+import '../../../common/widgets/';
 import '../../save-map/';
-import '../../styles/styles.module';
+import '../../styles/';
 import * as angular from 'angular';
 import forShapefileUploadFilter from './for-shapefile-upload.filter';
 import {HsAddLayersShpComponent} from './add-layers-shp.component';
@@ -19,7 +20,7 @@ export const downgradedAddLayersShpModule = downgrade(HsAddLayersShpModule);
 angular
   .module(downgradedAddLayersShpModule, [
     'hs.styles',
-    'hs.widgets',
+    'hs.ui-extensions',
     'hs.save-map',
     'hs.addLayersWms',
     'hs.common.endpoints',

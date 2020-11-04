@@ -1,6 +1,0 @@
-<span ng-if='!isIteratable(obj)'>{{obj}}</span>
-<dl ng-repeat="(key, value) in obj track by $index" ng-if='isIteratable(obj)'>
-    <dt>{{key}} </dt>
-    <dd hs.widgets.object-directive></dd>
-    <button ng-if="key=='bbox'" ng-click="DS.zoomTo(obj)" class='btn btn-secondary' translate>Zoom to</button>
-</dl>

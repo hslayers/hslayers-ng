@@ -1,6 +1,6 @@
-import '../../common/widgets/widgets.module';
+import '../../common/widgets/';
 import '../layout/layout.module';
-import '../map/map.module';
+import '../map/';
 import '../permalink';
 import * as angular from 'angular';
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
@@ -27,7 +27,7 @@ export const downgradedDatasourcesModule = downgrade(HsDatasourcesModule);
 angular
   .module(downgradedDatasourcesModule, [
     'hs.map',
-    'hs.widgets',
+    'hs.ui-extensions',
     'hs.layout',
     'hs.permalink',
   ])
