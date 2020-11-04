@@ -4,12 +4,13 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
+import {HsAddLayersWfsService} from './add-layers-wfs-service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule],
-  exports: [],
-  declarations: [/*HsAddLayersWfsComponent*/],
-  providers: [],
+  exports: [HsAddLayersWfsComponent],
+  declarations: [HsAddLayersWfsComponent],
+  providers: [HsAddLayersWfsService],
 })
 export class HsAddLayersWfsModule {}
