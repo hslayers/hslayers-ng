@@ -1,3 +1,4 @@
+/* eslint-disable angular/on-watch */
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
@@ -62,7 +63,6 @@ export default function (
   this.featuresUnderMouse = [];
   this.featureLayersUnderMouse = [];
   this.dataCleared = true;
-
   /**
    *
    */
@@ -90,7 +90,6 @@ export default function (
       me.data.selectedProj = me.data.coordinates[0].projections[0];
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
-
     if (
       angular.isDefined(HsConfig.popUpDisplay) &&
       HsConfig.popUpDisplay === 'hover'
@@ -107,16 +106,9 @@ export default function (
         'singleclick',
         HsUtilsService.debounce(me.showPopUp, 500, false, me)
       );
-    } /* else none */
-  }
-
-  /**
-   * @param e Event, which triggered this function
-   */
-  this.showPopUp = function (e) {
-    if (e.dragging) {
-      return;
     }
+  }
+  me.getFeaturesUnderMouse = function (e) {
     const map = e.map;
     me.featuresUnderMouse = map
       .getFeaturesAtPixel(e.pixel)
@@ -158,7 +150,15 @@ export default function (
       me.featuresUnderMouse = [];
     }
   };
-
+  /**
+   * @param e Event, which triggered this function
+   */
+  this.showPopUp = function (e) {
+    if (e.dragging) {
+      return;
+    }
+    me.getFeaturesUnderMouse(e);
+  };
   /**
    * @param feature
    */
