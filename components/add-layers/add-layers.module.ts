@@ -7,6 +7,7 @@ import {HsAddLayersComponent} from './add-layers.component';
 import {HsAddLayersShpModule} from './shp';
 import {HsAddLayersUrlComponent} from './add-layers-url.component';
 import {HsAddLayersVectorModule} from './vector';
+import {HsAddLayersWfsModule} from './wfs/add-layers-wfs.module';
 import {HsAddLayersWmsModule} from './wms';
 import {HsAddLayersWmtsModule} from './wmts';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
@@ -24,6 +25,7 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
     HsAddLayersShpModule,
     HsAddLayersWmsModule,
     HsAddLayersWmtsModule,
+    HsAddLayersWfsModule,
   ],
   exports: [
     HsAddLayersComponent,

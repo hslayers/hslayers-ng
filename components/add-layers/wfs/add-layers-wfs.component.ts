@@ -5,7 +5,6 @@ import {Component} from '@angular/core';
 import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
 import VectorLayer from 'ol/layer/Vector';
-import moment from 'moment';
 import {bbox} from 'ol/loadingstrategy';
 
 import {HsAddLayersWfsService} from './add-layers-wfs-service';
@@ -19,7 +18,6 @@ import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.
 @Component({
   selector: 'hs-add-layers-wfs',
   template: require('./add-wfs-layer.directive.html'),
-  //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddLayersWfsComponent {
   url: any;
@@ -27,6 +25,9 @@ export class HsAddLayersWfsComponent {
   add_all: any;
   isChecked: boolean;
   map_projection: any;
+  loadingFeatures: boolean;
+  showDetails: boolean;
+  folder_name: any;
 
   constructor(
     private HsMapService: HsMapService,
@@ -44,7 +45,7 @@ export class HsAddLayersWfsComponent {
 
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       ({type, response}) => {
-        if (type === 'WMS') {
+        if (type === 'WFS') {
           try {
             this.HsAddLayersWfsService.parseCapabilities(response);
           } catch (e) {
@@ -61,7 +62,7 @@ export class HsAddLayersWfsComponent {
     );
 
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'WMS') {
+      if (type == 'wfs') {
         this.setUrlAndConnect(uri);
       }
     });
@@ -88,7 +89,6 @@ export class HsAddLayersWfsComponent {
     });
   }
 
-  showDetails = false;
   path = 'WFS';
   loaderImage = require('../../../img/ajax-loader.gif');
   /**
@@ -121,23 +121,17 @@ export class HsAddLayersWfsComponent {
   }
 
   /**
+   * @param layers
    * @function selectAllLayers
    * @memberOf hs.addLayersWfs
    * @description Select all layers from service.
    */
-  selectAllLayers() {
-    /**
-     * @param layer
-     */
-    function recurse(layer) {
+  selectAllLayers(layers) {
+    for (const layer of layers) {
       layer.checked = !layer.checked;
-
-      for (const sublayer of layer.Layer) {
-        recurse(sublayer);
+      if (layer.Layer) {
+        this.selectAllLayers(layer.Layer);
       }
-    }
-    for (const layer of this.HsAddLayersWfsService.services) {
-      recurse(layer);
     }
     this.changed();
   }
@@ -172,27 +166,26 @@ export class HsAddLayersWfsComponent {
    * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
    */
   addLayers(checked) {
-    /**
-     * @param layer
-     */
-    function recurse(layer) {
-      if (!checked || layer.checked) {
-        this.addLayer(
-          layer,
-          layer.Title.replace(/\//g, '&#47;'),
-          this.folder_name,
-          this.HsAddLayersWfsService.srs
-        );
-      }
-      for (const sublayer of layer.Layer) {
-        recurse(sublayer);
-      }
-    }
     for (const layer of this.HsAddLayersWfsService.services) {
-      recurse(layer);
+      this.recurse(layer, checked);
     }
   }
 
+  recurse(layer, checked) {
+    if (!checked || layer.checked) {
+      this.addLayer(
+        layer,
+        layer.Title.replace(/\//g, '&#47;'),
+        this.folder_name,
+        this.HsAddLayersWfsService.srs
+      );
+    }
+    if (layer.Layer) {
+      for (const sublayer of layer.Layer) {
+        this.recurse(sublayer, checked);
+      }
+    }
+  }
   /**
    * @function addLayer
    * @memberOf hs.addLayersWfs
