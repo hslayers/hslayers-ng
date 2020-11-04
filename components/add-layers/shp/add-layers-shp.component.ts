@@ -13,7 +13,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 export class HsAddLayersShpComponent {
   abstract: string;
   endpoint = null;
-  errorDetails = {};
+  errorDetails = [];
   errorMessage: any;
   extract_styles = false;
   files = null;
@@ -116,7 +116,7 @@ export class HsAddLayersShpComponent {
         this.loading = false;
         this.resultCode = 'error';
         this.errorMessage = err.message;
-        this.errorDetails = err.detail;
+        this.errorDetails = Object.entries(err.detail);
       });
   }
 }

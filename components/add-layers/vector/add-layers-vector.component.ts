@@ -4,7 +4,7 @@ import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
-  selector: 'hs.addLayersVector',
+  selector: 'hs-add-layers-vector',
   template: require('./add-vector-layer.directive.html'),
 })
 export class HsAddLayersVectorComponent {
