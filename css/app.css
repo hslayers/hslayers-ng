@@ -443,9 +443,6 @@ button.but-title-sm {
 	right: auto;
 	left: 0.5em;
 }
-*[hs\.widgets\.object-directive] dd {
-	padding-left: 10px;
-}
 .list-group-item.active a {
 	color: #fff;
 }
