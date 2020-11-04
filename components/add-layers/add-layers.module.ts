@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsAddLayersArcGisModule} from './arcgis';
 import {HsAddLayersComponent} from './add-layers.component';
 import {HsAddLayersShpModule} from './shp';
 import {HsAddLayersUrlComponent} from './add-layers-url.component';
@@ -22,6 +23,7 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
     FormsModule,
     TranslateModule,
     HsAddLayersVectorModule,
+    HsAddLayersArcGisModule,
     HsAddLayersShpModule,
     HsAddLayersWmsModule,
     HsAddLayersWmtsModule,

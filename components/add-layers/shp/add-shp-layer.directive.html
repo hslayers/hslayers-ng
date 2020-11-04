@@ -5,8 +5,8 @@
             <div class="input-group-prepend">
                 <span class="input-group-text control-label">Save to</span>
             </div>
-            <select class="form-control" [(ngModel)]="endpoint">
-                <option *ngFor="let endpoint of hsCommonEndpointsService.endpoints | endpointsWithDatasources:'layman'"
+            <select class="form-control" name="endpoint" [(ngModel)]="endpoint">
+                <option *ngFor="let endpoint of hsCommonEndpointsService.endpoints | endpointsWithDatasources:'layman':'inclusive'"
                     [value]="endpoint">{{endpoint.title}}</option>
             </select>
         </div>
@@ -19,17 +19,17 @@
 
     <div class="form-group">
         <label class="capabilities_label control-label">Name</label>
-        <input class="form-control" [(ngModel)]="name" />
+        <input class="form-control" name="name" [(ngModel)]="name" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Title</label>
-        <input class="form-control" [(ngModel)]="title" />
+        <input class="form-control" name="title" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Abstract</label>
-        <textarea class="form-control" id='hs-ows-abstract'
+        <textarea class="form-control" id='hs-ows-abstract' name="abstract"
             placeholder="{{'Fill in descriptive text about map'|translate}}" [(ngModel)]="abstract">
         </textarea>
     </div>
@@ -47,12 +47,12 @@
     <div class="collapse hs-ows-shp-advanced" [ngClass]="{'show': advancedPanelVisible}">
         <div class="form-group">
             <label class="capabilities_label control-label">SRS</label>
-            <input class="form-control" [(ngModel)]="srs" />
+            <input class="form-control" name="srs" [(ngModel)]="srs" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label">Folder name</label>
-            <input class="form-control" [(ngModel)]="folder_name" />
+            <input class="form-control" name="folderName" [(ngModel)]="folder_name" />
         </div>
     </div>
 
@@ -64,9 +64,9 @@
 
     <div class="alert alert-danger" [hidden]="resultCode != 'error'">
         <div class="alert alert-danger">{{errorMessage}}</div>
-        <dl *ngFor="let key of errorDetails">
-            <dt>{{key}}</dt>
-            <hs-widgets-recursive-dd></hs-widgets-recursive-dd>
+        <dl *ngFor="let item of errorDetails">
+            <dt>{{item.key}}</dt>
+            <hs-widgets-recursive-dd [value]="item.value"></hs-widgets-recursive-dd>
         </dl>
     </div>
 </form>

@@ -5,13 +5,13 @@
 
     <div class="form-group">
         <label class="capabilities_label control-label">Title</label>
-        <input class="form-control" [(ngModel)]="title" />
+        <input class="form-control" name="title" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Abstract</label>
         <textarea class="form-control" id='hs-ows-abstract' placeholder="Fill in descriptive text about map"
-            [(ngModel)]="abstract">
+            name="abstract" [(ngModel)]="abstract">
         </textarea>
     </div>
 
@@ -24,17 +24,17 @@
     <div class="collapse hs-ows-vector-advanced" [ngClass]="{'show': advancedPanelVisible}">
         <div class="form-group">
             <label class="capabilities_label control-label">SRS</label>
-            <input class="form-control" [(ngModel)]="srs" />
+            <input class="form-control" name="srs" [(ngModel)]="srs" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label">Folder name</label>
-            <input class="form-control" [(ngModel)]="folder_name" />
+            <input class="form-control" name="folder" [(ngModel)]="folder_name" />
         </div>
 
         <div class="form-group">
             <label class="capabilities_label control-label">Extract styles</label>
-            <input type="checkbox" [(ngModel)]="extract_styles" />
+            <input type="checkbox" name="extractStyles" [(ngModel)]="extract_styles" />
         </div>
     </div>
 
