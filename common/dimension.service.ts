@@ -1,7 +1,12 @@
+import {Injectable} from '@angular/core';
 import moment = require('moment');
 import momentinterval from 'moment-interval/src/moment-interval';
+
 import {HsLogService} from './log/log.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class HsDimensionService {
   constructor(private $log: HsLogService) {}
 

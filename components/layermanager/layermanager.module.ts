@@ -5,6 +5,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {HsGetCapabilitiesModule} from '../../common/get-capabilities';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
@@ -42,6 +43,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     TranslateModule,
     CommonModule,
     FormsModule,
+    HsGetCapabilitiesModule,
     HsPanelHelpersModule,
     HsLegendModule,
     NgbModule,
