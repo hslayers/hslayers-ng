@@ -81,7 +81,7 @@ export class HsAddLayersWfsService {
 
         let url = [
           options.url,
-          this.HsUtilsService.paramsToURLWoEncode({
+          me.HsUtilsService.paramsToURLWoEncode({
             service: 'wfs',
             version: me.version == '2.0.0' ? '1.1.0' : me.version,
             request: 'GetFeature',
@@ -93,12 +93,12 @@ export class HsAddLayersWfsService {
           }),
         ].join('?');
 
-        url = this.HsUtilsService.proxify(url);
-        this.http.get(url).subscribe(
+        url = me.HsUtilsService.proxify(url);
+        me.http.get(url, {responseType: 'text'}).subscribe(
           (response: any) => {
             let featureString, features;
             if (response) {
-              featureString = response.data;
+              featureString = response;
             }
             if (featureString) {
               const oParser = new DOMParser();
@@ -110,7 +110,7 @@ export class HsAddLayersWfsService {
 
               features = me.readFeatures(doc);
               this.addFeatures(features);
-              this.loadingFeatures = false;
+              me.loadingFeatures = false;
             }
           },
           (e) => {
@@ -170,11 +170,13 @@ export class HsAddLayersWfsService {
     }
 
     const otherSRS = layer['Other' + srsType];
-    if (typeof otherSRS == 'string') {
-      this.srss.push(otherSRS);
-    } else {
-      for (const srs of layer['Other' + srsType]) {
-        this.srss.push(srs);
+    if (otherSRS) {
+      if (typeof otherSRS == 'string') {
+        this.srss.push(otherSRS);
+      } else {
+        for (const srs of layer['Other' + srsType]) {
+          this.srss.push(srs);
+        }
       }
     }
 
@@ -229,29 +231,28 @@ export class HsAddLayersWfsService {
         }),
       ].join('?');
 
-      this.http.get(this.HsUtilsService.proxify(url)).subscribe(
-        (response: any) => {
-          const oParser = new DOMParser();
-          const oDOM = oParser.parseFromString(
-            response.data,
-            'application/xml'
-          );
-          const doc = oDOM.documentElement;
-          service.featureCount = doc.getAttribute('numberOfFeatures');
-          service.featureCount > 1000
-            ? (service.limitFeatureCount = true)
-            : (service.limitFeatureCount = false);
-        },
-        (e) => {
-          if (e.status == 401) {
-            this.wfsCapabilitiesError.next(
-              'Unauthorized access. You are not authorized to query data from this service'
-            );
-            return;
+      this.http
+        .get(this.HsUtilsService.proxify(url), {responseType: 'text'})
+        .subscribe(
+          (response: any) => {
+            const oParser = new DOMParser();
+            const oDOM = oParser.parseFromString(response, 'application/xml');
+            const doc = oDOM.documentElement;
+            service.featureCount = doc.getAttribute('numberOfFeatures');
+            service.featureCount > 1000
+              ? (service.limitFeatureCount = true)
+              : (service.limitFeatureCount = false);
+          },
+          (e) => {
+            if (e.status == 401) {
+              this.wfsCapabilitiesError.next(
+                'Unauthorized access. You are not authorized to query data from this service'
+              );
+              return;
+            }
+            this.wfsCapabilitiesError.next(e.data);
           }
-          this.wfsCapabilitiesError.next(e.data);
-        }
-      );
+        );
     }
   }
 
