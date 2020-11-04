@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-layers-url [type]="Arcgis" [url]="url" [connect]="connect" [field]="frmConnect.url"></hs-add-layers-url>
+    <hs-add-layers-url [type]="'Arcgis'" [url]="url" [connect]="connect"></hs-add-layers-url>
 
     <div [hidden]="!showDetails">
         <div class="form-group">
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="form-group" [hidden]="data.srs.toUpperCase() == data.mapProjection">
+        <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() == data.mapProjection">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" translate>SRS</span>
