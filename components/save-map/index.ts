@@ -2,7 +2,7 @@
 import '../../common/endpoints/endpoints.module';
 import '../../common/get-capabilities.module';
 import '../../common/layman/';
-import '../../common/widgets/widgets.module';
+import '../../common/widgets/';
 import '../utils';
 import * as angular from 'angular';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
@@ -28,7 +28,7 @@ export const downgradedModule = downgrade(HsSaveMapModule);
 angular
   .module(downgradedModule, [
     'hs.map',
-    'hs.widgets',
+    'hs.ui-extensions',
     'hs.utils',
     'hs.common.layman',
   ])
