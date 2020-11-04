@@ -27,7 +27,7 @@ export class HsAddLayersComponent {
       this.types = [
         {id: 'wms', text: 'Web map service (WMS)'},
         {id: 'arcgis', text: 'ArcGIS Map Server'},
-        {id: 'vector', text: 'Vector file (GeoJson, KML)'},
+        {id: 'vector', text: 'Vector file (GeoJSON, KML)'},
         {id: 'shp', text: 'Shapefile'},
         {id: 'wfs', text: 'Web feature service (WFS)'},
       ];

@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs.add-layers-url type="Wms" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
+    <hs-add-layers-url [type]="Wms" [url]="url" [connect]="connect" [field]="frmConnect.url"></hs-add-layers-url>
 
     <div [hidden]="!showDetails">
         <div class="form-group">
@@ -7,7 +7,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>Image format</span>
                 </div>
-                <select class="form-control" [(ngModel)]="data.image_format">
+                <select class="form-control" [(ngModel)]="data.image_format" name="imageFormat">
                     <option *ngFor="let format of data.image_formats">{{format}}</option>
                 </select>
             </div>
@@ -18,18 +18,18 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>Query format</span>
                 </div>
-                <select class="form-control" [(ngModel)]="data.query_format">
+                <select class="form-control" [(ngModel)]="data.query_format" name="queryFormat">
                     <option *ngFor="let format of data.query_formats">{{format}}</option>
                 </select>
             </div>
         </div>
 
-        <div class="form-group" [hidden]="data.srs.toUpperCase() === data.mapProjection">
+        <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.mapProjection">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>SRS</span>
                 </div>
-                <select class="form-control" [(ngModel)]="data.srs" (change)="srsChanged()">
+                <select class="form-control" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
                     <option *ngFor="let srs of data.srss | slice:0:50">{{srs}}</option>
                 </select>
             </div>
@@ -41,7 +41,7 @@
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox" [(ngModel)]="data.useTiles" />
+                <label class="capabilities_label control-label"> <input type="checkbox" name="useTiles" [(ngModel)]="data.useTiles" />
                     Use tiles
                 </label>
             </div>
@@ -56,7 +56,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>Tile size</span>
                 </div>
-                <input class="form-control" [(ngModel)]="data.tileSize" />
+                <input class="form-control" name="tileSize" [(ngModel)]="data.tileSize" />
             </div>
         </div>
 
@@ -65,14 +65,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label" i18n>Folder name</span>
                 </div>
-                <input class="form-control" [(ngModel)]="data.path" />
+                <input class="form-control" name="path" [(ngModel)]="data.path" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="capabilities_input">
                 <label class="capabilities_label control-label" i18n> <input type="checkbox"
-                    [(ngModel)]="data.registerMetadata" />Register metadata</label>
+                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />Register metadata</label>
             </div>
         </div>
         <hr />
@@ -85,14 +85,14 @@
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr>
-                    <td><input type="checkbox" [(ngModel)]="service.checked" /></td>
+                    <td><input type="checkbox" [(ngModel)]="service.checked" name="service" /></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-left: 1em">
-                        <hs.nested-layers-table layers="service.Layer"></hs.nested-layers-table>
+                        <hs-nested-layers-table [layers]="service.Layer"></hs-nested-layers-table>
                     </td>
                 </tr>
             </tbody>
