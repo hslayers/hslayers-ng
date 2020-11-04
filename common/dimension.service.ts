@@ -1,16 +1,9 @@
-import moment from 'moment';
-global.moment = moment;
+import moment = require('moment');
 import momentinterval from 'moment-interval/src/moment-interval';
+import {HsLogService} from './log/log.service';
 
-//TODO needs to be documented
-/**
- * @param $log
- */
 export class HsDimensionService {
-  constructor($log) {
-    'ngInject';
-    this.$log = $log;
-  }
+  constructor(private $log: HsLogService) {}
 
   prepareTimeSteps(step_string) {
     const step_array = step_string.split(',');
@@ -56,24 +49,24 @@ export class HsDimensionService {
   }
 
   hasNestedLayers(layer) {
-    if (angular.isUndefined(layer)) {
+    if (layer == undefined) {
       return false;
     }
-    return angular.isDefined(layer.Layer);
+    return layer.Layer !== undefined;
   }
 
   paramsFromDimensions(layer) {
     const tmp = {};
-    angular.forEach(layer.Dimension, (dimension) => {
+    for (const dimension of layer.Dimension) {
       if (dimension.value) {
         tmp[dimension.name] = dimension.value;
       }
-    });
+    }
     return tmp;
   }
 
   dimensionType(dimension) {
-    if (angular.isUndefined(dimension.type)) {
+    if (dimension.type == undefined) {
       return null;
     }
     return dimension.type;
@@ -87,13 +80,13 @@ export class HsDimensionService {
    * children and sets the possible dimension values used in dropdown.
    */
   fillDimensionValues(layer) {
-    angular.forEach(layer.Layer, (layer) => {
-      if (this.hasNestedLayers(layer)) {
-        this.fillDimensionValues(layer);
+    for (const sublayer of layer.Layer) {
+      if (this.hasNestedLayers(sublayer)) {
+        this.fillDimensionValues(sublayer);
       }
-      angular.forEach(layer.Dimension, (dimension) => {
+      for (const dimension of sublayer.Dimension) {
         dimension.values = this.getDimensionValues(dimension);
-      });
-    });
+      }
+    }
   }
 }

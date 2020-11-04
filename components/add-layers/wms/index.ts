@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import '../../../common/get-capabilities.module';
+import '../../../common/get-capabilities';
 import '../../utils';
 import {HsAddLayersWmsComponent} from './add-layers-wms.component';
 import {HsAddLayersWmsModule} from './add-layers-wms.module';

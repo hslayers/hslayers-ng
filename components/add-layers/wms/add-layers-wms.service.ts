@@ -389,7 +389,7 @@ export class HsAddLayersWmsService {
     this.hsWmsGetCapabilitiesService
       .requestGetCapabilities(url)
       .then((resp) => {
-        let ol_layers = HsWmsGetCapabilitiesService.service2layers(resp);
+        let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(resp);
         if (layerName) {
           ol_layers = ol_layers.filter(
             (layer) =>

@@ -3,10 +3,6 @@ import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.s
 import {
   HsCommonEndpointsServiceProvider,
   HsConfigProvider,
-  HsDimensionServiceProvider,
-  HsWfsGetCapabilitiesServiceProvider,
-  HsWmsGetCapabilitiesServiceProvider,
-  HsWmtsGetCapabilitiesServiceProvider,
 } from '../../ajs-upgraded-providers';
 import {HsCompositionsModule} from '../compositions';
 import {HsConfig} from '../../config.service';
@@ -126,10 +122,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
     TranslateService,
     HsAddLayersVectorService,
     HsConfigProvider,
-    HsWmsGetCapabilitiesServiceProvider,
-    HsWfsGetCapabilitiesServiceProvider,
-    HsWmtsGetCapabilitiesServiceProvider,
-    HsDimensionServiceProvider,
     {
       provide: Window,
       useValue: window,

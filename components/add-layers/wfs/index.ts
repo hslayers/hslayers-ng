@@ -1,4 +1,4 @@
-import '../../../common/get-capabilities.module';
+import '../../../common/get-capabilities';
 import '../../utils';
 import * as angular from 'angular';
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';

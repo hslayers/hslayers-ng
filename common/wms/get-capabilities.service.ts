@@ -1,32 +1,23 @@
 import {Attribution} from 'ol/control';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {HttpClient} from '@angular/common/http';
 import {Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {getPreferedFormat} from '../format-utils';
 
-/**
- * @param $http
- * @param HsMapService
- * @param HsUtilsService
- * @param $rootScope
- */
+import {Injectable} from '@angular/core';
+
+@Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService {
   constructor(
-    $http,
-    HsEventBusService,
-    HsMapService,
-    HsUtilsService,
-    $rootScope
-  ) {
-    'ngInject';
-    Object.assign(this, {
-      $http,
-      HsEventBusService,
-      HsMapService,
-      HsUtilsService,
-      $rootScope,
-    });
-  }
+    private HttpClient: HttpClient,
+    private HsEventBusService: HsEventBusService,
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService
+  ) {}
 
   /**
    * Get WMS service location without parameters from url string
@@ -59,7 +50,7 @@ export class HsWmsGetCapabilitiesService {
           .map((key) => {
             const val = obj[key];
 
-            if (angular.isArray(val)) {
+            if (Array.isArray(val)) {
               return val
                 .map((val2) => {
                   return (
@@ -83,49 +74,37 @@ export class HsWmsGetCapabilitiesService {
    * @param {string} service_url Raw Url localization of service
    * @returns {Promise} Promise object - Response to GetCapabalities request
    */
-  requestGetCapabilities(service_url) {
+  async requestGetCapabilities(service_url) {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
-    if (
-      angular.isUndefined(params.request) &&
-      angular.isUndefined(params.REQUEST)
-    ) {
+    if (params.request == undefined && params.REQUEST == undefined) {
       params.request = 'GetCapabilities';
-    } else if (angular.isDefined(params.request)) {
+    } else if (params.request != undefined) {
       params.request = 'GetCapabilities';
-    } else if (angular.isDefined(params.REQUEST)) {
+    } else if (params.REQUEST != undefined) {
       params.REQUEST = 'GetCapabilities';
     }
-    if (
-      angular.isUndefined(params.service) &&
-      angular.isUndefined(params.SERVICE)
-    ) {
+    if (params.service == undefined && params.SERVICE == undefined) {
       params.service = 'WMS';
     }
-    if (
-      angular.isUndefined(params.version) &&
-      angular.isUndefined(params.VERSION)
-    ) {
+    if (params.version == undefined && params.VERSION == undefined) {
       params.version = '1.3.0';
     }
     let url = [path, this.params2String(params)].join('?');
 
     url = this.HsUtilsService.proxify(url);
-    return new Promise((resolve, reject) => {
-      this.$http
-        .get(url)
-        .then((r) => {
-          this.HsEventBusService.owsCapabilitiesReceived.next({
-            type: 'WMS',
-            response: r,
-          });
-          resolve(r.data);
-        })
-        .catch((e) => {
-          reject(e);
-        });
-    });
+
+    try {
+      const r = await this.HttpClient.get(url).toPromise();
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'WMS',
+        response: r,
+      });
+      return r;
+    } catch (e) {
+      throw e;
+    }
   }
 
   /**
@@ -140,10 +119,7 @@ export class HsWmsGetCapabilitiesService {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
-    if (
-      angular.isUndefined(service.length) &&
-      angular.isDefined(service.Layer)
-    ) {
+    if (service.length == undefined && service.Layer! + undefined) {
       service = [service];
     }
     //const srss = caps.Capability.Layer.CRS;
@@ -221,7 +197,7 @@ export class HsWmsGetCapabilitiesService {
    */
   currentProjectionSupported(srss) {
     let found = false;
-    angular.forEach(srss, (val) => {
+    for (const val of srss) {
       if (
         this.HsMapService.map
           .getView()
@@ -231,7 +207,7 @@ export class HsWmsGetCapabilitiesService {
       ) {
         found = true;
       }
-    });
+    }
     return found;
   }
 }

@@ -1,12 +1,9 @@
-import * as angular from 'angular';
-
-import {Component} from '@angular/core';
-
-import '../../../common/get-capabilities.module';
-import '../../utils/utils.module';
 import VectorLayer from 'ol/layer/Vector';
+import {Component} from '@angular/core';
 import {bbox} from 'ol/loadingstrategy';
 
+import '../../../common/get-capabilities';
+import '../../utils';
 import {HsAddLayersWfsService} from './add-layers-wfs-service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
