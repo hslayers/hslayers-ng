@@ -207,15 +207,26 @@ export class HsDatasourcesService {
         });
       });
     } else if (whatToAdd.type == 'WFS') {
-      const layer = await this.hsAddLayersVectorService.addVectorLayer(
-        'wfs',
-        whatToAdd.link,
-        whatToAdd.title,
-        whatToAdd.abstract,
-        whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
-      );
-      this.hsAddLayersVectorService.fitExtent(layer);
+      this.datasetSelect('OWS');
+      if (ds.type == 'micka') {
+        setTimeout(() => {
+          this.hsEventBusService.owsFilling.next({
+            type: whatToAdd.type.toLowerCase(),
+            uri: decodeURIComponent(whatToAdd.link),
+            layer: layer.title || layer.name || '',
+          });
+        });
+      } else {
+        const layer = await this.hsAddLayersVectorService.addVectorLayer(
+          'wfs',
+          whatToAdd.link,
+          whatToAdd.title,
+          whatToAdd.abstract,
+          whatToAdd.projection,
+          {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
+        );
+        this.hsAddLayersVectorService.fitExtent(layer);
+      }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),

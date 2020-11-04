@@ -29,6 +29,7 @@ export class HsAddLayersComponent {
         {id: 'arcgis', text: 'ArcGIS Map Server'},
         {id: 'vector', text: 'Vector file (GeoJson, KML)'},
         {id: 'shp', text: 'Shapefile'},
+        {id: 'wfs', text: 'Web feature service (WFS)'},
       ];
     }
     this.type = '';
@@ -69,7 +70,7 @@ export class HsAddLayersComponent {
         template = '<hs.add-layers-wmts/>';
         break;
       case 'wfs':
-        template = '<hs.add-layers-wfs/>';
+        template = '<hs-add-layers-wfs/>';
         break;
       case 'vector':
         template = '<hs.add-layers-vector/>';
