@@ -1,3 +1,4 @@
+/* eslint-disable angular/on-watch */
 import * as extent from 'ol/extent';
 import {Select} from 'ol/interaction';
 import {Vector as VectorSource} from 'ol/source';
@@ -25,12 +26,10 @@ export default function (
   HsLayerUtilsService,
   $window,
   HsMeasureService,
-  HsUtilsService,
-  HsQueryWmsService
+  HsUtilsService
 ) {
   'ngInject';
   const me = this;
-
   this.selector = new Select({
     condition: click,
     multi:
@@ -82,6 +81,38 @@ export default function (
     }
     me.createFeatureAttributeList();
   });
+  $rootScope.$on(
+    'vectorQuery.featureSelected',
+    HsUtilsService.debounce(
+      (event, feature) => {
+        const layer = feature.getLayer(HsMapService.map);
+        if (angular.isDefined(layer) && layer.get('onFeatureSelected')) {
+          const originalFeature = me.getSelectedFeature(feature);
+          if (originalFeature) {
+            layer.get('onFeatureSelected')(originalFeature);
+          }
+        }
+      },
+      150,
+      false,
+      me
+    )
+  );
+  me.getSelectedFeature = function (feature) {
+    let original;
+    if (angular.isDefined(feature)) {
+      original = feature;
+      if (original.get('features') && original.get('features').length == 1) {
+        original = original
+          .get('features')
+          .map((feature) => feature)
+          .pop();
+      }
+    } else {
+      original = null;
+    }
+    return original;
+  };
   me.createFeatureAttributeList = () => {
     HsQueryBaseService.data.attributes.length = 0;
     const features = me.selector.getFeatures().getArray();
