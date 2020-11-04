@@ -211,7 +211,7 @@ export class HsUtilsService {
    * @returns {string} Joined Url query string
    * @description Create Url string from object with parameters without encoding
    */
-  paramsToURLWoEncode(array: Array<string>): string {
+  paramsToURLWoEncode(array): string {
     const pairs = [];
     for (const key in array) {
       if (array.hasOwnProperty(key)) {
