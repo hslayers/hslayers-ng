@@ -1,7 +1,7 @@
 <p><sub class="text-danger">*Note: if you link a file with coordinates other than World Geodetic System (lon/lat),
         please set the SRS in the "ADVANCED OPTIONS"</sub></p>
 <form class="form-horizontal" role="form">
-    <hs-add-layers-url [type]="vector" [url]="url"></hs-add-layers-url>
+    <hs-add-layers-url [type]="'vector'" [url]="url" [connect]="connect"></hs-add-layers-url>
 
     <div class="form-group">
         <label class="capabilities_label control-label">Title</label>
