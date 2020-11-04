@@ -11,7 +11,7 @@ import * as angular from 'angular';
 import compileDirective from '../../common/compile.directive';
 import {HsAddLayersComponent} from './add-layers.component';
 import {HsAddLayersModule} from './add-layers.module';
-import {HsAddLayersUrlComponent} from './add-layers-url.component';
+import {HsAddLayersUrlComponent} from './common/add-layers-url.component';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 import {downgrade} from '../../common/downgrader';

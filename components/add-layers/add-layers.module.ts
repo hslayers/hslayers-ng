@@ -6,7 +6,6 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsAddLayersArcGisModule} from './arcgis';
 import {HsAddLayersComponent} from './add-layers.component';
 import {HsAddLayersShpModule} from './shp';
-import {HsAddLayersUrlComponent} from './add-layers-url.component';
 import {HsAddLayersVectorModule} from './vector';
 import {HsAddLayersWfsModule} from './wfs/add-layers-wfs.module';
 import {HsAddLayersWmsModule} from './wms';
@@ -31,14 +30,12 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
   ],
   exports: [
     HsAddLayersComponent,
-    HsAddLayersUrlComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsResampleDialogComponent,
   ],
   declarations: [
     HsAddLayersComponent,
-    HsAddLayersUrlComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsResampleDialogComponent,
