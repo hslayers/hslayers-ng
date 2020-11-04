@@ -1,4 +1,4 @@
-import '../../../common/get-capabilities.module';
+import '../../../common/get-capabilities';
 import '../../utils/utils.module';
 import * as xml2Json from 'xml-js';
 import GML3 from 'ol/format/GML3';

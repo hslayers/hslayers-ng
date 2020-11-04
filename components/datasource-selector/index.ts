@@ -1,7 +1,5 @@
 import '../../common/widgets/';
-import '../layout/layout.module';
-import '../map/';
-import '../permalink';
+import '../add-layers/';
 import * as angular from 'angular';
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
 import {HsDatasourcesComponent} from './datasource-selector.component';
