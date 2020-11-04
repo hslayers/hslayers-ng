@@ -4,6 +4,8 @@ import * as angular from 'angular';
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
 import {HsAddLayersWfsModule} from './add-layers-wfs.module';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsAddLayersWfsService} from './add-layers-wfs-service';
+
 import {downgrade} from '../../../common/downgrader';
 
 export const downgradedAddLayersWfsModule = downgrade(HsAddLayersWfsModule);
@@ -25,7 +27,10 @@ angular
     'hs.addLayersWfs.capabilitiesErrorDirective',
     HsGetCapabilitiesErrorComponent
   )
-
+  .service(
+    'HsAddLayersWfsService',
+    downgradeInjectable(HsAddLayersWfsService)
+  )
   /**
    * @name hs.addLayersWfs
    * @ngdoc controller
