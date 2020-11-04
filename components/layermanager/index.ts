@@ -1,4 +1,4 @@
-import '../../common/get-capabilities.module';
+import '../../common/get-capabilities';
 import '../draw/draw.module';
 import '../layout/';
 import '../legend';

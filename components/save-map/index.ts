@@ -1,6 +1,6 @@
 /* eslint-disable angular/file-name */
 import '../../common/endpoints/endpoints.module';
-import '../../common/get-capabilities.module';
+import '../../common/get-capabilities';
 import '../../common/layman/';
 import '../../common/widgets/';
 import '../utils';

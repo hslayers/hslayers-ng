@@ -163,7 +163,7 @@ export class HsLayerManagerMetadataService {
       )
         .then((capabilities_xml) => {
           const parser = new WMTSCapabilities();
-          const caps = parser.read(capabilities_xml.data);
+          const caps = parser.read(capabilities_xml);
           layer.setProperties(caps);
           if (layer.get('Copyright')) {
             layer.set('Attribution', {

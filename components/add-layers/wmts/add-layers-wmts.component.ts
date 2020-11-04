@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import {Component} from '@angular/core';
 
-import '../../../common/get-capabilities.module';
+import '../../../common/get-capabilities';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {addAnchors} from '../../../common/attribution-utils';
@@ -49,7 +49,7 @@ export class HsAddLayersWmtsComponent {
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       ({type, response}) => {
         if (type === 'WMTS') {
-          this.capabilitiesReceived(response.data);
+          this.capabilitiesReceived(response);
         }
       }
     );

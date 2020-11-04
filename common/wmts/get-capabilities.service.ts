@@ -1,59 +1,56 @@
-import '../../components/utils';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {WMTS} from 'ol/source';
 import {getPreferedFormat} from '../format-utils';
 
-/**
- * @param $http
- * @param HsMapService
- * @param HsUtilsService
- * @param $rootScope
- * @param $log
- */
-export const HsArcgisGetCapabilitiesService = function (
-  $http,
-  HsEventBusService,
-  HsMapService,
-  HsUtilsService,
-  $rootScope,
-  $log
-) {
-  'ngInject';
-  const me = this;
+@Injectable({providedIn: 'root'})
+export class HsWmtsGetCapabilitiesService {
+  service_url: any;
+  constructor(
+    private HttpClient: HttpClient,
+    private HsEventBusService: HsEventBusService,
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService
+  ) {}
 
   /**
-   * Get WMS service location without parameters from url string
+   * Get WMTS service location without parameters from url string
    *
-   * @memberof HsArcgisGetCapabilitiesService
+   * @memberof HsWmtsGetCapabilitiesService
    * @function getPathFromUrl
    * @param {string} str Url string to parse
-   * @returns {string} WMS service Url
+   * @returns {string} WMTS service Url
    */
-  this.getPathFromUrl = function (str) {
+  getPathFromUrl(str) {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
       return str;
     }
-  };
+  }
 
   /**
    * TODO: Probably the same as utils.paramsToURL
-   * Create WMS parameter string from parameter object
+   * Create WMTS parameter string from parameter object
    *
-   * @memberof HsArcgisGetCapabilitiesService
+   * @memberof HsWmtsGetCapabilitiesService
    * @function param2String
    * @param {object} obj Object with stored WNS service parameters
    * @returns {string} Parameter string or empty string if no object given
    */
-  this.params2String = function (obj) {
+  params2String(obj) {
     return obj
       ? Object.keys(obj)
           .map((key) => {
             const val = obj[key];
 
-            if (angular.isArray(val)) {
+            if (Array.isArray(val)) {
               return val
                 .map((val2) => {
                   return (
@@ -67,54 +64,61 @@ export const HsArcgisGetCapabilitiesService = function (
           })
           .join('&')
       : '';
-  };
+  }
 
   /**
-   * Parse added service url and sends GetCapabalities request to WMS service
+   * Parse added service url and sends GetCapabalities request to WMTS service
    *
-   * @memberof HsArcgisGetCapabilitiesService
+   * @memberof HsWmtsGetCapabilitiesService
    * @function requestGetCapabilities
    * @param {string} service_url Raw Url localization of service
-   * @returns {Promise} Promise object - Response to GetCapabalities request
+   * @returns {Promise} Promise object -  Response to GetCapabalities request
    */
-  this.requestGetCapabilities = function (service_url) {
+  async requestGetCapabilities(service_url): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = HsUtilsService.getParamsFromUrl(service_url);
+    const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
-    params.f = 'json';
-    let url = [path, me.params2String(params)].join('?');
+    if (params.request == undefined && params.REQUEST == undefined) {
+      params.request = 'GetCapabilities';
+    } else if (params.request != undefined) {
+      params.request = 'GetCapabilities';
+    } else if (params.REQUEST != undefined) {
+      params.REQUEST = 'GetCapabilities';
+    }
+    if (params.service == undefined && params.SERVICE == undefined) {
+      params.service = 'wmts';
+    }
+    if (params.version == undefined && params.VERSION == undefined) {
+      params.version = '1.3.0';
+    }
+    let url = [path, this.params2String(params)].join('?');
 
-    url = HsUtilsService.proxify(url);
-    return new Promise((resolve, reject) => {
-      $http
-        .get(url)
-        .then((r) => {
-          HsEventBusService.owsCapabilitiesReceived.next({
-            type: 'ArcGIS',
-            response: r,
-          });
-          resolve(r.data);
-        })
-        .catch((e) => {
-          reject(e);
-        });
+    url = this.HsUtilsService.proxify(url);
+    const r = await this.HttpClient.get(url).toPromise();
+
+    this.HsEventBusService.owsCapabilitiesReceived.next({
+      type: 'WMTS',
+      response: r,
     });
-  };
+    return r;
+  }
 
   /**
    * Load all layers of selected service to the map
    *
-   * @memberof HsArcgisGetCapabilitiesService
+   * @memberof HsWmtsGetCapabilitiesService
    * @function service2layers
-   * @param {string} caps Xml response of GetCapabilities of selected service
+   * @param {string} capabilities_xml Xml response of GetCapabilities of selected service
    * @returns {Ol.collection} List of layers from service
    */
-  this.service2layers = function (caps) {
-    const service = caps.layers;
-    //onst srss = caps.spatialReference.wkid;
-    const image_formats = caps.supportedImageFormatTypes.split(',');
-    const query_formats = caps.supportedQueryFormats
-      ? caps.supportedQueryFormats.split(',')
+  service2layers(capabilities_xml) {
+    const parser = new WMTSCapabilities();
+    const caps = parser.read(capabilities_xml);
+    const service = caps.Capability.Layer;
+    //const srss = caps.Capability.Layer.CRS;
+    const image_formats = caps.Capability.Request.GetMap.Format;
+    const query_formats = caps.Capability.Request.GetFeatureInfo
+      ? caps.Capability.Request.GetFeatureInfo.Format
       : [];
     const image_format = getPreferedFormat(image_formats, [
       'image/png; mode=8bit',
@@ -123,19 +127,16 @@ export const HsArcgisGetCapabilitiesService = function (
       'image/jpeg',
     ]);
     const query_format = getPreferedFormat(query_formats, [
-      'application/vnd.esri.wms_featureinfo_xml',
+      'application/vnd.esri.wmts_featureinfo_xml',
       'application/vnd.ogc.gml',
-      'application/vnd.ogc.wms_xml',
+      'application/vnd.ogc.wmts_xml',
       'text/plain',
       'text/html',
     ]);
 
     const tmp = [];
-    angular.forEach(service, function () {
-      $log.log('Load service', this);
-      angular.forEach(this.Layer, function () {
-        const layer = this;
-        $log.log('Load service', this);
+    for (const subservice of service) {
+      for (const layer of subservice.Layer) {
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
@@ -151,7 +152,7 @@ export const HsArcgisGetCapabilitiesService = function (
         }
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
-          source: new TileWMS({
+          source: new WMTS({
             url:
               caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
             attributions: attributions,
@@ -171,35 +172,33 @@ export const HsArcgisGetCapabilitiesService = function (
           MetadataURL: layer.MetadataURL,
           BoundingBox: layer.BoundingBox,
         });
-        HsMapService.proxifyLayerLoader(new_layer, true);
         tmp.push(new_layer);
-      });
-    });
+      }
+    }
     return tmp;
-  };
+  }
 
   /**
    * Test if current map projection is in supported projection list
    *
-   * @memberof HsArcgisGetCapabilitiesService
+   * @memberof HsWmtsGetCapabilitiesService
    * @function currentProjectionSupported
    * @param {Array} srss List of supported projections
    * @returns {boolean} True if map projection is in list, otherwise false
    */
-  this.currentProjectionSupported = function (srss) {
+  currentProjectionSupported(srss) {
     let found = false;
-    angular.forEach(srss, (val) => {
+    for (const val of srss) {
       if (
-        HsMapService.map.getView().getProjection().getCode().toUpperCase() ==
-        val.toUpperCase()
+        this.HsMapService.map
+          .getView()
+          .getProjection()
+          .getCode()
+          .toUpperCase() == val.toUpperCase()
       ) {
         found = true;
       }
-    });
+    }
     return found;
-  };
-
-  return me;
-};
-
-export default HsArcgisGetCapabilitiesService;
+  }
+}

@@ -1,27 +1,19 @@
-/**
- * @param $http
- * @param HsMapService
- * @param HsUtilsService
- * @param $rootScope
- */
-export class HsWfsGetCapabilitiesService {
-  constructor(
-    $http,
-    HsEventBusService,
-    HsMapService,
-    HsUtilsService,
-    $rootScope
-  ) {
-    'ngInject';
-    Object.assign(this, {
-      $http,
-      HsEventBusService,
-      HsMapService,
-      HsUtilsService,
-      $rootScope,
-    });
-  }
+import '../../components/utils';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
+@Injectable({providedIn: 'root'})
+export class HsWfsGetCapabilitiesService {
+  service_url: any;
+  constructor(
+    private HttpClient: HttpClient,
+    private HsEventBusService: HsEventBusService,
+    private HsMapService: HsMapService,
+    private HsUtilsService: HsUtilsService,
+  ) {}
   /**
    * Get WFS service location without parameters from url string
    *
@@ -50,22 +42,22 @@ export class HsWfsGetCapabilitiesService {
   params2String(obj) {
     return obj
       ? Object.keys(obj)
-        .map((key) => {
-          const val = obj[key];
+          .map((key) => {
+            const val = obj[key];
 
-          if (angular.isArray(val)) {
-            return val
-              .map((val2) => {
-                return (
-                  encodeURIComponent(key) + '=' + encodeURIComponent(val2)
-                );
-              })
-              .join('&');
-          }
+            if (Array.isArray(val)) {
+              return val
+                .map((val2) => {
+                  return (
+                    encodeURIComponent(key) + '=' + encodeURIComponent(val2)
+                  );
+                })
+                .join('&');
+            }
 
-          return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-        })
-        .join('&')
+            return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+          })
+          .join('&')
       : '';
   }
 
@@ -77,44 +69,35 @@ export class HsWfsGetCapabilitiesService {
    * @param {string} service_url Raw Url localization of service
    * @returns {Promise} Promise object -  Response to GetCapabalities request
    */
-  requestGetCapabilities(service_url) {
+  async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
     this.service_url = service_url;
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
-    if (
-      angular.isUndefined(params.request) &&
-      angular.isUndefined(params.REQUEST)
-    ) {
+    if (params.request == undefined && params.REQUEST == undefined) {
       params.request = 'GetCapabilities';
-    } else if (angular.isDefined(params.request)) {
+    } else if (params.request !== undefined) {
       params.request = 'GetCapabilities';
-    } else if (angular.isDefined(params.REQUEST)) {
+    } else if (params.REQUEST !== undefined) {
       params.REQUEST = 'GetCapabilities';
     }
-    if (
-      angular.isUndefined(params.service) &&
-      angular.isUndefined(params.SERVICE)
-    ) {
+    if (params.service == undefined && params.SERVICE == undefined) {
       params.service = 'WFS';
     }
-    if (
-      angular.isUndefined(params.version) &&
-      angular.isUndefined(params.VERSION)
-    ) {
+    if (params.version == undefined && params.VERSION == undefined) {
       params.version = '1.1.0';
     }
     let url = [path, this.params2String(params)].join('?');
 
     url = this.HsUtilsService.proxify(url);
-    const promise = this.$http.get(url);
-    promise.then((r) => {
-      this.HsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WFS',
-        response: r,
-      });
+    const r = await this.HttpClient.get(url).toPromise();
+
+    this.HsEventBusService.owsCapabilitiesReceived.next({
+      type: 'WFS',
+      response: r,
     });
-    return promise;
+
+    return r;
   }
 
   /**
@@ -125,9 +108,9 @@ export class HsWfsGetCapabilitiesService {
    * @param {Array} srss List of supported projections
    * @returns {boolean} True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss) {
+  currentProjectionSupported(srss): boolean {
     let found = false;
-    angular.forEach(srss, (val) => {
+    for (const val of srss) {
       if (
         val
           .toUpperCase()
@@ -142,20 +125,15 @@ export class HsWfsGetCapabilitiesService {
       ) {
         found = true;
       }
-    });
+    }
     return found;
   }
 
   /**
    * (DEPRECATED ?)
-   *
-   * @memberof HsWfsGetCapabilitiesService
-   * @function getUrl
-   * @param {} url
-   * @param {} use_proxy
    */
-  getUrl(url, use_proxy) {
-    if (typeof use_proxy == 'undefined' || !use_proxy) {
+  getUrl(url: string, use_proxy?: boolean): string {
+    if (use_proxy == undefined || !use_proxy) {
       return url;
     } else {
       return (
