@@ -3,8 +3,9 @@ import '../../utils';
 import * as angular from 'angular';
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
 import {HsAddLayersWfsModule} from './add-layers-wfs.module';
-import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsAddLayersWfsService} from './add-layers-wfs-service';
+import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
 import {downgrade} from '../../../common/downgrader';
 
@@ -27,18 +28,17 @@ angular
     'hs.addLayersWfs.capabilitiesErrorDirective',
     HsGetCapabilitiesErrorComponent
   )
-  .service(
-    'HsAddLayersWfsService',
-    downgradeInjectable(HsAddLayersWfsService)
-  )
+  .service('HsAddLayersWfsService', downgradeInjectable(HsAddLayersWfsService))
   /**
    * @name hs.addLayersWfs
    * @ngdoc controller
    * @memberof hs.addLayersWfs
    * @description Controller for displaying and setting parameters for Wfs and its layers, which will be added to map afterwards
    */
-  .component('hs.addLayersWfs', HsAddLayersWfsComponent);
-
+  .directive(
+    'hs.addLayersWfs',
+    downgradeComponent({component: HsAddLayersWfsComponent})
+  );
 angular.module('hs.addLayersWfs', [downgradedAddLayersWfsModule]);
 
 export {HsAddLayersWfsModule} from './add-layers-wfs.module';
