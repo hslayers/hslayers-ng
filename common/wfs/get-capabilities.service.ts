@@ -12,7 +12,7 @@ export class HsWfsGetCapabilitiesService {
     private HttpClient: HttpClient,
     private HsEventBusService: HsEventBusService,
     private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
+    private HsUtilsService: HsUtilsService
   ) {}
   /**
    * Get WFS service location without parameters from url string
@@ -90,7 +90,9 @@ export class HsWfsGetCapabilitiesService {
     let url = [path, this.params2String(params)].join('?');
 
     url = this.HsUtilsService.proxify(url);
-    const r = await this.HttpClient.get(url).toPromise();
+    const r = await this.HttpClient.get(url, {
+      responseType: 'text',
+    }).toPromise();
 
     this.HsEventBusService.owsCapabilitiesReceived.next({
       type: 'WFS',
@@ -131,6 +133,9 @@ export class HsWfsGetCapabilitiesService {
 
   /**
    * (DEPRECATED ?)
+   *
+   * @param url
+   * @param use_proxy
    */
   getUrl(url: string, use_proxy?: boolean): string {
     if (use_proxy == undefined || !use_proxy) {

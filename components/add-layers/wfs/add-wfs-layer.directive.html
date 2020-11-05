@@ -1,5 +1,5 @@
 <form class="form-horizontal pt-1" name="frmConnect" role="form">
-    <hs-add-layers-url type="wfs" [url]="url" connect="connect"></hs-add-layers-url>
+    <hs-add-layers-url type="wfs" [(url)]="url" [(connect)]="connect"></hs-add-layers-url>
     <div  [hidden]="!showDetails" class="card">
 
         <div class="card-title text-center font-weight-bold">{{title}}</div>

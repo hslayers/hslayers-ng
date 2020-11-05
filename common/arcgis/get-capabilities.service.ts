@@ -84,7 +84,9 @@ export class HsArcgisGetCapabilitiesService {
 
     url = this.HsUtilsService.proxify(url);
     try {
-      const r = await this.HttpClient.get(url).toPromise();
+      const r = await this.HttpClient.get(url, {
+        responseType: 'text',
+      }).toPromise();
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'ArcGIS',
         response: r,

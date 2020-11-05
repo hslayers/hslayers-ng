@@ -94,7 +94,9 @@ export class HsWmtsGetCapabilitiesService {
     let url = [path, this.params2String(params)].join('?');
 
     url = this.HsUtilsService.proxify(url);
-    const r = await this.HttpClient.get(url).toPromise();
+    const r = await this.HttpClient.get(url,{
+      responseType: 'text',
+    }).toPromise();
 
     this.HsEventBusService.owsCapabilitiesReceived.next({
       type: 'WMTS',
