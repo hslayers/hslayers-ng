@@ -14,7 +14,7 @@ import {HsHistoryListService} from './history-list.service';
 })
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input
-  @Output() clicked = new EventEmitter<string>(); //output
+  @Output() historyUrlSelected = new EventEmitter<string>(); //output
   historyDropdownVisible = false;
   items: Array<string>;
   constructor(private HsHistoryListService: HsHistoryListService) {}
@@ -24,6 +24,6 @@ export class HsHistoryListComponent implements OnChanges {
     );
   }
   historyUrlClicked(value: string): void {
-    this.clicked.emit(value);
+    this.historyUrlSelected.emit(value);
   }
 }

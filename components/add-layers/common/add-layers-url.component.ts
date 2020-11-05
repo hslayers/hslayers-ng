@@ -5,10 +5,11 @@ import {HsHistoryListService} from '../../../common/history-list/history-list.se
   selector: 'hs-add-layers-url',
   template: require('./add-layers-url.directive.html'),
 })
-export class HsAddLayersUrlComponent{
+export class HsAddLayersUrlComponent {
   items;
   what;
   @Input() type: any; // @type'; TODO: comes from another scope
+
   @Input() url: any;
   @Output() urlChange = new EventEmitter<any>();
 
@@ -25,5 +26,6 @@ export class HsAddLayersUrlComponent{
 
   historySelected(url): void {
     this.url = url;
+    this.change();
   }
 }
