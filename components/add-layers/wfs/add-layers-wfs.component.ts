@@ -99,10 +99,10 @@ export class HsAddLayersWfsComponent {
     this.showDetails = false;
   }
 
-  connect() {
+  connect = () => {
     this.HsWfsGetCapabilitiesService.requestGetCapabilities(this.url);
     this.showDetails = true;
-  }
+  };
 
   /**
    * Connect to service of specified Url

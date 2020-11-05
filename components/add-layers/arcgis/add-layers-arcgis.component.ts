@@ -44,7 +44,7 @@ export class HsAddLayersArcGisComponent {
     this.showDetails = false;
   }
 
-  connect(layerToSelect): void {
+  connect = (layerToSelect): void => {
     this.hsHistoryListService.addSourceHistory('Arcgis', this.url);
     this.hsArcgisGetCapabilitiesService
       .requestGetCapabilities(this.url)
