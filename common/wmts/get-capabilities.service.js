@@ -71,7 +71,7 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
    * @returns {Promise} Promise object -  Response to GetCapabalities request
    */
   this.requestGetCapabilities = function (service_url) {
-    service_url = service_url.replace('&amp;', '&');
+    service_url = service_url.replace(/&amp;/g, '&');
     const params = HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (

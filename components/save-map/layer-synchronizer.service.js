@@ -16,7 +16,8 @@ export default function (
   HsCommonEndpointsService,
   $compile,
   $rootScope,
-  HsLayoutService
+  HsLayoutService,
+  HsMapService
 ) {
   'ngInject';
   const me = this;
@@ -35,10 +36,21 @@ export default function (
           element: lyr,
         });
       });
+      $rootScope.$on('authChange', (endpoint) => {
+        me.reloadLayersOnAuthChange();
+      });
       me.crs = map.getView().getProjection().getCode();
       HsLaymanService.crs = me.crs;
     },
 
+    reloadLayersOnAuthChange() {
+      for (const layer of me.syncedLayers) {
+        const layerSource = layer.getSource();
+        layer.set('laymanLayerDescriptor', undefined);
+        layerSource.clear();
+        me.pull(layer, layerSource);
+      }
+    },
     /**
      * Start synchronizing layer to database
      *
@@ -46,13 +58,19 @@ export default function (
      * @function addLayer
      * @param {object} layer Layer to add
      */
-    addLayer: async function (layer) {
-      const synchronizable = await me.startMonitoring(layer);
-      if (synchronizable) {
+    addLayer(layer) {
+      if (me.isLayerSynchronizable(layer)) {
         me.syncedLayers.push(layer);
+        me.startMonitoringIfNeeded(layer);
       }
     },
 
+    isLayerSynchronizable(layer) {
+      return (
+        HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+        layer.get('synchronize') === true
+      );
+    },
     /**
      * Keep track of synchronized vector layers by listening to
      * VectorSources change events. Initialy also get features from server
@@ -62,17 +80,33 @@ export default function (
      * @param {object} layer Layer to add
      * @returns {boolean} If layer is synchronizable
      */
-    async startMonitoring(layer) {
-      if (
-        HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-        layer.get('synchronize') === true
-      ) {
-        const layerSource = layer.getSource();
-        await me.pull(layer, layerSource);
-        return true;
-      }
+    async startMonitoringIfNeeded(layer) {
+      const layerSource = layer.getSource();
+      await me.pull(layer, layerSource);
+      layerSource.forEachFeature((f) => me.observeFeature(f));
+      layerSource.on('addfeature', (e) => {
+        me.sync([e.feature], [], [], layer);
+      });
+      layerSource.on('removefeature', (e) => {
+        me.sync([], [], [e.feature], layer);
+      });
+      return true;
     },
 
+    observeFeature(f) {
+      f.getGeometry().on(
+        'change',
+        HsUtilsService.debounce(
+          (geom) => {
+            me.handleFeatureChange(f);
+          },
+          debounceInterval,
+          false,
+          me
+        )
+      );
+      f.on('propertychange', (e) => me.handleFeatureChange(e.target));
+    },
     /**
      * Get features from Layman endpoint as WFS string, parse and add
      * them to Openlayers VectorSource
@@ -82,93 +116,76 @@ export default function (
      * @param {Ol.layer} layer Layer to get Layman friendly name for
      * @param {Ol.source} source Openlayers VectorSource to store features in
      */
-    pull(layer, source) {
-      layer.set('events-suspended', true);
+    async pull(layer, source) {
+      layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
+      const laymanEndpoints = (HsCommonEndpointsService.endpoints || []).filter(
+        (ds) => ds.type == 'layman'
+      );
+      if (laymanEndpoints.length > 0) {
+        const ds = laymanEndpoints[0];
+        layer.set('hs-layman-synchronizing', true);
+        const response = await HsLaymanService.pullVectorSource(
+          ds,
+          HsLaymanService.getLayerName(layer),
+          layer
+        );
+        let featureString;
+        if (response) {
+          featureString = response;
+        }
+        layer.set('hs-layman-synchronizing', false);
+        if (featureString) {
+          source.loading = true;
+          const format = new WFS();
+          featureString = featureString.replace(
+            /urn:x-ogc:def:crs:EPSG:3857/gm,
+            'EPSG:3857'
+          );
+          try {
+            const features = format.readFeatures(featureString);
+            source.addFeatures(features);
+            features.forEach((f) => this.observeFeature(f));
+          } catch (ex) {
+            console.warn(featureString, ex);
+          }
+          source.loading = false;
+        }
+      }
+      layer.set('events-suspended', (layer.get('events-suspended') || 0) - 1);
+    },
+
+    handleFeatureChange(feature) {
+      me.sync([], [feature], [], HsMapService.getLayerForFeature(feature));
+    },
+
+    /**
+     * @param inserted
+     * @param updated
+     * @param deleted
+     * @param layer
+     */
+    sync(inserted, updated, deleted, layer) {
+      if ((layer.get('events-suspended') || 0) > 0) {
+        return;
+      }
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
           layer.set('hs-layman-synchronizing', true);
-          HsLaymanService.pullVectorSource(
+          HsLaymanService.createWfsTransaction(
             ds,
+            inserted,
+            updated,
+            deleted,
             HsLaymanService.getLayerName(layer),
             layer
           ).then((response) => {
-            let featureString;
-            if (response) {
-              featureString = response.data;
+            if (response.indexOf('Exception') > -1) {
+              me.displaySyncErrorDialog(response);
             }
             layer.set('hs-layman-synchronizing', false);
-            if (featureString) {
-              source.loading = true;
-              const format = new WFS();
-              featureString = featureString.replaceAll(
-                'urn:x-ogc:def:crs:EPSG:3857',
-                'EPSG:3857'
-              );
-              source.addFeatures(format.readFeatures(featureString));
-              source.loading = false;
-            }
-            /**
-             * @param e
-             */
-            function handleFeatureChange(e) {
-              sync([], [e.target || e], []);
-            }
-            /**
-             * @param inserted
-             * @param updated
-             * @param deleted
-             */
-            function sync(inserted, updated, deleted) {
-              if (layer.get('events-suspended')) {
-                return;
-              }
-              (HsCommonEndpointsService.endpoints || [])
-                .filter((ds) => ds.type == 'layman')
-                .forEach((ds) => {
-                  layer.set('hs-layman-synchronizing', true);
-                  HsLaymanService.createWfsTransaction(
-                    ds,
-                    inserted,
-                    updated,
-                    deleted,
-                    HsLaymanService.getLayerName(layer),
-                    layer
-                  ).then((response) => {
-                    if (response.data.indexOf('Exception') > -1) {
-                      me.displaySyncErrorDialog(response.data);
-                    }
-                    layer.set('hs-layman-synchronizing', false);
-                  });
-                });
-            }
-            /**
-             * @param f
-             */
-            function observeFeature(f) {
-              f.getGeometry().on(
-                'change',
-                HsUtilsService.debounce(
-                  (geom) => {
-                    handleFeatureChange(f);
-                  },
-                  debounceInterval,
-                  false,
-                  me
-                )
-              );
-              f.on('propertychange', handleFeatureChange);
-            }
-            source.forEachFeature(observeFeature);
-            source.on('addfeature', (e) => {
-              sync([e.feature], [], []);
-            });
-            source.on('removefeature', (e) => {
-              sync([], [], [e.feature]);
-            });
           });
         });
-      layer.set('events-suspended', false);
     },
 
     displaySyncErrorDialog(error) {
