@@ -131,7 +131,7 @@ export default function (
         );
         let featureString;
         if (response) {
-          featureString = response;
+          featureString = response.data;
         }
         layer.set('hs-layman-synchronizing', false);
         if (featureString) {
@@ -180,8 +180,8 @@ export default function (
             HsLaymanService.getLayerName(layer),
             layer
           ).then((response) => {
-            if (response.indexOf('Exception') > -1) {
-              me.displaySyncErrorDialog(response);
+            if (response.data.indexOf('Exception') > -1) {
+              me.displaySyncErrorDialog(response.data);
             }
             layer.set('hs-layman-synchronizing', false);
           });
