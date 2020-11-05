@@ -16,10 +16,7 @@ export default function ($http, $rootScope) {
               if (endpoint.user != res.data.username) {
                 endpoint.user = res.data.username;
                 somethingChanged = true;
-                $rootScope.$broadcast(
-                  'datasource-selector.layman_auth',
-                  endpoint
-                );
+                $rootScope.$broadcast('authChange', endpoint);
               }
             } else {
               if (endpoint.user != endpoint.originalConfiguredUser) {
@@ -42,6 +39,18 @@ export default function ($http, $rootScope) {
         ['anonymous', 'browser'].indexOf(endpoint.user) > -1
       ) {
         await me.getCurrentUser(endpoint);
+      }
+    },
+
+    async logout(endpoint) {
+      const url = `${endpoint.url}/authn/logout`;
+      try {
+        $http.get(url).then((response) => {
+          endpoint.user = 'anonymous';
+          $rootScope.$broadcast('authChange', endpoint);
+        });
+      } catch (ex) {
+        console.warn(ex);
       }
     },
   });

@@ -166,7 +166,7 @@ export default function (
         function sortLayersByPosition() {
           scope.filtered_layers = filterLayers();
           const minus = scope.order().indexOf('-') == 0;
-          const attribute = scope.order().replaceAll('-', '');
+          const attribute = scope.order().split('-').join('');
           scope.filtered_layers.sort((a, b) => {
             var a = a.layer.get(attribute);
             var b = b.layer.get(attribute);

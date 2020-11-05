@@ -192,6 +192,7 @@ export default function (
      * @memberof HsLaymanService
      * @public
      * @param {object} endpoint Endpoint description
+     * @param _endpoint
      * @param {Array} featuresToAdd Array of features to add
      * @param {Array} featuresToUpd Array of features to update
      * @param {Array} featuresToDel Array of features to delete
@@ -201,13 +202,17 @@ export default function (
      * @description Insert a feature
      */
     createWfsTransaction(
-      endpoint,
+      _endpoint,
       featuresToAdd,
       featuresToUpd,
       featuresToDel,
       name,
       layer
     ) {
+      /* Clone because endpoint.user can change while the request is processed
+    and then description might get cached even if anonymous user was set before.
+    Should not cache anonymous layers, because layer can be authorized any moment */
+      const endpoint = {..._endpoint};
       return new Promise((resolve, reject) => {
         me.checkIfLayerExists(
           endpoint,
@@ -216,7 +221,7 @@ export default function (
         )
           .then((layerDesc) => {
             if (layerDesc && layerDesc.name) {
-              layer.set('laymanLayerDescriptor', layerDesc);
+              this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
               try {
                 const wfsFormat = new WFS();
                 const serializedFeature = wfsFormat.writeTransaction(
@@ -257,9 +262,15 @@ export default function (
       });
     },
 
+    cacheLaymanDescriptor(layer, desc, endpoint) {
+      if (endpoint.user != 'browser') {
+        layer.set('laymanLayerDescriptor', desc);
+      }
+    },
     /**
      * @ngdoc method
      * @function pullVectorSource
+     * @param _endpoint
      * @param layer
      * @memberof HsLaymanService
      * @public
@@ -270,7 +281,11 @@ export default function (
      * with features for a specified layer
      * @description Retrieve layers features from server
      */
-    pullVectorSource(endpoint, layerName, layer) {
+    pullVectorSource(_endpoint, layerName, layer) {
+      /* Clone because endpoint.user can change while the request is processed
+    and then description might get cached even if anonymous user was set before.
+    Should not cache anonymous layers, because layer can be authorized any moment */
+      const endpoint = {..._endpoint};
       return new Promise((resolve, reject) => {
         me.describeLayer(endpoint, layerName).then((descr) => {
           if (descr === null) {
@@ -278,7 +293,7 @@ export default function (
             return;
           }
           if (descr && descr.name) {
-            layer.set('laymanLayerDescriptor', descr);
+            this.cacheLaymanDescriptor(layer, descr, endpoint);
           }
           if (
             descr.wfs.status == 'NOT_AVAILABLE' &&

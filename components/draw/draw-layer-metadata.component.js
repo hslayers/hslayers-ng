@@ -14,7 +14,7 @@ export default {
     'ngInject';
     this.modalVisible = true;
     const vm = this;
-    $scope.$on('datasource-selector.layman_auth', (endpoint) => {
+    $scope.$on('authChange', (endpoint) => {
       vm.endpoint = endpoint;
     });
     $timeout(() => {

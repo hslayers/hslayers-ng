@@ -209,7 +209,7 @@ export default function (
                 : iframe.contentWindow.document;
               innerDoc.querySelector(
                 '.cesium-infoBox-description'
-              ).innerHTML = s.replaceAll('\n', '<br/>');
+              ).innerHTML = s.replace(/\n/gm, '<br/>');
               iframe.style.height = 200 + 'px';
             }, 1000);
           }

@@ -6,7 +6,7 @@ export default {
   controller: function ($scope) {
     'ngInject';
     this.modalVisible = true;
-    $scope.$on('datasource-selector.layman_auth', () => {
+    $scope.$on('authChange', () => {
       this.modalVisible = false;
     });
   },

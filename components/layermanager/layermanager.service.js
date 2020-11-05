@@ -733,7 +733,6 @@ export default function (
       cur_res = HsMapService.map.getView().getResolution();
     }
     me.currentResolution = cur_res;
-    console.log(cur_res, lyr.getMaxResolution());
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
     );

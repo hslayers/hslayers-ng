@@ -85,7 +85,7 @@ export default function (
     loadUrl: function (url, overwrite, callback, pre_parse) {
       return new Promise((resolve, reject) => {
         me.current_composition_url = url;
-        url = url.replace('&amp;', '&');
+        url = url.replace(/&amp;/g, '&');
         url = HsUtilsService.proxify(url);
 
         if (url.includes('.wmc')) {
