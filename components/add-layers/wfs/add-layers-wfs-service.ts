@@ -125,7 +125,7 @@ export class HsAddLayersWfsService {
   parseCapabilities(response) {
     this.loadingFeatures = false;
 
-    let caps: any = xml2Json.xml2js(response.data, {compact: true});
+    let caps: any = xml2Json.xml2js(response, {compact: true});
     if (caps['wfs:WFS_Capabilities']) {
       caps = caps['wfs:WFS_Capabilities'];
     } else {
