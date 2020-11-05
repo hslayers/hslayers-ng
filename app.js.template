@@ -30,7 +30,6 @@ var module = angular.module('hs', [
     'hs.datasource_selector',
     'hs.save-map',
     'hs.addLayers',
-    'gettext',
     'hs.compositions',
     'hs.info'
 ]);

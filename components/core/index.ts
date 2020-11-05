@@ -23,7 +23,6 @@ import '../query';
 import '../save-map/';
 import '../styles';
 import '../toolbar';
-import '../translations/js/translations';
 import '../trip_planner';
 import '../utils';
 import {HsCoreModule} from './core.module';
@@ -43,7 +42,6 @@ export const downgradedCoreModule = downgrade(HsCoreModule);
 angular
   .module(downgradedCoreModule, [
     'hs.map',
-    'gettext',
     'hs.drag',
     'hs.language',
     'hs.geolocation',
