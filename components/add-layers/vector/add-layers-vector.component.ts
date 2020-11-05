@@ -34,7 +34,7 @@ export class HsAddLayersVectorComponent {
       {extractStyles: this.extract_styles}
     );
     this.HsAddLayersVectorService.fitExtent(layer);
-    HsLayoutService.setMainPanel('layermanager');
+    this.HsLayoutService.setMainPanel('layermanager');
     return layer;
   }
 }
