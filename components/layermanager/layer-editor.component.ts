@@ -374,23 +374,24 @@ export class HsLayerEditorComponent {
    * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
    * @returns {string} Title
    */
-  set title(newTitle: string | false) {
+  set title(newTitle: string) {
+    const newLayerTitle = newTitle.trim();
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
     }
-    layer.title = newTitle;
+    layer.title = newLayerTitle;
     this.HsLayerEditorService.layerTitleChange.next({
-      newTitle: newTitle,
-      layer: layer,
+      newTitle: newLayerTitle,
+      oldLayerTitle: layer.get('title'),
     });
-    layer.set('title', newTitle);
+    layer.set('title', newLayerTitle);
   }
 
-  get title(): string | false {
+  get title(): string {
     const layer = this.olLayer();
     if (layer == undefined) {
-      return false;
+      return;
     }
     return layer.get('title');
   }
