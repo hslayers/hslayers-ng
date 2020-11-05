@@ -1,5 +1,4 @@
-import * as unidecode from 'unidecode';
-
+import unidecode = require('unidecode');
 import {GeoJSON, WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
