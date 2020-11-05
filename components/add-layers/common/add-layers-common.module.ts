@@ -5,12 +5,13 @@ import {NgModule} from '@angular/core';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersUrlComponent} from './add-layers-url.component';
+import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, HsHistoryListModule],
   exports: [HsAddLayersUrlComponent],
   declarations: [HsAddLayersUrlComponent],
   providers: [],
 })
-export class HsAddLayersCommonModule { }
+export class HsAddLayersCommonModule {}
