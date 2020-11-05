@@ -17,7 +17,7 @@
             <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{attr.name}}<a href="#" style="float: right;" (click)="HsFeatureTableService.sortFeaturesBy(attr.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
             </th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
-                <span *ngIf="!attr.sanitizedValue && !attr.value.operations">
+                <span *ngIf="!attr.sanitizedValue && !attr.value?.operations">
                     <i>{{attr.value}}</i>
                 </span>
                 <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>

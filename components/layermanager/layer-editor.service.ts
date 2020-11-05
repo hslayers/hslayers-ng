@@ -1,3 +1,4 @@
+import BaseLayer from 'ol/layer/Base';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -10,15 +11,18 @@ import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
-
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorService {
   legendDescriptor: HsLegendDescriptor;
-
+  layerTitleChange: Subject<{
+    layer: BaseLayer;
+    newTitle: string | false;
+  }> = new Subject();
   constructor(
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
