@@ -62,7 +62,6 @@ export default angular
     'hs.datasource_selector',
     'hs.save-map',
     'hs.addLayers',
-    'gettext',
     'hs.compositions',
     'hs.info',
     'hs.styles',
