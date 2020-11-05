@@ -13,7 +13,6 @@ import {FormsModule} from '@angular/forms';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsComponent} from './compositions.component';
-import {HsCompositionsLayerParserModule} from './layer-parser/layer-parser.module';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
@@ -59,6 +58,7 @@ describe('compositions', () => {
 
   beforeEach(() => {
     mockedMapService = new HsMapServiceMock();
+    const mockedUtilsService: any = new HsUtilsServiceMock();
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -78,7 +78,7 @@ describe('compositions', () => {
           provide: Window,
           useValue: WINDOW_PROVIDERS[0],
         },
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
+        {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {
@@ -103,12 +103,12 @@ describe('compositions', () => {
           provide: HsAddLayersVectorService,
           useValue: new HsAddLayersVectorService(
             mockedMapService,
-            new HsUtilsServiceMock(),
-            new HsStylerService(null, <HsUtilsService>{
+            mockedUtilsService,
+            new HsStylerService(null, <HsUtilsService>(<unknown>{
               resolveEsModule: (m) => {
                 return m || m.default;
               },
-            })
+            }))
           ),
         },
         {

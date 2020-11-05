@@ -1,12 +1,12 @@
 import Map from 'ol/Map';
+import {Layer} from 'ol/layer';
 
 export class HsMapServiceMock {
-  constructor() {
-    this.map = new Map({
-      target: 'div',
-      interactions: [],
-    });
-  }
+  map = new Map({
+    target: 'div',
+    interactions: [],
+  });
+  constructor() {}
 
   loaded() {
     return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ export class HsMapServiceMock {
     return [0, 0, 100, 100];
   }
 
-  addLayer(layer) {
+  addLayer(layer): Layer {
     this.map.addLayer(layer);
   }
 
