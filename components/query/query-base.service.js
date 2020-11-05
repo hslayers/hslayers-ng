@@ -87,7 +87,7 @@ export default function (
       me.currentQuery = (Math.random() + 1).toString(36).substring(7);
       me.setData(getCoordinate(evt.coordinate), 'coordinates', true);
       me.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-      me.data.selectedProj = me.data.coordinates[0].projections[0]
+      me.data.selectedProj = me.data.coordinates[0].projections[0];
       $rootScope.$broadcast('mapQueryStarted', evt);
     });
 
@@ -118,51 +118,45 @@ export default function (
       return;
     }
     const map = e.map;
-    $timeout((_) => {
-      me.featuresUnderMouse = map.getFeaturesAtPixel(e.pixel);
-      if (me.featuresUnderMouse !== null) {
-        me.featuresUnderMouse = me.featuresUnderMouse.filter((feature) => {
-          return (
-            feature.getLayer &&
-            feature.getLayer(map) &&
-            feature.getLayer(map).get('title').length > 0 &&
-            feature.getLayer(map).get('title') !== 'Point clicked'
-          );
-        });
-        me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
-          f.getLayer(HsMapService.map)
-        );
-        me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
-          me.featureLayersUnderMouse,
-          'title'
-        );
-        me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
-          return {
-            title: l.get('title'),
-            layer: l,
-            features: me.featuresUnderMouse.filter(
-              (f) => f.getLayer(HsMapService.map) == l
-            ),
-          };
-        });
-        me.featuresUnderMouse.forEach((feature) => {
-          me.serializeFeatureAttributes(feature);
-          if (feature.get('features')) {
-            feature
-              .get('features')
-              .forEach((subfeature) =>
-                me.serializeFeatureAttributes(subfeature)
-              );
-          }
-        });
-        const pixel = e.pixel;
-        pixel[0] += 2;
-        pixel[1] += 4;
-        me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
-      } else {
-        me.featuresUnderMouse = [];
-      }
-    }, 0);
+    me.featuresUnderMouse = map
+      .getFeaturesAtPixel(e.pixel)
+      .filter((feature) => {
+        const layer = HsMapService.getLayerForFeature(feature);
+        return layer && layer != me.queryLayer;
+      });
+    if (me.featuresUnderMouse.length) {
+      me.featureLayersUnderMouse = me.featuresUnderMouse.map((f) =>
+        HsMapService.getLayerForFeature(f)
+      );
+      me.featureLayersUnderMouse = HsUtilsService.removeDuplicates(
+        me.featureLayersUnderMouse,
+        'title'
+      );
+      me.featureLayersUnderMouse = me.featureLayersUnderMouse.map((l) => {
+        const layer = {
+          title: l.get('title'),
+          layer: l,
+          features: me.featuresUnderMouse.filter(
+            (f) => HsMapService.getLayerForFeature(f) == l
+          ),
+        };
+        return layer;
+      });
+      me.featuresUnderMouse.forEach((feature) => {
+        me.serializeFeatureAttributes(feature);
+        if (feature.get('features')) {
+          feature
+            .get('features')
+            .forEach((subfeature) => me.serializeFeatureAttributes(subfeature));
+        }
+      });
+      const pixel = e.pixel;
+      pixel[0] += 2;
+      pixel[1] += 4;
+      me.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
+    } else {
+      me.featuresUnderMouse = [];
+    }
   };
 
   /**
@@ -363,7 +357,7 @@ export default function (
     'composition_browser',
     'analysis',
     'sensors',
-    'draw'
+    'draw',
   ];
 
   this.currentPanelQueryable = function () {

@@ -293,7 +293,7 @@ export default function (
       collapsed: true,
     },
   });
-
+  this.featureLayerMapping = {};
   //creates custom default view control
   const setDefaultView = function (e) {
     me.map.getView().setCenter(HsConfig.default_view.getCenter());
@@ -412,7 +412,72 @@ export default function (
     });
     return tmp;
   };
+  /**
+   * Returns the associated layer for feature.
+   * This is used in query-vector.service to get the layer of clicked
+   * feature when features are listed in info panel.
+   *
+   * @param feature
+   * @returns {Vector} Layer.
+   */
+  this.getLayerForFeature = function (feature) {
+    if (typeof feature.getId() == 'undefined') {
+      feature.setId(HsUtilsService.generateUuid());
+    }
+    const fid = feature.getId();
+    if (me.featureLayerMapping[fid]) {
+      return me.featureLayerMapping[fid];
+    }
+    let layer_;
+    const layersToLookFor = [];
+    const check = (layer) => {
+      const source = layer.getSource();
+      if (HsUtilsService.instOf(source, Cluster)) {
+        layersToLookFor.push({
+          layer,
+          source,
+        });
+        layersToLookFor.push({
+          layer,
+          source: source.getSource(),
+        });
+      } else if (HsUtilsService.instOf(source, Vector)) {
+        layersToLookFor.push({
+          layer,
+          source,
+        });
+      }
+    };
+    me.map.getLayers().forEach((layer) => {
+      if (HsUtilsService.instOf(layer, Group)) {
+        layer.getLayers().forEach(check);
+      } else {
+        check(layer);
+      }
+    });
+    for (const obj of layersToLookFor) {
+      let found = false;
+      if (obj.source.getFeatureById) {
+        //For ordinary vector layers we can search by Id
+        found = obj.source.getFeatureById(fid);
+      } else {
+        //For cluster layers we need to loop through features
+        found = obj.source.getFeatures().some((layer_feature) => {
+          return layer_feature === feature;
+        });
+      }
 
+      if (found) {
+        layer_ = obj.layer;
+        break;
+      }
+    }
+    if (layer_ && !me.featureLayerMapping[fid]) {
+      //TODO: Will have to delete the mapping at some point when layer is cleared or feature removed
+      me.featureLayerMapping[fid] = layer_;
+    }
+    return layer_;
+  };
   /**
    * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
    * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
