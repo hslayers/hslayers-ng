@@ -111,8 +111,13 @@ export class HsAddLayersWmsService {
       if (Array.isArray(caps.Capability.Layer)) {
         this.data.services = caps.Capability.Layer;
       } else if (typeof caps.Capability.Layer == 'object') {
-        this.data.services = [caps.Capability.Layer];
+        if (caps.Capability.Layer.Layer) {
+          this.data.services = caps.Capability.Layer.Layer;
+        } else {
+          this.data.services = [caps.Capability.Layer];
+        }
       }
+      this.data.services = this.data.services.filter((layer) => layer.Name);
 
       this.selectLayerByName(layerToSelect);
 
@@ -137,6 +142,7 @@ export class HsAddLayersWmsService {
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
     } catch (e) {
       //FIXME: $rootScope.$broadcast('wmsCapsParseError', e);
+      console.warn(e);
     }
   }
 

@@ -18,6 +18,7 @@ export class HsAddLayersWmsComponent {
   sourceHistory;
   showDetails: boolean;
   url: string;
+  layerToSelect: any;
 
   constructor(
     private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -32,6 +33,21 @@ export class HsAddLayersWmsComponent {
         this.setUrlAndConnect(uri, layer);
       }
     });
+
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
+      ({type, response}) => {
+        if (type === 'WMS') {
+          try {
+            this.hsAddLayersWmsService.capabilitiesReceived(
+              response,
+              this.layerToSelect
+            );
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
+    );
     //this.sourceHistory = hsAddLayersWmsService.sourceHistory;
     this.getDimensionValues = hsAddLayersWmsService.getDimensionValues;
     this.hasNestedLayers = hsAddLayersWmsService.hasNestedLayers;
@@ -45,16 +61,10 @@ export class HsAddLayersWmsComponent {
     this.showDetails = false;
   }
 
-  connect(layerToSelect): void {
-    this.hsHistoryListService.addSourceHistory('Wms', this.url);
-    this.hsWmsGetCapabilitiesService
-      .requestGetCapabilities(this.url)
-      .then((capabilities) => {
-        this.hsAddLayersWmsService.capabilitiesReceived(
-          capabilities,
-          layerToSelect
-        );
-      });
+  connect = (layerToSelect): void => {
+    this.hsHistoryListService.addSourceHistory('wms', this.url);
+    this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
+    this.layerToSelect = layerToSelect;
     this.showDetails = true;
   }
 
@@ -62,20 +72,13 @@ export class HsAddLayersWmsComponent {
    * @function selectAllLayers
    * @description Select all layers from service.
    */
-  selectAllLayers(): void {
-    /**
-     * @param layer
-     */
-    function recurse(layer) {
-      layer.checked = true;
-
-      angular.forEach(layer.Layer, (sublayer) => {
-        recurse(sublayer);
-      });
+  selectAllLayers(layers) {
+    for (const layer of layers) {
+      layer.checked = !layer.checked;
+      if (layer.Layer) {
+        this.selectAllLayers(layer.Layer);
+      }
     }
-    angular.forEach(this.data.services.Layer, (layer) => {
-      recurse(layer);
-    });
   }
 
   addLayers(checked): void {
