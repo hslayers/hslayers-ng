@@ -5,12 +5,18 @@ import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
 @Injectable({
   providedIn: 'root',
 })
 export class HsStylerService {
   layer: VectorLayer = null;
+  newLayerStyleSet: Subject<{layerTitle: string; style: any}> = new Subject();
+  newFeatureStyleSet: Subject<{
+    layerTitle: string;
+    source: VectorSource;
+  }> = new Subject();
   measure_style = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 1)',
@@ -45,7 +51,9 @@ export class HsStylerService {
 
   pin_white_blue = new Style({
     image: new Icon({
-      src: this.HsUtilsService.resolveEsModule('../../img/pin_white_blue32.png'),
+      src: this.HsUtilsService.resolveEsModule(
+        '../../img/pin_white_blue32.png'
+      ),
       crossOrigin: 'anonymous',
       anchor: [0.5, 1],
     }),
@@ -68,8 +76,12 @@ export class HsStylerService {
       new Style({
         image: new Icon({
           src: feature.get('highlighted')
-            ? this.HsUtilsService.resolveEsModule(require('../../img/pin_white_red32.png'))
-            : this.HsUtilsService.resolveEsModule(require('../../img/pin_white_blue32.png')),
+            ? this.HsUtilsService.resolveEsModule(
+                require('../../img/pin_white_red32.png')
+              )
+            : this.HsUtilsService.resolveEsModule(
+                require('../../img/pin_white_blue32.png')
+              ),
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),
@@ -104,6 +116,10 @@ export class HsStylerService {
       } else {
         return this.makeSingleFeatureClusterMarker(feature, resolution, layer);
       }
+    });
+    this.newLayerStyleSet.next({
+      layerTitle: layer.get('title'),
+      style: layer.getStyle(),
     });
   }
   /**

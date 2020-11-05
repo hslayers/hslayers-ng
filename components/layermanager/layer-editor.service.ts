@@ -1,4 +1,3 @@
-import BaseLayer from 'ol/layer/Base';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -20,7 +19,7 @@ import {get as getProj, transform, transformExtent} from 'ol/proj';
 export class HsLayerEditorService {
   legendDescriptor: HsLegendDescriptor;
   layerTitleChange: Subject<{
-    layer: BaseLayer;
+    oldLayerTitle: string;
     newTitle: string | false;
   }> = new Subject();
   constructor(

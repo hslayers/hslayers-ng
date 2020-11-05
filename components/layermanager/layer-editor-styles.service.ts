@@ -1,12 +1,16 @@
 /* eslint-disable angular/definedundefined */
 import {Circle, Fill, RegularShape, Stroke} from 'ol/style';
+import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorStylesService {
-  constructor(private HsUtilsService: HsUtilsService) {}
+  constructor(
+    private HsUtilsService: HsUtilsService,
+    private HsStylerService: HsStylerService
+  ) {}
   changePointType(layer, type): void {
     if (layer.style == undefined) {
       this.getLayerStyle(layer);
@@ -77,6 +81,10 @@ export class HsLayerEditorStylesService {
       style.setImage(image);
     }
     layer.setStyle(style);
+    this.HsStylerService.newLayerStyleSet.next({
+      layerTitle: layer.get('title'),
+      layer: layer,
+    });
   }
 
   //TODO refactor to some style oriented helper service
@@ -87,13 +95,7 @@ export class HsLayerEditorStylesService {
     if (layer.getStyle == undefined) {
       return;
     }
-    let style = layer.getStyle();
-    if (typeof style == 'function') {
-      style = style(source.getFeatures()[0]);
-    }
-    if (typeof style == 'object') {
-      style = style[0];
-    }
+    let style = this.HsStylerService.getLayerStyleObject(layer);
     style = style.clone();
     if (source.hasPoly) {
       wrapper.style.fillColor = style.getFill().getColor();
