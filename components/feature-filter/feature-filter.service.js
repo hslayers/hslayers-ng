@@ -7,7 +7,7 @@ import {unByKey} from 'ol/Observable';
  * @param HsLayermanagerService
  * @param HsUtilsService
  */
-export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
+export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQueryVectorService) {
   'ngInject';
   const me = {
     applyFilters: function (layer) {
@@ -31,7 +31,9 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService) {
       let filteredFeatures = source.getFeatures();
 
       source.forEachFeature((feature) => {
-        feature.setStyle(null);
+        if (HsQueryVectorService.selector.getFeatures().getArray().indexOf(feature) == -1) {
+          feature.setStyle(null);
+        }
       });
 
       for (const filter of filters) {
