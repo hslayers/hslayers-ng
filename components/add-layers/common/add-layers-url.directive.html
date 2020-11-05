@@ -1,15 +1,18 @@
 <div class="form-group">
     <div class="input-group">
-        <input type="url" class="form-control" name="url" [(ngModel)]="url"
-            placeholder="{{'External data source (URL)'|translate}}" required />
+        <input type="url" class="form-control" name="url" [(ngModel)]="url" (change)="change()"
+            placeholder="External data source (URL)" required #uri="ngModel"  />
 
         <div class="input-group-append">
 
-            <button type="button" class="btn btn-secondary" [hidden]="!url.valid" (click)="connect()"><i
+            <button type="button" class="btn btn-secondary" *ngIf="uri.valid" (click)="connect()"><i
                     class="icon-link"></i></button>
-            <button type="button" class="btn btn-danger" [hidden]="!url.error.url"><i
-                    class="icon-alertalt"></i></button>
-            <hs-history-list [clicked]="historySelected" [what]="type"></hs-history-list>
+
+            <!-- Not sure what's this next button supposed to be/do -->
+
+            <!-- <button type="button" class="btn btn-danger" *ngIf="uri && !uri.valid"><i
+                    class="icon-alertalt"></i></button> -->
+            <hs-history-list [clicked]="historySelected" [(what)]="type"></hs-history-list>
         </div>
     </div>
 </div>

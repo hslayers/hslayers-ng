@@ -61,6 +61,9 @@ export class HsDimensionService {
   }
 
   paramsFromDimensions(layer) {
+    if (!layer.Dimension) {
+      return;
+    }
     const tmp = {};
     for (const dimension of layer.Dimension) {
       if (dimension.value) {
@@ -89,8 +92,10 @@ export class HsDimensionService {
       if (this.hasNestedLayers(sublayer)) {
         this.fillDimensionValues(sublayer);
       }
-      for (const dimension of sublayer.Dimension) {
-        dimension.values = this.getDimensionValues(dimension);
+      if (layer.Dimension) {
+        for (const dimension of sublayer.Dimension) {
+          dimension.values = this.getDimensionValues(dimension);
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-layers-url [type]="'Wms'" [url]="url" [connect]="connect"></hs-add-layers-url>
+    <hs-add-layers-url type="wms" [(url)]="url" [(connect)]="connect"></hs-add-layers-url>
 
     <div [hidden]="!showDetails">
         <div class="form-group">
@@ -97,6 +97,9 @@
                 </tr>
             </tbody>
         </table>
+
+        <button class="btn btn-primary" style="position: sticky;
+        bottom: 1.5rem; float: left;" (click)="selectAllLayers(data.services)">Select All Layers</button>
         <button class="btn btn-primary btn-sm" style="position: sticky;
         bottom: 1.5rem; float: right;" (click)="addLayers(true)"><i class="icon-plus"></i></button>
     </div>
