@@ -34,7 +34,7 @@ export default function (
   $timeout,
   HsQueryVectorService,
   HsLaymanService,
-  HsConfirmDialogService
+  HsConfirmDialogService,
 ) {
   'ngInject';
   const me = this;
@@ -109,6 +109,10 @@ export default function (
         removable: true,
         editable: true,
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
+        definition: {
+          format: 'hs.format.WFS',
+          url: HsLaymanService.getLaymanEndpoint() + '/wfs',
+        },
       });
       me.selectedLayer = drawLayer;
       const el = angular.element(
