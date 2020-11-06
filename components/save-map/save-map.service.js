@@ -393,7 +393,6 @@ export default function (
         }
         if (layer.get('synchronize')) {
           json.protocol = {format: 'hs.format.WFS'};
-          json.synchronize = layer.get('synchronize');
           delete json.features;
         }
         if (angular.isDefined(src.defOptions)) {
@@ -503,7 +502,11 @@ export default function (
     const layers = [];
     angular.forEach(HsMapService.map.getLayers(), (layer) => {
       if (layer.get('saveState')) {
-        layers.push(me.layer2json(layer));
+        const lyr = me.layer2json(layer);
+        if (layer.get('synchronize')) {
+          lyr.synchronize = layer.get('synchronize');
+        }
+        layers.push(lyr);
       }
     });
     data.layers = layers;
