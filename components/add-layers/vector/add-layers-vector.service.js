@@ -34,6 +34,10 @@ export default function (HsMapService, HsUtilsService) {
           srs,
           options
         );
+        lyr.set('definition', {
+          format: 'hs.format.WFS',
+          url: url.replace('ows', 'wfs'),
+        });
         if (HsMapService.map) {
           HsMapService.addLayer(lyr, true);
         }
