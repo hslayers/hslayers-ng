@@ -418,12 +418,8 @@ export default function (
      * @public
      * @description Checks whether the layman endpoint exists or not
      */
-    laymanEndpointExists() {
-      return (
-        HsCommonEndpointsService.endpoints.findIndex(
-          (endpoint) => endpoint.type === 'layman'
-        ) >= 0
-      );
+    getLaymanEndpoint() {
+      return HsCommonEndpointsService.endpoints.filter((e)=> e.type == 'layman').pop().url;
     },
     /**
      * @function removeLayer
@@ -443,9 +439,11 @@ export default function (
 
     isLayerSynchronizable(layer) {
       const definition = layer.get('definition');
+      if (!definition) {
+        return false;
+      }
       return (
         HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-        angular.isDefined(definition) &&
         definition.format.toLowerCase().includes('wfs')
       );
     },
