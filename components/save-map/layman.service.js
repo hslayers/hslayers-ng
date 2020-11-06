@@ -240,7 +240,7 @@ export default function (
                 );
 
                 $http({
-                  url: layerDesc.wfs.url,
+                  url: layerDesc.wfs.url + '?request=Transaction',
                   method: 'POST',
                   data: serializedFeature.outerHTML
                     .replaceAll('<geometry>', '<wkb_geometry>')

@@ -411,6 +411,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
           break;
         case 'hs.format.WFS':
           options.defOptions = lyr_def.defOptions;
+          options.synchronize = lyr_def.synchronize;
           layer = HsAddLayersVectorService.createVectorLayer(
             'wfs',
             decodeURIComponent(lyr_def.protocol.url),
