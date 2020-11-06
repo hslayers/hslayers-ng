@@ -74,7 +74,6 @@ export default {
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
 
-        vm.layer.set('synchronize', true);
         vm.awaitLayerSync(vm.layer).then(() => {
           vm.layer.getSource().dispatchEvent('addfeature');
         });

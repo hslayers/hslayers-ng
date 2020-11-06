@@ -192,7 +192,6 @@ export default {
         source: HsAddLayersWfsService.createWfsSource(options),
         path: $scope.path,
         renderOrder: null,
-        synchronize: false,
       });
       HsMapService.map.addLayer(new_layer);
       HsLayoutService.setMainPanel('layermanager');

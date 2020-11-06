@@ -46,6 +46,7 @@ export default function (
           }
           angular.forEach(endpoint.compositions, (record) => {
             record.editable = true;
+            record.url = `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`;
             record.endpoint = endpoint;
           });
           $rootScope.$broadcast('CompositionsLoaded');
