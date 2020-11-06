@@ -1,4 +1,3 @@
-import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 const debounceInterval = 1000;
 
@@ -9,6 +8,7 @@ const debounceInterval = 1000;
  * @param $compile
  * @param $rootScope
  * @param HsLayoutService
+ * @param HsMapService
  */
 export default function (
   HsUtilsService,
@@ -59,17 +59,22 @@ export default function (
      * @param {object} layer Layer to add
      */
     addLayer(layer) {
-      if (me.isLayerSynchronizable(layer)) {
+      if (HsLaymanService.isLayerSynchronizable(layer)) {
         me.syncedLayers.push(layer);
         me.startMonitoringIfNeeded(layer);
       }
     },
 
-    isLayerSynchronizable(layer) {
-      return (
-        HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-        layer.get('synchronize') === true
-      );
+    findLaymanForWfsLayer(layer) {
+      const layerDefinition = layer.get('definition');
+      return (HsCommonEndpointsService.endpoints || [])
+        .filter(
+          (ds) =>
+            ds.type == 'layman' &&
+            layerDefinition &&
+            layerDefinition.url.includes(ds.url)
+        )
+        .pop();
     },
     /**
      * Keep track of synchronized vector layers by listening to
@@ -118,14 +123,11 @@ export default function (
      */
     async pull(layer, source) {
       layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
-      const laymanEndpoints = (HsCommonEndpointsService.endpoints || []).filter(
-        (ds) => ds.type == 'layman'
-      );
-      if (laymanEndpoints.length > 0) {
-        const ds = laymanEndpoints[0];
+      const laymanEndpoint = me.findLaymanForWfsLayer(layer);
+      if (laymanEndpoint) {
         layer.set('hs-layman-synchronizing', true);
         const response = await HsLaymanService.pullVectorSource(
-          ds,
+          laymanEndpoint,
           HsLaymanService.getLayerName(layer),
           layer
         );
@@ -168,24 +170,23 @@ export default function (
       if ((layer.get('events-suspended') || 0) > 0) {
         return;
       }
-      (HsCommonEndpointsService.endpoints || [])
-        .filter((ds) => ds.type == 'layman')
-        .forEach((ds) => {
-          layer.set('hs-layman-synchronizing', true);
-          HsLaymanService.createWfsTransaction(
-            ds,
-            inserted,
-            updated,
-            deleted,
-            HsLaymanService.getLayerName(layer),
-            layer
-          ).then((response) => {
-            if (response.data.indexOf('Exception') > -1) {
-              me.displaySyncErrorDialog(response.data);
-            }
-            layer.set('hs-layman-synchronizing', false);
-          });
+      const laymanEndpoint = me.findLaymanForWfsLayer(layer);
+      if (laymanEndpoint) {
+        layer.set('hs-layman-synchronizing', true);
+        HsLaymanService.createWfsTransaction(
+          laymanEndpoint,
+          inserted,
+          updated,
+          deleted,
+          HsLaymanService.getLayerName(layer),
+          layer
+        ).then((response) => {
+          if (response.data.indexOf('Exception') > -1) {
+            me.displaySyncErrorDialog(response.data);
+          }
+          layer.set('hs-layman-synchronizing', false);
         });
+      }
     },
 
     displaySyncErrorDialog(error) {

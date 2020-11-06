@@ -1,5 +1,7 @@
 import * as unidecode from 'unidecode';
 import {GeoJSON, WFS} from 'ol/format';
+import {Vector as VectorSource} from 'ol/source';
+
 /**
  * @param HsUtilsService
  * @param $http
@@ -437,6 +439,15 @@ export default function (
             `${ds.url}/rest/${ds.user}/layers/${me.getLayerName(layer)}`
           );
         });
+    },
+
+    isLayerSynchronizable(layer) {
+      const definition = layer.get('definition');
+      return (
+        HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+        angular.isDefined(definition) &&
+        definition.format.toLowerCase().includes('wfs')
+      );
     },
   });
   return me;

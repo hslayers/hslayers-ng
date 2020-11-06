@@ -54,7 +54,6 @@ export default function (
             visible: true,
             removable: true,
             editable: true,
-            synchronize: false,
             path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
           });
           HsDrawService.tmpDrawLayer = true;

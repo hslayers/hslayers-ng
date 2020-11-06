@@ -377,6 +377,9 @@ export default function (HsMapService, HsAddLayersVectorService) {
       let format = '';
       if (angular.isDefined(lyr_def.protocol)) {
         format = lyr_def.protocol.format;
+        if (lyr_def.protocol.url !== undefined) {
+          lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
+        }
       }
       const options = {};
       options.opacity = lyr_def.opacity || 1;
@@ -392,7 +395,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
         case 'ol.format.KML':
           layer = HsAddLayersVectorService.createVectorLayer(
             'kml',
-            decodeURIComponent(lyr_def.protocol.url),
+            lyr_def.protocol.url,
             lyr_def.title || 'Layer',
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
@@ -402,38 +405,23 @@ export default function (HsMapService, HsAddLayersVectorService) {
         case 'ol.format.GeoJSON':
           layer = HsAddLayersVectorService.createVectorLayer(
             'geojson',
-            decodeURIComponent(lyr_def.protocol.url),
+            lyr_def.protocol.url,
             lyr_def.title || 'Layer',
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
             options
           );
-          break;
+          break;  
         case 'hs.format.WFS':
           options.defOptions = lyr_def.defOptions;
-          options.synchronize = lyr_def.synchronize;
           layer = HsAddLayersVectorService.createVectorLayer(
             'wfs',
-            decodeURIComponent(lyr_def.protocol.url),
+            lyr_def.protocol.url,
             lyr_def.title || 'Layer',
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
             options
           );
-          break;
-        case 'hs.format.LaymanWfs':
-          layer = new VectorLayer({
-            title: lyr_def.title,
-            name: lyr_def.title,
-            visibility: lyr_def.visibility,
-            synchronize: true,
-            editor: {
-              editable: true,
-              defaultAttributes: {},
-            },
-            saveState: true,
-            source: new VectorSource({}),
-          });
           break;
         case 'hs.format.Sparql':
           layer = me.createSparqlLayer(lyr_def);
@@ -450,6 +438,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
             );
           }
       }
+      layer.set('definition', lyr_def.protocol);
       return layer;
     },
   };

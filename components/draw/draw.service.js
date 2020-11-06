@@ -34,7 +34,7 @@ export default function (
   $timeout,
   HsQueryVectorService,
   HsLaymanService,
-  HsConfirmDialogService,
+  HsConfirmDialogService
 ) {
   'ngInject';
   const me = this;
@@ -108,7 +108,6 @@ export default function (
         visible: true,
         removable: true,
         editable: true,
-        synchronize: HsLaymanService.laymanEndpointExists() ? true : false,
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
       });
       me.selectedLayer = drawLayer;
@@ -341,7 +340,7 @@ export default function (
       );
       if (confirmed == 'yes') {
         HsMapService.map.removeLayer(me.selectedLayer);
-        if (me.selectedLayer.get('synchronize') == true) {
+        if (HsLaymanService.isLayerSynchronizable(me.selectedLayer)) {
           HsLaymanService.removeLayer(this.selectedLayer);
         }
         if (me.selectedLayer.get('title') == 'tmpDrawLayer') {
