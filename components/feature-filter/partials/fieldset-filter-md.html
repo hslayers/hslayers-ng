@@ -1,7 +1,8 @@
 <md-button aria-label="Select All" ng-checked="allSelected(selectedFilter)" md-indeterminate="isIndeterminate(selectedFilter)"
 	ng-click="toggleAll(selectedFilter)" class="md-raised md-primary">
-	<span ng-if="allSelected(selectedFilter)">Unselect</span><span ng-if="!allSelected(selectedFilter)">Select</span>
-	All
+	<span>{{ getToggleText(selectedFilter) }}</span>
+	<!-- <span>{{ allSelected(selectedFilter) ? 'Unselect all' : 'Select all' }}</span> -->
+	<!-- <span ng-if="allSelected(selectedFilter)">Unselect</span><span ng-if="!allSelected(selectedFilter)">Select</span> -->
 </md-button>
 <fieldset style="border: none">
 	<!-- <legend class="legend">{{selectedFilter.title}}</legend> -->

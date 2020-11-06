@@ -103,7 +103,7 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
       }
 
       layer.filteredFeatures = filteredFeatures;
-      $rootScope.$digest();
+      if (!$rootScope.$$phase) $rootScope.$digest();
       return filteredFeatures;
     },
 

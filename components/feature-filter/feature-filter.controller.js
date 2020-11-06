@@ -41,6 +41,12 @@ export default function (
     return list.indexOf(item) > -1;
   };
 
+  $scope.getToggleText = function (filter) {
+    return $scope.allSelected(filter)
+      ? (filter.options && filter.options.unselectText) || 'Unselect all'
+      : (filter.options && filter.options.selectText) || 'Select all';
+  };
+
   $scope.toggle = function (value, selected) {
     const idx = selected.indexOf(value);
     if (idx > -1) {
