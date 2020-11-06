@@ -147,7 +147,6 @@ export class HsSensorsService {
     const me = this;
     this.layer = new VectorLayer({
       title: 'Sensor units',
-      synchronize: false,
       editor: {
         editable: false,
       },

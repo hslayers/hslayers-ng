@@ -306,9 +306,13 @@ export class HsCompositionsLayerParserService {
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   createVectorLayer(lyr_def) {
+    debugger;
     let format = '';
     if (lyr_def.protocol) {
       format = lyr_def.protocol.format;
+      if (lyr_def.protocol.url !== undefined) {
+        lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
+      }
     }
     const options: any = {};
     options.opacity = lyr_def.opacity || 1;
@@ -324,7 +328,7 @@ export class HsCompositionsLayerParserService {
       case 'ol.format.KML':
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'kml',
-          decodeURIComponent(lyr_def.protocol.url),
+          lyr_def.protocol.url,
           lyr_def.title || 'Layer',
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
@@ -334,7 +338,7 @@ export class HsCompositionsLayerParserService {
       case 'ol.format.GeoJSON':
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'geojson',
-          decodeURIComponent(lyr_def.protocol.url),
+          lyr_def.protocol.url,
           lyr_def.title || 'Layer',
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
@@ -346,27 +350,12 @@ export class HsCompositionsLayerParserService {
         options.defOptions = lyr_def.defOptions;
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'wfs',
-          decodeURIComponent(lyr_def.protocol.url),
+          lyr_def.protocol.url,
           lyr_def.title || 'Layer',
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
           options
         );
-        break;
-      case 'hs.format.LaymanWfs':
-        layer = new VectorLayer({
-          title: lyr_def.title,
-          name: lyr_def.name || lyr_def.title,
-          visibility: lyr_def.visibility,
-          from_composition: true,
-          synchronize: true,
-          editor: {
-            editable: true,
-            defaultAttributes: {},
-          },
-          saveState: true,
-          source: new VectorSource({}),
-        });
         break;
       case 'hs.format.Sparql':
         layer = this.createSparqlLayer(lyr_def);
@@ -383,6 +372,7 @@ export class HsCompositionsLayerParserService {
           );
         }
     }
+    layer.set('definition', lyr_def.protocol);
     return layer;
   }
 }

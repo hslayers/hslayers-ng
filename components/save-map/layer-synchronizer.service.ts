@@ -71,9 +71,10 @@ export class HsLayerSynchronizerService {
   }
 
   isLayerSynchronizable(layer: Layer): boolean {
+    const definition = layer.get('definition');
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      layer.get('synchronize') === true
+      definition?.format.toLowerCase().includes('wfs')
     );
   }
 
@@ -102,6 +103,15 @@ export class HsLayerSynchronizerService {
     return true;
   }
 
+  findLaymanForWfsLayer(layer: Layer) {
+    const layerDefinition = layer.get('definition');
+    return (this.HsCommonEndpointsService.endpoints || [])
+      .filter(
+        (ds) => ds.type == 'layman' && layerDefinition?.url.includes(ds.url)
+      )
+      .pop();
+  }
+
   /**
    * @description Get features from Layman endpoint as WFS string, parse and add
    * them to Openlayers VectorSource
@@ -112,14 +122,11 @@ export class HsLayerSynchronizerService {
    */
   async pull(layer: Layer, source: Source): Promise<void> {
     layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
-    const laymanEndpoints = (
-      this.HsCommonEndpointsService.endpoints || []
-    ).filter((ds) => ds.type == 'layman');
-    if (laymanEndpoints.length > 0) {
-      const ds = laymanEndpoints[0];
+    const laymanEndpoint = this.findLaymanForWfsLayer(layer);
+    if (laymanEndpoint) {
       layer.set('hs-layman-synchronizing', true);
       const response: string = await this.HsLaymanService.pullVectorSource(
-        ds,
+        laymanEndpoint,
         this.HsLaymanService.getLayerName(layer),
         layer
       );
@@ -189,36 +196,23 @@ export class HsLayerSynchronizerService {
     if ((layer.get('events-suspended') || 0) > 0) {
       return;
     }
-    (this.HsCommonEndpointsService.endpoints || [])
-      .filter((ds) => ds.type == 'layman')
-      .forEach((ds) => {
-        layer.set('hs-layman-synchronizing', true);
-        this.HsLaymanService.createWfsTransaction(
-          ds,
-          inserted,
-          updated,
-          deleted,
-          this.HsLaymanService.getLayerName(layer),
-          layer
-        ).then((response: string) => {
-          if (response.indexOf('Exception') > -1) {
-            this.displaySyncErrorDialog(response);
-          }
-          if (inserted[0]) {
-            const id = new DOMParser()
-              .parseFromString(response.data, 'application/xml')
-              .getElementsByTagName('ogc:FeatureId')[0]
-              .getAttribute('fid');
-            inserted[0].setId(id);
-
-            const geometry = inserted[0].getGeometry();
-            inserted[0].setGeometryName('wkb_geometry');
-            inserted[0].setGeometry(geometry);
-            inserted[0].unset('geometry', true);
-          }
-          layer.set('hs-layman-synchronizing', false);
-        });
+    const laymanEndpoint = this.findLaymanForWfsLayer(layer);
+    if (laymanEndpoint) {
+      layer.set('hs-layman-synchronizing', true);
+      this.HsLaymanService.createWfsTransaction(
+        laymanEndpoint,
+        inserted,
+        updated,
+        deleted,
+        this.HsLaymanService.getLayerName(layer),
+        layer
+      ).then((response: string) => {
+        if (response.indexOf('Exception') > -1) {
+          this.displaySyncErrorDialog(response);
+        }
+        layer.set('hs-layman-synchronizing', false);
       });
+    }
   }
 
   displaySyncErrorDialog(error: string): void {
