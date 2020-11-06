@@ -118,16 +118,13 @@ export default function (
       return;
     }
     //WMST.layerIsWmsT(layer);
+    const isVector = HsLayerUtilsService.isLayerVectorLayer(layer);
     loadingEvents(layer);
     layer.on('change:visible', layerVisibilityChanged);
-    if (
-      HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      layer.get('cluster') &&
-      layer.get('declutter')
-    ) {
+    if (isVector && layer.get('cluster') && layer.get('declutter')) {
       layer.set('declutter', false);
     }
-    if (HsLayerUtilsService.isLayerVectorLayer(layer) && layer.get('cluster')) {
+    if (isVector && layer.get('cluster')) {
       HsLayerEditorVectorLayerService.cluster(true, layer, '40');
     }
     if (typeof layer.get('position') == 'undefined') {
@@ -151,7 +148,6 @@ export default function (
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
     };
-
     layer.on('propertychange', (event) => {
       new_layer.title = HsLayerUtilsService.getLayerTitle(layer);
     });
@@ -168,7 +164,7 @@ export default function (
         HsLayermanagerMetadata.fillMetadata(layer).then(() => {
           setTimeout(() => {
             new_layer.grayed = !me.isLayerInResolutionInterval(layer);
-          },50);
+          }, 50);
         });
       }
     } else {
