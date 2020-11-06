@@ -90,7 +90,6 @@ describe('HsLegendLayerComponent', () => {
     }
     const layer = new VectorLayer({
       title: 'Bookmarks',
-      synchronize: false,
       cluster: true,
       inlineLegend: true,
       editor: {
@@ -123,7 +122,6 @@ describe('HsLegendLayerComponent', () => {
     }
     const layer = new VectorLayer({
       title: 'Bookmarks',
-      synchronize: false,
       cluster: true,
       inlineLegend: true,
       editor: {
@@ -160,7 +158,6 @@ describe('HsLegendLayerComponent', () => {
     }
     const layer = new VectorLayer({
       title: 'Bookmarks',
-      synchronize: false,
       cluster: true,
       inlineLegend: true,
       editor: {

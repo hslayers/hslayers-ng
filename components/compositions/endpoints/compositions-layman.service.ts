@@ -42,6 +42,7 @@ export class HsCompositionsLaymanService {
             }
             for (const record of endpoint.compositions) {
               record.editable = true;
+              record.url = `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`;
               record.endpoint = endpoint;
             }
             resolve();

@@ -398,16 +398,13 @@ export class HsSaveMapService {
           url: encodeURIComponent(definition.url),
           format: definition.format,
         };
+        delete json.features;
       } else {
         try {
           json.features = this.serializeFeatures(src.getFeatures());
         } catch (ex) {
           //Do nothing
         }
-      }
-      if (layer.get('synchronize')) {
-        json.protocol = {format: 'hs.format.WFS'};
-        delete json.features;
       }
       if (src.defOptions) {
         json.defOptions = src.defOptions;
