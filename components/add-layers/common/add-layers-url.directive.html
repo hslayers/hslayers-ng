@@ -1,14 +1,14 @@
 <div class="form-group">
     <div class="input-group">
         <input type="url" class="form-control" name="url" [(ngModel)]="url" (change)="change()"
-            placeholder="External data source (URL)" required #uri="ngModel"  />
+            placeholder="External data source (URL)" required #uri="ngModel" />
 
-        <div class="input-group-append"  >
+        <div class="input-group-append">
 
             <button type="button" class="btn btn-secondary" *ngIf="uri.valid" (click)="connect()"><i
                     class="icon-link"></i></button>
 
-            <!-- Not sure what's this next button supposed to be/do -->
+            <!-- TODO: Folllowing should be validating URL and warning user if URL is invalid -->
 
             <!-- <button type="button" class="btn btn-danger" *ngIf="uri && !uri.valid"><i
                     class="icon-alertalt"></i></button> -->

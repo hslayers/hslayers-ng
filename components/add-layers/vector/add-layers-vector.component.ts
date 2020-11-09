@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 
 import {HsAddLayersVectorService} from './add-layers-vector.service';
+import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
@@ -15,9 +16,15 @@ export class HsAddLayersVectorComponent {
   url: string;
 
   constructor(
-    private HsAddLayersVectorService: HsAddLayersVectorService,
-    private HsLayoutService: HsLayoutService
+    private hsAddLayersVectorService: HsAddLayersVectorService,
+    private hsHistoryListService: HsHistoryListService,
+    private hsLayoutService: HsLayoutService
   ) {}
+
+  connect = (): void => {
+    this.hsHistoryListService.addSourceHistory('vector', this.url);
+    //this.showDetails = true;
+  };
 
   /**
    * Handler for adding nonwms service, file in template.
@@ -25,7 +32,7 @@ export class HsAddLayersVectorComponent {
    * @function add
    */
   async add() {
-    const layer = await this.HsAddLayersVectorService.addVectorLayer(
+    const layer = await this.hsAddLayersVectorService.addVectorLayer(
       '',
       this.url,
       this.title,
@@ -33,8 +40,8 @@ export class HsAddLayersVectorComponent {
       this.srs,
       {extractStyles: this.extract_styles}
     );
-    this.HsAddLayersVectorService.fitExtent(layer);
-    this.HsLayoutService.setMainPanel('layermanager');
+    this.hsAddLayersVectorService.fitExtent(layer);
+    this.hsLayoutService.setMainPanel('layermanager');
     return layer;
   }
 }

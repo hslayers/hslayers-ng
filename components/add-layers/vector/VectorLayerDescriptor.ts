@@ -5,7 +5,7 @@ import {GPX, GeoJSON, KML} from 'ol/format';
 import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 
-export default class {
+export const VectorLayerDecriptor = class {
   layerParams: {
     abstract: any;
     definition: any;
@@ -29,9 +29,21 @@ export default class {
     maxResolution?: number;
     features?: Feature[];
   };
-  sourceClass: typeof VectorSourceFromUrl | typeof VectorSourceFromFeatures;
+  sourceClass:
+    | typeof VectorSourceFromUrl
+    | typeof VectorSourceFromFeatures
+    | typeof SparqlJson
+    | typeof VectorSource;
 
-  constructor(type, title, abstract, url, srs, options, private mapProjection) {
+  constructor(
+    type: string,
+    title,
+    abstract,
+    url: string,
+    srs,
+    options,
+    private mapProjection
+  ) {
     /**
      * Artificial object which is used when layer is saved to composition.
      * It describes format (ol.format.KML, )
@@ -118,8 +130,10 @@ export default class {
             features,
           };
         } else {
-          console.warn(`${type} not supported by hslayers`);
+          console.warn(`Type '${type}' not supported by hslayers`);
         }
     }
   }
-}
+};
+
+export default VectorLayerDecriptor;

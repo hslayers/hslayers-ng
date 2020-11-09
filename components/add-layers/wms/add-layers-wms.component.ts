@@ -66,7 +66,7 @@ export class HsAddLayersWmsComponent {
     this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
     this.layerToSelect = layerToSelect;
     this.showDetails = true;
-  }
+  };
 
   /**
    * @function selectAllLayers
