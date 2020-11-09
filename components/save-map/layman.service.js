@@ -246,8 +246,7 @@ export default function (
                   method: 'POST',
                   data: serializedFeature.outerHTML
                     .replaceAll('<geometry>', '<wkb_geometry>')
-                    .replaceAll('</geometry>', '</wkb_geometry>')
-                    .replaceAll('<Name>geometry</Name>', '<Name>wkb_geometry</Name>'),
+                    .replaceAll('</geometry>', '</wkb_geometry>'),
                   headers: {'Content-Type': 'application/xml'},
                 }).then((response) => {
                   resolve(response);
