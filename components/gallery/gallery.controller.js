@@ -5,15 +5,8 @@ export default function () {
 
   ctrl.curImg = 0;
 
-  ctrl.prevSlide = function() {
-    ctrl.curImg = (ctrl.curImg + ctrl.images.length - 1) % ctrl.images.length;
-  }
-
-  ctrl.nextSlide = function() {
-    ctrl.curImg = (ctrl.curImg + 1) % ctrl.images.length;
-  }
-
-  ctrl.goToSlide = function(slideIdx){
-    ctrl.curImg = slideIdx
+  ctrl.changeSlide = function(n) {
+    ctrl.curImg = (ctrl.curImg + ctrl.images.length + n) % ctrl.images.length;
+    document.querySelectorAll('.hs-preview-column')[ctrl.curImg].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
   }
 };
