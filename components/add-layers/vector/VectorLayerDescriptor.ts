@@ -5,7 +5,8 @@ import {GPX, GeoJSON, KML} from 'ol/format';
 import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 
-export const VectorLayerDecriptor = class {
+export class VectorLayerDescriptor {
+  mapProjection;
   layerParams: {
     abstract: any;
     definition: any;
@@ -17,6 +18,7 @@ export const VectorLayerDecriptor = class {
     source?: VectorSource;
   };
   sourceParams: {
+    extractStyles?: any;
     from_composition?: boolean;
     srs?: any;
     url?: string;
@@ -42,13 +44,15 @@ export const VectorLayerDecriptor = class {
     url: string,
     srs,
     options,
-    private mapProjection
+    mapProjection
   ) {
     /**
      * Artificial object which is used when layer is saved to composition.
      * It describes format (ol.format.KML, )
      */
     const definition: {format?: string; url?: string} = {};
+
+    this.mapProjection = mapProjection;
 
     this.layerParams = {
       abstract,
@@ -134,6 +138,6 @@ export const VectorLayerDecriptor = class {
         }
     }
   }
-};
+}
 
-export default VectorLayerDecriptor;
+export default VectorLayerDescriptor;

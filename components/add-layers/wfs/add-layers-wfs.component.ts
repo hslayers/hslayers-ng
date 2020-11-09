@@ -2,13 +2,12 @@ import VectorLayer from 'ol/layer/Vector';
 import {Component} from '@angular/core';
 import {bbox} from 'ol/loadingstrategy';
 
-import '../../../common/get-capabilities';
-import '../../utils';
 import {HsAddLayersWfsService} from './add-layers-wfs-service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 
@@ -26,13 +25,17 @@ export class HsAddLayersWfsComponent {
   showDetails: boolean;
   folder_name: any;
 
+  path = 'WFS';
+  loaderImage = require('../../../img/ajax-loader.gif');
+
   constructor(
-    private HsMapService: HsMapService,
-    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    private HsLayoutService: HsLayoutService,
     private HsAddLayersWfsService: HsAddLayersWfsService,
+    private HsDialogContainerService: HsDialogContainerService,
     private hsEventBusService: HsEventBusService,
-    private HsDialogContainerService: HsDialogContainerService
+    private HsLayoutService: HsLayoutService,
+    private hsLog: HsLogService,
+    private HsMapService: HsMapService,
+    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()
@@ -65,9 +68,7 @@ export class HsAddLayersWfsComponent {
     });
 
     this.HsAddLayersWfsService.wfsCapabilitiesError.subscribe((e) => {
-      if (console) {
-        console.warn(e);
-      }
+      this.hsLog.warn(e);
       this.url = null;
       this.showDetails = false;
 
@@ -86,44 +87,36 @@ export class HsAddLayersWfsComponent {
     });
   }
 
-  path = 'WFS';
-  loaderImage = require('../../../img/ajax-loader.gif');
   /**
-   * Clear Url and hide detailsWms
-   *
-   * @memberof hs.addLayers
    * @function clear
+   * @description Clear Url and hide detailsWms
    */
-  clear() {
+  clear(): void {
     this.url = '';
     this.showDetails = false;
   }
 
-  connect = () => {
+  connect = (): void => {
     this.HsWfsGetCapabilitiesService.requestGetCapabilities(this.url);
     this.showDetails = true;
   };
 
   /**
-   * Connect to service of specified Url
-   *
-   * @memberof hs.addLayersWms
    * @function setUrlAndConnect
+   * @description Connect to service of specified Url
    * @param {string} url Url of requested service
-   * @param {string} type Type of requested service
    */
-  setUrlAndConnect(url) {
+  setUrlAndConnect(url: string): void {
     this.url = url;
     this.connect();
   }
 
   /**
-   * @param layers
    * @function selectAllLayers
-   * @memberOf hs.addLayersWfs
    * @description Select all layers from service.
+   * @param layers
    */
-  selectAllLayers(layers) {
+  selectAllLayers(layers): void {
     for (const layer of layers) {
       layer.checked = !layer.checked;
       if (layer.Layer) {
@@ -135,16 +128,15 @@ export class HsAddLayersWfsComponent {
 
   /**
    * @function tryAddLayers
-   * @memberOf hs.addLayersWfs
    * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
    * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
    */
-  tryAddLayers(checked) {
+  tryAddLayers(checked: boolean): void {
     this.add_all = checked;
     this.addLayers(checked);
-    return;
   }
-  checked() {
+
+  checked(): boolean {
     for (const layer of this.HsAddLayersWfsService.services) {
       if (layer.checked) {
         return true;
@@ -152,23 +144,23 @@ export class HsAddLayersWfsComponent {
     }
     return false;
   }
-  changed() {
+
+  changed(): void {
     this.isChecked = this.checked();
-    console.log(this.isChecked);
   }
+
   /**
    * @function addLayers
-   * @memberOf hs.addLayersWfs
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
    */
-  addLayers(checked) {
+  addLayers(checked: boolean): void {
     for (const layer of this.HsAddLayersWfsService.services) {
       this.recurse(layer, checked);
     }
   }
 
-  recurse(layer, checked) {
+  recurse(layer, checked: boolean): void {
     if (!checked || layer.checked) {
       this.addLayer(
         layer,
@@ -183,16 +175,17 @@ export class HsAddLayersWfsComponent {
       }
     }
   }
+
   /**
    * @function addLayer
-   * @memberOf hs.addLayersWfs
+   * @private
+   * @description (PRIVATE) Add selected layer to map???
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
    * @param {string} folder name
    * @param {OpenLayers.Projection} srs of the layer
-   * (PRIVATE) Add selected layer to map???
    */
-  addLayer(layer, layerName, folder, srs) {
+  addLayer(layer, layerName: string, folder: string, srs): void {
     const options = {
       layer: layer,
       url: this.HsWfsGetCapabilitiesService.service_url.split('?')[0],

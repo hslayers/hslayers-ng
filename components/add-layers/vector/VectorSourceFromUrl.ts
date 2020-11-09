@@ -2,6 +2,8 @@ import * as loadingStrategy from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
 import {get as getProj} from 'ol/proj';
 
+import {VectorLayerDescriptor} from './VectorLayerDescriptor';
+
 export class VectorSourceFromUrl extends VectorSource {
   featureProjection: any;
   mapProjection: any;
@@ -11,7 +13,7 @@ export class VectorSourceFromUrl extends VectorSource {
   styleAble: boolean;
   error: boolean;
   errorMessage: any;
-  constructor(descriptor) {
+  constructor(descriptor: VectorLayerDescriptor) {
     super({
       format: descriptor.sourceParams.format,
       url: descriptor.sourceParams.url,
@@ -23,7 +25,7 @@ export class VectorSourceFromUrl extends VectorSource {
     super.setLoader(this.loaderFunction);
   }
 
-  async loaderFunction(extent, resolution, projection) {
+  async loaderFunction(extent, resolution, projection): Promise<void> {
     try {
       super.set('loaded', false);
       const response = await fetch(super.getUrl());
@@ -43,7 +45,7 @@ export class VectorSourceFromUrl extends VectorSource {
         })
       );
 
-      //TODO probably we should not do this. Have to check when styler is operational
+      //TODO: probably we should not do this. Have to check when styler is operational
       this.hasLine = false;
       this.hasPoly = false;
       this.hasPoint = false;
