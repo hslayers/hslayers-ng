@@ -280,9 +280,9 @@ export class HsSaveMapService {
    * @param {object} layer Map layer that should be converted
    * @returns {object} JSON object representing the layer
    */
-  layer2json(layer) {
+  layer2json(layer: Layer): any {
     const json: any = {
-      metadata: {},
+      metadata: layer.get('metadata') || {},
     };
 
     /*
