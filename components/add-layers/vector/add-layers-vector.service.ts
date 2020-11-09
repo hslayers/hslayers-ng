@@ -1,10 +1,11 @@
 import '../../styles/styles.module';
-import VectorLayer from 'ol/layer/Vector';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+
 import VectorLayerDescriptor from './VectorLayerDescriptor';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +18,8 @@ export class HsAddLayersVectorService {
   ) {}
 
   /**
-   * Load nonwms OWS data and create layer
-   *
-   * @memberof hs.addLayers
-   * @function add
+   * @function addVectorLayer
+   * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
    * @param {string} title Title of new layer
@@ -29,7 +28,14 @@ export class HsAddLayersVectorService {
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  addVectorLayer(type, url, title, abstract, srs, options) {
+  addVectorLayer(
+    type: string,
+    url: string,
+    title: string,
+    abstract: string,
+    srs: string,
+    options: any
+  ): Promise<VectorLayer> {
     return new Promise((resolve, reject) => {
       try {
         const lyr = this.createVectorLayer(
@@ -51,10 +57,8 @@ export class HsAddLayersVectorService {
   }
 
   /**
-   * Load nonwms OWS data and create layer
-   *
-   * @memberof hs.addLayers
    * @function add
+   * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
    * @param {string} title Title of new layer
@@ -63,10 +67,14 @@ export class HsAddLayersVectorService {
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  createVectorLayer(type, url, title, abstract, srs, options) {
-    if (options === undefined) {
-      options = {};
-    }
+  createVectorLayer(
+    type: string,
+    url: string,
+    title: string,
+    abstract: string,
+    srs: string,
+    options: any = {}
+  ): VectorLayer {
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&
@@ -105,7 +113,7 @@ export class HsAddLayersVectorService {
     return lyr;
   }
 
-  fitExtent(lyr) {
+  fitExtent(lyr: Layer): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
       this.tryFit(src.getExtent());
@@ -126,7 +134,7 @@ export class HsAddLayersVectorService {
    * @param extent
    * @private
    */
-  tryFit(extent) {
+  tryFit(extent): void {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
@@ -140,7 +148,7 @@ export class HsAddLayersVectorService {
     }
   }
 
-  tryGuessTypeFromUrl(url) {
+  tryGuessTypeFromUrl(url: string): string {
     if (url !== undefined) {
       if (url.toLowerCase().endsWith('kml')) {
         return 'kml';
