@@ -12,7 +12,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-
+import {Layer} from 'ol/layer';
 @Injectable({
   providedIn: 'root',
 })
