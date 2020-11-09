@@ -91,6 +91,9 @@ export default function (
       layerSource.forEachFeature((f) => me.observeFeature(f));
       layerSource.on('addfeature', (e) => {
         me.sync([e.feature], [], [], layer);
+        if (e.feature) {
+          me.observeFeature(e.feature);
+        }
       });
       layerSource.on('removefeature', (e) => {
         me.sync([], [], [e.feature], layer);
