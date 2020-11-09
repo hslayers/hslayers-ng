@@ -266,11 +266,11 @@ export class HsStylerComponent {
           this.HsStylerService.layer.set('hsOriginalStyle', style);
         } else {
           layer.setStyle(style);
-          this.HsStylerService.newLayerStyleSet.next({
-            layerTitle: layer.get('title'),
-            style: style,
-          });
         }
+        this.HsStylerService.newLayerStyleSet.next({
+          layerTitle: layer.get('title'),
+          layer: layer,
+        });
         break;
     }
     if (this.isClustered) {
@@ -286,10 +286,6 @@ export class HsStylerComponent {
    */
   repaintCluster(layer: VectorLayer): void {
     layer.setStyle(layer.getStyle());
-    this.HsStylerService.newLayerStyleSet.next({
-      layerTitle: layer.get('title'),
-      style: layer.getStyle(),
-    });
   }
 
   /**

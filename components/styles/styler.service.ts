@@ -12,7 +12,10 @@ import {createDefaultStyle} from 'ol/style/Style';
 })
 export class HsStylerService {
   layer: VectorLayer = null;
-  newLayerStyleSet: Subject<{layerTitle: string; style: any}> = new Subject();
+  newLayerStyleSet: Subject<{
+    layerTitle: string;
+    layer: VectorLayer;
+  }> = new Subject();
   newFeatureStyleSet: Subject<{
     layerTitle: string;
     source: VectorSource;
@@ -88,7 +91,25 @@ export class HsStylerService {
       }),
     ];
   }
-
+  /**
+   * @description Gets layers style object for any vector layer.
+   * @param {VectorLayer} layer Any vector layer
+   * @returns {any} Returns layer style object
+   */
+  getLayerStyleObject(layer: VectorLayer): any {
+    let features: any;
+    if (layer?.getSource()?.getSource) {
+      features = layer.getSource().getSource().getFeatures();
+    } else {
+      features = layer.getSource().getFeatures();
+    }
+    const style = layer.getStyle();
+    if (typeof style == 'function' && features.length > 0) {
+      return style(features[0]);
+    } else {
+      return style;
+    }
+  }
   /**
    * @description Get a Source for any vector layer. Both clustered and un-clustered.
    * @param {VectorLayer} layer Any vector layer
@@ -116,10 +137,6 @@ export class HsStylerService {
       } else {
         return this.makeSingleFeatureClusterMarker(feature, resolution, layer);
       }
-    });
-    this.newLayerStyleSet.next({
-      layerTitle: layer.get('title'),
-      style: layer.getStyle(),
     });
   }
   /**
