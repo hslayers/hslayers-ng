@@ -92,6 +92,9 @@ export class HsLayerSynchronizerService {
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
       this.sync([e.feature], [], [], layer);
+      if (e.feature) {
+        me.observeFeature(e.feature);
+      }
     });
     layerSource.on('removefeature', (e) => {
       this.sync([], [], [e.feature], layer);
@@ -200,6 +203,18 @@ export class HsLayerSynchronizerService {
         ).then((response: string) => {
           if (response.indexOf('Exception') > -1) {
             this.displaySyncErrorDialog(response);
+          }
+          if (inserted[0]) {
+            const id = new DOMParser()
+              .parseFromString(response.data, 'application/xml')
+              .getElementsByTagName('ogc:FeatureId')[0]
+              .getAttribute('fid');
+            inserted[0].setId(id);
+
+            const geometry = inserted[0].getGeometry();
+            inserted[0].setGeometryName('wkb_geometry');
+            inserted[0].setGeometry(geometry);
+            inserted[0].unset('geometry', true);
           }
           layer.set('hs-layman-synchronizing', false);
         });
