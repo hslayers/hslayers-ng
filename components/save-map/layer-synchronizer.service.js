@@ -1,4 +1,5 @@
 import {WFS} from 'ol/format';
+
 const debounceInterval = 1000;
 
 /**
@@ -186,6 +187,18 @@ export default function (
         ).then((response) => {
           if (response.data.indexOf('Exception') > -1) {
             me.displaySyncErrorDialog(response.data);
+          }
+          if (inserted[0]) {
+            const id = new DOMParser()
+              .parseFromString(response.data, 'application/xml')
+              .getElementsByTagName('ogc:FeatureId')[0]
+              .getAttribute('fid');
+            inserted[0].setId(id);
+
+            const geometry = inserted[0].getGeometry();
+            inserted[0].setGeometryName('wkb_geometry');
+            inserted[0].setGeometry(geometry);
+            inserted[0].unset('geometry', true);
           }
           layer.set('hs-layman-synchronizing', false);
         });
