@@ -3,6 +3,7 @@ import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {fromCircle} from 'ol/geom/Polygon';
 
 /**
  * @param HsConfig
@@ -34,7 +35,7 @@ export default function (
   $timeout,
   HsQueryVectorService,
   HsLaymanService,
-  HsConfirmDialogService,
+  HsConfirmDialogService
 ) {
   'ngInject';
   const me = this;
@@ -233,6 +234,9 @@ export default function (
         me.draw.on(
           'drawend',
           (e) => {
+            if (me.type == 'Circle') {
+              e.feature.setGeometry(fromCircle(e.feature.getGeometry()))
+            }
             if (changeStyle) {
               e.feature.setStyle(changeStyle());
             }
