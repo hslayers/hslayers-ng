@@ -12,14 +12,8 @@ import {createDefaultStyle} from 'ol/style/Style';
 })
 export class HsStylerService {
   layer: VectorLayer = null;
-  newLayerStyleSet: Subject<{
-    layerTitle: string;
-    layer: VectorLayer;
-  }> = new Subject();
-  newFeatureStyleSet: Subject<{
-    layerTitle: string;
-    source: VectorSource;
-  }> = new Subject();
+  newLayerStyleSet: Subject<VectorLayer> = new Subject();
+  newFeatureStyleSet: Subject<VectorLayer> = new Subject();
   measure_style = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 1)',
