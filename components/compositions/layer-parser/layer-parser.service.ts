@@ -306,7 +306,6 @@ export class HsCompositionsLayerParserService {
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   createVectorLayer(lyr_def) {
-    debugger;
     let format = '';
     if (lyr_def.protocol) {
       format = lyr_def.protocol.format;
