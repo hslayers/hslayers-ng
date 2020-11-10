@@ -11,7 +11,7 @@
     "area": "Plocha",
     "attribute": "Atribut",
     "attributes": "Atributy",
-    "boundingBox": "Ohraničující obdélník",
+    "boundingBox": "Rozsah v mapě",
     "cancel": "Zrušit",
     "circle": "Kruh",
     "clear": "Vyčistit",
@@ -34,7 +34,7 @@
     "filter": "Filtr:",
     "folder": "Složka",
     "from": "Od",
-    "fullText": "Plný text",
+    "fullText": "Fulltext",
     "hide": "Skrýt",
     "icon": "Ikona",
     "info": "Další informace",
@@ -271,7 +271,7 @@
     "SEARCH": "Hledání",
     "SENSORS": "Senzory",
     "TRACKING": "Sledování",
-    "TRIP_PLANNER": "Plánovač výletů"
+    "TRIP_PLANNER": "Plánovač tras"
   },
   "PERMALINK": {
     "directiveMd": {
