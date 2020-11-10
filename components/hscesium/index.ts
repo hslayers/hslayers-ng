@@ -54,7 +54,7 @@ angular
    */
   .service('HsCesiumCameraService', downgradeInjectable(HsCesiumCameraService))
 
-  .directive('hs.cesium', downgradeComponent({component: HsCesiumComponent}));
+  .directive('hsCesium', downgradeComponent({component: HsCesiumComponent}));
 
 angular.module('hs.cesium', [downgradedModule]);
 
