@@ -374,22 +374,22 @@
   },
   "SIDEBAR": {
     "descriptions": {
-      "ADDLAYERS": "Vyberte data nebo služby pro vaši mapovou kompozici",
-      "APPLICATIONSETTINGS": "Zadejte uživatelské nastavení aplikace",
-      "DRAW": "Nakreslete nové prvky",
-      "FEATURE_TABLE": "Zobrazte prvky vrstvy v tabulce",
+      "ADDLAYERS": "Vybrat data nebo služby pro vaši mapovou kompozici",
+      "APPLICATIONSETTINGS": "Zadat uživatelské nastavení aplikace",
+      "DRAW": "Nakreslit nové prvky",
+      "FEATURE_TABLE": "Zobrazit prvky vrstvy v tabulce",
       "FILTERFEATURES": "Crossfilter",
-      "INFO": "Zobrazte informace o výsledku mapového dotazu",
-      "LANGUAGE": "Změňte jazyk",
-      "LEGEND": "Zobrazte legendu",
-      "LM": "Spravujte a stylujte své vrstvy",
+      "INFO": "Zobrazit informace o výsledku mapového dotazu",
+      "LANGUAGE": "Změnit jazyk",
+      "LEGEND": "Zobrazit legendu",
+      "LM": "Spravovat a stylovat vaše vrstvy",
       "MAPCOMPOSITIONS": "Seznam dostupných mapových kompozic",
-      "MEASURE": "Měřte vzdálenost nebo plochu na mapě",
-      "PERMALINK": "Sdílejte mapu",
+      "MEASURE": "Měřit vzdálenost nebo plochu na mapě",
+      "PERMALINK": "Sdílet mapu",
       "PRINT": "Tisk mapy",
-      "SAVECOMPOSITION": "Uložte obsah mapy do kompozice",
-      "SEARCH": "Vyhledejte místo",
-      "TRIP_PLANNER": "Vytvořte novou trasu výletu"
+      "SAVECOMPOSITION": "Uložit obsah mapy do kompozice",
+      "SEARCH": "Vyhledat místo",
+      "TRIP_PLANNER": "Vytvořit novou trasu výletu"
     }
   },
   "STYLER": {
