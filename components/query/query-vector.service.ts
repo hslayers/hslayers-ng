@@ -95,14 +95,9 @@ export class HsQueryVectorService {
     });
   }
   getSelectedFeature(feature: any): any {
-    let original;
-    if (feature !== undefined) {
-      original = feature;
-      if (original.get('features') && original.get('features').length == 1) {
-        original = original.get('features')[0];
-      }
-    } else {
-      original = null;
+    let original = feature;
+    if (original.get('features') && original.get('features').length == 1) {
+      original = original.get('features')[0];
     }
     return original;
   }
