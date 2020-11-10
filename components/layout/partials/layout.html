@@ -1,17 +1,17 @@
 <div class="hs-page-wrapper bsi" style="width: 100%; height: 100%;">
-    <div class="hs-content-wrapper d-flex w-100 h-100" ng-class="{'hs-open': HsLayoutService.sidebarExpanded && HsLayoutService.sidebarVisible(), 'hs-sb-right': HsConfig.sidebarPosition == 'right' && HsLayoutService.sidebarVisible(), 'hs-sb-left': HsConfig.sidebarPosition == 'left' && HsLayoutService.sidebarVisible(),'hs-sb-bottom':HsLayoutService.sidebarBottom()}">
+    <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{'hs-open': HsLayoutService.sidebarExpanded && HsLayoutService.sidebarVisible(), 'hs-sb-right': HsConfig.sidebarPosition == 'right' && HsLayoutService.sidebarVisible(), 'hs-sb-left': HsConfig.sidebarPosition == 'left' && HsLayoutService.sidebarVisible(),'hs-sb-bottom':HsLayoutService.sidebarBottom()}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space">
             <hs.map></hs.map>
             <hs.cesium></hs.cesium>
 
-            <hs.layermanager.gallery ng-if="HsLayoutService.componentEnabled('basemapGallery')"></hs.layermanager.gallery>
-            <hs.toolbar ng-if="HsCore.exists('hs.toolbar')" ng-show="panelEnabled('toolbar') && HsLayoutService.componentEnabled('toolbar')">
+            <hs.layermanager.gallery *ngIf="HsLayoutService.componentEnabled('basemapGallery')"></hs.layermanager.gallery>
+            <hs.toolbar *ngIf="HsCore.exists('hs.toolbar')" [hidden]="!(panelEnabled('toolbar') && HsLayoutService.componentEnabled('toolbar'))">
             </hs.toolbar>
-            <hs-geolocation ng-show="HsLayoutService.componentEnabled('geolocationButton')"></hs-geolocation>
-            <div class="hs-info-container" ng-show="panelEnabled('compositionLoadingProgress')">
+            <hs-geolocation [hidden]="!HsLayoutService.componentEnabled('geolocationButton')"></hs-geolocation>
+            <div class="hs-info-container" [hidden]="!panelEnabled('compositionLoadingProgress')">
                 <div class="hs-info-area">
-                    <hs-info ng-if="HsCore.exists('hs.info')"></hs-info>
+                    <hs-info *ngIf="HsCore.exists('hs.info')"></hs-info>
                 </div>
             </div>
         </div>
@@ -22,36 +22,32 @@
                         <hs-search-results></hs-search-results>
                     </div>
                 </div> -->
-        <div class="hs-panelspace" ng-if="HsLayoutService.sidebarVisible()" ng-class="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}" ng-style="{width: panelSpaceWidth()+'px'}">
+        <div class="hs-panelspace" *ngIf="HsLayoutService.sidebarVisible()" [ngClass]="{'labels': HsLayoutService.sidebarLabels, 'buttons': HsLayoutService.sidebarButtons}" [ngStyle]="{width: panelSpaceWidth()+'px'}">
             <div class="hs-panelspace-wrapper">
-                <hs-sidebar ng-cloak></hs-sidebar>
+                <hs-sidebar ng-cloak=""></hs-sidebar>
                 <div class="hs-panelplace">
-                    <hs.layermanager  ng-show="panelVisible('layermanager', this)"></hs.layermanager>
-                    <hs.legend  ng-show="panelVisible('legend', this)"></hs.legend>
-                    <hs.datasource-selector  ng-show="panelVisible('datasource_selector', this)"></hs.datasource-selector>
-                    <hs-compositions  ng-show="panelVisible('composition_browser', this)"></hs-compositions>
-                    <hs.measure  ng-show="panelVisible('measure', this)"></hs.measure>
-                    <hs.print  ng-show="panelVisible('print', this)"></hs.print>
-                    <hs.styles  ng-show="panelVisible('styler', this)"></hs.styles>
-                    <hs-share  ng-show="panelVisible('permalink', this)"></hs-share>
-                    <hs-query  class="hs-infopanel" ng-show="panelVisible('info', this)"></hs-query>
-                    <hs.save-map  ng-show="panelVisible('saveMap', this)"></hs.save-map>
-                    <hs-language  ng-show="panelVisible('language', this)"></hs-language>
-                    <hs-feature-table  ng-show="panelVisible('feature_table', this)"></hs-feature-table>
-                    <!--
-        <div hs.routing.directive                ng-controller="HsRoutingController" ng-show="panelVisible('routing', this)"></div>
-                            <div hs.tracking.directive               ng-controller="HsTrackingController" ng-show="panelVisible('tracking', this)"></div>
-                           -->
-                    <hs.vgi-draw  ng-show="panelVisible('draw', this)"></hs.vgi-draw>
-                    <hs.sensors  ng-show="panelVisible('sensors', this)"></hs.sensors>
-                    <hs-search  ng-if="panelVisible('search')" ng-show="panelVisible('search', this)">
+                    <hs.layermanager [hidden]="!panelVisible('layermanager', this)"></hs.layermanager>
+                    <hs.legend [hidden]="!panelVisible('legend', this)"></hs.legend>
+                    <hs.datasource-selector [hidden]="!panelVisible('datasource_selector', this)"></hs.datasource-selector>
+                    <hs-compositions [hidden]="!panelVisible('composition_browser', this)"></hs-compositions>
+                    <hs.measure [hidden]="!panelVisible('measure', this)"></hs.measure>
+                    <hs.print [hidden]="!panelVisible('print', this)"></hs.print>
+                    <hs.styles [hidden]="!panelVisible('styler', this)"></hs.styles>
+                    <hs-share [hidden]="!panelVisible('permalink', this)"></hs-share>
+                    <hs-query class="hs-infopanel" [hidden]="!panelVisible('info', this)"></hs-query>
+                    <hs.save-map [hidden]="!panelVisible('saveMap', this)"></hs.save-map>
+                    <hs-language [hidden]="!panelVisible('language', this)"></hs-language>
+                    <hs-feature-table [hidden]="!panelVisible('feature_table', this)"></hs-feature-table>
+                    <hs.vgi-draw [hidden]="!panelVisible('draw', this)"></hs.vgi-draw>
+                    <hs.sensors [hidden]="!panelVisible('sensors', this)"></hs.sensors>
+                    <hs-search *ngIf="panelVisible('search')" [hidden]="!panelVisible('search', this)">
                     </hs-search>
-                    <hs-trip-planner ng-if="panelVisible('tripPlanner')" ng-show="panelVisible('tripPlanner', this)">
+                    <hs-trip-planner *ngIf="panelVisible('tripPlanner')" [hidden]="!panelVisible('tripPlanner', this)">
                     </hs-trip-planner>
-                    <hs-mini-sidebar  ng-if="HsLayoutService.minisidebar" ng-show="panelVisible('sidebar', this)"></hs-mini-sidebar>
-                    <hs.draw  ng-show="panelVisible('draw', this)"></hs.draw>
-                    <div hs.customhtml.directive DEPRECATED style="height: auto"></div>
-                    <hs-panel-container class="hs-panelplace" ng-style="{width: (panelSpaceWidth()-50)+'px'}">
+                    <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar" [hidden]="!panelVisible('sidebar', this)"></hs-mini-sidebar>
+                    <hs.draw [hidden]="!panelVisible('draw', this)"></hs.draw>
+                    <div hs.customhtml.directive="" deprecated="" style="height: auto"></div>
+                    <hs-panel-container class="hs-panelplace" [ngStyle]="{width: (panelSpaceWidth()-50)+'px'}">
                     </hs-panel-container>
                 </div>
             </div>
