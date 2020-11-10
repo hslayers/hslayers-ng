@@ -1,21 +1,26 @@
-import {Component} from '@angular/core';
+import {Component, ViewRef} from '@angular/core';
+import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsPanelComponent} from '../layout/panels/panel-component.interface';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 @Component({
   selector: 'hs-sensors',
   template: require('./partials/panel.html'),
 })
-export class HsSensorsComponent {
+export class HsSensorsComponent implements HsPanelComponent {
   viewMode = 'sensors';
   viewExpanded = false;
   query: any = {description: ''};
   constructor(
     private HsMapService: HsMapService,
-    private HsSensorsService: HsSensorsService
+    private HsSensorsService: HsSensorsService,
+    private HsLayoutService: HsLayoutService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
+  viewRef: ViewRef;
+  data: any;
 
   /**
    * @memberof hs.sensors.component
@@ -38,5 +43,9 @@ export class HsSensorsComponent {
         element.expanded = false;
       });
     }
+  }
+
+  isVisible() {
+    return this.HsLayoutService.panelVisible('sensors');
   }
 }
