@@ -28,7 +28,7 @@ import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HsToolbarModule} from '../toolbar';
 import {HsTripPlannerModule} from '../trip_planner';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {TranslateModule, TranslateStore} from '@ngx-translate/core';
 
 @NgModule({
@@ -38,12 +38,12 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsDialogHostDirective,
     HsLayoutComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     TranslateModule,
     HsConfirmModule,
     HsMapModule,
-    HsCesiumModule,
     HsLayerManagerModule,
     HsGeolocationModule,
     HsToolbarModule,
