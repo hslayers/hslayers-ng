@@ -20,6 +20,7 @@ import {HsQueryVectorService} from '../query/query-vector.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
+import {fromCircle} from 'ol/geom/Polygon';
 type activateParams = {
   onDrawStart?;
   onDrawEnd?;
@@ -474,6 +475,9 @@ export class HsDrawService {
       this.draw.on(
         'drawend',
         (e) => {
+          if (this.type == 'Circle') {
+            e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
+          }
           if (changeStyle) {
             e.feature.setStyle(changeStyle());
           }
