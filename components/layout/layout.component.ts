@@ -41,12 +41,6 @@ export class HsLayoutComponent {
       element: elementRef.nativeElement,
       innerElement: '.hs-map-container',
     });
-    if (HsConfig.sidebarPosition === 'left') {
-      this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
-      this.HsLayoutService.sidebarRight = false;
-    } else if (HsConfig.sidebarPosition != 'invisible') {
-      HsConfig.sidebarPosition = 'right';
-    }
 
     if (this.HsConfig.importCss == undefined || this.HsConfig.importCss) {
       require(/* webpackChunkName: "lazy-bootstrap" */ 'bootstrap/dist/css/bootstrap.isolated.css');
@@ -81,6 +75,12 @@ export class HsLayoutComponent {
     this.HsLayoutService.contentWrapper = this.elementRef.nativeElement.querySelector(
       '.hs-content-wrapper'
     );
+    if (this.HsConfig.sidebarPosition === 'left') {
+      this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
+      this.HsLayoutService.sidebarRight = false;
+    } else if (this.HsConfig.sidebarPosition != 'invisible') {
+      this.HsConfig.sidebarPosition = 'right';
+    }
     if (window.innerWidth < 600) {
       const viewport = document.querySelector('meta[name="viewport"]');
       viewport.setAttribute(
