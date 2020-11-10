@@ -18,7 +18,7 @@ import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 @Component({
-  selector: 'hs.compositions',
+  selector: 'hs-compositions',
   template: require('./compositions.html'),
 })
 export class HsCompositionsComponent implements OnInit {

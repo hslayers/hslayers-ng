@@ -1,4 +1,3 @@
-import '../core/';
 import * as angular from 'angular';
 import {HsInfoComponent} from './info.component';
 import {HsInfoModule} from './info.module';

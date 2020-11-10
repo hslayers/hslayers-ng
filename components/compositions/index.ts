@@ -1,5 +1,4 @@
 import '../../common/endpoints/endpoints.module';
-import '../layout/layout.module';
 import '../permalink/';
 import '../save-map/';
 import '../styles';
@@ -26,7 +25,6 @@ export const downgradedModule = downgrade(HsCompositionsModule);
 angular
   .module(downgradedModule, [
     'hs.map',
-    'hs.core',
     'hs.compositions.layerParser',
     'hs.compositions.endpoints',
     'hs.common.endpoints',

@@ -1,9 +1,8 @@
 import '../../common/get-capabilities';
-import '../draw/draw.module';
-import '../layout/';
+import '../draw/';
 import '../legend';
 import '../save-map/';
-import '../styles/styles.module';
+import '../styles/';
 import '../utils';
 import 'angular-drag-and-drop-lists';
 import * as angular from 'angular';

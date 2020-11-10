@@ -8,7 +8,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
-  selector: 'hs.cesium',
+  selector: 'hs-cesium',
   template: require('./partials/cesium.html'),
 })
 export class HsCesiumComponent implements OnInit {

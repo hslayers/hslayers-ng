@@ -16,7 +16,6 @@ export const downgradedModule = downgrade(HsShareModule);
 
 angular
   .module(downgradedModule, [
-    'hs.core',
     'hs.map',
     'hs.save-map',
     'hs.compositions',

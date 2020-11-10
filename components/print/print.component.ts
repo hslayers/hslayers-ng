@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsPrintService} from './print.service';
 @Component({
-  selector: 'hs.print',
+  selector: 'hs-print',
   template: require('./partials/printdialog.html'),
 })
 export class HsPrintComponent {

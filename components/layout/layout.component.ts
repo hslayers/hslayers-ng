@@ -1,10 +1,10 @@
 import {Component, ElementRef} from '@angular/core';
 import {HsConfig} from '../../config.service';
-import { HsEventBusService } from '../core/event-bus.service';
+import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
 
 @Component({
-  selector: 'hs-layout-component',
+  selector: 'hs-layout',
   template: require('./partials/layout.html'),
 })
 export class HsLayoutComponent {
