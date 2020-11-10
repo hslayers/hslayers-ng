@@ -365,7 +365,7 @@ export class HsCompositionsLayerParserService {
           undefined,
           lyr_def.title || 'Layer',
           lyr_def.abstract,
-          lyr_def.projection.toUpperCase(),
+          lyr_def.projection?.toUpperCase(),
           lyr_def
         );
     }
