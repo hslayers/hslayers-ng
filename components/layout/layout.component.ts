@@ -18,11 +18,8 @@ export class HsLayoutComponent {
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
     private HsEventBusService: HsEventBusService,
-    elementRef: ElementRef
+    private elementRef: ElementRef
   ) {
-    this.HsLayoutService.contentWrapper = elementRef.nativeElement.querySelector(
-      '.hs-content-wrapper'
-    );
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
 
     setTimeout(() => {
@@ -81,6 +78,9 @@ export class HsLayoutComponent {
   }
 
   ngOnInit(): void {
+    this.HsLayoutService.contentWrapper = this.elementRef.nativeElement.querySelector(
+      '.hs-content-wrapper'
+    );
     if (window.innerWidth < 600) {
       const viewport = document.querySelector('meta[name="viewport"]');
       viewport.setAttribute(
