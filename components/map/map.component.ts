@@ -9,7 +9,7 @@ import {HsMapService} from './map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
-  selector: 'hs.map',
+  selector: 'hs-map',
   template: require('./partials/map.html'),
 })
 export class HsMapComponent implements AfterViewInit {

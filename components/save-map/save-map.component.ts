@@ -6,7 +6,7 @@ import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 
 @Component({
-  selector: 'hs.save-map',
+  selector: 'hs-save-map',
   template: require('./partials/panel.html'),
 })
 export class HsSaveMapComponent {

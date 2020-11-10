@@ -1,4 +1,3 @@
-import '../core/';
 import * as angular from 'angular';
 
 import {HsToolbarComponent} from './toolbar.component';

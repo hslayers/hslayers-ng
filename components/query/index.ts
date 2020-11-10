@@ -26,7 +26,6 @@ export const downgradedModule = downgrade(HsQueryModule);
 angular
   .module(downgradedModule, [
     'hs.map',
-    'hs.core',
     'ngSanitize',
     'hs.language',
     'hs.layout',

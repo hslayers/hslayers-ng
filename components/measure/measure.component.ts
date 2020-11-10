@@ -4,7 +4,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
 
 @Component({
-  selector: 'hs.measure',
+  selector: 'hs-measure',
   template: require('./partials/measure.html'),
 })
 export class HsMeasureComponent {

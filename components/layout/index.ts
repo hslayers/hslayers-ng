@@ -1,9 +1,6 @@
 import {HsLayoutModule} from './layout.module';
 import {downgrade} from '../../common/downgrader';
 export const downgradedLayoutModule = downgrade(HsLayoutModule);
-import '../core/';
-import '../geolocation';
-import '../layermanager/';
 import * as angular from 'angular';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogContainerService} from './dialogs/dialog-container.service';
@@ -13,17 +10,12 @@ import {HsPanelContainerComponent} from './panels/panel-container.component';
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsPanelHeaderComponent} from './panels/layout-panel-header.component';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
-
 /**
  * @namespace hs.layout
  * @memberOf hs
  */
 angular
-  .module(downgradedLayoutModule, [
-    'hs.core',
-    'hs.geolocation',
-    'hs.layermanager',
-  ]) // 'material.components.bottomSheetCollapsible'
+  .module(downgradedLayoutModule, []) // 'material.components.bottomSheetCollapsible'
   /**
    * @memberof hs.layout
    * @ngdoc directive
@@ -31,7 +23,7 @@ angular
    * @description TODO
    */
   .directive(
-    'hs-layout-component',
+    'hs-layout',
     downgradeComponent({component: HsLayoutComponent})
   )
 

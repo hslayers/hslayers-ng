@@ -1,4 +1,3 @@
-import '../layout';
 import * as angular from 'angular';
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureModule} from './measure.module';
@@ -12,7 +11,7 @@ export const downgradedMeasureModule = downgrade(HsMeasureModule);
  * @memberOf hs
  */
 angular
-  .module(downgradedMeasureModule, ['hs.map', 'hs.core', 'hs.layout'])
+  .module(downgradedMeasureModule, ['hs.map'])
   /**
    * @memberof hs.measure
    * @ngdoc service

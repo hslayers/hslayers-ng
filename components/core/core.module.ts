@@ -19,7 +19,7 @@ import {HsInfoModule} from './../info';
 import {HsLanguageModule} from './../language';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLaymanModule} from '../../common/layman';
-import {HsLayoutModule} from '../layout/layout.module';
+import {HsLayoutModule} from '../layout/';
 import {HsLegendModule} from '../legend';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsMapModule} from '../map';
