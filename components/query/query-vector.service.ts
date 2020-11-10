@@ -75,7 +75,17 @@ export class HsQueryVectorService {
     this.selector.getFeatures().on('remove', (e) => {
       this.HsEventBusService.vectorQueryFeatureDeselection.next(e.element);
     });
-
+    this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
+      if (e?.feature) {
+        const layer = this.HsMapService.getLayerForFeature(e.feature);
+        if (layer?.get('onFeatureSelected')) {
+          const originalFeature = this.getSelectedFeature(e.feature);
+          if (originalFeature) {
+            layer.get('onFeatureSelected')(originalFeature);
+          }
+        }
+      }
+    });
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
       this.HsQueryBaseService.clearData('features');
       if (!this.HsQueryBaseService.queryActive) {
@@ -84,7 +94,18 @@ export class HsQueryVectorService {
       this.createFeatureAttributeList();
     });
   }
-
+  getSelectedFeature(feature: any): any {
+    let original;
+    if (feature !== undefined) {
+      original = feature;
+      if (original.get('features') && original.get('features').length == 1) {
+        original = original.get('features')[0];
+      }
+    } else {
+      original = null;
+    }
+    return original;
+  }
   createFeatureAttributeList() {
     this.HsQueryBaseService.data.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
