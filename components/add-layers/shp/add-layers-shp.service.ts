@@ -1,5 +1,7 @@
-import {HttpClient} from '@angular/common/http';
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import type {FileDescriptor} from './add-layers-shp.component';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersShpService {
@@ -18,13 +20,13 @@ export class HsAddLayersShpService {
    * @returns {Promise}
    */
   add(
-    endpoint,
-    files,
+    endpoint: HsEndpoint,
+    files: FileDescriptor[],
     name: string,
     title: string,
     abstract: string,
     srs: string,
-    sld
+    sld: FileDescriptor
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const formdata = new FormData();
@@ -36,13 +38,11 @@ export class HsAddLayersShpService {
         );
       });
       if (sld) {
-        sld.forEach((file) => {
-          formdata.append(
-            'sld',
-            new Blob([file.content], {type: file.type}),
-            file.name
-          );
-        });
+        formdata.append(
+          'sld',
+          new Blob([sld.content], {type: sld.type}),
+          sld.name
+        );
       }
       formdata.append('name', name);
       formdata.append('title', title);
@@ -51,22 +51,21 @@ export class HsAddLayersShpService {
       this.httpClient
         .post(
           `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
-          formdata,
-          {headers: {'Content-Type': undefined}}
+          formdata //,
+          //{headers: new HttpHeaders({'Content-Type': null})}
         )
         .toPromise()
-        .then(
-          (data: any) => {
-            if (data && data.length > 0) {
-              resolve(data);
-            } else {
-              reject(data);
-            }
-          },
-          (err) => {
-            reject(err.data);
+        .then((data: any) => {
+          if (data && data.length > 0) {
+            resolve(data);
+          } else {
+            reject(data);
           }
-        );
+        })
+        .catch((err) => {
+          console.warn(err);
+          reject(err);
+        });
     });
   }
 }

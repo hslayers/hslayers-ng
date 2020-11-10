@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {HsAddLayersShpService} from './add-layers-shp.service';
 import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 
@@ -12,16 +13,16 @@ import {HsLayoutService} from '../../layout/layout.service';
 })
 export class HsAddLayersShpComponent {
   abstract: string;
-  endpoint = null;
+  endpoint: HsEndpoint = null;
   errorDetails = [];
   errorMessage: any;
   extract_styles = false;
-  files = null;
+  files: FileDescriptor[] = [];
   loaderImage = require('../../../img/ajax-loader.gif');
   loading: boolean;
   name: string;
   resultCode: string;
-  sld = null;
+  sld: FileDescriptor = null;
   srs = 'EPSG:4326';
   title = '';
 
@@ -41,6 +42,7 @@ export class HsAddLayersShpComponent {
    */
   pickEndpoint(): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;
+    console.log('picking', endpoints);
     if (endpoints && endpoints.length > 0) {
       const laymans = endpoints.filter((ep) => ep.type == 'layman');
       if (laymans.length > 0) {
@@ -88,6 +90,7 @@ export class HsAddLayersShpComponent {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
+    console.log(this.endpoint, this.files, this.name, this.title, this.srs, this.sld);
     this.hsAddLayersShpService
       .add(
         this.endpoint,
@@ -99,6 +102,7 @@ export class HsAddLayersShpComponent {
         this.sld
       )
       .then((data) => {
+        console.log('add successfulll');
         this.describeNewLayer(this.endpoint, this.name).then(
           (descriptor: any) => {
             this.hsAddLayersWmsService.addService(
@@ -119,4 +123,33 @@ export class HsAddLayersShpComponent {
         this.errorDetails = Object.entries(err.detail);
       });
   }
+
+  read(evt): void {
+    console.log(evt.target.files);
+    const filesRead = [];
+    for (const file of evt.target.files) {
+      const reader = new FileReader();
+      reader.onload = (loadEvent) => {
+        filesRead.push({
+          name: file.name,
+          type: file.type,
+          content: loadEvent.target.result,
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    if (evt.target.id === 'sld') {
+      this.sld = filesRead[0];
+    } else {
+      this.files = filesRead;
+    }
+    console.log(this.files);
+    console.log(this.sld);
+  }
 }
+
+export type FileDescriptor = {
+  name: string;
+  type: string;
+  content: ArrayBuffer;
+};
