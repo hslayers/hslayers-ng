@@ -147,7 +147,7 @@ angular
    * container and settings panel for active layer.
    */
   .directive(
-    'hs.layermanager',
+    'hsLayerManager',
     downgradeComponent({component: HsLayerManagerComponent})
   )
 
