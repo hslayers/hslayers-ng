@@ -103,10 +103,7 @@ export default function (
     if (angular.isDefined(feature)) {
       original = feature;
       if (original.get('features') && original.get('features').length == 1) {
-        original = original
-          .get('features')
-          .map((feature) => feature)
-          .pop();
+        original = original.get('features')[0];
       }
     } else {
       original = null;
