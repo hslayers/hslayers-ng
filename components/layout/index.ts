@@ -23,7 +23,7 @@ angular
    * @description TODO
    */
   .directive(
-    'hs-layout',
+    'hsLayout',
     downgradeComponent({component: HsLayoutComponent})
   )
 
