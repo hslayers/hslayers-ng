@@ -383,7 +383,8 @@ export class HsLayerEditorComponent {
     layer.title = newLayerTitle;
     this.HsLayerEditorService.layerTitleChange.next({
       newTitle: newLayerTitle,
-      oldLayerTitle: layer.get('title'),
+      oldTitle: layer.get('title'),
+      layer,
     });
     layer.set('title', newLayerTitle);
   }

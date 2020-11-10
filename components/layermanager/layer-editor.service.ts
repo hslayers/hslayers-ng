@@ -19,8 +19,9 @@ import {get as getProj, transform, transformExtent} from 'ol/proj';
 export class HsLayerEditorService {
   legendDescriptor: HsLegendDescriptor;
   layerTitleChange: Subject<{
-    oldLayerTitle: string;
+    oldTitle: string;
     newTitle: string | false;
+    layer: Layer;
   }> = new Subject();
   constructor(
     private HsMapService: HsMapService,
