@@ -81,10 +81,7 @@ export class HsLayerEditorStylesService {
       style.setImage(image);
     }
     layer.setStyle(style);
-    this.HsStylerService.newLayerStyleSet.next({
-      layerTitle: layer.get('title'),
-      layer: layer,
-    });
+    this.HsStylerService.newLayerStyleSet.next(layer);
   }
 
   //TODO refactor to some style oriented helper service

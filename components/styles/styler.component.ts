@@ -267,10 +267,7 @@ export class HsStylerComponent {
         } else {
           layer.setStyle(style);
         }
-        this.HsStylerService.newLayerStyleSet.next({
-          layerTitle: layer.get('title'),
-          layer: layer,
-        });
+        this.HsStylerService.newLayerStyleSet.next(layer);
         break;
     }
     if (this.isClustered) {
@@ -310,10 +307,7 @@ export class HsStylerComponent {
       f.setStyle(style);
     }
     (this.isClustered ? layer.getSource() : layer).setSource(underlyingSource);
-    this.HsStylerService.newFeatureStyleSet.next({
-      layerTitle: layer.get('title'),
-      source: underlyingSource,
-    });
+    this.HsStylerService.newFeatureStyleSet.next(layer);
   }
 
   /**
