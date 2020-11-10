@@ -267,23 +267,42 @@ export class HsCompositionsParserService {
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
   jsonToLayer(lyr_def) {
+    let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
       case 'WMS':
-        return this.HsCompositionsLayerParserService.createWmsLayer(lyr_def);
-      case 'ArcGISRest':
-        return this.HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
-      case 'XYZ':
-        return this.HsCompositionsLayerParserService.createXYZLayer(lyr_def);
-      case 'StaticImage':
-        return this.HsCompositionsLayerParserService.createStaticImageLayer(
+        resultLayer = this.HsCompositionsLayerParserService.createWmsLayer(
           lyr_def
         );
+        break;
+      case 'ArcGISRest':
+        resultLayer = this.HsCompositionsLayerParserService.createArcGISLayer(
+          lyr_def
+        );
+        break;
+      case 'XYZ':
+        resultLayer = this.HsCompositionsLayerParserService.createXYZLayer(
+          lyr_def
+        );
+        break;
+      case 'StaticImage':
+        resultLayer = this.HsCompositionsLayerParserService.createStaticImageLayer(
+          lyr_def
+        );
+        break;
       case 'OpenLayers.Layer.Vector':
       case 'Vector':
-        return this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+      case 'hs.format.LaymanWfs':
+        resultLayer = this.HsCompositionsLayerParserService.createVectorLayer(
+          lyr_def
+        );
+        break;
       default:
         return;
     }
+    if (resultLayer) {
+      resultLayer.set('metadata', lyr_def.metadata);
+    }
+    return resultLayer;
   }
 }

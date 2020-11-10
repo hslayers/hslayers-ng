@@ -361,16 +361,14 @@ export class HsCompositionsLayerParserService {
         layer = this.createSparqlLayer(lyr_def);
         break;
       default:
-        if (lyr_def.features) {
-          layer = this.HsAddLayersVectorService.createVectorLayer(
-            '',
-            undefined,
-            lyr_def.title || 'Layer',
-            lyr_def.abstract,
-            lyr_def.projection.toUpperCase(),
-            lyr_def
-          );
-        }
+        layer = this.HsAddLayersVectorService.createVectorLayer(
+          '',
+          undefined,
+          lyr_def.title || 'Layer',
+          lyr_def.abstract,
+          lyr_def.projection.toUpperCase(),
+          lyr_def
+        );
     }
     layer.set('definition', lyr_def.protocol);
     return layer;

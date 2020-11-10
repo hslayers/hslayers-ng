@@ -118,24 +118,20 @@ export class VectorLayerDescriptor {
         this.sourceClass = VectorSource;
         break;
       default:
-        if (options.features !== undefined) {
-          this.sourceClass = VectorSourceFromFeatures;
-          const format = new GeoJSON();
-          let features = options.features;
-          if (typeof features === 'string') {
-            features = format.readFeatures(options.features, {
-              dataProjection: srs,
-              featureProjection: this.mapProjection,
-            });
-          }
-          this.sourceParams = {
-            srs,
-            options,
-            features,
-          };
-        } else {
-          console.warn(`Type '${type}' not supported by hslayers`);
+        this.sourceClass = VectorSourceFromFeatures;
+        const format = new GeoJSON();
+        let features = options.features || [];
+        if (typeof features === 'string') {
+          features = format.readFeatures(options.features, {
+            dataProjection: srs,
+            featureProjection: this.mapProjection,
+          });
         }
+        this.sourceParams = {
+          srs,
+          options,
+          features,
+        };
     }
   }
 }
