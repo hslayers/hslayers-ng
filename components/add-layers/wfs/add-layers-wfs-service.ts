@@ -2,7 +2,6 @@ import '../../../common/get-capabilities';
 import '../../utils/utils.module';
 import * as xml2Json from 'xml-js';
 import GML3 from 'ol/format/GML3';
-import VectorLayer from 'ol/layer/Vector';
 
 import {HsConfig} from '../../../config.service';
 import {HsMapService} from '../../map/map.service';
@@ -16,7 +15,6 @@ import {Renderer2, RendererFactory2} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {WFS} from 'ol/format';
-import {array} from 'vega';
 import {bbox} from 'ol/loadingstrategy';
 import {get} from 'ol/proj';
 import {transform, transformExtent} from 'ol/proj';
