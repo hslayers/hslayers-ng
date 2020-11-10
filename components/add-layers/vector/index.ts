@@ -17,7 +17,6 @@ export const downgradedAddLayersVectorModule = downgrade(
 angular
   .module(downgradedAddLayersVectorModule, [
     'hs.styles',
-    'gettext',
     'hs.utils',
     'hs.layout',
     'hs.map',
