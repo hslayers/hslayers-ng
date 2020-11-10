@@ -21,7 +21,7 @@
                     <i>{{attr.value}}</i>
                 </span>
                 <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>
-                <div *ngIf="attr.value.operations">
+                <div *ngIf="attr.value?.operations">
                     <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)"><span><i> {{translate(operation.customActionName) || translate(operation.action)}};</i></span></a>
                 </div>
             </td>
