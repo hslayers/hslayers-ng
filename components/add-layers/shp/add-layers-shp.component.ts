@@ -111,7 +111,7 @@ export class HsAddLayersShpComponent {
               this.name
             );
             this.loading = false;
-            HsLayoutService.setMainPanel('layermanager');
+            this.hsLayoutService.setMainPanel('layermanager');
           }
         );
         this.resultCode = 'success';

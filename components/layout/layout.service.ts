@@ -1,197 +1,191 @@
-/**
- * @param HsConfig
- * @param HsEventBusService
- * @param $window
- * @param $document
- * @param $timeout
- * @param $log
- */
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLogService} from '../../common/log/log.service';
+import {Injectable} from '@angular/core';
+@Injectable({
+  providedIn: 'root',
+})
 export class HsLayoutService {
-  constructor(HsConfig, HsEventBusService, $window, $document, $timeout, $log) {
-    'ngInject';
-    Object.assign(this, {
-      HsConfig,
-      HsEventBusService,
-      $window,
-      $document,
-      $timeout,
-      $log,
-    });
+  data = {
+    panels: [
+      {
+        enabled: true,
+        order: 0,
+        title: 'Map Compositions',
+        description: 'List available map compositions',
+        name: 'composition_browser',
+        directive: 'hs.compositions',
+        mdicon: 'map',
+      },
+      {
+        enabled: true,
+        order: 1,
+        title: 'Manage and Style Layers',
+        description: 'Manage and style your layers in composition',
+        name: 'layermanager',
+        directive: 'hs.layermanager',
+        mdicon: 'layers',
+      },
+      {
+        enabled: true,
+        order: 2,
+        title: 'Legend',
+        description: 'Display map legend',
+        name: 'legend',
+        directive: 'hs.legend',
+        mdicon: 'format_list_bulleted',
+      },
+      {
+        enabled: () => {
+          return this.panelEnabled('datasource_selector');
+        },
+        order: 3,
+        title:
+          this.HsConfig.datasources == undefined ||
+          this.HsConfig.datasources.length > 0
+            ? 'Datasource Selector'
+            : 'Add layers',
+        description: 'Select data or services for your map composition',
+        name: 'datasource_selector',
+        directive: 'hs.datasource-selector',
+        mdicon: 'dns',
+      },
+      {
+        enabled: true,
+        order: 5,
+        title: 'Measurements',
+        description: 'Measure distance or area at map',
+        name: 'measure',
+        directive: 'hs.measure',
+        mdicon: 'straighten',
+      },
+      {
+        enabled: true,
+        order: 6,
+        title: 'Print',
+        description: 'Print map',
+        name: 'print',
+        directive: 'hs.print',
+        mdicon: 'print',
+      },
+      {
+        enabled: true,
+        order: 7,
+        title: 'Share map',
+        description: 'Share map',
+        name: 'permalink',
+        directive: 'hs.permalink',
+        mdicon: 'share',
+      },
+      {
+        enabled: true,
+        order: 8,
+        title: 'Save composition',
+        description: 'Save content of map to composition',
+        name: 'saveMap',
+        directive: 'hs.save-map',
+        mdicon: 'save',
+      },
+    ],
+  };
 
-    this.data = {
-      panels: [
-        {
-          enabled: true,
-          order: 0,
-          title: 'Map Compositions',
-          description: 'List available map compositions',
-          name: 'composition_browser',
-          directive: 'hs.compositions',
-          mdicon: 'map',
-        },
-        {
-          enabled: true,
-          order: 1,
-          title: 'Manage and Style Layers',
-          description: 'Manage and style your layers in composition',
-          name: 'layermanager',
-          directive: 'hs.layermanager',
-          mdicon: 'layers',
-        },
-        {
-          enabled: true,
-          order: 2,
-          title: 'Legend',
-          description: 'Display map legend',
-          name: 'legend',
-          directive: 'hs.legend',
-          mdicon: 'format_list_bulleted',
-        },
-        {
-          enabled: () => {
-            return this.panelEnabled('datasource_selector');
-          },
-          order: 3,
-          title:
-            angular.isUndefined(HsConfig.datasources) ||
-            HsConfig.datasources.length > 0
-              ? 'Datasource Selector'
-              : 'Add layers',
-          description: 'Select data or services for your map composition',
-          name: 'datasource_selector',
-          directive: 'hs.datasource-selector',
-          mdicon: 'dns',
-        },
-        {
-          enabled: true,
-          order: 5,
-          title: 'Measurements',
-          description: 'Measure distance or area at map',
-          name: 'measure',
-          directive: 'hs.measure',
-          mdicon: 'straighten',
-        },
-        {
-          enabled: true,
-          order: 6,
-          title: 'Print',
-          description: 'Print map',
-          name: 'print',
-          directive: 'hs.print',
-          mdicon: 'print',
-        },
-        {
-          enabled: true,
-          order: 7,
-          title: 'Share map',
-          description: 'Share map',
-          name: 'permalink',
-          directive: 'hs.permalink',
-          mdicon: 'share',
-        },
-        {
-          enabled: true,
-          order: 8,
-          title: 'Save composition',
-          description: 'Save content of map to composition',
-          name: 'saveMap',
-          directive: 'hs.save-map',
-          mdicon: 'save',
-        },
-      ],
-    };
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#defaultPanel
+   * @public
+   * @type {string} null
+   * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed).
+   */
+  defaultPanel = '';
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#panel_statuses
+   * @public
+   * @type {object}
+   */
+  panel_statuses = {};
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#panel_enabled
+   * @public
+   * @type {object}
+   * @description DEPRACATED?
+   */
+  panel_enabled = {};
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#mainpanel
+   * @public
+   * @type {string} null
+   * @description Storage of current main panel (panel which is opened). When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
+   */
+  mainpanel = '';
+  /**
+   * @ngdoc property
+   * @name HsCore#sidebarRight
+   * @public
+   * @type {boolean} true
+   * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
+   */
+  sidebarRight = true;
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#sidebarLabels
+   * @public
+   * @type {boolean} true
+   * @description DEPRECATED? (labels display is done with CSS classes)
+   */
+  sidebarLabels = true;
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#sidebarToggleable
+   * @public
+   * @type {boolean} true
+   * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
+   */
+  sidebarToggleable = true;
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#sidebarButtons
+   * @public
+   * @type {boolean} true
+   * @description DEPRECATED?
+   */
+  sidebarButtons = true;
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#smallWidth
+   * @public
+   * @type {boolean} false
+   * @description Helper property for showing some button on smaller screens
+   */
+  smallWidth = false;
 
-    angular.extend(this, {
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#defaultPanel
-       * @public
-       * @type {string} null
-       * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed).
-       */
-      defaultPanel: '',
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#panel_statuses
-       * @public
-       * @type {object}
-       */
-      panel_statuses: {},
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#panel_enabled
-       * @public
-       * @type {object}
-       * @description DEPRACATED?
-       */
-      panel_enabled: {},
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#mainpanel
-       * @public
-       * @type {string} null
-       * @description Storage of current main panel (panel which is opened). When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
-       */
-      mainpanel: '',
-      /**
-       * @ngdoc property
-       * @name HsCore#sidebarRight
-       * @public
-       * @type {boolean} true
-       * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
-       */
-      sidebarRight: true,
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#sidebarLabels
-       * @public
-       * @type {boolean} true
-       * @description DEPRECATED? (labels display is done with CSS classes)
-       */
-      sidebarLabels: true,
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#sidebarToggleable
-       * @public
-       * @type {boolean} true
-       * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
-       */
-      sidebarToggleable: true,
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#sidebarButtons
-       * @public
-       * @type {boolean} true
-       * @description DEPRECATED?
-       */
-      sidebarButtons: true,
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#smallWidth
-       * @public
-       * @type {boolean} false
-       * @description Helper property for showing some button on smaller screens
-       */
-      smallWidth: false,
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#sidebarExpanded
+   * @public
+   * @type {boolean} false
+   * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
+   */
+  sidebarExpanded = false;
+  /**
+   * @ngdoc property
+   * @name HsLayoutService#minisidebar
+   * @public
+   * @type {boolean} false
+   * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
+   */
+  minisidebar = false;
+  contentWrapper: any;
+  layoutElement: any;
+  private _sidebarVisible: any;
 
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#sidebarExpanded
-       * @public
-       * @type {boolean} false
-       * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
-       */
-      sidebarExpanded: false,
-      /**
-       * @ngdoc property
-       * @name HsLayoutService#minisidebar
-       * @public
-       * @type {boolean} false
-       * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
-       */
-      minisidebar: false,
-    });
-
+  constructor(
+    private HsConfig: HsConfig,
+    private HsEventBusService: HsEventBusService,
+    private $log: HsLogService
+  ) {
     Object.defineProperty(this, 'panelListElement', {
       get: function () {
         return this.contentWrapper.querySelector('.hs-panelplace');
@@ -231,33 +225,35 @@ export class HsLayoutService {
       tripPlanner: false,
     };
 
-    angular.forEach(panelsEnabledDefaults, (value, key) => {
+    for (const key of Object.keys(panelsEnabledDefaults)) {
+      const value = panelsEnabledDefaults[key];
       if (
-        angular.isUndefined(HsConfig.panelsEnabled) ||
-        angular.isUndefined(HsConfig.panelsEnabled[key])
+        this.HsConfig.panelsEnabled == undefined ||
+        HsConfig.panelsEnabled[key] == undefined
       ) {
         this.panelEnabled(key, value);
       }
-    });
-    angular.forEach(HsConfig.panelsEnabled, (value, key) => {
+    }
+    for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
+      const value = this.HsConfig.panelsEnabled[key];
       this.panelEnabled(key, value);
-    });
+    }
     this.createComponentsEnabledConfigIfNeeded();
     // For backwards-compatibility
-    if (angular.isDefined(HsConfig.locationButtonVisible)) {
+    if (this.HsConfig.locationButtonVisible) {
       $log.warn(
         'config.locationButtonVisible parameter is deprecated. Use config.componentsEnabled.geolocationButton instead'
       );
-      if (angular.isUndefined(HsConfig.componentsEnabled.geolocationButton)) {
-        HsConfig.componentsEnabled.geolocationButton =
-          HsConfig.locationButtonVisible;
+      if (HsConfig.componentsEnabled.geolocationButton == undefined) {
+        this.HsConfig.componentsEnabled.geolocationButton = this.HsConfig.locationButtonVisible;
       }
     }
-    if (angular.isUndefined(HsConfig.componentsEnabled.basemapGallery)) {
+    if (HsConfig.componentsEnabled.basemapGallery == undefined) {
       HsConfig.componentsEnabled.basemapGallery = false;
     }
   }
-    /**
+
+  /**
    * @ngdoc method
    * @name HsLayoutService#createComponentsEnabledConfigIfNeeded
    * @public
@@ -277,19 +273,18 @@ export class HsLayoutService {
    * @returns {boolean} Panel opened/closed status
    * @description Find if selected panel is currently opened (in sidebar or as unpinned window)
    */
-  panelVisible(which, scope) {
-    if (angular.isDefined(scope)) {
-      if (angular.isUndefined(scope.panelName)) {
+  panelVisible(which, scope?) {
+    if (scope) {
+      if (scope.panelName == undefined) {
         scope.panelName = which;
       }
     }
-    if (angular.isDefined(this.panel_statuses[which])) {
+    if (this.panel_statuses[which] !== undefined) {
       return this.panel_statuses[which] && this.panelEnabled(which);
     }
-    return (
-      this.mainpanel == which || (angular.isDefined(scope) && scope.unpinned)
-    );
+    return this.mainpanel == which || (scope && scope.unpinned);
   }
+
   /**
    * @ngdoc method
    * @name HsLayoutService#hidePanels
@@ -299,12 +294,7 @@ export class HsLayoutService {
   hidePanels() {
     this.mainpanel = '';
     this.sidebarLabels = true;
-    this.$timeout(() => {
-      if (!this.exists('HsSidebarComponent')) {
-        this.sidebarExpanded = false;
-      }
-      this.HsEventBusService.mainPanelChanges.next();
-    }, 0);
+    this.HsEventBusService.mainPanelChanges.next();
   }
 
   /**
@@ -352,9 +342,9 @@ export class HsLayoutService {
    * @returns {boolean} Panel enabled/disabled status for getter function
    * @description Get or set panel visibility in sidebar. When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but it's functionality is running. Use with status parameter as setter.
    */
-  panelEnabled(which, status) {
-    if (angular.isUndefined(status)) {
-      if (angular.isDefined(this.panel_enabled[which])) {
+  panelEnabled(which: string, status?: boolean) {
+    if (status == undefined) {
+      if (this.panel_enabled[which] != undefined) {
         return this.panel_enabled[which];
       } else {
         return true;
@@ -366,8 +356,8 @@ export class HsLayoutService {
 
   componentEnabled(which) {
     return (
-      angular.isUndefined(this.HsConfig.componentsEnabled) ||
-      angular.isUndefined(this.HsConfig.componentsEnabled[which]) ||
+      this.HsConfig.componentsEnabled == undefined ||
+      this.HsConfig.componentsEnabled[which] == undefined ||
       this.HsConfig.componentsEnabled[which]
     );
   }
@@ -380,7 +370,7 @@ export class HsLayoutService {
    * @param {boolean} by_gui Whether function call came as result of GUI action
    * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
    */
-  setMainPanel(which, by_gui) {
+  setMainPanel(which, by_gui?: boolean) {
     if (!this.panelEnabled(which)) {
       return;
     }
@@ -430,17 +420,16 @@ export class HsLayoutService {
     Object.assign(panelWidths, this.HsConfig.panelWidths);
     let tmp = panelWidths[this.mainpanel] || panelWidths.default;
 
-    if (layoutWidth <= 767 && this.$window.innerWidth <= 767) {
+    if (layoutWidth <= 767 && window.innerWidth <= 767) {
       tmp = layoutWidth;
       this.sidebarToggleable = false;
 
       return tmp;
     } else {
-      this.sidebarToggleable = angular.isDefined(
-        this.HsConfig.sidebarToggleable
-      )
-        ? this.HsConfig.sidebarToggleable
-        : true;
+      this.sidebarToggleable =
+        this.HsConfig.sidebarToggleable != undefined
+          ? this.HsConfig.sidebarToggleable
+          : true;
       if (!this.sidebarToggleable) {
         return tmp;
       }
@@ -464,14 +453,14 @@ export class HsLayoutService {
     return tmp;
   }
 
-  sidebarVisible(state) {
+  sidebarVisible(state?) {
     if (this.HsConfig.sidebarPosition == 'invisible') {
       return false;
     }
-    if (angular.isDefined(state)) {
+    if (state != undefined) {
       this._sidebarVisible = state;
     }
-    if (angular.isUndefined(this._sidebarVisible)) {
+    if (this._sidebarVisible == undefined) {
       return true;
     }
     return this._sidebarVisible;
@@ -500,7 +489,7 @@ export class HsLayoutService {
 
   mapStyle() {
     const fullscreen =
-      angular.isUndefined(this.HsConfig.sizeMode) ||
+      this.HsConfig.sizeMode == undefined ||
       this.HsConfig.sizeMode == 'fullscreen';
     let height = this.layoutElement.clientHeight;
     let width = this.layoutElement.clientWidth;
@@ -510,10 +499,7 @@ export class HsLayoutService {
       marginLeft += this.sidebarRight ? 0 : this.panelSpaceWidth();
       width -= this.panelSpaceWidth();
     }
-    if (
-      this.sidebarBottom() &&
-      (fullscreen || this.$window.innerWidth <= 767)
-    ) {
+    if (this.sidebarBottom() && (fullscreen || window.innerWidth <= 767)) {
       height -= this.panelSpaceHeight();
       width = this.panelSpaceWidth();
     }

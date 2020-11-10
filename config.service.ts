@@ -58,5 +58,12 @@ export class HsConfig {
   open_lm_after_comp_loaded: any;
   draggable_windows: boolean;
   connectTypes?: any;
+  theme: any;
+  importCss: boolean;
+  datasources: any;
+  panelWidths: any;
+  sidebarToggleable: any;
+  sizeMode: string;
+  locationButtonVisible: any;
   constructor() {}
 }

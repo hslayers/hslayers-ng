@@ -70,6 +70,9 @@ export class HsCoreService {
     if (this.HsConfig.language) {
       this.translate.use(this.HsConfig.language);
     }
+    this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
+      this.init(element, {innerElement});
+    });
   }
 
   /**
@@ -150,6 +153,7 @@ export class HsCoreService {
     this.HsConfig.allowAddExternalDatasets = newName;
   }
 
+  //TODO: element, options not used anymore
   /**
    * @ngdoc method
    * @name HsCore#init
