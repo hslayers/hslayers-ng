@@ -25,7 +25,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLegendModule} from '../legend';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -59,7 +59,6 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsLayerManagerRemoveAllDialogComponent,
   ],
   providers: [
-    TranslateStore,
     HsLayerEditorSublayerService,
     HsLayerEditorService,
     HsLayerEditorVectorLayerService,

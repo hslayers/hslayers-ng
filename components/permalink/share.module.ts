@@ -14,7 +14,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareComponent} from './share.component';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {WINDOW_PROVIDERS} from '../utils/window';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -23,7 +23,6 @@ import {WINDOW_PROVIDERS} from '../utils/window';
   exports: [HsShareComponent],
   providers: [
     HsShareService,
-    TranslateStore,
     HsShareUrlService,
     Location,
     {provide: LocationStrategy, useClass: PathLocationStrategy},

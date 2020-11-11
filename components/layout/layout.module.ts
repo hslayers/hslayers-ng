@@ -1,6 +1,6 @@
 import {BootstrapComponent} from '../../bootstrap.component';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HsCesiumModule} from '../hscesium';
 import {HsCompositionsModule} from '../compositions';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDatasourcesModule} from '../datasource-selector';
@@ -28,8 +28,7 @@ import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
 import {HsToolbarModule} from '../toolbar';
 import {HsTripPlannerModule} from '../trip_planner';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -65,7 +64,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsDrawModule,
     HsPanelHelpersModule,
   ],
-  providers: [HsLayoutService, HsDialogContainerService, TranslateStore],
+  providers: [HsLayoutService, HsDialogContainerService],
   entryComponents: [
     BootstrapComponent,
     HsDialogContainerComponent,

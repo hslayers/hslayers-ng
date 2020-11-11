@@ -17,7 +17,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Polygon} from 'ol/geom';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {createDefaultStyle} from 'ol/style/Style';
 
@@ -76,7 +76,6 @@ describe('HsStyler', () => {
       declarations: [HsStylerComponent],
       providers: [
         HsStylerService,
-        TranslateStore,
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},

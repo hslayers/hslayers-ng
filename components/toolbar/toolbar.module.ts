@@ -4,7 +4,7 @@ import {
   NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {FormsModule} from '@angular/forms';
 import {HsDrawModule} from '../draw/';
@@ -25,7 +25,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     TranslateModule,
   ],
   exports: [HsToolbarComponent],
-  providers: [TranslateStore],
   entryComponents: [HsToolbarComponent],
 })
 export class HsToolbarModule {}
