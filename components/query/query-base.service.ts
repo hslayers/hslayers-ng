@@ -110,7 +110,7 @@ export class HsQueryBaseService {
     if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
       this.map.on(
         'pointermove',
-        this.HsUtilsService.debounce(this.showPopUp, 500, false, this)
+        this.HsUtilsService.debounce(this.showPopUp, 200, false, this)
       );
     } else if (
       this.HsConfig.popUpDisplay &&
@@ -118,7 +118,7 @@ export class HsQueryBaseService {
     ) {
       this.map.on(
         'singleclick',
-        this.HsUtilsService.debounce(this.showPopUp, 500, false, this)
+        this.HsUtilsService.debounce(this.showPopUp, 200, false, this)
       );
     } /* else none */
   }
