@@ -1,7 +1,8 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
     <div class="card" style="padding: 5px;">
-        <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse" style="line-height: 1.2">
-            <a class="p-1" href="#" (click)="closePopup()" data-toggle="tooltip" [title]="'QUERY.featurePopup.closePopup' | translate">
+        <div *ngFor="let layerDesc of HsQueryBaseService.featureLayersUnderMouse; let i = index" style="line-height: 1.2">
+            <a class="p-1" href="#" (click)="closePopup()" data-toggle="tooltip" [hidden]="i !== 0"
+                [title]="'QUERY.featurePopup.closePopup' | translate">
                 <i class="icon-remove-circle" style="color: rgb(73, 80, 87)"></i>
             </a>
             <strong style="font-size: small;">{{HsLayerUtilsService.translateTitle(layerDesc.title)}}</strong>
