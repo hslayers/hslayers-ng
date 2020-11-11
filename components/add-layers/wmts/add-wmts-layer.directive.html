@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="capabilities_label col-sm-4 control-label" i18n>Style</label>
+                    <label class="capabilities_label col-sm-4 control-label">{{'COMMON.style' | translate}}</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" [(ngModel)="style">
                             <option *ngFor="let i of currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="capabilities_label col-sm-4 control-label">Tile Matrix</label>
+                    <label class="capabilities_label col-sm-4 control-label">{{'ADDLAYERS.WMTS.tileMatrix' | translate}}</label>
                     <div class="capabilities_input col-sm-8">
                         <select class="form-control" [(ngModel)="tileMatrixSet">
                             <option *ngFor="let i of currentLayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
@@ -46,7 +46,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button class="btn btn-success" (click)="addLayer(currentLayer)">Connect</button>
+            <button class="btn btn-success" (click)="addLayer(currentLayer)">{{'COMMON.connect' | translate}}</button>
         </div>
     </div>
 

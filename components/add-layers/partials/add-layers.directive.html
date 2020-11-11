@@ -1,10 +1,10 @@
 <div class="hs-panel-margin panel">
-    <hs-panel-header name="ows" title="Add external data"></hs-panel-header>
+    <hs-panel-header name="ows" [title]="'PANEL_HEADER.ADDLAYERS' | translate"></hs-panel-header>
     <div class="card-body">
         <form role="form" class="form">
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-prepend"><span class="input-group-text">Choose type</span></div>
+                    <div class="input-group-prepend"><span class="input-group-text">{{'ADDLAYERS.chooseType' | translate}}</span></div>
                     <select class="form-control" [(ngModel)]="type" name="type">
                         <option *ngFor="let type of types" [value]="type.id">{{type.text}}</option>
                     </select>

@@ -3,7 +3,7 @@
     <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text control-label">Save to</span>
+                <span class="input-group-text control-label">{{'COMMON.saveTo' | translate}}</span>
             </div>
             <select class="form-control" name="endpoint" [(ngModel)]="endpoint">
                 <option *ngFor="let endpoint of hsCommonEndpointsService.endpoints | endpointsWithDatasources:'layman':'inclusive'"
@@ -13,52 +13,52 @@
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label">Shape file (shp+dbf+shx)</label>
+        <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.shapeFile' | translate}}</label>
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label">Name</label>
+        <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
         <input class="form-control" name="name" [(ngModel)]="name" />
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label">Title</label>
+        <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
         <input class="form-control" name="title" [(ngModel)]="title" />
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label">Abstract</label>
+        <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
         <textarea class="form-control" id='hs-ows-abstract' name="abstract"
-            placeholder="{{'Fill in descriptive text about map'|translate}}" [(ngModel)]="abstract">
+            [placeholder]="'COMMON.fillInDescriptive'| translate" [(ngModel)]="abstract">
         </textarea>
     </div>
 
     <div class="form-group">
-        <label class="capabilities_label control-label">SLD style file</label>
+        <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.SLDStyleFile' | translate}}</label>
         <input name="file" type="file" (change)="read($event)" id="sld">
     </div>
 
     <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
         data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-shp-advanced">
-        Advanced options
+        {{'COMMON.advancedOptions' | translate}}
     </button>
 
     <div class="collapse hs-ows-shp-advanced" [ngClass]="{'show': advancedPanelVisible}">
         <div class="form-group">
-            <label class="capabilities_label control-label">SRS</label>
+            <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
             <input class="form-control" name="srs" [(ngModel)]="srs" />
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label">Folder name</label>
+            <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
             <input class="form-control" name="folderName" [(ngModel)]="folder_name" />
         </div>
     </div>
 
     <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"
             [hidden]="loading"></i><img src="{{loaderImage}}" [hidden]="!loading" />
-        Add
+        {{'COMMON.add' | translate}}
     </button>
 
 
