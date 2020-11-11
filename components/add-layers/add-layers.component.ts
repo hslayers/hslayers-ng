@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 
@@ -18,18 +19,39 @@ export class HsAddLayersComponent {
     private hsShareUrlService: HsShareUrlService,
     private hsConfig: HsConfig,
     private hsEventBusService: HsEventBusService,
-    private hsLayoutService: HsLayoutService
+    private hsLayoutService: HsLayoutService,
+    private HsLanguageService: HsLanguageService
   ) {
     'ngInject';
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
     } else {
       this.types = [
-        {id: 'wms', text: 'Web map service (WMS)'},
-        {id: 'arcgis', text: 'ArcGIS Map Server'},
-        {id: 'vector', text: 'Vector file (GeoJSON, KML)'},
-        {id: 'shp', text: 'Shapefile'},
-        {id: 'wfs', text: 'Web feature service (WFS)'},
+        {
+          id: 'wms',
+          text: () =>
+            this.HsLanguageService.getTranslation('ADDLAYERS.TYPES.WMS'),
+        },
+        {
+          id: 'arcgis',
+          text: () =>
+            this.HsLanguageService.getTranslation('ADDLAYERS.TYPES.ArcGIS'),
+        },
+        {
+          id: 'vector',
+          text: () =>
+            this.HsLanguageService.getTranslation('ADDLAYERS.TYPES.vectorFile'),
+        },
+        {
+          id: 'shp',
+          text: () =>
+            this.HsLanguageService.getTranslation('ADDLAYERS.TYPES.shapeFile'),
+        },
+        {
+          id: 'wfs',
+          text: () =>
+            this.HsLanguageService.getTranslation('ADDLAYERS.TYPES.WFS'),
+        },
       ];
     }
     this.type = '';
