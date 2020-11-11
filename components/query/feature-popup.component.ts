@@ -45,7 +45,7 @@ export class HsQueryFeaturePopupComponent {
     );
     const featureCount = featuresWithPopup.length;
     return {
-      'visibility': featureCount > 0 ? 'visible' : 'hidden',
+      'display': featureCount > 0 ? 'block' : 'none',
     };
   }
   closePopup() {
