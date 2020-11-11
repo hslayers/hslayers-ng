@@ -3,7 +3,7 @@
         {{'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing' | translate}}
     </h4>
     {{exception}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="close()">
+    <button type="button" class="close" data-dismiss="alert" [attr.aria-label]="'COMMON.close' | translate" (click)="close()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

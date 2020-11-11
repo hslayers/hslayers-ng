@@ -4,7 +4,7 @@
 
         <!-- Layer -->
         <div class="form-group">
-            <label translate>Layer</label>
+            <label>{{'COMMON.layer' | translate}}</label>
 
             <div class="input-group">
                 <select class="form-control" ng-model="selected_layer" ng-change="changeLayer()">
@@ -23,23 +23,23 @@
         <div class="btn-group center-block">
             <!--
              --><button class="btn btn-secondary ng-class:{active: type=='Point'}" ng-click="setType('Point')"
-                translate><i class="icon-pin"></i></button>
+                ><i class="icon-pin"></i></button>
             <!--
              --><button class="btn btn-secondary ng-class:{active: type=='Polygon'}" ng-click="setType('Polygon')"
-                translate><i class="icon-polygonlasso"></i></button>
+                ><i class="icon-polygonlasso"></i></button>
             <!--
              --><button class="btn btn-secondary ng-class:{active: type=='LineString'}"
-                ng-click="setType('LineString')" translate> <i class="icon-line"></i></button>
+                ng-click="setType('LineString')"> <i class="icon-line"></i></button>
         </div>
         <div class="btn-group center-block hs-draw-new-buttons">
             <!--
              --><button class="btn btn-secondary ng-class:{hs_draw_new_extended: type!='Point'}" ng-click="start()"
-                translate>New</button>
+            >{{'COMMON.new' | translate}}</button>
             <!--
              --><button class="btn btn-secondary" ng-show="type=='Point' && HsCore.isMobile()"
-                ng-click="newPointFromGps()" translate>New GPS</button>
+                ng-click="newPointFromGps()">{{'DRAW.newGPS' | translate}}</button>
             <!--
-             --><button class="btn btn-secondary btn-danger" ng-click="clearAll()" translate>Clear</button>
+             --><button class="btn btn-secondary btn-danger" ng-click="clearAll()">{{'COMMON.clear' | translate}}</button>
         </div>
 
         <ul class="list-group hs-dr-featurelist">
@@ -50,7 +50,7 @@
                 <span>{{feature.type}} {{feature.name}}</span>
                 <span class="pull-right" ng-style="{'float':'right'}">
                     <button class="btn btn-secondary btn-sm" ng-if="feature==current_feature" ng-click="stop()"
-                        translate>Stop</button>
+                        >{{'COMMON.stop' | translate}}</button>
                     <button type="button" class="btn btn-secondary btn-sm" ng-click="removeFeature(feature);">
                         <i class="icon-trash"></i>
                     </button>
@@ -63,21 +63,21 @@
                 <form>
                     <!-- Name -->
                     <div class="form-group">
-                        <label translate>Name</label>
+                        <label>{{'COMMON.name' | translate}}</label>
                         <input type="text" class="form-control" ng-model="current_feature.name"
                             ng-change="setUnsaved()" />
                     </div>
 
                     <!-- Description -->
                     <div class="form-group">
-                        <label translate>Description</label>
+                        <label >{{'COMMON.description' | translate}}</label>
                         <input type="text" class="form-control" ng-model="current_feature.description"
                             ng-change="setUnsaved()" />
                     </div>
 
                     <!-- Category -->
                     <div class="form-group">
-                        <label translate>Category</label>
+                        <label>{{'COMMON.category' | translate}}</label>
                         <select class="form-control" ng-model="current_feature.category_id" ng-change="setUnsaved()">
                             <option ng-repeat="category in categories"
                                 ng-selected="category.category_id==current_feature.category_id"
@@ -87,7 +87,7 @@
 
                     <!-- Dataset -->
                     <div class="form-group">
-                        <label translate>Dataset</label>
+                        <label>{{'COMMON.dataset' | translate}}</label>
                         <select class="form-control" ng-model="current_feature.dataset_id" ng-change="setUnsaved()">
                             <option ng-repeat="dataset in datasets"
                                 ng-selected="dataset.dataset_id==current_feature.dataset_id"
@@ -98,7 +98,7 @@
                     <!-- Photo -->
                     <!-- <div class="form-group" ng-if="HsCore.isMobile()"> -->
                     <div class="form-group" ng-if="current_feature.media.length">
-                        <label translate>Photo</label>
+                        <label>{{'COMMON.photo' | translate}}</label>
                         <!-- <span>{{current_feature.photo_src}}</span> -->
                         <!-- <input type="file" class="form-control" ng-model="current_feature.photo" ng-change="setUnsaved()" style="display: none"> -->
                         <!-- <img data-ng-src="data:image/PNG;base64,{{photo}}" style="width: 100%"></img> -->
@@ -110,7 +110,7 @@
                     <button class="btn btn-secondary" ng-click="moreAttributesVisible = !moreAttributesVisible"
                         type="button" data-toggle="collapse" data-target="#hs-more-attributes" aria-expanded="false"
                         aria-controls="hs-more-attributes">
-                        Show more
+                        {{'COMMON.showMore' | translate}}
                     </button>
                     <div class="collapse" ng-class="{'show': moreAttributesVisible}" id="hs-more-attributes">
                         <br />
@@ -130,9 +130,9 @@
                         <i class="icon-camera"></i>
                     </button>
 
-                    <button class="btn btn-primary" ng-click="saveFeature(true); current_feature=null">Save</button>
+                    <button class="btn btn-primary" ng-click="saveFeature(true); current_feature=null">{{'COMMON.save' | translate}}</button>
                     <button class="btn btn-secondary" ng-click="cancelChanges()"
-                        ng-show="is_unsaved==true">Cancel</button>
+                        ng-show="is_unsaved==true">{{'COMMON.cancel' | translate}}</button>
                     <!-- Footer -->
                 </form>
             </div>

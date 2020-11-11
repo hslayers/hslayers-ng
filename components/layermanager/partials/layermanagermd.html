@@ -3,7 +3,7 @@
         ng-click="setCurrentLayer(layer, layer.layer.ol_uid, obj.coded_path)" layout-fill>
         <div layout="column" class="md-list-item-text" layout-fill>
             <div layout="row" layout-fill layout-align="start center">
-                <md-checkbox flex="none" ng-checked="layer.visible" aria-label="Layer visibility"
+                <md-checkbox flex="none" ng-checked="layer.visible" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.layerVisibility' | translate"
                     ng-click="$event.stopPropagation();changeLayerVisibility(!layer.visible,layer);"
                     style="margin-bottom:0px;">
                 </md-checkbox>
@@ -31,38 +31,38 @@
             </div>
             <!--Button toolbar-->
             <div layout="row" layout-align="space-around center" layout-wrap class="layer-toolbar">
-                <md-button layout-fill class="md-icon-button md-primary md-hue-2" aria-label="About layer"
+                <md-button layout-fill class="md-icon-button md-primary md-hue-2" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.aboutLayer' | translate"
                     ng-click="$event.stopPropagation();HsLayerManagerService.expandInfo(layer,!layer.expandInfo);">
                     <md-icon>info</md-icon>
                     <md-tooltip md-direction="down">{{'LAYERMANAGER.layermanagerMd.aboutLayer' | translate}}
                     </md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Move layer up"
+                <md-button layout-fill class="md-icon-button md-primary md-hue-3" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.moveLayerUp' | translate"
                     ng-click="changePosition(layer,true, $event)">
                     <md-icon>arrow_upward</md-icon>
                     <md-tooltip md-direction="down">{{'LAYERMANAGER.layermanagerMd.moveLayerUpward' | translate}}
                     </md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary md-hue-3" aria-label="Move layer down"
+                <md-button layout-fill class="md-icon-button md-primary md-hue-3" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.moveLayerDown' | translate"
                     ng-click="changePosition(layer,false, $event)">
                     <md-icon>arrow_downward</md-icon>
                     <md-tooltip md-direction="down">{{'LAYERMANAGER.layermanagerMd.moveLayerDownward' | translate}}
                     </md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Layer options"
+                <md-button layout-fill class="md-icon-button md-primary" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.layerOptions' | translate"
                     ng-click="expandSettings(layer,!layer.expandSettings);">
                     <md-icon>settings</md-icon>
                     <md-tooltip md-direction="down">{{'LAYERMANAGER.layermanagerMd.layerOptions' | translate}}
                     </md-tooltip>
                 </md-button>
                 <md-button layout-fill ng-if="layer.hsFilters" class="md-icon-button md-primary"
-                    aria-label="Filter features"
+                    [attr.aria-label]="'LAYERMANAGER.layermanagerMd.filterFeatures' | translate"
                     ng-click="HsLayerManagerService.expandFilter(layer,!layer.expandFilter);">
                     <md-icon>filter_list</md-icon>
                     <md-tooltip md-direction="down">{{'LAYERMANAGER.layermanagerMd.filterFeatures' | translate}}
                     </md-tooltip>
                 </md-button>
-                <md-button layout-fill class="md-icon-button md-warn md-hue-1" aria-label="Remove layer"
+                <md-button layout-fill class="md-icon-button md-warn md-hue-1" [attr.aria-label]="'COMMON.removeLayer' | translate"
                     ng-click="showRemoveLayerDiag($event, layer)">
                     <md-icon>delete</md-icon>
                     <md-tooltip md-direction="down">{{'COMMON.removeLayer' | translate}}</md-tooltip>
@@ -71,7 +71,7 @@
             <!-- expand divider-->
             <div layout="column" class="divider-layer" layout-fill layout-align="center center"
                 ng-if="layer.expandSettings || layer.expandInfo || layer.expandFilter">
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Hide"
+                <md-button layout-fill class="md-icon-button md-primary" [attr.aria-label]="'COMMON.hide' | translate"
                     ng-click="$event.stopPropagation();HsLayerManagerService.expandSettings(layer,false);HsLayerManagerService.expandInfo(layer,false);HsLayerManagerService.expandFilter(layer,false);">
                     <md-icon>arrow_drop_up</md-icon>
                     <md-tooltip md-direction="down">{{'COMMON.hide' | translate}}</md-tooltip>
@@ -92,7 +92,7 @@
                 <md-input-container layout-fill class="md-block">
                     <label>{{'LAYERMANAGER.layermanagerMd.layerOpacity' | translate}}</label>
                     <md-slider min="0" max="1" step="0.01" ng-model="opacity" ng-model-options="{ getterSetter: true }"
-                        aria-label="Change layer opacity"></md-slider>
+                        [attr.aria-label]="'LAYERMANAGER.layermanagerMd.changeLayerOpacity' | translate"></md-slider>
                 </md-input-container>
                 <!-- style -->
                 <label
@@ -110,7 +110,7 @@
                     <md-input-container layout-fill class="md-block">
                         <label>{{'COMMON.width | translate'}}</label>
                         <md-slider min="0" max="40" step="0.1" ng-model="layer.style.lineWidth"
-                            ng-change="HsLayerEditorStylesService.saveStyle(layer);" aria-label="Change line width">
+                            ng-change="HsLayerEditorStylesService.saveStyle(layer);" [attr.aria-label]="'LAYERMANAGER.layermanagerMd.changeLineWidht' | translate">
                         </md-slider>
                     </md-input-container>
                 </div>
@@ -221,7 +221,7 @@
             </div>
             <div layout="column" layout-align="space-around center" layout-wrap class="layer-toolbar"
                 ng-if="layer.expandInfo">
-                <md-button layout-fill class="md-icon-button md-primary" aria-label="Settings">
+                <md-button layout-fill class="md-icon-button md-primary" [attr.aria-label]="'COMMON.settings' | translate">
                     <md-icon>font_download</md-icon>
                     <md-tooltip md-direction="down">{{'COMMON.renameLayer' | translate}}</md-tooltip>
                 </md-button>

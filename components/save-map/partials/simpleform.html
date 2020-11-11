@@ -74,7 +74,7 @@
     </div>
 
     <div class="card-footer row hs-stc-footer">
-        <div class="btn-group" role="group" aria-label="Save composition">
+        <div class="btn-group" role="group" [attr.aria-label]="'SAVECOMPOSITION.dialogSave.saveComposition' | translate">
             <button type="button" class="btn btn-secondary" (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
             <button type="button" class="btn btn-primary" [hidden]="!(step == 'context')"
                 [disabled]="!HsSaveMapManagerService.compoData.title"

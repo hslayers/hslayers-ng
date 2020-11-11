@@ -15,7 +15,7 @@
                 </label>
             </md-input-container>
             <div>
-                <md-switch ng-model="thumbnailVisible" aria-label="Thumbnail switch">
+                <md-switch ng-model="thumbnailVisible" [attr.aria-label]="'SAVECOMPOSITION.panelMd.thumbnailSwitch' | translate">
                     {{'SAVECOMPOSITION.panelMd.showThumbnail' | translate}}
                 </md-switch>
                 <div class="hs-fade" ng-show="thumbnailVisible">
@@ -31,7 +31,7 @@
                 </md-checkbox>
             </div>
             <div>
-                <md-switch ng-model="showExpanded" aria-label="Thumbnail switch">
+                <md-switch ng-model="showExpanded" [attr.aria-label]="'SAVECOMPOSITION.panelMd.thumbnailSwitch' | translate">
                     {{'COMMON.advancedOptions' | translate}}
                 </md-switch>
                 <div class="hs-fade" ng-show="showExpanded" layout-fill>
@@ -71,7 +71,7 @@
                     <div layout-fill layout="column">
                         <span class="md-body-2">{{'COMMON.layers' | translate}}</span>
                         <md-checkbox ng-repeat="layer in compoData.layers" ng-model="layer.checked"
-                            aria-label="Make public">
+                        [attr.aria-label]="'SAVECOMPOSITION.panelMd.makePublic' | translate">
                             {{layer.title}}
                             <md-divider></md-divider>
                         </md-checkbox>
