@@ -122,7 +122,6 @@
     "angular-animate": "^1.7.9",
     "angular-aria": "^1.7.9",
     "angular-drag-and-drop-lists": ">=2.1.0",
-    "angular-gettext": "2.4.x",
     "angular-lazy-image": "^0.3.4",
     "angular-loader": "1.8.x",
     "angular-material": "^1.1.21",
