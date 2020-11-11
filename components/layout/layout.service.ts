@@ -151,9 +151,11 @@ export class HsLayoutService {
         this.panelEnabled(key, value);
       }
     }
-    for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
-      const value = this.HsConfig.panelsEnabled[key];
-      this.panelEnabled(key, value);
+    if (this.HsConfig.panelsEnabled) {
+      for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
+        const value = this.HsConfig.panelsEnabled[key];
+        this.panelEnabled(key, value);
+      }
     }
     this.createComponentsEnabledConfigIfNeeded();
     // For backwards-compatibility
@@ -165,7 +167,7 @@ export class HsLayoutService {
         this.HsConfig.componentsEnabled.geolocationButton = this.HsConfig.locationButtonVisible;
       }
     }
-    if (HsConfig.componentsEnabled.basemapGallery == undefined) {
+    if (HsConfig.componentsEnabled?.basemapGallery == undefined) {
       HsConfig.componentsEnabled.basemapGallery = false;
     }
   }
