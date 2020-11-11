@@ -92,7 +92,7 @@ export default function (
             if (maxScale < sublayer.MaxScaleDenominator) {
               maxScale = sublayer.MaxScaleDenominator;
             }
-          } else {
+          } else if (!sublayer.maxResolution) {
             sublayer.maxResolution = maxScale;
           }
         }
@@ -102,6 +102,84 @@ export default function (
       properties.maxResolution = maxScale;
     }
     return maxScale;
+  };
+  me.setOrUpdate = function (layer, key, values) {
+    const previousValue = layer.get(key);
+    if (previousValue) {
+      for (const value of values) {
+        layer.set(previousValue.push(value));
+      }
+    } else {
+      layer.set(key, values);
+    }
+  };
+  me.parseInfoForLayer = function (layer, layer_name, caps, fromSublayerParam) {
+    const layerObject = []; //array of layer objects representing added layer
+
+    if (layer_name.includes(',')) {
+      const layers = [];
+      const legends = [];
+
+      layer_name = layer_name.split(',');
+      //loop over layers from layer.LAYERS
+      for (let i = 0; i < layer_name.length; i++) {
+        layerObject[i] = me.identifyLayerObject(
+          layer_name[i],
+          caps.Capability.Layer
+        );
+        if (layerObject[i].Style) {
+          legends.push(layerObject[i].Style[0].LegendURL[0].OnlineResource);
+        }
+        if (angular.isDefined(layerObject[i].Layer)) {
+          if (fromSublayerParam) {
+            delete layerObject[i].Layer;
+            layers.push(layerObject[i]);
+          } else {
+            //loop over sublayers of layer from layer.LAYERS
+            for (let j = 0; j < layerObject[i].Layer.length; j++) {
+              layers.push(layerObject[i].Layer[j]); //merge sublayers
+            }
+          }
+        }
+        layerObject[i].maxResolution = me.searchForScaleDenominator(
+          layerObject[i]
+        );
+      }
+      if (!layer.paramsSet) {
+        layer.setProperties(layerObject[0]);
+        layer.paramsSet = true;
+      }
+      me.setOrUpdate(layer, 'Layer', layers);
+      me.setOrUpdate(layer, 'Legends', legends);
+      me.setOrUpdate(layer, 'MetadataURL', {
+        //use service metadata for layers with multiple layer.LAYERS inputs
+        '0': caps.Service,
+      });
+    } else {
+      layerObject[0] = me.identifyLayerObject(
+        layer_name,
+        caps.Capability.Layer
+      );
+
+      if (!layer.paramsSet) {
+        layer.setProperties(layerObject[0]);
+        layer.paramsSet = true;
+      }
+      if (layerObject[0].Style) {
+        layer.set(
+          'Legends',
+          layerObject[0].Style[0].LegendURL[0].OnlineResource
+        );
+      }
+
+      if (layerObject[0].Layer && fromSublayerParam) {
+        layerObject[0].maxResolution = me.searchForScaleDenominator(
+          layerObject[0]
+        );
+        delete layerObject[0].Layer;
+        me.setOrUpdate(layer, 'Layer', layerObject);
+      }
+    }
   };
   /**
    * @function queryMetadata
@@ -122,51 +200,16 @@ export default function (
         .then((capabilities_xml) => {
           const parser = new WMSCapabilities();
           const caps = parser.read(capabilities_xml);
-          let layer_name = layer.getSource().getParams().LAYERS;
-          const layerObject = []; //array of layer objects representing added layer
+          const layer_name_params = layer.getSource().getParams().LAYERS;
 
-          if (layer_name.includes(',')) {
-            const layers = [];
-            const legends = [];
+          me.parseInfoForLayer(layer, layer_name_params, caps, false);
+          if (layer.get('sublayers')) {
+            me.parseInfoForLayer(layer, layer.get('sublayers'), caps, true);
 
-            layer_name = layer_name.split(',');
-            //loop over layers from layer.LAYERS
-            for (let i = 0; i < layer_name.length; i++) {
-              layerObject[i] = me.identifyLayerObject(
-                layer_name[i],
-                caps.Capability.Layer
-              );
-              if (layerObject[i].Style) {
-                legends.push(
-                  layerObject[i].Style[0].LegendURL[0].OnlineResource
-                );
-              }
-              if (angular.isDefined(layerObject[i].Layer)) {
-                //loop over sublayers of layer from layer.LAYERS
-                for (let j = 0; j < layerObject[i].Layer.length; j++) {
-                  layers.push(layerObject[i].Layer[j]); //merge sublayers
-                }
-              }
-            }
-            layer.setProperties(layerObject[0]);
-            layer.set('Layer', layers);
-            layer.set('Legends', legends);
-            layer.set('MetadataURL', {
-              //use service metadata for layers with multiple layer.LAYERS inputs
-              '0': caps.Service,
-            });
-          } else {
-            layerObject[0] = me.identifyLayerObject(
-              layer_name,
-              caps.Capability.Layer
-            );
-            layer.setProperties(layerObject[0]);
-            if (layerObject[0].Style) {
-              layer.set(
-                'Legends',
-                layerObject[0].Style[0].LegendURL[0].OnlineResource
-              );
-            }
+            const src = layer.getSource();
+            const params = src.getParams();
+            params.LAYERS = params.LAYERS.concat(',', layer.get('sublayers'));
+            src.updateParams(params);
           }
 
           //prioritize config values
@@ -179,7 +222,7 @@ export default function (
             layer.set('MetadataURL', metadata);
             return layer;
           }
-          if (angular.isUndefined(layerObject[0].MetadataURL)) {
+          if (angular.isUndefined(layer.get('Layer')[0].MetadataURL)) {
             layer.set('MetadataURL', {
               '0': caps.Service,
             });
