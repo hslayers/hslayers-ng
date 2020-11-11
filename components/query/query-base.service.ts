@@ -127,7 +127,8 @@ export class HsQueryBaseService {
    * @param e Event, which triggered this function
    */
   showPopUp(e) {
-    if (e.dragging) {
+    // The latter case happens when hovering over the pop-up itself
+    if (e.dragging || e.originalEvent?.originalTarget?.tagName != 'CANVAS') {
       return;
     }
     const map = e.map;
