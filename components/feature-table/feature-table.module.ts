@@ -11,7 +11,7 @@ import {HsFeatureTableService} from './feature-table.service';
 import {HsLayerFeaturesComponent} from './layer-features.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -32,7 +32,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsLayerFeaturesComponent,
     HsFeatureFilterPipe,
   ],
-  providers: [HsFeatureTableService, TranslateStore],
+  providers: [HsFeatureTableService],
   entryComponents: [HsFeatureTableComponent, HsLayerFeaturesComponent],
 })
 export class HsFeatureTableModule {}

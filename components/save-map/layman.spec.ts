@@ -7,7 +7,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Subject} from 'rxjs';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
@@ -73,7 +73,6 @@ describe('HsSaveMap', () => {
       declarations: [HsSaveMapComponent],
       providers: [
         HsLaymanService,
-        TranslateStore,
         {
           provide: HsSaveMapManagerService,
           useValue: new HsSaveMapManagerServiceMock(),

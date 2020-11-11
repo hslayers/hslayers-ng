@@ -11,7 +11,7 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsLaymanModule} from '../../common/layman';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -31,7 +31,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
     HsLaymanModule,
   ],
   exports: [HsCompositionsComponent],
-  providers: [HsCompositionsService, TranslateStore],
+  providers: [HsCompositionsService],
   entryComponents: [
     HsCompositionsComponent,
     HsCompositionsOverwriteDialogComponent,

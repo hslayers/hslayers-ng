@@ -14,7 +14,7 @@ import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {LineString, Polygon} from 'ol/geom';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 class emptyMock {
   constructor() {}
@@ -40,7 +40,6 @@ describe('HsMeasure', () => {
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
-        TranslateStore,
         {provide: HsLayoutService, useValue: new emptyMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},

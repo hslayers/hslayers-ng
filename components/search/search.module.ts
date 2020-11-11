@@ -10,7 +10,7 @@ import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';
 import {HsSearchService} from './search.service';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {limitToPipe} from './limitTo.pipe';
 
 @NgModule({
@@ -27,7 +27,7 @@ import {limitToPipe} from './limitTo.pipe';
     HsSearchResultsComponent,
     HsSearchInputComponent,
   ],
-  providers: [HsSearchService, TranslateStore],
+  providers: [HsSearchService],
   entryComponents: [
     HsSearchComponent,
     HsSearchResultsComponent,

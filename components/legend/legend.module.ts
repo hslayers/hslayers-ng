@@ -10,7 +10,7 @@ import {HsLegendLayerStaticComponent} from './legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
 import {HsLegendService} from './legend.service';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -21,7 +21,7 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
   ],
   imports: [CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsLegendComponent, HsLegendLayerComponent],
-  providers: [HsLegendService, TranslateStore],
+  providers: [HsLegendService],
   entryComponents: [HsLegendComponent, HsLegendLayerComponent],
 })
 export class HsLegendModule {}

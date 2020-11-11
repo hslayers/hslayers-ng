@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsPrintComponent} from './print.component';
 import {HsPrintService} from './print.service';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 /**
  * @memberof hs.print
  * @ngdoc component
@@ -22,7 +22,6 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
   exports: [HsPrintComponent],
   providers: [
     HsPrintService,
-    TranslateStore,
     {
       provide: Window,
       useValue: window,

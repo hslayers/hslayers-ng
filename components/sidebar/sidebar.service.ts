@@ -7,7 +7,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
 // HsLanguageService not yet refactored
 /**
  * param HsLanguageService
@@ -35,8 +34,7 @@ export class HsSidebarService {
     private HsLanguageService: HsLanguageService,
     private HsCoreService: HsCoreService,
     private HsEventBusService: HsEventBusService,
-    private HsUtilsService: HsUtilsService,
-    private TranslateService: TranslateService
+    private HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
     /**

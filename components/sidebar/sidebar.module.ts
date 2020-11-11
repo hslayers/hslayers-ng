@@ -9,13 +9,13 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarComponent} from './sidebar.component';
 import {HsSidebarService} from './sidebar.service';
 import {SortByPipe} from './sortBy.pipe';
-import {TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsMiniSidebarComponent, HsSidebarComponent, SortByPipe],
-  imports: [CommonModule, HsPanelHelpersModule],
+  imports: [CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsMiniSidebarComponent, HsSidebarComponent],
-  providers: [HsSidebarService, TranslateStore],
+  providers: [HsSidebarService],
   entryComponents: [HsMiniSidebarComponent, HsSidebarComponent],
 })
 export class HsSidebarModule {}

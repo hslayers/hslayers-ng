@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {TranslateModule, TranslateStore} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersModule} from '../add-layers/add-layers.module';
 import {HsAdvancedMickaDialogComponent} from './micka/advanced-micka-dialog.component';
@@ -58,7 +58,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLaymanBrowserService,
     HsMickaBrowserService,
     HsMickaFilterService,
-    TranslateStore,
   ],
   entryComponents: [
     HsDatasourcesComponent,
