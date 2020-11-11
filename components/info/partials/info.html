@@ -4,13 +4,13 @@
         <span class="glyphicon" [ngClass]="info_image" [hidden]="!composition_loaded"></span>
     </div>
     <div class="hs-info-composition-container" *ngIf="!composition_edited">
-        <div class="hs-info-composition-title" translate>New map</div>
-        <div class="hs-info-composition-abstract" translate>View, Compose and analyse spatial data</div>
+        <div class="hs-info-composition-title">{{'INFOCOMPONENT.newMap' | translate}}</div>
+        <div class="hs-info-composition-abstract">{{'INFOCOMPONENT.viewComposeAndAnalyse' | translate}}</div>
     </div>
     <div class="hs-info-composition-container" *ngIf="composition_edited">
-        <div class="hs-info-composition-title" translate>Unsaved map</div>
-        <div class="hs-info-composition-abstract" translate [hidden]="!!(!layer_loading.length && composition_edited)">
-            You have unsaved changes!</div>
+        <div class="hs-info-composition-title">{{'INFOCOMPONENT.unsavedMap' | translate}}</div>
+        <div class="hs-info-composition-abstract" [hidden]="!!(!layer_loading.length && composition_edited)">
+            {{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</div>
     </div>
 </div>
 
@@ -26,12 +26,12 @@
 </div>
 
 <div class="hs-info-layers" [hidden]="!layer_loading.length">
-    <span translate>Loading: </span>
+    <span>{{'COMMON.loading' | translate}}: </span>
     <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
 </div>
 
 <div class="hs-info-composition-edited" [hidden]="!(!layer_loading.length && composition_edited)">
-    <span translate>You have unsaved changes!</span>
+    <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translate}}</span>
 </div>
 
 <update-title title="{{composition_title}}"></update-title>
