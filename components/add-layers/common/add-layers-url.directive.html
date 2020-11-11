@@ -1,7 +1,7 @@
 <div class="form-group">
     <div class="input-group">
         <input type="url" class="form-control" name="url" [(ngModel)]="url" (change)="change()"
-            placeholder="External data source (URL)" required #uri="ngModel" />
+            [placeholder]="'ADDLAYERS.externalDataSource' | translate" required #uri="ngModel" />
 
         <div class="input-group-append">
 

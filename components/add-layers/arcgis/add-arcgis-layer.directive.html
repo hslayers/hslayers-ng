@@ -5,7 +5,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Image format</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
                 </div>
                 <select class="form-control" name="imageFormat" [(ngModel)]="data.image_format">
                     <option *ngFor="let format of data.image_formats">{{format}}</option>
@@ -16,7 +16,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Query format</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
                 </div>
                 <select class="form-control" name="queryFormat" [(ngModel)]="data.query_format">
                     <option *ngFor="let format of data.query_formats">{{format}}</option>
@@ -27,7 +27,7 @@
         <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() == data.mapProjection">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>SRS</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
                 </div>
                 <select class="form-control" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
                     <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
@@ -38,7 +38,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" translate>Folder name</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate}}</span>
                 </div>
                 <input class="form-control" name="path" [(ngModel)]="data.path" />
             </div>
@@ -46,15 +46,15 @@
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label" translate> <input type="checkbox"
-                        name="registerMetadata" [(ngModel)]="data.registerMetadata" /> Register metadata</label>
+                <label class="capabilities_label control-label"> <input type="checkbox"
+                        name="registerMetadata" [(ngModel)]="data.registerMetadata" /> {{'ADDLAYERS.registerMetadata' | translate}}</label>
             </div>
         </div>
         <hr />
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <th style="width:1em">&nbsp;</th>
-                <th translate>Name</th>
+                <th>{{'COMMON.name' | translate}}</th>
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr>

@@ -5,7 +5,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>Image format</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
                 </div>
                 <select class="form-control" [(ngModel)]="data.image_format" name="imageFormat">
                     <option *ngFor="let format of data.image_formats">{{format}}</option>
@@ -16,7 +16,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>Query format</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate}}</span>
                 </div>
                 <select class="form-control" [(ngModel)]="data.query_format" name="queryFormat">
                     <option *ngFor="let format of data.query_formats">{{format}}</option>
@@ -27,7 +27,7 @@
         <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.mapProjection">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>SRS</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate}}</span>
                 </div>
                 <select class="form-control" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
                     <option *ngFor="let srs of data.srss | slice:0:50">{{srs}}</option>
@@ -35,26 +35,26 @@
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-danger" [hidden]="!data.useResampling" i18n>
-            Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.
+        <p class="col-sm-12 alert alert-danger" [hidden]="!data.useResampling">
+            {{'ADDLAYERS.mapAndLayerProjection' | translate}}
         </p>
 
         <div class="form-group">
             <div class="capabilities_input">
                 <label class="capabilities_label control-label"> <input type="checkbox" name="useTiles" [(ngModel)]="data.useTiles" />
-                    Use tiles
+                    {{'ADDLAYERS.useTiles' | translate}}
                 </label>
             </div>
         </div>
 
-        <p class="col-sm-12 alert alert-warning" [hidden]="data.useTiles" i18n>
-            Consider using tiles. Some servers have restricted max size of picture.
+        <p class="col-sm-12 alert alert-warning" [hidden]="data.useTiles">
+            {{'ADDLAYERS.considerUsingTiles' | translate}}
         </p>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>Tile size</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translate}}</span>
                 </div>
                 <input class="form-control" name="tileSize" [(ngModel)]="data.tileSize" />
             </div>
@@ -63,7 +63,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label" i18n>Folder name</span>
+                    <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate}}</span>
                 </div>
                 <input class="form-control" name="path" [(ngModel)]="data.path" />
             </div>
@@ -71,17 +71,17 @@
 
         <div class="form-group">
             <div class="capabilities_input">
-                <label class="capabilities_label control-label" i18n> <input type="checkbox"
-                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />Register metadata</label>
+                <label class="capabilities_label control-label"> <input type="checkbox"
+                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
             </div>
         </div>
         <hr />
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <th style="width:1em">&nbsp;</th>
-                <th style="width:30%" i18n>Name</th>
-                <th style="width:40%" i18n>Title</th>
-                <th i18n>Abstract</th>
+                <th style="width:30%">{{'COMMON.name' | translate}}</th>
+                <th style="width:40%">{{'COMMON.title' | translate}}</th>
+                <th>{{'COMMON.abstract' | translate}}</th>
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr>
@@ -99,7 +99,7 @@
         </table>
 
         <button class="btn btn-primary" style="position: sticky;
-        bottom: 1.5rem; float: left;" (click)="selectAllLayers(data.services)">Select All Layers</button>
+        bottom: 1.5rem; float: left;" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
         <button class="btn btn-primary btn-sm" style="position: sticky;
         bottom: 1.5rem; float: right;" (click)="addLayers(true)"><i class="icon-plus"></i></button>
     </div>

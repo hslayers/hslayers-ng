@@ -1,7 +1,7 @@
 <form>
     <div flex layout="row">
         <md-input-container>
-            <label translate>Image format</label>
+            <label>{{'ADDLAYERS.imageFormat' | translate}}</label>
             <md-select ng-model="data.image_format">
                 <md-option ng-value="i" ng-repeat="i in data.image_formats">{{ i }}</md-option>
             </md-select>
@@ -10,39 +10,39 @@
 
     <div flex layout="row">
         <md-input-container>
-            <label translate>Query format</label>
+            <label>{{'ADDLAYERS.queryFormat' | translate}}</label>
             <md-select ng-model="data.query_format">
                 <md-option ng-value="i" ng-repeat="i in data.query_formats">{{ i }}</md-option>
             </md-select>
         </md-input-container>
         <md-input-container ng-show="data.srs.toUpperCase() != data.map_projection">
-            <label translate>SRS</label>
+            <label>{{'ADDLAYERS.srs' | translate}}</label>
             <md-select ng-model="data.srs" ng-change="srsChanged()">
                 <md-option ng-value="i" ng-repeat="i in data.srss | limitTo: 50">{{ i }}</md-option>
             </md-select>
         </md-input-container>
     </div>
 
-    <p class="md-warn" ng-show="data.useResampling" translate>Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.</p>
+    <p class="md-warn" ng-show="data.useResampling">{{'ADDLAYERS.mapAndLayerProjection' | translate}}</p>
 
-    <md-checkbox ng-model="data.useTiles" aria-label="Use tiles">
-        <translate>Use tiles</translate>
+    <md-checkbox ng-model="data.useTiles" [attr.aria-label]="'ADDLAYERS.useTiles' | translate">
+        {{'ADDLAYERS.useTiles' | translate}}
     </md-checkbox>
 
-    <p class="md-warn" ng-show="!data.useTiles" translate>Consider using tiles. Some servers has restricted max size of picture.</p>
+    <p class="md-warn" ng-show="!data.useTiles">{{'ADDLAYERS.considerUsingTiles' | translate}}</p>
 
     <md-input-container>
-        <label translate>Tile size</label>
+        <label>{{'ADDLAYERS.tileSize' | translate}}</label>
         <input ng-model="data.tileSize" >
     </md-input-container>
 
     <md-input-container>
-        <label translate>Folder name</label>
+        <label>{{'ADDLAYERS.folderName' | translate}}</label>
         <input ng-model="data.path" >
     </md-input-container>
 
-    <md-checkbox ng-model="data.register_metadata" aria-label="Register metadata">
-        <translate>Register metadata</translate>
+    <md-checkbox ng-model="data.register_metadata" [attr.aria-label]="'ADDLAYERS.registerMetadata' | translate">
+        {{'ADDLAYERS.registerMetadata' | translate}}
     </md-checkbox>
     <hr/>
 
@@ -51,8 +51,8 @@
             <div class="md-list-item-text" layout="column">
                 {{data.services.Title}}
                 <div layout="row">
-                    <md-button class="md-raised md-primary" ng-click="selectAllLayers()" translate>Select All Layers</md-button>
-                    <md-button class="md-raised md-primary" ng-click="addLayers(true)" aria-label="Add">
+                    <md-button class="md-raised md-primary" ng-click="selectAllLayers()">{{'ADDLAYERS.selectAllLayers' | translate}}</md-button>
+                    <md-button class="md-raised md-primary" ng-click="addLayers(true)" [attr.aria-label]="'COMMON.add' | translate">
                         <md-icon class="md-danger md-hue-2">add</md-icon>
                     </md-button>
                 </div>
