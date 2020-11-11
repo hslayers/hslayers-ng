@@ -436,6 +436,7 @@ export default function (
   me.changeLayerVisibility = function (visibility, layer) {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
+    layer.grayed = !me.isLayerInResolutionInterval(layer.layer);
     //Set the other layers in the same folder invisible
     if (visibility && layer.layer.get('exclusive') == true) {
       angular.forEach(me.data.layers, (other_layer) => {
