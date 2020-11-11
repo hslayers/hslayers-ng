@@ -1,11 +1,11 @@
-<md-dialog aria-label="Info">
+<md-dialog [attr.aria-label]="'PANEL_HEADER.INFO' | translate">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>{{'PANEL_HEADER.INFO' | translate}}</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancelQueryDialog()">
-          <md-icon md-icon-set="material-icons" aria-label="Close dialog">close</md-icon>
+          <md-icon md-icon-set="material-icons" [attr.aria-label]="'COMMON.closeDialog' | translate">close</md-icon>
         </md-button>
       </div>
     </md-toolbar>

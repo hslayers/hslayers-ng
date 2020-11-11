@@ -6,7 +6,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text control-label">{{'SAVECOMPOSITION.saveTo' | translate}}</span>
+                    <span class="input-group-text control-label">{{'COMMON.saveTo' | translate}}</span>
                 </div>
                 <select class="form-control" [(ngModel)]="endpoint" (change)="HsSaveMapManagerService.selectEndpoint(endpoint)">
                     <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>
