@@ -1,10 +1,59 @@
 {
+  "ADDLAYERS": {
+    "SHP": {
+      "SLDStyleFile": "SLD style file",
+      "shapeFile": "Shape file (shp+dbf+shx)"
+    },
+    "TYPES": {
+      "ArcGIS": "ArcGIS Map Server",
+      "WFS": "Web feature service (WFS)",
+      "WMS": "Web map service (WMS)",
+      "shapeFile": "Shapefile",
+      "vectorFile": "Vector file (GeoJSON, KML)"
+    },
+    "VECTOR": {
+      "extractStyles": "Extract styles"
+    },
+    "Vector": {
+      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\""
+    },
+    "WFS": {
+      "addToMap": "Add to map",
+      "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
+      "selectedLayerContains": "Selected layer contains"
+    },
+    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
+    "WMTS": {
+      "tileMatrix": "Tile matrix"
+    },
+    "chooseFormat": "Choose format",
+    "chooseType": "Choose type",
+    "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
+    "externalDataSource": "External data source (URL)",
+    "folderName": "Folder name",
+    "imageFormat": "Image format",
+    "loadingFeaturePleaseWait": "Loading features, please wait",
+    "mapAndLayerProjection": "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.",
+    "mapProjectionAndLayerProjection": "Map projection and layer projection not match. Add the layer to map and use server-side resampling program?",
+    "queryFormat": "Query format",
+    "registerMetadata": "Register metadata",
+    "resampleLayer": "Resample layer",
+    "selectAllLayers": "Select All layers",
+    "someErrorHappened": "Some error happened or input missing",
+    "srs": "SRS",
+    "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
+    "thisIsRequired": "This is required!",
+    "tileSize": "Tile size",
+    "useProxy": "Use proxy",
+    "useTiles": "Use tiles"
+  },
   "COMMON": {
     "Login": "Přihlásit se",
     "Logout": "Odhlásit",
     "Sort": "Seřadit",
     "abstract": "Abstrakt",
     "addAs": "Přidat jako",
+    "add": "Add",
     "advancedOptions": "Pokročilé možnosti",
     "all": "Vše",
     "application": "Aplikace",
@@ -13,16 +62,21 @@
     "attributes": "Atributy",
     "boundingBox": "Rozsah v mapě",
     "cancel": "Zrušit",
+    "category": "Category",
     "circle": "Kruh",
     "clear": "Vyčistit",
     "close": "Zavřít",
+    "closeDialog": "Close dialog",
     "color": "Barva",
     "confirm": "Potvrdit",
     "confirmDelete": "Potvrďte smazání",
     "continue": "Pokračovat",
+    "connect": "Connect",
     "data": "Data",
+    "dataset": "Dataset",
     "date": "Datum",
     "delete": "Vymazat",
+    "description": "Description",
     "distance": "Vzdálenost",
     "download": "Ke stažení",
     "drawNewFeatures": "Nakreslit nové prvky",
@@ -45,14 +99,18 @@
     "line": "Linie",
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
+    "loading": "Loading",
+    "menu": "Menu",
     "more": "Více",
     "name": "Název",
     "newDrawingLayer": "Nová vrstva pro kreslení",
+    "new": "New",
     "next": "Další",
     "no": "Ne",
     "north": "Severní",
     "ok": "Ok",
     "orderBy": "Seřadit podle",
+    "photo": "Photo",
     "point": "Bod",
     "polygon": "Polygon",
     "print": "Tisk",
@@ -66,12 +124,17 @@
     "rotation": "Rotace",
     "save": "Uložit",
     "saveAs": "Uložit jako..",
+    "saveTo": "Uložit do",
     "scale": "Měřítko",
     "service": "Služba",
     "south": "Jižní",
     "stroke": "Obrys",
     "strokeWidth": "Šířka obrysu",
     "theme": "Téma",
+    "settings": "Settings",
+    "showMore": "Show more",
+    "stop": "Stop",
+    "style": "Style",
     "thumbnail": "Miniatura",
     "title": "Název",
     "to": "do",
@@ -154,6 +217,7 @@
     "drawingTo": "Kreslím do:",
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
+    "newGPS": "New GPS",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "unsavedDrawing": "Neuložená kresba"
   },
@@ -174,6 +238,12 @@
   "HISTORY": {
     "toggleDropdown": "Rozbalovací nabídka"
   },
+  "INFOCOMPONENT": {
+    "newMap": "New map",
+    "unsavedMap": "Unsaved map",
+    "viewComposeAndAnalyse": "View, Compose and analyse spatial data",
+    "youHaveUnsavedChanges": "You have unsaved changes!"
+  },
   "LAYERMANAGER": {
     "User generated": "Uživatelský",
     "baseMapGallery": {
@@ -187,6 +257,7 @@
       "removeAllAdded": "Odstranit všechny přidané vrstvy"
     },
     "dimensions": "Dimenze",
+    "editorButtons": "Editor buttons",
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
@@ -206,6 +277,8 @@
     },
     "layermanagerMd": {
       "aboutLayer": "O vrstvě",
+      "changeLayerOpacity": "Change layer opacity",
+      "changeLineWidht": "Change line width",
       "filterFeatures": "Filtrovat prvky",
       "imageLayer": "Vrstva obrazu",
       "innerRadius": "Vnitřní poloměr",
@@ -213,8 +286,11 @@
       "layerOpacity": "Průhlednost vrstvy",
       "layerOptions": "Možnosti vrstvy",
       "layerStyle": "Styl vrstvy",
+      "layerVisibility": "Layer visibility",
       "lineFeatures": "Liniové prvky",
+      "moveLayerDown": "Move layer down",
       "moveLayerDownward": "Přesunutí vrstvy dolů, shift-klik dolů",
+      "moveLayerUp": "Move layer up",
       "moveLayerUpward": "Přesunutí vrstvy nahoru, shift-klik na začátek",
       "outerRadius": "Vnější poloměr",
       "pointFeatures": "Bodové prvky",
@@ -229,11 +305,12 @@
     "terrains": "Terény"
   },
   "LAYOUT": {
+    "closeBottomSheet": "Close bottom sheet",
     "sideNav": {
       "applicationSettings": "Nastavení aplikace",
-      "specifyApplication": "Zadejte uživatelské nastavení aplikace",
-      "tracking": "Sledování"
-    }
+      "specifyApplication": "Zadejte uživatelské nastavení aplikace"
+    },
+    "switchBottomSheetState": "Switch bottom sheet state"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
@@ -251,7 +328,7 @@
     "multipleShapes": "Více tvarů"
   },
   "PANEL_HEADER": {
-    "ADDLAYERS": "Přidat vrstvy",
+    "ADDLAYERS": "Add external data",
     "APPLICATIONSETTINGS": "Nastavení aplikace",
     "COMPOSITIONS": "Kompozice",
     "DATASOURCE_SELECTOR": "Datové zdroje",
@@ -352,10 +429,10 @@
       "makePublic": "Zveřejnit",
       "saveMap": "Uložit mapu",
       "showThumbnail": "Zobrazit miniaturu",
+      "thumbnailSwitch": "Thumbnail switch",
       "useMapExtent": "Použijte rozsah mapy",
       "youAreNotAuthorized": "Nemáte oprávnění k uložení kompozic. Přihlaste se nebo se obraťte na administrátora pro vaše přihlašovací údaje."
     },
-    "saveTo": "Uložit do",
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba při synchronizaci"
     }
@@ -368,6 +445,7 @@
     "max": "Max",
     "measure": "Měření",
     "min": "Min",
+    "oneHour": "1 hodina",
     "phenomena": "Jevy",
     "sensorUnit": "Senzorová jednotka",
     "sensors": "Senzory"
