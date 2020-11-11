@@ -1,6 +1,6 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import * as Popup from 'ol-popup';
+import Popup = require('ol-popup');
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
