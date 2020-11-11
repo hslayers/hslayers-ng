@@ -1,9 +1,58 @@
 {
+  "ADDLAYERS": {
+    "SHP": {
+      "SLDStyleFile": "SLD style file",
+      "shapeFile": "Shape file (shp+dbf+shx)"
+    },
+    "TYPES": {
+      "ArcGIS": "ArcGIS Map Server",
+      "WFS": "Web feature service (WFS)",
+      "WMS": "Web map service (WMS)",
+      "shapeFile": "Shapefile",
+      "vectorFile": "Vector file (GeoJSON, KML)"
+    },
+    "VECTOR": {
+      "extractStyles": "Extract styles"
+    },
+    "Vector": {
+      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\""
+    },
+    "WFS": {
+      "addToMap": "Add to map",
+      "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
+      "selectedLayerContains": "Selected layer contains"
+    },
+    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
+    "WMTS": {
+      "tileMatrix": "Tile matrix"
+    },
+    "chooseFormat": "Choose format",
+    "chooseType": "Choose type",
+    "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
+    "externalDataSource": "External data source (URL)",
+    "folderName": "Folder name",
+    "imageFormat": "Image format",
+    "loadingFeaturePleaseWait": "Loading features, please wait",
+    "mapAndLayerProjection": "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.",
+    "mapProjectionAndLayerProjection": "Map projection and layer projection not match. Add the layer to map and use server-side resampling program?",
+    "queryFormat": "Query format",
+    "registerMetadata": "Register metadata",
+    "resampleLayer": "Resample layer",
+    "selectAllLayers": "Select All layers",
+    "someErrorHappened": "Some error happened or input missing",
+    "srs": "SRS",
+    "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
+    "thisIsRequired": "This is required!",
+    "tileSize": "Tile size",
+    "useProxy": "Use proxy",
+    "useTiles": "Use tiles"
+  },
   "COMMON": {
     "Login": "Log in",
     "Logout": "Log out",
     "Sort": "Sort",
     "abstract": "Abstract",
+    "add": "Add",
     "addAs": "Add as",
     "advancedOptions": "Advanced options",
     "all": "All",
@@ -13,16 +62,21 @@
     "attributes": "Attributes",
     "boundingBox": "Bounding box",
     "cancel": "Cancel",
+    "category": "Category",
     "circle": "Circle",
     "clear": "Clear",
     "close": "Close",
+    "closeDialog": "Close dialog",
     "color": "Color",
     "confirm": "Confirm",
     "confirmDelete": "Confirm delete",
+    "connect": "Connect",
     "continue": "continue",
     "data": "Data",
+    "dataset": "Dataset",
     "date": "Date",
     "delete": "Delete",
+    "description": "Description",
     "distance": "Distance",
     "download": "Download",
     "drawNewFeatures": "Draw new features",
@@ -45,14 +99,18 @@
     "line": "Line",
     "lineColor": "Line color",
     "lineWidth": "Line width",
+    "loading": "Loading",
+    "menu": "Menu",
     "more": "More",
     "name": "Name",
+    "new": "New",
     "newDrawingLayer": "New drawing layer",
     "next": "Next",
     "no": "No",
     "north": "North",
     "ok": "Ok",
     "orderBy": "Order by",
+    "photo": "Photo",
     "point": "Point",
     "polygon": "Polygon",
     "print": "Print",
@@ -66,11 +124,16 @@
     "rotation": "Rotation",
     "save": "Save",
     "saveAs": "Save as..",
+    "saveTo": "Save to",
     "scale": "Scale",
     "service": "Service",
+    "settings": "Settings",
+    "showMore": "Show more",
     "south": "South",
+    "stop": "Stop",
     "stroke": "Stroke",
     "strokeWidth": "Stroke width",
+    "style": "Style",
     "theme": "Theme",
     "thumbnail": "Thumbnail",
     "title": "Title",
@@ -154,6 +217,7 @@
     "drawingTo": "Drawing to:",
     "fillOpacity": "Fill opacity:",
     "individualStyle": "Individual style for feature",
+    "newGPS": "New GPS",
     "reallyDeleteThisLayer": "Really delete this layer?",
     "unsavedDrawing": "Unsaved drawing"
   },
@@ -174,6 +238,12 @@
   "HISTORY": {
     "toggleDropdown": "Toggle dropdown"
   },
+  "INFOCOMPONENT": {
+    "newMap": "New map",
+    "unsavedMap": "Unsaved map",
+    "viewComposeAndAnalyse": "View, Compose and analyse spatial data",
+    "youHaveUnsavedChanges": "You have unsaved changes!"
+  },
   "LAYERMANAGER": {
     "User generated": "User generated",
     "baseMapGallery": {
@@ -187,6 +257,7 @@
       "removeAllAdded": "Remove all added layers"
     },
     "dimensions": "Dimensions",
+    "editorButtons": "Editor buttons",
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Copyright",
@@ -206,6 +277,8 @@
     },
     "layermanagerMd": {
       "aboutLayer": "About layer",
+      "changeLayerOpacity": "Change layer opacity",
+      "changeLineWidht": "Change line width",
       "filterFeatures": "Filter features",
       "imageLayer": "Image layer",
       "innerRadius": "Inner radius",
@@ -213,8 +286,11 @@
       "layerOpacity": "Layer Opacity",
       "layerOptions": "Layer options",
       "layerStyle": "Layer Style",
+      "layerVisibility": "Layer visibility",
       "lineFeatures": "Line features",
+      "moveLayerDown": "Move layer down",
       "moveLayerDownward": "Move layer downward, SHIFT-click to bottom",
+      "moveLayerUp": "Move layer up",
       "moveLayerUpward": "Move layer upward, SHIFT-click to top",
       "outerRadius": "Outer radius",
       "pointFeatures": "Point features",
@@ -229,11 +305,12 @@
     "terrains": "Terrains"
   },
   "LAYOUT": {
+    "closeBottomSheet": "Close bottom sheet",
     "sideNav": {
       "applicationSettings": "Application settings",
-      "specifyApplication": "Specify application user settings",
-      "tracking": "Tracking"
-    }
+      "specifyApplication": "Specify application user settings"
+    },
+    "switchBottomSheetState": "Switch bottom sheet state"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
@@ -251,7 +328,7 @@
     "multipleShapes": "Multiple shapes"
   },
   "PANEL_HEADER": {
-    "ADDLAYERS": "Add layers",
+    "ADDLAYERS": "Add external data",
     "APPLICATIONSETTINGS": "Application settings",
     "COMPOSITIONS": "Compositions",
     "DATASOURCE_SELECTOR": "Datasources",
@@ -352,10 +429,10 @@
       "makePublic": "Make public",
       "saveMap": "Save map",
       "showThumbnail": "Show thumbnail",
+      "thumbnailSwitch": "Thumbnail switch",
       "useMapExtent": "Use map extent",
       "youAreNotAuthorized": "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
     },
-    "saveTo": "Save to",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     }
@@ -368,6 +445,7 @@
     "max": "Max",
     "measure": "Measure",
     "min": "Min",
+    "oneHour": "1 hour",
     "phenomena": "Phenomena",
     "sensorUnit": "Sensor unit",
     "sensors": "Sensors"

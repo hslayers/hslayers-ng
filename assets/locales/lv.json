@@ -1,9 +1,58 @@
 {
+  "ADDLAYERS": {
+    "SHP": {
+      "SLDStyleFile": "SLD stila datne",
+      "shapeFile": "Ģeometrijas datne (shp+dbf+shx)"
+    },
+    "TYPES": {
+      "ArcGIS": "ArcGIS karšu serveris",
+      "WFS": "Tīmekļa grafisko objektu pakalpojums (WFS)",
+      "WMS": "Tīmekļa karšu pakalpojums (WMS)",
+      "shapeFile": "Ģeometrijas datne (Shapefile)",
+      "vectorFile": "Vektoru datne (GeoJSON, KML)"
+    },
+    "VECTOR": {
+      "extractStyles": "Izvilkt stilus"
+    },
+    "Vector": {
+      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\""
+    },
+    "WFS": {
+      "addToMap": "Pievienot kartei",
+      "loadingToManyAtOnce": "grafiskie objekti. Pārāk daudzu objektu ielāde vienlaikus (kamēr karte ir tālināta) var ietekmēt lietotnes veiktspēju",
+      "selectedLayerContains": "Atlasītajā slānī ir"
+    },
+    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
+    "WMTS": {
+      "tileMatrix": "\"Flīžu\" matrica"
+    },
+    "chooseFormat": "Izvēlieties formātu",
+    "chooseType": "Izvēlieties tipu",
+    "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
+    "externalDataSource": "Ārējais datu avots (hipersaite)",
+    "folderName": "Mapes nosaukums",
+    "imageFormat": "Attēla formāts",
+    "loadingFeaturePleaseWait": "Notiek grafisko objektu ielāde, lūdzu uzgaidiet!",
+    "mapAndLayerProjection": "Kartes un slāņa projekcija nesakrīt! Tiks izmantota atkārtota paraugu ņemšana. Tas var novest pie negaidītiem rezultātiem.",
+    "mapProjectionAndLayerProjection": "Kartes projekcija un slāņa projekcija nesakrīt. Pievienojiet slāni kartei un izmantojiet servera puses atkārtotas atlases programmu?",
+    "queryFormat": "Vaicājuma formāts",
+    "registerMetadata": "Reģistrēt metadatus",
+    "resampleLayer": "Atkārtojiet slāņa atlasi",
+    "selectAllLayers": "Atlasīt visus slāņus",
+    "someErrorHappened": "Radās kļūda vai trūkst ievades",
+    "srs": "Ģeodēziskā atskaites sistēma",
+    "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
+    "thisIsRequired": "Šis ir nepieciešams!",
+    "tileSize": "\"Flīžu\" izmērs",
+    "useProxy": "Izmantojiet starpniekserveri",
+    "useTiles": "Izmantojiet \"flīzes\""
+  },
   "COMMON": {
     "Login": "Autorizēties",
     "Logout": "Atteikties",
     "Sort": "Kārtot",
     "abstract": "Apraksts",
+    "add": "Pievienot",
     "addAs": "Pievienot kā",
     "advancedOptions": "Advancētas opcijas",
     "all": "visi",
@@ -13,16 +62,21 @@
     "attributes": "Atribūts",
     "boundingBox": "Robežu taisnstūris",
     "cancel": "Atcelt",
+    "category": "Kategorija",
     "circle": "Aplis",
     "clear": "Notīrīt",
     "close": "Aizvērt",
+    "closeDialog": "Aizvērt logu",
     "color": "Krāsa",
     "confirm": "Apstiprināt",
     "confirmDelete": "Aptipriniet dzēšanu",
+    "connect": "Izveidot savienojumu",
     "continue": "turpināt",
     "data": "Dati",
+    "dataset": "Datu kopa",
     "date": "Datums",
     "delete": "Dzēst",
+    "description": "Apraksts",
     "distance": "Distance",
     "download": "Lejuplādēt",
     "drawNewFeatures": "Zīmēt jaunus objektus",
@@ -45,14 +99,18 @@
     "line": "Līnija",
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
+    "loading": "Notiek ielāde",
+    "menu": "Izvēlne",
     "more": "vairāk",
     "name": "Nosaukums",
+    "new": "Jauna/s",
     "newDrawingLayer": "Jauns zīmēšanas slānis",
     "next": "Nākamais",
     "no": "No",
     "north": "Ziemeļi",
     "ok": "Labi",
     "orderBy": "Kārtot pēc",
+    "photo": "Bilde",
     "point": "Punkts",
     "polygon": "Daudzstūris",
     "print": "Printēt",
@@ -66,11 +124,16 @@
     "rotation": "Rotācija",
     "save": "Saglabāt",
     "saveAs": "Saglabāt kā..",
+    "saveTo": "Saglabāt",
     "scale": "Mērogs",
     "service": "Service",
+    "settings": "Uzstādījumi",
+    "showMore": "Rādīt vairāk",
     "south": "Dienvidi",
+    "stop": "Apturēt",
     "stroke": "Līnija",
     "strokeWidth": "Līnjas platums",
+    "style": "Stils",
     "theme": "tēma",
     "thumbnail": "Sīktēls",
     "title": "Virsraksts",
@@ -154,6 +217,7 @@
     "drawingTo": "Zīmējums uz:",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils objektam",
+    "newGPS": "Jauns GPS",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "unsavedDrawing": "Nesaglabāts zīmējums"
   },
@@ -174,6 +238,12 @@
   "HISTORY": {
     "toggleDropdown": "Pārslēgt nolaižamo izvēlni"
   },
+  "INFOCOMPONENT": {
+    "newMap": "Jauna karte",
+    "unsavedMap": "Nesaglabāta karte",
+    "viewComposeAndAnalyse": "Skatiet, sastādiet un analizējiet telpiskos datus",
+    "youHaveUnsavedChanges": "Jums ir nesaglabātas izmaiņas!"
+  },
   "LAYERMANAGER": {
     "User generated": "Lietotāja ģenerēti",
     "baseMapGallery": {
@@ -187,6 +257,7 @@
       "removeAllAdded": "Noņemt visus pievienotos slāņus"
     },
     "dimensions": "Dimensijas",
+    "editorButtons": "Redaktora pogas",
     "layerEditor": {
       "cluster": "Apvienot blakusesošos",
       "copyright": "Autortiesības",
@@ -206,6 +277,8 @@
     },
     "layermanagerMd": {
       "aboutLayer": "Par slāni",
+      "changeLayerOpacity": "Mainīt slāņa necaurredzamību",
+      "changeLineWidht": "Mainīt līnijas platumu",
       "filterFeatures": "Filtrēt objektus",
       "imageLayer": "Attēla slānis",
       "innerRadius": "Iekšējais rādiuss",
@@ -213,8 +286,11 @@
       "layerOpacity": "Slāņa necaurredzamība",
       "layerOptions": "Slāņa opcijas",
       "layerStyle": "Slāņa stils",
+      "layerVisibility": "Slāņa redzamība",
       "lineFeatures": "Līnijas objekts",
+      "moveLayerDown": "Pārvietot slāni uz leju",
       "moveLayerDownward": "Pārvietojiet slāni uz leju, SHIFT-peles klikšķis uz leju",
+      "moveLayerUp": "Pārvietot slāni uz augšu",
       "moveLayerUpward": "Pārvietojiet slāni uz augšu, SHIFT-peles klikšķis uz augšu",
       "outerRadius": "Ārējais rādiuss",
       "pointFeatures": "Punkta objekts",
@@ -229,11 +305,12 @@
     "terrains": "Reljefi"
   },
   "LAYOUT": {
+    "closeBottomSheet": "Aizvērt apakšējo lapu",
     "sideNav": {
       "applicationSettings": "Programmas iestatījumi",
-      "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus",
-      "tracking": "Izsekošana"
-    }
+      "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus"
+    },
+    "switchBottomSheetState": "Pārslēgt apakšējās lapas stāvokli"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -251,7 +328,7 @@
     "multipleShapes": "Vairākas formas"
   },
   "PANEL_HEADER": {
-    "ADDLAYERS": "Pievienot slāņus",
+    "ADDLAYERS": "Pievienot ārējos datus",
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi",
     "COMPOSITIONS": "Kompozīcijas",
     "DATASOURCE_SELECTOR": "Datu avoti",
@@ -352,10 +429,10 @@
       "makePublic": "Publiskot",
       "saveMap": "Saglabāt karti",
       "showThumbnail": "Rādīt sīktēlu",
+      "thumbnailSwitch": "Sīktēlu slēdzis",
       "useMapExtent": "Izmantot kartes apmēru",
       "youAreNotAuthorized": "Jums nav atļauts saglabāt kompozīciju. Lūdzu, pierakstieties vai sazinieties ar administratoru, lai iegūtu Jūsu akreditācijas datus."
     },
-    "saveTo": "Saglabāt uz",
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     }
@@ -368,6 +445,7 @@
     "max": "Maks.",
     "measure": "mēra",
     "min": "Min",
+    "oneHour": "1 stunda",
     "phenomena": "Parādība",
     "sensorUnit": "Sensoru vienība",
     "sensors": "Sensori"
