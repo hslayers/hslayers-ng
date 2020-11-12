@@ -52,8 +52,8 @@
     "Logout": "Odhlásit",
     "Sort": "Seřadit",
     "abstract": "Abstrakt",
-    "addAs": "Přidat jako",
     "add": "Add",
+    "addAs": "Přidat jako",
     "advancedOptions": "Pokročilé možnosti",
     "all": "Vše",
     "application": "Aplikace",
@@ -70,8 +70,8 @@
     "color": "Barva",
     "confirm": "Potvrdit",
     "confirmDelete": "Potvrďte smazání",
-    "continue": "Pokračovat",
     "connect": "Connect",
+    "continue": "Pokračovat",
     "data": "Data",
     "dataset": "Dataset",
     "date": "Datum",
@@ -103,8 +103,8 @@
     "menu": "Menu",
     "more": "Více",
     "name": "Název",
-    "newDrawingLayer": "Nová vrstva pro kreslení",
     "new": "New",
+    "newDrawingLayer": "Nová vrstva pro kreslení",
     "next": "Další",
     "no": "Ne",
     "north": "Severní",
@@ -127,14 +127,14 @@
     "saveTo": "Uložit do",
     "scale": "Měřítko",
     "service": "Služba",
-    "south": "Jižní",
-    "stroke": "Obrys",
-    "strokeWidth": "Šířka obrysu",
-    "theme": "Téma",
     "settings": "Settings",
     "showMore": "Show more",
+    "south": "Jižní",
     "stop": "Stop",
+    "stroke": "Obrys",
+    "strokeWidth": "Šířka obrysu",
     "style": "Style",
+    "theme": "Téma",
     "thumbnail": "Miniatura",
     "title": "Název",
     "to": "do",
@@ -304,14 +304,6 @@
     "resetMap": "Obnovit mapu",
     "terrains": "Terény"
   },
-  "LAYOUT": {
-    "closeBottomSheet": "Close bottom sheet",
-    "sideNav": {
-      "applicationSettings": "Nastavení aplikace",
-      "specifyApplication": "Zadejte uživatelské nastavení aplikace"
-    },
-    "switchBottomSheetState": "Switch bottom sheet state"
-  },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
   },
@@ -347,7 +339,6 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "SEARCH": "Hledání",
     "SENSORS": "Senzory",
-    "TRACKING": "Sledování",
     "TRIP_PLANNER": "Plánovač tras"
   },
   "PERMALINK": {

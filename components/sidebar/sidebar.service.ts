@@ -137,15 +137,6 @@ export class HsSidebarService {
         condition: true,
       },
       {
-        panel: 'tracking',
-        module: 'HsTrackingController',
-        order: 9,
-        title: () =>
-          this.HsLanguageService.getTranslation('PANEL_HEADER.TRACKING'),
-        description: '',
-        icon: 'icon-screenshot',
-      },
-      {
         panel: 'print',
         module: 'hs.print',
         order: 10,

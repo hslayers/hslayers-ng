@@ -304,14 +304,6 @@
     "resetMap": "Reset map",
     "terrains": "Terrains"
   },
-  "LAYOUT": {
-    "closeBottomSheet": "Close bottom sheet",
-    "sideNav": {
-      "applicationSettings": "Application settings",
-      "specifyApplication": "Specify application user settings"
-    },
-    "switchBottomSheetState": "Switch bottom sheet state"
-  },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
   },
@@ -347,7 +339,6 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRACKING": "Tracking",
     "TRIP_PLANNER": "Trip planner"
   },
   "PERMALINK": {
