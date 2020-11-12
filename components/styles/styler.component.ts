@@ -7,11 +7,11 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-
 type StyleJson = {
   fill?: any;
   stroke?: any;
@@ -64,7 +64,8 @@ export class HsStylerComponent {
     public sanitizer: DomSanitizer,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService,
-    private HsStylerColorService: HsStylerColorService
+    private HsStylerColorService: HsStylerColorService,
+    private HsSaveMapService: HsSaveMapService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler') {
@@ -401,6 +402,39 @@ export class HsStylerComponent {
     this.hasPoly = src.hasPoly;
     this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
+    if (this.HsStylerService.layer.getStyle()) {
+      let style: any = this.HsStylerService.getLayerStyleObject(
+        this.HsStylerService.layer
+      );
+      style = this.HsSaveMapService.serializeStyle(style);
+      const image = style.image;
+      this.linewidth = style.stroke.width;
+      this.fillcolor = {'background-color': style.fill};
+      this.linecolor = {'background-color': style.stroke.color};
+
+      if (image.type === 'icon') {
+        this.setImageType('icon');
+        if (
+          typeof image.src == 'string' &&
+          image.src.slice(0, 10) === 'data:image'
+        ) {
+          const encodedIconData = image.src.replace(
+            'data:image/svg+xml;base64,',
+            ''
+          );
+          this.serialized_icon = image.src;
+          this.iconimage = window.btoa(encodedIconData);
+        } else {
+          this.iconSelected(image.getSrc());
+        }
+      }
+      if (image.type === 'circle') {
+        this.radius = image.radius;
+        this.iconlinewidth = image.stroke.width;
+        this.iconfillcolor = {'background-color': image.fill};
+        this.iconlinecolor = {'background-color': image.stroke.color};
+      }
+    }
   }
 
   readCurrentStyle(layer: VectorLayer): void {
