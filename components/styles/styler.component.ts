@@ -244,7 +244,6 @@ export class HsStylerComponent {
   setStyleByJson(style_json: StyleJson): void {
     const style = new Style(style_json);
     const layer = this.HsStylerService.layer;
-    // const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
     switch (this.level) {
       case 'feature':
         this.setStyleForFeatures(layer, style);
@@ -294,7 +293,6 @@ export class HsStylerComponent {
    * @param {StyleLike|null} style Style to set for the feature. Can be null
    */
   private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
-    // const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
     const underlyingSource = this.HsStylerService.getLayerSource(layer);
     /**
      * We set a blank VectorSource temporarily
@@ -360,7 +358,8 @@ export class HsStylerComponent {
         path.style.strokeWidth = this.iconlinewidth;
       }
       this.serialized_icon =
-        'data:image/svg+xml;base64,' + window.btoa(iconPreview.innerHTML);
+        'data:image/svg+xml;base64,' + this.encodeTob64(iconPreview.innerHTML);
+      // window.btoa();
     }
   }
   /**
@@ -377,7 +376,22 @@ export class HsStylerComponent {
   layermanager(): void {
     this.HsLayoutService.setMainPanel('layermanager');
   }
-
+  encodeTob64(str: string): string {
+    return btoa(
+      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+        return String.fromCharCode(parseInt(p1, 16));
+      })
+    );
+  }
+  decodeToUnicode(str: string): string {
+    return decodeURIComponent(
+      Array.prototype.map
+        .call(atob(str), (c) => {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+  }
   /**
    * @function refreshLayerDefinition
    * @memberof HsStylerComponent
@@ -402,51 +416,11 @@ export class HsStylerComponent {
     this.hasPoly = src.hasPoly;
     this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
-    if (this.HsStylerService.layer.getStyle()) {
-      let style: any = this.HsStylerService.getLayerStyleObject(
-        this.HsStylerService.layer
-      );
-      style = this.HsSaveMapService.serializeStyle(style);
-      const image = style.image;
-      this.linewidth = style.stroke.width;
-      this.fillcolor = {'background-color': style.fill};
-      this.linecolor = {'background-color': style.stroke.color};
-
-      if (image.type === 'icon') {
-        this.setImageType('icon');
-        if (
-          typeof image.src == 'string' &&
-          image.src.slice(0, 10) === 'data:image'
-        ) {
-          const encodedIconData = image.src.replace(
-            'data:image/svg+xml;base64,',
-            ''
-          );
-          this.serialized_icon = image.src;
-          this.iconimage = window.btoa(encodedIconData);
-        } else {
-          this.iconSelected(image.getSrc());
-        }
-      }
-      if (image.type === 'circle') {
-        this.radius = image.radius;
-        this.iconlinewidth = image.stroke.width;
-        this.iconfillcolor = {'background-color': image.fill};
-        this.iconlinecolor = {'background-color': image.stroke.color};
-      }
-    }
   }
-
   readCurrentStyle(layer: VectorLayer): void {
-    let style = layer.getStyle();
-    if (this.HsLayerUtilsService.isLayerClustered(layer)) {
-      style = layer.get('hsOriginalStyle');
-    }
-    if (typeof style == 'function') {
-      const resolvedStyle: Style | Style[] = style(new Feature());
+    const resolvedStyle = this.HsStylerService.getLayerStyleObject(layer);
+    if (resolvedStyle !== undefined) {
       this.parseStyles(resolvedStyle);
-    } else if (this.HsUtilsService.instOf(style, Style)) {
-      this.parseStyle(style);
     }
   }
 
@@ -455,36 +429,95 @@ export class HsStylerComponent {
       for (const subStyle of resolvedStyle) {
         this.parseStyle(subStyle);
       }
-    } else if (this.HsUtilsService.instOf(resolvedStyle, Style)) {
+    } else {
       this.parseStyle(resolvedStyle);
     }
   }
 
-  private parseStyle(subStyle: Style) {
-    if (subStyle.getStroke()?.getColor()) {
+  private parseStyle(style: Style) {
+    const subStyle: Style = this.HsSaveMapService.serializeStyle(style);
+    if (subStyle.stroke?.color) {
       this.linecolor = this.HsStylerColorService.findAndParseColor(
-        subStyle.getStroke().getColor()
+        subStyle.stroke.color
       );
     }
-    if (subStyle.getFill()?.getColor()) {
+    if (subStyle.stroke?.width) {
+      this.linewidth = subStyle.stroke.width;
+    }
+    if (subStyle.fill) {
       this.fillcolor = this.HsStylerColorService.findAndParseColor(
-        subStyle.getFill().getColor()
+        subStyle.fill
       );
     }
     if (subStyle.image) {
-      if (subStyle.image.getStroke()?.getColor()) {
-        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
-          subStyle.getStroke().getColor()
+      this.getImageStyle(subStyle.image);
+    }
+  }
+  getImageStyle(image: any): void {
+    if (!image || image === undefined) {
+      return;
+    }
+    if (image.type === 'icon') {
+      if (
+        typeof image.src == 'string' &&
+        image.src.slice(0, 10) === 'data:image'
+      ) {
+        const encodedIconData = image.src.replace(
+          'data:image/svg+xml;base64,',
+          ''
+        );
+        this.serialized_icon = image.src;
+        const decodedIcon: any = this.decodeToUnicode(encodedIconData);
+        this.getIconStyleFromLayer(decodedIcon);
+      } else {
+        //TODO Check if this is even necessary
+        //this.iconSelected(image.getSrc());
+      }
+    }
+    if (image.type === 'circle') {
+      if (image.radius) {
+        this.radius = image.radius;
+      }
+      if (image.stroke?.width) {
+        this.iconlinewidth = image.stroke.width;
+      }
+      if (image.fill) {
+        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
+          image.fill
         );
       }
-      if (subStyle.image.getFill()?.getColor()) {
-        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
-          subStyle.getFill().getColor()
+      if (image.stroke?.color) {
+        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
+          image.stroke.color
         );
       }
     }
   }
-
+  getIconStyleFromLayer(decodedIcon: any): void {
+    this.iconimage = this.sanitizer.bypassSecurityTrustHtml(decodedIcon);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(decodedIcon, 'image/svg+xml');
+    const svgPath: any = doc.querySelectorAll('path');
+    if (!svgPath) {
+      return;
+    } else {
+      const path = svgPath[0];
+      if (path.style?.stroke) {
+        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
+          path.style.stroke
+        );
+      }
+      if (path.style?.fill) {
+        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
+          path.style.fill
+        );
+      }
+      if (path.style?.strokeWidth) {
+        this.iconlinewidth = path.style.strokeWidth;
+      }
+    }
+    this.setImageType('icon');
+  }
   /**
    * @function calculateHasLinePointPoly
    * @memberof HsStylerComponent
