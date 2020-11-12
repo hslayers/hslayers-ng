@@ -419,7 +419,10 @@ export class HsStylerComponent {
   }
   readCurrentStyle(layer: VectorLayer): void {
     const resolvedStyle = this.HsStylerService.getLayerStyleObject(layer);
-    if (resolvedStyle !== undefined) {
+    if (
+      resolvedStyle !== undefined &&
+      this.HsUtilsService.instOf(resolvedStyle, Style)
+    ) {
       this.parseStyles(resolvedStyle);
     }
   }
