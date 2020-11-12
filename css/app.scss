@@ -1,4 +1,23 @@
-/* app css stylesheet */
+
+/* Default values for customizable variables */
+
+//Mobile layout breakpoint
+$mobile-layout-breakpoint-value: 767 !default; 	//will be used in TS files
+$mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //this will be used in hsl styles
+
+//*****Sidebar*****//
+//Background color of sidebar
+$sidebar-bg-color: #fff	 !default;
+//Color of sidebar icon
+$sidebar-item-color: #007bff !default;
+//Background color of active sidebar item
+$sidebar-item-active: #007bff !default;
+
+
+.hsl{
+	@import '~bootstrap/scss/bootstrap';
+
+	/* app css stylesheet */
 .icon-spin {
 	-webkit-animation: spin 1000ms infinite linear;
 	animation: spin 1000ms infinite linear;
@@ -169,7 +188,7 @@ li.hs-lm-item.hovering {
 	cursor: pointer;
 }
 .hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
-	color: #4495eb;
+	color: $primary;
 }
 
 .hs-layermanager-card li.hs-lm-item,
@@ -447,8 +466,8 @@ button.but-title-sm {
 	color: #fff;
 }
 .list-group-item.active {
-	background-color:var(--sidebar-active-color,#007bff);
-	border-color: var(--sidebar-active-color,#007bff);
+	background-color: $sidebar-item-active;
+	border-color:  $sidebar-item-active;
  }
 
 .hs-lm-deactivated-layer {
@@ -574,13 +593,16 @@ hs-sidebar {
 	bottom: 0;
 	position: absolute;
 	top: 0;
-	background: var(--sidebar-bg-color,unset) ;
+	background: $sidebar-bg-color;
 	transition: width 100ms ease-out;
+	z-index: 2;
 }
+
 hs-sidebar div.hs-sidebar-list a:not(.active){
 	background-color: transparent ;
-	color: var(--sidebar-item-color,#007bff) ;
+	color: $sidebar-item-color;
 }
+
 .hs-content-wrapper.hs-open .hs-panelspace:not(.labels) hs-sidebar {
 	border-right: 1px solid #ddd;
 }
@@ -593,13 +615,13 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 }
 
 .hs-content-wrapper.hs-sb-left:not(.hs-open) hs-sidebar {
-	background-color: var(--sidebar-bg-color,white) ;
+	background-color: $sidebar-bg-color;
 	right: auto;
 	width: 48px;
 }
 
 .hs-content-wrapper.hs-sb-right:not(.hs-open) hs-sidebar {
-	background-color: var(--sidebar-bg-color,white) ;
+	background-color: $sidebar-bg-color;
 	left: auto;
 	width: 48px;
 }
@@ -630,10 +652,7 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	margin-left: 0;
 	width: 400px;
 }
-hs-sidebar {
-	z-index: 2;
-	background-color: white;
-}
+
 .hs-sidebar-list .list-group-item {
 	border-left: 0px;
 	border-right: 0px;
@@ -703,7 +722,7 @@ hs-sidebar {
 	display: inline-block;
 	width: 1.5em;
 	height: 1.5em;
-	background-color: #4495eb;
+	background-color: $primary;
 	padding: 0.09em 0.4em 0.05em 0.35em;
 	border-radius: 0.2em;
 	font-weight: 1000;
@@ -711,10 +730,10 @@ hs-sidebar {
 }
 .hs-uncheckmark::before {
 	background-color: white;
-	box-shadow: inset 0 0 0 0.2em #4495eb;
+	box-shadow: inset 0 0 0 0.2em $primary;
 }
 .hs-checkmark.hs-btn-baselayers::before {
-	color: #4495eb;
+	color: $primary;
 	background-color: white;
 }
 .sublayerContainer .hs-checkmark::before,
@@ -911,7 +930,7 @@ div.hs-info-composition-edited {
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: $mobile-layout-breakpoint) {
 	.hs-content-wrapper{
 		flex-direction: column;
 	}
@@ -1658,3 +1677,4 @@ li.hs-lm-header {
 hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}
 .hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)}
+}

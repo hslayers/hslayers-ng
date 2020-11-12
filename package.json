@@ -74,6 +74,8 @@
     "puppeteer": "^5.0.0",
     "raw-loader": "^4.0.1",
     "release-it": "^14.0.2",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.0",
     "ts-ng-annotate-loader": "^0.2.1",
@@ -87,8 +89,8 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "build": "npm run isolate-bootstrap && rm -rf dist && webpack --config scripts/webpack.prod.js",
-    "build-bundle": "npm run isolate-bootstrap && rm -rf bundle && webpack --config scripts/webpack.bundle.js",
+    "build": "rm -rf dist && webpack --config scripts/webpack.prod.js",
+    "build-bundle": "rm -rf bundle && webpack --config scripts/webpack.bundle.js",
     "doc": "npx compodoc -c .compodocrc.json",
     "postinstall": "",
     "prestart": "npm install",
@@ -100,7 +102,6 @@
     "update-webdriver": "webdriver-manager update",
     "prerelease": "npm run doc",
     "release": "npm run build && dotenv -- release-it",
-    "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
     "generate-glyphs-subset": "sh scripts/subset-font.sh",
