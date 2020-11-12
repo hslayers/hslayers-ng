@@ -3,11 +3,6 @@ import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
@@ -15,6 +10,13 @@ import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {createStringXY, toStringHDMS} from 'ol/coordinate';
 import {transform} from 'ol/proj';
+
+import {HsConfig} from '../../config.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -70,6 +72,7 @@ export class HsQueryBaseService {
     private HsMapService: HsMapService,
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
+    private hsLanguageService: HsLanguageService,
     private HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer
@@ -322,8 +325,7 @@ export class HsQueryBaseService {
       'EPSG:4326'
     );
     const coords = {
-      //TODO Should envelope in i18n
-      name: 'Coordinates',
+      name: this.hsLanguageService.getTranslation('QUERY.coordinates'),
       mapProjCoordinate: coordinate,
       epsg4326Coordinate,
       projections: [
