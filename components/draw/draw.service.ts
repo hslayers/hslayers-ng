@@ -243,7 +243,10 @@ export class HsDrawService {
     /*Timeout is necessary because features are not imediately
      * added to the layer and layer can't be retrieved from the
      * feature, so they don't appear in Info panel */
-    if (this.HsLayoutService.mainpanel != 'draw') {
+    if (
+      this.HsLayoutService.mainpanel != 'draw' &&
+      this.HsConfig.openQueryPanelOnDrawEnd
+    ) {
       setTimeout(() => {
         this.HsLayoutService.setMainPanel('info');
         this.HsQueryVectorService.selector.getFeatures().push(e.feature);

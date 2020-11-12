@@ -65,5 +65,6 @@ export class HsConfig {
   sidebarToggleable: any;
   sizeMode: string;
   locationButtonVisible: any;
+  openQueryPanelOnDrawEnd: boolean;
   constructor() {}
 }
