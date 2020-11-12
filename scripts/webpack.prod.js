@@ -86,8 +86,8 @@ module.exports = merge(common, {
           {
             loader: 'sass-loader',
             options: {
-              additionalData: fs.existsSync(scssOverridesPath + 'custom.scss')
-                ? `@use "${scssOverridesPath}custom.scss" as *;`
+              additionalData: fs.existsSync(scssOverridesPath + 'hsl-custom.scss')
+                ? `@use "${scssOverridesPath}hsl-custom.scss" as *;`
                 : '',
             },
           },
