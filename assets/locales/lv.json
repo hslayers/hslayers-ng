@@ -304,14 +304,6 @@
     "resetMap": "Atiestatīt karti",
     "terrains": "Reljefi"
   },
-  "LAYOUT": {
-    "closeBottomSheet": "Aizvērt apakšējo lapu",
-    "sideNav": {
-      "applicationSettings": "Programmas iestatījumi",
-      "specifyApplication": "Norādiet lietojumprogrammas lietotāja iestatījumus"
-    },
-    "switchBottomSheetState": "Pārslēgt apakšējās lapas stāvokli"
-  },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
   },
@@ -347,7 +339,6 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRACKING": "Izsekošna",
     "TRIP_PLANNER": "Maršruta plānotājs"
   },
   "PERMALINK": {
