@@ -9,14 +9,19 @@ const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const fs = require('fs');
+
+const scssOverridesPath = '../apps/simple/';
 
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   watchOptions: {ignored: /node_modules/},
-  externals: [nodeExternals({
-    allowlist: ['bootstrap']
-  })],
+  externals: [
+    nodeExternals({
+      allowlist: ['bootstrap'],
+    }),
+  ],
   optimization: {
     // see https://webpack.js.org/guides/build-performance#avoid-extra-optimization-steps
     removeAvailableModules: false,
@@ -36,6 +41,22 @@ module.exports = merge(common, {
             // We do not yet use Modular CSS, hence it's safe to disable their resolving
             options: {
               modules: false,
+            },
+          },
+        ],
+      },
+      //SCSS files
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: fs.existsSync(scssOverridesPath + 'custom.scss')
+                ? `@use "${scssOverridesPath}custom.scss" as *;`
+                : '',
             },
           },
         ],

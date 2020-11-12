@@ -15,6 +15,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
+const fs = require('fs');
+
+const scssOverridesPath = '../apps/simple/';
 
 module.exports = merge(common, {
   mode: 'production',
@@ -66,6 +69,22 @@ module.exports = merge(common, {
             options: {
               // We do not yet use Modular CSS, hence it's safe to disable their resolving
               modules: false,
+            },
+          },
+        ],
+      },
+      //SCSS files
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: fs.existsSync(scssOverridesPath + 'custom.scss')
+                ? `@use "${scssOverridesPath}custom.scss" as *;`
+                : '',
             },
           },
         ],

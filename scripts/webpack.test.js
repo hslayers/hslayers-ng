@@ -8,6 +8,9 @@
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
+const fs = require('fs');
+
+const scssOverridesPath = '../apps/simple/';
 
 module.exports = merge(common, {
   mode: 'development',
@@ -31,6 +34,22 @@ module.exports = merge(common, {
             // We do not yet use Modular CSS, hence it's safe to disable their resolving
             options: {
               modules: false,
+            },
+          },
+        ],
+      },
+      //SCSS files
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: fs.existsSync(scssOverridesPath + 'custom.scss')
+                ? `@use "${scssOverridesPath}custom.scss" as *;`
+                : '',
             },
           },
         ],
