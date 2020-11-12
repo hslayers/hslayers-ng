@@ -34,7 +34,7 @@
     "imageFormat": "Image format",
     "loadingFeaturePleaseWait": "Loading features, please wait",
     "mapAndLayerProjection": "Map and layer projection do not match! Resampling will be used. This may lead to unexpectable results.",
-    "mapProjectionAndLayerProjection": "Map projection and layer projection not match. Add the layer to map and use server-side resampling program?",
+    "mapProjectionAndLayerProjection": "Map projection and layer projection do not match. Add the layer to map and use server-side resampling program?",
     "queryFormat": "Query format",
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
