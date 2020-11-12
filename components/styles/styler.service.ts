@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -65,6 +66,7 @@ export class HsStylerService {
   });
   constructor(
     private HsQueryVectorService: HsQueryVectorService,
+    private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService
   ) {}
 
@@ -91,17 +93,19 @@ export class HsStylerService {
    * @returns {any} Returns layer style object
    */
   getLayerStyleObject(layer: VectorLayer): any {
-    let features: any;
-    if (layer?.getSource()?.getSource) {
-      features = layer.getSource().getSource().getFeatures();
+    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+    let style: any;
+    if (isClustered) {
+      style = layer.get('hsOriginalStyle');
     } else {
-      features = layer.getSource().getFeatures();
+      style = layer.getStyle();
     }
-    const style = layer.getStyle();
-    if (typeof style == 'function' && features.length > 0) {
-      return style(features[0]);
-    } else {
-      return style;
+    if (style !== undefined && this.HsUtilsService.instOf(style, Style)) {
+      if (typeof style == 'function') {
+        return style(new Feature());
+      } else {
+        return style;
+      }
     }
   }
   /**
