@@ -43,10 +43,8 @@ export class HsLayoutComponent {
     });
 
     if (this.HsConfig.importCss == undefined || this.HsConfig.importCss) {
-      require(/* webpackChunkName: "lazy-bootstrap" */ 'bootstrap/dist/css/bootstrap.isolated.css');
-
       require('ol/ol.css');
-      require('../../css/app.css');
+      require('../../css/app.scss');
       /* if (window.cordova) {
         require('../../css/mobile.css');
       } */
