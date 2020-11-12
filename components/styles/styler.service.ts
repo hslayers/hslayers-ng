@@ -100,9 +100,9 @@ export class HsStylerService {
     } else {
       style = layer.getStyle();
     }
-    if (style !== undefined && this.HsUtilsService.instOf(style, Style)) {
+    if (style !== undefined) {
       if (typeof style == 'function') {
-        return style(new Feature());
+        return style(new Feature())[0];
       } else {
         return style;
       }
