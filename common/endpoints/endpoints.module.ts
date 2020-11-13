@@ -1,13 +1,16 @@
-import * as angular from 'angular';
+import {CommonModule} from '@angular/common';
 import {HsCommonEndpointsService} from './endpoints.service';
+import {NgModule} from '@angular/core';
 
-angular
-  .module('hs.common.endpoints', [])
-
-  /**
-   * @name HsCommonEndpointsService
-   * @ngdoc service
-   * @memberOf hs.common.endpoints
-   * @description Service for endpoints
-   */
-  .service('HsCommonEndpointsService', HsCommonEndpointsService);
+/**
+ * @namespace HsCommonEndpointsModule
+ * @memberof hs
+ */
+@NgModule({
+  declarations: [],
+  imports: [CommonModule],
+  providers: [HsCommonEndpointsService],
+  entryComponents: [],
+  exports: [],
+})
+export class HsCommonEndpointsModule {}

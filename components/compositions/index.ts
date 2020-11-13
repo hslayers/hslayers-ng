@@ -1,4 +1,4 @@
-import '../../common/endpoints/endpoints.module';
+import '../../common/endpoints/';
 import '../permalink/';
 import '../save-map/';
 import '../styles';

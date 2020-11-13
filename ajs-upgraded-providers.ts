@@ -1,4 +1,3 @@
-import {HsCommonEndpointsService} from './common/endpoints/endpoints.service';
 import {HsConfig} from './config.service';
 
 /**
@@ -14,15 +13,3 @@ export const HsConfigProvider = {
   deps: ['$injector'],
 };
 
-/**
- * @param i
- */
-export function hsCommonEndpointsService(i: any) {
-  return i.get('HsCommonEndpointsService');
-}
-
-export const HsCommonEndpointsServiceProvider = {
-  provide: HsCommonEndpointsService,
-  useFactory: hsCommonEndpointsService,
-  deps: ['$injector'],
-};
