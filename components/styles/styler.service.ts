@@ -3,7 +3,6 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -67,7 +66,6 @@ export class HsStylerService {
   });
   constructor(
     private HsQueryVectorService: HsQueryVectorService,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer
   ) {}
@@ -94,10 +92,9 @@ export class HsStylerService {
    * @param {VectorLayer} layer Any vector layer
    * @returns {any} Returns layer style object
    */
-  getLayerStyleObject(layer: VectorLayer): any {
-    const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+  getLayerStyleObject(layer: VectorLayer, isClustered?: boolean): any {
     let style: any;
-    if (isClustered) {
+    if (isClustered !== undefined || layer.getSource()?.getSource) {
       style = layer.get('hsOriginalStyle');
     } else {
       style = layer.getStyle();
@@ -110,8 +107,8 @@ export class HsStylerService {
       }
     }
   }
-  hasFeatures(layer): boolean {
-    const src = this.getLayerSource(layer);
+  hasFeatures(layer: VectorLayer, isClustered: boolean): boolean {
+    const src = this.getLayerSource(layer, isClustered);
     if (src.getFeatures().length > 0) {
       return true;
     } else {
@@ -123,9 +120,9 @@ export class HsStylerService {
    * @param {VectorLayer} layer Any vector layer
    * @returns {VectorSource} Source of the input layer or source of its cluster's source
    */
-  getLayerSource(layer: VectorLayer): VectorSource {
+  getLayerSource(layer: VectorLayer, isClustered: boolean): VectorSource {
     let src = [];
-    if (layer.getSource().getSource !== undefined) {
+    if (isClustered) {
       src = layer.getSource().getSource();
     } else {
       src = layer.getSource();

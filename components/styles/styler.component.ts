@@ -1,4 +1,3 @@
-import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
@@ -49,9 +48,6 @@ export class HsStylerComponent {
   iconfillcolor: any;
   iconlinecolor: any;
   serialized_icon: any;
-  // hasLine: any;
-  // hasPoly: any;
-  // hasPoint: any;
   layerTitle: string;
   level: 'feature' | 'cluster' | 'layer' = 'layer';
   isClustered: boolean;
@@ -128,7 +124,8 @@ export class HsStylerComponent {
           HsStylerService.layer
         );
         this.hasFeatures = this.HsStylerService.hasFeatures(
-          HsStylerService.layer
+          HsStylerService.layer,
+          this.isClustered
         );
         this.refreshLayerDefinition();
       }
@@ -296,7 +293,10 @@ export class HsStylerComponent {
    * @param {StyleLike|null} style Style to set for the feature. Can be null
    */
   private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
-    const underlyingSource = this.HsStylerService.getLayerSource(layer);
+    const underlyingSource = this.HsStylerService.getLayerSource(
+      layer,
+      this.isClustered
+    );
     /**
      * We set a blank VectorSource temporarily
      * to disable change event broadcasting and linked
@@ -385,24 +385,20 @@ export class HsStylerComponent {
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
   refreshLayerDefinition(): void {
-    // const src: any = this.HsStylerService.getLayerSource(
-    //   this.HsStylerService.layer
-    // );
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
     ) {
       return;
     }
-    // this.calculateHasLinePointPoly(src);
     this.readCurrentStyle(this.HsStylerService.layer);
-    // this.hasLine = src.hasLine;
-    // this.hasPoly = src.hasPoly;
-    // this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
   }
   readCurrentStyle(layer: VectorLayer): void {
-    const resolvedStyle = this.HsStylerService.getLayerStyleObject(layer);
+    const resolvedStyle = this.HsStylerService.getLayerStyleObject(
+      layer,
+      this.isClustered
+    );
     if (
       resolvedStyle !== undefined &&
       this.HsUtilsService.instOf(resolvedStyle, Style)
@@ -474,35 +470,4 @@ export class HsStylerComponent {
       this.iconlinewidth = style.iconlinewidth;
     }
   }
-  /**
-   * @function calculateHasLinePointPoly
-   * @memberof HsStylerComponent
-   * @private
-   * @description (PRIVATE) Calculate vector type if not specified in layer metadata
-   * @param src
-   */
-  // calculateHasLinePointPoly(src): void {
-  //   src.hasLine = false;
-  //   src.hasPoly = false;
-  //   src.hasPoint = false;
-  //   src.getFeatures().forEach((f) => {
-  //     if (f.getGeometry()) {
-  //       switch (f.getGeometry().getType()) {
-  //         case 'LineString' || 'MultiLineString':
-  //           src.hasLine = true;
-  //           break;
-  //         case 'Polygon' || 'MultiPolygon':
-  //           src.hasPoly = true;
-  //           break;
-  //         case 'Circle':
-  //           src.hasPoly = true;
-  //           break;
-  //         case 'Point' || 'MultiPoint':
-  //           src.hasPoint = true;
-  //           break;
-  //         // no default
-  //       }
-  //     }
-  //   });
-  // }
 }
