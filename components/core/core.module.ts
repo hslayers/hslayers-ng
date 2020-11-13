@@ -2,7 +2,6 @@ import * as merge from 'deepmerge';
 import {HsCommonEndpointsModule} from '../../common/endpoints';
 import {HsCompositionsModule} from '../compositions';
 import {HsConfig} from '../../config.service';
-import {HsConfigProvider} from '../../ajs-upgraded-providers';
 import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
 import {HsDatasourcesModule} from '../datasource-selector';
@@ -110,16 +109,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsCommonEndpointsModule,
   ],
   exports: [TranslateModule],
-  providers: [
-    HsCoreService,
-    TranslateStore,
-    TranslateService,
-    HsConfigProvider,
-    {
-      provide: Window,
-      useValue: window,
-    },
-  ],
+  providers: [HsCoreService, TranslateStore, TranslateService, HsConfig],
   entryComponents: [],
 })
 export class HsCoreModule {
