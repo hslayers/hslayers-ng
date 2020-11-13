@@ -49,13 +49,13 @@ export class HsStylerComponent {
   iconfillcolor: any;
   iconlinecolor: any;
   serialized_icon: any;
-  hasLine: any;
-  hasPoly: any;
-  hasPoint: any;
+  // hasLine: any;
+  // hasPoly: any;
+  // hasPoint: any;
   layerTitle: string;
   level: 'feature' | 'cluster' | 'layer' = 'layer';
   isClustered: boolean;
-
+  hasFeatures: boolean;
   constructor(
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
@@ -68,7 +68,7 @@ export class HsStylerComponent {
     private HsSaveMapService: HsSaveMapService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (this.HsLayoutService.mainpanel == 'styler') {
+      if (e == 'styler') {
         if (!this.icons) {
           this.icons = [
             require(/* webpackChunkName: "img" */ './img/svg/bag1.svg'),
@@ -127,8 +127,11 @@ export class HsStylerComponent {
         this.isClustered = this.HsLayerUtilsService.isLayerClustered(
           HsStylerService.layer
         );
+        this.hasFeatures = this.HsStylerService.hasFeatures(
+          HsStylerService.layer
+        );
+        this.refreshLayerDefinition();
       }
-      this.refreshLayerDefinition();
     });
   }
 
@@ -358,8 +361,8 @@ export class HsStylerComponent {
         path.style.strokeWidth = this.iconlinewidth;
       }
       this.serialized_icon =
-        'data:image/svg+xml;base64,' + this.encodeTob64(iconPreview.innerHTML);
-      // window.btoa();
+        'data:image/svg+xml;base64,' +
+        this.HsStylerService.encodeTob64(iconPreview.innerHTML);
     }
   }
   /**
@@ -376,45 +379,26 @@ export class HsStylerComponent {
   layermanager(): void {
     this.HsLayoutService.setMainPanel('layermanager');
   }
-  encodeTob64(str: string): string {
-    return btoa(
-      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
-        return String.fromCharCode(parseInt(p1, 16));
-      })
-    );
-  }
-  decodeToUnicode(str: string): string {
-    return decodeURIComponent(
-      Array.prototype.map
-        .call(atob(str), (c) => {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join('')
-    );
-  }
   /**
    * @function refreshLayerDefinition
    * @memberof HsStylerComponent
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
   refreshLayerDefinition(): void {
-    if (this.HsStylerService.layer === null) {
-      return;
-    }
-    const src: any = this.HsStylerService.getLayerSource(
-      this.HsStylerService.layer
-    );
+    // const src: any = this.HsStylerService.getLayerSource(
+    //   this.HsStylerService.layer
+    // );
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
     ) {
       return;
     }
-    this.calculateHasLinePointPoly(src);
+    // this.calculateHasLinePointPoly(src);
     this.readCurrentStyle(this.HsStylerService.layer);
-    this.hasLine = src.hasLine;
-    this.hasPoly = src.hasPoly;
-    this.hasPoint = src.hasPoint;
+    // this.hasLine = src.hasLine;
+    // this.hasPoly = src.hasPoly;
+    // this.hasPoint = src.hasPoint;
     this.layerTitle = this.HsStylerService.layer.get('title');
   }
   readCurrentStyle(layer: VectorLayer): void {
@@ -453,73 +437,42 @@ export class HsStylerComponent {
       );
     }
     if (subStyle.image) {
-      this.getImageStyle(subStyle.image);
-    }
-  }
-  getImageStyle(image: any): void {
-    if (!image || image === undefined) {
-      return;
-    }
-    if (image.type === 'icon') {
-      if (
-        typeof image.src == 'string' &&
-        image.src.slice(0, 10) === 'data:image'
-      ) {
-        const encodedIconData = image.src.replace(
-          'data:image/svg+xml;base64,',
-          ''
-        );
-        this.serialized_icon = image.src;
-        const decodedIcon: any = this.decodeToUnicode(encodedIconData);
-        this.getIconStyleFromLayer(decodedIcon);
-      } else {
-        //TODO Check if this is even necessary
-        //this.iconSelected(image.getSrc());
+      const imageStyle = this.HsStylerService.getImageStyle(subStyle.image);
+      if (!imageStyle || imageStyle === undefined) {
+        return;
       }
-    }
-    if (image.type === 'circle') {
-      if (image.radius) {
-        this.radius = image.radius;
+      if (imageStyle.icon !== undefined) {
+        this.setStylerValues(imageStyle.icon);
+        if (imageStyle.icon.iconimage) {
+          this.iconimage = imageStyle.icon.iconimage;
+        }
+        if (imageStyle.icon.serialized_icon) {
+          this.serialized_icon = imageStyle.icon.serialized_icon;
+        }
+        this.setImageType('icon');
       }
-      if (image.stroke?.width) {
-        this.iconlinewidth = image.stroke.width;
-      }
-      if (image.fill) {
-        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
-          image.fill
-        );
-      }
-      if (image.stroke?.color) {
-        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
-          image.stroke.color
-        );
+      if (imageStyle.circle !== undefined) {
+        this.setStylerValues(imageStyle.circle);
+        if (imageStyle.circle?.radius) {
+          this.radius = imageStyle.circle.radius;
+        }
       }
     }
   }
-  getIconStyleFromLayer(decodedIcon: any): void {
-    this.iconimage = this.sanitizer.bypassSecurityTrustHtml(decodedIcon);
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(decodedIcon, 'image/svg+xml');
-    const svgPath: any = doc.querySelectorAll('path');
-    if (!svgPath) {
-      return;
-    } else {
-      const path = svgPath[0];
-      if (path.style?.stroke) {
-        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
-          path.style.stroke
-        );
-      }
-      if (path.style?.fill) {
-        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
-          path.style.fill
-        );
-      }
-      if (path.style?.strokeWidth) {
-        this.iconlinewidth = path.style.strokeWidth;
-      }
+  setStylerValues(style: any): void {
+    if (style.iconlinecolor) {
+      this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
+        style.iconlinecolor
+      );
     }
-    this.setImageType('icon');
+    if (style.iconfillcolor) {
+      this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
+        style.iconfillcolor
+      );
+    }
+    if (style.iconlinewidth) {
+      this.iconlinewidth = style.iconlinewidth;
+    }
   }
   /**
    * @function calculateHasLinePointPoly
@@ -528,28 +481,28 @@ export class HsStylerComponent {
    * @description (PRIVATE) Calculate vector type if not specified in layer metadata
    * @param src
    */
-  calculateHasLinePointPoly(src): void {
-    src.hasLine = false;
-    src.hasPoly = false;
-    src.hasPoint = false;
-    src.getFeatures().forEach((f) => {
-      if (f.getGeometry()) {
-        switch (f.getGeometry().getType()) {
-          case 'LineString' || 'MultiLineString':
-            src.hasLine = true;
-            break;
-          case 'Polygon' || 'MultiPolygon':
-            src.hasPoly = true;
-            break;
-          case 'Circle':
-            src.hasPoly = true;
-            break;
-          case 'Point' || 'MultiPoint':
-            src.hasPoint = true;
-            break;
-          // no default
-        }
-      }
-    });
-  }
+  // calculateHasLinePointPoly(src): void {
+  //   src.hasLine = false;
+  //   src.hasPoly = false;
+  //   src.hasPoint = false;
+  //   src.getFeatures().forEach((f) => {
+  //     if (f.getGeometry()) {
+  //       switch (f.getGeometry().getType()) {
+  //         case 'LineString' || 'MultiLineString':
+  //           src.hasLine = true;
+  //           break;
+  //         case 'Polygon' || 'MultiPolygon':
+  //           src.hasPoly = true;
+  //           break;
+  //         case 'Circle':
+  //           src.hasPoly = true;
+  //           break;
+  //         case 'Point' || 'MultiPoint':
+  //           src.hasPoint = true;
+  //           break;
+  //         // no default
+  //       }
+  //     }
+  //   });
+  // }
 }
