@@ -11,6 +11,7 @@ import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from './micka/micka-filters.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -43,6 +44,7 @@ export class HsDatasourcesService {
     private hsLayoutService: HsLayoutService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsUtilsService: HsUtilsService,
+    private HsMapService: HsMapService,
     private hsDatasourcesMapService: HsDatasourcesMapService /*,
     private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
@@ -97,12 +99,14 @@ export class HsDatasourcesService {
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(): void {
-    this.hsDatasourcesMapService.clearExtentLayer();
-    this.hsCommonEndpointsService.endpoints.forEach((endpoint: HsEndpoint) => {
-      if (endpoint.datasourcePaging) {
-        endpoint.datasourcePaging.start = 0;
+    this.HsMapService.loaded().then(() => {
+      this.hsDatasourcesMapService.clearExtentLayer();
+      for (const endpoint of this.hsCommonEndpointsService.endpoints) {
+        if (endpoint.datasourcePaging) {
+          endpoint.datasourcePaging.start = 0;
+        }
+        this.queryCatalog(endpoint);
       }
-      this.queryCatalog(endpoint);
     });
   }
 
