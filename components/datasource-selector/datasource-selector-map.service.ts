@@ -82,15 +82,17 @@ export class HsDatasourcesMapService {
    * @description Remove layer extent features from map
    */
   clearDatasetFeatures(dataset): void {
-    dataset.layers?.forEach((val) => {
-      try {
-        if (val.feature) {
-          this.extentLayer.getSource().removeFeature(val.feature);
+    if (dataset.layers) {
+      dataset.layers.forEach((val) => {
+        try {
+          if (val) {
+            this.extentLayer.getSource().clear();
+          }
+        } catch (ex) {
+          this.hsLogService.warn(ex);
         }
-      } catch (ex) {
-        this.hsLogService.warn(ex);
-      }
-    });
+      });
+    }
   }
 
   /**
