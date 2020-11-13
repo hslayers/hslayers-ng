@@ -153,13 +153,18 @@ export class HsCompositionsService {
   }
 
   getRecordLink(record) {
-    let url;
-    if (record.link !== undefined) {
-      url = record.link;
-    } else if (record.links !== undefined) {
-      url = record.links.filter((l) => l.url.indexOf('/file') > -1)[0].url;
+    try {
+      let url;
+      if (record.link !== undefined) {
+        url = record.link;
+      } else if (record.links !== undefined) {
+        url = record.links.filter((l) => l.url.includes('/file') || l.url.includes('.wmc'))[0].url;
+      }
+      return url;
     }
-    return url;
+    catch (e) {
+      this.$log.warn(e);
+    }
   }
 
   loadCompositionParser(record) {
@@ -180,13 +185,15 @@ export class HsCompositionsService {
           reject();
           return;
       }
-      if (this.HsCompositionsParserService.composition_edited == true) {
-        this.notSavedCompositionLoading.next(url);
-        reject();
-      } else {
-        this.loadComposition(url, true).then(() => {
-          resolve();
-        });
+      if (url) {
+        if (this.HsCompositionsParserService.composition_edited == true) {
+          this.notSavedCompositionLoading.next(url);
+          reject();
+        } else {
+          this.loadComposition(url, true).then(() => {
+            resolve();
+          });
+        }
       }
     });
   }
