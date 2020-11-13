@@ -8,7 +8,7 @@ import {HsLayoutService} from './layout.service';
   template: require('./partials/layout.html'),
 })
 export class HsLayoutComponent {
-  @ViewChild('layout') layout: ElementRef;
+  @ViewChild('hslayout') hslayout: ElementRef;
   panelVisible = (which, scope) =>
     this.HsLayoutService.panelVisible(which, scope);
   panelEnabled = (which, status) =>
@@ -90,6 +90,6 @@ export class HsLayoutComponent {
   }
 
   ngAfterViewInit() {
-    this.HsLayoutService.layoutElement = this.layout.nativeElement;
+    this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
   }
 }
