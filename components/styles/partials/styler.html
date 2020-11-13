@@ -16,7 +16,7 @@
               {{'STYLER.layer' | translate}}
               <input type="radio" name="level" id="hs-styler-layer" value="layer" [(ngModel)]="level">
             </label>
-            <label class="btn btn-secondary" [ngClass]="{'active': level == 'feature'}"  for="hs-styler-features">
+            <label class="btn btn-secondary" *ngIf="hasFeatures" [ngClass]="{'active': level == 'feature'}"  for="hs-styler-features">
               {{'STYLER.features' | translate}}
               <input type="radio" name="level" id="hs-styler-features" value="feature" [(ngModel)]="level">
             </label>
@@ -32,7 +32,7 @@
            --> 
         </div>
         <form class="form-inline">
-            <div class="card panel-info" [hidden]="!hasPoly">
+            <div class="card panel-info">
                 <div class="card-header">
                     <h3 class="panel-title">{{'COMMON.fill' | translate}}</h3>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="card panel-info" [hidden]="!(hasLine || hasPoly)">
+            <div class="card panel-info">
                 <div class="card-header">
                     <h3 class="panel-title">{{'COMMON.line' | translate}}</h3>
                 </div>
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="card panel-info" [hidden]="!hasPoint">
+            <div class="card panel-info">
                 <div class="card-header">
                     <h3 class="panel-title">{{'COMMON.point' | translate}}</h3>
                 </div>
