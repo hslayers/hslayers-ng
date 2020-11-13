@@ -24,36 +24,6 @@ module.exports = merge(common, {
   },
   module: {
     rules: [
-      // Load css files which will be injected in html page at startup <style>...</style>)
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            // We do not yet use Modular CSS, hence it's safe to disable their resolving
-            options: {
-              modules: false,
-            },
-          },
-        ],
-      },
-      //SCSS files
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              additionalData: fs.existsSync(scssOverridesPath + 'hsl-custom.scss')
-                ? `@use "${scssOverridesPath}hsl-custom.scss" as *;`
-                : '',
-            },
-          },
-        ],
-      },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         use: ['url-loader'],
