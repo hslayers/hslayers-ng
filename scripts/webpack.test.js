@@ -8,9 +8,6 @@
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
-const fs = require('fs');
-
-const scssOverridesPath = '../apps/simple/';
 
 module.exports = merge(common, {
   mode: 'development',

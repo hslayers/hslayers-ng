@@ -15,10 +15,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const fs = require('fs');
-
-const scssOverridesPath = '../apps/simple/';
-
 
 module.exports = merge(common, {
   mode: 'production',
@@ -33,7 +29,6 @@ module.exports = merge(common, {
       filename: 'hslayers-ng.[name].js.map',
       exclude: [
         'hslayers-ng.vendors~lazy-material.js',
-        'hslayers-ng.vendors~lazy-bootstrap.js',
         'hslayers-ng.vendors.js',
         'hslayers-ng.vendors~img.js',
       ],
