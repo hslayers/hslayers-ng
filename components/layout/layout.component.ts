@@ -1,4 +1,4 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
@@ -8,6 +8,7 @@ import {HsLayoutService} from './layout.service';
   template: require('./partials/layout.html'),
 })
 export class HsLayoutComponent {
+  @ViewChild('layout') layout: ElementRef;
   panelVisible = (which, scope) =>
     this.HsLayoutService.panelVisible(which, scope);
   panelEnabled = (which, status) =>
@@ -21,7 +22,6 @@ export class HsLayoutComponent {
     private elementRef: ElementRef
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
-
     setTimeout(() => {
       const hsapp = elementRef.nativeElement.parentElement;
       if (getComputedStyle(hsapp).display == 'inline') {
@@ -87,5 +87,9 @@ export class HsLayoutComponent {
       );
     }
     //this.$emit('scope_loaded', 'Layout');
+  }
+
+  ngAfterViewInit() {
+    this.HsLayoutService.layoutElement = this.layout.nativeElement;
   }
 }
