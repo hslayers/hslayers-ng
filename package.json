@@ -17,7 +17,6 @@
     "/po",
     "/scripts/bootstrap-isolate.js",
     "ajs-app.ts",
-    "ajs-upgraded-providers.ts",
     "app.module.ts",
     "bootstrap.component.ts",
     "config.service.ts",

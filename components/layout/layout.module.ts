@@ -1,4 +1,3 @@
-import {BootstrapComponent} from '../../bootstrap.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HsCompositionsModule} from '../compositions';
@@ -33,7 +32,6 @@ import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    BootstrapComponent,
     HsDialogContainerComponent,
     HsDialogHostDirective,
     HsLayoutComponent,
@@ -67,12 +65,8 @@ import {TranslateModule} from '@ngx-translate/core';
     HsPanelHelpersModule,
   ],
   providers: [HsLayoutService, HsDialogContainerService],
-  entryComponents: [
-    BootstrapComponent,
-    HsDialogContainerComponent,
-    HsLayoutComponent,
-  ],
-  exports: [BootstrapComponent, HsDialogContainerComponent, HsLayoutComponent],
+  entryComponents: [HsDialogContainerComponent, HsLayoutComponent],
+  exports: [HsDialogContainerComponent, HsLayoutComponent],
 })
 export class HsLayoutModule {
   ngDoBootstrap(): void {}

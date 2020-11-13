@@ -1,21 +1,57 @@
-import {Component, Inject, OnInit} from '@angular/core';
-/**
- * This component is needed because we start the bootstrap
- * process with Angular and when its completed, only then
- * proceed with bootstraping of AngularJs application.
- * Otherwise we cant use downgraded services in AngularJs
- * components, because Angular modules are not yet bootstrapped (lazy)
- */
-import {UpgradeModule} from '@angular/upgrade/static';
+import * as proj from 'ol/proj';
+import GeoJSON from 'ol/format/GeoJSON';
+import VectorLayer from 'ol/layer/Vector';
+import View from 'ol/View';
+import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
+import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+import {Component} from '@angular/core';
+import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import {HsConfig} from './config.service';
+import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {Vector} from 'ol/source';
 
 @Component({
   selector: 'hs',
-  template: ``,
+  template: require('./hslayers.html'),
   styles: [],
 })
-export class BootstrapComponent {
-  public upgrade: UpgradeModule;
-  constructor(upgrade: UpgradeModule) {
-    this.upgrade = upgrade;
+export class HsBootstrapComponent {
+  constructor(private HsConfig: HsConfig) {
+    const w: any = window;
+    w.ol = {
+      layer: {
+        Tile,
+        Group,
+        Image: ImageLayer,
+        Vector: VectorLayer,
+      },
+      source: {
+        OSM,
+        XYZ,
+        TileWMS,
+        Vector,
+        WMTS,
+        TileArcGISRest,
+        BingMaps,
+        ImageWMS,
+        ImageArcGISRest,
+      },
+      format: {
+        GeoJSON,
+      },
+      style: {
+        Style,
+        Fill,
+        Stroke,
+        Circle,
+        Icon,
+      },
+      View,
+      proj,
+    };
+
+    if (w.hslayersNgConfig) {
+      Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
+    }
   }
 }
