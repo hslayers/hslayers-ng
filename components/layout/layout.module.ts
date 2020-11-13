@@ -14,6 +14,7 @@ import {HsInfoModule} from '../info';
 import {HsLanguageModule} from '../language';
 import {HsLayerManagerModule} from '../layermanager';
 import {HsLayoutComponent} from './layout.component';
+import {HsLayoutHostDirective} from './layout.directive';
 import {HsLayoutService} from './layout.service';
 import {HsLegendModule} from '../legend';
 import {HsMapModule} from '../map';
@@ -36,6 +37,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsDialogContainerComponent,
     HsDialogHostDirective,
     HsLayoutComponent,
+    HsLayoutHostDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [

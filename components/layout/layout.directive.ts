@@ -1,8 +1,8 @@
 import {Directive, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[layout]',
+  selector: '[map]',
 })
-export class HsMapHostDirective {
+export class HsLayoutHostDirective {
   constructor(public viewContainerRef: ViewContainerRef) {}
 }

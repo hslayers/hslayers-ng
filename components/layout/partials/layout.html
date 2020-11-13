@@ -1,4 +1,4 @@
-<div class="hs-page-wrapper hsl" style="width: 100%; height: 100%;">
+<div #layout class="hs-page-wrapper hsl" style="width: 100%; height: 100%;">
     <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{'hs-open': HsLayoutService.sidebarExpanded && HsLayoutService.sidebarVisible(), 'hs-sb-right': HsConfig.sidebarPosition == 'right' && HsLayoutService.sidebarVisible(), 'hs-sb-left': HsConfig.sidebarPosition == 'left' && HsLayoutService.sidebarVisible(),'hs-sb-bottom':HsLayoutService.sidebarBottom()}">
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space">
