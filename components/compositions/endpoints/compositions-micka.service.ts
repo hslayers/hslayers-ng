@@ -75,7 +75,7 @@ export class HsCompositionsMickaService {
   getCompositions(endpoint, params, bbox) {
     return new Promise((resolve, reject) => {
       this.listLoading = this.$http
-        .get(this.getCompositionsQueryUrl(endpoint, params, bbox))
+        .get(this.getCompositionsQueryUrl(endpoint, params, bbox),{responseType: 'json'})
         .subscribe((response: any) => {
           resolve(response);
         });
