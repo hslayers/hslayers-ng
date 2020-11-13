@@ -137,13 +137,6 @@ describe('HsStyler', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  // it('detect geometry types', () => {
-  //   component.refreshLayerDefinition();
-  //   expect(component.hasLine).toBe(false);
-  //   expect(component.hasPoly).toBe(true);
-  //   expect(component.hasPoint).toBe(true);
-  // });
   it('should resolve style function', () => {
     service.layer.setStyle(createDefaultStyle);
     component.refreshLayerDefinition();
