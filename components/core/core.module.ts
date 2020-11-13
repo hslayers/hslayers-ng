@@ -1,17 +1,13 @@
 import * as merge from 'deepmerge';
-import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
-import {
-  HsCommonEndpointsServiceProvider,
-  HsConfigProvider,
-} from '../../ajs-upgraded-providers';
+import {HsCommonEndpointsModule} from '../../common/endpoints';
 import {HsCompositionsModule} from '../compositions';
 import {HsConfig} from '../../config.service';
+import {HsConfigProvider} from '../../ajs-upgraded-providers';
 import {HsConfirmModule} from './../../common/confirm';
 import {HsCoreService} from './core.service';
 import {HsDatasourcesModule} from '../datasource-selector';
 import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw';
-import {HsDrawService} from '../draw/draw.service';
 import {HsFeatureTableModule} from './../feature-table';
 import {HsGeolocationModule} from './../geolocation';
 import {HsHistoryListModule} from './../../common/history-list';
@@ -28,7 +24,6 @@ import {HsPrintModule} from '../print';
 import {HsQueryModule} from '../query';
 import {HsSaveMapModule} from '../save-map';
 import {HsSearchModule} from './../search';
-import {HsSearchService} from './../search/search.service';
 import {HsShareModule} from '../permalink';
 import {HsSidebarModule} from '../sidebar';
 import {HsStylerModule} from '../styles';
@@ -112,21 +107,18 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsMapModule,
     HsLaymanModule,
     HsTripPlannerModule,
+    HsCommonEndpointsModule,
   ],
   exports: [TranslateModule],
   providers: [
     HsCoreService,
-    HsSearchService,
-    HsDrawService,
     TranslateStore,
     TranslateService,
-    HsAddLayersVectorService,
     HsConfigProvider,
     {
       provide: Window,
       useValue: window,
     },
-    HsCommonEndpointsServiceProvider,
   ],
   entryComponents: [],
 })
