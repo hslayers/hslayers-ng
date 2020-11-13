@@ -2,9 +2,7 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
-import '../core/core-ajs.mock';
 import 'angular-mocks';
-import * as angular from 'angular';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
@@ -15,21 +13,19 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
+import {HsCoreService} from '../core/core.service';
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapComponent} from './map.component';
 import {HsMapHostDirective} from './map.directive';
 import {HsMapService} from './map.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {HsLanguageService} from '../language/language.service';
-
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
 
 class emptyMock {
   constructor() {}
