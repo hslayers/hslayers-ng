@@ -46,6 +46,10 @@ export class HsAddLayersVectorService {
           srs,
           options
         );
+        /* 
+        TODO: Should have set definition property with protocol inside 
+        so layer synchronizer would know if to sync 
+        */
         if (this.HsMapService.map) {
           this.HsMapService.addLayer(lyr, true);
         }
