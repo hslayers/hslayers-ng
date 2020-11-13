@@ -6,7 +6,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
-import {HsLegendService} from '../legend';
+import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {Injectable} from '@angular/core';

@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import {Component} from '@angular/core';
 import {HsAddLayersWmsService} from './add-layers-wms.service';
 import {HsEventBusService} from '../../core/event-bus.service';

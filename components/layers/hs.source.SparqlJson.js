@@ -162,15 +162,13 @@ function extendAttributes(options, objects) {
   }
 }
 
-const $http = angular.injector(['ng']).get('$http');
-
 export default function (options) {
   const category_map = {};
   const category_id = 0;
   const occupied_xy = {};
   var src = new Vector({
     format: new GeoJSON(),
-    loader: function (extent, resolution, projection) {
+    loader: async function (extent, resolution, projection) {
       this.set('loaded', false);
       if (
         typeof this.options.clear_on_move !== 'undefined' &&
@@ -243,7 +241,10 @@ export default function (options) {
       }
       this.loadCounter += 1;
       this.loadTotal += 1;
-      $http({url: p}).then((response) => {
+      const responseObject = await fetch(p, {
+        method: 'GET'
+    })
+    const response = await responseObject.json();
         if (console) {
           console.log(
             'Finish ',
@@ -266,9 +267,10 @@ export default function (options) {
           updates_query = updates_query.replace(/<extent>/g, s_extent);
           src.loadCounter += 1;
           src.loadTotal += 1;
-          const $injector = angular.injector(['ng']);
-          const $http = $injector.get('$http');
-          $http({url: updates_query}).then((updates_response) => {
+          const responseObject = await fetch(updates_query, {
+            method: 'GET'
+        })
+        const updates_response = await responseObject.json();
             if (console && typeof this.get('geoname') != 'undefined') {
               console.log(
                 'Finish updates ',
@@ -331,7 +333,7 @@ export default function (options) {
               this.set('loaded', true);
               this.dispatchEvent('imageloadend');
             }
-          });
+
         } else {
           const objects = {};
           for (var i = 0; i < response.data.results.bindings.length; i++) {
@@ -369,7 +371,7 @@ export default function (options) {
             this.dispatchEvent('imageloadend');
           }
         }
-      });
+      
     },
     strategy:
       options.strategy ||

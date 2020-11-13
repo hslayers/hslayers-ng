@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {Component} from '@angular/core';
 
 import {HsAddLayersArcGisService} from './add-layers-arcgis.service';
@@ -58,7 +57,7 @@ export class HsAddLayersArcGisComponent {
         }, 0);
       });
     this.showDetails = true;
-  }
+  };
 
   /**
    * @function selectAllLayers
@@ -71,13 +70,13 @@ export class HsAddLayersArcGisComponent {
     function recurse(layer) {
       layer.checked = true;
 
-      angular.forEach(layer.Layer, (sublayer) => {
+      for (const sublayer of layer.Layer) {
         recurse(sublayer);
-      });
+      }
     }
-    angular.forEach(this.data.services.Layer, (layer) => {
+    for (const layer of this.data.services.Layer) {
       recurse(layer);
-    });
+    }
   }
 
   addLayers(checked): void {

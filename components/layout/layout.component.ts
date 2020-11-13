@@ -1,4 +1,9 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
@@ -19,7 +24,8 @@ export class HsLayoutComponent {
     private HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
     private HsEventBusService: HsEventBusService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
     setTimeout(() => {
@@ -91,5 +97,6 @@ export class HsLayoutComponent {
 
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    this.cdr.detectChanges();
   }
 }

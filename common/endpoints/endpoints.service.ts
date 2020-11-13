@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {BehaviorSubject} from 'rxjs';
 import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -59,8 +58,7 @@ export class HsCommonEndpointsService {
    * @param ds
    */
   getItemsPerPageConfig(ds) {
-    return angular.isDefined(ds.paging) &&
-      angular.isDefined(ds.paging.itemsPerPage)
+    return ds.paging !== undefined && ds.paging.itemsPerPage !== undefined
       ? ds.paging.itemsPerPage
       : this.HsConfig.dsPaging || 20;
   }
