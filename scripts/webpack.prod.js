@@ -63,36 +63,6 @@ module.exports = merge(common, {
   },
   module: {
     rules: [
-      // CSS files are bundled togethers
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              // We do not yet use Modular CSS, hence it's safe to disable their resolving
-              modules: false,
-            },
-          },
-        ],
-      },
-      //SCSS files
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              additionalData: fs.existsSync(scssOverridesPath + 'hsl-custom.scss')
-                ? `@use "${scssOverridesPath}hsl-custom.scss" as *;`
-                : '',
-            },
-          },
-        ],
-      },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         use: ['url-loader'],

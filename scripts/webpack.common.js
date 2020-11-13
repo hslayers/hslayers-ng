@@ -12,6 +12,9 @@ const path = require('path');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 const DynamicPubPathPlugin = require('dynamic-pub-path-plugin');
 const webpack = require('webpack');
+const fs = require('fs');
+
+const scssOverridesPath = '../apps/simple/';
 
 module.exports = {
   entry: path.resolve(__dirname, '../main.ts'),
@@ -62,17 +65,47 @@ module.exports = {
   },
   module: {
     rules: [
+      // Load css files which will be injected in html page at startup <style>...</style>)
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            // We do not yet use Modular CSS, hence it's safe to disable their resolving
+            options: {
+              modules: false,
+            },
+          },
+        ],
+      },
+      //SCSS files
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: fs.existsSync(scssOverridesPath + 'hsl-custom.scss')
+                ? `@use "${scssOverridesPath}hsl-custom.scss" as *;`
+                : '',
+            },
+          },
+        ],
+      },
       {
         test: /\.ts?$/,
         use: ['ng-annotate-loader', 'ts-loader'],
         exclude: /node_modules/,
       },
-      {test: /\.xml$/, loader: 'raw-loader'},
+      { test: /\.xml$/, loader: 'raw-loader' },
       {
         // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
         // Removing this will cause deprecation warnings to appear.
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-        parser: {system: true}, // enable SystemJS
+        parser: { system: true }, // enable SystemJS
       },
       // Automatically generates $inject array for angularJS components annotated with:
       // 'ngInject';
