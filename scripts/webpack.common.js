@@ -97,7 +97,7 @@ module.exports = {
       },
       {
         test: /\.ts?$/,
-        use: ['ng-annotate-loader', 'ts-loader'],
+        use: ['ts-loader'],
         exclude: /node_modules/,
       },
       { test: /\.xml$/, loader: 'raw-loader' },
@@ -106,28 +106,7 @@ module.exports = {
         // Removing this will cause deprecation warnings to appear.
         test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
         parser: { system: true }, // enable SystemJS
-      },
-      // Automatically generates $inject array for angularJS components annotated with:
-      // 'ngInject';
-      // or commented with /**@ngInject */
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              // Babel syntax dynamic import plugin allow babel to correctly parse js files
-              // using webpack dynamic import expression (i.e import('angular').then(...))
-              plugins: [
-                'angularjs-annotate',
-                '@babel/plugin-syntax-dynamic-import',
-                '@babel/plugin-proposal-optional-chaining',
-              ],
-            },
-          },
-        ],
-      },
+      }
     ],
   },
 };
