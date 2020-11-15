@@ -163,7 +163,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	padding: 3px 6px;
 }
 
-.bsi .hs-lm-header:first-child,
+.hs-lm-header:first-child,
 .hs-lm-list:first-child,
 .hs-lm-item:first-child,
 .hs-comp-header:first-child,
@@ -173,7 +173,7 @@ ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon{
 	border-top-right-radius: 0;
 }
 
-.bsi .hs-lm-list:last-child,
+.hs-lm-list:last-child,
 .hs-lm-item:last-child,
 .hs-comp-list:last-child,
 .hs-comp-item:last-child {
@@ -262,7 +262,7 @@ ul.hs-comp-list {
 	overflow-y: auto;
 }
 
-.bsi .modal.in {
+.modal.in {
 	display: block;
 }
 
@@ -277,7 +277,7 @@ ul.hs-comp-list {
 .form-control {
 	border-radius: 0;
 }
-.bsi input[type=range].form-control {
+input[type=range].form-control {
 	padding: 0;
 }
 
@@ -1664,16 +1664,16 @@ li.hs-lm-header {
 .hs-hover-popup{max-height: 20em; min-width: 10em; max-width: 40em; overflow-y: scroll; visibility: visible;}
 
 .hs-toolbar-button{height: 2.4em}
-.bsi .dropdown-menu.datetime-picker-menu {min-width: 22rem;}
-.bsi a.hs-sensor-type {color: black}
-.bsi a.hs-sensor-unit{color: black; font-weight: bold;}
+.dropdown-menu.datetime-picker-menu {min-width: 22rem;}
+a.hs-sensor-type {color: black}
+a.hs-sensor-unit{color: black; font-weight: bold;}
 .hs-sensor{line-height: 1.9em;}
 .hs-date-time-chevron:not(*:root) { /* Supports only WebKit browsers */
 	visibility: hidden;
 }
-.bsi hs-layer-editor .form-check {line-height: 1.5}
-.bsi hs-layer-editor .card-body {padding: 0.65rem}
-.bsi hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
+hs-layer-editor .form-check {line-height: 1.5}
+hs-layer-editor .card-body {padding: 0.65rem}
+hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
 hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}
 .hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)}
