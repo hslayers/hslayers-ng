@@ -242,7 +242,7 @@ export class HsShareService {
   }
 
   openInShareApi(title, abstract, url): void {
-    navigator
+    (<any>navigator)
       .share({
         title,
         text: abstract || title,
