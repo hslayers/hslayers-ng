@@ -493,9 +493,7 @@ export class HsUtilsService {
    * @description Replaces input string text with replacement text
    */
   replaceAll(target: string, search: string, replacement: string): string {
-    if (!String.prototype.replaceAll) {
-      return target.replace(new RegExp(search, 'g'), replacement);
-    }
+    return target.replace(new RegExp(search, 'g'), replacement);
   }
   resolveEsModule(module) {
     if (module.default) {
