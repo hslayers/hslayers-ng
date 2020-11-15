@@ -1,5 +1,5 @@
 import VectorLayer from 'ol/layer/Vector';
-import moment = require('moment');
+import moment from 'moment';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';

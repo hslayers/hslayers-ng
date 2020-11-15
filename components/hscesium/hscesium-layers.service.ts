@@ -1,4 +1,3 @@
-import moment = require('moment');
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
@@ -16,6 +15,7 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
 import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
+import moment from 'moment';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
