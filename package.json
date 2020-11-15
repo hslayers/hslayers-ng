@@ -73,6 +73,7 @@
     "start-hsl-proxy": "node lib/proxy.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.9",
     "angular-aria": "^1.7.9",
