@@ -118,11 +118,14 @@ export default function (
   $scope.highlighter = new Select({
     condition: pointerMove,
     style: function (feature) {
-      return (
-        feature.getLayer().get('highlightedStyle') ||
-        HsQueryVectorService.DEFAULT_STYLES[feature.getGeometry().getType()] ||
-        null
-      );
+      const highlightedStyle = feature.getLayer().get('highlightedStyle');
+      return typeof highlightedStyle === 'function'
+        ? highlightedStyle(feature)
+        : highlightedStyle ||
+            HsQueryVectorService.DEFAULT_STYLES[
+              feature.getGeometry().getType()
+            ] ||
+            null;
     },
     filter: function (feature) {
       return feature !== HsLayermanagerService.currentLayer.selectedFeature;
@@ -183,7 +186,9 @@ export default function (
     HsLayermanagerService.currentLayer.selectedFeature = feature;
     $scope.highlightFeature(feature);
 
-    if (!$scope.$$phase) $scope.$apply();
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
 
     const currentView = HsMapService.map.getView();
     const currentZoom = currentView.getZoom();

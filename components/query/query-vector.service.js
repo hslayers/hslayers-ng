@@ -105,7 +105,10 @@ this.selector = new Select({
 		}
 	},
 	style: function (feature) {
-		return feature.getLayer().get('selectedStyle')
+		const selectedStyle = feature.getLayer().get('selectedStyle');
+		return typeof selectedStyle === "function"
+			? selectedStyle(feature)
+			: selectedStyle
 			|| DEFAULT_STYLES[feature.getGeometry().getType()]
 			|| null;
 	}
