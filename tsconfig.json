@@ -3,12 +3,13 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "target": "es5",
-        "allowJs": true,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "lib": ["esnext", "dom"],
         "sourceMap": true,
         "declaration": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "resolveJsonModule": true
     },
-    "types": ["jasmine", "node"],
+    "types": ["jasmine"],
 }

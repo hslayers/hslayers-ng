@@ -6,7 +6,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from './../utils/utils.service';
 @Component({
   selector: 'hs-save-map-advanced-form',
-  template: require('./partials/form.html'),
+  templateUrl: './partials/form.html',
 })
 export class HsSaveMapAdvancedFormComponent {
   btnSelectDeselectClicked = true;
