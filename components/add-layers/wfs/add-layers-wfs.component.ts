@@ -29,13 +29,13 @@ export class HsAddLayersWfsComponent {
   loaderImage = require('../../../img/ajax-loader.gif');
 
   constructor(
-    private HsAddLayersWfsService: HsAddLayersWfsService,
-    private HsDialogContainerService: HsDialogContainerService,
+    public HsAddLayersWfsService: HsAddLayersWfsService,
+    public HsDialogContainerService: HsDialogContainerService,
     private hsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
+    public HsLayoutService: HsLayoutService,
     private hsLog: HsLogService,
-    private HsMapService: HsMapService,
-    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
+    public HsMapService: HsMapService,
+    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()

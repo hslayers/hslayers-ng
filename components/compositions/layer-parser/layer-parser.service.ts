@@ -17,9 +17,9 @@ import {Vector as VectorSource} from 'ol/source';
 })
 export class HsCompositionsLayerParserService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsAddLayersVectorService: HsAddLayersVectorService,
-    private HsStylerService: HsStylerService
+    public HsMapService: HsMapService,
+    public HsAddLayersVectorService: HsAddLayersVectorService,
+    public HsStylerService: HsStylerService
   ) {}
 
   /**

@@ -15,7 +15,7 @@ export class HsDragDropLayerService {
   constructor(
     private httpClient: HttpClient,
     private hsAddLayersVectorService: HsAddLayersVectorService,
-    private hsConfig: HsConfig,
+    public hsConfig: HsConfig,
     private hsLog: HsLogService,
     private hsMapService: HsMapService,
     private hsStatusManagerService: HsStatusManagerService

@@ -11,8 +11,8 @@ export class HsSaveMapDialogComponent implements HsDialogComponent {
   data: any;
 
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsSaveMapManagerService: HsSaveMapManagerService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsSaveMapManagerService: HsSaveMapManagerService
   ) {}
 
   close(): void {

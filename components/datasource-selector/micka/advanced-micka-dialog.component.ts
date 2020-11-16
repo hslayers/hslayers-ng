@@ -18,10 +18,10 @@ export class HsAdvancedMickaDialogComponent {
   suggestionsModalVisible;
 
   constructor(
-    private hsConfig: HsConfig,
+    public hsConfig: HsConfig,
     private hsMickaFilterService: HsMickaFilterService,
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsDialogContainerService: HsDialogContainerService,
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsDialogContainerService: HsDialogContainerService,
     private hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;

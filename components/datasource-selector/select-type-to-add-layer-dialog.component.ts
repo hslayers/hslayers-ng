@@ -20,7 +20,7 @@ export class HsSelectTypeToAddLayerDialogComponent {
   alertChoose;
   layerType; //do not rename to 'type', would clash in the template
 
-  constructor(private hsDatasourcesService: HsDatasourcesService) {
+  constructor(public hsDatasourcesService: HsDatasourcesService) {
     this.modalVisible = true;
   }
 

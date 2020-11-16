@@ -13,8 +13,8 @@ export class HsLaymanLoginComponent implements HsDialogComponent {
   viewRef: ViewRef;
   data = {};
   constructor(
-    private HsCommonLaymanService: HsCommonLaymanService,
-    private HsDialogContainerService: HsDialogContainerService
+    public HsCommonLaymanService: HsCommonLaymanService,
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
       this.close();

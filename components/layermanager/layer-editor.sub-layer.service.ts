@@ -16,8 +16,8 @@ export class HsLayerEditorSublayerService {
   withChildrenTmp: any = {};
   checkedSubLayersTmp: any = {};
   constructor(
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsLayerSelectorService: HsLayerSelectorService
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayerSelectorService: HsLayerSelectorService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);

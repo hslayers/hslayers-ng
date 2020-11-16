@@ -39,14 +39,14 @@ export class HsCoreService {
   existsWarningShown: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService,
     private window: Window,
     private log: HsLogService,
     @Inject(DOCUMENT) private document: Document,
-    private HsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
     private translate: TranslateService
   ) {
     /**

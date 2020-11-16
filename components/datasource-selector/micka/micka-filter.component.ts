@@ -16,9 +16,9 @@ export class HsMickaFilterComponent {
   modalVisible;
 
   constructor(
-    private hsDatasourcesService: HsDatasourcesService,
+    public hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService,
-    private hsLogService: HsLogService,
+    public hsLogService: HsLogService,
     private hsMickaFilterService: HsMickaFilterService // used in template
   ) {
     this.query = hsDatasourcesService.data.query;

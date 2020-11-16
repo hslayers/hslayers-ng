@@ -16,9 +16,9 @@ import {Layer} from 'ol/layer';
 export class HsFeatureTableComponent implements OnInit {
   layers: Layer[] = [];
   constructor(
-    private HsFeatureTableService: HsFeatureTableService,
-    private HsConfig: HsConfig,
-    private HsMapService: HsMapService
+    public HsFeatureTableService: HsFeatureTableService,
+    public HsConfig: HsConfig,
+    public HsMapService: HsMapService
   ) {}
   ngOnInit(): void {
     this.HsMapService.loaded().then(() => {

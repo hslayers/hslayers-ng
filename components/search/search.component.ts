@@ -17,9 +17,9 @@ export class HsSearchComponent implements OnInit {
   searchInputVisible: boolean;
   query = '';
   constructor(
-    private HsSearchService: HsSearchService,
-    private HsEventBusService: HsEventBusService,
-    private HsShareUrlService: HsShareUrlService
+    public HsSearchService: HsSearchService,
+    public HsEventBusService: HsEventBusService,
+    public HsShareUrlService: HsShareUrlService
   ) {
     this.HsEventBusService.searchResultsReceived.subscribe(() => {
       this.clearvisible = true;

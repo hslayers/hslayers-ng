@@ -31,13 +31,13 @@ export class HsQueryVectorService {
   featureRemovals: Subject<Feature> = new Subject();
 
   constructor(
-    private HsQueryBaseService: HsQueryBaseService,
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsMeasureService: HsMeasureService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
+    public HsQueryBaseService: HsQueryBaseService,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsMeasureService: HsMeasureService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer
   ) {
     this.selector = new Select({

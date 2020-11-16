@@ -16,8 +16,8 @@ export class HsSearchResultsComponent {
   data: any = {};
   fcode_zoom_map: any;
   constructor(
-    private HsEventBusService: HsEventBusService,
-    private HsSearchService: HsSearchService
+    public HsEventBusService: HsEventBusService,
+    public HsSearchService: HsSearchService
   ) {
     this.HsEventBusService.searchResultsReceived.subscribe((_) => {
       this.searchResultsReceived();

@@ -9,7 +9,7 @@ import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
 })
 export class HsConfirmDialogComponent implements HsDialogComponent {
   dialogItem: HsDialogItem;
-  constructor(private HsDialogContainerService: HsDialogContainerService) {}
+  constructor(public HsDialogContainerService: HsDialogContainerService) {}
   viewRef: ViewRef;
   data: any;
 

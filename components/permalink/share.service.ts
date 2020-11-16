@@ -37,15 +37,15 @@ export class HsShareService {
   private renderer: Renderer2;
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsShareUrlService: HsShareUrlService,
-    private HsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService,
-    private HsStatusManagerService: HsStatusManagerService,
-    private HsLayoutService: HsLayoutService,
-    private HsSaveMapService: HsSaveMapService,
-    private HsEventBusService: HsEventBusService,
-    private HsLogService: HsLogService,
+    public HsConfig: HsConfig,
+    public HsShareUrlService: HsShareUrlService,
+    public HsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public HsStatusManagerService: HsStatusManagerService,
+    public HsLayoutService: HsLayoutService,
+    public HsSaveMapService: HsSaveMapService,
+    public HsEventBusService: HsEventBusService,
+    public HsLogService: HsLogService,
     private HttpClient: HttpClient,
     rendererFactory: RendererFactory2
   ) {

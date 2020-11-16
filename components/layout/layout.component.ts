@@ -21,9 +21,9 @@ export class HsLayoutComponent {
   panelSpaceWidth = () => this.HsLayoutService.panelSpaceWidth();
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) {

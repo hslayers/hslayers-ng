@@ -27,17 +27,17 @@ export class HsLayerEditorComponent {
   layer_renamer_visible = false;
 
   constructor(
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayerManagerWmstService: HsLayerManagerWmstService,
-    private HsStylerService: HsStylerService,
-    private HsMapService: HsMapService,
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayerEditorService: HsLayerEditorService,
-    private HsDrawService: HsDrawService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsLayerManagerWmstService: HsLayerManagerWmstService,
+    public HsStylerService: HsStylerService,
+    public HsMapService: HsMapService,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayerEditorService: HsLayerEditorService,
+    public HsDrawService: HsDrawService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
   ) {}
 
   layerIsWmsT(): boolean {

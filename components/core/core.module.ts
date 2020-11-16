@@ -41,7 +41,7 @@ import {
 import {map} from 'rxjs/operators';
 
 export class WebpackTranslateLoader implements TranslateLoader {
-  constructor(private HsConfig: HsConfig) {}
+  constructor(public HsConfig: HsConfig) {}
 
   getTranslation(lang: string): any {
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts

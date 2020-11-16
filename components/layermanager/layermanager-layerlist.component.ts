@@ -27,14 +27,14 @@ export class HsLayerListComponent {
   filtered_layers: Array<any> = [];
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    public HsConfig: HsConfig,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.sortLayersByPosition();

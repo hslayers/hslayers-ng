@@ -99,9 +99,9 @@ export class HsLayoutService {
   private _sidebarVisible: any;
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
-    private $log: HsLogService
+    public HsConfig: HsConfig,
+    public HsEventBusService: HsEventBusService,
+    public $log: HsLogService
   ) {
     Object.defineProperty(this, 'panelListElement', {
       get: function () {

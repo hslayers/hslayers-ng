@@ -40,7 +40,7 @@ export class HsAddLayersWmtsComponent {
     private hsLayoutService: HsLayoutService,
     private hsLog: HsLogService,
     private hsMapService: HsMapService,
-    private HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     this.mapProjection = this.hsMapService.map
       .getView()

@@ -7,7 +7,7 @@ import {HsLanguageService} from './language.service';
 export class HsLanguageComponent implements OnInit {
   available_languages: any;
 
-  constructor(private HsLanguageService: HsLanguageService) {}
+  constructor(public HsLanguageService: HsLanguageService) {}
 
   ngOnInit(): void {
     this.available_languages = this.HsLanguageService.listAvailableLanguages();

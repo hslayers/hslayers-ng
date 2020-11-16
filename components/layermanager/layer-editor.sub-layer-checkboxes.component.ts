@@ -11,7 +11,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   withChildren: any;
 
   constructor(
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService
   ) {
     this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;

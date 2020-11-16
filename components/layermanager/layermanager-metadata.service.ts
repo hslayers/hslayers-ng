@@ -11,10 +11,10 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 })
 export class HsLayerManagerMetadataService {
   constructor(
-    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
+    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   /**

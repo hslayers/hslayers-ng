@@ -12,9 +12,9 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsAddLayersVectorService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsStylerService: HsStylerService
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsStylerService: HsStylerService
   ) {}
 
   /**

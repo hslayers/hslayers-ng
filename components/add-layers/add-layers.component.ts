@@ -17,10 +17,10 @@ export class HsAddLayersComponent {
 
   constructor(
     private hsShareUrlService: HsShareUrlService,
-    private hsConfig: HsConfig,
+    public hsConfig: HsConfig,
     private hsEventBusService: HsEventBusService,
     private hsLayoutService: HsLayoutService,
-    private HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService
   ) {
     'ngInject';
     if (Array.isArray(this.hsConfig.connectTypes)) {

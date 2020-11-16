@@ -13,9 +13,9 @@ export class HsLayerManagerRemoveAllDialogComponent
   viewRef: ViewRef;
 
   constructor(
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsEventBusService: HsEventBusService
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   removeAllLayers(reloadComposition?: boolean): void {

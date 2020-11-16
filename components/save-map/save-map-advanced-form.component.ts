@@ -18,11 +18,11 @@ export class HsSaveMapAdvancedFormComponent {
   changeTitle: boolean;
 
   constructor(
-    private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsEventBusService: HsEventBusService,
-    private HsCoreService: HsCoreService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsSaveMapManagerService: HsSaveMapManagerService,
+    public HsEventBusService: HsEventBusService,
+    public HsCoreService: HsCoreService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';

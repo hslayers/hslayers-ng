@@ -50,9 +50,9 @@ export class HsGeolocationService {
   style: any;
   position_layer: any;
   constructor(
-    private HsMapService: HsMapService,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService
+    public HsMapService: HsMapService,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService
   ) {
     this.accuracyFeature = new Feature({
       known: false,

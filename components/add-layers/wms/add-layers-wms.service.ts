@@ -26,7 +26,7 @@ export class HsAddLayersWmsService {
     private hsDimensionService: HsDimensionService,
     private hsLayoutService: HsLayoutService,
     private hsUtilsService: HsUtilsService,
-    private hsConfig: HsConfig
+    public hsConfig: HsConfig
   ) {
     this.data = {
       useResampling: false,

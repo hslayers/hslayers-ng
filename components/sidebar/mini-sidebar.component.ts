@@ -9,10 +9,10 @@ import {HsSidebarService} from './sidebar.service';
 })
 export class HsMiniSidebarComponent implements OnInit {
   constructor(
-    private HsCoreService: HsCoreService,
-    private HsSidebarService: HsSidebarService,
-    private HsLayoutService: HsLayoutService,
-    private HsConfig: HsConfig
+    public HsCoreService: HsCoreService,
+    public HsSidebarService: HsSidebarService,
+    public HsLayoutService: HsLayoutService,
+    public HsConfig: HsConfig
   ) {}
 
   ngOnInit(): void {

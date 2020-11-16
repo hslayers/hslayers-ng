@@ -25,14 +25,14 @@ export class HsLayerEditorService {
     layer: VectorLayer;
   }> = new Subject();
   constructor(
-    private HsMapService: HsMapService,
-    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsLegendService: HsLegendService,
-    private HsLayerSelectorService: HsLayerSelectorService
+    public HsMapService: HsMapService,
+    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsLegendService: HsLegendService,
+    public HsLayerSelectorService: HsLayerSelectorService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(

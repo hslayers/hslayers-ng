@@ -55,10 +55,10 @@ export class HsCesiumLayersService {
   paramCaches: Array<ParamCacheMapItem> = [];
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService,
     @Inject(WINDOW) private window: Window
   ) {}
 

@@ -18,7 +18,7 @@ export class HsDialogContainerComponent implements OnInit {
   dialogHost: HsDialogHostDirective;
   interval: any;
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
+    public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 

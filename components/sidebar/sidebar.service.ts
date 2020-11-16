@@ -29,12 +29,12 @@ export class HsSidebarService {
   visibleButtons: Array<HsButton> = [];
   showUnimportant: boolean;
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsConfig: HsConfig,
-    private HsLanguageService: HsLanguageService,
-    private HsCoreService: HsCoreService,
-    private HsEventBusService: HsEventBusService,
-    private HsUtilsService: HsUtilsService
+    public HsLayoutService: HsLayoutService,
+    public HsConfig: HsConfig,
+    public HsLanguageService: HsLanguageService,
+    public HsCoreService: HsCoreService,
+    public HsEventBusService: HsEventBusService,
+    public HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
     /**

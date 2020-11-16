@@ -26,11 +26,11 @@ export class HsSearchService {
   searchResultsLayer: VectorLayer;
   constructor(
     private http: HttpClient,
-    private HsUtilsService: HsUtilsService,
-    private HsConfig: HsConfig,
-    private HsMapService: HsMapService,
-    private HsStylerService: HsStylerService,
-    private HsEventBusService: HsEventBusService,
+    public HsUtilsService: HsUtilsService,
+    public HsConfig: HsConfig,
+    public HsMapService: HsMapService,
+    public HsStylerService: HsStylerService,
+    public HsEventBusService: HsEventBusService,
     @Inject(WINDOW) private window: Window
   ) {
     this.searchResultsLayer = new VectorLayer({

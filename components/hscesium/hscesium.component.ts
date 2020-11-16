@@ -14,13 +14,13 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 export class HsCesiumComponent implements OnInit {
   visible = true;
   constructor(
-    private HsCesiumService: HsCesiumService,
-    private HsPermalinkUrlService: HsShareUrlService,
-    private HsCoreService: HsCoreService,
-    private HsMapService: HsMapService,
-    private HsSidebarService: HsSidebarService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService //Used in template
+    public HsCesiumService: HsCesiumService,
+    public HsPermalinkUrlService: HsShareUrlService,
+    public HsCoreService: HsCoreService,
+    public HsMapService: HsMapService,
+    public HsSidebarService: HsSidebarService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService //Used in template
   ) {}
 
   ngOnInit(): void {

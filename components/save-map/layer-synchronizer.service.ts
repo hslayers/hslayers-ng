@@ -21,12 +21,12 @@ export class HsLayerSynchronizerService {
   crs: any;
   syncedLayers: Layer[] = [];
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsLaymanService: HsLaymanService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsMapService: HsMapService,
-    private HsCommonLaymanService: HsCommonLaymanService
+    public HsUtilsService: HsUtilsService,
+    public HsLaymanService: HsLaymanService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsMapService: HsMapService,
+    public HsCommonLaymanService: HsCommonLaymanService
   ) {}
 
   init(map: Map): void {

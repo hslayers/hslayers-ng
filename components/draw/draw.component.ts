@@ -21,8 +21,8 @@ export class HsDrawComponent {
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
 
   constructor(
-    private HsDrawService: HsDrawService,
-    private HsLayoutService: HsLayoutService
+    public HsDrawService: HsDrawService,
+    public HsLayoutService: HsLayoutService
   ) {}
 
   activateDrawing(withStyle?): void {

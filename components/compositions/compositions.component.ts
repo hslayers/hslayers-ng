@@ -63,20 +63,20 @@ export class HsCompositionsComponent implements OnInit {
   query: {editable: boolean; title: string} = {editable: false, title: ''};
   activeTab = 0;
   constructor(
-    private HsMapService: HsMapService,
-    private HsCompositionsService: HsCompositionsService,
-    private HsCompositionsParserService: HsCompositionsParserService,
-    private HsConfig: HsConfig,
-    private HsCompositionsMickaService: HsCompositionsMickaService,
-    private HsLayoutService: HsLayoutService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsUtilsService: HsUtilsService,
-    private HsCompositionsMapService: HsCompositionsMapService,
-    private HsEventBusService: HsEventBusService,
-    private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private $window: Window,
-    private HsLogService: HsLogService
+    public HsMapService: HsMapService,
+    public HsCompositionsService: HsCompositionsService,
+    public HsCompositionsParserService: HsCompositionsParserService,
+    public HsConfig: HsConfig,
+    public HsCompositionsMickaService: HsCompositionsMickaService,
+    public HsLayoutService: HsLayoutService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsUtilsService: HsUtilsService,
+    public HsCompositionsMapService: HsCompositionsMapService,
+    public HsEventBusService: HsEventBusService,
+    public HsSaveMapManagerService: HsSaveMapManagerService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public $window: Window,
+    public HsLogService: HsLogService
   ) {
     this.filteredEndpointsForCompositions().forEach(
       (ep: HsEndpoint) =>

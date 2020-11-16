@@ -21,12 +21,12 @@ export class HsTripPlannerComponent implements OnInit {
   timer: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsCoreService: HsCoreService,
-    private HsTripPlannerService: HsTripPlannerService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService
+    public HsMapService: HsMapService,
+    public HsCoreService: HsCoreService,
+    public HsTripPlannerService: HsTripPlannerService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService
   ) {}
   ngOnInit(): void {
     this.loaderImage = this.HsUtilsService.resolveEsModule(

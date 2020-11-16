@@ -18,10 +18,10 @@ export class HsMickaSuggestionsDialogComponent
   viewRef: ViewRef;
 
   constructor(
-    private hsDatasourcesService: HsDatasourcesService,
+    public hsDatasourcesService: HsDatasourcesService,
     private hsLayoutService: HsLayoutService,
     private hsMickaFilterService: HsMickaFilterService,
-    private HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService
   ) {
     this.suggestionsModalVisible = true;
     this.loaderImage = this.HsUtilsService.resolveEsModule(

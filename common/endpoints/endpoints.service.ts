@@ -10,8 +10,8 @@ export class HsCommonEndpointsService {
   endpoints: HsEndpoint[];
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsCommonLaymanService: HsCommonLaymanService
+    public HsConfig: HsConfig,
+    public HsCommonLaymanService: HsCommonLaymanService
   ) {
     this.endpoints = [
       ...(this.HsConfig.status_manager_url

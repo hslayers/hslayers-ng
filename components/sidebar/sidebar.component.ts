@@ -14,11 +14,11 @@ export class HsSidebarComponent implements OnInit {
   showUnimportant = true;
 
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsCoreService: HsCoreService,
-    private HsSidebarService: HsSidebarService,
-    private HsPermalinkUrlService: HsShareUrlService,
-    private HsConfig: HsConfig
+    public HsLayoutService: HsLayoutService,
+    public HsCoreService: HsCoreService,
+    public HsSidebarService: HsSidebarService,
+    public HsPermalinkUrlService: HsShareUrlService,
+    public HsConfig: HsConfig
   ) {}
   ngOnInit(): void {
     if (this.HsCoreService.config.createExtraMenu !== undefined) {

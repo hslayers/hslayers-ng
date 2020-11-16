@@ -13,9 +13,9 @@ export class HsCompositionsLaymanService {
   listLoading: Subscription;
   constructor(
     private $http: HttpClient,
-    private HsUtilsService: HsUtilsService,
-    private HsCompositionsParserService: HsCompositionsParserService,
-    private HsEventBusService: HsEventBusService
+    public HsUtilsService: HsUtilsService,
+    public HsCompositionsParserService: HsCompositionsParserService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   loadList(endpoint, params, bbox, extentLayer): Promise<any> {

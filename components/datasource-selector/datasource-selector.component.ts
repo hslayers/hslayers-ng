@@ -21,10 +21,10 @@ export class HsDatasourcesComponent {
 
   constructor(
     private hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
-    private hsConfig: HsConfig, //Used in template
+    public hsConfig: HsConfig, //Used in template
     private hsCore: HsCoreService, //Used in template
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsDatasourcesMapService: HsDatasourcesMapService, //Used in template
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsDatasourcesMapService: HsDatasourcesMapService, //Used in template
     private hsEventBusService: HsEventBusService,
     private hsLayoutService: HsLayoutService
   ) {

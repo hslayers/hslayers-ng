@@ -17,12 +17,12 @@ import {Layer} from 'ol/layer';
 export class HsLaymanService implements HsSaverService {
   crs: string;
   constructor(
-    private HsUtilsService: HsUtilsService,
+    public HsUtilsService: HsUtilsService,
     private http: HttpClient,
-    private HsMapService: HsMapService,
-    private HsLogService: HsLogService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private $log: HsLogService
+    public HsMapService: HsMapService,
+    public HsLogService: HsLogService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public $log: HsLogService
   ) {}
 
   /**

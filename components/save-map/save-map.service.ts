@@ -21,10 +21,10 @@ export class HsSaveMapService {
     require(/* webpackChunkName: "img" */ './notAvailable.png')
   );
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayoutService: HsLayoutService,
-    private HsLogService: HsLogService
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayoutService: HsLayoutService,
+    public HsLogService: HsLogService
   ) {}
 
   /**

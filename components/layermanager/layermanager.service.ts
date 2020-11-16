@@ -99,19 +99,19 @@ export class HsLayerManagerService {
   menuExpanded = false;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsConfig: HsConfig,
-    private HsLayermanagerWmstService: HsLayerManagerWmstService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsLayerManagerMetadata: HsLayerManagerMetadataService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorStylesService: HsLayerEditorStylesService,
-    private HsLayerSelectorService: HsLayerSelectorService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsConfig: HsConfig,
+    public HsLayermanagerWmstService: HsLayerManagerWmstService,
+    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    public HsLayerManagerMetadata: HsLayerManagerMetadataService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerEditorStylesService: HsLayerEditorStylesService,
+    public HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer,
-    private HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }

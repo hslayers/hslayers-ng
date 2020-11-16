@@ -16,7 +16,7 @@ import {Vector} from 'ol/source';
   styles: [],
 })
 export class HsBootstrapComponent {
-  constructor(private HsConfig: HsConfig) {
+  constructor(public HsConfig: HsConfig) {
     const w: any = window;
     w.ol = {
       layer: {

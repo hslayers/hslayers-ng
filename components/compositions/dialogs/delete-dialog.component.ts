@@ -11,8 +11,8 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   data: any;
 
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsCompositionsService: HsCompositionsService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsCompositionsService: HsCompositionsService
   ) {}
 
   close(): void {

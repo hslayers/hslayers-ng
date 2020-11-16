@@ -13,10 +13,10 @@ import {Point} from 'ol/geom';
 })
 export class HsLayerEditorVectorLayerService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsStylerService: HsStylerService,
-    private HsConfig: HsConfig
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsStylerService: HsStylerService,
+    public HsConfig: HsConfig
   ) {}
 
   /**

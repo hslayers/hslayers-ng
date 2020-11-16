@@ -13,9 +13,9 @@ export class HsSensorsComponent implements HsPanelComponent {
   viewExpanded = false;
   query: any = {description: ''};
   constructor(
-    private HsMapService: HsMapService,
-    private HsSensorsService: HsSensorsService,
-    private HsLayoutService: HsLayoutService
+    public HsMapService: HsMapService,
+    public HsSensorsService: HsSensorsService,
+    public HsLayoutService: HsLayoutService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }

@@ -18,7 +18,7 @@ export class HsPanelContainerComponent implements OnInit {
   panelHost: HsPanelHostDirective;
   interval: any;
   constructor(
-    private HsPanelContainerService: HsPanelContainerService,
+    public HsPanelContainerService: HsPanelContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 

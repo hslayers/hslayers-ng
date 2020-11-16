@@ -22,9 +22,9 @@ export class HsCesiumCameraService {
   ellipsoid: any;
   lastSyncedExtentFromOl: any;
   constructor(
-    private HsMapService: HsMapService,
+    public HsMapService: HsMapService,
     private Window: Window,
-    private HsConfig: HsConfig
+    public HsConfig: HsConfig
   ) {}
 
   init(viewer: Viewer) {

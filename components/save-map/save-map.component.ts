@@ -14,12 +14,12 @@ export class HsSaveMapComponent {
 
   constructor(
     //Used in template
-    private HsConfig: HsConfig,
-    private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsCommonLaymanService: HsCommonLaymanService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsConfig: HsConfig,
+    public HsSaveMapManagerService: HsSaveMapManagerService,
+    public HsCommonLaymanService: HsCommonLaymanService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
-    private HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService
+    public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService
   ) {
     this.HsSaveMapManagerService.panelOpened.subscribe((composition) => {
       if (composition && composition.endpoint) {

@@ -8,7 +8,7 @@ import {WINDOW} from '../utils/window';
 @Injectable()
 export class HsUtilsService {
   constructor(
-    private HsConfig: HsConfig,
+    public HsConfig: HsConfig,
     private http: HttpClient,
     @Inject(WINDOW) private window: Window,
     @Inject(DOCUMENT) private document: Document,

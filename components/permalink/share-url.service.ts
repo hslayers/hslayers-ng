@@ -33,14 +33,14 @@ export class HsShareUrlService {
   public browserUrlUpdated: Subject<any> = new Subject();
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsCore: HsCoreService,
-    private HsUtilsService: HsUtilsService,
-    private HsSaveMapService: HsSaveMapService,
-    private HsConfig: HsConfig,
-    private HsLanguageService: HsLanguageService,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsCore: HsCoreService,
+    public HsUtilsService: HsUtilsService,
+    public HsSaveMapService: HsSaveMapService,
+    public HsConfig: HsConfig,
+    public HsLanguageService: HsLanguageService,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
     private Location: Location,
     @Inject(WINDOW) private window: Window
   ) {

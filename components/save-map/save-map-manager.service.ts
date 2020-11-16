@@ -50,15 +50,15 @@ export class HsSaveMapManagerService {
   endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
   preSaveCheckCompleted: Subject<any> = new Subject();
   constructor(
-    private HsMapService: HsMapService,
-    private HsSaveMapService: HsSaveMapService,
-    private HsConfig: HsConfig,
+    public HsMapService: HsMapService,
+    public HsSaveMapService: HsSaveMapService,
+    public HsConfig: HsConfig,
     private http: HttpClient,
-    private HsStatusManagerService: HsStatusManagerService,
-    private HsLaymanService: HsLaymanService,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    public HsStatusManagerService: HsStatusManagerService,
+    public HsLaymanService: HsLaymanService,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService
   ) {
     HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {

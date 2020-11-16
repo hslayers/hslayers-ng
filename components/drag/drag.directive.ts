@@ -35,7 +35,7 @@ export class HsDragDirective {
     this.mouseMove();
   }
   constructor(
-    private HsConfig: HsConfig,
+    public HsConfig: HsConfig,
     private el: ElementRef,
     private renderer: Renderer2,
     private rendererFactory: RendererFactory2,

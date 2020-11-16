@@ -69,12 +69,12 @@ export class HsQueryBaseService {
   vectorSelectorCreated: Subject<Select> = new Subject();
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
     private hsLanguageService: HsLanguageService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {

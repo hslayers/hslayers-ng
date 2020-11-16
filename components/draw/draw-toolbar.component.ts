@@ -16,9 +16,9 @@ export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
   constructor(
-    private HsDrawService: HsDrawService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsDrawService: HsDrawService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
 
   toggleDrawToolbar(e): void {

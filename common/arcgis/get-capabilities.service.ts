@@ -14,10 +14,10 @@ import {getPreferedFormat} from '../format-utils';
 export class HsArcgisGetCapabilitiesService {
   constructor(
     private HttpClient: HttpClient,
-    private HsEventBusService: HsEventBusService,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLogService: HsLogService
+    public HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLogService: HsLogService
   ) {}
 
   /**

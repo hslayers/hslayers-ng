@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class HsPrintService {
-  constructor(private HsMapService: HsMapService, private window: Window) {}
+  constructor(public HsMapService: HsMapService, private window: Window) {}
 
   /**
    * @memberof HsPrintService

@@ -11,8 +11,8 @@ export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   data: {url; title; abstract};
 
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsShareService: HsShareService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsShareService: HsShareService
   ) {}
 
   close(): void {

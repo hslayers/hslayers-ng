@@ -5,5 +5,5 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
   templateUrl: './partials/simpleform.html',
 })
 export class HsSaveMapSimpleFormComponent {
-  constructor(private HsLayerUtilsService: HsLayerUtilsService) {}
+  constructor(public HsLayerUtilsService: HsLayerUtilsService) {}
 }

@@ -57,14 +57,14 @@ export class HsStylerComponent {
   isClustered: boolean;
 
   constructor(
-    private HsStylerService: HsStylerService,
-    private HsLayoutService: HsLayoutService,
+    public HsStylerService: HsStylerService,
+    public HsLayoutService: HsLayoutService,
     private http: HttpClient,
-    private HsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsUtilsService: HsUtilsService,
-    private HsStylerColorService: HsStylerColorService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsUtilsService: HsUtilsService,
+    public HsStylerColorService: HsStylerColorService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler') {

@@ -19,8 +19,8 @@ export class HsLaymanCurrentUserComponent {
 
   constructor(
     private $http: HttpClient,
-    private HsCommonLaymanService: HsCommonLaymanService,
-    private HsDialogContainerService: HsDialogContainerService
+    public HsCommonLaymanService: HsCommonLaymanService,
+    public HsDialogContainerService: HsDialogContainerService
   ) {}
 
   isAuthorized() {

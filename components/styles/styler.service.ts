@@ -64,8 +64,8 @@ export class HsStylerService {
     }),
   });
   constructor(
-    private HsQueryVectorService: HsQueryVectorService,
-    private HsUtilsService: HsUtilsService
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsUtilsService: HsUtilsService
   ) {}
 
   pin_white_blue_highlight(feature: Feature, resolution): Array<Style> {

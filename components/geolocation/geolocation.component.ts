@@ -8,8 +8,8 @@ import {HsLayoutService} from '../layout/layout.service';
 export class HsGeolocationComponent implements OnInit {
   collapsed: boolean;
   constructor(
-    private HsGeolocationService: HsGeolocationService,
-    private HsLayoutService: HsLayoutService
+    public HsGeolocationService: HsGeolocationService,
+    public HsLayoutService: HsLayoutService
   ) {}
   ngOnInit(): void {
     this.collapsed = true;

@@ -42,11 +42,11 @@ export class HsLayerFeaturesComponent implements OnInit {
   showFeatureStats = false; //Toggle for showing feature statistics
   searchedFeatures = '';
   constructor(
-    private HsFeatureTableService: HsFeatureTableService,
-    private HsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService,
-    private HsLanguageService: HsLanguageService,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsFeatureTableService: HsFeatureTableService,
+    public HsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public HsLanguageService: HsLanguageService,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
   /**
    * @ngdoc method

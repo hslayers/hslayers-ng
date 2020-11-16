@@ -16,11 +16,11 @@ export class HsLayerManagerGalleryComponent {
   data: any;
 
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsLayerManagerService: HsLayerManagerService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerManagerService: HsLayerManagerService,
     private Window: Window,
-    private HsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsConfig: HsConfig,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.data = this.HsLayerManagerService.data;
   }

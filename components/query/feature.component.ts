@@ -14,8 +14,8 @@ export class HsQueryFeatureComponent {
   newAttribVisible = false;
   exportFormats = [{name: 'WKT format'}];
   constructor(
-    private HsMapService: HsMapService,
-    private HsQueryVectorService: HsQueryVectorService
+    public HsMapService: HsMapService,
+    public HsQueryVectorService: HsQueryVectorService
   ) {}
 
   olFeature() {
