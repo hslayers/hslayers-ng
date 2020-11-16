@@ -1,3 +1,10 @@
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+import {TileWMS} from 'ol/source';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -6,11 +13,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {TileWMS} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +54,7 @@ export class HsQueryWmsService {
    * @param Base
    * @param group
    */
-  updateFeatureList(updated, customInfoTemplate, Base, group) {
+  updateFeatureList(updated, customInfoTemplate, Base, group): void {
     if (updated) {
       if (customInfoTemplate) {
         Base.setData(group, 'customFeatures');
@@ -63,7 +65,7 @@ export class HsQueryWmsService {
     }
   }
 
-  async request(url, infoFormat, coordinate, layer) {
+  async request(url, infoFormat, coordinate, layer): Promise<void> {
     const req_url = this.HsUtilsService.proxify(url, true);
     const reqHash = this.HsQueryBaseService.currentQuery;
     try {
@@ -88,12 +90,11 @@ export class HsQueryWmsService {
 
   /**
    * @function featureInfoError
-   * @param exception
-   * @memberOf hs.query.service_getwmsfeatureinfo
    * @description Error callback to decrease infoCounter
+   * @param exception
    * @param coordinate
    */
-  featureInfoError(coordinate, exception) {
+  featureInfoError(coordinate, exception): void {
     this.infoCounter--;
     this.HsLogService.warn(exception);
     if (this.infoCounter === 0) {
@@ -103,31 +104,32 @@ export class HsQueryWmsService {
 
   /**
    * @function featureInfoReceived
-   * @memberOf hs.query.service_getwmsfeatureinfo
-   * @params {Object} response Response of GetFeatureInfoRequest
-   * @params {string} infoFormat Format of GetFeatureInfoResponse
-   * @params {string} url Url of request
-   * @params {Ol.coordinate object} coordinate Coordinate of request
-   * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
-   * @param response
-   * @param infoFormat
-   * @param url
-   * @param coordinate
+   * @description Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
+   * @param {Object} response Response of GetFeatureInfoRequest
+   * @param {string} infoFormat Format of GetFeatureInfoResponse
+   * @param {string} url Url of request
+   * @param {Ol.coordinate object} coordinate Coordinate of request
    * @param layer
    */
-  featureInfoReceived(response, infoFormat, url, coordinate, layer) {
+  featureInfoReceived(
+    response,
+    infoFormat: string,
+    url,
+    coordinate,
+    layer
+  ): void {
     /* Maybe this will work in future OL versions
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
      */
     const customInfoTemplate = layer.get('customInfoTemplate') || false;
 
-    if (infoFormat.indexOf('xml') > 0 || infoFormat.indexOf('gml') > 0) {
+    if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (infoFormat.indexOf('gml') > 0) {
+      if (infoFormat.includes('gml')) {
         this.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
@@ -151,18 +153,14 @@ export class HsQueryWmsService {
         }
       }
     }
-    if (infoFormat.indexOf('html') > 0) {
+    if (infoFormat.includes('html')) {
       if (response.length <= 1) {
         return;
       }
       if (layer.get('getFeatureInfoTarget') == 'info-panel') {
         this.HsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
-        this.HsQueryBaseService.fillIframeAndResize(
-          this.HsQueryBaseService.getInvisiblePopup(),
-          response,
-          true
-        );
+        this.HsQueryBaseService.fillIframeAndResize(response, true);
         if (layer.get('popupClass') != undefined) {
           this.HsQueryBaseService.popupClassname =
             'ol-popup ' + layer.get('popupClass');
@@ -175,7 +173,7 @@ export class HsQueryWmsService {
     }
   }
 
-  parseGmlResponse(doc, layer, customInfoTemplate) {
+  parseGmlResponse(doc, layer: Layer, customInfoTemplate): void {
     let updated = false;
     let features = doc.querySelectorAll('gml\\:featureMember');
     if (features.length == 0) {
@@ -273,7 +271,7 @@ export class HsQueryWmsService {
   /**
    * @param coordinate
    */
-  queriesCollected(coordinate) {
+  queriesCollected(coordinate): void {
     const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
     if (
       this.HsQueryBaseService.data.features.length > 0 ||
@@ -285,14 +283,11 @@ export class HsQueryWmsService {
 
   /**
    * @function queryWmsLayer
-   * @memberOf HsQueryController
-   * @params {Ol.Layer} layer Layer to Query
-   * @params {Ol.coordinate} coordinate
-   * Get FeatureInfo from WMS queriable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
-   * @param layer
-   * @param coordinate
+   * @description Get FeatureInfo from WMS queriable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
+   * @param {Ol.Layer} layer Layer to Query
+   * @param {Ol.coordinate} coordinate
    */
-  queryWmsLayer(layer, coordinate) {
+  queryWmsLayer(layer: Layer, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
       const source = layer.getSource();
       const map = this.HsMapService.map;
@@ -317,14 +312,12 @@ export class HsQueryWmsService {
         );
       }
       if (url) {
-        if (console) {
-          console.log(url);
-        }
+        this.HsLogService.log(url);
 
         if (
-          source.getParams().INFO_FORMAT.indexOf('xml') > 0 ||
-          source.getParams().INFO_FORMAT.indexOf('html') > 0 ||
-          source.getParams().INFO_FORMAT.indexOf('gml') > 0
+          source.getParams().INFO_FORMAT.includes('xml') ||
+          source.getParams().INFO_FORMAT.includes('html') ||
+          source.getParams().INFO_FORMAT.includes('gml')
         ) {
           this.infoCounter++;
           this.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
@@ -336,7 +329,7 @@ export class HsQueryWmsService {
   /**
    * @param layer
    */
-  isLayerWmsQueryable(layer) {
+  isLayerWmsQueryable(layer): boolean {
     if (!layer.getVisible()) {
       return false;
     }
