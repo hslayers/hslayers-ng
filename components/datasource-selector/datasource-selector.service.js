@@ -186,6 +186,7 @@ export default function (
           const layer = await HsAddLayersVectorService.addVectorLayer(
             'wfs',
             whatToAdd.link,
+            whatToAdd.name,
             whatToAdd.title,
             whatToAdd.abstract,
             whatToAdd.projection,
@@ -198,6 +199,7 @@ export default function (
         const layer = await HsAddLayersVectorService.addVectorLayer(
           whatToAdd.type.toLowerCase(),
           whatToAdd.link,
+          whatToAdd.name,
           whatToAdd.title,
           whatToAdd.abstract,
           whatToAdd.projection,

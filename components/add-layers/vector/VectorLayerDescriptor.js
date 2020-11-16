@@ -5,7 +5,7 @@ import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 
 export default class {
-  constructor(type, title, abstract, url, srs, options, mapProjection) {
+  constructor(type,name,title, abstract, url, srs, options, mapProjection) {
     /**
      * Artificial object which is used when layer is saved to composition.
      * It describes format (ol.format.KML, )
@@ -18,6 +18,7 @@ export default class {
       abstract,
       definition,
       saveState: true,
+      name,
       title,
       opacity: options.opacity || 1,
       from_composition: options.from_composition || false,

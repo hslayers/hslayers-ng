@@ -66,6 +66,7 @@ export default function (
           'geojson',
           decodeURIComponent(data.url),
           data.title || 'Layer',
+          data.title || 'Layer',
           '',
           data.projection,
           options
@@ -79,6 +80,7 @@ export default function (
         const layer = await HsAddLayersVectorService.addVectorLayer(
           '',
           undefined,
+          data.title || 'Layer',
           data.title || 'Layer',
           '',
           data.projection,

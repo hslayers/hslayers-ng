@@ -266,6 +266,7 @@ export default function (
               type: 'sparql',
               link: me.getLayerLink(layer),
               title: layer.title || 'Layer',
+              name: layer.title || 'Layer',
               abstract: layer.abstract || 'Layer',
               projection: 'EPSG:4326',
             };
@@ -278,6 +279,7 @@ export default function (
               type: 'WFS',
               link: me.getLayerLink(layer),
               title: layer.title || 'Layer',
+              name: layer.title || 'Layer',
               abstract: layer.abstract || 'Layer',
               dsType: ds.type,
             };
@@ -290,6 +292,7 @@ export default function (
               type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
               link: me.getLayerLink(layer),
               title: layer.title || 'Layer',
+              name: layer.title || 'Layer',
               abstract: layer.abstract || 'Layer',
               projection: 'EPSG:4326',
               extractStyles: layer.formats[0].toLowerCase() == 'kml',
@@ -308,6 +311,7 @@ export default function (
               type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
               link: me.getLayerLink(layer),
               title: layer.title || 'Layer',
+              name: layer.title || 'Layer',
               abstract: layer.abstract || 'Layer',
               projection: 'EPSG:4326',
               extractStyles: layer.formats[0].toLowerCase() == 'kml',

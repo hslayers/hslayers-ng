@@ -63,6 +63,7 @@ angular
         const layer = await service.addVectorLayer(
           '',
           vm.url,
+          vm.title, //name param
           vm.title,
           vm.abstract,
           vm.srs,

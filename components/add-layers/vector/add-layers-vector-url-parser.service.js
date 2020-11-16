@@ -32,6 +32,7 @@ export default function (
       const lyr = await HsAddLayersVectorService.addVectorLayer(
         type,
         url,
+        title, //name param
         title,
         abstract,
         'EPSG:4326'
@@ -44,6 +45,7 @@ export default function (
       const lyr = await HsAddLayersVectorService.addVectorLayer(
         'kml',
         url,
+        title, //name param
         title,
         abstract,
         'EPSG:4326',

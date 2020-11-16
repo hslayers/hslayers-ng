@@ -390,13 +390,15 @@ export default function (HsMapService, HsAddLayersVectorService) {
         options.style = me.parseStyle(lyr_def.style);
         extractStyles = false;
       }
+      const title = lyr_def.title || 'Layer';
       let layer;
       switch (format) {
         case 'ol.format.KML':
           layer = HsAddLayersVectorService.createVectorLayer(
             'kml',
             lyr_def.protocol.url,
-            lyr_def.title || 'Layer',
+            title,
+            lyr_def.name || title,
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
             Object.assign(options, {extractStyles})
@@ -406,7 +408,8 @@ export default function (HsMapService, HsAddLayersVectorService) {
           layer = HsAddLayersVectorService.createVectorLayer(
             'geojson',
             lyr_def.protocol.url,
-            lyr_def.title || 'Layer',
+            title,
+            lyr_def.name || title,
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
             options
@@ -417,7 +420,8 @@ export default function (HsMapService, HsAddLayersVectorService) {
           layer = HsAddLayersVectorService.createVectorLayer(
             'wfs',
             lyr_def.protocol.url,
-            lyr_def.title || 'Layer',
+            title,
+            lyr_def.name || title,
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),
             options
@@ -431,7 +435,8 @@ export default function (HsMapService, HsAddLayersVectorService) {
             layer = HsAddLayersVectorService.createVectorLayer(
               '',
               undefined,
-              lyr_def.title || 'Layer',
+              title,
+              lyr_def.name || title,
               lyr_def.abstract,
               lyr_def.projection.toUpperCase(),
               lyr_def

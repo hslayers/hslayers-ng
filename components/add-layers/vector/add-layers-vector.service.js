@@ -17,18 +17,28 @@ export default function (HsMapService, HsUtilsService) {
    * @function add
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  me.addVectorLayer = function (type, url, title, abstract, srs, options) {
+  me.addVectorLayer = function (
+    type,
+    url,
+    name,
+    title,
+    abstract,
+    srs,
+    options
+  ) {
     return new Promise((resolve, reject) => {
       try {
         const lyr = me.createVectorLayer(
           type,
           url,
+          name,
           title,
           abstract,
           srs,
@@ -55,13 +65,22 @@ export default function (HsMapService, HsUtilsService) {
    * @function add
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  me.createVectorLayer = function (type, url, title, abstract, srs, options) {
+  me.createVectorLayer = function (
+    type,
+    url,
+    name,
+    title,
+    abstract,
+    srs,
+    options
+  ) {
     if (angular.isUndefined(options)) {
       options = {};
     }
@@ -84,6 +103,7 @@ export default function (HsMapService, HsUtilsService) {
 
     const descriptor = new VectorLayerDescriptor(
       type,
+      name,
       title,
       abstract,
       url,

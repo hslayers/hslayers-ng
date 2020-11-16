@@ -53,7 +53,7 @@ export default function ($http, $q, HsUtilsService) {
         for (const lyr in j) {
           if (j[lyr]) {
             const obj = {
-              title: j[lyr].name,
+              title: j[lyr].title,
               type: ['WMS', 'WFS'],
               name: j[lyr].name,
             };
@@ -109,6 +109,7 @@ export default function ($http, $q, HsUtilsService) {
             type: layer.type,
             link: layer.wms.url,
             layer: layer.name,
+            name: layer.name,
             title: layer.title,
             dsType: ds.type,
           });
