@@ -277,8 +277,8 @@ export class HsQueryBaseService {
     this.dataCleared = true;
   }
 
-  getInvisiblePopup() {
-    return document.getElementById('invisible_popup');
+  getInvisiblePopup(): HTMLIFrameElement {
+    return <HTMLIFrameElement>document.getElementById('invisible_popup');
   }
 
   pushFeatureInfoHtml(html): void {
@@ -288,14 +288,14 @@ export class HsQueryBaseService {
     this.dataCleared = false;
   }
 
-  fillIframeAndResize(iframe, response, append: boolean): void {
-    iframe = this.getInvisiblePopup();
+  fillIframeAndResize(response, append: boolean): void {
+    const iframe = this.getInvisiblePopup();
     if (append) {
       iframe.contentDocument.body.innerHTML += response;
     } else {
       iframe.contentDocument.body.innerHTML = response;
     }
-    let tmp_width = iframe.contentDocument.innerWidth;
+    let tmp_width = iframe.contentWindow.innerWidth;
     if (
       tmp_width >
       this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
@@ -307,7 +307,7 @@ export class HsQueryBaseService {
           .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
-    let tmp_height = iframe.contentDocument.innerHeight;
+    let tmp_height = iframe.contentWindow.innerHeight;
     if (tmp_height > 700) {
       tmp_height = 700;
     }
