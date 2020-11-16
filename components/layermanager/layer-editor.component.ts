@@ -17,7 +17,7 @@ import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layer-editor',
-  template: require('./partials/layer-editor.html'),
+  templateUrl: './partials/layer-editor.html',
 })
 export class HsLayerEditorComponent {
   @Input('current-layer') currentLayer: HsLayerDescriptor;

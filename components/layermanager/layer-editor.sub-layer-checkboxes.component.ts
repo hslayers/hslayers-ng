@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
-  template: require('./partials/sub-layer-checkboxes.html'),
+  templateUrl: './partials/sub-layer-checkboxes.html',
 })
 export class HsLayerEditorSubLayerCheckboxesComponent {
   @Input() subLayer: any;

@@ -6,7 +6,7 @@ import {HsMapService} from '../map/map.service';
 import {Layer} from 'ol/layer';
 @Component({
   selector: 'hs-legend',
-  template: require('./partials/legend.html'),
+  templateUrl: './partials/legend.html',
 })
 export class HsLegendComponent {
   layerDescriptors = [];

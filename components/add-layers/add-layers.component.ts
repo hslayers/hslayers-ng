@@ -7,7 +7,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
   selector: 'hs-add-layers',
-  template: require('./partials/add-layers.directive.html'),
+  templateUrl: './partials/add-layers.directive.html',
   //TODO: require('./partials/add-layers.md.directive.html')
 })
 export class HsAddLayersComponent {

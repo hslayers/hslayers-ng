@@ -5,7 +5,7 @@ import {HsMeasureService} from './measure.service';
 
 @Component({
   selector: 'hs-measure',
-  template: require('./partials/measure.html'),
+  templateUrl: './partials/measure.html',
 })
 export class HsMeasureComponent {
   type: string;

@@ -14,7 +14,7 @@ import {HsUtilsService} from '../utils/utils.service';
  */
 @Component({
   selector: 'hs-trip-planner',
-  template: require('./partials/trip_planner.html'),
+  templateUrl: './partials/trip_planner.html',
 })
 export class HsTripPlannerComponent implements OnInit {
   loaderImage: string;

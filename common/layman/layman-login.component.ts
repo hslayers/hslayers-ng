@@ -6,7 +6,7 @@ import {Input} from '@angular/core';
 
 @Component({
   selector: 'hs-layman-login',
-  template: require('./layman-login.html'),
+  templateUrl: './layman-login.html',
 })
 export class HsLaymanLoginComponent implements HsDialogComponent {
   @Input() url;

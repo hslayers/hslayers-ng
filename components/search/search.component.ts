@@ -9,7 +9,7 @@ import {HsShareUrlService} from './../permalink/share-url.service';
  */
 @Component({
   selector: 'hs-search',
-  template: require('./partials/search.html'),
+  templateUrl: './partials/search.html',
 })
 export class HsSearchComponent implements OnInit {
   replace = false;

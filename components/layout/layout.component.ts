@@ -10,7 +10,7 @@ import {HsLayoutService} from './layout.service';
 
 @Component({
   selector: 'hs-layout',
-  template: require('./partials/layout.html'),
+  templateUrl: './partials/layout.html',
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;

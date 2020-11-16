@@ -6,7 +6,7 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 @Component({
   selector: 'hs-sensors',
-  template: require('./partials/panel.html'),
+  templateUrl: './partials/panel.html',
 })
 export class HsSensorsComponent implements HsPanelComponent {
   viewMode = 'sensors';

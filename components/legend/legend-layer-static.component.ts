@@ -7,7 +7,7 @@ import {
 
 @Component({
   selector: 'hs-legend-layer-static',
-  template: require('./partials/layer-static-directive.html'),
+  templateUrl: './partials/layer-static-directive.html',
 })
 export class HsLegendLayerStaticComponent {
   @Input() layer: any;

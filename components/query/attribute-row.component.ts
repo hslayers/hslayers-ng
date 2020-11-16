@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'hs-query-attribute-row',
-  template: require('./partials/attribute-row.html'),
+  templateUrl: './partials/attribute-row.html',
 })
 export class HsQueryAttributeRowComponent {
   @Input() attribute;

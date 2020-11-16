@@ -3,7 +3,7 @@ import {HsHistoryListService} from '../../../common/history-list/history-list.se
 
 @Component({
   selector: 'hs-add-layers-url',
-  template: require('./add-layers-url.directive.html'),
+  templateUrl: './add-layers-url.directive.html',
 })
 export class HsAddLayersUrlComponent {
   items;

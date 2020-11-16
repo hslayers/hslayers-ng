@@ -8,7 +8,7 @@ import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
   selector: 'hs-draw',
-  template: require('./partials/draw.html'),
+  templateUrl: './partials/draw.html',
 })
 export class HsDrawComponent {
   onFeatureSelected: any;

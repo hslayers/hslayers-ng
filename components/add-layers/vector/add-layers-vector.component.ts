@@ -6,7 +6,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
   selector: 'hs-add-layers-vector',
-  template: require('./add-vector-layer.directive.html'),
+  templateUrl: './add-vector-layer.directive.html',
 })
 export class HsAddLayersVectorComponent {
   srs = 'EPSG:4326';

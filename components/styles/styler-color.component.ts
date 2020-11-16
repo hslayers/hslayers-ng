@@ -3,7 +3,7 @@ import {HsStylerColorService} from './styler-color.service';
 
 @Component({
   selector: 'hs-styler-color-component',
-  template: require('./partials/color.html'),
+  templateUrl: './partials/color.html',
 })
 export class HsStylerColorComponent {
   @Input() color: any;

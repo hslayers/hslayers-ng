@@ -8,7 +8,7 @@ import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Layer} from 'ol/layer';
 @Component({
   selector: 'hs-layer-editor-dimensions',
-  template: require('./layer-editor-dimensions.html'),
+  templateUrl: './layer-editor-dimensions.html',
 })
 export class HsLayerEditorDimensionsComponent {
   @Input('ol-layer') olLayer: Layer;

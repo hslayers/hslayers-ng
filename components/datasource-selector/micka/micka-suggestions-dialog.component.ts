@@ -8,7 +8,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-micka-suggestions-dialog',
-  template: require('./micka-suggestions-dialog.html'),
+  templateUrl: './micka-suggestions-dialog.html',
 })
 export class HsMickaSuggestionsDialogComponent
   implements HsDialogComponent, OnInit {

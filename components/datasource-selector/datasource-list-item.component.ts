@@ -13,7 +13,7 @@ import {HsLogService} from '../../common/log/log.service';
 
 @Component({
   selector: 'hs-datasource-list-item',
-  template: require('./partials/datasource-list-item.html'),
+  templateUrl: './partials/datasource-list-item.html',
 })
 export class HsDatasourceListItemComponent {
   @Input() layer;
@@ -135,7 +135,7 @@ export class HsDatasourceListItemComponent {
         escapeToClose: true,
         scope: this.$scope,
         preserveScope: true,
-        template: require('./partials/datasourceBrowserMetadata.html'),
+        templateUrl: './partials/datasourceBrowserMetadata.html',
         controller: function DialogController($scope, $mdDialog) {
           $scope.closeDialog = function () {
             $mdDialog.hide();

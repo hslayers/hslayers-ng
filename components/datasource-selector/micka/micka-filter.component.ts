@@ -7,7 +7,7 @@ import {HsMickaFilterService} from './micka-filters.service';
 
 @Component({
   selector: 'hs-micka-filters',
-  template: require('./micka-filters.html'),
+  templateUrl: './micka-filters.html',
 })
 export class HsMickaFilterComponent {
   query;

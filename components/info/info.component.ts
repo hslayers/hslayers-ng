@@ -8,7 +8,7 @@ import {HsUtilsService} from './../utils/utils.service';
  */
 @Component({
   selector: 'hs-info',
-  template: require('./partials/info.html'),
+  templateUrl: './partials/info.html',
 })
 export class HsInfoComponent {
   /**

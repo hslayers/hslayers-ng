@@ -8,7 +8,7 @@ import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layermanager-gallery',
-  template: require('./partials/basemap-gallery.html'),
+  templateUrl: './partials/basemap-gallery.html',
 })
 export class HsLayerManagerGalleryComponent {
   baseLayersExpanded = false;

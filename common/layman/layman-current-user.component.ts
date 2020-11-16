@@ -7,7 +7,7 @@ import {Input} from '@angular/core';
 
 @Component({
   selector: 'hs-layman-current-user',
-  template: require('./layman-current-user.html'),
+  templateUrl: './layman-current-user.html',
 })
 export class HsLaymanCurrentUserComponent {
   @Input() endpoint;

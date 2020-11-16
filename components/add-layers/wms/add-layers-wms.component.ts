@@ -6,7 +6,7 @@ import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.
 
 @Component({
   selector: 'hs-add-layers-wms',
-  template: require('./add-wms-layer.directive.html'),
+  templateUrl: './add-wms-layer.directive.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddLayersWmsComponent {

@@ -10,7 +10,7 @@ import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 
 @Component({
   selector: 'hs-datasource-metadata-dialog',
-  template: require('./partials/datasource-metadata-dialog.html'),
+  templateUrl: './partials/datasource-metadata-dialog.html',
 })
 export class HsDatasourcesMetadataDialogComponent
   implements HsDialogComponent, OnInit {

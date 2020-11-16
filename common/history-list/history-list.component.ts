@@ -10,7 +10,7 @@ import {HsHistoryListService} from './history-list.service';
 
 @Component({
   selector: 'hs-history-list',
-  template: require('./history-list.html'),
+  templateUrl: './history-list.html',
 })
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input

@@ -4,7 +4,7 @@ import {HsDialogContainerService} from '../layout/dialogs/dialog-container.servi
 import {HsSaveMapManagerService} from './save-map-manager.service';
 @Component({
   selector: 'hs.save-map-dialog-save',
-  template: require('./partials/dialog_save.html'),
+  templateUrl: './partials/dialog_save.html',
 })
 export class HsSaveMapDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

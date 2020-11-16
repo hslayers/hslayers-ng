@@ -13,7 +13,7 @@ import {HsLogService} from '../../common/log/log.service';
 
 @Component({
   selector: 'hs-datasource-selector',
-  template: require('./partials/datasource-selector.html'),
+  templateUrl: './partials/datasource-selector.html',
 })
 export class HsDatasourcesComponent {
   data;

@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {HsLanguageService} from '../language/language.service';
 @Component({
   selector: 'hs-layer-manager-folder',
-  template: require('./partials/folder.html'),
+  templateUrl: './partials/folder.html',
 })
 export class HsLayerManagerFolderComponent {
   @Input() folder: any;

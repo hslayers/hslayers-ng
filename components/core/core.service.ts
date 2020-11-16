@@ -13,7 +13,6 @@ import {TranslateService} from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class HsCoreService {
-  hslayersNgTemplate: string = require('../../hslayers.html');
   /**
    * @ngdoc property
    * @name HsCore#scopes_registered

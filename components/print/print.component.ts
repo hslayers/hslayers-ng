@@ -3,7 +3,7 @@ import {HsConfig} from '../../config.service';
 import {HsPrintService} from './print.service';
 @Component({
   selector: 'hs-print',
-  template: require('./partials/printdialog.html'),
+  templateUrl: './partials/printdialog.html',
 })
 export class HsPrintComponent {
   public title = '';

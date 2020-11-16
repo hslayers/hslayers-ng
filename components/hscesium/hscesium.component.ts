@@ -9,7 +9,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-cesium',
-  template: require('./partials/cesium.html'),
+  templateUrl: './partials/cesium.html',
 })
 export class HsCesiumComponent implements OnInit {
   visible = true;

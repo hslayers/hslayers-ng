@@ -7,7 +7,7 @@ import {HsHistoryListService} from '../../../common/history-list/history-list.se
 
 @Component({
   selector: 'hs-add-layers-arcgis',
-  template: require('./add-arcgis-layer.directive.html'),
+  templateUrl: './add-arcgis-layer.directive.html',
   //TODO: require('./add-arcgis-layer.md.directive.html')
 })
 export class HsAddLayersArcGisComponent {

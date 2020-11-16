@@ -8,7 +8,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-sensor-unit',
-  template: require('./partials/unit-dialog.html'),
+  templateUrl: './partials/unit-dialog.html',
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};

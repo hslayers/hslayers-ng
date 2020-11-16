@@ -7,7 +7,7 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
-  template: require('./partials/unit-list-item.html'),
+  templateUrl: './partials/unit-list-item.html',
 })
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;

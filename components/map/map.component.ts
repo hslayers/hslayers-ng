@@ -10,7 +10,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
   selector: 'hs-map',
-  template: require('./partials/map.html'),
+  templateUrl: './partials/map.html',
 })
 export class HsMapComponent implements AfterViewInit {
   @ViewChild('map') map: ElementRef;

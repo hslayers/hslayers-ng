@@ -18,7 +18,7 @@ import { HsLanguageService } from '../language/language.service';
 
 @Component({
   selector: 'hs-layer-manager',
-  template: require('./partials/layermanager.html'),
+  templateUrl: './partials/layermanager.html',
 })
 export class HsLayerManagerComponent implements OnInit {
   map: any;

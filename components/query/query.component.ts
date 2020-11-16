@@ -14,7 +14,7 @@ import {Subject} from 'rxjs';
 
 @Component({
   selector: 'hs-query',
-  template: require('./partials/infopanel.html'),
+  templateUrl: './partials/infopanel.html',
 })
 export class HsQueryComponent {
   popup = new Popup();
@@ -111,7 +111,7 @@ export class HsQueryComponent {
       .show({
         scope: this,
         preserveScope: true,
-        template: require('./partials/infopanel.html'),
+        templateUrl: './partials/infopanel.html',
         parent: document.body,
         targetEvent: ev,
         clickOutsideToClose: true,

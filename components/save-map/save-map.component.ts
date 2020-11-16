@@ -7,7 +7,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 
 @Component({
   selector: 'hs-save-map',
-  template: require('./partials/panel.html'),
+  templateUrl: './partials/panel.html',
 })
 export class HsSaveMapComponent {
   endpoint = null;

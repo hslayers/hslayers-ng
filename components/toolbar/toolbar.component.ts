@@ -6,7 +6,7 @@ import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
   selector: 'hs-toolbar',
-  template: require('./partials/toolbar.html'),
+  templateUrl: './partials/toolbar.html',
 })
 export class HsToolbarComponent {
   collapsed = false;

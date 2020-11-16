@@ -4,7 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'legend-vector-layer-directive',
-  template: require('./partials/layer-vector-directive.html'),
+  templateUrl: './partials/layer-vector-directive.html',
 })
 export class HsLegendLayerVectorComponent {
   @Input('layer-style') layerStyle: any;

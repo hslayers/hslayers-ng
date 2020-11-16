@@ -3,7 +3,7 @@ import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 
 @Component({
   selector: 'hs-get-capabilities-error',
-  template: require('./partials/dialog_getcapabilities_error.html'),
+  templateUrl: './partials/dialog_getcapabilities_error.html',
 })
 export class HsGetCapabilitiesErrorComponent implements HsDialogComponent {
   @Input() data: any;

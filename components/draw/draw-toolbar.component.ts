@@ -10,7 +10,7 @@ import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
   selector: 'hs-draw-toolbar',
-  template: require('./partials/draw-toolbar.html'),
+  templateUrl: './partials/draw-toolbar.html',
 })
 export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;

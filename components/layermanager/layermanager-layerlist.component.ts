@@ -12,7 +12,7 @@ import {Layer} from 'ol/layer';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
-  template: require('./partials/layerlist.html'),
+  templateUrl: './partials/layerlist.html',
 })
 export class HsLayerListComponent {
   @Input() folder: any;

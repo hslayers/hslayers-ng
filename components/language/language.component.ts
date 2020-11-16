@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HsLanguageService} from './language.service';
 @Component({
   selector: 'hs-language',
-  template: require('./partials/language.html'),
+  templateUrl: './partials/language.html',
 })
 export class HsLanguageComponent implements OnInit {
   available_languages: any;

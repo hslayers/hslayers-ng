@@ -9,7 +9,7 @@ import {HsSearchService} from './search.service';
  */
 @Component({
   selector: 'hs-search-results',
-  template: require('./partials/searchresults.html'),
+  templateUrl: './partials/searchresults.html',
 })
 export class HsSearchResultsComponent {
   searchResultsVisible: boolean;

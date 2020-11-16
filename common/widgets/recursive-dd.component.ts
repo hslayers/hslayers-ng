@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 import {HsDatasourcesMapService} from '../../components/datasource-selector/datasource-selector-map.service';
 @Component({
   selector: 'hs-widgets-recursive-dd',
-  template: require('./recursive-dd.html'),
+  templateUrl: './recursive-dd.html',
 })
 export class HsUiExtensionsRecursiveDd {
   @Input() value: any;

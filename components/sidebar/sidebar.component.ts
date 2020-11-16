@@ -8,7 +8,7 @@ import {HsSidebarService} from './sidebar.service';
 
 @Component({
   selector: 'hs-sidebar',
-  template: require('./partials/sidebar.html'),
+  templateUrl: './partials/sidebar.html',
 })
 export class HsSidebarComponent implements OnInit {
   showUnimportant = true;

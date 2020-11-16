@@ -11,7 +11,7 @@ import {HsQueryVectorService} from './query-vector.service';
 
 @Component({
   selector: 'hs-query-feature-popup',
-  template: require('./partials/feature-popup.html'),
+  templateUrl: './partials/feature-popup.html',
 })
 export class HsQueryFeaturePopupComponent {
   constructor(

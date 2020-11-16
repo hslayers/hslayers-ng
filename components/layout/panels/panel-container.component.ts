@@ -11,7 +11,7 @@ import {HsPanelItem} from './panel-item';
 
 @Component({
   selector: 'hs-panel-container',
-  template: require('./panel-container.html'),
+  templateUrl: './panel-container.html',
 })
 export class HsPanelContainerComponent implements OnInit {
   @ViewChild(HsPanelHostDirective, {static: true})

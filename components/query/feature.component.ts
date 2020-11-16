@@ -5,7 +5,7 @@ import {Input} from '@angular/core';
 
 @Component({
   selector: 'hs-query-feature',
-  template: require('./partials/feature.html'),
+  templateUrl: './partials/feature.html',
 })
 export class HsQueryFeatureComponent {
   @Input() feature;

@@ -13,7 +13,7 @@ import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.
 
 @Component({
   selector: 'hs-add-layers-wfs',
-  template: require('./add-wfs-layer.directive.html'),
+  templateUrl: './add-wfs-layer.directive.html',
 })
 export class HsAddLayersWfsComponent {
   url: any;

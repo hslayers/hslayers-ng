@@ -10,7 +10,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
  */
 @Component({
   selector: 'hs-search-input',
-  template: require('./partials/searchinput.html'),
+  templateUrl: './partials/searchinput.html',
 })
 export class HsSearchInputComponent implements OnInit {
   query = '';

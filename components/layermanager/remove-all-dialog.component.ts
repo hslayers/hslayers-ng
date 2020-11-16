@@ -5,7 +5,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
-  template: require('./partials/dialog_removeall.html'),
+  templateUrl: './partials/dialog_removeall.html',
 })
 export class HsLayerManagerRemoveAllDialogComponent
   implements HsDialogComponent {

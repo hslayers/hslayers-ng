@@ -5,7 +5,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 @Component({
   selector: 'hs-mini-sidebar',
-  template: require('./partials/sidebar.html'),
+  templateUrl: './partials/sidebar.html',
 })
 export class HsMiniSidebarComponent implements OnInit {
   constructor(

@@ -12,7 +12,7 @@ import {Vector} from 'ol/source';
 
 @Component({
   selector: 'hs',
-  template: require('./hslayers.html'),
+  templateUrl: './hslayers.html',
   styles: [],
 })
 export class HsBootstrapComponent {

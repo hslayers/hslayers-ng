@@ -21,7 +21,7 @@ type StyleJson = {
 
 @Component({
   selector: 'hs-styles',
-  template: require('./partials/styler.html'),
+  templateUrl: './partials/styler.html',
 })
 export class HsStylerComponent {
   icons: any;

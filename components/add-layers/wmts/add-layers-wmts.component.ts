@@ -18,7 +18,7 @@ import {getTopLeft, getWidth} from 'ol/extent';
 
 @Component({
   selector: 'hs-add-layers-wmts',
-  template: require('./add-wmts-layer.directive.html'),
+  templateUrl: './add-wmts-layer.directive.html',
 })
 export class HsAddLayersWmtsComponent {
   capabilities;

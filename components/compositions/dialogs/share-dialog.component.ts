@@ -4,7 +4,7 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsShareService} from '../../permalink/share.service';
 @Component({
   selector: 'hs-compositions-share-dialog',
-  template: require('./dialog_share.html'),
+  templateUrl: './dialog_share.html',
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

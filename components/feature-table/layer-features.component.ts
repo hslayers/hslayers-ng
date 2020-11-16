@@ -20,7 +20,7 @@ type Operation = {
  */
 @Component({
   selector: 'hs-layer-features',
-  template: require('./partials/layer-features.html'),
+  templateUrl: './partials/layer-features.html',
   styles: [
     `
       td,

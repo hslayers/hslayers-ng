@@ -9,7 +9,7 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
 
 @Component({
   selector: 'hs-advanced-micka-dialog',
-  template: require('./advanced-micka-dialog.html'),
+  templateUrl: './advanced-micka-dialog.html',
 })
 export class HsAdvancedMickaDialogComponent {
   query;

@@ -4,7 +4,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsShareService} from './share.service';
 @Component({
   selector: 'hs-share',
-  template: require('./partials/directive.html'),
+  templateUrl: './partials/directive.html',
 })
 export class HsShareComponent {
   new_share = false;

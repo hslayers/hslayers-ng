@@ -9,7 +9,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
   selector: 'hs-add-layers-shp',
-  template: require('./add-shp-layer.directive.html'),
+  templateUrl: './add-shp-layer.directive.html',
 })
 export class HsAddLayersShpComponent {
   abstract: string;

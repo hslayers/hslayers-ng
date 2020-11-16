@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {HsLayoutService} from '../layout.service';
 @Component({
   selector: 'hs-panel-header',
-  template: require('./panel-header.directive.html'),
+  templateUrl: './panel-header.directive.html',
 })
 export class HsPanelHeaderComponent {
   @Input() name: string;

@@ -11,7 +11,7 @@ import {Layer} from 'ol/layer';
  */
 @Component({
   selector: 'hs-feature-table',
-  template: require('./partials/feature-table.html'),
+  templateUrl: './partials/feature-table.html',
 })
 export class HsFeatureTableComponent implements OnInit {
   layers: Layer[] = [];
