@@ -65,6 +65,24 @@ export class WebpackTranslateLoader implements TranslateLoader {
   }
 }
 
+/**
+ * @param HsConfig
+ */
+export function configurableTranslateLoader(
+  HsConfig: HsConfig
+): WebpackTranslateLoader {
+  return new WebpackTranslateLoader(HsConfig);
+}
+
+export const translateModule = TranslateModule.forRoot({
+  loader: {
+    provide: TranslateLoader,
+    useFactory: configurableTranslateLoader,
+    multi: false,
+    deps: [HsConfig],
+  },
+});
+
 @NgModule({
   declarations: [],
   imports: [
@@ -90,16 +108,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     HsUtilsModule,
     HsToolbarModule,
     HsCompositionsModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (HsConfig: HsConfig) => {
-          return new WebpackTranslateLoader(HsConfig);
-        },
-        multi: false,
-        deps: [HsConfig],
-      },
-    }),
+    translateModule,
     HsInfoModule,
     HsQueryModule,
     HsConfirmModule,

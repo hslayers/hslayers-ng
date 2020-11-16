@@ -72,7 +72,6 @@ describe('HsDatasources', () => {
           },
         },
         {provide: HttpClient, useValue: new emptyMock()},
-        {provide: Window, useValue: new WindowMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDatasourcesComponent);

@@ -30,7 +30,6 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
-import {WINDOW_PROVIDERS} from '../utils/window';
 import {compositionJson} from '../../test/data/composition';
 import {compositionsJson} from '../../test/data/compositions';
 class HsConfigMock {
@@ -73,11 +72,6 @@ describe('compositions', () => {
       declarations: [HsCompositionsComponent],
       providers: [
         HsCompositionsService,
-        WINDOW_PROVIDERS[0],
-        {
-          provide: Window,
-          useValue: WINDOW_PROVIDERS[0],
-        },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},

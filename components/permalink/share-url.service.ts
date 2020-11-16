@@ -12,7 +12,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {WINDOW} from '../utils/window';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {
@@ -41,8 +40,7 @@ export class HsShareUrlService {
     public HsLanguageService: HsLanguageService,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
-    private Location: Location,
-    @Inject(WINDOW) private window: Window
+    private Location: Location
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
@@ -137,7 +135,7 @@ export class HsShareUrlService {
   }
 
   private pathName(): string {
-    let tmp = this.window.location.pathname.split('?')[0];
+    let tmp = window.location.pathname.split('?')[0];
     if (!tmp.endsWith('/') && !tmp.split('/').pop().includes('.')) {
       tmp = tmp + '/';
     }

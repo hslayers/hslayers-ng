@@ -18,7 +18,6 @@ export class HsLayerManagerGalleryComponent {
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsLayerManagerService: HsLayerManagerService,
-    private Window: Window,
     public HsConfig: HsConfig,
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {

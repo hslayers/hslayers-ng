@@ -1,4 +1,3 @@
-import {DOCUMENT} from '@angular/common';
 import {
   Directive,
   ElementRef,
@@ -38,8 +37,7 @@ export class HsDragDirective {
     public HsConfig: HsConfig,
     private el: ElementRef,
     private renderer: Renderer2,
-    private rendererFactory: RendererFactory2,
-    @Inject(DOCUMENT) private document: Document
+    private rendererFactory: RendererFactory2
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
     this.element = this.el.nativeElement;
@@ -54,7 +52,7 @@ export class HsDragDirective {
       this.drag_panel = this.element;
 
       const header = this.element.querySelector('.card-header');
-      const closeButton = this.document.createElement(
+      const closeButton = document.createElement(
         '<button class="but-title-sm"><span class="icon-share" aria-hidden="true"></span><span class="sr-only">Unpin</span><button>'
       );
       closeButton.onclick = () => {
@@ -121,8 +119,8 @@ export class HsDragDirective {
             return;
           }
           const rect = this.element.getBoundingClientRect();
-          this.orig_left = rect.left + this.document.body.scrollLeft;
-          this.orig_top = rect.top + this.document.body.scrollTop;
+          this.orig_left = rect.left + document.body.scrollLeft;
+          this.orig_top = rect.top + document.body.scrollTop;
           this.startY = event.pageY;
           this.startX = event.pageX;
           if (this.element.parentElement != document.body) {
@@ -131,7 +129,7 @@ export class HsDragDirective {
               null
             ).width;
             this.original_container = this.element.parentElement;
-            this.document.body.appendChild(this.element);
+            document.body.appendChild(this.element);
             this.element.top = this.orig_top + 'px';
             this.element.left = this.orig_left + 'px';
             this.element.position = 'absolute';

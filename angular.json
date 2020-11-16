@@ -23,7 +23,7 @@
             "tsConfig": "tsconfig.json",
             "polyfills": "polyfills.ts",
             "outputPath": "dist/",
-            "index": "hslayers.html",
+            "index": "hslayers.html"
           },
           "configurations": {
             "es": {
@@ -32,6 +32,9 @@
               "i18nFormat": "xlf",
               "i18nLocale": "ru",
               "i18nMissingTranslation": "error"
+            },
+            "production": {
+              "tsConfig": "tsconfig.lib.prod.json"
             }
           }
         },

@@ -21,11 +21,7 @@ export class HsCesiumCameraService {
   lastGoodCenter: any[] = null;
   ellipsoid: any;
   lastSyncedExtentFromOl: any;
-  constructor(
-    public HsMapService: HsMapService,
-    private Window: Window,
-    public HsConfig: HsConfig
-  ) {}
+  constructor(public HsMapService: HsMapService, public HsConfig: HsConfig) {}
 
   init(viewer: Viewer) {
     this.viewer = viewer;
@@ -294,11 +290,11 @@ export class HsCesiumCameraService {
     const width =
       this.viewer.canvas.width > 0
         ? this.viewer.canvas.width
-        : this.Window.innerWidth;
+        : window.innerWidth;
     const height =
       this.viewer.canvas.height > 0
         ? this.viewer.canvas.height
-        : this.Window.innerHeight;
+        : window.innerHeight;
     const ray = this.viewer.camera.getPickRay(
       new Cartesian2(width / 2, height / 2)
     );
@@ -405,8 +401,8 @@ export class HsCesiumCameraService {
       trans_ext = this.lastSyncedExtentFromOl;
     } else {
       const view = this.HsConfig.default_view;
-      let winWidth = this.Window.innerWidth;
-      let winHeight = this.Window.innerHeight;
+      let winWidth = window.innerWidth;
+      let winHeight = window.innerHeight;
       if (innerWidth == 0) {
         winWidth = 1900;
       }

@@ -11,7 +11,6 @@ import {Inject, Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
-import {WINDOW} from '../utils/window';
 import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
 @Injectable({
@@ -30,8 +29,7 @@ export class HsSearchService {
     public HsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsStylerService: HsStylerService,
-    public HsEventBusService: HsEventBusService,
-    @Inject(WINDOW) private window: Window
+    public HsEventBusService: HsEventBusService
   ) {
     this.searchResultsLayer = new VectorLayer({
       title: 'Search results',
@@ -80,7 +78,7 @@ export class HsSearchService {
             `http://api.geonames.org/searchJSON?&name_startsWith=${query}`
           );
         }
-        if (this.window.location.protocol == 'https:') {
+        if (window.location.protocol == 'https:') {
           url = this.HsUtilsService.proxify(url);
         }
       } else if (provider == 'sdi4apps_openapi') {

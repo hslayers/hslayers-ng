@@ -36,7 +36,6 @@ export class HsCompositionsService {
     public HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
     public HsCompositionsLaymanService: HsCompositionsLaymanService,
     public $log: HsLogService,
-    public $window: Window,
     public HsCommonEndpointsService: HsCommonEndpointsService,
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsEventBusService: HsEventBusService
@@ -231,7 +230,7 @@ export class HsCompositionsService {
   async tryParseCompositionFromCookie() {
     if (
       localStorage.getItem('hs_layers') &&
-      (<any>this.$window).permalinkApp != true
+      (<any>window).permalinkApp != true
     ) {
       await this.HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');

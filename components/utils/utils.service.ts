@@ -1,17 +1,13 @@
-import {DOCUMENT} from '@angular/common';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {WINDOW} from '../utils/window';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class HsUtilsService {
   constructor(
     public HsConfig: HsConfig,
     private http: HttpClient,
-    @Inject(WINDOW) private window: Window,
-    @Inject(DOCUMENT) private document: Document,
     private LogService: HsLogService
   ) {}
   /**
@@ -30,12 +26,11 @@ export class HsUtilsService {
     toEncoding = toEncoding === undefined ? true : toEncoding;
     let outUrl = url;
     //Not using location because don't know if port 80 was specified explicitly or not
-    const windowUrlPosition = url.indexOf(this.window.location.origin);
+    const windowUrlPosition = url.indexOf(window.location.origin);
     if (
       windowUrlPosition == -1 ||
       windowUrlPosition > 7 ||
-      this.getPortFromUrl(url) !=
-        this.getPortFromUrl(this.window.location.origin)
+      this.getPortFromUrl(url) != this.getPortFromUrl(window.location.origin)
     ) {
       if (
         this.HsConfig.useProxy === undefined ||
@@ -110,7 +105,7 @@ export class HsUtilsService {
    * @returns {string} Port number
    */
   getPortFromUrl(url: string): string {
-    const link = this.document.createElement('a');
+    const link = document.createElement('a');
     link.setAttribute('href', url);
     if (link.port == '') {
       if (url.indexOf('https://') === 0) {

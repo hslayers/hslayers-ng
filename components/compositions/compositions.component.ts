@@ -78,7 +78,6 @@ export class HsCompositionsComponent implements OnInit {
     public HsEventBusService: HsEventBusService,
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsDialogContainerService: HsDialogContainerService,
-    public $window: Window,
     public HsLogService: HsLogService
   ) {
     this.filteredEndpointsForCompositions().forEach(
