@@ -89,12 +89,19 @@ export class HsStylerService {
   }
   /**
    * @description Gets layers style object for any vector layer.
+   * @param isClustered
    * @param {VectorLayer} layer Any vector layer
    * @returns {any} Returns layer style object
    */
   getLayerStyleObject(layer: VectorLayer, isClustered?: boolean): any {
+    if (!layer) {
+      return;
+    }
     let style: any;
-    if (isClustered !== undefined || layer.getSource()?.getSource) {
+    if (
+      (isClustered !== undefined && isClustered) ||
+      layer.getSource()?.getSource
+    ) {
       style = layer.get('hsOriginalStyle');
     } else {
       style = layer.getStyle();
@@ -109,7 +116,7 @@ export class HsStylerService {
   }
   hasFeatures(layer: VectorLayer, isClustered: boolean): boolean {
     const src = this.getLayerSource(layer, isClustered);
-    if (src.getFeatures().length > 0) {
+    if (src?.getFeatures().length > 0) {
       return true;
     } else {
       return false;
@@ -117,10 +124,14 @@ export class HsStylerService {
   }
   /**
    * @description Get a Source for any vector layer. Both clustered and un-clustered.
+   * @param isClustered
    * @param {VectorLayer} layer Any vector layer
    * @returns {VectorSource} Source of the input layer or source of its cluster's source
    */
   getLayerSource(layer: VectorLayer, isClustered: boolean): VectorSource {
+    if (!layer) {
+      return;
+    }
     let src = [];
     if (isClustered) {
       src = layer.getSource().getSource();
