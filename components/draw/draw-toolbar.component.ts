@@ -21,7 +21,7 @@ export class HsDrawToolbarComponent {
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
 
-  toggleDrawToolbar(e): void {
+  toggleDrawToolbar(): void {
     this.HsDrawService.highlightDrawButton = false;
     if (
       this.HsLayoutService.layoutElement.clientWidth > 767 &&

@@ -6,4 +6,8 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 })
 export class HsSaveMapSimpleFormComponent {
   constructor(public HsLayerUtilsService: HsLayerUtilsService) {}
+  isAllowed() {
+    //TODO: Needs implementation
+    return true;
+  }
 }

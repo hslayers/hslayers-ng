@@ -11,11 +11,11 @@
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <span>{{'COMPOSITIONS.dialogDelete.doYouWantToDeleteMap' | translate}}</span>
-                {{compositionToDelete.title}}
+                {{data.compositionToDelete.title}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger"
-                    (click)="delete(compositionToDelete)">{{'COMMON.ok' | translate}}</button>
+                    (click)="delete(data.compositionToDelete)">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                     (click)="close()">{{'COMMON.close' | translate}}</button>
             </div>

@@ -13,6 +13,7 @@ export class HsQueryFeatureComponent {
   attributeValue = '';
   newAttribVisible = false;
   exportFormats = [{name: 'WKT format'}];
+  exportMenuVisible = false;
   constructor(
     public HsMapService: HsMapService,
     public HsQueryVectorService: HsQueryVectorService

@@ -25,6 +25,8 @@ export class HsAddLayersShpComponent {
   sld: FileDescriptor = null;
   srs = 'EPSG:4326';
   title = '';
+  folder_name = '';
+  advancedPanelVisible = false;
 
   constructor(
     public hsAddLayersShpService: HsAddLayersShpService,

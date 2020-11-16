@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesService} from '../datasource-selector.service';
@@ -14,8 +14,8 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
 export class HsAdvancedMickaDialogComponent {
   query;
   modalVisible = true;
-  mickaDatasetConfig;
   suggestionsModalVisible;
+  @Input('endpoint') mickaDatasetConfig;
 
   constructor(
     public hsConfig: HsConfig,
@@ -25,7 +25,6 @@ export class HsAdvancedMickaDialogComponent {
     public hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
-    this.mickaDatasetConfig; // FIXME: = scope.$eval(attrs['mickaDatasetConfig']);
   }
 
   /**
@@ -52,7 +51,7 @@ export class HsAdvancedMickaDialogComponent {
       ) {
         this.hsDialogContainerService.create(
           HsMickaSuggestionsDialogComponent,
-          null
+          {mickaDatasetConfig: this.mickaDatasetConfig}
         );
         //FIXME: $compile
         /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');

@@ -14,11 +14,17 @@ import {HsLayoutService} from './layout.service';
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
-  panelVisible = (which, scope) =>
-    this.HsLayoutService.panelVisible(which, scope);
-  panelEnabled = (which, status) =>
-    this.HsLayoutService.panelEnabled(which, status);
-  panelSpaceWidth = () => this.HsLayoutService.panelSpaceWidth();
+
+  panelVisible(which, scope): boolean {
+    return this.HsLayoutService.panelVisible(which, scope);
+  }
+
+  panelEnabled(which, status?): boolean {
+    return this.HsLayoutService.panelEnabled(which, status);
+  }
+  panelSpaceWidth() {
+    return this.HsLayoutService.panelSpaceWidth();
+  }
 
   constructor(
     public HsConfig: HsConfig,

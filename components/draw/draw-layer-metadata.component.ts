@@ -15,6 +15,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   layer: any;
   title: any;
   path: string;
+  folderVisible = false;
 
   constructor(public HsMapService: HsMapService) {}
   viewRef: ViewRef;

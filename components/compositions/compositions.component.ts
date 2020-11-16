@@ -22,6 +22,8 @@ import {HsUtilsService} from '../utils/utils.service';
   templateUrl: './compositions.html',
 })
 export class HsCompositionsComponent implements OnInit {
+  sortMenuOpen = false;
+  keywordsMenuOpen = false;
   /**
    * @public
    * @type {object}
@@ -46,6 +48,7 @@ export class HsCompositionsComponent implements OnInit {
     'Planning': false,
     'ComplexInformation': false,
   };
+  urlToAdd = '';
   addCompositionUrlVisible = false;
   /**
    * @public
@@ -235,7 +238,7 @@ export class HsCompositionsComponent implements OnInit {
     }
   }
 
-  private filteredEndpointsForCompositions(): Array<HsEndpoint> {
+  filteredEndpointsForCompositions(): Array<HsEndpoint> {
     return this.HsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );

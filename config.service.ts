@@ -21,6 +21,7 @@ export class HsConfig {
   creditContainer: any;
   cesiumInfoBox: any;
   clusteringDistance: number;
+  dss_disallow_add: boolean;
   imageryProvider: any;
   terrainExaggeration: number;
   cesiumBingKey: string;

@@ -13,11 +13,11 @@
                     {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translate}}
                 </div>
                 <div>
-                    <b>{{compoData.title}}</b>
+                    <b>{{HsSaveMapManagerService.compoData.title}}</b>
                 </div>
-                <div *ngIf="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
+                <div *ngIf="!data.statusData?.titleFree && data.statusData?.hasPermission && !data.statusData?.changeTitle">
                     <div>
-                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}} <b>{{compoData.title}}</b>
+                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}} <b>{{HsSaveMapManagerService.compoData.title}}</b>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
@@ -29,10 +29,10 @@
                     </p>
                 </div>
 
-                <div *ngIf="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
+                <div *ngIf="!data.statusData?.titleFree && data.statusData?.hasPermission && data.statusData?.changeTitle">
                     <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translate}}</div>
                     <p>
-                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="compoData.title">
+                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="HsSaveMapManagerService.compoData.title">
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
@@ -40,11 +40,11 @@
                     </p>
                 </div>
 
-                <div *ngIf="!statusData.titleFree || !statusData.hasPermission">
+                <div *ngIf="!data.statusData?.titleFree || !data.statusData?.hasPermission">
                     <div>
-                        <p *ngIf="!statusData.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' | translate}}
+                        <p *ngIf="!data.statusData?.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' | translate}}
                         </p>
-                        <p *ngIf="!statusData.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' | translate}}
+                        <p *ngIf="!data.statusData?.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' | translate}}
                         </p>
                     </div>
                     <p>

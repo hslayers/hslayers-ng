@@ -14,6 +14,8 @@ export class HsAddLayersVectorComponent {
   extract_styles = false;
   abstract: string;
   url: string;
+  advancedPanelVisible = false;
+  folder_name = '';
 
   constructor(
     public hsAddLayersVectorService: HsAddLayersVectorService,

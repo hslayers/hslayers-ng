@@ -37,8 +37,8 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  toggleBasemap(layer: Layer): void {
-    if (arguments.length > 0) {
+  toggleBasemap(layer?: Layer): void {
+    if (layer) {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.baseLayersExpanded = false;

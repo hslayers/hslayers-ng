@@ -24,6 +24,7 @@ export class HsAddLayersWfsComponent {
   loadingFeatures: boolean;
   showDetails: boolean;
   folder_name: any;
+  title = '';
 
   path = 'WFS';
   loaderImage = require('../../../img/ajax-loader.gif');
