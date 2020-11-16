@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es5",
+    "target": "es6",
     "allowJs": false,
     "inlineSources": true,
     "allowSyntheticDefaultImports": true,
@@ -15,16 +14,19 @@
     "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "enableResourceInlining": true
   },
+  
   "exclude": [
     "src/test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.mock.ts"
   ],
   "types": [
     "jasmine"

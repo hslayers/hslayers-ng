@@ -1,20 +1,14 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "",
   "projects": {
     "hslayers-ng": {
       "projectType": "application",
       "schematics": {},
-      "root": "",
-      "sourceRoot": "",
-      "prefix": "app",
-      "i18n": {
-        "sourceLocale": "en-US",
-        "locales": {
-          "cz": "src/i18n/messages.ru.xlf"
-        }
-      },
+      "root": "./",
+      "sourceRoot": "./",
+      "prefix": "",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -22,19 +16,20 @@
             "main": "main.ts",
             "tsConfig": "tsconfig.json",
             "polyfills": "polyfills.ts",
-            "outputPath": "dist/",
+            "outputPath": "bundle/",
             "index": "hslayers.html"
           },
           "configurations": {
-            "es": {
+            "bundle": {
+              "optimization": true,
+              "sourceMap": false,
+              "extractCss": false,
+              "statsJson": true,
+              "namedChunks": false,
               "aot": true,
-              "i18nFile": "src/translate/messages.cz.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "ru",
-              "i18nMissingTranslation": "error"
-            },
-            "production": {
-              "tsConfig": "tsconfig.lib.prod.json"
+              "extractLicenses": false,
+              "buildOptimizer": true,
+              "tsConfig": "tsconfig.bundle.json"
             }
           }
         },
