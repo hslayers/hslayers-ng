@@ -3,6 +3,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "target": "es5",
+        "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "lib": ["esnext", "dom"],
         "sourceMap": true,
