@@ -16,10 +16,10 @@ export class HsAddLayersComponent {
   types;
 
   constructor(
-    private hsShareUrlService: HsShareUrlService,
+    public hsShareUrlService: HsShareUrlService,
     public hsConfig: HsConfig,
-    private hsEventBusService: HsEventBusService,
-    private hsLayoutService: HsLayoutService,
+    public hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
   ) {
     'ngInject';

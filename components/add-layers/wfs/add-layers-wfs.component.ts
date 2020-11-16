@@ -31,9 +31,9 @@ export class HsAddLayersWfsComponent {
   constructor(
     public HsAddLayersWfsService: HsAddLayersWfsService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsEventBusService: HsEventBusService,
+    public hsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
+    public hsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
   ) {

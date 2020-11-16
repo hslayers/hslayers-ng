@@ -14,11 +14,11 @@ import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format';
 export class HsDragDropLayerService {
   constructor(
     private httpClient: HttpClient,
-    private hsAddLayersVectorService: HsAddLayersVectorService,
+    public hsAddLayersVectorService: HsAddLayersVectorService,
     public hsConfig: HsConfig,
-    private hsLog: HsLogService,
-    private hsMapService: HsMapService,
-    private hsStatusManagerService: HsStatusManagerService
+    public hsLog: HsLogService,
+    public hsMapService: HsMapService,
+    public hsStatusManagerService: HsStatusManagerService
   ) {
     const dragAndDrop = new DragAndDrop({
       formatConstructors: [GPX, GeoJSON, IGC, KML, TopoJSON],

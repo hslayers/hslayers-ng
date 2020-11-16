@@ -72,7 +72,7 @@ export class HsQueryBaseService {
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
-    private hsLanguageService: HsLanguageService,
+    public hsLanguageService: HsLanguageService,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     private DomSanitizer: DomSanitizer

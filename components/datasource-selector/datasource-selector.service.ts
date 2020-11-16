@@ -36,14 +36,14 @@ export class HsDatasourcesService {
 
   constructor(
     public hsConfig: HsConfig,
-    private hsAddLayersVectorService: HsAddLayersVectorService,
-    private hsEventBusService: HsEventBusService,
-    private hsMickaFilterService: HsMickaFilterService,
-    private hsMickaBrowserService: HsMickaBrowserService,
+    public hsAddLayersVectorService: HsAddLayersVectorService,
+    public hsEventBusService: HsEventBusService,
+    public hsMickaFilterService: HsMickaFilterService,
+    public hsMickaBrowserService: HsMickaBrowserService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
-    private hsLayoutService: HsLayoutService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsUtilsService: HsUtilsService,
+    public hsLayoutService: HsLayoutService,
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
     public hsDatasourcesMapService: HsDatasourcesMapService /*,
     private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/

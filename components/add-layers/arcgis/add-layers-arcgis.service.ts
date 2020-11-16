@@ -21,11 +21,11 @@ export class HsAddLayersArcGisService {
   arcgisCapsParseError = new Subject();
 
   constructor(
-    private hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    private hsDimensionService: HsDimensionService,
-    private hsLayoutService: HsLayoutService,
-    private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService
+    public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
+    public hsDimensionService: HsDimensionService,
+    public hsLayoutService: HsLayoutService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.data = {
       useResampling: false,

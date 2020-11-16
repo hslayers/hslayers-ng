@@ -19,8 +19,8 @@ export class HsMickaSuggestionsDialogComponent
 
   constructor(
     public hsDatasourcesService: HsDatasourcesService,
-    private hsLayoutService: HsLayoutService,
-    private hsMickaFilterService: HsMickaFilterService,
+    public hsLayoutService: HsLayoutService,
+    public hsMickaFilterService: HsMickaFilterService,
     public HsUtilsService: HsUtilsService
   ) {
     this.suggestionsModalVisible = true;

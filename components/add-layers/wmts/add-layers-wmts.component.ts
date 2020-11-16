@@ -36,10 +36,10 @@ export class HsAddLayersWmtsComponent {
   version;
 
   constructor(
-    private hsEventBusService: HsEventBusService,
-    private hsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
-    private hsMapService: HsMapService,
+    public hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
+    public hsMapService: HsMapService,
     public HsDialogContainerService: HsDialogContainerService
   ) {
     this.mapProjection = this.hsMapService.map

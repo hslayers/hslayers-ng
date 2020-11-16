@@ -5,7 +5,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsDatasourcesMetadataService {
-  constructor(private hsUtilsService: HsUtilsService) {}
+  constructor(public hsUtilsService: HsUtilsService) {}
 
   /**
    * @param input

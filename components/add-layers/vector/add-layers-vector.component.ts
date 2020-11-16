@@ -16,9 +16,9 @@ export class HsAddLayersVectorComponent {
   url: string;
 
   constructor(
-    private hsAddLayersVectorService: HsAddLayersVectorService,
-    private hsHistoryListService: HsHistoryListService,
-    private hsLayoutService: HsLayoutService
+    public hsAddLayersVectorService: HsAddLayersVectorService,
+    public hsHistoryListService: HsHistoryListService,
+    public hsLayoutService: HsLayoutService
   ) {}
 
   connect = (): void => {

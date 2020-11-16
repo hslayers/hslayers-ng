@@ -17,10 +17,10 @@ export class HsAddLayersArcGisComponent {
   url;
 
   constructor(
-    private hsAddLayersArcgisService: HsAddLayersArcGisService,
-    private hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    private hsEventBusService: HsEventBusService,
-    private hsHistoryListService: HsHistoryListService
+    public hsAddLayersArcgisService: HsAddLayersArcGisService,
+    public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
+    public hsEventBusService: HsEventBusService,
+    public hsHistoryListService: HsHistoryListService
   ) {
     this.data = hsAddLayersArcgisService.data;
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {

@@ -27,11 +27,11 @@ export class HsAddLayersShpComponent {
   title = '';
 
   constructor(
-    private hsAddLayersShpService: HsAddLayersShpService,
-    private hsLayoutService: HsLayoutService,
-    private hsLaymanService: HsLaymanService,
-    private hsAddLayersWmsService: HsAddLayersWmsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    public hsAddLayersShpService: HsAddLayersShpService,
+    public hsLayoutService: HsLayoutService,
+    public hsLaymanService: HsLaymanService,
+    public hsAddLayersWmsService: HsAddLayersWmsService,
+    public hsCommonEndpointsService: HsCommonEndpointsService
   ) {
     //vm.endpointsService = HsCommonEndpointsService;
   }

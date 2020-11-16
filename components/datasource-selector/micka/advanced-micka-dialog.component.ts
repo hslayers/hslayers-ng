@@ -19,10 +19,10 @@ export class HsAdvancedMickaDialogComponent {
 
   constructor(
     public hsConfig: HsConfig,
-    private hsMickaFilterService: HsMickaFilterService,
+    public hsMickaFilterService: HsMickaFilterService,
     public hsDatasourcesService: HsDatasourcesService,
     public hsDialogContainerService: HsDialogContainerService,
-    private hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
     this.mickaDatasetConfig; // FIXME: = scope.$eval(attrs['mickaDatasetConfig']);

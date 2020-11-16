@@ -33,7 +33,7 @@ export class HsDatasourcesMapService {
   });
 
   constructor(
-    private hsMapService: HsMapService,
+    public hsMapService: HsMapService,
     public hsLogService: HsLogService
   ) {
     this.hsMapService.loaded().then((map) => this.init(map));

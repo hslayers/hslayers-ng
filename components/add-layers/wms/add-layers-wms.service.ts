@@ -21,11 +21,11 @@ export class HsAddLayersWmsService {
   data;
 
   constructor(
-    private hsMapService: HsMapService,
-    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private hsDimensionService: HsDimensionService,
-    private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
+    public hsMapService: HsMapService,
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsDimensionService: HsDimensionService,
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig
   ) {
     this.data = {

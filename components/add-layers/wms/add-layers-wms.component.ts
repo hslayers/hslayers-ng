@@ -19,10 +19,10 @@ export class HsAddLayersWmsComponent {
   layerToSelect: any;
 
   constructor(
-    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private hsAddLayersWmsService: HsAddLayersWmsService,
-    private hsEventBusService: HsEventBusService,
-    private hsHistoryListService: HsHistoryListService
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsAddLayersWmsService: HsAddLayersWmsService,
+    public hsEventBusService: HsEventBusService,
+    public hsHistoryListService: HsHistoryListService
   ) {
     this.data = hsAddLayersWmsService.data;
     //FIXME: is it even fired?
