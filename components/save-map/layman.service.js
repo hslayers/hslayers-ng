@@ -170,7 +170,7 @@ export default function (
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
-          if (ds.version === undefined || ds.version.split('.').join() < 171) {
+          if (ds.version !== undefined && ds.version.split('.').join() < 171) {
             layerTitle = this.getLaymanFriendlyLayerName(layerTitle);
           }
           layer.set('hs-layman-synchronizing', true);

@@ -109,7 +109,7 @@ export default function ($http, $q, HsUtilsService) {
             type: layer.type,
             link: layer.wms.url,
             layer: layer.name,
-            title: layer.name,
+            title: layer.title,
             dsType: ds.type,
           });
         });
