@@ -2,12 +2,12 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "target": "es5",
+        "target": "es2015",
         "allowSyntheticDefaultImports": true,
         "lib": ["esnext", "dom"],
         "sourceMap": true,
-        "declaration": false,
+        "declaration": true,
         "esModuleInterop": true
     },
-    "types": ["jasmine"],
+    "types": ["jasmine", "node"],
 }
