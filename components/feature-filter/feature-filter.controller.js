@@ -86,7 +86,7 @@ export default function (
         return filter.selected && !$scope.allSelected(filter);
         break;
       case 'arrayset':
-        return filter.selected.length > 0
+        return filter.selected && filter.selected.length > 0;
         break;
     }
   };
