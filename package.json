@@ -26,6 +26,10 @@
     "polyfills.ts"
   ],
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.12",
+    "@angular-devkit/build-ng-packagr": "~0.901.12",
+    "@angular/cli": "~9.1.12",
+    "@angular/compiler-cli": "~9.1.12",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
@@ -141,6 +145,7 @@
     "unidecode": "^0.1.8",
     "vega": "5.17.0",
     "vega-embed": "6.13.0",
+    "vega-lite": "^4.17.0",
     "xml-js": "^1.6.11",
     "zone.js": "^0.10.3"
   }
