@@ -3,10 +3,10 @@
  *
  * @function getPreferedFormat
  * @param {Array} formats List of formats avaiable for service
- * @param {string} preferedFormats List of prefered formats for output
+ * @param {Array} preferedFormats List of prefered formats for output
  * @returns {string} Either one of prefered formats or first first avaiable format
  */
-export function getPreferedFormat(formats, preferedFormats) {
+export function getPreferedFormat(formats, preferedFormats: string[]) {
   for (let i = 0; i < preferedFormats.length; i++) {
     if (formats.indexOf(preferedFormats[i]) > -1) {
       return preferedFormats[i];
