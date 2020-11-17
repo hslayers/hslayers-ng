@@ -1,12 +1,9 @@
-import * as Gyro from '../../lib/gyronorm_updated_206';
-import FULLTILT from './fulltilt';
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import Rotate from 'ol/control/Rotate';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
-import {GyroNorm} from '../../lib/gyronorm_updated_206';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './../utils/utils.service';
@@ -260,23 +257,7 @@ export class HsGeolocationService {
   }
 
   setRotation(): void {
-    const args = {
-      orientationBase: Gyro.GyroNorm.WORLD, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
-      decimalCount: 4, // ( How many digits after the decimal point will there be in the return values )
-    };
-    this.gn = new GyroNorm();
-    this.gn.FULLTILT = FULLTILT;
-    this.gn
-      .init(args)
-      .then(() => {
-        this.gn.start((event) => {
-          const z = toRadians(event.do.alpha);
-          this.HsMapService.map.getView().setRotation(z);
-        });
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
+   console.error('Device rotation tracking currently not implemented')
   }
   /**
    * @param map
