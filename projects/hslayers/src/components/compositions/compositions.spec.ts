@@ -30,8 +30,8 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
-import {compositionJson} from '../../test/data/composition';
-import {compositionsJson} from '../../test/data/compositions';
+import {compositionJson} from '../../../test/data/composition';
+import {compositionsJson} from '../../../test/data/compositions';
 class HsConfigMock {
   layer_order = '-position';
   constructor() {}

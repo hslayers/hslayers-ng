@@ -28,7 +28,7 @@ import {ImageWMS} from 'ol/source';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
-
+import {wmsGetCapabilitiesResponse} from '../../../test/data/wms-capabilities';
 class HsConfigMock {
   layer_order = '-position';
   constructor() {}
@@ -83,7 +83,7 @@ describe('layermanager-layer-list', () => {
             requestGetCapabilities: (service_url) =>
               new Promise((resolve, reject) => {
                 resolve(
-                  require('../../test/data/wms-capabilities.data.xml').default
+                  wmsGetCapabilitiesResponse 
                 );
               }),
           },

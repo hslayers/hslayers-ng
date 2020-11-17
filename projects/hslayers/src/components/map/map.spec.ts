@@ -2,7 +2,6 @@
 /* eslint-disable angular/di */
 /* eslint-disable no-undef */
 'use strict';
-import 'angular-mocks';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
