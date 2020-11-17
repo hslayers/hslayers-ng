@@ -1,20 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+import {HsConfig} from './config.service';
 
 @Component({
-  selector: 'lib-hslayers',
-  template: `
-    <p>
-      hslayers works!
-    </p>
-  `,
-  styles: [
-  ]
+  selector: 'hs',
+  templateUrl: './hslayers.html',
+  styles: [],
 })
-export class HslayersComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+export class HslayersComponent {
+  constructor(public HsConfig: HsConfig) {
+   
   }
-
 }
