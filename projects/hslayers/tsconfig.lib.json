@@ -22,6 +22,5 @@
   "exclude": [
     "src/test.ts",
     "**/*.spec.ts"
-  ],
-  "types": ["node"]
+  ]
 }
