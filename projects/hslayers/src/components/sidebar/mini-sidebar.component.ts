@@ -20,4 +20,29 @@ export class HsMiniSidebarComponent implements OnInit {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
   }
+
+   /**
+   * Seat weather to show all sidebar buttons or just a
+   * subset of important ones
+   *
+   * @memberof HsSidebarComponent
+   * @function toggleUnimportant
+   */
+  toggleUnimportant(): void {
+    this.HsSidebarService.showUnimportant = !this.HsSidebarService
+      .showUnimportant;
+  }
+   /**
+   * Toggle sidebar mode between expanded and narrow
+   *
+   * @memberof HsSidebarComponent
+   * @function toggleSidebar
+   */
+  toggleSidebar(): void {
+    this.HsLayoutService.sidebarExpanded = !this.HsLayoutService
+      .sidebarExpanded;
+    setTimeout(() => {
+      this.HsCoreService.updateMapSize();
+    }, 110);
+  }
 }

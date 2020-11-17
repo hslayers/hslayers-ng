@@ -26,6 +26,7 @@ export class HsLayerManagerComponent implements OnInit {
   data: any;
   query: any = {title: undefined};
   layerlistVisible: boolean;
+  hovering: boolean;
 
   icons = [
     'bag1.svg',
@@ -132,8 +133,8 @@ export class HsLayerManagerComponent implements OnInit {
     this.layerlistVisible = true;
   }
 
-  changeBaseLayerVisibility(toWhat: boolean, layer: Layer) {
-    return this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
+  changeBaseLayerVisibility(e?, layer?: Layer) {
+    return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }
 
   changeTerrainLayerVisibility(e, layer: Layer) {
@@ -286,10 +287,6 @@ export class HsLayerManagerComponent implements OnInit {
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
-  }
-
-  setLayerTime(layer: Layer, metadata) {
-    return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
   }
 
   /**

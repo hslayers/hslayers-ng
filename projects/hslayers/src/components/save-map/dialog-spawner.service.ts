@@ -17,8 +17,8 @@ export class HsSaveMapDialogSpawnerService {
         statusData,
       });
     });
-    this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(() => {
-      this.HsDialogContainerService.create(HsSaveMapDialogComponent, {});
+    this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(({endpoint}) => {
+      this.HsDialogContainerService.create(HsSaveMapDialogComponent, {endpoint});
     });
   }
 }

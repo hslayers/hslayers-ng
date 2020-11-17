@@ -31,9 +31,7 @@ export class HsShareService {
     abstract: '',
     shareUrl: '',
   };
-  notAvailableImage = this.HsUtilsService.resolveEsModule(
-    require(/* webpackChunkName: "img" */ '../../img/notAvailable.png')
-  );
+  notAvailableImage = 'img/notAvailable.png';
   private renderer: Renderer2;
 
   constructor(

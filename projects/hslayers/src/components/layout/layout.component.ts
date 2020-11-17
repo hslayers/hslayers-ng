@@ -7,6 +7,9 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
+import 'ol/ol.css';
+import '../../css/app.scss';
+import '../../css/whhg-font/css/whhg.css';
 
 @Component({
   selector: 'hs-layout',
@@ -55,12 +58,6 @@ export class HsLayoutComponent {
     });
 
     if (this.HsConfig.importCss == undefined || this.HsConfig.importCss) {
-      require('ol/ol.css');
-      require('../../css/app.scss');
-      /* if (window.cordova) {
-        require('../../css/mobile.css');
-      } */
-      require('../../css/whhg-font/css/whhg.css');
 
       if (this.HsConfig.theme) {
         if (this.HsConfig.theme.sidebar) {

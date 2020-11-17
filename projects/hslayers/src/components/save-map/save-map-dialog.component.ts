@@ -8,7 +8,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 })
 export class HsSaveMapDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
-  data: any;
+  data: {endpoint};
 
   constructor(
     public HsDialogContainerService: HsDialogContainerService,

@@ -11,7 +11,6 @@ import {HsSidebarService} from './sidebar.service';
   templateUrl: './partials/sidebar.html',
 })
 export class HsSidebarComponent implements OnInit {
-  showUnimportant = true;
 
   constructor(
     public HsLayoutService: HsLayoutService,

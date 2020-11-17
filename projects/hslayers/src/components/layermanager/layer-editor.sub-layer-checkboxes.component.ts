@@ -36,7 +36,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
    * @param {object} sublayer Selected sublayer
    * @param {object} state New state of sublayer
    */
-  subLayerSelected(sublayer, state) {
+  subLayerSelected(sublayer?, state?) {
+    //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail 
     if (sublayer != undefined && sublayer.Layer) {
       for (const children of sublayer.Layer) {
         Object.assign(this.checkedSubLayers, {

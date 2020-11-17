@@ -18,7 +18,7 @@ export class HsAddLayersShpComponent {
   errorMessage: any;
   extract_styles = false;
   files: FileDescriptor[] = [];
-  loaderImage = require('../../../img/ajax-loader.gif');
+  loaderImage = 'img/ajax-loader.gif';
   loading: boolean;
   name: string;
   resultCode: string;

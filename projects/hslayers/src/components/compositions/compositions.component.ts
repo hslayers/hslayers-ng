@@ -203,6 +203,12 @@ export class HsCompositionsComponent implements OnInit {
     });
   }
 
+  loadCompositionsOnAllEndpoints(){
+    for(let endpoint of this.filteredEndpointsForCompositions()){
+      this.loadCompositions(endpoint);
+    }
+  }
+
   /**
    * Handler of "Only mine" filter change, delete editable variable if needed
    */
@@ -328,10 +334,9 @@ export class HsCompositionsComponent implements OnInit {
   /**
    * @public
    * @param {object} record Composition to show details
-   * @param $event
    * @description Load info about composition through service and display composition info dialog
    */
-  detailComposition(record, $event) {
+  detailComposition(record) {
     this.HsCompositionsService.getCompositionInfo(record, (info) => {
       this.infoDialogBootstrap(info);
     });

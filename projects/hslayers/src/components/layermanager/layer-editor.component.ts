@@ -25,7 +25,7 @@ export class HsLayerEditorComponent {
     value: 40,
   };
   layer_renamer_visible = false;
-
+  
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsLayerManagerWmstService: HsLayerManagerWmstService,
@@ -397,7 +397,7 @@ export class HsLayerEditorComponent {
     return layer.get('title');
   }
 
-  set abstract(newAbstract: string | false) {
+  set abstract(newAbstract: string) {
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
@@ -405,10 +405,10 @@ export class HsLayerEditorComponent {
     layer.set('abstract', newAbstract);
   }
 
-  get abstract(): string | false {
+  get abstract(): string {
     const layer = this.olLayer();
     if (layer == undefined) {
-      return false;
+      return;
     }
     return layer.get('abstract');
   }

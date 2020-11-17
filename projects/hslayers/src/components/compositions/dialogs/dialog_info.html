@@ -26,12 +26,12 @@
                     <div class="col-md-3"><b>{{'COMMON.extent' | translate}}</b></div>
                     <div class="col-md-9">{{data.info.extent}}</div>
                 </div>
-                <div *ngFor="let layer of data.info.layers">
-                    <div class="row" *ngIf="$first">
+                <div *ngFor="let layer of data.info.layers;let first = first;">
+                    <div class="row" *ngIf="first">
                         <div class="col-md-3"><b>{{'COMMON.layer' | translate}}</b></div>
                         <div class="col-md-9">{{layer.title}}</div>
                     </div>
-                    <div class="row" *ngIf="!$first">
+                    <div class="row" *ngIf="!first">
                         <div class="col-md-offset-3 col-md-9">{{layer.title}}</div>
                     </div>
                 </div>

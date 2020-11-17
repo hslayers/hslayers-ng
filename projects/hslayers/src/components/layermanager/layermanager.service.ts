@@ -220,11 +220,11 @@ export class HsLayerManagerService {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return require('../../img/' + thumbnail);
+        return 'img/' + thumbnail;
       }
     } else {
       return this.HsUtilsService.resolveEsModule(
-        require(/* webpackChunkName: "img" */ '../../img/default.png')
+        'img/default.png'
       );
     }
   }

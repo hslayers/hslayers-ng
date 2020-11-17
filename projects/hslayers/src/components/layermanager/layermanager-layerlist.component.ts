@@ -162,8 +162,8 @@ export class HsLayerListComponent {
    * @param {object} layer_container Selected layer - wrapped in layer object
    * @description Test if layer is queryable (WMS layer with Info format)
    */
-  isLayerQueryable(layer_container) {
-    this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
+  isLayerQueryable(layer_container): boolean {
+    return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   }
 
   /**

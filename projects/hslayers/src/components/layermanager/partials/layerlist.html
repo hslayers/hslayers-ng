@@ -22,7 +22,7 @@
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
-                        [ngClass]="{true:'icon-chevron-right', false:'icon-chevron-down'}[HsLayerManagerService.currentLayer == layer]"
+                        [ngClass]="{'icon-chevron-right':HsLayerManagerService.currentLayer == layer, 'icon-chevron-down': HsLayerManagerService.currentLayer != layer}"
                         [hidden]="!layerLoaded(layer.layer)"></span>
                 </div>
 

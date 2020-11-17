@@ -15,6 +15,8 @@ import {HsLayoutService} from '../layout/layout.service';
 export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
+  drawTypeExpanded = false;
+
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,

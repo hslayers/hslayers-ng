@@ -27,7 +27,7 @@ export class HsAddLayersWfsComponent {
   title = '';
 
   path = 'WFS';
-  loaderImage = require('../../../img/ajax-loader.gif');
+  loaderImage = 'img/ajax-loader.gif';
 
   constructor(
     public HsAddLayersWfsService: HsAddLayersWfsService,

@@ -12,7 +12,7 @@
     </a>
 
     <a href="#" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsSidebarService.unimportantExist && !HsLayoutService.sidebarBottom()" (click)="toggleUnimportant()">
-        <i class="menu-icon" [ngClass]="{'icon-minus' : showUnimportant, 'icon-plus': !showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
+        <i class="menu-icon" [ngClass]="{'icon-minus' : HsSidebarService.showUnimportant, 'icon-plus': !HsSidebarService.showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
     </a>
 
     <a href="#" class="flex-fill hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="HsLayoutService.setMainPanel('sidebar')" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">

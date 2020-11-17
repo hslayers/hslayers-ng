@@ -17,9 +17,7 @@ import {Layer} from 'ol/layer';
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  notAvailableImage = this.HsUtilsService.resolveEsModule(
-    require(/* webpackChunkName: "img" */ './notAvailable.png')
-  );
+  notAvailableImage = 'img/notAvailable.png'
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,

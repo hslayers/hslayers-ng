@@ -36,8 +36,8 @@
                     <label>{{'COMMON.date' | translate}}</label>
                     <input type="range" name="layer-date" step="{{currentLayer.time_step}}"
                         min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control"
-                        style="width: 100%;height: 21px;" [(ngModel)]="dateIncrement"
-                        (change)="setLayerTime(currentLayer, dateIncrement)">
+                        style="width: 100%;height: 21px;" [(ngModel)]="currentLayer.date_increment"
+                        (change)="HsLayerManagerWmstService.setLayerTime(currentLayer, currentLayer.date_increment)">
                     <div class="row">
                         <div class="col-md-4">
                             <small>{{formatDate(dateToNonUtc(currentLayer.date_from), currentLayer.date_format)}}</small>

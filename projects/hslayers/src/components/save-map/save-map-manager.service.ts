@@ -48,7 +48,8 @@ export class HsSaveMapManagerService {
   panelOpened: Subject<any> = new Subject();
   saveMapResulted: Subject<any> = new Subject();
   endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
-  preSaveCheckCompleted: Subject<any> = new Subject();
+  preSaveCheckCompleted: Subject<{endpoint}> = new Subject();
+  changeTitle: boolean;
   constructor(
     public HsMapService: HsMapService,
     public HsSaveMapService: HsSaveMapService,
@@ -154,7 +155,7 @@ export class HsSaveMapManagerService {
           this.HsStatusManagerService.findStatusmanagerEndpoint()
         );
       }
-      this.preSaveCheckCompleted.next();
+      this.preSaveCheckCompleted.next({endpoint: this.HsStatusManagerService.findStatusmanagerEndpoint()});
     } catch (ex) {
       this.statusData.success = false;
     }
@@ -372,6 +373,17 @@ export class HsSaveMapManagerService {
       west: pair2[0].toFixed(2),
       north: pair2[1].toFixed(2),
     };
+  }
+
+  /**
+   * Callback for saving with new title
+   *
+   * @function selectNewTitle
+   * @memberof hs.save-map
+   */
+  selectNewTitle() {
+    this.compoData.title = this.statusData.guessedTitle;
+    this.changeTitle = true;
   }
 
   resetCompoData() {

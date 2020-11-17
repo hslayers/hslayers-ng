@@ -72,16 +72,4 @@ export class HsAdvancedMickaDialogComponent {
       );
     }
   }
-
-  /**
-   * @function addSuggestion
-   * @param {string} text Selected property value from suggestions
-   * @description Save suggestion into Query object
-   */
-  addSuggestion(text: string): void {
-    this.hsDatasourcesService.data.query[
-      this.hsMickaFilterService.suggestionConfig.input
-    ] = text;
-    this.suggestionsModalVisible = false;
-  }
 }

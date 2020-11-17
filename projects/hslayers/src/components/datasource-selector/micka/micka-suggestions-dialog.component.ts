@@ -24,10 +24,7 @@ export class HsMickaSuggestionsDialogComponent
     public HsUtilsService: HsUtilsService
   ) {
     this.suggestionsModalVisible = true;
-    this.loaderImage = this.HsUtilsService.resolveEsModule(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('../../../img/ajax-loader.gif')
-    );
+    this.loaderImage = 'img/ajax-loader.gif';
     this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
       this.hsMickaFilterService.suggestionConfig.input
     ];
@@ -37,5 +34,17 @@ export class HsMickaSuggestionsDialogComponent
     this.hsLayoutService.contentWrapper
       .querySelector('.hs-ds-sug-filter')
       .focus();
+  }
+
+   /**
+   * @function addSuggestion
+   * @param {string} text Selected property value from suggestions
+   * @description Save suggestion into Query object
+   */
+  addSuggestion(text: string): void {
+    this.hsDatasourcesService.data.query[
+      this.hsMickaFilterService.suggestionConfig.input
+    ] = text;
+    this.suggestionsModalVisible = false;
   }
 }
