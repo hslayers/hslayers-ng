@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>HS Layers</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+</head>
+<body >
+    <div hs ng-app="hs" ng-controller="Main" style="position: relative;"></div>
+    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../node_modules/js-cookie/src/js.cookie.js"></script>
+    <script src="../../../node_modules/requirejs/require.js"></script>    
+
+    <script>
+    $(document).ready(function(){
+    debugger;
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results==null){
+               return null;
+            }
+            else{
+               return results[1] || 0;
+            }
+        }
+        
+        if ($.urlParam("hsl_path")) {
+            var TP = decodeURIComponent($.urlParam("hsl_path"));
+            var TPA = TP.split('/');
+            var TPF = [];
+            if (TP.search('../')) {
+                for (var i=0; i<TPA.length; i++){
+                    if (TPA[i] == "..") {
+                        TPF.pop();
+                    } else {
+                        TPF.push(TPA[i]);
+                    }
+                }
+            }
+            
+            window.hsl_path = TPF.join('/');
+            Cookies.set('hsl_path', window.hsl_path, {expires: 1, path: window.hsl_path + 'components/permalink/app'});
+        }
+        if ($.urlParam("config")) {
+            window.hsl_config = decodeURIComponent($.urlParam("config"));
+            Cookies.set('hsl_config', window.hsl_config, {expires: 1, path: window.hsl_path + 'components/permalink/app'});
+        }
+        if ($.urlParam("hsl_app")) {
+            window.hsl_app = decodeURIComponent($.urlParam("hsl_app"));
+            Cookies.set('hsl_app', window.hsl_app, {expires: 1, path: window.hsl_path + 'components/permalink/app'});
+        }
+
+        if (typeof(window.hsl_config) == 'undefined' && Cookies.get('hsl_config') != '') {
+            window.hsl_config = Cookies.get('hsl_config');
+        }
+
+        if (typeof(window.hsl_path) == 'undefined' && Cookies.get('hsl_path') != '') {
+            window.hsl_path = Cookies.get('hsl_path');
+        }
+
+        if (typeof(window.hsl_app) == 'undefined' && Cookies.get('hsl_app') != '') {
+            window.hsl_app = Cookies.get('hsl_app');
+        }
+
+        window.permalinkApp = true;
+        var idx = location.search.indexOf("&config");
+        var search = location.search.substr(0,idx);
+        if (typeof(history.replaceState) !== "undefined") {
+            history.replaceState({
+                path: location.pathname + search
+            }, null, location.pathname + search);
+        }
+
+        jQuery.getScript(window.hsl_config);
+    })
+    </script>
+</body>
+</html>
