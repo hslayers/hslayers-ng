@@ -9,7 +9,7 @@ import {HsSensorsService} from './sensors.service';
   template: require('./partials/panel.html'),
 })
 export class HsSensorsComponent implements HsPanelComponent {
-  viewMode = 'sensors';
+  viewMode = 'sensornames';
   viewExpanded = false;
   query: any = {description: ''};
   constructor(

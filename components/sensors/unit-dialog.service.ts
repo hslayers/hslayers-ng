@@ -292,9 +292,9 @@ export class HsSensorsUnitDialogService {
     return aggregates;
   }
 
-  translate(text: string): string {
+  translate(text: string, group?: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(
-      'SENSORS',
+      'SENSORS' + (group != undefined ? '.' + group : ''),
       text
     );
   }
