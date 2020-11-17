@@ -50,7 +50,7 @@
                         <ul class="dropdown-menu" [ngClass]="{'show': keywordsMenuOpen}">
                             <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue">
                                 <label>
-                                    <input type="checkbox" [(ngModel)]="keyword.value" (click)="loadCompositionsOnAllEndpoints()">
+                                    <input type="checkbox" [(ngModel)]="keyword.value" [ngModelOptions]="{standalone: true}" (click)="loadCompositionsOnAllEndpoints()">
                                     {{keyword}}
                                 </label>
                             </li>
