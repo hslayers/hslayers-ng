@@ -7,9 +7,6 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
-import 'ol/ol.css';
-import '../../css/app.scss';
-import '../../css/whhg-font/css/whhg.css';
 
 @Component({
   selector: 'hs-layout',

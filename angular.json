@@ -28,7 +28,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles.sass",
+              "projects/hslayers/src/css/app.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css",
+              "node_modules/ol/ol.css"
             ],
             "scripts": []
           },
