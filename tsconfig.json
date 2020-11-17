@@ -1,34 +1,30 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "target": "es6",
-    "allowJs": false,
-    "inlineSources": true,
-    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
     "lib": [
-      "esnext",
+      "es2018",
       "dom"
     ],
-    "module": "esnext",
-    "sourceMap": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "paths": {
+      "hslayers": [
+        "dist/hslayers/hslayers",
+        "dist/hslayers"
+      ]
+    }
   },
   "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "enableResourceInlining": true
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   },
-  
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts",
-    "**/*.mock.ts"
-  ],
-  "types": [
-    "jasmine"
-  ]
+  "types": ["node"]
 }
