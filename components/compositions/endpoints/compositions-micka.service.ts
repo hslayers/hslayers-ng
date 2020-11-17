@@ -12,7 +12,6 @@ import {Subscription} from 'rxjs';
   providedIn: 'root',
 })
 export class HsCompositionsMickaService {
-  listLoading: Subscription;
   constructor(
     private HsCompositionsParserService: HsCompositionsParserService,
     private $http: HttpClient,
@@ -74,8 +73,8 @@ export class HsCompositionsMickaService {
 
   getCompositions(endpoint, params, bbox) {
     return new Promise((resolve, reject) => {
-      this.listLoading = this.$http
-        .get(this.getCompositionsQueryUrl(endpoint, params, bbox),{responseType: 'json'})
+      endpoint.listLoading = this.$http
+        .get(this.getCompositionsQueryUrl(endpoint, params, bbox))
         .subscribe((response: any) => {
           resolve(response);
         });
@@ -94,9 +93,9 @@ export class HsCompositionsMickaService {
       if (params.limit == undefined || isNaN(params.limit)) {
         params.limit = endpoint.compositionsPaging.limit;
       }
-      if (this.listLoading) {
-        this.listLoading.unsubscribe();
-        delete this.listLoading;
+      if (endpoint.listLoading) {
+        endpoint.listLoading.unsubscribe();
+        delete endpoint.listLoading;
       }
       this.getCompositions(endpoint, params, bbox).then(
         (response: any) => {
