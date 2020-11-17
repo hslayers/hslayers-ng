@@ -46,7 +46,12 @@ export class WebpackTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): any {
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
-      from(import(`../../assets/locales/${lang}.json`)),
+      from(
+        new Promise((resolve) => {
+          const promise = import(`../../assets/locales/${lang}.json`);
+          promise.then((contents)=> resolve(contents.default))
+        })
+      ),
       from(
         new Promise((resolve) => {
           if (
