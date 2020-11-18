@@ -342,6 +342,7 @@ export class HsCompositionsParserService {
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
   jsonToLayer(lyr_def) {
+    console.log(lyr_def)
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
