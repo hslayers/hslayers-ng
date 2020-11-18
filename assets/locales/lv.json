@@ -433,7 +433,13 @@
   },
   "SENSORS": {
     "avg": "Vid.",
+    "1H": "1st",
+    "1D": "1d",
+    "1W": "1ned",
+    "1M": "1m",
+    "6M": "6m",
     "max": "Maks.",
+    "at": "",
     "measure": "mēra",
     "min": "Min",
     "oneHour": "1 stunda",

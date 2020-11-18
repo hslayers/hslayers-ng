@@ -172,7 +172,10 @@ export class HsSensorsUnitDialogService {
             .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
             .map((s) => {
               const time = moment(val.time_stamp);
-              s.sensor_name = this.sensorById[s.sensor_id].sensor_name;
+              s.sensor_name = this.translate(
+                this.sensorById[s.sensor_id].sensor_name,
+                'SENSORNAMES'
+              );
               s.time = time.format('DD.MM.YYYY HH:mm');
               s.time_stamp = time.toDate();
               return s;
@@ -215,7 +218,7 @@ export class HsSensorsUnitDialogService {
         'color': {
           'field': 'sensor_name',
           'legend': {
-            'title': 'Sensor',
+            'title': this.HsLanguageService.getTranslation('SENSORS.sensors'),
           },
           'type': 'nominal',
           'sort': 'sensor_id',
@@ -231,7 +234,10 @@ export class HsSensorsUnitDialogService {
         },
         'y': {
           'axis': {
-            'title': `${sensorDesc.phenomenon_name} ${sensorDesc.uom}`,
+            'title': `${this.translate(
+              sensorDesc.phenomenon_name,
+              'PHENOMENON'
+            )} ${sensorDesc.uom}`,
           },
           'field': 'value',
           'type': 'quantitative',
