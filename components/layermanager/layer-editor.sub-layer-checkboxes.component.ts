@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {HsLayerManagerService} from './layermanager.service';
+
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
   template: require('./partials/sub-layer-checkboxes.html'),
@@ -11,7 +13,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   withChildren: any;
 
   constructor(
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService
+    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    private HsLayerManagerService: HsLayerManagerService
   ) {
     this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
