@@ -139,7 +139,8 @@ export class HsLaymanBrowserService {
       type: lyr.type,
       link: lyr.wms.url,
       layer: lyr.name,
-      title: lyr.name,
+      name: lyr.name,
+      title: lyr.title,
       dsType: ds.type,
     };
   }

@@ -11,6 +11,7 @@ export class VectorLayerDescriptor {
     abstract: any;
     definition: any;
     saveState: boolean;
+    name: any;
     title: any;
     opacity: any;
     from_composition: boolean;
@@ -39,6 +40,7 @@ export class VectorLayerDescriptor {
 
   constructor(
     type: string,
+    name,
     title,
     abstract,
     url: string,
@@ -59,6 +61,7 @@ export class VectorLayerDescriptor {
       definition,
       saveState: true,
       title,
+      name,
       opacity: options.opacity || 1,
       from_composition: options.from_composition || false,
       style: options.style,

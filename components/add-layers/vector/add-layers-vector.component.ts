@@ -14,6 +14,7 @@ export class HsAddLayersVectorComponent {
   extract_styles = false;
   abstract: string;
   url: string;
+  name = '';
 
   constructor(
     private hsAddLayersVectorService: HsAddLayersVectorService,
@@ -35,6 +36,7 @@ export class HsAddLayersVectorComponent {
     const layer = await this.hsAddLayersVectorService.addVectorLayer(
       '',
       this.url,
+      this.name,
       this.title,
       this.abstract,
       this.srs,
