@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
@@ -14,7 +16,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import { HsLanguageService } from '../language/language.service';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -79,6 +80,7 @@ export class HsLayerManagerComponent implements OnInit {
 
   constructor(
     private HsCore: HsCoreService,
+    private HsConfig: HsConfig,
     private HsUtilsService: HsUtilsService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsMapService: HsMapService,
