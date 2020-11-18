@@ -63,7 +63,9 @@ $sidebar-item-active: #007bff !default;
 .hs-grayscale {
 	filter: grayscale(100%);
 }
-
+.hs-lm-deactivated-layer, .grayed {
+	color: #cccccc;
+}
 .hs-main-panel {
 	border: none;
 	margin-bottom: 0;
