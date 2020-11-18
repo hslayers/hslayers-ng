@@ -333,6 +333,7 @@ export class HsMickaBrowserService {
       return false;
     }
     whatToAdd.title = layer.title || 'Layer';
+    whatToAdd.name = layer.title || 'Layer';
     whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;
   }

@@ -31,6 +31,7 @@ export class HsAddLayersVectorService {
   addVectorLayer(
     type: string,
     url: string,
+    name: string,
     title: string,
     abstract: string,
     srs: string,
@@ -41,6 +42,7 @@ export class HsAddLayersVectorService {
         const lyr = this.createVectorLayer(
           type,
           url,
+          name,
           title,
           abstract,
           srs,
@@ -74,6 +76,7 @@ export class HsAddLayersVectorService {
   createVectorLayer(
     type: string,
     url: string,
+    name: string,
     title: string,
     abstract: string,
     srs: string,
@@ -98,6 +101,7 @@ export class HsAddLayersVectorService {
 
     const descriptor = new VectorLayerDescriptor(
       type,
+      name,
       title,
       abstract,
       url,

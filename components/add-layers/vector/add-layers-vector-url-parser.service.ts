@@ -39,6 +39,7 @@ export class HsVectorUrlParserService {
         type,
         url,
         title,
+        title,
         abstract,
         'EPSG:4326'
       );
@@ -50,6 +51,7 @@ export class HsVectorUrlParserService {
       const lyr = await this.HsAddLayersVectorService.addVectorLayer(
         'kml',
         url,
+        title,
         title,
         abstract,
         'EPSG:4326',

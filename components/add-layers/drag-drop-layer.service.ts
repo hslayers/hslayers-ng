@@ -68,6 +68,7 @@ export class HsDragDropLayerService {
           const layer = await this.hsAddLayersVectorService.addVectorLayer(
             'geojson',
             decodeURIComponent(data.url),
+            data.title || 'Layer', //name
             data.title || 'Layer',
             '',
             data.projection,
@@ -83,6 +84,7 @@ export class HsDragDropLayerService {
           const layer = await this.hsAddLayersVectorService.addVectorLayer(
             '',
             undefined,
+            data.title || 'Layer', //name
             data.title || 'Layer',
             '',
             data.projection,
