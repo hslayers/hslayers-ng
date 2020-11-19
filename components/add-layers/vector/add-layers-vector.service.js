@@ -129,7 +129,7 @@ export default function (HsMapService, HsUtilsService) {
             return;
           }
           const extent = src.getExtent();
-          tryFit(extent);
+          tryFit(extent, src);
         }
       });
     }
@@ -137,8 +137,9 @@ export default function (HsMapService, HsUtilsService) {
 
   /**
    * @param extent
+   * @param src
    */
-  function tryFit(extent) {
+  function tryFit(extent, src) {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
@@ -147,6 +148,7 @@ export default function (HsMapService, HsUtilsService) {
       HsMapService.map
     ) {
       HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+      src.un('change');
     }
   }
 
