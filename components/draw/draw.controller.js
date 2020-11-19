@@ -12,9 +12,12 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
  * @param gettext
  * @param $compile
  * @param HsConfirmDialogService
+ * @param HsAddLayersVectorService
  * @param HsMapService
  * @param HsCommonEndpointsService
  * @param $http
+ * @param HsQueryBaseService
+ * @param HsDatasourceBrowserService
  */
 export default function (
   $scope,
@@ -24,6 +27,8 @@ export default function (
   HsLayoutService,
   gettext,
   HsQueryBaseService,
+  HsAddLayersVectorService,
+  HsMapService
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -97,12 +102,25 @@ export default function (
     removeLastPoint() {
       HsDrawService.removeLastPoint();
     },
-    selectLayer(layer) {
-      if (layer != HsDrawService.selectedLayer) {
-        HsDrawService.selectedLayer = layer;
+    async selectLayer(layer) {
+      let lyr = layer;
+      if (layer.type) {
+        lyr = await HsAddLayersVectorService.addVectorLayer(
+          'wfs',
+          HsDrawService.laymanEndpoint.url,
+          layer.name,
+          layer.title,
+          undefined,
+          'EPSG:4326'
+        );
+        lyr = HsMapService.findLayerByTitle(layer.title);
+      }
+      if (lyr != HsDrawService.selectedLayer) {
+        HsDrawService.selectedLayer = lyr;
         HsDrawService.changeDrawSource();
       }
       $scope.layersExpanded = false;
+      HsDrawService.fillDrawableLayers();
     },
     selectedLayerString() {
       if (HsDrawService.selectedLayer) {
