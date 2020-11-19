@@ -5,7 +5,7 @@ export default {
     types: '<',
     endpoint: '<',
   },
-  controller: function (HsDatasourceBrowserService) {
+  controller: function (HsDatasourceBrowserService,HsLayoutService) {
     'ngInject';
     this.modalVisible = true;
     const vm = this;
@@ -23,6 +23,7 @@ export default {
           vm.layer,
           vm.type
         );
+        HsLayoutService.setMainPanel('layermanager');
       }
     };
   },
