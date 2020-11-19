@@ -125,7 +125,7 @@ msgid "Additional information"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:20
-#: components/save-map/partials/form.html:97
+#: components/save-map/partials/form.html:96
 msgid "Address"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Circle"
 msgstr ""
 
-#: components/save-map/partials/form.html:102
+#: components/save-map/partials/form.html:101
 msgid "City"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 msgid "Cluster"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:91
+#: components/draw/partials/draw.directive.html:95
 msgid "Color"
 msgstr ""
 
@@ -345,7 +345,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: components/save-map/partials/form.html:117
+#: components/save-map/partials/form.html:116
 msgid "Country"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgstr ""
 msgid "Default value"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:87
+#: components/draw/partials/draw.directive.html:91
 msgid "Defined style"
 msgstr ""
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Drawing to:"
 msgstr ""
 
-#: components/save-map/partials/form.html:127
+#: components/save-map/partials/form.html:126
 msgid "E-mail"
 msgstr ""
 
@@ -541,7 +541,7 @@ msgstr ""
 msgid "Fill keywords"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:94
+#: components/draw/partials/draw.directive.html:98
 msgid "Fill opacity: {{opacity}}"
 msgstr ""
 
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Import composition from a file on device"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:81
+#: components/draw/partials/draw.directive.html:85
 msgid ""
 "Individual style for\n"
 "                feature"
@@ -915,7 +915,7 @@ msgstr ""
 msgid "Order by"
 msgstr ""
 
-#: components/save-map/partials/form.html:87
+#: components/save-map/partials/form.html:86
 msgid "Organization"
 msgstr ""
 
@@ -943,11 +943,11 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: components/save-map/partials/form.html:82
+#: components/save-map/partials/form.html:81
 msgid "Person"
 msgstr ""
 
-#: components/save-map/partials/form.html:122
+#: components/save-map/partials/form.html:121
 msgid "Phone"
 msgstr ""
 
@@ -975,11 +975,11 @@ msgstr ""
 msgid "Polygon features"
 msgstr ""
 
-#: components/save-map/partials/form.html:92
+#: components/save-map/partials/form.html:91
 msgid "Position"
 msgstr ""
 
-#: components/save-map/partials/form.html:112
+#: components/save-map/partials/form.html:111
 msgid "Postal code"
 msgstr ""
 
@@ -1022,7 +1022,7 @@ msgstr ""
 msgid "Radius"
 msgstr ""
 
-#: components/save-map/partials/form.html:69
+#: components/save-map/partials/form.html:68
 msgid "Read"
 msgstr ""
 
@@ -1213,7 +1213,11 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/draw.controller.js:111
+#: components/draw/partials/draw.directive.html:78
+msgid "Select feature"
+msgstr ""
+
+#: components/draw/draw.controller.js:114
 msgid "Select layer"
 msgstr ""
 
@@ -1315,7 +1319,7 @@ msgstr ""
 msgid "Star"
 msgstr ""
 
-#: components/save-map/partials/form.html:107
+#: components/save-map/partials/form.html:106
 msgid "State"
 msgstr ""
 
@@ -1335,7 +1339,7 @@ msgstr ""
 msgid "Stroke width"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:98
+#: components/draw/partials/draw.directive.html:102
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 
@@ -1407,7 +1411,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: components/save-map/partials/form.html:50
+#: components/save-map/partials/form.html:56
 msgid "Toggle all"
 msgstr ""
 
@@ -1473,7 +1477,7 @@ msgstr ""
 msgid "Use tiles"
 msgstr ""
 
-#: components/draw/draw.controller.js:57
+#: components/draw/draw.controller.js:60
 #: components/draw/draw.service.js:112
 msgid "User generated"
 msgstr ""
@@ -1511,7 +1515,7 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: components/save-map/partials/form.html:70
+#: components/save-map/partials/form.html:69
 msgid "Write"
 msgstr ""
 
