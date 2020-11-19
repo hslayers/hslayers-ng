@@ -1651,5 +1651,9 @@ msgstr "Načítání prvku, prosím čekejte"
 msgid "Selected layer contains {{layer.featureCount}} features. Loading too many at once (while zoomed out) may affect app performance"
 msgstr "Vybraná vrstva obsahuje {{layer.featureCount}} prvkov. Načítání vyššího počtu prvku pri menších měřítkách muže aplikaci spomalit "
 
+#: components/save-map/partials/form.html:50
+msgid "Toggle all"
+msgstr "Označit všechny"
+
 
 

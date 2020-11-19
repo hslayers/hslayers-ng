@@ -239,6 +239,8 @@ msgstr ""
 #: components/add-layers/partials/dialog_proxyconfirm.html:8
 #: components/compositions/partials/dialog_delete.html:15
 #: components/compositions/partials/dialog_delete.html:8
+#: components/compositions/partials/dialog_error.html:16
+#: components/compositions/partials/dialog_error.html:9
 #: components/compositions/partials/dialog_info.html:38
 #: components/compositions/partials/dialog_info.html:8
 #: components/compositions/partials/dialog_overwriteconfirm.html:8
@@ -303,7 +305,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: components/draw/draw.service.js:340
+#: components/draw/draw.service.js:347
 #: components/query/feature-popup.component.js:53
 #: components/query/feature-popup.component.js:67
 msgid "Confirm delete"
@@ -335,7 +337,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: components/query/query-base.service.js:318
+#: components/query/query-base.service.js:312
 msgid "Coordinates"
 msgstr ""
 
@@ -444,8 +446,8 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
-#: components/draw/draw.service.js:102
-#: components/draw/draw.service.js:92
+#: components/draw/draw.service.js:103
+#: components/draw/draw.service.js:93
 msgid "Draw layer"
 msgstr ""
 
@@ -471,6 +473,10 @@ msgstr ""
 #: components/permalink/partials/directive.html:35
 #: components/permalink/partials/directivemd.html:14
 msgid "Embed code"
+msgstr ""
+
+#: components/compositions/partials/dialog_error.html:6
+msgid "Error"
 msgstr ""
 
 #: components/save-map/sync-error-dialog.html:4
@@ -1024,7 +1030,7 @@ msgstr ""
 msgid "Really delete all features from layer \"{0}\"?"
 msgstr ""
 
-#: components/draw/draw.service.js:339
+#: components/draw/draw.service.js:346
 msgid "Really delete selected draw layer?"
 msgstr ""
 
@@ -1070,12 +1076,12 @@ msgstr ""
 #: components/draw/partials/draw.directive.html:33
 #: components/draw/partials/draw.directive.html:52
 #: components/draw/partials/shape-toolbar.html:15
-#: components/layermanager/partials/layer-editor.html:141
+#: components/layermanager/partials/layer-editor.html:147
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:139
+#: components/layermanager/partials/layer-editor.html:145
 msgid "Rename layer"
 msgstr ""
 
@@ -1176,7 +1182,7 @@ msgid "Saving composition status"
 msgstr ""
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:90
-#: components/layermanager/partials/layer-editor.html:113
+#: components/layermanager/partials/layer-editor.html:119
 #: components/layermanager/partials/layer-editor.html:61
 msgid "Scale"
 msgstr ""
@@ -1207,7 +1213,7 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/draw.controller.js:112
+#: components/draw/draw.controller.js:111
 msgid "Select layer"
 msgstr ""
 
@@ -1337,7 +1343,7 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:137
+#: components/layermanager/partials/layer-editor.html:143
 #: components/styles/partials/styler.html:3
 msgid "Style layer"
 msgstr ""
@@ -1394,11 +1400,15 @@ msgstr ""
 #: components/compositions/partials/compositionsmd.html:15
 #: components/datasource-selector/micka/advanced-micka-dialog.html:108
 #: components/language/partials/languagemd.html:8
-#: components/layermanager/partials/layer-editor.html:109
+#: components/layermanager/partials/layer-editor.html:115
 #: components/print/partials/printdialog.html:6
 #: components/print/partials/printdialogmd.html:8
 #: components/save-map/partials/form.html:12
 msgid "Title"
+msgstr ""
+
+#: components/save-map/partials/form.html:50
+msgid "Toggle all"
 msgstr ""
 
 #: components/datasource-selector/micka/advanced-micka-dialog.html:80
@@ -1463,7 +1473,7 @@ msgstr ""
 msgid "Use tiles"
 msgstr ""
 
-#: components/draw/draw.controller.js:58
+#: components/draw/draw.controller.js:57
 #: components/draw/draw.service.js:112
 msgid "User generated"
 msgstr ""
@@ -1554,7 +1564,7 @@ msgstr ""
 msgid "Zoom to initial window"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:135
+#: components/layermanager/partials/layer-editor.html:141
 msgid "Zoom to layer"
 msgstr ""
 
@@ -1566,7 +1576,7 @@ msgstr ""
 msgid "embed/"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:117
+#: components/layermanager/partials/layer-editor.html:123
 #: components/layermanager/partials/layer-editor.html:62
 msgid "from"
 msgstr ""
@@ -1583,7 +1593,7 @@ msgstr ""
 msgid "social share"
 msgstr ""
 
-#: components/layermanager/partials/layer-editor.html:126
+#: components/layermanager/partials/layer-editor.html:132
 #: components/layermanager/partials/layer-editor.html:63
 msgid "to"
 msgstr ""
