@@ -123,22 +123,27 @@ export default function (HsMapService, HsUtilsService) {
     if (src.getFeatures().length > 0) {
       tryFit(src.getExtent());
     } else {
-      src.on('change', (e) => {
-        if (src.getState() == 'ready') {
-          if (src.getFeatures().length == 0) {
-            return;
-          }
-          const extent = src.getExtent();
-          tryFit(extent);
+      src.on('change', me.changeListener(src));
+    }
+  };
+
+  me.changeListener = function (src) {
+    if (src.getState() == 'ready') {
+      setTimeout(() => {
+        if (src.getFeatures().length == 0) {
+          return;
         }
-      });
+        const extent = src.getExtent();
+        tryFit(extent, src);
+      }, 1000);
     }
   };
 
   /**
    * @param extent
+   * @param src
    */
-  function tryFit(extent) {
+  function tryFit(extent, src) {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
@@ -147,6 +152,7 @@ export default function (HsMapService, HsUtilsService) {
       HsMapService.map
     ) {
       HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
+      src.un('change', me.changeListener);
     }
   }
 
