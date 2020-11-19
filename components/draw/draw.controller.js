@@ -22,7 +22,8 @@ export default function (
   HsDrawService,
   HsLayerUtilsService,
   HsLayoutService,
-  gettext
+  gettext,
+  HsQueryBaseService,
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -32,6 +33,8 @@ export default function (
     hasLayerTitle: HsLayerUtilsService.hasLayerTitle,
     isLayerEditable: HsLayerUtilsService.isLayerEditable,
     isLayerDrawable: HsLayerUtilsService.isLayerDrawable,
+    HsQueryBaseService: HsQueryBaseService,
+    data: HsQueryBaseService.data,
     useIndividualStyle: true,
     opacity: 0.2,
     linewidth: 1,
@@ -186,6 +189,10 @@ export default function (
         $scope.$digest();
       }
     },
+  });
+
+  $scope.$on('infopanel.featureRemoved', (e, feature) => {
+    $scope.data.features.splice($scope.data.features.indexOf(feature), 1);
   });
 
   $scope.$on('core.mainpanel_changed', (event) => {

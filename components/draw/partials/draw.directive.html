@@ -74,6 +74,10 @@
             ng-click="setType('Circle')" data-toggle="tooltip" title="{{'Circle' | translate }}">
             <i class="icon-circleloaderfull"></i>
         </button>
+        <button class="btn btn-light btn-outline-primary" ng-class="{active: !service.type }" 
+        ng-click="setType(service.type)" data-toggle="tooltip" title="{{'Select feature' | translate }}">
+        <i class="icon-handup"></i>
+    </button>
     </div>
     <div ng-show="service.type != null " class="pt-2">
         <div class="form-check" style="font-size: smaller">
@@ -101,5 +105,8 @@
                 ng-model="linewidth" ng-change='save()' />
 
         </div>
+    </div>
+    <div ng-show="!service.type"  class="pt-2 border-top border-light">
+        <hs.query.feature ng-repeat="item in HsQueryBaseService.data.features | orderBy : 'name'" feature="item"></hs.query.feature>
     </div>
 </div>

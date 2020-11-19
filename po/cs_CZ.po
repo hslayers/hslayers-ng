@@ -1655,5 +1655,8 @@ msgstr "Vybraná vrstva obsahuje {{layer.featureCount}} prvkov. Načítání vy�
 msgid "Toggle all"
 msgstr "Označit všechny"
 
+#: components/draw/partials/draw.directive.html:78
+msgid "Select feature"
+msgstr "Výber prvku"
 
 
