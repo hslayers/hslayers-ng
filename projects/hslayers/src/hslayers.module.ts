@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HsCoreModule } from './components/core';
-import { HsLayoutModule } from './components/layout';
+import { HsCoreModule } from './components/core/core.module';
+import { HsLayoutModule } from './components/layout/layout.module';
 import { HslayersComponent } from './hslayers.component';
 
 @NgModule({

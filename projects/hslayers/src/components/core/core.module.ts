@@ -1,34 +1,34 @@
 import * as merge from 'deepmerge';
-import {HsCommonEndpointsModule} from '../../common/endpoints';
-import {HsCompositionsModule} from '../compositions';
+import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
+import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
-import {HsConfirmModule} from './../../common/confirm';
+import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsCoreService} from './core.service';
-import {HsDatasourcesModule} from '../datasource-selector';
+import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
 import {HsDragModule} from './../drag/drag.module';
-import {HsDrawModule} from '../draw';
-import {HsFeatureTableModule} from './../feature-table';
-import {HsGeolocationModule} from './../geolocation';
-import {HsHistoryListModule} from './../../common/history-list';
-import {HsInfoModule} from './../info';
-import {HsLanguageModule} from './../language';
-import {HsLayerManagerModule} from '../layermanager';
-import {HsLaymanModule} from '../../common/layman';
-import {HsLayoutModule} from '../layout/';
-import {HsLegendModule} from '../legend';
+import {HsDrawModule} from '../draw/draw.module';
+import {HsFeatureTableModule} from './../feature-table/feature-table.module';
+import {HsGeolocationModule} from './../geolocation/geolocation.module';
+import {HsHistoryListModule} from './../../common/history-list/history-list.module';
+import {HsInfoModule} from './../info/info.module';
+import {HsLanguageModule} from './../language/language.module';
+import {HsLayerManagerModule} from '../layermanager/layermanager.module';
+import {HsLaymanModule} from '../../common/layman/layman.module';
+import {HsLayoutModule} from '../layout/layout.module';
+import {HsLegendModule} from '../legend/legend.module';
 import {HsLogModule} from '../../common/log/log.module';
-import {HsMapModule} from '../map';
-import {HsMeasureModule} from '../measure';
-import {HsPrintModule} from '../print';
-import {HsQueryModule} from '../query';
-import {HsSaveMapModule} from '../save-map';
-import {HsSearchModule} from './../search';
-import {HsShareModule} from '../permalink';
-import {HsSidebarModule} from '../sidebar';
-import {HsStylerModule} from '../styles';
+import {HsMapModule} from '../map/map.module';
+import {HsMeasureModule} from '../measure/measure.module';
+import {HsPrintModule} from '../print/print.module';
+import {HsQueryModule} from '../query/query.module';
+import {HsSaveMapModule} from '../save-map/save-map.module';
+import {HsSearchModule} from './../search/search.module';
+import {HsShareModule} from '../permalink/share.module';
+import {HsSidebarModule} from '../sidebar/sidebar.module';
+import {HsStylerModule} from '../styles/styles.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
-import {HsTripPlannerModule} from '../trip_planner';
-import {HsUtilsModule} from './../utils';
+import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
+import {HsUtilsModule} from './../utils/utils.module';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {Observable, forkJoin, from} from 'rxjs';
@@ -47,13 +47,13 @@ export class WebpackTranslateLoader implements TranslateLoader {
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       from(
-        new Promise((resolve) => {
-          const promise = import(`../../assets/locales/${lang}.json`);
-          promise.then((contents)=> resolve(contents.default))
+        new Promise(function (resolve){
+          const promise = import(`../assets/locales/${lang}.json`);
+          promise.then( function(contents){resolve(contents.default)})
         })
       ),
       from(
-        new Promise((resolve) => {
+        new Promise(function (resolve){
           if (
             this.HsConfig.translationOverrides &&
             this.HsConfig.translationOverrides[lang]
@@ -65,9 +65,15 @@ export class WebpackTranslateLoader implements TranslateLoader {
         })
       ),
     ];
-    const tmp = forkJoin(requests).pipe(map((response) => merge.all(response)));
+    const tmp = forkJoin(requests).pipe(map(function (response) {return merge.all(response)}));
     return tmp;
   }
+}
+
+export function getWebpackTranslateLoader (
+  HsConfig: HsConfig
+): WebpackTranslateLoader {
+  return new WebpackTranslateLoader(HsConfig);
 }
 
 @NgModule({
@@ -98,11 +104,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: function(
-          HsConfig: HsConfig
-        ): WebpackTranslateLoader {
-          return new WebpackTranslateLoader(HsConfig);
-        },
+        useFactory: getWebpackTranslateLoader,
         multi: false,
         deps: [HsConfig],
       },
