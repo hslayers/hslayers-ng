@@ -20,6 +20,7 @@ import {fromCircle} from 'ol/geom/Polygon';
  * @param HsQueryVectorService
  * @param HsLaymanService
  * @param HsConfirmDialogService
+ * @param HsLaymanBrowserService
  */
 export default function (
   HsConfig,
@@ -35,6 +36,7 @@ export default function (
   $timeout,
   HsQueryVectorService,
   HsLaymanService,
+  HsLaymanBrowserService,
   HsConfirmDialogService
 ) {
   'ngInject';
@@ -112,7 +114,7 @@ export default function (
         path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
         definition: {
           format: 'hs.format.WFS',
-          url: HsLaymanService.getLaymanEndpoint() + '/wfs',
+          url: HsLaymanService.getLaymanEndpoint().url + '/wfs', //which endpoint? TODO
         },
       });
       me.selectedLayer = drawLayer;
@@ -235,7 +237,7 @@ export default function (
           'drawend',
           (e) => {
             if (me.type == 'Circle') {
-              e.feature.setGeometry(fromCircle(e.feature.getGeometry()))
+              e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
             }
             if (changeStyle) {
               e.feature.setStyle(changeStyle());
@@ -402,7 +404,7 @@ export default function (
       }
       me.draw.setActive(true);
     },
-
+    drawableLaymanLayers: [],
     fillDrawableLayers() {
       const tmp = HsMapService.map
         .getLayers()
@@ -416,6 +418,16 @@ export default function (
         me.deactivateDrawing();
       }
       me.drawableLayers = tmp;
+      me.laymanEndpoint = HsLaymanService.getLaymanEndpoint();
+      if (me.laymanEndpoint) {
+        HsLaymanBrowserService.queryCatalog(me.laymanEndpoint);
+        if (me.laymanEndpoint.layers) {
+          me.drawableLaymanLayers = me.laymanEndpoint.layers.filter((layer) => {
+            return !HsMapService.findLayerByTitle(layer.title);
+          });
+        }
+      }
+      console.log(me.drawableLaymanLayers);
     },
   });
 

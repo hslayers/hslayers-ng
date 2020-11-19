@@ -419,7 +419,9 @@ export default function (
      * @description Checks whether the layman endpoint exists or not
      */
     getLaymanEndpoint() {
-      return HsCommonEndpointsService.endpoints.filter((e)=> e.type == 'layman').pop().url;
+      return HsCommonEndpointsService.endpoints
+        .filter((e) => e.type == 'layman')
+        .pop();
     },
     /**
      * @function removeLayer
