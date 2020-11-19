@@ -5,7 +5,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HsGetCapabilitiesModule} from '../../common/get-capabilities';
+import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
@@ -22,7 +22,7 @@ import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.compon
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLegendModule} from '../legend';
+import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
