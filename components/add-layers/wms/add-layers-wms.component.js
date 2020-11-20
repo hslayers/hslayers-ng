@@ -29,6 +29,9 @@ export default {
       $scope.showDetails = false;
     };
 
+    /**
+     * @param {string} [layerToSelect]
+     */
     $scope.connect = function (layerToSelect) {
       HsHistoryListService.addSourceHistory('Wms', $scope.url);
       HsWmsGetCapabilitiesService.requestGetCapabilities($scope.url).then(
@@ -37,7 +40,13 @@ export default {
             HsAddLayersWmsAddLayerService.capabilitiesReceived(
               capabilities,
               layerToSelect
-            );
+            )
+              .then(() => {
+                if (layerToSelect) {
+                  $scope.addLayers(true);
+                }
+              })
+              .catch((e) => console.warn(e));
           }, 0);
         }
       );
@@ -85,7 +94,7 @@ export default {
      * @memberof hs.addLayersWms
      * @function setUrlAndConnect
      * @param {string} url Url of requested service
-     * @param {string} layer Optional layer to select, when
+     * @param {string} [layer] Optional layer to select, when
      * getCapabilities arrives
      */
     $scope.setUrlAndConnect = function (url, layer) {
