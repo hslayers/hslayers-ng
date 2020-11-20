@@ -1,9 +1,11 @@
-import '../../utils/utils.module';
 import moment from 'moment';
 global.moment = moment;
-import '../../../common/get-capabilities.module';
 import VectorLayer from 'ol/layer/Vector';
 import {bbox} from 'ol/loadingstrategy';
+import {transformExtent} from 'ol/proj';
+
+import '../../../common/get-capabilities.module';
+import '../../utils/utils.module';
 
 export default {
   template: require('./add-wfs-layer.directive.html'),
@@ -31,8 +33,7 @@ export default {
     });
     $scope.$on('ows_wfs.capabilities_received', (event, response) => {
       try {
-        HsAddLayersWfsService.parseCapabilities(response).then(() => {
-          console.log('then', $scope.layerToAdd);
+        HsAddLayersWfsService.parseCapabilities(response).then((bbox) => {
           if ($scope.layerToAdd) {
             for (const layer of HsAddLayersWfsService.services) {
               if (
@@ -40,9 +41,28 @@ export default {
               ) {
                 layer.checked = true;
               }
-              console.log(layer);
             }
             $scope.tryAddLayers(true);
+            if (bbox) {
+              if (bbox.LowerCorner) {
+                bbox = [
+                  bbox.LowerCorner.split(' ')[0],
+                  bbox.LowerCorner.split(' ')[1],
+                  bbox.UpperCorner.split(' ')[0],
+                  bbox.UpperCorner.split(' ')[1],
+                ];
+              }
+              const extent = transformExtent(
+                bbox,
+                'EPSG:4326',
+                $scope.map_projection
+              );
+              if (extent !== null) {
+                HsMapService.map
+                  .getView()
+                  .fit(extent, HsMapService.map.getSize());
+              }
+            }
             $scope.layerToAdd = null;
           }
         });
@@ -69,7 +89,11 @@ export default {
     };
 
     $scope.connect = function () {
-      HsWfsGetCapabilitiesService.requestGetCapabilities($scope.url);
+      try {
+        HsWfsGetCapabilitiesService.requestGetCapabilities($scope.url);
+      } catch (e) {
+        console.warn(e);
+      }
       $scope.showDetails = true;
     };
 
@@ -78,9 +102,7 @@ export default {
       $scope.setUrlAndConnect(url);
     });
     $scope.$on('wfs_capabilities_error', (event, e) => {
-      if (console) {
-        $log.warn(e);
-      }
+      $log.warn(e);
       $scope.url = null;
       $scope.showDetails = false;
 
@@ -137,7 +159,7 @@ export default {
     /**
      * @function tryAddLayers
      * @memberOf hs.addLayersWfs
-     * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
+     * @description Callback for "Add layers" button. Proceeds to add layers to the map.
      * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
      */
     $scope.tryAddLayers = function (checked) {
@@ -160,7 +182,7 @@ export default {
      * @function addLayers
      * @memberOf hs.addLayersWfs
      * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-     * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
+     * @param {boolean} checked - Add all available layers or o0lny checked ones. Checked=false=all
      */
     $scope.addLayers = function (checked) {
       /**
