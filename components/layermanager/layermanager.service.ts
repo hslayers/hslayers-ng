@@ -891,6 +891,15 @@ export class HsLayerManagerService {
     });
 
     this.boxLayersInit();
+    if (this.HsShareUrlService.getParamValue('layerSelected')) {
+      const selectedLayerTitle = this.HsShareUrlService.getParamValue(
+        'layerSelected'
+      );
+      const layerFound = this.getLayerFromUrl(selectedLayerTitle);
+      if (layerFound !== undefined) {
+        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
+      }
+    }
 
     this.map.getView().on(
       'change:resolution',
@@ -917,7 +926,12 @@ export class HsLayerManagerService {
     this.map.getLayers().on('add', (e) => this.layerAdded(e));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
-
+  getLayerFromUrl(layerTitle: string): any {
+    const layerFound = this.data.layers.filter(
+      (layer) => layer.title == layerTitle
+    );
+    return layerFound;
+  }
   expandLayer(layer: Layer): void {
     if (layer.expanded == undefined) {
       layer.expanded = true;
