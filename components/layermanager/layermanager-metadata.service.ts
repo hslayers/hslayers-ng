@@ -239,7 +239,7 @@ export class HsLayerManagerMetadataService {
             layer.set('MetadataURL', metadata);
             return layer;
           }
-          if (layer.get('Layer')[0].MetadataURL == undefined){
+          if (!layer.get('MetadataURL')){
             layer.set('MetadataURL', {
               '0': caps.Service,
             });
