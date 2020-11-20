@@ -39,6 +39,9 @@ import {
   TranslateStore,
 } from '@ngx-translate/core';
 import {map} from 'rxjs/operators';
+import lv from '../../assets/locales/lv.json';
+import en from '../../assets/locales/en.json';
+import cs from '../../assets/locales/cs.json';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   constructor(public HsConfig: HsConfig) {}
@@ -49,8 +52,18 @@ export class WebpackTranslateLoader implements TranslateLoader {
     const requests: Observable<any>[] = [
       from(
         new Promise(function (resolve){
-          const promise = import(`../assets/locales/${lang}.json`);
-          promise.then( function(contents){resolve(contents.default)})
+          switch(lang){
+            case 'lv':
+              resolve(lv);
+              break;
+            case 'en':
+              resolve(en);
+              break;
+            case 'cs':
+              resolve(cs);
+              break;
+          }
+          
         })
       ),
       from(
