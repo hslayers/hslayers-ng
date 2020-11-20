@@ -6,6 +6,7 @@ import VectorLayerDescriptor from './VectorLayerDescriptor';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {VectorSourceDescriptor} from './vector-source-descriptor';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class HsAddLayersVectorService {
    * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
@@ -67,6 +69,7 @@ export class HsAddLayersVectorService {
    * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
@@ -105,12 +108,19 @@ export class HsAddLayersVectorService {
       title,
       abstract,
       url,
+      options,
+      mapProjection
+    );
+
+    const sourceDescriptor = new VectorSourceDescriptor(
+      type,
+      url,
       srs,
       options,
       mapProjection
     );
 
-    const src = new descriptor.sourceClass(descriptor);
+    const src = new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
     if (descriptor.layerParams.style) {
       descriptor.layerParams.style = this.HsStylerService.parseStyle(
