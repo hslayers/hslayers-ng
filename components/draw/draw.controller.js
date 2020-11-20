@@ -116,6 +116,11 @@ export default function (
         lyr = HsMapService.findLayerByTitle(layer.title);
       }
       if (lyr != HsDrawService.selectedLayer) {
+        if (HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer') {
+          HsDrawService.tmpDrawLayer = false;
+          HsMapService.map.removeLayer(HsDrawService.selectedLayer);
+        }
+
         HsDrawService.selectedLayer = lyr;
         HsDrawService.changeDrawSource();
       }
