@@ -443,7 +443,7 @@ export class HsLayerManagerService {
       for (const box of this.data.box_layers) {
         let visible = false;
         let baseVisible = false;
-        for (const layer of box.get('layers')) {
+        for (const layer of box.get('layers').getArray()) {
           if (layer.get('visible') == true && layer.get('base') == true) {
             baseVisible = true;
           } else if (layer.get('visible') == true) {
