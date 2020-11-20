@@ -2,8 +2,6 @@ import * as loadingStrategy from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
 import {get as getProj} from 'ol/proj';
 
-import {VectorLayerDescriptor} from './VectorLayerDescriptor';
-
 export class VectorSourceFromUrl extends VectorSource {
   featureProjection: any;
   mapProjection: any;
@@ -13,7 +11,7 @@ export class VectorSourceFromUrl extends VectorSource {
   styleAble: boolean;
   error: boolean;
   errorMessage: any;
-  constructor(descriptor: VectorLayerDescriptor) {
+  constructor(descriptor: any) {
     super({
       format: descriptor.sourceParams.format,
       url: descriptor.sourceParams.url,

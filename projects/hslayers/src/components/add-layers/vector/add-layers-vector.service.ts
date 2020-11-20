@@ -6,6 +6,7 @@ import VectorLayerDescriptor from './VectorLayerDescriptor';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {VectorSourceDescriptor} from './vector-source-descriptor';
 
 @Injectable({
   providedIn: 'root',
@@ -101,12 +102,19 @@ export class HsAddLayersVectorService {
       title,
       abstract,
       url,
+      options,
+      mapProjection
+    );
+
+    const sourceDescriptor = new VectorSourceDescriptor(
+      type,
+      url,
       srs,
       options,
       mapProjection
     );
 
-    const src = new descriptor.sourceClass(descriptor);
+    const src = new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
     if (descriptor.layerParams.style) {
       descriptor.layerParams.style = this.HsStylerService.parseStyle(
