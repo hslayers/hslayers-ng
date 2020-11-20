@@ -1,10 +1,14 @@
 {
   "name": "hslayers-ng",
   "version": "0.0.1",
+  "scripts": {
+    "find-circular": "npx madge --circular --extensions ts ./"
+  },
   "peerDependencies": {
     "@angular/common": "^9.1.12",
     "@angular/core": "^9.1.12",
     "@angular/forms": "^9.1.12",
+    "@angular/localize": "^9.1.12",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
     "@types/cesium": "^1.67.12",
