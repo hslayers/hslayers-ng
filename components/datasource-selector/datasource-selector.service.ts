@@ -233,6 +233,7 @@ export class HsDatasourcesService {
         );
         this.hsAddLayersVectorService.fitExtent(layer);
       }
+      this.hsLayoutService.setMainPanel('layermanager');
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),
