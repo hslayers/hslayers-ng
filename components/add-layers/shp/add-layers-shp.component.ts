@@ -6,6 +6,7 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {FileDescriptor} from './file-descriptor';
 
 @Component({
   selector: 'hs-add-layers-shp',
@@ -147,9 +148,3 @@ export class HsAddLayersShpComponent {
     console.log(this.sld);
   }
 }
-
-export type FileDescriptor = {
-  name: string;
-  type: string;
-  content: ArrayBuffer;
-};

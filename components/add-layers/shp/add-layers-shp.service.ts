@@ -1,7 +1,7 @@
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import type {FileDescriptor} from './add-layers-shp.component';
+import {FileDescriptor} from './file-descriptor';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersShpService {
