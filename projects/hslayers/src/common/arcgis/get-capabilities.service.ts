@@ -1,4 +1,3 @@
-import '../../components/utils';
 import {Attribution} from 'ol/control';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';

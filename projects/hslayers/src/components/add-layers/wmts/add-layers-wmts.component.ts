@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 
-import '../../../common/get-capabilities';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {addAnchors} from '../../../common/attribution-utils';
