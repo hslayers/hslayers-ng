@@ -186,6 +186,7 @@ export default function (
    * @memberOf HsLayermanagerMetadata.service
    * @param {Ol.layer} layer Selected layer
    * @description Callback function, adds getCapabilities response metadata to layer object
+   * @returns {Promise}
    */
   me.queryMetadata = async function (layer) {
     const url = HsLayerUtilsService.getURL(layer);
@@ -222,7 +223,11 @@ export default function (
             layer.set('MetadataURL', metadata);
             return layer;
           }
-          if (angular.isUndefined(layer.get('Layer')[0].MetadataURL)) {
+          if (
+            layer.get('MetadataURL') === undefined &&
+            layer.get('Layer') &&
+            layer.get('Layer')[0].MetadataURL === undefined
+          ) {
             layer.set('MetadataURL', {
               '0': caps.Service,
             });
@@ -246,7 +251,7 @@ export default function (
           return true;
         })
         .catch((e) => {
-          console.log('GetCapabilities call invalid', e);
+          console.warn('GetCapabilities call invalid', e);
           return e;
         });
       return capabilities;
