@@ -30,6 +30,9 @@
     "xml-js": "^1.6.11",
     "unidecode": "^0.1.8"
   },
+  "devDependencies": {
+    "ol": "^6.4.3"
+  },
   "dependencies": {
     "tslib": "^1.10.0"
   }
