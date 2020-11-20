@@ -1,11 +1,7 @@
-/**
- * DEPRECATED
- *
- * @deprecated
- */
 import {Component, Input} from '@angular/core';
 
 import {HsDatasourcesService} from './datasource-selector.service';
+import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
   selector: 'hs-select-type-to-add-layer',
@@ -20,7 +16,10 @@ export class HsSelectTypeToAddLayerDialogComponent {
   alertChoose;
   layerType; //do not rename to 'type', would clash in the template
 
-  constructor(private hsDatasourcesService: HsDatasourcesService) {
+  constructor(
+    private hsDatasourcesService: HsDatasourcesService,
+    private HsLayoutService: HsLayoutService
+  ) {
     this.modalVisible = true;
   }
 
@@ -34,6 +33,7 @@ export class HsSelectTypeToAddLayerDialogComponent {
         this.layer,
         this.layerType
       );
+      this.HsLayoutService.setMainPanel('layermanager');
     }
   }
 }
