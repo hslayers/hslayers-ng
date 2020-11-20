@@ -16,6 +16,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
@@ -112,7 +113,8 @@ export class HsLayerManagerService {
     private HsLayerEditorStylesService: HsLayerEditorStylesService,
     private HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer,
-    private HsLanguageService: HsLanguageService
+    private HsLanguageService: HsLanguageService,
+    private HsShareUrlService: HsShareUrlService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -803,6 +805,9 @@ export class HsLayerManagerService {
       layer.sublayers = false;
       layer.settings = false;
       this.currentLayer = null;
+      this.HsShareUrlService.updateCustomParams({
+        'layerSelected': undefined,
+      });
     } else {
       this.setCurrentLayer(layer);
       return false;
@@ -811,6 +816,9 @@ export class HsLayerManagerService {
 
   setCurrentLayer(layer: HsLayerDescriptor): false {
     this.currentLayer = layer;
+    this.HsShareUrlService.updateCustomParams({
+      'layerSelected': layer.title,
+    });
     if (!layer.layer.checkedSubLayers) {
       layer.layer.checkedSubLayers = {};
       layer.layer.withChildren = {};
