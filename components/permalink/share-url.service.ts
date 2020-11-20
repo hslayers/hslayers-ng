@@ -238,7 +238,11 @@ export class HsShareUrlService {
    * @description Push new key-value pair into paramater object and update Url string with new params
    */
   push(key, new_value): void {
-    this.params[key] = new_value;
+    if (new_value === undefined) {
+      delete this.params[key];
+    } else {
+      this.params[key] = new_value;
+    }
     const new_params_string = this.stringify(this.params);
     this.param_string = new_params_string;
     this.urlUntilParams = location.origin + location.pathname;
