@@ -44,6 +44,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
   constructor(public HsConfig: HsConfig) {}
 
   getTranslation(lang: string): any {
+    const hsConfig = this.HsConfig;
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       from(
@@ -55,10 +56,10 @@ export class WebpackTranslateLoader implements TranslateLoader {
       from(
         new Promise(function (resolve){
           if (
-            this.HsConfig.translationOverrides &&
-            this.HsConfig.translationOverrides[lang]
+            hsConfig.translationOverrides &&
+            hsConfig.translationOverrides[lang]
           ) {
-            resolve(this.HsConfig.translationOverrides[lang]);
+            resolve(hsConfig.translationOverrides[lang]);
           } else {
             resolve({});
           }
