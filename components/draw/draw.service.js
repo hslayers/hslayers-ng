@@ -404,7 +404,9 @@ export default function (
       }
       me.draw.setActive(true);
     },
+
     drawableLaymanLayers: [],
+
     fillDrawableLayers() {
       const tmp = HsMapService.map
         .getLayers()
@@ -427,7 +429,8 @@ export default function (
           });
         }
       }
-      console.log(me.drawableLaymanLayers);
+      me.hasSomeDrawables =
+        me.drawableLayers.length > 0 || me.drawableLaymanLayers.length > 0;
     },
   });
 
