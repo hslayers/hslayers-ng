@@ -1,3 +1,5 @@
+import {transformExtent} from 'ol/proj';
+
 import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
 
@@ -13,6 +15,7 @@ export default {
     HsWmsGetCapabilitiesService,
     HsAddLayersWmsAddLayerService,
     HsHistoryListService,
+    HsMapService,
     $timeout
   ) {
     'ngInject';
@@ -41,9 +44,22 @@ export default {
               capabilities,
               layerToSelect
             )
-              .then(() => {
+              .then((data) => {
                 if (layerToSelect) {
                   $scope.addLayers(true);
+                  console.log('data', data);
+                  if (data && data.extent) {
+                    const extent = transformExtent(
+                      data.extent,
+                      'EPSG:4326',
+                      HsMapService.map.getView().getProjection()
+                    );
+                    if (extent !== null) {
+                      HsMapService.map
+                        .getView()
+                        .fit(extent, HsMapService.map.getSize());
+                    }
+                  }
                 }
               })
               .catch((e) => console.warn(e));

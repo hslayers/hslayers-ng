@@ -110,6 +110,9 @@ export default function (
       } else if (typeof caps.Capability.Layer == 'object') {
         me.data.services = [caps.Capability.Layer];
       }
+      me.data.extent =
+        me.data.services[0].EX_GeographicBoundingBox ||
+        me.data.services[0].BoundingBox;
 
       selectLayerByName(layerToSelect);
 
@@ -133,6 +136,7 @@ export default function (
       ]);
       //FIXME: unused?
       $rootScope.$broadcast('wmsCapsParsed');
+      return me.data;
     } catch (e) {
       $rootScope.$broadcast('wmsCapsParseError', e);
     }
