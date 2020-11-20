@@ -21,57 +21,36 @@
         <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;" ng-show="!service.type" translate>Activate drawing by choosing a feature type</p>
         <div ng-show="service.type" class="btn-group w-100"
             ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
-
-            <div ng-show="service.drawableLayers.length == 0" class="flex-row w-100 m-auto justify-content-center align-items-center"
-                style="display: flex;">
-                <div class="d-flex justify-content-around">
-                    <p class="m-0 p-0" style="color:crimson" translate>Unsaved drawing</p>
-                    <a href="" class="ml-2" ng-click="service.saveDrawingLayer($scope)" translate>Save as..</a>
-                </div>
-                <div class="dropdown" ng-show="service.drawableLaymanLayers.length == 0">
-                    <button type="button" class="icon-plus btn btn-sm hs-toolbar-button btn-outline-danger" data-toggle="dropdown"
-                        aria-haspopup="true" ng-click="layersExpanded = !layersExpanded" aria-expanded="{{layersExpanded}}" style="border: none !important;">
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" ng-class="{'show': layersExpanded}">
-                        <div class="d-flex align-items-center w-100 flex-column">
-                            <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
-                            <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLaymanLayers"
-                                ng-click="selectLayer(layer)">{{layer.title}}</a>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" ng-if="service.selectedLayer"
-                class="btn btn-light btn-outline-danger btn-sm" ng-click="removeLayer()"
-                title="{{'Remove layer' | translate}}" style="border: none !important;">
-                <i class="glyphicon icon-trash"></i>
-                </button>
-            </div>
-            <div class="flex-row w-75 m-auto justify-content-center align-items-center"
-                ng-show="service.drawableLayers.length != 0" style="display: flex;">
-                <p class="m-0 p-0" style="color: blue;" translate>Drawing to:</p>
+            <div class="flex-row w-100 m-auto justify-content-center align-items-center"
+                 style="display: flex;">
+                <p class="m-0 pl-1" style="color: blue;" translate>Drawing to:</p>
                 <div class="dropdown">
-                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
+                    <button type="button" class="btn btn-sm hs-toolbar-button"
                         data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
-                        aria-expanded="{{layersExpanded}}">
+                        aria-expanded="{{layersExpanded}}"
+                        ng-class="{'btn-light btn-outline-danger border-0' : service.tmpDrawLayer,
+                         'dropdown-toggle' : service.hasSomeDrawables }" ng-disabled="!service.hasSomeDrawables" style="opacity: 1 !important">
                         {{selectedLayerString()}}
                     </button>
                     <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
-                        <div class="d-flex align-items-center w-100 flex-column">
-
+                        <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLayers.length > 0">
                         <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
                         <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
                             ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
                         </div>
 
-                        <div class="d-flex align-items-center w-100 flex-column">
+                        <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLaymanLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
                             <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLaymanLayers"
                             ng-click="selectLayer(layer)">{{layer.title}}</a>    
                         </div>
                     </div>
                 </div>
-                <button type="button" ng-if="service.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm" ng-click="removeLayer()"
-                title="{{'Remove layer' | translate}}" style="border: none !important;">
+                <button type="button" ng-if="service.tmpDrawLayer" class="btn btn-light btn-outline-primary border-0 btn-sm" ng-click="service.saveDrawingLayer($scope)"
+                title="{{'Save drawing to layer' | translate}}">
+                <i class="glyphicon icon-save-floppy"></i>
+                <button type="button" ng-if="service.selectedLayer" class="btn btn-light border-0 btn-outline-danger btn-sm" ng-click="removeLayer()"
+                title="{{'Remove layer' | translate}}">
                 <i class="glyphicon icon-trash"></i>
                  </button>
             </div>
