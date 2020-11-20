@@ -22,6 +22,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsStylerServiceMock} from './../styles/styler.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
@@ -75,6 +76,7 @@ describe('layermanager', () => {
         HsLayerEditorService,
         HsLayerEditorVectorLayerService,
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
+        {provide: HsShareUrlService, useValue: new emptyMock()},
         {provide: HsWmsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
