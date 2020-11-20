@@ -1,17 +1,14 @@
 /* eslint-disable angular/definedundefined */
-import '../../utils/utils.module';
 import * as xml2Json from 'xml-js';
 import moment from 'moment';
 global.moment = moment;
-import '../../../common/get-capabilities.module';
-import GML3 from 'ol/format/GML3';
-import VectorLayer from 'ol/layer/Vector';
-import {WFS} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
-import {get} from 'ol/proj';
-import {transform, transformExtent} from 'ol/proj';
-
+import {GML as GML3, WFS} from 'ol/format';
 import {Vector} from 'ol/source';
+import {bbox} from 'ol/loadingstrategy';
+import {get, transformExtent} from 'ol/proj';
+
+import '../../../common/get-capabilities.module';
+import '../../utils/utils.module';
 
 /**
  * @param HsConfig
@@ -124,9 +121,7 @@ export class HsAddLayersWfsService {
     } else {
       caps = caps['WFS_Capabilities'];
     }
-    console.log('parsed', caps);
     this.parseWFSJson(caps);
-    console.log('double-parsed', caps);
     this.title = caps.ServiceIdentification.Title;
     // this.description = addAnchors(caps.ServiceIdentification.Abstract);
     this.version = caps.ServiceIdentification.ServiceTypeVersion;
@@ -136,7 +131,6 @@ export class HsAddLayersWfsService {
     this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
       ? caps.FeatureTypeList.FeatureType
       : [caps.FeatureTypeList.FeatureType];
-    console.log(layer);
     this.output_formats = layer.OutputFormats
       ? layer.OutputFormats.Format
       : 'GML3';
@@ -206,7 +200,7 @@ export class HsAddLayersWfsService {
         this.$rootScope.$broadcast('wfs_capabilities_error', e);
       }
     });
-    return;
+    return this.bbox;
   }
 
   getPreferedFormat(formats) {
