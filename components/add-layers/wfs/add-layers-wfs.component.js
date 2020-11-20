@@ -19,17 +19,33 @@ export default {
   ) {
     'ngInject';
     $scope.showDetails = false;
-    $scope.path = 'WFS'
+    $scope.path = 'WFS';
     $scope.loaderImage = require('../../../img/ajax-loader.gif');
     $scope.service = HsAddLayersWfsService;
-    $scope.map_projection = HsMapService.map
-      .getView()
-      .getProjection()
-      .getCode()
-      .toUpperCase();
+    $scope.$on('map.loaded', (e) => {
+      $scope.map_projection = HsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
     $scope.$on('ows_wfs.capabilities_received', (event, response) => {
       try {
-        HsAddLayersWfsService.parseCapabilities(response);
+        HsAddLayersWfsService.parseCapabilities(response).then(() => {
+          console.log('then', $scope.layerToAdd);
+          if ($scope.layerToAdd) {
+            for (const layer of HsAddLayersWfsService.services) {
+              if (
+                layer.Title.toLowerCase() === $scope.layerToAdd.toLowerCase()
+              ) {
+                layer.checked = true;
+              }
+              console.log(layer);
+            }
+            $scope.tryAddLayers(true);
+            $scope.layerToAdd = null;
+          }
+        });
       } catch (e) {
         if (e.status == 401) {
           $rootScope.$broadcast(
@@ -57,7 +73,8 @@ export default {
       $scope.showDetails = true;
     };
 
-    $scope.$on('ows.wfs_connecting', (event, url) => {
+    $scope.$on('ows.wfs_connecting', (event, url, layer) => {
+      $scope.layerToAdd = layer;
       $scope.setUrlAndConnect(url);
     });
     $scope.$on('wfs_capabilities_error', (event, e) => {
@@ -89,7 +106,6 @@ export default {
      * @memberof hs.addLayersWms
      * @function setUrlAndConnect
      * @param {string} url Url of requested service
-     * @param {string} type Type of requested service
      */
     $scope.setUrlAndConnect = function (url) {
       $scope.url = url;
@@ -139,7 +155,6 @@ export default {
     };
     $scope.changed = function () {
       $scope.isChecked = $scope.checked();
-      console.log($scope.isChecked);
     };
     /**
      * @function addLayers
