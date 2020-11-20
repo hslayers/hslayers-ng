@@ -76,7 +76,12 @@ describe('layermanager', () => {
         HsLayerEditorService,
         HsLayerEditorVectorLayerService,
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
-        {provide: HsShareUrlService, useValue: new emptyMock()},
+        {
+          provide: HsShareUrlService,
+          useValue: {
+            getParamValue: () => undefined,
+          },
+        },
         {provide: HsWmsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
