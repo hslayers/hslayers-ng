@@ -14,7 +14,7 @@
             </div>
         </div>
         <hs-layman-current-user *ngIf="endpoint?.type == 'layman'" [endpoint]="endpoint"></hs-layman-current-user>
-        <hs-save-map-advanced-form *ngIf="HsConfig.advanced_form"></hs-save-map-advanced-form>
-        <div hs.save-map.directive_simpleform="" *ngIf="!HsConfig.advanced_form"></div>
+        <hs-save-map-advanced-form *ngIf="HsConfig.advancedForm"></hs-save-map-advanced-form>
+        <hs-save-map-simple-form *ngIf="!HsConfig.advancedForm"></hs-save-map-simple-form>
     </div>
 </div>
