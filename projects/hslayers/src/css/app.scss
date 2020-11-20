@@ -13,10 +13,10 @@ $sidebar-item-color: #007bff !default;
 //Background color of active sidebar item
 $sidebar-item-active: #007bff !default;
 
+@import "~ol/ol";
 
 .hsl{
-	@import '~bootstrap/scss/bootstrap';
-
+@import '~bootstrap/scss/bootstrap';
 	/* app css stylesheet */
 .icon-spin {
 	-webkit-animation: spin 1000ms infinite linear;

@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -11,6 +12,8 @@ import {HsLayoutService} from './layout.service';
 @Component({
   selector: 'hs-layout',
   templateUrl: './partials/layout.html',
+  styleUrls: ['../../css/app.scss', '../../css/whhg-font/css/whhg.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
