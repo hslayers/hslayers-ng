@@ -891,7 +891,7 @@ export class HsLayerManagerService {
     });
 
     this.boxLayersInit();
-    if (this.HsShareUrlService.getParamValue('layerSelected')) {
+    if (this.HsShareUrlService.getParamValue('layerSelected') !== undefined) {
       const selectedLayerTitle = this.HsShareUrlService.getParamValue(
         'layerSelected'
       );
