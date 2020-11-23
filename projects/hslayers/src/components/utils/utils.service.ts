@@ -525,7 +525,7 @@ export class HsUtilsService {
   }
 
   getAssetsPath(){
-    let assetsPath = this.HsConfig.assetsPath;
+    let assetsPath = this.HsConfig.assetsPath || '';
     assetsPath += assetsPath.endsWith("/") ? "" : "/";
     return assetsPath;
   }
