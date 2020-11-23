@@ -182,7 +182,7 @@ export default {
      * @function addLayers
      * @memberOf hs.addLayersWfs
      * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-     * @param {boolean} checked - Add all available layers or o0lny checked ones. Checked=false=all
+     * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
      */
     $scope.addLayers = function (checked) {
       /**

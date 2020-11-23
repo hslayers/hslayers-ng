@@ -77,7 +77,7 @@ export default {
     function connectServiceFromUrlParam(type) {
       const url = HsPermalinkUrlService.getParamValue(`${type}_to_connect`);
       if (url) {
-        const layers = HsPermalinkUrlService.getParamValue('visible_layers');
+        const layers = HsPermalinkUrlService.getParamValue(`${type}_layers`);
         HsLayoutService.setMainPanel('datasource_selector');
         $scope.type = type.toUpperCase();
         $timeout(() => {
