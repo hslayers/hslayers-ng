@@ -30,13 +30,13 @@
 
         <div class="dropdown-menu" ng-class="{'show': layersExpanded}" >
             <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLayers.length > 0">
-                <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
+                <label class=" bg-primary w-100 text-light m-0 p-1" translate>Active layers</label>
                 <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
                     ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
             </div>
 
             <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLaymanLayers.length > 0">
-                <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
+                <label class=" bg-primary w-100 text-light m-0 p-1" translate>Server layers</label>
                 <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLaymanLayers"
                     ng-click="selectLayer(layer)">{{layer.title}}</a>
             </div>
