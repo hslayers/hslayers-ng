@@ -31,7 +31,7 @@
                 <div class="d-flex w-100">
                     <div class="m-1">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of HsSensorsUnitDialogService.intervals" [attr.aria-label]="'SENSORS.oneHour' | translate">{{HsSensorsUnitDialogService.translate(interval.name)}}<img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!interval.loading"></button>
+                            <button type="button" class="btn btn-" [ngClass]="{'btn-primary':HsSensorsUnitDialogService.currentInterval == interval}" (click)="timeButtonClicked(interval)" *ngFor="let interval of HsSensorsUnitDialogService.intervals" [attr.aria-label]="'SENSORS.oneHour' | translate">{{HsSensorsUnitDialogService.translate(interval.name)}}<img [src]="HsUtilsService.getAjaxLoaderIcon()" [hidden]="!interval.loading"></button>
                         </div>
                     </div>
                     <div class="m-1">
