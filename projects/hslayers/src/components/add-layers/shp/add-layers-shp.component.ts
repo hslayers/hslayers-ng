@@ -7,6 +7,7 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {FileDescriptor} from './file-descriptor';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-layers-shp',
@@ -19,7 +20,6 @@ export class HsAddLayersShpComponent {
   errorMessage: any;
   extract_styles = false;
   files: FileDescriptor[] = [];
-  loaderImage = 'img/ajax-loader.gif';
   loading: boolean;
   name: string;
   resultCode: string;
@@ -34,7 +34,8 @@ export class HsAddLayersShpComponent {
     public hsLayoutService: HsLayoutService,
     public hsLaymanService: HsLaymanService,
     public hsAddLayersWmsService: HsAddLayersWmsService,
-    public hsCommonEndpointsService: HsCommonEndpointsService
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsUtilsService: HsUtilsService
   ) {
     //vm.endpointsService = HsCommonEndpointsService;
   }

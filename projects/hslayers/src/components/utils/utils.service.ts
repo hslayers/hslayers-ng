@@ -523,4 +523,14 @@ export class HsUtilsService {
   capitalizeFirstLetter(target: string): string {
     return target.charAt(0).toUpperCase() + target.slice(1);
   }
+
+  getAssetsPath(){
+    let assetsPath = this.HsConfig.assetsPath;
+    assetsPath += assetsPath.endsWith("/") ? "" : "/";
+    return assetsPath;
+  }
+
+  getAjaxLoaderIcon(){
+    return this.getAssetsPath() + 'img/ajax-loader.gif'
+  }
 }

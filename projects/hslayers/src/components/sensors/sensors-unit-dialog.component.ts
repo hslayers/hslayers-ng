@@ -12,10 +12,6 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
-  loaderImage = this.HsUtilsService.resolveEsModule(
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('../../img/ajax-loader.gif')
-  );
 
   constructor(
     public HsLayoutService: HsLayoutService,

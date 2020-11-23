@@ -20,7 +20,7 @@
                 </form>
                 <ul class="list-group">
                     <li class='list-group-item' [hidden]="hsMickaFilterService.suggestionsLoaded"><img
-                            [src]="loaderImage" /></li>
+                            [src]="HsUtilsService.getAjaxLoaderIcon()" /></li>
                     <li [hidden]='hsMickaFilterService.suggestions.length > 0' class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li *ngFor="let suggestion of hsMickaFilterService.suggestions | slice:0:10"

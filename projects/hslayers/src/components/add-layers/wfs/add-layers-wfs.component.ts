@@ -10,6 +10,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-layers-wfs',
@@ -27,7 +28,6 @@ export class HsAddLayersWfsComponent {
   title = '';
 
   path = 'WFS';
-  loaderImage = 'img/ajax-loader.gif';
 
   constructor(
     public HsAddLayersWfsService: HsAddLayersWfsService,
@@ -36,7 +36,8 @@ export class HsAddLayersWfsComponent {
     public HsLayoutService: HsLayoutService,
     public hsLog: HsLogService,
     public HsMapService: HsMapService,
-    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
+    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    public hsUtilsService: HsUtilsService,
   ) {
     this.map_projection = this.HsMapService.map
       .getView()

@@ -67,5 +67,6 @@ export class HsConfig {
   sizeMode: string;
   locationButtonVisible: any;
   openQueryPanelOnDrawEnd: boolean;
+  assetsPath: string;
   constructor() {}
 }

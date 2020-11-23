@@ -24,7 +24,6 @@ export class HsMickaSuggestionsDialogComponent
     public HsUtilsService: HsUtilsService
   ) {
     this.suggestionsModalVisible = true;
-    this.loaderImage = 'img/ajax-loader.gif';
     this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
       this.hsMickaFilterService.suggestionConfig.input
     ];

@@ -220,12 +220,10 @@ export class HsLayerManagerService {
       if (thumbnail.length > 10) {
         return thumbnail;
       } else {
-        return 'img/' + thumbnail;
+        return this.HsUtilsService.getAssetsPath() + 'img/' + thumbnail;
       }
     } else {
-      return this.HsUtilsService.resolveEsModule(
-        'img/default.png'
-      );
+        this.HsUtilsService.getAssetsPath() + 'img/default.png'
     }
   }
   /**

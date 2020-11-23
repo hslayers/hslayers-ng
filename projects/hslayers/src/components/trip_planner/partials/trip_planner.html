@@ -8,7 +8,7 @@
                     [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
             </div>
             <div class="p-1">
-                <img [hidden]="!waypoint.loading" src="{{loaderImage}}">
+                <img [hidden]="!waypoint.loading" [src]="HsUtilsService.getAjaxLoaderIcon()">
             </div>
             <div class="p-1" style="height: 1.7em">
                 <div style="margin-top: 1em; ">{{ formatDistance(waypoint) }}</div>

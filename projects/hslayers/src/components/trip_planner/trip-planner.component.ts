@@ -29,7 +29,6 @@ export class HsTripPlannerComponent implements OnInit {
     public HsUtilsService: HsUtilsService
   ) {}
   ngOnInit(): void {
-    this.loaderImage = 'img/ajax-loader.gif';
     if (this.HsConfig.default_layers === undefined) {
       this.HsConfig.default_layers = [];
     } else {

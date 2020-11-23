@@ -31,7 +31,6 @@ export class HsShareService {
     abstract: '',
     shareUrl: '',
   };
-  notAvailableImage = 'img/notAvailable.png';
   private renderer: Renderer2;
 
   constructor(
@@ -366,7 +365,7 @@ export class HsShareService {
       this.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
     } catch (e) {
       this.HsLogService.warn(e);
-      $element.setAttribute('src', this.notAvailableImage);
+      $element.setAttribute('src', this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png');
     }
     $element.style.width = width + 'px';
     $element.style.height = height + 'px';

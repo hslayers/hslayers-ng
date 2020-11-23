@@ -48,8 +48,8 @@ export class HsTripPlannerService {
         }),
         image: new Icon({
           src: feature.get('highlighted')
-            ? 'img/pin_white_red32.png'              
-            : 'img/pin_white_blue32.png',
+            ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'              
+            : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],
         }),

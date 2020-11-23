@@ -57,7 +57,7 @@
     </div>
 
     <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"
-            [hidden]="loading"></i><img src="{{loaderImage}}" [hidden]="!loading" />
+            [hidden]="loading"></i><img [src]="hsUtilsService.getAjaxLoaderIcon()" [hidden]="!loading" />
         {{'COMMON.add' | translate}}
     </button>
 

@@ -17,7 +17,6 @@ import {Layer} from 'ol/layer';
   providedIn: 'root',
 })
 export class HsSaveMapService {
-  notAvailableImage = 'img/notAvailable.png'
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
@@ -475,7 +474,7 @@ export class HsSaveMapService {
         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
       } catch (e) {
         this.$log.warn(e);
-        $element.setAttribute('src', this.notAvailableImage);
+        $element.setAttribute('src', this.HsUtilsService.getAssetsPath() + "img/notAvailable.png");
       }
       $element.style.width = width + 'px';
       $element.style.height = height + 'px';
