@@ -110,7 +110,7 @@ export default function (
     selectedLayerString() {
       if (HsDrawService.selectedLayer) {
         return HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer'
-          ? 'Unsaved drawing'
+          ? gettext('Unsaved drawing')
           : HsDrawService.selectedLayer.get('title') ||
               HsDrawService.selectedLayer.get('name');
       } else {

@@ -29,7 +29,7 @@ msgid ""
 "                </div>"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:42
+#: components/draw/partials/shape-toolbar.html:57
 msgid "<i class=\"icon-check\"></i>"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 msgid "<i class=\"icon-pin\"></i>"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:29
+#: components/draw/partials/shape-toolbar.html:44
 msgid "<i class=\"icon-plus\"></i>"
 msgstr ""
 
@@ -49,7 +49,7 @@ msgstr ""
 msgid "<i class=\"icon-polygonlasso\"></i>"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:39
+#: components/draw/partials/shape-toolbar.html:54
 #: components/query/partials/feature-popup.html:26
 #: components/query/partials/feature-popup.html:9
 msgid "<i class=\"icon-remove-circle\"></i>"
@@ -87,6 +87,11 @@ msgstr ""
 msgid "Activate drawing by choosing a feature type"
 msgstr ""
 
+#: components/draw/partials/draw.directive.html:37
+#: components/draw/partials/shape-toolbar.html:33
+msgid "Active layers"
+msgstr ""
+
 #: components/add-layers/shp/add-shp-layer.directive.html:56
 #: components/add-layers/vector/add-vector-layer.directive.html:37
 #: components/datasource-selector/select-type-to-add-layer-dialog.html:19
@@ -97,8 +102,8 @@ msgstr ""
 msgid "Add composition by address"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:31
-#: components/draw/partials/shape-toolbar.html:35
+#: components/draw/partials/shape-toolbar.html:46
+#: components/draw/partials/shape-toolbar.html:50
 msgid "Add draw layer"
 msgstr ""
 
@@ -112,6 +117,7 @@ msgstr ""
 
 #: components/add-layers/wfs/add-wfs-layer.directive.html:30
 #: components/datasource-selector/partials/datasource_selector.html:59
+#: components/draw/draw-layer-metadata.html:81
 msgid "Add to map"
 msgstr ""
 
@@ -129,7 +135,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:31
+#: components/draw/draw-layer-metadata.html:43
 msgid ""
 "Advanced\n"
 "                            options"
@@ -156,7 +162,7 @@ msgstr ""
 msgid "Area"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:45
+#: components/draw/draw-layer-metadata.html:57
 msgid "Attribute"
 msgstr ""
 
@@ -174,7 +180,7 @@ msgstr ""
 #: components/compositions/partials/dialog_overwriteconfirm.html:17
 #: components/compositions/partials/dialog_overwriteconfirmmd.html:36
 #: components/datasource-selector/select-type-to-add-layer-dialog.html:21
-#: components/draw/draw-layer-metadata.html:63
+#: components/draw/draw-layer-metadata.html:92
 #: components/save-map/partials/simpleform.html:79
 msgid "Cancel"
 msgstr ""
@@ -201,7 +207,7 @@ msgstr ""
 msgid "Choose type of layer"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:74
+#: components/draw/partials/draw.directive.html:75
 #: components/layermanager/partials/layermanagermd.html:95
 msgid "Circle"
 msgstr ""
@@ -272,7 +278,7 @@ msgstr ""
 msgid "Cluster"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:95
+#: components/draw/partials/draw.directive.html:96
 msgid "Color"
 msgstr ""
 
@@ -305,7 +311,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: components/draw/draw.service.js:347
+#: components/draw/draw.service.js:380
 #: components/query/feature-popup.component.js:53
 #: components/query/feature-popup.component.js:67
 msgid "Confirm delete"
@@ -349,6 +355,10 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+#: components/draw/draw-layer-metadata.html:24
+msgid "Create new drawing layer"
+msgstr ""
+
 #: components/sidebar/sidebar.service.js:78
 msgid "Crossfilter"
 msgstr ""
@@ -374,15 +384,15 @@ msgstr ""
 msgid "Declutter"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:41
+#: components/draw/draw-layer-metadata.html:53
 msgid "Default attributes"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:46
+#: components/draw/draw-layer-metadata.html:58
 msgid "Default value"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:91
+#: components/draw/partials/draw.directive.html:92
 msgid "Defined style"
 msgstr ""
 
@@ -446,8 +456,8 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
-#: components/draw/draw.service.js:103
-#: components/draw/draw.service.js:93
+#: components/draw/draw.service.js:107
+#: components/draw/draw.service.js:97
 msgid "Draw layer"
 msgstr ""
 
@@ -458,7 +468,7 @@ msgstr ""
 msgid "Draw new features"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:39
+#: components/draw/partials/draw.directive.html:26
 msgid "Drawing to:"
 msgstr ""
 
@@ -541,7 +551,7 @@ msgstr ""
 msgid "Fill keywords"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:98
+#: components/draw/partials/draw.directive.html:99
 msgid "Fill opacity: {{opacity}}"
 msgstr ""
 
@@ -562,11 +572,11 @@ msgstr ""
 msgid "Filter features"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:43
+#: components/draw/partials/shape-toolbar.html:58
 msgid "Finish feature"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:36
+#: components/draw/draw-layer-metadata.html:48
 msgid "Folder"
 msgstr ""
 
@@ -616,7 +626,7 @@ msgstr ""
 msgid "Import composition from a file on device"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:85
+#: components/draw/partials/draw.directive.html:86
 msgid ""
 "Individual style for\n"
 "                feature"
@@ -671,7 +681,7 @@ msgstr ""
 msgid "Layer options"
 msgstr ""
 
-#: components/draw/draw-layer-metadata.html:25
+#: components/draw/draw-layer-metadata.html:36
 msgid "Layer title"
 msgstr ""
 
@@ -686,8 +696,8 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:70
-#: components/draw/partials/shape-toolbar.html:67
+#: components/draw/partials/draw.directive.html:71
+#: components/draw/partials/shape-toolbar.html:82
 #: components/styles/partials/styler.html:29
 msgid "Line"
 msgstr ""
@@ -712,6 +722,10 @@ msgstr ""
 
 #: components/sidebar/sidebar.service.js:60
 msgid "List available map compositions"
+msgstr ""
+
+#: components/draw/draw-layer-metadata.html:28
+msgid "Load layer from server"
 msgstr ""
 
 #: components/add-layers/wfs/add-wfs-layer.directive.html:34
@@ -893,7 +907,7 @@ msgid "North"
 msgstr ""
 
 #: components/compositions/partials/dialog_delete.html:14
-#: components/draw/draw-layer-metadata.html:61
+#: components/draw/draw-layer-metadata.html:90
 #: components/save-map/partials/dialog_save.html:47
 msgid "OK"
 msgstr ""
@@ -955,8 +969,8 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:62
-#: components/draw/partials/shape-toolbar.html:59
+#: components/draw/partials/draw.directive.html:63
+#: components/draw/partials/shape-toolbar.html:74
 #: components/styles/partials/styler.html:48
 msgid "Point"
 msgstr ""
@@ -965,8 +979,8 @@ msgstr ""
 msgid "Point features"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:66
-#: components/draw/partials/shape-toolbar.html:63
+#: components/draw/partials/draw.directive.html:67
+#: components/draw/partials/shape-toolbar.html:78
 #: components/layermanager/partials/layermanagermd.html:112
 msgid "Polygon"
 msgstr ""
@@ -1030,7 +1044,7 @@ msgstr ""
 msgid "Really delete all features from layer \"{0}\"?"
 msgstr ""
 
-#: components/draw/draw.service.js:346
+#: components/draw/draw.service.js:379
 msgid "Really delete selected draw layer?"
 msgstr ""
 
@@ -1069,13 +1083,12 @@ msgstr ""
 msgid "Remove feature"
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:40
+#: components/draw/partials/shape-toolbar.html:55
 msgid "Remove last point"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:33
-#: components/draw/partials/draw.directive.html:52
-#: components/draw/partials/shape-toolbar.html:15
+#: components/draw/partials/draw.directive.html:53
+#: components/draw/partials/shape-toolbar.html:27
 #: components/layermanager/partials/layer-editor.html:147
 #: components/layermanager/partials/layermanagermd.html:51
 msgid "Remove layer"
@@ -1140,10 +1153,6 @@ msgstr ""
 msgid "Save as"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:29
-msgid "Save as.."
-msgstr ""
-
 #: components/compositions/partials/compositionLoadUnsavedDialog.html:33
 #: components/compositions/partials/dialog_overwriteconfirm.html:16
 #: components/compositions/partials/dialog_overwriteconfirmmd.html:33
@@ -1162,6 +1171,11 @@ msgstr ""
 #: components/save-map/partials/dialog.html:6
 #: components/save-map/partials/panel.html:2
 msgid "Save current map"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:50
+#: components/draw/partials/shape-toolbar.html:22
+msgid "Save drawing to layer"
 msgstr ""
 
 #: components/save-map/partials/panelmd.html:3
@@ -1213,11 +1227,11 @@ msgstr ""
 msgid "Select data or services for your map composition"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:78
+#: components/draw/partials/draw.directive.html:79
 msgid "Select feature"
 msgstr ""
 
-#: components/draw/draw.controller.js:114
+#: components/draw/draw.controller.js:117
 msgid "Select layer"
 msgstr ""
 
@@ -1225,7 +1239,7 @@ msgstr ""
 msgid "Select new name for map."
 msgstr ""
 
-#: components/draw/partials/shape-toolbar.html:47
+#: components/draw/partials/shape-toolbar.html:62
 msgid "Select type"
 msgstr ""
 
@@ -1248,6 +1262,11 @@ msgstr ""
 
 #: components/save-map/partials/dialog_result.html:14
 msgid "Server didn't respond or other error occured"
+msgstr ""
+
+#: components/draw/partials/draw.directive.html:43
+#: components/draw/partials/shape-toolbar.html:39
+msgid "Server layers"
 msgstr ""
 
 #: components/layout/partials/toolbar.html:20
@@ -1339,7 +1358,7 @@ msgstr ""
 msgid "Stroke width"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:102
+#: components/draw/partials/draw.directive.html:103
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 
@@ -1437,7 +1456,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: components/draw/partials/draw.directive.html:28
+#: components/draw/draw.controller.js:113
 #: components/draw/partials/shape-toolbar.html:11
 msgid "Unsaved drawing"
 msgstr ""
@@ -1477,8 +1496,8 @@ msgstr ""
 msgid "Use tiles"
 msgstr ""
 
-#: components/draw/draw.controller.js:60
-#: components/draw/draw.service.js:112
+#: components/draw/draw.controller.js:66
+#: components/draw/draw.service.js:116
 msgid "User generated"
 msgstr ""
 

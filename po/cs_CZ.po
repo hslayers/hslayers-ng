@@ -1312,7 +1312,8 @@ msgstr "Adresu url"
 msgid "Unsaved map"
 msgstr "Neuložená mapa"
 
-#: components/draw/partials/draw.directive.html:28
+#: components/draw/draw.controller.js:113
+#: components/draw/partials/shape-toolbar.html:11
 msgid "Unsaved drawing"
 msgstr "Neuložená kresba"
 
@@ -1659,4 +1660,25 @@ msgstr "Označit všechny"
 msgid "Select feature"
 msgstr "Výber prvku"
 
+
+#: components/draw/draw-layer-metadata.html:28
+msgid "Load layer from server"
+msgstr "Načíst vrstvu ze serveru"
+
+#: components/draw/draw-layer-metadata.html:24
+msgid "Create new drawing layer"
+msgstr "Vytvořit novou vrstvu"
+
+#: components/draw/partials/shape-toolbar.html:39
+msgid "Server layers"
+msgstr "Servrové vrstvy"
+
+#: components/draw/partials/shape-toolbar.html:33
+msgid "Active layers"
+msgstr "Aktivní vrstvy"
+
+#: components/draw/partials/draw.directive.html:50
+#: components/draw/partials/shape-toolbar.html:22
+msgid "Save drawing to layer"
+msgstr "Uložit do vrstvy"
 
