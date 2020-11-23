@@ -23,6 +23,7 @@ export class HsAddLayersVectorService {
    * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
@@ -32,6 +33,7 @@ export class HsAddLayersVectorService {
   addVectorLayer(
     type: string,
     url: string,
+    name: string,
     title: string,
     abstract: string,
     srs: string,
@@ -42,6 +44,7 @@ export class HsAddLayersVectorService {
         const lyr = this.createVectorLayer(
           type,
           url,
+          name,
           title,
           abstract,
           srs,
@@ -51,6 +54,10 @@ export class HsAddLayersVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
+        lyr.set('definition', {
+          format: 'hs.format.WFS',
+          url: url.replace('ows', 'wfs'),
+        });
         if (this.HsMapService.map) {
           this.HsMapService.addLayer(lyr, true);
         }
@@ -66,6 +73,7 @@ export class HsAddLayersVectorService {
    * @description Load nonwms OWS data and create layer
    * @param {string} type Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param {string} url Url of data/service localization
+   * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
@@ -75,6 +83,7 @@ export class HsAddLayersVectorService {
   createVectorLayer(
     type: string,
     url: string,
+    name: string,
     title: string,
     abstract: string,
     srs: string,
@@ -99,6 +108,7 @@ export class HsAddLayersVectorService {
 
     const descriptor = new VectorLayerDescriptor(
       type,
+      name,
       title,
       abstract,
       url,

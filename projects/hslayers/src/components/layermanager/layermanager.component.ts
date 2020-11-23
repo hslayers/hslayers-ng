@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../layout/dialogs/dialog-item';
@@ -14,7 +15,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import { HsLanguageService } from '../language/language.service';
+import {HsLanguageService} from '../language/language.service';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -90,7 +91,8 @@ export class HsLayerManagerComponent implements OnInit {
     public HsLayerSynchronizerService: HsLayerSynchronizerService,
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsConfig: HsConfig
   ) {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
@@ -287,6 +289,10 @@ export class HsLayerManagerComponent implements OnInit {
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
+  }
+
+  setLayerTime(layer: Layer, metadata) {
+    return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
   }
 
   /**

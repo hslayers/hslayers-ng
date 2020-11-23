@@ -1,8 +1,3 @@
-/**
- * DEPRECATED
- *
- * @deprecated
- */
 import {Component, Input} from '@angular/core';
 
 import {HsDatasourcesService} from './datasource-selector.service';

@@ -34,7 +34,7 @@ export class HsQueryBaseService {
   popupClassname = '';
   selector = null;
   currentQuery = null;
-  featuresUnderMouse = [];
+  featuresUnderMouse: Feature[] = [];
   featureLayersUnderMouse = [];
   dataCleared = true;
   queryPoint = new Point([0, 0]);
@@ -86,7 +86,7 @@ export class HsQueryBaseService {
   /**
    *
    */
-  init() {
+  init(): void {
     this.map = this.HsMapService.map;
     this.activateQueries();
     this.map.on('singleclick', (evt) => {
@@ -129,15 +129,15 @@ export class HsQueryBaseService {
   /**
    * @param e Event, which triggered this function
    */
-  showPopUp(e) {
+  showPopUp(e): void {
     // The latter case happens when hovering over the pop-up itself
-    if (e.dragging || e.originalEvent?.originalTarget?.tagName != 'CANVAS') {
+    if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
     }
     const map = e.map;
     this.featuresUnderMouse = map
       .getFeaturesAtPixel(e.pixel)
-      .filter((feature) => {
+      .filter((feature: Feature) => {
         const layer = this.HsMapService.getLayerForFeature(feature);
         return layer && layer != this.queryLayer;
       });
@@ -181,7 +181,7 @@ export class HsQueryBaseService {
   /**
    * @param feature
    */
-  serializeFeatureAttributes(feature): void {
+  serializeFeatureAttributes(feature: Feature): void {
     feature.attributesForHover = [];
     const layer = this.HsMapService.getLayerForFeature(feature);
     if (layer === undefined) {
@@ -277,25 +277,25 @@ export class HsQueryBaseService {
     this.dataCleared = true;
   }
 
-  getInvisiblePopup() {
-    return document.getElementById('invisible_popup');
+  getInvisiblePopup(): HTMLIFrameElement {
+    return <HTMLIFrameElement>document.getElementById('invisible_popup');
   }
 
-  pushFeatureInfoHtml(html) {
+  pushFeatureInfoHtml(html): void {
     this.data.featureInfoHtmls.push(
       this.DomSanitizer.bypassSecurityTrustHtml(html)
     );
     this.dataCleared = false;
   }
 
-  fillIframeAndResize(iframe, response, append) {
-    iframe = this.getInvisiblePopup();
+  fillIframeAndResize(response, append: boolean): void {
+    const iframe = this.getInvisiblePopup();
     if (append) {
       iframe.contentDocument.body.innerHTML += response;
     } else {
       iframe.contentDocument.body.innerHTML = response;
     }
-    let tmp_width = iframe.contentDocument.innerWidth;
+    let tmp_width = iframe.contentWindow.innerWidth;
     if (
       tmp_width >
       this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map')
@@ -307,7 +307,7 @@ export class HsQueryBaseService {
           .clientWidth - 60;
     }
     iframe.style.width = tmp_width + 'px';
-    let tmp_height = iframe.contentDocument.innerHeight;
+    let tmp_height = iframe.contentWindow.innerHeight;
     if (tmp_height > 700) {
       tmp_height = 700;
     }
@@ -346,7 +346,7 @@ export class HsQueryBaseService {
     return coords;
   }
 
-  activateQueries() {
+  activateQueries(): void {
     if (this.queryActive) {
       return;
     }
@@ -357,7 +357,7 @@ export class HsQueryBaseService {
     });
   }
 
-  deactivateQueries() {
+  deactivateQueries(): void {
     if (!this.queryActive) {
       return;
     }
@@ -368,17 +368,17 @@ export class HsQueryBaseService {
     });
   }
 
-  currentPanelQueryable() {
+  currentPanelQueryable(): boolean {
     return (
-      this.nonQueryablePanels.indexOf(this.HsLayoutService.mainpanel) == -1 &&
-      this.nonQueryablePanels.indexOf('*') == -1
+      !this.nonQueryablePanels.includes(this.HsLayoutService.mainpanel) &&
+      !this.nonQueryablePanels.includes('*')
     );
   }
 
   /**
    * @param feature
    */
-  pointClickedStyle(feature) {
+  pointClickedStyle(feature): Style {
     const defaultStyle = new Style({
       image: new Circle({
         fill: new Fill({

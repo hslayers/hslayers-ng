@@ -97,6 +97,7 @@ export class HsLayerManagerService {
   currentLayer: HsLayerDescriptor;
   composition_id: string;
   menuExpanded = false;
+  currentResolution: number;
 
   constructor(
     public HsMapService: HsMapService,
@@ -191,7 +192,11 @@ export class HsLayerManagerService {
       }
       this.data.layers.push(new_layer);
       if (layer.get('queryCapabilities') != false) {
-        this.HsLayerManagerMetadata.fillMetadata(layer);
+        this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
+          setTimeout(() => {
+            new_layer.grayed = !this.isLayerInResolutionInterval(layer);
+          }, 50);
+        });
       }
     } else {
       new_layer.active = layer.getVisible();
@@ -737,23 +742,25 @@ export class HsLayerManagerService {
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
-    const src = lyr.getSource();
+    if (!lyr.get('visible')) {
+      return true;
+    }
+    let cur_res;
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
       const resolution = view.getResolution();
-      const units = this.HsMapService.map.getView().getProjection().getUnits();
+      const units = view.getProjection().getUnits();
       const dpi = 25.4 / 0.28;
       const mpu = METERS_PER_UNIT[units];
-      const cur_res = resolution * mpu * 39.37 * dpi;
-      return (
-        lyr.getMinResolution() >= cur_res || cur_res >= lyr.getMaxResolution()
-      );
+      cur_res = resolution * mpu * 39.37 * dpi;
     } else {
-      const cur_res = this.HsMapService.map.getView().getResolution();
-      return (
-        lyr.getMinResolution() >= cur_res && cur_res <= lyr.getMaxResolution()
-      );
+      cur_res = this.HsMapService.map.getView().getResolution();
     }
+    this.currentResolution = cur_res;
+    console.log(this.currentResolution);
+    return (
+      lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
+    );
   }
 
   /**
@@ -875,27 +882,27 @@ export class HsLayerManagerService {
 
     this.boxLayersInit();
 
-    this.map.getView().on('change:resolution', (e) => {
-      if (this.timer !== null) {
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(() => {
-        let somethingChanged = false;
-        for (let i = 0; i < this.data.layers.length; i++) {
-          const tmp = this.isLayerInResolutionInterval(
-            this.data.layers[i].layer
-          );
-          if (this.data.layers[i].grayed != tmp) {
-            this.data.layers[i].grayed = tmp;
-            somethingChanged = true;
-          }
-          if (somethingChanged) {
-            //  $timeout(() => { }, 0);
-          }
-        }
-        this.timer = null;
-      }, 500);
-    });
+    this.map.getView().on(
+      'change:resolution',
+      this.HsUtilsService.debounce(
+        () => {
+          setTimeout(() => {
+            for (let i = 0; i < this.data.layers.length; i++) {
+              const tmp = !this.isLayerInResolutionInterval(
+                this.data.layers[i].layer
+              );
+              if (this.data.layers[i].grayed != tmp) {
+                this.data.layers[i].grayed = tmp;
+              }
+            }
+            this.timer = null;
+          }, 250);
+        },
+        750,
+        false,
+        this
+      )
+    );
 
     this.map.getLayers().on('add', (e) => this.layerAdded(e));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));

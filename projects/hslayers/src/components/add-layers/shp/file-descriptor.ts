@@ -1,7 +1,6 @@
 
 export type FileDescriptor = {
-    name: string;
-    type: string;
-    content: ArrayBuffer;
-  };
-  
+  name: string;
+  type: string;
+  content: ArrayBuffer;
+};

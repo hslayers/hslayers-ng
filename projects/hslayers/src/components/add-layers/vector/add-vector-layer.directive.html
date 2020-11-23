@@ -8,6 +8,11 @@
     </div>
 
     <div class="form-group">
+        <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+        <input class="form-control" name="name" [(ngModel)]="name" />
+    </div>
+
+    <div class="form-group">
         <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
         <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
             name="abstract" [(ngModel)]="abstract">

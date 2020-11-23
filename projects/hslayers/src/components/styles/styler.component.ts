@@ -65,7 +65,6 @@ export class HsStylerComponent {
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsUtilsService: HsUtilsService,
     public HsStylerColorService: HsStylerColorService
-
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (this.HsLayoutService.mainpanel == 'styler') {

@@ -25,7 +25,7 @@ export class HsLayerEditorComponent {
     value: 40,
   };
   layer_renamer_visible = false;
-  
+
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsLayerManagerWmstService: HsLayerManagerWmstService,

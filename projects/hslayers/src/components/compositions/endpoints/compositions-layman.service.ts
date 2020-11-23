@@ -10,7 +10,6 @@ import {Subscription} from 'rxjs';
 })
 export class HsCompositionsLaymanService {
   data: any = {};
-  listLoading: Subscription;
   constructor(
     private $http: HttpClient,
     public HsUtilsService: HsUtilsService,
@@ -26,11 +25,11 @@ export class HsCompositionsLaymanService {
         params.sortBy = '';
       }
       try {
-        if (this.listLoading) {
-          this.listLoading.unsubscribe();
-          delete this.listLoading;
+        if (endpoint.listLoading) {
+          endpoint.listLoading.unsubscribe();
+          delete endpoint.listLoading;
         }
-        this.listLoading = this.$http
+        endpoint.listLoading = this.$http
           .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
           .subscribe((response: any) => {
             endpoint.compositionsPaging.loaded = true;

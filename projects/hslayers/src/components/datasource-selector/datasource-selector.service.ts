@@ -22,6 +22,7 @@ type WhatToAddDescriptor = {
   dsType?: string;
   layer?;
   link?;
+  name?;
   title?: string;
   abstract?: string;
   projection?;
@@ -224,6 +225,7 @@ export class HsDatasourcesService {
         const layer = await this.hsAddLayersVectorService.addVectorLayer(
           'wfs',
           whatToAdd.link,
+          whatToAdd.name,
           whatToAdd.title,
           whatToAdd.abstract,
           whatToAdd.projection,
@@ -231,10 +233,12 @@ export class HsDatasourcesService {
         );
         this.hsAddLayersVectorService.fitExtent(layer);
       }
+      this.hsLayoutService.setMainPanel('layermanager');
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),
         whatToAdd.link,
+        whatToAdd.name,
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,

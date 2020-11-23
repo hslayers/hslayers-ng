@@ -10,7 +10,6 @@ import {Subscription} from 'rxjs';
   providedIn: 'root',
 })
 export class HsCompositionsStatusManagerService {
-  listLoading: Subscription;
   constructor(
     public HsStatusManagerService: HsStatusManagerService,
     public HsConfig: HsConfig,
@@ -48,11 +47,11 @@ export class HsCompositionsStatusManagerService {
       '&start=0&limit=1000&sort=' +
       getStatusSortAttr(params.sortBy);
     url = this.HsUtilsService.proxify(url);
-    if (this.listLoading) {
-      this.listLoading.unsubscribe();
-      delete this.listLoading;
+    if (ds.listLoading) {
+      ds.listLoading.unsubscribe();
+      delete ds.listLoading;
     }
-    this.listLoading = this.$http.get(url).subscribe(
+    ds.listLoading = this.$http.get(url).subscribe(
       (response: any) => {
         if (ds.compositions == undefined) {
           ds.compositions = [];

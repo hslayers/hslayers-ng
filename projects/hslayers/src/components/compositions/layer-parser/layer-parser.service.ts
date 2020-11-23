@@ -322,13 +322,15 @@ export class HsCompositionsLayerParserService {
       options.style = this.HsStylerService.parseStyle(lyr_def.style);
       extractStyles = false;
     }
+    const title = lyr_def.title || 'Layer';
     let layer;
     switch (format) {
       case 'ol.format.KML':
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'kml',
           lyr_def.protocol.url,
-          lyr_def.title || 'Layer',
+          title,
+          lyr_def.name || title,
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
           Object.assign(options, {extractStyles})
@@ -338,7 +340,8 @@ export class HsCompositionsLayerParserService {
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'geojson',
           lyr_def.protocol.url,
-          lyr_def.title || 'Layer',
+          title,
+          lyr_def.name || title,
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
           options
@@ -350,7 +353,8 @@ export class HsCompositionsLayerParserService {
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'wfs',
           lyr_def.protocol.url,
-          lyr_def.title || 'Layer',
+          title,
+          lyr_def.name || title,
           lyr_def.abstract,
           lyr_def.projection.toUpperCase(),
           options
@@ -363,7 +367,8 @@ export class HsCompositionsLayerParserService {
         layer = this.HsAddLayersVectorService.createVectorLayer(
           '',
           undefined,
-          lyr_def.title || 'Layer',
+          title,
+          lyr_def.name || title,
           lyr_def.abstract,
           lyr_def.projection?.toUpperCase(),
           lyr_def
