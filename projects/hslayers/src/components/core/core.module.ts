@@ -69,14 +69,17 @@ export class WebpackTranslateLoader implements TranslateLoader {
       ),
       from(
         new Promise(function (resolve){
-          if (
-            hsConfig.translationOverrides &&
-            hsConfig.translationOverrides[lang]
-          ) {
-            resolve(hsConfig.translationOverrides[lang]);
-          } else {
-            resolve({});
-          }
+          //Wait a bit for the HsConfig to be set from container app
+          setTimeout(_ => {
+            if (
+              hsConfig.translationOverrides &&
+              hsConfig.translationOverrides[lang]
+            ) {
+              resolve(hsConfig.translationOverrides[lang]);
+            } else {
+              resolve({});
+            }
+          }, 200);
         })
       ),
     ];
