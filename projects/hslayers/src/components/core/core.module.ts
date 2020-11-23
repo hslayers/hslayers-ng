@@ -42,7 +42,6 @@ import {map} from 'rxjs/operators';
 import lv from '../../assets/locales/lv.json';
 import en from '../../assets/locales/en.json';
 import cs from '../../assets/locales/cs.json';
-import { HsSensorsModule } from '../sensors/sensors.module';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   constructor(public HsConfig: HsConfig) {}
@@ -133,8 +132,7 @@ export function getWebpackTranslateLoader (
     HsMapModule,
     HsLaymanModule,
     HsTripPlannerModule,
-    HsCommonEndpointsModule,
-    HsSensorsModule
+    HsCommonEndpointsModule
   ],
   exports: [TranslateModule],
   providers: [HsCoreService, TranslateStore, TranslateService, HsConfig],

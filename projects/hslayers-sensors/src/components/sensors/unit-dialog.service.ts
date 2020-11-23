@@ -1,12 +1,12 @@
 /* eslint-disable angular/definedundefined */
 import moment from 'moment';
 import {ElementRef, Injectable} from '@angular/core';
-import {HsConfig} from '../../config.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsConfig} from 'hslayers-ng';
+import {HsLanguageService} from 'hslayers-ng';
+import {HsLayoutService} from 'hslayers-ng';
+import {HsLogService} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
 import {default as vegaEmbed} from 'vega-embed';
 type Aggregate = {

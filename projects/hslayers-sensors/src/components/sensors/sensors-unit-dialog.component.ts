@@ -1,10 +1,10 @@
 /* eslint-disable angular/definedundefined */
 import {Component, ElementRef, Inject, ViewRef} from '@angular/core';
-import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsDialogComponent} from 'hslayers-ng';
+import {HsDialogContainerService} from 'hslayers-ng';
+import {HsLayoutService} from 'hslayers-ng';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng';
 
 @Component({
   selector: 'hs-sensor-unit',

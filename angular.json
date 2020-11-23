@@ -166,6 +166,46 @@
           }
         }
       }
+    },
+    "hslayers-sensors": {
+      "projectType": "library",
+      "root": "projects/hslayers-sensors",
+      "sourceRoot": "projects/hslayers-sensors/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/hslayers-sensors/tsconfig.lib.json",
+            "project": "projects/hslayers-sensors/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/hslayers-sensors/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/hslayers-sensors/src/test.ts",
+            "tsConfig": "projects/hslayers-sensors/tsconfig.spec.json",
+            "karmaConfig": "projects/hslayers-sensors/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/hslayers-sensors/tsconfig.lib.json",
+              "projects/hslayers-sensors/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "hslayers-workspace",

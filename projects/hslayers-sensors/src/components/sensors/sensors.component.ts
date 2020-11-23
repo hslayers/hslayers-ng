@@ -1,7 +1,7 @@
 import {Component, ViewRef} from '@angular/core';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsPanelComponent} from '../layout/panels/panel-component.interface';
+import {HsLayoutService} from 'hslayers-ng';
+import {HsMapService} from 'hslayers-ng';
+import {HsPanelComponent} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 @Component({

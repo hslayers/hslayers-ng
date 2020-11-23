@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsDialogContainerService} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
