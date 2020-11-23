@@ -21,12 +21,12 @@ export class HsTripPlannerComponent implements OnInit {
   timer: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsCoreService: HsCoreService,
-    private HsTripPlannerService: HsTripPlannerService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService
+    public HsMapService: HsMapService,
+    public HsCoreService: HsCoreService,
+    public HsTripPlannerService: HsTripPlannerService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService
   ) {}
   ngOnInit(): void {
     this.loaderImage = this.HsUtilsService.resolveEsModule(
@@ -80,9 +80,8 @@ export class HsTripPlannerComponent implements OnInit {
    * @memberof HsTripPlannerController
    * @function toggleEdit
    * @param {object} waypoint
-   * @param {unknown} e
    */
-  toggleEdit(waypoint: Feature, e: any): void {
+  toggleEdit(waypoint: Feature): void {
     waypoint.name_editing = !waypoint.name_editing;
     this.HsTripPlannerService.storeWaypoints();
     waypoint.feature.set('highlighted', waypoint.name_editing);

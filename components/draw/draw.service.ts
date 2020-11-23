@@ -76,17 +76,17 @@ export class HsDrawService {
   }> = new Subject();
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsLogService: HsLogService,
-    private HsConfig: HsConfig,
-    private HsQueryBaseService: HsQueryBaseService,
-    private HsQueryVectorService: HsQueryVectorService,
-    private HsLaymanService: HsLaymanService,
-    private HsLanguageService: HsLanguageService
+    public HsMapService: HsMapService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLogService: HsLogService,
+    public HsConfig: HsConfig,
+    public HsQueryBaseService: HsQueryBaseService,
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsLaymanService: HsLaymanService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {

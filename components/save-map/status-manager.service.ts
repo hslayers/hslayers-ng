@@ -11,9 +11,9 @@ import {Injectable} from '@angular/core';
 export class HsStatusManagerService implements HsSaverService {
   constructor(
     private http: HttpClient,
-    private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService,
-    private HsCommonEndpointsService: HsCommonEndpointsService
+    public HsConfig: HsConfig,
+    public HsUtilsService: HsUtilsService,
+    public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   endpointUrl() {

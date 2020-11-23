@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class HsPrintService {
-  constructor(private HsMapService: HsMapService, private window: Window) {}
+  constructor(public HsMapService: HsMapService) {}
 
   /**
    * @memberof HsPrintService
@@ -17,7 +17,7 @@ export class HsPrintService {
   print(title: string): void {
     const canvas = this.HsMapService.getCanvas();
     const img = canvas.toDataURL('image/png');
-    const win = this.window.open();
+    const win = window.open();
     const html = `<html><head></head><body><h2>${title}</h2><br><img src='${img}'/></body></html>`;
     win.document.write(html);
     setTimeout(() => {

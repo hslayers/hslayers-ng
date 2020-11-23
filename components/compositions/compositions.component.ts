@@ -22,6 +22,8 @@ import {HsUtilsService} from '../utils/utils.service';
   template: require('./compositions.html'),
 })
 export class HsCompositionsComponent implements OnInit {
+  sortMenuOpen = false;
+  keywordsMenuOpen = false;
   /**
    * @public
    * @type {object}
@@ -46,6 +48,7 @@ export class HsCompositionsComponent implements OnInit {
     'Planning': false,
     'ComplexInformation': false,
   };
+  urlToAdd = '';
   addCompositionUrlVisible = false;
   /**
    * @public
@@ -63,20 +66,19 @@ export class HsCompositionsComponent implements OnInit {
   query: {editable: boolean; title: string} = {editable: false, title: ''};
   activeTab = 0;
   constructor(
-    private HsMapService: HsMapService,
-    private HsCompositionsService: HsCompositionsService,
-    private HsCompositionsParserService: HsCompositionsParserService,
-    private HsConfig: HsConfig,
-    private HsCompositionsMickaService: HsCompositionsMickaService,
-    private HsLayoutService: HsLayoutService,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsUtilsService: HsUtilsService,
-    private HsCompositionsMapService: HsCompositionsMapService,
-    private HsEventBusService: HsEventBusService,
-    private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private $window: Window,
-    private HsLogService: HsLogService
+    public HsMapService: HsMapService,
+    public HsCompositionsService: HsCompositionsService,
+    public HsCompositionsParserService: HsCompositionsParserService,
+    public HsConfig: HsConfig,
+    public HsCompositionsMickaService: HsCompositionsMickaService,
+    public HsLayoutService: HsLayoutService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsUtilsService: HsUtilsService,
+    public HsCompositionsMapService: HsCompositionsMapService,
+    public HsEventBusService: HsEventBusService,
+    public HsSaveMapManagerService: HsSaveMapManagerService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLogService: HsLogService
   ) {
     this.filteredEndpointsForCompositions().forEach(
       (ep: HsEndpoint) =>
@@ -201,6 +203,12 @@ export class HsCompositionsComponent implements OnInit {
     });
   }
 
+  loadCompositionsOnAllEndpoints(){
+    for(let endpoint of this.filteredEndpointsForCompositions()){
+      this.loadCompositions(endpoint);
+    }
+  }
+
   /**
    * Handler of "Only mine" filter change, delete editable variable if needed
    */
@@ -235,7 +243,7 @@ export class HsCompositionsComponent implements OnInit {
     }
   }
 
-  private filteredEndpointsForCompositions(): Array<HsEndpoint> {
+  filteredEndpointsForCompositions(): Array<HsEndpoint> {
     return this.HsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
@@ -326,10 +334,9 @@ export class HsCompositionsComponent implements OnInit {
   /**
    * @public
    * @param {object} record Composition to show details
-   * @param $event
    * @description Load info about composition through service and display composition info dialog
    */
-  detailComposition(record, $event) {
+  detailComposition(record) {
     this.HsCompositionsService.getCompositionInfo(record, (info) => {
       this.infoDialogBootstrap(info);
     });

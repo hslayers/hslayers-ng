@@ -13,38 +13,38 @@
                     {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translate}}
                 </div>
                 <div>
-                    <b>{{compoData.title}}</b>
+                    <b>{{HsSaveMapManagerService.compoData.title}}</b>
                 </div>
-                <div *ngIf="!statusData.titleFree && statusData.hasPermission && !statusData.changeTitle">
+                <div *ngIf="!HsSaveMapManagerService.statusData?.titleFree && HsSaveMapManagerService.statusData?.hasPermission && !HsSaveMapManagerService.statusData?.changeTitle">
                     <div>
-                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}} <b>{{compoData.title}}</b>
+                        {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translate}} <b>{{HsSaveMapManagerService.compoData.title}}</b>
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
-                            (click)="HsSaveMapManagerService.save(); close()">{{'SAVECOMPOSITION.dialogSave.yesSave' | translate}}</button>
+                            (click)="HsSaveMapManagerService.save(false, data.endpoint); close()">{{'SAVECOMPOSITION.dialogSave.yesSave' | translate}}</button>
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg"
-                            (click)="selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs' | translate}}</button>
+                            (click)="HsSaveMapManagerService.selectNewTitle()">{{'SAVECOMPOSITION.dialogSave.noSaveAs' | translate}}</button>
                     </p>
                 </div>
 
-                <div *ngIf="!statusData.titleFree && statusData.hasPermission && statusData.changeTitle">
+                <div *ngIf="!HsSaveMapManagerService.statusData?.titleFree && HsSaveMapManagerService.statusData?.hasPermission && HsSaveMapManagerService.statusData?.changeTitle">
                     <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translate}}</div>
                     <p>
-                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="compoData.title">
+                        <input type="text" class="form-control hs-stc-title" [(ngModel)]="HsSaveMapManagerService.compoData.title">
                     </p>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
-                            (click)="HsSaveMapManagerService.save(true); close()">{{'COMMON.save' | translate}}</button>
+                            (click)="HsSaveMapManagerService.save(true, data.endpoint); close()">{{'COMMON.save' | translate}}</button>
                     </p>
                 </div>
 
-                <div *ngIf="!statusData.titleFree || !statusData.hasPermission">
+                <div *ngIf="!HsSaveMapManagerService.statusData?.titleFree || !HsSaveMapManagerService.statusData?.hasPermission">
                     <div>
-                        <p *ngIf="!statusData.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' | translate}}
+                        <p *ngIf="!HsSaveMapManagerService.statusData?.hasPermission">{{'SAVECOMPOSITION.dialogSave.youDoNotHave' | translate}}
                         </p>
-                        <p *ngIf="!statusData.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' | translate}}
+                        <p *ngIf="!HsSaveMapManagerService.statusData?.titleFree">{{'SAVECOMPOSITION.dialogSave.useDifferentName' | translate}}
                         </p>
                     </div>
                     <p>

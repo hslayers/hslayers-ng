@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddLayersArcGisModule} from './arcgis';
+import {HsAddLayersArcGisModule} from './arcgis/add-layers-arcgis.module';
 import {HsAddLayersComponent} from './add-layers.component';
-import {HsAddLayersShpModule} from './shp';
-import {HsAddLayersVectorModule} from './vector';
+import {HsAddLayersShpModule} from './shp/add-layers-shp.module';
+import {HsAddLayersVectorModule} from './vector/add-layers-vector.module';
 import {HsAddLayersWfsModule} from './wfs/add-layers-wfs.module';
-import {HsAddLayersWmsModule} from './wms';
-import {HsAddLayersWmtsModule} from './wmts';
+import {HsAddLayersWmsModule} from './wms/add-layers-wms.module';
+import {HsAddLayersWmtsModule} from './wmts/add-layers-wmts.module';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';

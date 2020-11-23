@@ -1,5 +1,3 @@
-import '../../../common/get-capabilities';
-import '../../utils/utils.module';
 import * as xml2Json from 'xml-js';
 import GML3 from 'ol/format/GML3';
 
@@ -39,11 +37,11 @@ export class HsAddLayersWfsService {
   srs: any;
 
   constructor(
-    private HsConfig: HsConfig,
+    public HsConfig: HsConfig,
     private http: HttpClient,
-    private HsUtilsService: HsUtilsService,
-    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    private HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    public HsMapService: HsMapService,
     rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);

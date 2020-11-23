@@ -15,9 +15,9 @@ export class HsMeasureComponent {
   }*/
 
   constructor(
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsMeasureService: HsMeasureService
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsMeasureService: HsMeasureService
   ) {
     this.data = this.HsMeasureService.data;
     this.type = 'distance';

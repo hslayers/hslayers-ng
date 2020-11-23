@@ -28,7 +28,6 @@ import {Inject, Injectable, ViewRef} from '@angular/core';
 import {OSM, TileWMS} from 'ol/source';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
-import {WINDOW} from '../utils/window';
 import {default as proj4} from 'proj4';
 /**
  * @param proxy.proxy
@@ -55,11 +54,10 @@ export class HsCesiumLayersService {
   paramCaches: Array<ParamCacheMapItem> = [];
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
-    @Inject(WINDOW) private window: Window
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   init(viewer: Viewer) {

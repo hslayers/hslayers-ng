@@ -31,9 +31,9 @@ export class HsCompositionsMapService {
   });
 
   constructor(
-    private HsEventBusService: HsEventBusService,
-    private HsMapService: HsMapService,
-    private HsLayoutService: HsLayoutService
+    public HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsLayoutService: HsLayoutService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));

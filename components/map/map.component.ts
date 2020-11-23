@@ -16,11 +16,11 @@ export class HsMapComponent implements AfterViewInit {
   @ViewChild('map') map: ElementRef;
   unregisterMapSyncCenterHandler: any;
   constructor(
-    private HsMapService: HsMapService,
-    private HsPermalinkUrlService: HsShareUrlService,
-    private HsCoreService: HsCoreService,
-    private HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService
+    public HsMapService: HsMapService,
+    public HsPermalinkUrlService: HsShareUrlService,
+    public HsCoreService: HsCoreService,
+    public HsConfig: HsConfig,
+    public HsEventBusService: HsEventBusService
   ) {
     this.unregisterMapSyncCenterHandler = this.HsEventBusService.mapCenterSynchronizations.subscribe(
       (data) => {

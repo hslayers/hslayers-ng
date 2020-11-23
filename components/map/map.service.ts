@@ -139,11 +139,11 @@ export class HsMapService {
   featureLayerMapping = {};
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
-    private HsLanguageService: HsLanguageService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService,
+    public HsLanguageService: HsLanguageService,
     rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);

@@ -21,9 +21,9 @@ export class HsMickaBrowserService {
   constructor(
     private http: HttpClient,
     private log: HsLogService,
-    private hsMapService: HsMapService,
-    private hsMickaFilterService: HsMickaFilterService,
-    private hsUtilsService: HsUtilsService
+    public hsMapService: HsMapService,
+    public hsMickaFilterService: HsMickaFilterService,
+    public hsUtilsService: HsUtilsService
   ) {}
 
   /**

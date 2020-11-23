@@ -14,12 +14,13 @@ export class HsMickaFilterComponent {
   mickaDatasetConfig;
   queryCatalogs;
   modalVisible;
+  keywordsDropdownVisible = false;
 
   constructor(
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsLayoutService: HsLayoutService,
-    private hsLogService: HsLogService,
-    private hsMickaFilterService: HsMickaFilterService // used in template
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsLayoutService: HsLayoutService,
+    public hsLogService: HsLogService,
+    public hsMickaFilterService: HsMickaFilterService // used in template
   ) {
     this.query = hsDatasourcesService.data.query;
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);

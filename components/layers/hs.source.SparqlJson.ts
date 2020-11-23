@@ -1,10 +1,14 @@
-import * as loadingstrategy from 'ol/loadingstrategy';
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
-import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
+import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
+/**
+ * @param numOfSteps
+ * @param step
+ * @param opacity
+ */
 function rainbow(numOfSteps, step, opacity) {
   // based on http://stackoverflow.com/a/7419630
   // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
@@ -28,6 +32,8 @@ function rainbow(numOfSteps, step, opacity) {
     case 1:
       (r = 0), (g = 1), (b = q);
       break;
+    default:
+      (r = 0), (g = 0), (b = 0);
   }
   const c =
     'rgba(' +
@@ -42,6 +48,13 @@ function rainbow(numOfSteps, step, opacity) {
   return c;
 }
 
+/**
+ * @param feature_object
+ * @param options
+ * @param feature
+ * @param category_map
+ * @param category_id
+ */
 function registerCategoryForStatistics(
   feature_object,
   options,
@@ -65,6 +78,14 @@ function registerCategoryForStatistics(
   }
 }
 
+/**
+ * @param objects
+ * @param src
+ * @param options
+ * @param occupied_xy
+ * @param category_map
+ * @param category_id
+ */
 function loadFeatures(
   objects,
   src,
@@ -89,12 +110,12 @@ function loadFeatures(
         objects[key]['http://www.w3.org/2003/01/geo/wgs84_pos#lat']
       );
       if (!isNaN(x) && !isNaN(y)) {
-        var coord = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+        const coord = transform([x, y], 'EPSG:4326', 'EPSG:3857');
         if (typeof occupied_xy[coord] !== 'undefined') {
           continue;
         }
         objects[key].geometry = new Point(coord);
-        var feature = new Feature(objects[key]);
+        const feature = new Feature(objects[key]);
         registerCategoryForStatistics(
           objects[key],
           options,
@@ -114,12 +135,12 @@ function loadFeatures(
       objects[key].geometry = g_feature.getGeometry();
       objects[key].geometry.transform('EPSG:4326', options.projection);
       delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
-      var coord = objects[key].geometry.getCoordinates();
+      const coord = objects[key].geometry.getCoordinates();
 
       if (typeof occupied_xy[coord] !== 'undefined') {
         continue;
       }
-      var feature = new Feature(objects[key]);
+      const feature = new Feature(objects[key]);
       registerCategoryForStatistics(
         objects[key],
         options,
@@ -148,6 +169,10 @@ function loadFeatures(
   return features;
 }
 
+/**
+ * @param options
+ * @param objects
+ */
 function extendAttributes(options, objects) {
   if (typeof options.extend_with_attribs != 'undefined') {
     for (const attr_i in options.extend_with_attribs) {
@@ -162,15 +187,16 @@ function extendAttributes(options, objects) {
   }
 }
 
-const $http = angular.injector(['ng']).get('$http');
-
-export default function (options) {
+/**
+ * @param options
+ */
+export default function (options): void {
   const category_map = {};
   const category_id = 0;
   const occupied_xy = {};
-  var src = new Vector({
+  const src = new Vector({
     format: new GeoJSON(),
-    loader: function (extent, resolution, projection) {
+    loader: async function (extent, resolution, projection) {
       this.set('loaded', false);
       if (
         typeof this.options.clear_on_move !== 'undefined' &&
@@ -193,12 +219,7 @@ export default function (options) {
       let second_pair = [extent[2], extent[3]];
       first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
       second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
-      var extent = [
-        first_pair[0],
-        first_pair[1],
-        second_pair[0],
-        second_pair[1],
-      ];
+      extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
       const s_extent = encodeURIComponent(
         'FILTER(geof:sfIntersects("POLYGON((' +
           extent[0] +
@@ -243,133 +264,134 @@ export default function (options) {
       }
       this.loadCounter += 1;
       this.loadTotal += 1;
-      $http({url: p}).then((response) => {
-        if (console) {
-          console.log(
-            'Finish ',
-            this.get('geoname'),
-            response.data.results.bindings.length
-          );
-        }
-        src.loadCounter -= 1;
-        if (this.options.updates_url) {
-          let updates_query = this.options.updates_url;
-          const tmp = updates_query.split('&query=');
-          updates_query =
-            tmp[0] +
-            '&query=' +
-            encodeURIComponent(
-              'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
-                'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
-            ) +
-            tmp[1];
-          updates_query = updates_query.replace(/<extent>/g, s_extent);
-          src.loadCounter += 1;
-          src.loadTotal += 1;
-          const $injector = angular.injector(['ng']);
-          const $http = $injector.get('$http');
-          $http({url: updates_query}).then((updates_response) => {
-            if (console && typeof this.get('geoname') != 'undefined') {
-              console.log(
-                'Finish updates ',
-                this.get('geoname'),
-                response.data.results.bindings.length,
-                updates_response.data.results.bindings.length
-              );
-            }
-            const objects = {};
-            for (const item of response.data.results.bindings) {
-              if (typeof objects[item.o.value] === 'undefined') {
-                objects[item.o.value] = {
-                  'poi_id': item.o.value,
-                };
-              }
-              objects[item.o.value][item.p.value] = item.s.value;
-            }
-            for (const item of updates_response.data.results.bindings) {
-              let attribute_name = item.attr.value;
-              //Because photos can be more than one
-              if (
-                typeof objects[item.o.value][attribute_name] != 'undefined' &&
-                attribute_name == 'http://xmlns.com/foaf/0.1/depiction'
-              ) {
-                for (let try_i = 1; try_i < 20; try_i++) {
-                  if (
-                    typeof objects[item.o.value][attribute_name + try_i] ==
-                    'undefined'
-                  ) {
-                    attribute_name = attribute_name + try_i;
-                    break;
-                  }
-                }
-              }
-              objects[item.o.value][attribute_name] = item.value.value;
-            }
-            if (typeof options.category != 'undefined') {
-              for (const i in objects) {
-                objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-                  options.category;
-              }
-            }
-            extendAttributes(options, objects);
-            if (console) {
-              console.log('Add features', objects);
-            }
-            this.addFeatures(
-              loadFeatures(
-                objects,
-                this,
-                options,
-                occupied_xy,
-                category_map,
-                category_id
-              )
-            );
-            src.loadCounter -= 1;
-            this.set('last_feature_count', Object.keys(objects).length);
-            if (src.loadCounter == 0) {
-              this.set('loaded', true);
-              this.dispatchEvent('imageloadend');
-            }
-          });
-        } else {
-          const objects = {};
-          for (var i = 0; i < response.data.results.bindings.length; i++) {
-            const b = response.data.results.bindings[i];
-            if (typeof objects[b.o.value] === 'undefined') {
-              objects[b.o.value] = {
-                'poi_id': b.o.value,
-              };
-            }
-            objects[b.o.value][b.p.value] = b.s.value;
-          }
-          if (typeof options.category != 'undefined') {
-            for (var i in objects) {
-              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-                options.category;
-            }
-          }
-          extendAttributes(options, objects);
-          this.addFeatures(
-            loadFeatures(
-              objects,
-              this,
-              options,
-              occupied_xy,
-              category_map,
-              category_id
-            )
-          );
-          this.styleAble = true;
-          this.hasPoint = true;
-          src.loadCounter -= 1;
-          this.set('last_feature_count', Object.keys(objects).length);
-          if (src.loadCounter == 0) {
-            this.set('loaded', true);
-            this.dispatchEvent('imageloadend');
-          }
-        }
+      const responseObject = await fetch(p, {
+        method: 'GET',
       });
+      const response = await responseObject.json();
+      if (console) {
+        console.log(
+          'Finish ',
+          this.get('geoname'),
+          response.data.results.bindings.length
+        );
+      }
+      src.loadCounter -= 1;
+      if (this.options.updates_url) {
+        let updates_query = this.options.updates_url;
+        const tmp = updates_query.split('&query=');
+        updates_query =
+          tmp[0] +
+          '&query=' +
+          encodeURIComponent(
+            'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
+              'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
+          ) +
+          tmp[1];
+        updates_query = updates_query.replace(/<extent>/g, s_extent);
+        src.loadCounter += 1;
+        src.loadTotal += 1;
+        const responseObject = await fetch(updates_query, {
+          method: 'GET',
+        });
+        const updates_response = await responseObject.json();
+        if (console && typeof this.get('geoname') != 'undefined') {
+          console.log(
+            'Finish updates ',
+            this.get('geoname'),
+            response.data.results.bindings.length,
+            updates_response.data.results.bindings.length
+          );
+        }
+        const objects = {};
+        for (const item of response.data.results.bindings) {
+          if (typeof objects[item.o.value] === 'undefined') {
+            objects[item.o.value] = {
+              'poi_id': item.o.value,
+            };
+          }
+          objects[item.o.value][item.p.value] = item.s.value;
+        }
+        for (const item of updates_response.data.results.bindings) {
+          let attribute_name = item.attr.value;
+          //Because photos can be more than one
+          if (
+            typeof objects[item.o.value][attribute_name] != 'undefined' &&
+            attribute_name == 'http://xmlns.com/foaf/0.1/depiction'
+          ) {
+            for (let try_i = 1; try_i < 20; try_i++) {
+              if (
+                typeof objects[item.o.value][attribute_name + try_i] ==
+                'undefined'
+              ) {
+                attribute_name = attribute_name + try_i;
+                break;
+              }
+            }
+          }
+          objects[item.o.value][attribute_name] = item.value.value;
+        }
+        if (typeof options.category != 'undefined') {
+          for (const i in objects) {
+            objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
+              options.category;
+          }
+        }
+        extendAttributes(options, objects);
+        if (console) {
+          console.log('Add features', objects);
+        }
+        this.addFeatures(
+          loadFeatures(
+            objects,
+            this,
+            options,
+            occupied_xy,
+            category_map,
+            category_id
+          )
+        );
+        src.loadCounter -= 1;
+        this.set('last_feature_count', Object.keys(objects).length);
+        if (src.loadCounter == 0) {
+          this.set('loaded', true);
+          this.dispatchEvent('imageloadend');
+        }
+      } else {
+        const objects = {};
+        for (const b of response.data.results.bindings) {
+          if (objects[b.o.value] === undefined) {
+            objects[b.o.value] = {
+              'poi_id': b.o.value,
+            };
+          }
+          objects[b.o.value][b.p.value] = b.s.value;
+        }
+        if (typeof options.category != 'undefined') {
+          for (const i in objects) {
+            objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
+              options.category;
+          }
+        }
+        extendAttributes(options, objects);
+        this.addFeatures(
+          loadFeatures(
+            objects,
+            this,
+            options,
+            occupied_xy,
+            category_map,
+            category_id
+          )
+        );
+        this.styleAble = true;
+        this.hasPoint = true;
+        src.loadCounter -= 1;
+        this.set('last_feature_count', Object.keys(objects).length);
+        if (src.loadCounter == 0) {
+          this.set('loaded', true);
+          this.dispatchEvent('imageloadend');
+        }
+      }
     },
     strategy:
       options.strategy ||

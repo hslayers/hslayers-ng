@@ -8,7 +8,7 @@ export class HsLayerManagerFolderComponent {
   @Input() folder: any;
 
   constructor(
-    private HsLanguageService: HsLanguageService /* Used in template */
+    public HsLanguageService: HsLanguageService /* Used in template */
   ) {}
 
   /**

@@ -13,10 +13,10 @@ import {Subscription} from 'rxjs';
 })
 export class HsCompositionsMickaService {
   constructor(
-    private HsCompositionsParserService: HsCompositionsParserService,
+    public HsCompositionsParserService: HsCompositionsParserService,
     private $http: HttpClient,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService
   ) {}
 
   getCompositionsQueryUrl(endpoint, params, bbox) {

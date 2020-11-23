@@ -15,14 +15,13 @@ export class HsSaveMapAdvancedFormComponent {
   endpoint: any;
   overwrite = false;
   downloadableData: string;
-  changeTitle: boolean;
 
   constructor(
-    private HsSaveMapManagerService: HsSaveMapManagerService,
-    private HsEventBusService: HsEventBusService,
-    private HsCoreService: HsCoreService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsSaveMapManagerService: HsSaveMapManagerService,
+    public HsEventBusService: HsEventBusService,
+    public HsCoreService: HsCoreService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       this.step = 'context';
@@ -90,17 +89,6 @@ export class HsSaveMapAdvancedFormComponent {
   }
   titleChanged() {
     this.overwrite = false;
-  }
-
-  /**
-   * Callback for saving with new title
-   *
-   * @function selectNewTitle
-   * @memberof hs.save-map
-   */
-  selectNewTitle() {
-    this.HsSaveMapManagerService.compoData.title = this.HsSaveMapManagerService.statusData.guessedTitle;
-    this.changeTitle = true;
   }
 
   isAllowed() {

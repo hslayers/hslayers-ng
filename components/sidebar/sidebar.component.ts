@@ -1,5 +1,4 @@
 /* eslint-disable jsdoc/require-returns */
-import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
@@ -12,17 +11,16 @@ import {HsSidebarService} from './sidebar.service';
   template: require('./partials/sidebar.html'),
 })
 export class HsSidebarComponent implements OnInit {
-  showUnimportant = true;
 
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsCoreService: HsCoreService,
-    private HsSidebarService: HsSidebarService,
-    private HsPermalinkUrlService: HsShareUrlService,
-    private HsConfig: HsConfig
+    public HsLayoutService: HsLayoutService,
+    public HsCoreService: HsCoreService,
+    public HsSidebarService: HsSidebarService,
+    public HsPermalinkUrlService: HsShareUrlService,
+    public HsConfig: HsConfig
   ) {}
   ngOnInit(): void {
-    if (angular.isDefined(this.HsCoreService.config.createExtraMenu)) {
+    if (this.HsCoreService.config.createExtraMenu !== undefined) {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
     if (this.HsPermalinkUrlService.getParamValue('hs_panel')) {

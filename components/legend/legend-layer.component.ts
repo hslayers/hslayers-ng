@@ -13,8 +13,8 @@ export class HsLegendLayerComponent {
   geometryTypes = [];
 
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsLegendService: HsLegendService
+    public HsUtilsService: HsUtilsService,
+    public HsLegendService: HsLegendService
   ) {}
 
   ngOnInit(): void {

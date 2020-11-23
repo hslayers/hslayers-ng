@@ -12,8 +12,8 @@ import {Injectable} from '@angular/core';
 export class HsCesiumTimeService {
   viewer: Viewer;
   constructor(
-    private HsCesiumLayersService: HsCesiumLayersService,
-    private HsEventBusService: HsEventBusService
+    public HsCesiumLayersService: HsCesiumLayersService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   init(viewer: Viewer) {

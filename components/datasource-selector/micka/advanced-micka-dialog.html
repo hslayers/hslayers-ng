@@ -81,7 +81,7 @@
                         [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
 
                         <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory">
-                            <option *ngFor="let type of hsMickaFilterService.mickaDS.code_lists.topicCategory"
+                            <option *ngFor="let type of mickaDatasetConfig.code_lists.topicCategory"
                                 [attr.value]="type.value">{{type.name}}</option>
                         </select>
                     </label>

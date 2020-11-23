@@ -21,14 +21,14 @@ export class HsQueryComponent {
   popupOpens: Subject<any> = new Subject();
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsQueryBaseService: HsQueryBaseService,
-    private HsLayoutService: HsLayoutService,
-    private HsMapService: HsMapService,
-    private HsEventBusService: HsEventBusService,
-    private HsQueryVectorService: HsQueryVectorService,
-    private HsQueryWmsService: HsQueryWmsService,
-    private HsDrawService: HsDrawService
+    public HsConfig: HsConfig,
+    public HsQueryBaseService: HsQueryBaseService,
+    public HsLayoutService: HsLayoutService,
+    public HsMapService: HsMapService,
+    public HsEventBusService: HsEventBusService,
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsQueryWmsService: HsQueryWmsService,
+    public HsDrawService: HsDrawService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);

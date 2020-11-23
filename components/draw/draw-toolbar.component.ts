@@ -15,13 +15,15 @@ import {HsLayoutService} from '../layout/layout.service';
 export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
+  drawTypeExpanded = false;
+
   constructor(
-    private HsDrawService: HsDrawService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsDrawService: HsDrawService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {}
 
-  toggleDrawToolbar(e): void {
+  toggleDrawToolbar(): void {
     this.HsDrawService.highlightDrawButton = false;
     if (
       this.HsLayoutService.layoutElement.clientWidth > 767 &&

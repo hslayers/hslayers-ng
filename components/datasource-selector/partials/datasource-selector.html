@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources"
-                *ngIf="hsCore.exists('hs.addLayers') && hsConfig.allowAddExternalDatasets">
+                *ngIf="hsConfig.allowAddExternalDatasets">
                 <a class="nav-link" href="#" aria-controls="OWS"
                     [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab"
                     (click)="datasetSelect('OWS')" data-toggle="tab">

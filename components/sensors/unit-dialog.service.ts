@@ -41,11 +41,11 @@ export class HsSensorsUnitDialogService {
 
   constructor(
     private http: HttpClient,
-    private HsUtilsService: HsUtilsService,
-    private HsLogService: HsLogService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsLanguageService: HsLanguageService
+    public HsUtilsService: HsUtilsService,
+    public HsLogService: HsLogService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.endpoint = this.HsConfig.senslog;
   }

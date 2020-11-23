@@ -10,6 +10,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-layers-wfs',
@@ -24,18 +25,20 @@ export class HsAddLayersWfsComponent {
   loadingFeatures: boolean;
   showDetails: boolean;
   folder_name: any;
+  title = '';
 
   path = 'WFS';
   loaderImage = require('../../../img/ajax-loader.gif');
 
   constructor(
-    private HsAddLayersWfsService: HsAddLayersWfsService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private hsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
-    private HsMapService: HsMapService,
-    private HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
+    public HsAddLayersWfsService: HsAddLayersWfsService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public hsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
+    public HsMapService: HsMapService,
+    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    public hsUtilsService: HsUtilsService,
   ) {
     this.map_projection = this.HsMapService.map
       .getView()

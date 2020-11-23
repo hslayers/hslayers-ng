@@ -20,8 +20,8 @@ export class HsMickaFilterService {
 
   constructor(
     private http: HttpClient,
-    private hsUtilsService: HsUtilsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    public hsUtilsService: HsUtilsService,
+    public hsCommonEndpointsService: HsCommonEndpointsService
   ) {
     if (
       this.hsCommonEndpointsService.endpoints &&

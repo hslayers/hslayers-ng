@@ -9,7 +9,7 @@ export class HsStylerColorComponent {
   @Input() color: any;
   @Output() colorChange = new EventEmitter<any>();
 
-  constructor(private HsStylerColorService: HsStylerColorService) {}
+  constructor(public HsStylerColorService: HsStylerColorService) {}
 
   colorSelected(col): void {
     this.color = col;

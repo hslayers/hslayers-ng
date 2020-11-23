@@ -18,10 +18,10 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   );
 
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private HsUtilsService: HsUtilsService,
+    public HsLayoutService: HsLayoutService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    public HsUtilsService: HsUtilsService,
     elementRef: ElementRef
   ) {
     this.HsSensorsUnitDialogService.unitDialogVisible = true;

@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -22,11 +21,11 @@ export class HsAddLayersArcGisService {
   arcgisCapsParseError = new Subject();
 
   constructor(
-    private hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    private hsDimensionService: HsDimensionService,
-    private hsLayoutService: HsLayoutService,
-    private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService
+    public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
+    public hsDimensionService: HsDimensionService,
+    public hsLayoutService: HsLayoutService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.data = {
       useResampling: false,
@@ -139,13 +138,13 @@ export class HsAddLayersArcGisService {
         }
       }
 
-      angular.forEach(layer.Layer, (sublayer) => {
+      for (const sublayer of layer.Layer) {
         recurse(sublayer);
-      });
+      }
     }
-    angular.forEach(this.data.services, (layer) => {
+    for (const layer of this.data.services) {
       recurse(layer);
-    });
+    }
     this.hsLayoutService.setMainPanel('layermanager');
   }
 
@@ -213,9 +212,9 @@ export class HsAddLayersArcGisService {
     }
     const layer_class = Tile;
     const dimensions = {};
-    angular.forEach(layer.Dimension, (val) => {
+    for (const val of layer.Dimension) {
       dimensions[val.name] = val;
-    });
+    }
 
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {

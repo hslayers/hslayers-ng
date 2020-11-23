@@ -5,17 +5,17 @@
                 <h4 class="modal-title">
                     {{'PANEL_HEADER.LM' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
+                <button (click)="close()" class="close" data-dismiss="modal"><span
                         aria-hidden="true"></span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translate}}</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="removeAllLayers(true, false);"
+                <button class="btn btn-primary" (click)="removeAllLayers(false);"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translate}}</button>
-                <button type="button" class="btn btn-primary" *ngIf="composition_id" (click)="removeAllLayers(true)"
+                <button class="btn btn-primary" *ngIf="HsCompositionsParserService.current_composition" (click)="removeAllLayers(true)"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translate}}</button>
-                <button type="button" class="btn btn-secondary" (click)="close()"
+                <button class="btn btn-secondary" (click)="close()"
                     data-dismiss="modal">{{'COMMON.no' | translate}}</button>
             </div>
         </div>

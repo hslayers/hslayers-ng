@@ -1,4 +1,10 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
@@ -9,17 +15,24 @@ import {HsLayoutService} from './layout.service';
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
-  panelVisible = (which, scope) =>
-    this.HsLayoutService.panelVisible(which, scope);
-  panelEnabled = (which, status) =>
-    this.HsLayoutService.panelEnabled(which, status);
-  panelSpaceWidth = () => this.HsLayoutService.panelSpaceWidth();
+
+  panelVisible(which, scope?): boolean {
+    return this.HsLayoutService.panelVisible(which, scope);
+  }
+
+  panelEnabled(which, status?): boolean {
+    return this.HsLayoutService.panelEnabled(which, status);
+  }
+  panelSpaceWidth() {
+    return this.HsLayoutService.panelSpaceWidth();
+  }
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
-    private elementRef: ElementRef
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
     setTimeout(() => {
@@ -91,5 +104,6 @@ export class HsLayoutComponent {
 
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    this.cdr.detectChanges();
   }
 }

@@ -48,9 +48,9 @@ export class HsMeasureService {
   });
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService
   ) {
     HsMapService.loaded().then((m) => {
       this.map = m;

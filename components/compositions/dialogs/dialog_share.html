@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translate}}</span> {{data.shareTitle}}
+                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translate}}</span> {{data.title}}
                 </h4>
                 <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
                         aria-hidden="true">&times;</span><span
@@ -12,11 +12,11 @@
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
                     <div class="col-md-3"><b>{{'COMMON.abstract' | translate}}</b></div>
-                    <div class="col-md-9">{{data.shareDescription}}</div>
+                    <div class="col-md-9">{{data.abstract}}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>
-                    <div class="col-md-9"><a [href]="data.shareUrl">{{data.shareUrl}}</a></div>
+                    <div class="col-md-9"><a [href]="data.url">{{data.url}}</a></div>
                 </div>
             </div>
             <div class="modal-footer">

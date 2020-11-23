@@ -24,7 +24,6 @@ import {WINDOW_PROVIDERS} from '../utils/window';
   providers: [
     HsShareService,
     HsShareUrlService,
-    Location,
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {provide: APP_BASE_HREF, useValue: '/'},
     WINDOW_PROVIDERS,

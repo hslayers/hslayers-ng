@@ -1,4 +1,3 @@
-import '../../components/utils';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -10,9 +9,9 @@ export class HsWfsGetCapabilitiesService {
   service_url: any;
   constructor(
     private HttpClient: HttpClient,
-    private HsEventBusService: HsEventBusService,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService
+    public HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService
   ) {}
   /**
    * Get WFS service location without parameters from url string

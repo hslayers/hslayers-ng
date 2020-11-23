@@ -13,9 +13,9 @@ export class HsToolbarComponent {
   composition_title: any;
   composition_abstract: any;
   constructor(
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsCoreService: HsCoreService
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsCoreService: HsCoreService
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       setTimeout(() => {

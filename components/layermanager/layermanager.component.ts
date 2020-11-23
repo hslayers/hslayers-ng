@@ -27,6 +27,7 @@ export class HsLayerManagerComponent implements OnInit {
   data: any;
   query: any = {title: undefined};
   layerlistVisible: boolean;
+  hovering: boolean;
 
   icons = [
     'bag1.svg',
@@ -79,19 +80,19 @@ export class HsLayerManagerComponent implements OnInit {
   ];
 
   constructor(
-    private HsCore: HsCoreService,
-    private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsMapService: HsMapService,
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsLayermanagerWmstService: HsLayerManagerWmstService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayerSynchronizerService: HsLayerSynchronizerService,
-    private HsEventBusService: HsEventBusService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsLanguageService: HsLanguageService
+    public HsCore: HsCoreService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsMapService: HsMapService,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayermanagerWmstService: HsLayerManagerWmstService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayerSynchronizerService: HsLayerSynchronizerService,
+    public HsEventBusService: HsEventBusService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLanguageService: HsLanguageService,
+    public HsConfig: HsConfig
   ) {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
@@ -134,8 +135,8 @@ export class HsLayerManagerComponent implements OnInit {
     this.layerlistVisible = true;
   }
 
-  changeBaseLayerVisibility(toWhat: boolean, layer: Layer) {
-    return this.HsLayerManagerService.changeBaseLayerVisibility(toWhat, layer);
+  changeBaseLayerVisibility(e?, layer?: Layer) {
+    return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }
 
   changeTerrainLayerVisibility(e, layer: Layer) {

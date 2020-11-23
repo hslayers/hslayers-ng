@@ -10,8 +10,8 @@ import {Layer} from 'ol/layer';
 })
 export class HsLayerManagerWmstService {
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   /**

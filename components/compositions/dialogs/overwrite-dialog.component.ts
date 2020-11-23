@@ -13,9 +13,9 @@ export class HsCompositionsOverwriteDialogComponent
   data: any;
 
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsCompositionsService: HsCompositionsService,
-    private HsSaveMapManagerService: HsSaveMapManagerService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsCompositionsService: HsCompositionsService,
+    public HsSaveMapManagerService: HsSaveMapManagerService
   ) {}
 
   close(): void {

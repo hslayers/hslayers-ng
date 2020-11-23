@@ -6,7 +6,8 @@
         "lib": ["esnext", "dom"],
         "sourceMap": true,
         "declaration": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "resolveJsonModule": true
     },
     "types": ["jasmine"],
 }

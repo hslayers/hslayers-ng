@@ -6,7 +6,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsLayerSynchronizerService} from './layer-synchronizer.service';
-import {HsLaymanModule} from '../../common/layman';
+import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsLaymanService} from './layman.service';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';

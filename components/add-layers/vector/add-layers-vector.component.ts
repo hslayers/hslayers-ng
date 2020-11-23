@@ -15,11 +15,13 @@ export class HsAddLayersVectorComponent {
   abstract: string;
   url: string;
   name = '';
+  advancedPanelVisible = false;
+  folder_name = '';
 
   constructor(
-    private hsAddLayersVectorService: HsAddLayersVectorService,
-    private hsHistoryListService: HsHistoryListService,
-    private hsLayoutService: HsLayoutService
+    public hsAddLayersVectorService: HsAddLayersVectorService,
+    public hsHistoryListService: HsHistoryListService,
+    public hsLayoutService: HsLayoutService
   ) {}
 
   connect = (): void => {

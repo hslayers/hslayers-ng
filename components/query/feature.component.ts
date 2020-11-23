@@ -13,9 +13,10 @@ export class HsQueryFeatureComponent {
   attributeValue = '';
   newAttribVisible = false;
   exportFormats = [{name: 'WKT format'}];
+  exportMenuVisible = false;
   constructor(
-    private HsMapService: HsMapService,
-    private HsQueryVectorService: HsQueryVectorService
+    public HsMapService: HsMapService,
+    public HsQueryVectorService: HsQueryVectorService
   ) {}
 
   olFeature() {

@@ -53,10 +53,10 @@ export class HsStylerComponent {
   isClustered: boolean;
   hasFeatures: boolean;
   constructor(
-    private HsStylerService: HsStylerService,
-    private HsLayoutService: HsLayoutService,
+    public HsStylerService: HsStylerService,
+    public HsLayoutService: HsLayoutService,
     private http: HttpClient,
-    private HsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsUtilsService: HsUtilsService,

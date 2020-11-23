@@ -57,14 +57,14 @@ export class HsSensorsService {
   endpoint: any;
 
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsConfig: HsConfig,
-    private HsMapService: HsMapService,
-    private HsLayoutService: HsLayoutService,
-    private HsDialogContainerService: HsDialogContainerService,
+    public HsUtilsService: HsUtilsService,
+    public HsConfig: HsConfig,
+    public HsMapService: HsMapService,
+    public HsLayoutService: HsLayoutService,
+    public HsDialogContainerService: HsDialogContainerService,
     private http: HttpClient,
-    private HsEventBusService: HsEventBusService,
-    private HsSensorsUnitDialogService: HsSensorsUnitDialogService
+    public HsEventBusService: HsEventBusService,
+    public HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
     this.bookmarkStyle = [
       new Style({

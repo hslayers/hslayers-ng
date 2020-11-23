@@ -15,7 +15,7 @@
         </label>
 
         <div class="form-group">
-            <div class="checkbox" *ngFor="let g of statusData.groups">
+            <div class="checkbox" *ngFor="let g of HsSaveMapManagerService.statusData.groups">
                 <label>
                     <input type="checkbox" [(ngModel)]="g.r">
                     <span>{{'SAVECOMPOSITION.panelMd.makePublic' | translate}}</span>
@@ -60,7 +60,7 @@
 
             <label class="form-group">{{'COMMON.layers' | translate}}
                 <ul class="list-group">
-                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers" id="layer-{{$index}}"
+                    <li *ngFor="let layer of HsSaveMapManagerService.compoData.layers; let index = index" id="layer-{{index}}"
                         class="list-group-item">
                         <span>{{HsLayerUtilsService.translateTitle(layer.title)}}</span>
                         <span class="pull-right">
@@ -75,8 +75,7 @@
 
     <div class="card-footer row hs-stc-footer">
         <div class="btn-group" role="group" [attr.aria-label]="'SAVECOMPOSITION.dialogSave.saveComposition' | translate">
-            <button type="button" class="btn btn-secondary" (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
-            <button type="button" class="btn btn-primary" [hidden]="!(step == 'context')"
+                <button type="button" class="btn btn-primary"
                 [disabled]="!HsSaveMapManagerService.compoData.title"
                 (click)="HsSaveMapManagerService.confirmSave()">{{'COMMON.save' | translate}}</button>
         </div>

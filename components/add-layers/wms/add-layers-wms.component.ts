@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import {Component} from '@angular/core';
 import {HsAddLayersWmsService} from './add-layers-wms.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -21,10 +19,10 @@ export class HsAddLayersWmsComponent {
   layerToSelect: any;
 
   constructor(
-    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private hsAddLayersWmsService: HsAddLayersWmsService,
-    private hsEventBusService: HsEventBusService,
-    private hsHistoryListService: HsHistoryListService
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsAddLayersWmsService: HsAddLayersWmsService,
+    public hsEventBusService: HsEventBusService,
+    public hsHistoryListService: HsHistoryListService
   ) {
     this.data = hsAddLayersWmsService.data;
     //FIXME: is it even fired?

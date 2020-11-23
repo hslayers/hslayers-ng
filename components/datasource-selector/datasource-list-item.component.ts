@@ -29,12 +29,12 @@ export class HsDatasourceListItemComponent {
   whatToAddTypes;
 
   constructor(
-    private hsConfig: HsConfig, //used in template
-    private hsDatasourcesMetadataService: HsDatasourcesMetadataService,
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLaymanBrowserService: HsLaymanBrowserService,
-    private hsLogService: HsLogService
+    public hsConfig: HsConfig, //used in template
+    public hsDatasourcesMetadataService: HsDatasourcesMetadataService,
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLaymanBrowserService: HsLaymanBrowserService,
+    public hsLogService: HsLogService
   ) {}
 
   /**

@@ -23,7 +23,7 @@
         <div [hidden]="!HsDrawService.type" class="btn-group w-75  m-auto"
             [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
-            <div [hidden]="!HsDrawService.drawableLayers.length == 0"
+            <div [hidden]="!(HsDrawService.drawableLayers.length == 0)"
                 class="flex-row w-100 m-auto justify-content-around align-items-center" style="display: flex;">
                 <p class="m-0 p-0" style="color:crimson">{{'DRAW.unsavedDrawing' | translate}}</p>
                 <a href="#" class="ml-2" (click)="HsDrawService.saveDrawingLayer()">{{'COMMON.saveAs' | translate}}</a>

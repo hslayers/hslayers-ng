@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesService} from '../datasource-selector.service';
@@ -14,18 +14,17 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
 export class HsAdvancedMickaDialogComponent {
   query;
   modalVisible = true;
-  mickaDatasetConfig;
   suggestionsModalVisible;
+  @Input('endpoint') mickaDatasetConfig;
 
   constructor(
-    private hsConfig: HsConfig,
-    private hsMickaFilterService: HsMickaFilterService,
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLayoutService: HsLayoutService
+    public hsConfig: HsConfig,
+    public hsMickaFilterService: HsMickaFilterService,
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
-    this.mickaDatasetConfig; // FIXME: = scope.$eval(attrs['mickaDatasetConfig']);
   }
 
   /**
@@ -52,7 +51,7 @@ export class HsAdvancedMickaDialogComponent {
       ) {
         this.hsDialogContainerService.create(
           HsMickaSuggestionsDialogComponent,
-          null
+          {mickaDatasetConfig: this.mickaDatasetConfig}
         );
         //FIXME: $compile
         /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
@@ -72,17 +71,5 @@ export class HsAdvancedMickaDialogComponent {
         this.mickaDatasetConfig
       );
     }
-  }
-
-  /**
-   * @function addSuggestion
-   * @param {string} text Selected property value from suggestions
-   * @description Save suggestion into Query object
-   */
-  addSuggestion(text: string): void {
-    this.hsDatasourcesService.data.query[
-      this.hsMickaFilterService.suggestionConfig.input
-    ] = text;
-    this.suggestionsModalVisible = false;
   }
 }

@@ -25,21 +25,20 @@ export class HsCompositionsService {
   notSavedCompositionLoading: Subject<string> = new Subject();
   constructor(
     private http: HttpClient,
-    private HsMapService: HsMapService,
-    private HsCore: HsCoreService,
-    private HsCompositionsParserService: HsCompositionsParserService,
-    private HsConfig: HsConfig,
-    private HsPermalinkUrlService: HsShareUrlService,
-    private HsUtilsService: HsUtilsService,
-    private HsStatusManagerService: HsStatusManagerService,
-    private HsCompositionsMickaService: HsCompositionsMickaService,
-    private HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
-    private HsCompositionsLaymanService: HsCompositionsLaymanService,
-    private $log: HsLogService,
-    private $window: Window,
-    private HsCommonEndpointsService: HsCommonEndpointsService,
-    private HsCompositionsMapService: HsCompositionsMapService,
-    private HsEventBusService: HsEventBusService
+    public HsMapService: HsMapService,
+    public HsCore: HsCoreService,
+    public HsCompositionsParserService: HsCompositionsParserService,
+    public HsConfig: HsConfig,
+    public HsPermalinkUrlService: HsShareUrlService,
+    public HsUtilsService: HsUtilsService,
+    public HsStatusManagerService: HsStatusManagerService,
+    public HsCompositionsMickaService: HsCompositionsMickaService,
+    public HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
+    public HsCompositionsLaymanService: HsCompositionsLaymanService,
+    public $log: HsLogService,
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsCompositionsMapService: HsCompositionsMapService,
+    public HsEventBusService: HsEventBusService
   ) {
     this.tryParseCompositionFromCookie();
     this.tryParseCompositionFromUrlParam();
@@ -238,7 +237,7 @@ export class HsCompositionsService {
   async tryParseCompositionFromCookie() {
     if (
       localStorage.getItem('hs_layers') &&
-      (<any>this.$window).permalinkApp != true
+      (<any>window).permalinkApp != true
     ) {
       await this.HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
