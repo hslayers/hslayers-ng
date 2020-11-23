@@ -11,34 +11,34 @@
             {{ 'Unsaved drawing' | translate}}
         </button> -->
         <button type="button" class="btn rounded-0  btn-light dropdown-toggle" data-toggle="dropdown"
-        aria-haspopup="true" ng-click="controlLayerListAction()" aria-expanded="{{layersExpanded}}"
-        ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}"
-        ng-class="service.tmpDrawLayer ? 'btn-outline-danger ' : 'btn-outline-primary'"
-        ng-show="service.hasSomeDrawables || service.tmpDrawLayer ">
-        {{selectedLayerString()}} 
-         </button>
-         <button type="button" ng-if="service.tmpDrawLayer"
-         class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="service.saveDrawingLayer($scope)"
-         title="{{'Save drawing to layer' | translate}}">
-         <i class="glyphicon  icon-save-floppy"></i>
-         </button>
+            aria-haspopup="true" ng-click="controlLayerListAction()" aria-expanded="{{layersExpanded}}"
+            ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}"
+            ng-class="service.tmpDrawLayer ? 'btn-outline-danger ' : 'btn-outline-primary'"
+            ng-show="service.hasSomeDrawables || service.tmpDrawLayer ">
+            {{selectedLayerString()}}
+        </button>
+        <button type="button" ng-if="service.tmpDrawLayer"
+            class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="service.saveDrawingLayer($scope)"
+            title="{{'Save drawing to layer' | translate}}">
+            <i class="glyphicon  icon-save-floppy"></i>
+        </button>
         <button type="button" ng-if="service.selectedLayer"
-        class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="removeLayer()"
-        title="{{'Remove layer' | translate}}">
-        <i class="glyphicon icon-trash"></i>
+            class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="removeLayer()"
+            title="{{'Remove layer' | translate}}">
+            <i class="glyphicon icon-trash"></i>
         </button>
 
         <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
             <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLayers.length > 0">
-            <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
-            <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
-                ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
+                <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
+                <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
+                    ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
             </div>
 
             <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLaymanLayers.length > 0">
                 <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
                 <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLaymanLayers"
-                ng-click="selectLayer(layer)">{{layer.title}}</a>    
+                    ng-click="selectLayer(layer)">{{layer.title}}</a>
             </div>
         </div>
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary" ng-show="!service.tmpDrawLayer"
