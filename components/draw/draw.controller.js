@@ -103,7 +103,7 @@ export default function (
     removeLastPoint() {
       HsDrawService.removeLastPoint();
     },
-    async selectLayer(layer) {
+    selectLayer(layer) {
       HsDrawService.selectLayer(layer);
       $scope.layersExpanded = false;
     },
