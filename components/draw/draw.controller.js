@@ -149,6 +149,7 @@ export default function (
       if (!$scope.drawToolbarExpanded) {
         HsDrawService.stopDrawing();
       }
+      HsDrawService.fillDrawableLayers();
     },
 
     updateStyle() {
