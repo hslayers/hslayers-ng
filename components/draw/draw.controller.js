@@ -44,6 +44,7 @@ export default function (
     opacity: 0.2,
     linewidth: 1,
     $scope,
+    layersExpanded: false,
     fillcolor: {'background-color': 'rgba(0, 153, 255, 1)'},
     setType(what) {
       if (HsDrawService.type == what) {
@@ -103,29 +104,8 @@ export default function (
       HsDrawService.removeLastPoint();
     },
     async selectLayer(layer) {
-      let lyr = layer;
-      if (layer.type) {
-        lyr = await HsAddLayersVectorService.addVectorLayer(
-          'wfs',
-          HsDrawService.laymanEndpoint.url,
-          layer.name,
-          layer.title,
-          undefined,
-          'EPSG:4326'
-        );
-        lyr = HsMapService.findLayerByTitle(layer.title);
-      }
-      if (lyr != HsDrawService.selectedLayer) {
-        if (HsDrawService.selectedLayer.get('title') == 'tmpDrawLayer') {
-          HsDrawService.tmpDrawLayer = false;
-          HsMapService.map.removeLayer(HsDrawService.selectedLayer);
-        }
-
-        HsDrawService.selectedLayer = lyr;
-        HsDrawService.changeDrawSource();
-      }
+      HsDrawService.selectLayer(layer);
       $scope.layersExpanded = false;
-      HsDrawService.fillDrawableLayers();
     },
     selectedLayerString() {
       if (HsDrawService.selectedLayer) {
@@ -150,6 +130,14 @@ export default function (
         HsDrawService.stopDrawing();
       }
       HsDrawService.fillDrawableLayers();
+    },
+
+    controlLayerListAction() {
+      if (!HsDrawService.hasSomeDrawables && HsDrawService.tmpDrawLayer) {
+        HsDrawService.saveDrawingLayer($scope);
+      } else {
+        $scope.layersExpanded = !$scope.layersExpanded;
+      }
     },
 
     updateStyle() {

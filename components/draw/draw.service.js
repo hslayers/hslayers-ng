@@ -21,6 +21,7 @@ import {fromCircle} from 'ol/geom/Polygon';
  * @param HsLaymanService
  * @param HsConfirmDialogService
  * @param HsLaymanBrowserService
+ * @param HsAddLayersVectorService
  */
 export default function (
   HsConfig,
@@ -37,7 +38,8 @@ export default function (
   HsQueryVectorService,
   HsLaymanService,
   HsLaymanBrowserService,
-  HsConfirmDialogService
+  HsConfirmDialogService,
+  HsAddLayersVectorService
 ) {
   'ngInject';
   const me = this;
@@ -338,6 +340,35 @@ export default function (
       }
       return false;
     },
+
+    async selectLayer(layer) {
+      let lyr = layer;
+      if (layer.type) {
+        lyr = await HsAddLayersVectorService.addVectorLayer(
+          'wfs',
+          me.laymanEndpoint.url,
+          layer.name,
+          layer.title,
+          undefined,
+          'EPSG:4326'
+        );
+        lyr = HsMapService.findLayerByTitle(layer.title);
+      }
+      if (lyr != me.selectedLayer) {
+        if (
+          me.selectedLayer &&
+          me.selectedLayer.get('title') == 'tmpDrawLayer'
+        ) {
+          me.tmpDrawLayer = false;
+          HsMapService.map.removeLayer(me.selectedLayer);
+        }
+
+        me.selectedLayer = lyr;
+        me.changeDrawSource();
+      }
+      me.fillDrawableLayers();
+    },
+
     /**
      * @function removeLayer
      * @memberOf HsDrawController

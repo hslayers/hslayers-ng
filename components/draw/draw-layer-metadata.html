@@ -13,18 +13,30 @@
                     can be further managed in "Layermanager" panel</p>
             </div>
             <div ng-show="$ctrl.isAuthorized()" class="alert alert-danger" role="alert">
-                <p class="text-center"> 
+                <p class="text-center">
                     {{'User not authorized, drawings cannot be saved' | translate}}
                 </p>
                 <hs.layman.current-user class="draw_laymanLogin" endpoint="$ctrl.endpoint"></hs.layman.current-user>
-        
+
             </div>
-            <div class="modal-body"  ng-if="!$ctrl.isAuthorized()" style="max-height:400px; overflow-y:auto">
-                <form>
+            <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;"
+                ng-if="service.drawableLaymanLayers.length > 0 && !$ctrl.isAuthorized()">
+                <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
+                    ng-click="$ctrl.setType('draw')" translate ng-class="{active: $ctrl.type == 'draw' }">
+                    Create new drawing layer
+                </button>
+                <button type="button" class="btn ml-1 btn-sm rounded btn-primary hs-toolbar-button" translate
+                    ng-click="$ctrl.setType('layman')" ng-class="{active: $ctrl.type == 'layman' }">
+                    Load layer from server
+                </button>
+            </div>
+            <div class="modal-body" ng-if="!$ctrl.isAuthorized()" style="max-height:400px; overflow-y:auto">
+                <form ng-show="$ctrl.type == 'draw' || service.drawableLaymanLayers.length == 0">
                     <div class="form-group">
                         <label class="control-label" translate>Layer title</label>
                         <div class="mb-3">
-                            <input class="form-control drawModalInput" ng-keypress="$ctrl.keyHandler($event)" ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
+                            <input class="form-control drawModalInput" ng-keypress="$ctrl.keyHandler($event)"
+                                ng-model="$ctrl.title" ng-change="$ctrl.titleChanged()" />
                         </div>
                     </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
@@ -56,10 +68,27 @@
                         </div>
                     </div>
                 </form>
+                <form ng-show="$ctrl.type == 'layman'">
+                    <div class="d-flex align-items-center w-100 flex-column" > 
+                        <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
+                        <ul class="list-group w-100">
+                            <li ng-repeat="layer in service.drawableLaymanLayers" class="clearfix"
+                                ng-class="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                                    <b><a href="#" data-toggle="tooltip"
+                                            title="{{layer.description}}">{{layer.title}}</a></b>
+                                <span class="float-right">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.selectLayer(layer)"
+                                        data-toggle="tooltip" title="{{'Add to map'|translate}}"><i
+                                            class="icon-plus"></i></button>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button"  ng-show="!$ctrl.isAuthorized()" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.confirm()"
-                    translate>OK</button>
+                <button type="button" ng-show="!$ctrl.isAuthorized()" class="btn btn-primary" data-dismiss="modal"
+                    ng-click="$ctrl.confirm()" translate>OK</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="$ctrl.cancel()"
                     translate>Cancel</button>
             </div>
