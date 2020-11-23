@@ -14,7 +14,7 @@
             aria-haspopup="true" ng-click="controlLayerListAction()" aria-expanded="{{layersExpanded}}"
             ng-style="{'max-width':'125px', 'overflow':'hidden', 'font-size':'smaller'}"
             ng-class="service.tmpDrawLayer ? 'btn-outline-danger ' : 'btn-outline-primary'"
-            ng-show="service.hasSomeDrawables || service.tmpDrawLayer ">
+            ng-show="service.drawableLayers.length > 0 || service.tmpDrawLayer ">
             {{selectedLayerString()}}
         </button>
         <button type="button" ng-if="service.tmpDrawLayer"
@@ -28,7 +28,7 @@
             <i class="glyphicon icon-trash"></i>
         </button>
 
-        <div class="dropdown-menu" ng-class="{'show': layersExpanded}">
+        <div class="dropdown-menu" ng-class="{'show': layersExpanded}" >
             <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLayers.length > 0">
                 <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
                 <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
