@@ -1,14 +1,14 @@
-import * as angular from 'angular';
 import {Component} from '@angular/core';
 
-import '../../../common/get-capabilities';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {addAnchors} from '../../../common/attribution-utils';
 
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsLogService} from '../../../common/log/log.service';
 import {Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
@@ -35,10 +35,11 @@ export class HsAddLayersWmtsComponent {
   version;
 
   constructor(
-    private hsEventBusService: HsEventBusService,
-    private hsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
-    private hsMapService: HsMapService
+    public hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
+    public hsMapService: HsMapService,
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     this.mapProjection = this.hsMapService.map
       .getView()
@@ -89,12 +90,10 @@ export class HsAddLayersWmtsComponent {
       if (previousDialog) {
         previousDialog.parentNode.removeChild(previousDialog);
       }
-      const el = angular.element(
-        '<div hs.wmts.capabilities_error_directive></div>'
+      this.HsDialogContainerService.create(
+        HsGetCapabilitiesErrorComponent,
+        this.error
       );
-      this.hsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
       //FIXME: $compile(el)($scope);
       //throw "wmts Capabilities parsing problem";
     }
@@ -151,9 +150,9 @@ export class HsAddLayersWmtsComponent {
 
     const dimensions = {};
 
-    angular.forEach(layer.Dimension, (val) => {
+    for (const val of layer.Dimension) {
       dimensions[val.name] = val;
-    });
+    }
 
     const new_layer = new Tile({
       title: layer.Title,

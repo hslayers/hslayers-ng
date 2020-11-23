@@ -8,8 +8,8 @@ import {Group} from 'ol/layer';
 @Injectable({providedIn: 'root'})
 export class HsAddLayersWmtsService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService
+    public HsMapService: HsMapService,
+    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService
   ) {}
 
   /**

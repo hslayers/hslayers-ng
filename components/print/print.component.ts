@@ -9,8 +9,8 @@ export class HsPrintComponent {
   public title = '';
 
   constructor(
-    private HsPrintService: HsPrintService,
-    private HsConfig: HsConfig
+    public HsPrintService: HsPrintService,
+    public HsConfig: HsConfig
   ) {
     //$scope.$emit('scope_loaded', 'Print');
   }

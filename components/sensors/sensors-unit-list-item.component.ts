@@ -15,9 +15,9 @@ export class HsSensorsUnitListItemComponent {
   @Input('view-mode') viewMode: string;
 
   constructor(
-    private HsSensorsService: HsSensorsService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsSensorsUnitDialogService: HsSensorsUnitDialogService
+    public HsSensorsService: HsSensorsService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {}
 
   /**

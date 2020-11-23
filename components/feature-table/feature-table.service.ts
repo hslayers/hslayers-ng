@@ -27,9 +27,9 @@ export class HsFeatureTableService {
   lastSortValue = ''; //last sorting value selected
   features: FeatureDescriptor[] = []; //all feature attributes for html table
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsQueryVectorService: HsQueryVectorService
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsQueryVectorService: HsQueryVectorService
   ) {}
   /**
    * @param layer Layer from HsConfig.layersInFeatureTable

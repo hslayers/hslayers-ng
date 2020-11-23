@@ -33,16 +33,15 @@ export class HsShareUrlService {
   public browserUrlUpdated: Subject<any> = new Subject();
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsCore: HsCoreService,
-    private HsUtilsService: HsUtilsService,
-    private HsSaveMapService: HsSaveMapService,
-    private HsConfig: HsConfig,
-    private HsLanguageService: HsLanguageService,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
-    private Location: Location,
-    @Inject(WINDOW) private window: Window
+    public HsMapService: HsMapService,
+    public HsCore: HsCoreService,
+    public HsUtilsService: HsUtilsService,
+    public HsSaveMapService: HsSaveMapService,
+    public HsConfig: HsConfig,
+    public HsLanguageService: HsLanguageService,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
+    private Location: Location
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
@@ -137,7 +136,7 @@ export class HsShareUrlService {
   }
 
   private pathName(): string {
-    let tmp = this.window.location.pathname.split('?')[0];
+    let tmp = window.location.pathname.split('?')[0];
     if (!tmp.endsWith('/') && !tmp.split('/').pop().includes('.')) {
       tmp = tmp + '/';
     }

@@ -40,14 +40,12 @@ export class HsCoreService {
   existsWarningShown: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService,
-    private window: Window,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsLayoutService: HsLayoutService,
+    public HsUtilsService: HsUtilsService,
     private log: HsLogService,
-    @Inject(DOCUMENT) private document: Document,
-    private HsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
     private translate: TranslateService
   ) {
     /**
@@ -58,7 +56,7 @@ export class HsCoreService {
      * @description Service shortcut to config module defined by app.js for application
      */
     this.config = this.HsConfig;
-    if (this.window.innerWidth < 767 || this.HsConfig.sidebarClosed) {
+    if (window.innerWidth < 767 || this.HsConfig.sidebarClosed) {
       this.HsLayoutService.sidebarExpanded = false;
       this.HsLayoutService.sidebarLabels = false;
     } else {
@@ -181,13 +179,13 @@ export class HsCoreService {
    * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
    */
   updateVH() {
-    const vh = this.window.innerHeight * 0.01;
-    this.document.body.style.setProperty('--vh', `${vh}px`);
+    const vh = window.innerHeight * 0.01;
+    document.body.style.setProperty('--vh', `${vh}px`);
 
-    if (this.window.matchMedia('(orientation: portrait)').matches) {
-      this.document.getElementsByTagName('html')[0].style.height = '100vh';
+    if (window.matchMedia('(orientation: portrait)').matches) {
+      document.getElementsByTagName('html')[0].style.height = '100vh';
       setTimeout(() => {
-        this.document.getElementsByTagName('html')[0].style.height = '100%';
+        document.getElementsByTagName('html')[0].style.height = '100%';
       }, 500);
     }
   }
@@ -198,7 +196,7 @@ export class HsCoreService {
    * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    */
   initSizeListeners(): void {
-    this.window.addEventListener('resize', () => {
+    window.addEventListener('resize', () => {
       this.HsUtilsService.debounce(
         function () {
           this.updateVH();
@@ -246,16 +244,13 @@ export class HsCoreService {
    * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
    */
   isAuthorized(): boolean {
-    if (
-      this.window['getLRUser'] === undefined &&
-      !this.missingLRFunctionsWarned
-    ) {
+    if (window['getLRUser'] === undefined && !this.missingLRFunctionsWarned) {
       this.log.warn(
         'window.getLRUser function needs to be defined, which usually comes from liferay.'
       );
       this.missingLRFunctionsWarned = true;
     }
-    if (this.window['getLRUser'] && this.window['getLRUser']() != 'guest') {
+    if (window['getLRUser'] && window['getLRUser']() != 'guest') {
       return true;
     }
     return false;
@@ -287,7 +282,7 @@ export class HsCoreService {
    * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
    */
   isMobile(): string {
-    if (this.window['cordova']) {
+    if (window['cordova']) {
       return 'mobile';
     } else {
       return '';

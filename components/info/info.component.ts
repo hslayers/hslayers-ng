@@ -33,8 +33,8 @@ export class HsInfoComponent {
   info_image: string;
   composition_edited: boolean;
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService
   ) {
     this.HsEventBusService.compositionLoading.subscribe((data) => {
       if (data.error === undefined) {

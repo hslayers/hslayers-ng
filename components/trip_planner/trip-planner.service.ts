@@ -88,11 +88,11 @@ export class HsTripPlannerService {
   timer: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
-    private HsShareUrlService: HsShareUrlService,
-    private HsEventBusService: HsEventBusService
+    public HsShareUrlService: HsShareUrlService,
+    public HsEventBusService: HsEventBusService
   ) {
     if (this.HsShareUrlService.getParamValue('trip') !== null) {
       this.trip = this.HsShareUrlService.getParamValue('trip');

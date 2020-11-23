@@ -11,11 +11,11 @@ import {Subscription} from 'rxjs';
 })
 export class HsCompositionsStatusManagerService {
   constructor(
-    private HsStatusManagerService: HsStatusManagerService,
-    private HsConfig: HsConfig,
-    private HsUtilsService: HsUtilsService,
+    public HsStatusManagerService: HsStatusManagerService,
+    public HsConfig: HsConfig,
+    public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
-    private HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService
   ) {}
   /**
    * @ngdoc method

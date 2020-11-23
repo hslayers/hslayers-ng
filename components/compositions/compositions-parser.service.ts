@@ -43,14 +43,14 @@ export class HsCompositionsParserService {
   current_composition: any;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
     private $http: HttpClient,
-    private HsUtilsService: HsUtilsService,
-    private HsCompositionsLayerParserService: HsCompositionsLayerParserService,
-    private HsLayoutService: HsLayoutService,
-    private $log: HsLogService,
-    private HsEventBusService: HsEventBusService
+    public HsUtilsService: HsUtilsService,
+    public HsCompositionsLayerParserService: HsCompositionsLayerParserService,
+    public HsLayoutService: HsLayoutService,
+    public $log: HsLogService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   /**
@@ -342,7 +342,6 @@ export class HsCompositionsParserService {
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
   jsonToLayer(lyr_def) {
-    console.log(lyr_def)
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':

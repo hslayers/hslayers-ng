@@ -22,10 +22,10 @@ export class HsDatasourcesMetadataDialogComponent
   viewRef: ViewRef;
 
   constructor(
-    private hsConfig: HsConfig, // used in template
-    private hsDatasourcesService: HsDatasourcesService, //used in template
-    private hsDatasourcesMapService: HsDatasourcesMapService, //used in template
-    private hsDialogContainerService: HsDialogContainerService
+    public hsConfig: HsConfig, // used in template
+    public hsDatasourcesService: HsDatasourcesService, //used in template
+    public hsDatasourcesMapService: HsDatasourcesMapService, //used in template
+    public hsDialogContainerService: HsDialogContainerService
   ) {}
 
   ngOnInit(): void {

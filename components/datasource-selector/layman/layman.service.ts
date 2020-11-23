@@ -15,7 +15,7 @@ export class HsLaymanBrowserService {
   constructor(
     private http: HttpClient,
     private log: HsLogService,
-    private hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService
   ) {}
 
   /**

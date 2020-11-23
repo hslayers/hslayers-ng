@@ -8,7 +8,7 @@ import {HsLogService} from './log/log.service';
   providedIn: 'root',
 })
 export class HsDimensionService {
-  constructor(private $log: HsLogService) {}
+  constructor(public $log: HsLogService) {}
 
   prepareTimeSteps(step_string) {
     const step_array = step_string.split(',');

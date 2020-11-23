@@ -13,8 +13,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   withChildren: any;
 
   constructor(
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayerManagerService: HsLayerManagerService
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayerManagerService: HsLayerManagerService
   ) {
     this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
     this.withChildren = this.HsLayerEditorSublayerService.withChildren;
@@ -39,7 +39,8 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
    * @param {object} sublayer Selected sublayer
    * @param {object} state New state of sublayer
    */
-  subLayerSelected(sublayer, state) {
+  subLayerSelected(sublayer?, state?) {
+    //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail 
     if (sublayer != undefined && sublayer.Layer) {
       for (const children of sublayer.Layer) {
         Object.assign(this.checkedSubLayers, {

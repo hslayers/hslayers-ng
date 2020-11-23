@@ -12,9 +12,9 @@ export class HsLegendComponent {
   layerDescriptors = [];
 
   constructor(
-    private HsLegendService: HsLegendService,
-    private HsMapService: HsMapService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    public HsLegendService: HsLegendService,
+    public HsMapService: HsMapService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
     //this.$emit('scope_loaded', 'Legend');

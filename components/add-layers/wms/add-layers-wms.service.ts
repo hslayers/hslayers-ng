@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 import {HsConfig} from '../../../config.service';
 import {HsDimensionService} from '../../../common/dimension.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -23,12 +21,12 @@ export class HsAddLayersWmsService {
   data;
 
   constructor(
-    private hsMapService: HsMapService,
-    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private hsDimensionService: HsDimensionService,
-    private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
-    private hsConfig: HsConfig
+    public hsMapService: HsMapService,
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsDimensionService: HsDimensionService,
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService,
+    public hsConfig: HsConfig
   ) {
     this.data = {
       useResampling: false,
@@ -237,13 +235,13 @@ export class HsAddLayersWmsService {
         }
       }
 
-      angular.forEach(layer.Layer, (sublayer) => {
+      for (const sublayer of layer.Layer) {
         recurse(sublayer);
-      });
+      }
     };
-    angular.forEach(this.data.services, (layer) => {
+    for (const layer of this.data.services) {
       recurse(layer);
-    });
+    }
     this.hsLayoutService.setMainPanel('layermanager');
   }
 
@@ -332,9 +330,9 @@ export class HsAddLayersWmsService {
     }
     const dimensions = {};
 
-    angular.forEach(layer.Dimension, (val) => {
+    for (const val of layer.Dimension) {
       dimensions[val.name] = val;
-    });
+    }
 
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {

@@ -1,6 +1,5 @@
 <div class="card panel-default mainpanel hs-stc-mainpanel">
     <hs-panel-header name="saveMap" [title]="'PANEL_HEADER.SAVECOMPOSITION' | translate">
-        <extra-title>{{title || current_composition_title}}</extra-title>
     </hs-panel-header>
     <div class="card-body">
         <div class="form-group">
@@ -14,7 +13,7 @@
             </div>
         </div>
         <hs-layman-current-user *ngIf="endpoint?.type == 'layman'" [endpoint]="endpoint"></hs-layman-current-user>
-        <hs-save-map-advanced-form *ngIf="HsConfig.advancedForm"></hs-save-map-advanced-form>
-        <hs-save-map-simple-form *ngIf="!HsConfig.advancedForm"></hs-save-map-simple-form>
+        <hs-save-map-advanced-form *ngIf="HsConfig.advancedForm == undefined || HsConfig.advancedForm"></hs-save-map-advanced-form>
+        <hs-save-map-simple-form *ngIf="HsConfig.advancedForm === false"></hs-save-map-simple-form>
     </div>
 </div>

@@ -8,8 +8,8 @@ import {Injectable} from '@angular/core';
 })
 export class HsLayerEditorStylesService {
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsStylerService: HsStylerService
+    public HsUtilsService: HsUtilsService,
+    public HsStylerService: HsStylerService
   ) {}
   changePointType(layer, type): void {
     if (layer.style == undefined) {

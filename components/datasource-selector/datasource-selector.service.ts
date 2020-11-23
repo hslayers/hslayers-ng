@@ -36,17 +36,17 @@ export class HsDatasourcesService {
   data: any = {};
 
   constructor(
-    private hsConfig: HsConfig,
-    private hsAddLayersVectorService: HsAddLayersVectorService,
-    private hsEventBusService: HsEventBusService,
-    private hsMickaFilterService: HsMickaFilterService,
-    private hsMickaBrowserService: HsMickaBrowserService,
-    private hsLaymanBrowserService: HsLaymanBrowserService,
-    private hsLayoutService: HsLayoutService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService,
-    private hsDatasourcesMapService: HsDatasourcesMapService /*,
+    public hsConfig: HsConfig,
+    public hsAddLayersVectorService: HsAddLayersVectorService,
+    public hsEventBusService: HsEventBusService,
+    public hsMickaFilterService: HsMickaFilterService,
+    public hsMickaBrowserService: HsMickaBrowserService,
+    public hsLaymanBrowserService: HsLaymanBrowserService,
+    public hsLayoutService: HsLayoutService,
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public hsDatasourcesMapService: HsDatasourcesMapService /*,
     private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
     this.data.query = {

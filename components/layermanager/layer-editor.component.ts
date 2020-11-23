@@ -27,17 +27,17 @@ export class HsLayerEditorComponent {
   layer_renamer_visible = false;
 
   constructor(
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLayerManagerWmstService: HsLayerManagerWmstService,
-    private HsStylerService: HsStylerService,
-    private HsMapService: HsMapService,
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayerEditorService: HsLayerEditorService,
-    private HsDrawService: HsDrawService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsLayerManagerWmstService: HsLayerManagerWmstService,
+    public HsStylerService: HsStylerService,
+    public HsMapService: HsMapService,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayerEditorService: HsLayerEditorService,
+    public HsDrawService: HsDrawService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
   ) {}
 
   layerIsWmsT(): boolean {
@@ -397,7 +397,7 @@ export class HsLayerEditorComponent {
     return layer.get('title');
   }
 
-  set abstract(newAbstract: string | false) {
+  set abstract(newAbstract: string) {
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
@@ -405,10 +405,10 @@ export class HsLayerEditorComponent {
     layer.set('abstract', newAbstract);
   }
 
-  get abstract(): string | false {
+  get abstract(): string {
     const layer = this.olLayer();
     if (layer == undefined) {
-      return false;
+      return;
     }
     return layer.get('abstract');
   }

@@ -21,8 +21,8 @@ export class HsLegendService {
    * @param HsLayerSelectorService
    */
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsLayerSelectorService: HsLayerSelectorService
+    public HsUtilsService: HsUtilsService,
+    public HsLayerSelectorService: HsLayerSelectorService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);

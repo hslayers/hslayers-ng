@@ -2,8 +2,6 @@ import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
-
-import * as angular from 'angular';
 import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'hs-mini-sidebar',
@@ -11,15 +9,40 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HsMiniSidebarComponent implements OnInit {
   constructor(
-    private HsCoreService: HsCoreService,
-    private HsSidebarService: HsSidebarService,
-    private HsLayoutService: HsLayoutService,
-    private HsConfig: HsConfig
+    public HsCoreService: HsCoreService,
+    public HsSidebarService: HsSidebarService,
+    public HsLayoutService: HsLayoutService,
+    public HsConfig: HsConfig
   ) {}
 
   ngOnInit(): void {
-    if (angular.isDefined(this.HsCoreService.config.createExtraMenu)) {
+    if (this.HsCoreService.config.createExtraMenu !== undefined) {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
+  }
+
+   /**
+   * Seat weather to show all sidebar buttons or just a
+   * subset of important ones
+   *
+   * @memberof HsSidebarComponent
+   * @function toggleUnimportant
+   */
+  toggleUnimportant(): void {
+    this.HsSidebarService.showUnimportant = !this.HsSidebarService
+      .showUnimportant;
+  }
+   /**
+   * Toggle sidebar mode between expanded and narrow
+   *
+   * @memberof HsSidebarComponent
+   * @function toggleSidebar
+   */
+  toggleSidebar(): void {
+    this.HsLayoutService.sidebarExpanded = !this.HsLayoutService
+      .sidebarExpanded;
+    setTimeout(() => {
+      this.HsCoreService.updateMapSize();
+    }, 110);
   }
 }

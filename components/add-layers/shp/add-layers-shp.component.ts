@@ -7,6 +7,7 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {FileDescriptor} from './file-descriptor';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-layers-shp',
@@ -26,13 +27,16 @@ export class HsAddLayersShpComponent {
   sld: FileDescriptor = null;
   srs = 'EPSG:4326';
   title = '';
+  folder_name = '';
+  advancedPanelVisible = false;
 
   constructor(
-    private hsAddLayersShpService: HsAddLayersShpService,
-    private hsLayoutService: HsLayoutService,
-    private hsLaymanService: HsLaymanService,
-    private hsAddLayersWmsService: HsAddLayersWmsService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    public hsAddLayersShpService: HsAddLayersShpService,
+    public hsLayoutService: HsLayoutService,
+    public hsLaymanService: HsLaymanService,
+    public hsAddLayersWmsService: HsAddLayersWmsService,
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsUtilsService: HsUtilsService
   ) {
     //vm.endpointsService = HsCommonEndpointsService;
   }

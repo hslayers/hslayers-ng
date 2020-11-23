@@ -9,10 +9,10 @@ import {Injectable} from '@angular/core';
 })
 export class HsCompositionsStatusManagerMickaJointService {
   constructor(
-    private HsCompositionsStatusManagerService: HsCompositionsStatusManagerService,
-    private HsCompositionsMickaService: HsCompositionsMickaService,
-    private HsCompositionsMapService: HsCompositionsMapService,
-    private HsCompositionsParserService: HsCompositionsParserService
+    public HsCompositionsStatusManagerService: HsCompositionsStatusManagerService,
+    public HsCompositionsMickaService: HsCompositionsMickaService,
+    public HsCompositionsMapService: HsCompositionsMapService,
+    public HsCompositionsParserService: HsCompositionsParserService
   ) {}
   /**
    * @ngdoc method

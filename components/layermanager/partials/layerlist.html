@@ -14,7 +14,7 @@
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
-                    style="word-break:break-all" [ngClass]="{'hover': layer.layer.hasSublayers == true}" [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="HsConfig.layerTooltipDelay || 0">
+                    style="word-break:break-all" [ngClass]="{'hover': layer.layer.hasSublayers == true}" [ngbTooltip]="layer.abstract ? abstractTooltip : ''" closeDelay="HsConfig.layerTooltipDelay || 0">
                     {{HsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
                 <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers"
@@ -22,7 +22,7 @@
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"
-                        [ngClass]="{true:'icon-chevron-right', false:'icon-chevron-down'}[HsLayerManagerService.currentLayer == layer]"
+                        [ngClass]="{'icon-chevron-right':HsLayerManagerService.currentLayer == layer, 'icon-chevron-down': HsLayerManagerService.currentLayer != layer}"
                         [hidden]="!layerLoaded(layer.layer)"></span>
                 </div>
 

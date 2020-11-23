@@ -20,13 +20,13 @@ export class HsDatasourcesComponent {
   advancedSearch;
 
   constructor(
-    private hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
-    private hsConfig: HsConfig, //Used in template
-    private hsCore: HsCoreService, //Used in template
-    private hsDatasourcesService: HsDatasourcesService,
-    private hsDatasourcesMapService: HsDatasourcesMapService, //Used in template
-    private hsEventBusService: HsEventBusService,
-    private hsLayoutService: HsLayoutService
+    public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
+    public hsConfig: HsConfig, //Used in template
+    public hsCore: HsCoreService, //Used in template
+    public hsDatasourcesService: HsDatasourcesService,
+    public hsDatasourcesMapService: HsDatasourcesMapService, //Used in template
+    public hsEventBusService: HsEventBusService,
+    public hsLayoutService: HsLayoutService
   ) {
     this.data = hsDatasourcesService.data;
     this.advancedSearch = false;

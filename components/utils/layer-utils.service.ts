@@ -11,8 +11,8 @@ import {isEmpty} from 'ol/extent';
 @Injectable()
 export class HsLayerUtilsService {
   constructor(
-    private HsUtilsService: HsUtilsService,
-    private HsLanguageService: HsLanguageService
+    public HsUtilsService: HsUtilsService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   /**

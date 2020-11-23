@@ -27,14 +27,14 @@ export class HsLayerListComponent {
   filtered_layers: Array<any> = [];
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsLayerManagerService: HsLayerManagerService,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private HsLayoutService: HsLayoutService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayerUtilsService: HsLayerUtilsService
+    public HsConfig: HsConfig,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    public HsLayoutService: HsLayoutService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.sortLayersByPosition();
@@ -162,8 +162,8 @@ export class HsLayerListComponent {
    * @param {object} layer_container Selected layer - wrapped in layer object
    * @description Test if layer is queryable (WMS layer with Info format)
    */
-  isLayerQueryable(layer_container) {
-    this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
+  isLayerQueryable(layer_container): boolean {
+    return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   }
 
   /**

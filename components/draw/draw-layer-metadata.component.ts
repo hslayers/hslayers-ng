@@ -15,8 +15,9 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   layer: any;
   title: any;
   path: string;
+  folderVisible = false;
 
-  constructor(private HsMapService: HsMapService) {}
+  constructor(public HsMapService: HsMapService) {}
   viewRef: ViewRef;
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;

@@ -20,13 +20,7 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [HsPrintComponent],
   imports: [CommonModule, FormsModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsPrintComponent],
-  providers: [
-    HsPrintService,
-    {
-      provide: Window,
-      useValue: window,
-    },
-  ],
+  providers: [HsPrintService],
   entryComponents: [HsPrintComponent],
 })
 export class HsPrintModule {}

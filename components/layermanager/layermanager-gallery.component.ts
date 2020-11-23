@@ -16,11 +16,10 @@ export class HsLayerManagerGalleryComponent {
   data: any;
 
   constructor(
-    private HsLayoutService: HsLayoutService,
-    private HsLayerManagerService: HsLayerManagerService,
-    private Window: Window,
-    private HsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService //Used in template
+    public HsLayoutService: HsLayoutService,
+    public HsLayerManagerService: HsLayerManagerService,
+    public HsConfig: HsConfig,
+    public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
     this.data = this.HsLayerManagerService.data;
   }
@@ -37,8 +36,8 @@ export class HsLayerManagerGalleryComponent {
     }
   }
 
-  toggleBasemap(layer: Layer): void {
-    if (arguments.length > 0) {
+  toggleBasemap(layer?: Layer): void {
+    if (layer) {
       if (!layer.active) {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.baseLayersExpanded = false;

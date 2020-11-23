@@ -9,9 +9,9 @@ import {Injectable} from '@angular/core';
 })
 export class HsVectorUrlParserService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsShareUrlService: HsShareUrlService,
-    private HsAddLayersVectorService: HsAddLayersVectorService
+    public HsMapService: HsMapService,
+    public HsShareUrlService: HsShareUrlService,
+    public HsAddLayersVectorService: HsAddLayersVectorService
   ) {
     this.HsMapService.loaded().then((map) => {
       this.checkUrlParamsAndAdd();

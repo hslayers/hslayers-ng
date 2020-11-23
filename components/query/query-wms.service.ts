@@ -20,15 +20,15 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsQueryWmsService {
   infoCounter = 0;
   constructor(
-    private HsQueryBaseService: HsQueryBaseService,
-    private HsMapService: HsMapService,
-    private HsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsLanguageService: HsLanguageService,
-    private HsUtilsService: HsUtilsService,
-    private HsEventBusService: HsEventBusService,
+    public HsQueryBaseService: HsQueryBaseService,
+    public HsMapService: HsMapService,
+    public HsConfig: HsConfig,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsLanguageService: HsLanguageService,
+    public HsUtilsService: HsUtilsService,
+    public HsEventBusService: HsEventBusService,
     private HttpClient: HttpClient,
-    private HsLogService: HsLogService
+    public HsLogService: HsLogService
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;

@@ -10,8 +10,8 @@ export class HsShareComponent {
   new_share = false;
 
   constructor(
-    private HsShareService: HsShareService,
-    private HsCore: HsCoreService
+    public HsShareService: HsShareService,
+    public HsCore: HsCoreService
   ) {}
 
   /**

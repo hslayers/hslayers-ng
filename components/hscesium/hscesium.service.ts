@@ -38,15 +38,15 @@ export class HsCesiumService {
   cesiumPositionClicked: Subject<any> = new Subject();
 
   constructor(
-    private HsConfig: HsConfig,
-    private HsMapService: HsMapService,
-    private HsLayermanagerService: HsLayerManagerService,
-    private HsLayoutService: HsLayoutService,
-    private HsCesiumCameraService: HsCesiumCameraService,
-    private HsCesiumLayersService: HsCesiumLayersService,
-    private HsCesiumTimeService: HsCesiumTimeService,
-    private HsEventBusService: HsEventBusService,
-    private HsUtilsService: HsUtilsService
+    public HsConfig: HsConfig,
+    public HsMapService: HsMapService,
+    public HsLayermanagerService: HsLayerManagerService,
+    public HsLayoutService: HsLayoutService,
+    public HsCesiumCameraService: HsCesiumCameraService,
+    public HsCesiumLayersService: HsCesiumLayersService,
+    public HsCesiumTimeService: HsCesiumTimeService,
+    public HsEventBusService: HsEventBusService,
+    public HsUtilsService: HsUtilsService
   ) {
     'ngInject';
     if (this.HsConfig.cesiumBingKey) {

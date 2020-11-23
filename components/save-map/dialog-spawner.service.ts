@@ -9,16 +9,16 @@ import {Injectable} from '@angular/core';
 })
 export class HsSaveMapDialogSpawnerService {
   constructor(
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsSaveMapManagerService: HsSaveMapManagerService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsSaveMapManagerService: HsSaveMapManagerService
   ) {
     this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
       this.HsDialogContainerService.create(HsSaveMapResultDialogComponent, {
         statusData,
       });
     });
-    this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(() => {
-      this.HsDialogContainerService.create(HsSaveMapDialogComponent, {});
+    this.HsSaveMapManagerService.preSaveCheckCompleted.subscribe(({endpoint}) => {
+      this.HsDialogContainerService.create(HsSaveMapDialogComponent, {endpoint});
     });
   }
 }

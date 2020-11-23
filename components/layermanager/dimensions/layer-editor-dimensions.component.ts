@@ -15,10 +15,10 @@ export class HsLayerEditorDimensionsComponent {
   dimensions: Array<HsDimensionDescriptor> = [];
 
   constructor(
-    private HsDimensionService: HsDimensionService,
-    private HsUtilsService: HsUtilsService,
-    private HsMapService: HsMapService,
-    private HsEventBusService: HsEventBusService
+    public HsDimensionService: HsDimensionService,
+    public HsUtilsService: HsUtilsService,
+    public HsMapService: HsMapService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   ngOnChanges(): void {

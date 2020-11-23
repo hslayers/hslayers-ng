@@ -15,13 +15,13 @@ import {HsQueryVectorService} from './query-vector.service';
 })
 export class HsQueryFeaturePopupComponent {
   constructor(
-    private HsQueryBaseService: HsQueryBaseService,
-    private HsQueryVectorService: HsQueryVectorService,
-    private HsEventBusService: HsEventBusService,
-    private HsLanguageService: HsLanguageService,
-    private HsLayerUtilsService: HsLayerUtilsService, //Used in template
-    private HsDialogContainerService: HsDialogContainerService,
-    private HsMapService: HsMapService,
+    public HsQueryBaseService: HsQueryBaseService,
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsEventBusService: HsEventBusService,
+    public HsLanguageService: HsLanguageService,
+    public HsLayerUtilsService: HsLayerUtilsService, //Used in template
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsMapService: HsMapService,
     ElementRef: ElementRef
   ) {
     this.HsQueryBaseService.hoverPopup = new Overlay({

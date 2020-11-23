@@ -13,9 +13,9 @@ import {VectorSourceDescriptor} from './vector-source-descriptor';
 })
 export class HsAddLayersVectorService {
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsStylerService: HsStylerService
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsStylerService: HsStylerService
   ) {}
 
   /**

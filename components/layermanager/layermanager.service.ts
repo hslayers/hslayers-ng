@@ -101,17 +101,17 @@ export class HsLayerManagerService {
   currentResolution: number;
 
   constructor(
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLayerUtilsService: HsLayerUtilsService,
-    private HsConfig: HsConfig,
-    private HsLayermanagerWmstService: HsLayerManagerWmstService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsLayerManagerMetadata: HsLayerManagerMetadataService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorStylesService: HsLayerEditorStylesService,
-    private HsLayerSelectorService: HsLayerSelectorService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsConfig: HsConfig,
+    public HsLayermanagerWmstService: HsLayerManagerWmstService,
+    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    public HsLayerManagerMetadata: HsLayerManagerMetadataService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public HsLayerEditorStylesService: HsLayerEditorStylesService,
+    public HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer,
     private HsLanguageService: HsLanguageService,
     private HsShareUrlService: HsShareUrlService
@@ -170,6 +170,7 @@ export class HsLayerManagerService {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
       abstract: layer.get('abstract'),
       layer: layer,
+      grayed: this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),
       hsFilters: layer.get('hsFilters'),
@@ -449,7 +450,7 @@ export class HsLayerManagerService {
       for (const box of this.data.box_layers) {
         let visible = false;
         let baseVisible = false;
-        for (const layer of box.get('layers')) {
+        for (const layer of box.get('layers').getArray()) {
           if (layer.get('visible') == true && layer.get('base') == true) {
             baseVisible = true;
           } else if (layer.get('visible') == true) {

@@ -1,4 +1,3 @@
-import '../../components/utils';
 import {Attribution} from 'ol/control';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
@@ -14,10 +13,10 @@ import {getPreferedFormat} from '../format-utils';
 export class HsArcgisGetCapabilitiesService {
   constructor(
     private HttpClient: HttpClient,
-    private HsEventBusService: HsEventBusService,
-    private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
-    private HsLogService: HsLogService
+    public HsEventBusService: HsEventBusService,
+    public HsMapService: HsMapService,
+    public HsUtilsService: HsUtilsService,
+    public HsLogService: HsLogService
   ) {}
 
   /**
