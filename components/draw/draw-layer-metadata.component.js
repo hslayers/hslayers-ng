@@ -17,6 +17,7 @@ export default {
     $scope.$on('authChange', (endpoint) => {
       vm.endpoint = endpoint;
     });
+    $scope.service = HsDrawService;
     $timeout(() => {
       vm.title = $scope.$ctrl.layer.get('title');
       vm.path = $scope.$ctrl.layer.get('path');
@@ -35,6 +36,10 @@ export default {
       },
       newLayerPath: '',
       attributes: [],
+
+      setType(type){
+        vm.type = type;
+      },
 
       keyHandler(e) {
         if (e.keyCode == 13) {
@@ -98,6 +103,10 @@ export default {
       addAttr() {
         vm.attributes.push({id: Math.random(), name: '', value: ''});
       },
+      selectLayer(layer){
+        HsDrawService.selectLayer(layer);
+        vm.modalVisible = false;
+      }
     });
   },
 };
