@@ -23,7 +23,7 @@
             ng-class="layoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
             <div class="flex-row w-100 m-auto justify-content-center align-items-center"
                  style="display: flex;">
-                <p class="m-0 pl-1" style="color: blue;" translate>Drawing to:</p>
+                <p class="m-0 pr-1" style="color: blue;" translate>Drawing to:</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm hs-toolbar-button"
                         data-toggle="dropdown" aria-haspopup="true" ng-click="layersExpanded = !layersExpanded"
@@ -36,13 +36,13 @@
                         <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLayers.length > 0">
                         <label class=" bg-primary w-100 text-light m-0 p-1">Active layers</label>
                         <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLayers"
-                            ng-click="selectLayer(layer)">{{layer.get('title')}}</a>
+                            ng-click="service.selectLayer(layer)">{{layer.get('title')}}</a>
                         </div>
 
                         <div class="d-flex align-items-center w-100 flex-column" ng-if="service.drawableLaymanLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">Server layers</label>
                             <a class="dropdown-item" href="#" ng-repeat="layer in service.drawableLaymanLayers"
-                            ng-click="selectLayer(layer)">{{layer.title}}</a>    
+                            ng-click="service.selectLayer(layer)">{{layer.title}}</a>    
                         </div>
                     </div>
                 </div>
