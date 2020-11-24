@@ -1,11 +1,10 @@
-import {DOCUMENT} from '@angular/common';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from './event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import {TranslateService} from '@ngx-translate/core';
 
@@ -68,7 +67,7 @@ export class HsCoreService {
       this.translate.use(this.HsConfig.language);
     }
     this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
-      this.init(element, {innerElement});
+      this.init();
     });
   }
 
@@ -159,11 +158,11 @@ export class HsCoreService {
    * @param {object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any css like selector
    * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
    */
-  init(element, options?): void {
+  init(): void {
     if (this.initCalled) {
       return;
     }
-    this.HsMapService.loaded().then((map) => {
+    this.HsMapService.loaded().then(() => {
       this.initSizeListeners();
       setTimeout(() => {
         this.updateMapSize();
