@@ -66,23 +66,6 @@ export class HsSensorsService {
     public HsEventBusService: HsEventBusService,
     public HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
-    this.bookmarkStyle = [
-      new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.2)',
-        }),
-        stroke: new Stroke({
-          color: '#e49905',
-          width: 2,
-        }),
-        image: new Icon({
-          src: this.HsUtilsService.getAssetsPath() + 'img/icons/wifi8.svg',
-          crossOrigin: 'anonymous',
-          anchor: [0.5, 1],
-        }),
-      }),
-      this.labelStyle,
-    ];
     this.endpoint = this.HsConfig.senslog;
 
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
@@ -143,6 +126,23 @@ export class HsSensorsService {
 
   createLayer() {
     const me = this;
+    this.bookmarkStyle = [
+      new Style({
+        fill: new Fill({
+          color: 'rgba(255, 255, 255, 0.2)',
+        }),
+        stroke: new Stroke({
+          color: '#e49905',
+          width: 2,
+        }),
+        image: new Icon({
+          src: this.HsUtilsService.getAssetsPath() + 'img/icons/wifi8.svg',
+          crossOrigin: 'anonymous',
+          anchor: [0.5, 1],
+        }),
+      }),
+      this.labelStyle,
+    ];
     this.layer = new VectorLayer({
       title: 'Sensor units',
       editor: {
