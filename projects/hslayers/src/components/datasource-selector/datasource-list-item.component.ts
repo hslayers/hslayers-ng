@@ -107,17 +107,15 @@ export class HsDatasourceListItemComponent {
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
-    if (this.hsConfig.design === 'md') {
-      this.metadataMdDialog();
-    } else {
-      this.hsDialogContainerService.create(
-        HsDatasourcesMetadataDialogComponent,
-        {
-          selectedLayer: this.selected_layer,
-          selectedDS: this.selected_ds,
-        }
-      );
-    }
+
+    this.hsDialogContainerService.create(
+      HsDatasourcesMetadataDialogComponent,
+      {
+        selectedLayer: this.selected_layer,
+        selectedDS: this.selected_ds,
+      }
+    );
+  
   }
 
   /**
