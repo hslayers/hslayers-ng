@@ -1,4 +1,7 @@
 import * as merge from 'deepmerge';
+import cs from '../../assets/locales/cs.json';
+import en from '../../assets/locales/en.json';
+import lv from '../../assets/locales/lv.json';
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
@@ -39,9 +42,6 @@ import {
   TranslateStore,
 } from '@ngx-translate/core';
 import {map} from 'rxjs/operators';
-import lv from '../../assets/locales/lv.json';
-import en from '../../assets/locales/en.json';
-import cs from '../../assets/locales/cs.json';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   constructor(public HsConfig: HsConfig) {}
@@ -51,11 +51,12 @@ export class WebpackTranslateLoader implements TranslateLoader {
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       from(
-        new Promise(function (resolve){
-          switch(lang){
+        new Promise((resolve) => {
+          switch (lang) {
             case 'lv':
               resolve(lv);
               break;
+            default:
             case 'en':
               resolve(en);
               break;
@@ -63,13 +64,12 @@ export class WebpackTranslateLoader implements TranslateLoader {
               resolve(cs);
               break;
           }
-          
         })
       ),
       from(
-        new Promise(function (resolve){
+        new Promise((resolve) => {
           //Wait a bit for the HsConfig to be set from container app
-          setTimeout(_ => {
+          setTimeout((_) => {
             if (
               hsConfig.translationOverrides &&
               hsConfig.translationOverrides[lang]
@@ -82,12 +82,19 @@ export class WebpackTranslateLoader implements TranslateLoader {
         })
       ),
     ];
-    const tmp = forkJoin(requests).pipe(map(function (response) {return merge.all(response)}));
+    const tmp = forkJoin(requests).pipe(
+      map((response) => {
+        return merge.all(response);
+      })
+    );
     return tmp;
   }
 }
 
-export function getWebpackTranslateLoader (
+/**
+ * @param HsConfig
+ */
+export function getWebpackTranslateLoader(
   HsConfig: HsConfig
 ): WebpackTranslateLoader {
   return new WebpackTranslateLoader(HsConfig);
@@ -132,7 +139,7 @@ export function getWebpackTranslateLoader (
     HsMapModule,
     HsLaymanModule,
     HsTripPlannerModule,
-    HsCommonEndpointsModule
+    HsCommonEndpointsModule,
   ],
   exports: [TranslateModule],
   providers: [HsCoreService, TranslateStore, TranslateService, HsConfig],

@@ -13,7 +13,7 @@ import {HsLayoutService} from './layout.service';
   selector: 'hs-layout',
   templateUrl: './partials/layout.html',
   styleUrls: ['../../css/app.scss', '../../css/whhg-font/css/whhg.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
@@ -73,7 +73,6 @@ export class HsLayoutComponent {
         this.HsConfig.theme.sidebar.activeItemColor || null
       );
     }
-  
   }
 
   ngOnInit(): void {
