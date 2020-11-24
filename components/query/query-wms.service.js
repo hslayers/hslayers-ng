@@ -1,6 +1,7 @@
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
-import {TileWMS} from 'ol/source';
+import {TileWMS,WMTS} from 'ol/source';
+import * as xml2Json from 'xml-js';
 
 /**
  * @param $rootScope
@@ -18,7 +19,8 @@ export default function (
   HsMapService,
   HsUtilsService,
   HsLanguageService,
-  HsLayerUtilsService
+  HsLayerUtilsService,
+  HsQueryWmtsService
 ) {
   'ngInject';
   const me = this;
@@ -93,7 +95,7 @@ export default function (
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (infoFormat.includes('gml')) {
+      if (infoFormat.includes('gml') || HsUtilsService.instOf(layer.getSource(), WMTS)) {
         me.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
@@ -256,6 +258,15 @@ export default function (
   this.queryWmsLayer = function (layer, coordinate) {
     if (isLayerWmsQueryable(layer)) {
       const source = layer.getSource();
+
+      if (HsUtilsService.instOf(layer.getSource(), WMTS)){
+        HsQueryWmtsService.parseRequestUrl(layer, coordinate).then((res)=>{
+          console.log(res)
+          me.infoCounter++;
+          me.request(res.url, res.format, coordinate, layer);
+        })
+        return
+      }
       const map = HsMapService.map;
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
@@ -304,11 +315,16 @@ export default function (
       return false;
     }
     if (
-      HsUtilsService.instOf(layer, Tile) &&
-      HsUtilsService.instOf(layer.getSource(), TileWMS) &&
-      layer.getSource().getParams().INFO_FORMAT
+      HsUtilsService.instOf(layer, Tile)
     ) {
-      return true;
+      if (HsUtilsService.instOf(layer.getSource(), TileWMS) &&
+        layer.getSource().getParams().INFO_FORMAT) {
+        return true;
+
+      }
+      if (HsUtilsService.instOf(layer.getSource(), WMTS) && layer.get('info_format')) {
+        return true
+      }
     }
     if (
       HsUtilsService.instOf(layer, ImageLayer) &&
