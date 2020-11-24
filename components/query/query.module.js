@@ -13,7 +13,7 @@ import queryInfoPanelDirective from './query-info-panel.directive';
 import queryInfoPanelMdDirective from './query-info-panel-md.directive';
 import queryVectorService from './query-vector.service';
 import queryWmsService from './query-wms.service';
-
+import queryWmtsService from './query-wmts.service';
 /**
  * @namespace hs.query
  * @memberOf hs
@@ -77,6 +77,7 @@ angular
    * @description TODO
    */
   .factory('HsQueryWmsService', queryWmsService)
+  .factory('HsQueryWmtsService', queryWmtsService)
 
   /**
    * @ngdoc service
