@@ -12,7 +12,6 @@
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
     "@types/cesium": "^1.67.12",
-    "bootstrap": ">=4.4.1",
     "cesium": "^1.71.0",
     "deepmerge": "^4.2.2",
     "moment": "^2.24.0",
@@ -28,7 +27,8 @@
     "unidecode": "^0.1.8"
   },
   "devDependencies": {
-    "ol": "^6.4.3"
+    "ol": "^6.4.3",
+    "bootstrap": ">=4.4.1"
   },
   "dependencies": {
     "tslib": "^1.10.0"
