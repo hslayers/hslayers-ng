@@ -23,7 +23,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsStylerModule} from '../styles';
+import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
@@ -98,11 +98,7 @@ describe('compositions', () => {
           useValue: new HsAddLayersVectorService(
             mockedMapService,
             mockedUtilsService,
-            new HsStylerService(null, <HsUtilsService>(<unknown>{
-              resolveEsModule: (m) => {
-                return m || m.default;
-              },
-            }))
+            new HsStylerService(null, mockedUtilsService)
           ),
         },
         {
@@ -170,7 +166,7 @@ describe('compositions', () => {
     );
   }
 
-  it('if should load composition from json', function () {
+  it('should load composition from json', function () {
     loadComposition(component);
     expect(mockedMapService.map.getLayers().getLength()).toBe(4);
     expect(mockedMapService.map.getLayers().item(0).get('title')).toBe(

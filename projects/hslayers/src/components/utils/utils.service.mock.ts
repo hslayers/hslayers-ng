@@ -11,6 +11,10 @@ export class HsUtilsServiceMock {
     return this._instanceOf(obj, type);
   }
 
+  getAssetsPath(){
+    return 'assets/hslayers-ng/'
+  }
+
   _instanceOf(obj, klass) {
     if (this.isFunction(klass)) {
       return obj instanceof klass;

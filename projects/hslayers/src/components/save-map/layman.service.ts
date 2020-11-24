@@ -401,17 +401,19 @@ export class HsLaymanService implements HsSaverService {
    * @description Get Layman friendly name for layer based on its title by
    * replacing spaces with underscores, converting to lowercase, etc.
    * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
-   * @function getLaymanFriendlyLayerName
+   * @function 
    * @param {string} title Title to get Layman-friendly name for
    * @returns {string} New layer name
    */
   getLaymanFriendlyLayerName(title: string): string {
     //TODO: Unidecode on server side or just drop the unsupported letters.
-    return title
+    title = title
       .toLowerCase()
-      .replace(/[^\w\s\-\.]/gm, '')
+      .replace(/[^\w\s\-\.]/gm, '') //Remove spaces
       .trim()
-      .replace(/[\s\-\._]+/gm, '_');
+      .replace(/[\s\-\._]+/gm, '_') //Remove dashes
+      .replace(/[^\x00-\x7F]/g, ""); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
+    return title;
   }
 
   /**

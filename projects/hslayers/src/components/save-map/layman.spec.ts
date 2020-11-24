@@ -114,11 +114,11 @@ describe('HsSaveMap', () => {
     laymanName = service.getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_unsafe_english_name');
 
-    // Non-ASCII characters should be replaced by their closest ASCII representations
-    // and "" should be ommitted
+    // Non-ASCII characters should be omitted
+    // and "" should be omitted
     name = 'Some Czech Name Like "Vážně hustý název"';
     laymanName = service.getLaymanFriendlyLayerName(name);
-    expect(laymanName).toBe('some_czech_name_like_vazne_husty_nazev');
+    expect(laymanName).toBe('some_czech_name_like_vn_hust_nzev');
   });
 
   it('read layer title/name attributes and escape for layman', () => {
