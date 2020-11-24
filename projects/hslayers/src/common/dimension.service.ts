@@ -1,5 +1,5 @@
 import moment from 'moment';
-import momentinterval from 'moment-interval/src/moment-interval';
+import momentinterval from 'moment-interval';
 import {Injectable} from '@angular/core';
 
 import {HsLogService} from './log/log.service';

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import knockout from 'cesium/Source/ThirdParty/knockout';

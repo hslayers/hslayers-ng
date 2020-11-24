@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import {Collection} from 'ol';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsUtilsService} from '../utils/utils.service';
