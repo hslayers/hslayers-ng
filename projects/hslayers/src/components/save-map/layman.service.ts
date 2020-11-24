@@ -1,4 +1,3 @@
-import unidecode from 'unidecode';
 import {GeoJSON, WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
@@ -407,7 +406,8 @@ export class HsLaymanService implements HsSaverService {
    * @returns {string} New layer name
    */
   getLaymanFriendlyLayerName(title: string): string {
-    return unidecode(title)
+    //TODO: Unidecode on server side or just drop the unsupported letters.
+    return title
       .toLowerCase()
       .replace(/[^\w\s\-\.]/gm, '')
       .trim()
