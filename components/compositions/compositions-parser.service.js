@@ -61,7 +61,7 @@ export default function (
       const scope = $rootScope.$new();
       Object.assign(scope, {
         text,
-        error
+        error,
       });
       const el = angular.element(
         '<hs.compositions.error_dialog_component error="text" msg = "error" ></hs.compositions.error_dialog_component>'
@@ -80,6 +80,7 @@ export default function (
      * @param {boolean} overwrite Whether overwrite current composition in map - remove all layers from maps which originate from composition (if not pasted, it counts as "true")
      * @param {Function} callback Optional function which should be called when composition is successfully loaded
      * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
+     * @returns {Promise<void>}
      * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
      */
     loadUrl: function (url, overwrite, callback, pre_parse) {
@@ -93,16 +94,25 @@ export default function (
             .then((response) => {
               return me.parseWMC(response);
             })
-            .then(me.loaded, (err) => {})
+            .then(me.loaded)
             .then(() => {
               resolve();
-            });
+            })
+            .catch(reject);
         } else {
           $http({url: url, overwrite, callback, pre_parse})
-            .then(me.loaded, (err) => {})
+            .then((res) => {
+              if (res.data.file) {
+                // Layman composition wrapper
+                me.loadUrl(res.data.file.url, overwrite, callback, pre_parse);
+              } else {
+                me.loaded(res);
+              }
+            })
             .then(() => {
               resolve();
-            });
+            })
+            .catch(reject);
         }
       });
     },

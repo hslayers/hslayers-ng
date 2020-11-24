@@ -256,10 +256,7 @@ export default function (
   function tryParseCompositionFromUrlParam() {
     if (HsPermalinkUrlService.getParamValue('composition')) {
       let id = HsPermalinkUrlService.getParamValue('composition');
-      if (
-        id.indexOf('http') == -1 &&
-        id.indexOf(HsConfig.status_manager_url) == -1
-      ) {
+      if (!id.includes('http') && !id.includes(HsConfig.status_manager_url)) {
         id = HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
       HsCompositionsParserService.loadUrl(id);
