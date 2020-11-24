@@ -75,12 +75,19 @@ export default {
      * @param type
      */
     function connectServiceFromUrlParam(type) {
-      if (HsPermalinkUrlService.getParamValue(`${type}_to_connect`)) {
-        const url = HsPermalinkUrlService.getParamValue(`${type}_to_connect`);
+      const url = HsPermalinkUrlService.getParamValue(`${type}_to_connect`);
+      if (url) {
+        const layers = HsPermalinkUrlService.getParamValue(`${type}_layers`);
         HsLayoutService.setMainPanel('datasource_selector');
         $scope.type = type.toUpperCase();
         $timeout(() => {
-          $rootScope.$broadcast(`ows.${type}_connecting`, url);
+          if (layers) {
+            for (const layer of layers.split(';')) {
+              $rootScope.$broadcast(`ows.${type}_connecting`, url, layer);
+            }
+          } else {
+            $rootScope.$broadcast(`ows.${type}_connecting`, url);
+          }
         });
       }
     }

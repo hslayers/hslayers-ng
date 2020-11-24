@@ -1,3 +1,5 @@
+import {transformExtent} from 'ol/proj';
+
 import '../../../common/get-capabilities.module';
 import '../../utils/utils.module';
 
@@ -13,6 +15,7 @@ export default {
     HsWmsGetCapabilitiesService,
     HsAddLayersWmsAddLayerService,
     HsHistoryListService,
+    HsMapService,
     $timeout
   ) {
     'ngInject';
@@ -29,18 +32,37 @@ export default {
       $scope.showDetails = false;
     };
 
+    /**
+     * @param {string} [layerToSelect]
+     */
     $scope.connect = function (layerToSelect) {
       HsHistoryListService.addSourceHistory('Wms', $scope.url);
-      HsWmsGetCapabilitiesService.requestGetCapabilities($scope.url).then(
-        (capabilities) => {
+      HsWmsGetCapabilitiesService.requestGetCapabilities($scope.url)
+        .then((capabilities) => {
           $timeout((_) => {
             HsAddLayersWmsAddLayerService.capabilitiesReceived(
               capabilities,
               layerToSelect
-            );
+            ).then((data) => {
+              if (layerToSelect) {
+                $scope.addLayers(true);
+                if (data && data.extent) {
+                  const extent = transformExtent(
+                    data.extent,
+                    'EPSG:4326',
+                    HsMapService.map.getView().getProjection()
+                  );
+                  if (extent !== null) {
+                    HsMapService.map
+                      .getView()
+                      .fit(extent, HsMapService.map.getSize());
+                  }
+                }
+              }
+            });
           }, 0);
-        }
-      );
+        })
+        .catch((e) => console.warn(e));
       $scope.showDetails = true;
     };
 
@@ -85,7 +107,7 @@ export default {
      * @memberof hs.addLayersWms
      * @function setUrlAndConnect
      * @param {string} url Url of requested service
-     * @param {string} layer Optional layer to select, when
+     * @param {string} [layer] Optional layer to select, when
      * getCapabilities arrives
      */
     $scope.setUrlAndConnect = function (url, layer) {

@@ -58,7 +58,11 @@ export default function (
     }
   }
 
-  this.capabilitiesReceived = function (response, layerToSelect) {
+  /**
+   * @param response
+   * @param {string} [layerToSelect]
+   */
+  this.capabilitiesReceived = async function (response, layerToSelect) {
     try {
       const parser = new WMSCapabilities();
       const caps = parser.read(response);
@@ -106,6 +110,9 @@ export default function (
       } else if (typeof caps.Capability.Layer == 'object') {
         me.data.services = [caps.Capability.Layer];
       }
+      me.data.extent =
+        me.data.services[0].EX_GeographicBoundingBox ||
+        me.data.services[0].BoundingBox;
 
       selectLayerByName(layerToSelect);
 
@@ -127,7 +134,9 @@ export default function (
         'text/plain',
         'text/html',
       ]);
+      //FIXME: unused?
       $rootScope.$broadcast('wmsCapsParsed');
+      return me.data;
     } catch (e) {
       $rootScope.$broadcast('wmsCapsParseError', e);
     }
@@ -161,7 +170,7 @@ export default function (
   }
 
   /**
-   * @param layerToSelect
+   * @param {string} layerToSelect
    */
   function selectLayerByName(layerToSelect) {
     if (layerToSelect) {
@@ -190,10 +199,10 @@ export default function (
       );
     }, 0);
   };
-    /**
+  /**
    * @function checkboxChange
    * @memberOf add-layers-wms.service
-   * @description Determines whether any of checkboxes (layer/sublayer) of add-layer-wms directive is checked. 
+   * @description Determines whether any of checkboxes (layer/sublayer) of add-layer-wms directive is checked.
    * @param {boolean} changed - Layer or sublayer of service to be added to map
    */
   me.checkboxChange = function (changed) {
@@ -206,7 +215,7 @@ export default function (
    * @function addLayers
    * @memberOf add-layers-wms.controller
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+   * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
    */
   me.addLayers = function (checked) {
     /**

@@ -1,16 +1,14 @@
-import '../../utils/utils.module';
+/* eslint-disable angular/definedundefined */
 import * as xml2Json from 'xml-js';
 import moment from 'moment';
 global.moment = moment;
-import '../../../common/get-capabilities.module';
-import GML3 from 'ol/format/GML3';
-import VectorLayer from 'ol/layer/Vector';
-import {WFS} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
-import {get} from 'ol/proj';
-import {transform, transformExtent} from 'ol/proj';
-
+import {GML as GML3, WFS} from 'ol/format';
 import {Vector} from 'ol/source';
+import {bbox} from 'ol/loadingstrategy';
+import {get, transformExtent} from 'ol/proj';
+
+import '../../../common/get-capabilities.module';
+import '../../utils/utils.module';
 
 /**
  * @param HsConfig
@@ -114,7 +112,7 @@ export class HsAddLayersWfsService {
     return src;
   }
 
-  parseCapabilities(response) {
+  async parseCapabilities(response) {
     this.loadingFeatures = false;
 
     let caps = xml2Json.xml2js(response.data, {compact: true});
@@ -133,8 +131,10 @@ export class HsAddLayersWfsService {
     this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
       ? caps.FeatureTypeList.FeatureType
       : [caps.FeatureTypeList.FeatureType];
-    this.output_formats = layer.OutputFormats.Format;
-    this.bbox = layer.OutputFormats.WGS84BoundingBox;
+    this.output_formats = layer.OutputFormats
+      ? layer.OutputFormats.Format
+      : 'GML3';
+    this.bbox = layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
     if (typeof this.output_formats == 'string') {
       this.output_formats = [
@@ -186,7 +186,7 @@ export class HsAddLayersWfsService {
 
     this.srs = (() => {
       for (const srs of this.srss) {
-        if(srs.includes('3857')){
+        if (srs.includes('3857')) {
           return srs;
         }
       }
@@ -200,7 +200,9 @@ export class HsAddLayersWfsService {
         this.$rootScope.$broadcast('wfs_capabilities_error', e);
       }
     });
+    return this.bbox;
   }
+
   getPreferedFormat(formats) {
     for (const format of formats) {
       if (format.includes('geojson') || format.includes('GML')) {
@@ -209,6 +211,7 @@ export class HsAddLayersWfsService {
       return 'GML3';
     }
   }
+
   parseFeatureCount() {
     angular.forEach(this.services, (service) => {
       const url = [
@@ -277,6 +280,7 @@ export class HsAddLayersWfsService {
       );
     }
   }
+
   parseEPSG(srss) {
     srss.forEach((srs, index) => {
       const epsgCode = srs.slice(-4);
@@ -285,7 +289,6 @@ export class HsAddLayersWfsService {
         srss.splice(srss.indexOf(index), 1);
       }
     });
-
     return [...new Set(srss)].filter((srs) =>
       this.definedProjections.includes(srs)
     );
