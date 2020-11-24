@@ -36,40 +36,31 @@ export class HsAdvancedMickaDialogComponent {
    */
   showSuggestions(input: string, param: string, field: string): void {
     this.hsMickaFilterService.changeSuggestionConfig(input, param, field);
-    if (this.hsConfig.design === 'md') {
-      this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
-        input
-      ];
-      this.hsMickaFilterService.suggestionFilterChanged(
-        this.mickaDatasetConfig
+    if (
+      this.hsLayoutService.contentWrapper.querySelector(
+        '.hs-ds-suggestions-micka'
+      ) === null
+    ) {
+      this.hsDialogContainerService.create(
+        HsMickaSuggestionsDialogComponent,
+        {mickaDatasetConfig: this.mickaDatasetConfig}
       );
+      //FIXME: $compile
+      /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
+      this.hsLayoutService.contentWrapper
+        .querySelector('.hs-dialog-area')
+        .appendChild(el[0]);
+      $compile(el)(scope);*/
     } else {
-      if (
-        this.hsLayoutService.contentWrapper.querySelector(
-          '.hs-ds-suggestions-micka'
-        ) === null
-      ) {
-        this.hsDialogContainerService.create(
-          HsMickaSuggestionsDialogComponent,
-          {mickaDatasetConfig: this.mickaDatasetConfig}
-        );
-        //FIXME: $compile
-        /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
-        this.hsLayoutService.contentWrapper
-          .querySelector('.hs-dialog-area')
-          .appendChild(el[0]);
-        $compile(el)(scope);*/
-      } else {
-        this.suggestionsModalVisible = true;
-        const filterElement = this.hsLayoutService.contentWrapper.querySelector(
-          '.hs-ds-sug-filter'
-        );
-        this.hsMickaFilterService.suggestionFilter = this.query[input];
-        filterElement.focus();
-      }
-      this.hsMickaFilterService.suggestionFilterChanged(
-        this.mickaDatasetConfig
+      this.suggestionsModalVisible = true;
+      const filterElement = this.hsLayoutService.contentWrapper.querySelector(
+        '.hs-ds-sug-filter'
       );
+      this.hsMickaFilterService.suggestionFilter = this.query[input];
+      filterElement.focus();
     }
+    this.hsMickaFilterService.suggestionFilterChanged(
+      this.mickaDatasetConfig
+    );
   }
 }
