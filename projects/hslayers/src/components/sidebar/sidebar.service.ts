@@ -37,7 +37,7 @@ export class HsSidebarService {
     public HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
-    
+
     /**
      * List of visible buttons taking into acount viewport size
      *

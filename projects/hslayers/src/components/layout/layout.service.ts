@@ -145,10 +145,10 @@ export class HsLayoutService {
     be set after this service constructor is executed */
     setTimeout((_) => {
       this.parseConfig();
-    })
+    });
   }
 
-  parseConfig() {  
+  parseConfig() {
     for (const key of Object.keys(this.panelsEnabledDefaults)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }
@@ -168,7 +168,10 @@ export class HsLayoutService {
   }
 
   getPanelEnableState(panel): boolean {
-    if(this.panelsEnabledDefaults[panel] == undefined && this.HsConfig?.panelsEnabled[panel] == undefined){
+    if (
+      this.panelsEnabledDefaults[panel] == undefined &&
+      this.HsConfig?.panelsEnabled[panel] == undefined
+    ) {
       /* 
       Function called from sidebar and panel is 
       probably custom panel added to buttons array from outside 
@@ -176,9 +179,9 @@ export class HsLayoutService {
       return true;
     }
     if (this.HsConfig.panelsEnabled == undefined) {
-      return this.panelsEnabledDefaults[panel]
+      return this.panelsEnabledDefaults[panel];
     }
-    if(this.HsConfig.panelsEnabled[panel] == undefined) {
+    if (this.HsConfig.panelsEnabled[panel] == undefined) {
       return this.panelsEnabledDefaults[panel];
     } else {
       return this.HsConfig.panelsEnabled[panel];
