@@ -37,14 +37,15 @@ export class HsSidebarService {
     public HsUtilsService: HsUtilsService
   ) {
     this.extraButtons = [];
+    
     /**
      * List of visible buttons taking into acount viewport size
      *
      * @memberof HsSidebarService
      * @member visibleButtons
      */
-
     this.visibleButtons = [];
+
     /**
      * List of sidebar buttons
      *
@@ -288,7 +289,7 @@ export class HsSidebarService {
   setPanelState(buttons: Array<HsButton>): void {
     for (const button of buttons) {
       if (
-        this.HsLayoutService.panelEnabled(button.panel) &&
+        this.HsLayoutService.getPanelEnableState(button.panel) &&
         this.checkConfigurableButtons(button)
       ) {
         if (!this.visibleButtons.includes(button.panel)) {

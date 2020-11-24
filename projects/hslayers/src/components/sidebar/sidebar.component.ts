@@ -24,13 +24,16 @@ export class HsSidebarComponent implements OnInit {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
     if (this.HsPermalinkUrlService.getParamValue('hs_panel')) {
-      if (this.HsCoreService.exists() && !this.HsLayoutService.minisidebar) {
+      if (!this.HsLayoutService.minisidebar) {
         this.HsLayoutService.setMainPanel(
           this.HsPermalinkUrlService.getParamValue('hs_panel')
         );
       }
     }
     this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+    this.HsConfig.configChanges.subscribe((_) => {
+      this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+    });
     this.HsSidebarService.sidebarLoad.next();
   }
 
