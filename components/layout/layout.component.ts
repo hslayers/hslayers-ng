@@ -55,30 +55,22 @@ export class HsLayoutComponent {
       innerElement: '.hs-map-container',
     });
 
-    if (this.HsConfig.importCss == undefined || this.HsConfig.importCss) {
-      require('ol/ol.css');
-      require('../../css/app.scss');
-      /* if (window.cordova) {
-        require('../../css/mobile.css');
-      } */
-      require('../../css/whhg-font/css/whhg.css');
-
-      if (this.HsConfig.theme) {
-        if (this.HsConfig.theme.sidebar) {
-          this.HsLayoutService.layoutElement.style.setProperty(
-            '--sidebar-bg-color',
-            this.HsConfig.theme.sidebar.background || null
-          );
-        }
+    require('../../css/app.scss');
+    if (this.HsConfig.theme) {
+      if (this.HsConfig.theme.sidebar) {
         this.HsLayoutService.layoutElement.style.setProperty(
-          '--sidebar-item-color',
-          this.HsConfig.theme.sidebar.itemColor || null
-        );
-        this.HsLayoutService.layoutElement.style.setProperty(
-          '--sidebar-active-color',
-          this.HsConfig.theme.sidebar.activeItemColor || null
+          '--sidebar-bg-color',
+          this.HsConfig.theme.sidebar.background || null
         );
       }
+      this.HsLayoutService.layoutElement.style.setProperty(
+        '--sidebar-item-color',
+        this.HsConfig.theme.sidebar.itemColor || null
+      );
+      this.HsLayoutService.layoutElement.style.setProperty(
+        '--sidebar-active-color',
+        this.HsConfig.theme.sidebar.activeItemColor || null
+      );
     }
   }
 
