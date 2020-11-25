@@ -10,6 +10,7 @@ import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryModule} from './query.module';
 import {HsQueryVectorService} from './query-vector.service';
+import {HsQueryWmtsService} from './query-wmts.service';
 import {HsQueryWmsService} from './query-wms.service';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
@@ -73,6 +74,14 @@ angular
    * @description TODO
    */
   .service('HsQueryWmsService', downgradeInjectable(HsQueryWmsService))
+
+    /**
+   * @ngdoc service
+   * @name HsQueryWmtsService
+   * @memberOf hs.query
+   * @description TODO
+   */
+  .service('HsQueryWmtsService', downgradeInjectable(HsQueryWmtsService))
 
   /**
    * @ngdoc service
