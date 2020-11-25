@@ -5,14 +5,14 @@
                 <h4 class="modal-title">
                     {{'ADDLAYERS.resampleLayer' | translate}}
                 </h4>
-                <button type="button" class="close" ng-click="resampleModalVisible = false" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
+                <button type="button" class="close" (click)="resampleModalVisible = false" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 {{'ADDLAYERS.mapProjectionAndLayerProjection' | translate}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="use_resampling=true; addLayers(add_all); resampleModalVisible = false" data-dismiss="modal">{{'ADDLAYERS.useProxy' | translate}}</button>
-                <button type="button" class="btn btn-secondary" ng-click="resampleModalVisible = false" data-dismiss="modal">{{'COMMON.cancel' | translate}}</button>
+                <button type="button" class="btn btn-primary" (click)="use_resampling=true; addLayers(add_all); resampleModalVisible = false" data-dismiss="modal">{{'ADDLAYERS.useProxy' | translate}}</button>
+                <button type="button" class="btn btn-secondary" (click)="resampleModalVisible = false" data-dismiss="modal">{{'COMMON.cancel' | translate}}</button>
             </div>
         </div>
     </div>
