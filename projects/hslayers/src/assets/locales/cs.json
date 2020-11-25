@@ -432,6 +432,7 @@
     "search": "Vyhledat:"
   },
   "SENSORS": {
+    "at": "v",
     "avg": "Prům.",
     "max": "Max",
     "measure": "Měření",

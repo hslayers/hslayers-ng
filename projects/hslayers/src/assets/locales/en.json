@@ -433,6 +433,12 @@
   },
   "SENSORS": {
     "avg": "Avg.",
+    "at": "at",
+    "1H": "1H",
+    "1D": "1D",
+    "1W": "1W",
+    "1M": "1M",
+    "6M": "6M",
     "max": "Max",
     "measure": "Measure",
     "min": "Min",
