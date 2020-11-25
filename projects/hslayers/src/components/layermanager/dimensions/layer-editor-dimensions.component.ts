@@ -27,8 +27,16 @@ export class HsLayerEditorDimensionsComponent {
       this.dimensions = [];
     }
     if (layer.get('dimensions') && Object.entries(layer.get('dimensions'))) {
-      for (const [key, dimension] of Object.entries(layer.get('dimensions'))) {
-        this.dimensions.push(new HsDimensionDescriptor(key, dimension));
+      for (const [key, dimension] of <[any, any]>(
+        Object.entries(layer.get('dimensions'))
+      )) {
+        let available = true;
+        if (this.HsUtilsService.isFunction(dimension.availability)) {
+          available = dimension.availability(layer);
+        }
+        if (available) {
+          this.dimensions.push(new HsDimensionDescriptor(key, dimension));
+        }
       }
     }
   }
