@@ -20,38 +20,43 @@
         </div>
         <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
             [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translate}}</p>
-        <div [hidden]="!HsDrawService.type" class="btn-group w-75  m-auto"
+        <div [hidden]="!HsDrawService.type" class="btn-group w-100  m-auto justify-content-center"
             [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
-            <div [hidden]="!(HsDrawService.drawableLayers.length == 0)"
-                class="flex-row w-100 m-auto justify-content-around align-items-center" style="display: flex;">
-                <p class="m-0 p-0" style="color:crimson">{{'DRAW.unsavedDrawing' | translate}}</p>
-                <a href="#" class="ml-2" (click)="HsDrawService.saveDrawingLayer()">{{'COMMON.saveAs' | translate}}</a>
-            </div>
-            <div class="flex-row w-75 m-auto justify-content-center align-items-center"
-                *ngIf="HsDrawService.drawableLayers.length != 0" style="display: flex;">
+            <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
                 <p class="m-0 p-0" style="color: blue;">{{'DRAW.drawingTo' | translate}}</p>
                 <div class="dropdown">
-                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true"
-                        (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
-                        [attr.aria-expanded]="layersExpanded">
+                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
+                        [attr.aria-expanded]="layersExpanded"
+                        [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,
+                        'dropdown-toggle' : HsDrawService.hasSomeDrawables }" [disabled]="!HsDrawService.hasSomeDrawables">
                         {{HsDrawService.selectedLayerString()}}
                     </button>
                     <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
-                        <a class="dropdown-item" href="#" *ngFor="let layer of HsDrawService.drawableLayers"
-                            (click)="selectLayer(layer)">{{layer.get('title')}}
-                        </a>
-
+                        <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
+                            <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' | translate}}</label>
+                            <a class="dropdown-item" href="#" *ngFor="let layer of HsDrawService.drawableLayers"
+                                (click)="selectLayer(layer)">{{layer.get('title')}}</a>
+                        </div>
+                        <div class="d-flex align-items-center w-100 flex-column"
+                            *ngIf="HsDrawService.drawableLaymanLayers.length > 0">
+                            <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
+                            <a class="dropdown-item" href="#" *ngFor="let layer of HsDrawService.drawableLaymanLayers"
+                                (click)="selectLayer(layer)">{{layer.title}}</a>
+                        </div>
                     </div>
                 </div>
-
+                <button type="button" *ngIf="HsDrawService.tmpDrawLayer" class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer($scope)"
+                [title]="'DRAW.saveDrawingToLayer' | translate">
+                <i class="glyphicon icon-save-floppy"></i>
+                </button>
+                <button type="button" *ngIf="HsDrawService.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm"
+                    (click)="HsDrawService.removeLayer()" [title]="'COMMON.removeLayer' | translate"
+                    style="border: none !important;">
+                    <i class="glyphicon icon-trash"></i>
+                </button>
             </div>
-            <button type="button" *ngIf="HsDrawService.selectedLayer" class="btn btn-light  btn-outline-danger btn-sm"
-                (click)="HsDrawService.removeLayer()" [title]="'COMMON.removeLayer' | translate"
-                style="border: none !important;">
-                <i class="glyphicon icon-trash"></i>
-            </button>
         </div>
     </div>
 

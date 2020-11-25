@@ -457,4 +457,10 @@ export class HsLaymanService implements HsSaverService {
       ) >= 0
     );
   }
+
+  getLaymanEndpoint() {
+    return this.HsCommonEndpointsService.endpoints
+      .filter((e) => e.type == 'layman')
+      .pop();
+  }
 }

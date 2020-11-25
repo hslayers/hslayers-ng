@@ -56,7 +56,10 @@
         },
         "fillOpacity": "Remplir l'opacité:",
         "individualStyle": "Style individuel pour entité",
-        "unsavedDrawing": "Dessin non enregistré"
+        "unsavedDrawing": "Dessin non enregistré",
+        "saveDrawingToLayer": "Save drawing to layer",
+        "activeLayers": "Active layers",
+        "serverLayers": "Server layers"
     },
     "LAYERMANAGER": {
         "baselayers": "Fond de carte de base",
