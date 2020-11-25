@@ -11,7 +11,6 @@ import {HsSidebarService} from './sidebar.service';
   template: require('./partials/sidebar.html'),
 })
 export class HsSidebarComponent implements OnInit {
-
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -24,7 +23,7 @@ export class HsSidebarComponent implements OnInit {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
     }
     if (this.HsPermalinkUrlService.getParamValue('hs_panel')) {
-      if (this.HsCoreService.exists() && !this.HsLayoutService.minisidebar) {
+      if (!this.HsLayoutService.minisidebar) {
         this.HsLayoutService.setMainPanel(
           this.HsPermalinkUrlService.getParamValue('hs_panel')
         );
