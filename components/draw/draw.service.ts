@@ -186,6 +186,7 @@ export class HsDrawService {
         this.HsMapService.map.removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
       }
+      this.HsQueryBaseService.activateQueries();
       return false;
     }
     //console.log(this.drawableLayers);
