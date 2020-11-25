@@ -58,7 +58,7 @@ export class HsQueryBaseService {
     'composition_browser',
     'analysis',
     'sensors',
-    'draw',
+    // 'draw',
     'tripPlanner',
   ];
   last_coordinate_clicked: any;

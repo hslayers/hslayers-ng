@@ -66,7 +66,9 @@ export class HsQueryComponent {
         } else {
           this.popup.hide();
           if (this.HsQueryBaseService.currentPanelQueryable()) {
-            this.HsLayoutService.setMainPanel('info');
+            if (this.HsLayoutService.mainpanel != 'draw') {
+              this.HsLayoutService.setMainPanel('info');
+            }
           }
         }
       });
