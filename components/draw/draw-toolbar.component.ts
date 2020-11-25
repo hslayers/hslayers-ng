@@ -36,6 +36,7 @@ export class HsDrawToolbarComponent {
     if (!this.drawToolbarExpanded) {
       this.HsDrawService.stopDrawing();
     }
+    this.HsDrawService.fillDrawableLayers()
   }
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);
