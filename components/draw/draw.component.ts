@@ -4,6 +4,7 @@ import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {HsDrawService} from './draw.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class HsDrawComponent {
 
   constructor(
     public HsDrawService: HsDrawService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   activateDrawing(withStyle?): void {

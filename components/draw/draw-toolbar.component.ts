@@ -38,11 +38,19 @@ export class HsDrawToolbarComponent {
     }
   }
   selectLayer(layer): void {
-    if (layer != this.HsDrawService.selectedLayer) {
-      this.HsDrawService.selectedLayer = layer;
-      this.HsDrawService.changeDrawSource();
-    }
+    this.HsDrawService.selectLayer(layer);
     this.layersExpanded = false;
+  }
+
+  controlLayerListAction(newLayer: boolean) {
+    if (
+      !this.HsDrawService.hasSomeDrawables &&
+      this.HsDrawService.tmpDrawLayer
+    ) {
+      this.HsDrawService.saveDrawingLayer(newLayer);
+    } else {
+      this.layersExpanded = !this.layersExpanded;
+    }
   }
 
   setType(what): void {

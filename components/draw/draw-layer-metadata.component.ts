@@ -65,6 +65,11 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     });
   }
 
+  cancel() {
+    this.data.selectedLayer = this.data.previouslySelected;
+    this.AddNewDrawLayerModalVisible = false;
+  }
+
   async awaitLayerSync(layer) {
     while (layer.get('hs-layman-synchronizing')) {
       await new Promise((r) => setTimeout(r, 200));
