@@ -206,7 +206,8 @@
       "defaultValue": "Noklusējuma vērtības",
       "layerTitle": "Slāņa virsraksts",
       "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
-      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā"
+      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
+      "loadServerLayers": "Load layer from server"
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",

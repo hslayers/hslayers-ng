@@ -206,7 +206,8 @@
       "defaultValue": "Default value",
       "layerTitle": "Layer title",
       "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
-      "nameOfFolder": "Name of folder in layer-manager hierararchy"
+      "nameOfFolder": "Name of folder in layer-manager hierararchy",
+      "loadServerLayers": "Load layer from server"
     },
     "drawToolbar": {
       "addDrawLayer": "Add draw layer",

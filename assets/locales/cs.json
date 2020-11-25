@@ -206,7 +206,8 @@
       "defaultValue": "Výchozí hodnota",
       "layerTitle": "Název vrstvy",
       "layerWillBeAdded": "*Vrstva bude přidána do mapy a lze ji dále spravovat v panelu \"Správce vrstev\"",
-      "nameOfFolder": "Název složky v hierarchii správce vrstev"
+      "nameOfFolder": "Název složky v hierarchii správce vrstev",
+      "loadServerLayers": "Načíst vrstvu ze serveru"
     },
     "drawToolbar": {
       "addDrawLayer": "Přidat vrstvu pro kreslení",

@@ -47,7 +47,8 @@
             "defaultValue": "Valeur par défaut",
             "layerTitle": "Titre du calque",
             "layerWillBeAdded": "*Le calque sera ajouté à la carte et pourra être géré ultérieurement dans le panneau \"Gestionnaire des calques\"",
-            "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches"
+            "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches",
+            "loadServerLayers": "Load layer from server"
         },
         "drawToolbar": {
             "addDrawLayer": "Ajouter un calque de dessin",
