@@ -6,9 +6,15 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HsResampleDialogComponent implements OnInit {
   resampleModalVisible: boolean;
+  use_resampling: boolean;
+
   constructor() {}
 
   ngOnInit(): void {
     this.resampleModalVisible = true;
+  }
+
+  addLayers() {
+    // TODO
   }
 }
