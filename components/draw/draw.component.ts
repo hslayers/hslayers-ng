@@ -41,10 +41,7 @@ export class HsDrawComponent {
   }
 
   selectLayer(layer): void {
-    if (layer != this.HsDrawService.selectedLayer) {
-      this.HsDrawService.selectedLayer = layer;
-      this.HsDrawService.changeDrawSource();
-    }
+    this.HsDrawService.selectLayer(layer);
     this.layersExpanded = false;
   }
 
