@@ -16,8 +16,10 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   title: any;
   path: string;
   folderVisible = false;
+  type: string;
 
   constructor(public HsMapService: HsMapService) {}
+
   viewRef: ViewRef;
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;
@@ -76,5 +78,10 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
 
   addAttr(): void {
     this.attributes.push({id: Math.random(), name: '', value: ''});
+  }
+
+  selectLayer(layer) {
+    this.data.selectLayer(layer);
+    this.AddNewDrawLayerModalVisible = false;
   }
 }
