@@ -47,7 +47,8 @@
             "defaultValue": "Standaardwaarde",
             "layerTitle": "Laag titel",
             "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
-            "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder"
+            "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
+            "loadServerLayers": "Load layer from server"
         },
         "drawToolbar": {
             "addDrawLayer": "Tekenlaag toevoegen",
