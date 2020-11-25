@@ -6,10 +6,12 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -26,9 +28,6 @@ class emptyMock {
   constructor() {}
 }
 class HsConfigMock {
-  constructor() {}
-}
-class HsLanguageMock {
   constructor() {}
 }
 
@@ -48,8 +47,14 @@ describe('HsDraw', () => {
   const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
     'activateQueries',
     'deactivateQueries',
+    'data',
   ]);
-
+  const mockLaymanService = jasmine.createSpyObj('HsLaymanService', [
+    'getLaymanEndpoint',
+  ]);
+  const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
+    'getTranslation',
+  ]);
   const layer = new VectorLayer({
     title: 'Point',
     source: new VectorSource({}),
@@ -75,13 +80,15 @@ describe('HsDraw', () => {
       providers: [
         HsDrawService,
         {provide: HsLayoutService, useValue: mockLayoutService},
-        {provide: HsLanguageService, useValue: new HsLanguageMock()},
+        {provide: HsLanguageService, useValue: mockLanguageService},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
-        {provide: HsLaymanService, useValue: new emptyMock()},
+        {provide: HsLaymanService, useValue: mockLaymanService},
+        {provide: HsLaymanBrowserService, useValue: new emptyMock()},
+        {provide: HsAddLayersVectorService, useValue: new emptyMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);
