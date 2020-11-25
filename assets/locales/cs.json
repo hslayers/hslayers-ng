@@ -219,7 +219,10 @@
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "saveDrawingToLayer": "Uložit do vrstvy",
+    "activeLayers": "Aktivní vrstvy",
+    "serverLayers": "Servrové vrstvy"
   },
   "FEATURE_TABLE": {
     "delete": "delete",

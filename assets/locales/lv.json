@@ -219,7 +219,10 @@
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "saveDrawingToLayer": "Save drawing to layer",
+    "activeLayers": "Active layers",
+    "serverLayers": "Server layers"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",

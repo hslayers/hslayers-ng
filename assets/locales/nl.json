@@ -56,7 +56,10 @@
         },
         "fillOpacity": "Vul de dekking:",
         "individualStyle": "Individuele stijl voor entiteit",
-        "unsavedDrawing": "Niet-opgeslagen tekening"
+        "unsavedDrawing": "Niet-opgeslagen tekening",
+        "saveDrawingToLayer": "Save drawing to layer",
+        "activeLayers": "Active layers",
+        "serverLayers": "Server layers"
     },
     "LAYERMANAGER": {
         "baselayers": "Basislagen",

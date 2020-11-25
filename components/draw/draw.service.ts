@@ -21,6 +21,8 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
+import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
+
 type activateParams = {
   onDrawStart?;
   onDrawEnd?;
@@ -35,6 +37,8 @@ type activateParams = {
 })
 export class HsDrawService {
   drawableLayers: Array<any> = [];
+  drawableLaymanLayers: Array<any> = [];
+  hasSomeDrawables: boolean;
   draw: Draw;
   modify: any;
   /**
@@ -74,6 +78,7 @@ export class HsDrawService {
     layer: BaseLayer;
     source: VectorSource;
   }> = new Subject();
+  laymanEndpoint: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -86,7 +91,8 @@ export class HsDrawService {
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
     public HsLaymanService: HsLaymanService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsLaymanBrowserService: HsLaymanBrowserService,
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -350,6 +356,19 @@ export class HsDrawService {
       this.deactivateDrawing();
     }
     this.drawableLayers = drawables;
+    this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
+    if (this.laymanEndpoint) {
+      this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint);
+      if (this.laymanEndpoint.layers) {
+        this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
+          (layer) => {
+            return !this.HsMapService.findLayerByTitle(layer.title);
+          }
+        );
+      }
+    }
+    this.hasSomeDrawables =
+      this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
   }
   /**
    * @function removeLayer
