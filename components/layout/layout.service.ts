@@ -97,6 +97,26 @@ export class HsLayoutService {
   contentWrapper: any;
   layoutElement: any;
   private _sidebarVisible: any;
+  panelsEnabledDefaults = {
+    legend: true,
+    info: true,
+    composition_browser: true,
+    toolbar: true,
+    mobile_settings: false,
+    draw: false,
+    datasource_selector: true,
+    layermanager: true,
+    print: true,
+    saveMap: true,
+    language: true,
+    permalink: true,
+    compositionLoadingProgress: false,
+    sensors: true,
+    tracking: true,
+    filter: false,
+    search: false,
+    tripPlanner: false,
+  };
 
   constructor(
     public HsConfig: HsConfig,
@@ -121,54 +141,50 @@ export class HsLayoutService {
       },
     });
 
-    const panelsEnabledDefaults = {
-      legend: true,
-      info: true,
-      composition_browser: true,
-      toolbar: true,
-      mobile_settings: false,
-      draw: false,
-      datasource_selector: true,
-      layermanager: true,
-      print: true,
-      saveMap: true,
-      language: true,
-      permalink: true,
-      compositionLoadingProgress: false,
-      sensors: true,
-      tracking: true,
-      filter: false,
-      search: false,
-      tripPlanner: false,
-    };
+    /* Timeout is needed because Hsconfig can 
+    be set after this service constructor is executed */
+    setTimeout((_) => {
+      this.parseConfig();
+    });
+  }
 
-    for (const key of Object.keys(panelsEnabledDefaults)) {
-      const value = panelsEnabledDefaults[key];
-      if (
-        this.HsConfig.panelsEnabled == undefined ||
-        HsConfig.panelsEnabled[key] == undefined
-      ) {
-        this.panelEnabled(key, value);
-      }
-    }
-    if (this.HsConfig.panelsEnabled) {
-      for (const key of Object.keys(this.HsConfig.panelsEnabled)) {
-        const value = this.HsConfig.panelsEnabled[key];
-        this.panelEnabled(key, value);
-      }
+  parseConfig() {
+    for (const key of Object.keys(this.panelsEnabledDefaults)) {
+      this.panelEnabled(key, this.getPanelEnableState(key));
     }
     this.createComponentsEnabledConfigIfNeeded();
     // For backwards-compatibility
     if (this.HsConfig.locationButtonVisible) {
-      $log.warn(
+      this.$log.warn(
         'config.locationButtonVisible parameter is deprecated. Use config.componentsEnabled.geolocationButton instead'
       );
-      if (HsConfig.componentsEnabled.geolocationButton == undefined) {
+      if (this.HsConfig.componentsEnabled.geolocationButton == undefined) {
         this.HsConfig.componentsEnabled.geolocationButton = this.HsConfig.locationButtonVisible;
       }
     }
-    if (HsConfig.componentsEnabled?.basemapGallery == undefined) {
-      HsConfig.componentsEnabled.basemapGallery = false;
+    if (this.HsConfig.componentsEnabled?.basemapGallery == undefined) {
+      this.HsConfig.componentsEnabled.basemapGallery = false;
+    }
+  }
+
+  getPanelEnableState(panel): boolean {
+    if (
+      this.panelsEnabledDefaults[panel] == undefined &&
+      this.HsConfig?.panelsEnabled[panel] == undefined
+    ) {
+      /* 
+      Function called from sidebar and panel is 
+      probably custom panel added to buttons array from outside 
+      */
+      return true;
+    }
+    if (this.HsConfig.panelsEnabled == undefined) {
+      return this.panelsEnabledDefaults[panel];
+    }
+    if (this.HsConfig.panelsEnabled[panel] == undefined) {
+      return this.panelsEnabledDefaults[panel];
+    } else {
+      return this.HsConfig.panelsEnabled[panel];
     }
   }
 
