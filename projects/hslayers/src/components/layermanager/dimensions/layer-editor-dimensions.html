@@ -1,17 +1,18 @@
 <div [hidden]="!isLayerWithDimensions()">
     <p style="text-align: center;font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
-    <div class="form-group" *ngFor="let dimension of dimensions">
-        <label class="control-label">{{dimension.label || dimension.name}}:</label>
+    <div class="form-inline" *ngFor="let dimension of dimensions">
+        <label class="control-label" style="width: 100%; justify-content: left;">{{dimension.label || dimension.name}}:</label>
 
-        <select class="form-control" [(ngModel)]="dimension.modelValue" *ngIf="dimension.type == null" (change)="dimensionChanged(dimension)">
+        <select class="form-control" style="width: 100%" [(ngModel)]="dimension.modelValue" *ngIf="dimension.type == null" (change)="dimensionChanged(dimension)">
             <option [ngValue]="dimension_value" *ngFor="let dimension_value of dimension.values">
                 {{dimension_value}}</option>
         </select>
-        <div class="input-group" *ngIf="dimension.type == 'datetime'">
-            <input type="text" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="dimensionChanged(dimension)"/>
+        <div class="input-group flex-fill" *ngIf="dimension.type == 'datetime' || dimension.type == 'date'">
+            <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="dimensionChanged(dimension)"/>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
             </div>
         </div>
+        <ngb-timepicker *ngIf="dimension.type == 'datetime'" size="small" [(ngModel)]="dimension.modelTimeValue" (ngModelChange)="dimensionChanged(dimension)"></ngb-timepicker>
     </div>
 </div>

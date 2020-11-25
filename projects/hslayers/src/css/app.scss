@@ -1705,6 +1705,9 @@ a.hs-sensor-unit{color: black; font-weight: bold;}
 .hs-date-time-chevron:not(*:root) { /* Supports only WebKit browsers */
 	visibility: hidden;
 }
+.form-inline .ngb-tp-input {
+	width: 4em
+}
 hs-layer-editor .form-check {line-height: 1.5}
 hs-layer-editor .card-body {padding: 0.65rem}
 hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
