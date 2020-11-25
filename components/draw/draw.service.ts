@@ -80,6 +80,7 @@ export class HsDrawService {
     source: VectorSource;
   }> = new Subject();
   laymanEndpoint: any;
+  previouslySelected: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -140,6 +141,7 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(addNewLayer = false): void {
+    this.previouslySelected = this.selectedLayer;
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
     const tmpLayer =
       addNewLayer === true
