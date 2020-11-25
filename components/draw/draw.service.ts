@@ -4,6 +4,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -11,6 +12,7 @@ import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.componen
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -21,7 +23,6 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
-import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
 
 type activateParams = {
   onDrawStart?;
@@ -93,6 +94,7 @@ export class HsDrawService {
     public HsLaymanService: HsLaymanService,
     public HsLanguageService: HsLanguageService,
     public HsLaymanBrowserService: HsLaymanBrowserService,
+    public HsAddLayersVectorService: HsAddLayersVectorService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -161,6 +163,10 @@ export class HsDrawService {
       style: this.defaultStyle,
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
+      definition: {
+        format: 'hs.format.WFS',
+        url: this.HsLaymanService.getLaymanEndpoint().url + '/wfs', //which endpoint? TODO
+      },
     });
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
@@ -201,6 +207,35 @@ export class HsDrawService {
       ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
       : this.selectedLayer.getSource();
     return true;
+  }
+
+  async selectLayer(layer) {
+    let lyr = layer;
+    if (layer.type) {
+      lyr = await this.HsAddLayersVectorService.addVectorLayer(
+        'wfs',
+        this.laymanEndpoint.url,
+        layer.name,
+        layer.title,
+        undefined,
+        'EPSG:4326',
+        undefined
+      );
+      lyr = this.HsMapService.findLayerByTitle(layer.title);
+    }
+    if (lyr != this.selectedLayer) {
+      if (
+        this.selectedLayer &&
+        this.selectedLayer.get('title') == 'tmpDrawLayer'
+      ) {
+        this.tmpDrawLayer = false;
+        this.HsMapService.map.removeLayer(this.selectedLayer);
+      }
+
+      this.selectedLayer = lyr;
+      this.changeDrawSource();
+    }
+    this.fillDrawableLayers();
   }
 
   addDrawLayer(layer: Layer): void {
