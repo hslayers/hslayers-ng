@@ -78,6 +78,10 @@
             (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translate">
             <i class="icon-circleloaderfull"></i>
         </button>
+        <button class="btn btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
+        (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'STYLER.selection' | translate">
+        <i class="icon-cursor"></i>
+        </button>
     </div>
     <div [hidden]="HsDrawService.type == null " class="pt-2">
         <div class="form-check" style="font-size: smaller">
@@ -106,5 +110,8 @@
                 [(ngModel)]="linewidth" (ngModelChange)="updateStyle()" />
 
         </div>
+    </div>
+    <div class="mh-75">
+        <hs-query-feature *ngFor="let item of HsQueryBaseService.data.features" [feature]="item"></hs-query-feature>
     </div>
 </div>

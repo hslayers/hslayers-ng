@@ -13,6 +13,7 @@ import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
 import {HsDrawToolbarComponent} from './draw-toolbar.component';
+import {HsQueryModule} from '../query/query.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -29,6 +30,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     HsStylerModule,
     TranslateModule,
+    HsQueryModule,
   ],
   exports: [
     HsDrawComponent,
