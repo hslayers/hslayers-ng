@@ -6,6 +6,7 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {HsDrawService} from './draw.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsQueryBaseService} from '../query/query-base.service';
 
 @Component({
   selector: 'hs-draw',
@@ -24,7 +25,8 @@ export class HsDrawComponent {
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsQueryBaseService: HsQueryBaseService
   ) {}
 
   activateDrawing(withStyle?): void {

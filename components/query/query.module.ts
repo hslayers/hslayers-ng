@@ -26,7 +26,11 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryAttributeRowComponent,
   ],
   imports: [CommonModule, HsPanelHelpersModule, FormsModule, TranslateModule],
-  exports: [HsQueryComponent, HsQueryFeaturePopupComponent],
+  exports: [
+    HsQueryComponent,
+    HsQueryFeaturePopupComponent,
+    HsQueryFeatureComponent,
+  ],
   providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
