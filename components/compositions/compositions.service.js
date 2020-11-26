@@ -259,7 +259,13 @@ export default function (
       if (!id.includes('http') && !id.includes(HsConfig.status_manager_url)) {
         id = HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
-      HsCompositionsParserService.loadUrl(id);
+      HsCompositionsParserService.loadUrl(id).catch((e) => {
+        console.warn(e);
+        HsCompositionsParserService.createErrorDialog(
+          'Composition not found',
+          e.data
+        );
+      });
     }
   }
 
