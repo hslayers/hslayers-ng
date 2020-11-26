@@ -156,6 +156,7 @@ export class HsDrawService {
         'DRAW.drawLayer'
       )} ${i++}`;
     }
+    const layman = this.HsLaymanService.getLaymanEndpoint();
     const drawLayer = new VectorLayer({
       title: tmpTitle,
       source: tmpSource,
@@ -166,8 +167,8 @@ export class HsDrawService {
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
       definition: {
-        format: 'hs.format.WFS',
-        url: this.HsLaymanService.getLaymanEndpoint().url + '/wfs', //which endpoint? TODO
+        format: layman ? 'hs.format.WFS' : null,
+        url: layman ? layman.url + '/wfs' : null
       },
     });
     this.selectedLayer = drawLayer;
