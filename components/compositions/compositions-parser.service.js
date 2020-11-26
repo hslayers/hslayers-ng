@@ -104,9 +104,14 @@ export default function (
             .then((res) => {
               if (res.data.file) {
                 // Layman composition wrapper
-                me.loadUrl(res.data.file.url, overwrite, callback, pre_parse);
+                return me.loadUrl(
+                  res.data.file.url,
+                  overwrite,
+                  callback,
+                  pre_parse
+                );
               } else {
-                me.loaded(res);
+                return me.loaded(res);
               }
             })
             .then(() => {
@@ -290,7 +295,11 @@ export default function (
           respError.abstract =
             'Sorry but composition was deleted or incorrectly saved';
           break;
+        default:
+          respError.title = 'Unknown error happened while loading composition';
+          respError.abstract = response.error.toString();
       }
+      console.warn(response.error);
       $rootScope.$broadcast('compositions.composition_loaded', respError);
     },
 
