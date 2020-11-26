@@ -23,9 +23,7 @@ export class HsLayerEditorDimensionsComponent {
 
   ngOnChanges(): void {
     const layer = this.olLayer;
-    if (layer == undefined) {
-      this.dimensions = [];
-    }
+    this.dimensions = [];
     if (layer.get('dimensions') && Object.entries(layer.get('dimensions'))) {
       for (const [key, dimension] of <[any, any]>(
         Object.entries(layer.get('dimensions'))
