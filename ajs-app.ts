@@ -1,6 +1,5 @@
 'use strict';
 
-import './components/add-layers/add-layers.module';
 import './components/core';
 import * as angular from 'angular';
 import * as proj from 'ol/proj';
@@ -46,27 +45,8 @@ window.ol = {
   proj,
 };
 export default angular
-  .module('hs', [
-    'hs.sidebar',
-    'hs.toolbar',
-    'hs.layermanager',
-    'hs.draw',
-    'hs.map',
-    'hs.query',
-    'hs.search',
-    'hs.print',
-    'hs.permalink',
-    'hs.measure',
-    'hs.legend',
-    'hs.core',
-    'hs.datasource_selector',
-    'hs.save-map',
-    'hs.addLayers',
-    'hs.compositions',
-    'hs.info',
-    'hs.styles',
-  ])
-  .directive('hs', (HsConfig, HsCore) => {
+  .module('hs', ['hs.core'])
+  .directive('hs', (HsCore) => {
     'ngInject';
     return {
       template: require('./hslayers.html'),
