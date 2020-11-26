@@ -1675,6 +1675,15 @@ div.feature-list {
 	height: 100%;
 }
 
+div.hs-infopanel-header {
+	display: flex;
+}
+
+div.hs-infopanel-header button.close {
+	margin: 1.245rem;
+	margin-bottom: 0;
+}
+
 div.feature-list md-content img {
 	max-width: 100%;
 	display: block;
@@ -1693,7 +1702,9 @@ div.feature-list md-content .content-body {
 	float: none;
 }
 
-div.feature-list:not(.card-list) md-content .content-body div > * {
+div.feature-list:not(.card-list) .main-content > *,
+div.feature-list:not(.card-list) .additional-content > *,
+div.feature-list:not(.card-list) .hs-infopanel-header > .heading {
 	padding-left: 16px;
 	padding-right: 16px;
 }
