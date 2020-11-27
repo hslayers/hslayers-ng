@@ -206,7 +206,8 @@
       "defaultValue": "Default value",
       "layerTitle": "Layer title",
       "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
-      "nameOfFolder": "Name of folder in layer-manager hierararchy"
+      "nameOfFolder": "Name of folder in layer-manager hierararchy",
+      "loadServerLayers": "Load layer from server"
     },
     "drawToolbar": {
       "addDrawLayer": "Add draw layer",
@@ -219,7 +220,10 @@
     "individualStyle": "Individual style for feature",
     "newGPS": "New GPS",
     "reallyDeleteThisLayer": "Really delete this layer?",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "saveDrawingToLayer": "Save drawing to layer",
+    "activeLayers": "Active layers",
+    "serverLayers": "Server layers"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
