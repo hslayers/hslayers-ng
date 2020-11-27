@@ -192,7 +192,7 @@
     "layerRDF": "Slāņa RDF",
     "metadataFor": "Metadati priekš",
     "noResults": "Nav rezultātu",
-    "suggestions": "Suggestions"
+    "suggestions": "Ieteikumi"
   },
   "DRAW": {
     "Select layer": "Izvēlieties slāni",
@@ -207,7 +207,7 @@
       "layerTitle": "Slāņa virsraksts",
       "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
       "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
-      "loadServerLayers": "Load layer from server"
+      "loadServerLayers": "Ielādēt slāni no servera"
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
@@ -221,9 +221,9 @@
     "newGPS": "Jauns GPS",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "unsavedDrawing": "Nesaglabāts zīmējums",
-    "saveDrawingToLayer": "Save drawing to layer",
-    "activeLayers": "Active layers",
-    "serverLayers": "Server layers"
+    "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
+    "activeLayers": "Aktīvie slāņi",
+    "serverLayers": "Servera slāņi"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
