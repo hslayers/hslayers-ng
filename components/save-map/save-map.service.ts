@@ -391,6 +391,7 @@ export class HsSaveMapService {
     // Vector
     if (this.HsUtilsService.instOf(layer, VectorLayer)) {
       const src = layer.getSource();
+      json.name = layer.get('name');
       json.className = 'Vector';
       const definition = layer.get('definition');
       if (definition && definition.url) {
