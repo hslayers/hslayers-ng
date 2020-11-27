@@ -17,6 +17,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   path: string;
   folderVisible = false;
   type: string;
+  endpoint: any;
 
   constructor(public HsMapService: HsMapService) {}
 
@@ -25,6 +26,11 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     this.layer = this.data.selectedLayer;
     this.title = this.layer.get('title');
     this.path = this.layer.get('path');
+    this.endpoint = this.data.laymanEndpoint;
+  }
+
+  authorized(){
+    return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
   }
 
   titleChanged(): void {
