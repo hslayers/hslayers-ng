@@ -134,7 +134,7 @@ export default function (
 
     controlLayerListAction() {
       if (!HsDrawService.hasSomeDrawables && HsDrawService.tmpDrawLayer) {
-        HsDrawService.saveDrawingLayer($scope);
+        HsDrawService.saveDrawingLayer();
       } else {
         $scope.layersExpanded = !$scope.layersExpanded;
       }
