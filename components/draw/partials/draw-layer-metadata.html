@@ -14,6 +14,12 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translate}}</p>
             </div>
+            <div *ngIf="authorized()" class="alert alert-danger" role="alert">
+                <p class="text-center">
+                    {{'User not authorized, drawings won´t be preserved' | translate}}
+                </p>
+                <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
+            </div>
             <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
                 *ngIf="data.drawableLaymanLayers.length > 0">
                 <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button" (click)="type = 'draw'"
