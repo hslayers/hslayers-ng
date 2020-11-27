@@ -43,12 +43,12 @@ export class HsDrawToolbarComponent {
     this.layersExpanded = false;
   }
 
-  controlLayerListAction(newLayer: boolean) {
+  controlLayerListAction() {
     if (
       !this.HsDrawService.hasSomeDrawables &&
       this.HsDrawService.tmpDrawLayer
     ) {
-      this.HsDrawService.saveDrawingLayer(newLayer);
+      this.HsDrawService.saveDrawingLayer();
     } else {
       this.layersExpanded = !this.layersExpanded;
     }
