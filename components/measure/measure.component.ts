@@ -10,9 +10,6 @@ import {HsMeasureService} from './measure.service';
 export class HsMeasureComponent {
   type: string;
   data;
-  /*if (HsConfig.design == 'md') {
-    return require('./partials/measuremd.html');
-  }*/
 
   constructor(
     public HsEventBusService: HsEventBusService,

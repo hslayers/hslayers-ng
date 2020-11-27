@@ -52,23 +52,10 @@ export class HsQueryComponent {
 
     this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
       this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
-        if (
-          this.HsConfig.design === 'md' &&
-          this.HsQueryBaseService.data.features.length === 0
-        ) {
-          this.showNoImagesWarning();
-        }
-        if (
-          this.HsConfig.design === 'md' &&
-          this.HsQueryBaseService.data.features.length > 0
-        ) {
-          this.showQueryDialog(e);
-        } else {
-          this.popup.hide();
-          if (this.HsQueryBaseService.currentPanelQueryable()) {
-            if (this.HsLayoutService.mainpanel != 'draw') {
-              this.HsLayoutService.setMainPanel('info');
-            }
+        this.popup.hide();
+        if (this.HsQueryBaseService.currentPanelQueryable()) {
+          if (this.HsLayoutService.mainpanel != 'draw') {
+            this.HsLayoutService.setMainPanel('info');
           }
         }
       });
