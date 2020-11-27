@@ -77,7 +77,7 @@ export class HsLaymanBrowserService {
       for (const lyr in data) {
         if (data[lyr]) {
           const obj = {
-            title: data[lyr].name,
+            title: data[lyr].title,
             type: ['WMS', 'WFS'],
             name: data[lyr].name,
           };
@@ -139,7 +139,8 @@ export class HsLaymanBrowserService {
       type: lyr.type,
       link: lyr.wms.url,
       layer: lyr.name,
-      title: lyr.name,
+      name: lyr.name,
+      title: lyr.title,
       dsType: ds.type,
     };
   }

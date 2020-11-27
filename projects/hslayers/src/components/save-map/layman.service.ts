@@ -401,7 +401,7 @@ export class HsLaymanService implements HsSaverService {
    * @description Get Layman friendly name for layer based on its title by
    * replacing spaces with underscores, converting to lowercase, etc.
    * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
-   * @function 
+   * @function getLaymanFriendlyLayerName
    * @param {string} title Title to get Layman-friendly name for
    * @returns {string} New layer name
    */
@@ -458,5 +458,11 @@ export class HsLaymanService implements HsSaverService {
         (endpoint) => endpoint.type === 'layman'
       ) >= 0
     );
+  }
+
+  getLaymanEndpoint() {
+    return this.HsCommonEndpointsService.endpoints
+      .filter((e) => e.type == 'layman')
+      .pop();
   }
 }

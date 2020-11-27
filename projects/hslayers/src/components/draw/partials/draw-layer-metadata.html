@@ -14,8 +14,19 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translate}}</p>
             </div>
+            <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
+                *ngIf="data.drawableLaymanLayers.length > 0">
+                <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button" (click)="type = 'draw'"
+                    [ngClass]="{active: type == 'draw' }">
+                    {{'DRAW.drawToolbar.addDrawLayer' | translate}}
+                </button>
+                <button type="button" class="btn ml-1 btn-sm rounded btn-primary hs-toolbar-button"
+                    (click)="type = 'layman'" [ngClass]="{active: type == 'layman' }">
+                    {{'DRAW.drawLayerMetadata.loadServerLayers' | translate}}
+                </button>
+            </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <form>
+                <form [hidden]="!(type == 'draw' || data.drawableLaymanLayers.length == 0)">
                     <div class="form-group">
                         <label class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' | translate}}</label>
                         <div class="mb-3">
@@ -53,12 +64,29 @@
                         </div>
                     </div>
                 </form>
+                <form [hidden]="type != 'layman'">
+                    <div class="d-flex align-items-center w-100 flex-column">
+                        <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
+                        <ul class="list-group w-100">
+                            <li *ngFor="let layer of data.drawableLaymanLayers" class="clearfix"
+                                [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                                <b><a href="#" data-toggle="tooltip"
+                                        title="{{layer.description}}">{{layer.title}}</a></b>
+                                <span class="float-right">
+                                    <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
+                                        data-toggle="tooltip" title="'WFS.addToMap' | translate"><i
+                                            class="icon-plus"></i></button>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                    (click)="AddNewDrawLayerModalVisible = false">{{'COMMON.cancel' | translate}}</button>
+                    (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
             </div>
         </div>
     </div>

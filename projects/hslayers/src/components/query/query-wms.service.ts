@@ -3,7 +3,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {TileWMS, WMTS} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -12,6 +12,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
+import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Injectable({
@@ -28,7 +29,8 @@ export class HsQueryWmsService {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     private HttpClient: HttpClient,
-    public HsLogService: HsLogService
+    public HsLogService: HsLogService,
+    public HsQueryWmtsService: HsQueryWmtsService
   ) {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
@@ -129,7 +131,10 @@ export class HsQueryWmsService {
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (infoFormat.includes('gml')) {
+      if (
+        infoFormat.includes('gml') ||
+        this.HsUtilsService.instOf(layer.getSource(), WMTS)
+      ) {
         this.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
@@ -289,6 +294,17 @@ export class HsQueryWmsService {
    */
   queryWmsLayer(layer: Layer, coordinate) {
     if (this.isLayerWmsQueryable(layer)) {
+      if (this.HsUtilsService.instOf(layer.getSource(), WMTS)) {
+        this.HsQueryWmtsService.parseRequestUrl(layer, coordinate).then(
+          (res) => {
+            console.log(res);
+            this.infoCounter++;
+            this.request(res.url, res.format, coordinate, layer);
+          }
+        );
+        return;
+      }
+
       const source = layer.getSource();
       const map = this.HsMapService.map;
       const viewResolution = map.getView().getResolution();
@@ -333,12 +349,19 @@ export class HsQueryWmsService {
     if (!layer.getVisible()) {
       return false;
     }
-    if (
-      this.HsUtilsService.instOf(layer, Tile) &&
-      this.HsUtilsService.instOf(layer.getSource(), TileWMS) &&
-      layer.getSource().getParams().INFO_FORMAT
-    ) {
-      return true;
+    if (this.HsUtilsService.instOf(layer, Tile)) {
+      if (
+        this.HsUtilsService.instOf(layer.getSource(), TileWMS) &&
+        layer.getSource().getParams().INFO_FORMAT
+      ) {
+        return true;
+      }
+      if (
+        this.HsUtilsService.instOf(layer.getSource(), WMTS) &&
+        layer.get('info_format')
+      ) {
+        return true;
+      }
     }
     if (
       this.HsUtilsService.instOf(layer, ImageLayer) &&

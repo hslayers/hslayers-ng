@@ -4,6 +4,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
+import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -11,6 +12,7 @@ import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.componen
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -21,6 +23,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
+
 type activateParams = {
   onDrawStart?;
   onDrawEnd?;
@@ -35,6 +38,8 @@ type activateParams = {
 })
 export class HsDrawService {
   drawableLayers: Array<any> = [];
+  drawableLaymanLayers: Array<any> = [];
+  hasSomeDrawables: boolean;
   draw: Draw;
   modify: any;
   /**
@@ -74,6 +79,8 @@ export class HsDrawService {
     layer: BaseLayer;
     source: VectorSource;
   }> = new Subject();
+  laymanEndpoint: any;
+  previouslySelected: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -86,7 +93,9 @@ export class HsDrawService {
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
     public HsLaymanService: HsLaymanService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsLaymanBrowserService: HsLaymanBrowserService,
+    public HsAddLayersVectorService: HsAddLayersVectorService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -132,6 +141,7 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(addNewLayer = false): void {
+    this.previouslySelected = this.selectedLayer;
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
     const tmpLayer =
       addNewLayer === true
@@ -146,6 +156,7 @@ export class HsDrawService {
         'DRAW.drawLayer'
       )} ${i++}`;
     }
+    const layman = this.HsLaymanService.getLaymanEndpoint();
     const drawLayer = new VectorLayer({
       title: tmpTitle,
       source: tmpSource,
@@ -155,6 +166,10 @@ export class HsDrawService {
       style: this.defaultStyle,
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
+      definition: {
+        format: layman ? 'hs.format.WFS' : null,
+        url: layman ? layman.url + '/wfs' : null
+      },
     });
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
@@ -172,6 +187,7 @@ export class HsDrawService {
         this.HsMapService.map.removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
       }
+      this.HsQueryBaseService.activateQueries();
       return false;
     }
     //console.log(this.drawableLayers);
@@ -195,6 +211,35 @@ export class HsDrawService {
       ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
       : this.selectedLayer.getSource();
     return true;
+  }
+
+  async selectLayer(layer) {
+    let lyr = layer;
+    if (layer.type) {
+      lyr = await this.HsAddLayersVectorService.addVectorLayer(
+        'wfs',
+        this.laymanEndpoint.url,
+        layer.name,
+        layer.title,
+        undefined,
+        'EPSG:4326',
+        undefined
+      );
+      lyr = this.HsMapService.findLayerByTitle(layer.title);
+    }
+    if (lyr != this.selectedLayer) {
+      if (
+        this.selectedLayer &&
+        this.selectedLayer.get('title') == 'tmpDrawLayer'
+      ) {
+        this.tmpDrawLayer = false;
+        this.HsMapService.map.removeLayer(this.selectedLayer);
+      }
+
+      this.selectedLayer = lyr;
+      this.changeDrawSource();
+    }
+    this.fillDrawableLayers();
   }
 
   addDrawLayer(layer: Layer): void {
@@ -350,6 +395,19 @@ export class HsDrawService {
       this.deactivateDrawing();
     }
     this.drawableLayers = drawables;
+    this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
+    if (this.laymanEndpoint) {
+      this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint);
+      if (this.laymanEndpoint.layers) {
+        this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
+          (layer) => {
+            return !this.HsMapService.findLayerByTitle(layer.title);
+          }
+        );
+      }
+    }
+    this.hasSomeDrawables =
+      this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
   }
   /**
    * @function removeLayer

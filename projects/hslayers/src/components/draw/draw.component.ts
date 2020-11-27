@@ -4,7 +4,9 @@ import Vector from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {HsDrawService} from './draw.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsQueryBaseService} from '../query/query-base.service';
 
 @Component({
   selector: 'hs-draw',
@@ -22,7 +24,9 @@ export class HsDrawComponent {
 
   constructor(
     public HsDrawService: HsDrawService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsQueryBaseService: HsQueryBaseService
   ) {}
 
   activateDrawing(withStyle?): void {
@@ -41,10 +45,7 @@ export class HsDrawComponent {
   }
 
   selectLayer(layer): void {
-    if (layer != this.HsDrawService.selectedLayer) {
-      this.HsDrawService.selectedLayer = layer;
-      this.HsDrawService.changeDrawSource();
-    }
+    this.HsDrawService.selectLayer(layer);
     this.layersExpanded = false;
   }
 

@@ -14,6 +14,7 @@ import {HsQueryFeatureComponent} from './feature.component';
 import {HsQueryFeaturePopupComponent} from './feature-popup.component';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
+import {HsQueryWmtsService} from './query-wmts.service';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -26,8 +27,17 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryAttributeRowComponent,
   ],
   imports: [CommonModule, HsPanelHelpersModule, FormsModule, TranslateModule],
-  exports: [HsQueryComponent, HsQueryFeaturePopupComponent],
-  providers: [HsQueryBaseService, HsQueryVectorService, HsQueryWmsService],
+  exports: [
+    HsQueryComponent,
+    HsQueryFeaturePopupComponent,
+    HsQueryFeatureComponent,
+  ],
+  providers: [
+    HsQueryBaseService,
+    HsQueryVectorService,
+    HsQueryWmsService,
+    HsQueryWmtsService,
+  ],
   entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
 export class HsQueryModule {}
