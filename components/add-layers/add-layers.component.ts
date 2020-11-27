@@ -13,7 +13,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 export class HsAddLayersComponent {
   showDetails: boolean;
   type: string;
-  types;
+  types: any[];
 
   constructor(
     public hsShareUrlService: HsShareUrlService,
@@ -22,7 +22,6 @@ export class HsAddLayersComponent {
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
   ) {
-    'ngInject';
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
     } else {
@@ -73,10 +72,10 @@ export class HsAddLayersComponent {
   }
 
   /**
-   * Change detail panel template according to selected type
-   *
    * @function templateByType
-   * @returns {string} template Path to correct type template
+   * @description Change detail panel template according to selected type
+   * @todo unused
+   * @returns {string} Path to correct type template
    */
   templateByType(): string {
     /**TODO: move variables out of this function. Call $scope.connected = false when template change */
@@ -109,7 +108,7 @@ export class HsAddLayersComponent {
   }
 
   /**
-   * @param type
+   * @param type Type of OWS service
    */
   connectServiceFromUrlParam(type: string): void {
     if (this.hsShareUrlService.getParamValue(`${type}_to_connect`)) {
