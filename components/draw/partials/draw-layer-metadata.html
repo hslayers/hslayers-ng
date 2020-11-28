@@ -21,7 +21,7 @@
                 <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
             </div>
             <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
-                *ngIf="data.drawableLaymanLayers.length > 0">
+                *ngIf="data.drawableLaymanLayers.length > 0 && !authorized()">
                 <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button" (click)="type = 'draw'"
                     [ngClass]="{active: type == 'draw' }">
                     {{'DRAW.drawToolbar.addDrawLayer' | translate}}
