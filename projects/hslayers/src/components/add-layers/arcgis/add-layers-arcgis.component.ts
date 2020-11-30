@@ -69,9 +69,10 @@ export class HsAddLayersArcGisComponent {
      */
     function recurse(layer) {
       layer.checked = true;
-
-      for (const sublayer of layer.Layer) {
-        recurse(sublayer);
+      if (layer.Layer) {
+        for (const sublayer of layer.Layer) {
+          recurse(sublayer);
+        }
       }
     }
     for (const layer of this.data.services.Layer) {

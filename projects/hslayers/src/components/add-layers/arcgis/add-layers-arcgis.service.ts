@@ -137,9 +137,10 @@ export class HsAddLayersArcGisService {
           );
         }
       }
-
-      for (const sublayer of layer.Layer) {
-        recurse(sublayer);
+      if (layer.Layer) {
+        for (const sublayer of layer.Layer) {
+          recurse(sublayer);
+        }
       }
     }
     for (const layer of this.data.services) {
@@ -212,8 +213,10 @@ export class HsAddLayersArcGisService {
     }
     const layer_class = Tile;
     const dimensions = {};
-    for (const val of layer.Dimension) {
-      dimensions[val.name] = val;
+    if (layer.Dimension) {
+      for (const val of layer.Dimension) {
+        dimensions[val.name] = val;
+      }
     }
 
     const legends = [];
