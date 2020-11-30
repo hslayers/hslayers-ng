@@ -98,7 +98,8 @@ describe('compositions', () => {
           useValue: new HsAddLayersVectorService(
             mockedMapService,
             mockedUtilsService,
-            new HsStylerService(null, mockedUtilsService)
+            new HsStylerService(null, mockedUtilsService),
+            null
           ),
         },
         {
