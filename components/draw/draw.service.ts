@@ -5,6 +5,7 @@ import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -81,6 +82,7 @@ export class HsDrawService {
   }> = new Subject();
   laymanEndpoint: any;
   previouslySelected: any;
+  isAuthorized: boolean;
 
   constructor(
     public HsMapService: HsMapService,
@@ -95,7 +97,8 @@ export class HsDrawService {
     public HsLaymanService: HsLaymanService,
     public HsLanguageService: HsLanguageService,
     public HsLaymanBrowserService: HsLaymanBrowserService,
-    public HsAddLayersVectorService: HsAddLayersVectorService
+    public HsAddLayersVectorService: HsAddLayersVectorService,
+    public HsCommonLaymanService: HsCommonLaymanService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -125,6 +128,12 @@ export class HsDrawService {
       if (event === 'draw' && this.HsMapService.map) {
         this.fillDrawableLayers();
       }
+    });
+
+    this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+      this.fillDrawableLayers();
+      this.isAuthorized =
+        endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     });
   }
 
@@ -168,7 +177,7 @@ export class HsDrawService {
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
       definition: {
         format: layman ? 'hs.format.WFS' : null,
-        url: layman ? layman.url + '/wfs' : null
+        url: layman ? layman.url + '/wfs' : null,
       },
     });
     this.selectedLayer = drawLayer;
