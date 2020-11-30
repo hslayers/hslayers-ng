@@ -14,14 +14,14 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translate}}</p>
             </div>
-            <div *ngIf="authorized()" class="alert alert-danger" role="alert">
+            <div *ngIf="!data.isAuthorized" class="alert alert-danger" role="alert">
                 <p class="text-center">
                     {{'User not authorized, drawings won´t be preserved' | translate}}
                 </p>
                 <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
             </div>
             <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
-                *ngIf="data.drawableLaymanLayers.length > 0 && !authorized()">
+                *ngIf="data.drawableLaymanLayers.length > 0 && data.isAuthorized">
                 <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button" (click)="type = 'draw'"
                     [ngClass]="{active: type == 'draw' }">
                     {{'DRAW.drawToolbar.addDrawLayer' | translate}}
@@ -32,7 +32,7 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <form [hidden]="!(type == 'draw' || data.drawableLaymanLayers.length == 0)">
+                <form *ngIf="type == 'draw' || data.drawableLaymanLayers.length == 0">
                     <div class="form-group">
                         <label class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' | translate}}</label>
                         <div class="mb-3">
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </form>
-                <form [hidden]="type != 'layman'">
+                <form *ngIf="type == 'layman'">
                     <div class="d-flex align-items-center w-100 flex-column">
                         <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
                         <ul class="list-group w-100">
@@ -89,7 +89,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="data.isAuthorized || type == 'draw'"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>

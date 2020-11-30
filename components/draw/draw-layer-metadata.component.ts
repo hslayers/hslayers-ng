@@ -1,5 +1,6 @@
 import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
 
 @Component({
@@ -19,7 +20,10 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   type: string;
   endpoint: any;
 
-  constructor(public HsMapService: HsMapService) {}
+  constructor(
+    public HsMapService: HsMapService,
+    public HsDialogContainerService: HsDialogContainerService
+  ) {}
 
   viewRef: ViewRef;
   ngOnInit(): void {
@@ -27,10 +31,10 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     this.title = this.layer.get('title');
     this.path = this.layer.get('path');
     this.endpoint = this.data.laymanEndpoint;
-  }
 
-  authorized(){
-    return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
+    if (this.data.isAuthorized !== true) {
+      this.type = 'draw';
+    }
   }
 
   titleChanged(): void {
@@ -74,6 +78,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   cancel() {
     this.data.selectedLayer = this.data.previouslySelected;
     this.AddNewDrawLayerModalVisible = false;
+    this.HsDialogContainerService.destroy(this);
   }
 
   async awaitLayerSync(layer) {

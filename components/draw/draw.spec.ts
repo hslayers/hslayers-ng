@@ -7,6 +7,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
@@ -23,6 +24,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsLanguageService} from '../language/language.service';
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
+import {of} from 'rxjs';
 
 class emptyMock {
   constructor() {}
@@ -55,6 +57,7 @@ describe('HsDraw', () => {
   const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
     'getTranslation',
   ]);
+
   const layer = new VectorLayer({
     title: 'Point',
     source: new VectorSource({}),
@@ -89,6 +92,12 @@ describe('HsDraw', () => {
         {provide: HsLaymanService, useValue: mockLaymanService},
         {provide: HsLaymanBrowserService, useValue: new emptyMock()},
         {provide: HsAddLayersVectorService, useValue: new emptyMock()},
+        {
+          provide: HsCommonLaymanService,
+          useValue: {
+            authChange: of('endpoint'),
+          },
+        },
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);
