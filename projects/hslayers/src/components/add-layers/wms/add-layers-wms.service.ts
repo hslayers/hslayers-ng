@@ -345,8 +345,7 @@ export class HsAddLayersWmsService {
     if (layer.styleSelected) {
       styles = layer.styleSelected;
     } else {
-      styles =
-        layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : 'default';
+      styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : '';
     }
     const source = new source_class({
       url: this.data.getMapUrl,
