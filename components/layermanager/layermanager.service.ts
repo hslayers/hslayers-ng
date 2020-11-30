@@ -897,7 +897,7 @@ export class HsLayerManagerService {
         'layerSelected'
       );
       const layerFound = this.getLayerFromUrl(selectedLayerTitle);
-      if (layerFound !== undefined) {
+      if (layerFound !== undefined && layerFound.length > 0) {
         this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
       }
     }

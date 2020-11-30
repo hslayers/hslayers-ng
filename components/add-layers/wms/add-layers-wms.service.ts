@@ -234,9 +234,10 @@ export class HsAddLayersWmsService {
           );
         }
       }
-
-      for (const sublayer of layer.Layer) {
-        recurse(sublayer);
+      if (layer.Layer) {
+        for (const sublayer of layer.Layer) {
+          recurse(sublayer);
+        }
       }
     };
     for (const layer of this.data.services) {
@@ -329,9 +330,10 @@ export class HsAddLayersWmsService {
       }
     }
     const dimensions = {};
-
-    for (const val of layer.Dimension) {
-      dimensions[val.name] = val;
+    if (layer.Dimension) {
+      for (const val of layer.Dimension) {
+        dimensions[val.name] = val;
+      }
     }
 
     const legends = [];
@@ -342,8 +344,7 @@ export class HsAddLayersWmsService {
     if (layer.styleSelected) {
       styles = layer.styleSelected;
     } else {
-      styles =
-        layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : 'default';
+      styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : '';
     }
     const source = new source_class({
       url: this.data.getMapUrl,
