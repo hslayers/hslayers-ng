@@ -90,6 +90,14 @@
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
                 </tr>
+                <tr *ngIf="service.Style?.length > 0">
+                    <td colspan="4">
+                        <label class="control-label">{{'COMMON.style' | translate}}:</label>
+                        <select class="form-control" [(ngModel)]="service.styleSelected">
+                            <option *ngFor="let style of service.Style">{{style.Name}}</option>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="4" style="padding-left: 1em">
                         <hs-nested-layers-table [layers]="service.Layer"></hs-nested-layers-table>

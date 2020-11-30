@@ -6,7 +6,7 @@
             <td style="width: 40%;">{{sub_layer.Title}}</td>
             <td>{{sub_layer.Abstract}}</td>
         </tr>
-        <tr *ngIf="!!sub_layer.Style && sub_layer.Style.length > 1">
+        <tr *ngIf="sub_layer.Style?.length > 0">
             <td colspan="4">
                 <label class="control-label">{{'COMMON.style' | translate}}:</label>
                 <select class="form-control" [(ngModel)]="sub_layer.styleSelected">
