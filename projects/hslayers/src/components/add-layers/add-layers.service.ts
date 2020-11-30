@@ -1,5 +1,4 @@
 import BaseLayer from 'ol/layer/Base';
-import {BaseLayerPicker} from 'cesium';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -13,7 +12,7 @@ export class HsAddLayersService {
     public hsUtilsService: HsUtilsService
   ) {}
 
-  addLayer(layer: BaseLayerPicker, addBefore?: BaseLayer) {
+  addLayer(layer: BaseLayer, addBefore?: BaseLayer) {
     if (addBefore) {
       const layers = this.hsMapService.map.getLayers();
       const ix = layers.getArray().indexOf(addBefore);
