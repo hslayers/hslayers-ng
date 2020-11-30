@@ -1,5 +1,7 @@
 {
   "ADDLAYERS": {
+    "before": "Přidat před vrstvu",
+    "none": "Žádnou (nahoru)",
     "SHP": {
       "SLDStyleFile": "Soubor se styly SLD",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)"

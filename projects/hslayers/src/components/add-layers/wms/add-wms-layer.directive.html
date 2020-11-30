@@ -75,6 +75,9 @@
                     [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
             </div>
         </div>
+
+        <hs-add-layers-target-position [(addBefore)]="data.addBefore" ></hs-add-layers-target-position>
+       
         <hr />
         <table class="table table-sm table-striped table-bordered">
             <thead>

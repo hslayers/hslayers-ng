@@ -1,19 +1,20 @@
+import BaseLayer from 'ol/layer/Base';
+import {Attribution} from 'ol/control';
+import {Group} from 'ol/layer';
+import {HsAddLayersService} from '../add-layers.service';
 import {HsConfig} from '../../../config.service';
 import {HsDimensionService} from '../../../common/dimension.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
-import {addAnchors} from '../../../common/attribution-utils';
-import {getPreferedFormat} from '../../../common/format-utils';
-
-import {Attribution} from 'ol/control';
-import {Group} from 'ol/layer';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
+import {addAnchors} from '../../../common/attribution-utils';
+import {getPreferedFormat} from '../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersWmsService {
@@ -26,7 +27,8 @@ export class HsAddLayersWmsService {
     public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
+    public hsAddLayersService: HsAddLayersService
   ) {
     this.data = {
       useResampling: false,
@@ -34,6 +36,7 @@ export class HsAddLayersWmsService {
       mapProjection: undefined,
       registerMetadata: true,
       tileSize: 512,
+      addBefore: null,
     };
     //TODO: all dimension related things need to be refactored into seperate module
     this.getDimensionValues = hsDimensionService.getDimensionValues;
@@ -381,17 +384,23 @@ export class HsAddLayersWmsService {
       subLayers: subLayers,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.hsMapService.map.addLayer(new_layer);
+    this.hsAddLayersService.addLayer(new_layer, this.data.addBefore);
   }
 
   /**
    * @description Add service and its layers to project
    * @function addService
    * @param {string} url Service url
+   * @param addBefore
    * @param {Group} group Group layer to which add layer to
    * @param {string} layerName Name of layer to add. If not specified then all layers are added
    */
-  addService(url: string, group: Group, layerName: string): void {
+  addService(
+    url: string,
+    group: Group,
+    layerName: string,
+    addBefore?: BaseLayer
+  ): void {
     this.hsWmsGetCapabilitiesService
       .requestGetCapabilities(url)
       .then((resp) => {
@@ -408,7 +417,7 @@ export class HsAddLayersWmsService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.hsMapService.addLayer(layer, true);
+            this.hsAddLayersService.addLayer(layer, addBefore);
           }
         });
       });

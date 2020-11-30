@@ -1,5 +1,7 @@
 {
   "ADDLAYERS": {
+    "before": "Pievienot pirms slāņa",
+    "none": "Neviena (pievienot augšā)",
     "SHP": {
       "SLDStyleFile": "SLD stila datne",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)"

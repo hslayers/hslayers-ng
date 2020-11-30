@@ -1,5 +1,5 @@
+import BaseLayer from 'ol/layer/Base';
 import {Component} from '@angular/core';
-
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -17,6 +17,7 @@ export class HsAddLayersVectorComponent {
   name = '';
   advancedPanelVisible = false;
   folder_name = '';
+  addBefore: BaseLayer = null;
 
   constructor(
     public hsAddLayersVectorService: HsAddLayersVectorService,
@@ -42,7 +43,8 @@ export class HsAddLayersVectorComponent {
       this.title,
       this.abstract,
       this.srs,
-      {extractStyles: this.extract_styles}
+      {extractStyles: this.extract_styles},
+      this.addBefore
     );
     this.hsAddLayersVectorService.fitExtent(layer);
     this.hsLayoutService.setMainPanel('layermanager');

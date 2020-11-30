@@ -1,11 +1,12 @@
 import '../../styles/styles.module';
-import {Injectable} from '@angular/core';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-
+import BaseLayer from 'ol/layer/Base';
 import VectorLayerDescriptor from './VectorLayerDescriptor';
+import {HsAddLayersService} from '../add-layers.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
 
 @Injectable({
@@ -15,7 +16,8 @@ export class HsAddLayersVectorService {
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsStylerService: HsStylerService
+    public HsStylerService: HsStylerService,
+    private hsAddLayersService: HsAddLayersService
   ) {}
 
   /**
@@ -26,6 +28,7 @@ export class HsAddLayersVectorService {
    * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
+   * @param addBefore
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
@@ -37,7 +40,8 @@ export class HsAddLayersVectorService {
     title: string,
     abstract: string,
     srs: string,
-    options: any
+    options: any,
+    addBefore?: BaseLayer
   ): Promise<VectorLayer> {
     return new Promise((resolve, reject) => {
       try {
@@ -59,7 +63,7 @@ export class HsAddLayersVectorService {
           url: url.replace('ows', 'wfs'),
         });
         if (this.HsMapService.map) {
-          this.HsMapService.addLayer(lyr, true);
+          this.hsAddLayersService.addLayer(lyr, addBefore);
         }
         resolve(lyr);
       } catch (ex) {

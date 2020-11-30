@@ -1,0 +1,11 @@
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text control-label">{{'ADDLAYERS.before' | translate}}</span>
+        </div>
+        <select class="form-control" [(ngModel)]="addBefore" (ngModelChange)="updateChanges()" name="addBefore">
+            <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translate}}</option>
+            <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.data.layers">{{hsLayerUtilsService.translateTitle(layer.title)}}</option>
+        </select>
+    </div>
+</div>

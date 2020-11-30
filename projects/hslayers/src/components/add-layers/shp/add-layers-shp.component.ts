@@ -1,12 +1,12 @@
+import BaseLayer from 'ol/layer/Base';
 import {Component} from '@angular/core';
-
+import {FileDescriptor} from './file-descriptor';
 import {HsAddLayersShpService} from './add-layers-shp.service';
 import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {FileDescriptor} from './file-descriptor';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
@@ -28,6 +28,7 @@ export class HsAddLayersShpComponent {
   title = '';
   folder_name = '';
   advancedPanelVisible = false;
+  addBefore: BaseLayer = null;
 
   constructor(
     public hsAddLayersShpService: HsAddLayersShpService,
@@ -94,7 +95,6 @@ export class HsAddLayersShpComponent {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    console.log(this.endpoint, this.files, this.name, this.title, this.srs, this.sld);
     this.hsAddLayersShpService
       .add(
         this.endpoint,
@@ -112,7 +112,8 @@ export class HsAddLayersShpComponent {
             this.hsAddLayersWmsService.addService(
               descriptor.wms.url,
               undefined,
-              this.name
+              this.name,
+              this.addBefore
             );
             this.loading = false;
             this.hsLayoutService.setMainPanel('layermanager');

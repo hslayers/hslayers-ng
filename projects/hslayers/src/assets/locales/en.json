@@ -1,5 +1,7 @@
 {
   "ADDLAYERS": {
+    "before": "Add before layer",
+    "none": "None (at top)",
     "SHP": {
       "SLDStyleFile": "SLD style file",
       "shapeFile": "Shape file (shp+dbf+shx)"

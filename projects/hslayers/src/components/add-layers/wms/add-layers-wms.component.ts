@@ -67,6 +67,7 @@ export class HsAddLayersWmsComponent {
   };
 
   /**
+   * @param layers
    * @function selectAllLayers
    * @description Select all layers from service.
    */
