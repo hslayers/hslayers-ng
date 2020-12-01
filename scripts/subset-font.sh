@@ -73,5 +73,7 @@
 # icon-indexmanager U+f09e
 # icon-sextant U+f6ec
 # icon-cursor  U+f0dc
-pyftsubset css/whhg-font/font/webhostinghub-glyphs.ttf --unicodes="U+F1CA,U+f4c2,U+f315,U+f209,U+f00b,U+f000,U+002b,U+f022,U+f2b4,U+f078,U+f488,U+f489,U+f48b,U+f47a,U+f4c9,U+f47c,U+f0ce,U+f16a,U+f140,U+f165,U+f47b,U+f20a,U+f397,U+f1bf,U+f772,U+f1b7,U+00d7,U+f487,U+f19b,U+f23a,U+f36c,U+f316,U+f127,U+f0c5,U+f1b8,U+f1ed,U+f319,U+f692,U+f01b,U+f187,U+f0d2,U+f0c8,U+f571,U+f572,U+f782,U+f53d,U+f249,U+f109,U+f125,U+f309,U+f4d2,U+f30c,U+2212,U+f16c,U+f21e,U+f21f,U+f269,U+f470,U+f310,U+f307,U+f7ac,U+f210,U+f5d5,U+f0a3,U+f4d0,U+f09e,U+f6ec,U+f0dc"  --output-file="css/whhg-font/font/subset.ttf"
+# icon-arrow-up U+f301
+# icon-arrow-down U+f2fe
+pyftsubset css/whhg-font/font/webhostinghub-glyphs.ttf --unicodes="U+F1CA,U+f4c2,U+f315,U+f209,U+f00b,U+f000,U+002b,U+f022,U+f2b4,U+f078,U+f488,U+f489,U+f48b,U+f47a,U+f4c9,U+f47c,U+f0ce,U+f16a,U+f140,U+f165,U+f47b,U+f20a,U+f397,U+f1bf,U+f772,U+f1b7,U+00d7,U+f487,U+f19b,U+f23a,U+f36c,U+f316,U+f127,U+f0c5,U+f1b8,U+f1ed,U+f319,U+f692,U+f01b,U+f187,U+f0d2,U+f0c8,U+f571,U+f572,U+f782,U+f53d,U+f249,U+f109,U+f125,U+f309,U+f4d2,U+f30c,U+2212,U+f16c,U+f21e,U+f21f,U+f269,U+f470,U+f310,U+f307,U+f7ac,U+f210,U+f5d5,U+f0a3,U+f4d0,U+f09e,U+f6ec,U+f0dc,U+f301,U+f2fe"  --output-file="css/whhg-font/font/subset.ttf"
 ttf2eot css/whhg-font/font/subset.ttf css/whhg-font/font/subset.eot
