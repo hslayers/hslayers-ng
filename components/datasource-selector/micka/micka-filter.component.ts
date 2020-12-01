@@ -15,6 +15,7 @@ export class HsMickaFilterComponent {
   query;
   mickaDatasetConfig;
   queryCatalogs;
+  queryCatalog;
   modalVisible;
   keywordsDropdownVisible = false;
 
@@ -28,6 +29,8 @@ export class HsMickaFilterComponent {
     this.query = hsDatasourcesService.data.query;
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
     this.queryCatalogs = () => hsDatasourcesService.queryCatalogs();
+    this.queryCatalog = (endpoint) =>
+      hsDatasourcesService.queryCatalog(endpoint);
   }
 
   /**
