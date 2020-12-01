@@ -11,29 +11,29 @@
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <form>
-                    <label class="form-group control-label">{{'COMMON.fullText' | translate}}
+                    <label class="form-group control-label w-100">{{'COMMON.fullText' | translate}}
                         <input type="text" class="form-control"
-                            [(ngModel)]="hsDatasourcesService.data.query.textFilter" />
+                            [(ngModel)]="hsDatasourcesService.data.query.textFilter" name="textFilter" />
                     </label>
-                    <div>
-                        <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="AnyText">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-input">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="AnyText" name="all">
                             {{'COMMON.all' | translate}}
                         </label>
-                        <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="title">
+                        <label class="form-check-input">
+                            <input  type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="title" name="title">
                             {{'COMMON.title' | translate}}
                         </label>
-                        <label class="radio-inline">
-                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="abstract">
+                        <label class="form-check-input">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="abstract" name="avstract">
                             {{'COMMON.abstract' | translate}}
                         </label>
                     </div>
 
-                    <label class="form-group control-label">{{'COMMON.keywords' | translate}}
+                    <label class="form-group control-label w-100">{{'COMMON.keywords' | translate}}
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                [(ngModel)]="hsDatasourcesService.data.query.keywords" />
+                                [(ngModel)]="hsDatasourcesService.data.query.keywords"  name="keywords"/>
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
                                     (click)="showSuggestions('keywords', 'keyword', 'value')">...</button>
@@ -42,10 +42,10 @@
                     </label>
 
                     <label
-                        class="form-group control-label">{{'DATASOURCE_SELECTOR.advancedMicka.organizationName' | translate}}
+                        class="form-group control-label w-100">{{'DATASOURCE_SELECTOR.advancedMicka.organizationName' | translate}}
                         <div class="input-group">
                             <input type="text" class="form-control"
-                                [(ngModel)]="hsDatasourcesService.data.query.OrganisationName" />
+                                [(ngModel)]="hsDatasourcesService.data.query.OrganisationName" name="organisationName"/>
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button"
                                     (click)="showSuggestions('OrganisationName', 'org', 'name')">...</button>
@@ -53,9 +53,9 @@
                         </div>
                     </label>
 
-                    <label class="form-group control-label" [hidden]='true'> {{'COMMON.type' | translate}}
+                    <label class="form-group control-label w-100" [hidden]='true'> {{'COMMON.type' | translate}}
                         <!-- TODO: wtf?-->
-                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.type"
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.type" name="type"
                             (change)='hsMickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, hsDatasourcesService.data.query.type)'>
                             <option value=""></option>
                             <option value="data">{{'COMMON.data' | translate}}</option>
@@ -77,18 +77,18 @@
                     </div>
                     -->
 
-                    <label class="form-group control-label"
-                        [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
+                    <label class="form-group control-label w-100"
+                        *ngIf="hsDatasourcesService.data.query.type == 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
 
-                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory">
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory" name="topicCategory">
                             <option *ngFor="let type of mickaDatasetConfig.code_lists.topicCategory"
                                 [attr.value]="type.value">{{type.name}}</option>
                         </select>
                     </label>
 
-                    <label class="form-group control-label"
+                    <label class="form-group control-label w-100"
                         [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'COMMON.scale' | translate}} 1:
-                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.Denominator">
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.Denominator" name="denominator">
                             <option value="2000">2000</option>
                             <option value="2500">2500</option>
                             <option value="2880">2880</option>
@@ -100,10 +100,10 @@
                     </label>
 
 
-                    <label class="form-group control-label" [hidden]='true'>
+                    <label class="form-group control-label w-100" [hidden]='true'>
                         {{'COMMON.orderBy' | translate}}
                         <!-- TODO: wtf?-->
-                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.sortby">
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.sortby" name="sortby">
                             <option value="title">{{'COMMON.title' | translate}}</option>
                             <option value="date">{{'DATASOURCE_SELECTOR.advancedMicka.dateStamp' | translate}}</option>
                             <option value="bbox">{{'DATASOURCE_SELECTOR.advancedMicka.extentSimilarity' | translate}}

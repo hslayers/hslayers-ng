@@ -23,7 +23,7 @@
                 *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
                 <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" href="#"
                     [attr.data-target]="'#ds'+i" aria-controls="context" role="tab" data-toggle="tab"
-                    (click)="datasetSelect('ds'+i)">
+                    (click)="datasetSelect('ds'+i, endpoint)">
                     {{endpoint.title}}
                     <span
                         [hidden]='!(endpoint.datasourcePaging.matched > 0)'>({{endpoint.datasourcePaging.matched}})</span>

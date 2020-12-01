@@ -75,8 +75,11 @@ export class HsDatasourcesComponent {
     }
   }
 
-  datasetSelect(id_selected: string): void {
+  datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {
     this.hsDatasourcesService.datasetSelect(id_selected);
+    if (endpoint) {
+      this.hsDatasourcesService.selectedEndpoint = endpoint;
+    }
   }
   reload(): void {
     this.hsDatasourcesService.reloadData();
