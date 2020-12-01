@@ -176,11 +176,11 @@
     "advancedMicka": {
       "applicationType": "Application type",
       "dateStamp": "Date stamp",
-      "extendedSearchParameters": "Extended search parameters for Micka",
+      "extendedSearchParameters": "Rozšířené vyhledávání",
       "extentSimilarity": "Extent similarity",
-      "featureCatalogue": "Feature catalogue",
-      "organizationName": "Organization name",
-      "serviceType": "Service type",
+      "featureCatalogue": "Katalog prvku",
+      "organizationName": "Jméno organizace",
+      "serviceType": "Typ služby",
       "topicCategory": "Topic category"
     },
     "datasourceListItem": {
@@ -192,7 +192,7 @@
     "layerRDF": "RDF vrstva",
     "metadataFor": "Metadata o",
     "noResults": "Žádné výsledky",
-    "suggestions": "Suggestions"
+    "suggestions": "Návrhy"
   },
   "DRAW": {
     "Select layer": "Vybrat vrstvu",
