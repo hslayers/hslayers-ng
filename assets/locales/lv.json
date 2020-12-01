@@ -308,7 +308,8 @@
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
-    "terrains": "Reljefi"
+    "terrains": "Reljefi",
+    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"

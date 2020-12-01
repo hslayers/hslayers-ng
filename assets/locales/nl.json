@@ -113,7 +113,8 @@
         "other": "Andere",
         "removeAllLayers": "Verwijder alle lagen",
         "resetMap": "Reset kaart",
-        "terrains": "Terreinen"
+        "terrains": "Terreinen",
+        "enablePhysicalLayerList": "Enable/Disable physical layer list"
     },
     "LEGEND": {
         "noLegendExists": "Er bestaat geen laag met legenda!"
