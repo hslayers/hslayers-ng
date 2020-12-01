@@ -277,7 +277,9 @@
       "layerIsQueryable": "This layer is queryable",
       "layerNotAvailable": "This layer is not available",
       "noAvailableInScale": "This layer is not available in this scale",
-      "sendingToLayman": "Sending to layman"
+      "sendingToLayman": "Sending to layman",
+      "moveLayerDown": "Move layer down the list",
+      "moveLayerUp": "Move layer up the list"
     },
     "layermanagerMd": {
       "aboutLayer": "About layer",

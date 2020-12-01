@@ -277,7 +277,9 @@
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
       "layerNotAvailable": "Tato vrstva není k dispozici",
       "noAvailableInScale": "Tato vrstva není v tomto měřítku k dispozici",
-      "sendingToLayman": "Odesílam na Layman"
+      "sendingToLayman": "Odesílam na Layman",
+      "moveLayerDown": "Přesunout vrstvy dolů v seznamu",
+      "moveLayerUp": "Posunout vrstvy nahoru v seznamu"
     },
     "layermanagerMd": {
       "aboutLayer": "O vrstvě",
