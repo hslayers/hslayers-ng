@@ -14,7 +14,6 @@ export class HsMickaSuggestionsDialogComponent
   implements HsDialogComponent, OnInit {
   @Input() data;
   loaderImage;
-  suggestionsModalVisible;
   viewRef: ViewRef;
 
   constructor(
@@ -23,7 +22,7 @@ export class HsMickaSuggestionsDialogComponent
     public hsMickaFilterService: HsMickaFilterService,
     public HsUtilsService: HsUtilsService
   ) {
-    this.suggestionsModalVisible = true;
+    this.hsMickaFilterService.suggestionsModalVisible = true;
     this.loaderImage = this.HsUtilsService.resolveEsModule(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../../img/ajax-loader.gif')
@@ -34,7 +33,7 @@ export class HsMickaSuggestionsDialogComponent
   }
 
   ngOnInit(): void {
-    this.hsLayoutService.contentWrapper
+    this.hsLayoutService.layoutElement
       .querySelector('.hs-ds-sug-filter')
       .focus();
   }
@@ -48,6 +47,6 @@ export class HsMickaSuggestionsDialogComponent
     this.hsDatasourcesService.data.query[
       this.hsMickaFilterService.suggestionConfig.input
     ] = text;
-    this.suggestionsModalVisible = false;
+    this.hsMickaFilterService.suggestionsModalVisible = false;
   }
 }

@@ -1,11 +1,11 @@
-<div [ngClass]="{'in': modalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog" aria-hidden="true">
+<div [ngClass]="{'in': hsMickaFilterService.advancedModalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
                     {{'DATASOURCE_SELECTOR.advancedMicka.extendedSearchParameters' | translate}}
                 </h4>
-                <button type="button" (click)="modalVisible = false" class="close" data-dismiss="modal"><span
+                <button type="button" (click)="hsMickaFilterService.advancedModalVisible = false" class="close" data-dismiss="modal"><span
                         aria-hidden="true">&times;</span><span
                         class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
@@ -115,13 +115,13 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"
-                    (click)="hsDatasourcesService.queryCatalog(hsDatasourcesService.selectedEndpoint); modalVisible = false"
+                    (click)="hsDatasourcesService.queryCatalog(hsDatasourcesService.selectedEndpoint); hsMickaFilterService.advancedModalVisible = false"
                     data-dismiss="modal">{{'SEARCH.search' | translate}}</button>
                 <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()">
                     {{'COMMON.clear' | translate}}
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    (click)="hsDatasourcesService.clear(); modalVisible = false">{{'COMMON.close' | translate}}</button>
+                    (click)="hsDatasourcesService.clear(); hsMickaFilterService.advancedModalVisible = false">{{'COMMON.close' | translate}}</button>
             </div>
         </div>
     </div>
