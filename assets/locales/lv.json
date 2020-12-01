@@ -197,6 +197,7 @@
   "DRAW": {
     "Select layer": "Izvēlieties slāni",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
+    "activeLayers": "Aktīvie slāņi",
     "definedStyle": "Definētais stils",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
@@ -206,8 +207,8 @@
       "defaultValue": "Noklusējuma vērtības",
       "layerTitle": "Slāņa virsraksts",
       "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
-      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
-      "loadServerLayers": "Ielādēt slāni no servera"
+      "loadServerLayers": "Ielādēt slāni no servera",
+      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā"
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
@@ -220,10 +221,9 @@
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
-    "activeLayers": "Aktīvie slāņi",
-    "serverLayers": "Servera slāņi"
+    "serverLayers": "Servera slāņi",
+    "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -276,10 +276,10 @@
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
       "layerNotAvailable": "Šis slānis nav pieejams",
-      "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
-      "sendingToLayman": "Sūta uz layman",
       "moveLayerDown": "Pārvietot slāni uz leju",
-      "moveLayerUp": "Pārvietot slāni uz augšu"
+      "moveLayerUp": "Pārvietot slāni uz augšu",
+      "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
+      "sendingToLayman": "Sūta uz layman"
     },
     "layermanagerMd": {
       "aboutLayer": "Par slāni",
@@ -438,14 +438,14 @@
     "search": "Meklēt:"
   },
   "SENSORS": {
-    "avg": "Vid.",
-    "1H": "1st",
     "1D": "1d",
-    "1W": "1ned",
+    "1H": "1st",
     "1M": "1m",
+    "1W": "1ned",
     "6M": "6m",
-    "max": "Maks.",
     "at": "",
+    "avg": "Vid.",
+    "max": "Maks.",
     "measure": "mēra",
     "min": "Min",
     "oneHour": "1 stunda",

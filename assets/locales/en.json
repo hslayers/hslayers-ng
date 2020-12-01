@@ -197,6 +197,7 @@
   "DRAW": {
     "Select layer": "Select layer",
     "activateDrawing": "Activate drawing by choosing a feature type",
+    "activeLayers": "Active layers",
     "definedStyle": "Defined style",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
@@ -206,8 +207,8 @@
       "defaultValue": "Default value",
       "layerTitle": "Layer title",
       "layerWillBeAdded": "*Layer will be added to the map and can be further managed in \"Layermanager\" panel",
-      "nameOfFolder": "Name of folder in layer-manager hierararchy",
-      "loadServerLayers": "Load layer from server"
+      "loadServerLayers": "Load layer from server",
+      "nameOfFolder": "Name of folder in layer-manager hierararchy"
     },
     "drawToolbar": {
       "addDrawLayer": "Add draw layer",
@@ -220,10 +221,9 @@
     "individualStyle": "Individual style for feature",
     "newGPS": "New GPS",
     "reallyDeleteThisLayer": "Really delete this layer?",
-    "unsavedDrawing": "Unsaved drawing",
     "saveDrawingToLayer": "Save drawing to layer",
-    "activeLayers": "Active layers",
-    "serverLayers": "Server layers"
+    "serverLayers": "Server layers",
+    "unsavedDrawing": "Unsaved drawing"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -276,10 +276,10 @@
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
       "layerNotAvailable": "This layer is not available",
-      "noAvailableInScale": "This layer is not available in this scale",
-      "sendingToLayman": "Sending to layman",
       "moveLayerDown": "Move layer down the list",
-      "moveLayerUp": "Move layer up the list"
+      "moveLayerUp": "Move layer up the list",
+      "noAvailableInScale": "This layer is not available in this scale",
+      "sendingToLayman": "Sending to layman"
     },
     "layermanagerMd": {
       "aboutLayer": "About layer",
@@ -438,13 +438,13 @@
     "search": "Search:"
   },
   "SENSORS": {
-    "avg": "Avg.",
-    "at": "at",
-    "1H": "1H",
     "1D": "1D",
-    "1W": "1W",
+    "1H": "1H",
     "1M": "1M",
+    "1W": "1W",
     "6M": "6M",
+    "at": "at",
+    "avg": "Avg.",
     "max": "Max",
     "measure": "Measure",
     "min": "Min",
