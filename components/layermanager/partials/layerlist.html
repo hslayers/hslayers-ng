@@ -2,13 +2,7 @@
     <ul class="list-group row">
         <li *ngFor="let layer of filtered_layers;" id="{{layer.idString()}}" class="list-group-item hs-lm-item"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'hs-lm-deactivated-layer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
-            <div class="d-flex ">
-                <div class="p-0 info_btn">
-                    <span class="icon-arrow-up" [title]="'LAYERMANAGER.layerList.moveLayerUp' | translate"
-                        (click)="moveLayer(layer, 'up')"></span>
-                    <span class="icon-arrow-down" [title]="'LAYERMANAGER.layerList.moveLayerDown' | translate"
-                        (click)="moveLayer(layer, 'down')"></span>
-                </div>
+            <div class="d-flex">
                 <div class="p-0">
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                         (click)="HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);toggleSublayersVisibility(layer);$event.stopPropagation()"

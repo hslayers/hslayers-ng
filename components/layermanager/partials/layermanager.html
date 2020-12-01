@@ -1,6 +1,10 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card">
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translate">
         <extra-buttons>
+            <button type="button" class="but-title-sm" (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
+                [title]="'LAYERMANAGER.enablePhysicalLayerList' | translate">
+                <i class="glyphicon icon-edit"></i>
+            </button>
             <button type="button" class="but-title-sm" (click)="removeAllLayers()"
                 [title]="'LAYERMANAGER.removeAllLayers' | translate">
                 <i class="glyphicon icon-trash"></i>
@@ -99,13 +103,13 @@
             </li>
         </ul>
 
-        <ul class="list-group hs-lm-mapcontentlist">
+        <ul class="list-group hs-lm-mapcontentlist" >
             <li *ngIf="!HsLayoutService.componentEnabled('basemapGallery')"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate }}</span>
             </li>
-            <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders">
+            <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders" [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary"
                     (click)="value.visible = !value.visible">
                     <span>{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
@@ -121,7 +125,12 @@
                     </li>
                 </div>
             </ul>
-            <ul class="list-group hs-lm-layerlist">
+            <ul class="list-group hs-lm-layerlist" [hidden]="!physicalLayerListEnabled">
+                <li>
+                    <hs-layermanager-physical-layer-list [layers]="data.layers"></hs-layermanager-physical-layer-list>
+                </li>
+            </ul>
+            <ul class="list-group hs-lm-layerlist" [hidden]="physicalLayerListEnabled">
                 <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)"
                     class="list-group-item list-group-item-primary hs-lm-layerlist-header"
                     (click)="layerlistVisible = !layerlistVisible">
