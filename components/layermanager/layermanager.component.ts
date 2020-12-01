@@ -28,7 +28,7 @@ export class HsLayerManagerComponent implements OnInit {
   query: any = {title: undefined};
   layerlistVisible: boolean;
   hovering: boolean;
-
+  physicalLayerListEnabled = false;
   icons = [
     'bag1.svg',
     'banking4.svg',

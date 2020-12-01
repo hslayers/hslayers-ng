@@ -154,10 +154,6 @@ export class HsLayerListComponent {
     }
   }
 
-  order() {
-    return this.HsConfig.layer_order || '-position';
-  }
-
   /**
    * @function isLayerQueryable
    * @memberOf hs.layermanager.controller
@@ -176,36 +172,9 @@ export class HsLayerListComponent {
    */
   sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
-    const minus = this.order().indexOf('-') == 0;
-    this.filtered_layers.sort((a, b) => {
-      a = a.layer.getZIndex();
-      b = b.layer.getZIndex();
-      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
-      return tmp;
-    });
+    this.filtered_layers = this.HsLayerManagerService.sortLayersByValue(
+      this.filtered_layers
+    );
     this.generateLayerTitlesArray();
-  }
-  moveLayer(layer, orient: string): void {
-    const currentLayerIndex = this.filtered_layers.indexOf(layer);
-    switch (orient) {
-      case 'up':
-        if (currentLayerIndex != 0) {
-          this.setLayerZIndex(currentLayerIndex - 1, layer.layer);
-        }
-        break;
-      case 'down':
-        if (currentLayerIndex < this.filtered_layers.length - 1) {
-          this.setLayerZIndex(currentLayerIndex + 1, layer.layer);
-        }
-        break;
-      default:
-    }
-  }
-  setLayerZIndex(indexTo: number, layer: BaseLayer): void {
-    const layerSwitchedWith = this.filtered_layers[indexTo].layer;
-    const interactedLayerZIndex = layer.getZIndex();
-    layer.setZIndex(layerSwitchedWith.getZIndex());
-    layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.sortLayersByPosition();
   }
 }

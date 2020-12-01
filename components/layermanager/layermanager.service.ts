@@ -276,7 +276,19 @@ export class HsLayerManagerService {
       }
     }
   }
-
+  sortLayersByValue(arr: any[]): any[] {
+    const minus = this.order().indexOf('-') == 0;
+    arr.sort((a, b) => {
+      a = a.layer.getZIndex();
+      b = b.layer.getZIndex();
+      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
+      return tmp;
+    });
+    return arr;
+  }
+  order(): string {
+    return this.HsConfig.layer_order || '-position';
+  }
   /**
    * (PRIVATE) Get layer by its title
    *
