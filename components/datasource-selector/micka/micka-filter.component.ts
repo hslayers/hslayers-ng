@@ -24,7 +24,7 @@ export class HsMickaFilterComponent {
   ) {
     this.query = hsDatasourcesService.data.query;
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
-    this.queryCatalogs = hsDatasourcesService.queryCatalogs;
+    this.queryCatalogs = () => hsDatasourcesService.queryCatalogs();
   }
 
   /**
