@@ -14,9 +14,7 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
 })
 export class HsAdvancedMickaDialogComponent implements HsDialogComponent {
   query;
-  modalVisible = true;
-  suggestionsModalVisible;
-  @Input() data; //endpoint
+  @Input() data; //HsEndpoint
   mickaDatasetConfig: any;
 
   constructor(
@@ -27,6 +25,7 @@ export class HsAdvancedMickaDialogComponent implements HsDialogComponent {
     public hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
+    this.hsMickaFilterService.advancedModalVisible = true;
   }
   viewRef: ViewRef;
   ngOnInit(): void {
@@ -41,40 +40,22 @@ export class HsAdvancedMickaDialogComponent implements HsDialogComponent {
    */
   showSuggestions(input: string, param: string, field: string): void {
     this.hsMickaFilterService.changeSuggestionConfig(input, param, field);
-    if (this.hsConfig.design === 'md') {
-      this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
-        input
-      ];
-      this.hsMickaFilterService.suggestionFilterChanged(
-        this.mickaDatasetConfig
-      );
+    if (
+      this.hsLayoutService.layoutElement.querySelector(
+        '.hs-ds-suggestions-micka'
+      ) === null
+    ) {
+      this.hsDialogContainerService.create(HsMickaSuggestionsDialogComponent, {
+        mickaDatasetConfig: this.mickaDatasetConfig,
+      });
     } else {
-      if (
-        this.hsLayoutService.contentWrapper.querySelector(
-          '.hs-ds-suggestions-micka'
-        ) === null
-      ) {
-        this.hsDialogContainerService.create(
-          HsMickaSuggestionsDialogComponent,
-          {mickaDatasetConfig: this.mickaDatasetConfig}
-        );
-        //FIXME: $compile
-        /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
-        this.hsLayoutService.contentWrapper
-          .querySelector('.hs-dialog-area')
-          .appendChild(el[0]);
-        $compile(el)(scope);*/
-      } else {
-        this.suggestionsModalVisible = true;
-        const filterElement = this.hsLayoutService.contentWrapper.querySelector(
-          '.hs-ds-sug-filter'
-        );
-        this.hsMickaFilterService.suggestionFilter = this.query[input];
-        filterElement.focus();
-      }
-      this.hsMickaFilterService.suggestionFilterChanged(
-        this.mickaDatasetConfig
+      this.hsMickaFilterService.suggestionsModalVisible = true;
+      const filterElement = this.hsLayoutService.layoutElement.querySelector(
+        '.hs-ds-sug-filter'
       );
+      this.hsMickaFilterService.suggestionFilter = this.query[input];
+      filterElement.focus();
     }
+    this.hsMickaFilterService.suggestionFilterChanged(this.mickaDatasetConfig);
   }
 }

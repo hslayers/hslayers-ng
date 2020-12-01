@@ -39,16 +39,19 @@ export class HsMickaFilterComponent {
    * @description Opens Micka Advanced Search dialog, might pass current search string.
    */
   openMickaAdvancedSearch(): void {
-    const previousDialog = this.hsLayoutService.layoutElement.querySelector(
-      '.hs-ds-advanced-micka'
-    );
-    if (previousDialog) {
-      previousDialog.parentNode.removeChild(previousDialog);
+    if (
+      this.hsLayoutService.layoutElement.querySelector(
+        '.hs-ds-advanced-micka'
+      ) === null
+    ) {
+      this.HsDialogContainerService.create(
+        HsAdvancedMickaDialogComponent,
+        this.hsDatasourcesService.selectedEndpoint
+      );
+    } else {
+      this.hsMickaFilterService.advancedModalVisible = true;
     }
-    this.HsDialogContainerService.create(
-      HsAdvancedMickaDialogComponent,
-      this.hsDatasourcesService.selectedEndpoint
-    );
+
     if (this.hsDatasourcesService.data.query.title) {
       this.hsDatasourcesService.data.query.textFilter = this.hsDatasourcesService.data.query.title;
     }
