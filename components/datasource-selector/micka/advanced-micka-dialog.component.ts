@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesService} from '../datasource-selector.service';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
@@ -11,11 +12,12 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
   selector: 'hs-advanced-micka-dialog',
   template: require('./advanced-micka-dialog.html'),
 })
-export class HsAdvancedMickaDialogComponent {
+export class HsAdvancedMickaDialogComponent implements HsDialogComponent {
   query;
   modalVisible = true;
   suggestionsModalVisible;
-  @Input('endpoint') mickaDatasetConfig;
+  @Input() data; //endpoint
+  mickaDatasetConfig: any;
 
   constructor(
     public hsConfig: HsConfig,
@@ -26,7 +28,10 @@ export class HsAdvancedMickaDialogComponent {
   ) {
     this.query = hsDatasourcesService.data.query;
   }
-
+  viewRef: ViewRef;
+  ngOnInit(): void {
+    this.mickaDatasetConfig = this.data;
+  }
   /**
    * @function showSuggestions
    * @param {string} input Suggestion class type name (e.g. "Organisation Name")

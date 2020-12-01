@@ -5,7 +5,7 @@
                 [(ngModel)]="query.title" (change)="queryCatalogs()" name="queryTitle">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary"
-                    (click)='openMickaAdvancedSearch(mickaDatasetConfig)'>{{'COMMON.more' | translate}}</button>
+                    (click)='openMickaAdvancedSearch()'>{{'COMMON.more' | translate}}</button>
                 <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()"><span
                         aria-hidden="true" class="close">×</span><span class="sr-only">
                         {{'COMMON.clear' | translate}}

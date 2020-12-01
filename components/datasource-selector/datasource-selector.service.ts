@@ -34,6 +34,7 @@ type WhatToAddDescriptor = {
 })
 export class HsDatasourcesService {
   data: any = {};
+  selectedEndpoint: HsEndpoint;
 
   constructor(
     public hsConfig: HsConfig,

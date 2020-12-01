@@ -62,6 +62,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
   entryComponents: [
     HsDatasourcesComponent,
     HsDatasourcesMetadataDialogComponent,
+    HsAdvancedMickaDialogComponent,
   ],
 })
 export class HsDatasourcesModule {}

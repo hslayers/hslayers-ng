@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsAdvancedMickaDialogComponent} from './advanced-micka-dialog.component';
 import {HsDatasourcesService} from '../datasource-selector.service';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMickaFilterService} from './micka-filters.service';
@@ -20,7 +22,8 @@ export class HsMickaFilterComponent {
     public hsDatasourcesService: HsDatasourcesService,
     public hsLayoutService: HsLayoutService,
     public hsLogService: HsLogService,
-    public hsMickaFilterService: HsMickaFilterService // used in template
+    public hsMickaFilterService: HsMickaFilterService, // used in template
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     this.query = hsDatasourcesService.data.query;
     //FIXME: this.mickaDatasetConfig = scope.$eval(attrs['mickaDatasetConfig']);
@@ -32,26 +35,17 @@ export class HsMickaFilterComponent {
    * @param {object} mickaDatasetConfig Micka datasource config
    * @description Opens Micka Advanced Search dialog, might pass current search string.
    */
-  openMickaAdvancedSearch(mickaDatasetConfig): void {
-    if (
-      this.hsLayoutService.contentWrapper.querySelector(
-        '.hs-ds-advanced-micka'
-      ) === null
-    ) {
-      this.hsLogService.warn('Not implemented');
-      /*const el = angular.element('<div hs-advanced-micka-dialog></div>');
-      el[0].setAttribute(
-        'micka-dataset-config',
-        JSON.stringify(mickaDatasetConfig)
-      );
-      //FIXME: $compile
-      this.$compile(el)(this);
-      this.hsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);*/
-    } else {
-      this.modalVisible = true;
+  openMickaAdvancedSearch(): void {
+    const previousDialog = this.hsLayoutService.layoutElement.querySelector(
+      '.hs-ds-advanced-micka'
+    );
+    if (previousDialog) {
+      previousDialog.parentNode.removeChild(previousDialog);
     }
+    this.HsDialogContainerService.create(
+      HsAdvancedMickaDialogComponent,
+      this.hsDatasourcesService.selectedEndpoint
+    );
     if (this.hsDatasourcesService.data.query.title) {
       this.hsDatasourcesService.data.query.textFilter = this.hsDatasourcesService.data.query.title;
     }
