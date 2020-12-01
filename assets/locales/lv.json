@@ -277,7 +277,9 @@
       "layerIsQueryable": "Šis slānis ir vaicājams",
       "layerNotAvailable": "Šis slānis nav pieejams",
       "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
-      "sendingToLayman": "Sūta uz layman"
+      "sendingToLayman": "Sūta uz layman",
+      "moveLayerDown": "Pārvietot slāni uz leju",
+      "moveLayerUp": "Pārvietot slāni uz augšu"
     },
     "layermanagerMd": {
       "aboutLayer": "Par slāni",
