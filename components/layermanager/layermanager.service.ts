@@ -99,7 +99,7 @@ export class HsLayerManagerService {
   composition_id: string;
   menuExpanded = false;
   currentResolution: number;
-
+  zIndexValue = 0;
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
@@ -157,6 +157,14 @@ export class HsLayerManagerService {
     }
     if (typeof layer.get('position') == 'undefined') {
       layer.set('position', this.getMyLayerPosition(layer));
+    }
+    if (typeof layer.getZIndex() == 'undefined') {
+      layer.setZIndex(this.zIndexValue);
+      this.zIndexValue = ++this.zIndexValue;
+    } else {
+      if (layer.getZIndex() == this.zIndexValue) {
+        this.zIndexValue = ++this.zIndexValue;
+      }
     }
 
     /**
