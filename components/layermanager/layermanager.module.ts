@@ -21,6 +21,7 @@ import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
+import {HsLayerPhysicalListComponent} from './layermanager-physical-layerlist.component';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -38,6 +39,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerPhysicalListComponent,
   ],
   imports: [
     TranslateModule,
@@ -57,6 +59,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerPhysicalListComponent,
   ],
   providers: [
     HsLayerEditorSublayerService,
@@ -76,6 +79,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerPhysicalListComponent,
   ],
 })
 export class HsLayerManagerModule {}

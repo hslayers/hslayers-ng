@@ -1,0 +1,17 @@
+<div class="list-group-item hs-lm-list pb-1" *ngIf="layers.length != 0">
+    <ul class="list-group row">
+        <li *ngFor="let layer of layers;" id="{{layer.idString()}}" class="list-group-item hs-lm-item">
+            <div class="d-flex">
+                <div class="p-0 info_btn">
+                    <span class="icon-arrow-up" [title]="'LAYERMANAGER.layerList.moveLayerUp' | translate"
+                        (click)="moveLayer(layer, 'up')"></span>
+                    <span class="icon-arrow-down" [title]="'LAYERMANAGER.layerList.moveLayerDown' | translate"
+                        (click)="moveLayer(layer, 'down')"></span>
+                </div>
+                <div class="align-items-center p-0 hs-lm-item-title flex-grow-1">
+                    {{HsLayerUtilsService.translateTitle(layer.title)}}
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
