@@ -308,7 +308,8 @@
     "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "terrains": "Terény"
+    "terrains": "Terény",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"

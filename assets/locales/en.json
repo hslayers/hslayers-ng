@@ -308,7 +308,8 @@
     "other": "Other",
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
-    "terrains": "Terrains"
+    "terrains": "Terrains",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"

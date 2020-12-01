@@ -113,7 +113,8 @@
         "other": "Autre",
         "removeAllLayers": "Supprimer toutes les couches",
         "resetMap": "Réinitialiser la carte",
-        "terrains": "Terrains"
+        "terrains": "Terrains",
+        "enablePhysicalLayerList": "Enable/Disable physical layer list"
     },
     "LEGEND": {
         "noLegendExists": "Aucune couche avec légende n'existe!"
