@@ -275,7 +275,8 @@ export class HsAddLayersWfsService {
         }
       }
     } catch (e) {
-      throw new Error(
+      this.$rootScope.$broadcast(
+        'wfs_capabilities_error',
         'GetCapabilities parsing failed. Likely unexpected implementation'
       );
     }

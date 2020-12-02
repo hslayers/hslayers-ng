@@ -1,7 +1,6 @@
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
-import {TileWMS,WMTS} from 'ol/source';
-import * as xml2Json from 'xml-js';
+import {TileWMS, WMTS} from 'ol/source';
 
 /**
  * @param $rootScope
@@ -11,6 +10,7 @@ import * as xml2Json from 'xml-js';
  * @param HsUtilsService
  * @param HsLanguageService
  * @param HsLayerUtilsService
+ * @param HsQueryWmtsService
  */
 export default function (
   $rootScope,
@@ -66,9 +66,9 @@ export default function (
   /**
    * @function featureInfoReceived
    * @memberOf hs.query.service_getwmsfeatureinfo
-   * @params {Object} response Response of GetFeatureInfoRequest
-   * @params {String} infoFormat Format of GetFeatureInfoResponse
-   * @params {String} url Url of request
+   * @params {object} response Response of GetFeatureInfoRequest
+   * @params {string} infoFormat Format of GetFeatureInfoResponse
+   * @params {string} url Url of request
    * @params {Ol.coordinate object} coordinate Coordinate of request
    * Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
    * @param response
@@ -90,12 +90,15 @@ export default function (
      */
     const customInfoTemplate = layer.get('customInfoTemplate') || false;
 
-    if (infoFormat.includes('xml')  || infoFormat.includes('gml')) {
+    if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
 
-      if (infoFormat.includes('gml') || HsUtilsService.instOf(layer.getSource(), WMTS)) {
+      if (
+        infoFormat.includes('gml') ||
+        HsUtilsService.instOf(layer.getSource(), WMTS)
+      ) {
         me.parseGmlResponse(doc, layer, customInfoTemplate);
       } else if (
         infoFormat == 'text/xml' ||
@@ -259,13 +262,12 @@ export default function (
     if (isLayerWmsQueryable(layer)) {
       const source = layer.getSource();
 
-      if (HsUtilsService.instOf(layer.getSource(), WMTS)){
-        HsQueryWmtsService.parseRequestUrl(layer, coordinate).then((res)=>{
-          console.log(res)
+      if (HsUtilsService.instOf(layer.getSource(), WMTS)) {
+        HsQueryWmtsService.parseRequestUrl(layer, coordinate).then((res) => {
           me.infoCounter++;
           me.request(res.url, res.format, coordinate, layer);
-        })
-        return
+        });
+        return;
       }
       const map = HsMapService.map;
       const viewResolution = map.getView().getResolution();
@@ -314,16 +316,18 @@ export default function (
     if (!layer.getVisible()) {
       return false;
     }
-    if (
-      HsUtilsService.instOf(layer, Tile)
-    ) {
-      if (HsUtilsService.instOf(layer.getSource(), TileWMS) &&
-        layer.getSource().getParams().INFO_FORMAT) {
+    if (HsUtilsService.instOf(layer, Tile)) {
+      if (
+        HsUtilsService.instOf(layer.getSource(), TileWMS) &&
+        layer.getSource().getParams().INFO_FORMAT
+      ) {
         return true;
-
       }
-      if (HsUtilsService.instOf(layer.getSource(), WMTS) && layer.get('info_format')) {
-        return true
+      if (
+        HsUtilsService.instOf(layer.getSource(), WMTS) &&
+        layer.get('info_format')
+      ) {
+        return true;
       }
     }
     if (
