@@ -34,12 +34,12 @@ export class HsHistoryListService {
   }
 
   addSourceHistory(forWhat: string, url: string): void {
-    if (this.items[forWhat].history === undefined) {
+    if (this.items[forWhat]?.history === undefined) {
       this.items[forWhat] = {
         history: [],
       };
     }
-    if (this.items[forWhat].history.indexOf(url) == -1) {
+    if (!this.items[forWhat]?.history?.includes(url)) {
       this.items[forWhat].history.push(url);
       this.CookieService.set(
         `last${forWhat}Sources`,

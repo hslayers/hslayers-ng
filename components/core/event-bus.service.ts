@@ -1,6 +1,6 @@
 import Map from 'ol/Map';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -90,7 +90,11 @@ export class HsEventBusService {
   /**
    * replaces `ows.${type}_connecting`
    */
-  owsConnecting: Subject<{type: string; uri: any; layer?: any}> = new Subject();
+  owsConnecting: BehaviorSubject<{
+    type: string;
+    uri: string;
+    layer?: any;
+  }> = new BehaviorSubject({type: '', uri: '', layer: null});
   /**
    * replaces 'ows_wmts.capabilities_received'
    * and

@@ -1,7 +1,10 @@
+import {BehaviorSubject} from 'rxjs';
 import {Component} from '@angular/core';
+
 import {HsAddLayersWmsService} from './add-layers-wms.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
 
 @Component({
@@ -19,12 +22,15 @@ export class HsAddLayersWmsComponent {
   layerToSelect: any;
 
   constructor(
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsEventBusService: HsEventBusService,
-    public hsHistoryListService: HsHistoryListService
+    public hsHistoryListService: HsHistoryListService,
+    public hsLog: HsLogService,
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
   ) {
-    this.data = hsAddLayersWmsService.data;
+    this.data = this.hsAddLayersWmsService.data;
+    this.url = '';
+
     //FIXME: is it even fired?
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'WMS') {
@@ -33,15 +39,18 @@ export class HsAddLayersWmsComponent {
     });
 
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      ({type, response}) => {
+      async ({type, response}) => {
         if (type === 'WMS') {
           try {
-            this.hsAddLayersWmsService.capabilitiesReceived(
+            await this.hsAddLayersWmsService.capabilitiesReceived(
               response,
               this.layerToSelect
             );
+            if (this.layerToSelect) {
+              this.addLayers(true);
+            }
           } catch (e) {
-            console.log(e);
+            hsLog.warn(e);
           }
         }
       }
@@ -55,11 +64,11 @@ export class HsAddLayersWmsComponent {
    * @description Clear Url and hide detailsWms
    */
   clear(): void {
-    this.url = '';
+    this.updateUrl('');
     this.showDetails = false;
   }
 
-  connect = (layerToSelect): void => {
+  connect = (layerToSelect: string): void => {
     this.hsHistoryListService.addSourceHistory('wms', this.url);
     this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
     this.layerToSelect = layerToSelect;
@@ -68,9 +77,10 @@ export class HsAddLayersWmsComponent {
 
   /**
    * @function selectAllLayers
-   * @description Select all layers from service.
+   * @description Select all layers from service
+   * @param layers
    */
-  selectAllLayers(layers) {
+  selectAllLayers(layers: any[]): void {
     for (const layer of layers) {
       layer.checked = !layer.checked;
       if (layer.Layer) {
@@ -79,7 +89,7 @@ export class HsAddLayersWmsComponent {
     }
   }
 
-  addLayers(checked): void {
+  addLayers(checked: boolean): void {
     this.hsAddLayersWmsService.addLayers(checked);
   }
 
@@ -91,11 +101,19 @@ export class HsAddLayersWmsComponent {
    * @description Connect to service of specified Url
    * @function setUrlAndConnect
    * @param {string} url Url of requested service
-   * @param {string} layer Optional layer to select, when
+   * @param {string} [layer] Optional layer to select, when
    * getCapabilities arrives
    */
-  setUrlAndConnect(url: string, layer): void {
-    this.url = url;
+  setUrlAndConnect(url: string, layer?: string): void {
+    this.updateUrl(url);
     this.connect(layer);
+  }
+
+  /**
+   * @description For the sake of possible future implementation changes
+   * @param {string} url URL to be set
+   */
+  private updateUrl(url: string): void {
+    this.url = url;
   }
 }
