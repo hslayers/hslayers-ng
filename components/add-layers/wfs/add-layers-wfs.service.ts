@@ -116,7 +116,11 @@ export class HsAddLayersWfsService {
     return src;
   }
 
-  async parseCapabilities(response): Promise<any> {
+  /**
+   * @param {string} response A stringified XML response to getCapabilities request
+   * @returns {Promise}
+   */
+  async parseCapabilities(response: string): Promise<any> {
     this.loadingFeatures = false;
 
     let caps: any = xml2Json.xml2js(response, {compact: true});
@@ -203,6 +207,7 @@ export class HsAddLayersWfsService {
         this.wfsCapabilitiesError.next(e);
       }
     });
+    return this.bbox;
   }
 
   getPreferredFormat(formats: string[]): string {
