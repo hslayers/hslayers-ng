@@ -3,6 +3,7 @@ import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {WMSCapabilities} from 'ol/format';
+import {transformExtent} from 'ol/proj';
 
 import {HsConfig} from '../../../config.service';
 import {HsDimensionService} from '../../../common/dimension.service';
@@ -117,6 +118,10 @@ export class HsAddLayersWmsService {
       }
       this.data.services = this.data.services.filter((layer) => layer.Name);
 
+      this.data.extent =
+        this.data.services[0].EX_GeographicBoundingBox ||
+        this.data.services[0].BoundingBox;
+
       this.selectLayerByName(layerToSelect);
 
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
@@ -218,47 +223,11 @@ export class HsAddLayersWmsService {
    * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): void {
-    /**
-     * @param layer
-     */
-    const recurse = (layer) => {
-      if (!checkedOnly || layer.checked) {
-        if (layer.Layer === undefined) {
-          this.addLayer(
-            layer,
-            layer.Title.replace(/\//g, '&#47;'),
-            this.data.path,
-            this.data.image_format,
-            this.data.query_format,
-            this.data.tile_size,
-            this.data.srs,
-            this.getSublayerNames(layer)
-          );
-        } else {
-          const clone = this.hsUtilsService.structuredClone(layer);
-          delete clone.Layer;
-          this.addLayer(
-            layer,
-            layer.Title.replace(/\//g, '&#47;'),
-            this.data.path,
-            this.data.image_format,
-            this.data.query_format,
-            this.data.tile_size,
-            this.data.srs,
-            this.getSublayerNames(layer)
-          );
-        }
-      }
-      if (layer.Layer) {
-        for (const sublayer of layer.Layer) {
-          recurse(sublayer);
-        }
-      }
-    };
     for (const layer of this.data.services) {
-      recurse(layer);
+      this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
     }
     this.hsLayoutService.setMainPanel('layermanager');
+    this.zoomToLayers();
   }
 
   /**
@@ -427,5 +396,55 @@ export class HsAddLayersWmsService {
           }
         });
       });
+  }
+
+  private addLayersRecursively(layer, {checkedOnly = true}) {
+    if (!checkedOnly || layer.checked) {
+      if (layer.Layer === undefined) {
+        this.addLayer(
+          layer,
+          layer.Title.replace(/\//g, '&#47;'),
+          this.data.path,
+          this.data.image_format,
+          this.data.query_format,
+          this.data.tile_size,
+          this.data.srs,
+          this.getSublayerNames(layer)
+        );
+      } else {
+        const clone = this.hsUtilsService.structuredClone(layer);
+        delete clone.Layer;
+        this.addLayer(
+          layer,
+          layer.Title.replace(/\//g, '&#47;'),
+          this.data.path,
+          this.data.image_format,
+          this.data.query_format,
+          this.data.tile_size,
+          this.data.srs,
+          this.getSublayerNames(layer)
+        );
+      }
+    }
+    if (layer.Layer) {
+      for (const sublayer of layer.Layer) {
+        this.addLayersRecursively(sublayer, {checkedOnly: checkedOnly});
+      }
+    }
+  }
+
+  private zoomToLayers() {
+    if (this.data.extent) {
+      const extent = transformExtent(
+        this.data.extent,
+        'EPSG:4326',
+        this.hsMapService.map.getView().getProjection()
+      );
+      if (extent) {
+        this.hsMapService.map
+          .getView()
+          .fit(extent, this.hsMapService.map.getSize());
+      }
+    }
   }
 }
