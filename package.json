@@ -146,7 +146,7 @@
     "moment-interval": "^0.2.1",
     "ngclipboard": "^2.0.0",
     "ngma": "^1.0.6",
-    "ngx-cookie-service": "^10.0.1",
+    "ngx-cookie-service": "^11.0.2",
     "ol": "^6.3.1",
     "ol-popup": "^4.0.0",
     "proj4": "^2.6.0",
