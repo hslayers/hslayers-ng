@@ -103,7 +103,7 @@ if (window.hslayersNgConfig) {
   mainModuleBs.value('HsConfig', window.hslayersNgConfig(window.ol));
 }
 
-mainModuleBs.controller('Main', ($scope, HsCore, HsMapService, HsConfig) => {
+mainModuleBs.controller('Main', ($scope, HsCore, HsMapService, HsConfig,HsQueryWmsService) => {
   'ngInject';
   $scope.HsCore = HsCore;
   let lastConfigBuster = HsConfig.buster;
