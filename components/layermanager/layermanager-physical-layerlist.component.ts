@@ -6,9 +6,17 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
   template: require('./partials/physical-layerlist.html'),
+  styles: [
+    `
+      .activeLayer {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    `,
+  ],
 })
 export class HsLayerPhysicalListComponent {
   @Input() layers: any;
+  previoslySelectedLayer: any;
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -19,6 +27,11 @@ export class HsLayerPhysicalListComponent {
     });
   }
   moveLayer(layer, orient: string): void {
+    if (this.previoslySelectedLayer !== undefined) {
+      this.previoslySelectedLayer.active = false;
+    }
+    layer.active = true;
+    this.previoslySelectedLayer = layer;
     const currentLayerIndex = this.layers.indexOf(layer);
     switch (orient) {
       case 'up':
