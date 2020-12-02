@@ -73,9 +73,17 @@ export class HsCompositionsParserService {
       pre_parse = (res) => this.parseWMC(res);
       options = {responseType: 'text'};
     }
-    const response = await this.$http.get(url, options).toPromise();
-
-    this.loaded(response, pre_parse, url, overwrite, callback);
+    try {
+      const data: any = await this.$http.get(url, options).toPromise();
+      if (data?.file) {
+        // Layman composition wrapper
+        this.loadUrl(data.file.url, overwrite, callback, pre_parse);
+      } else {
+        this.loaded(data, pre_parse, url, overwrite, callback);
+      }
+    } catch (e) {
+      this.$log.warn(e);
+    }
   }
 
   loaded(response, pre_parse, url, overwrite: boolean, callback): void {
