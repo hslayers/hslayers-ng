@@ -9,6 +9,9 @@ import {Vector as VectorSource} from 'ol/source';
  * @param $timeout
  * @param $log
  * @param HsCommonEndpointsService
+ * @param $rootScope
+ * @param $compile
+ * @param HsLayoutService
  */
 export default function (
   HsUtilsService,
@@ -16,7 +19,10 @@ export default function (
   HsMapService,
   $timeout,
   $log,
-  HsCommonEndpointsService
+  HsCommonEndpointsService,
+  $rootScope,
+  $compile,
+  HsLayoutService
 ) {
   'ngInject';
   const me = this;
@@ -290,50 +296,80 @@ export default function (
       const endpoint = {..._endpoint};
       return new Promise((resolve, reject) => {
         me.describeLayer(endpoint, layerName).then((descr) => {
-          if (descr === null) {
-            resolve();
-            return;
+          try {
+            if (descr === null) {
+              resolve(null);
+              return;
+            }
+            if (descr && descr.name) {
+              this.cacheLaymanDescriptor(layer, descr, endpoint);
+            }
+            if (
+              ['STARTED', 'PENDING', 'SUCCESS', 'NOT_AVAILABLE'].includes(
+                descr.wms.status
+              ) &&
+              ['STARTED', 'PENDING', 'SUCCESS', 'NOT_AVAILABLE'].includes(
+                descr.wfs.status
+              )
+            ) {
+              throw new Error('Layer not available');
+            }
+            if (descr.wfs.status == 'NOT_AVAILABLE') {
+              $timeout(() => {
+                me.pullVectorSource(
+                  endpoint,
+                  layerName,
+                  layer
+                ).then((response) => resolve(response));
+              }, 2000);
+              return;
+            }
+            /* When OL will support GML3.2, then we can use WFS
+                          version 2.0.0. Currently only 3.1.1 is possible */
+            $http({
+              url:
+                descr.wfs.url +
+                '?' +
+                HsUtilsService.paramsToURL({
+                  service: 'wfs',
+                  version: '1.1.0',
+                  request: 'GetFeature',
+                  typeNames: `${endpoint.user}:${descr.name}`,
+                  r: Math.random(),
+                }),
+              method: 'GET',
+            }).then(
+              (response) => {
+                resolve(response);
+              },
+              (err) => resolve(null)
+            );
+          } catch (error) {
+            me.displaySyncErrorDialog(error, endpoint);
           }
-          if (descr && descr.name) {
-            this.cacheLaymanDescriptor(layer, descr, endpoint);
-          }
-          if (
-            descr.wfs.status == 'NOT_AVAILABLE' &&
-            descr.wms.status == 'NOT_AVAILABLE'
-          ) {
-            resolve();
-            return;
-          }
-          if (descr.wfs.status == 'NOT_AVAILABLE') {
-            $timeout(() => {
-              me.pullVectorSource(endpoint, layerName, layer).then((response) =>
-                resolve(response)
-              );
-            }, 2000);
-            return;
-          }
-          /* When OL will support GML3.2, then we can use WFS
-                        version 2.0.0. Currently only 3.1.1 is possible */
-          $http({
-            url:
-              descr.wfs.url +
-              '?' +
-              HsUtilsService.paramsToURL({
-                service: 'wfs',
-                version: '1.1.0',
-                request: 'GetFeature',
-                typeNames: `${endpoint.user}:${descr.name}`,
-                r: Math.random(),
-              }),
-            method: 'GET',
-          }).then(
-            (response) => {
-              resolve(response);
-            },
-            (err) => resolve(null)
-          );
         });
       });
+    },
+
+    displaySyncErrorDialog(error, endpoint) {
+      if (endpoint.user == 'anonymous' || endpoint.user == 'browser') {
+        console.warn('Not authorized');
+        return;
+      }
+      const scope = $rootScope.$new();
+      Object.assign(scope, {
+        error,
+      });
+      const el = angular.element(
+        '<hs-sync-error-dialog exception="error"></hs-sync-error-dialog>'
+      );
+      HsLayoutService.contentWrapper
+        .querySelector('.hs-dialog-area')
+        .appendChild(el[0]);
+      $compile(el)(scope);
+      if (!$rootScope.$$phase) {
+        $rootScope.$digest();
+      }
     },
 
     /**

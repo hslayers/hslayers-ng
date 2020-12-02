@@ -1,14 +1,20 @@
-<div class="alert alert-danger alert-dismissible fade"
-    style="position: fixed; top: 10em; left: calc((100% - 500px) / 2); height: 19em; width: 500px; overflow-y: auto;"
-    ng-class="{'show': $ctrl.modalVisible}" role="alert">
-    <h4 class="alert-heading" translate> 
-        Error when syncing
-    </h4>
-    {{$ctrl.exception}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="$ctrl.modalVisible = false">
-        <span aria-hidden="true">×</span>
-    </button>
-</div>
-</div>
-</div>
+
+<div  ng-class="{'in': $ctrl.modalVisible}" class="modal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" translate>
+                    Error when syncing
+                </h4>
+                <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+            </div>
+            <div class="modal-body alert alert-danger" style="max-height:600px; overflow-y:auto">
+                    <h5 translate>There was a problem loading  layer</h5>
+                    <p>{{$ctrl.exception}}</p>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" ng-click="$ctrl.modalVisible = false" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
 </div>

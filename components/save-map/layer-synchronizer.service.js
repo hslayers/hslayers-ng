@@ -186,7 +186,10 @@ export default function (
           layer
         ).then((response) => {
           if (response.data.indexOf('Exception') > -1) {
-            me.displaySyncErrorDialog(response.data);
+            HsLaymanService.displaySyncErrorDialog(
+              response.data,
+              laymanEndpoint
+            );
           }
           if (inserted[0]) {
             const id = new DOMParser()
@@ -203,20 +206,6 @@ export default function (
           layer.set('hs-layman-synchronizing', false);
         });
       }
-    },
-
-    displaySyncErrorDialog(error) {
-      const scope = $rootScope.$new();
-      Object.assign(scope, {
-        error,
-      });
-      const el = angular.element(
-        '<hs-sync-error-dialog exception="error"></hs-sync-error-dialog>'
-      );
-      HsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
-      $compile(el)(scope);
     },
 
     /**
