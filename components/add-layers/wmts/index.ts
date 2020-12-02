@@ -4,7 +4,7 @@ import * as angular from 'angular';
 import {HsAddLayersWmtsComponent} from './add-layers-wmts.component';
 import {HsAddLayersWmtsModule} from './add-layers-wmts.module';
 import {HsAddLayersWmtsService} from './add-layers-wmts.service';
-import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
 import {HsResampleDialogComponent} from '../resample-dialog.component';
 import {downgrade} from '../../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
