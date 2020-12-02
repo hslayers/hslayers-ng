@@ -21,6 +21,10 @@ export class HsEventBusService {
   layerManagerUpdates: Subject<any> = new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
   compositionDeletes: Subject<any> = new Subject();
+  /**
+   * @event compositionLoads
+   * @description Fires when composition is loaded or not loaded with Error message
+   */
   compositionLoads: Subject<any> = new Subject();
   layerRemovals: Subject<any> = new Subject();
   compositionEdits: Subject<any> = new Subject();
@@ -48,8 +52,7 @@ export class HsEventBusService {
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
   /**
-   * @name mapExtentChanges
-   * @eventType broadcast on $rootScope
+   * @event mapExtentChanges
    * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
    */
   mapExtentChanges: Subject<any> = new Subject();
@@ -66,6 +69,8 @@ export class HsEventBusService {
    */
   olMapLoads: Subject<Map> = new Subject();
   /**
+   * @event compositionLoading
+   * @description Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
    */
   compositionLoading: Subject<any> = new Subject();

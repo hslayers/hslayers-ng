@@ -1,4 +1,6 @@
 import * as xml2Json from 'xml-js';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {transform, transformExtent} from 'ol/proj';
 
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
@@ -8,15 +10,12 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsParserService {
   /**
-   * @ngdoc property
    * @name HsCompositionsParserService#composition_loaded
    * @public
    * @type {string} null
@@ -24,7 +23,6 @@ export class HsCompositionsParserService {
    */
   composition_loaded = null;
   /**
-   * @ngdoc property
    * @name HsCompositionsParserService#composition_edited
    * @public
    * @type {boolean} null
@@ -32,7 +30,6 @@ export class HsCompositionsParserService {
    */
   composition_edited = false;
   /**
-   * @ngdoc property
    * @name HsCompositionsParserService#current_composition_title
    * @public
    * @type {string} ""
@@ -54,7 +51,6 @@ export class HsCompositionsParserService {
   ) {}
 
   /**
-   * @ngdoc method
    * @name HsCompositionsParserService#load
    * @public
    * @param {string} url Url of selected composition
@@ -63,7 +59,12 @@ export class HsCompositionsParserService {
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
    * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
    */
-  async loadUrl(url, overwrite?, callback?, pre_parse?) {
+  async loadUrl(
+    url: string,
+    overwrite?: boolean,
+    callback?,
+    pre_parse?
+  ): Promise<void> {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
@@ -77,13 +78,7 @@ export class HsCompositionsParserService {
     this.loaded(response, pre_parse, url, overwrite, callback);
   }
 
-  loaded(response, pre_parse, url, overwrite, callback) {
-    /**
-     * @ngdoc event
-     * @name HsCompositionsParserService#compositions.composition_loading
-     * @eventType broadcast on $rootScope
-     * @description Fires when composition is downloaded from server and parsing begins
-     */
+  loaded(response, pre_parse, url, overwrite: boolean, callback): void {
     this.HsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
       this.composition_loaded = url;
@@ -114,7 +109,7 @@ export class HsCompositionsParserService {
   parseWMC(response: string): any {
     let res: any = xml2Json.xml2js(response, {compact: true});
     res = res.ViewContext;
-    console.log(res);
+    //console.log(res);
     const compositionJSON: any = {
       'current_base_layer': {
         'title': 'Composite_base_layer',
@@ -172,22 +167,23 @@ export class HsCompositionsParserService {
       };
       compositionJSON.layers.push(layerToAdd);
     }
-    let composition = {data:{}};
+    const composition = {data: {}};
     composition.data = compositionJSON;
     return composition;
   }
 
-  checkLoadSuccess(response) {
+  checkLoadSuccess(response): boolean {
     return (
       response.success == true /*micka*/ ||
-      (response.success == undefined /*layman*/ && response.name !== undefined) ||
+      (response.success == undefined /*layman*/ &&
+        response.name !== undefined) ||
       response.includes('LayerList') /*.wmc micka*/
     );
   }
 
   loadCompositionObject(
     obj,
-    overwrite,
+    overwrite: boolean,
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
   ): void {
@@ -220,21 +216,16 @@ export class HsCompositionsParserService {
     }
   }
 
-  finalizeCompositionLoading(responseData) {
+  finalizeCompositionLoading(responseData): void {
     if (this.HsConfig.open_lm_after_comp_loaded) {
       this.HsLayoutService.setMainPanel('layermanager');
     }
 
     this.composition_edited = false;
-    /**
-     * @ngdoc event
-     * @name HsCompositionsParserService#compositions.composition_loaded
-     * @description Fires when composition is loaded or not loaded with Error message
-     */
     this.HsEventBusService.compositionLoads.next(responseData);
   }
 
-  raiseCompositionLoadError(response) {
+  raiseCompositionLoadError(response): void {
     const respError: any = {};
     respError.error = response.error;
     switch (response.error) {
@@ -253,12 +244,11 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @ngdoc method
    * @name HsCompositionsParserService#removeCompositionLayers
    * @public
    * @description Remove all layers gained from composition from map
    */
-  removeCompositionLayers() {
+  removeCompositionLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (lyr.get('from_composition')) {
@@ -271,11 +261,9 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @ngdoc method
    * @name HsCompositionsParserService#loadInfo
    * @public
    * @param {string} url Url to composition info
-   * @param cb
    * @returns {object} Object containing composition info
    * @description Send Ajax request to selected server to gain information about composition
    */
@@ -309,7 +297,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @ngdoc method
    * @name HsCompositionsParserService#jsonToLayers
    * @public
    * @param {object} j Composition object with Layers
@@ -334,7 +321,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @ngdoc method
    * @name HsCompositionsParserService#jsonToLayer
    * @public
    * @param {object} lyr_def Layer to be created (encapsulated in layer definition object)
