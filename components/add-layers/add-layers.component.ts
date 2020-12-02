@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HsAddLayersWfsService} from './wfs/add-layers-wfs-service';
+import {HsAddLayersWfsService} from './wfs/add-layers-wfs.service';
 import {HsAddLayersWmsService} from './wms/add-layers-wms.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';

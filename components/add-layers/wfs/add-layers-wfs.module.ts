@@ -5,7 +5,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersCommonModule} from '../common/add-layers-common.module';
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
-import {HsAddLayersWfsService} from './add-layers-wfs-service';
+import {HsAddLayersWfsService} from './add-layers-wfs.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
