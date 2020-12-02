@@ -3,7 +3,7 @@ import '../../utils';
 import * as angular from 'angular';
 import {HsAddLayersWfsComponent} from './add-layers-wfs.component';
 import {HsAddLayersWfsModule} from './add-layers-wfs.module';
-import {HsAddLayersWfsService} from './add-layers-wfs-service';
+import {HsAddLayersWfsService} from './add-layers-wfs.service';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 

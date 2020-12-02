@@ -1,16 +1,16 @@
-import VectorLayer from 'ol/layer/Vector';
 import {Component} from '@angular/core';
+import {Vector as VectorLayer} from 'ol/layer';
 import {bbox} from 'ol/loadingstrategy';
 
-import {HsAddLayersWfsService} from './add-layers-wfs-service';
+import {HsAddLayersWfsService} from './add-layers-wfs.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
-import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 
 @Component({
   selector: 'hs-add-layers-wfs',
@@ -38,7 +38,7 @@ export class HsAddLayersWfsComponent {
     public hsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsUtilsService: HsUtilsService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()
@@ -163,7 +163,7 @@ export class HsAddLayersWfsComponent {
     }
   }
 
-  recurse(layer, checked: boolean): void {
+  private recurse(layer, checked: boolean): void {
     if (!checked || layer.checked) {
       this.addLayer(
         layer,

@@ -1,21 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as xml2Json from 'xml-js';
-import GML3 from 'ol/format/GML3';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Renderer2, RendererFactory2} from '@angular/core';
+import {Subject} from 'rxjs';
+
+import {GML as GML3, WFS} from 'ol/format';
+import {Vector} from 'ol/source';
+import {bbox} from 'ol/loadingstrategy';
+import {get, transformExtent} from 'ol/proj';
 
 import {HsConfig} from '../../../config.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
-
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Renderer2, RendererFactory2} from '@angular/core';
-
-import {Subject} from 'rxjs';
-import {Vector} from 'ol/source';
-import {WFS} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
-import {get} from 'ol/proj';
-import {transform, transformExtent} from 'ol/proj';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +53,7 @@ export class HsAddLayersWfsService {
   }
 
   //FIXME: context
-  createWfsSource(options) {
+  createWfsSource(options): Vector {
     const me = this;
     const src = new Vector({
       strategy: bbox,
@@ -151,7 +149,7 @@ export class HsAddLayersWfsService {
         this.output_formats[index] = 'GML3';
       }
     });
-    this.output_format = this.getPreferedFormat(this.output_formats);
+    this.output_format = this.getPreferredFormat(this.output_formats);
 
     this.services = caps.FeatureTypeList.FeatureType[0]
       ? caps.FeatureTypeList.FeatureType
@@ -206,7 +204,8 @@ export class HsAddLayersWfsService {
       }
     });
   }
-  getPreferedFormat(formats) {
+
+  getPreferredFormat(formats: string[]): string {
     for (const format of formats) {
       if (format.includes('geojson') || format.includes('GML')) {
         return format;
@@ -214,6 +213,7 @@ export class HsAddLayersWfsService {
       return 'GML3';
     }
   }
+
   parseFeatureCount(): void {
     for (const service of this.services) {
       const url = [
@@ -252,7 +252,7 @@ export class HsAddLayersWfsService {
     }
   }
 
-  parseWFSJson(json) {
+  parseWFSJson(json: JSON): void {
     try {
       for (const key of Object.keys(json)) {
         if (key.includes(':')) {
@@ -278,6 +278,7 @@ export class HsAddLayersWfsService {
       );
     }
   }
+
   parseEPSG(srss) {
     srss.forEach((srs, index) => {
       const epsgCode = srs.slice(-4);
@@ -286,7 +287,6 @@ export class HsAddLayersWfsService {
         srss.splice(srss.indexOf(index), 1);
       }
     });
-
     return [...Array.from(new Set(srss))].filter((srs: string) =>
       this.definedProjections.includes(srs)
     );
