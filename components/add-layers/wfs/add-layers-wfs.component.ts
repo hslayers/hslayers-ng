@@ -5,7 +5,7 @@ import {bbox} from 'ol/loadingstrategy';
 import {HsAddLayersWfsService} from './add-layers-wfs.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
@@ -19,13 +19,14 @@ import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.
 export class HsAddLayersWfsComponent {
   url: any;
   error: any;
-  add_all: any;
+  addAll: boolean;
   isChecked: boolean;
   map_projection: any;
   loadingFeatures: boolean;
   showDetails: boolean;
   folder_name: any;
   title = '';
+  layerToAdd: string;
 
   path = 'WFS';
   loaderImage = require('../../../img/ajax-loader.gif');
@@ -40,17 +41,32 @@ export class HsAddLayersWfsComponent {
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public hsUtilsService: HsUtilsService
   ) {
-    this.map_projection = this.HsMapService.map
-      .getView()
-      .getProjection()
-      .getCode()
-      .toUpperCase();
+    this.hsEventBusService.olMapLoads.subscribe(() => {
+      this.map_projection = this.HsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
 
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      ({type, response}) => {
+      async ({type, response}) => {
         if (type === 'WFS') {
           try {
-            this.HsAddLayersWfsService.parseCapabilities(response);
+            await this.HsAddLayersWfsService.parseCapabilities(response);
+            if (this.layerToAdd) {
+              for (const layer of this.HsAddLayersWfsService.services) {
+                //TODO: If Layman allows layers with different casing,
+                // then remove the case lowering
+                if (
+                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase()
+                ) {
+                  layer.checked = true;
+                }
+              }
+              this.addLayers(true);
+              this.layerToAdd = null;
+            }
           } catch (e) {
             if (e.status == 401) {
               this.HsAddLayersWfsService.wfsCapabilitiesError.next(
@@ -65,7 +81,8 @@ export class HsAddLayersWfsComponent {
     );
 
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'wfs') {
+      if (type == 'WFS') {
+        this.layerToAdd = layer;
         this.setUrlAndConnect(uri);
       }
     });
@@ -135,7 +152,7 @@ export class HsAddLayersWfsComponent {
    * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
    */
   tryAddLayers(checked: boolean): void {
-    this.add_all = checked;
+    this.addAll = checked;
     this.addLayers(checked);
   }
 
@@ -154,17 +171,18 @@ export class HsAddLayersWfsComponent {
 
   /**
    * @function addLayers
-   * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
+   * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checked: boolean): void {
+  addLayers(checkedOnly: boolean): void {
+    this.addAll = checkedOnly;
     for (const layer of this.HsAddLayersWfsService.services) {
-      this.recurse(layer, checked);
+      this.addLayersRecursively(layer);
     }
   }
 
-  private recurse(layer, checked: boolean): void {
-    if (!checked || layer.checked) {
+  private addLayersRecursively(layer): void {
+    if (!this.addAll || layer.checked) {
       this.addLayer(
         layer,
         layer.Title.replace(/\//g, '&#47;'),
@@ -174,7 +192,7 @@ export class HsAddLayersWfsComponent {
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.recurse(sublayer, checked);
+        this.addLayersRecursively(sublayer);
       }
     }
   }

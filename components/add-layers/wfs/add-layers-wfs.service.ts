@@ -116,7 +116,7 @@ export class HsAddLayersWfsService {
     return src;
   }
 
-  parseCapabilities(response) {
+  async parseCapabilities(response): Promise<any> {
     this.loadingFeatures = false;
 
     let caps: any = xml2Json.xml2js(response, {compact: true});
@@ -135,8 +135,8 @@ export class HsAddLayersWfsService {
     this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
       ? caps.FeatureTypeList.FeatureType
       : [caps.FeatureTypeList.FeatureType];
-    this.output_formats = layer.OutputFormats.Format;
-    this.bbox = layer.OutputFormats.WGS84BoundingBox;
+    this.output_formats = layer.OutputFormats?.Format || [];
+    this.bbox = layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
     if (typeof this.output_formats == 'string') {
       this.output_formats = [
@@ -210,8 +210,8 @@ export class HsAddLayersWfsService {
       if (format.includes('geojson') || format.includes('GML')) {
         return format;
       }
-      return 'GML3';
     }
+    return 'GML3';
   }
 
   parseFeatureCount(): void {

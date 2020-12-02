@@ -1,6 +1,6 @@
 <form class="form-horizontal pt-1" name="frmConnect" role="form">
     <hs-add-layers-url type="wfs" [(url)]="url" [(connect)]="connect"></hs-add-layers-url>
-    <div  [hidden]="!showDetails" class="card">
+    <div [hidden]="!showDetails" class="card">
 
         <div class="card-title text-center font-weight-bold">{{title}}</div>
         <div class="form-group">
@@ -28,10 +28,10 @@
                 <div class="d-flex justify-content-center">
                     <div class="d-flex justify-content-between w-100" >
                         <button class="btn btn-primary" (click)="selectAllLayers(HsAddLayersWfsService.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
-                        <button class="btn btn-primary pull-right" (click)="tryAddLayers(true)" [title]="'ADDLAYERS.WFS.addToMap' | translate"
+                        <button class="btn btn-primary pull-right" (click)="addLayers(true)" [title]="'ADDLAYERS.WFS.addToMap' | translate"
                             [disabled]="!isChecked"><i class="icon-plus"></i></button>
                     </div>
-                    <button  *ngIf="loadingFeatures" class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img class="ml-2" [src]="loaderImage" /></button>
+                    <button *ngIf="loadingFeatures" class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img class="ml-2" [src]="loaderImage" /></button>
                 </div>
             </li>
 
