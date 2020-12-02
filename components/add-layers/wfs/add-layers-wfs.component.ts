@@ -18,18 +18,17 @@ import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.
   template: require('./add-wfs-layer.directive.html'),
 })
 export class HsAddLayersWfsComponent {
-  url: any;
+  url: string;
   error: any;
   addAll: boolean;
   isChecked: boolean;
-  map_projection: any;
+  mapProjection: any;
   loadingFeatures: boolean;
   showDetails: boolean;
-  folder_name: any;
-  title = '';
+  title = ''; //FIXME: unused
   layerToAdd: string;
 
-  path = 'WFS';
+  folderName = 'WFS';
   loaderImage = require('../../../img/ajax-loader.gif');
 
   constructor(
@@ -43,7 +42,7 @@ export class HsAddLayersWfsComponent {
     public hsUtilsService: HsUtilsService
   ) {
     this.hsEventBusService.olMapLoads.subscribe(() => {
-      this.map_projection = this.HsMapService.map
+      this.mapProjection = this.HsMapService.map
         .getView()
         .getProjection()
         .getCode()
@@ -107,7 +106,6 @@ export class HsAddLayersWfsComponent {
         HsGetCapabilitiesErrorComponent,
         this.error
       );
-      //throw "WMS Capabilities parsing problem";
     });
   }
 
@@ -150,16 +148,6 @@ export class HsAddLayersWfsComponent {
     this.changed();
   }
 
-  /**
-   * @function tryAddLayers
-   * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-   * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
-   */
-  tryAddLayers(checked: boolean): void {
-    this.addAll = checked;
-    this.addLayers(checked);
-  }
-
   checked(): boolean {
     for (const layer of this.HsAddLayersWfsService.services) {
       if (layer.checked) {
@@ -190,7 +178,7 @@ export class HsAddLayersWfsComponent {
       this.addLayer(
         layer,
         layer.Title.replace(/\//g, '&#47;'),
-        this.folder_name,
+        this.folderName,
         this.HsAddLayersWfsService.srs
       );
     }
@@ -221,7 +209,7 @@ export class HsAddLayersWfsComponent {
     const new_layer = new VectorLayer({
       title: layerName,
       source: this.HsAddLayersWfsService.createWfsSource(options),
-      path: this.path,
+      path: this.folderName,
       renderOrder: null,
       synchronize: false,
     });
@@ -241,7 +229,7 @@ export class HsAddLayersWfsComponent {
         bbox.UpperCorner.split(' ')[1],
       ];
     }
-    const extent = transformExtent(bbox, 'EPSG:4326', this.map_projection);
+    const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
     if (extent) {
       this.HsMapService.map
         .getView()
