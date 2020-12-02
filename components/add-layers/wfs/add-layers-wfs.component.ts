@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {bbox} from 'ol/loadingstrategy';
+import {transformExtent} from 'ol/proj';
 
 import {HsAddLayersWfsService} from './add-layers-wfs.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
@@ -53,7 +54,9 @@ export class HsAddLayersWfsComponent {
       async ({type, response}) => {
         if (type === 'WFS') {
           try {
-            await this.HsAddLayersWfsService.parseCapabilities(response);
+            const bbox = await this.HsAddLayersWfsService.parseCapabilities(
+              response
+            );
             if (this.layerToAdd) {
               for (const layer of this.HsAddLayersWfsService.services) {
                 //TODO: If Layman allows layers with different casing,
@@ -66,6 +69,7 @@ export class HsAddLayersWfsComponent {
               }
               this.addLayers(true);
               this.layerToAdd = null;
+              this.zoomToBBox(bbox);
             }
           } catch (e) {
             if (e.status == 401) {
@@ -206,7 +210,7 @@ export class HsAddLayersWfsComponent {
    * @param {string} folder name
    * @param {OpenLayers.Projection} srs of the layer
    */
-  addLayer(layer, layerName: string, folder: string, srs): void {
+  private addLayer(layer, layerName: string, folder: string, srs): void {
     const options = {
       layer: layer,
       url: this.HsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -223,5 +227,25 @@ export class HsAddLayersWfsComponent {
     });
     this.HsMapService.map.addLayer(new_layer);
     this.HsLayoutService.setMainPanel('layermanager');
+  }
+
+  private zoomToBBox(bbox: any) {
+    if (!bbox) {
+      return;
+    }
+    if (bbox.LowerCorner) {
+      bbox = [
+        bbox.LowerCorner.split(' ')[0],
+        bbox.LowerCorner.split(' ')[1],
+        bbox.UpperCorner.split(' ')[0],
+        bbox.UpperCorner.split(' ')[1],
+      ];
+    }
+    const extent = transformExtent(bbox, 'EPSG:4326', this.map_projection);
+    if (extent) {
+      this.HsMapService.map
+        .getView()
+        .fit(extent, this.HsMapService.map.getSize());
+    }
   }
 }
