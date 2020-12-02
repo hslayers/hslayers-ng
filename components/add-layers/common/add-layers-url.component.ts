@@ -20,7 +20,7 @@ export class HsAddLayersUrlComponent {
     this.items = this.historyListService.readSourceHistory(this.what);
   }
 
-  change() {
+  change(): void {
     this.urlChange.emit(this.url);
   }
 

@@ -1,19 +1,18 @@
+import {Attribution} from 'ol/control';
+import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS, TileWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {WMSCapabilities} from 'ol/format';
+
 import {HsConfig} from '../../../config.service';
 import {HsDimensionService} from '../../../common/dimension.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
-
-import {Attribution} from 'ol/control';
-import {Group} from 'ol/layer';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {TileWMS} from 'ol/source';
-import {WMSCapabilities} from 'ol/format';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersWmsService {
@@ -25,6 +24,7 @@ export class HsAddLayersWmsService {
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig
   ) {
@@ -62,7 +62,7 @@ export class HsAddLayersWmsService {
     }
   }
 
-  capabilitiesReceived(response, layerToSelect): void {
+  async capabilitiesReceived(response, layerToSelect: string): Promise<void> {
     try {
       const parser = new WMSCapabilities();
       const caps = parser.read(response);
@@ -140,7 +140,7 @@ export class HsAddLayersWmsService {
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
     } catch (e) {
       //FIXME: $rootScope.$broadcast('wmsCapsParseError', e);
-      console.warn(e);
+      this.hsLog.warn(e);
     }
   }
 
@@ -172,22 +172,37 @@ export class HsAddLayersWmsService {
   /**
    * @param layerToSelect
    */
-  selectLayerByName(layerToSelect): void {
-    if (layerToSelect) {
-      this.data.services.forEach((service) => {
-        service.Layer.forEach((layer) => {
+  selectLayerByName(layerToSelect: string): void {
+    if (!layerToSelect) {
+      return;
+    }
+    for (const service of this.data.services) {
+      if (service.Layer) {
+        for (const layer of service.Layer) {
           if (layer.Name == layerToSelect) {
             layer.checked = true;
+            setTimeout(() => {
+              const id = `#hs-add-layer-${layer.Name}`;
+              const el = this.hsLayoutService.contentWrapper.querySelector(id);
+              if (el) {
+                el.scrollIntoView();
+              }
+            }, 1000);
+            return;
           }
+        }
+      } else {
+        if (service.Name == layerToSelect) {
+          service.checked = true;
           setTimeout(() => {
-            const id = `#hs-add-layer-${layer.Name}`;
+            const id = `#hs-add-layer-${service.Name}`;
             const el = this.hsLayoutService.contentWrapper.querySelector(id);
             if (el) {
               el.scrollIntoView();
             }
           }, 1000);
-        });
-      });
+        }
+      }
     }
   }
 
@@ -200,14 +215,14 @@ export class HsAddLayersWmsService {
   /**
    * @function addLayers
    * @description Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
-   * @param {boolean} checked Add all available layers or ony checked ones. checked=false=all
+   * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
    */
-  addLayers(checked: boolean): void {
+  addLayers(checkedOnly: boolean): void {
     /**
      * @param layer
      */
     const recurse = (layer) => {
-      if (!checked || layer.checked) {
+      if (!checkedOnly || layer.checked) {
         if (layer.Layer === undefined) {
           this.addLayer(
             layer,
@@ -248,8 +263,9 @@ export class HsAddLayersWmsService {
 
   /**
    * @param service
+   * @returns {Array}
    */
-  getSublayerNames(service) {
+  getSublayerNames(service): any[] {
     if (service.Layer) {
       return service.Layer.map((l) => {
         const tmp: any = {};
@@ -295,7 +311,7 @@ export class HsAddLayersWmsService {
     imageFormat: string,
     queryFormat: string,
     tileSize,
-    crs,
+    crs: string,
     subLayers: any[]
   ): void {
     let attributions = [];

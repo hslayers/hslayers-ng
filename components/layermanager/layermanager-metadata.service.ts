@@ -210,7 +210,8 @@ export class HsLayerManagerMetadataService {
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const capabilities = this.HsWmsGetCapabilitiesService.requestGetCapabilities(
-        url
+        url,
+        {castOwsCapabilitiesReceived: false}
       )
         .then((capabilities_xml) => {
           const parser = new WMSCapabilities();

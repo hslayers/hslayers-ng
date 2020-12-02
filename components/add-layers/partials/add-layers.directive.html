@@ -6,7 +6,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">{{'ADDLAYERS.chooseType' | translate}}</span></div>
                     <select class="form-control" [(ngModel)]="type" name="type">
-                        <option *ngFor="let type of types" [value]="type.id">{{type.text()}}</option>
+                        <option *ngFor="let typ of types" [value]="typ.id">{{typ.text()}}</option>
                     </select>
                 </div>
             </div>
@@ -14,12 +14,14 @@
         <hr />
         <!-- TODO: Shall be dynamically created -->
         <!--div *ngFor="let t of types"-->
+        <div (type)="type">
             <hs-add-layers-arcgis *ngIf="type == 'arcgis'"></hs-add-layers-arcgis>
             <hs-add-layers-shp *ngIf="type == 'shp'"></hs-add-layers-shp>
             <hs-add-layers-wfs *ngIf="type == 'wfs'"></hs-add-layers-wfs>
             <hs-add-layers-wms *ngIf="type == 'wms'"></hs-add-layers-wms>
             <hs-add-layers-wmts *ngIf="type == 'wmts'"></hs-add-layers-wmts>
             <hs-add-layers-vector *ngIf="type == 'vector'"></hs-add-layers-vector>
+        </div>
         <!--/div-->
         <!--div compile="templateByType()"></div-->
     </div>

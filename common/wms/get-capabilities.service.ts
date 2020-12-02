@@ -67,14 +67,20 @@ export class HsWmsGetCapabilitiesService {
   }
 
   /**
-   * Parse added service url and sends GetCapabalities request to WMS service
-   *
-   * @memberof HsWmsGetCapabilitiesService
    * @function requestGetCapabilities
+   * @description Parse added service url and sends GetCapabalities request to WMS service
    * @param {string} service_url Raw Url localization of service
+   * @param {object} [options]
+   * @param {boolean} [options.castOwsCapabilitiesReceived=true] Whether or not to cast
+   *   next value of owsCapabilitiesReceived subject
    * @returns {Promise} Promise object - Response to GetCapabalities request
    */
-  async requestGetCapabilities(service_url) {
+  async requestGetCapabilities(
+    service_url: string,
+    {castOwsCapabilitiesReceived} = {
+      castOwsCapabilitiesReceived: true,
+    }
+  ): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -99,10 +105,12 @@ export class HsWmsGetCapabilitiesService {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
       }).toPromise();
-      this.HsEventBusService.owsCapabilitiesReceived.next({
-        type: 'WMS',
-        response: r,
-      });
+      if (castOwsCapabilitiesReceived) {
+        this.HsEventBusService.owsCapabilitiesReceived.next({
+          type: 'WMS',
+          response: r,
+        });
+      }
       return r;
     } catch (e) {
       throw e;
