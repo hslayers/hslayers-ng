@@ -114,7 +114,7 @@ export class HsCompositionsComponent implements OnInit {
     );
 
     this.HsEventBusService.compositionDeletes.subscribe((composition) => {
-      //TODO rewrite
+      //TODO: rewrite
       const deleteDialog = this.HsLayoutService.contentWrapper.querySelector(
         '.hs-composition-delete-dialog'
       );
@@ -127,6 +127,15 @@ export class HsCompositionsComponent implements OnInit {
     this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
       this.HsCompositionsService.compositionToLoad = {url, title: ''};
       this.loadUnsavedDialogBootstrap(url, '');
+    });
+
+    this.HsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
+      this.HsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
+        info: {
+          title: 'Composition not found',
+          abstract: error.message,
+        },
+      });
     });
   }
 
@@ -203,8 +212,8 @@ export class HsCompositionsComponent implements OnInit {
     });
   }
 
-  loadCompositionsOnAllEndpoints(){
-    for(let endpoint of this.filteredEndpointsForCompositions()){
+  loadCompositionsOnAllEndpoints() {
+    for (const endpoint of this.filteredEndpointsForCompositions()) {
       this.loadCompositions(endpoint);
     }
   }
