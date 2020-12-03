@@ -1,33 +1,34 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Component} from '@angular/core';
 import {bbox} from 'ol/loadingstrategy';
+import {transformExtent} from 'ol/proj';
 
-import {HsAddLayersWfsService} from './add-layers-wfs-service';
+import {HsAddLayersWfsService} from './add-layers-wfs.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
-import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 
 @Component({
   selector: 'hs-add-layers-wfs',
   templateUrl: './add-wfs-layer.directive.html',
 })
 export class HsAddLayersWfsComponent {
-  url: any;
+  url: string;
   error: any;
-  add_all: any;
+  addAll: boolean;
   isChecked: boolean;
-  map_projection: any;
+  mapProjection: any;
   loadingFeatures: boolean;
   showDetails: boolean;
-  folder_name: any;
-  title = '';
+  title = ''; //FIXME: unused
+  layerToAdd: string;
 
-  path = 'WFS';
+  folderName = 'WFS';
 
   constructor(
     public HsAddLayersWfsService: HsAddLayersWfsService,
@@ -39,17 +40,35 @@ export class HsAddLayersWfsComponent {
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public hsUtilsService: HsUtilsService,
   ) {
-    this.map_projection = this.HsMapService.map
-      .getView()
-      .getProjection()
-      .getCode()
-      .toUpperCase();
+    this.hsEventBusService.olMapLoads.subscribe(() => {
+      this.mapProjection = this.HsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
 
     this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      ({type, response}) => {
+      async ({type, response}) => {
         if (type === 'WFS') {
           try {
-            this.HsAddLayersWfsService.parseCapabilities(response);
+            const bbox = await this.HsAddLayersWfsService.parseCapabilities(
+              response
+            );
+            if (this.layerToAdd) {
+              for (const layer of this.HsAddLayersWfsService.services) {
+                //TODO: If Layman allows layers with different casing,
+                // then remove the case lowering
+                if (
+                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase()
+                ) {
+                  layer.checked = true;
+                }
+              }
+              this.addLayers(true);
+              this.layerToAdd = null;
+              this.zoomToBBox(bbox);
+            }
           } catch (e) {
             if (e.status == 401) {
               this.HsAddLayersWfsService.wfsCapabilitiesError.next(
@@ -64,7 +83,8 @@ export class HsAddLayersWfsComponent {
     );
 
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'wfs') {
+      if (type == 'WFS') {
+        this.layerToAdd = layer;
         this.setUrlAndConnect(uri);
       }
     });
@@ -128,16 +148,6 @@ export class HsAddLayersWfsComponent {
     this.changed();
   }
 
-  /**
-   * @function tryAddLayers
-   * @description Callback for "Add layers" button. Checks if current map projection is supported by wms service and warns user about resampling if not. Otherwise proceeds to add layers to the map.
-   * @param {boolean} checked - Add all available layers or only checked ones. Checked=false=all
-   */
-  tryAddLayers(checked: boolean): void {
-    this.add_all = checked;
-    this.addLayers(checked);
-  }
-
   checked(): boolean {
     for (const layer of this.HsAddLayersWfsService.services) {
       if (layer.checked) {
@@ -153,27 +163,28 @@ export class HsAddLayersWfsComponent {
 
   /**
    * @function addLayers
-   * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked - Add all available layers or olny checked ones. Checked=false=all
+   * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
-  addLayers(checked: boolean): void {
+  addLayers(checkedOnly: boolean): void {
+    this.addAll = checkedOnly;
     for (const layer of this.HsAddLayersWfsService.services) {
-      this.recurse(layer, checked);
+      this.addLayersRecursively(layer);
     }
   }
 
-  recurse(layer, checked: boolean): void {
-    if (!checked || layer.checked) {
+  private addLayersRecursively(layer): void {
+    if (!this.addAll || layer.checked) {
       this.addLayer(
         layer,
         layer.Title.replace(/\//g, '&#47;'),
-        this.folder_name,
+        this.folderName,
         this.HsAddLayersWfsService.srs
       );
     }
     if (layer.Layer) {
       for (const sublayer of layer.Layer) {
-        this.recurse(sublayer, checked);
+        this.addLayersRecursively(sublayer);
       }
     }
   }
@@ -187,7 +198,7 @@ export class HsAddLayersWfsComponent {
    * @param {string} folder name
    * @param {OpenLayers.Projection} srs of the layer
    */
-  addLayer(layer, layerName: string, folder: string, srs): void {
+  private addLayer(layer, layerName: string, folder: string, srs): void {
     const options = {
       layer: layer,
       url: this.HsWfsGetCapabilitiesService.service_url.split('?')[0],
@@ -198,11 +209,31 @@ export class HsAddLayersWfsComponent {
     const new_layer = new VectorLayer({
       title: layerName,
       source: this.HsAddLayersWfsService.createWfsSource(options),
-      path: this.path,
+      path: this.folderName,
       renderOrder: null,
       synchronize: false,
     });
     this.HsMapService.map.addLayer(new_layer);
     this.HsLayoutService.setMainPanel('layermanager');
+  }
+
+  private zoomToBBox(bbox: any) {
+    if (!bbox) {
+      return;
+    }
+    if (bbox.LowerCorner) {
+      bbox = [
+        bbox.LowerCorner.split(' ')[0],
+        bbox.LowerCorner.split(' ')[1],
+        bbox.UpperCorner.split(' ')[0],
+        bbox.UpperCorner.split(' ')[1],
+      ];
+    }
+    const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
+    if (extent) {
+      this.HsMapService.map
+        .getView()
+        .fit(extent, this.HsMapService.map.getSize());
+    }
   }
 }

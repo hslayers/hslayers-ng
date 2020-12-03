@@ -11,7 +11,6 @@ import {HsAddLayersWfsModule} from './wfs/add-layers-wfs.module';
 import {HsAddLayersWmsModule} from './wms/add-layers-wms.module';
 import {HsAddLayersWmtsModule} from './wmts/add-layers-wmts.module';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
-import {HsGetCapabilitiesErrorComponent} from './capabilities-error.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 import {HsResampleDialogComponent} from './resample-dialog.component';
 
@@ -30,13 +29,11 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
   ],
   exports: [
     HsAddLayersComponent,
-    HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsResampleDialogComponent,
   ],
   declarations: [
     HsAddLayersComponent,
-    HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
     HsResampleDialogComponent,
   ],

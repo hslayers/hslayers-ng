@@ -1,4 +1,5 @@
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
@@ -14,12 +15,12 @@ export class HsLayerManagerMetadataService {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public hsLog: HsLogService
   ) {}
 
   /**
    * @function identifyLayerObject
-   * @memberOf HsLayermanagerMetadata.service
    * @param layerName
    * @param {Layer} currentLayer Selected layer
    * @description Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
@@ -46,7 +47,6 @@ export class HsLayerManagerMetadataService {
 
   /**
    * @function fillMetadata
-   * @memberOf HsLayermanagerMetadata.service
    * @param {Layer} layer Selected layer
    * @description Async adds hasSublayers parameter if true
    */
@@ -72,8 +72,7 @@ export class HsLayerManagerMetadataService {
 
   /**
    * @param properties
-   * @function queryMetadata
-   * @memberOf HsLayermanagerMetadata.service
+   * @returns {any}
    * @description Looks for maxScaleDenominator in property object
    */
   searchForScaleDenominator(properties: any) {
@@ -105,14 +104,13 @@ export class HsLayerManagerMetadataService {
     return maxScale;
   }
   /**
-   * @param properties
-   * @function queryMetadata
-   * @memberOf HsLayermanagerMetadata.service
+   * @param layer
+   * @param key
+   * @param values
    * @description Sets or updates values in layer object
    */
-
-  //TODO TYPES
-  setOrUpdate(layer, key, values) {
+  //TODO: TYPES
+  setOrUpdate(layer, key, values): void {
     const previousValue = layer.get(key);
     if (previousValue) {
       for (const value of values) {
@@ -124,11 +122,11 @@ export class HsLayerManagerMetadataService {
   }
 
   parseInfoForLayer(
-    layer, //TODOTYPE
+    layer, //TODO:TYPE
     layer_name: any,
     caps: any,
     fromSublayerParam: boolean
-  ) {
+  ): void {
     const layerObject = []; //array of layer objects representing added layer
 
     if (layer_name.includes(',')) {
@@ -199,11 +197,11 @@ export class HsLayerManagerMetadataService {
 
   /**
    * @function queryMetadata
-   * @memberOf HsLayermanagerMetadata.service
    * @param {Layer} layer Selected layer
    * @description Callback function, adds getCapabilities response metadata to layer object
+   * @returns {Promise}
    */
-  async queryMetadata(layer: Layer) {
+  async queryMetadata(layer: Layer): Promise<any> {
     const url = this.HsLayerUtilsService.getURL(layer);
     const metadata = {
       metainfo: {'OnlineResource': layer.get('Metadata')},
@@ -211,7 +209,8 @@ export class HsLayerManagerMetadataService {
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const capabilities = this.HsWmsGetCapabilitiesService.requestGetCapabilities(
-        url
+        url,
+        {castOwsCapabilitiesReceived: false}
       )
         .then((capabilities_xml) => {
           const parser = new WMSCapabilities();
@@ -239,7 +238,7 @@ export class HsLayerManagerMetadataService {
             layer.set('MetadataURL', metadata);
             return layer;
           }
-          if (!layer.get('MetadataURL')){
+          if (!layer.get('MetadataURL')) {
             layer.set('MetadataURL', {
               '0': caps.Service,
             });
@@ -263,7 +262,7 @@ export class HsLayerManagerMetadataService {
           return true;
         })
         .catch((e) => {
-          console.log('GetCapabilities call invalid', e);
+          this.hsLog.warn('GetCapabilities call invalid', e);
           return e;
         });
       return capabilities;
