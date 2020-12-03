@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
@@ -12,9 +17,6 @@ import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -72,11 +74,11 @@ export class HsCompositionsService {
     });
   }
 
-  datasetSelect(id_selected) {
+  datasetSelect(id_selected): void {
     this.data.id_selected = id_selected;
   }
 
-  async loadCompositions(ds, params) {
+  async loadCompositions(ds, params): Promise<void> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
     await this.managerByType(ds).loadList(
@@ -87,7 +89,7 @@ export class HsCompositionsService {
     );
   }
 
-  resetCompositionCounter() {
+  resetCompositionCounter(): void {
     this.HsCommonEndpointsService.endpoints.forEach((ds) => {
       if (ds.type == 'micka') {
         this.HsCompositionsMickaService.resetCompositionCounter(ds);
@@ -106,7 +108,7 @@ export class HsCompositionsService {
     }
   }
 
-  deleteComposition(composition) {
+  deleteComposition(composition): void {
     const endpoint = composition.endpoint;
     this.managerByType(endpoint)?.delete(endpoint, composition);
   }
@@ -143,7 +145,7 @@ export class HsCompositionsService {
     }
   }
 
-  getCompositionInfo(composition, cb) {
+  getCompositionInfo(composition, cb): void {
     this.managerByType(composition.endpoint)
       .getInfo(composition)
       .then((info) => {
@@ -152,7 +154,7 @@ export class HsCompositionsService {
       });
   }
 
-  getRecordLink(record) {
+  getRecordLink(record): string {
     try {
       let url;
       if (record.link !== undefined) {
@@ -168,7 +170,7 @@ export class HsCompositionsService {
     }
   }
 
-  loadCompositionParser(record) {
+  loadCompositionParser(record): Promise<void> {
     return new Promise((resolve, reject) => {
       let url;
       switch (record.endpoint.type) {
@@ -201,10 +203,9 @@ export class HsCompositionsService {
 
   /**
    * @function parsePermalinkLayers
-   * @memberof HsCompositionsService
-   * Load layers received through permalink to map
+   * @description Load layers received through permalink to map
    */
-  async parsePermalinkLayers() {
+  async parsePermalinkLayers(): Promise<void> {
     await this.HsMapService.loaded();
     const layersUrl = this.HsUtilsService.proxify(
       this.HsPermalinkUrlService.getParamValue('permalink')
@@ -229,11 +230,11 @@ export class HsCompositionsService {
     }
   }
 
-  loadComposition(url, overwrite?) {
+  loadComposition(url, overwrite?: boolean): Promise<void> {
     return this.HsCompositionsParserService.loadUrl(url, overwrite);
   }
 
-  async tryParseCompositionFromCookie() {
+  async tryParseCompositionFromCookie(): Promise<void> {
     if (
       localStorage.getItem('hs_layers') &&
       (<any>window).permalinkApp != true

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, OnInit} from '@angular/core';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
@@ -139,14 +141,14 @@ export class HsCompositionsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getPageSize();
     this.HsEventBusService.layoutResizes.subscribe(() => {
       this.getPageSize();
     });
   }
 
-  changeUrlButtonVisible() {
+  changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
 
@@ -155,7 +157,7 @@ export class HsCompositionsComponent implements OnInit {
    * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
    */
-  getPreviousCompositions(ds: HsEndpoint) {
+  getPreviousCompositions(ds: HsEndpoint): void {
     const paging = ds.compositionsPaging;
     if (paging.start - paging.limit < 0) {
       paging.start = 0;
@@ -172,7 +174,7 @@ export class HsCompositionsComponent implements OnInit {
    * @description Load next list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
    */
-  getNextCompositions(ds: HsEndpoint) {
+  getNextCompositions(ds: HsEndpoint): void {
     const paging = ds.compositionsPaging;
     if (paging.next != 0) {
       paging.start = Math.floor(paging.next / paging.limit) * paging.limit;
@@ -190,8 +192,9 @@ export class HsCompositionsComponent implements OnInit {
    * @public
    * @description Load list of compositions according to current filter values and pager position (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param ds
+   * @returns {Promise}
    */
-  loadCompositions(ds: HsEndpoint) {
+  loadCompositions(ds: HsEndpoint): Promise<any> {
     return new Promise((resolve, reject) => {
       this.HsMapService.loaded()
         .then((map) => {
@@ -212,22 +215,22 @@ export class HsCompositionsComponent implements OnInit {
     });
   }
 
-  loadCompositionsOnAllEndpoints() {
+  loadCompositionsOnAllEndpoints(): void {
     for (const endpoint of this.filteredEndpointsForCompositions()) {
       this.loadCompositions(endpoint);
     }
   }
 
   /**
-   * Handler of "Only mine" filter change, delete editable variable if needed
+   * @description Handler of "Only mine" filter change, delete editable variable if needed
    */
-  mineFilterChanged() {
+  mineFilterChanged(): void {
     if (this.query.editable !== undefined && this.query.editable == false) {
       delete this.query.editable;
     }
   }
 
-  getPageSize() {
+  getPageSize(): void {
     const compList = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-comp-list'
     );
@@ -243,7 +246,7 @@ export class HsCompositionsComponent implements OnInit {
    * @public
    * @description Reloads compositions from start, used as callback when filters are changed in view
    */
-  filterChanged() {
+  filterChanged(): void {
     this.HsCompositionsService.resetCompositionCounter();
     for (const ds of this.filteredEndpointsForCompositions()) {
       ds.compositionsPaging.start = 0;
@@ -263,27 +266,25 @@ export class HsCompositionsComponent implements OnInit {
    * @param {object} composition Composition selected for deletion
    * @description Display delete dialog of composition
    */
-  confirmDelete(composition) {
+  confirmDelete(composition): void {
     this.deleteDialogBootstrap(composition);
   }
 
   /**
-   * @param ev
    * @param composition
    */
-  deleteDialogBootstrap(composition) {
+  deleteDialogBootstrap(composition): void {
     this.HsDialogContainerService.create(HsCompositionsDeleteDialogComponent, {
       compositionToDelete: composition,
     });
   }
 
   /**
-   * Load selected composition for editing
-   *
    * @function edit
+   * @description Load selected composition for editing
    * @param {object} composition Selected composition
    */
-  edit(composition) {
+  edit(composition): void {
     this.HsCompositionsService.loadCompositionParser(composition)
       .then(() => {
         this.HsSaveMapManagerService.openPanel(composition);
@@ -299,11 +300,11 @@ export class HsCompositionsComponent implements OnInit {
    * @param {boolean} state Target state of composition ( True - highlighted, False - normal)
    * @description Highlight (or dim) composition, toogle visual state of composition extent on map
    */
-  highlightComposition(composition, state) {
+  highlightComposition(composition, state: boolean): void {
     this.HsCompositionsMapService.highlightComposition(composition, state);
   }
 
-  loadCompositionsForAllEndpoints() {
+  loadCompositionsForAllEndpoints(): void {
     this.filteredEndpointsForCompositions().forEach((ds) => {
       this.loadCompositions(ds);
     });
@@ -324,11 +325,10 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @param $event
    * @param record
    * @param url
    */
-  shareDialogBootstrap(record, url) {
+  shareDialogBootstrap(record, url): void {
     this.HsDialogContainerService.create(HsCompositionsShareDialogComponent, {
       url,
       title:
@@ -345,13 +345,13 @@ export class HsCompositionsComponent implements OnInit {
    * @param {object} record Composition to show details
    * @description Load info about composition through service and display composition info dialog
    */
-  detailComposition(record) {
+  detailComposition(record): void {
     this.HsCompositionsService.getCompositionInfo(record, (info) => {
       this.infoDialogBootstrap(info);
     });
   }
 
-  infoDialogBootstrap(info) {
+  infoDialogBootstrap(info): void {
     this.HsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
       info,
     });
@@ -362,13 +362,13 @@ export class HsCompositionsComponent implements OnInit {
    * @param {object} record Composition to be loaded
    * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
    */
-  startLoadComposition(record) {
+  startLoadComposition(record): void {
     this.HsCompositionsService.loadCompositionParser(record).catch(() => {
       //Do nothing, probably now asking for overwrite of composition
     });
   }
 
-  addCompositionUrl(url) {
+  addCompositionUrl(url): void {
     if (this.HsCompositionsParserService.composition_edited == true) {
       this.HsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
@@ -383,12 +383,12 @@ export class HsCompositionsComponent implements OnInit {
    * @param {string} attribute Attribute by which compositions should be sorted (expected values: bbox, title, date)
    * @description Set sort attribute for sorting composition list and reload compositions
    */
-  setSortAttribute(attribute) {
+  setSortAttribute(attribute): void {
     this.sortBy = attribute;
     this.loadCompositionsForAllEndpoints();
   }
 
-  handleFileSelect(evt) {
+  handleFileSelect(evt): void {
     const files = evt.target.files; // FileList object
     for (const f of files) {
       if (!f.type.match('application/json')) {
@@ -407,7 +407,7 @@ export class HsCompositionsComponent implements OnInit {
    * @param url
    * @param title
    */
-  loadUnsavedDialogBootstrap(url, title) {
+  loadUnsavedDialogBootstrap(url, title): void {
     this.HsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,
       {
@@ -420,7 +420,7 @@ export class HsCompositionsComponent implements OnInit {
     return composition.uuid || composition.id;
   }
 
-  compositionClicked(composition) {
+  compositionClicked(composition): void {
     this.selectedCompId = this.commonId(composition);
     this.startLoadComposition(composition);
   }
