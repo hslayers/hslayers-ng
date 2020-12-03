@@ -199,6 +199,7 @@
   "DRAW": {
     "Select layer": "Vybrat vrstvu",
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
+    "activeLayers": "Aktivní vrstvy",
     "definedStyle": "Definovaný styl",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
@@ -208,8 +209,8 @@
       "defaultValue": "Výchozí hodnota",
       "layerTitle": "Název vrstvy",
       "layerWillBeAdded": "*Vrstva bude přidána do mapy a lze ji dále spravovat v panelu \"Správce vrstev\"",
-      "nameOfFolder": "Název složky v hierarchii správce vrstev",
-      "loadServerLayers": "Načíst vrstvu ze serveru"
+      "loadServerLayers": "Načíst vrstvu ze serveru",
+      "nameOfFolder": "Název složky v hierarchii správce vrstev"
     },
     "drawToolbar": {
       "addDrawLayer": "Přidat vrstvu pro kreslení",
@@ -222,10 +223,10 @@
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
-    "unsavedDrawing": "Neuložená kresba",
+
     "saveDrawingToLayer": "Uložit do vrstvy",
-    "activeLayers": "Aktivní vrstvy",
-    "serverLayers": "Servrové vrstvy"
+    "serverLayers": "Servrové vrstvy",
+    "unsavedDrawing": "Neuložená kresba"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -278,6 +279,8 @@
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
       "layerNotAvailable": "Tato vrstva není k dispozici",
+      "moveLayerDown": "Přesunout vrstvy dolů v seznamu",
+      "moveLayerUp": "Posunout vrstvy nahoru v seznamu",
       "noAvailableInScale": "Tato vrstva není v tomto měřítku k dispozici",
       "sendingToLayman": "Odesílam na Layman"
     },
@@ -308,7 +311,8 @@
     "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "terrains": "Terény"
+    "terrains": "Terény",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
@@ -438,6 +442,11 @@
     "search": "Vyhledat:"
   },
   "SENSORS": {
+    "1D": "1D",
+    "1H": "1H",
+    "1M": "1M",
+    "1W": "1W",
+    "6M": "6M",
     "at": "v",
     "avg": "Prům.",
     "max": "Max",
