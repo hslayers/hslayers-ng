@@ -23,6 +23,7 @@ export class HsCompositionsService {
   data: any = {};
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
+  compositionNotFoundAtUrl: Subject<any> = new Subject();
   constructor(
     private http: HttpClient,
     public HsMapService: HsMapService,
@@ -71,11 +72,11 @@ export class HsCompositionsService {
     });
   }
 
-  datasetSelect(id_selected) {
+  datasetSelect(id_selected): void {
     this.data.id_selected = id_selected;
   }
 
-  async loadCompositions(ds, params) {
+  async loadCompositions(ds, params): Promise<void> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
     await this.managerByType(ds).loadList(
@@ -86,7 +87,7 @@ export class HsCompositionsService {
     );
   }
 
-  resetCompositionCounter() {
+  resetCompositionCounter(): void {
     this.HsCommonEndpointsService.endpoints.forEach((ds) => {
       if (ds.type == 'micka') {
         this.HsCompositionsMickaService.resetCompositionCounter(ds);
@@ -105,7 +106,7 @@ export class HsCompositionsService {
     }
   }
 
-  deleteComposition(composition) {
+  deleteComposition(composition): void {
     const endpoint = composition.endpoint;
     this.managerByType(endpoint)?.delete(endpoint, composition);
   }
@@ -142,7 +143,7 @@ export class HsCompositionsService {
     }
   }
 
-  getCompositionInfo(composition, cb) {
+  getCompositionInfo(composition, cb): void {
     this.managerByType(composition.endpoint)
       .getInfo(composition)
       .then((info) => {
@@ -151,22 +152,23 @@ export class HsCompositionsService {
       });
   }
 
-  getRecordLink(record) {
+  getRecordLink(record): string {
     try {
       let url;
       if (record.link !== undefined) {
         url = record.link;
       } else if (record.links !== undefined) {
-        url = record.links.filter((l) => l.url.includes('/file') || l.url.includes('.wmc'))[0].url;
+        url = record.links.filter(
+          (l) => l.url.includes('/file') || l.url.includes('.wmc')
+        )[0].url;
       }
       return url;
-    }
-    catch (e) {
+    } catch (e) {
       this.$log.warn(e);
     }
   }
 
-  loadCompositionParser(record) {
+  loadCompositionParser(record): Promise<void> {
     return new Promise((resolve, reject) => {
       let url;
       switch (record.endpoint.type) {
@@ -199,10 +201,9 @@ export class HsCompositionsService {
 
   /**
    * @function parsePermalinkLayers
-   * @memberof HsCompositionsService
-   * Load layers received through permalink to map
+   * @description Load layers received through permalink to map
    */
-  async parsePermalinkLayers() {
+  async parsePermalinkLayers(): Promise<void> {
     await this.HsMapService.loaded();
     const layersUrl = this.HsUtilsService.proxify(
       this.HsPermalinkUrlService.getParamValue('permalink')
@@ -227,14 +228,11 @@ export class HsCompositionsService {
     }
   }
 
-  loadComposition(url, overwrite?) {
+  loadComposition(url, overwrite?: boolean): Promise<void> {
     return this.HsCompositionsParserService.loadUrl(url, overwrite);
   }
 
-  /**
-   *
-   */
-  async tryParseCompositionFromCookie() {
+  async tryParseCompositionFromCookie(): Promise<void> {
     if (
       localStorage.getItem('hs_layers') &&
       (<any>window).permalinkApp != true
@@ -254,20 +252,22 @@ export class HsCompositionsService {
     }
   }
 
-  /**
-   *
-   */
-  tryParseCompositionFromUrlParam() {
+  async tryParseCompositionFromUrlParam(): Promise<void> {
     if (this.HsPermalinkUrlService.getParamValue('composition')) {
       let id = this.HsPermalinkUrlService.getParamValue('composition');
       if (
-        id.indexOf('http') == -1 &&
-        id.indexOf(this.HsConfig.status_manager_url) == -1
+        !id.includes('http') &&
+        !id.includes(this.HsConfig.status_manager_url)
       ) {
         id =
           this.HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
-      this.HsCompositionsParserService.loadUrl(id);
+      try {
+        await this.HsCompositionsParserService.loadUrl(id);
+      } catch (e) {
+        this.compositionNotFoundAtUrl.next(e);
+        this.$log.warn(e);
+      }
     }
   }
 }

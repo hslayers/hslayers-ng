@@ -8,7 +8,7 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../capabilities-error.component';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
 import {HsLogService} from '../../../common/log/log.service';
 import {Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';

@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {HsAddLayersWfsService} from './wfs/add-layers-wfs.service';
+import {HsAddLayersWmsService} from './wms/add-layers-wms.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
@@ -13,16 +15,17 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 export class HsAddLayersComponent {
   showDetails: boolean;
   type: string;
-  types;
+  types: any[];
 
   constructor(
+    public hsAddLayersWfsService: HsAddLayersWfsService,
+    public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsShareUrlService: HsShareUrlService,
     public hsConfig: HsConfig,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
   ) {
-    'ngInject';
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
     } else {
@@ -73,13 +76,13 @@ export class HsAddLayersComponent {
   }
 
   /**
-   * Change detail panel template according to selected type
-   *
    * @function templateByType
-   * @returns {string} template Path to correct type template
+   * @description Change detail panel template according to selected type
+   * @todo unused
+   * @returns {string} Path to correct type template
    */
-  templateByType(): string {
-    /**TODO: move variables out of this function. Call $scope.connected = false when template change */
+  /*templateByType(): string {
+    //TODO: move variables out of this function. Call $scope.connected = false when template change
     let template: string;
     switch (this.type.toLowerCase()) {
       case 'wms':
@@ -106,17 +109,30 @@ export class HsAddLayersComponent {
         break;
     }
     return template;
-  }
+  }*/
 
   /**
-   * @param type
+   * @param type Type of OWS service
    */
   connectServiceFromUrlParam(type: string): void {
-    if (this.hsShareUrlService.getParamValue(`${type}_to_connect`)) {
-      const url = this.hsShareUrlService.getParamValue(`${type}_to_connect`);
+    const url = this.hsShareUrlService.getParamValue(`${type}_to_connect`);
+    if (url) {
+      const layers = this.hsShareUrlService.getParamValue(`${type}_layers`);
       this.hsLayoutService.setMainPanel('datasource_selector');
-      this.type = type.toUpperCase();
-      this.hsEventBusService.owsConnecting.next({type: type, uri: url});
+      this.type = type;
+      type = type.toUpperCase();
+      const serviceName = `hsAddLayersWmsService`;
+      if (layers) {
+        for (const layer of layers.split(';')) {
+          this.hsEventBusService.owsConnecting.next({
+            type: type,
+            uri: url,
+            layer: layer,
+          });
+        }
+      } else {
+        this.hsEventBusService.owsConnecting.next({type: type, uri: url});
+      }
     }
   }
 }
