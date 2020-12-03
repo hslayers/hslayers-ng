@@ -78,4 +78,7 @@ export class HsDatasourcesComponent {
   datasetSelect(id_selected: string): void {
     this.hsDatasourcesService.datasetSelect(id_selected);
   }
+  reload(): void {
+    this.hsDatasourcesService.reloadData();
+  }
 }

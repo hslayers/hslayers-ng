@@ -94,7 +94,11 @@ export class HsDatasourcesService {
       this.calcExtentLayerVisibility();
     });
   }
-
+  reloadData(): void {
+    this.queryCatalogs();
+    this.hsMickaFilterService.fillCodesets();
+    this.calcExtentLayerVisibility();
+  }
   /**
    * @function queryCatalogs
    * @description Queries all configured catalogs for datasources (layers)
