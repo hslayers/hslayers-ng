@@ -151,6 +151,12 @@ export class HsStylerColorService {
       );
       if (found.length > 0) {
         return found[0];
+      } else {
+        const newColor: {'background-color'} = {
+          'background-color': `rgba(${parsed[0]}, ${parsed[1]}, ${parsed[2]}, 1)`,
+        };
+        this.colors.push(newColor);
+        return newColor;
       }
     }
   }

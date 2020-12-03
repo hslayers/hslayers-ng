@@ -89,10 +89,13 @@ export class HsLayerEditorStylesService {
     const layer = wrapper.layer;
     const source = layer.getSource();
     wrapper.style = {};
-    if (layer.getStyle == undefined) {
+    if (layer.getStyle === undefined) {
       return;
     }
     let style = this.HsStylerService.getLayerStyleObject(layer);
+    if (style === undefined) {
+      return;
+    }
     style = style.clone();
     if (source.hasPoly) {
       wrapper.style.fillColor = style.getFill().getColor();
