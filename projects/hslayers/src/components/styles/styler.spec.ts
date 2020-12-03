@@ -136,7 +136,6 @@ describe('HsStyler', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-
   });
   it('should resolve style function', () => {
     service.layer.setStyle(createDefaultStyle);
