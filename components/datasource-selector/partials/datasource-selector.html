@@ -1,5 +1,11 @@
 <div class="card hs-main-panel">
     <hs-panel-header name="datasource_selector" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translate">
+        <extra-buttons>
+            <button type="button" class="but-title-sm" (click)="reload()"
+                [title]="'COMMON.reload' | translate">
+                <i class="glyphicon icon-fatredo"></i>
+            </button>
+        </extra-buttons>
     </hs-panel-header>
     <div class="card-body">
         <!--        <div *ngIf="hsConfig.allowAddExternalDatasets" ng-include="'./datasource_search.html'">
