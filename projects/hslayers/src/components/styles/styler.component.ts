@@ -1,4 +1,3 @@
-import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
@@ -7,6 +6,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -49,13 +49,11 @@ export class HsStylerComponent {
   iconfillcolor: any;
   iconlinecolor: any;
   serialized_icon: any;
-  hasLine: any;
-  hasPoly: any;
-  hasPoint: any;
+
   layerTitle: string;
   level: 'feature' | 'cluster' | 'layer' = 'layer';
   isClustered: boolean;
-
+  hasFeatures: boolean;
   constructor(
     public HsStylerService: HsStylerService,
     public HsLayoutService: HsLayoutService,
@@ -64,10 +62,11 @@ export class HsStylerComponent {
     public sanitizer: DomSanitizer,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsUtilsService: HsUtilsService,
-    public HsStylerColorService: HsStylerColorService
+    public HsStylerColorService: HsStylerColorService,
+    public HsSaveMapService: HsSaveMapService
   ) {
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (this.HsLayoutService.mainpanel == 'styler') {
+      if (e == 'styler') {
         if (!this.icons) {
           const assetsPath = this.HsUtilsService.getAssetsPath();
           this.icons = [
@@ -127,8 +126,12 @@ export class HsStylerComponent {
         this.isClustered = this.HsLayerUtilsService.isLayerClustered(
           HsStylerService.layer
         );
+        this.hasFeatures = this.HsStylerService.hasFeatures(
+          HsStylerService.layer,
+          this.isClustered
+        );
+        this.refreshLayerDefinition();
       }
-      this.refreshLayerDefinition();
     });
   }
 
@@ -294,8 +297,10 @@ export class HsStylerComponent {
    * @param {StyleLike|null} style Style to set for the feature. Can be null
    */
   private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
-    // const isClustered = this.HsLayerUtilsService.isLayerClustered(layer);
-    const underlyingSource = this.HsStylerService.getLayerSource(layer);
+    const underlyingSource = this.HsStylerService.getLayerSource(
+      layer,
+      this.isClustered
+    );
     /**
      * We set a blank VectorSource temporarily
      * to disable change event broadcasting and linked
@@ -360,7 +365,8 @@ export class HsStylerComponent {
         path.style.strokeWidth = this.iconlinewidth;
       }
       this.serialized_icon =
-        'data:image/svg+xml;base64,' + window.btoa(iconPreview.innerHTML);
+        'data:image/svg+xml;base64,' +
+        this.HsStylerService.encodeTob64(iconPreview.innerHTML);
     }
   }
   /**
@@ -384,36 +390,30 @@ export class HsStylerComponent {
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
   refreshLayerDefinition(): void {
-    if (this.HsStylerService.layer === null) {
-      return;
-    }
-    const src: any = this.HsStylerService.getLayerSource(
-      this.HsStylerService.layer
-    );
+
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
     ) {
       return;
     }
-    this.calculateHasLinePointPoly(src);
+
     this.readCurrentStyle(this.HsStylerService.layer);
-    this.hasLine = src.hasLine;
-    this.hasPoly = src.hasPoly;
-    this.hasPoint = src.hasPoint;
+
     this.layerTitle = this.HsStylerService.layer.get('title');
   }
 
   readCurrentStyle(layer: VectorLayer): void {
-    let style = layer.getStyle();
-    if (this.HsLayerUtilsService.isLayerClustered(layer)) {
-      style = layer.get('hsOriginalStyle');
-    }
-    if (typeof style == 'function') {
-      const resolvedStyle: Style | Style[] = style(new Feature());
+    const resolvedStyle = this.HsStylerService.getLayerStyleObject(
+      layer,
+      this.isClustered
+    );
+    if (
+      resolvedStyle !== undefined &&
+      this.HsUtilsService.instOf(resolvedStyle, Style)
+    ) {
       this.parseStyles(resolvedStyle);
-    } else if (this.HsUtilsService.instOf(style, Style)) {
-      this.parseStyle(style);
+
     }
   }
 
@@ -422,65 +422,62 @@ export class HsStylerComponent {
       for (const subStyle of resolvedStyle) {
         this.parseStyle(subStyle);
       }
-    } else if (this.HsUtilsService.instOf(resolvedStyle, Style)) {
+    } else {
       this.parseStyle(resolvedStyle);
     }
   }
 
-  private parseStyle(subStyle: Style) {
-    if (subStyle.getStroke()?.getColor()) {
+  private parseStyle(style: Style) {
+    const subStyle: Style = this.HsSaveMapService.serializeStyle(style);
+    if (subStyle.stroke?.color) {
       this.linecolor = this.HsStylerColorService.findAndParseColor(
-        subStyle.getStroke().getColor()
+        subStyle.stroke.color
       );
     }
-    if (subStyle.getFill()?.getColor()) {
+    if (subStyle.stroke?.width) {
+      this.linewidth = subStyle.stroke.width;
+    }
+    if (subStyle.fill) {
       this.fillcolor = this.HsStylerColorService.findAndParseColor(
-        subStyle.getFill().getColor()
+        subStyle.fill
       );
     }
     if (subStyle.image) {
-      if (subStyle.image.getStroke()?.getColor()) {
-        this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
-          subStyle.getStroke().getColor()
-        );
+      const imageStyle = this.HsStylerService.getImageStyle(subStyle.image);
+      if (!imageStyle || imageStyle === undefined) {
+        return;
       }
-      if (subStyle.image.getFill()?.getColor()) {
-        this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
-          subStyle.getFill().getColor()
-        );
+      if (imageStyle.icon !== undefined) {
+        this.setStylerValues(imageStyle.icon);
+        if (imageStyle.icon.iconimage) {
+          this.iconimage = imageStyle.icon.iconimage;
+        }
+        if (imageStyle.icon.serialized_icon) {
+          this.serialized_icon = imageStyle.icon.serialized_icon;
+        }
+        this.setImageType('icon');
+      }
+      if (imageStyle.circle !== undefined) {
+        this.setStylerValues(imageStyle.circle);
+        if (imageStyle.circle?.radius) {
+          this.radius = imageStyle.circle.radius;
+        }
       }
     }
   }
-
-  /**
-   * @function calculateHasLinePointPoly
-   * @memberof HsStylerComponent
-   * @private
-   * @description (PRIVATE) Calculate vector type if not specified in layer metadata
-   * @param src
-   */
-  calculateHasLinePointPoly(src): void {
-    src.hasLine = false;
-    src.hasPoly = false;
-    src.hasPoint = false;
-    src.getFeatures().forEach((f) => {
-      if (f.getGeometry()) {
-        switch (f.getGeometry().getType()) {
-          case 'LineString' || 'MultiLineString':
-            src.hasLine = true;
-            break;
-          case 'Polygon' || 'MultiPolygon':
-            src.hasPoly = true;
-            break;
-          case 'Circle':
-            src.hasPoly = true;
-            break;
-          case 'Point' || 'MultiPoint':
-            src.hasPoint = true;
-            break;
-          // no default
-        }
-      }
-    });
+  setStylerValues(style: any): void {
+    if (style.iconlinecolor) {
+      this.iconlinecolor = this.HsStylerColorService.findAndParseColor(
+        style.iconlinecolor
+      );
+    }
+    if (style.iconfillcolor) {
+      this.iconfillcolor = this.HsStylerColorService.findAndParseColor(
+        style.iconfillcolor
+      );
+    }
+    if (style.iconlinewidth) {
+      this.iconlinewidth = style.iconlinewidth;
+    }
   }
 }

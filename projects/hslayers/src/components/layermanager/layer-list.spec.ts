@@ -18,6 +18,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
@@ -104,6 +105,12 @@ describe('layermanager-layer-list', () => {
           },
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
+        {
+          provide: HsShareUrlService,
+          useValue: {
+            getParamValue: () => undefined,
+          },
+        },
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
       ],

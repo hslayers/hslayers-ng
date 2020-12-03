@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {DomSanitizer} from '@angular/platform-browser';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -63,7 +64,8 @@ export class HsStylerService {
   });
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public sanitizer: DomSanitizer
   ) {}
 
   pin_white_blue_highlight(feature: Feature, resolution): Array<Style> {
@@ -81,31 +83,51 @@ export class HsStylerService {
   }
   /**
    * @description Gets layers style object for any vector layer.
+   * @param isClustered
    * @param {VectorLayer} layer Any vector layer
    * @returns {any} Returns layer style object
    */
-  getLayerStyleObject(layer: VectorLayer): any {
-    let features: any;
-    if (layer?.getSource()?.getSource) {
-      features = layer.getSource().getSource().getFeatures();
-    } else {
-      features = layer.getSource().getFeatures();
+  getLayerStyleObject(layer: VectorLayer, isClustered?: boolean): any {
+    if (!layer) {
+      return;
     }
-    const style = layer.getStyle();
-    if (typeof style == 'function' && features.length > 0) {
-      return style(features[0]);
+    let style: any;
+    if (
+      (isClustered !== undefined && isClustered) ||
+      layer.getSource()?.getSource
+    ) {
+      style = layer.get('hsOriginalStyle');
     } else {
-      return style;
+      style = layer.getStyle();
+    }
+    if (style !== undefined) {
+      if (typeof style == 'function') {
+        return style(new Feature())[0];
+      } else {
+        return style;
+      }
+    }
+  }
+  hasFeatures(layer: VectorLayer, isClustered: boolean): boolean {
+    const src = this.getLayerSource(layer, isClustered);
+    if (src?.getFeatures().length > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
   /**
    * @description Get a Source for any vector layer. Both clustered and un-clustered.
+   * @param isClustered
    * @param {VectorLayer} layer Any vector layer
    * @returns {VectorSource} Source of the input layer or source of its cluster's source
    */
-  getLayerSource(layer: VectorLayer): VectorSource {
+  getLayerSource(layer: VectorLayer, isClustered: boolean): VectorSource {
+    if (!layer) {
+      return;
+    }
     let src = [];
-    if (layer.getSource().getSource !== undefined) {
+    if (isClustered) {
       src = layer.getSource().getSource();
     } else {
       src = layer.getSource();
@@ -296,5 +318,86 @@ export class HsStylerService {
       }
     }
     return new Style(style_json);
+  }
+  encodeTob64(str: string): string {
+    return btoa(
+      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+        return String.fromCharCode(parseInt(p1, 16));
+      })
+    );
+  }
+  decodeToUnicode(str: string): string {
+    return decodeURIComponent(
+      Array.prototype.map
+        .call(atob(str), (c) => {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+  }
+  getImageStyle(image: any): any {
+    if (image === undefined) {
+      return;
+    }
+    const imageStyle: any = {};
+    if (image.type === 'icon' && image.src) {
+      if (
+        typeof image.src == 'string' &&
+        image.src.slice(0, 10) === 'data:image'
+      ) {
+        const encodedIconData = image.src.replace(
+          'data:image/svg+xml;base64,',
+          ''
+        );
+        const decodedIcon: any = this.decodeToUnicode(encodedIconData);
+        const icon: any = this.getIconStyleFromLayer(decodedIcon);
+        const serialized_icon: any = image.src;
+        icon.serialized_icon = serialized_icon;
+        imageStyle.icon = icon;
+      } else {
+        //TODO Check if this is even necessary
+        //this.iconSelected(image.getSrc());
+      }
+    }
+    if (image.type === 'circle') {
+      const circle: any = {};
+      if (image.radius) {
+        circle.radius = image.radius;
+      }
+      if (image.stroke?.width) {
+        circle.iconlinewidth = image.stroke.width;
+      }
+      if (image.fill) {
+        circle.iconfillcolor = image.fill;
+      }
+      if (image.stroke?.color) {
+        circle.iconlinecolor = image.stroke.color;
+      }
+      imageStyle.circle = circle;
+    }
+    return imageStyle;
+  }
+  getIconStyleFromLayer(decodedIcon: any): any {
+    const iconStyle: any = {};
+    const iconimage: any = this.sanitizer.bypassSecurityTrustHtml(decodedIcon);
+    iconStyle.iconimage = iconimage;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(decodedIcon, 'image/svg+xml');
+    const svgPath: any = doc.querySelectorAll('path');
+    if (!svgPath) {
+      return;
+    } else {
+      const path = svgPath[0];
+      if (path.style?.stroke) {
+        iconStyle.iconlinecolor = path.style.stroke;
+      }
+      if (path.style?.fill) {
+        iconStyle.iconfillcolor = path.style.fill;
+      }
+      if (path.style?.strokeWidth) {
+        iconStyle.iconlinewidth = path.style.strokeWidth;
+      }
+    }
+    return iconStyle;
   }
 }
