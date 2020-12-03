@@ -150,8 +150,10 @@ export class HsAddLayersWmtsComponent {
 
     const dimensions = {};
 
-    for (const val of layer.Dimension) {
-      dimensions[val.name] = val;
+    if (layer.Dimension) {
+      for (const val of layer.Dimension) {
+        dimensions[val.name] = val;
+      }
     }
 
     const new_layer = new Tile({
