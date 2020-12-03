@@ -16,6 +16,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
@@ -98,7 +99,7 @@ export class HsLayerManagerService {
   composition_id: string;
   menuExpanded = false;
   currentResolution: number;
-
+  zIndexValue = 0;
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
@@ -111,8 +112,9 @@ export class HsLayerManagerService {
     public HsLayoutService: HsLayoutService,
     public HsLayerEditorStylesService: HsLayerEditorStylesService,
     public HsLayerSelectorService: HsLayerSelectorService,
-    private sanitizer: DomSanitizer,
-    public HsLanguageService: HsLanguageService
+    public sanitizer: DomSanitizer,
+    public HsLanguageService: HsLanguageService,
+    private HsShareUrlService: HsShareUrlService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -155,6 +157,14 @@ export class HsLayerManagerService {
     }
     if (typeof layer.get('position') == 'undefined') {
       layer.set('position', this.getMyLayerPosition(layer));
+    }
+    if (typeof layer.getZIndex() == 'undefined') {
+      layer.setZIndex(this.zIndexValue);
+      this.zIndexValue = ++this.zIndexValue;
+    } else {
+      if (layer.getZIndex() == this.zIndexValue) {
+        this.zIndexValue = ++this.zIndexValue;
+      }
     }
 
     /**
@@ -264,7 +274,19 @@ export class HsLayerManagerService {
       }
     }
   }
-
+  sortLayersByValue(arr: any[]): any[] {
+    const minus = this.order().indexOf('-') == 0;
+    arr.sort((a, b) => {
+      a = a.layer.getZIndex();
+      b = b.layer.getZIndex();
+      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
+      return tmp;
+    });
+    return arr;
+  }
+  order(): string {
+    return this.HsConfig.layer_order || '-position';
+  }
   /**
    * (PRIVATE) Get layer by its title
    *
@@ -468,6 +490,7 @@ export class HsLayerManagerService {
   changeLayerVisibility(visibility: boolean, layer: Layer): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
+    layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
     //Set the other layers in the same folder invisible
     if (visibility && layer.layer.get('exclusive') == true) {
       for (const other_layer of this.data.layers) {
@@ -801,6 +824,9 @@ export class HsLayerManagerService {
       layer.sublayers = false;
       layer.settings = false;
       this.currentLayer = null;
+      this.HsShareUrlService.updateCustomParams({
+        'layerSelected': undefined,
+      });
     } else {
       this.setCurrentLayer(layer);
       return false;
@@ -809,6 +835,9 @@ export class HsLayerManagerService {
 
   setCurrentLayer(layer: HsLayerDescriptor): false {
     this.currentLayer = layer;
+    this.HsShareUrlService.updateCustomParams({
+      'layerSelected': layer.title,
+    });
     if (!layer.layer.checkedSubLayers) {
       layer.layer.checkedSubLayers = {};
       layer.layer.withChildren = {};
@@ -881,6 +910,15 @@ export class HsLayerManagerService {
     });
 
     this.boxLayersInit();
+    if (this.HsShareUrlService.getParamValue('layerSelected') !== undefined) {
+      const selectedLayerTitle = this.HsShareUrlService.getParamValue(
+        'layerSelected'
+      );
+      const layerFound = this.getLayerFromUrl(selectedLayerTitle);
+      if (layerFound !== undefined && layerFound.length > 0) {
+        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
+      }
+    }
 
     this.map.getView().on(
       'change:resolution',
@@ -907,7 +945,12 @@ export class HsLayerManagerService {
     this.map.getLayers().on('add', (e) => this.layerAdded(e));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
-
+  getLayerFromUrl(layerTitle: string): any {
+    const layerFound = this.data.layers.filter(
+      (layer) => layer.title == layerTitle
+    );
+    return layerFound;
+  }
   expandLayer(layer: Layer): void {
     if (layer.expanded == undefined) {
       layer.expanded = true;

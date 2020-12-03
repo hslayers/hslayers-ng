@@ -1,3 +1,4 @@
+import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -67,6 +68,7 @@ export class HsLayerListComponent {
    * @function layerValid
    * @memberOf hs.layermanager.controller
    * @param {Ol.layer} layer Selected layer
+   * @returns
    * @description Test if selected layer is valid (true for invalid)
    */
   layerValid(layer) {
@@ -152,9 +154,7 @@ export class HsLayerListComponent {
     }
   }
 
-  order() {
-    return this.HsConfig.layer_order || '-position';
-  }
+
 
   /**
    * @function isLayerQueryable
@@ -174,90 +174,9 @@ export class HsLayerListComponent {
    */
   sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
-    const minus = this.order().indexOf('-') == 0;
-    const attribute = this.order().split('-').join('');
-    this.filtered_layers.sort((a, b) => {
-      a = a.layer.get(attribute);
-      b = b.layer.get(attribute);
-      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
-      return tmp;
-    });
+    this.filtered_layers = this.HsLayerManagerService.sortLayersByValue(
+      this.filtered_layers
+    );
     this.generateLayerTitlesArray();
-  }
-
-  /**
-   * @param event
-   * @param index
-   * @param item
-   * @param type
-   * @param external
-   * @ngdoc method
-   * @name hs.layermanager.layerlistDirective#dragged
-   * @public
-   * @description Callback for dragged event so event can be injected with correct layer titles list needed for correct recalculation.
-   */
-  dragged(event, index, item, type, external): void {
-    this.draggedCont(event, index, item, type, external, this.layer_titles);
-  }
-
-  /**
-   * @function dragged
-   * @memberOf hs.layermanager-layerlist-directive
-   * @param {unknown} event
-   * @param {number} index
-   * @param {unknown} item
-   * @param {unknown} type
-   * @param {unknown} external
-   * @param {Array} layerTitles Array of layer titles of group in which layer should be moved in other position
-   * @description Callback for dnd-drop event to change layer position in layer manager structure (drag and drop action with layers in layer manager - see https://github.com/marceljuenemann/angular-drag-and-drop-lists for more info about dnd-drop).
-   * This is called from layerlistDirective
-   */
-  draggedCont(
-    event,
-    index: number,
-    item,
-    type,
-    external,
-    layerTitles: Array<any>
-  ): void {
-    if (layerTitles.indexOf(item) < index) {
-      index--;
-    } //Must take into acount that this item will be removed and list will shift
-    const to_title = layerTitles[index];
-    let to_index = null;
-    let item_index = null;
-    const layers = this.HsMapService.map.getLayers();
-    //Get the position where to drop the item in the map.getLayers list and which item to remove. because we could be working only within a folder so layer_titles is small
-    for (let i = 0; i < layers.getLength(); i++) {
-      if (layers.item(i).get('title') == to_title) {
-        to_index = i;
-      }
-      if (layers.item(i).get('title') == item) {
-        item_index = i;
-      }
-      if (index > layerTitles.length) {
-        to_index = i + 1;
-      } //If dragged after the last item
-    }
-    const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-layerpanel'
-    );
-    const layerNodes = document
-      .querySelector('.hs-lm-list')
-      .querySelectorAll('.hs-lm-item');
-    let layerNode = layerNodes[layerNodes.length - 1];
-    this.HsUtilsService.insertAfter(layerPanel, layerNode);
-    const item_layer = layers.item(item_index);
-    this.HsMapService.map.getLayers().removeAt(item_index);
-    this.HsMapService.map.getLayers().insertAt(to_index, item_layer);
-    this.HsLayerManagerService.updateLayerOrder();
-    const layerDesc = this.HsLayerManagerService.getLayerDescriptorForOlLayer(
-      item_layer
-    );
-    setTimeout((_) => {
-      layerNode = document.getElementById(layerDesc.idString());
-      this.HsUtilsService.insertAfter(layerPanel, layerNode);
-      this.HsEventBusService.layerManagerUpdates.next();
-    }, 300);
   }
 }

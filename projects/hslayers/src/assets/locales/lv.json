@@ -199,6 +199,7 @@
   "DRAW": {
     "Select layer": "Izvēlieties slāni",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
+    "activeLayers": "Aktīvie slāņi",
     "definedStyle": "Definētais stils",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
@@ -208,8 +209,8 @@
       "defaultValue": "Noklusējuma vērtības",
       "layerTitle": "Slāņa virsraksts",
       "layerWillBeAdded": "*Slānis tiks pievienots kartei, un to varēs turpmāk pārvaldīt \"Slāņu pārvaldība\" panelī",
-      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā",
-      "loadServerLayers": "Ielādēt slāni no servera"
+      "loadServerLayers": "Ielādēt slāni no servera",
+      "nameOfFolder": "Mapes nosaukums slāņu pārvaldnieka hierarhijā"
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
@@ -222,10 +223,9 @@
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
-    "activeLayers": "Aktīvie slāņi",
-    "serverLayers": "Servera slāņi"
+    "serverLayers": "Servera slāņi",
+    "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -278,6 +278,8 @@
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
       "layerNotAvailable": "Šis slānis nav pieejams",
+      "moveLayerDown": "Pārvietot slāni uz leju",
+      "moveLayerUp": "Pārvietot slāni uz augšu",
       "noAvailableInScale": "Šis slānis šajā mērogā nav pieejams",
       "sendingToLayman": "Sūta uz layman"
     },
@@ -308,7 +310,8 @@
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
-    "terrains": "Reljefi"
+    "terrains": "Reljefi",
+    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"

@@ -224,6 +224,18 @@ li.hs-lm-item.hovering {
 .hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
 	color: $primary;
 }
+.hs-lm-list li .info_btn .icon-arrow-up {
+	color: rgba(0, 0, 0, 0.25);
+}
+.hs-lm-list li .info_btn .icon-arrow-down {
+	color: rgba(0, 0, 0, 0.25);
+}
+.hs-lm-list li .info_btn .icon-arrow-up:hover::before {
+	color: black;
+}
+.hs-lm-list li .info_btn .icon-arrow-down:hover::before {
+	color:black;
+}
 
 .hs-layermanager-card li.hs-lm-item,
 li.hs-dr-item {
