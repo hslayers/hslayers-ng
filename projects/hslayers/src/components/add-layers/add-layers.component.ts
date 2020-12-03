@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {HsAddLayersWfsService} from './wfs/add-layers-wfs.service';
-import {HsAddLayersWmsService} from './wms/add-layers-wms.service';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
@@ -18,8 +16,6 @@ export class HsAddLayersComponent {
   types: any[];
 
   constructor(
-    public hsAddLayersWfsService: HsAddLayersWfsService,
-    public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsShareUrlService: HsShareUrlService,
     public hsConfig: HsConfig,
     public hsEventBusService: HsEventBusService,
@@ -76,42 +72,6 @@ export class HsAddLayersComponent {
   }
 
   /**
-   * @function templateByType
-   * @description Change detail panel template according to selected type
-   * @todo unused
-   * @returns {string} Path to correct type template
-   */
-  /*templateByType(): string {
-    //TODO: move variables out of this function. Call $scope.connected = false when template change
-    let template: string;
-    switch (this.type.toLowerCase()) {
-      case 'wms':
-        template = '<hs.add-layers-wms/>';
-        break;
-      case 'arcgis':
-        template = '<hs.add-layers-arcgis/>';
-        break;
-      case 'wmts':
-        template = '<hs.add-layers-wmts/>';
-        break;
-      case 'wfs':
-        template = '<hs-add-layers-wfs/>';
-        break;
-      case 'vector':
-        template = '<hs.add-layers-vector/>';
-        this.showDetails = true;
-        break;
-      case 'shp':
-        template = '<hs.add-layers-shp/>';
-        this.showDetails = true;
-        break;
-      default:
-        break;
-    }
-    return template;
-  }*/
-
-  /**
    * @param type Type of OWS service
    */
   connectServiceFromUrlParam(type: string): void {
@@ -121,7 +81,6 @@ export class HsAddLayersComponent {
       this.hsLayoutService.setMainPanel('datasource_selector');
       this.type = type;
       type = type.toUpperCase();
-      const serviceName = `hsAddLayersWmsService`;
       if (layers) {
         for (const layer of layers.split(';')) {
           this.hsEventBusService.owsConnecting.next({
