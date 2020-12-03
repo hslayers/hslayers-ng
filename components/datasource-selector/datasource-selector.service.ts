@@ -237,8 +237,8 @@ export class HsDatasourcesService {
           {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
         );
         this.hsAddLayersVectorService.fitExtent(layer);
+        this.hsLayoutService.setMainPanel('layermanager');
       }
-      this.hsLayoutService.setMainPanel('layermanager');
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),
