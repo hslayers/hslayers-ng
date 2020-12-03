@@ -23,6 +23,7 @@ export class HsCompositionsService {
   data: any = {};
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
+  compositionNotFoundAtUrl: Subject<any> = new Subject();
   constructor(
     private http: HttpClient,
     public HsMapService: HsMapService,
@@ -157,11 +158,12 @@ export class HsCompositionsService {
       if (record.link !== undefined) {
         url = record.link;
       } else if (record.links !== undefined) {
-        url = record.links.filter((l) => l.url.includes('/file') || l.url.includes('.wmc'))[0].url;
+        url = record.links.filter(
+          (l) => l.url.includes('/file') || l.url.includes('.wmc')
+        )[0].url;
       }
       return url;
-    }
-    catch (e) {
+    } catch (e) {
       this.$log.warn(e);
     }
   }
@@ -231,9 +233,6 @@ export class HsCompositionsService {
     return this.HsCompositionsParserService.loadUrl(url, overwrite);
   }
 
-  /**
-   *
-   */
   async tryParseCompositionFromCookie() {
     if (
       localStorage.getItem('hs_layers') &&
@@ -254,20 +253,22 @@ export class HsCompositionsService {
     }
   }
 
-  /**
-   *
-   */
-  tryParseCompositionFromUrlParam() {
+  async tryParseCompositionFromUrlParam(): Promise<void> {
     if (this.HsPermalinkUrlService.getParamValue('composition')) {
       let id = this.HsPermalinkUrlService.getParamValue('composition');
       if (
-        id.indexOf('http') == -1 &&
-        id.indexOf(this.HsConfig.status_manager_url) == -1
+        !id.includes('http') &&
+        !id.includes(this.HsConfig.status_manager_url)
       ) {
         id =
           this.HsStatusManagerService.endpointUrl() + '?request=load&id=' + id;
       }
-      this.HsCompositionsParserService.loadUrl(id);
+      try {
+        await this.HsCompositionsParserService.loadUrl(id);
+      } catch (e) {
+        this.compositionNotFoundAtUrl.next(e);
+        this.$log.warn(e);
+      }
     }
   }
 }

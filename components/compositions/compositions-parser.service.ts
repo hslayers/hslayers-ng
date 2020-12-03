@@ -57,6 +57,7 @@ export class HsCompositionsParserService {
    * @param {boolean} overwrite Whether overwrite current composition in map - remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param {Function} callback Optional function which should be called when composition is successfully loaded
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
+   * @returns {Promise}
    * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
    */
   async loadUrl(
@@ -73,17 +74,12 @@ export class HsCompositionsParserService {
       pre_parse = (res) => this.parseWMC(res);
       options = {responseType: 'text'};
     }
-    try {
-      const data: any = await this.$http.get(url, options).toPromise();
-      if (data?.file) {
-        // Layman composition wrapper
-        this.loadUrl(data.file.url, overwrite, callback, pre_parse);
-      } else {
-        this.loaded(data, pre_parse, url, overwrite, callback);
-      }
-    } catch (e) {
-      this.$log.warn(e);
+    const data: any = await this.$http.get(url, options).toPromise();
+    if (data?.file) {
+      // Layman composition wrapper
+      return this.loadUrl(data.file.url, overwrite, callback, pre_parse);
     }
+    this.loaded(data, pre_parse, url, overwrite, callback);
   }
 
   loaded(response, pre_parse, url, overwrite: boolean, callback): void {
@@ -316,8 +312,7 @@ export class HsCompositionsParserService {
     if (j.data) {
       j = j.data;
     }
-    for (let i = 0; i < j.layers.length; i++) {
-      const lyr_def = j.layers[i];
+    for (const lyr_def of j.layers) {
       const layer = this.jsonToLayer(lyr_def);
       if (layer == undefined) {
         this.$log.warn('Was not able to parse layer from composition', lyr_def);
