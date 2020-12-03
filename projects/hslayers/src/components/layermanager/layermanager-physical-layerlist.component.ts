@@ -5,7 +5,7 @@ import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
-  template: require('./partials/physical-layerlist.html'),
+  templateUrl: './partials/physical-layerlist.html',
   styles: [
     `
       .activeLayer {

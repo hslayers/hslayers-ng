@@ -12,7 +12,7 @@ export class HsUtilsServiceMock {
   }
 
   getAssetsPath(){
-    return 'assets/hslayers-ng/'
+    return 'assets/hslayers-ng/';
   }
 
   _instanceOf(obj, klass) {
