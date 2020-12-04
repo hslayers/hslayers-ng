@@ -235,6 +235,9 @@ export class HsCompositionsComponent implements OnInit {
     if (this.query.editable !== undefined && this.query.editable == false) {
       delete this.query.editable;
     }
+    else{
+      this.query.editable = true;
+    }
   }
 
   getPageSize(): void {
@@ -260,6 +263,7 @@ export class HsCompositionsComponent implements OnInit {
       ds.compositionsPaging.next = ds.compositionsPaging.limit;
       this.loadCompositions(ds);
     }
+    this.filterByExtent = !this.filterByExtent;
   }
 
   filteredEndpointsForCompositions(): Array<HsEndpoint> {
