@@ -280,6 +280,9 @@ export class HsCompositionsParserService {
 
   parseExtent(b: string | Array<number>): Array<number> {
     let boundArray;
+    if (!b) {
+      return;
+    }
     if (typeof b == 'string') {
       boundArray = b.split(' ');
     } else {
