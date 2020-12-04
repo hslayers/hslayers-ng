@@ -157,7 +157,7 @@
     "ttf2eot": "^2.0.0",
     "unidecode": "^0.1.8",
     "vega": "5.17.0",
-    "vega-embed": "6.13.0",
+    "vega-embed": "6.14.0",
     "xml-js": "^1.6.11",
     "zone.js": "^0.10.3"
   }
