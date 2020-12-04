@@ -228,18 +228,6 @@ export class HsCompositionsComponent implements OnInit {
     // this.keywordsMenuOpen = !this.keywordsMenuOpen;
   }
 
-  /**
-   * @description Handler of "Only mine" filter change, delete editable variable if needed
-   */
-  mineFilterChanged(): void {
-    if (this.query.editable !== undefined && this.query.editable == false) {
-      delete this.query.editable;
-    }
-    else{
-      this.query.editable = true;
-    }
-  }
-
   getPageSize(): void {
     const compList = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-comp-list'
