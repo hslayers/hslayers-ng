@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="!data.isAuthorized" class="alert alert-danger" role="alert">
                 <p class="text-center">
-                    {{'User not authorized, drawings won´t be preserved' | translate}}
+                    {{'DRAW.notAuthorized' | translate}}
                 </p>
                 <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
             </div>

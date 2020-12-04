@@ -223,7 +223,9 @@
     "reallyDeleteThisLayer": "Really delete this layer?",
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "activeLayers": "Active layers",
+    "notAuthorized":"User not authorized, drawings won´t be preserved"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
