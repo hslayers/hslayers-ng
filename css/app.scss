@@ -688,16 +688,13 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	width: 400px;
 }
 
-.hs-impressum {
-	//display: flex;
-	//flex-direction: column;
-	//justify-content: flex-end;
-	//position: absolute;
-	//bottom: 0;
-	//z-index: 2;
+.hs-impressum .hs-logo {
+	max-width: 100%;
+	padding-left: 5em;
+	padding-right: 5em;
 }
 
-.hs-impressum .hs-logo {
+.hs-impressum .hs-logo img {
 	width: 100%;
 }
 
@@ -742,6 +739,10 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 }
 
 .hs-content-wrapper:not(.hs-open) .hs-panelplace {
+	display: none;
+}
+
+.hs-content-wrapper:not(.hs-open) .hs-impressum {
 	display: none;
 }
 
