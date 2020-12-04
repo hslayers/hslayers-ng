@@ -87,6 +87,7 @@ export class HsCompositionsService {
       bbox,
       this.HsCompositionsMapService.extentLayer
     );
+    console.log(ds)
   }
 
   resetCompositionCounter(): void {
