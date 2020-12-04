@@ -1,8 +1,8 @@
+import {Component, OnInit} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
-import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'hs-mini-sidebar',
   template: require('./partials/sidebar.html'),
@@ -21,7 +21,7 @@ export class HsMiniSidebarComponent implements OnInit {
     }
   }
 
-   /**
+  /**
    * Seat weather to show all sidebar buttons or just a
    * subset of important ones
    *
@@ -32,7 +32,7 @@ export class HsMiniSidebarComponent implements OnInit {
     this.HsSidebarService.showUnimportant = !this.HsSidebarService
       .showUnimportant;
   }
-   /**
+  /**
    * Toggle sidebar mode between expanded and narrow
    *
    * @memberof HsSidebarComponent

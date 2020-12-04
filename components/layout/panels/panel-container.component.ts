@@ -35,7 +35,7 @@ export class HsPanelContainerComponent implements OnInit {
     );
   }
 
-  destroyPanel(panel: HsPanelComponent) {
+  destroyPanel(panel: HsPanelComponent): void {
     const viewContainerRef = this.panelHost.viewContainerRef;
     viewContainerRef.remove(viewContainerRef.indexOf(panel.viewRef));
   }
