@@ -178,8 +178,8 @@
       "dateStamp": "Date stamp",
       "extendedSearchParameters": "Rozšířené vyhledávání",
       "extentSimilarity": "Extent similarity",
-      "featureCatalogue": "Katalog prvku",
-      "organizationName": "Jméno organizace",
+      "featureCatalogue": "Katalog prvků",
+      "organizationName": "název organizace",
       "serviceType": "Typ služby",
       "topicCategory": "Topic category"
     },
@@ -223,7 +223,9 @@
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "saveDrawingToLayer": "Uložit do vrstvy",
     "serverLayers": "Servrové vrstvy",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "activeLayers": "Aktivní vrstvy",
+    "notAuthorized":"Uživatel neautorizován, změny nebudou uloženy"
   },
   "FEATURE_TABLE": {
     "delete": "delete",

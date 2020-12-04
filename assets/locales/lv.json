@@ -223,7 +223,9 @@
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "serverLayers": "Servera slāņi",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "activeLayers": "Aktīvie slāņi",
+    "notAuthorized":"User not authorized, drawings won´t be preserved"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
