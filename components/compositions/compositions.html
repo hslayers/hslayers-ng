@@ -43,15 +43,15 @@
                             <li><a class="dropdown-item" (click)="setSortAttribute('date')">{{'COMMON.date' | translate}}</a></li>
                         </ul>
                     </div>
-                    <div class="input-group-append dropleft">
+                    <div class="input-group-append ">
                         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" (click)="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
                             {{'COMMON.keywords' | translate}}<span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" [ngClass]="{'show': keywordsMenuOpen}">
-                            <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue">
+                            <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue; let i = index">
                                 <label>
-                                    <input type="checkbox" [(ngModel)]="keyword.value" [ngModelOptions]="{standalone: true}" (click)="loadCompositionsOnAllEndpoints()">
-                                    {{keyword}}
+                                    <input type="checkbox" [(ngModel)]="keyword.value" [ngModelOptions]="{standalone: true}" (click)="keywordChecked(keyword)">
+                                    {{keyword.key}}
                                 </label>
                             </li>
                         </ul>

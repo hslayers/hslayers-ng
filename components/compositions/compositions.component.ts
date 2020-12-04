@@ -19,6 +19,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {ThrowStmt} from '@angular/compiler';
 @Component({
   selector: 'hs-compositions',
   template: require('./compositions.html'),
@@ -219,6 +220,12 @@ export class HsCompositionsComponent implements OnInit {
     for (const endpoint of this.filteredEndpointsForCompositions()) {
       this.loadCompositions(endpoint);
     }
+  }
+
+  keywordChecked(keyword) {
+    this.keywords[keyword.key] = !this.keywords[keyword.key];
+    this.loadCompositionsOnAllEndpoints();
+    // this.keywordsMenuOpen = !this.keywordsMenuOpen;
   }
 
   /**
