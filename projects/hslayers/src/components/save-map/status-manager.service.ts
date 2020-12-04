@@ -34,18 +34,11 @@ export class HsStatusManagerService implements HsSaverService {
         hostName = this.HsConfig.hostname.default.url;
       }
     }
-    if (
-      this.HsConfig.status_manager_url &&
-      this.HsConfig.status_manager_url.indexOf('://') > -1
-    ) {
+    if (this.HsConfig.status_manager_url?.includes('://')) {
       //Full url specified
       return this.HsConfig.status_manager_url;
     } else {
-      return (
-        hostName +
-        (this.HsConfig.status_manager_url ||
-          '/wwwlibs/statusmanager2/index.php')
-      );
+      return hostName + (this.HsConfig.status_manager_url || '/statusmanager/');
     }
   }
 

@@ -8,7 +8,7 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 @Injectable({
@@ -208,6 +208,10 @@ export class HsShareService {
       }
       try {
         const endpointUrl = this.HsStatusManagerService.endpointUrl();
+        const headers = new HttpHeaders().set(
+          'Content-Type',
+          'text/plain; charset=utf-8'
+        );
         await this.HttpClient.post(
           endpointUrl,
           JSON.stringify({
@@ -217,8 +221,9 @@ export class HsShareService {
             title: this.data.title,
             description: this.data.abstract,
             image: this.data.thumbnail,
-          })
-        );
+          }),
+          {headers, responseType: 'text'}
+        ).toPromise();
 
         const shortUrl = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
@@ -365,7 +370,10 @@ export class HsShareService {
       this.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
     } catch (e) {
       this.HsLogService.warn(e);
-      $element.setAttribute('src', this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png');
+      $element.setAttribute(
+        'src',
+        this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
+      );
     }
     $element.style.width = width + 'px';
     $element.style.height = height + 'px';

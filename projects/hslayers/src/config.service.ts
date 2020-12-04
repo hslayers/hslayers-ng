@@ -56,7 +56,7 @@ export class HsConfig {
   advancedForm?: boolean;
   project_name?: string;
   hostname?: any;
-  status_manager_url: string;
+  status_manager_url?: string;
   dsPaging?: number;
   permalinkLocation?: {origin: string; pathname: string};
   social_hashtag?: string;
