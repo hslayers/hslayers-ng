@@ -667,6 +667,7 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 
 .hs-content-wrapper.hs-open .hs-sidebar-list {
 	width: 100%;
+	height: 100%;
 }
 
 .hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) .hs-sidebar-list {
@@ -685,6 +686,19 @@ div.hs-panelplace > div {
 div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	margin-left: 0;
 	width: 400px;
+}
+
+.hs-impressum {
+	//display: flex;
+	//flex-direction: column;
+	//justify-content: flex-end;
+	//position: absolute;
+	//bottom: 0;
+	//z-index: 2;
+}
+
+.hs-impressum .hs-logo {
+	width: 100%;
 }
 
 .hs-sidebar-list .list-group-item {
@@ -711,6 +725,10 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	display: none;
 }
 
+.hs-panelspace:not(.labels) .hs-impressum {
+	display: none;
+}
+
 .hs-content-wrapper.hs-sb-right:not(.hs-open) .hs-sidebar-list {
 	right: 0;
 }
@@ -731,6 +749,7 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	position: absolute;
 	left: -9999px;
 }
+
 .sublayerContainer {
 	padding-bottom: 2.5px;
 }
@@ -1056,6 +1075,7 @@ div.hs-info-composition-edited {
 	}
 
 	a.hs-sidebar-item.list-group-item {
+		flex-grow: 1;
 		display: flex;
 		justify-content: center;
 		padding: 0.55rem 1.05rem;

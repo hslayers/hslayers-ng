@@ -7,7 +7,6 @@ import {Injectable} from '@angular/core';
 })
 export class HsLayoutService {
   /**
-   * @ngdoc property
    * @name HsLayoutService#defaultPanel
    * @public
    * @type {string} null
@@ -15,14 +14,12 @@ export class HsLayoutService {
    */
   defaultPanel = '';
   /**
-   * @ngdoc property
    * @name HsLayoutService#panel_statuses
    * @public
    * @type {object}
    */
   panel_statuses = {};
   /**
-   * @ngdoc property
    * @name HsLayoutService#panel_enabled
    * @public
    * @type {object}
@@ -30,67 +27,67 @@ export class HsLayoutService {
    */
   panel_enabled = {};
   /**
-   * @ngdoc property
    * @name HsLayoutService#mainpanel
    * @public
-   * @type {string} null
+   * @type {string}
+   * @default ''
    * @description Storage of current main panel (panel which is opened). When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
    */
   mainpanel = '';
   /**
-   * @ngdoc property
    * @name HsCore#sidebarRight
    * @public
-   * @type {boolean} true
+   * @type {boolean}
+   * @default true
    * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
    */
   sidebarRight = true;
   /**
-   * @ngdoc property
    * @name HsLayoutService#sidebarLabels
    * @public
-   * @type {boolean} true
-   * @description DEPRECATED? (labels display is done with CSS classes)
+   * @type {boolean}
+   * @default true
+   * @description Whether to display labels of sidebar buttons or not.
+   * Used in CSS classes assertion on hs-panelspace.
    */
   sidebarLabels = true;
   /**
-   * @ngdoc property
    * @name HsLayoutService#sidebarToggleable
    * @public
-   * @type {boolean} true
+   * @type {boolean}
+   * @default true
    * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
    */
   sidebarToggleable = true;
   /**
-   * @ngdoc property
    * @name HsLayoutService#sidebarButtons
    * @public
-   * @type {boolean} true
+   * @type {boolean}
+   * @default true
    * @description DEPRECATED?
    */
   sidebarButtons = true;
   /**
-   * @ngdoc property
    * @name HsLayoutService#smallWidth
    * @public
-   * @type {boolean} false
+   * @type {boolean}
+   * @default false
    * @description Helper property for showing some button on smaller screens
    */
   smallWidth = false;
-
   /**
-   * @ngdoc property
    * @name HsLayoutService#sidebarExpanded
    * @public
-   * @type {boolean} false
+   * @type {boolean}
+   * @default false
    * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
    */
   sidebarExpanded = false;
   /**
-   * @ngdoc property
    * @name HsLayoutService#minisidebar
    * @public
-   * @type {boolean} false
+   * @type {boolean}
+   * @default false
    * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
    */
   minisidebar = false;
