@@ -213,7 +213,7 @@ export class HsDatasourcesService {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
-          layer: layer.title || layer.name || '',
+          layer: undefined,
         });
       });
     } else if (whatToAdd.type == 'WFS') {
@@ -223,7 +223,7 @@ export class HsDatasourcesService {
           this.hsEventBusService.owsFilling.next({
             type: whatToAdd.type.toLowerCase(),
             uri: decodeURIComponent(whatToAdd.link),
-            layer: layer.title || layer.name || '',
+            layer: undefined, //layer.title || layer.name ||
           });
         });
       } else {
