@@ -157,7 +157,6 @@ export class HsCompositionsParserService {
         'show_in_manager': layer.Extension['ol:displayInLayerSwitcher']._text,
         'params': {
           'FORMAT': 'image/png',
-          'FROMCRS': 'EPSG:3857',
           'INFO_FORMAT': 'text/html',
           'LAYERS': layer.Name._text,
           'VERSION': layer.Server._attributes.version,

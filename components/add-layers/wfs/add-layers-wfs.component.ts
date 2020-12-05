@@ -84,7 +84,7 @@ export class HsAddLayersWfsComponent {
     );
 
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'WFS') {
+      if (type == 'wfs') {
         this.layerToAdd = layer;
         this.setUrlAndConnect(uri);
       }
