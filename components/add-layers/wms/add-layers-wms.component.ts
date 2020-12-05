@@ -33,7 +33,7 @@ export class HsAddLayersWmsComponent {
 
     //FIXME: is it even fired?
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'WMS') {
+      if (type == 'wms') {
         this.setUrlAndConnect(uri, layer);
       }
     });

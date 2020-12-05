@@ -32,7 +32,7 @@ export class HsDatasourcesComponent {
     this.advancedSearch = false;
 
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'WMS') {
+      if (type == 'wms') {
         this.data.wms_connecting = true;
       }
     });
