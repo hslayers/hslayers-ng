@@ -274,7 +274,7 @@ export class HsLayerManagerService {
       }
     }
   }
-  sortLayersByValue(arr: any[]): any[] {
+  sortLayersByZ(arr: any[]): any[] {
     const minus = this.order().indexOf('-') == 0;
     arr.sort((a, b) => {
       a = a.layer.getZIndex();

@@ -174,7 +174,7 @@ export class HsLayerListComponent {
    */
   sortLayersByPosition(): void {
     this.filtered_layers = this.filterLayers();
-    this.filtered_layers = this.HsLayerManagerService.sortLayersByValue(
+    this.filtered_layers = this.HsLayerManagerService.sortLayersByZ(
       this.filtered_layers
     );
     this.generateLayerTitlesArray();
