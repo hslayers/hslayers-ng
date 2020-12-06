@@ -55,6 +55,6 @@ export class HsLayerPhysicalListComponent {
     this.sortLayers();
   }
   sortLayers(): void {
-    this.layers = this.HsLayerManagerService.sortLayersByValue(this.layers);
+    this.layers = this.HsLayerManagerService.sortLayersByZ(this.layers);
   }
 }
