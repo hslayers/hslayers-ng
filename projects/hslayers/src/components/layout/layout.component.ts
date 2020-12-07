@@ -8,6 +8,7 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layout',
@@ -34,7 +35,8 @@ export class HsLayoutComponent {
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private HsUtilsService: HsUtilsService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
     setTimeout(() => {
@@ -56,7 +58,6 @@ export class HsLayoutComponent {
       element: elementRef.nativeElement,
       innerElement: '.hs-map-container',
     });
-
   }
 
   ngOnInit(): void {
@@ -69,7 +70,7 @@ export class HsLayoutComponent {
     } else if (this.HsConfig.sidebarPosition != 'invisible') {
       this.HsConfig.sidebarPosition = 'right';
     }
-    if (window.innerWidth < 600) {
+    if (window.innerWidth < 600 && this.HsUtilsService.runningInBrowser()) {
       const viewport = document.querySelector('meta[name="viewport"]');
       viewport.setAttribute(
         'content',

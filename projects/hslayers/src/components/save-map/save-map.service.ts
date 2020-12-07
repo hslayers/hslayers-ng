@@ -451,7 +451,7 @@ export class HsSaveMapService {
      */
     function rendered() {
       const canvas = this.HsMapService.getCanvas();
-      const canvas2 = this.$document[0].createElement('canvas');
+      const canvas2 = document.createElement('canvas');
       const width = 256,
         height = 256;
       canvas2.style.width = width + 'px';
@@ -475,7 +475,10 @@ export class HsSaveMapService {
         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
       } catch (e) {
         this.$log.warn(e);
-        $element.setAttribute('src', this.HsUtilsService.getAssetsPath() + "img/notAvailable.png");
+        $element.setAttribute(
+          'src',
+          this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
+        );
       }
       $element.style.width = width + 'px';
       $element.style.height = height + 'px';

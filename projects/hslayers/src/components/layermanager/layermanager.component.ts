@@ -99,7 +99,10 @@ export class HsLayerManagerComponent implements OnInit {
 
     this.HsEventBusService.layerRemovals.subscribe(
       (layer: HsLayerDescriptor) => {
-        if (this.HsLayerManagerService?.currentLayer?.layer == layer) {
+        if (
+          this.HsLayerManagerService?.currentLayer?.layer == layer &&
+          this.HsUtilsService.runningInBrowser()
+        ) {
           const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
             '.hs-layerpanel'
           );

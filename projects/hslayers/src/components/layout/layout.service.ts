@@ -167,7 +167,8 @@ export class HsLayoutService {
   getPanelEnableState(panel): boolean {
     if (
       this.panelsEnabledDefaults[panel] == undefined &&
-      this.HsConfig?.panelsEnabled[panel] == undefined
+      (this.HsConfig?.panelsEnabled == undefined ||
+        this.HsConfig?.panelsEnabled[panel] == undefined)
     ) {
       /* 
       Function called from sidebar and panel is 

@@ -347,26 +347,28 @@ export class HsStylerComponent {
    * @description Change colors of selected icon based on user input. Decode modified icon into Base-64
    */
   colorIcon(): void {
-    const iconPreview = document.getElementsByClassName(
-      'hs-styler-selected-icon-box'
-    )[0];
-    const svgPath: any = iconPreview.querySelectorAll('path');
-    for (const path of svgPath) {
-      if (!path) {
-        return;
+    if (this.HsUtilsService.runningInBrowser()) {
+      const iconPreview = document.getElementsByClassName(
+        'hs-styler-selected-icon-box'
+      )[0];
+      const svgPath: any = iconPreview.querySelectorAll('path');
+      for (const path of svgPath) {
+        if (!path) {
+          return;
+        }
+        if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
+          path.style.fill = this.iconfillcolor['background-color'];
+        }
+        if (this.iconlinecolor !== undefined && this.iconlinecolor !== null) {
+          path.style.stroke = this.iconlinecolor['background-color'];
+        }
+        if (this.iconlinewidth !== undefined && this.iconlinewidth !== null) {
+          path.style.strokeWidth = this.iconlinewidth;
+        }
+        this.serialized_icon =
+          'data:image/svg+xml;base64,' +
+          this.HsStylerService.encodeTob64(iconPreview.innerHTML);
       }
-      if (this.iconfillcolor !== undefined && this.iconfillcolor !== null) {
-        path.style.fill = this.iconfillcolor['background-color'];
-      }
-      if (this.iconlinecolor !== undefined && this.iconlinecolor !== null) {
-        path.style.stroke = this.iconlinecolor['background-color'];
-      }
-      if (this.iconlinewidth !== undefined && this.iconlinewidth !== null) {
-        path.style.strokeWidth = this.iconlinewidth;
-      }
-      this.serialized_icon =
-        'data:image/svg+xml;base64,' +
-        this.HsStylerService.encodeTob64(iconPreview.innerHTML);
     }
   }
   /**
@@ -390,7 +392,6 @@ export class HsStylerComponent {
    * @description (PRIVATE) Get geometry type and title for selected layer
    */
   refreshLayerDefinition(): void {
-
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
@@ -413,7 +414,6 @@ export class HsStylerComponent {
       this.HsUtilsService.instOf(resolvedStyle, Style)
     ) {
       this.parseStyles(resolvedStyle);
-
     }
   }
 

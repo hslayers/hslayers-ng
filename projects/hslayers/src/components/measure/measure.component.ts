@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-measure',
@@ -14,20 +15,22 @@ export class HsMeasureComponent {
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
-    public HsMeasureService: HsMeasureService
+    public HsMeasureService: HsMeasureService,
+    private HsUtilsService: HsUtilsService
   ) {
     this.data = this.HsMeasureService.data;
     this.type = 'distance';
 
-    document.addEventListener('keyup', (e) => {
-      if (e.keyCode == 17) {
-        //ControlLeft
-        setTimeout(() => {
-          this.HsMeasureService.switchMultipleMode();
-        }, 0);
-      }
-    });
-
+    if (this.HsUtilsService.runningInBrowser()) {
+      document.addEventListener('keyup', (e) => {
+        if (e.keyCode == 17) {
+          //ControlLeft
+          setTimeout(() => {
+            this.HsMeasureService.switchMultipleMode();
+          }, 0);
+        }
+      });
+    }
     this.HsEventBusService.measurementStarts.subscribe(() => {
       this.HsLayoutService.panelEnabled('toolbar', false);
     });

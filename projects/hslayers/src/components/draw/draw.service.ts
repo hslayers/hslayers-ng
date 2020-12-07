@@ -19,6 +19,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
@@ -95,7 +96,8 @@ export class HsDrawService {
     public HsLaymanService: HsLaymanService,
     public HsLanguageService: HsLanguageService,
     public HsLaymanBrowserService: HsLaymanBrowserService,
-    public HsAddLayersVectorService: HsAddLayersVectorService
+    public HsAddLayersVectorService: HsAddLayersVectorService,
+    private HsUtilsService: HsUtilsService
   ) {
     this.keyUp = this.keyUp.bind(this);
     this.HsMapService.loaded().then((map) => {
@@ -168,7 +170,7 @@ export class HsDrawService {
       path: this.HsConfig.defaultDrawLayerPath || 'User generated',
       definition: {
         format: layman ? 'hs.format.WFS' : null,
-        url: layman ? layman.url + '/wfs' : null
+        url: layman ? layman.url + '/wfs' : null,
       },
     });
     this.selectedLayer = drawLayer;
@@ -528,7 +530,9 @@ export class HsDrawService {
           if (onDrawStart) {
             onDrawStart(e);
           }
-          document.addEventListener('keyup', this.keyUp);
+          if (this.HsUtilsService.runningInBrowser()) {
+            document.addEventListener('keyup', this.keyUp);
+          }
         },
         this
       );
@@ -545,7 +549,9 @@ export class HsDrawService {
           if (onDrawEnd) {
             onDrawEnd(e);
           }
-          document.removeEventListener('keyup', this.keyUp);
+          if (this.HsUtilsService.runningInBrowser()) {
+            document.removeEventListener('keyup', this.keyUp);
+          }
         },
         this
       );

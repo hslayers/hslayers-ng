@@ -177,14 +177,16 @@ export class HsCoreService {
    * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
    */
   updateVH() {
-    const vh = window.innerHeight * 0.01;
-    document.body.style.setProperty('--vh', `${vh}px`);
+    if (this.HsUtilsService.runningInBrowser()) {
+      const vh = window.innerHeight * 0.01;
+      document.body.style.setProperty('--vh', `${vh}px`);
 
-    if (window.matchMedia('(orientation: portrait)').matches) {
-      document.getElementsByTagName('html')[0].style.height = '100vh';
-      setTimeout(() => {
-        document.getElementsByTagName('html')[0].style.height = '100%';
-      }, 500);
+      if (window.matchMedia('(orientation: portrait)').matches) {
+        document.getElementsByTagName('html')[0].style.height = '100vh';
+        setTimeout(() => {
+          document.getElementsByTagName('html')[0].style.height = '100%';
+        }, 500);
+      }
     }
   }
   /**

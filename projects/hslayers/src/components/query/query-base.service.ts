@@ -278,7 +278,9 @@ export class HsQueryBaseService {
   }
 
   getInvisiblePopup(): HTMLIFrameElement {
-    return <HTMLIFrameElement>document.getElementById('invisible_popup');
+    if (this.HsUtilsService.runningInBrowser()) {
+      return <HTMLIFrameElement>document.getElementById('invisible_popup');
+    }
   }
 
   pushFeatureInfoHtml(html): void {

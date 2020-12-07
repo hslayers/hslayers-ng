@@ -1,3 +1,4 @@
+import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -106,39 +107,43 @@ export class HsStylerColorService {
     'background-color': 'rgba(244, 235, 54, 0)',
   };
 
+  constructor(private HsUtilsService: HsUtilsService) {}
+
   parseColor(input: string): number[] {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-    let tmp = null;
-    div.style.backgroundColor = input;
-    const computedColor = getComputedStyle(div, null).getPropertyValue(
-      'background-color'
-    );
-    //Parse rgb color
-    let m = computedColor.match(
-      /^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i
-    );
-    if (m) {
-      tmp = [m[1], m[2], m[3]];
-    }
+    if (this.HsUtilsService.runningInBrowser()) {
+      const div = document.createElement('div');
+      document.body.appendChild(div);
+      let tmp = null;
+      div.style.backgroundColor = input;
+      const computedColor = getComputedStyle(div, null).getPropertyValue(
+        'background-color'
+      );
+      //Parse rgb color
+      let m = computedColor.match(
+        /^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i
+      );
+      if (m) {
+        tmp = [m[1], m[2], m[3]];
+      }
 
-    //In rgba case when alpha is a float with decimal dot
-    m = computedColor.match(
-      /^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+\.\d+)?\s*\)$/i
-    );
-    if (m) {
-      tmp = [m[1], m[2], m[3], m[4]];
-    }
+      //In rgba case when alpha is a float with decimal dot
+      m = computedColor.match(
+        /^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+\.\d+)?\s*\)$/i
+      );
+      if (m) {
+        tmp = [m[1], m[2], m[3], m[4]];
+      }
 
-    //In rgba case when alpha is not a float but integer
-    m = computedColor.match(
-      /^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)?\s*\)$/i
-    );
-    if (m) {
-      tmp = [m[1], m[2], m[3], m[4]];
+      //In rgba case when alpha is not a float but integer
+      m = computedColor.match(
+        /^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)?\s*\)$/i
+      );
+      if (m) {
+        tmp = [m[1], m[2], m[3], m[4]];
+      }
+      document.body.removeChild(div);
+      return tmp;
     }
-    document.body.removeChild(div);
-    return tmp;
   }
 
   findAndParseColor(color: string): {'background-color'} {

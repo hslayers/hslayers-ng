@@ -852,9 +852,11 @@ export class HsLayerManagerService {
     const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-layerpanel'
     );
-    const layerNode = document.getElementById(layer.idString());
-    if (layerNode) {
-      this.HsUtilsService.insertAfter(layerPanel, layerNode);
+    if (this.HsUtilsService.runningInBrowser()) {
+      const layerNode = document.getElementById(layer.idString());
+      if (layerNode) {
+        this.HsUtilsService.insertAfter(layerPanel, layerNode);
+      }
     }
     return false;
   }

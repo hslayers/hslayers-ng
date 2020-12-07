@@ -1,14 +1,17 @@
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
+import {PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 
 @Injectable()
 export class HsUtilsService {
   constructor(
     public HsConfig: HsConfig,
     private http: HttpClient,
-    private LogService: HsLogService
+    private LogService: HsLogService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
   /**
    * @ngdoc method
@@ -105,17 +108,23 @@ export class HsUtilsService {
    * @returns {string} Port number
    */
   getPortFromUrl(url: string): string {
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    if (link.port == '') {
-      if (url.indexOf('https://') === 0) {
-        return '443';
+    if (this.runningInBrowser()) {
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      if (link.port == '') {
+        if (url.indexOf('https://') === 0) {
+          return '443';
+        }
+        if (url.indexOf('http://') === 0) {
+          return '80';
+        }
       }
-      if (url.indexOf('http://') === 0) {
-        return '80';
-      }
+      return link.port;
     }
-    return link.port;
+  }
+
+  runningInBrowser() {
+    return isPlatformBrowser(this.platformId);
   }
 
   /**
@@ -524,13 +533,13 @@ export class HsUtilsService {
     return target.charAt(0).toUpperCase() + target.slice(1);
   }
 
-  getAssetsPath(){
+  getAssetsPath() {
     let assetsPath = this.HsConfig.assetsPath || '';
-    assetsPath += assetsPath.endsWith("/") ? "" : "/";
+    assetsPath += assetsPath.endsWith('/') ? '' : '/';
     return assetsPath;
   }
 
-  getAjaxLoaderIcon(){
-    return this.getAssetsPath() + 'img/ajax-loader.gif'
+  getAjaxLoaderIcon() {
+    return this.getAssetsPath() + 'img/ajax-loader.gif';
   }
 }
