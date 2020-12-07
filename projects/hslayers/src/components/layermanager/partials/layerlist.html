@@ -1,7 +1,7 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
     <ul class="list-group row">
         <li *ngFor="let layer of filtered_layers;" id="{{layer.idString()}}" class="list-group-item hs-lm-item"
-            [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'hs-lm-deactivated-layer': !layer.visible || layerValid(layer.layer) || layer.grayed}">
+            [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed == true}">
             <div class="d-flex">
                 <div class="p-0">
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"

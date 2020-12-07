@@ -34,6 +34,7 @@ type WhatToAddDescriptor = {
 })
 export class HsDatasourcesService {
   data: any = {};
+  selectedEndpoint: HsEndpoint;
 
   constructor(
     public hsConfig: HsConfig,
@@ -212,7 +213,7 @@ export class HsDatasourcesService {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
-          layer: layer.title || layer.name || '',
+          layer: undefined,
         });
       });
     } else if (whatToAdd.type == 'WFS') {
@@ -222,7 +223,7 @@ export class HsDatasourcesService {
           this.hsEventBusService.owsFilling.next({
             type: whatToAdd.type.toLowerCase(),
             uri: decodeURIComponent(whatToAdd.link),
-            layer: layer.title || layer.name || '',
+            layer: undefined, //layer.title || layer.name ||
           });
         });
       } else {
@@ -236,8 +237,9 @@ export class HsDatasourcesService {
           {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
         );
         this.hsAddLayersVectorService.fitExtent(layer);
+        this.hsLayoutService.setMainPanel('layermanager');
       }
-      this.hsLayoutService.setMainPanel('layermanager');
+
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddLayersVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),

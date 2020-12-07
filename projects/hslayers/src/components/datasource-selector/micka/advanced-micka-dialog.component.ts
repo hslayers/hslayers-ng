@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesService} from '../datasource-selector.service';
+import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMickaFilterService} from './micka-filters.service';
@@ -11,11 +12,10 @@ import {HsMickaSuggestionsDialogComponent} from './micka-suggestions-dialog.comp
   selector: 'hs-advanced-micka-dialog',
   templateUrl: './advanced-micka-dialog.html',
 })
-export class HsAdvancedMickaDialogComponent {
+export class HsAdvancedMickaDialogComponent implements HsDialogComponent {
   query;
-  modalVisible = true;
-  suggestionsModalVisible;
-  @Input('endpoint') mickaDatasetConfig;
+  @Input() data; //HsEndpoint
+  mickaDatasetConfig: any;
 
   constructor(
     public hsConfig: HsConfig,
@@ -25,8 +25,12 @@ export class HsAdvancedMickaDialogComponent {
     public hsLayoutService: HsLayoutService
   ) {
     this.query = hsDatasourcesService.data.query;
+    this.hsMickaFilterService.advancedModalVisible = true;
   }
-
+  viewRef: ViewRef;
+  ngOnInit(): void {
+    this.mickaDatasetConfig = this.data;
+  }
   /**
    * @function showSuggestions
    * @param {string} input Suggestion class type name (e.g. "Organisation Name")
@@ -37,30 +41,21 @@ export class HsAdvancedMickaDialogComponent {
   showSuggestions(input: string, param: string, field: string): void {
     this.hsMickaFilterService.changeSuggestionConfig(input, param, field);
     if (
-      this.hsLayoutService.contentWrapper.querySelector(
+      this.hsLayoutService.layoutElement.querySelector(
         '.hs-ds-suggestions-micka'
       ) === null
     ) {
-      this.hsDialogContainerService.create(
-        HsMickaSuggestionsDialogComponent,
-        {mickaDatasetConfig: this.mickaDatasetConfig}
-      );
-      //FIXME: $compile
-      /*const el = angular.element('<div hs-micka-suggestions-dialog></div>');
-      this.hsLayoutService.contentWrapper
-        .querySelector('.hs-dialog-area')
-        .appendChild(el[0]);
-      $compile(el)(scope);*/
+      this.hsDialogContainerService.create(HsMickaSuggestionsDialogComponent, {
+        mickaDatasetConfig: this.mickaDatasetConfig,
+      });
     } else {
-      this.suggestionsModalVisible = true;
-      const filterElement = this.hsLayoutService.contentWrapper.querySelector(
+      this.hsMickaFilterService.suggestionsModalVisible = true;
+      const filterElement = this.hsLayoutService.layoutElement.querySelector(
         '.hs-ds-sug-filter'
       );
       this.hsMickaFilterService.suggestionFilter = this.query[input];
       filterElement.focus();
     }
-    this.hsMickaFilterService.suggestionFilterChanged(
-      this.mickaDatasetConfig
-    );
+    this.hsMickaFilterService.suggestionFilterChanged(this.mickaDatasetConfig);
   }
 }

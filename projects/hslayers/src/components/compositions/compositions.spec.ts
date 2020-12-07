@@ -150,11 +150,7 @@ describe('compositions', () => {
     });
   });
 
-  it('if "Only mine" is unchecked then query.editable should not be sent at all', function () {
-    component.query = {editable: false, title: null};
-    component.mineFilterChanged();
-    expect(component.query.editable).toBeUndefined();
-  });
+
 
   /**
    * @param scope

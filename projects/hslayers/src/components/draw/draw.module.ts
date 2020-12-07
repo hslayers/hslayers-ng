@@ -4,6 +4,7 @@ import {
   NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsStylerModule} from '../styles/styles.module';
 import {TranslateModule} from '@ngx-translate/core';
@@ -31,6 +32,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsStylerModule,
     TranslateModule,
     HsQueryModule,
+    HsLaymanModule,
   ],
   exports: [
     HsDrawComponent,

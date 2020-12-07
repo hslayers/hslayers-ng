@@ -1,4 +1,4 @@
-<div [ngClass]="{'in': suggestionsModalVisible}" class="modal hs-ds-suggestions-micka" tabindex="-1" role="dialog"
+<div [ngClass]="{'in': hsMickaFilterService.suggestionsModalVisible}" class="modal hs-ds-suggestions-micka" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -6,28 +6,28 @@
                 <h4 class="modal-title">
                     {{'DATASOURCE_SELECTOR.suggestions' | translate}}
                 </h4>
-                <button type="button" (click)="suggestionsModalVisible = false" class="close" data-dismiss="modal">
+                <button type="button" (click)="hsMickaFilterService.suggestionsModalVisible = false" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span>
                 </button>
             </div>
             <div class="modal-body" style="max-height:525px; overflow-y:auto">
                 <form>
                     <label class="form-group">{{'COMMON.filter' | translate}}
-                        <input type="text" class="hs-ds-sug-filter form-control"
+                        <input type="text" class="hs-ds-sug-filter form-control" name="suggestionFilter"
                             (change)="hsMickaFilterService.suggestionFilterChanged(data.mickaDatasetConfig)"
                             [(ngModel)]="hsMickaFilterService.suggestionFilter">
                     </label>
                 </form>
                 <ul class="list-group">
                     <li class='list-group-item' [hidden]="hsMickaFilterService.suggestionsLoaded"><img
-                            [src]="HsUtilsService.getAjaxLoaderIcon()" /></li>
+                            [src]="loaderImage" /></li>
                     <li [hidden]='hsMickaFilterService.suggestions.length > 0' class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li *ngFor="let suggestion of hsMickaFilterService.suggestions | slice:0:10"
                         [ngClass]="'list-group-item'">
                         <b class="list-group-item-heading">
                             <a href="#"
-                                (click)="addSuggestion(suggestion[hsMickaFilterService.suggestionConfig.field]); suggestionsModalVisible = false"
+                                (click)="addSuggestion(suggestion[hsMickaFilterService.suggestionConfig.field]); hsMickaFilterService.suggestionsModalVisible = false"
                                 data-dismiss="modal">
                                 {{suggestion[hsMickaFilterService.suggestionConfig.field]}} <span
                                     [hidden]="suggestion.count === undefined">({{suggestion.count}})</span>
@@ -38,7 +38,7 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="suggestionsModalVisible = false"
+                <button type="button" class="btn btn-secondary" (click)="hsMickaFilterService.suggestionsModalVisible = false"
                     data-dismiss="modal">{{'COMMON.close' | translate}}</button>
             </div>
         </div>

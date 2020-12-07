@@ -126,7 +126,7 @@ export class HsCompositionsMickaService {
               record.bbox
             );
             //Check if height or Width covers the whole screen
-            if (
+            if (extent &&
               !(
                 (extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) ||
                 (extent[1] < mapExtent[1] && extent[3] > mapExtent[3])

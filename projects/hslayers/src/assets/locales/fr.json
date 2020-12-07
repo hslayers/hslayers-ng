@@ -60,7 +60,8 @@
         "unsavedDrawing": "Dessin non enregistré",
         "saveDrawingToLayer": "Save drawing to layer",
         "activeLayers": "Active layers",
-        "serverLayers": "Server layers"
+        "serverLayers": "Server layers",
+        "notAuthorized":"User not authorized, drawings won´t be preserved"
     },
     "LAYERMANAGER": {
         "baselayers": "Fond de carte de base",
@@ -113,7 +114,8 @@
         "other": "Autre",
         "removeAllLayers": "Supprimer toutes les couches",
         "resetMap": "Réinitialiser la carte",
-        "terrains": "Terrains"
+        "terrains": "Terrains",
+        "enablePhysicalLayerList": "Enable/Disable physical layer list"
     },
     "LEGEND": {
         "noLegendExists": "Aucune couche avec légende n'existe!"

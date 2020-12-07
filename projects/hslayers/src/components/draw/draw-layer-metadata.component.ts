@@ -1,10 +1,11 @@
 import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
+import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
-  templateUrl: './partials/draw-layer-metadata.html',
+  template: require('./partials/draw-layer-metadata.html'),
 })
 export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   @Input() data: any;
@@ -17,14 +18,23 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   path: string;
   folderVisible = false;
   type: string;
+  endpoint: any;
 
-  constructor(public HsMapService: HsMapService) {}
+  constructor(
+    public HsMapService: HsMapService,
+    public HsDialogContainerService: HsDialogContainerService
+  ) {}
 
   viewRef: ViewRef;
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;
     this.title = this.layer.get('title');
     this.path = this.layer.get('path');
+    this.endpoint = this.data.laymanEndpoint;
+
+    if (this.data.isAuthorized !== true) {
+      this.type = 'draw';
+    }
   }
 
   titleChanged(): void {
@@ -68,6 +78,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   cancel() {
     this.data.selectedLayer = this.data.previouslySelected;
     this.AddNewDrawLayerModalVisible = false;
+    this.HsDialogContainerService.destroy(this);
   }
 
   async awaitLayerSync(layer) {
