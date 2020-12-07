@@ -238,7 +238,7 @@ export class HsLayerManagerService {
         return this.HsUtilsService.getAssetsPath() + 'img/' + thumbnail;
       }
     } else {
-        this.HsUtilsService.getAssetsPath() + 'img/default.png'
+      this.HsUtilsService.getAssetsPath() + 'img/default.png';
     }
   }
   /**
@@ -765,7 +765,6 @@ export class HsLayerManagerService {
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
-
     let cur_res;
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
@@ -778,7 +777,6 @@ export class HsLayerManagerService {
       cur_res = this.HsMapService.map.getView().getResolution();
     }
     this.currentResolution = cur_res;
-    console.log(this.currentResolution);
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
     );
