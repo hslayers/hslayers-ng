@@ -24,10 +24,8 @@ export class HsMickaSuggestionsDialogComponent
     public HsUtilsService: HsUtilsService
   ) {
     this.hsMickaFilterService.suggestionsModalVisible = true;
-    this.loaderImage = this.HsUtilsService.resolveEsModule(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('../../../img/ajax-loader.gif')
-    );
+    this.loaderImage =
+      this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
     this.hsMickaFilterService.suggestionFilter = this.hsDatasourcesService.data.query[
       this.hsMickaFilterService.suggestionConfig.input
     ];
@@ -39,7 +37,7 @@ export class HsMickaSuggestionsDialogComponent
       .focus();
   }
 
-   /**
+  /**
    * @function addSuggestion
    * @param {string} text Selected property value from suggestions
    * @description Save suggestion into Query object
