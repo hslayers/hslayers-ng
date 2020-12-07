@@ -36,3 +36,4 @@ export * from './components/save-map/save-map.service';
 export * from './components/styles/styler.service';
 export * from './common/log/log.module';
 export * from './common/log/log.service';
+export * from './components/layermanager/layermanager.service';
