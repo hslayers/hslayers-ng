@@ -1,0 +1,13 @@
+{
+  "name": "hslayers-ng-proxy",
+  "version": "1.0.0",
+  "main": "src/proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BOSC",
+  "dependencies": {
+    "cors-anywhere": "^0.4.3",
+    "http": "0.0.1-security"
+  }
+}
