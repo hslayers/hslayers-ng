@@ -178,7 +178,7 @@ export class HsLayerManagerService {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
       abstract: layer.get('abstract'),
       layer: layer,
-      grayed: this.isLayerInResolutionInterval(layer),
+      grayed: !this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),
       hsFilters: layer.get('hsFilters'),
@@ -767,9 +767,6 @@ export class HsLayerManagerService {
    * @description Test if layer (WMS) resolution is within map resolution interval
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
-    if (!lyr.get('visible')) {
-      return true;
-    }
     let cur_res;
     if (this.isWms(lyr)) {
       const view = this.HsMapService.map.getView();
