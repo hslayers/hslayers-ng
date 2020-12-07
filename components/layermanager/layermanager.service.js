@@ -715,9 +715,6 @@ export default function (
    * @description Test if layer (WMS) resolution is within map resolution interval.
    */
   me.isLayerInResolutionInterval = function (lyr) {
-    if (!lyr.get('visible')) {
-      return true;
-    }
     let cur_res;
     if (me.isWms(lyr)) {
       const view = HsMapService.map.getView();
