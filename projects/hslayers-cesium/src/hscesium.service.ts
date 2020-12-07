@@ -1,4 +1,3 @@
-import '../permalink/share.module';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
 import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
@@ -20,12 +19,14 @@ import when from 'cesium/Source/ThirdParty/when';
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {
+  HsConfig,
+  HsEventBusService,
+  HsLayerManagerService,
+  HsLayoutService,
+  HsMapService,
+  HsUtilsService,
+} from 'hslayers-ng';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -48,7 +49,6 @@ export class HsCesiumService {
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService
   ) {
-    'ngInject';
     if (this.HsConfig.cesiumBingKey) {
       this.BING_KEY = this.HsConfig.cesiumBingKey;
     }
@@ -124,9 +124,10 @@ export class HsCesiumService {
      * @param file
      */
     function loadSkyBoxSide(file) {
-      return this.HsUtilsService.resolveEsModule(
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('cesium/Build/Cesium/Assets/Textures/SkyBox/' + file)
+      return (
+        this.HsUtilsService.getAssetsPath() +
+        'cesium/Build/Cesium/Assets/Textures/SkyBox/' +
+        file
       );
     }
 
@@ -224,7 +225,9 @@ export class HsCesiumService {
               s = s + features[i].data + '\n';
             }
           }
-          const iframe: any = document.querySelector('.cesium-infoBox-iframe');
+          const iframe: any = this.HsLayoutService.layoutElement.querySelector(
+            '.cesium-infoBox-iframe'
+          );
           if (iframe) {
             // eslint-disable-next-line angular/timeout-service
             setTimeout(() => {
@@ -328,14 +331,20 @@ export class HsCesiumService {
       '.hs-cesium-container'
     ).style.height = size.height + 'px';
     const timelineElement = <HTMLElement>(
-      document.querySelector('.cesium-viewer-timelineContainer')
+      this.HsLayoutService.layoutService.querySelector(
+        '.cesium-viewer-timelineContainer'
+      )
     );
     if (timelineElement) {
       timelineElement.style.right = '0';
     }
-    if (document.querySelector('.cesium-viewer-bottom')) {
+    if (
+      this.HsLayoutService.layoutService.querySelector('.cesium-viewer-bottom')
+    ) {
       const bottomElement = <HTMLElement>(
-        document.querySelector('.cesium-viewer-bottom')
+        this.HsLayoutService.layoutService.querySelector(
+          '.cesium-viewer-bottom'
+        )
       );
       if (timelineElement) {
         bottomElement.style.bottom = '30px';

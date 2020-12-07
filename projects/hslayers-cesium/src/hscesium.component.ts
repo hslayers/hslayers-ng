@@ -1,15 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {HsCesiumService} from './hscesium.service';
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {
+  HsCoreService,
+  HsEventBusService,
+  HsLayoutService,
+  HsMapService,
+  HsShareUrlService,
+  HsSidebarService,
+} from 'hslayers-ng';
 
 @Component({
   selector: 'hs-cesium',
-  templateUrl: './partials/cesium.html',
+  templateUrl: './hscesium.html',
 })
 export class HsCesiumComponent implements OnInit {
   visible = true;

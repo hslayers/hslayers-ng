@@ -10,7 +10,6 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumService} from './hscesium.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {WINDOW_PROVIDERS} from '../utils/window';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -22,7 +21,6 @@ import {WINDOW_PROVIDERS} from '../utils/window';
     HsCesiumCameraService,
     HsCesiumLayersService,
     HsCesiumTimeService,
-    WINDOW_PROVIDERS,
   ],
   entryComponents: [HsCesiumComponent],
 })
