@@ -1,8 +1,7 @@
 {
   "name": "hslayers-ng",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "scripts": {
-    "find-circular": "npx madge --circular --extensions ts ./"
   },
   "peerDependencies": {
     "@angular/common": "^9.1.12",

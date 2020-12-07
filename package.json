@@ -4,7 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "node projects/hslayers/prebuild.js",
     "build": "ng build hslayers",
+    "prebuild-watch": "node projects/hslayers/prebuild.js",
+    "build-watch": "ng build hslayers",
+    "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
     "test": "ng test hslayers",
     "lint": "ng lint",
     "e2e": "ng e2e"
