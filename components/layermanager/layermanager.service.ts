@@ -779,7 +779,6 @@ export class HsLayerManagerService {
       cur_res = this.HsMapService.map.getView().getResolution();
     }
     this.currentResolution = cur_res;
-    console.log(this.currentResolution);
     return (
       lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
     );
