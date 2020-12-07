@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hslayers-workspace": {
+    "hslayers-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -11,44 +11,50 @@
         }
       },
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "projects/",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/hslayers-workspace",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "outputPath": "dist/hslayers-app",
+            "index": "projects/hslayers-app/src/index.html",
+            "main": "projects/hslayers-app/src/main.ts",
+            "polyfills": "projects/hslayers-app/src/polyfills.ts",
+            "tsConfig": "projects/hslayers-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/hslayers-app/src/favicon.ico",
+              "projects/hslayers-app/src/assets",
+              "projects/hslayers/src/assets"
             ],
             "styles": [
-              "src/styles.sass",
-              "projects/hslayers/src/css/app.scss",
-              "projects/hslayers/src/css/whhg-font/css/whhg.css",
               "node_modules/ol/ol.css"
             ],
             "scripts": []
           },
           "configurations": {
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hslayers-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-app/src/environments/environment.hmr.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/hslayers-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-app/src/environments/environment.prod.ts"
                 },
                 {
                   "replace": "node_modules/moment/locale/",
-                  "with": "src/locale/"
+                  "with": "projects/hslayers-app/src/locale/"
                 },
                 {
                   "replace": "node_modules/moment-interval/node_modules/moment/lang/",
-                  "with": "src/locale/"
+                  "with": "projects/hslayers-app/src/locale/"
                 }
               ],
               "optimization": true,
@@ -77,30 +83,34 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hslayers-workspace:build"
+            "browserTarget": "hslayers-app:build"
           },
           "configurations": {
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "hslayers-app:build:hmr"
+            },
             "production": {
-              "browserTarget": "hslayers-workspace:build:production"
+              "browserTarget": "hslayers-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hslayers-workspace:build"
+            "browserTarget": "hslayers-app:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "main": "projects/hslayers-app/src/test.ts",
+            "polyfills": "projects/hslayers-app/src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/hslayers-app/src/favicon.ico",
+              "projects/hslayers-app/src/assets"
             ],
             "styles": [
               "src/styles.sass"
@@ -125,11 +135,130 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hslayers-workspace:serve"
+            "devServerTarget": "hslayers-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "hslayers-workspace:serve:production"
+              "devServerTarget": "hslayers-app:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "hslayers-cesium-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "sass"
+        }
+      },
+      "root": "",
+      "sourceRoot": "projects/hslayers-cesium-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/hslayers-cesium-app",
+            "index": "projects/hslayers-cesium-app/src/index.html",
+            "main": "projects/hslayers-cesium-app/src/main.ts",
+            "polyfills": "projects/hslayers-cesium-app/src/polyfills.ts",
+            "tsConfig": "projects/hslayers-cesium-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/hslayers-cesium-app/src/favicon.ico",
+              "projects/hslayers-cesium-app/src/assets"
+            ],
+            "styles": [
+              "projects/hslayers-cesium-app/src/styles.sass",
+              "projects/hslayers/src/css/app.scss",
+              "projects/hslayers/src/css/whhg-font/css/whhg.css",
+              "node_modules/ol/ol.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hslayers-cesium-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-cesium-app/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "node_modules/moment/locale/",
+                  "with": "projects/hslayers-cesium-app/src/locale/"
+                },
+                {
+                  "replace": "node_modules/moment-interval/node_modules/moment/lang/",
+                  "with": "projects/hslayers-cesium-app/src/locale/"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "hslayers-cesium-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "hslayers-cesium-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hslayers-cesium-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "projects/hslayers-cesium-app/src/favicon.ico",
+              "projects/hslayers-cesium-app/src/assets"
+            ],
+            "styles": [
+              "projects/hslayers-cesium-app/src/styles.sass"
+            ],
+            "scripts": []
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "hslayers-cesium-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hslayers-cesium-app:serve:production"
             }
           }
         }
@@ -160,18 +289,6 @@
             "tsConfig": "projects/hslayers/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/hslayers/tsconfig.lib.json",
-              "projects/hslayers/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -200,23 +317,39 @@
             "tsConfig": "projects/hslayers-sensors/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-sensors/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+        }
+      }
+    },
+    "hslayers-cesium": {
+      "projectType": "library",
+      "root": "projects/hslayers-cesium",
+      "sourceRoot": "projects/hslayers-cesium/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": [
-              "projects/hslayers-sensors/tsconfig.lib.json",
-              "projects/hslayers-sensors/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": "projects/hslayers-cesium/tsconfig.lib.json",
+            "project": "projects/hslayers-cesium/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/hslayers-cesium/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/hslayers-cesium/src/test.ts",
+            "tsConfig": "projects/hslayers-cesium/tsconfig.spec.json",
+            "karmaConfig": "projects/hslayers-cesium/karma.conf.js"
           }
         }
       }
     }
   },
-  "defaultProject": "hslayers-workspace",
+  "defaultProject": "hslayers-app",
   "cli": {
     "analytics": false
   }
