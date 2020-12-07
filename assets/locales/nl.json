@@ -60,7 +60,7 @@
         "unsavedDrawing": "Niet-opgeslagen tekening",
         "saveDrawingToLayer": "Save drawing to layer",
         "activeLayers": "Active layers",
-        "serverLayers": "Server layers"´,
+        "serverLayers": "Server layers",
         "notAuthorized":"User not authorized, drawings won´t be preserved"
     },
     "LAYERMANAGER": {
