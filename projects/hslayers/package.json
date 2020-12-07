@@ -23,14 +23,14 @@
     "rxjs": "^6.5.5",
     "share-api-polyfill": "^1.0.18",
     "xml-js": "^1.6.11",
-    "unidecode": "^0.1.8"
+    "unidecode": "^0.1.8",
+    "hslayers-ng-proxy": "^1.0.0"
   },
   "devDependencies": {
     "ol": "^6.4.3",
     "bootstrap": ">=4.4.1"
   },
   "dependencies": {
-    "tslib": "^1.10.0",
-    "hslayers-ng-proxy": "^1.0.0"
+    "tslib": "^1.10.0"
   }
 }
