@@ -153,7 +153,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/hslayers-cesium-app/src",
+      "sourceRoot": "projects",
       "prefix": "app",
       "architect": {
         "build": {
@@ -167,17 +167,23 @@
             "aot": true,
             "assets": [
               "projects/hslayers-cesium-app/src/favicon.ico",
-              "projects/hslayers-cesium-app/src/assets"
+              "projects/hslayers-cesium-app/src/assets",
+              "projects/hslayers/src/assets"
             ],
             "styles": [
-              "projects/hslayers-cesium-app/src/styles.sass",
-              "projects/hslayers/src/css/app.scss",
-              "projects/hslayers/src/css/whhg-font/css/whhg.css",
               "node_modules/ol/ol.css"
             ],
             "scripts": []
           },
           "configurations": {
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hslayers-cesium-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-cesium-app/src/environments/environment.hmr.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -222,6 +228,10 @@
             "browserTarget": "hslayers-cesium-app:build"
           },
           "configurations": {
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "hslayers-app:build:hmr"
+            },
             "production": {
               "browserTarget": "hslayers-cesium-app:build:production"
             }
@@ -236,10 +246,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "main": "projects/hslayers-cesium-app/src/test.ts",
+            "polyfills": "projects/hslayers-cesium-app/src/polyfills.ts",
+            "tsConfig": "projects/hslayers-cesium-app/tsconfig.spec.json",
+            "karmaConfig": "projects/hslayers-cesium-app/karma.conf.js",
             "assets": [
               "projects/hslayers-cesium-app/src/favicon.ico",
               "projects/hslayers-cesium-app/src/assets"
