@@ -11,7 +11,7 @@ export class HsUtilsServiceMock {
     return this._instanceOf(obj, type);
   }
 
-  getAssetsPath(){
+  getAssetsPath() {
     return 'assets/hslayers-ng/';
   }
 
