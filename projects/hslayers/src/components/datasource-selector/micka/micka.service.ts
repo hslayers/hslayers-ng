@@ -89,12 +89,12 @@ export class HsMickaBrowserService {
       });
     url = this.hsUtilsService.proxify(url);
     dataset.datasourcePaging.loaded = false;
-    if (this.httpCall !== undefined) {
-      this.httpCall.unsubscribe();
-      delete this.httpCall;
+    if (dataset.httpCall) {
+      dataset.httpCall.unsubscribe();
+      delete dataset.httpCall;
     }
     //dataset.canceler = $q.defer();
-    this.httpCall = this.http
+    dataset.httpCall = this.http
       .get(url, {
         //FIXME: dataset must be passed to datasetsReceived
         //timeout: dataset.canceler.promise,
@@ -333,6 +333,7 @@ export class HsMickaBrowserService {
       return false;
     }
     whatToAdd.title = layer.title || 'Layer';
+    whatToAdd.name = layer.title || 'Layer';
     whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;
   }

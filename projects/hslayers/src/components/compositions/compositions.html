@@ -21,41 +21,44 @@
                 <input type="text" class="form-control hs-filter" placeholder="{{'COMMON.filter'|translate}}" name="hs-filter-by-name" [(ngModel)]="query.title" (change)="filterChanged()">
             </div>
 
-            <div class="form-group">
-
-                <div class="input-group">
-                    <div class="btn-group input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" [(ngModel)]="filterByExtent" name="hs-filter-by-extent" (change)="filterChanged()"><span>{{'COMPOSITIONS.filterByMap'|translate}}</span>
-                        </div>
-                        <div class="input-group-text">
-                            <input type="checkbox" [(ngModel)]="query.editable" name="hs-filter-by-editable" (change)="mineFilterChanged()"><span>{{'COMPOSITIONS.onlyMine'|translate}}</span>
-                        </div>
-                    </div>
-                    <div class="input-group-append dropdown">
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="sortMenuOpen=!sortMenuOpen">
-                            {{'COMMON.Sort' | translate}} <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': sortMenuOpen}">
-                            <li><a class="dropdown-item" (click)="setSortAttribute('bbox')" href="#">{{'COMMON.boundingBox' | translate}}</a>
-                            </li>
-                            <li><a class="dropdown-item" (click)="setSortAttribute('title')">{{'COMMON.title' | translate}}</a></li>
-                            <li><a class="dropdown-item" (click)="setSortAttribute('date')">{{'COMMON.date' | translate}}</a></li>
-                        </ul>
-                    </div>
-                    <div class="input-group-append dropleft">
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" (click)="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
-                            {{'COMMON.keywords' | translate}}<span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" [ngClass]="{'show': keywordsMenuOpen}">
-                            <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue">
-                                <label>
-                                    <input type="checkbox" [(ngModel)]="keyword.value" [ngModelOptions]="{standalone: true}" (click)="loadCompositionsOnAllEndpoints()">
-                                    {{keyword}}
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="d-flex flex-row pb-2 justify-content-between">
+                <div class="btn-group input-group-prepend">
+                    <button type="button" class=" btn pl-2 pr-2 " (click)="filterChanged()"
+                        [ngClass]="filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'" [title]="'COMPOSITIONS.filterByMap' | translate"
+                        style="font-size:larger; line-height:1 !important; "
+                        [ngStyle]="{'border-color': filterByExtent ? '#6c757d' : '#ced4da'}">
+                        <i class="icon-tabletscreensize"></i>
+                    </button>
+                    <!-- <button  type="button" class=" btn btn-sm pl-2 pr-2 " (click)="filterChanged()" [ngClass]="filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
+                        [title]="'COMPOSITIONS.filterByMap' | translate">
+                        {{'COMPOSITIONS.filterByMap'|translate}}
+                    </button> -->
+                </div>
+                <div class="btn-group dropdown ">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" (click)="sortMenuOpen=!sortMenuOpen">
+                        {{'COMMON.Sort' | translate}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': sortMenuOpen}">
+                        <li><a class="dropdown-item" (click)="setSortAttribute('bbox')"
+                                href="#">{{'COMMON.boundingBox' | translate}}</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="setSortAttribute('title')">{{'COMMON.title' | translate}}</a></li>
+                        <li><a class="dropdown-item" (click)="setSortAttribute('date')">{{'COMMON.date' | translate}}</a></li>
+                    </ul>
+                    <button type="button" class=" btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                        (click)="keywordsMenuOpen=!keywordsMenuOpen" aria-haspopup="true" aria-expanded="false">
+                        {{'COMMON.keywords' | translate}}<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': keywordsMenuOpen}">
+                        <li class="dropdown-item" *ngFor="let keyword of keywords | keyvalue; let i = index">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="keyword.value" [ngModelOptions]="{standalone: true}"
+                                    (click)="keywordChecked(keyword)">
+                                {{keyword.key}}
+                            </label>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </form>
@@ -93,18 +96,18 @@
                         </div>
 
 
-                        <div class="card-footer" [hidden]="!(endpoint.matched > 0)">
+                        <div class="card-footer" [hidden]="!(endpoint.compositionsPaging.matched > 0)">
                             <nav>
                                 <ul class="pagination d-flex justify-content-center">
                                     <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.start == 0 }">
-                                        <a href="#" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true"></span></a>
+                                        <a href="#" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true">&laquo;</span></a>
                                     </li>
                                     <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
                                     <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
                                     <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
-                                        <a href="#" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true"></span></a>
+                                        <a href="#" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true">&raquo;</span></a>
                                     </li>
                                 </ul>
                             </nav>

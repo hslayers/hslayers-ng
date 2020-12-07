@@ -2,10 +2,10 @@
     <div class="form-group">
         <div class="input-group" style="margin-bottom: 4px">
             <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translate"
-                [(ngModel)]="query.title" (change)="queryCatalogs()" name="queryTitle">
+                [(ngModel)]="query.title" (ngModelChange)="queryCatalog(hsDatasourcesService.selectedEndpoint)" name="queryTitle">
             <div class="input-group-append">
                 <button type="button" class="btn btn-secondary"
-                    (click)='openMickaAdvancedSearch(mickaDatasetConfig)'>{{'COMMON.more' | translate}}</button>
+                    (click)='openMickaAdvancedSearch()'>{{'COMMON.more' | translate}}</button>
                 <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()"><span
                         aria-hidden="true" class="close">×</span><span class="sr-only">
                         {{'COMMON.clear' | translate}}

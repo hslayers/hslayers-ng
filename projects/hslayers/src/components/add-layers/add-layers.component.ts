@@ -80,7 +80,7 @@ export class HsAddLayersComponent {
       const layers = this.hsShareUrlService.getParamValue(`${type}_layers`);
       this.hsLayoutService.setMainPanel('datasource_selector');
       this.type = type;
-      type = type.toUpperCase();
+      const serviceName = `hsAddLayersWmsService`;
       if (layers) {
         for (const layer of layers.split(';')) {
           this.hsEventBusService.owsConnecting.next({

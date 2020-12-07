@@ -60,7 +60,8 @@
         "unsavedDrawing": "Niet-opgeslagen tekening",
         "saveDrawingToLayer": "Save drawing to layer",
         "activeLayers": "Active layers",
-        "serverLayers": "Server layers"
+        "serverLayers": "Server layers",
+        "notAuthorized":"User not authorized, drawings won´t be preserved"
     },
     "LAYERMANAGER": {
         "baselayers": "Basislagen",
@@ -113,7 +114,8 @@
         "other": "Andere",
         "removeAllLayers": "Verwijder alle lagen",
         "resetMap": "Reset kaart",
-        "terrains": "Terreinen"
+        "terrains": "Terreinen",
+        "enablePhysicalLayerList": "Enable/Disable physical layer list"
     },
     "LEGEND": {
         "noLegendExists": "Er bestaat geen laag met legenda!"

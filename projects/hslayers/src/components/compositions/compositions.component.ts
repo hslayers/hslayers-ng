@@ -17,6 +17,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {ThrowStmt} from '@angular/compiler';
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.html',
@@ -219,13 +220,10 @@ export class HsCompositionsComponent implements OnInit {
     }
   }
 
-  /**
-   * @description Handler of "Only mine" filter change, delete editable variable if needed
-   */
-  mineFilterChanged(): void {
-    if (this.query.editable !== undefined && this.query.editable == false) {
-      delete this.query.editable;
-    }
+  keywordChecked(keyword) {
+    this.keywords[keyword.key] = !this.keywords[keyword.key];
+    this.loadCompositionsOnAllEndpoints();
+    // this.keywordsMenuOpen = !this.keywordsMenuOpen;
   }
 
   getPageSize(): void {
@@ -251,6 +249,7 @@ export class HsCompositionsComponent implements OnInit {
       ds.compositionsPaging.next = ds.compositionsPaging.limit;
       this.loadCompositions(ds);
     }
+    this.filterByExtent = !this.filterByExtent;
   }
 
   filteredEndpointsForCompositions(): Array<HsEndpoint> {

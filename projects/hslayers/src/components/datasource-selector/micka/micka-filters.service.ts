@@ -17,6 +17,8 @@ export class HsMickaFilterService {
   suggestionsLoaded = true;
   filterByExtent = true;
   otnKeywords = [];
+  suggestionsModalVisible: boolean;
+  advancedModalVisible: boolean;
 
   constructor(
     private http: HttpClient,

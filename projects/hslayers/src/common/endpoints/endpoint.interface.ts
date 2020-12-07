@@ -1,6 +1,7 @@
 import {HsDatasourceLayerDescriptor} from '../../components/datasource-selector/datasource-layer-descriptor.interface';
 
 export interface HsEndpoint {
+  httpCall: any;
   type: string;
   title: string;
   url: string;
