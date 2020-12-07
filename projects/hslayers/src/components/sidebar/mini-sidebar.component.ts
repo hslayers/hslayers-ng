@@ -21,7 +21,7 @@ export class HsMiniSidebarComponent implements OnInit {
     }
   }
 
-   /**
+  /**
    * Seat weather to show all sidebar buttons or just a
    * subset of important ones
    *
@@ -32,7 +32,7 @@ export class HsMiniSidebarComponent implements OnInit {
     this.HsSidebarService.showUnimportant = !this.HsSidebarService
       .showUnimportant;
   }
-   /**
+  /**
    * Toggle sidebar mode between expanded and narrow
    *
    * @memberof HsSidebarComponent
