@@ -60,7 +60,7 @@ export class AppComponent {
       Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
     }
   }
-  title = 'hslayers demo';
+  title = 'hslayers-workspace';
 
   ngOnInit(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
