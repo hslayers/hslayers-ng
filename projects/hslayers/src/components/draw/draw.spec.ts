@@ -10,6 +10,7 @@ import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.s
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
@@ -18,10 +19,10 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {TranslateModule} from '@ngx-translate/core';
-
-import {HsLanguageService} from '../language/language.service';
+import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsServiceMock} from './../../../../../../hslayers-ng-2/components/utils/utils.service.mock';
 import {Polygon} from 'ol/geom';
+import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 class emptyMock {
@@ -89,6 +90,7 @@ describe('HsDraw', () => {
         {provide: HsLaymanService, useValue: mockLaymanService},
         {provide: HsLaymanBrowserService, useValue: new emptyMock()},
         {provide: HsAddLayersVectorService, useValue: new emptyMock()},
+        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);

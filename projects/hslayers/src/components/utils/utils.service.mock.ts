@@ -50,7 +50,9 @@ export class HsUtilsServiceMock {
   generateUuid() {
     return Math.random().toString();
   }
-
+  runningInBrowser(): boolean {
+    return true;
+  }
   structuredClone(from, to?) {
     return from;
   }
