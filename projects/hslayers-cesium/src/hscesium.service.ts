@@ -19,14 +19,12 @@ import when from 'cesium/Source/ThirdParty/when';
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {
-  HsConfig,
-  HsEventBusService,
-  HsLayerManagerService,
-  HsLayoutService,
-  HsMapService,
-  HsUtilsService,
-} from 'hslayers-ng';
+import {HsConfig} from 'hslayers-ng';
+import {HsEventBusService} from 'hslayers-ng';
+import {HsLayerManagerService} from 'hslayers-ng';
+import {HsLayoutService} from 'hslayers-ng';
+import {HsMapService} from 'hslayers-ng';
+import {HsUtilsService} from 'hslayers-ng';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -124,7 +122,7 @@ export class HsCesiumService {
      * @param file
      */
     function loadSkyBoxSide(file) {
-      return `Textures/SkyBox/${file}`;
+      return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
     }
 
     viewer.scene.debugShowFramesPerSecond = this.HsConfig

@@ -8,7 +8,6 @@ import {
   HsShareUrlService,
   HsSidebarService,
 } from 'hslayers-ng';
-
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',

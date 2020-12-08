@@ -19,18 +19,13 @@ import moment from 'moment';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
-import {
-  HsConfig,
-  HsEventBusService,
-  HsMapService,
-  HsUtilsService,
-} from 'hslayers-ng';
 import {ImageWMS, Source} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {OSM, TileWMS} from 'ol/source';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 import {default as proj4} from 'proj4';
+import { HsConfig, HsEventBusService, HsMapService, HsUtilsService } from 'hslayers-ng';
 /**
  * @param proxy.proxy
  * @param proxy
