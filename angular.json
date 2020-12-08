@@ -169,12 +169,13 @@
               { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
               { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
               { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
-              { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium" },
+              { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium/Assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Widgets", "output": "./assets/cesium/Widgets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Workers", "output": "./assets/cesium/Workers" }
             ],
             "styles": [
-              "node_modules/ol/ol.css"
+              "node_modules/ol/ol.css",
+              "node_modules/cesium/Build/Cesium/Widgets/widgets.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
