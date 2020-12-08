@@ -8,6 +8,7 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
+import {HsMapHostDirective} from './map-host.directive';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
@@ -18,6 +19,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
+  @ViewChild(HsMapHostDirective, {static: true})
+  mapHost: HsMapHostDirective;
 
   panelVisible(which, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, scope);
@@ -82,6 +85,7 @@ export class HsLayoutComponent {
 
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     this.cdr.detectChanges();
   }
 }

@@ -9,12 +9,13 @@ import {HsCesiumComponent} from './hscesium.component';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumService} from './hscesium.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
+import {HslayersModule} from 'hslayers-ng';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsCesiumComponent],
-  imports: [CommonModule, NgbModule],
+  imports: [CommonModule, NgbModule, HslayersModule],
   exports: [HsCesiumComponent],
   providers: [
     HsCesiumService,
@@ -22,6 +23,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsCesiumLayersService,
     HsCesiumTimeService,
   ],
-  entryComponents: [HsCesiumComponent],
+  entryComponents: [],
 })
 export class HsCesiumModule {}

@@ -1,7 +1,8 @@
+import {BehaviorSubject} from 'rxjs';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
-import {Injectable} from '@angular/core';
+import {Injectable, ViewContainerRef} from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
@@ -114,6 +115,7 @@ export class HsLayoutService {
     search: false,
     tripPlanner: false,
   };
+  mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(null);
 
   constructor(
     public HsConfig: HsConfig,

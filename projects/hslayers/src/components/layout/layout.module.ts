@@ -16,6 +16,7 @@ import {HsLayoutComponent} from './layout.component';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsLayoutService} from './layout.service';
 import {HsLegendModule} from '../legend/legend.module';
+import {HsMapHostDirective} from './map-host.directive';
 import {HsMapModule} from '../map/map.module';
 import {HsMeasureModule} from '../measure/measure.module';
 import {HsPanelHelpersModule} from './panels/panel-helpers.module';
@@ -34,6 +35,7 @@ import {TranslateModule} from '@ngx-translate/core';
   declarations: [
     HsDialogContainerComponent,
     HsDialogHostDirective,
+    HsMapHostDirective,
     HsLayoutComponent,
     HsLayoutHostDirective,
   ],

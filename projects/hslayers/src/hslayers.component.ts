@@ -7,7 +7,5 @@ import {HsConfig} from './config.service';
   styles: [],
 })
 export class HslayersComponent {
-  constructor(public HsConfig: HsConfig) {
-   
-  }
+  constructor(public HsConfig: HsConfig) {}
 }
