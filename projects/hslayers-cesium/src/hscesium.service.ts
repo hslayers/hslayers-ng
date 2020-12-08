@@ -124,11 +124,7 @@ export class HsCesiumService {
      * @param file
      */
     function loadSkyBoxSide(file) {
-      return (
-        this.HsUtilsService.getAssetsPath() +
-        'cesium/Build/Cesium/Assets/Textures/SkyBox/' +
-        file
-      );
+      return `Textures/SkyBox/${file}`;
     }
 
     viewer.scene.debugShowFramesPerSecond = this.HsConfig
@@ -331,7 +327,7 @@ export class HsCesiumService {
       '.hs-cesium-container'
     ).style.height = size.height + 'px';
     const timelineElement = <HTMLElement>(
-      this.HsLayoutService.layoutService.querySelector(
+      this.HsLayoutService.layoutElement.querySelector(
         '.cesium-viewer-timelineContainer'
       )
     );
@@ -339,10 +335,10 @@ export class HsCesiumService {
       timelineElement.style.right = '0';
     }
     if (
-      this.HsLayoutService.layoutService.querySelector('.cesium-viewer-bottom')
+      this.HsLayoutService.layoutElement.querySelector('.cesium-viewer-bottom')
     ) {
       const bottomElement = <HTMLElement>(
-        this.HsLayoutService.layoutService.querySelector(
+        this.HsLayoutService.layoutElement.querySelector(
           '.cesium-viewer-bottom'
         )
       );

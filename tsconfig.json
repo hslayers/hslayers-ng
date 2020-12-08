@@ -18,9 +18,13 @@
       "dom"
     ],
     "paths": {
-      "hslayers": [
+      "hslayers-ng": [
         "dist/hslayers/hslayers",
         "dist/hslayers"
+      ],
+      "hslayers-cesium": [
+        "dist/hslayers-cesium/hslayers-cesium",
+        "dist/hslayers-cesium"
       ]
     }
   },

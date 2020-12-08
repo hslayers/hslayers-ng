@@ -24,9 +24,9 @@
             "tsConfig": "projects/hslayers-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/hslayers-app/src/favicon.ico",
-              "projects/hslayers-app/src/assets",
-              "projects/hslayers/src/assets"
+              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" }
             ],
             "styles": [
               "node_modules/ol/ol.css"
@@ -157,7 +157,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist/hslayers-cesium-app",
             "index": "projects/hslayers-cesium-app/src/index.html",
@@ -166,14 +166,20 @@
             "tsConfig": "projects/hslayers-cesium-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/hslayers-cesium-app/src/favicon.ico",
-              "projects/hslayers-cesium-app/src/assets",
-              "projects/hslayers/src/assets"
+              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium" },
+              { "glob": "**/*", "input": "./node_modules/cesium/Source/Widgets", "output": "./assets/cesium/Widgets" },
+              { "glob": "**/*", "input": "./node_modules/cesium/Source/Workers", "output": "./assets/cesium/Workers" }
             ],
             "styles": [
               "node_modules/ol/ol.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "projects/hslayers-cesium-app/custom-webpack.config.js"
+            }
           },
           "configurations": {
             "hmr": {
@@ -223,7 +229,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "hslayers-cesium-app:build"
           },

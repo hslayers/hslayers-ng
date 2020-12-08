@@ -11,7 +11,8 @@
   <script>
     function hslayersNgConfig(ol) {
       return {
-        assetsPath: 'hslayers/src/assets/',
+        assetsPath: 'assets',
+        cesiumBase: 'assets/cesium/',
         default_layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM(),
