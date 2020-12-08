@@ -11,7 +11,7 @@ export class HsUtilsService {
     public HsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: unknown
   ) {}
   /**
    * @ngdoc method
@@ -123,7 +123,7 @@ export class HsUtilsService {
     }
   }
 
-  runningInBrowser() {
+  runningInBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
 
