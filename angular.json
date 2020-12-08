@@ -153,7 +153,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects",
+      "sourceRoot": "projects/hslayers-cesium/src",
       "prefix": "app",
       "architect": {
         "build": {
