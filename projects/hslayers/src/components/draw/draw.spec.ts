@@ -20,7 +20,7 @@ import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from './../../../../../../hslayers-ng-2/components/utils/utils.service.mock';
+import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {Polygon} from 'ol/geom';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
