@@ -106,14 +106,14 @@
           "options": {
             "main": "projects/hslayers-app/src/test.ts",
             "polyfills": "projects/hslayers-app/src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "tsConfig": "projects/hslayers-app/tsconfig.spec.json",
+            "karmaConfig": "projects/hslayers-app/karma.conf.js",
             "assets": [
               "projects/hslayers-app/src/favicon.ico",
               "projects/hslayers-app/src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "projects/hslayers-app/src/styles.sass"
             ],
             "scripts": []
           }
