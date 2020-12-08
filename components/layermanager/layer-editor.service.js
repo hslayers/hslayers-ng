@@ -158,11 +158,8 @@ export default function (
       }
     } else {
       for (let ix = 0; ix < bbox.length; ix++) {
-        if (
-          angular.isDefined(getProj(bbox[ix].crs)) ||
-          angular.isDefined(layer.getSource().getParams().FROMCRS)
-        ) {
-          const crs = bbox[ix].crs || layer.getSource().getParams().FROMCRS;
+        if (angular.isDefined(getProj(bbox[ix].crs))) {
+          const crs = bbox[ix].crs;
           const b = bbox[ix].extent;
           let first_pair = [b[0], b[1]];
           let second_pair = [b[2], b[3]];
