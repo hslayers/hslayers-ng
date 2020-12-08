@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HsCesiumService} from './hscesium.service';
 import {
   HsCoreService,
@@ -12,7 +12,7 @@ import {
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',
 })
-export class HsCesiumComponent implements OnInit {
+export class HsCesiumComponent {
   visible = true;
   constructor(
     public HsCesiumService: HsCesiumService,
@@ -24,8 +24,13 @@ export class HsCesiumComponent implements OnInit {
     public HsLayoutService: HsLayoutService //Used in template
   ) {}
 
-  ngOnInit(): void {
-    this.HsCesiumService.init();
+  ngAfterViewInit(): void {
+    //Timeout needed because view container might not
+    //be resized yey and globe will be zoomed out in that case
+    setTimeout(() => {
+      this.HsCesiumService.init();
+    }, 100);
+
     const view = this.HsPermalinkUrlService.getParamValue('view');
     if (view != '2d') {
       this.HsPermalinkUrlService.updateCustomParams({view: '3d'});

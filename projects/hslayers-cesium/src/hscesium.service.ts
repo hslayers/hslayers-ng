@@ -1,6 +1,7 @@
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import BingMapsImageryProvider from 'cesium/Source/Scene/BingMapsImageryProvider';
 import BingMapsStyle from 'cesium/Source/Scene/BingMapsStyle';
+import Camera from 'cesium/Source/Scene/Camera';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import Cartographic from 'cesium/Source/Core/Cartographic';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
@@ -25,6 +26,7 @@ import {HsLayerManagerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
 import {HsUtilsService} from 'hslayers-ng';
+import Color from 'cesium/Source/Core/Color';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -72,7 +74,9 @@ export class HsCesiumService {
       );
     }
 
-    this.HsCesiumCameraService.setDefaultViewport();
+    const defaultViewport = this.HsCesiumCameraService.getDefaultViewport();
+    Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
+    Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
 
     //TODO: research if this must be used or ignored
     const bing = new BingMapsImageryProvider({
@@ -80,6 +84,7 @@ export class HsCesiumService {
       key: this.BING_KEY,
       mapStyle: BingMapsStyle.AERIAL,
     });
+
     const viewer = new Viewer(
       this.HsLayoutService.contentWrapper.querySelector('.hs-cesium-container'),
       {

@@ -1,4 +1,3 @@
-import Camera from 'cesium/Source/Scene/Camera';
 import Cartesian2 from 'cesium/Source/Core/Cartesian2';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import Cartographic from 'cesium/Source/Core/Cartographic';
@@ -394,7 +393,7 @@ export class HsCesiumCameraService {
     });
   }
 
-  setDefaultViewport() {
+  getDefaultViewport() {
     let trans_ext;
     if (this.lastSyncedExtentFromOl) {
       trans_ext = this.lastSyncedExtentFromOl;
@@ -417,9 +416,10 @@ export class HsCesiumCameraService {
       trans_ext[2],
       trans_ext[3]
     );
+    const tmp = {rectangle: undefined, viewFactor: 0};
     if (trans_ext && !isNaN(trans_ext[0])) {
-      Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+      tmp.rectangle = rectangle;
     }
-    Camera.DEFAULT_VIEW_FACTOR = 0;
+    return tmp;
   }
 }
