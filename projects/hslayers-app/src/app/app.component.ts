@@ -54,5 +54,5 @@ export class AppComponent {
       Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
     }
   }
-  title = 'hslayers demo';
+  title = 'hslayers-workspace';
 }
