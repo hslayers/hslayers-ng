@@ -374,7 +374,6 @@ export default function (
           LAYERS: layer.Name || layer.Layer[0].Name,
           INFO_FORMAT: layer.queryable ? queryFormat : undefined,
           FORMAT: imageFormat,
-          FROMCRS: me.data.srs,
           VERSION: me.data.version,
           STYLES: styles,
         },
