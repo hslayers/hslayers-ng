@@ -416,6 +416,8 @@ export default function (
       switch (lyr_def.className) {
         case 'HSLayers.Layer.WMS':
           return HsCompositionsLayerParserService.createWmsLayer(lyr_def);
+          case 'HSLayers.Layer.WMTS':
+            return HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         case 'ArcGISRest':
           return HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
         case 'XYZ':

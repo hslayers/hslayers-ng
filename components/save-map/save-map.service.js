@@ -1,4 +1,5 @@
 import VectorLayer from 'ol/layer/Vector';
+import WMTS from 'ol/source/WMTS';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
@@ -294,7 +295,7 @@ export default function (
       json.title = layer.get('title');
       if (angular.isUndefined(layer.get('title'))) {
         $log.warn('Layer title undefined', layer);
-        debugger;
+        // debugger;
       }
       //json.index = layer.map.getLayerIndex(layer);
       json.path = layer.get('path');
@@ -310,7 +311,10 @@ export default function (
       }
 
       // HTTPRequest
-      if (HsUtilsService.instOf(layer, Tile) || HsUtilsService.instOf(layer, ImageLayer)) {
+      if (
+        HsUtilsService.instOf(layer, Tile) ||
+        HsUtilsService.instOf(layer, ImageLayer)
+      ) {
         const src = layer.getSource();
         if (layer.getMaxResolution() !== null) {
           json.maxResolution = layer.getMaxResolution();
@@ -342,7 +346,10 @@ export default function (
           json.className = 'StaticImage';
           json.extent = src.getImageExtent();
         }
-        if (HsUtilsService.instOf(src, ImageWMS) || HsUtilsService.instOf(src, TileWMS)) {
+        if (
+          HsUtilsService.instOf(src, ImageWMS) ||
+          HsUtilsService.instOf(src, TileWMS)
+        ) {
           json.className = 'HSLayers.Layer.WMS';
           json.singleTile = HsUtilsService.instOf(src, ImageWMS);
           if (layer.get('legends')) {
@@ -368,6 +375,14 @@ export default function (
         }
         if (src.attributions_) {
           json.attributions = encodeURIComponent(src.attributions_);
+        }
+        if (HsUtilsService.instOf(src, WMTS)) {
+          json.className = 'HSLayers.Layer.WMTS';
+          json.matrixSet = src.getMatrixSet();
+          json.layer = src.getLayer();
+          json.format = src.getFormat();
+          json.extent = layer.getExtent();
+          json.info_format = layer.get('info_format');
         }
       }
 
@@ -402,6 +417,7 @@ export default function (
           json.style = me.serializeStyle(layer.getStyle());
         }
       }
+      console.log(json);
       return json;
     },
 
