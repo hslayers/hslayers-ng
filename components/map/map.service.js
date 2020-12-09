@@ -577,6 +577,9 @@ export default function (
    */
   this.addLayer = (lyr, removeIfExists, visibilityOverrides) => {
     if (removeIfExists && me.layerDuplicate(lyr)) {
+      if (lyr.get('base') == true){
+        return
+      }
       me.removeDuplicate(lyr);
     }
     if (angular.isDefined(visibilityOverrides)) {
