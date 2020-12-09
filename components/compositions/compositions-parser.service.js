@@ -380,20 +380,25 @@ export default function (
      */
     jsonToLayers: function (j) {
       const layers = [];
-      if (j.data) {
-        j = j.data;
-      }
-      if (!j.layers) {
-        return layers;
-      }
-      for (const lyr_def of j.layers) {
-        const layer = me.jsonToLayer(lyr_def);
-        if (angular.isUndefined(layer)) {
-          const error = `Was not able to parse layer from composition: ${lyr_def.name}`;
-          $log.warn(error);
-          me.createErrorDialog(error);
-        } else {
-          layers.push(layer);
+      // debugger;
+      if (j) {
+        if (j.data) {
+          j = j.data;
+        }
+        if (!j.layers) {
+          return layers;
+        }
+        for (const lyr_def of j.layers) {
+          if (lyr_def.className){
+            const layer = me.jsonToLayer(lyr_def);
+            if (angular.isUndefined(layer)) {
+              const error = `Was not able to parse layer from composition: ${lyr_def.title}`;
+              $log.warn(error);
+              me.createErrorDialog(error);
+            } else {
+              layers.push(layer);
+            }
+          }
         }
       }
       return layers;
