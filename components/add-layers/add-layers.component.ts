@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {HsAddLayersWfsService} from './wfs/add-layers-wfs.service';
 import {HsAddLayersWmsService} from './wms/add-layers-wms.service';
 import {HsConfig} from '../../config.service';
+import {HsDragDropLayerService} from './drag-drop-layer.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -24,7 +25,8 @@ export class HsAddLayersComponent {
     public hsConfig: HsConfig,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public hsDragDropLayerService: HsDragDropLayerService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
