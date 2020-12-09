@@ -348,7 +348,19 @@ hr {
 	right: 5px;
 	left: auto;
 }
-
+.hs-ol-map .map-drop-zone {
+	position: fixed;
+	z-index: 999;
+	background-color: $primary;
+	border: dashed 20px rgba(0, 0, 0, 0.35);
+	opacity: .4;
+}
+.hs-ol-map .map-drop-zone h2 {
+	position: absolute;
+	top: 50%;
+	left: 35%;
+  	margin: -20px 0 0 -25px;
+}
 .hs-ol-map .hs-defaultView {
 	bottom: 6.5em;
 	top: auto;

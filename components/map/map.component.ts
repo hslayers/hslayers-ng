@@ -1,12 +1,20 @@
-import Map from 'ol/Map';
-import {transform} from 'ol/proj';
-
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
+import {transform} from 'ol/proj';
 
 @Component({
   selector: 'hs-map',
@@ -14,7 +22,11 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 })
 export class HsMapComponent implements AfterViewInit {
   @ViewChild('map') map: ElementRef;
+  @Input() dragEnabled: boolean;
+  @Output() dragDisabled = new EventEmitter<boolean>();
   unregisterMapSyncCenterHandler: any;
+  mapHeight: number;
+  mapWidth: number;
   constructor(
     public HsMapService: HsMapService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -27,6 +39,15 @@ export class HsMapComponent implements AfterViewInit {
         this.onCenterSync(data);
       }
     );
+    this.HsEventBusService.sizeChanges.subscribe((mapSize) => {
+      this.mapHeight = mapSize.height;
+      this.mapWidth = mapSize.width;
+    });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.dragEnabled.currentValue) {
+      this.dragEnabled = changes.dragEnabled.currentValue;
+    }
   }
   ngAfterViewInit() {
     this.HsMapService.mapElement = this.map.nativeElement;
@@ -65,10 +86,22 @@ export class HsMapComponent implements AfterViewInit {
     this.HsMapService.map.updateSize();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.unregisterMapSyncCenterHandler) {
       this.unregisterMapSyncCenterHandler.unsubscribe();
     }
+  }
+  onDragLeave(event: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragEnabled = false;
+    this.dragDisabled.emit(false);
+  }
+  onDrop(event: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragEnabled = false;
+    this.dragDisabled.emit(false);
   }
   /**
    * @ngdoc method
@@ -92,7 +125,6 @@ export class HsMapComponent implements AfterViewInit {
       this.zoomForResolution(center[2])
     );
   }
-
   /**
    * @ngdoc method
    * @name HsMapController#zoomForResolution

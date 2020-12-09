@@ -1,1 +1,6 @@
-<div #map class="hs-ol-map h-100" ></div>
+<div #map class="hs-ol-map h-100">
+    <div class="map-drop-zone" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" *ngIf="dragEnabled"
+    [ngStyle]="{width: mapWidth+'px', height: mapHeight+'px'}">
+        <h2>Drop your files here</h2>
+    </div>
+</div>

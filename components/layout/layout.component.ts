@@ -15,7 +15,7 @@ import {HsLayoutService} from './layout.service';
 })
 export class HsLayoutComponent {
   @ViewChild('hslayout') hslayout: ElementRef;
-
+  dragEnabled = false;
   panelVisible(which, scope?): boolean {
     return this.HsLayoutService.panelVisible(which, scope);
   }
@@ -77,7 +77,14 @@ export class HsLayoutComponent {
     }
     //this.$emit('scope_loaded', 'Layout');
   }
-
+  onDragOver(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragEnabled = true;
+  }
+  dragDisabled(value: boolean) {
+    this.dragEnabled = value;
+  }
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     this.cdr.detectChanges();
