@@ -1,7 +1,7 @@
 {
   "name": "hslayers-ng",
   "private": false,
-  "version": "1.27.0",
+  "version": "1.27.1",
   "description": "HSLayers-NG mapping library",
   "repository": "git+ssh://git@github.com:hslayers/hslayers-ng.git",
   "license": "MIT",
