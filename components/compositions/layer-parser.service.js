@@ -3,12 +3,15 @@ import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
 import SparqlJson from '../layers/hs.source.SparqlJson';
 import VectorLayer from 'ol/layer/Vector';
+import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
+import {transform, transformExtent} from 'ol/proj';
 
 /**
  * @param HsMapService
@@ -83,6 +86,49 @@ export default function (HsMapService, HsAddLayersVectorService) {
       HsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
       return new_layer;
     },
+    /**
+     * @ngdoc method
+     * @name hs.compositions.config_parsers.service#createWMTSLayer
+     * @public
+     * @param {object} lyr_def Layer definition object
+     * @returns {object} Ol Tile layer
+     * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
+     */
+    createWMTSLayer: async function (lyr_def) {
+      const wmts = new Tile({
+        title: lyr_def.title,
+        info_format: lyr_def.info_format,
+        opacity: 0.7,
+        extent: transformExtent(
+          lyr_def.extent,
+          'EPSG:4326',
+          HsMapService.map.getView().getProjection()
+        ),
+        source: new WMTS({}),
+      });
+
+      // Get WMTS Capabilities and create WMTS source base on it
+      const source = await fetch(lyr_def.url + 'REQUEST=getcapabilities')
+        .then((response) => {
+          return response.text();
+        })
+        .then((text) => {
+          //parse the XML response and create options object...
+          const parser = new WMTSCapabilities();
+          const result = parser.read(text);
+          // ...create WMTS Capabilities based on the parsed options
+          const options = optionsFromCapabilities(result, {
+            layer: lyr_def.layer,
+            matrixSet: lyr_def.matrixSet,
+            format: lyr_def.format,
+          });
+          // WMTS source for raster tiles layer
+          return new WMTS(options);
+        });
+      wmts.setSource(source);
+      return wmts;
+    },
+
     /**
      * @ngdoc method
      * @name hs.compositions.config_parsers.service#createArcGISLayer
@@ -414,7 +460,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
             lyr_def.projection.toUpperCase(),
             options
           );
-          break;  
+          break;
         case 'hs.format.WFS':
           options.defOptions = lyr_def.defOptions;
           layer = HsAddLayersVectorService.createVectorLayer(
