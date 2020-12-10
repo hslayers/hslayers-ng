@@ -20,7 +20,6 @@ export class HsDragDropLayerService {
     const dragAndDrop = new DragAndDrop({
       formatConstructors: [GPX, GeoJSON, IGC, KML, TopoJSON],
     });
-
     this.hsMapService.loaded().then((map) => {
       this.map = map;
       map.addInteraction(dragAndDrop);
