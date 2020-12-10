@@ -16,7 +16,8 @@
     },
     "Vector": {
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files"
+      "uploadVectorFiles": "Upload vector files",
+      "dragAndDropFiles": "Drag and drop files"
     },
     "WFS": {
       "addToMap": "Add to map",
