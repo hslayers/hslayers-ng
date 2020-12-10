@@ -113,7 +113,7 @@ export default function (
       ).then((res) => {
         //parse the XML response and create options object...
         const parser = new WMTSCapabilities();
-        const result = parser.read(res);
+        const result = parser.read(res.data);
         // ...create WMTS Capabilities based on the parsed options
         const options = optionsFromCapabilities(result, {
           layer: lyr_def.layer,

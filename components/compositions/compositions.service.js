@@ -214,7 +214,7 @@ export default function (
           data.data.layers = response.data.data;
         }
         HsCompositionsParserService.removeCompositionLayers();
-        const layers = HsCompositionsParserService.jsonToLayers(data);
+        const layers = await HsCompositionsParserService.jsonToLayers(data);
         for (let i = 0; i < layers.length; i++) {
           HsMapService.addLayer(layers[i], true);
         }

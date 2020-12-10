@@ -383,6 +383,8 @@ export default function (
           json.layer = src.getLayer();
           json.format = src.getFormat();
           json.info_format = layer.get('info_format');
+          json.url = src.getUrls()[0];
+
         }
       }
 
