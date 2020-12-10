@@ -48,6 +48,13 @@ export default {
       $scope.connect();
     };
 
+    /**
+     * Parse information recieved in WMTS getCapabilities respond
+     *
+     * @memberof hs.addLayersWMTS
+     * @function capabilitiesReceived
+     * @param {object} response Url of requested service
+     */
     $scope.capabilitiesReceived = function (response) {
       try {
         const parser = new WMTSCapabilities();
@@ -83,7 +90,6 @@ export default {
     $scope.$on('ows_wmts.capabilities_received', (event, response) => {
       $scope.capabilitiesReceived(response.data);
     });
-
 
     $scope.checked = function () {
       for (const layer of $scope.services) {
@@ -128,22 +134,50 @@ export default {
       });
     };
 
+    /**
+     * Returns prefered tile format 
+     *
+     * @memberof hs.addLayersWMTS
+     * @function getPreferedFormat
+     * @param {object} formats Set of avaliable formats for layer being added
+     */
     $scope.getPreferedFormat = function (formats) {
       const prefered = formats.find((format) => format.includes('png'));
       return prefered ? prefered : formats[0];
     };
-
+    /**
+     * Returns prefered tile tileMatrixSet
+     * Looks for the occurence of supported CRS's, if possible picks CRS of current view
+     * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
+     *
+     * @memberof hs.addLayersWMTS
+     * @function getPreferedMatrixSet
+     * @param {object} sets Set of avaliable matrixSets
+     */
     $scope.getPreferedMatrixSet = function (sets) {
       const supportedFormats = ['3857', '4326', '5514'];
       const prefered = sets.filter((set) =>
         supportedFormats.some((v) => set.TileMatrixSet.includes(v))
       );
-      const prefer3857 = prefered.find((set) =>
-        set.TileMatrixSet.includes('3857')
-      );
-      return prefer3857 ? prefer3857.TileMatrixSet : prefered[0].TileMatrixSet;
+      if (prefered.length != 0) {
+        const preferCurrent = prefered.find((set) =>
+          set.TileMatrixSet.includes(HsMapService.map.getView().getProjection().getCode())
+        );
+        return preferCurrent
+          ? preferCurrent.TileMatrixSet
+          : prefered[0].TileMatrixSet;
+      }
+      return 'EPSG:3857';
     };
-
+    /**
+     * Returns prefered info format
+     * Looks for the occurence of supported formats (query.wms)
+     * if possible picks HTML, otherwise first from the list of supported is selected
+     *
+     * @memberof hs.addLayersWMTS
+     * @function getPreferedInfoFormat
+     * @param {object} response Set of avaliable info formats for layer being added
+     */
     $scope.getPreferedInfoFormat = function (formats) {
       if (formats) {
         const supportedFormats = ['html', 'xml', 'gml'];
@@ -160,24 +194,53 @@ export default {
         }
       }
     };
-
+    /**
+     * Add WMTS layer to the map
+     * Uses previously recieved capabilities response as a reference for the source
+     *
+     * @memberof hs.addLayersWMTS
+     * @function getPreferedInfoFormat
+     * @param {object} response Set of avaliable info formats for layer being added
+     */
     $scope.addLayer = function (layer) {
-      const wmts = new Tile({
-        title: layer.Title,
-        info_format: $scope.getPreferedInfoFormat(layer.ResourceURL),
-        source: new WMTS({}),
-      });
-      // Get WMTS Capabilities and create WMTS source base on it
-      const options = optionsFromCapabilities($scope.caps, {
-        layer: layer.Identifier,
-        matrixSet: $scope.getPreferedMatrixSet(layer.TileMatrixSetLink),
-        format: $scope.getPreferedFormat(layer.Format),
-      });
-      // WMTS source for raster tiles layer
-      const wmtsSource = new WMTS(options);
-      // set the data source for raster and vector tile layers
-      wmts.setSource(wmtsSource);
-      HsMapService.addLayer(wmts, true);
+      try {
+        const wmts = new Tile({
+          title: layer.Title,
+          info_format: $scope.getPreferedInfoFormat(layer.ResourceURL),
+          source: new WMTS({}),
+          queryCapabilities: false,
+        });
+        // Get WMTS Capabilities and create WMTS source base on it
+        const options = optionsFromCapabilities($scope.caps, {
+          layer: layer.Identifier,
+          matrixSet: $scope.getPreferedMatrixSet(layer.TileMatrixSetLink),
+          format: $scope.getPreferedFormat(layer.Format),
+        });
+        // WMTS source for raster tiles layer
+        const wmtsSource = new WMTS(options);
+        // set the data source for raster and vector tile layers
+        wmts.setSource(wmtsSource);
+        HsMapService.addLayer(wmts, true);
+      } catch (e) {
+        if (console) {
+          $log.log(e);
+        }
+        $scope.error = e.toString();
+        const previousDialog = HsLayoutService.contentWrapper.querySelector(
+          '.hs-ows-wms-capabilities-error'
+        );
+        if (previousDialog) {
+          previousDialog.parentNode.removeChild(previousDialog);
+        }
+        const el = angular.element(
+          '<div hs.wmts.capabilities_error_directive></div>'
+        );
+        HsLayoutService.contentWrapper
+          .querySelector('.hs-dialog-area')
+          .appendChild(el[0]);
+        $compile(el)($scope);
+        //throw "wmts Capabilities parsing problem";
+      }
     };
   },
 };
