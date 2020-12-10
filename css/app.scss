@@ -159,9 +159,7 @@ div.list-group-item.hs-lm-list {
 	margin-bottom: 0;
 }
 .dropzone {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	text-align: center;
 	min-height: 80px;
 	border: dashed 2px rgba(0, 0, 0, 0.35);
 	border-radius: 5px;
@@ -172,7 +170,8 @@ div.list-group-item.hs-lm-list {
 	color: rgba(0, 0, 0, 0.35) !important;
 	opacity: 0.4;
 }
-.dropzone .file-label {
+.dropzone .dropzone-label {
+	display: block;
 	font-size: 1em;
 }
 progress::-webkit-progress-value {
