@@ -231,7 +231,7 @@ export class HsAddLayersVectorService {
         title: json.name,
         projection: format.readProjection(json),
       };
-      const mapProjection = this.hsMapService.map.getView().getProjection();
+      const mapProjection = this.HsMapService.map.getView().getProjection();
       if (data.projection != mapProjection) {
         options.features.forEach((f) =>
           //TODO: Make it parallel using workers or some library
