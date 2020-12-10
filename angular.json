@@ -167,7 +167,6 @@
             "aot": true,
             "assets": [
               { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
-              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
               { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium/Assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Widgets", "output": "./assets/cesium/Widgets" },

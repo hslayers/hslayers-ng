@@ -7,7 +7,7 @@
     "prebuild": "node projects/hslayers/prebuild.js",
     "build": "ng build hslayers",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
-    "build-watch": "ng build hslayers",
+    "build-watch": "ng build hslayers --watch",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
     "test": "ng test hslayers",
     "lint": "ng lint",
