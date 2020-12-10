@@ -1,13 +1,12 @@
 import '../../styles/styles.module';
 import VectorLayerDescriptor from './VectorLayerDescriptor';
-import {GeoJSON} from 'ol/format';
+import {GPX, GeoJSON, KML} from 'ol/format';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
-import {gpx, kml} from '@tmcw/togeojson';
 @Injectable({
   providedIn: 'root',
 })
@@ -199,55 +198,76 @@ export class HsAddLayersVectorService {
     }
   }
   readUploadedFile(file: any): void {
-    let fileToJSON: any;
-    if (file.name.includes('.kml')) {
-      fileToJSON = kml(new DOMParser().parseFromString(file, 'text/xml'));
-      this.addNewLayer(fileToJSON);
-    } else if (file.name.includes('.gpx')) {
-      fileToJSON = gpx(new DOMParser().parseFromString(file, 'text/xml'));
-      this.addNewLayer(fileToJSON);
+    if (file.name.endsWith('kml')) {
+      this.createVectorObjectFromXml(file, 'kml');
+    } else if (file.name.endsWith('gpx')) {
+      this.createVectorObjectFromXml(file, 'gpx');
     } else {
       const reader = new FileReader();
       reader.onload = () => {
         try {
-          fileToJSON = JSON.parse(<string>reader.result);
+          const fileToJSON = JSON.parse(<string>reader.result);
           if (fileToJSON !== undefined) {
-            this.addNewLayer(fileToJSON);
+            if (fileToJSON.features.length > 0) {
+              this.createVectorObjectFromJson(fileToJSON);
+            }
           }
-        } catch (ex) {
+        } catch (e) {
           // do nothing
         }
       };
       reader.readAsText(file);
     }
   }
-  async addNewLayer(json: any): Promise<void> {
-    if (json.features.length > 0) {
-      const format = new GeoJSON();
-      const options = {
-        features: format.readFeatures(json),
-      };
-      const data = {
-        title: json.name,
-        projection: format.readProjection(json),
-      };
-      const mapProjection = this.HsMapService.map.getView().getProjection();
-      if (data.projection != mapProjection) {
-        options.features.forEach((f) =>
-          //TODO: Make it parallel using workers or some library
-          f.getGeometry().transform(data.projection, mapProjection)
-        );
+  async createVectorObjectFromXml(file: File, type: string): Promise<void> {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const dataUrl = <string>reader.result;
+        const object = {
+          url: dataUrl,
+          name: file.name,
+          title: file.name,
+          type: type,
+        };
+        this.addNewLayer(object);
+      } catch (e) {
+        //no nothing
       }
-      const layer = await this.addVectorLayer(
-        '',
-        undefined,
-        data.title || 'Layer', //name
-        data.title || 'Layer',
-        '',
-        data.projection,
-        options
+    };
+    reader.readAsDataURL(file);
+  }
+  createVectorObjectFromJson(json: any): void {
+    const format = new GeoJSON();
+    const options = {
+      features: format.readFeatures(json),
+    };
+    const projection = format.readProjection(json);
+    const mapProjection = this.HsMapService.map.getView().getProjection();
+    if (projection != mapProjection) {
+      options.features.forEach((f) =>
+        //TODO: Make it parallel using workers or some library
+        f.getGeometry().transform(projection, mapProjection)
       );
-      this.fitExtent(layer);
     }
+    const object = {
+      name: json.name,
+      title: json.name,
+      srs: projection,
+      options: options,
+    };
+    this.addNewLayer(object);
+  }
+  async addNewLayer(dataObject: any): Promise<void> {
+    const layer = await this.addVectorLayer(
+      dataObject.type || '',
+      dataObject.url || undefined,
+      dataObject.name || 'Layer', //name
+      dataObject.title || 'Layer',
+      dataObject.abstract || '',
+      dataObject.srs || undefined,
+      dataObject.options || undefined
+    );
+    this.fitExtent(layer);
   }
 }
