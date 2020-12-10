@@ -130,7 +130,7 @@ export class HsCompositionsService {
           url: encodeURIComponent(compositionUrl),
           title: record.title,
           description: record.abstract,
-          image: record.thumbnail || 'https://ng.hslayers.org/img/logo.jpg',
+          image: record.thumbnail || 'https://ng.hslayers.org/img/logo.png',
         })
       )
       .toPromise();
