@@ -1,9 +1,10 @@
-import GeoJSON from 'ol/format/GeoJSON';
 import {Component} from '@angular/core';
+import {GeoJSON} from 'ol/format';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {get as getProjection} from 'ol/proj';
+import {gpx, kml} from '@tmcw/togeojson';
 @Component({
   selector: 'hs-add-layers-vector',
   template: require('./add-vector-layer.directive.html'),
@@ -57,6 +58,12 @@ export class HsAddLayersVectorComponent {
     });
   }
   readUploadedFile(file: any): void {
+    if (file.name.includes('.kml')) {
+      file = kml(new DOMParser().parseFromString(file, 'text/xml'));
+    }
+    if (file.name.includes('.gpx')) {
+      file = gpx(new DOMParser().parseFromString(file, 'text/xml'));
+    }
     const reader = new FileReader();
     reader.onload = async () => {
       const json = JSON.parse(<string>reader.result);
