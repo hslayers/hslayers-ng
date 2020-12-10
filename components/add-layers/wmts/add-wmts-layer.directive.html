@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" name="frmConnect" role="form">
     <hs.add-layers-url type="wmts" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
 
     <div ng-show="showDetails" class="card">
@@ -6,16 +6,25 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix">
                 <div>{{title}}</div>
             </li>
-            <li ng-repeat="layer in services.Layer" class="list-group-item clearfix" ng-click="setCurrentLayer(layer, $index)" id="wmtslayer-{{$index}}">
-                <div class="hs-lm-item-status">
-                    <span class="icon-chevron-right" ng-hide="currentLayer == layer"></span>
-                    <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
-                </div>
-                <div class="hs-lm-item-title hover">{{layer.Title}}</div>
+            <li ng-repeat="layer in services" class="list-group-item clearfix" ng-click="setCurrentLayer(layer, $index)" >
+                <input type="checkbox" ng-model="layer.checked" ng-change="changed()" id="wmtslayer-{{$index}}"/> 
+                <label class="mw-100" for="wmtslayer-{{$index}}">{{layer.Title}}</label>
             </li>
         </ul>
-        
-        <div class="card panel-default hs-wmts-layerpanel" ng-show="currentLayer!=null">
+        <li class="list-group-item hs-ows-layerlistheading clearfix">
+            <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-between w-100" ng-if="!loadingFeatures">
+                    <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
+                    <button class="btn btn-primary pull-right" ng-click="tryAddLayers(true)"
+                        title="{{'Add to map'|translate}}" ng-disabled="!isChecked"><i
+                            class="icon-plus"></i></button>
+                </div>
+                <button ng-show="loadingFeatures"
+                    class="btn btn-primary btn-block w-75">{{'Loading features, please wait' | translate}}<img
+                        class="ml-2" ng-src="{{loaderImage}}" /></button>
+            </div>
+        </li>
+        <!-- <div class="card panel-default hs-wmts-layerpanel" ng-show="currentLayer!=null">
             <div class="card-body">
                 <form>
                     <div class="form-group">
@@ -44,13 +53,12 @@
                             </select>
                         </div>      
                     </div>                     
-                <!-- Footer -->
                 </form>
             </div>
             <div class="card-footer">
                 <button class="btn btn-success" ng-click="addLayer(currentLayer)">Connect</button>
             </div>
-        </div>
+        </div> -->
     </div>
     
 </form>
