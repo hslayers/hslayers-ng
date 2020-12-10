@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {GeoJSON} from 'ol/format';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {get as getProjection} from 'ol/proj';
-import {gpx, kml} from '@tmcw/togeojson';
+
 @Component({
   selector: 'hs-add-layers-vector',
   template: require('./add-vector-layer.directive.html'),
@@ -54,40 +52,7 @@ export class HsAddLayersVectorComponent {
   }
   handleFileUpload(fileList: FileList): void {
     Array.from(fileList).forEach((f) => {
-      this.readUploadedFile(f);
+      this.hsAddLayersVectorService.readUploadedFile(f);
     });
-  }
-  readUploadedFile(file: any): void {
-    if (file.name.includes('.kml')) {
-      file = kml(new DOMParser().parseFromString(file, 'text/xml'));
-    }
-    if (file.name.includes('.gpx')) {
-      file = gpx(new DOMParser().parseFromString(file, 'text/xml'));
-    }
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const json = JSON.parse(<string>reader.result);
-      if (json.features.length > 0) {
-        const format = new GeoJSON();
-        const options = {
-          features: format.readFeatures(json),
-        };
-        const data = {
-          title: json.name,
-          projection: getProjection(json.crs.properties.name),
-        };
-        const layer = await this.hsAddLayersVectorService.addVectorLayer(
-          '',
-          undefined,
-          data.title || 'Layer', //name
-          data.title || 'Layer',
-          '',
-          data.projection || this.srs,
-          options
-        );
-        this.hsAddLayersVectorService.fitExtent(layer);
-      }
-    };
-    reader.readAsText(file);
   }
 }
