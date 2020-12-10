@@ -111,23 +111,19 @@ export default function (
       // Get WMTS Capabilities and create WMTS source base on it
       const source = await HsWmtsGetCapabilitiesService.requestGetCapabilities(
         url
-      )
-        .then((response) => {
-          return response.text();
-        })
-        .then((text) => {
-          //parse the XML response and create options object...
-          const parser = new WMTSCapabilities();
-          const result = parser.read(text);
-          // ...create WMTS Capabilities based on the parsed options
-          const options = optionsFromCapabilities(result, {
-            layer: lyr_def.layer,
-            matrixSet: lyr_def.matrixSet,
-            format: lyr_def.format,
-          });
-          // WMTS source for raster tiles layer
-          return new WMTS(options);
+      ).then((res) => {
+        //parse the XML response and create options object...
+        const parser = new WMTSCapabilities();
+        const result = parser.read(res);
+        // ...create WMTS Capabilities based on the parsed options
+        const options = optionsFromCapabilities(result, {
+          layer: lyr_def.layer,
+          matrixSet: lyr_def.matrixSet,
+          format: lyr_def.format,
         });
+        // WMTS source for raster tiles layer
+        return new WMTS(options);
+      });
       wmts.setSource(source);
       wmts.setVisible(lyr_def.visibility);
       return wmts;
