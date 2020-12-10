@@ -381,7 +381,6 @@ export default function (
           json.matrixSet = src.getMatrixSet();
           json.layer = src.getLayer();
           json.format = src.getFormat();
-          json.extent = layer.getExtent();
           json.info_format = layer.get('info_format');
         }
       }

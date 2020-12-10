@@ -1,3 +1,4 @@
+import '../../common/get-capabilities.module';
 import '../add-layers/vector/add-layers-vector.module';
 import 'angular-socialshare';
 import ImageLayer from 'ol/layer/Image';
@@ -10,14 +11,19 @@ import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Tile} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {transform, transformExtent} from 'ol/proj';
 
 /**
  * @param HsMapService
  * @param HsAddLayersVectorService
+ * @param HsWmtsGetCapabilitiesService
+ * @param HsUtilsService
  */
-export default function (HsMapService, HsAddLayersVectorService) {
+export default function (
+  HsMapService,
+  HsAddLayersVectorService,
+  HsWmtsGetCapabilitiesService,
+  HsUtilsService
+) {
   'ngInject';
   const me = {
     /**
@@ -98,17 +104,14 @@ export default function (HsMapService, HsAddLayersVectorService) {
       const wmts = new Tile({
         title: lyr_def.title,
         info_format: lyr_def.info_format,
-        opacity: 0.7,
-        extent: transformExtent(
-          lyr_def.extent,
-          'EPSG:4326',
-          HsMapService.map.getView().getProjection()
-        ),
         source: new WMTS({}),
       });
 
+      const url = HsUtilsService.proxify(lyr_def.url);
       // Get WMTS Capabilities and create WMTS source base on it
-      const source = await fetch(lyr_def.url + 'REQUEST=getcapabilities')
+      const source = await HsWmtsGetCapabilitiesService.requestGetCapabilities(
+        url
+      )
         .then((response) => {
           return response.text();
         })
@@ -126,6 +129,7 @@ export default function (HsMapService, HsAddLayersVectorService) {
           return new WMTS(options);
         });
       wmts.setSource(source);
+      wmts.setVisible(lyr_def.visibility);
       return wmts;
     },
 

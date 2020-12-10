@@ -31,7 +31,9 @@ export default {
 
     $scope.connect = function () {
       try {
-        HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url);
+        HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url).then((r)=> {
+          console.log(r)
+        })
       } catch (e) {
         console.warn(e);
       }
@@ -88,7 +90,9 @@ export default {
     };
 
     $scope.$on('ows_wmts.capabilities_received', (event, response) => {
-      $scope.capabilitiesReceived(response.data);
+      if ($scope.showDetails == true){
+        $scope.capabilitiesReceived(response.data);
+      }
     });
 
     $scope.checked = function () {
