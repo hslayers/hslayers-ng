@@ -15,7 +15,8 @@
       "extractStyles": "Izvilkt stilus"
     },
     "Vector": {
-      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\""
+      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
     },
     "WFS": {
       "addToMap": "Pievienot kartei",
@@ -220,12 +221,11 @@
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
+    "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "serverLayers": "Servera slāņi",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
-    "activeLayers": "Aktīvie slāņi",
-    "notAuthorized":"User not authorized, drawings won´t be preserved"
+    "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -264,6 +264,7 @@
     },
     "dimensions": "Dimensijas",
     "editorButtons": "Redaktora pogas",
+    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu",
     "layerEditor": {
       "cluster": "Apvienot blakusesošos",
       "copyright": "Autortiesības",
@@ -310,8 +311,7 @@
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
-    "terrains": "Reljefi",
-    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu"
+    "terrains": "Reljefi"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
