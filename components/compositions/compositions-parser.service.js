@@ -378,7 +378,7 @@ export default function (
      * @returns {Array} Array of created layers
      * @description Parse composition object to extract individual layers and add them to map
      */
-    jsonToLayers: function (j) {
+    jsonToLayers: async function (j) {
       const layers = [];
       // debugger;
       if (j) {
@@ -390,7 +390,7 @@ export default function (
         }
         for (const lyr_def of j.layers) {
           if (lyr_def.className){
-            const layer = me.jsonToLayer(lyr_def);
+            const layer = await me.jsonToLayer(lyr_def);
             if (angular.isUndefined(layer)) {
               const error = `Was not able to parse layer from composition: ${lyr_def.title}`;
               $log.warn(error);
