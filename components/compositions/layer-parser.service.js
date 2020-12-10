@@ -107,10 +107,9 @@ export default function (
         source: new WMTS({}),
       });
 
-      const url = HsUtilsService.proxify(lyr_def.url);
       // Get WMTS Capabilities and create WMTS source base on it
       const source = await HsWmtsGetCapabilitiesService.requestGetCapabilities(
-        url
+        lyr_def.url
       ).then((res) => {
         //parse the XML response and create options object...
         const parser = new WMTSCapabilities();
