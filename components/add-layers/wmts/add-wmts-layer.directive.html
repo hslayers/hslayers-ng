@@ -1,7 +1,11 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs.add-layers-url type="wmts" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
 
-    <div ng-show="showDetails" class="card">
+    <button ng-show="layersLoading"
+    class="btn m-auto btn-primary btn-block w-75">{{'Loading features, please wait' | translate}}<img
+        class="ml-2" ng-src="{{loaderImage}}" /></button>
+
+    <div ng-show="showDetails && !layersLoading" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix">
                 <div>{{title}}</div>
@@ -19,9 +23,6 @@
                         title="{{'Add to map'|translate}}" ng-disabled="!isChecked"><i
                             class="icon-plus"></i></button>
                 </div>
-                <button ng-show="loadingFeatures"
-                    class="btn btn-primary btn-block w-75">{{'Loading features, please wait' | translate}}<img
-                        class="ml-2" ng-src="{{loaderImage}}" /></button>
             </div>
         </li>
     </div>

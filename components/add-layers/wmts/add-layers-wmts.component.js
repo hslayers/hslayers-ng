@@ -28,9 +28,12 @@ export default {
     $scope.style = '';
     $scope.tileMatrixSet = '';
     $scope.image_format = '';
+    $scope.loaderImage = require('../../../img/ajax-loader.gif');
+
 
     $scope.connect = function () {
       try {
+        $scope.layersLoading = true;
         HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url).then((r)=> {
           console.log(r)
         })
@@ -67,6 +70,8 @@ export default {
         $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
         $scope.version = caps.Version || caps.version;
         $scope.services = caps.Contents.Layer;
+
+        $scope.layersLoading = false;
       } catch (e) {
         if (console) {
           $log.log(e);
@@ -87,6 +92,28 @@ export default {
         $compile(el)($scope);
         //throw "wmts Capabilities parsing problem";
       }
+    };
+
+        /**
+     * @function selectAllLayers
+     * @memberOf hs.addLayersWfs
+     * @description Select all layers from service.
+     */
+    $scope.selectAllLayers = function () {
+      /**
+       * @param layer
+       */
+      function recurse(layer) {
+        layer.checked = !layer.checked;
+
+        angular.forEach(layer.Layer, (sublayer) => {
+          recurse(sublayer);
+        });
+      }
+      angular.forEach($scope.services, (layer) => {
+        recurse(layer);
+      });
+      $scope.changed();
     };
 
     $scope.$on('ows_wmts.capabilities_received', (event, response) => {
@@ -136,6 +163,7 @@ export default {
       angular.forEach($scope.services, (layer) => {
         recurse(layer);
       });
+      HsLayoutService.setMainPanel('layermanager');
     };
 
     /**
