@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
-
 @Component({
   selector: 'hs-add-layers-vector',
   template: require('./add-vector-layer.directive.html'),

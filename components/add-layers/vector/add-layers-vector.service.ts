@@ -232,6 +232,13 @@ export class HsAddLayersVectorService {
         title: json.name,
         projection: getProjection(json.crs.properties.name),
       };
+      const mapProjection = this.hsMapService.map.getView().getProjection();
+      if (data.projection != mapProjection) {
+        options.features.forEach((f) =>
+          //TODO: Make it parallel using workers or some library
+          f.getGeometry().transform(data.projection, mapProjection)
+        );
+      }
       const layer = await this.addVectorLayer(
         '',
         undefined,
