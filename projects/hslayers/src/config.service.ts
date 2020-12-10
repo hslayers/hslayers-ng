@@ -65,7 +65,7 @@ export class HsConfig {
   layerTooltipDelay?: number;
   search_provider?: any;
   geonamesUser?: any;
-  searchProvider: any;
+  searchProvider?: any;
   language?: string;
   query?: any;
   queryPoint?: string;
