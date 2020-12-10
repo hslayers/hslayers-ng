@@ -293,6 +293,7 @@ export default function (
       json.visibility = layer.getVisible();
       json.opacity = layer.getOpacity();
       json.title = layer.get('title');
+      json.name = layer.get('name');
       if (angular.isUndefined(layer.get('title'))) {
         $log.warn('Layer title undefined', layer);
         // debugger;
