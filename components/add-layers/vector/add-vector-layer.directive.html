@@ -3,10 +3,21 @@
     <hs-add-layers-url type="vector" [(url)]="url" [(connect)]="connect"></hs-add-layers-url>
 
     <div class="form-group">
+        <label class="capabilities_label control-label">Upload vector files</label>
+        <div class="dropzone" fileDrop (filesDropped)="handleFileUpload($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
+                <h3 style="width: 100%;">Drag and drop file</h3>
+            <div>
+                <label class="file-label">
+                    <input type="file" (change)="handleFileUpload($event.target.files)" accept=".kml, .geojson">
+                </label>
+            </div>   
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
         <input class="form-control" name="title" [(ngModel)]="title" />
     </div>
-
     <div class="form-group">
         <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
         <input class="form-control" name="name" [(ngModel)]="name" />
