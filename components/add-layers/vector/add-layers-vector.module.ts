@@ -5,6 +5,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddLayersCommonModule} from '../common/add-layers-common.module';
 import {HsAddLayersVectorComponent} from './add-layers-vector.component';
+import {HsAddLayersVectorFileUploadDirective} from './add-layers-vector.file-upload.directive';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsVectorUrlParserService} from './add-layers-vector-url-parser.service';
 
@@ -17,7 +18,10 @@ import {HsVectorUrlParserService} from './add-layers-vector-url-parser.service';
     HsAddLayersCommonModule,
   ],
   exports: [HsAddLayersVectorComponent],
-  declarations: [HsAddLayersVectorComponent],
+  declarations: [
+    HsAddLayersVectorComponent,
+    HsAddLayersVectorFileUploadDirective,
+  ],
   providers: [HsAddLayersVectorService, HsVectorUrlParserService],
 })
 export class HsAddLayersVectorModule {}

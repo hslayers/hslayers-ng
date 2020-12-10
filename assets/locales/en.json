@@ -15,7 +15,8 @@
       "extractStyles": "Extract styles"
     },
     "Vector": {
-      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\""
+      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
+      "uploadFile": "Upload file"
     },
     "WFS": {
       "addToMap": "Add to map",
@@ -224,8 +225,7 @@
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",
     "unsavedDrawing": "Unsaved drawing",
-    "activeLayers": "Active layers",
-    "notAuthorized":"User not authorized, drawings won´t be preserved"
+    "notAuthorized": "User not authorized, drawings won´t be preserved"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
