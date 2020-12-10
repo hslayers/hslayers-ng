@@ -7,7 +7,6 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
-import {get as getProjection} from 'ol/proj';
 import {gpx, kml} from '@tmcw/togeojson';
 @Injectable({
   providedIn: 'root',
@@ -230,7 +229,7 @@ export class HsAddLayersVectorService {
       };
       const data = {
         title: json.name,
-        projection: getProjection(json.crs.properties.name),
+        projection: format.readProjection(json),
       };
       const mapProjection = this.hsMapService.map.getView().getProjection();
       if (data.projection != mapProjection) {
