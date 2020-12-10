@@ -16,7 +16,7 @@
     },
     "Vector": {
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadFile": "Upload file"
+      "uploadVectorFiles": "Upload vector files"
     },
     "WFS": {
       "addToMap": "Add to map",
@@ -221,11 +221,11 @@
     "fillOpacity": "Fill opacity:",
     "individualStyle": "Individual style for feature",
     "newGPS": "New GPS",
+    "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",
-    "unsavedDrawing": "Unsaved drawing",
-    "notAuthorized": "User not authorized, drawings won´t be preserved"
+    "unsavedDrawing": "Unsaved drawing"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -264,6 +264,7 @@
     },
     "dimensions": "Dimensions",
     "editorButtons": "Editor buttons",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Copyright",
@@ -310,8 +311,7 @@
     "other": "Other",
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
-    "terrains": "Terrains",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "terrains": "Terrains"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"

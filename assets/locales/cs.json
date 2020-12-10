@@ -15,7 +15,8 @@
       "extractStyles": "Extrahovat styly"
     },
     "Vector": {
-      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\""
+      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
     },
     "WFS": {
       "addToMap": "Přidat do mapy",
@@ -220,12 +221,11 @@
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
+    "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "saveDrawingToLayer": "Uložit do vrstvy",
     "serverLayers": "Servrové vrstvy",
-    "unsavedDrawing": "Neuložená kresba",
-    "activeLayers": "Aktivní vrstvy",
-    "notAuthorized":"Uživatel neautorizován, změny nebudou uloženy"
+    "unsavedDrawing": "Neuložená kresba"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -264,6 +264,7 @@
     },
     "dimensions": "Dimenze",
     "editorButtons": "Editační tlačítka",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
@@ -310,8 +311,7 @@
     "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "terrains": "Terény",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "terrains": "Terény"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
