@@ -6,13 +6,9 @@ import {WMTS} from 'ol/source';
 import {addAnchors} from '../../../common/attribution-utils';
 import {get} from 'ol/proj';
 import {getTopLeft, getWidth} from 'ol/extent';
+
 export default {
-  template: function (HsConfig) {
-    'ngInject';
-    return {
-      template: require('./add-wmts-layer.directive.html'),
-    };
-  },
+  template: require('./add-wmts-layer.directive.html'),
   controller: function ($scope, HsMapService, $compile, HsLayoutService, $log) {
     'ngInject';
     $scope.map_projection = HsMapService.map

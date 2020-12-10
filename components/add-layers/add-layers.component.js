@@ -23,6 +23,7 @@ export default {
     } else {
       $scope.types = [
         {id: 'wms', text: 'Web map service (WMS)'},
+        {id: 'wmts', text: 'Web map tile service (WMTS)'},
         {id: 'arcgis', text: 'ArcGIS Map Server'},
         {id: 'vector', text: 'Vector file (GeoJson, KML)'},
         {id: 'shp', text: 'Shapefile'},

@@ -1,52 +1,55 @@
-<form class="form-horizontal" role="form" ng-controller="hs.ows.wmts.controller">
-    <hr/>
-    <ul class="list-group">
-        <li class="list-group-item hs-ows-layerlistheading clearfix">
-            <div>{{title}}</div>
-        </li>
-        <li ng-repeat="layer in services.Layer" class="list-group-item clearfix" ng-click="setCurrentLayer(layer, $index)" id="wmtslayer-{{$index}}">
-            <div class="hs-lm-item-status">
-                <span class="icon-chevron-right" ng-hide="currentLayer == layer"></span>
-                <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
-            </div>
-            <div class="hs-lm-item-title hover">{{layer.Title}}</div>
-        </li>
-    </ul>
+<form class="form-horizontal" role="form">
+    <hs.add-layers-url type="wmts" url="url" connect="connect" field="frmConnect.url"></hs.add-layers-url>
+
+    <div ng-show="showDetails" class="card">
+        <ul class="list-group">
+            <li class="list-group-item hs-ows-layerlistheading clearfix">
+                <div>{{title}}</div>
+            </li>
+            <li ng-repeat="layer in services.Layer" class="list-group-item clearfix" ng-click="setCurrentLayer(layer, $index)" id="wmtslayer-{{$index}}">
+                <div class="hs-lm-item-status">
+                    <span class="icon-chevron-right" ng-hide="currentLayer == layer"></span>
+                    <span class="icon-chevron-down" ng-show="currentLayer == layer"></span>
+                </div>
+                <div class="hs-lm-item-title hover">{{layer.Title}}</div>
+            </li>
+        </ul>
+        
+        <div class="card panel-default hs-wmts-layerpanel" ng-show="currentLayer!=null">
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
+                        <div class="capabilities_input col-sm-8">
+                            <select class="form-control" ng-model="image_format">
+                                <option ng-repeat="i in currentLayer.Format">{{i}}</option>
+                            </select>
+                        </div>      
+                    </div>
     
-    <div class="card panel-default hs-wmts-layerpanel" ng-show="currentLayer!=null">
-        <div class="card-body">
-            <form>
-                <div class="form-group">
-                    <label for="image_format" class="capabilities_label col-sm-4 control-label" translate>Image format</label>
-                    <div class="capabilities_input col-sm-8">
-                        <select class="form-control" ng-model="image_format">
-                            <option ng-repeat="i in currentLayer.Format">{{i}}</option>
-                        </select>
-                    </div>      
-                </div>
-
-                <div class="form-group">
-                    <label class="capabilities_label col-sm-4 control-label" translate>Style</label>
-                    <div class="capabilities_input col-sm-8">
-                        <select class="form-control" ng-model="style">
-                            <option ng-repeat="i in currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
-                        </select>
-                    </div>      
-                </div>
-
-                <div class="form-group">
-                    <label class="capabilities_label col-sm-4 control-label">Tile Matrix</label>
-                    <div class="capabilities_input col-sm-8">
-                        <select class="form-control" ng-model="tileMatrixSet">
-                            <option ng-repeat="i in currentLayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
-                        </select>
-                    </div>      
-                </div>                     
-            <!-- Footer -->
-            </form>
-        </div>
-        <div class="card-footer">
-            <button class="btn btn-success" ng-click="addLayer(currentLayer)">Connect</button>
+                    <div class="form-group">
+                        <label class="capabilities_label col-sm-4 control-label" translate>Style</label>
+                        <div class="capabilities_input col-sm-8">
+                            <select class="form-control" ng-model="style">
+                                <option ng-repeat="i in currentLayer.Style" value={{i.Identifier}}>{{i.Title}}</option>
+                            </select>
+                        </div>      
+                    </div>
+    
+                    <div class="form-group">
+                        <label class="capabilities_label col-sm-4 control-label">Tile Matrix</label>
+                        <div class="capabilities_input col-sm-8">
+                            <select class="form-control" ng-model="tileMatrixSet">
+                                <option ng-repeat="i in currentLayer.TileMatrixSetLink">{{i.TileMatrixSet}}</option>
+                            </select>
+                        </div>      
+                    </div>                     
+                <!-- Footer -->
+                </form>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-success" ng-click="addLayer(currentLayer)">Connect</button>
+            </div>
         </div>
     </div>
     
