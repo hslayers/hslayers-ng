@@ -54,10 +54,16 @@ export class HsAddLayersVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
-        lyr.set('definition', {
-          format: 'hs.format.WFS',
-          url: url.replace('ows', 'wfs'),
-        });
+        if (url !== undefined) {
+          lyr.set('definition', {
+            format: 'hs.format.WFS',
+            url: url.replace('ows', 'wfs'),
+          });
+        } else {
+          lyr.set('definition', {
+            format: 'hs.format.WFS',
+          });
+        }
         if (this.HsMapService.map) {
           this.HsMapService.addLayer(lyr, true);
         }
