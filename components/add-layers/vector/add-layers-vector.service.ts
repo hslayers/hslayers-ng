@@ -1,13 +1,14 @@
 import '../../styles/styles.module';
-import {Injectable} from '@angular/core';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-
 import VectorLayerDescriptor from './VectorLayerDescriptor';
+import {GeoJSON} from 'ol/format';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
-
+import {get as getProjection} from 'ol/proj';
+import {gpx, kml} from '@tmcw/togeojson';
 @Injectable({
   providedIn: 'root',
 })
@@ -196,6 +197,51 @@ export class HsAddLayersVectorService {
       ) {
         return 'geojson';
       }
+    }
+  }
+  readUploadedFile(file: any): void {
+    let fileToJSON: any;
+    if (file.name.includes('.kml')) {
+      fileToJSON = kml(new DOMParser().parseFromString(file, 'text/xml'));
+      this.addNewLayer(fileToJSON);
+    } else if (file.name.includes('.gpx')) {
+      fileToJSON = gpx(new DOMParser().parseFromString(file, 'text/xml'));
+      this.addNewLayer(fileToJSON);
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          fileToJSON = JSON.parse(<string>reader.result);
+          if (fileToJSON !== undefined) {
+            this.addNewLayer(fileToJSON);
+          }
+        } catch (ex) {
+          // do nothing
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+  async addNewLayer(json: any): Promise<void> {
+    if (json.features.length > 0) {
+      const format = new GeoJSON();
+      const options = {
+        features: format.readFeatures(json),
+      };
+      const data = {
+        title: json.name,
+        projection: getProjection(json.crs.properties.name),
+      };
+      const layer = await this.addVectorLayer(
+        '',
+        undefined,
+        data.title || 'Layer', //name
+        data.title || 'Layer',
+        '',
+        data.projection,
+        options
+      );
+      this.fitExtent(layer);
     }
   }
 }
