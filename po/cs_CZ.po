@@ -1354,7 +1354,7 @@ msgstr "Zobrazení, skládání a analýza prostorových dat"
 
 #: components/add-layers/partials/dialog_getcapabilities_error.html:5
 msgid "WMS Capabilities parsing problem"
-msgstr "WMS Schopnosti analýzy problém"
+msgstr "Problém při spracování odezvy"
 
 #: components/trip_planner/partials/trip_planner.html:12
 msgid "Waypoints"
