@@ -16,7 +16,8 @@
     },
     "Vector": {
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus",
+      "dragAndDropFiles": "Velciet un nometiet failus"
     },
     "WFS": {
       "addToMap": "Pievienot kartei",

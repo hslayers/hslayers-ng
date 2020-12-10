@@ -16,7 +16,8 @@
     },
     "Vector": {
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory"
+      "uploadVectorFiles": "Nahrajte vektorové soubory",
+      "dragAndDropFiles": "Přetáhněte soubory"
     },
     "WFS": {
       "addToMap": "Přidat do mapy",

@@ -5,7 +5,7 @@
     <div class="form-group">
         <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label>
         <div class="dropzone" fileDrop (filesDropped)="handleFileUpload($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
-                <p class="dropzone-label mt-2">Drag and drop file</p>
+                <p class="dropzone-label mt-2">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
                 <label class="dropzone-label">
                     <input type="file" (change)="handleFileUpload($event.target.files)">
                 </label> 
