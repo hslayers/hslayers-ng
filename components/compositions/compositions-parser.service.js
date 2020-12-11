@@ -231,7 +231,7 @@ export default function (
           angular.isDefined(response.data.name))
       );
     },
-    loadCompositionObject: function (
+    loadCompositionObject: async function (
       obj,
       overwrite,
       titleFromContainer,
@@ -256,7 +256,7 @@ export default function (
         $log.warn(error);
         me.createErrorDialog(error);
       }
-      const layers = me.jsonToLayers(obj);
+      const layers = await me.jsonToLayers(obj);
       layers.forEach((lyr) => {
         HsMapService.addLayer(lyr, true);
       });
