@@ -240,7 +240,7 @@ export default function (
     ) {
       await HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
-      const layers = HsCompositionsParserService.jsonToLayers(
+      const layers = await HsCompositionsParserService.jsonToLayers(
         angular.fromJson(data)
       );
       for (const layer of layers) {
