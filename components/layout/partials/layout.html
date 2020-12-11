@@ -3,8 +3,7 @@
         <!-- ng-if="HsLayoutService.componentEnabled('guiOverlay')" -->
         <div class="hs-map-space">
             <hs-map></hs-map>
-            <hs-cesium></hs-cesium>
-
+            <ng-template map-host></ng-template>
             <hs-layermanager-gallery *ngIf="HsLayoutService.componentEnabled('basemapGallery')"></hs-layermanager-gallery>
             <hs-toolbar [hidden]="!(panelEnabled('toolbar') && HsLayoutService.componentEnabled('toolbar'))">
             </hs-toolbar>

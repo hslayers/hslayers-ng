@@ -103,12 +103,12 @@ export class HsCesiumService {
         // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
         skyBox: new SkyBox({
           sources: {
-            positiveX: loadSkyBoxSide('tycho2t3_80_px.jpg'),
-            negativeX: loadSkyBoxSide('tycho2t3_80_mx.jpg'),
-            positiveY: loadSkyBoxSide('tycho2t3_80_py.jpg'),
-            negativeY: loadSkyBoxSide('tycho2t3_80_my.jpg'),
-            positiveZ: loadSkyBoxSide('tycho2t3_80_pz.jpg'),
-            negativeZ: loadSkyBoxSide('tycho2t3_80_mz.jpg'),
+            positiveX: this.loadSkyBoxSide('tycho2t3_80_px.jpg'),
+            negativeX: this.loadSkyBoxSide('tycho2t3_80_mx.jpg'),
+            positiveY: this.loadSkyBoxSide('tycho2t3_80_py.jpg'),
+            negativeY: this.loadSkyBoxSide('tycho2t3_80_my.jpg'),
+            positiveZ: this.loadSkyBoxSide('tycho2t3_80_pz.jpg'),
+            negativeZ: this.loadSkyBoxSide('tycho2t3_80_mz.jpg'),
           },
         }),
         // Show Columbus View map with Web Mercator projection
@@ -119,16 +119,6 @@ export class HsCesiumService {
         sceneModePicker: false,
       }
     );
-
-    /**
-     * @param file
-     */
-    function loadSkyBoxSide(file) {
-      return this.HsUtilsService.resolveEsModule(
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('cesium/Build/Cesium/Assets/Textures/SkyBox/' + file)
-      );
-    }
 
     viewer.scene.debugShowFramesPerSecond = this.HsConfig
       .cesiumdDebugShowFramesPerSecond
@@ -290,6 +280,16 @@ export class HsCesiumService {
     return this.HsConfig.cesiumShadows == undefined
       ? ShadowMode.DISABLED
       : this.HsConfig.cesiumShadows;
+  }
+
+  /**
+   * @param file
+   */
+  loadSkyBoxSide(file) {
+    return this.HsUtilsService.resolveEsModule(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('cesium/Build/Cesium/Assets/Textures/SkyBox/' + file)
+    );
   }
 
   getCameraCenterInLngLat() {
