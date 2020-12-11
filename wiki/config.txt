@@ -225,10 +225,6 @@ Array of datasource catalogues which are used in Datasource explorer panel. Exam
 
 How many items to display in dataset list
 
-**dss_disallow_add**
-
-Boolean parameter to specify, that datasets must not be allowed to be added to map.
-
 ## GUI
 
 **createExtraMenu**

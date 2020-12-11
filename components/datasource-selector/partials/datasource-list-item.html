@@ -23,7 +23,7 @@
                 data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translate"></i>
         </div>
     </div>
-    <div class="p-0" [hidden]="hsConfig.dss_disallow_add == true || (selectTypeToAddLayerVisible)">
+    <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
         <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(endpoint, layer)"
             data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate">
             <i class="icon-plus"></i>
