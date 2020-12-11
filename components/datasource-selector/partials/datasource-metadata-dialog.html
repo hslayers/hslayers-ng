@@ -29,14 +29,16 @@
                 <button type="button" class="btn btn-success"
                     [hidden]="!hsDatasourcesMapService.isZoomable(selectedLayer)"
                     (click)="hsDatasourcesMapService.zoomTo(selectedLayer.bbox)">{{'COMMON.zoomTo' | translate}}</button>
-                <button type="button" class="btn btn-primary" *ngFor="let type of selectedLayer.type"
-                    (click)="addLayerToMap(selectedDS, selectedLayer, type)"
-                    [hidden]='hsConfig.dss_disallow_add == true' data-dismiss="modal">
-                    <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate}}
-                        {{type}}</span>
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">
-                    {{'COMMON.close' | translate}}
+                <div *ngIf="selectedDS.type == 'layman'" >
+                    <button type="button" class="btn btn-primary ml-2" *ngFor="let type of selectedLayer.type"
+                        (click)="addLayerToMap(selectedDS, selectedLayer, type)"
+                        [hidden]='hsConfig.dss_disallow_add == true' data-dismiss="modal">
+                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate}}
+                            {{type}}</span>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal" [title]="'COMMON.close' | translate">
+                    {{'COMMON.close' | translate}} 
                 </button>
             </div>
         </div>
