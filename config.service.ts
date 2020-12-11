@@ -66,5 +66,6 @@ export class HsConfig {
   sizeMode: string;
   locationButtonVisible: any;
   openQueryPanelOnDrawEnd: boolean;
+  dss_disallow_add: boolean; //found in datasources-metadata-dialog
   constructor() {}
 }
