@@ -149,7 +149,7 @@ export class HsAddLayersVectorService {
     }
   }
 
-  changeListener = function (src) {
+  changeListener(src): any {
     if (src.getState() == 'ready') {
       setTimeout(() => {
         if (src.getFeatures().length == 0) {
@@ -159,7 +159,7 @@ export class HsAddLayersVectorService {
         this.tryFit(extent, src);
       }, 1000);
     }
-  };
+  }
 
   /**
    * @param extent
@@ -213,7 +213,7 @@ export class HsAddLayersVectorService {
             }
           }
         } catch (e) {
-          // do nothing
+          console.log('Uploaded file is not supported!');
         }
       };
       reader.readAsText(file);
@@ -232,7 +232,7 @@ export class HsAddLayersVectorService {
         };
         this.addNewLayer(object);
       } catch (e) {
-        //no nothing
+        console.log('Uploaded file is not supported!');
       }
     };
     reader.readAsDataURL(file);
