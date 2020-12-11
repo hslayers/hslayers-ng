@@ -29,7 +29,7 @@
                 {{'COMMON.zoomTo' | translate}}
             </md-button>
             <md-button class="md-raised md-primary" *ngFor="let type of selectedLayer.type"
-                (click)="addLayerToMap(selectedDS, selectedLayer, type)" [hidden]='config.dss_disallow_add == true'>
+                (click)="addLayerToMap(selectedDS, selectedLayer, type)">
                 {{'DATASOURCE_SELECTOR.addToMapAs' | translate}} {{type}}
             </md-button>
         </md-dialog-actions>
