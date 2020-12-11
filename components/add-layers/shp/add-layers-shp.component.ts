@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 
+import {FileDescriptor} from './file-descriptor.type';
 import {HsAddLayersShpService} from './add-layers-shp.service';
 import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {FileDescriptor} from './file-descriptor';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class HsAddLayersShpComponent {
   errorMessage: any;
   extract_styles = false;
   files: FileDescriptor[] = [];
-  loaderImage = require('../../../img/ajax-loader.gif');
+  loaderImage;
   loading: boolean;
   name: string;
   resultCode: string;
@@ -38,6 +38,9 @@ export class HsAddLayersShpComponent {
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService
   ) {
+    this.loaderImage = this.hsUtilsService.resolveEsModule(
+      require('../../../img/ajax-loader.gif')
+    );
     //vm.endpointsService = HsCommonEndpointsService;
   }
 
@@ -95,7 +98,14 @@ export class HsAddLayersShpComponent {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    console.log(this.endpoint, this.files, this.name, this.title, this.srs, this.sld);
+    console.log(
+      this.endpoint,
+      this.files,
+      this.name,
+      this.title,
+      this.srs,
+      this.sld
+    );
     this.hsAddLayersShpService
       .add(
         this.endpoint,
