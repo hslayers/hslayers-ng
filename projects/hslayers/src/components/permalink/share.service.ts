@@ -66,7 +66,7 @@ export class HsShareService {
               project: this.HsConfig.project_name,
               request: 'save',
             })
-          );
+          ).toPromise();
           this.HsShareUrlService.permalinkRequestUrl =
             status_url + '?request=load&id=' + this.HsShareUrlService.id;
         } catch (ex) {
