@@ -13,7 +13,7 @@ export class HsUiExtensionsRecursiveDd {
     public hsDSMapService: HsDatasourcesMapService // used in template
   ) {}
   isIterable(): boolean {
-    if (typeof this.value === 'object') {
+    if (this.value && typeof this.value === 'object') {
       this.entries = Object.entries(this.value);
       return true;
     }
