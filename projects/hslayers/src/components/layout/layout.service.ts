@@ -1,8 +1,13 @@
 import {BehaviorSubject} from 'rxjs';
+import {
+  ComponentFactoryResolver,
+  Injectable,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLogService} from '../../common/log/log.service';
-import {Injectable, ViewContainerRef} from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
@@ -120,7 +125,8 @@ export class HsLayoutService {
   constructor(
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
-    public $log: HsLogService
+    public $log: HsLogService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {
     Object.defineProperty(this, 'panelListElement', {
       get: function () {
@@ -451,5 +457,17 @@ export class HsLayoutService {
       width: `${width}px`,
       ...(marginLeft > 0 && {marginLeft: `${marginLeft}px`}),
     };
+  }
+
+  addMapVisualizer(visualizerComponent: Type<unknown>): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      visualizerComponent
+    );
+
+    this.mapSpaceRef.subscribe((mapSpace) => {
+      if (mapSpace) {
+        mapSpace.createComponent(componentFactory);
+      }
+    });
   }
 }
