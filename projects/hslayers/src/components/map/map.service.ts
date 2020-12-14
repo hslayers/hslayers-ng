@@ -1,11 +1,12 @@
 /* eslint-disable no-eq-null */
 /* eslint-disable angular/timeout-service */
 import Control from 'ol/control/Control';
-import Feature from 'ol/Feature';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
+import Source from 'ol/source/Source';
 import Static from 'ol/source/ImageStatic';
 import View from 'ol/View';
+import WMTS from 'ol/source/WMTS';
 import proj4 from 'proj4';
 import {Cluster, OSM, Vector} from 'ol/source';
 import {
@@ -506,6 +507,45 @@ export class HsMapService {
   }
 
   /**
+   * @param lyr {Layer} Layer which to proxify if needed
+   * @description Proxify layer based on its source object type and if its tiled or not.
+   * Each underlying OL source class has its own way to override imagery loading.
+   */
+  proxifyLayer(lyr: Layer): void {
+    const source = lyr.getSource();
+    if (
+      [ImageWMS, ImageArcGISRest].some((typ) =>
+        this.HsUtilsService.instOf(source, typ)
+      )
+    ) {
+      this.proxifyLayerLoader(lyr, false);
+    }
+    if (this.HsUtilsService.instOf(source, WMTS)) {
+      source.setTileLoadFunction((i, s) => this.simpleImageryProxy(i, s));
+    }
+    if (
+      [TileWMS, TileArcGISRest].some((typ) =>
+        this.HsUtilsService.instOf(source, typ)
+      )
+    ) {
+      this.proxifyLayerLoader(lyr, true);
+    }
+    if (
+      this.HsUtilsService.instOf(source, XYZ) &&
+      !this.HsUtilsService.instOf(source, OSM) &&
+      source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
+        .length == 0
+    ) {
+      this.proxifyLayerLoader(lyr, true);
+    }
+
+    if (this.HsUtilsService.instOf(source, Static)) {
+      //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
+      source.url_ = this.HsUtilsService.proxify(source.getUrl());
+    }
+  }
+
+  /**
    * @ngdoc method
    * @name HsMapService#addLayer
    * @param {Layer} lyr Layer to add
@@ -530,33 +570,13 @@ export class HsMapService {
     }
     lyr.set('manuallyAdded', false);
     const source = lyr.getSource();
-    if (
-      this.HsUtilsService.instOf(source, ImageWMS) ||
-      this.HsUtilsService.instOf(source, ImageArcGISRest)
-    ) {
-      this.proxifyLayerLoader(lyr, false);
-    }
-    if (
-      this.HsUtilsService.instOf(source, TileWMS) ||
-      this.HsUtilsService.instOf(source, TileArcGISRest)
-    ) {
-      this.proxifyLayerLoader(lyr, true);
-    }
-    if (
-      this.HsUtilsService.instOf(source, XYZ) &&
-      !this.HsUtilsService.instOf(source, OSM) &&
-      source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
-        .length == 0
-    ) {
-      this.proxifyLayerLoader(lyr, true);
-    }
     if (this.HsUtilsService.instOf(source, Vector)) {
       this.getVectorType(lyr);
     }
-    if (this.HsUtilsService.instOf(source, Static)) {
-      //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-      source.url_ = this.HsUtilsService.proxify(source.getUrl());
-    }
+    this.proxifyLayer(lyr);
+    lyr.on('change:source', (e) => {
+      this.proxifyLayer(e.target);
+    });
     this.map.addLayer(lyr);
     return lyr;
   }
@@ -724,13 +744,15 @@ export class HsMapService {
         }
       });
     } else {
-      lyr.getSource().setImageLoadFunction((image, src) => {
-        if (src.indexOf(this.HsConfig.proxyPrefix) == 0) {
-          image.getImage().src = src;
-        } else {
-          image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
-        }
-      });
+      src.setImageLoadFunction((i, s) => this.simpleImageryProxy(i, s));
+    }
+  }
+
+  simpleImageryProxy(image, src) {
+    if (src.indexOf(this.HsConfig.proxyPrefix) == 0) {
+      image.getImage().src = src;
+    } else {
+      image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
     }
   }
 
