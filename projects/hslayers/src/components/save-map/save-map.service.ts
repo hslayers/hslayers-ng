@@ -234,7 +234,7 @@ export class HsSaveMapService {
       if (
         this.HsUtilsService.isFunction(style_img.getSrc) &&
         typeof style_img.getSrc() === 'string' &&
-        style_img.getSrc().slice(0, 10) !== 'data:image'
+        !style_img.getSrc().startsWith('data:image')
       ) {
         ima.src = this.HsUtilsService.proxify(style_img.getSrc());
       } else if (
