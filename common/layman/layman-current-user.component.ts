@@ -72,6 +72,9 @@ export class HsLaymanCurrentUserComponent {
     if (!this.protocolsMatch()) {
       return;
     }
-    this.HsDialogContainerService.create(HsLaymanLoginComponent, {});
+    this.HsDialogContainerService.create(
+      HsLaymanLoginComponent,
+      this.authUrl()
+    );
   }
 }
