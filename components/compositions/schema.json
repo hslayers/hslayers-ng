@@ -424,16 +424,6 @@
                 ],
                 "pattern": "^(.*)$"
               },
-              "FROMCRS": {
-                "$id": "#/properties/layers/items/properties/params/properties/FROMCRS",
-                "type": "string",
-                "title": "CRS used if serverside reprojection is needed",
-                "default": "",
-                "examples": [
-                  "EPSG:3857"
-                ],
-                "pattern": "^(.*)$"
-              },
               "VERSION": {
                 "$id": "#/properties/layers/items/properties/params/properties/VERSION",
                 "type": "string",
