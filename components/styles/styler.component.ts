@@ -63,6 +63,12 @@ export class HsStylerComponent {
     private HsStylerColorService: HsStylerColorService,
     private HsSaveMapService: HsSaveMapService
   ) {
+    this.HsEventBusService.layerSelectedFromUrl.subscribe((layerFound) => {
+      if (layerFound !== null) {
+        this.HsStylerService.layer = layerFound;
+        this.resolveLayerStyle();
+      }
+    });
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (e == 'styler') {
         if (!this.icons) {
@@ -119,19 +125,21 @@ export class HsStylerComponent {
               this.HsUtilsService.resolveEsModule(icon)
             )
           );
+          this.resolveLayerStyle();
         }
-        this.isClustered = this.HsLayerUtilsService.isLayerClustered(
-          HsStylerService.layer
-        );
-        this.hasFeatures = this.HsStylerService.hasFeatures(
-          HsStylerService.layer,
-          this.isClustered
-        );
-        this.refreshLayerDefinition();
       }
     });
   }
-
+  resolveLayerStyle(): void {
+    this.isClustered = this.HsLayerUtilsService.isLayerClustered(
+      this.HsStylerService.layer
+    );
+    this.hasFeatures = this.HsStylerService.hasFeatures(
+      this.HsStylerService.layer,
+      this.isClustered
+    );
+    this.refreshLayerDefinition();
+  }
   toDecimal2(n: number) {
     return Math.round(n * 100) / 100;
   }

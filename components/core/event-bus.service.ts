@@ -1,6 +1,7 @@
 import Map from 'ol/Map';
-import {Injectable} from '@angular/core';
+import VectorLayer from 'ol/layer/Vector';
 import {BehaviorSubject, Subject} from 'rxjs';
+import {Injectable} from '@angular/core';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -111,5 +112,12 @@ export class HsEventBusService {
     type: string;
     response: any;
   }> = new Subject();
+  /**
+   * @event layerSelectedFromUrl
+   * @description Fires when layerSelected parameter is found in the URL
+   */
+  layerSelectedFromUrl: BehaviorSubject<VectorLayer> = new BehaviorSubject(
+    null
+  );
   constructor() {}
 }
