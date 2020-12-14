@@ -45,7 +45,8 @@
     "thisIsRequired": "This is required!",
     "tileSize": "Tile size",
     "useProxy": "Use proxy",
-    "useTiles": "Use tiles"
+    "useTiles": "Use tiles",
+    "addSelected": "Add selected layers to the map"
   },
   "COMMON": {
     "Login": "Log in",
