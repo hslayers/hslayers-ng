@@ -149,15 +149,12 @@ export class HsDrawService {
     }
   }
 
-  saveDrawingLayer(addNewLayer = false): void {
+  saveDrawingLayer(): void {
     this.previouslySelected = this.selectedLayer;
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
-    const tmpLayer =
-      addNewLayer === true
-        ? null
-        : this.HsMapService.findLayerByTitle('tmpDrawLayer');
-    const tmpSource =
-      addNewLayer === true ? new VectorSource() : tmpLayer.getSource();
+
+    const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer');
+    const tmpSource = tmpLayer ? tmpLayer.getSource() : new VectorSource();
 
     let i = 1;
     while (this.HsMapService.findLayerByTitle(tmpTitle)) {

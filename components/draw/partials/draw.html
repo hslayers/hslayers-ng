@@ -10,7 +10,7 @@
     <div class="d-flex flex-column"> 
         <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
             <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button"
-                (click)="HsDrawService.saveDrawingLayer(true)">
+                (click)="HsDrawService.saveDrawingLayer()">
                 {{'COMMON.newDrawingLayer' | translate}}
             </button>
             <button type="button" (click)="HsDrawService.setType(HsDrawService.type)"
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" *ngIf="HsDrawService.tmpDrawLayer" class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer(true)"
+                <button type="button" *ngIf="HsDrawService.tmpDrawLayer" class="btn btn-light btn-outline-primary border-0 btn-sm" (click)="HsDrawService.saveDrawingLayer()"
                 [title]="'DRAW.saveDrawingToLayer' | translate">
                 <i class="glyphicon icon-save-floppy"></i>
                 </button>
