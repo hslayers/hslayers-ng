@@ -212,6 +212,7 @@ export class HsAddLayersWfsComponent {
       path: this.folderName,
       renderOrder: null,
       synchronize: false,
+      removable: true,
     });
     this.HsMapService.map.addLayer(new_layer);
     this.HsLayoutService.setMainPanel('layermanager');

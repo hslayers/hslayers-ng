@@ -640,7 +640,7 @@ export class HsLayerManagerService {
   removeAllLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (lyr.get('removable') == undefined || lyr.get('removable') == true) {
+      if (lyr.get('removable') == true) {
         if (lyr.get('base') == undefined || lyr.get('base') == false) {
           if (
             lyr.get('show_in_manager') == undefined ||
