@@ -33,7 +33,7 @@ export class HsLaymanCurrentUserComponent {
   }
 
   protocolsMatch() {
-    return location.protocol == this.endpoint.liferayProtocol;
+    return location.protocol.slice(0, -1) == this.endpoint.liferayProtocol;
   }
 
   authUrl() {
