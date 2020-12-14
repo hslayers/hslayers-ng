@@ -101,7 +101,7 @@
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "prerelease": "npm run doc",
-    "release": "npm run build && dotenv -- release-it",
+    "release": "dotenv -- release-it",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
     "generate-glyphs-subset": "sh scripts/subset-font.sh",

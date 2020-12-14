@@ -3,5 +3,8 @@
     "release": true,
     "releaseName": "${version}",
     "assets": ["dist/*.js", "dist/*.map"]
+  },
+  "hooks": {
+    "after:bump": "npm run build"
   }
 }
