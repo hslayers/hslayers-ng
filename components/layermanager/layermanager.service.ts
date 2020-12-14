@@ -635,7 +635,8 @@ export class HsLayerManagerService {
    * @function removeAllLayers
    * @memberOf HsLayermanagerService
    * @private
-   * @description Remove all layers from map
+   * @description Remove all non-base layers that were added to the map by user.
+   * Doesnt remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
    */
   removeAllLayers(): void {
     const to_be_removed = [];
