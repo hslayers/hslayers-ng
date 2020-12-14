@@ -940,7 +940,9 @@ export class HsLayerManagerService {
   checkLayerFromUrl(layerTitle: string): any {
     const layerFound = this.getLayerFromUrl(layerTitle);
     if (layerFound !== undefined && layerFound.length > 0) {
-      this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
+      setTimeout(() => {
+        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
+      }, 500);
       return layerFound[0].layer;
     }
   }
