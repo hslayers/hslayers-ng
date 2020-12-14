@@ -4,7 +4,7 @@
             ng-class="layoutService.sidebarExpanded ? (!layoutService.sidebarRight ? 'icon-chevron-left' : 'icon-chevron-right') : (!layoutService.sidebarRight ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </a>
 
-    <a href="#" ng-repeat="button in sidebarService.buttons | orderBy:'order'" class="flex-fill hs-sidebar-item list-group-item"
+    <a href="#" ng-repeat="button in sidebarService.buttons | orderBy:'order'" class="hs-sidebar-item list-group-item"
         ng-show="button.visible && visibilityByImportancy(button)" ng-click="setMainPanel(button.panel)"
         ng-class="{active: layoutService.mainpanel == button.panel, 'hs-panel-hidden': fitsSidebar(button.panel)}" title="{{button.description | translate}}">
 
@@ -15,15 +15,16 @@
         <span class="hs-sidebar-item-title" >{{button.title | translate}}</span>
     </a>
 
-    <a href="#" class="flex-fill hs-sidebar-item  list-group-item" ng-if="sidebarService.unimportantExist && !layoutService.sidebarBottom()" ng-click="toggleUnimportant()">
+    <a href="#" class="hs-sidebar-item  list-group-item" ng-if="sidebarService.unimportantExist && !layoutService.sidebarBottom()" ng-click="toggleUnimportant()">
         <i class="menu-icon" ng-class="{'icon-minus': showUnimportant, 'icon-plus': !showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto"
             title="{{'Expand/collapse' | translate}}"></i>
     </a>
 
-    <a href="#" class="flex-fill hs-sidebar-item  list-group-item"
+    <a href="#" class="hs-sidebar-item  list-group-item"
         ng-if="HsCore.exists('hs.sidebar') && layoutService.minisidebar" ng-click="setMainPanel('sidebar')"
         ng-class="{active: layoutService.mainpanel == 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto"
             title="Menu"></i>
     </a>
+    <hs.impressum class="mt-auto"></hs.impressum>
 </div>

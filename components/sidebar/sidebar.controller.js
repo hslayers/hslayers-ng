@@ -46,7 +46,7 @@ export default function (
     },
 
     /**
-     * Seat weather to show all sidebar buttons or just a
+     * Seat whether to show all sidebar buttons or just a
      * subset of important ones
      *
      * @memberof HsSidebarController
