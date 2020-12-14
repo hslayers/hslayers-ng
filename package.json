@@ -14,8 +14,6 @@
     "/dist",
     "/img",
     "/lib",
-    "/po",
-    "/scripts/bootstrap-isolate.js",
     "ajs-app.ts",
     "ajs-upgraded-providers.ts",
     "app.module.ts",
