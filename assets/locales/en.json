@@ -259,7 +259,7 @@
     },
     "baselayers": "Baselayers",
     "dialogRemoveAll": {
-      "dialogMessage": "Do you really want to remove all layers?",
+      "dialogMessage": "Do you really want to remove all your layers?",
       "reloadComposition": "Reload composition",
       "removeAllAdded": "Remove all added layers"
     },
