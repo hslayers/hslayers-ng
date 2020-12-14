@@ -1,12 +1,9 @@
 /* eslint-disable no-eq-null */
 /* eslint-disable angular/timeout-service */
 import Control from 'ol/control/Control';
-import Feature from 'ol/Feature';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
-import Static from 'ol/source/ImageStatic';
 import View from 'ol/View';
-import WMTS from 'ol/source/WMTS';
 import proj4 from 'proj4';
 import {Cluster, OSM, Vector} from 'ol/source';
 import {
@@ -24,21 +21,18 @@ import {Group} from 'ol/layer';
 import {
   ImageArcGISRest,
   ImageWMS,
+  ImageStatic as Static,
   TileArcGISRest,
   TileWMS,
+  WMTS,
   XYZ,
 } from 'ol/source';
-import {
-  MousePosition,
-  ScaleLine,
-  defaults as controlDefaults,
-} from 'ol/control';
+import {ScaleLine, defaults as controlDefaults} from 'ol/control';
 import {
   always as alwaysCondition,
   never as neverCondition,
   platformModifierKeyOnly as platformModifierKeyOnlyCondition,
 } from 'ol/events/condition';
-import {createStringXY} from 'ol/coordinate';
 import {register} from 'ol/proj/proj4';
 import {transform, transformExtent} from 'ol/proj';
 
