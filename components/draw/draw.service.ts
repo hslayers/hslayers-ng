@@ -207,6 +207,7 @@ export class HsDrawService {
         removable: true,
         editable: true,
         path: this.HsConfig.defaultDrawLayerPath || 'User generated',
+        zIndex: Infinity,
       });
       this.tmpDrawLayer = true;
       this.selectedLayer = drawLayer;
