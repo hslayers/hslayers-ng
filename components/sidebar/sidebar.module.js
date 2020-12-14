@@ -2,6 +2,7 @@ import '../core/core.module';
 import '../map/map.module';
 import '../permalink/permalink.module';
 import 'angular-cookies';
+import impressumComponent from './impressum.component';
 import sidebarController from './sidebar.controller';
 import sidebarDirective from './sidebar.directive';
 import sidebarMiniDirective from './sidebar-mini.directive';
@@ -42,4 +43,12 @@ angular
    * @ngdoc controller
    * @name HsSidebarController
    */
-  .controller('HsSidebarController', sidebarController);
+  .controller('HsSidebarController', sidebarController)
+
+  /**
+   * @memberof hs.sidebar
+   * @ngdoc component
+   * @name hs.impressum
+   * @description Sidebar component which displays logo and version
+   */
+  .component('hs.impressum', impressumComponent);
