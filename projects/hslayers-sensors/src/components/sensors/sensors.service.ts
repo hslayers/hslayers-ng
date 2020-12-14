@@ -16,6 +16,15 @@ import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {getWidth} from 'ol/extent';
 
+export type SensLogEndpoint = {
+  url: string;
+  user_id: number;
+  group: string;
+  user: string;
+  liteApiPath?: string;
+  mapLogApiPath?: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -54,7 +63,7 @@ export class HsSensorsService {
   bookmarkStyle = null;
   units: any = [];
   layer = null;
-  endpoint: any;
+  endpoint: SensLogEndpoint;
 
   constructor(
     public HsUtilsService: HsUtilsService,
@@ -67,6 +76,10 @@ export class HsSensorsService {
     public HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
     this.endpoint = this.HsConfig.senslog;
+    if (this.endpoint.liteApiPath == undefined) {
+      this.endpoint.liteApiPath = 'senslog-lite2';
+    }
+    this.HsSensorsUnitDialogService.endpoint = this.endpoint;
 
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       HsUtilsService.debounce(
@@ -167,12 +180,12 @@ export class HsSensorsService {
       this.createLayer();
     }
     const url = this.HsUtilsService.proxify(
-      `${this.endpoint.url}/senslog-lite/rest/unit`
+      `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`
     );
     this.http
       .get(url, {
         params: {
-          user_id: this.endpoint.user_id,
+          user_id: this.endpoint.user_id.toString(),
         },
       })
       .subscribe((response) => {

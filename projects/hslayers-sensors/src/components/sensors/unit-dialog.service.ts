@@ -1,14 +1,15 @@
 /* eslint-disable angular/definedundefined */
 import moment from 'moment';
 import {ElementRef, Injectable} from '@angular/core';
-import {HsConfig} from 'hslayers-ng';
 import {HsLanguageService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsLogService} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
+import {SensLogEndpoint} from './sensors.service';
 import {default as vegaEmbed} from 'vega-embed';
+
 type Aggregate = {
   sensor_id;
   max;
@@ -26,7 +27,7 @@ export class HsSensorsUnitDialogService {
   currentInterval: any;
   sensorsSelected = [];
   sensorIdsSelected = [];
-  endpoint: any;
+  endpoint: SensLogEndpoint;
   observations: any;
   sensorById = {};
   intervals = [
@@ -43,12 +44,9 @@ export class HsSensorsUnitDialogService {
     private http: HttpClient,
     public HsUtilsService: HsUtilsService,
     public HsLogService: HsLogService,
-    public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService
-  ) {
-    this.endpoint = this.HsConfig.senslog;
-  }
+  ) {}
 
   selectSensor(sensor: any) {
     this.sensorsSelected.forEach((s) => (s.checked = false));
@@ -116,7 +114,7 @@ export class HsSensorsUnitDialogService {
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.HsUtilsService.proxify(
-        `${this.endpoint.url}/senslog-lite/rest/observation`
+        `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`
       );
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
@@ -196,7 +194,7 @@ export class HsSensorsUnitDialogService {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     const chartData: any = {
       '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
-      'HsConfig': {
+      'config': {
         'mark': {
           'tooltip': null,
         },
