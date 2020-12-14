@@ -63,6 +63,12 @@ export class HsStylerComponent {
     private HsStylerColorService: HsStylerColorService,
     private HsSaveMapService: HsSaveMapService
   ) {
+    this.HsEventBusService.layerSelectedFromUrl.subscribe((layerFound) => {
+      if (layerFound !== null) {
+        this.HsStylerService.layer = layerFound;
+        this.resolveLayerStyle();
+      }
+    });
     this.HsEventBusService.mainPanelChanges.subscribe((e) => {
       if (e == 'styler') {
         if (!this.icons) {
@@ -119,19 +125,21 @@ export class HsStylerComponent {
               this.HsUtilsService.resolveEsModule(icon)
             )
           );
+          this.resolveLayerStyle();
         }
-        this.isClustered = this.HsLayerUtilsService.isLayerClustered(
-          HsStylerService.layer
-        );
-        this.hasFeatures = this.HsStylerService.hasFeatures(
-          HsStylerService.layer,
-          this.isClustered
-        );
-        this.refreshLayerDefinition();
       }
     });
   }
-
+  resolveLayerStyle(): void {
+    this.isClustered = this.HsLayerUtilsService.isLayerClustered(
+      this.HsStylerService.layer
+    );
+    this.hasFeatures = this.HsStylerService.hasFeatures(
+      this.HsStylerService.layer,
+      this.isClustered
+    );
+    this.refreshLayerDefinition();
+  }
   toDecimal2(n: number) {
     return Math.round(n * 100) / 100;
   }
@@ -249,13 +257,28 @@ export class HsStylerComponent {
         this.setStyleForFeatures(layer, style);
         break;
       case 'cluster':
+        let newClusterStroke: Stroke;
+        let newClusterFill: Fill;
+        if (
+          this.iconlinecolor !== undefined &&
+          this.iconlinewidth !== undefined &&
+          this.iconfillcolor !== undefined
+        ) {
+          newClusterStroke = new Stroke({
+            color: this.iconlinecolor['background-color'],
+            width: this.iconlinewidth,
+          });
+          newClusterFill = new Fill({
+            color: this.iconfillcolor['background-color'],
+          });
+        }
         this.HsStylerService.clusterStyle.setFill(
-          style.getImage() ? style.getImage().getFill() : style.getFill()
+          newClusterFill !== undefined ? newClusterFill : layer.getFill()
         );
         this.HsStylerService.clusterStyle.setStroke(
-          style.getImage() ? style.getImage().getStroke() : style.getStroke()
+          newClusterStroke !== undefined ? newClusterStroke : layer.getStroke()
         );
-        this.HsStylerService.styleClusteredLayer(layer);
+        this.HsStylerService.styleClusteredLayer(this.HsStylerService.layer);
         break;
       default:
       case 'layer':
@@ -284,7 +307,6 @@ export class HsStylerComponent {
   repaintCluster(layer: VectorLayer): void {
     layer.setStyle(layer.getStyle());
   }
-
   /**
    * Sets style for all features in a given layer.
    * For cluster layers the style is set for underlying sources features.
