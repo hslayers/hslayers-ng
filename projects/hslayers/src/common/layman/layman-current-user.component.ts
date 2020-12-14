@@ -33,7 +33,7 @@ export class HsLaymanCurrentUserComponent {
   }
 
   protocolsMatch() {
-    return location.protocol == this.endpoint.liferayProtocol;
+    return location.protocol.slice(0, -1) == this.endpoint.liferayProtocol;
   }
 
   authUrl() {
@@ -72,6 +72,9 @@ export class HsLaymanCurrentUserComponent {
     if (!this.protocolsMatch()) {
       return;
     }
-    this.HsDialogContainerService.create(HsLaymanLoginComponent, {});
+    this.HsDialogContainerService.create(
+      HsLaymanLoginComponent,
+      this.authUrl()
+    );
   }
 }

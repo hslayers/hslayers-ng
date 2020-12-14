@@ -311,8 +311,7 @@ export class HsLayerEditorComponent {
   isLayerRemovable(): boolean {
     const layer = this.olLayer();
     return (
-      layer != undefined &&
-      (layer.get('removable') == undefined || layer.get('removable') == true)
+      layer?.get('removable') == undefined || layer?.get('removable') == true
     );
   }
 

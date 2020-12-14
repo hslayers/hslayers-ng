@@ -109,9 +109,11 @@
             </tbody>
         </table>
 
-        <button class="btn btn-primary" style="position: sticky;
-        bottom: 1.5rem; float: left;" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
-        <button class="btn btn-primary btn-sm" style="position: sticky;
-        bottom: 1.5rem; float: right;" (click)="addLayers(true)"><i class="icon-plus"></i></button>
+
+        <div class="w-100 d-flex justify-content-between bg-light pb-2" style="position: sticky;
+        bottom: 0">
+            <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
+            <button class="btn btn-primary" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+        </div>
     </div>
 </form>

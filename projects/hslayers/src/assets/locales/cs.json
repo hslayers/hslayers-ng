@@ -47,7 +47,8 @@
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
     "useProxy": "Použít proxy",
-    "useTiles": "Použít dlaždice"
+    "useTiles": "Použít dlaždice",
+    "addSelected": "Přidat označené vrstvy do mapy"
   },
   "COMMON": {
     "Login": "Přihlásit se",
@@ -223,7 +224,6 @@
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
-
     "saveDrawingToLayer": "Uložit do vrstvy",
     "serverLayers": "Servrové vrstvy",
     "unsavedDrawing": "Neuložená kresba",
@@ -261,7 +261,7 @@
     },
     "baselayers": "Podkladové vrstvy",
     "dialogRemoveAll": {
-      "dialogMessage": "Opravdu chcete odstranit všechny vrstvy?",
+      "dialogMessage": "Opravdu chcete odstranit všechny vámi přidané vrstvy?",
       "reloadComposition": "Obnovit kompozici",
       "removeAllAdded": "Odstranit všechny přidané vrstvy"
     },

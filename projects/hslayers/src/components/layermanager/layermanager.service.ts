@@ -633,12 +633,13 @@ export class HsLayerManagerService {
    * @function removeAllLayers
    * @memberOf HsLayermanagerService
    * @private
-   * @description Remove all layers from map
+   * @description Remove all non-base layers that were added to the map by user.
+   * Doesn't remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
    */
   removeAllLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (lyr.get('removable') == undefined || lyr.get('removable') == true) {
+      if (lyr.get('removable') == true) {
         if (lyr.get('base') == undefined || lyr.get('base') == false) {
           if (
             lyr.get('show_in_manager') == undefined ||
@@ -899,25 +900,19 @@ export class HsLayerManagerService {
    * @private
    * @description Initialization of needed controllers, run when map object is available
    */
-  init(): void {
+  async init(): Promise<void> {
     this.map = this.HsMapService.map;
     this.HsMapService.map.getLayers().forEach((lyr) => {
       this.layerAdded({
         element: lyr,
       });
     });
-
-    this.boxLayersInit();
-    if (this.HsShareUrlService.getParamValue('layerSelected') !== undefined) {
-      const selectedLayerTitle = this.HsShareUrlService.getParamValue(
-        'layerSelected'
-      );
-      const layerFound = this.getLayerFromUrl(selectedLayerTitle);
-      if (layerFound !== undefined && layerFound.length > 0) {
-        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
-      }
+    if (this.HsShareUrlService.getParamValue('layerSelected')) {
+      const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
+      const layerFound = await this.checkLayerFromUrl(layerTitle);
+      this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
     }
-
+    this.boxLayersInit();
     this.map.getView().on(
       'change:resolution',
       this.HsUtilsService.debounce(
@@ -942,6 +937,15 @@ export class HsLayerManagerService {
 
     this.map.getLayers().on('add', (e) => this.layerAdded(e));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
+  }
+  checkLayerFromUrl(layerTitle: string): any {
+    const layerFound = this.getLayerFromUrl(layerTitle);
+    if (layerFound !== undefined && layerFound.length > 0) {
+      setTimeout(() => {
+        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
+      }, 500);
+      return layerFound[0].layer;
+    }
   }
   getLayerFromUrl(layerTitle: string): any {
     const layerFound = this.data.layers.filter(

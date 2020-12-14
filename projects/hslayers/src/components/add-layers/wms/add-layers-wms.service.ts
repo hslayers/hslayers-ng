@@ -343,7 +343,6 @@ export class HsAddLayersWmsService {
           LAYERS: layer.Name || layer.Layer[0].Name,
           INFO_FORMAT: layer.queryable ? queryFormat : undefined,
           FORMAT: imageFormat,
-          FROMCRS: this.data.srs,
           VERSION: this.data.version,
           STYLES: styles,
         },

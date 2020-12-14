@@ -26,10 +26,10 @@
             </div>
         </div>
         <button class="btn btn-light hs-toolbar-button btn-outline-secondary" [hidden]="HsDrawService.tmpDrawLayer"
-            (click)="HsDrawService.saveDrawingLayer(true)" data-toggle="tooltip"
+            (click)="HsDrawService.saveDrawingLayer()" data-toggle="tooltip"
             [title]="'DRAW.drawToolbar.addDrawLayer' | translate">
             <i class="icon-plus"></i></button>
-        <button type="button" *ngIf="HsDrawService.tmpDrawLayer" class="btn btn-light  hs-toolbar-button  btn-outline-secondary" (click)="HsDrawService.saveDrawingLayer(true)"
+        <button type="button" *ngIf="HsDrawService.tmpDrawLayer" class="btn btn-light  hs-toolbar-button  btn-outline-secondary" (click)="HsDrawService.saveDrawingLayer()"
         [title]="'DRAW.saveDrawingToLayer' | translate">
         <i class="glyphicon icon-save-floppy"></i>
         </button>

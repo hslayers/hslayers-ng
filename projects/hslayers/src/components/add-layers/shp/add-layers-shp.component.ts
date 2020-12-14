@@ -1,6 +1,7 @@
 import BaseLayer from 'ol/layer/Base';
 import {Component} from '@angular/core';
-import {FileDescriptor} from './file-descriptor';
+
+import {FileDescriptor} from './file-descriptor.type';
 import {HsAddLayersShpService} from './add-layers-shp.service';
 import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';

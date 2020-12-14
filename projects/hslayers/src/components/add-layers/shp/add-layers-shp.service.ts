@@ -1,4 +1,4 @@
-import {FileDescriptor} from './file-descriptor';
+import {FileDescriptor} from './file-descriptor.type';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';

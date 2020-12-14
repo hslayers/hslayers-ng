@@ -6,7 +6,7 @@
                 <i class="glyphicon icon-edit"></i>
             </button>
             <button type="button" class="but-title-sm" (click)="removeAllLayers()"
-                [title]="'LAYERMANAGER.removeAllLayers' | translate">
+                [title]="'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translate">
                 <i class="glyphicon icon-trash"></i>
             </button>
             <button type="button" class="but-title-sm" (click)="HsCore.resetMap()"
@@ -103,7 +103,7 @@
             </li>
         </ul>
 
-        <ul class="list-group hs-lm-mapcontentlist">
+        <ul class="list-group hs-lm-mapcontentlist" >
             <li *ngIf="!HsLayoutService.componentEnabled('basemapGallery')"
                 class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
