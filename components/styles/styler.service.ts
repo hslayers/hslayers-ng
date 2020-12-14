@@ -87,6 +87,13 @@ export class HsStylerService {
       }),
     ];
   }
+  isVectorLayer(layer: any): boolean {
+    if (this.HsUtilsService.instOf(layer, VectorLayer)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /**
    * @description Gets layers style object for any vector layer.
    * @param isClustered
@@ -97,29 +104,33 @@ export class HsStylerService {
     if (!layer) {
       return;
     }
-    let style: any;
-    if (
-      (isClustered !== undefined && isClustered) ||
-      layer.getSource()?.getSource
-    ) {
-      style = layer.get('hsOriginalStyle');
-    } else {
-      style = layer.getStyle();
-    }
-    if (style !== undefined) {
-      if (typeof style == 'function') {
-        return style(new Feature())[0];
+    if (this.isVectorLayer(layer)) {
+      let style: any;
+      if (
+        (isClustered !== undefined && isClustered) ||
+        layer.getSource()?.getSource
+      ) {
+        style = layer.get('hsOriginalStyle');
       } else {
-        return style;
+        style = layer.getStyle();
+      }
+      if (style !== undefined) {
+        if (typeof style == 'function') {
+          return style(new Feature())[0];
+        } else {
+          return style;
+        }
       }
     }
   }
   hasFeatures(layer: VectorLayer, isClustered: boolean): boolean {
-    const src = this.getLayerSource(layer, isClustered);
-    if (src?.getFeatures().length > 0) {
-      return true;
-    } else {
-      return false;
+    if (this.isVectorLayer(layer)) {
+      const src = this.getLayerSource(layer, isClustered);
+      if (src?.getFeatures().length > 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
   /**
