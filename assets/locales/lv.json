@@ -46,7 +46,7 @@
     "tileSize": "\"Flīžu\" izmērs",
     "useProxy": "Izmantojiet starpniekserveri",
     "useTiles": "Izmantojiet \"flīzes\"",
-    "addSelected": "Add selected layers to the map"
+    "addSelected": "Pievienot izvēlētos slāņus kartei"
   },
   "COMMON": {
     "Login": "Autorizēties",
