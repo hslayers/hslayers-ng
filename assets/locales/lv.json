@@ -45,7 +45,8 @@
     "thisIsRequired": "Šis ir nepieciešams!",
     "tileSize": "\"Flīžu\" izmērs",
     "useProxy": "Izmantojiet starpniekserveri",
-    "useTiles": "Izmantojiet \"flīzes\""
+    "useTiles": "Izmantojiet \"flīzes\"",
+    "addSelected": "Add selected layers to the map"
   },
   "COMMON": {
     "Login": "Autorizēties",

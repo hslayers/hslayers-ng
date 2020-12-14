@@ -45,7 +45,8 @@
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
     "useProxy": "Použít proxy",
-    "useTiles": "Použít dlaždice"
+    "useTiles": "Použít dlaždice",
+    "addSelected": "Přidat označené vrstvy do mapy"
   },
   "COMMON": {
     "Login": "Přihlásit se",
