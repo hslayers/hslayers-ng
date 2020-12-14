@@ -614,6 +614,12 @@ div.hs-panelspace:not(.buttons) .hs-sidebar ~ div.hs-panelplace {
 }
 
 .hs-impressum .hs-logo {
+	max-width: 100%;
+	padding-left: 5em;
+	padding-right: 5em;
+}
+
+.hs-impressum .hs-logo img {
 	width: 100%;
 }
 
@@ -671,6 +677,10 @@ a.sidebar-main {
 }
 
 .hs-content-wrapper:not(.hs-open) .hs-panelplace {
+	display: none;
+}
+
+.hs-content-wrapper:not(.hs-open) .hs-impressum {
 	display: none;
 }
 
