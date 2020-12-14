@@ -259,7 +259,7 @@
     },
     "baselayers": "Podkladové vrstvy",
     "dialogRemoveAll": {
-      "dialogMessage": "Opravdu chcete odstranit všechny vrstvy?",
+      "dialogMessage": "Opravdu chcete odstranit všechny vámi přidané vrstvy?",
       "reloadComposition": "Obnovit kompozici",
       "removeAllAdded": "Odstranit všechny přidané vrstvy"
     },
