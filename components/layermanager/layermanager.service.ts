@@ -5,6 +5,7 @@ import {CollectionEvent} from 'ol/Collection';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Group, Tile} from 'ol/layer';
 import {HsConfig} from '../../config.service';
+import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -114,7 +115,8 @@ export class HsLayerManagerService {
     public HsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer,
     private HsLanguageService: HsLanguageService,
-    private HsShareUrlService: HsShareUrlService
+    private HsShareUrlService: HsShareUrlService,
+    public HsDrawService: HsDrawService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -655,6 +657,7 @@ export class HsLayerManagerService {
     while (to_be_removed.length > 0) {
       this.HsMapService.map.removeLayer(to_be_removed.shift());
     }
+    this.HsDrawService.fillDrawableLayers();
   }
 
   /**
