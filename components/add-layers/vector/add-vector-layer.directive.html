@@ -40,12 +40,12 @@
     </button>
 
     <div class="collapse hs-ows-vector-advanced" *ngIf="advancedPanelVisible">
-        <div class="form-group" [hidden]="fileUploadEnabled">
+        <div class="form-group" >
             <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
             <input class="form-control" name="srs" [(ngModel)]="srs" />
         </div>
 
-        <div class="form-group" [hidden]="fileUploadEnabled">
+        <div class="form-group" >
             <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
             <input class="form-control" name="folder" [(ngModel)]="folder_name" />
         </div>

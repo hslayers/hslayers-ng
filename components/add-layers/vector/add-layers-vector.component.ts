@@ -21,7 +21,6 @@ export class HsAddLayersVectorComponent {
   features: any[] = [];
   featureCount = 0;
   type = '';
-  fileUploadEnabled = false;
   errorOccured = false;
   constructor(
     public hsAddLayersVectorService: HsAddLayersVectorService,
@@ -58,7 +57,6 @@ export class HsAddLayersVectorComponent {
     this.dropzoneActive = $event;
   }
   handleFileUpload(fileList: FileList): any {
-    this.fileUploadEnabled = true;
     Array.from(fileList).forEach(async (f) => {
       const uploadedData = await this.hsAddLayersVectorService.readUploadedFile(
         f
@@ -81,8 +79,8 @@ export class HsAddLayersVectorComponent {
           : (this.title = '');
 
         uploadedData.srs !== undefined
-          ? (this.srs = uploadedData.srs)
-          : (this.srs = '');
+          ? (this.srs = uploadedData.srs.getCode())
+          : (this.srs = 'EPSG:4326');
 
         uploadedData.abstract !== undefined
           ? (this.abstract = uploadedData.abstract)
@@ -118,6 +116,5 @@ export class HsAddLayersVectorComponent {
     this.features = [];
     this.featureCount = 0;
     this.type = '';
-    this.fileUploadEnabled = false;
   }
 }
