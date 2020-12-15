@@ -1,0 +1,3 @@
+<ngb-toast *ngFor="let toast of PmToastService.toasts" [header]="toast.header" [class]="toast.classname"
+  [autohide]="toast.autohide" [delay]="toast.delay || 5000" (hide)="PmToastService.remove(toast)">{{toast.textOrTpl}}
+</ngb-toast>

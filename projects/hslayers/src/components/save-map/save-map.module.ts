@@ -19,7 +19,6 @@ import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component
 import {HsSaveMapService} from './save-map.service';
 import {HsSaveMapSimpleFormComponent} from './save-map-simple-form.component';
 import {HsStatusManagerService} from './status-manager.service';
-import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -27,7 +26,6 @@ import {TranslateModule} from '@ngx-translate/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [
     HsSaveMapComponent,
-    HsSyncErrorDialogComponent,
     HsSaveMapResultDialogComponent,
     HsSaveMapSimpleFormComponent,
     HsSaveMapDialogComponent,
@@ -56,7 +54,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsSaveMapAdvancedFormComponent,
     HsSaveMapResultDialogComponent,
     HsSaveMapDialogComponent,
-    HsSyncErrorDialogComponent,
   ],
 })
 export class HsSaveMapModule {}
