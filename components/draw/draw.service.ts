@@ -416,17 +416,16 @@ export class HsDrawService {
       .getLayers()
       .getArray()
       .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
-
-    if (drawables.length == 0) {
-      //&& !this.selectedLayer
+    if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
       this.deactivateDrawing();
       this.selectedLayer = null;
-    } else {
+    } else if (drawables.length > 0) {
       if (
         !drawables.some(
-          (layer) => layer.get('title') == this.selectedLayer.get('title')
-        )
+          (layer) => layer.get('title') == this.selectedLayer?.get('title')
+        ) ||
+        !this.selectedLayer
       ) {
         this.selectedLayer = drawables[0];
         this.changeDrawSource();
