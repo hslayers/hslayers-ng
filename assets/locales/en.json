@@ -15,9 +15,9 @@
       "extractStyles": "Extract styles"
     },
     "Vector": {
+      "dragAndDropFiles": "Drag and drop files",
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files",
-      "dragAndDropFiles": "Drag and drop files"
+      "uploadVectorFiles": "Upload vector files"
     },
     "WFS": {
       "addToMap": "Add to map",
@@ -28,10 +28,13 @@
     "WMTS": {
       "tileMatrix": "Tile matrix"
     },
+    "addSelected": "Add selected layers to the map",
     "chooseFormat": "Choose format",
     "chooseType": "Choose type",
     "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
+    "couldNotUploadSelectedFile": "There was a problem uploading the selected file!",
     "externalDataSource": "External data source (URL)",
+    "featureCount": "Feature count",
     "folderName": "Folder name",
     "imageFormat": "Image format",
     "loadingFeaturePleaseWait": "Loading features, please wait",
@@ -47,8 +50,7 @@
     "thisIsRequired": "This is required!",
     "tileSize": "Tile size",
     "useProxy": "Use proxy",
-    "useTiles": "Use tiles",
-    "addSelected": "Add selected layers to the map"
+    "useTiles": "Use tiles"
   },
   "COMMON": {
     "Login": "Log in",
