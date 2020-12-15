@@ -220,6 +220,13 @@ export class HsDrawService {
     return true;
   }
 
+  /**
+   * @param layer
+   * @function selectLayer
+   * @memberOf HsDrawService
+   * @description Handles drawing layer selection/change by activating drawing for selected layer.
+   * In case of layman layer not yet existing in app it pulls the layer first.
+   */
   async selectLayer(layer) {
     let lyr = layer;
     if (layer.type) {
@@ -248,7 +255,12 @@ export class HsDrawService {
     }
     this.fillDrawableLayers();
   }
-
+  /**
+   * @param layer
+   * @function addDrawLayer
+   * @memberOf HsDrawService
+   * @description Add draw layer to the map and repopulate list of drawables.
+   */
   addDrawLayer(layer: Layer): void {
     this.HsMapService.map.addLayer(layer);
     this.fillDrawableLayers();
@@ -320,7 +332,11 @@ export class HsDrawService {
   removeLastPoint(): void {
     this.draw.removeLastPoint();
   }
-
+  /**
+   * @function changeDrawSource
+   * @memberOf HsDrawService
+   * @description Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
+   */
   changeDrawSource(): void {
     if (this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)) {
       this.source = this.selectedLayer.getSource().getSource();
@@ -388,19 +404,35 @@ export class HsDrawService {
     this.draw.setActive(true);
   }
 
+  /**
+   * @function fillDrawableLayers
+   * @memberOf HsDrawService
+   * @description Repopulates drawable layers. In case layman connection exists it also creates
+   * a list of avaliable server possiblities.
+   */
+
   fillDrawableLayers(): void {
     const drawables = this.HsMapService.map
       .getLayers()
       .getArray()
       .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer));
-    if (drawables.length > 0 && !this.selectedLayer) {
-      this.selectedLayer = drawables[0];
-      this.changeDrawSource();
-    }
-    if (drawables.length == 0 && !this.selectedLayer) {
+
+    if (drawables.length == 0) {
+      //&& !this.selectedLayer
       this.type = null;
       this.deactivateDrawing();
+      this.selectedLayer = null;
+    } else {
+      if (
+        !drawables.some(
+          (layer) => layer.get('title') == this.selectedLayer.get('title')
+        )
+      ) {
+        this.selectedLayer = drawables[0];
+        this.changeDrawSource();
+      }
     }
+
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
