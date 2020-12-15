@@ -434,7 +434,7 @@ export class HsDrawService {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
-      if (this.selectedLayer.get('synchronize') == true) {
+      if (this.selectedLayer.get('definition')?.format == 'hs.format.WFS') {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (this.selectedLayer.get('title') == 'tmpDrawLayer') {
