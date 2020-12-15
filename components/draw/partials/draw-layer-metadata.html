@@ -21,7 +21,7 @@
                 <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
             </div>
             <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
-                *ngIf="data.drawableLaymanLayers.length > 0 && data.isAuthorized">
+                *ngIf="data.drawableLaymanLayers.length > 0 && data.isAuthorized && !data.tmpDrawLayer">
                 <button type="button" class="btn btn-sm rounded btn-primary hs-toolbar-button" (click)="type = 'draw'"
                     [ngClass]="{active: type == 'draw' }">
                     {{'DRAW.drawToolbar.addDrawLayer' | translate}}
@@ -32,7 +32,7 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <form *ngIf="type == 'draw' || data.drawableLaymanLayers.length == 0">
+                <form *ngIf="type == 'draw' || data.drawableLaymanLayers.length == 0 || data.tmpDrawLayer">
                     <div class="form-group">
                         <label class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' | translate}}</label>
                         <div class="mb-3">
@@ -89,7 +89,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="data.isAuthorized || type == 'draw'"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="data.isAuthorized && type == 'draw' || data.tmpDrawLayer"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
