@@ -10,7 +10,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 export class HsAddLayersVectorComponent {
   srs = 'EPSG:4326';
   title = '';
-  extract_styles = false;
+  extract_styles = true;
   abstract: string;
   url: string;
   base64url: string;
@@ -30,9 +30,17 @@ export class HsAddLayersVectorComponent {
 
   connect = (): void => {
     this.hsHistoryListService.addSourceHistory('vector', this.url);
+    this.isKml();
     //this.showDetails = true;
   };
 
+  isKml(): boolean {
+    if (this.type == 'kml' || this.url?.endsWith('kml')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /**
    * Handler for adding nonwms service, file in template.
    *
@@ -62,10 +70,6 @@ export class HsAddLayersVectorComponent {
         f
       );
       if (uploadedData !== undefined) {
-        uploadedData.type !== undefined
-          ? (this.type = uploadedData.type)
-          : (this.type = '');
-
         uploadedData.url !== undefined
           ? (this.base64url = uploadedData.url)
           : ((this.url = ''), (this.base64url = ''));
@@ -93,6 +97,12 @@ export class HsAddLayersVectorComponent {
           this.features = [];
           this.featureCount = 0;
         }
+        if (uploadedData.type !== undefined) {
+          this.type = uploadedData.type;
+          this.isKml();
+        } else {
+          this.type = '';
+        }
       } else {
         this.setToDefault();
         this.errorOccured = true;
@@ -105,7 +115,7 @@ export class HsAddLayersVectorComponent {
   setToDefault(): void {
     this.srs = 'EPSG:4326';
     this.title = '';
-    this.extract_styles = false;
+    this.extract_styles = true;
     this.abstract = '';
     this.url = '';
     this.base64url = '';
