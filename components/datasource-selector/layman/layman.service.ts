@@ -73,17 +73,14 @@ export class HsLaymanBrowserService {
     if (data.data === null) {
       dataset.datasourcePaging.matched == 0;
     } else {
-      dataset.datasourcePaging.matched = data.matched;
-      for (const lyr in data) {
-        if (data[lyr]) {
-          const obj = {
-            title: data[lyr].title,
-            type: ['WMS', 'WFS'],
-            name: data[lyr].name,
-          };
-          dataset.layers.push(obj);
-        }
-      }
+      dataset.datasourcePaging.matched = data.length;
+      dataset.layers = data.map((layer) => {
+        return {
+          title: layer.title,
+          type: ['WMS', 'WFS'],
+          name: layer.name,
+        };
+      });
     }
   }
 
