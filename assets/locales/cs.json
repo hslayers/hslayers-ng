@@ -15,9 +15,9 @@
       "extractStyles": "Extrahovat styly"
     },
     "Vector": {
+      "dragAndDropFiles": "Přetáhněte soubory",
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory",
-      "dragAndDropFiles": "Přetáhněte soubory"
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
     },
     "WFS": {
       "addToMap": "Přidat do mapy",
@@ -28,10 +28,13 @@
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
     },
+    "addSelected": "Přidat označené vrstvy do mapy",
     "chooseFormat": "Vyberte formát",
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrazu.",
+    "couldNotUploadSelectedFile": "There was a problem uploading the selected file!",
     "externalDataSource": "Zdroj externích dat (URL)",
+    "featureCount": "Feature count",
     "folderName": "Název složky",
     "imageFormat": "Formát obrazu",
     "loadingFeaturePleaseWait": "Načítání prvků, prosím, čekejte",
@@ -47,8 +50,7 @@
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
     "useProxy": "Použít proxy",
-    "useTiles": "Použít dlaždice",
-    "addSelected": "Přidat označené vrstvy do mapy"
+    "useTiles": "Použít dlaždice"
   },
   "COMMON": {
     "Login": "Přihlásit se",
