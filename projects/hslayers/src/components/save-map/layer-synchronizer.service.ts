@@ -9,6 +9,7 @@ import {WFS} from 'ol/format';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './layman.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
@@ -28,7 +29,8 @@ export class HsLayerSynchronizerService {
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
     public HsCommonLaymanService: HsCommonLaymanService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   init(map: Map): void {
@@ -235,7 +237,9 @@ export class HsLayerSynchronizerService {
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
       {
-        header: 'Error',
+        header: this.HsLanguageService.getTranslation(
+          'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing'
+        ),
         delay: 3000,
         autohide: true,
         classname: 'bg-danger text-light',
