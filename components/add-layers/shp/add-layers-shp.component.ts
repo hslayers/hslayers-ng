@@ -135,7 +135,7 @@ export class HsAddLayersShpComponent {
         this.loading = false;
         this.resultCode = 'error';
         this.errorMessage = err.message;
-        this.errorDetails = Object.entries(err.detail);
+        this.errorDetails = Object.entries(err.error.detail);
       });
   }
 
