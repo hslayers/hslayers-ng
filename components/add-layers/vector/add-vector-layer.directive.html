@@ -10,6 +10,7 @@
                     <input type="file" (change)="handleFileUpload($event.target.files)">
                 </label> 
         </div>
+        <!-- TODO Replace this with upcomming toast directive -->
         <div class="text-danger text-center" *ngIf="errorOccured">
             <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
         </div>
