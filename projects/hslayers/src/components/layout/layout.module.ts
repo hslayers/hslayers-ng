@@ -27,6 +27,7 @@ import {HsSearchModule} from '../search/search.module';
 import {HsShareModule} from '../permalink/share.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsStylerModule} from '../styles/styles.module';
+import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
 import {TranslateModule} from '@ngx-translate/core';
@@ -65,6 +66,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsTripPlannerModule,
     HsDrawModule,
     HsPanelHelpersModule,
+    HsToastModule,
   ],
   providers: [HsLayoutService, HsDialogContainerService],
   entryComponents: [HsDialogContainerComponent, HsLayoutComponent],
