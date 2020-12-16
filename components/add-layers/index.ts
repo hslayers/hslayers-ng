@@ -13,7 +13,7 @@ import {HsAddLayersComponent} from './add-layers.component';
 import {HsAddLayersModule} from './add-layers.module';
 import {HsAddLayersUrlComponent} from './common/add-layers-url.component';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
-import {HsNestedLayersTableComponent} from './nested-layers-table.component';
+import {HsNestedLayersTableComponent} from './common/nested-layers-table.component';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 

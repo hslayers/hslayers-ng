@@ -7,12 +7,21 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsAddLayersUrlComponent} from './add-layers-url.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog.component';
 import {HsHistoryListModule} from '../../../common/history-list/history-list.module';
+import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule, HsHistoryListModule],
-  exports: [HsAddLayersUrlComponent, HsGetCapabilitiesErrorComponent],
-  declarations: [HsAddLayersUrlComponent, HsGetCapabilitiesErrorComponent],
+  exports: [
+    HsAddLayersUrlComponent,
+    HsGetCapabilitiesErrorComponent,
+    HsNestedLayersTableComponent,
+  ],
+  declarations: [
+    HsAddLayersUrlComponent,
+    HsGetCapabilitiesErrorComponent,
+    HsNestedLayersTableComponent,
+  ],
   providers: [],
   entryComponents: [HsGetCapabilitiesErrorComponent],
 })

@@ -11,7 +11,6 @@ import {HsAddLayersWfsModule} from './wfs/add-layers-wfs.module';
 import {HsAddLayersWmsModule} from './wms/add-layers-wms.module';
 import {HsAddLayersWmtsModule} from './wmts/add-layers-wmts.module';
 import {HsDragDropLayerService} from './drag-drop-layer.service';
-import {HsNestedLayersTableComponent} from './nested-layers-table.component';
 import {HsResampleDialogComponent} from './resample-dialog.component';
 
 @NgModule({
@@ -27,16 +26,8 @@ import {HsResampleDialogComponent} from './resample-dialog.component';
     HsAddLayersWmtsModule,
     HsAddLayersWfsModule,
   ],
-  exports: [
-    HsAddLayersComponent,
-    HsNestedLayersTableComponent,
-    HsResampleDialogComponent,
-  ],
-  declarations: [
-    HsAddLayersComponent,
-    HsNestedLayersTableComponent,
-    HsResampleDialogComponent,
-  ],
+  exports: [HsAddLayersComponent, HsResampleDialogComponent],
+  declarations: [HsAddLayersComponent, HsResampleDialogComponent],
   providers: [HsDragDropLayerService],
 })
 export class HsAddLayersModule {}
