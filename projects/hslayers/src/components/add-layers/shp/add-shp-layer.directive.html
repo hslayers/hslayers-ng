@@ -40,11 +40,11 @@
     </div>
 
     <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-        data-toggle="collapse" (click)="advancedPanelVisible = !advancedPanelVisible" data-target=".hs-ows-shp-advanced">
+        (click)="advancedPanelVisible = !advancedPanelVisible">
         {{'COMMON.advancedOptions' | translate}}
     </button>
 
-    <div class="collapse hs-ows-shp-advanced" [ngClass]="{'show': advancedPanelVisible}">
+    <div class="collapse hs-ows-shp-advanced" *ngIf="advancedPanelVisible">
         <div class="form-group">
             <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
             <input class="form-control" name="srs" [(ngModel)]="srs" />
