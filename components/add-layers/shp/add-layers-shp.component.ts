@@ -108,7 +108,6 @@ export class HsAddLayersShpComponent implements OnInit {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    this.name = this.hsLaymanService.getLaymanFriendlyLayerName(this.name);
     console.log(
       this.endpoint,
       this.files,
@@ -128,22 +127,27 @@ export class HsAddLayersShpComponent implements OnInit {
         this.sld
       )
       .then((data) => {
-        this.describeNewLayer(this.endpoint, this.name).then((descriptor) => {
-          this.hsAddLayersWmsService.addService(
-            descriptor.wms.url,
-            undefined,
-            this.name
-          );
-          this.loading = false;
-          this.hsLayoutService.setMainPanel('layermanager');
-        });
+        this.name = data[0].name; //Name translated to Layman-safe name
+        return this.describeNewLayer(this.endpoint, this.name);
+      })
+      .then((descriptor) => {
         this.resultCode = 'success';
+        this.hsAddLayersWmsService.addService(
+          descriptor.wms.url,
+          undefined,
+          this.name
+        );
+        this.loading = false;
+        this.hsLayoutService.setMainPanel('layermanager');
       })
       .catch((err) => {
+        this.hsLog.error(err);
         this.loading = false;
         this.resultCode = 'error';
-        this.errorMessage = err?.error?.message;
-        this.errorDetails = Object.entries(err?.error?.detail);
+        this.errorMessage = err?.error?.message ?? err?.message;
+        this.errorDetails = err?.error?.detail
+          ? Object.entries(err.error.detail)
+          : [];
       });
   }
 
