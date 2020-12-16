@@ -26,6 +26,9 @@ export class HsUtilsService {
     if (url.startsWith(this.HsConfig.proxyPrefix)) {
       return url;
     }
+    if (url.startsWith('data:application')) {
+      return url;
+    }
     toEncoding = toEncoding === undefined ? true : toEncoding;
     let outUrl = url;
     //Not using location because don't know if port 80 was specified explicitly or not

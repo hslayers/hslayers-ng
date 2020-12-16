@@ -158,7 +158,25 @@ div.list-group-item.hs-lm-list {
 .hs-lm-list > ul.list-group.row {
 	margin-bottom: 0;
 }
-
+.dropzone {
+	text-align: center;
+	min-height: 80px;
+	border: dashed 2px rgba(0, 0, 0, 0.35);
+	border-radius: 5px;
+	color: #495057 !important;
+}
+.dropzone.active {
+	border: solid 3px $primary;
+	color: rgba(0, 0, 0, 0.35) !important;
+	opacity: 0.4;
+}
+.dropzone .dropzone-label {
+	display: block;
+	font-size: 1em;
+}
+progress::-webkit-progress-value {
+	transition: width 0.1s ease;
+}
 ul.hs-lm-baselayerlist {
 	margin-bottom: 0;
 }
