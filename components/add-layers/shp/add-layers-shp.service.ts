@@ -1,11 +1,12 @@
 import {FileDescriptor} from './file-descriptor.type';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsLogService} from '../../../common/log/log.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersShpService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, public hsLog: HsLogService) {}
 
   /**
    * @function add
@@ -63,7 +64,7 @@ export class HsAddLayersShpService {
           }
         })
         .catch((err) => {
-          console.warn(err);
+          this.hsLog.error(err);
           reject(err);
         });
     });

@@ -338,7 +338,7 @@ export class HsLaymanService implements HsSaverService {
    * @description Try getting layer description from layman.
    */
   async describeLayer(
-    endpoint,
+    endpoint: HsEndpoint,
     layerName: string
   ): Promise<HsLaymanLayerDescriptor> {
     try {
@@ -357,8 +357,8 @@ export class HsLaymanService implements HsSaverService {
         return response;
       }
     } catch (ex) {
-      console.warn(ex);
-      return null;
+      this.HsLogService.error(ex);
+      throw ex;
     }
   }
 
