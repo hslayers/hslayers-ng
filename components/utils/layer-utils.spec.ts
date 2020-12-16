@@ -11,6 +11,7 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Cluster} from 'ol/source';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
@@ -49,9 +50,10 @@ describe('HsLayerUtilsService', () => {
   });
 
   it('check if layer is clustered', () => {
+    const source = new Vector();
     const clusteredLayer = new VectorLayer({
       title: 'villages',
-      source: new Vector(),
+      source: new Cluster({source: source}),
       cluster: true,
     });
     const unclusteredLayer = new VectorLayer({
