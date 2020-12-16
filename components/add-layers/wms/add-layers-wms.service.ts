@@ -12,6 +12,7 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
+import {Subject} from 'rxjs';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
 
@@ -19,13 +20,12 @@ import {getPreferedFormat} from '../../../common/format-utils';
 export class HsAddLayersWmsService {
   getDimensionValues;
   data;
-
+  getWmsCapabilitiesError: Subject<any> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig
   ) {
@@ -144,8 +144,7 @@ export class HsAddLayersWmsService {
       ]);
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
     } catch (e) {
-      //FIXME: $rootScope.$broadcast('wmsCapsParseError', e);
-      this.hsLog.warn(e);
+      this.getWmsCapabilitiesError.next(e);
     }
   }
 
