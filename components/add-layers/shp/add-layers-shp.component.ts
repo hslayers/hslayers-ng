@@ -108,14 +108,6 @@ export class HsAddLayersShpComponent implements OnInit {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    console.log(
-      this.endpoint,
-      this.files,
-      this.name,
-      this.title,
-      this.srs,
-      this.sld
-    );
     this.hsAddLayersShpService
       .add(
         this.endpoint,
