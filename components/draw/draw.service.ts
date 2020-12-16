@@ -338,7 +338,13 @@ export class HsDrawService {
    * @description Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
   changeDrawSource(): void {
-    if (this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)) {
+    if (this.selectedLayer.getSource === undefined) {
+      return;
+    }
+    const isLayerClustered = this.HsLayerUtilsService.isLayerClustered(
+      this.selectedLayer
+    );
+    if (isLayerClustered) {
       this.source = this.selectedLayer.getSource().getSource();
     } else {
       this.source = this.selectedLayer.getSource();
