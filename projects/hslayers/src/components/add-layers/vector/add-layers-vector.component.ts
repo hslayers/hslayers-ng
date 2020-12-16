@@ -57,7 +57,11 @@ export class HsAddLayersVectorComponent {
       this.title,
       this.abstract,
       this.srs,
-      {extractStyles: this.extract_styles, features: this.features},
+      {
+        extractStyles: this.extract_styles,
+        features: this.features,
+        path: this.folder_name,
+      },
       this.addBefore
     );
     this.hsAddLayersVectorService.fitExtent(layer);

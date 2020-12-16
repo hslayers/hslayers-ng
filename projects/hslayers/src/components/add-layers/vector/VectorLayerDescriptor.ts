@@ -13,6 +13,7 @@ export class VectorLayerDescriptor {
     style: any;
     source?: VectorSource;
     removable?: boolean;
+    path: string;
   };
 
   constructor(
@@ -42,6 +43,7 @@ export class VectorLayerDescriptor {
       from_composition: options.from_composition || false,
       style: options.style,
       removable: true,
+      path: options.path,
     };
 
     switch (type ? type.toLowerCase() : '') {

@@ -125,7 +125,7 @@ export class HsWmsGetCapabilitiesService {
    * @param {string} capabilities_xml Xml response of GetCapabilities of selected service
    * @returns {Ol.collection} List of layers from service
    */
-  service2layers(capabilities_xml) {
+  service2layers(capabilities_xml, path: string) {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
@@ -170,6 +170,7 @@ export class HsWmsGetCapabilitiesService {
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           name: layer.Name.replace(/\//g, '&#47;'),
+          path,
           source: new TileWMS({
             url:
               caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
