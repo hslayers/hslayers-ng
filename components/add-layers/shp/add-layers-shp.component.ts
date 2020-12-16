@@ -108,6 +108,7 @@ export class HsAddLayersShpComponent implements OnInit {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
+    this.name = this.hsLaymanService.getLaymanFriendlyLayerName(this.name);
     console.log(
       this.endpoint,
       this.files,
