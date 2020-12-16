@@ -8,7 +8,7 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 @Injectable({
@@ -211,6 +211,10 @@ export class HsShareService {
       }
       try {
         const endpointUrl = this.HsStatusManagerService.endpointUrl();
+        const headers = new HttpHeaders().set(
+          'Content-Type',
+          'text/plain; charset=utf-8'
+        );
         await this.HttpClient.post(
           endpointUrl,
           JSON.stringify({
@@ -221,7 +225,7 @@ export class HsShareService {
             description: this.data.abstract,
             image: this.data.thumbnail,
           }),
-          {responseType: 'text'}
+          {headers, responseType: 'text'}
         ).toPromise();
 
         const shortUrl = await this.HsUtilsService.shortUrl(
