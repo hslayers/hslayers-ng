@@ -220,7 +220,8 @@ export class HsShareService {
             title: this.data.title,
             description: this.data.abstract,
             image: this.data.thumbnail,
-          })
+          }),
+          {responseType: 'text'}
         ).toPromise();
 
         const shortUrl = await this.HsUtilsService.shortUrl(
