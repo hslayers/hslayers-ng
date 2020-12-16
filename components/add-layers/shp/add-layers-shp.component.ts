@@ -56,7 +56,6 @@ export class HsAddLayersShpComponent implements OnInit {
    */
   pickEndpoint(): void {
     const endpoints = this.hsCommonEndpointsService.endpoints;
-    console.log('picking', endpoints);
     if (endpoints && endpoints.length > 0) {
       const laymans = endpoints.filter((ep) => ep.type == 'layman');
       if (laymans.length > 0) {
@@ -129,8 +128,6 @@ export class HsAddLayersShpComponent implements OnInit {
         this.sld
       )
       .then((data) => {
-        console.log('add successfulll');
-        //need refreshed endpoint here
         this.describeNewLayer(this.endpoint, this.name).then((descriptor) => {
           this.hsAddLayersWmsService.addService(
             descriptor.wms.url,
@@ -151,7 +148,6 @@ export class HsAddLayersShpComponent implements OnInit {
   }
 
   read(evt): void {
-    console.log(evt.target.files);
     const filesRead = [];
     for (const file of evt.target.files) {
       const reader = new FileReader();
