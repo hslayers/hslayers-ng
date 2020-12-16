@@ -44,7 +44,6 @@ export class HsAddLayersShpComponent implements OnInit {
     this.loaderImage = this.hsUtilsService.resolveEsModule(
       require('../../../img/ajax-loader.gif')
     );
-    //vm.endpointsService = HsCommonEndpointsService;
   }
 
   ngOnInit(): void {
@@ -86,9 +85,11 @@ export class HsAddLayersShpComponent implements OnInit {
         layerName
       );
       if (['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)) {
-        setTimeout(async () => {
-          return await this.describeNewLayer(endpoint, layerName);
-        }, 2000);
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(this.describeNewLayer(endpoint, layerName));
+          }, 2000);
+        });
       } else {
         return descriptor;
       }
