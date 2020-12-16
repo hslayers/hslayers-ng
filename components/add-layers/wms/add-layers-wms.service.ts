@@ -223,6 +223,9 @@ export class HsAddLayersWmsService {
    * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): void {
+    if (this.data.services === undefined) {
+      return;
+    }
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
     }
