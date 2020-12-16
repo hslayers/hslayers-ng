@@ -221,7 +221,7 @@ export class HsShareService {
             description: this.data.abstract,
             image: this.data.thumbnail,
           })
-        );
+        ).toPromise();
 
         const shortUrl = await this.HsUtilsService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
