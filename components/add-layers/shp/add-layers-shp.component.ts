@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {FileDescriptor} from './file-descriptor.type';
 import {HsAddLayersShpService} from './add-layers-shp.service';
@@ -13,7 +13,7 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-add-layers-shp',
   template: require('./add-shp-layer.directive.html'),
 })
-export class HsAddLayersShpComponent {
+export class HsAddLayersShpComponent implements OnInit {
   abstract: string;
   endpoint: HsEndpoint = null;
   errorDetails = [];
@@ -42,6 +42,10 @@ export class HsAddLayersShpComponent {
       require('../../../img/ajax-loader.gif')
     );
     //vm.endpointsService = HsCommonEndpointsService;
+  }
+
+  ngOnInit(): void {
+    this.pickEndpoint();
   }
 
   /**
