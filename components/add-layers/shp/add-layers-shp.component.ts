@@ -5,8 +5,10 @@ import {HsAddLayersShpService} from './add-layers-shp.service';
 import {HsAddLayersWmsService} from '../wms/add-layers-wms.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsLaymanLayerDescriptor} from '../../save-map/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
@@ -34,6 +36,7 @@ export class HsAddLayersShpComponent implements OnInit {
     public hsAddLayersShpService: HsAddLayersShpService,
     public hsLayoutService: HsLayoutService,
     public hsLaymanService: HsLaymanService,
+    public hsLog: HsLogService,
     public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService
@@ -69,27 +72,30 @@ export class HsAddLayersShpComponent implements OnInit {
   }
 
   /**
-   * @param endpoint
-   * @param layerName
+   * @param endpoint Selected endpoint (should be Layman)
+   * @param layerName Name of the layer to describe
+   * @returns {Promise} Description of Layman layer
    */
-  describeNewLayer(endpoint, layerName): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.hsLaymanService
-        .describeLayer(endpoint, layerName)
-        .then((descriptor) => {
-          if (
-            ['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)
-          ) {
-            setTimeout(() => {
-              this.describeNewLayer(endpoint, layerName).then((response) =>
-                resolve(response)
-              );
-            }, 2000);
-          } else {
-            resolve(descriptor);
-          }
-        });
-    });
+  async describeNewLayer(
+    endpoint: HsEndpoint,
+    layerName: string
+  ): Promise<HsLaymanLayerDescriptor> {
+    try {
+      const descriptor = await this.hsLaymanService.describeLayer(
+        endpoint,
+        layerName
+      );
+      if (['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)) {
+        setTimeout(async () => {
+          return await this.describeNewLayer(endpoint, layerName);
+        }, 2000);
+      } else {
+        return descriptor;
+      }
+    } catch (ex) {
+      this.hsLog.error(ex);
+      throw ex;
+    }
   }
 
   /**
@@ -122,17 +128,16 @@ export class HsAddLayersShpComponent implements OnInit {
       )
       .then((data) => {
         console.log('add successfulll');
-        this.describeNewLayer(this.endpoint, this.name).then(
-          (descriptor: any) => {
-            this.hsAddLayersWmsService.addService(
-              descriptor.wms.url,
-              undefined,
-              this.name
-            );
-            this.loading = false;
-            this.hsLayoutService.setMainPanel('layermanager');
-          }
-        );
+        //need refreshed endpoint here
+        this.describeNewLayer(this.endpoint, this.name).then((descriptor) => {
+          this.hsAddLayersWmsService.addService(
+            descriptor.wms.url,
+            undefined,
+            this.name
+          );
+          this.loading = false;
+          this.hsLayoutService.setMainPanel('layermanager');
+        });
         this.resultCode = 'success';
       })
       .catch((err) => {
