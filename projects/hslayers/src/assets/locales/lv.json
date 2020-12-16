@@ -1,7 +1,5 @@
 {
   "ADDLAYERS": {
-    "before": "Pievienot pirms slāņa",
-    "none": "Neviena (pievienot augšā)",
     "SHP": {
       "SLDStyleFile": "SLD stila datne",
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)"
@@ -17,7 +15,9 @@
       "extractStyles": "Izvilkt stilus"
     },
     "Vector": {
-      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\""
+      "dragAndDropFiles": "Velciet un nometiet failus",
+      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
     },
     "WFS": {
       "addToMap": "Pievienot kartei",
@@ -28,15 +28,20 @@
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
     },
+    "addSelected": "Pievienot izvēlētos slāņus kartei",
+    "before": "Pievienot pirms slāņa",
     "chooseFormat": "Izvēlieties formātu",
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
+    "couldNotUploadSelectedFile": "Radās problēma mēģinot ielādēt Jūsu izvēlēto failu!",
     "externalDataSource": "Ārējais datu avots (hipersaite)",
+    "featureCount": "Grafisko objektu skaits",
     "folderName": "Mapes nosaukums",
     "imageFormat": "Attēla formāts",
     "loadingFeaturePleaseWait": "Notiek grafisko objektu ielāde, lūdzu uzgaidiet!",
     "mapAndLayerProjection": "Kartes un slāņa projekcija nesakrīt! Tiks izmantota atkārtota paraugu ņemšana. Tas var novest pie negaidītiem rezultātiem.",
     "mapProjectionAndLayerProjection": "Kartes projekcija un slāņa projekcija nesakrīt. Pievienojiet slāni kartei un izmantojiet servera puses atkārtotas atlases programmu?",
+    "none": "Neviena (pievienot augšā)",
     "queryFormat": "Vaicājuma formāts",
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
@@ -47,8 +52,7 @@
     "thisIsRequired": "Šis ir nepieciešams!",
     "tileSize": "\"Flīžu\" izmērs",
     "useProxy": "Izmantojiet starpniekserveri",
-    "useTiles": "Izmantojiet \"flīzes\"",
-    "addSelected": "Add selected layers to the map"
+    "useTiles": "Izmantojiet \"flīzes\""
   },
   "COMMON": {
     "Login": "Autorizēties",
@@ -223,12 +227,11 @@
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
+    "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "serverLayers": "Servera slāņi",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
-    "activeLayers": "Aktīvie slāņi",
-    "notAuthorized":"User not authorized, drawings won´t be preserved"
+    "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -267,6 +270,7 @@
     },
     "dimensions": "Dimensijas",
     "editorButtons": "Redaktora pogas",
+    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu",
     "layerEditor": {
       "cluster": "Apvienot blakusesošos",
       "copyright": "Autortiesības",
@@ -313,8 +317,7 @@
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
-    "terrains": "Reljefi",
-    "enablePhysicalLayerList": "Ieslēgt/Izslēgt slāņu secības sarakstu"
+    "terrains": "Reljefi"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"

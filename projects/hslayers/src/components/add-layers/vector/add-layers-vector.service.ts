@@ -1,6 +1,7 @@
 import '../../styles/styles.module';
 import BaseLayer from 'ol/layer/Base';
 import VectorLayerDescriptor from './VectorLayerDescriptor';
+import {GeoJSON} from 'ol/format';
 import {HsAddLayersService} from '../add-layers.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -13,6 +14,34 @@ import {VectorSourceDescriptor} from './vector-source-descriptor';
   providedIn: 'root',
 })
 export class HsAddLayersVectorService {
+  readUploadedFileAsText = (inputFile: any) => {
+    const temporaryFileReader = new FileReader();
+    return new Promise((resolve, reject) => {
+      temporaryFileReader.onerror = () => {
+        temporaryFileReader.abort();
+        reject(new DOMException('Problem parsing input file.'));
+      };
+
+      temporaryFileReader.onload = () => {
+        resolve(temporaryFileReader.result);
+      };
+      temporaryFileReader.readAsText(inputFile);
+    });
+  };
+  readUploadedFileAsURL = (inputFile: any) => {
+    const temporaryFileReader = new FileReader();
+    return new Promise((resolve, reject) => {
+      temporaryFileReader.onerror = () => {
+        temporaryFileReader.abort();
+        reject(new DOMException('Problem parsing input file.'));
+      };
+
+      temporaryFileReader.onload = () => {
+        resolve(temporaryFileReader.result);
+      };
+      temporaryFileReader.readAsDataURL(inputFile);
+    });
+  };
   constructor(
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
@@ -58,10 +87,16 @@ export class HsAddLayersVectorService {
         TODO: Should have set definition property with protocol inside 
         so layer synchronizer would know if to sync 
         */
-        lyr.set('definition', {
-          format: 'hs.format.WFS',
-          url: url.replace('ows', 'wfs'),
-        });
+        if (url !== undefined) {
+          lyr.set('definition', {
+            format: 'hs.format.WFS',
+            url: url.replace('ows', 'wfs'),
+          });
+        } else {
+          lyr.set('definition', {
+            format: 'hs.format.WFS',
+          });
+        }
         if (this.HsMapService.map) {
           this.hsAddLayersService.addLayer(lyr, addBefore);
         }
@@ -189,5 +224,62 @@ export class HsAddLayersVectorService {
         return 'geojson';
       }
     }
+  }
+  async readUploadedFile(file: any): Promise<any> {
+    let uploadedData: any = {};
+    if (file.name.endsWith('kml')) {
+      uploadedData = await this.createVectorObjectFromXml(file, 'kml');
+      return uploadedData;
+    } else if (file.name.endsWith('gpx')) {
+      uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
+      return uploadedData;
+    } else {
+      try {
+        const fileContents = await this.readUploadedFileAsText(file);
+        const fileToJSON = JSON.parse(<string>fileContents);
+        if (fileToJSON !== undefined) {
+          if (fileToJSON.features.length > 0) {
+            uploadedData = this.createVectorObjectFromJson(fileToJSON);
+            return uploadedData;
+          }
+        }
+      } catch (e) {
+        console.log('Uploaded file is not supported!');
+      }
+    }
+  }
+  async createVectorObjectFromXml(file: File, type: string): Promise<any> {
+    try {
+      const uploadedContent = await this.readUploadedFileAsURL(file);
+      const dataUrl = uploadedContent.toString();
+      const object = {
+        url: dataUrl,
+        name: file.name,
+        title: file.name,
+        type: type,
+      };
+      return object;
+    } catch (e) {
+      console.log('Uploaded file is not supported!');
+    }
+  }
+  createVectorObjectFromJson(json: any): any {
+    const format = new GeoJSON();
+    const features = format.readFeatures(json);
+    const projection = format.readProjection(json);
+    const mapProjection = this.HsMapService.map.getView().getProjection();
+    if (projection != mapProjection) {
+      features.forEach((f) =>
+        //TODO: Make it parallel using workers or some library
+        f.getGeometry().transform(projection, mapProjection)
+      );
+    }
+    const object = {
+      name: json.name,
+      title: json.name,
+      srs: projection,
+      features: features,
+    };
+    return object;
   }
 }

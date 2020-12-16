@@ -1,7 +1,5 @@
 {
   "ADDLAYERS": {
-    "before": "Přidat před vrstvu",
-    "none": "Žádnou (nahoru)",
     "SHP": {
       "SLDStyleFile": "Soubor se styly SLD",
       "shapeFile": "Soubory Shapefile (shp+dbf+shx)"
@@ -17,7 +15,9 @@
       "extractStyles": "Extrahovat styly"
     },
     "Vector": {
-      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\""
+      "dragAndDropFiles": "Přetáhněte soubory",
+      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
     },
     "WFS": {
       "addToMap": "Přidat do mapy",
@@ -28,15 +28,20 @@
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
     },
+    "addSelected": "Přidat označené vrstvy do mapy",
+    "before": "Přidat před vrstvu",
     "chooseFormat": "Vyberte formát",
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrazu.",
+    "couldNotUploadSelectedFile": "Při načítání souboru došlo k chybě!",
     "externalDataSource": "Zdroj externích dat (URL)",
+    "featureCount": "Počet prvků",
     "folderName": "Název složky",
     "imageFormat": "Formát obrazu",
     "loadingFeaturePleaseWait": "Načítání prvků, prosím, čekejte",
     "mapAndLayerProjection": "Mapová zobrazení mapy a vrstvy si neodpovídají! Bude použito převzorkování. To může vést k neočekávaným výsledkům.",
     "mapProjectionAndLayerProjection": "Mapové zobrazení mapy a vrstvy si neodpovídají. Přidat vrstvu do mapy a použít převzorkovací program na straně serveru?",
+    "none": "Žádnou (nahoru)",
     "queryFormat": "Formát dotazu",
     "registerMetadata": "Registrovat metadata",
     "resampleLayer": "Převzorkovat vrstvu",
@@ -47,8 +52,7 @@
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
     "useProxy": "Použít proxy",
-    "useTiles": "Použít dlaždice",
-    "addSelected": "Přidat označené vrstvy do mapy"
+    "useTiles": "Použít dlaždice"
   },
   "COMMON": {
     "Login": "Přihlásit se",
@@ -223,12 +227,11 @@
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
+    "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "saveDrawingToLayer": "Uložit do vrstvy",
     "serverLayers": "Servrové vrstvy",
-    "unsavedDrawing": "Neuložená kresba",
-    "activeLayers": "Aktivní vrstvy",
-    "notAuthorized":"Uživatel neautorizován, změny nebudou uloženy"
+    "unsavedDrawing": "Neuložená kresba"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -267,6 +270,7 @@
     },
     "dimensions": "Dimenze",
     "editorButtons": "Editační tlačítka",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
@@ -313,8 +317,7 @@
     "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "terrains": "Terény",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "terrains": "Terény"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"

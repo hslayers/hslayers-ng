@@ -10,6 +10,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsImpressumComponent {
   version = 'dev';
   logo = '';
+  logoDisabled = true;
   constructor(public hsUtilsService: HsUtilsService) {
     this.version = packageJson.version;
   }
