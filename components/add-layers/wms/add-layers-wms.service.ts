@@ -107,16 +107,8 @@ export class HsAddLayersWmsService {
         this.data.srs = this.data.srss[0];
       }
       this.srsChanged();
-      if (Array.isArray(caps.Capability.Layer)) {
-        this.data.services = caps.Capability.Layer;
-      } else if (typeof caps.Capability.Layer == 'object') {
-        if (caps.Capability.Layer.Layer) {
-          this.data.services = caps.Capability.Layer.Layer;
-        } else {
-          this.data.services = [caps.Capability.Layer];
-        }
-      }
-      this.data.services = this.data.services.filter((layer) => layer.Name);
+
+      this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
       this.data.extent =
         this.data.services[0].EX_GeographicBoundingBox ||
@@ -146,6 +138,27 @@ export class HsAddLayersWmsService {
     } catch (e) {
       this.getWmsCapabilitiesError.next(e);
     }
+  }
+
+  filterCapabilitiesLayers(layers) {
+    let tmp = [];
+    if (Array.isArray(layers)) {
+      tmp = layers;
+    } else if (typeof layers == 'object') {
+      if (layers.Layer) {
+        const layersWithNameParam = layers.Layer.filter((layer) => layer.Name);
+        if (layersWithNameParam.length > 0) {
+          tmp = layersWithNameParam;
+        } else {
+          for (const layer of layers.Layer) {
+            tmp.push(...layer.Layer.filter((layer) => layer.Name));
+          }
+        }
+      } else {
+        tmp = [layers];
+      }
+    }
+    return tmp;
   }
 
   /**
