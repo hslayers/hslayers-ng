@@ -177,25 +177,30 @@ export class HsAddLayersVectorService {
   fitExtent(lyr: Layer): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
-      this.tryFit(src.getExtent());
+      this.tryFit(src.getExtent(), src);
     } else {
-      src.on('change', (e) => {
-        if (src.getState() == 'ready') {
-          if (src.getFeatures().length == 0) {
-            return;
-          }
-          const extent = src.getExtent();
-          this.tryFit(extent);
+      src.on('change', this.changeListener(src));
+    }
+  }
+
+  changeListener(src): any {
+    if (src.getState() == 'ready') {
+      setTimeout(() => {
+        if (src.getFeatures().length == 0) {
+          return;
         }
-      });
+        const extent = src.getExtent();
+        this.tryFit(extent, src);
+      }, 1000);
     }
   }
 
   /**
    * @param extent
+   * @param src
    * @private
    */
-  tryFit(extent): void {
+  tryFit(extent, src): void {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&
@@ -206,6 +211,7 @@ export class HsAddLayersVectorService {
       this.HsMapService.map
         .getView()
         .fit(extent, this.HsMapService.map.getSize());
+      src.un('change', this.changeListener);
     }
   }
 
