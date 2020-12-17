@@ -116,7 +116,7 @@ export default function (
             : `:${$location.port()}`;
         return `${$location.protocol()}://${$location.host()}${portIfNeeded}/${
           me.current_url
-        }&permalink=${encodeURIComponent(me.permalinkRequestUrl)}`;
+        }&permalink=https://hub.lesprojekt.cz/statusmanager/?request=load%26id=5cfcd73f-f2dc-4052-8045-b4a1ff99dcde`;
       }
     },
 

@@ -142,7 +142,10 @@ export default function (HsUtilsService) {
       let url;
       if (layer.getSource().getUrls) {
         //Multi tile
-        url = layer.getSource().getUrls()[0];
+        url = layer.getSource().getUrls();
+        if (url) { //in case WMTS source has yet not been set
+          url = url[0];
+        }
       }
       if (layer.getSource().getUrl) {
         //Single tile
