@@ -517,9 +517,10 @@ export default function (
     const existingUrls = angular.isUndefined(existingSource.getUrls)
       ? ''
       : existingSource.getUrls();
-    const newUrls = angular.isUndefined(newSource.getUrls)
+    let newUrls = angular.isUndefined(newSource.getUrls)
       ? ['']
       : newSource.getUrls();
+    newUrls = newUrls ? newUrls : [''];
     const urlsEqual =
       existingUrls == newUrls ||
       (newUrls.length > 0 && existingUrls.indexOf(newUrls[0]) > -1);

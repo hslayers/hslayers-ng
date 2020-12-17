@@ -190,6 +190,9 @@ export default function (
    */
   me.queryMetadata = async function (layer) {
     const url = HsLayerUtilsService.getURL(layer);
+    if (!url) {
+      return;
+    }
     const metadata = {
       metainfo: {'OnlineResource': layer.get('Metadata')},
     };

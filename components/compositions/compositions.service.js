@@ -214,7 +214,7 @@ export default function (
           data.data.layers = response.data.data;
         }
         HsCompositionsParserService.removeCompositionLayers();
-        const layers = await HsCompositionsParserService.jsonToLayers(data);
+        const layers = HsCompositionsParserService.jsonToLayers(data);
         for (let i = 0; i < layers.length; i++) {
           HsMapService.addLayer(layers[i], true);
         }
@@ -240,7 +240,7 @@ export default function (
     ) {
       await HsMapService.loaded();
       const data = localStorage.getItem('hs_layers');
-      const layers = await HsCompositionsParserService.jsonToLayers(
+      const layers = HsCompositionsParserService.jsonToLayers(
         angular.fromJson(data)
       );
       for (const layer of layers) {

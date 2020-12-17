@@ -100,7 +100,7 @@ export default function (
      * @returns {object} Ol Tile layer
      * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
      */
-    createWMTSLayer: async function (lyr_def) {
+    createWMTSLayer: function (lyr_def) {
       const wmts = new Tile({
         title: lyr_def.title,
         info_format: lyr_def.info_format,
@@ -108,22 +108,28 @@ export default function (
       });
 
       // Get WMTS Capabilities and create WMTS source base on it
-      const source = await HsWmtsGetCapabilitiesService.requestGetCapabilities(
-        lyr_def.url
-      ).then((res) => {
-        //parse the XML response and create options object...
-        const parser = new WMTSCapabilities();
-        const result = parser.read(res.data);
-        // ...create WMTS Capabilities based on the parsed options
-        const options = optionsFromCapabilities(result, {
-          layer: lyr_def.layer,
-          matrixSet: lyr_def.matrixSet,
-          format: lyr_def.format,
-        });
-        // WMTS source for raster tiles layer
-        return new WMTS(options);
-      });
-      wmts.setSource(source);
+      HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url).then(
+        (res) => {
+          try {
+            //parse the XML response and create options object...
+            const parser = new WMTSCapabilities();
+            const result = parser.read(res.data);
+            // ...create WMTS Capabilities based on the parsed options
+            const options = optionsFromCapabilities(result, {
+              layer: lyr_def.layer,
+              matrixSet: lyr_def.matrixSet,
+              format: lyr_def.format,
+            });
+            // WMTS source for raster tiles layer
+            wmts.setSource(new WMTS(options));
+            HsMapService.proxifyLayerLoader(wmts, true);
+          } catch (error) {
+            console.error(error);
+            me.map.getLayers().remove(wmts);
+          }
+        }
+      );
+
       wmts.setVisible(lyr_def.visibility);
       return wmts;
     },
@@ -465,7 +471,7 @@ export default function (
           layer = HsAddLayersVectorService.createVectorLayer(
             'wfs',
             lyr_def.protocol.url,
-            lyr_def.name ||title,
+            lyr_def.name || title,
             title,
             lyr_def.abstract,
             lyr_def.projection.toUpperCase(),

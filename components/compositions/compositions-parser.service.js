@@ -231,7 +231,7 @@ export default function (
           angular.isDefined(response.data.name))
       );
     },
-    loadCompositionObject: async function (
+    loadCompositionObject: function (
       obj,
       overwrite,
       titleFromContainer,
@@ -256,7 +256,7 @@ export default function (
         $log.warn(error);
         me.createErrorDialog(error);
       }
-      const layers = await me.jsonToLayers(obj);
+      const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
         HsMapService.addLayer(lyr, true);
       });
@@ -378,7 +378,7 @@ export default function (
      * @returns {Array} Array of created layers
      * @description Parse composition object to extract individual layers and add them to map
      */
-    jsonToLayers: async function (j) {
+    jsonToLayers: function (j) {
       const layers = [];
       // debugger;
       if (j) {
@@ -389,8 +389,8 @@ export default function (
           return layers;
         }
         for (const lyr_def of j.layers) {
-          if (lyr_def.className){
-            const layer = await me.jsonToLayer(lyr_def);
+          if (lyr_def.className) {
+            const layer = me.jsonToLayer(lyr_def);
             if (angular.isUndefined(layer)) {
               const error = `Was not able to parse layer from composition: ${lyr_def.title}`;
               $log.warn(error);
@@ -416,8 +416,8 @@ export default function (
       switch (lyr_def.className) {
         case 'HSLayers.Layer.WMS':
           return HsCompositionsLayerParserService.createWmsLayer(lyr_def);
-          case 'HSLayers.Layer.WMTS':
-            return HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
+        case 'HSLayers.Layer.WMTS':
+          return HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         case 'ArcGISRest':
           return HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
         case 'XYZ':
