@@ -1,6 +1,11 @@
 import BaseLayer from 'ol/layer/Base';
 import {Attribution} from 'ol/control';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS, TileWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {WMSCapabilities} from 'ol/format';
+import {transformExtent} from 'ol/proj';
+
 import {HsAddLayersService} from '../add-layers.service';
 import {HsConfig} from '../../../config.service';
 import {HsDimensionService} from '../../../common/dimension.service';
@@ -9,18 +14,15 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
-import {ImageWMS, TileWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {WMSCapabilities} from 'ol/format';
+import {Subject} from 'rxjs';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
-import {transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsAddLayersWmsService {
   getDimensionValues;
   data;
-
+  getWmsCapabilitiesError: Subject<any> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -110,16 +112,8 @@ export class HsAddLayersWmsService {
         this.data.srs = this.data.srss[0];
       }
       this.srsChanged();
-      if (Array.isArray(caps.Capability.Layer)) {
-        this.data.services = caps.Capability.Layer;
-      } else if (typeof caps.Capability.Layer == 'object') {
-        if (caps.Capability.Layer.Layer) {
-          this.data.services = caps.Capability.Layer.Layer;
-        } else {
-          this.data.services = [caps.Capability.Layer];
-        }
-      }
-      this.data.services = this.data.services.filter((layer) => layer.Name);
+
+      this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
       this.data.extent =
         this.data.services[0].EX_GeographicBoundingBox ||
@@ -147,9 +141,29 @@ export class HsAddLayersWmsService {
       ]);
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
     } catch (e) {
-      //FIXME: $rootScope.$broadcast('wmsCapsParseError', e);
-      this.hsLog.warn(e);
+      this.getWmsCapabilitiesError.next(e);
     }
+  }
+
+  filterCapabilitiesLayers(layers) {
+    let tmp = [];
+    if (Array.isArray(layers)) {
+      tmp = layers;
+    } else if (typeof layers == 'object') {
+      if (layers.Layer) {
+        const layersWithNameParam = layers.Layer.filter((layer) => layer.Name);
+        if (layersWithNameParam.length > 0) {
+          tmp = layersWithNameParam;
+        } else {
+          for (const layer of layers.Layer) {
+            tmp.push(...layer.Layer.filter((layer) => layer.Name));
+          }
+        }
+      } else {
+        tmp = [layers];
+      }
+    }
+    return tmp;
   }
 
   /**
@@ -226,6 +240,9 @@ export class HsAddLayersWmsService {
    * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): void {
+    if (this.data.services === undefined) {
+      return;
+    }
     for (const layer of this.data.services) {
       this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
     }
