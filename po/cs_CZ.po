@@ -1354,7 +1354,7 @@ msgstr "Zobrazení, skládání a analýza prostorových dat"
 
 #: components/add-layers/partials/dialog_getcapabilities_error.html:5
 msgid "WMS Capabilities parsing problem"
-msgstr "Problém při spracování odezvy"
+msgstr "Problém při zpracování odezvy"
 
 #: components/trip_planner/partials/trip_planner.html:12
 msgid "Waypoints"
@@ -1681,4 +1681,3 @@ msgstr "Aktivní vrstvy"
 #: components/draw/partials/shape-toolbar.html:22
 msgid "Save drawing to layer"
 msgstr "Uložit do vrstvy"
-
