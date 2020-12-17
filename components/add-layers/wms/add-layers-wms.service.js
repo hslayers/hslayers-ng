@@ -105,11 +105,9 @@ export default function (
         me.data.srs = me.data.srss[0];
       }
       me.srsChanged();
-      if (angular.isArray(caps.Capability.Layer)) {
-        me.data.services = caps.Capability.Layer;
-      } else if (typeof caps.Capability.Layer == 'object') {
-        me.data.services = [caps.Capability.Layer];
-      }
+
+      me.data.services = me.filterCapabilitiesLayers(caps.Capability.Layer);
+
       me.data.extent =
         me.data.services[0].EX_GeographicBoundingBox ||
         me.data.services[0].BoundingBox;
@@ -140,6 +138,27 @@ export default function (
     } catch (e) {
       $rootScope.$broadcast('wmsCapsParseError', e);
     }
+  };
+
+  me.filterCapabilitiesLayers = function (layers) {
+    let tmp = [];
+    if (Array.isArray(layers)) {
+      tmp = layers;
+    } else if (typeof layers == 'object') {
+      if (layers.Layer) {
+        const layersWithNameParam = layers.Layer.filter((layer) => layer.Name);
+        if (layersWithNameParam.length > 0) {
+          tmp = layersWithNameParam;
+        } else {
+          for (const layer of layers.Layer) {
+            tmp.push(...layer.Layer.filter((layer) => layer.Name));
+          }
+        }
+      } else {
+        tmp = [layers];
+      }
+    }
+    return tmp;
   };
 
   /**
