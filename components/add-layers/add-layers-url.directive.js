@@ -19,9 +19,6 @@ export default function (HsConfig) {
         $scope.historySelected = function (url) {
           $scope.url = url;
         };
-        $scope.log = function (){
-          console.log($scope)
-        }
       },
     ],
   };
