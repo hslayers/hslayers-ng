@@ -8,6 +8,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Map} from 'ol';
 
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
@@ -21,7 +22,8 @@ export class HsSaveMapService {
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
-    public HsLogService: HsLogService
+    public HsLogService: HsLogService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   /**
@@ -388,7 +390,10 @@ export class HsSaveMapService {
 
     // Vector
     if (this.HsUtilsService.instOf(layer, VectorLayer)) {
-      const src = layer.getSource();
+      let src = layer.getSource();
+      if (this.HsLayerUtilsService.isLayerClustered(layer)) {
+        src = src.getSource();
+      }
       json.name = layer.get('name');
       json.className = 'Vector';
       const definition = layer.get('definition');
