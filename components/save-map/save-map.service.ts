@@ -327,10 +327,7 @@ export class HsSaveMapService {
       this.HsUtilsService.instOf(layer, Tile) ||
       this.HsUtilsService.instOf(layer, ImageLayer)
     ) {
-      let src = layer.getSource();
-      if (this.HsLayerUtilsService.isLayerClustered(layer)) {
-        src = src.getSource();
-      }
+      const src = layer.getSource();
       if (layer.getMaxResolution() !== null) {
         json.maxResolution = layer.getMaxResolution();
       }
@@ -395,7 +392,10 @@ export class HsSaveMapService {
 
     // Vector
     if (this.HsUtilsService.instOf(layer, VectorLayer)) {
-      const src = layer.getSource();
+      let src = layer.getSource();
+      if (this.HsLayerUtilsService.isLayerClustered(layer)) {
+        src = src.getSource();
+      }
       json.name = layer.get('name');
       json.className = 'Vector';
       const definition = layer.get('definition');
