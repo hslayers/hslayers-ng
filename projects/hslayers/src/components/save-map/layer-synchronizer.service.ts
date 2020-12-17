@@ -97,9 +97,6 @@ export class HsLayerSynchronizerService {
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
       this.sync([e.feature], [], [], layer);
-      if (e.feature) {
-        this.observeFeature(e.feature);
-      }
     });
     layerSource.on('removefeature', (e) => {
       this.sync([], [], [e.feature], layer);
@@ -225,6 +222,8 @@ export class HsLayerSynchronizerService {
           inserted[0].setGeometryName('wkb_geometry');
           inserted[0].setGeometry(geometry);
           inserted[0].unset('geometry', true);
+
+          this.observeFeature(inserted[0]);
         }
         layer.set('hs-layman-synchronizing', false);
       });

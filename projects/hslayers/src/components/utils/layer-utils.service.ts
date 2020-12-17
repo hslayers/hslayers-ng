@@ -262,7 +262,9 @@ export class HsLayerUtilsService {
    * @description Checks if layer's source has its own source
    */
   isLayerClustered(layer: Layer): boolean {
-    return this.isLayerVectorLayer(layer) && layer.get('cluster')
+    return this.isLayerVectorLayer(layer) &&
+      layer.get('cluster') &&
+      layer.getSource()?.getSource
       ? true
       : false;
   }

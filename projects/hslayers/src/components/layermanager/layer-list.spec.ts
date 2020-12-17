@@ -30,6 +30,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {wmsGetCapabilitiesResponse} from '../../../test/data/wms-capabilities';
+import {HsDrawService} from '../draw/draw.service';
+
 class HsConfigMock {
   layer_order = '-position';
   constructor() {}
@@ -112,6 +114,7 @@ describe('layermanager-layer-list', () => {
           },
         },
         {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsDrawService, useValue: new HsConfigMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
       ],
     });
