@@ -101,7 +101,7 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr [hidden]="!hasNestedLayers(service)">
                     <td colspan="4" style="padding-left: 1em">
                         <hs-nested-layers-table [layers]="service.Layer"></hs-nested-layers-table>
                     </td>
