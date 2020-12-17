@@ -1,7 +1,8 @@
-import {BehaviorSubject} from 'rxjs';
 import {Component} from '@angular/core';
 import {HsAddLayersWmsService} from './add-layers-wms.service';
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
@@ -19,17 +20,17 @@ export class HsAddLayersWmsComponent {
   showDetails: boolean;
   url: string;
   layerToSelect: any;
-
+  error: any;
   constructor(
     public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
     public hsLog: HsLogService,
+    public HsDialogContainerService: HsDialogContainerService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
   ) {
     this.data = this.hsAddLayersWmsService.data;
     this.url = '';
-
     //FIXME: is it even fired?
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'wms') {
@@ -49,12 +50,29 @@ export class HsAddLayersWmsComponent {
               this.addLayers(true);
             }
           } catch (e) {
-            hsLog.warn(e);
+            if (e.status == 401) {
+              this.hsAddLayersWmsService.getWmsCapabilitiesError.next(
+                'Unauthorized access. You are not authorized to query data from this service'
+              );
+              return;
+            }
+            this.hsAddLayersWmsService.getWmsCapabilitiesError.next(e);
           }
         }
       }
     );
-    //this.sourceHistory = hsAddLayersWmsService.sourceHistory;
+    this.hsAddLayersWmsService.getWmsCapabilitiesError.subscribe((e) => {
+      this.hsLog.warn(e);
+      this.url = null;
+      this.showDetails = false;
+
+      this.error = e.toString();
+      this.HsDialogContainerService.create(
+        HsGetCapabilitiesErrorComponent,
+        this.error
+      );
+    });
+
     this.getDimensionValues = hsAddLayersWmsService.getDimensionValues;
     this.hasNestedLayers = hsAddLayersWmsService.hasNestedLayers;
   }
