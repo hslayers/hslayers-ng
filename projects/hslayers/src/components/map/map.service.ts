@@ -4,9 +4,7 @@ import Control from 'ol/control/Control';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
 import Source from 'ol/source/Source';
-import Static from 'ol/source/ImageStatic';
 import View from 'ol/View';
-import WMTS from 'ol/source/WMTS';
 import proj4 from 'proj4';
 import {Cluster, OSM, Vector} from 'ol/source';
 import {
@@ -24,8 +22,10 @@ import {Group} from 'ol/layer';
 import {
   ImageArcGISRest,
   ImageWMS,
+  ImageStatic as Static,
   TileArcGISRest,
   TileWMS,
+  WMTS,
   XYZ,
 } from 'ol/source';
 import {
