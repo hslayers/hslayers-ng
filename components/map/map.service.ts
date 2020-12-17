@@ -560,6 +560,7 @@ export class HsMapService {
       if (lyr.get('base') == true) {
         return;
       }
+      this.removeDuplicate(lyr);
     }
     if (visibilityOverrides) {
       lyr.setVisible(this.layerTitleInArray(lyr, visibilityOverrides));
