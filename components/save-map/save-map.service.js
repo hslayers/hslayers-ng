@@ -1,8 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
-import WMTS from 'ol/source/WMTS';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
+import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS, WMTS} from 'ol/source';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
@@ -296,7 +295,6 @@ export default function (
       json.name = layer.get('name');
       if (angular.isUndefined(layer.get('title'))) {
         $log.warn('Layer title undefined', layer);
-        // debugger;
       }
       //json.index = layer.map.getLayerIndex(layer);
       json.path = layer.get('path');

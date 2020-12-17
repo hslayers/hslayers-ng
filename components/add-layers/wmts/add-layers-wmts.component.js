@@ -4,9 +4,8 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {Tile} from 'ol/layer';
 import {addAnchors} from '../../../common/attribution-utils';
-import {get} from 'ol/proj';
+import {get, transform, transformExtent} from 'ol/proj';
 import {getTopLeft, getWidth} from 'ol/extent';
-import {transform, transformExtent} from 'ol/proj';
 
 export default {
   template: require('./add-wmts-layer.directive.html'),
@@ -35,7 +34,6 @@ export default {
       try {
         $scope.layersLoading = true;
         HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url).then((r)=> {
-          console.log(r)
         })
       } catch (e) {
         console.warn(e);
@@ -136,7 +134,7 @@ export default {
 
     /**
      * @function addLayer
-     * @param checked
+     * @param {boolean} checked
      * @memberOf hs.addLayersWmts.controller
      * @description Add layer to map
      * @param {object} layer - Wrapped layer to add
@@ -173,7 +171,7 @@ export default {
      * @function getPreferedFormat
      * @param {object} formats Set of avaliable formats for layer being added
      */
-    $scope.getPreferedFormat = function (formats) {
+    $scope.getPreferredFormat = function (formats) {
       const prefered = formats.find((format) => format.includes('png'));
       return prefered ? prefered : formats[0];
     };
@@ -186,7 +184,7 @@ export default {
      * @function getPreferedMatrixSet
      * @param {object} sets Set of avaliable matrixSets
      */
-    $scope.getPreferedMatrixSet = function (sets) {
+    $scope.getPreferredMatrixSet = function (sets) {
       const supportedFormats = ['3857', '4326', '5514'];
       const prefered = sets.filter((set) =>
         supportedFormats.some((v) => set.TileMatrixSet.includes(v))
