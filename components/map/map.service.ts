@@ -557,7 +557,9 @@ export class HsMapService {
     visibilityOverrides?: Array<string>
   ): Layer {
     if (removeIfExists && this.layerAlreadyExists(lyr)) {
-      this.removeDuplicate(lyr);
+      if (lyr.get('base') == true) {
+        return;
+      }
     }
     if (visibilityOverrides) {
       lyr.setVisible(this.layerTitleInArray(lyr, visibilityOverrides));
