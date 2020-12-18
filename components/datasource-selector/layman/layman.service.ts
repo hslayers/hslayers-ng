@@ -107,6 +107,7 @@ export class HsLaymanBrowserService {
         })
         .toPromise()
         .then((data: any) => {
+          delete data.type;
           layer = {...layer, ...data};
           if (layer.thumbnail) {
             layer.thumbnail = dataset.url + layer.thumbnail.url;
