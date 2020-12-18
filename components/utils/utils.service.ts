@@ -501,24 +501,6 @@ export class HsUtilsService {
       return module;
     }
   }
-  //Not working at all.
-  //This is not used anywhere in out code
-
-  /**
-   * @ngdoc method
-   * @name format
-   * @public
-   * @param {string} target Target string
-   * @param {any} args String to look for
-   * @returns {string} Returns modified string
-   * @description Replaces input string text with replacement text
-   */
-
-  // format(target: string, ...args: any): string {
-  //   return target.replace(/{(\d+)}/g, (match, index) => {
-  //     return args[index] !== undefined ? args[index] : match;
-  //   });
-  // }
   /**
    * @param target
    * @ngdoc method
