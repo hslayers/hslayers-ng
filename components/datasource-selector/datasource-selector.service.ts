@@ -234,7 +234,7 @@ export class HsDatasourcesService {
           whatToAdd.title,
           whatToAdd.abstract,
           whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles, dsType: whatToAdd.dsType}
+          {extractStyles: whatToAdd.extractStyles}
         );
         this.hsAddLayersVectorService.fitExtent(layer);
         this.hsLayoutService.setMainPanel('layermanager');
