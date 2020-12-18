@@ -313,10 +313,11 @@ export class HsCompositionsLayerParserService {
         lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
       }
     }
-    const options: any = {};
-    options.opacity = lyr_def.opacity || 1;
-    options.from_composition = true;
-
+    const options: any = {
+      opacity: lyr_def.opacity || 1,
+      from_composition: true,
+      path: lyr_def.path,
+    };
     let extractStyles = true;
     if (lyr_def.style) {
       options.style = this.HsStylerService.parseStyle(lyr_def.style);
