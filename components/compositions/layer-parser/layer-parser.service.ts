@@ -317,6 +317,7 @@ export class HsCompositionsLayerParserService {
       opacity: lyr_def.opacity || 1,
       from_composition: true,
       path: lyr_def.path,
+      visible: lyr_def.visibility,
     };
     let extractStyles = true;
     if (lyr_def.style) {
