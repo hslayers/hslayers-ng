@@ -6,6 +6,7 @@ import {HsAddLayersService} from '../add-layers.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
@@ -69,7 +70,7 @@ export class HsAddLayersVectorService {
     title: string,
     abstract: string,
     srs: string,
-    options: any,
+    options: HsVectorLayerOptions,
     addBefore?: BaseLayer
   ): Promise<VectorLayer> {
     return new Promise((resolve, reject) => {
@@ -116,7 +117,7 @@ export class HsAddLayersVectorService {
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
-   * @param {object} options Other options
+   * @param {HsVectorLayerOptions} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
   createVectorLayer(
@@ -126,7 +127,7 @@ export class HsAddLayersVectorService {
     title: string,
     abstract: string,
     srs: string,
-    options: any = {}
+    options: HsVectorLayerOptions = {}
   ): VectorLayer {
     if (
       type.toLowerCase() != 'sparql' &&

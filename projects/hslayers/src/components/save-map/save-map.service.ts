@@ -232,7 +232,6 @@ export class HsSaveMapService {
       if (style_img.getRadius) {
         ima.radius = style_img.getRadius();
       }
-
       if (
         this.HsUtilsService.isFunction(style_img.getSrc) &&
         typeof style_img.getSrc() === 'string' &&
@@ -410,9 +409,6 @@ export class HsSaveMapService {
         } catch (ex) {
           //Do nothing
         }
-      }
-      if (src.defOptions) {
-        json.defOptions = src.defOptions;
       }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();

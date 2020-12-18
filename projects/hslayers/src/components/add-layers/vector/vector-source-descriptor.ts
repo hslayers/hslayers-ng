@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import SparqlJson from '../../layers/hs.source.SparqlJson';
 import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
+import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 export class VectorSourceDescriptor {
@@ -13,7 +14,7 @@ export class VectorSourceDescriptor {
     url?: string;
     format?: any;
     geom_attribute?: string;
-    options?: any;
+    options?: HsVectorLayerOptions;
     category_field?: string;
     projection?: any;
     minResolution?: number;
@@ -26,7 +27,13 @@ export class VectorSourceDescriptor {
     | typeof SparqlJson
     | typeof VectorSource;
 
-  constructor(type: string, url: string, srs, options, mapProjection) {
+  constructor(
+    type: string,
+    url: string,
+    srs,
+    options: HsVectorLayerOptions,
+    mapProjection
+  ) {
     this.mapProjection = mapProjection;
 
     this.sourceParams = {
