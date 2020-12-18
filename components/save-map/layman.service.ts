@@ -355,7 +355,7 @@ export class HsLaymanService implements HsSaverService {
         return response;
       }
     } catch (ex) {
-      if (ex.error.code == 15) {
+      if (ex.error?.code == 15) {
         return null;
       } else {
         this.HsLogService.error(ex);
