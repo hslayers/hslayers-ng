@@ -177,12 +177,6 @@ describe('HsUtilsService', () => {
     const pairs = hsUtilsService.paramsToURL(params);
     expect(pairs).toEqual('%23param1=test&%23param2=test2');
   });
-  //TODO:
-  // it('try to insert element after the target element', () => {
-  //   const target = 'target';
-  //   const node = 'node';
-  //   hsUtilsService.insertAfter(node, target);
-  // });
   //Causing error: Cannot read property 'assertPresent' of undefined
   // it('try to set debounce function call', fakeAsync(() => {
   //   const clock = jasmine.clock();
@@ -262,15 +256,6 @@ describe('HsUtilsService', () => {
     );
     expect(result).toEqual('This is a text, this is a text');
   });
-  //TODO:
-  // it('try to resolve Es module', () => {
-  // });
-  //TODO:
-  // it('try to replace input string text with replacement text', () => {
-  //   const str = 'this is 1 text that 2 3 replaced';
-  //   const result = hsUtilsService.format(str, 'a', 'has', 'been');
-  //   expect(result).toEqual('this is a text that has been replaced');
-  // });
   it('try to capitalize first string letter', () => {
     const str = 'this string will have atleast one capital letter';
     const result = hsUtilsService.capitalizeFirstLetter(str);
