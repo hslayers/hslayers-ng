@@ -30,6 +30,7 @@ export class HsShareUrlService {
   id: any;
   urlUntilParams: string;
   param_string: string;
+  public statusSaving = false;
   public browserUrlUpdated: Subject<any> = new Subject();
 
   constructor(
@@ -92,6 +93,9 @@ export class HsShareUrlService {
     }
     for (const cP in this.customParams) {
       this.push(cP, this.customParams[cP]);
+    }
+    if (this.statusSaving) {
+      return;
     }
     this.HsUtilsService.debounce(
       () => {
