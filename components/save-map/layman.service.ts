@@ -260,6 +260,7 @@ export class HsLaymanService implements HsSaverService {
   /**
    * @function pullVectorSource
    * @memberof HsLaymanService
+   * @param _endpoint
    * @param layer
    * @public
    * @param {object} endpoint Endpoint description
@@ -350,15 +351,16 @@ export class HsLaymanService implements HsSaverService {
           }/layers/${layerName}?${Math.random()}`
         )
         .toPromise();
-      if (response?.code == 15) {
-        return null;
-      }
       if (response.name) {
         return response;
       }
     } catch (ex) {
-      this.HsLogService.error(ex);
-      throw ex;
+      if (ex.error.code == 15) {
+        return null;
+      } else {
+        this.HsLogService.error(ex);
+        throw ex;
+      }
     }
   }
 
