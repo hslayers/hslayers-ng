@@ -100,6 +100,5 @@ export default function (options) {
     projection: options.projection,
     strategy: loadingstrategy.bbox,
   });
-  src.defOptions = options;
   return src;
 }

@@ -1,4 +1,5 @@
 import VectorSource from 'ol/source/Vector';
+import {HsVectorLayerOptions} from './vector-layer-options.type';
 
 export class VectorLayerDescriptor {
   mapProjection;
@@ -23,7 +24,7 @@ export class VectorLayerDescriptor {
     title,
     abstract,
     url: string,
-    options,
+    options: HsVectorLayerOptions,
     mapProjection
   ) {
     /**
@@ -78,5 +79,3 @@ export class VectorLayerDescriptor {
     }
   }
 }
-
-export default VectorLayerDescriptor;
