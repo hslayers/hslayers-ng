@@ -510,20 +510,7 @@ export class HsUtilsService {
     }
   }
   /**
-   * @ngdoc method
-   * @name format
-   * @public
-   * @param {string} target Target string
-   * @param {any} args String to look for
-   * @returns {string} Returns modified string
-   * @description Replaces input string text with replacement text
-   */
-  format(target: string, ...args: any): string {
-    return target.replace(/{(\d+)}/g, (match, number) => {
-      return args[number] !== undefined ? args[number] : match;
-    });
-  }
-  /**
+
    * @param target
    * @ngdoc method
    * @name capitalizeFirstLetter
