@@ -148,10 +148,13 @@ describe('HsUtilsService', () => {
   });
   it('check if short url gets created correctly', async () => {
     hsConfig.proxyPrefix = 'http://localhost:8085/';
+    hsConfig.shortenUrl = (url) => {
+      return 'http://customShortUrl.com/shorturl';
+    };
     const url =
       'http://localhost:8080/?hs_x=1945211.1423359748&hs_y=6904584.935889341&hs_z=4&visible_layers=%26%2347%3BOpenStreetMap%3BSwiss%3B%3BBookmarks&hs_panel=layermanager';
     const shortUrl = await hsUtilsService.shortUrl(url);
-    expect(shortUrl).toEqual('https://tinyurl.com/y7pwdxbw');
+    expect(shortUrl).toEqual('http://customShortUrl.com/shorturl');
   });
   it('try to get port number from url', () => {
     let url = 'http://localhost:';
