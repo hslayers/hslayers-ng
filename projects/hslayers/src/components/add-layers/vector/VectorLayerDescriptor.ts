@@ -14,6 +14,7 @@ export class VectorLayerDescriptor {
     source?: VectorSource;
     removable?: boolean;
     path: string;
+    visible: boolean;
   };
 
   constructor(
@@ -44,6 +45,7 @@ export class VectorLayerDescriptor {
       style: options.style,
       removable: true,
       path: options.path,
+      visible: options.visible,
     };
 
     switch (type ? type.toLowerCase() : '') {

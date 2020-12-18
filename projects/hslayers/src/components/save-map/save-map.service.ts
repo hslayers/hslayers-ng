@@ -303,6 +303,7 @@ export class HsSaveMapService {
     // options
     json.visibility = layer.getVisible();
     json.opacity = layer.getOpacity();
+    json.base = layer.get('base');
     json.title = layer.get('title');
     if (layer.get('title') == undefined) {
       this.HsLogService.warn('Layer title undefined', layer);

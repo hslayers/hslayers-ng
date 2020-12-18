@@ -49,7 +49,7 @@ export class HsShareService {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.HsEventBusService.mainPanelChanges.subscribe(async () => {
       if (this.HsLayoutService.mainpanel == 'permalink') {
-        this.HsShareUrlService.update();
+        this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl();
         try {
           await this.HttpClient.post(
@@ -67,8 +67,10 @@ export class HsShareService {
               request: 'save',
             })
           ).toPromise();
+          this.HsShareUrlService.statusSaving = false;
           this.HsShareUrlService.permalinkRequestUrl =
             status_url + '?request=load&id=' + this.HsShareUrlService.id;
+          this.HsShareUrlService.update();
         } catch (ex) {
           this.HsLogService.error('Error saving permalink layers.', ex);
           throw ex;
