@@ -413,9 +413,6 @@ export class HsSaveMapService {
           //Do nothing
         }
       }
-      if (src.defOptions) {
-        json.defOptions = src.defOptions;
-      }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
       json.projection = 'epsg:4326';

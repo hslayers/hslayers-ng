@@ -6,6 +6,7 @@ import {Attribution} from 'ol/control';
 import {HsAddLayersVectorService} from '../../add-layers/vector/add-layers-vector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
+import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
 import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
@@ -313,7 +314,7 @@ export class HsCompositionsLayerParserService {
         lyr_def.protocol.url = decodeURIComponent(lyr_def.protocol.url);
       }
     }
-    const options: any = {
+    const options: HsVectorLayerOptions = {
       opacity: lyr_def.opacity || 1,
       from_composition: true,
       path: lyr_def.path,
@@ -351,7 +352,6 @@ export class HsCompositionsLayerParserService {
         break;
       case 'hs.format.WFS':
       case 'WFS':
-        options.defOptions = lyr_def.defOptions;
         layer = this.HsAddLayersVectorService.createVectorLayer(
           'wfs',
           lyr_def.protocol.url,
@@ -373,7 +373,14 @@ export class HsCompositionsLayerParserService {
           title,
           lyr_def.abstract,
           lyr_def.projection?.toUpperCase(),
-          lyr_def
+          {
+            opacity: lyr_def.opacity,
+            visible: lyr_def.visibility,
+            path: lyr_def.path,
+            from_composition: lyr_def.from_composition,
+            style: lyr_def.style,
+            features: lyr_def.features,
+          }
         );
     }
     layer.set('definition', lyr_def.protocol);
