@@ -11,6 +11,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsConfig} from '../../config.service';
+import {HsDrawService} from '../draw/draw.service';
 import {HsLayerListComponent} from './layermanager-layerlist.component';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -30,7 +31,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 import {wmsGetCapabilitiesResponse} from '../../test/data/wms-capabilities';
-import {HsDrawService} from '../draw/draw.service';
 
 class HsConfigMock {
   layer_order = '-position';
@@ -85,9 +85,7 @@ describe('layermanager-layer-list', () => {
           useValue: {
             requestGetCapabilities: (service_url) =>
               new Promise((resolve, reject) => {
-                resolve(
-                  wmsGetCapabilitiesResponse 
-                );
+                resolve(wmsGetCapabilitiesResponse);
               }),
           },
         },

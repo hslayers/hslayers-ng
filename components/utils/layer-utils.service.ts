@@ -101,7 +101,7 @@ export class HsLayerUtilsService {
    * @description Get title of selected layer
    */
   getLayerTitle(layer: Layer): string {
-    if (layer.get('title') !== undefined) {
+    if (layer.get('title') !== undefined && layer.get('title') != '') {
       return layer.get('title').replace(/&#47;/g, '/');
     } else {
       return 'Void';
@@ -139,6 +139,7 @@ export class HsLayerUtilsService {
     ) {
       return true;
     }
+    return false;
   }
   // todo
   getURL(layer: Layer): string {
@@ -194,7 +195,7 @@ export class HsLayerUtilsService {
    * @description Test if layer is has a title
    */
   hasLayerTitle(layer: Layer): boolean {
-    return layer.get('title') !== undefined && layer.get('title') != '';
+    return layer.get('title') !== undefined && layer.get('title') !== '';
   }
 
   /**
@@ -226,13 +227,14 @@ export class HsLayerUtilsService {
   getLayerName(layer: Layer): string {
     if (
       layer === undefined ||
-      (layer.get('show_in_manager' !== undefined) &&
+      (layer.get('show_in_manager') !== undefined &&
         layer.get('show_in_manager') === false)
     ) {
       return '';
+    } else {
+      const layerName = layer.get('title') || layer.get('name');
+      return layerName;
     }
-    const layerName = layer.get('title') || layer.get('name');
-    return layerName;
   }
 
   /**
