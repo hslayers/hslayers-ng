@@ -501,6 +501,9 @@ export class HsUtilsService {
       return module;
     }
   }
+  //Not working at all.
+  //This is not used anywhere in out code
+
   /**
    * @ngdoc method
    * @name format
@@ -510,11 +513,12 @@ export class HsUtilsService {
    * @returns {string} Returns modified string
    * @description Replaces input string text with replacement text
    */
-  format(target: string, ...args: any): string {
-    return target.replace(/{(\d+)}/g, (match, number) => {
-      return args[number] !== undefined ? args[number] : match;
-    });
-  }
+
+  // format(target: string, ...args: any): string {
+  //   return target.replace(/{(\d+)}/g, (match, index) => {
+  //     return args[index] !== undefined ? args[index] : match;
+  //   });
+  // }
   /**
    * @param target
    * @ngdoc method
