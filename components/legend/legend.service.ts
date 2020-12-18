@@ -330,21 +330,24 @@ export class HsLegendService {
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
       this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
     ) {
-      const subLayerLegends = layer.getSource().getParams().LAYERS.split(',');
-      for (let i = 0; i < subLayerLegends.length; i++) {
-        subLayerLegends[i] = this.getLegendUrl(
-          layer.getSource(),
-          subLayerLegends[i],
-          layer
-        );
+      const sourceParamLayers = layer.getSource().getParams().LAYERS;
+      if (sourceParamLayers !== undefined) {
+        const subLayerLegends = sourceParamLayers.split(',');
+        for (let i = 0; i < subLayerLegends.length; i++) {
+          subLayerLegends[i] = this.getLegendUrl(
+            layer.getSource(),
+            subLayerLegends[i],
+            layer
+          );
+        }
+        return {
+          title: layer.get('title'),
+          lyr: layer,
+          type: 'wms',
+          subLayerLegends: subLayerLegends,
+          visible: layer.getVisible(),
+        };
       }
-      return {
-        title: layer.get('title'),
-        lyr: layer,
-        type: 'wms',
-        subLayerLegends: subLayerLegends,
-        visible: layer.getVisible(),
-      };
     } else if (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       (layer.get('show_in_manager') === undefined ||
