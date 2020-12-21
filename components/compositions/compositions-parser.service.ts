@@ -367,7 +367,7 @@ export class HsCompositionsParserService {
         const existing = this.HsMapService.getLayersArray().find(
           (l) => l.get('title') == lyr_def.title
         );
-        if (existing) {
+        if (existing != undefined) {
           return existing;
         }
         return;
