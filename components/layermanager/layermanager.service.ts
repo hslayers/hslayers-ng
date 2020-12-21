@@ -157,9 +157,6 @@ export class HsLayerManagerService {
         this.HsConfig.clusteringDistance
       );
     }
-    if (typeof layer.get('position') == 'undefined') {
-      layer.set('position', this.getMyLayerPosition(layer));
-    }
     if (typeof layer.getZIndex() == 'undefined') {
       layer.setZIndex(this.zIndexValue);
       this.zIndexValue = ++this.zIndexValue;
@@ -219,7 +216,6 @@ export class HsLayerManagerService {
     if (layer.getVisible() && layer.get('base')) {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
-    this.updateLayerOrder();
     this.HsEventBusService.layerAdditions.next(new_layer);
     this.HsEventBusService.layerManagerUpdates.next(layer);
     this.HsEventBusService.compositionEdits.next();
@@ -453,7 +449,6 @@ export class HsLayerManagerService {
         this.data.baselayers.splice(i, 1);
       }
     }
-    this.updateLayerOrder();
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next();
@@ -597,38 +592,6 @@ export class HsLayerManagerService {
       }
     }
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
-  }
-
-  /**
-   * Update "position" property of layers, so layers could be correctly ordered in GUI
-   *
-   * @function updateLayerOrder
-   * @memberOf HsLayermanagerService
-   */
-  updateLayerOrder(): void {
-    for (const my_layer of this.data.layers) {
-      my_layer.layer.set('position', this.getMyLayerPosition(my_layer.layer));
-      my_layer.position = my_layer.layer.get('position');
-    }
-  }
-
-  /**
-   * (PRIVATE) Get position of selected layer in map layer order
-   *
-   * @function getMyLayerPosition
-   * @memberOf HsLayermanagerService
-   * @private
-   * @param {Layer} layer Selected layer
-   */
-  getMyLayerPosition(layer: Layer): number | null {
-    let pos = null;
-    for (let i = 0; i < this.HsMapService.map.getLayers().getLength(); i++) {
-      if (this.HsMapService.map.getLayers().item(i) == layer) {
-        pos = i;
-        break;
-      }
-    }
-    return pos;
   }
 
   /**

@@ -52,6 +52,7 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
+    this.HsEventBusService.layerManagerUpdates.next();
     this.sortLayers();
   }
   sortLayers(): void {
