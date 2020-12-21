@@ -294,7 +294,10 @@ export class HsLayerManagerComponent implements OnInit {
   setLayerTime(layer: Layer, metadata) {
     return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
   }
-
+  triggerPhysicalLayerList(): void {
+    this.physicalLayerListEnabled = !this.physicalLayerListEnabled;
+    this.HsEventBusService.layerManagerUpdates.next();
+  }
   /**
    * @param m
    */

@@ -1,7 +1,7 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card">
     <hs-panel-header name="layermanager" [title]="'PANEL_HEADER.LM' | translate">
         <extra-buttons>
-            <button type="button" class="but-title-sm" (click)="physicalLayerListEnabled = !physicalLayerListEnabled"
+            <button type="button" class="but-title-sm" (click)="triggerPhysicalLayerList()"
                 [title]="'LAYERMANAGER.enablePhysicalLayerList' | translate">
                 <i class="glyphicon icon-edit"></i>
             </button>
