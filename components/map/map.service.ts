@@ -1,5 +1,6 @@
 /* eslint-disable no-eq-null */
 /* eslint-disable angular/timeout-service */
+import BaseLayer from 'ol/layer/Base';
 import Control from 'ol/control/Control';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
@@ -498,6 +499,10 @@ export class HsMapService {
       .forEach((to_remove) => {
         this.map.getLayers().remove(to_remove);
       });
+  }
+
+  getLayersArray(): BaseLayer[] {
+    return this.map.getLayers().getArray();
   }
 
   /**
