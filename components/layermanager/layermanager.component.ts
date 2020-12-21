@@ -147,48 +147,6 @@ export class HsLayerManagerComponent implements OnInit {
     return this.HsLayerManagerService.changeLayerVisibility(toWhat, layer);
   }
 
-  layerOrder(layer: Layer) {
-    return layer.layer.get('position');
-  }
-
-  changePosition(layer: Layer, direction, $event): void {
-    const index = layer.layer.get('position');
-    const layers = this.HsMapService.map.getLayers();
-    let toIndex = index;
-    if (direction) {
-      // upwards
-      const max = layers.getLength() - 1;
-      if (index < max) {
-        if ($event.shiftKey) {
-          toIndex = max;
-        } else {
-          toIndex = index + 1;
-        }
-      }
-    } else {
-      //downwards
-      let min;
-      for (let i = 0; i < layers.getLength(); i++) {
-        if (layers.item(i).get('base') != true) {
-          min = i;
-          break;
-        }
-      }
-      if (index > min) {
-        if ($event.shiftKey) {
-          toIndex = min;
-        } else {
-          toIndex = index - 1;
-        }
-      }
-    }
-    const moveLayer = layers.item(index);
-    layers.removeAt(index);
-    layers.insertAt(toIndex, moveLayer);
-    this.HsLayerManagerService.updateLayerOrder();
-    this.HsEventBusService.layerManagerUpdates.next();
-  }
-
   isLayerType(layer: Layer, type: string): boolean {
     switch (type) {
       case 'wms':
@@ -293,10 +251,6 @@ export class HsLayerManagerComponent implements OnInit {
 
   setLayerTime(layer: Layer, metadata) {
     return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
-  }
-  triggerPhysicalLayerList(): void {
-    this.physicalLayerListEnabled = !this.physicalLayerListEnabled;
-    this.HsEventBusService.layerManagerUpdates.next();
   }
   /**
    * @param m
