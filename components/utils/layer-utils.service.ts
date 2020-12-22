@@ -1,11 +1,15 @@
 import VectorLayer from 'ol/layer/Vector';
-import {Cluster, Vector as VectorSource} from 'ol/source';
+import {
+  Cluster,
+  ImageWMS,
+  TileWMS,
+  Vector as VectorSource,
+  WMTS,
+} from 'ol/source';
 import {HsLanguageService} from '../language/language.service';
 import {HsUtilsService} from './utils.service';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
-import {TileWMS, WMTS} from 'ol/source';
 import {isEmpty} from 'ol/extent';
 
 @Injectable()
