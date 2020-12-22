@@ -1,4 +1,3 @@
-import {DOCUMENT} from '@angular/common';
 import {HsConfig} from './../../config.service';
 import {HsLogService} from './../../common/log/log.service';
 import {HttpClient} from '@angular/common/http';
