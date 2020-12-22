@@ -200,6 +200,7 @@ export class HsLayerManagerService {
         new_layer.legends = layer.get('legends');
       }
       this.data.layers.push(new_layer);
+      this.updateLayerListPositions();
       if (layer.get('queryCapabilities') != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
           setTimeout(() => {
@@ -272,18 +273,26 @@ export class HsLayerManagerService {
       }
     }
   }
+  updateLayerListPositions(arr?: any[]): any[] {
+    this.data.layers = this.sortLayersByZ(this.data.layers);
+    if (arr?.length > 0) {
+      const sortedArray = this.sortLayersByZ(arr);
+      return sortedArray;
+    } else {
+      return [];
+    }
+  }
+  layerOrderOrientation(): string {
+    return this.HsConfig.layer_order || '+position';
+  }
   sortLayersByZ(arr: any[]): any[] {
-    const minus = this.order().indexOf('-') == 0;
-    arr.sort((a, b) => {
+    const minus = this.layerOrderOrientation().indexOf('-') == 0;
+    return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
       const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
       return tmp;
     });
-    return arr;
-  }
-  order(): string {
-    return this.HsConfig.layer_order || '-position';
   }
   /**
    * (PRIVATE) Get layer by its title
@@ -591,7 +600,6 @@ export class HsLayerManagerService {
     }
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
   }
-
   /**
    * (PRIVATE)
    *
