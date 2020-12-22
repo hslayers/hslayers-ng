@@ -38,10 +38,10 @@ export class HsLayerListComponent {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.sortLayersByPosition();
+      this.updateLayers();
     });
     this.HsEventBusService.layerPositionUpdates.subscribe(() => {
-      this.sortLayersByPosition();
+      this.updateLayers();
     });
   }
   /**
@@ -119,7 +119,6 @@ export class HsLayerListComponent {
      * @description List of layers which belong to folder hierarchy level of directive instance
      */
     this.filtered_layers = this.filterLayers();
-    this.sortLayersByPosition();
   }
 
   /**
@@ -157,11 +156,9 @@ export class HsLayerListComponent {
     }
   }
 
-
-
   /**
    * @function isLayerQueryable
-   * @memberOf hs.layermanager.controller
+   * @memberOf hs.layermanager.layerlist
    * @param {object} layer_container Selected layer - wrapped in layer object
    * @description Test if layer is queryable (WMS layer with Info format)
    */
@@ -171,15 +168,12 @@ export class HsLayerListComponent {
 
   /**
    * @ngdoc method
-   * @name hs.layermanager.layerlistDirective#sortLayersByPosition
+   * @name hs.layermanager.layerlist#updateLayers
    * @private
-   * @description Sort layers by computed position
+   * @description Update layers list
    */
-  sortLayersByPosition(): void {
+  updateLayers(): void {
     this.filtered_layers = this.filterLayers();
-    this.filtered_layers = this.HsLayerManagerService.sortLayersByZ(
-      this.filtered_layers
-    );
     this.generateLayerTitlesArray();
   }
 }

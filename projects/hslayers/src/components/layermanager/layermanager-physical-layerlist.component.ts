@@ -31,7 +31,6 @@ export class HsLayerPhysicalListComponent {
       this.layersCopy = this.layers.map((l) => {
         return {title: l.title, layer: l.layer};
       });
-      this.sortLayers();
     });
   }
   moveLayer(layer, orient: string): void {
@@ -60,10 +59,12 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.HsEventBusService.layerPositionUpdates.next();
     this.sortLayers();
   }
   sortLayers(): void {
-    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
+    this.layersCopy = this.HsLayerManagerService.updateLayerListPositions(
+      this.layersCopy
+    );
+    this.HsEventBusService.layerPositionUpdates.next();
   }
 }
