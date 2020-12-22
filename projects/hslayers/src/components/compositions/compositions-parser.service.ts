@@ -365,6 +365,13 @@ export class HsCompositionsParserService {
         );
         break;
       default:
+        const existing = this.HsMapService.getLayersArray().find(
+          (l) => l.get('title') == lyr_def.title
+        );
+        if (existing != undefined) {
+          existing.setZIndex(undefined);
+          return existing;
+        }
         return;
     }
     if (resultLayer) {

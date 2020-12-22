@@ -40,6 +40,9 @@ export class HsLayerListComponent {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.sortLayersByPosition();
     });
+    this.HsEventBusService.layerPositionUpdates.subscribe(() => {
+      this.sortLayersByPosition();
+    });
   }
   /**
    * @function layerLoaded
