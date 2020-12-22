@@ -1,9 +1,13 @@
 <div class="hs-impressum pl-3 pr-3 pb-2">
   <div>
     <span class="text-dark">Powered by</span>
-    <div class="hs-logo">
+    <div class="hs-logo" [hidden]="logoDisabled">
       <a href="https://ng.hslayers.org/" target="_blank">
-        <img [src]="hsUtilsService.getAssetsPath() + 'img/hslayers-ng-logo.png'" alt="HSLayers-NG" [hidden]="logoDisabled">
+        <img [src]="hsUtilsService.getAssetsPath() + 'img/hslayers-ng-logo.png'" alt="HSLayers-NG">
+      </a>
+    </div>
+    <div *ngIf="logoDisabled" class="text-center">
+      <a href="https://ng.hslayers.org/" target="_blank">HSLayers-NG
       </a>
     </div>
     <div class="text-right">
