@@ -19,7 +19,6 @@ export class HsLayerPhysicalListComponent {
   layersCopy: Array<{
     title: string;
     layer: BaseLayer;
-    idString: any;
   }> = [];
   previoslySelectedLayer: any;
   constructor(
@@ -29,7 +28,7 @@ export class HsLayerPhysicalListComponent {
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.layersCopy = this.layers.map((l) => {
-        return {title: l.title, layer: l.layer, idString: l.idString};
+        return {title: l.title, layer: l.layer};
       });
       this.sortLayers();
     });

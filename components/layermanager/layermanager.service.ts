@@ -282,7 +282,6 @@ export class HsLayerManagerService {
       const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
       return tmp;
     });
-    //console.trace(arr.map((l) => l.title + l.layer.getZIndex()));
     return arr;
   }
   order(): string {
