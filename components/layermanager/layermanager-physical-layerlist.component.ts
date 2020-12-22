@@ -15,7 +15,12 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
   ],
 })
 export class HsLayerPhysicalListComponent {
-  @Input() layers: any;
+  @Input() layers: Array<any>;
+  layersCopy: Array<{
+    title: string;
+    layer: BaseLayer;
+    idString: any;
+  }> = [];
   previoslySelectedLayer: any;
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
@@ -23,6 +28,9 @@ export class HsLayerPhysicalListComponent {
     public HsEventBusService: HsEventBusService
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
+      this.layersCopy = this.layers.map((l) => {
+        return {title: l.title, layer: l.layer, idString: l.idString};
+      });
       this.sortLayers();
     });
   }
@@ -32,7 +40,7 @@ export class HsLayerPhysicalListComponent {
     }
     layer.active = true;
     this.previoslySelectedLayer = layer;
-    const currentLayerIndex = this.layers.indexOf(layer);
+    const currentLayerIndex = this.layersCopy.indexOf(layer);
     switch (orient) {
       case 'up':
         if (currentLayerIndex != 0) {
@@ -40,7 +48,7 @@ export class HsLayerPhysicalListComponent {
         }
         break;
       case 'down':
-        if (currentLayerIndex < this.layers.length - 1) {
+        if (currentLayerIndex < this.layersCopy.length - 1) {
           this.setLayerZIndex(currentLayerIndex + 1, layer.layer);
         }
         break;
@@ -48,7 +56,7 @@ export class HsLayerPhysicalListComponent {
     }
   }
   setLayerZIndex(indexTo: number, layer: BaseLayer): void {
-    const layerSwitchedWith = this.layers[indexTo].layer;
+    const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
@@ -56,6 +64,6 @@ export class HsLayerPhysicalListComponent {
     this.sortLayers();
   }
   sortLayers(): void {
-    this.layers = this.HsLayerManagerService.sortLayersByZ(this.layers);
+    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
   }
 }
