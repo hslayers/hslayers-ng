@@ -1,4 +1,3 @@
-import VectorLayer from 'ol/layer/Vector';
 import {
   Cluster,
   ImageWMS,
@@ -8,7 +7,12 @@ import {
 } from 'ol/source';
 import {HsLanguageService} from '../language/language.service';
 import {HsUtilsService} from './utils.service';
-import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import {
+  Image as ImageLayer,
+  Layer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
 import {Injectable} from '@angular/core';
 import {isEmpty} from 'ol/extent';
 
