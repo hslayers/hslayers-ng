@@ -4,7 +4,6 @@ import 'core-js/es7/reflect';
 import 'reflect-metadata';
 import 'zone.js/dist/zone';
 import 'zone.js/dist/zone-testing';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -15,7 +14,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {Image as ImageLayer, Tile} from 'ol/layer';
+import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {TestBed} from '@angular/core/testing';
 
 describe('HsLayerUtilsService', () => {
