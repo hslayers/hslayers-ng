@@ -368,6 +368,7 @@ export class HsCompositionsParserService {
           (l) => l.get('title') == lyr_def.title
         );
         if (existing != undefined) {
+          existing.setZIndex(undefined);
           return existing;
         }
         return;
