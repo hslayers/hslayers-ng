@@ -9,7 +9,7 @@ It contains source code of libraries which need to be used in an existing Angula
 
 Source code for ready to use application bundles which can be included in html files through `<script>` tags:
 + [hslayers-app](./projects/hslayers-app)
-+ [hslayers-cesium-app](./projects/hslayers-cesium-app) - Ready application built on HSLayers-NG and Cesium
++ [hslayers-cesium-app](./projects/hslayers-cesium-app) - Ready application built on HSLayers-NG and Cesium.
 Configuration for these applications can be provided through global `hslayersNgConfig` function which exposes an object containing a subset of most common [OpenLayers](https://openlayers.org/en/latest/apidoc/) classes through ol parameter. In return the function must provide a JSON object confirming to [HsConfig](./projects/hslayers/src/config.service.ts) type. [See](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) example and config parameter descriptions. 
 
 Server components:
