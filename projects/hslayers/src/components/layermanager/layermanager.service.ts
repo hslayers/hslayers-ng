@@ -123,12 +123,13 @@ export class HsLayerManagerService {
 
   /**
    * @ngdoc method
+   * @param sorting
    * @name HsLayermanagerService#layerAdded
    * @private
    * @param {CollectionEvent} e Event object emited by Ol add layer event
    * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    */
-  layerAdded(e: CollectionEvent): void {
+  layerAdded(e: CollectionEvent, sorting: boolean): void {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
@@ -200,7 +201,10 @@ export class HsLayerManagerService {
         new_layer.legends = layer.get('legends');
       }
       this.data.layers.push(new_layer);
-      this.updateLayerListPositions();
+      if (sorting) {
+        this.updateLayerListPositions();
+        this.HsEventBusService.layerPositionUpdates.next();
+      }
       if (layer.get('queryCapabilities') != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
           setTimeout(() => {
@@ -283,14 +287,14 @@ export class HsLayerManagerService {
     }
   }
   layerOrderOrientation(): string {
-    return this.HsConfig.layer_order || '+position';
+    return this.HsConfig.layer_order || 'desc';
   }
   sortLayersByZ(arr: any[]): any[] {
-    const minus = this.layerOrderOrientation().indexOf('-') == 0;
+    const desc = this.layerOrderOrientation().startsWith('desc');
     return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
-      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
+      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (desc ? -1 : 1);
       return tmp;
     });
   }
@@ -877,10 +881,15 @@ export class HsLayerManagerService {
   async init(): Promise<void> {
     this.map = this.HsMapService.map;
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      this.layerAdded({
-        element: lyr,
-      });
+      this.layerAdded(
+        {
+          element: lyr,
+        },
+        false
+      );
     });
+    this.updateLayerListPositions();
+    this.HsEventBusService.layerPositionUpdates.next();
     if (this.HsShareUrlService.getParamValue('layerSelected')) {
       const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
       const layerFound = await this.checkLayerFromUrl(layerTitle);
@@ -909,7 +918,7 @@ export class HsLayerManagerService {
       )
     );
 
-    this.map.getLayers().on('add', (e) => this.layerAdded(e));
+    this.map.getLayers().on('add', (e) => this.layerAdded(e, true));
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
   checkLayerFromUrl(layerTitle: string): any {

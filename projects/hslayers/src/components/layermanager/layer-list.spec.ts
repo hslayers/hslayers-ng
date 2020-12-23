@@ -135,9 +135,12 @@ describe('layermanager-layer-list', () => {
   });
 
   it('should list sublayers', () => {
-    component['HsLayerManagerService'].layerAdded({
-      element: subLayerContainerLayer,
-    });
+    component['HsLayerManagerService'].layerAdded(
+      {
+        element: subLayerContainerLayer,
+      },
+      false
+    );
     expect(component).toBeTruthy();
     expect(window.console.error).not.toHaveBeenCalled();
   });
