@@ -33,11 +33,13 @@ export class HsLayerPhysicalListComponent {
       this.layersCopy = this.layers.map((l) => {
         return {title: l.title, layer: l.layer};
       });
+      console.log('Before', this.layersCopy);
       if (this.HsConfig.reverseLayerList) {
         this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
           this.layersCopy
         );
       }
+      console.log('After', this.layersCopy);
     });
   }
   moveLayer(layer, orient: string): void {
