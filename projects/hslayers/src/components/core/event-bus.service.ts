@@ -119,10 +119,5 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<VectorLayer> = new BehaviorSubject(
     null
   );
-  /**
-   * @event layerPositionUpdates
-   * @description Fires when layer is moved up or down in physical layer list
-   */
-  layerPositionUpdates: Subject<void> = new Subject();
   constructor() {}
 }

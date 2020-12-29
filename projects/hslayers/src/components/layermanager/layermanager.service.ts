@@ -279,7 +279,6 @@ export class HsLayerManagerService {
   updateLayerListPositions(): void {
     //TODO: We could also sort by title or other property. Not supported right now though, just zIndex
     this.data.layers = this.sortLayersByZ(this.data.layers);
-    this.HsEventBusService.layerPositionUpdates.next();
   }
   sortLayersByZ(arr: any[]): any[] {
     const minus = this.HsConfig.reverseLayerList || false;
