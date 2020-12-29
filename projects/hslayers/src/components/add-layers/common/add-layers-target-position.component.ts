@@ -8,8 +8,8 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
   templateUrl: './add-layers-target-position.component.html',
 })
 export class HsAddLayersTargetPositionComponent {
-  @Input() addBefore: BaseLayer | null; // @type'; TODO: comes from another scope
-  @Output() addBeforeChange = new EventEmitter<BaseLayer | null>();
+  @Input() addUnder: BaseLayer | null; // @type'; TODO: comes from another scope
+  @Output() addUnderChange = new EventEmitter<BaseLayer | null>();
 
   constructor(
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -17,6 +17,6 @@ export class HsAddLayersTargetPositionComponent {
   ) {}
 
   updateChanges(): void {
-    this.addBeforeChange.next(this.addBefore);
+    this.addUnderChange.next(this.addUnder);
   }
 }
