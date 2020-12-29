@@ -22,7 +22,6 @@ export class HsLayerPhysicalListComponent {
     layer: BaseLayer;
     active?: boolean;
   }> = [];
-  previoslySelectedLayer: any;
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -30,40 +29,26 @@ export class HsLayerPhysicalListComponent {
     public HsConfig: HsConfig
   ) {
     this.fillLayers();
-    this.HsEventBusService.layerManagerUpdates.subscribe(
-      (suspendListSourceUpdate: boolean) => {
-        this.fillLayers(suspendListSourceUpdate);
+    this.HsEventBusService.layerManagerUpdates.subscribe((layer: any) => {
+      this.fillLayers();
+      if (layer !== undefined) {
+        this.layersCopy.find((wrapper) => wrapper.layer == layer).active = true;
       }
-    );
+    });
   }
 
-  private fillLayers(suspendListSourceUpdate?: boolean) {
+  private fillLayers() {
     if (this.layers == undefined) {
       return;
     }
-    if (
-      suspendListSourceUpdate !== undefined &&
-      typeof suspendListSourceUpdate == 'boolean' &&
-      suspendListSourceUpdate
-    ) {
-      this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
-        this.layersCopy
-      );
-    } else {
-      this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
-        this.layers.map((l) => {
-          return {title: l.title, layer: l.layer};
-        })
-      );
-    }
+    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
+      this.layers.map((l) => {
+        return {title: l.title, layer: l.layer};
+      })
+    );
   }
 
   moveLayer(layer, orient: string): void {
-    if (this.previoslySelectedLayer !== undefined) {
-      this.previoslySelectedLayer.active = false;
-    }
-    layer.active = true;
-    this.previoslySelectedLayer = layer;
     const currentLayerIndex = this.layersCopy.indexOf(layer);
     switch (orient) {
       case 'up':
@@ -84,7 +69,6 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    const suspendListSourceUpdate = true;
-    this.HsEventBusService.layerManagerUpdates.next(suspendListSourceUpdate);
+    this.HsEventBusService.layerManagerUpdates.next(layer);
   }
 }
