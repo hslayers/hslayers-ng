@@ -139,7 +139,7 @@ describe('layermanager-layer-list', () => {
       {
         element: subLayerContainerLayer,
       },
-      false
+      true
     );
     expect(component).toBeTruthy();
     expect(window.console.error).not.toHaveBeenCalled();
