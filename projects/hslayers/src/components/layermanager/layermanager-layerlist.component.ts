@@ -38,9 +38,7 @@ export class HsLayerListComponent {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.updateLayers();
-    });
-    this.HsEventBusService.layerPositionUpdates.subscribe(() => {
+      this.HsLayerManagerService.updateLayerListPositions();
       this.updateLayers();
     });
   }
