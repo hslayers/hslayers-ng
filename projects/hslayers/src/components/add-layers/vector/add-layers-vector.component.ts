@@ -60,7 +60,7 @@ export class HsAddLayersVectorComponent {
       {
         extractStyles: this.extract_styles,
         features: this.features,
-        path: this.folder_name,
+        path: this.folder_name.trim() != '' ? this.folder_name : undefined,
       },
       this.addUnder
     );
