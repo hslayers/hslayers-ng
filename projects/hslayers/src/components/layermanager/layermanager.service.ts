@@ -277,24 +277,15 @@ export class HsLayerManagerService {
       }
     }
   }
-  updateLayerListPositions(arr?: any[]): any[] {
+  updateLayerListPositions(): void {
     this.data.layers = this.sortLayersByZ(this.data.layers);
-    if (arr?.length > 0) {
-      const sortedArray = this.sortLayersByZ(arr);
-      return sortedArray;
-    } else {
-      return [];
-    }
-  }
-  layerOrderOrientation(): string {
-    return this.HsConfig.layer_order || 'desc';
   }
   sortLayersByZ(arr: any[]): any[] {
-    const desc = this.layerOrderOrientation().startsWith('desc');
+    const minus = this.HsConfig.reverseLayerList || false;
     return arr.sort((a, b) => {
       a = a.layer.getZIndex();
       b = b.layer.getZIndex();
-      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (desc ? -1 : 1);
+      const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
       return tmp;
     });
   }

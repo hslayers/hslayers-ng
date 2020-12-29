@@ -1,5 +1,6 @@
 import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
+import {HsConfig} from './../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -25,12 +26,18 @@ export class HsLayerPhysicalListComponent {
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public HsConfig: HsConfig
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.layersCopy = this.layers.map((l) => {
         return {title: l.title, layer: l.layer};
       });
+      if (this.HsConfig.reverseLayerList) {
+        this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
+          this.layersCopy
+        );
+      }
     });
   }
   moveLayer(layer, orient: string): void {
@@ -62,9 +69,8 @@ export class HsLayerPhysicalListComponent {
     this.sortLayers();
   }
   sortLayers(): void {
-    this.layersCopy = this.HsLayerManagerService.updateLayerListPositions(
-      this.layersCopy
-    );
+    this.HsLayerManagerService.updateLayerListPositions();
+    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
     this.HsEventBusService.layerPositionUpdates.next();
   }
 }
