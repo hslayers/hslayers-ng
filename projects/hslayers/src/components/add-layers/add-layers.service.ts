@@ -18,7 +18,7 @@ export class HsAddLayersService {
     if (addBefore) {
       let prevLayerZIndex: number;
       const layers = this.hsMapService.map.getLayers();
-      if (this.HsConfig.layer_order === 'desc') {
+      if (this.HsConfig.reverseLayerList) {
         layer.setZIndex(addBefore.getZIndex() + 1);
         layers.forEach((mapLayer) => {
           if (layer.get('base') != true) {

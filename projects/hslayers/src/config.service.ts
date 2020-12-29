@@ -9,7 +9,6 @@ export class HsConfig {
   allowAddExternalDatasets?: boolean;
   sidebarClosed?: boolean;
   sidebarPosition?: string;
-  layer_order?: string;
   box_layers?: Array<any>;
   senslog?: {
     url: string;
@@ -94,6 +93,7 @@ export class HsConfig {
   assetsPath?: string;
 
   configChanges?: Subject<HsConfig> = new Subject();
+  reverseLayerList?: boolean;
   constructor() {}
 
   update?(newConfig: HsConfig): void {
