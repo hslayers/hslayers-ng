@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HsConfig } from './config.service';
+import {ComponentFixture, TestBed, async} from '@angular/core/testing';
+import {HsConfig} from './config.service';
 
-import { HslayersComponent } from './hslayers.component';
+import {HslayersComponent} from './hslayers.component';
 
 class HsConfigMock {
-  layer_order = '-position';
+  reverseLayerList = true;
   constructor() {}
 }
 
@@ -14,10 +14,9 @@ describe('HslayersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HslayersComponent ],
-      providers: [{provide: HsConfig, useValue: new HsConfigMock()},]
-    })
-    .compileComponents();
+      declarations: [HslayersComponent],
+      providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

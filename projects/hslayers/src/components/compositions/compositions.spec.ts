@@ -33,7 +33,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 class HsConfigMock {
-  layer_order = '-position';
+  reverseLayerList = true;
   constructor() {}
 }
 
