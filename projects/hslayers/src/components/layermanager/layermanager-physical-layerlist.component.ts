@@ -71,6 +71,5 @@ export class HsLayerPhysicalListComponent {
   sortLayers(): void {
     this.HsLayerManagerService.updateLayerListPositions();
     this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
-    this.HsEventBusService.layerPositionUpdates.next();
   }
 }

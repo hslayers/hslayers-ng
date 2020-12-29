@@ -200,7 +200,6 @@ export class HsLayerManagerService {
       this.data.layers.push(new_layer);
       if (sorting) {
         this.updateLayerListPositions();
-        this.HsEventBusService.layerPositionUpdates.next();
       }
       if (layer.get('queryCapabilities') != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
@@ -274,8 +273,13 @@ export class HsLayerManagerService {
       }
     }
   }
+  /**
+   * @description Sort layers which are added to map and registered
+   * in layermanager by Z and notify components that layer positions have changed.
+   */
   updateLayerListPositions(): void {
     this.data.layers = this.sortLayersByZ(this.data.layers);
+    this.HsEventBusService.layerPositionUpdates.next();
   }
   sortLayersByZ(arr: any[]): any[] {
     const minus = this.HsConfig.reverseLayerList || false;
@@ -877,7 +881,6 @@ export class HsLayerManagerService {
       );
     });
     this.updateLayerListPositions();
-    this.HsEventBusService.layerPositionUpdates.next();
     if (this.HsShareUrlService.getParamValue('layerSelected')) {
       const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
       const layerFound = await this.checkLayerFromUrl(layerTitle);
