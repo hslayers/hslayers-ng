@@ -3,7 +3,7 @@
         <li *ngFor="let layer of layersCopy;" class="list-group-item hs-lm-item" [ngClass]="{'activeLayer': layer.active}">
             <div class="d-flex"> 
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1">
-                    {{HsLayerUtilsService.translateTitle(layer.title)}}{{layer.layer.getZIndex()}}
+                    {{HsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
                 <div class="p-0 info_btn text-right">
                     <span class="icon-arrow-up" [title]="'LAYERMANAGER.layerList.moveLayerUp' | translate"

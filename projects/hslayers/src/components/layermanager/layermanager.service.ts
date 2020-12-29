@@ -123,13 +123,13 @@ export class HsLayerManagerService {
 
   /**
    * @ngdoc method
-   * @param sorting
+   * @param suspendEvents
    * @name HsLayermanagerService#layerAdded
    * @private
    * @param {CollectionEvent} e Event object emited by Ol add layer event
    * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    */
-  layerAdded(e: CollectionEvent, sorting: boolean): void {
+  layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
@@ -198,9 +198,6 @@ export class HsLayerManagerService {
         new_layer.legends = layer.get('legends');
       }
       this.data.layers.push(new_layer);
-      if (sorting) {
-        this.updateLayerListPositions();
-      }
       if (layer.get('queryCapabilities') != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
           setTimeout(() => {
@@ -217,9 +214,11 @@ export class HsLayerManagerService {
     if (layer.getVisible() && layer.get('base')) {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
-    this.HsEventBusService.layerAdditions.next(new_layer);
-    this.HsEventBusService.layerManagerUpdates.next(layer);
-    this.HsEventBusService.compositionEdits.next();
+    if (!suspendEvents) {
+      this.HsEventBusService.layerAdditions.next(new_layer);
+      this.HsEventBusService.layerManagerUpdates.next(layer);
+      this.HsEventBusService.compositionEdits.next();
+    }
   }
 
   /**
@@ -278,6 +277,7 @@ export class HsLayerManagerService {
    * in layermanager by Z and notify components that layer positions have changed.
    */
   updateLayerListPositions(): void {
+    //TODO: We could also sort by title or other property. Not supported right now though, just zIndex
     this.data.layers = this.sortLayersByZ(this.data.layers);
     this.HsEventBusService.layerPositionUpdates.next();
   }
@@ -877,10 +877,11 @@ export class HsLayerManagerService {
         {
           element: lyr,
         },
-        false
+        true
       );
     });
     this.updateLayerListPositions();
+    this.HsEventBusService.layerManagerUpdates.next();
     if (this.HsShareUrlService.getParamValue('layerSelected')) {
       const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
       const layerFound = await this.checkLayerFromUrl(layerTitle);
@@ -909,7 +910,13 @@ export class HsLayerManagerService {
       )
     );
 
-    this.map.getLayers().on('add', (e) => this.layerAdded(e, true));
+    this.map.getLayers().on('add', (e) => {
+      if (e.element.get('show_in_manager') == false) {
+        return;
+      }
+      this.layerAdded(e);
+      this.updateLayerListPositions();
+    });
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
   checkLayerFromUrl(layerTitle: string): any {

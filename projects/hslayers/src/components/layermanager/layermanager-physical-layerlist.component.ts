@@ -36,6 +36,9 @@ export class HsLayerPhysicalListComponent {
   }
 
   private fillLayers() {
+    if (this.layers == undefined) {
+      return;
+    }
     this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
       this.layers.map((l) => {
         return {title: l.title, layer: l.layer};
@@ -69,9 +72,6 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.sortLayers();
-  }
-  sortLayers(): void {
     this.HsLayerManagerService.updateLayerListPositions();
     this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
   }
