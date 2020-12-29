@@ -30,20 +30,32 @@ export class HsLayerPhysicalListComponent {
     public HsConfig: HsConfig
   ) {
     this.fillLayers();
-    this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.fillLayers();
-    });
+    this.HsEventBusService.layerManagerUpdates.subscribe(
+      (suspendListSourceUpdate: boolean) => {
+        this.fillLayers(suspendListSourceUpdate);
+      }
+    );
   }
 
-  private fillLayers() {
+  private fillLayers(suspendListSourceUpdate?: boolean) {
     if (this.layers == undefined) {
       return;
     }
-    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
-      this.layers.map((l) => {
-        return {title: l.title, layer: l.layer};
-      })
-    );
+    if (
+      suspendListSourceUpdate !== undefined &&
+      typeof suspendListSourceUpdate == 'boolean' &&
+      suspendListSourceUpdate
+    ) {
+      this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
+        this.layersCopy
+      );
+    } else {
+      this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
+        this.layers.map((l) => {
+          return {title: l.title, layer: l.layer};
+        })
+      );
+    }
   }
 
   moveLayer(layer, orient: string): void {
@@ -72,6 +84,7 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.HsEventBusService.layerManagerUpdates.next();
+    const suspendListSourceUpdate = true;
+    this.HsEventBusService.layerManagerUpdates.next(suspendListSourceUpdate);
   }
 }
