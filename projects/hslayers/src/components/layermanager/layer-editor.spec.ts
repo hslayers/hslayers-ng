@@ -35,7 +35,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {Vector as VectorSource} from 'ol/source';
 
 class HsConfigMock {
-  layer_order = '-position';
+  reverseLayerList = true;
   layersInFeatureTable = [];
   constructor() {}
 }
