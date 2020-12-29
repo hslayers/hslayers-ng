@@ -14,29 +14,18 @@ export class HsAddLayersService {
     public HsConfig: HsConfig
   ) {}
 
-  addLayer(layer: BaseLayer, addBefore?: BaseLayer) {
-    if (addBefore) {
-      let prevLayerZIndex: number;
-      const layers = this.hsMapService.map.getLayers();
-      if (this.HsConfig.reverseLayerList) {
-        layer.setZIndex(addBefore.getZIndex() + 1);
-      } else {
-        layer.setZIndex(addBefore.getZIndex());
-      }
-      layers.forEach((mapLayer) => {
-        if (layer.get('base') != true) {
-          if (
-            mapLayer.getZIndex() == layer.getZIndex() ||
-            mapLayer.getZIndex() == prevLayerZIndex
-          ) {
-            mapLayer.setZIndex(mapLayer.getZIndex() + 1);
-            prevLayerZIndex = mapLayer.getZIndex();
-          }
+  addLayer(layer: BaseLayer, underLayer?: BaseLayer) {
+    if (underLayer) {
+      const layers = this.hsMapService.getLayersArray();
+      const underZ = underLayer.getZIndex();
+      layer.setZIndex(underZ);
+      for (const iLayer of layers.filter((l) => !l.get('base'))) {
+        if (iLayer.getZIndex() >= underZ) {
+          iLayer.setZIndex(iLayer.getZIndex() + 1);
         }
-      });
-
-      const ix = layers.getArray().indexOf(addBefore);
-      layers.insertAt(ix, layer);
+      }
+      const ix = layers.indexOf(underLayer);
+      this.hsMapService.map.getLayers().insertAt(ix, layer);
     } else {
       this.hsMapService.map.addLayer(layer);
     }
