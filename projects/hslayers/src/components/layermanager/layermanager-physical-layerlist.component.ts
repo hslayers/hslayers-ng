@@ -29,12 +29,20 @@ export class HsLayerPhysicalListComponent {
     public HsEventBusService: HsEventBusService,
     public HsConfig: HsConfig
   ) {
+    this.fillLayers();
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.layersCopy = this.layers.map((l) => {
-        return {title: l.title, layer: l.layer};
-      });
+      this.fillLayers();
     });
   }
+
+  private fillLayers() {
+    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
+      this.layers.map((l) => {
+        return {title: l.title, layer: l.layer};
+      })
+    );
+  }
+
   moveLayer(layer, orient: string): void {
     if (this.previoslySelectedLayer !== undefined) {
       this.previoslySelectedLayer.active = false;
