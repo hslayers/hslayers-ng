@@ -158,13 +158,10 @@ export class HsLayerManagerService {
         this.HsConfig.clusteringDistance
       );
     }
-    if (typeof layer.getZIndex() == 'undefined') {
-      layer.setZIndex(this.zIndexValue);
-      this.zIndexValue = ++this.zIndexValue;
-    } else {
-      if (layer.getZIndex() == this.zIndexValue) {
-        this.zIndexValue = ++this.zIndexValue;
-      }
+    if (layer.getZIndex() == undefined) {
+      layer.setZIndex(this.zIndexValue++);
+    } else if (layer.getZIndex() > this.zIndexValue) {
+      this.zIndexValue = layer.getZIndex() + 1;
     }
 
     /**
