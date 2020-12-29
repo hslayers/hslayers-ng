@@ -72,7 +72,6 @@ export class HsLayerPhysicalListComponent {
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
-    this.HsLayerManagerService.updateLayerListPositions();
-    this.layersCopy = this.HsLayerManagerService.sortLayersByZ(this.layersCopy);
+    this.HsEventBusService.layerManagerUpdates.next();
   }
 }
