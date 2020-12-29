@@ -880,7 +880,6 @@ export class HsLayerManagerService {
         true
       );
     });
-    this.updateLayerListPositions();
     this.HsEventBusService.layerManagerUpdates.next();
     if (this.HsShareUrlService.getParamValue('layerSelected')) {
       const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
@@ -915,7 +914,6 @@ export class HsLayerManagerService {
         return;
       }
       this.layerAdded(e);
-      this.updateLayerListPositions();
     });
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
