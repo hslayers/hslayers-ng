@@ -39,7 +39,7 @@ export class HsAddLayersWmsService {
       mapProjection: undefined,
       registerMetadata: true,
       tileSize: 512,
-      addBefore: null,
+      addUnder: null,
     };
     //TODO: all dimension related things need to be refactored into seperate module
     this.getDimensionValues = hsDimensionService.getDimensionValues;
@@ -384,14 +384,14 @@ export class HsAddLayersWmsService {
       subLayers: subLayers,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.hsAddLayersService.addLayer(new_layer, this.data.addBefore);
+    this.hsAddLayersService.addLayer(new_layer, this.data.addUnder);
   }
 
   /**
    * @description Add service and its layers to project
    * @function addService
    * @param {string} url Service url
-   * @param addBefore {BaseLayer} OL layer before which to add new layer
+   * @param addUnder {BaseLayer} OL layer before which to add new layer
    * @param path {string} Folder name with path to group layers
    * @param {Group} group Group layer to which add layer to
    * @param {string} layerName Name of layer to add. If not specified then all layers are added
@@ -400,7 +400,7 @@ export class HsAddLayersWmsService {
     url: string,
     group: Group,
     layerName: string,
-    addBefore?: BaseLayer,
+    addUnder?: BaseLayer,
     path?: string
   ): void {
     this.hsWmsGetCapabilitiesService
@@ -422,7 +422,7 @@ export class HsAddLayersWmsService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.hsAddLayersService.addLayer(layer, addBefore);
+            this.hsAddLayersService.addLayer(layer, addUnder);
           }
         });
       });

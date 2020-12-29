@@ -31,7 +31,7 @@ export class HsAddLayersShpComponent implements OnInit {
   title = '';
   folder_name = '';
   advancedPanelVisible = false;
-  addBefore: BaseLayer = null;
+  addUnder: BaseLayer = null;
 
   constructor(
     public hsAddLayersShpService: HsAddLayersShpService,
