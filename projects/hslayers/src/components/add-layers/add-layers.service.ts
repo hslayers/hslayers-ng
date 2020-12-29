@@ -20,25 +20,21 @@ export class HsAddLayersService {
       const layers = this.hsMapService.map.getLayers();
       if (this.HsConfig.reverseLayerList) {
         layer.setZIndex(addBefore.getZIndex() + 1);
-        layers.forEach((mapLayer) => {
-          if (layer.get('base') != true) {
-            if (
-              mapLayer.getZIndex() == layer.getZIndex() ||
-              mapLayer.getZIndex() == prevLayerZIndex
-            ) {
-              mapLayer.setZIndex(mapLayer.getZIndex() + 1);
-              prevLayerZIndex = mapLayer.getZIndex();
-            }
-          }
-        });
       } else {
         layer.setZIndex(addBefore.getZIndex());
-        layers.forEach((layer) => {
-          if (layer.get('base') != true) {
-            layer.setZIndex(layer.getZIndex() + 1);
-          }
-        });
       }
+      layers.forEach((mapLayer) => {
+        if (layer.get('base') != true) {
+          if (
+            mapLayer.getZIndex() == layer.getZIndex() ||
+            mapLayer.getZIndex() == prevLayerZIndex
+          ) {
+            mapLayer.setZIndex(mapLayer.getZIndex() + 1);
+            prevLayerZIndex = mapLayer.getZIndex();
+          }
+        }
+      });
+
       const ix = layers.getArray().indexOf(addBefore);
       layers.insertAt(ix, layer);
     } else {
