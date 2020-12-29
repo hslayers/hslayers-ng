@@ -33,7 +33,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {wmsGetCapabilitiesResponse} from '../../../test/data/wms-capabilities';
 
 class HsConfigMock {
-  layer_order = '-position';
+  reverseLayerList = true;
   constructor() {}
 }
 

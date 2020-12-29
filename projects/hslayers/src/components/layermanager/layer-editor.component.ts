@@ -386,6 +386,7 @@ export class HsLayerEditorComponent {
       layer,
     });
     layer.set('title', newLayerTitle);
+    this.HsEventBusService.layerManagerUpdates.next();
   }
 
   get title(): string {
