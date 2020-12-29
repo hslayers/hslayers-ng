@@ -29,7 +29,7 @@
       "tileMatrix": "Matice dlaždic"
     },
     "addSelected": "Přidat označené vrstvy do mapy",
-    "before": "Přidat před vrstvu",
+    "under": "Přidat pod vrstvu",
     "chooseFormat": "Vyberte formát",
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrazu.",

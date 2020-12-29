@@ -23,7 +23,7 @@ export class HsAddLayersVectorComponent {
   featureCount = 0;
   type = '';
   errorOccured = false;
-  addBefore: BaseLayer = null;
+  addUnder: BaseLayer = null;
 
   constructor(
     public hsAddLayersVectorService: HsAddLayersVectorService,
@@ -62,7 +62,7 @@ export class HsAddLayersVectorComponent {
         features: this.features,
         path: this.folder_name,
       },
-      this.addBefore
+      this.addUnder
     );
     this.hsAddLayersVectorService.fitExtent(layer);
     this.hsLayoutService.setMainPanel('layermanager');

@@ -29,7 +29,7 @@
       "tileMatrix": "Tile matrix"
     },
     "addSelected": "Add selected layers to the map",
-    "before": "Add before layer",
+    "under": "Add under layer",
     "chooseFormat": "Choose format",
     "chooseType": "Choose type",
     "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",

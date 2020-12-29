@@ -29,7 +29,7 @@
       "tileMatrix": "\"Flīžu\" matrica"
     },
     "addSelected": "Pievienot izvēlētos slāņus kartei",
-    "before": "Pievienot pirms slāņa",
+    "under": "Pievienot zem slāņa",
     "chooseFormat": "Izvēlieties formātu",
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",

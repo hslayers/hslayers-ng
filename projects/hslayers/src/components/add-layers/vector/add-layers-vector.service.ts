@@ -58,7 +58,7 @@ export class HsAddLayersVectorService {
    * @param name
    * @param {string} title Title of new layer
    * @param {string} abstract Abstract of new layer
-   * @param addBefore
+   * @param addUnder
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {object} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
@@ -71,7 +71,7 @@ export class HsAddLayersVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions,
-    addBefore?: BaseLayer
+    addUnder?: BaseLayer
   ): Promise<VectorLayer> {
     return new Promise((resolve, reject) => {
       try {
@@ -99,7 +99,7 @@ export class HsAddLayersVectorService {
           });
         }
         if (this.HsMapService.map) {
-          this.hsAddLayersService.addLayer(lyr, addBefore);
+          this.hsAddLayersService.addLayer(lyr, addUnder);
         }
         resolve(lyr);
       } catch (ex) {
