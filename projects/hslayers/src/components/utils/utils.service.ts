@@ -532,4 +532,11 @@ export class HsUtilsService {
   getAjaxLoaderIcon() {
     return this.getAssetsPath() + 'img/ajax-loader.gif';
   }
+
+  undefineEmptyString(str: string): any {
+    if (str === undefined) {
+      return undefined;
+    }
+    return str.trim() != '' ? str : undefined;
+  }
 }
