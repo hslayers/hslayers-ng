@@ -253,4 +253,15 @@ describe('HsUtilsService', () => {
     const result = hsUtilsService.capitalizeFirstLetter(str);
     expect(result).toEqual('This string will have atleast one capital letter');
   });
+  it('try to undefine an empty string', () => {
+    let str = 'this is now an empty string';
+    let result = hsUtilsService.undefineEmptyString(str);
+    expect(result).toEqual('this is now an empty string');
+    str = '';
+    result = hsUtilsService.undefineEmptyString(str);
+    expect(result).toEqual(undefined);
+    str = undefined;
+    result = hsUtilsService.undefineEmptyString(str);
+    expect(result).toEqual(undefined);
+  });
 });
