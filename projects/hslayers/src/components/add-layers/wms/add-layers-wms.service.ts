@@ -434,7 +434,7 @@ export class HsAddLayersWmsService {
         this.addLayer(
           layer,
           layer.Title.replace(/\//g, '&#47;'),
-          this.data.path,
+          this.hsUtilsService.undefineEmptyString(this.data.path),
           this.data.image_format,
           this.data.query_format,
           this.data.tile_size,
@@ -447,7 +447,7 @@ export class HsAddLayersWmsService {
         this.addLayer(
           layer,
           layer.Title.replace(/\//g, '&#47;'),
-          this.data.path,
+          this.hsUtilsService.undefineEmptyString(this.data.path),
           this.data.image_format,
           this.data.query_format,
           this.data.tile_size,

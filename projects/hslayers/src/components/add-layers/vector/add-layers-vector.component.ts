@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {HsAddLayersVectorService} from './add-layers-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-layers-vector',
@@ -28,7 +29,8 @@ export class HsAddLayersVectorComponent {
   constructor(
     public hsAddLayersVectorService: HsAddLayersVectorService,
     public hsHistoryListService: HsHistoryListService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService
   ) {}
 
   connect = (): void => {
@@ -60,7 +62,7 @@ export class HsAddLayersVectorComponent {
       {
         extractStyles: this.extract_styles,
         features: this.features,
-        path: this.folder_name.trim() != '' ? this.folder_name : undefined,
+        path: this.hsUtilsService.undefineEmptyString(this.folder_name),
       },
       this.addUnder
     );

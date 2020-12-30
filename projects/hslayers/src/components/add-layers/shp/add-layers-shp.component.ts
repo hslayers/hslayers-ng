@@ -41,8 +41,7 @@ export class HsAddLayersShpComponent implements OnInit {
     public hsAddLayersWmsService: HsAddLayersWmsService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.pickEndpoint();
@@ -127,7 +126,7 @@ export class HsAddLayersShpComponent implements OnInit {
           undefined,
           this.name,
           undefined,
-          this.folder_name
+          this.hsUtilsService.undefineEmptyString(this.folder_name)
         );
         this.loading = false;
         this.hsLayoutService.setMainPanel('layermanager');

@@ -137,7 +137,7 @@ export class HsAddLayersVectorService {
       url = this.HsUtilsService.proxify(url);
     }
 
-    if (type === undefined || type == '') {
+    if (this.HsUtilsService.undefineEmptyString(type) === undefined) {
       type = this.tryGuessTypeFromUrl(url);
     }
 
