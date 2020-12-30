@@ -109,4 +109,10 @@ export class HsUtilsServiceMock {
       return flatArray.indexOf(propertyValue) === position;
     });
   }
+  undefineEmptyString(str: string): any {
+    if (str === undefined) {
+      return undefined;
+    }
+    return str.trim() != '' ? str : undefined;
+  }
 }
