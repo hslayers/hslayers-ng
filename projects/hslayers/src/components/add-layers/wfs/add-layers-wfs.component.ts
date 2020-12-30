@@ -38,7 +38,7 @@ export class HsAddLayersWfsComponent {
     public hsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsUtilsService: HsUtilsService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.hsEventBusService.olMapLoads.subscribe(() => {
       this.mapProjection = this.HsMapService.map
@@ -178,7 +178,7 @@ export class HsAddLayersWfsComponent {
       this.addLayer(
         layer,
         layer.Title.replace(/\//g, '&#47;'),
-        this.folderName,
+        this.hsUtilsService.undefineEmptyString(this.folderName),
         this.HsAddLayersWfsService.srs
       );
     }
@@ -209,7 +209,7 @@ export class HsAddLayersWfsComponent {
     const new_layer = new VectorLayer({
       title: layerName,
       source: this.HsAddLayersWfsService.createWfsSource(options),
-      path: this.folderName,
+      path: folder,
       renderOrder: null,
       removable: true,
     });

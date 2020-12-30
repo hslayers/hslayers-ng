@@ -119,7 +119,7 @@ export class HsAddLayersArcGisService {
           this.addLayer(
             layer,
             layer.name.replace(/\//g, '&#47;'),
-            this.data.path,
+            this.hsUtilsService.undefineEmptyString(this.data.path),
             this.data.image_format,
             this.data.query_format,
             this.getSublayerNames(layer)
@@ -130,7 +130,7 @@ export class HsAddLayersArcGisService {
           this.addLayer(
             layer,
             layer.name.replace(/\//g, '&#47;'),
-            this.data.path,
+            this.hsUtilsService.undefineEmptyString(this.data.path),
             this.data.image_format,
             this.data.query_format,
             this.getSublayerNames(layer)
