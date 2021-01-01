@@ -583,6 +583,21 @@ export default function (
         duration: 300
       });
     };
+
+    $scope.canZoomIn = function () {
+      const map_view = 'map' in HsMapService ? HsMapService.map.getView() : undefined;
+      return map_view && map_view.getZoom() < map_view.getMaxZoom();
+    }
+
+    $scope.canZoomOut = function () {
+      const map_view = 'map' in HsMapService ? HsMapService.map.getView() : undefined;
+      return map_view && map_view.getZoom() > map_view.getMinZoom();
+    }
+
+    $scope.adjustZoom = function (delta) {
+      const map_view = HsMapService.map.getView();
+      map_view.animate({zoom: map_view.getZoom() + delta, duration: 300});
+    }
                     
   } catch (ex) {
     //Ignore error

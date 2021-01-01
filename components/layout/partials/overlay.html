@@ -24,6 +24,16 @@
 	<md-icon md-icon-set="material-icons" class="geolocation material-icons {{location.status.class}}">{{location.status.icon}}</md-icon>
 </md-button>
 
+<md-button class="md-fab md-mini" style="background-color: #fff" ng-click="adjustZoom(-1)" ng-disabled="!canZoomOut()">
+	<md-tooltip md-direction="bottom">Zoom out</md-tooltip>
+	–
+</md-button>
+
+<md-button class="md-fab md-mini" style="background-color: #fff" ng-click="adjustZoom(1)" ng-disabled="!canZoomIn()">
+	<md-tooltip md-direction="bottom">Zoom in</md-tooltip>
+	+
+</md-button>
+
 <md-button ng-if="HsCore.exists('hs.layermanager.controller')" class="md-fab md-mini md-fab-top-right baselayers-button" ng-click="openBaselayersPanel($event)">
 	<md-icon md-icon-set="material-icons">layers</md-icon>
 </md-button>

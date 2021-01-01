@@ -151,7 +151,10 @@ export default function (
           e.element,
           me.map.getView().calculateExtent(me.map.getSize())
         );
-      }, 500);
+        if (!$rootScope.$$phase) {
+          $rootScope.$digest();
+        }
+      }, 300);
     }
     me.map.getView().on('change:center', (e) => {
       extentChanged(e);
