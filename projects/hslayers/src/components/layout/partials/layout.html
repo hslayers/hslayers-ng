@@ -36,6 +36,7 @@
                     </hs-trip-planner>
                     <hs-mini-sidebar *ngIf="HsLayoutService.minisidebar" [hidden]="!panelVisible('sidebar', this)"></hs-mini-sidebar>
                     <hs-draw [hidden]="!panelVisible('draw', this)"></hs-draw>
+                    <hs-data [hidden]="!panelVisible('data', this)"></hs-data>
                     <hs-panel-container class="hs-panelplace" [ngStyle]="{width: (panelSpaceWidth()-50)+'px'}">
                     </hs-panel-container>
                 </div>
