@@ -31,6 +31,7 @@ import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
 import {TranslateModule} from '@ngx-translate/core';
+import {HsDataModule} from '../data/data.module';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsDrawModule,
     HsPanelHelpersModule,
     HsToastModule,
+    HsDataModule,
   ],
   providers: [HsLayoutService, HsDialogContainerService],
   entryComponents: [HsDialogContainerComponent, HsLayoutComponent],

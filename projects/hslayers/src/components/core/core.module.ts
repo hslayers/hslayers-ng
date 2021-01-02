@@ -7,6 +7,7 @@ import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsCoreService} from './core.service';
+import {HsDataModule} from '../data/data.module';
 import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
 import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw/draw.module';
@@ -35,6 +36,7 @@ import {HsUtilsModule} from './../utils/utils.module';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {Observable, forkJoin, from} from 'rxjs';
+
 import {
   TranslateLoader,
   TranslateModule,
@@ -125,6 +127,7 @@ export function getWebpackTranslateLoader(
     HsUtilsModule,
     HsToolbarModule,
     HsCompositionsModule,
+    HsDataModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
