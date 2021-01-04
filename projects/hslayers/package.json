@@ -9,11 +9,11 @@
   },
   "devDependencies": {
     "bootstrap": ">=4.4.1",
-    "ol": "^6.4.3",
+    "ol": "^6.5.0",
     "@angular/common": "^9.1.12",
     "@angular/core": "^9.1.12",
     "@angular/forms": "^9.1.12",
-    "@angular/localize": "^9.1.12",
+    "@angular/localize": "^9.1.13",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
     "deepmerge": "^4.2.2",
