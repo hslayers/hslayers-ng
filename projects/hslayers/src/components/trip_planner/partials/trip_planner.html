@@ -4,7 +4,7 @@
         <div *ngFor="let waypoint of HsTripPlannerService.waypoints" class="d-flex flex-row">
             <div class="p-1 flex-grow-1">
                 <a href="#" (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.name_editing">{{waypoint.name}}</a>
-                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name"
+                <input [(ngModel)]="waypoint.name" class="form-control hs-waypoint-name" [ngModelOptions]="{standalone: true}"
                     [hidden]="!waypoint.name_editing" (blur)="toggleEdit(waypoint)">
             </div>
             <div class="p-1">

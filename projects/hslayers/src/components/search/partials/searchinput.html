@@ -4,7 +4,7 @@
             class="btn btn-light btn-outline-secondary rounded-0 hs-toolbar-button"><i class="glyphicon icon-search"
                 title="Search: "></i></button>
     </div>
-    <input [(ngModel)]="query" [hidden]="!searchInputVisible"
+    <input [(ngModel)]="query" [hidden]="!searchInputVisible" name="query"
         class="form-control hs-search-address-input rounded-0 hs-toolbar-button" [placeholder]="'SEARCH.search' | translate"
         (ngModelChange)="queryChanged()">
     <div class="input-group-append" *ngIf="clearvisible">

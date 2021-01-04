@@ -40,7 +40,7 @@
             <div class="form-group" [hidden]="!HsCore.embededEnabled">
                 <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translate}}</label>
                 <textarea class="form-control" style="height: 80px" id="permalink-embed"
-                    [(ngModel)]="HsShareService.data.embedCode"></textarea>
+                    [(ngModel)]="HsShareService.data.embedCode" [ngModelOptions]="{standalone: true}"></textarea>
                 <br>
             </div>
 
@@ -52,19 +52,19 @@
                     <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translate}}</label>
                     <input type="text" class="form-control" id="hs-prmlnk-title"
                         [placeholder]="'COMMON.fillInName' | translate" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.data.title">
+                        [(ngModel)]="HsShareService.data.title" [ngModelOptions]="{standalone: true}">
                 </div>
                 <div class="form-group">
                     <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translate}}</label>
 
                     <textarea class="form-control" id="hs-prmlnk-abstract"
                         [placeholder]="'COMMON.fillInDescriptive' | translate" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.data.abstract">                    </textarea>
+                        [(ngModel)]="HsShareService.data.abstract" [ngModelOptions]="{standalone: true}">                    </textarea>
                 </div>
 
                 <div class="form-group">
                     <div class="form-group">
-                        <label class="control-label"><input type="checkbox" [(ngModel)]="new_share" /><span
+                        <label class="control-label"><input type="checkbox" [(ngModel)]="new_share" [ngModelOptions]="{standalone: true}" /><span
                                 class="ng-scope">{{'PERMALINK.newShare' | translate}}</span></label>
                     </div>
                     <div class="btn-group" role="group">

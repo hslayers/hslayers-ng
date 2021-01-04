@@ -7,7 +7,7 @@
 
         <label class="form-group">{{'COMMON.abstract' | translate}}
             <textarea class="form-control" [placeholder]="'COMMON.fillInDescriptive' | translate"
-                [(ngModel)]="HsSaveMapManagerService.compoData.abstract">            </textarea>
+                [(ngModel)]="HsSaveMapManagerService.compoData.abstract" [ngModelOptions]="{standalone: true}">            </textarea>
         </label>
 
         <label class="form-group">{{'COMMON.thumbnail' | translate}}
@@ -17,7 +17,7 @@
         <div class="form-group">
             <div class="checkbox" *ngFor="let g of HsSaveMapManagerService.statusData.groups">
                 <label>
-                    <input type="checkbox" [(ngModel)]="g.r">
+                    <input type="checkbox" [(ngModel)]="g.r" [ngModelOptions]="{standalone: true}">
                     <span>{{'SAVECOMPOSITION.panelMd.makePublic' | translate}}</span>
                 </label>
             </div>
@@ -30,26 +30,26 @@
     <div class="collapse hs-save-comp-advanced-panel">
         <form class="form">
             <label class="form-group">{{'COMMON.keywords' | translate}}
-                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
+                <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.compoData.keywords" [ngModelOptions]="{standalone: true}">
             </label>
 
             <label class="form-group">{{'COMMON.extent' | translate}}
                 <div class="row hs-comp-ext-row">
                     <div class="form-group hs-comp-ext col-sm-3">
                         <input type="text" class="form-control input-group-lg"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]">
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[0]" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
                         <input type="text" class="form-control hs-comp-ext input-group-lg"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[1]">
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[1]" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
                         <input type="text" class="form-control hs-comp-ext input-group-lg"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[2]">
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[2]" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group hs-comp-ext col-sm-3">
                         <input type="text" class="form-control hs-comp-ext input-group-lg"
-                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]">
+                            [(ngModel)]="HsSaveMapManagerService.compoData.bbox[3]" [ngModelOptions]="{standalone: true}">
                     </div>
                 </div>
             </label>
@@ -64,7 +64,7 @@
                         class="list-group-item">
                         <span>{{HsLayerUtilsService.translateTitle(layer.title)}}</span>
                         <span class="pull-right">
-                            <input type="checkbox" [(ngModel)]="layer.checked">
+                            <input type="checkbox" [(ngModel)]="layer.checked" [ngModelOptions]="{standalone: true}">
                         </span>
                     </li>
                 </ul>

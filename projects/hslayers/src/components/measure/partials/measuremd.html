@@ -3,7 +3,7 @@
     <div layout="row" layout-align="space-between center">
       <div layout="column" layout-align="start start">
         <span>{{'MEASURE.measureMd.measureType' | translate}}</span>
-        <md-radio-group [(ngModel)]="type" flex-offset="10">
+        <md-radio-group [(ngModel)]="type" name="type" flex-offset="10">
           <md-radio-button value="distance">{{'COMMON.distance' | translate}}</md-radio-button>
           <md-radio-button value="area">{{'COMMON.area' | translate}}</md-radio-button>
         </md-radio-group>

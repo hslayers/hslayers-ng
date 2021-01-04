@@ -3,6 +3,6 @@
         <div class="input-group-prepend">
             <span class="input-group-text">{{attribute.name}}</span>
         </div>
-        <input class="form-control" [(ngModel)]="attribute.value" (change)="change()" [readonly]="readonly">
+        <input class="form-control" [(ngModel)]="attribute.value" (change)="change()" [readonly]="readonly" [ngModelOptions]="{standalone: true}">
     </div>
 </div>
