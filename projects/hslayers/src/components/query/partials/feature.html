@@ -11,14 +11,14 @@
     <div class="row">
         <div class="input-group m-1" [hidden]="!newAttribVisible">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translate" [(ngModel)]="attributeName">
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translate" [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
             <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translate" [(ngModel)]="attributeValue">
+                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translate" [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
     </div>

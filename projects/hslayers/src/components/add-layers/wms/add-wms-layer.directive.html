@@ -96,7 +96,7 @@
                 <tr *ngIf="service.Style?.length > 0">
                     <td colspan="4">
                         <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                        <select class="form-control" [(ngModel)]="service.styleSelected">
+                        <select class="form-control" [(ngModel)]="service.styleSelected" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let style of service.Style">{{style.Name}}</option>
                         </select>
                     </td>

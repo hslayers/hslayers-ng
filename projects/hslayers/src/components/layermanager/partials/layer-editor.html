@@ -116,7 +116,7 @@
     <div class="card-footer" *ngIf="currentLayer != undefined && currentLayer.settings">
         <div class="form-group" [hidden]="!layer_renamer_visible">
             <label>{{'COMMON.title' | translate}}</label>
-            <input type="text" class="form-control" [(ngModel)]="title">
+            <input type="text" class="form-control" [(ngModel)]="title" name="title">
             <div class="form">
                 <br>
                 <label>{{'COMMON.scale' | translate}}</label>
@@ -125,7 +125,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><span>{{'COMMON.from' | translate}}</span>&nbsp;1</span>
                         </div>
-                        <input class="form-control" style="width:65px" [(ngModel)]="minResolution">
+                        <input class="form-control" style="width:65px" [(ngModel)]="minResolution" name="minResolution">
                     </div>
                 </div>
                 <div *ngIf="maxResolutionValid()">
@@ -133,7 +133,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <span>{{'COMMON.to' | translate}}</span>&nbsp;1</span>
                         </div>
-                        <input class="form-control" style="width:65px" [(ngModel)]="maxResolution">
+                        <input class="form-control" style="width:65px" [(ngModel)]="maxResolution" name="maxResolution">
                     </div>
                 </div>
             </div>

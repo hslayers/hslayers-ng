@@ -85,8 +85,8 @@
                 </tr>
                 <tr *ngFor="let g of HsSaveMapManagerService.statusData.groups">
                     <td>{{g.roleTitle || g.roleName}}:</td>
-                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.r"></td>
-                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.w"></td>
+                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.r" [ngModelOptions]="{standalone: true}"></td>
+                    <td><input type="checkbox" class="form-control" [(ngModel)]="g.w" [ngModelOptions]="{standalone: true}"></td>
                 </tr>
             </tbody>
         </table>
@@ -95,56 +95,56 @@
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.person' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.name">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.name" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.organization' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.organization">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.organization" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.position' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.position">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.position" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.address' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.address">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.address" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.city' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.city">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.city" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.state' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.state">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.state" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.postalCode' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.postalcode">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.postalcode" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.country' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.country">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.country" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.phone' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.phone">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.phone" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">
             {{'SAVECOMPOSITION.form.eMail' | translate}}
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.email">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.email" [ngModelOptions]="{standalone: true}">
         </label>
 
         <label class="form-group">WWW
-            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.url">
+            <input type="text" class="form-control" [(ngModel)]="HsSaveMapManagerService.userData.url" [ngModelOptions]="{standalone: true}">
         </label>
 
     </div>
