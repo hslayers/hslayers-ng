@@ -36,9 +36,9 @@ export class HsConfig {
   cesiumAccessToken?: string;
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
-  default_layers: Array<BaseLayer>;
-  default_view: View;
-  panelsEnabled: {
+  default_layers?: Array<BaseLayer>;
+  default_view?: View;
+  panelsEnabled?: {
     legend?: boolean;
     info?: boolean;
     composition_browser?: boolean;
