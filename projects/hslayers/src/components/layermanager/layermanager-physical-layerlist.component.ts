@@ -32,7 +32,12 @@ export class HsLayerPhysicalListComponent {
     this.HsEventBusService.layerManagerUpdates.subscribe((layer: any) => {
       this.fillLayers();
       if (layer !== undefined) {
-        this.layersCopy.find((wrapper) => wrapper.layer == layer).active = true;
+        const layerFound = this.layersCopy.find(
+          (wrapper) => wrapper.layer == layer
+        );
+        if (layerFound !== undefined) {
+          layerFound.active = true;
+        }
       }
     });
   }
