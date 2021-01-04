@@ -3,31 +3,29 @@
   "version": "3.0.0",
   "scripts": {},
   "peerDependencies": {
+    "@types/cesium": "^1.67.12",
+    "cesium": "^1.76.0",
+    "hslayers-ng-proxy": "^1.0.0"
+  },
+  "devDependencies": {
+    "bootstrap": ">=4.4.1",
+    "ol": "^6.4.3",
     "@angular/common": "^9.1.12",
     "@angular/core": "^9.1.12",
     "@angular/forms": "^9.1.12",
     "@angular/localize": "^9.1.12",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
-    "@types/cesium": "^1.67.12",
-    "cesium": "^1.71.0",
     "deepmerge": "^4.2.2",
     "moment": "^2.24.0",
     "moment-interval": "^0.2.1",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
-    "ngx-cookie-service": "^3.1.3",
-    "ol": "^6.3.1",
+    "ngx-cookie-service": "^10.0.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.6.0",
     "rxjs": "^6.5.5",
     "share-api-polyfill": "^1.0.18",
-    "xml-js": "^1.6.11",
-    "unidecode": "^0.1.8",
-    "hslayers-ng-proxy": "^1.0.0"
-  },
-  "devDependencies": {
-    "bootstrap": ">=4.4.1",
-    "ol": "^6.4.3"
+    "xml-js": "^1.6.11"
   },
   "dependencies": {
     "tslib": "^1.10.0"
