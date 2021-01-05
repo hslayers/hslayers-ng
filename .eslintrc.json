@@ -7,15 +7,12 @@
     "openlayers",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:angular/johnpapa",
     "plugin:jsdoc/recommended"
   ],
   "plugins": ["@typescript-eslint"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
-    "define": "readonly",
-    "angular": "readonly",
     "stmPath": "readonly",
     "hslMin": "readonly"
   },
@@ -37,33 +34,6 @@
         "ts": "never"
       }
     ],
-    "angular/di": [
-      "error",
-      "function"
-    ],
-    "angular/file-name": [
-      "warn",
-      {
-        "typeSeparator": "dot",
-        "ignoreTypeSuffix": true,
-        "nameStyle": "dash",
-        "ignorePrefix": "hs."
-      }
-    ],
-    "angular/definedundefined": "off",
-    "angular/typecheck-array": "off",
-    "angular/typecheck-date": "off",
-    "angular/typecheck-function": "off",
-    "angular/typecheck-number": "off",
-    "angular/typecheck-object": "off",
-    "angular/typecheck-string": "off",
-    "angular/document-service": "off",
-    "angular/interval-service": "off",
-    "angular/timeout-service": "off",
-    "angular/window-service": "off",
-    "angular/prefer-component": "warn",
-    "angular/no-controller": "error",
-    "angular/no-service-method": "off",
     "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
     "valid-jsdoc": "off"
   },
@@ -92,6 +62,5 @@
         "extensions": [".js", ".ts"]
       }
     }
-    //"import/resolver": "webpack"
   }
 }
