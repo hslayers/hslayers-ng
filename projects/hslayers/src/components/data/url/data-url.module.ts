@@ -6,12 +6,13 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsDataUrlComponent} from './data-url-component';
+import {HsDataUrlWmsModule} from '../url/wms/data-url-wms.module';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsDataUrlComponent],
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, HsDataUrlWmsModule],
   exports: [HsDataUrlComponent],
   providers: [],
   entryComponents: [HsDataUrlComponent],
