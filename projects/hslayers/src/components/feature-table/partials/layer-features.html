@@ -7,14 +7,14 @@
 <table style="width:100%;" *ngFor="let feature of HsFeatureTableService.features | featureFilter: searchedFeatures">
     <thead>
         <tr style="text-align: center; background-color: rgba(0,0,0,0.05);">
-            <th colspan="2">{{feature.name}}
+            <th colspan="2">{{HsFeatureTableService.translate(feature.name)}}
                 <a href="#" style="float: center;" (click)="HsFeatureTableService.sortFeaturesBy(feature.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let attr of feature.attributes" rowspan="3">
-            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{attr.name}}<a href="#" style="float: right;" 
+            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{HsFeatureTableService.translate(attr.name)}}<a href="#" style="float: right;" 
                 (click)="HsFeatureTableService.sortFeaturesBy(attr.name)" [title]="'FEATURE_TABLE.sortFeaturesByValue' | translate">^</a>
             </th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
@@ -24,12 +24,12 @@
                 <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>
                 <div *ngIf="attr.value?.operations">
                     <a href="#" *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)"><span>
-                        <i> {{translate(operation.customActionName) || translate(operation.action)}};</i></span></a>
+                        <i> {{HsFeatureTableService.translate(operation.customActionName) || HsFeatureTableService.translate(operation.action)}};</i></span></a>
                 </div>
             </td>
         </tr>
         <tr [hidden]="!showFeatureStats" class="tdbreak" *ngFor="let stat of feature.stats">
-            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{stat.name}}</th>
+            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">{{HsFeatureTableService.translate(stat.name)}}</th>
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;"><span><i>{{stat.value}}</i></span></td>
         </tr>
     </tbody>

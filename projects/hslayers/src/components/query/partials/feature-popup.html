@@ -38,7 +38,7 @@
                     <div *ngIf="feature.attributesForHover.length > 0">
                         <div *ngFor="let attribute of feature.attributesForHover" class="d-flex flex-row">
                             <div class="p-1 flex-grow-1">
-                                {{attribute.key}} 
+                                {{HsFeatureTableService.translate(attribute.key)}} 
                             </div>
                             <div class="p-1" [innerHtml]="attribute.displayFunction(attribute.value)"></div>
                         </div>

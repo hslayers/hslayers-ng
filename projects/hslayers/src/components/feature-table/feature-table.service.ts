@@ -2,6 +2,7 @@
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
@@ -29,7 +30,8 @@ export class HsFeatureTableService {
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsQueryVectorService: HsQueryVectorService
+    public HsQueryVectorService: HsQueryVectorService,
+    public HsLanguageService: HsLanguageService
   ) {}
   /**
    * @param layer Layer from HsConfig.layersInFeatureTable
@@ -223,5 +225,13 @@ export class HsFeatureTableService {
       value = value[0];
     }
     return value;
+  }
+
+  translate(text: string): string {
+    const translation: string = this.HsLanguageService.getTranslationIgnoreNonExisting(
+      'FEATURE_TABLE',
+      text
+    );
+    return translation;
   }
 }

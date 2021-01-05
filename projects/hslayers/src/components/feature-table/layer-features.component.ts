@@ -93,11 +93,4 @@ export class HsLayerFeaturesComponent implements OnInit {
       default:
     }
   }
-  translate(text: string): string {
-    const translation: string = this.HsLanguageService.getTranslationIgnoreNonExisting(
-      'FEATURE_TABLE',
-      text
-    );
-    return translation;
-  }
 }

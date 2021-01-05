@@ -3,6 +3,7 @@ import {Component, ElementRef} from '@angular/core';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsFeatureTableService} from '../feature-table/feature-table.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
@@ -22,6 +23,7 @@ export class HsQueryFeaturePopupComponent {
     public HsLayerUtilsService: HsLayerUtilsService, //Used in template
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
+    public HsFeatureTableService: HsFeatureTableService,
     ElementRef: ElementRef
   ) {
     this.HsQueryBaseService.hoverPopup = new Overlay({
