@@ -4,6 +4,7 @@ import BaseLayer from 'ol/layer/Base';
 import Control from 'ol/control/Control';
 import Kinetic from 'ol/Kinetic';
 import Map from 'ol/Map';
+import Projection from 'ol/proj/Projection';
 import Source from 'ol/source/Source';
 import View from 'ol/View';
 import proj4 from 'proj4';
@@ -613,6 +614,10 @@ export class HsMapService {
         this.addLayer(lyr, false, visibilityOverrides);
       });
     }
+  }
+
+  getCurrentProj(): Projection {
+    return this.map.getView().getProjection();
   }
 
   getVectorType(layer) {
