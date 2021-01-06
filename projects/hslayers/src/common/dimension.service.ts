@@ -81,13 +81,12 @@ export class HsDimensionService {
   }
 
   /**
-   * fillDimensionValues
-   *
-   * @param {ol/Layer} layer Layer to fill the dimension values
-   * @description A recursive function with goes through layers
+   * A recursive function with goes through layers
    * children and sets the possible dimension values used in dropdown.
+   *
+   * @param layer - Layer to fill the dimension values
    */
-  fillDimensionValues(layer) {
+  fillDimensionValues(layer): void {
     for (const sublayer of layer.Layer) {
       if (this.hasNestedLayers(sublayer)) {
         this.fillDimensionValues(sublayer);

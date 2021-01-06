@@ -3,10 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {EndpointsWithDatasourcesPipe} from './endpoints-with-datasources.pipe';
 import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
-/**
- * @namespace HsUiExtensionsModule
- * @memberof hs
- */
+
 @NgModule({
   declarations: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
   imports: [CommonModule],

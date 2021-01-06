@@ -13,15 +13,14 @@ export class HsWfsGetCapabilitiesService {
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService
   ) {}
+
   /**
    * Get WFS service location without parameters from url string
    *
-   * @memberof HsWfsGetCapabilitiesService
-   * @function getPathFromUrl
-   * @param {string} str Url string to parse
-   * @returns {string} WFS service Url without params
+   * @param str - Url string to parse
+   * @returns WFS service Url without params
    */
-  getPathFromUrl(str) {
+  getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
@@ -30,15 +29,13 @@ export class HsWfsGetCapabilitiesService {
   }
 
   /**
-   * TODO: Probably the same as utils.paramsToURL
    * Create WFS parameter string from parameter object
+   * TODO: Probably the same as utils.paramsToURL
    *
-   * @memberof HsWfsGetCapabilitiesService
-   * @function param2String
-   * @param {object} obj Object with stored WFS service parameters
-   * @returns {string} Parameter string or empty string if no object given
+   * @param obj - Object with stored WFS service parameters
+   * @returns Parameter string or empty string if no object given
    */
-  params2String(obj) {
+  params2String(obj): string {
     return obj
       ? Object.keys(obj)
           .map((key) => {
@@ -63,10 +60,8 @@ export class HsWfsGetCapabilitiesService {
   /**
    * Parse added service url and sends request GetCapabalities to WFS service
    *
-   * @memberof HsWfsGetCapabilitiesService
-   * @function requestGetCapabilities
-   * @param {string} service_url Raw Url localization of service
-   * @returns {Promise} Promise object -  Response to GetCapabalities request
+   * @param service_url - Raw Url localization of service
+   * @returns Promise object - Response to GetCapabalities request
    */
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
@@ -104,12 +99,10 @@ export class HsWfsGetCapabilitiesService {
   /**
    * Test if current map projection is in supported projection list
    *
-   * @memberof HsWfsGetCapabilitiesService
-   * @function currentProjectionSupported
-   * @param {Array} srss List of supported projections
-   * @returns {boolean} True if map projection is in list, otherwise false
+   * @param srss - List of supported projections
+   * @returns True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss): boolean {
+  currentProjectionSupported(srss: string[]): boolean {
     let found = false;
     for (const val of srss) {
       if (

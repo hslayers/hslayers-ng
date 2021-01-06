@@ -4,10 +4,7 @@ import {HsWfsGetCapabilitiesService} from '../wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../wmts/get-capabilities.service';
 import {NgModule} from '@angular/core';
-/**
- * @namespace HsGetCapabilitiesModule
- * @memberof hs
- */
+
 @NgModule({
   declarations: [],
   imports: [],

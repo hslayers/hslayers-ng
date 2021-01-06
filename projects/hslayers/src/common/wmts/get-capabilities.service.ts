@@ -1,12 +1,13 @@
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Layer, Tile} from 'ol/layer';
+import {WMTS} from 'ol/source';
+
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Tile} from 'ol/layer';
-import {WMTS} from 'ol/source';
 import {getPreferedFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
@@ -22,12 +23,10 @@ export class HsWmtsGetCapabilitiesService {
   /**
    * Get WMTS service location without parameters from url string
    *
-   * @memberof HsWmtsGetCapabilitiesService
-   * @function getPathFromUrl
-   * @param {string} str Url string to parse
-   * @returns {string} WMTS service Url
+   * @param str - Url string to parse
+   * @returns WMTS service Url
    */
-  getPathFromUrl(str) {
+  getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
@@ -36,15 +35,13 @@ export class HsWmtsGetCapabilitiesService {
   }
 
   /**
-   * TODO: Probably the same as utils.paramsToURL
    * Create WMTS parameter string from parameter object
+   * TODO: Probably the same as utils.paramsToURL
    *
-   * @memberof HsWmtsGetCapabilitiesService
-   * @function param2String
-   * @param {object} obj Object with stored WNS service parameters
-   * @returns {string} Parameter string or empty string if no object given
+   * @param obj - Object with stored WMS service parameters
+   * @returns Parameter string or empty string if no object given
    */
-  params2String(obj) {
+  params2String(obj): string {
     return obj
       ? Object.keys(obj)
           .map((key) => {
@@ -69,12 +66,10 @@ export class HsWmtsGetCapabilitiesService {
   /**
    * Parse added service url and sends GetCapabalities request to WMTS service
    *
-   * @memberof HsWmtsGetCapabilitiesService
-   * @function requestGetCapabilities
-   * @param {string} service_url Raw Url localization of service
-   * @returns {Promise} Promise object -  Response to GetCapabalities request
+   * @param service_url - Raw Url localization of service
+   * @returns Promise object -  Response to GetCapabalities request
    */
-  async requestGetCapabilities(service_url): Promise<any> {
+  async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -94,7 +89,7 @@ export class HsWmtsGetCapabilitiesService {
     let url = [path, this.params2String(params)].join('?');
 
     url = this.HsUtilsService.proxify(url);
-    const r = await this.HttpClient.get(url,{
+    const r = await this.HttpClient.get(url, {
       responseType: 'text',
     }).toPromise();
 
@@ -108,12 +103,10 @@ export class HsWmtsGetCapabilitiesService {
   /**
    * Load all layers of selected service to the map
    *
-   * @memberof HsWmtsGetCapabilitiesService
-   * @function service2layers
-   * @param {string} capabilities_xml Xml response of GetCapabilities of selected service
-   * @returns {Ol.collection} List of layers from service
+   * @param capabilities_xml - XML response of GetCapabilities of selected service
+   * @returns List of layers from service
    */
-  service2layers(capabilities_xml) {
+  service2layers(capabilities_xml): Layer[] {
     const parser = new WMTSCapabilities();
     const caps = parser.read(capabilities_xml);
     const service = caps.Capability.Layer;
@@ -183,12 +176,10 @@ export class HsWmtsGetCapabilitiesService {
   /**
    * Test if current map projection is in supported projection list
    *
-   * @memberof HsWmtsGetCapabilitiesService
-   * @function currentProjectionSupported
-   * @param {Array} srss List of supported projections
-   * @returns {boolean} True if map projection is in list, otherwise false
+   * @param srss - List of supported projections
+   * @returns True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss) {
+  currentProjectionSupported(srss: string[]): boolean {
     let found = false;
     for (const val of srss) {
       if (

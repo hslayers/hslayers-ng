@@ -1,15 +1,17 @@
 /**
  * Loop through list of formats returned by getcapabilities and select first available from the list of available formats
  *
- * @function getPreferedFormat
- * @param {Array} formats List of formats avaiable for service
- * @param {Array} preferedFormats List of prefered formats for output
- * @returns {string} Either one of prefered formats or first first avaiable format
+ * @param formats - List of formats avaiable for service
+ * @param preferredFormats - List of preferred formats for output
+ * @returns Either one of preferred formats or first avaiable format
  */
-export function getPreferedFormat(formats, preferedFormats: string[]) {
-  for (let i = 0; i < preferedFormats.length; i++) {
-    if (formats.indexOf(preferedFormats[i]) > -1) {
-      return preferedFormats[i];
+export function getPreferedFormat(
+  formats: string[],
+  preferredFormats: string[]
+): string {
+  for (let i = 0; i < preferredFormats.length; i++) {
+    if (formats.indexOf(preferredFormats[i]) > -1) {
+      return preferredFormats[i];
     }
   }
   return formats[0];

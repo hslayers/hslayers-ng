@@ -27,7 +27,7 @@ export class HsLaymanCurrentUserComponent {
     return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
   }
 
-  logout() {
+  logout(): void {
     this.monitorUser();
     this.HsCommonLaymanService.logout(this.endpoint);
   }
@@ -40,15 +40,12 @@ export class HsLaymanCurrentUserComponent {
     return this.endpoint.url + '/authn/oauth2-liferay/login';
   }
 
-  monitorUser() {
+  monitorUser(): void {
     if (this.getCurrentUserTimer) {
       clearTimeout(this.getCurrentUserTimer);
     }
     this.monitorTries = 0;
     this.timerInterval = this.DEFAULT_TIMER_INTERVAL;
-    /**
-     *
-     */
     const poll = () => {
       this.HsCommonLaymanService.getCurrentUser(this.endpoint).then(
         (somethingChanged) => {
@@ -67,7 +64,7 @@ export class HsLaymanCurrentUserComponent {
     this.getCurrentUserTimer = setTimeout(poll, this.timerInterval);
   }
 
-  login() {
+  login(): void {
     this.monitorUser();
     if (!this.protocolsMatch()) {
       return;

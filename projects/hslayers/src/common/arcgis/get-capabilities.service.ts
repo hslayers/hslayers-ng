@@ -1,12 +1,13 @@
 import {Attribution} from 'ol/control';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Layer, Tile} from 'ol/layer';
+import {TileWMS} from 'ol/source';
+
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
 import {getPreferedFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
@@ -22,12 +23,10 @@ export class HsArcgisGetCapabilitiesService {
   /**
    * Get WMS service location without parameters from url string
    *
-   * @memberof HsArcgisGetCapabilitiesService
-   * @function getPathFromUrl
-   * @param {string} str Url string to parse
-   * @returns {string} WMS service Url
+   * @param str - Url string to parse
+   * @returns WMS service Url
    */
-  getPathFromUrl(str) {
+  getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
     } else {
@@ -36,15 +35,13 @@ export class HsArcgisGetCapabilitiesService {
   }
 
   /**
-   * TODO: Probably the same as utils.paramsToURL
    * Create WMS parameter string from parameter object
+   * TODO: Probably the same as utils.paramsToURL
    *
-   * @memberof HsArcgisGetCapabilitiesService
-   * @function param2String
-   * @param {object} obj Object with stored WNS service parameters
-   * @returns {string} Parameter string or empty string if no object given
+   * @param obj - Object with stored WMS service parameters
+   * @returns Parameter string or empty string if no object given
    */
-  params2String(obj) {
+  params2String(obj): string {
     return obj
       ? Object.keys(obj)
           .map((key) => {
@@ -69,12 +66,10 @@ export class HsArcgisGetCapabilitiesService {
   /**
    * Parse added service url and sends GetCapabalities request to WMS service
    *
-   * @memberof HsArcgisGetCapabilitiesService
-   * @function requestGetCapabilities
-   * @param {string} service_url Raw Url localization of service
-   * @returns {Promise} Promise object - Response to GetCapabalities request
+   * @param service_url - Raw Url localization of service
+   * @returns Promise object - Response to GetCapabalities request
    */
-  async requestGetCapabilities(service_url) {
+  async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
@@ -99,12 +94,10 @@ export class HsArcgisGetCapabilitiesService {
   /**
    * Load all layers of selected service to the map
    *
-   * @memberof HsArcgisGetCapabilitiesService
-   * @function service2layers
-   * @param {string} caps Xml response of GetCapabilities of selected service
-   * @returns {Ol.collection} List of layers from service
+   * @param caps - XML response of GetCapabilities of selected service
+   * @returns List of layers from service
    */
-  service2layers(caps) {
+  service2layers(caps): Layer[] {
     const service = caps.layers;
     //onst srss = caps.spatialReference.wkid;
     const image_formats = caps.supportedImageFormatTypes.split(',');
@@ -175,12 +168,10 @@ export class HsArcgisGetCapabilitiesService {
   /**
    * Test if current map projection is in supported projection list
    *
-   * @memberof HsArcgisGetCapabilitiesService
-   * @function currentProjectionSupported
-   * @param {Array} srss List of supported projections
-   * @returns {boolean} True if map projection is in list, otherwise false
+   * @param srss - List of supported projections
+   * @returns True if map projection is in list, otherwise false
    */
-  currentProjectionSupported(srss) {
+  currentProjectionSupported(srss: string[]): boolean {
     let found = false;
     for (const val of srss) {
       if (

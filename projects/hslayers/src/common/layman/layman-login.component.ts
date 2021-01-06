@@ -23,9 +23,10 @@ export class HsLaymanLoginComponent implements HsDialogComponent {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data);
   }
+
   close(): void {
     this.HsDialogContainerService.destroy(this);
   }
