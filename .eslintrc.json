@@ -43,16 +43,7 @@
         "**/*.spec.js"
       ],
       "env": {
-        "jasmine": true,
-        "angular/mocks": true
-      }
-    },
-    {
-      "files": [
-        "**/webpack.*.js"
-      ],
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off"
+        "jasmine": true
       }
     }
   ],
