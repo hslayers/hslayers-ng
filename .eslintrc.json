@@ -6,8 +6,7 @@
   "extends": [
     "openlayers",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:jsdoc/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
   "plugins": ["@typescript-eslint"],
   "globals": {
