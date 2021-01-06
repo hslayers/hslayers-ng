@@ -8,7 +8,7 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
@@ -34,7 +34,8 @@
       }
     ],
     "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
-    "valid-jsdoc": "off"
+    "valid-jsdoc": "off",
+    "tsdoc/syntax": "warn"
   },
   "overrides": [
     {

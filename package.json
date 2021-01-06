@@ -65,6 +65,7 @@
     "eslint": "^7.17.0",
     "eslint-config-openlayers": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-tsdoc": "^0.2.10",
     "eslint-stats": "^1.0.1",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
