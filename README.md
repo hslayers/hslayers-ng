@@ -3,7 +3,7 @@
 This is a monorepo for developing HSLayers-NG [Angular](https://angular.io/guide/creating-libraries) library. 
 
 It contains source code of libraries which need to be used in an existing Angular 9 based container project:
-+ [hslayers](./projects/hslayers) - core components and services for map application based on HslayersNG + Angular 9 + [Bootstrap](https://getbootstrap.com/)
++ [hslayers](./projects/hslayers) - core components and services for map application based on OpenLayers 6 + Angular 9 + [Bootstrap](https://getbootstrap.com/)
 + [hslayers-cesium](./projects/hslayers-cesium) - Angular components for running HSLayers-NG UI with [Cesium](https://cesium.com/cesiumjs/) 3D map renderer
 + [hslayers-sensors](./projects/hslayers-sensors) - Angular components for visualizing data from [Senslog](https://www.senslog.org/) server using [Vega](https://vega.github.io/vega/) charts.
 
@@ -13,7 +13,7 @@ Source code for ready to use application bundles which can be included in html f
 + [hslayers-cesium-app](./projects/hslayers-cesium-app) - Ready application built on HSLayers-NG and Cesium.
 
 
-Configuration for these applications can be provided through global `hslayersNgConfig` function which exposes an object containing a subset of most common [OpenLayers](https://openlayers.org/en/latest/apidoc/) classes through ol parameter. In return the function must provide a JSON object confirming to [HsConfig](./projects/hslayers/src/config.service.ts) type. [See](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) example and config parameter descriptions. 
+Configuration for these applications can be provided through global `hslayersNgConfig` function which exposes an object containing a subset of most common [OpenLayers](https://openlayers.org/en/latest/apidoc/) classes through ol parameter. In return the function must provide a JSON object conforming to [HsConfig](./projects/hslayers/src/config.service.ts) type. [See](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) example and config parameter descriptions. 
 
 
 Server components:
