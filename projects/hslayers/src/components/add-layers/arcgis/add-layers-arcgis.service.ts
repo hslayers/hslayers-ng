@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Attribution} from 'ol/control';
-import {Group} from 'ol/layer';
-import {Tile} from 'ol/layer';
+import {Group, Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
 import {HsArcgisGetCapabilitiesService} from '../../../common/arcgis/get-capabilities.service';

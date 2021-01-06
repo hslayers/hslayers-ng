@@ -1,9 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
+import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import {ImageWMS, TileWMS, WMTS} from 'ol/source';
 import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {TileWMS, WMTS} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';

@@ -1,6 +1,3 @@
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -8,6 +5,15 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {TranslateModule} from '@ngx-translate/core';
+
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import {Point, Polygon} from 'ol/geom';
+import {Vector as VectorSource} from 'ol/source';
+import {createDefaultStyle} from 'ol/style/Style';
+
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
@@ -16,11 +22,6 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Polygon} from 'ol/geom';
-import {TranslateModule} from '@ngx-translate/core';
-import {Vector as VectorSource} from 'ol/source';
-import {createDefaultStyle} from 'ol/style/Style';
 
 class emptyMock {
   constructor() {}

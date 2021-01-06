@@ -1,9 +1,5 @@
 import * as xml2Json from 'xml-js';
 import {GML as GML3, WFS} from 'ol/format';
-import {HsConfig} from '../../../config.service';
-import {HsMapService} from '../../map/map.service';
-import {HsUtilsService} from '../../utils/utils.service';
-import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Renderer2, RendererFactory2} from '@angular/core';
@@ -11,6 +7,11 @@ import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
+
+import {HsConfig} from '../../../config.service';
+import {HsMapService} from '../../map/map.service';
+import {HsUtilsService} from '../../utils/utils.service';
+import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',

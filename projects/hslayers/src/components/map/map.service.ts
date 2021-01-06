@@ -1,14 +1,23 @@
-/* eslint-disable no-eq-null */
-/* eslint-disable angular/timeout-service */
 import BaseLayer from 'ol/layer/Base';
-import Control from 'ol/control/Control';
-import Kinetic from 'ol/Kinetic';
-import Map from 'ol/Map';
-import Projection from 'ol/proj/Projection';
-import Source from 'ol/source/Source';
-import View from 'ol/View';
 import proj4 from 'proj4';
-import {Cluster, OSM, Vector} from 'ol/source';
+import {
+  Cluster,
+  ImageArcGISRest,
+  ImageWMS,
+  OSM,
+  ImageStatic as Static,
+  TileArcGISRest,
+  TileWMS,
+  Vector,
+  WMTS,
+  XYZ,
+} from 'ol/source';
+import {
+  Control,
+  MousePosition,
+  ScaleLine,
+  defaults as controlDefaults,
+} from 'ol/control';
 import {
   DoubleClickZoom,
   DragPan,
@@ -20,21 +29,10 @@ import {
   PinchRotate,
   PinchZoom,
 } from 'ol/interaction';
-import {Group} from 'ol/layer';
-import {
-  ImageArcGISRest,
-  ImageWMS,
-  ImageStatic as Static,
-  TileArcGISRest,
-  TileWMS,
-  WMTS,
-  XYZ,
-} from 'ol/source';
-import {
-  MousePosition,
-  ScaleLine,
-  defaults as controlDefaults,
-} from 'ol/control';
+import {Group, Layer} from 'ol/layer';
+import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {Kinetic, Map, View} from 'ol';
+import {Projection, transform, transformExtent} from 'ol/proj';
 import {
   always as alwaysCondition,
   never as neverCondition,
@@ -42,15 +40,12 @@ import {
 } from 'ol/events/condition';
 import {createStringXY} from 'ol/coordinate';
 import {register} from 'ol/proj/proj4';
-import {transform, transformExtent} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {Layer} from 'ol/layer';
 @Injectable({
   providedIn: 'root',
 })

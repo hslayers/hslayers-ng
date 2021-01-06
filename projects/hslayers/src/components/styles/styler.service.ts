@@ -3,11 +3,13 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HsQueryVectorService} from '../query/query-vector.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {createDefaultStyle} from 'ol/style/Style';
+
+import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsUtilsService} from '../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })

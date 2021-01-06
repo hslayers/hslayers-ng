@@ -1,14 +1,27 @@
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
 import View from 'ol/View';
-import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
+import {
+  BingMaps,
+  ImageArcGISRest,
+  ImageWMS,
+  OSM,
+  TileArcGISRest,
+  TileWMS,
+  Vector,
+  WMTS,
+  XYZ,
+} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component} from '@angular/core';
-import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+import {
+  Group,
+  Image as ImageLayer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
+
 import {HsConfig} from '../../../hslayers/src/config.service';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
-import {Vector} from 'ol/source';
 
 @Component({
   selector: 'hs-app',

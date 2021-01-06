@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Feature from 'ol/Feature';
 import {Component, Input, OnInit} from '@angular/core';
 import {HsFeatureTableService} from './feature-table.service';
@@ -6,6 +5,7 @@ import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+
 type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';
   feature: Feature;
@@ -13,11 +13,6 @@ type Operation = {
   customAction?: any;
 };
 
-/**
- * @memberof hs.layerFeatures
- * @ngdoc component
- * @name HsLayerFeaturesComponent
- */
 @Component({
   selector: 'hs-layer-features',
   templateUrl: './partials/layer-features.html',

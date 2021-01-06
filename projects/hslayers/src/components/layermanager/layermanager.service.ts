@@ -1,9 +1,16 @@
-import '../layers/hs.source.SparqlJson';
-import ImageLayer from 'ol/layer/Image';
-import VectorLayer from 'ol/layer/Vector';
 import {CollectionEvent} from 'ol/Collection';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Group, Tile} from 'ol/layer';
+import {
+  Group,
+  Image as ImageLayer,
+  Layer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
+import {ImageWMS, TileWMS} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {METERS_PER_UNIT} from 'ol/proj';
+
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -19,11 +26,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {ImageWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {METERS_PER_UNIT} from 'ol/proj';
-import {TileWMS} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',

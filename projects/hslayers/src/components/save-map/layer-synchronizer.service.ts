@@ -1,6 +1,5 @@
 import * as xml2Json from 'xml-js';
-import Feature from 'ol/Feature';
-import Map from 'ol/Map';
+import {Feature, Map} from 'ol';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';

@@ -1,8 +1,7 @@
-import Feature from 'ol/Feature';
-import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
+import {Feature, Map} from 'ol';
 import {Injectable} from '@angular/core';
 import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';

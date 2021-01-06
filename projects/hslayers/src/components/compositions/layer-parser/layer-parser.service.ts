@@ -1,17 +1,20 @@
-import '../../add-layers/vector/add-layers-vector.module';
-import ImageLayer from 'ol/layer/Image';
-import SparqlJson from '../../layers/hs.source.SparqlJson';
-import VectorLayer from 'ol/layer/Vector';
 import {Attribution} from 'ol/control';
+import {
+  ImageArcGISRest,
+  ImageStatic,
+  ImageWMS,
+  TileArcGISRest,
+  TileWMS,
+  XYZ,
+} from 'ol/source';
+import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {Injectable} from '@angular/core';
+
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddLayersVectorService} from '../../add-layers/vector/add-layers-vector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
-import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
-import {ImageWMS, XYZ} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {Tile} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',

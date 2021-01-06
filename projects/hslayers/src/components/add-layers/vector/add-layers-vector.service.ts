@@ -1,13 +1,13 @@
-import '../../styles/styles.module';
 import BaseLayer from 'ol/layer/Base';
 import {GeoJSON} from 'ol/format';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+
 import {HsAddLayersService} from '../add-layers.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {Injectable} from '@angular/core';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorLayerDescriptor} from './VectorLayerDescriptor';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
 

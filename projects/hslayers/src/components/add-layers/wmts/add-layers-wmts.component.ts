@@ -1,19 +1,19 @@
 import {Component} from '@angular/core';
 
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsMapService} from '../../map/map.service';
-import {addAnchors} from '../../../common/attribution-utils';
-
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
-import {HsLogService} from '../../../common/log/log.service';
 import {Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
 import {get} from 'ol/proj';
 import {getTopLeft, getWidth} from 'ol/extent';
+
+import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsEventBusService} from '../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../common/capabilities-error-dialog.component';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsLogService} from '../../../common/log/log.service';
+import {HsMapService} from '../../map/map.service';
+import {addAnchors} from '../../../common/attribution-utils';
 
 @Component({
   selector: 'hs-add-layers-wmts',

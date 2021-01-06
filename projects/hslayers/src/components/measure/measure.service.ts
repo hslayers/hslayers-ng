@@ -3,21 +3,16 @@ import VectorLayer from 'ol/layer/Vector';
 import {Draw} from 'ol/interaction';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {LineString, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {getArea, getDistance} from 'ol/sphere';
 import {transform} from 'ol/proj';
 
-/**
- * @param $rootScope
- * @param HsMapService
- * @param HsUtilsService
- * @param $timeout
- */
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from '../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })

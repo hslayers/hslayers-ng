@@ -1,4 +1,4 @@
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 
 export type HsVectorLayerOptions = {
   opacity?: number;

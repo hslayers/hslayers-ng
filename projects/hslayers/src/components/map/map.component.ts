@@ -1,7 +1,8 @@
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+
 import Map from 'ol/Map';
 import {transform} from 'ol/proj';
 
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
