@@ -1,13 +1,19 @@
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TranslateModule} from '@ngx-translate/core';
+
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
+import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Vector as VectorSource} from 'ol/source';
+
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsLegendComponent} from './legend.component';
@@ -20,10 +26,6 @@ import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {TranslateModule} from '@ngx-translate/core';
-import {Vector as VectorSource} from 'ol/source';
-import { HsLayerUtilsServiceMock } from '../utils/layer-utils.service.mock';
-import { HsLayerUtilsService } from '../utils/layer-utils.service';
 
 describe('HsLegendLayerComponent', () => {
   beforeAll(() => {

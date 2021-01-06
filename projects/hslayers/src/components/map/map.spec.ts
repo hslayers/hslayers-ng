@@ -1,10 +1,3 @@
-/* eslint-disable prefer-arrow-callback */
-/* eslint-disable angular/di */
-/* eslint-disable no-undef */
-'use strict';
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -12,6 +5,10 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';

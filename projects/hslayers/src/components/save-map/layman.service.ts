@@ -1,4 +1,8 @@
 import {GeoJSON, WFS} from 'ol/format';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
@@ -6,9 +10,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
 
 @Injectable({
   providedIn: 'root',
@@ -412,7 +413,7 @@ export class HsLaymanService implements HsSaverService {
       .replace(/[^\w\s\-\.]/gm, '') //Remove spaces
       .trim()
       .replace(/[\s\-\._]+/gm, '_') //Remove dashes
-      .replace(/[^\x00-\x7F]/g, ""); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
+      .replace(/[^\x00-\x7F]/g, ''); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
     return title;
   }
 

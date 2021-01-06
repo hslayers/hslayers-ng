@@ -1,25 +1,18 @@
 import Feature from 'ol/Feature';
-import Static from 'ol/source/ImageStatic';
 import StyleFunction from 'ol/style/Style';
-import VectorLayer from 'ol/layer/Vector';
-import {Circle, Icon} from 'ol/style';
-import {Fill, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {ImageWMS, Source, ImageStatic as Static, TileWMS, XYZ} from 'ol/source';
+import {Injectable} from '@angular/core';
+
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {Image as ImageLayer, Layer} from 'ol/layer';
-import {ImageWMS, Source} from 'ol/source';
-import {Injectable} from '@angular/core';
-import {TileWMS, XYZ} from 'ol/source';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLegendService {
-  /**
-   * @param HsUtilsService
-   * @param HsLayerSelectorService
-   */
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsLayerSelectorService: HsLayerSelectorService

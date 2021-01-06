@@ -1,5 +1,6 @@
 import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
@@ -8,8 +9,6 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {getPreferedFormat} from '../format-utils';
-
-import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService {

@@ -1,4 +1,9 @@
-import VectorLayer from 'ol/layer/Vector';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Subject} from 'rxjs';
+import {WMSCapabilities} from 'ol/format';
+import {get as getProj, transform, transformExtent} from 'ol/proj';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -9,11 +14,6 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Subject} from 'rxjs';
-import {WMSCapabilities} from 'ol/format';
-import {get as getProj, transform, transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
 })

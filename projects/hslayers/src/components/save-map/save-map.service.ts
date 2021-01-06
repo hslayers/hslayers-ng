@@ -1,11 +1,16 @@
 import {Injectable} from '@angular/core';
 
-import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS} from 'ol/source';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS, XYZ} from 'ol/source';
+import {
+  ImageArcGISRest,
+  ImageStatic,
+  ImageWMS,
+  TileArcGISRest,
+  TileWMS,
+  XYZ,
+} from 'ol/source';
+import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';

@@ -1,8 +1,3 @@
-/* eslint-disable prefer-arrow-callback */
-/* eslint-disable angular/no-service-method */
-/* eslint-disable angular/di */
-'use strict';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -10,6 +5,12 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
+
+import VectorLayer from 'ol/layer/Vector';
+import {Vector as VectorSource} from 'ol/source';
+
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsLayerEditorComponent} from './layer-editor.component';
@@ -30,9 +31,6 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
-import {Vector as VectorSource} from 'ol/source';
 
 class HsConfigMock {
   reverseLayerList = true;

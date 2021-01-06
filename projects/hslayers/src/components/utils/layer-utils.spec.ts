@@ -1,21 +1,17 @@
-/* eslint-disable angular/di */
-import OSM from 'ol/source/OSM';
-import Vector from 'ol/source/Vector';
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {Cluster} from 'ol/source';
+import {TestBed} from '@angular/core/testing';
+
+import {Cluster, ImageWMS, OSM, TileWMS, Vector, WMTS} from 'ol/source';
+import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
-import {TestBed} from '@angular/core/testing';
-import {TileWMS, WMTS} from 'ol/source';
 
 describe('HsLayerUtilsService', () => {
   const vectorLayer = new VectorLayer({

@@ -1,15 +1,14 @@
-/* eslint-disable angular/di */
-import VectorLayer from 'ol/layer/Vector';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-
-import {Feature} from 'ol';
 import {HttpClientModule} from '@angular/common/http';
-import {Point} from 'ol/geom';
 import {TestBed, fakeAsync, tick} from '@angular/core/testing';
+
+import VectorLayer from 'ol/layer/Vector';
+import {Feature} from 'ol';
+import {Point} from 'ol/geom';
 
 import {HsConfig} from './../../config.service';
 import {HsLayerUtilsService} from './layer-utils.service';

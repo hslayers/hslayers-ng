@@ -1,12 +1,12 @@
-import VectorLayer from 'ol/layer/Vector';
 import {Cluster} from 'ol/source';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Point} from 'ol/geom';
+
 import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Point} from 'ol/geom';
 
 @Injectable({
   providedIn: 'root',

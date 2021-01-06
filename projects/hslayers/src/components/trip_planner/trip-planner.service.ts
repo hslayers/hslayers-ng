@@ -1,19 +1,19 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsMapService} from './../map/map.service';
-import {HsShareUrlService} from './../permalink/share-url.service';
-import {HsUtilsService} from './../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Modify} from 'ol/interaction';
 import {Point} from 'ol/geom';
 import {transform} from 'ol/proj';
+
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsMapService} from './../map/map.service';
+import {HsShareUrlService} from './../permalink/share-url.service';
+import {HsUtilsService} from './../utils/utils.service';
 
 export type Waypoint = {
   name: string;
@@ -48,7 +48,7 @@ export class HsTripPlannerService {
         }),
         image: new Icon({
           src: feature.get('highlighted')
-            ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'              
+            ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
             : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
           crossOrigin: 'anonymous',
           anchor: [0.5, 1],

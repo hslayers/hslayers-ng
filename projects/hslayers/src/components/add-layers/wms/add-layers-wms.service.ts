@@ -3,6 +3,7 @@ import {Attribution} from 'ol/control';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
@@ -14,7 +15,6 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../common/wms/get-capabilities.service';
-import {Subject} from 'rxjs';
 import {addAnchors} from '../../../common/attribution-utils';
 import {getPreferedFormat} from '../../../common/format-utils';
 

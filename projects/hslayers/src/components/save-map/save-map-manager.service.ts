@@ -1,5 +1,8 @@
-/* eslint-disable angular/on-watch */
 import {BehaviorSubject, Subject} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {transform} from 'ol/proj';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLaymanService} from './layman.service';
@@ -9,9 +12,6 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {transform} from 'ol/proj';
 
 @Injectable({
   providedIn: 'root',

@@ -1,18 +1,19 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+import {HttpClient} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
+import {Point} from 'ol/geom';
+import {Vector} from 'ol/source';
+import {WKT} from 'ol/format';
+import {transform} from 'ol/proj';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Point} from 'ol/geom';
-import {Subject} from 'rxjs';
-import {Vector} from 'ol/source';
-import {WKT} from 'ol/format';
-import {transform} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
 })

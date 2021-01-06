@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Injectable} from '@angular/core';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
 
 type FeatureDescriptor = {
   name: string;

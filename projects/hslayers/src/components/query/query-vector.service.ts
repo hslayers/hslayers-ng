@@ -1,6 +1,15 @@
+import {DomSanitizer} from '@angular/platform-browser';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import * as extent from 'ol/extent';
 import Feature from 'ol/Feature';
-import {DomSanitizer} from '@angular/platform-browser';
+import {Select} from 'ol/interaction';
+import {Vector as VectorSource} from 'ol/source';
+import {WKT} from 'ol/format';
+import {click} from 'ol/events/condition';
+import {toLonLat} from 'ol/proj';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -8,13 +17,6 @@ import {HsMapService} from '../map/map.service';
 import {HsMeasureService} from '../measure/measure.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Select} from 'ol/interaction';
-import {Subject} from 'rxjs';
-import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
-import {click} from 'ol/events/condition';
-import {toLonLat} from 'ol/proj';
 
 type AttributeValuePair = {
   name;

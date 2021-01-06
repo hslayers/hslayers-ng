@@ -1,11 +1,12 @@
 import {DragAndDrop} from 'ol/interaction';
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format';
+import {Injectable} from '@angular/core';
+
 import {HsAddLayersVectorService} from './vector/add-layers-vector.service';
 import {HsConfig} from '../../config.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
-import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class HsDragDropLayerService {

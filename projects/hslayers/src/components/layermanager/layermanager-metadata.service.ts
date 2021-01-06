@@ -1,11 +1,12 @@
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 @Injectable({
   providedIn: 'root',

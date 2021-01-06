@@ -1,4 +1,6 @@
 import * as xml2Json from 'xml-js';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {transform, transformExtent} from 'ol/proj';
 
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
@@ -8,8 +10,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',

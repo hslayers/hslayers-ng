@@ -1,12 +1,13 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
+
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -126,7 +127,8 @@ export class HsCompositionsMickaService {
               record.bbox
             );
             //Check if height or Width covers the whole screen
-            if (extent &&
+            if (
+              extent &&
               !(
                 (extent[0] < mapExtent[0] && extent[2] > mapExtent[2]) ||
                 (extent[1] < mapExtent[1] && extent[3] > mapExtent[3])

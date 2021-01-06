@@ -4,12 +4,14 @@ import Rotate from 'ol/control/Rotate';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from './../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
 import {toRadians} from 'ol/math';
+
+import {HsLayoutService} from '../layout/layout.service';
+import {HsMapService} from '../map/map.service';
+import {HsUtilsService} from './../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })
