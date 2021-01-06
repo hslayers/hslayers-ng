@@ -1,13 +1,17 @@
 import * as loadingstrategy from 'ol/loadingstrategy';
 import Feature from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
-import {GeometryType, LineString, Point, Polygon} from 'ol/geom';
+import {LineString, Point, Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
+/**
+ * DEPRECATED?
+ * @deprecated
+ */
 export default function (options) {
   const format = new GeoJSON();
-  var src = new Vector({
+  const src = new Vector({
     format: format,
     extractStyles: options.extractStyles,
     projection: getProj(options.featureProjection),

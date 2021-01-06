@@ -190,7 +190,7 @@ function extendAttributes(options, objects) {
 /**
  * @param options
  */
-export default function (options): void {
+export function SparqlJson(options): void {
   const category_map = {};
   const category_id = 0;
   const occupied_xy = {};
@@ -411,7 +411,7 @@ export default function (options): void {
   src.loadTotal = 0;
   src.options = options;
   src.legend_categories = category_map;
-  console.log('src');
-  console.log(src);
   return src;
 }
+
+export default SparqlJson;
