@@ -21,6 +21,7 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 
+import SparqlJson from '../../../hslayers/src/common/layers/hs.source.SparqlJson';
 import {HsConfig} from '../../../hslayers/src/config.service';
 
 @Component({
@@ -48,6 +49,7 @@ export class AppComponent {
         BingMaps,
         ImageWMS,
         ImageArcGISRest,
+        SparqlJson,
       },
       format: {
         GeoJSON,
