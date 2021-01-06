@@ -5,15 +5,15 @@ import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 /**
+ * based on http://stackoverflow.com/a/7419630
+ * This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
+ * Adam Cole, 2011-Sept-14
+ * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
  * @param numOfSteps
  * @param step
  * @param opacity
  */
-function rainbow(numOfSteps, step, opacity) {
-  // based on http://stackoverflow.com/a/7419630
-  // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
-  // Adam Cole, 2011-Sept-14
-  // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rainbow(numOfSteps: number, step: number, opacity) {
   let r, g, b;
   const h = step / (numOfSteps * 1.00000001);
   const i = ~~(h * 4);
@@ -128,7 +128,6 @@ function loadFeatures(
       }
     }
     if (objects[key]['http://www.opengis.net/ont/geosparql#asWKT']) {
-      console.log('foo');
       const g_feature = format.readFeature(
         objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase()
       );
@@ -165,7 +164,7 @@ function loadFeatures(
       features[i].color = rainbow(category_id, features[i].category_id, 0.7);
     }
   }
-  console.log(features);
+  //console.log(features);
   return features;
 }
 
@@ -189,8 +188,9 @@ function extendAttributes(options, objects) {
 
 /**
  * @param options
+ * @returns New vector source
  */
-export function SparqlJson(options): void {
+export const SparqlJson = function (options): Vector {
   const category_map = {};
   const category_id = 0;
   const occupied_xy = {};
@@ -204,10 +204,10 @@ export function SparqlJson(options): void {
       ) {
         this.clear();
       }
-      if (typeof options.hsproxy == 'undefined') {
+      if (typeof options.hsproxy === 'undefined') {
         options.hsproxy = false;
       }
-      if (typeof options.geom_attribute == 'undefined') {
+      if (typeof options.geom_attribute === 'undefined') {
         options.geom_attribute =
           'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
       }
@@ -219,7 +219,7 @@ export function SparqlJson(options): void {
       let second_pair = [extent[2], extent[3]];
       first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
       second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
-      extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
+      extent = [...first_pair, ...second_pair];
       const s_extent = encodeURIComponent(
         'FILTER(geof:sfIntersects("POLYGON((' +
           extent[0] +
@@ -259,7 +259,7 @@ export function SparqlJson(options): void {
         p =
           '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
       }
-      if (console && typeof src.get('geoname') != 'undefined') {
+      if (console && typeof src.get('geoname') !== 'undefined') {
         console.log('Get ', src.get('geoname'));
       }
       this.loadCounter += 1;
@@ -294,7 +294,7 @@ export function SparqlJson(options): void {
           method: 'GET',
         });
         const updates_response = await responseObject.json();
-        if (console && typeof this.get('geoname') != 'undefined') {
+        if (console && typeof this.get('geoname') !== 'undefined') {
           console.log(
             'Finish updates ',
             this.get('geoname'),
@@ -315,7 +315,7 @@ export function SparqlJson(options): void {
           let attribute_name = item.attr.value;
           //Because photos can be more than one
           if (
-            typeof objects[item.o.value][attribute_name] != 'undefined' &&
+            typeof objects[item.o.value][attribute_name] !== 'undefined' &&
             attribute_name == 'http://xmlns.com/foaf/0.1/depiction'
           ) {
             for (let try_i = 1; try_i < 20; try_i++) {
