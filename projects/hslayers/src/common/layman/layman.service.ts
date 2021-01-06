@@ -9,7 +9,7 @@ export class HsCommonLaymanService {
   authChange = new Subject();
   constructor(private $http: HttpClient) {}
 
-  async getCurrentUser(endpoint) {
+  async getCurrentUser(endpoint): Promise<any> {
     const url = `${endpoint.url}/rest/current-user`;
     return this.$http.get(url).subscribe(
       (res: any) => {
@@ -35,7 +35,7 @@ export class HsCommonLaymanService {
     );
   }
 
-  async getCurrentUserIfNeeded(endpoint) {
+  async getCurrentUserIfNeeded(endpoint): Promise<void> {
     if (
       endpoint.user === undefined ||
       ['anonymous', 'browser'].includes(endpoint.user)
@@ -44,7 +44,7 @@ export class HsCommonLaymanService {
     }
   }
 
-  async logout(endpoint) {
+  async logout(endpoint): Promise<void> {
     const url = `${endpoint.url}/authn/logout`;
     try {
       const response = await this.$http.get(url).toPromise();

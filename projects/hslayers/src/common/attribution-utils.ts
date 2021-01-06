@@ -1,11 +1,10 @@
 /**
  * Replace Urls in text by anchor html tag with url, usefull for attribution to be clickable
  *
- * @function addAnchors
- * @param {string} url String to look for Urls
- * @returns {string} Text with added anchors
+ * @param url - String to look for Urls
+ * @returns Text with added anchors
  */
-export function addAnchors(url) {
+export function addAnchors(url: string): string {
   if (!url) {
     return null;
   }
