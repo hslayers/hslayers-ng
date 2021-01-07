@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {HsConfig} from '../../../config.service';
-import {HsLanguageService} from './../../language/language.service';
+import {HsLanguageService} from '../../language/language.service';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
@@ -33,11 +33,11 @@ export class HsDataUrlComponent {
           text: 'WFS',
         },
         {
-          id: 'vector',
+          id: 'kml',
           text: 'KML',
         },
         {
-          id: 'vector',
+          id: 'geojson',
           text: 'GeoJSON',
         },
         {
