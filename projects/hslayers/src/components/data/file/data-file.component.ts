@@ -5,7 +5,7 @@ import {HsLanguageService} from './../../language/language.service';
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
 @Component({
-  selector: 'hs-data-file ',
+  selector: 'hs-data-file',
   templateUrl: './data-file.html',
 })
 export class HsDataFileComponent {
@@ -29,7 +29,7 @@ export class HsDataFileComponent {
           text: 'GeoJSON',
         },
         {
-          id: 'shp ',
+          id: 'shp',
           text: 'Shapefile',
         },
       ];

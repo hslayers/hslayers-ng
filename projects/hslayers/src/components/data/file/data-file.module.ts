@@ -6,6 +6,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsDataFileComponent} from './data-file.component';
+import {HsDataFileShpModule} from './shp/data-file-shp.module';
 import {HsDataVectorModule} from '../vector/data-vector.module';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -17,6 +18,7 @@ import {TranslateModule} from '@ngx-translate/core';
     FormsModule,
     TranslateModule,
     //
+    HsDataFileShpModule,
     HsDataVectorModule,
   ],
   exports: [HsDataFileComponent],
