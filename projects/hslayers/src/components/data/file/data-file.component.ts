@@ -5,33 +5,21 @@ import {HsLanguageService} from './../../language/language.service';
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
 @Component({
-  selector: 'hs-data-url ',
-  templateUrl: './data-url.html',
+  selector: 'hs-data-file ',
+  templateUrl: './data-file.html',
 })
-export class HsDataUrlComponent {
+export class HsDataFileComponent {
   typeSelected: string;
   types: any[];
 
   constructor(
     public hsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService,
+    public HsLanguageService: HsLanguageService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
     } else {
       this.types = [
-        {
-          id: 'wms',
-          text: 'WMS',
-        },
-        {
-          id: 'wmts',
-          text: 'WMTS',
-        },
-        {
-          id: 'wfs',
-          text: 'WFS',
-        },
         {
           id: 'vector',
           text: 'KML',
@@ -41,8 +29,8 @@ export class HsDataUrlComponent {
           text: 'GeoJSON',
         },
         {
-          id: 'arcgis',
-          text: 'ArcGIS Map Server',
+          id: 'shp ',
+          text: 'Shapefile',
         },
       ];
     }
