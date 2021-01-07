@@ -285,14 +285,10 @@ export default function (HsUtilsService) {
       ) {
         const sourceParamLayers = layer.getSource().getParams().LAYERS;
         if (angular.isDefined(sourceParamLayers)) {
-          const subLayerLegends = sourceParamLayers.split(',');
-          for (let subLayerLegend of subLayerLegends) {
-            subLayerLegend = me.getLegendUrl(
-              layer.getSource(),
-              subLayerLegend,
-              layer
-            );
-          }
+          let subLayerLegends = sourceParamLayers.split(',');
+          subLayerLegends = subLayerLegends.map((subLayerLegend) =>
+            me.getLegendUrl(layer.getSource(), subLayerLegend, layer)
+          );
           return {
             title: layer.get('title'),
             lyr: layer,
@@ -300,37 +296,37 @@ export default function (HsUtilsService) {
             subLayerLegends: subLayerLegends,
             visible: layer.getVisible(),
           };
-        } else if (
-          HsUtilsService.instOf(layer, VectorLayer) &&
-          (angular.isUndefined(layer.get('show_in_manager')) ||
-            layer.get('show_in_manager') == true)
-        ) {
-          return {
-            title: layer.get('title'),
-            lyr: layer,
-            type: 'vector',
-            visible: layer.getVisible(),
-          };
-        } else if (
-          HsUtilsService.instOf(layer, ImageLayer) &&
-          HsUtilsService.instOf(layer.getSource(), Static)
-        ) {
-          return {
-            title: layer.get('title'),
-            lyr: layer,
-            type: 'static',
-            visible: layer.getVisible(),
-          };
-        } else if (HsUtilsService.instOf(layer.getSource(), XYZ)) {
-          return {
-            title: layer.get('title'),
-            lyr: layer,
-            type: 'static',
-            visible: layer.getVisible(),
-          };
-        } else {
-          return undefined;
         }
+      } else if (
+        HsUtilsService.instOf(layer, VectorLayer) &&
+        (angular.isUndefined(layer.get('show_in_manager')) ||
+          layer.get('show_in_manager') == true)
+      ) {
+        return {
+          title: layer.get('title'),
+          lyr: layer,
+          type: 'vector',
+          visible: layer.getVisible(),
+        };
+      } else if (
+        HsUtilsService.instOf(layer, ImageLayer) &&
+        HsUtilsService.instOf(layer.getSource(), Static)
+      ) {
+        return {
+          title: layer.get('title'),
+          lyr: layer,
+          type: 'static',
+          visible: layer.getVisible(),
+        };
+      } else if (HsUtilsService.instOf(layer.getSource(), XYZ)) {
+        return {
+          title: layer.get('title'),
+          lyr: layer,
+          type: 'static',
+          visible: layer.getVisible(),
+        };
+      } else {
+        return undefined;
       }
     },
   });
