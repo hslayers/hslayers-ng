@@ -8,8 +8,8 @@ import {transformExtent} from 'ol/proj';
 
 //FIX ME
 //refactor
-import {HsAddLayersService} from '../../../add-layers/add-layers.service';
 import {HsConfig} from '../../../../config.service';
+import {HsDataService} from '../../data.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
@@ -33,7 +33,7 @@ export class HsDataUrlWmsService {
     public hsLog: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
-    public hsAddLayersService: HsAddLayersService
+    public HsDataService: HsDataService
   ) {
     this.data = {
       useResampling: false,
@@ -386,7 +386,7 @@ export class HsDataUrlWmsService {
       subLayers: subLayers,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.hsAddLayersService.addLayer(new_layer, this.data.addUnder);
+    this.HsDataService.addLayer(new_layer, this.data.addUnder);
   }
 
   /**
@@ -424,7 +424,7 @@ export class HsDataUrlWmsService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.hsAddLayersService.addLayer(layer, addUnder);
+            this.HsDataService.addLayer(layer, addUnder);
           }
         });
       });

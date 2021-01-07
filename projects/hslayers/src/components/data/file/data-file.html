@@ -5,10 +5,7 @@
             {{type.text}}</button>
     </div>
     <div class="w-100 pt-3">
-        <hs-data-url-arcgis *ngIf="typeSelected == 'arcgis'"></hs-data-url-arcgis>
-        <hs-data-url-wfs *ngIf="typeSelected == 'wfs'"></hs-data-url-wfs>
-        <hs-data-url-wms *ngIf="typeSelected == 'wms'"></hs-data-url-wms>
-        <hs-data-url-wmts *ngIf="typeSelected == 'wmts'"></hs-data-url-wmts>
         <hs-data-url-vector *ngIf="typeSelected == 'vector'"></hs-data-url-vector>
+        <hs-data-file-shp *ngIf="typeSelected == 'shp'"></hs-data-file-shp>
     </div>
 </div>
