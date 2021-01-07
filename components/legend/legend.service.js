@@ -286,10 +286,10 @@ export default function (HsUtilsService) {
         const sourceParamLayers = layer.getSource().getParams().LAYERS;
         if (angular.isDefined(sourceParamLayers)) {
           const subLayerLegends = sourceParamLayers.split(',');
-          for (let i = 0; i < subLayerLegends.length; i++) {
-            subLayerLegends[i] = me.getLegendUrl(
+          for (let subLayerLegend of subLayerLegends) {
+            subLayerLegend = me.getLegendUrl(
               layer.getSource(),
-              subLayerLegends[i],
+              subLayerLegend,
               layer
             );
           }
