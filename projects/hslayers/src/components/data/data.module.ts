@@ -9,6 +9,7 @@ import {HsDataComponent} from './data.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsDataCatalogueModule} from './catalogue/data-catalogue-module';
 import {HsDataFileModule} from './file/data-file.module';
 import {HsDataUrlModule} from './url/data-url.module';
 
@@ -22,6 +23,7 @@ import {HsDataUrlModule} from './url/data-url.module';
     HsPanelHelpersModule,
     HsDataUrlModule,
     HsDataFileModule,
+    HsDataCatalogueModule,
   ],
   exports: [HsDataComponent],
   providers: [],
