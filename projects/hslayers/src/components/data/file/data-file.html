@@ -5,7 +5,7 @@
             {{type.text}}</button>
     </div>
     <div class="w-100 pt-3">
-        <hs-data-url-vector *ngIf="typeSelected == 'vector'"></hs-data-url-vector>
+        <hs-data-url-vector *ngIf="typeSelected == 'kml' || typeSelected == 'geojson' "></hs-data-url-vector>
         <hs-data-file-shp *ngIf="typeSelected == 'shp'"></hs-data-file-shp>
     </div>
 </div>

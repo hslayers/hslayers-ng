@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center flex-column align-items-center m-3">
     <div class="btn-group w-75 mt-3 flex-wrap">
         <button *ngFor="let type of types" [ngClass]="{'active': type.id == typeSelected }" style="width: 33% !important;"
-            (click)="selectType(type.id)" class="btn btn-light btn-outline-secondary btn-sm rounded-0">
+            (click)="selectType(type.id)" class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
             {{type.text}}</button>
     </div>
     <div class="w-100 pt-3">
@@ -9,6 +9,6 @@
         <hs-data-url-wfs *ngIf="typeSelected == 'wfs'"></hs-data-url-wfs>
         <hs-data-url-wms *ngIf="typeSelected == 'wms'"></hs-data-url-wms>
         <hs-data-url-wmts *ngIf="typeSelected == 'wmts'"></hs-data-url-wmts>
-        <hs-data-url-vector *ngIf="typeSelected == 'vector'"></hs-data-url-vector>
+        <hs-data-url-vector *ngIf="typeSelected == 'kml' || typeSelected == 'geojson' "></hs-data-url-vector>
     </div>
 </div>

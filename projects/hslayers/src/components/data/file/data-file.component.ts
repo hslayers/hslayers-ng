@@ -21,11 +21,11 @@ export class HsDataFileComponent {
     } else {
       this.types = [
         {
-          id: 'vector',
+          id: 'kml',
           text: 'KML',
         },
         {
-          id: 'vector',
+          id: 'geojson',
           text: 'GeoJSON',
         },
         {
