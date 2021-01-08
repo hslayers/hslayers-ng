@@ -1,0 +1,128 @@
+<div [ngClass]="{'in': hsMickaFilterService.advancedModalVisible}" class="modal hs-ds-advanced-micka" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{'DATASOURCE_SELECTOR.advancedMicka.extendedSearchParameters' | translate}}
+                </h4>
+                <button type="button" (click)="hsMickaFilterService.advancedModalVisible = false" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">{{'COMMON.close' | translate}}</span></button>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+                <form>
+                    <label class="form-group control-label w-100">{{'COMMON.fullText' | translate}}
+                        <input type="text" class="form-control"
+                            [(ngModel)]="hsDatasourcesService.data.query.textFilter" name="textFilter" />
+                    </label>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-input">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="AnyText" name="all">
+                            {{'COMMON.all' | translate}}
+                        </label>
+                        <label class="form-check-input">
+                            <input  type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="title" name="title">
+                            {{'COMMON.title' | translate}}
+                        </label>
+                        <label class="form-check-input">
+                            <input type="radio" [(ngModel)]="hsDatasourcesService.data.textField" value="abstract" name="avstract">
+                            {{'COMMON.abstract' | translate}}
+                        </label>
+                    </div>
+
+                    <label class="form-group control-label w-100">{{'COMMON.keywords' | translate}}
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                [(ngModel)]="hsDatasourcesService.data.query.keywords"  name="keywords"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button"
+                                    (click)="showSuggestions('keywords', 'keyword', 'value')">...</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label
+                        class="form-group control-label w-100">{{'DATASOURCE_SELECTOR.advancedMicka.organizationName' | translate}}
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                [(ngModel)]="hsDatasourcesService.data.query.OrganisationName" name="organisationName"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button"
+                                    (click)="showSuggestions('OrganisationName', 'org', 'name')">...</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="form-group control-label w-100" [hidden]='true'> {{'COMMON.type' | translate}}
+                        <!-- TODO: wtf?-->
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.type" name="type"
+                            (change)='hsMickaFilterService.advancedMickaTypeChanged(mickaDatasetConfig, hsDatasourcesService.data.query.type)'>
+                            <option value=""></option>
+                            <option value="data">{{'COMMON.data' | translate}}</option>
+                            <option value="service">{{'COMMON.service' | translate}}</option>
+                            <option value="application">{{'COMMON.application' | translate}}</option>
+                            <option value="featureCatalogue">
+                                {{'DATASOURCE_SELECTOR.advancedMicka.featureCatalogue' | translate}}</option>
+                        </select>
+                    </label>
+                    <!--
+                    <div class="form-group" [hidden]="query.type != 'application' && query.type != 'service'">
+                        <label class="control-label">
+                            <span [hidden]="query.type != 'application'">{{'DATASOURCE_SELECTOR.advancedMicka.applicationType' | translate}}:</span>
+                            <span [hidden]="query.type != 'service'">{{'DATASOURCE_SELECTOR.advancedMicka.serviceType' | translate}}:</span>
+                        </label>
+                        <select class="form-control" [(ngModel)]="query.ServiceType">
+                            <option *ngFor="let type of micka_ds.level2_types" [attr.value]="{{type.value}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                    -->
+
+                    <label class="form-group control-label w-100"
+                        *ngIf="hsDatasourcesService.data.query.type == 'data'">{{'DATASOURCE_SELECTOR.advancedMicka.topicCategory' | translate}}
+
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.TopicCategory" name="topicCategory">
+                            <option *ngFor="let type of mickaDatasetConfig.code_lists.topicCategory"
+                                [attr.value]="type.value">{{type.name}}</option>
+                        </select>
+                    </label>
+
+                    <label class="form-group control-label w-100"
+                        [hidden]="hsDatasourcesService.data.query.type != 'data'">{{'COMMON.scale' | translate}} 1:
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.Denominator" name="denominator">
+                            <option value="2000">2000</option>
+                            <option value="2500">2500</option>
+                            <option value="2880">2880</option>
+                            <option value="5000">5000</option>
+                            <option value="6000">6000</option>
+                            <option value="10000">10000</option>
+                            <option value="100000">100000</option>
+                        </select>
+                    </label>
+
+
+                    <label class="form-group control-label w-100" [hidden]='true'>
+                        {{'COMMON.orderBy' | translate}}
+                        <!-- TODO: wtf?-->
+                        <select class="form-control" [(ngModel)]="hsDatasourcesService.data.query.sortby" name="sortby">
+                            <option value="title">{{'COMMON.title' | translate}}</option>
+                            <option value="date">{{'DATASOURCE_SELECTOR.advancedMicka.dateStamp' | translate}}</option>
+                            <option value="bbox">{{'DATASOURCE_SELECTOR.advancedMicka.extentSimilarity' | translate}}
+                            </option>
+                        </select>
+                    </label>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"
+                    (click)="hsDatasourcesService.queryCatalog(hsDatasourcesService.selectedEndpoint); hsMickaFilterService.advancedModalVisible = false"
+                    data-dismiss="modal">{{'SEARCH.search' | translate}}</button>
+                <button type="button" class="btn btn-secondary" (click)="hsDatasourcesService.clear()">
+                    {{'COMMON.clear' | translate}}
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="hsDatasourcesService.clear(); hsMickaFilterService.advancedModalVisible = false">{{'COMMON.close' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

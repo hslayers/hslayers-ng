@@ -12,9 +12,10 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanBrowserService} from '../../datasource-selector/layman/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
-import {HsMickaBrowserService} from '../../datasource-selector/micka/micka.service';
+import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {promise} from 'protractor';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -35,6 +36,7 @@ type WhatToAddDescriptor = {
 export class HsDataCatalogueService {
   data: any = {};
   selectedEndpoint: HsEndpoint;
+  catalogEntries = [];
 
   constructor(
     public hsConfig: HsConfig,
@@ -107,13 +109,30 @@ export class HsDataCatalogueService {
   queryCatalogs(): void {
     this.HsMapService.loaded().then(() => {
       this.HsDataCatalogueMapService.clearExtentLayer();
+      const promises = [];
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
         if (endpoint.datasourcePaging) {
           endpoint.datasourcePaging.start = 0;
         }
-        this.queryCatalog(endpoint);
+        const promise = this.queryCatalog(endpoint);
+        promises.push(promise);
       }
+      //FIXME use allSettled instead of all
+      // ALL -   It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message 
+      //ALL SETTLED - resolves after all of the given promises have either fulfilled or rejected
+      Promise.all(promises).then((results) => this.createLayerList());
     });
+  }
+
+  createLayerList(): void {
+    for (const endpoint of this.hsCommonEndpointsService.endpoints) {
+      if (endpoint.layers) {
+        console.log(endpoint.layers);
+        endpoint.layers.forEach((layer) => this.catalogEntries.push(layer));
+      }
+    }
+    this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title))
+    console.log(this.catalogEntries)
   }
 
   /**
@@ -124,18 +143,19 @@ export class HsDataCatalogueService {
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-  queryCatalog(catalog: HsEndpoint): void {
+  async queryCatalog(catalog: HsEndpoint) {
     this.HsDataCatalogueMapService.clearDatasetFeatures(catalog);
     switch (catalog.type) {
       case 'micka':
-        this.hsMickaBrowserService.queryCatalog(
+        const query = await this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data.query,
           (feature: Feature) =>
             this.HsDataCatalogueMapService.addExtentFeature(feature),
           this.data.textField
         );
-        break;
+        return query;
+      //FIX ME - await for laymanendpoint
       case 'layman':
         this.hsLaymanBrowserService.queryCatalog(catalog);
         break;
