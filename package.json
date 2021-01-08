@@ -13,7 +13,10 @@
     "test": "ng test hslayers",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "doc": "npx compodoc -c .compodocrc.json"
+    "doc-hs": "cd ./projects/hslayers && npx compodoc -c .compodocrc.json -t",
+    "doc-cesium": "cd ./projects/hslayers-cesium && npx compodoc -c .compodocrc.json -t",
+    "doc-sensors": "cd ./projects/hslayers-sensors && npx compodoc -c .compodocrc.json -t",
+    "doc": "npm run doc-hs && npm run doc-cesium && npm run doc-sensors"
   },
   "private": true,
   "dependencies": {
