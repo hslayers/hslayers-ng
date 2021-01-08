@@ -1,6 +1,5 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
 
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
@@ -44,10 +43,13 @@ export class HsCompositionsMickaService {
     const selected = [];
     let keywordFilter = '';
     let tmp = endpoint.url;
-    for (const key of Object.keys(params.keywords)) {
-      if (params.keywords[key]) {
-        selected.push("subject='" + key + "'");
+    for (const key of params.keywords) {
+      if (key.selected) {
+        selected.push("subject='" + key.value + "'");
       }
+    }
+    if (params.theme !== undefined && params.theme != '') {
+      selected.push("subject='" + params.theme + "'");
     }
     if (selected.length > 0) {
       keywordFilter = encodeURIComponent(
@@ -58,7 +60,8 @@ export class HsCompositionsMickaService {
     tmp +=
       '?format=json&' +
       serviceName +
-      'query=type%3Dapplication' +
+      'query=type%3D' +
+      params.type +
       bbox +
       textFilter +
       keywordFilter +
@@ -85,8 +88,14 @@ export class HsCompositionsMickaService {
   loadList(endpoint, params, bbox, extentLayer) {
     return new Promise((resolve, reject) => {
       endpoint.compositionsPaging.loaded = false;
-      if (params.sortBy == undefined) {
+      if (params.sortBy == undefined || params.sortBy === 'None') {
         params.sortBy = 'title';
+      }
+      if (params.type == undefined || params.type === 'None') {
+        params.type = 'application';
+      }
+      if (params.theme == undefined || params.theme === 'None') {
+        params.theme = '';
       }
       if (params.start == undefined) {
         params.start = endpoint.compositionsPaging.start;

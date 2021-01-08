@@ -61,6 +61,9 @@ $sidebar-item-active: #007bff !default;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
+.icon-primary {
+	color: $primary;
+}
 @-webkit-keyframes spin {
 	0% {
 		-webkit-transform: rotate(0deg);
@@ -137,8 +140,9 @@ div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 }
 
 .hs-filter {
-	border-left: 0;
 	border-right: 0;
+	border-top-left-radius: .25rem !important;
+    border-bottom-left-radius: .25rem !important;
 }
 
 .hs-layerpanel {
@@ -1754,6 +1758,26 @@ li.hs-lm-header {
 }
 .hs-lm-map-content-header {
 	height: 2.56em;
+}
+.hs-input-search-icon {
+	border-top-right-radius: .25rem !important;
+    border-bottom-right-radius: .25rem !important;
+	background-color: white;
+	border: 1px solid #ced4da;
+	border-left: 0;
+	padding: .375rem .75rem;
+	line-height: 1.5;
+	cursor: pointer;
+}
+.hs-borderless-input {
+	border: 0 !important;
+	background-color: white !important;
+}
+.hs-dotted-line {
+	border: 1px dotted #495057;
+	border-style: none none dotted;
+	color: #495057;
+	background-color: rgba(0, 0, 0, 0.2);
 }
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}

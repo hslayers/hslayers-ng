@@ -21,6 +21,7 @@ export interface HsEndpoint {
     matched?;
     next?;
   };
+  compositions?: any;
   compositionsPaging?: {
     start?: number;
     limit: number;

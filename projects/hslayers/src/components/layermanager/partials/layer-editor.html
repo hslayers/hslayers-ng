@@ -15,7 +15,7 @@
                         <a class="card-href"
                             *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)"
                             href="{{metadata.OnlineResource}}" target="_blank"
-                            [title]="'LAYERMANAGER.layerEditor.metadata' | translate">
+                            [title]="'COMMON.metadata' | translate">
                             <span [hidden]="!metadata.type">
                                 {{'LAYERMANAGER.layerEditor.metadataOfLayer' | translate}} {{metadata.type}}
                             </span>
