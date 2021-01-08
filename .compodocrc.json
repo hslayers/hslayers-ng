@@ -1,8 +1,0 @@
-{
-  "tsconfig": "./projects/hslayers/tsconfig.lib.json",
-  "output": "./docs",
-  "name": "HSLayers-NG documentation",
-  "theme": "material",
-  "customFavicon": "./projects/hslayers/src/assets/img/hslayers-ng-favicon_32x32.jpg",
-  "customLogo": "./projects/hslayers/src/assets/img/hslayers-ng-logo.png"
-}
