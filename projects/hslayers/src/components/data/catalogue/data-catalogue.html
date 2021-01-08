@@ -1,3 +1,9 @@
 <div class="card hs-main-panel">
-list of data will be here
+    <div>
+        Loading data
+    </div>
+
+    <li *ngFor="let layer of HsDataCatalogueService.catalogEntries | slice:0:20" class="clearfix">
+        {{layer.title}}
+    </li>
 </div>
