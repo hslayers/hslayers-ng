@@ -1,4 +1,74 @@
 {
+  "COMPOSITONTYPES": {
+    "None": "None",
+    "Datasource": "Data",
+    "Service": "Service",
+    "Application": "Application",
+    "Feature catalogue": "Feature catalogue"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Basemap": "Basemap",
+    "Borders": "Borders",
+    "PhysicalGeography": "PhysicalGeography",
+    "Demographics": "Demographics",
+    "Economics": "Economics",
+    "SocioPoliticalConditions": "SocioPoliticalConditions",
+    "Culture": "Culture",
+    "Transport": "Transport",
+    "LandUse": "LandUse",
+    "Environment": "Environment",
+    "Water": "Water",
+    "Hazards": "Hazards",
+    "Cadastre": "Cadastre",
+    "Infrastructure": "Infrastructure",
+    "RealEstate": "RealEstate",
+    "Planning": "Planning",
+    "ComplexInformation": "ComplexInformation"
+  },
+  "COMPOSITONSORTVALUES": {
+    "None": "None",
+    "Title": "Title",
+    "Date": "Date",
+    "Bbox": "Bounding box"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "None": "None",
+    "Addresses": "Addresses",
+    "Administrative units": "Administrative units",
+    "Coordinate reference systems": "Coordinate reference systems",
+    "Geographical grid systems": "Geographical grid systems",
+    "Cadastral parcels": "Cadastral parcels",
+    "Geographical names": "Geographical names",
+    "Hydrography": "Hydrography",
+    "Protected sites": "Protected sites",
+    "Transport networks": "Transport networks",
+    "Elevation": "Elevation",
+    "Geology": "Geology",
+    "Land cover": "Land cover",
+    "Orthoimagery": "Orthoimagery",
+    "Agricultural and aquaculture facitilies": "Agricultural and aquaculture facitilies",
+    "Area management/restriction/regulation zones and reporting units": "Area management/restriction/regulation zones and reporting units",
+    "Atmospheric conditions": "Atmospheric conditions",
+    "Bio-geographical regions": "Bio-geographical regions",
+    "Buildings": "Buildings",
+    "Energy resources": "Energy resources",
+    "Environmental monitoring facilities": "Environmental monitoring facilities",
+    "Habitants and biotopes": "Habitants and biotopes",
+    "Human health and safety": "Human health and safety",
+    "Land use": "Land use",
+    "Mineral resources": "Mineral resources",
+    "Natural risk zones": "Natural risk zones",
+    "Oceanographic geographical features": "Oceanographic geographical features",
+    "Population distribution - demography": "Population distribution - demography",
+    "Production and industrial facilities": "Production and industrial facilities",
+    "Sea regions": "Sea regions",
+    "Soil": "Soil",
+    "Species distribution": "Species distribution",
+    "Statistical units": "Statistical units",
+    "Utility and governmental services": "Utility and governmental services",
+    "Meteorological geographical features": "Meteorological geographical features",
+    "Atmospheric Conditions and meteorological geographical features": "Atmospheric Conditions and meteorological geographical features"
+  },
   "ADDLAYERS": {
     "SHP": {
       "SLDStyleFile": "SLD style file",
@@ -152,7 +222,13 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "zoomTo": "zoom to"
+    "zoomTo": "zoom to",
+    "search": "Search:",
+    "less": "Less",
+    "sortBy": "Sort by",
+    "open": "Open",
+    "metadata": "Metadata",
+    "share": "Share"
   },
   "COMPOSITIONS": {
     "Address": "Address",
@@ -176,7 +252,11 @@
     },
     "filterByMap": "Filter by map extent",
     "import": "Import composition from a file on device",
-    "onlyMine": "Only mine"
+    "onlyMine": "Only mine",
+    "inspireTheme": "INSPIRE theme",
+    "loginToCatalogue": "Login to catalogue",
+    "selectKeywords": "Select keywords",
+    "clearFilters": "Clear all filters"
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Add to map as",
@@ -236,7 +316,6 @@
   "FEATURE_TABLE": {
     "delete": "delete",
     "showFeatureStats": "Expand",
-    "sortBy": "Sort by",
     "sortFeaturesByValue": "Sort features by value",
     "zoom to": "zoom to"
   },
@@ -275,7 +354,6 @@
       "cluster": "Cluster",
       "copyright": "Copyright",
       "declutter": "Declutter",
-      "metadata": "Metadata",
       "metadataOfLayer": "Metadata of layer in",
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",
@@ -366,7 +444,6 @@
     "newShare": "New share",
     "permalink": "Permalink",
     "pureMap": "Pure map",
-    "share": "Share",
     "shareOnSocialNetwork": "Share on social network",
     "sharePureMap": "Share pure map",
     "sharesMapWith": "*Shares map with (all )portal functionality",
@@ -442,9 +519,6 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     }
-  },
-  "SEARCH": {
-    "search": "Search:"
   },
   "SENSORS": {
     "1D": "1D",
