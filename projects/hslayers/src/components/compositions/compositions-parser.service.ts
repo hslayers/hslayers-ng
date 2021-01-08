@@ -224,7 +224,7 @@ export class HsCompositionsParserService {
 
   finalizeCompositionLoading(responseData): void {
     if (this.HsConfig.open_lm_after_comp_loaded) {
-      this.HsLayoutService.setMainPanel('layermanager');
+      //this.HsLayoutService.setMainPanel('layermanager');
     }
 
     this.composition_edited = false;
@@ -276,7 +276,9 @@ export class HsCompositionsParserService {
   async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    const response: any = await this.$http.get(url).toPromise();
+    const response: any = await this.$http
+      .get(url, {responseType: 'json'})
+      .toPromise();
     return response.data || response;
   }
 

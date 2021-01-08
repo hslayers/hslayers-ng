@@ -72,10 +72,6 @@ export class HsCompositionsService {
     });
   }
 
-  datasetSelect(id_selected): void {
-    this.data.id_selected = id_selected;
-  }
-
   async loadCompositions(ds, params): Promise<void> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();

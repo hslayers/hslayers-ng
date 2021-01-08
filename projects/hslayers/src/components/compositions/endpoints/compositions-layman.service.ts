@@ -21,8 +21,14 @@ export class HsCompositionsLaymanService {
     return new Promise((resolve, reject) => {
       endpoint.getCurrentUserIfNeeded(endpoint);
       endpoint.compositionsPaging.loaded = false;
-      if (params.sortBy == undefined) {
-        params.sortBy = '';
+      if (params.sortBy == undefined || params.sortBy === 'None') {
+        params.sortBy = 'title';
+      }
+      if (params.type == undefined || params.type === 'None') {
+        params.type = 'application';
+      }
+      if (params.theme == undefined || params.theme === 'None') {
+        params.theme = '';
       }
       try {
         if (endpoint.listLoading) {
