@@ -85,7 +85,7 @@ export class HsCompositionsMickaService {
     });
   }
 
-  loadList(endpoint, params, bbox, extentLayer) {
+  loadList(endpoint, params, bbox, extentLayer): Promise<any> {
     return new Promise((resolve, reject) => {
       endpoint.compositionsPaging.loaded = false;
       if (params.sortBy == undefined || params.sortBy === 'None') {

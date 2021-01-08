@@ -72,15 +72,16 @@ export class HsCompositionsService {
     });
   }
 
-  async loadCompositions(ds, params): Promise<void> {
+  async loadCompositions(ds, params): Promise<any> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
-    await this.managerByType(ds).loadList(
+    const promise = await this.managerByType(ds).loadList(
       ds,
       params,
       bbox,
       this.HsCompositionsMapService.extentLayer
     );
+    return promise;
   }
 
   resetCompositionCounter(): void {

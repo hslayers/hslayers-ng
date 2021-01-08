@@ -60,6 +60,6 @@ export class HsCommonEndpointsService {
   getItemsPerPageConfig(ds) {
     return ds.paging !== undefined && ds.paging.itemsPerPage !== undefined
       ? ds.paging.itemsPerPage
-      : this.HsConfig.dsPaging || 20;
+      : this.HsConfig.dsPaging || 10;
   }
 }

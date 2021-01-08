@@ -21,15 +21,6 @@ export class HsCompositionsLaymanService {
     return new Promise((resolve, reject) => {
       endpoint.getCurrentUserIfNeeded(endpoint);
       endpoint.compositionsPaging.loaded = false;
-      if (params.sortBy == undefined || params.sortBy === 'None') {
-        params.sortBy = 'title';
-      }
-      if (params.type == undefined || params.type === 'None') {
-        params.type = 'application';
-      }
-      if (params.theme == undefined || params.theme === 'None') {
-        params.theme = '';
-      }
       try {
         if (endpoint.listLoading) {
           endpoint.listLoading.unsubscribe();
@@ -39,7 +30,11 @@ export class HsCompositionsLaymanService {
           .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
           .subscribe((response: any) => {
             endpoint.compositionsPaging.loaded = true;
-            endpoint.compositions = response;
+            if (params.query.title !== '' && params.query.title !== undefined ) {
+              endpoint.compositions = response.filter((comp) => comp.title.includes(params.query.title));
+            } else {
+              endpoint.compositions = response;
+            }
             if (response && response.length > 0) {
               endpoint.compositionsPaging.matched = response.length;
             } else {

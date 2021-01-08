@@ -36,7 +36,7 @@
                         <i class="icon-search icon-primary"></i>
                     </label>
                 </span>
-                <hs-layman-current-user [endpoint]="laymanEndpoint"></hs-layman-current-user>
+                <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
             </div>
             <div class="d-flex flex-row pb-2 justify-content-between">
                 <div class="input-group-prepend">
@@ -46,7 +46,7 @@
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
                     <div class="input-group-text hs-borderless-input" style="margin-left: 1.5em;"
-                        [hidden]="!laymanEndpoint">
+                        [hidden]="!HsLaymanService.getLaymanEndpoint()">
                         <input type="checkbox" [(ngModel)]="filterByOnlyMine" (change)='filterChanged()'
                             name="filterByOnlyMine">
                         <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
@@ -68,7 +68,7 @@
                                     </td>
                                     <td>
                                         <select class="form-control" name="type" [(ngModel)]="type"
-                                            (change)="sortCompositions()" style="background-color:rgba(0,0,0,.03);">
+                                            (change)="filterChanged()" style="background-color:rgba(0,0,0,.03);">
                                             <option *ngFor="let type of types" [ngValue]="type.value">
                                                 {{translateString('COMPOSITONTYPES', type.name)}}</option>
                                         </select>
@@ -115,7 +115,7 @@
                                     </td>
                                     <td>
                                         <select class="form-control" name="theme" [(ngModel)]="theme"
-                                            (change)="sortCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            (change)="filterChanged()" style="background-color:rgba(0,0,0,.03)">
                                             <option *ngFor="let theme of inspireThemes" [ngValue]="theme.value">
                                                 {{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</option>
                                         </select>
@@ -136,12 +136,20 @@
                                     <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
                                         {{'COMMON.sortBy' | translate}}
                                     </td>
-                                    <td>
+                                    <td class="tdbreak">
                                         <select class="form-control" name="sortBy" [(ngModel)]="sortBy"
-                                            (change)="sortCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            (change)="filterChanged()" style="background-color:rgba(0,0,0,.03)">
                                             <option *ngFor="let item of sortByValues" [ngValue]="item.value">
                                                 {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
                                         </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center; vertical-align: middle;">
+                                        <a class="btn btn-block btn-light"
+                                            style="border-radius: 0.25rem; background-color:rgba(0,0,0,.03); color: #495057"
+                                            (click)="clearFilters()">
+                                            {{'COMPOSITIONS.clearFilters' | translate}}</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -153,8 +161,9 @@
         <div class="card">
             <div class="card-body">
                 <ul class="hs-comp-list list-group">
-                    <li *ngFor="let composition of compositions" class="list-group-item hs-comp-item"
-                        style="cursor: pointer;" [ngClass]="{'activeComposition' : composition.highlighted}"
+                    <li *ngFor="let composition of compositions | slice:listStart:listNext"
+                        class="list-group-item hs-comp-item" style="cursor: pointer;"
+                        [ngClass]="{'activeComposition' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
@@ -187,25 +196,32 @@
                         </div>
                     </li>
                 </ul>
-            </div>        
+            </div>
             <div class="card-footer">
-                <ul class="pagination d-flex justify-content-center">
+                <ul class="pagination d-flex justify-content-center" *ngIf="paging.matched == 0">
                     <li class="page-item">
-                        <a class="page-link"><span
+                        <span aria-hidden="true">Loading...</span>
+                    </li>
+                </ul>
+                <ul class="pagination d-flex justify-content-center" *ngIf="paging.matched != 0">
+                    <li class="page-item" [ngClass]="{'disabled': listStart == 0 }">
+                        <a class="page-link" (click)="getPreviousCompositions()"><span
                                 aria-hidden="true">&laquo;</span></a>
                     </li>
-                    <!-- <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link">
+                    <li class="page-item" *ngIf="resultsVisible() && listNext != paging.matched"><span
+                            class="page-link">
                             {{'COMMON.results' | translate}}
-                            {{endpoint.compositionsPaging.start + 1}} -
-                            {{endpoint.compositionsPaging.next}}</span></li>
-                    <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link">
+                            {{listStart + 1}} -
+                            {{listNext}}</span></li>
+                    <li class="page-item" *ngIf="resultsVisible() && listNext == paging.matched"><span
+                            class="page-link">
                             {{'COMMON.results' | translate}}
-                            {{endpoint.compositionsPaging.start + 1}} -
-                            {{endpoint.compositionsPaging.matched}}</span></li>
-                    <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
-                        <a class="page-link" (click)="getNextCompositions(endpoint)"><span
+                            {{listStart + 1}} -
+                            {{paging.matched}}</span></li>
+                    <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }">
+                        <a class="page-link" (click)="getNextCompositions()"><span
                                 aria-hidden="true">&raquo;</span></a>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </div>
