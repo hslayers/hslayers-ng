@@ -1,6 +1,6 @@
-<div *ngIf="endpoint && endpoint.type == 'layman'">
-    <a class="btn btn-block btn-light" (click)="login()" *ngIf="isAuthorized()" href="{{protocolsMatch() ? '#' : authUrl()}}" target="{{protocolsMatch() ? '' : '_blank'}}">
-        {{'COMMON.Login' | translate }}</a>
+<div *ngIf="endpoint && endpoint.type == 'layman'" style="margin-left: 1em; float: right; ">
+    <a class="btn btn-block btn-light" style="border-radius: 0.25rem; background-color:rgba(0,0,0,.03); color: #495057" (click)="login()" *ngIf="isAuthorized()" href="{{protocolsMatch() ? '#' : authUrl()}}" target="{{protocolsMatch() ? '' : '_blank'}}">
+        {{'COMPOSITIONS.loginToCatalogue' | translate}}</a>
     <a class="btn btn-block btn-light" (click)="logout()" *ngIf="!isAuthorized()">{{'COMMON.Logout' | translate }}
         {{endpoint.user}}</a>
 </div>

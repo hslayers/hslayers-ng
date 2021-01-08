@@ -12,60 +12,63 @@ import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {ThrowStmt} from '@angular/compiler';
+import {
+  INSPIRETHEMES,
+  KEYWORDS,
+  SORTBYVALUES,
+  TYPES,
+} from './compositions-option-values';
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.html',
+  styles: [
+    `
+      .activeComposition {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    `,
+  ],
 })
 export class HsCompositionsComponent implements OnInit {
-  sortMenuOpen = false;
-  keywordsMenuOpen = false;
+  keywordsVisible = false;
   /**
    * @public
    * @type {object}
    * @description List of keywords (currently hard-coded selection), with their selection status (Boolean value) which sets if keyword will be applied in compositions lookup
    */
-  keywords = {
-    'Basemap': false,
-    'Borders': false,
-    'PhysicalGeography': false,
-    'Demographics': false,
-    'Economics': false,
-    'SocioPoliticalConditions': false,
-    'Culture': false,
-    'Transport': false,
-    'LandUse': false,
-    'Environment': false,
-    'Water': false,
-    'Hazards': false,
-    'Cadastre': false,
-    'Infrastructure': false,
-    'RealEstate': false,
-    'Planning': false,
-    'ComplexInformation': false,
-  };
+  keywords = KEYWORDS;
   urlToAdd = '';
   addCompositionUrlVisible = false;
   /**
    * @public
-   * @type {string} bbox
    * @description Store current rule for sorting compositions in composition list (supported values: bbox, title, date)
    */
-  sortBy = 'title';
+  sortByValues = SORTBYVALUES;
+  sortBy = SORTBYVALUES[0].name;
+  types = TYPES;
+  type = TYPES[0].name;
+  inspireThemes = INSPIRETHEMES;
+  theme = INSPIRETHEMES[0].name;
   /**
    * @public
    * @type {boolean} true
    * @description Store whether filter compositions by current window extent during composition search
    */
   filterByExtent = true;
+  filterByOnlyMine = false;
+  optionsButtonLabel = 'more';
+  optionsMenuOpen = false;
   selectedCompId: any;
   query: {editable: boolean; title: string} = {editable: false, title: ''};
   activeTab = 0;
+  laymanEndpoint: HsEndpoint;
+  compositions: any[] = [];
   constructor(
     public HsMapService: HsMapService,
     public HsCompositionsService: HsCompositionsService,
@@ -79,18 +82,24 @@ export class HsCompositionsComponent implements OnInit {
     public HsEventBusService: HsEventBusService,
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLogService: HsLogService
+    public HsLogService: HsLogService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.filteredEndpointsForCompositions().forEach(
       (ep: HsEndpoint) =>
         (ep.compositionsPaging.next = ep.compositionsPaging.limit)
+    );
+    this.filteredEndpointsForCompositions().find((ep: HsEndpoint) =>
+      ep.type == 'layman'
+        ? (this.laymanEndpoint = ep)
+        : (this.laymanEndpoint = undefined)
     );
     HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
         this.HsLayoutService.mainpanel === 'composition_browser' ||
         this.HsLayoutService.mainpanel === 'composition'
       ) {
-        this.loadCompositionsForAllEndpoints();
+        this.loadCompositions();
       }
     });
 
@@ -105,7 +114,7 @@ export class HsCompositionsComponent implements OnInit {
             return;
           }
           if (this.filterByExtent) {
-            this.loadCompositionsForAllEndpoints();
+            this.loadCompositions();
           }
         },
         400,
@@ -122,7 +131,7 @@ export class HsCompositionsComponent implements OnInit {
       if (deleteDialog) {
         deleteDialog.parentNode.remove(deleteDialog);
       }
-      this.loadCompositions(composition.endpoint);
+      this.loadCompositions();
     });
 
     this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
@@ -150,42 +159,44 @@ export class HsCompositionsComponent implements OnInit {
   changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
-
+  openSaveMapPanel(): void {
+    this.HsLayoutService.setMainPanel('saveMap');
+  }
   /**
    * @public
    * @description Load previous list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
    */
-  getPreviousCompositions(ds: HsEndpoint): void {
-    const paging = ds.compositionsPaging;
-    if (paging.start - paging.limit < 0) {
-      paging.start = 0;
-      paging.next = paging.limit;
-    } else {
-      paging.start -= paging.limit;
-      paging.next = paging.start + paging.limit;
-    }
-    this.loadCompositions(ds);
-  }
+  // getPreviousCompositions(ds: HsEndpoint): void {
+  //   const paging = ds.compositionsPaging;
+  //   if (paging.start - paging.limit < 0) {
+  //     paging.start = 0;
+  //     paging.next = paging.limit;
+  //   } else {
+  //     paging.start -= paging.limit;
+  //     paging.next = paging.start + paging.limit;
+  //   }
+  //   this.loadCompositions(ds);
+  // }
 
   /**
    * @public
    * @description Load next list of compositions to display on pager (number per page set by {@link hs.compositions.controller#page_size hs.compositions.controller#page_size})
    * @param ds
    */
-  getNextCompositions(ds: HsEndpoint): void {
-    const paging = ds.compositionsPaging;
-    if (paging.next != 0) {
-      paging.start = Math.floor(paging.next / paging.limit) * paging.limit;
+  // getNextCompositions(ds: HsEndpoint): void {
+  //   const paging = ds.compositionsPaging;
+  //   if (paging.next != 0) {
+  //     paging.start = Math.floor(paging.next / paging.limit) * paging.limit;
 
-      if (paging.next + paging.limit > paging.matched) {
-        paging.next = paging.matched;
-      } else {
-        paging.next += paging.limit;
-      }
-      this.loadCompositions(ds);
-    }
-  }
+  //     if (paging.next + paging.limit > paging.matched) {
+  //       paging.next = paging.matched;
+  //     } else {
+  //       paging.next += paging.limit;
+  //     }
+  //     this.loadCompositions(ds);
+  //   }
+  // }
 
   /**
    * @public
@@ -193,37 +204,49 @@ export class HsCompositionsComponent implements OnInit {
    * @param ds
    * @returns {Promise}
    */
-  loadCompositions(ds: HsEndpoint): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.HsMapService.loaded()
-        .then((map) => {
-          this.HsCompositionsService.loadCompositions(ds, {
-            query: this.query,
-            sortBy: this.sortBy,
-            filterExtent: this.filterByExtent,
-            keywords: this.keywords,
-            start: ds.compositionsPaging.start,
-            limit: ds.compositionsPaging.limit,
-          }).then((_) => {
-            resolve();
-          });
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
-
-  loadCompositionsOnAllEndpoints(): void {
+  loadCompositions(clearCompositions?: boolean): void {
+    if (clearCompositions) {
+      this.compositions = [];
+    }
     for (const endpoint of this.filteredEndpointsForCompositions()) {
-      this.loadCompositions(endpoint);
+      this.HsMapService.loaded().then(() => {
+        const promises = [];
+        const promise = this.HsCompositionsService.loadCompositions(endpoint, {
+          query: this.query,
+          sortBy: this.sortBy,
+          filterExtent: this.filterByExtent,
+          onlyMine: this.filterByOnlyMine, //is not active
+          keywords: this.keywords,
+          theme: this.theme,
+          type: this.type,
+          start: endpoint.compositionsPaging.start,
+          limit: endpoint.compositionsPaging.limit,
+        });
+        promises.push(promise);
+        Promise.all(promises).then(() => {
+          this.createCompositionList();
+        });
+      });
     }
   }
-
+  createCompositionList(): void {
+    for (const endpoint of this.filteredEndpointsForCompositions()) {
+      console.log(endpoint.compositions);
+      if (endpoint.compositions && endpoint.compositions.length > 0) {
+        endpoint.compositions.forEach((composition) => {
+          if (
+            this.compositions.filter((comp) => comp.id == composition.id)
+              .length == 0
+          ) {
+            this.compositions.push(composition);
+          }
+        });
+      }
+    }
+  }
   keywordChecked(keyword) {
-    this.keywords[keyword.key] = !this.keywords[keyword.key];
-    this.loadCompositionsOnAllEndpoints();
-    // this.keywordsMenuOpen = !this.keywordsMenuOpen;
+    this.keywords.find((kw) => kw == keyword).selected = !keyword.selected;
+    this.loadCompositions(true);
   }
 
   getPageSize(): void {
@@ -231,9 +254,10 @@ export class HsCompositionsComponent implements OnInit {
       '.hs-comp-list'
     );
     if (compList) {
-      const listHeight = compList.innerHeight;
+      // const listHeight = compList.innerHeight;
       for (const ds of this.filteredEndpointsForCompositions()) {
-        ds.compositionsPaging.limit = Math.round((listHeight - 180) / 60);
+        ds.compositionsPaging.limit = 20;
+        //Math.round((listHeight - 180) / 60);
       }
     }
   }
@@ -247,9 +271,8 @@ export class HsCompositionsComponent implements OnInit {
     for (const ds of this.filteredEndpointsForCompositions()) {
       ds.compositionsPaging.start = 0;
       ds.compositionsPaging.next = ds.compositionsPaging.limit;
-      this.loadCompositions(ds);
     }
-    this.filterByExtent = !this.filterByExtent;
+    this.loadCompositions(true);
   }
 
   filteredEndpointsForCompositions(): Array<HsEndpoint> {
@@ -277,14 +300,15 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   /**
-   * @function edit
-   * @description Load selected composition for editing
+   * @function openComposition
+   * @description Load selected composition
    * @param {object} composition Selected composition
    */
-  edit(composition): void {
+  openComposition(composition): void {
     this.HsCompositionsService.loadCompositionParser(composition)
       .then(() => {
-        this.HsSaveMapManagerService.openPanel(composition);
+        // this.HsSaveMapManagerService.openPanel(composition);
+        this.HsLayoutService.setMainPanel('layermanager');
       })
       .catch(() => {
         //Do nothing
@@ -298,14 +322,15 @@ export class HsCompositionsComponent implements OnInit {
    * @description Highlight (or dim) composition, toogle visual state of composition extent on map
    */
   highlightComposition(composition, state: boolean): void {
+    composition.highlighted = state;
     this.HsCompositionsMapService.highlightComposition(composition, state);
   }
 
-  loadCompositionsForAllEndpoints(): void {
-    this.filteredEndpointsForCompositions().forEach((ds) => {
-      this.loadCompositions(ds);
-    });
-  }
+  // loadCompositionsForAllEndpoints(): void {
+  //   this.filteredEndpointsForCompositions().forEach((ds) => {
+  //     this.loadCompositions(ds);
+  //   });
+  // }
 
   /**
    * @public
@@ -356,14 +381,15 @@ export class HsCompositionsComponent implements OnInit {
 
   /**
    * @public
+   * @param url
    * @param {object} record Composition to be loaded
    * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
    */
-  startLoadComposition(record): void {
-    this.HsCompositionsService.loadCompositionParser(record).catch(() => {
-      //Do nothing, probably now asking for overwrite of composition
-    });
-  }
+  // startLoadComposition(record): void {
+  //   this.HsCompositionsService.loadCompositionParser(record).catch(() => {
+  //     //Do nothing, probably now asking for overwrite of composition
+  //   });
+  // }
 
   addCompositionUrl(url): void {
     if (this.HsCompositionsParserService.composition_edited == true) {
@@ -377,14 +403,11 @@ export class HsCompositionsComponent implements OnInit {
 
   /**
    * @public
-   * @param {string} attribute Attribute by which compositions should be sorted (expected values: bbox, title, date)
-   * @description Set sort attribute for sorting composition list and reload compositions
+   * @description Sort compositions list and reload compositions
    */
-  setSortAttribute(attribute): void {
-    this.sortBy = attribute;
-    this.loadCompositionsForAllEndpoints();
+  sortCompositions(): void {
+    this.loadCompositions(true);
   }
-
   handleFileSelect(evt): void {
     const files = evt.target.files; // FileList object
     for (const f of files) {
@@ -418,7 +441,21 @@ export class HsCompositionsComponent implements OnInit {
   }
 
   compositionClicked(composition): void {
-    this.selectedCompId = this.commonId(composition);
-    this.startLoadComposition(composition);
+    if (this.selectedCompId != this.commonId(composition)) {
+      this.selectedCompId = this.commonId(composition);
+    } else {
+      this.selectedCompId = '';
+    }
+  }
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  }
+  openOptionsMenu(): void {
+    this.optionsMenuOpen = !this.optionsMenuOpen;
+    if (this.optionsMenuOpen) {
+      this.optionsButtonLabel = 'less';
+    } else {
+      this.optionsButtonLabel = 'more';
+    }
   }
 }
