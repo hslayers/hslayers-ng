@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
@@ -15,6 +16,7 @@ export class HsDataUrlComponent {
   constructor(
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
+    public hsEventBusService: HsEventBusService,
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
@@ -47,6 +49,15 @@ export class HsDataUrlComponent {
       ];
     }
     this.typeSelected = '';
+
+    this.hsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
+      this.typeSelected = type.toLowerCase();
+      this.hsEventBusService.owsConnecting.next({
+        type: type,
+        uri: uri,
+        layer: layer,
+      });
+    });
   }
 
   selectType(type: string): void {

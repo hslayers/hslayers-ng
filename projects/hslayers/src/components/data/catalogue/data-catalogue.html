@@ -1,9 +1,55 @@
 <div class="card hs-main-panel">
-    <div>
-        Loading data
+    <div class="m-3 pl-1 d-flex justify-content-between">
+        <input type="text" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search">
+        <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
+            Login to catalogue</button>
     </div>
-
-    <li *ngFor="let layer of HsDataCatalogueService.catalogEntries | slice:0:20" class="clearfix">
-        {{layer.title}}
-    </li>
+    <div class="tab-content">
+        <div class="card">
+            <div class="card-body">
+                <!-- <div *ngIf="endpoint.type == 'micka'">
+                        <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
+                    </div>
+                    <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user> -->
+                <ul class="list-group">
+                    <li [hidden]='!HsDataCatalogueService.layersLoading' class='list-group-item'>
+                        Loading data</li>
+                    <li [hidden]='HsDataCatalogueService.catalogEntries.length > 0 || HsDataCatalogueService.layersLoading' class='list-group-item'>
+                        {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
+                    <li *ngFor="let layer of HsDataCatalogueService.catalogEntries | slice:0:20" class="clearfix"
+                        [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                        <hs-data-list-item [layer]="layer"></hs-data-list-item>
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="card-footer"
+                    [hidden]="endpoint.datasourcePaging.matched==0 || endpoint.type != 'micka'">
+                    <nav>
+                        <ul class="pagination d-flex justify-content-center">
+                            <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.start == 0 }">
+                                <a href="#" class="page-link" (click)='getPreviousRecords(endpoint)'><span
+                                        aria-hidden="true">&laquo;</span></a>
+                            </li>
+                            <li class="page-item" *ngIf="endpoint.datasourcePaging.next != 0"><span
+                                    class="page-link">
+                                    {{'COMMON.results' | translate}} {{endpoint.datasourcePaging.start+ 1}} -
+                                    {{endpoint.datasourcePaging.next}}
+                                </span></li>
+                            <li class="page-item" *ngIf="endpoint.datasourcePaging.next == 0"><span
+                                    class="page-link">
+                                    {{'COMMON.results' | translate}} {{endpoint.datasourcePaging.start+ 1}} -
+                                    {{endpoint.datasourcePaging.matched}}
+                                </span></li>
+                            <li class="page-item" [hidden]="endpoint.datasourcePaging.loaded">
+                                <span class="page-link"><span class="icon-refresh icon-spin"></span></span>
+                            </li>
+                            <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.next == 0 }">
+                                <a href="#" class="page-link" (click)='getNextRecords(endpoint)'><span
+                                        aria-hidden="true">&raquo;</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div> -->
+        </div>
+    </div>
 </div>

@@ -6,6 +6,7 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsConfig} from '../../../config.service';
 import {HsDataCatalogueMapService} from './data-catalogue-map.service';
 import {HsDataLayerDescriptor} from './data-layer-descriptor.interface';
+import {HsDataService} from '../data.service';
 import {HsDataVectorService} from '../vector/data-vector.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -15,7 +16,6 @@ import {HsMapService} from '../../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {promise} from 'protractor';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -37,6 +37,7 @@ export class HsDataCatalogueService {
   data: any = {};
   selectedEndpoint: HsEndpoint;
   catalogEntries = [];
+  layersLoading: boolean;
 
   constructor(
     public hsConfig: HsConfig,
@@ -49,8 +50,8 @@ export class HsDataCatalogueService {
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
-    public HsDataCatalogueMapService: HsDataCatalogueMapService /*,
-    private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
+    public HsDataCatalogueMapService: HsDataCatalogueMapService,
+    public HsDataService: HsDataService /*private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
   ) {
     this.data.query = {
       textFilter: '',
@@ -108,6 +109,7 @@ export class HsDataCatalogueService {
    */
   queryCatalogs(): void {
     this.HsMapService.loaded().then(() => {
+      this.layersLoading = true;
       this.HsDataCatalogueMapService.clearExtentLayer();
       const promises = [];
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
@@ -118,21 +120,25 @@ export class HsDataCatalogueService {
         promises.push(promise);
       }
       //FIXME use allSettled instead of all
-      // ALL -   It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message 
+      // ALL -   It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message
       //ALL SETTLED - resolves after all of the given promises have either fulfilled or rejected
       Promise.all(promises).then((results) => this.createLayerList());
     });
   }
 
   createLayerList(): void {
+    this.catalogEntries.length = 0;
     for (const endpoint of this.hsCommonEndpointsService.endpoints) {
       if (endpoint.layers) {
-        console.log(endpoint.layers);
-        endpoint.layers.forEach((layer) => this.catalogEntries.push(layer));
+        endpoint.layers.forEach((layer) => {
+          layer.endpoint = endpoint; //add endpoint to interface
+          this.catalogEntries.push(layer);
+        });
       }
     }
-    this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title))
-    console.log(this.catalogEntries)
+    this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
+    this.layersLoading = false;
+    console.log(this.catalogEntries);
   }
 
   /**
@@ -227,8 +233,8 @@ export class HsDataCatalogueService {
     if (Array.isArray(whatToAdd.type)) {
       return whatToAdd.type;
     }
-    if (whatToAdd.type == 'WMS') {
-      this.datasetSelect('OWS');
+    if (whatToAdd.type == 'WMS' ) {
+      this.datasetSelect('OWS'); //OWS maybe will be necessary to change also somewhere else
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
@@ -276,9 +282,11 @@ export class HsDataCatalogueService {
     return whatToAdd.type;
   }
 
+  //FIXME id_Selected more jsut like TYPE
   datasetSelect(id_selected: string): void {
     this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
+    this.HsDataService.selectType(id_selected);
     this.calcExtentLayerVisibility();
   }
 

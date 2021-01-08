@@ -68,6 +68,7 @@ export class HsConfig {
     filter?: boolean;
     search?: boolean;
     tripPlanner?: boolean;
+    data?: boolean;
   };
   advancedForm?: boolean;
   project_name?: string;

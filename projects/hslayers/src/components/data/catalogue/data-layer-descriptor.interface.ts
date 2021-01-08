@@ -10,4 +10,5 @@ export interface HsDataLayerDescriptor {
   wms?: {
     url;
   };
+  endpoint?;
 }

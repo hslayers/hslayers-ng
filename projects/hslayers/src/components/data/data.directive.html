@@ -4,26 +4,26 @@
     <div class="card-body">
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': typeSelected == 'catalogue'}" role="tab"
+                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': HsDataService.typeSelected == 'catalogue'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('catalogue')">
                     Data Catalogue
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': typeSelected == 'url'}" role="tab"
+                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': HsDataService.typeSelected == 'url' || HsDataService.typeSelected == 'OWS'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('url')">
                     Url
                 </a>
             </li>
             <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': typeSelected == 'file'}" role="tab"
+                <a class="nav-link" href="#" [ngClass]="{'btn-primary active': HsDataService.typeSelected == 'file'}" role="tab"
                     data-toggle="tab" (click)="datasetSelect('file')">
                     File
                 </a>
             </li>
         </ul>
-        <hs-data-url *ngIf="typeSelected == 'url'"></hs-data-url>
-        <hs-data-file *ngIf="typeSelected == 'file'"></hs-data-file>
-        <hs-data-catalogue *ngIf="typeSelected == 'catalogue'"></hs-data-catalogue>
+        <hs-data-url *ngIf="HsDataService.typeSelected == 'url' || HsDataService.typeSelected == 'OWS'"></hs-data-url>
+        <hs-data-file *ngIf="HsDataService.typeSelected == 'file'"></hs-data-file>
+        <hs-data-catalogue *ngIf="HsDataService.typeSelected == 'catalogue'"></hs-data-catalogue>
     </div>
 </div>
