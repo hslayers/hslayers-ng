@@ -11,6 +11,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsDataCatalogueModule} from './catalogue/data-catalogue-module';
 import {HsDataFileModule} from './file/data-file.module';
+import {HsDataService} from './data.service';
 import {HsDataUrlModule} from './url/data-url.module';
 
 @NgModule({
@@ -26,7 +27,7 @@ import {HsDataUrlModule} from './url/data-url.module';
     HsDataCatalogueModule,
   ],
   exports: [HsDataComponent],
-  providers: [],
+  providers: [HsDataService],
   entryComponents: [HsDataComponent],
 })
 export class HsDataModule {}
