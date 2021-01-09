@@ -16,7 +16,7 @@
     "doc-hs": "cd ./projects/hslayers && npx compodoc -c .compodocrc.json -t",
     "doc-cesium": "cd ./projects/hslayers-cesium && npx compodoc -c .compodocrc.json -t",
     "doc-sensors": "cd ./projects/hslayers-sensors && npx compodoc -c .compodocrc.json -t",
-    "doc": "npm run doc-hs && npm run doc-cesium && npm run doc-sensors"
+    "doc": "npm run doc-hs && npm run doc-cesium && npm run doc-sensors && node scripts/gen-doc.js"
   },
   "private": true,
   "dependencies": {
