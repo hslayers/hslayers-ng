@@ -53,6 +53,7 @@
     "@angular-builders/custom-webpack": "~9.2.0",
     "@angular-devkit/build-angular": "~0.901.13",
     "@angular-devkit/build-ng-packagr": "~0.901.12",
+    "@angular-eslint/eslint-plugin": "^1.0.0",
     "@angular/cli": "~9.1.12",
     "@angular/compiler-cli": "~9.1.12",
     "@angularclass/hmr": "^3.0.0",
