@@ -478,6 +478,9 @@ export default function (
     }
     return layer_;
   };
+
+  //Only exposed to be testable with Jasmine
+  me.layersEqual = layersEqual;
   /**
    * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
    * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
