@@ -82,6 +82,7 @@ export default function ($http, $q, HsUtilsService) {
             dataset,
           })
           .then((j) => {
+            delete j.data.type;
             angular.extend(layer, j.data);
             if (layer.thumbnail) {
               layer.thumbnail = dataset.url + layer.thumbnail.url;
