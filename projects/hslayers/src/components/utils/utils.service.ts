@@ -11,7 +11,7 @@ export class HsUtilsService {
     public HsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
-    @Inject(PLATFORM_ID) private platformId: unknown
+    @Inject(PLATFORM_ID) private platformId: any
   ) {}
   /**
    * @ngdoc method
