@@ -20,6 +20,9 @@ It will install hslayers-ng for the default application specified in your angula
 
 `ng add hslayers-ng --project myProject`
 
+Add peer dependecies:
+`npm i bootstrap@^4.0.0 ol@^6.0.0 @angular/common@^9.0.0 @angular/core@^9.0.0 @angular/forms@^9.0.0 @ngx-translate/http-loader@^5.0.0 deepmerge@^4.0.0 moment@^2.24.0 moment-interval@^0.2.1 @ng-bootstrap/ng-bootstrap@^6.0.0 ol-popup@^4.0.0 proj4@^2.6.0 share-api-polyfill@^1.0.0 @angular/compiler@^9.0.0 @angular/platform-browser@^9.0.0 @angular/platform-browser-dynamic@^9.0.0 zone.js@^0.10.3`
+
 For using hslayers-ng prebuilt bundle including angular, bootstrap etc. dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
 ## Configuration
