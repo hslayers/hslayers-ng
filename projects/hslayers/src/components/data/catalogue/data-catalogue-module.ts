@@ -13,6 +13,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsDataCatalogueMapService} from './data-catalogue-map.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsMickaBrowserService} from './micka/micka.service';
 
 @NgModule({
@@ -22,7 +23,13 @@ import {HsMickaBrowserService} from './micka/micka.service';
     HsDataListItemComponent,
     HsDataMetadataDialogComponent,
   ],
-  imports: [CommonModule, FormsModule, TranslateModule, HsUiExtensionsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    HsUiExtensionsModule,
+    HsLaymanModule,
+  ],
   exports: [
     HsDataCatalogueComponent,
     HsDataListItemComponent,

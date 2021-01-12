@@ -1,6 +1,6 @@
+import {EMPTY, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
@@ -24,7 +24,7 @@ export class HsLaymanBrowserService {
    * extent feature is created. Has one parameter: feature
    * @description Loads datasets metadata from Layman
    */
-  queryCatalog(endpoint: HsEndpoint): void {
+  async queryCatalog(endpoint: HsEndpoint): Promise<boolean> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
     url = this.hsUtilsService.proxify(url);
@@ -34,25 +34,24 @@ export class HsLaymanBrowserService {
       delete this.httpCall;
     }
     //endpoint.canceler = $q.defer();
-    this.httpCall = this.http
+    endpoint.httpCall = await this.http
       .get(url, {
-        //timeout: endpoint.canceler.promise,
-        //dataset: endpoint,
         responseType: 'json',
       })
       .pipe(
         map((x: any) => {
           x.dataset = endpoint;
-          return x;
-        })
-      )
-      .subscribe(
-        (data) => this.datasetsReceived(data),
-        (e) => {
+          this.datasetsReceived(x);
+          // return x;
+        }),
+        catchError((e) => {
           this.log.error(e);
           endpoint.datasourcePaging.loaded = true;
-        }
-      );
+          return EMPTY;
+        })
+      )
+      .toPromise();
+    return endpoint.httpCall;
   }
 
   /**
