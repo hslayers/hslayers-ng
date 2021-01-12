@@ -1,17 +1,20 @@
 <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 <form class="form-horizontal" role="form">
-    <hs-data-common-url type="vector" [(url)]="url" [(connect)]="connect"></hs-data-common-url>
+    <hs-data-common-url *ngIf="HsDataService.typeSelected == 'url'" type="vector" [(url)]="url" [(connect)]="connect"></hs-data-common-url>
 
     <div class="form-group"  *ngIf="HsDataService.typeSelected == 'file'">
-        <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label>
-        <div class="dropzone" fileDrop (filesDropped)="handleFileUpload($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
-                <p class="dropzone-label mt-2">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
-                <label class="dropzone-label">
-                    <input type="file" (change)="handleFileUpload($event.target.files)">
-                </label> 
+        <div class="d-flex flex-row justify-content-around align-items-baseline">
+            <!-- <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label> -->
+            <div class="dropzone p-4" fileDrop (filesDropped)="handleFileUpload($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
+                    <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
+            </div>
+            <label class="dropzone-label">
+                <input type="file" (change)="handleFileUpload($event.target.files)">
+            </label> 
+
         </div>
         <!-- TODO: Replace this with upcomming toast directive -->
-        <div class="text-danger text-center" *ngIf="errorOccured">
+        <div class="text-light text-center bg-danger" *ngIf="errorOccured">
             <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
         </div>
     </div>
