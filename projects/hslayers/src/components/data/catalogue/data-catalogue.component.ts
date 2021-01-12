@@ -24,6 +24,7 @@ export class HsDataCatalogueComponent {
   types: any[];
   data: any;
   advancedSearch: boolean;
+  queryCatalogs;
 
   constructor(
     public HsLanguageService: HsLanguageService,
@@ -37,15 +38,20 @@ export class HsDataCatalogueComponent {
   ) {
     this.data = HsDataCatalogueService.data;
     this.advancedSearch = false;
-
+    this.queryCatalogs = () => HsDataCatalogueService.queryCatalogs();
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'wms') {
         this.data.wms_connecting = true;
       }
     });
 
-    this.reload()
-   }
+    this.reload();
+  }
+
+  extentFilterChanged(): void {
+    this.data.filterByExtent = !this.data.filterByExtent;
+    this.queryCatalogs();
+  }
 
   /**
    * @function getPreviousRecords
@@ -92,6 +98,5 @@ export class HsDataCatalogueComponent {
   }
   reload(): void {
     this.HsDataCatalogueService.reloadData();
-    console.log('reloading')
   }
 }

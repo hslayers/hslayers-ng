@@ -1,6 +1,20 @@
 <div class="card hs-main-panel">
     <div class="m-3 pl-1 d-flex justify-content-between">
-        <input type="text" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search">
+        <div class="input-group w-50">
+            <input type="text" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search"
+                [(ngModel)]="data.query.title" (ngModelChange)="queryCatalogs()">
+            <div class="input-group-append">
+                <button type="button" class=" btn pl-2 pr-2 "
+                    [ngClass]="data.filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
+                    [title]="'COMPOSITIONS.filterByMap' | translate"
+                    style="font-size:larger; line-height:1 !important; "
+                    [ngStyle]="{'border-color': data.filterByExtent ? '#6c757d' : '#ced4da'}"
+                    (click)="extentFilterChanged()">
+                    <i class="icon-tabletscreensize"></i>
+                </button>
+            </div>
+        </div>
+
         <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
             Login to catalogue</button>
     </div>
@@ -14,42 +28,25 @@
                 <ul class="list-group">
                     <li [hidden]='!HsDataCatalogueService.layersLoading' class='list-group-item'>
                         Loading data</li>
-                    <li [hidden]='HsDataCatalogueService.catalogEntries.length > 0 || HsDataCatalogueService.layersLoading' class='list-group-item'>
+                    <li [hidden]='HsDataCatalogueService.catalogEntries.length > 0 || HsDataCatalogueService.layersLoading'
+                        class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li *ngFor="let layer of HsDataCatalogueService.catalogEntries | slice:0:20" class="clearfix"
+                    <li *ngFor='let layer of HsDataCatalogueService.catalogEntries | slice:HsDataCatalogueService.paging.start:20' class="clearfix"
                         [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                         <hs-data-list-item [layer]="layer"></hs-data-list-item>
                     </li>
                 </ul>
             </div>
-            <!-- <div class="card-footer"
-                    [hidden]="endpoint.datasourcePaging.matched==0 || endpoint.type != 'micka'">
+            <div class="card-footer"
+                    [hidden]="HsDataCatalogueService.paging.matched==0">
                     <nav>
-                        <ul class="pagination d-flex justify-content-center">
-                            <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.start == 0 }">
-                                <a href="#" class="page-link" (click)='getPreviousRecords(endpoint)'><span
-                                        aria-hidden="true">&laquo;</span></a>
-                            </li>
-                            <li class="page-item" *ngIf="endpoint.datasourcePaging.next != 0"><span
-                                    class="page-link">
-                                    {{'COMMON.results' | translate}} {{endpoint.datasourcePaging.start+ 1}} -
-                                    {{endpoint.datasourcePaging.next}}
-                                </span></li>
-                            <li class="page-item" *ngIf="endpoint.datasourcePaging.next == 0"><span
-                                    class="page-link">
-                                    {{'COMMON.results' | translate}} {{endpoint.datasourcePaging.start+ 1}} -
-                                    {{endpoint.datasourcePaging.matched}}
-                                </span></li>
-                            <li class="page-item" [hidden]="endpoint.datasourcePaging.loaded">
-                                <span class="page-link"><span class="icon-refresh icon-spin"></span></span>
-                            </li>
-                            <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.next == 0 }">
-                                <a href="#" class="page-link" (click)='getNextRecords(endpoint)'><span
-                                        aria-hidden="true">&raquo;</span></a>
-                            </li>
-                        </ul>
+                        <li class="page-item"><span
+                            class="page-link">
+                            {{'COMMON.results' | translate}} {{HsDataCatalogueService.paging.start+ 1}} -
+                            {{HsDataCatalogueService.paging.matched}}
+                        </span></li>
                     </nav>
-                </div> -->
+                </div>
         </div>
     </div>
 </div>

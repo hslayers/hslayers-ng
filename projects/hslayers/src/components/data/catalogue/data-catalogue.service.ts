@@ -30,6 +30,14 @@ type WhatToAddDescriptor = {
   extractStyles?;
 };
 
+type pagination = {
+  start?: number;
+  limit?: number;
+  loaded?: boolean;
+  matched?;
+  next?;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,6 +46,14 @@ export class HsDataCatalogueService {
   selectedEndpoint: HsEndpoint;
   catalogEntries = [];
   layersLoading: boolean;
+  paging: pagination = {
+    start: 0,
+    limit: 20,
+    loaded: false,
+    matched: 0,
+    next: 20, //default, change by config?
+  };
+  itemsPerPage = 20;
 
   constructor(
     public hsConfig: HsConfig,
@@ -64,6 +80,7 @@ export class HsDataCatalogueService {
     this.data.selectedLayer = null;
     this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
+    this.data.filterByExtent = true;
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
@@ -80,7 +97,7 @@ export class HsDataCatalogueService {
           if (!this.panelVisible()) {
             return;
           }
-          if (this.hsMickaFilterService.filterByExtent) {
+          if (this.data.filterByExtent) {
             this.queryCatalogs();
           }
         },
@@ -128,6 +145,7 @@ export class HsDataCatalogueService {
 
   createLayerList(): void {
     this.catalogEntries.length = 0;
+
     for (const endpoint of this.hsCommonEndpointsService.endpoints) {
       if (endpoint.layers) {
         endpoint.layers.forEach((layer) => {
@@ -135,10 +153,33 @@ export class HsDataCatalogueService {
           this.catalogEntries.push(layer);
         });
       }
+      if (endpoint.datasourcePaging) {
+        if (this.paging.matched == 0) {
+          this.paging.matched = endpoint.datasourcePaging.matched;
+        } else {
+          this.paging.matched += endpoint.datasourcePaging.matched;
+        }
+      }
     }
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
-    console.log(this.catalogEntries);
+    console.log(this);
+  }
+
+  getNextRecords(): void {
+    // paging: pagination = {
+    //   start: 0,
+    //   limit: 20,
+    //   loaded: false,
+    //   matched: 0,
+    //   next: 20,
+    // };
+    // itemsPerPage = 20;
+    if (this.paging.next <= this.catalogEntries.length - this.itemsPerPage){
+      this.paging.start = Math.floor(this.paging.next / this.itemsPerPage) * this.itemsPerPage;
+      this.paging.next += this.itemsPerPage;
+    }
+
   }
 
   /**
@@ -155,7 +196,7 @@ export class HsDataCatalogueService {
       case 'micka':
         const query = await this.hsMickaBrowserService.queryCatalog(
           catalog,
-          this.data.query,
+          this.data,
           (feature: Feature) =>
             this.HsDataCatalogueMapService.addExtentFeature(feature),
           this.data.textField
@@ -233,7 +274,7 @@ export class HsDataCatalogueService {
     if (Array.isArray(whatToAdd.type)) {
       return whatToAdd.type;
     }
-    if (whatToAdd.type == 'WMS' ) {
+    if (whatToAdd.type == 'WMS') {
       this.datasetSelect('OWS'); //OWS maybe will be necessary to change also somewhere else
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
