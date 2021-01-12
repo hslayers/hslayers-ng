@@ -11,6 +11,10 @@ import {HsDataMetadataDialogComponent} from './data-catalogue-metadata-dialog.co
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsDataCatalogueMapService} from './data-catalogue-map.service';
+import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsMickaBrowserService} from './micka/micka.service';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [
@@ -24,7 +28,11 @@ import {TranslateModule} from '@ngx-translate/core';
     HsDataListItemComponent,
     HsDataMetadataDialogComponent,
   ],
-  providers: [],
+  providers: [
+    HsMickaBrowserService,
+    HsLaymanBrowserService,
+    HsDataCatalogueMapService,
+  ],
   entryComponents: [
     HsDataCatalogueComponent,
     HsDataListItemComponent,

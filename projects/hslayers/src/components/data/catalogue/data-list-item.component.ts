@@ -8,7 +8,7 @@ import {HsDataMetadataDialogComponent} from './data-catalogue-metadata-dialog.co
 import {HsDatasourcesMetadataService} from '../../datasource-selector/datasource-selector-metadata.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLaymanBrowserService} from '../../datasource-selector/layman/layman.service';
+import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 
 @Component({
