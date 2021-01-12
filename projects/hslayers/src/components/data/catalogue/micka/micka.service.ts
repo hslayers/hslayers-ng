@@ -2,9 +2,9 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
 
+import {EMPTY, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {EMPTY, Subscription} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
@@ -30,6 +30,7 @@ export class HsMickaBrowserService {
    * @function queryCatalog
    * @param {object} dataset Configuration of selected datasource (from app config)
    * @param {object} query Container for all query filter values
+   * @param data
    * @param {Function} extentFeatureCreated Function which gets called
    * @param {string} textField Name of the field to search in
    * extent feature is created. Has one parameter: feature
@@ -39,18 +40,21 @@ export class HsMickaBrowserService {
    */
   async queryCatalog(
     dataset: HsEndpoint,
-    query,
+    data,
     extentFeatureCreated,
     textField: string
   ): Promise<boolean> {
-    const url = this.createRequestUrl(dataset, query, textField);
-
+    const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
-    if (dataset.httpCall) {
-      dataset.httpCall.unsubscribe();
-      delete dataset.httpCall;
-    }
-    //dataset.canceler = $q.defer();
+
+    //FIXME
+    // Currently not canceling multiple continuous requests
+
+    // if (dataset.httpCall) {
+    //   dataset.httpCall.unsubscribe();
+    //   delete dataset.httpCall;
+    // }
+
     dataset.httpCall = await this.http
       .get(url, {
         //FIXME: dataset must be passed to datasetsReceived
@@ -75,7 +79,8 @@ export class HsMickaBrowserService {
     return dataset.httpCall;
   }
 
-  private createRequestUrl(dataset, query, textField) {
+  private createRequestUrl(dataset, data, textField) {
+    const query = data.query;
     const b = transformExtent(
       this.hsMapService.map
         .getView()
@@ -83,9 +88,7 @@ export class HsMickaBrowserService {
       this.hsMapService.map.getView().getProjection(),
       'EPSG:4326'
     );
-    const bbox = this.hsMickaFilterService.filterByExtent
-      ? "BBOX='" + b.join(' ') + "'"
-      : '';
+    const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
     const text =
       query.textFilter !== undefined && query.textFilter.length > 0
         ? query.textFilter
