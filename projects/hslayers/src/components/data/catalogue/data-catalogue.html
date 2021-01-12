@@ -17,6 +17,7 @@
 
         <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
             Login to catalogue</button>
+            <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
     <div class="tab-content">
         <div class="card">
@@ -24,7 +25,7 @@
                 <!-- <div *ngIf="endpoint.type == 'micka'">
                         <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
                     </div>
-                    <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user> -->
+                     -->
                 <ul class="list-group">
                     <li [hidden]='!HsDataCatalogueService.layersLoading' class='list-group-item'>
                         Loading data</li>

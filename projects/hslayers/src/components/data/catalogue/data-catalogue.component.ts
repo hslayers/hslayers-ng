@@ -10,9 +10,9 @@ import {HsDataCatalogueService} from './data-catalogue.service';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
-
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
 @Component({
@@ -34,7 +34,8 @@ export class HsDataCatalogueComponent {
     public HsDataCatalogueService: HsDataCatalogueService,
     public HsDataCatalogueMapService: HsDataCatalogueMapService, //Used in template
     public hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    public HsLaymanService: HsLaymanService //Used in template
   ) {
     this.data = HsDataCatalogueService.data;
     this.advancedSearch = false;
@@ -45,7 +46,7 @@ export class HsDataCatalogueComponent {
       }
     });
 
-    this.reload();
+    // this.reload();
   }
 
   extentFilterChanged(): void {

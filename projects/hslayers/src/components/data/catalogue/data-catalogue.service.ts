@@ -139,6 +139,8 @@ export class HsDataCatalogueService {
       //FIXME use allSettled instead of all
       // ALL -   It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message
       //ALL SETTLED - resolves after all of the given promises have either fulfilled or rejected
+
+      //forkJOIN to be able to cancel
       Promise.all(promises).then((results) => this.createLayerList());
     });
   }
@@ -175,11 +177,11 @@ export class HsDataCatalogueService {
     //   next: 20,
     // };
     // itemsPerPage = 20;
-    if (this.paging.next <= this.catalogEntries.length - this.itemsPerPage){
-      this.paging.start = Math.floor(this.paging.next / this.itemsPerPage) * this.itemsPerPage;
+    if (this.paging.next <= this.catalogEntries.length - this.itemsPerPage) {
+      this.paging.start =
+        Math.floor(this.paging.next / this.itemsPerPage) * this.itemsPerPage;
       this.paging.next += this.itemsPerPage;
     }
-
   }
 
   /**
@@ -192,9 +194,10 @@ export class HsDataCatalogueService {
    */
   async queryCatalog(catalog: HsEndpoint) {
     this.HsDataCatalogueMapService.clearDatasetFeatures(catalog);
+    let query;
     switch (catalog.type) {
       case 'micka':
-        const query = await this.hsMickaBrowserService.queryCatalog(
+        query = await this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data,
           (feature: Feature) =>
@@ -204,8 +207,8 @@ export class HsDataCatalogueService {
         return query;
       //FIX ME - await for laymanendpoint
       case 'layman':
-        this.hsLaymanBrowserService.queryCatalog(catalog);
-        break;
+        query = await this.hsLaymanBrowserService.queryCatalog(catalog);
+        return query;
       default:
         break;
     }
@@ -362,10 +365,7 @@ export class HsDataCatalogueService {
    *
    */
   panelVisible(): boolean {
-    return (
-      this.hsLayoutService.panelVisible('datasource_selector') ||
-      this.hsLayoutService.panelVisible('datasourceBrowser')
-    );
+    return this.hsLayoutService.panelVisible('data');
   }
 
   calcExtentLayerVisibility(): void {
