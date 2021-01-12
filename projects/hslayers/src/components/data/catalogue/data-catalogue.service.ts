@@ -10,7 +10,7 @@ import {HsDataService} from '../data.service';
 import {HsDataVectorService} from '../vector/data-vector.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLaymanBrowserService} from '../../datasource-selector/layman/layman.service';
+import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
