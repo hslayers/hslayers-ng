@@ -4,6 +4,7 @@ import {HsCommonLaymanService} from './layman.service';
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {Input} from '@angular/core';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'hs-layman-login',
@@ -13,12 +14,13 @@ export class HsLaymanLoginComponent implements HsDialogComponent {
   @Input() data;
   viewRef: ViewRef;
   url: SafeResourceUrl;
+  authChangeSubscription: Subscription;
   constructor(
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService,
     private sanitizer: DomSanitizer
   ) {
-    this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
+    this.authChangeSubscription = this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
       this.close();
     });
   }
@@ -29,5 +31,6 @@ export class HsLaymanLoginComponent implements HsDialogComponent {
 
   close(): void {
     this.HsDialogContainerService.destroy(this);
+    this.authChangeSubscription.unsubscribe();
   }
 }
