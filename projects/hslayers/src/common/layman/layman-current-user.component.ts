@@ -41,7 +41,7 @@ export class HsLaymanCurrentUserComponent {
   }
 
   /**
-   * @description Periodically poll layman client endpoint for auth change.
+   * Periodically poll layman client endpoint for auth change.
    * This is used for hiding login iframe and toggling state for login buttons,
    * which is done in separate modules by subscribing to HsCommonLaymanService.authChange
    */
