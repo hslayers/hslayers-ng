@@ -22,6 +22,10 @@ export class HsMapServiceMock {
     this.map.addLayer(layer);
   }
 
+  getCurrentProj(){
+    return this.map.getView().getProjection();
+  }
+
   getMapExtent() {
     return [0, 0, 100, 100];
   }
