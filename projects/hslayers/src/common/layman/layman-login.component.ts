@@ -4,7 +4,7 @@ import {HsCommonLaymanService} from './layman.service';
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {Input} from '@angular/core';
-import { Subscription } from 'rxjs/internal/Subscription';
+import {Subscription} from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'hs-layman-login',
@@ -20,9 +20,11 @@ export class HsLaymanLoginComponent implements HsDialogComponent {
     public HsDialogContainerService: HsDialogContainerService,
     private sanitizer: DomSanitizer
   ) {
-    this.authChangeSubscription = this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
-      this.close();
-    });
+    this.authChangeSubscription = this.HsCommonLaymanService.authChange.subscribe(
+      (endpoint) => {
+        this.close();
+      }
+    );
   }
 
   ngOnInit(): void {
