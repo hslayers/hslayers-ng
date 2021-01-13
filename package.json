@@ -20,6 +20,7 @@
     "bootstrap.component.ts",
     "config.service.ts",
     "hslayers.html",
+    "hslayers-ng-logo.png",
     "index.js",
     "main.ts",
     "polyfills.ts"
