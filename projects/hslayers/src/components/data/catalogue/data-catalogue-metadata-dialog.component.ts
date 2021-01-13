@@ -33,6 +33,8 @@ export class HsDataMetadataDialogComponent
     this.selectedDS = this.data.selectedDS;
     this.selectedLayer = this.data.selectedLayer;
     this.selectedLayerKeys = Object.keys(this.selectedLayer);
+    this.selectedLayerKeys = this.selectedLayerKeys.filter(e => e !== 'endpoint')
+    console.log(this.selectedLayerKeys)
   }
 
   /**
