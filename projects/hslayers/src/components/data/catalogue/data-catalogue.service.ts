@@ -30,14 +30,6 @@ type WhatToAddDescriptor = {
   extractStyles?;
 };
 
-type pagination = {
-  start?: number;
-  limit?: number;
-  loaded?: boolean;
-  matched?;
-  next?;
-};
-
 @Injectable({
   providedIn: 'root',
 })
@@ -46,7 +38,7 @@ export class HsDataCatalogueService {
   selectedEndpoint: HsEndpoint;
   catalogEntries = [];
   layersLoading: boolean;
-  paging: pagination = {
+  paging = {
     start: 0,
     limit: 20,
     loaded: false,
@@ -54,6 +46,8 @@ export class HsDataCatalogueService {
     next: 20, //default, change by config?
   };
   itemsPerPage = 20;
+  listStart = 0;
+  listNext = this.itemsPerPage;
 
   constructor(
     public hsConfig: HsConfig,
@@ -91,6 +85,9 @@ export class HsDataCatalogueService {
       this.hsConfig.allowAddExternalDatasets = true;
     }
 
+    let mickaEndpoints = this.hsCommonEndpointsService.endpoints.filter(e=> e.type == 'micka')
+    this.paging.limit =  20 / mickaEndpoints.length; // add 1 if odd
+
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
         (e) => {
@@ -98,6 +95,7 @@ export class HsDataCatalogueService {
             return;
           }
           if (this.data.filterByExtent) {
+            this.resetList();
             this.queryCatalogs();
           }
         },
@@ -109,6 +107,7 @@ export class HsDataCatalogueService {
 
     this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
+        this.resetList();
         this.queryCatalogs();
         this.hsMickaFilterService.fillCodesets();
       }
@@ -124,15 +123,25 @@ export class HsDataCatalogueService {
    * @function queryCatalogs
    * @description Queries all configured catalogs for datasources (layers)
    */
-  queryCatalogs(): void {
+  queryCatalogs(preserveLayers?: boolean): void {
+    if (preserveLayers === undefined || !preserveLayers) {
+      this.catalogEntries.length = 0;
+      this.paging.start = 0;
+      this.paging.matched = 0;
+    }
+
     this.HsMapService.loaded().then(() => {
       this.layersLoading = true;
       this.HsDataCatalogueMapService.clearExtentLayer();
       const promises = [];
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-        if (endpoint.datasourcePaging) {
-          endpoint.datasourcePaging.start = 0;
-        }
+        endpoint.datasourcePaging = {...this.paging}
+        console.log(
+          'query',
+          this.paging.matched,
+          endpoint.datasourcePaging.matched,
+          endpoint.title
+        )
         const promise = this.queryCatalog(endpoint);
         promises.push(promise);
       }
@@ -146,42 +155,77 @@ export class HsDataCatalogueService {
   }
 
   createLayerList(): void {
-    this.catalogEntries.length = 0;
+    this.paging.matched = 0;
 
     for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-      if (endpoint.layers) {
-        endpoint.layers.forEach((layer) => {
-          layer.endpoint = endpoint; //add endpoint to interface
-          this.catalogEntries.push(layer);
-        });
-      }
-      if (endpoint.datasourcePaging) {
-        if (this.paging.matched == 0) {
-          this.paging.matched = endpoint.datasourcePaging.matched;
-        } else {
-          this.paging.matched += endpoint.datasourcePaging.matched;
+      if (endpoint.type != 'statusmanager') {
+        console.log(
+          this.paging.matched,
+          endpoint.datasourcePaging.matched,
+          endpoint.title,
+          endpoint.layers
+        )
+        if (endpoint.layers) {
+          endpoint.layers.forEach((layer) => {
+            layer.endpoint = endpoint; //add endpoint to interface
+            this.catalogEntries.push(layer);
+          });
+        }
+        if (endpoint.datasourcePaging) {
+          if (this.paging.matched == 0) {
+            this.paging.matched = endpoint.datasourcePaging.matched;
+          } else {
+            this.paging.matched = this.paging.matched + endpoint.datasourcePaging.matched;
+          }
         }
       }
     }
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
     console.log(this);
+    this.checkIfPageIsFull();
   }
 
-  getNextRecords(): void {
-    // paging: pagination = {
-    //   start: 0,
-    //   limit: 20,
-    //   loaded: false,
-    //   matched: 0,
-    //   next: 20,
-    // };
-    // itemsPerPage = 20;
-    if (this.paging.next <= this.catalogEntries.length - this.itemsPerPage) {
-      this.paging.start =
-        Math.floor(this.paging.next / this.itemsPerPage) * this.itemsPerPage;
-      this.paging.next += this.itemsPerPage;
+  checkIfPageIsFull(): void {
+    let boundByLimit: boolean;
+    if (this.catalogEntries.length < this.paging.matched) {
+      boundByLimit = true;
     }
+    if (this.catalogEntries.length < this.listNext && boundByLimit) {
+      this.paging.start += this.paging.limit;
+      this.queryCatalogs(true);
+    }
+  }
+
+  getNextRecords(){
+    this.listStart += this.itemsPerPage;
+    this.listNext += this.itemsPerPage;
+    if (
+      this.listNext > this.catalogEntries.length &&
+      this.catalogEntries.length < this.paging.matched
+    ) {
+      this.paging.start += this.paging.limit;
+      this.queryCatalogs(true);
+    }
+    if (this.listNext > this.paging.matched) {
+      this.listNext = this.paging.matched;
+    }
+  }
+
+  getPreviousRecords(): void {
+    if (this.listStart - this.itemsPerPage < 0) {
+      this.listStart = 0;
+      this.listNext = this.itemsPerPage;
+    } else {
+      this.listStart -= this.itemsPerPage;
+      this.listNext = this.listStart + this.itemsPerPage;
+    }
+  }
+
+  resetList(){
+    this.catalogEntries.length = 0;
+    this.listStart = 0;
+    this.listNext = this.itemsPerPage;
   }
 
   /**
