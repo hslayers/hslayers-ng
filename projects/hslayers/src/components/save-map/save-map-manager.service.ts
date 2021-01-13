@@ -364,7 +364,7 @@ export class HsSaveMapManagerService {
       .calculateExtent(this.HsMapService.map.getSize());
     let pair1 = [b[0], b[1]];
     let pair2 = [b[2], b[3]];
-    const cur_proj = this.HsMapService.map.getView().getProjection().getCode();
+    const cur_proj = this.HsMapService.getCurrentProj().getCode();
     pair1 = transform(pair1, cur_proj, 'EPSG:4326');
     pair2 = transform(pair2, cur_proj, 'EPSG:4326');
     return {

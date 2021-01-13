@@ -311,9 +311,9 @@ export class HsQueryWmsService {
         viewResolution,
         source.getProjection()
           ? source.getProjection()
-          : map.getView().getProjection(),
+          : this.HsMapService.getCurrentProj(),
         {
-          'INFO_FORMAT': source.getParams().INFO_FORMAT,
+          INFO_FORMAT: source.getParams().INFO_FORMAT,
         }
       );
       if (

@@ -267,7 +267,7 @@ export class HsMeasureService {
   formatLength(line: LineString): measurement {
     let length = 0;
     const coordinates = line.getCoordinates();
-    const sourceProj = this.map.getView().getProjection();
+    const sourceProj = this.HsMapService.getCurrentProj();
 
     for (let i = 0; i < coordinates.length - 1; ++i) {
       const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
@@ -300,7 +300,7 @@ export class HsMeasureService {
    * @description Compute and format polygon area with correct units (m2/km2)
    */
   formatArea(polygon: Polygon): measurement {
-    //const sourceProj = this.map.getView().getProjection();
+    //const sourceProj = this.getCurrentProj();
     const area = Math.abs(getArea(polygon));
     const output = {
       size: area,

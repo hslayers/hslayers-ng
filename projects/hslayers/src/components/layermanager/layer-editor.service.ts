@@ -165,7 +165,7 @@ export class HsLayerEditorService {
     return transformExtent(
       extent,
       'EPSG:4326',
-      this.HsMapService.map.getView().getProjection()
+      this.HsMapService.getCurrentProj()
     );
   }
 
@@ -189,16 +189,9 @@ export class HsLayerEditorService {
           const b = bbox[ix].extent;
           let first_pair = [b[0], b[1]];
           let second_pair = [b[2], b[3]];
-          first_pair = transform(
-            first_pair,
-            crs,
-            this.HsMapService.map.getView().getProjection()
-          );
-          second_pair = transform(
-            second_pair,
-            crs,
-            this.HsMapService.map.getView().getProjection()
-          );
+          const currentProj = this.HsMapService.getCurrentProj();
+          first_pair = transform(first_pair, crs, currentProj);
+          second_pair = transform(second_pair, crs, currentProj);
           extent = [
             first_pair[0],
             first_pair[1],

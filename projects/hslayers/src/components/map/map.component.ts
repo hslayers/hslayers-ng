@@ -85,7 +85,7 @@ export class HsMapComponent implements AfterViewInit {
     if (!center) {
       return;
     }
-    const toProj = this.HsMapService.map.getView().getProjection();
+    const toProj = this.HsMapService.getCurrentProj();
     const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
     this.HsMapService.moveToAndZoom(
       transformed[0],

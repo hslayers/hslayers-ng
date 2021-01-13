@@ -143,7 +143,7 @@ export class HsAddLayersVectorService {
 
     let mapProjection;
     if (this.HsMapService.map) {
-      mapProjection = this.HsMapService.map.getView().getProjection().getCode();
+      mapProjection = this.HsMapService.getCurrentProj().getCode();
     }
 
     const descriptor = new VectorLayerDescriptor(
@@ -274,7 +274,7 @@ export class HsAddLayersVectorService {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
     const projection = format.readProjection(json);
-    const mapProjection = this.HsMapService.map.getView().getProjection();
+    const mapProjection = this.HsMapService.getCurrentProj();
     if (projection != mapProjection) {
       features.forEach((f) =>
         //TODO: Make it parallel using workers or some library

@@ -18,7 +18,7 @@ export class HsQueryWmtsService {
 
     coordinate = transform(
       coordinate,
-      this.HsMapService.map.getView().getProjection(),
+      this.HsMapService.getCurrentProj(),
       source.getProjection()
     );
 

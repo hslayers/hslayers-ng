@@ -322,7 +322,7 @@ export class HsQueryBaseService {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
-      this.map.getView().getProjection(),
+      this.HsMapService.getCurrentProj(),
       'EPSG:4326'
     );
     const coords = {
@@ -331,16 +331,16 @@ export class HsQueryBaseService {
       epsg4326Coordinate,
       projections: [
         {
-          'name': 'EPSG:4326',
-          'value': toStringHDMS(epsg4326Coordinate),
+          name: 'EPSG:4326',
+          value: toStringHDMS(epsg4326Coordinate),
         },
         {
-          'name': 'EPSG:4326',
-          'value': createStringXY(7)(epsg4326Coordinate),
+          name: 'EPSG:4326',
+          value: createStringXY(7)(epsg4326Coordinate),
         },
         {
-          'name': this.map.getView().getProjection().getCode(),
-          'value': createStringXY(7)(coordinate),
+          name: this.HsMapService.getCurrentProj().getCode(),
+          value: createStringXY(7)(coordinate),
         },
       ],
     };

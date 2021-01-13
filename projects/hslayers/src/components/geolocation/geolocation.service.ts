@@ -271,7 +271,7 @@ export class HsGeolocationService {
    */
   init(map: any): void {
     this.geolocation = new Geolocation({
-      projection: map.getView().getProjection(),
+      projection: this.HsMapService.getCurrentProj(),
       trackingOptions: {
         enableHighAccuracy: true,
       },
