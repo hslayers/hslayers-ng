@@ -12,7 +12,7 @@ export class HsDataService {
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
   ) {}
 
   addLayer(layer: BaseLayer, underLayer?: BaseLayer) {

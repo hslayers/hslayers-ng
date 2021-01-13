@@ -120,7 +120,7 @@ export class HsMickaBrowserService {
           query.sortby !== undefined && query.sortby != ''
             ? query.sortby
             : 'title',
-        limit: dataset.paging.itemsPerPage,
+        limit: dataset.datasourcePaging.limit,
         start: dataset.datasourcePaging.start,
       });
     return this.hsUtilsService.proxify(url);
@@ -144,6 +144,11 @@ export class HsMickaBrowserService {
       dataset.datasourcePaging.matched == 0;
     } else {
       dataset.datasourcePaging.matched = data.matched;
+      console.log(
+        'datarecieved',
+        dataset.datasourcePaging.matched,
+        dataset.title
+      )
       dataset.datasourcePaging.next = data.next;
       for (const lyr of data.records) {
         dataset.layers.push(lyr);
@@ -152,6 +157,7 @@ export class HsMickaBrowserService {
           data.extentFeatureCreated(extentFeature);
         }
       }
+      console.log('ending')
     }
   }
 

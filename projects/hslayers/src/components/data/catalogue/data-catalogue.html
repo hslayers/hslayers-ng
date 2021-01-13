@@ -1,8 +1,8 @@
 <div class="card hs-main-panel">
     <div class="m-3 pl-1 d-flex justify-content-between">
         <div class="input-group w-50">
-            <input type="text" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search"
-                [(ngModel)]="data.query.title" (ngModelChange)="queryCatalogs()">
+            <input type="search" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search"
+                [(ngModel)]="data.query.title" (ngModelChange)="filterByTitle()">
             <div class="input-group-append">
                 <button type="button" class=" btn pl-2 pr-2 "
                     [ngClass]="data.filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
@@ -15,9 +15,9 @@
             </div>
         </div>
 
-        <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
-            Login to catalogue</button>
-            <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
+        <!-- <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
+            Login to catalogue</button> -->
+        <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
     <div class="tab-content">
         <div class="card">
@@ -27,27 +27,38 @@
                     </div>
                      -->
                 <ul class="list-group">
-                    <li [hidden]='!HsDataCatalogueService.layersLoading' class='list-group-item'>
-                        Loading data</li>
+                    <li class='list-group-item text-primary text-center' [hidden]="!HsDataCatalogueService.layersLoading"><img class="pr-2"
+                        [src]="loaderImage" />Loading data</li>
                     <li [hidden]='HsDataCatalogueService.catalogEntries.length > 0 || HsDataCatalogueService.layersLoading'
                         class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li *ngFor='let layer of HsDataCatalogueService.catalogEntries | slice:HsDataCatalogueService.paging.start:20' class="clearfix"
-                        [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                    <li *ngFor='let layer of HsDataCatalogueService.catalogEntries | slice:HsDataCatalogueService.listStart:HsDataCatalogueService.listNext'
+                        class="clearfix" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                         <hs-data-list-item [layer]="layer"></hs-data-list-item>
                     </li>
                 </ul>
             </div>
-            <div class="card-footer"
-                    [hidden]="HsDataCatalogueService.paging.matched==0">
-                    <nav>
-                        <li class="page-item"><span
-                            class="page-link">
-                            {{'COMMON.results' | translate}} {{HsDataCatalogueService.paging.start+ 1}} -
-                            {{HsDataCatalogueService.paging.matched}}
-                        </span></li>
-                    </nav>
-                </div>
+    
+            <div class="card-footer" *ngIf="HsDataCatalogueService.paging.matched != 0">
+                <ul class="pagination d-flex justify-content-center">
+                    <li class="page-item" [ngClass]="{'disabled': HsDataCatalogueService.listStart == 0 }">
+                        <a href="#" class="page-link" (click)="getPreviousRecords()"><span
+                           aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li class="page-item" *ngIf="resultsVisible() && HsDataCatalogueService.listNext != HsDataCatalogueService.paging.matched"><span class="page-link">
+                            {{'COMMON.results' | translate}}
+                            {{HsDataCatalogueService.listStart + 1}} -
+                            {{HsDataCatalogueService.listNext}}</span></li>
+                    <li class="page-item" *ngIf="resultsVisible() && HsDataCatalogueService.listNext == HsDataCatalogueService.paging.matched"><span class="page-link">
+                            {{'COMMON.results' | translate}}
+                            {{HsDataCatalogueService.listStart + 1}} -
+                            {{HsDataCatalogueService.paging.matched}}</span></li>
+                    <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }">
+                        <a href="#" class="page-link" (click)="getNextRecords()"><span
+                                aria-hidden="true">&raquo;</span></a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
