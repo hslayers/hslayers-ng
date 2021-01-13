@@ -297,20 +297,18 @@ export class HsAddLayersWfsService {
 
   readFeatures(doc) {
     let features;
+    const currentProj = this.HsMapService.getCurrentProj();
     if (this.output_format == 'GML3') {
       const gml = new GML3();
       features = gml.readFeatures(doc, {
         dataProjection: this.srs,
-        featureProjection: this.HsMapService.map.getView().getProjection(),
+        featureProjection: currentProj,
       });
     } else {
       const wfs = new WFS();
       features = wfs.readFeatures(doc, {
         dataProjection: this.srs,
-        featureProjection:
-          this.HsMapService.map.getView().getProjection().getCode() == this.srs
-            ? ''
-            : this.HsMapService.map.getView().getProjection(),
+        featureProjection: currentProj.getCode() == this.srs ? '' : currentProj,
       });
     }
     return features;

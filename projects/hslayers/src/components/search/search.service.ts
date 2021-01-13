@@ -187,7 +187,7 @@ export class HsSearchService {
     this.HsEventBusService.searchZoomTo.next({
       coordinate: transform(
         coordinate,
-        this.HsMapService.map.getView().getProjection(),
+        this.HsMapService.getCurrentProj(),
         'EPSG:4326'
       ),
       zoom: zoomLevel,
@@ -202,6 +202,7 @@ export class HsSearchService {
    * @description Parse coordinate of selected result
    */
   getResultCoordinate(result: any): any {
+    const currentProj = this.HsMapService.getCurrentProj();
     if (
       result.provider_name.indexOf('geonames') > -1 ||
       result.provider_name == 'searchFunctionsearchProvider'
@@ -209,7 +210,7 @@ export class HsSearchService {
       return transform(
         [parseFloat(result.lng), parseFloat(result.lat)],
         'EPSG:4326',
-        this.HsMapService.map.getView().getProjection()
+        currentProj
       );
     } else if (result.provider_name == 'sdi4apps_openapi') {
       const g_feature = this.formatWKT.readFeature(
@@ -217,7 +218,7 @@ export class HsSearchService {
       );
       return g_feature
         .getGeometry()
-        .transform('EPSG:4326', this.HsMapService.map.getView().getProjection())
+        .transform('EPSG:4326', currentProj)
         .getCoordinates();
     }
   }

@@ -198,7 +198,7 @@ export class HsTripPlannerService {
         this.removeRoutesForWaypoint(wp);
         const new_cords = transform(
           wp.feature.getGeometry().getCoordinates(),
-          this.HsMapService.map.getView().getProjection().getCode(),
+          this.HsMapService.getCurrentProj().getCode(),
           'EPSG:4326'
         );
         wp.lon = new_cords[0];

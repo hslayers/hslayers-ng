@@ -139,16 +139,9 @@ export class HsDatasourcesMapService {
     }
     let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
     let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
+    const currentProj = this.hsMapService.getCurrentProj();
+    first_pair = transform(first_pair, 'EPSG:4326', currentProj);
+    second_pair = transform(second_pair, 'EPSG:4326', currentProj);
     if (
       isNaN(first_pair[0]) ||
       isNaN(first_pair[1]) ||

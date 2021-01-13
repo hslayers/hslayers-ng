@@ -54,11 +54,13 @@ export class HsCompositionsParserService {
    * @name HsCompositionsParserService#load
    * @public
    * @param {string} url Url of selected composition
-   * @param {boolean} overwrite Whether overwrite current composition in map - remove all layers from maps which originate from composition (if not pasted, it counts as "true")
+   * @param {boolean} overwrite Whether overwrite current composition in map -
+   * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param {Function} callback Optional function which should be called when composition is successfully loaded
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
    * @returns {Promise}
-   * @description Load selected composition from server, parse it and add layers to map. Optionally (based on app config) may open layer manager panel
+   * @description Load selected composition from server, parse it and add layers to map.
+   * Optionally (based on app config) may open layer manager panel
    */
   async loadUrl(
     url: string,
@@ -115,17 +117,17 @@ export class HsCompositionsParserService {
     res = res.ViewContext;
     //console.log(res);
     const compositionJSON: any = {
-      'current_base_layer': {
-        'title': 'Composite_base_layer',
+      current_base_layer: {
+        title: 'Composite_base_layer',
       },
-      'extent': [
+      extent: [
         parseFloat(res.General.BoundingBox._attributes['maxx']),
         parseFloat(res.General.BoundingBox._attributes['maxy']),
         parseFloat(res.General.BoundingBox._attributes['minx']),
         parseFloat(res.General.BoundingBox._attributes['miny']),
       ],
       layers: [],
-      'units': res.LayerList.Layer[0].Extension['ol:units']._text,
+      units: res.LayerList.Layer[0].Extension['ol:units']._text,
       scale: 1,
       id: res._attributes.id,
     };
@@ -145,29 +147,29 @@ export class HsCompositionsParserService {
 
     for (const layer of res.LayerList.Layer) {
       const layerToAdd = {
-        'className': 'HSLayers.Layer.WMS',
-        'dimensions': {},
-        'legends': [''],
-        'maxResolution': null,
-        'metadata': {},
-        'minResolution': 0,
-        'opacity': layer.Extension['ol:opacity']
+        className: 'HSLayers.Layer.WMS',
+        dimensions: {},
+        legends: [''],
+        maxResolution: null,
+        metadata: {},
+        minResolution: 0,
+        opacity: layer.Extension['ol:opacity']
           ? parseFloat(layer.Extension['ol:opacity']._text)
           : 1,
-        'show_in_manager': layer.Extension['ol:displayInLayerSwitcher']._text,
-        'params': {
-          'FORMAT': 'image/png',
+        show_in_manager: layer.Extension['ol:displayInLayerSwitcher']._text,
+        params: {
+          FORMAT: 'image/png',
 
-          'INFO_FORMAT': 'text/html',
-          'LAYERS': layer.Name._text,
-          'VERSION': layer.Server._attributes.version,
+          INFO_FORMAT: 'text/html',
+          LAYERS: layer.Name._text,
+          VERSION: layer.Server._attributes.version,
         },
-        'ratio': 1.5,
-        'singleTile': true,
-        'title': layer.Extension['hsl:layer_title']._text,
-        'url': layer.Server.OnlineResource._attributes['xlink:href'],
-        'visibility': true,
-        'wmsMaxScale': 0,
+        ratio: 1.5,
+        singleTile: true,
+        title: layer.Extension['hsl:layer_title']._text,
+        url: layer.Server.OnlineResource._attributes['xlink:href'],
+        visibility: true,
+        wmsMaxScale: 0,
       };
       compositionJSON.layers.push(layerToAdd);
     }
@@ -290,16 +292,9 @@ export class HsCompositionsParserService {
     }
     let first_pair = [parseFloat(boundArray[0]), parseFloat(boundArray[1])];
     let second_pair = [parseFloat(boundArray[2]), parseFloat(boundArray[3])];
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.HsMapService.map.getView().getProjection()
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.HsMapService.map.getView().getProjection()
-    );
+    const currentProj = this.HsMapService.getCurrentProj();
+    first_pair = transform(first_pair, 'EPSG:4326', currentProj);
+    second_pair = transform(second_pair, 'EPSG:4326', currentProj);
     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
   }
 

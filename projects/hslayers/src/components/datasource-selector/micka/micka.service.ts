@@ -47,7 +47,7 @@ export class HsMickaBrowserService {
       this.hsMapService.map
         .getView()
         .calculateExtent(this.hsMapService.map.getSize()),
-      this.hsMapService.map.getView().getProjection(),
+      this.hsMapService.getCurrentProj(),
       'EPSG:4326'
     );
     const bbox = this.hsMickaFilterService.filterByExtent
@@ -198,16 +198,9 @@ export class HsMickaBrowserService {
       .getView()
       .getProjection()
       .getExtent();
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.hsMapService.map.getView().getProjection()
-    );
+    const currentProj = this.hsMapService.getCurrentProj();
+    first_pair = transform(first_pair, 'EPSG:4326', currentProj);
+    second_pair = transform(second_pair, 'EPSG:4326', currentProj);
     if (!isFinite(first_pair[0])) {
       first_pair[0] = mapProjectionExtent[0];
     }

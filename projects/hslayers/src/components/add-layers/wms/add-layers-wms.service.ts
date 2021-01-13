@@ -98,9 +98,9 @@ export class HsAddLayersWmsService {
         )
       ) {
         this.data.srs = this.data.srss.includes(
-          this.hsMapService.map.getView().getProjection().getCode()
+          this.hsMapService.getCurrentProj().getCode()
         )
-          ? this.hsMapService.map.getView().getProjection().getCode()
+          ? this.hsMapService.getCurrentProj().getCode()
           : this.hsMapService.map
               .getView()
               .getProjection()
@@ -468,7 +468,7 @@ export class HsAddLayersWmsService {
       const extent = transformExtent(
         this.data.extent,
         'EPSG:4326',
-        this.hsMapService.map.getView().getProjection()
+        this.hsMapService.getCurrentProj()
       );
       if (extent) {
         this.hsMapService.map

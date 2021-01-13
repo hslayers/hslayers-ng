@@ -46,7 +46,7 @@ export class HsLayerSynchronizerService {
     this.HsCommonLaymanService.authChange.subscribe((_) => {
       this.reloadLayersOnAuthChange();
     });
-    this.crs = map.getView().getProjection().getCode();
+    this.crs = this.HsMapService.getCurrentProj().getCode();
     this.HsLaymanService.crs = this.crs;
   }
 

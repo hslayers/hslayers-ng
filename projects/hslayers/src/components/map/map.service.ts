@@ -789,7 +789,7 @@ export class HsMapService {
   getMapExtentInEpsg4326() {
     const bbox = transformExtent(
       this.getMapExtent(),
-      this.map.getView().getProjection(),
+      this.getCurrentProj(),
       'EPSG:4326'
     );
     return bbox;

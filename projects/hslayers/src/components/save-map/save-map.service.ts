@@ -82,13 +82,14 @@ export class HsSaveMapService {
     };
 
     // Map properties
-    json.scale = map.getView().getProjection().getMetersPerUnit();
-    json.projection = map.getView().getProjection().getCode().toLowerCase();
+    const currentProj = this.HsMapService.getCurrentProj();
+    json.scale = currentProj.getMetersPerUnit();
+    json.projection = currentProj.getCode().toLowerCase();
     const center = map.getView().getCenter();
     if (center) {
       json.center = [center[0], center[1]];
     }
-    json.units = map.getView().getProjection().getUnits();
+    json.units = currentProj.getUnits();
 
     if (map.maxExtent) {
       json.maxExtent = {};

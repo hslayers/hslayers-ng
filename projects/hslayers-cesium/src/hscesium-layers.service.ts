@@ -232,7 +232,7 @@ export class HsCesiumLayersService {
 
   currentMapProjCode() {
     if (this.HsMapService.map) {
-      return this.HsMapService.map.getView().getProjection().getCode();
+      return this.HsMapService.getCurrentProj().getCode();
     } else {
       this.HsConfig.default_view.getProjection().getCode();
     }
