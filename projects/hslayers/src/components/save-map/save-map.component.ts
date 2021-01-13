@@ -42,7 +42,7 @@ export class HsSaveMapComponent {
           this.HsSaveMapManagerService.selectEndpoint(value[0]);
         }
         if (this.endpoint && this.endpoint.type == 'layman') {
-          this.HsCommonLaymanService.getCurrentUser(this.endpoint);
+          this.HsCommonLaymanService.detectAuthChange(this.endpoint);
         }
       }
     });

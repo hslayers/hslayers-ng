@@ -40,6 +40,11 @@ export class HsLaymanCurrentUserComponent {
     return this.endpoint.url + '/authn/oauth2-liferay/login';
   }
 
+  /**
+   * @description Periodically poll layman client endpoint for auth change.
+   * This is used for hiding login iframe and toggling state for login buttons,
+   * which is done in separate modules by subscribing to HsCommonLaymanService.authChange
+   */
   monitorUser(): void {
     if (this.getCurrentUserTimer) {
       clearTimeout(this.getCurrentUserTimer);
@@ -47,7 +52,7 @@ export class HsLaymanCurrentUserComponent {
     this.monitorTries = 0;
     this.timerInterval = this.DEFAULT_TIMER_INTERVAL;
     const poll = () => {
-      this.HsCommonLaymanService.getCurrentUser(this.endpoint).then(
+      this.HsCommonLaymanService.detectAuthChange(this.endpoint).then(
         (somethingChanged) => {
           if (somethingChanged && this.getCurrentUserTimer) {
             clearTimeout(this.getCurrentUserTimer);
