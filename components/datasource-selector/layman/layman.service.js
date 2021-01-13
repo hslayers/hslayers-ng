@@ -108,7 +108,7 @@ export default function ($http, $q, HsUtilsService) {
         me.fillLayerMetadata(ds, layer).then(() => {
           resolve({
             type: layer.type,
-            link: layer.wms.url,
+            link: layer.wms.url.replace('geoserver','client/geoserver'),
             layer: layer.name,
             name: layer.name,
             title: layer.title,

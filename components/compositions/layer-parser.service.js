@@ -17,12 +17,14 @@ import {Tile} from 'ol/layer';
  * @param HsAddLayersVectorService
  * @param HsWmtsGetCapabilitiesService
  * @param HsUtilsService
+ * @param $location
  */
 export default function (
   HsMapService,
   HsAddLayersVectorService,
   HsWmtsGetCapabilitiesService,
-  HsUtilsService
+  HsUtilsService,
+  $location
 ) {
   'ngInject';
   const me = {
@@ -46,8 +48,12 @@ export default function (
           legends.push(decodeURIComponent(lyr_def.legends[idx_leg]));
         }
       }
+      let url = decodeURIComponent(lyr_def.url);
+      if (url.includes($location.host() + '/geoserver')) {
+        url = url.replace('geoserver', 'client/geoserver');
+      }
       const source = new source_class({
-        url: decodeURIComponent(lyr_def.url),
+        url: url,
         attributions: lyr_def.attribution
           ? [
               new Attribution({

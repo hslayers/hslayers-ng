@@ -94,6 +94,11 @@ export default function (
       const defaultViewElement = HsLayoutService.contentWrapper.querySelector(
         '.hs-defaultView'
       );
+        console.log(      HsMapService.map
+          .getView()
+          .getProjection()
+          .getCode())
+
       $compile(defaultViewElement, $scope);
     },
   });

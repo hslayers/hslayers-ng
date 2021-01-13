@@ -172,7 +172,15 @@ export default function (
       const layerName = me.getLayerName(layer);
       let layerTitle = layer.get('title');
       const f = new GeoJSON();
+
+      // if (!['EPSG:4326', 'EPSG:3857'].includes(me.crs)) {
+      //   const features = layer.getSource().getFeatures();
+      //   features.forEach((feature) => {
+      //     feature.getGeometry().transform(me.crs, 'EPSG:3857');
+      //   });
+      // }
       const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
@@ -183,7 +191,9 @@ export default function (
           me.pushVectorSource(ds, geojson, {
             title: layerTitle,
             name: layerName,
-            crs: me.crs,
+            crs: ['EPSG:4326', 'EPSG:3857'].includes(me.crs)
+              ? me.crs
+              : 'EPSG:3857',
           }).then((response) => {
             $timeout(() => {
               me.pullVectorSource(ds, layerName, layer).then((response) => {
@@ -231,6 +241,11 @@ export default function (
             if (layerDesc && layerDesc.name) {
               this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
               try {
+                const srs = HsMapService.map
+                  .getView()
+                  .getProjection()
+                  .getCode();
+
                 const wfsFormat = new WFS();
                 const serializedFeature = wfsFormat.writeTransaction(
                   featuresToAdd,
@@ -240,15 +255,14 @@ export default function (
                     featureNS: 'http://' + endpoint.user,
                     featurePrefix: endpoint.user,
                     featureType: name,
-                    srsName: HsMapService.map
-                      .getView()
-                      .getProjection()
-                      .getCode(),
+                    srsName: srs,
                   }
                 );
 
                 $http({
-                  url: layerDesc.wfs.url + '?request=Transaction',
+                  url:
+                    layerDesc.wfs.url.replace('geoserver', 'client/geoserver') +
+                    '?request=Transaction',
                   method: 'POST',
                   data: serializedFeature.outerHTML
                     .replaceAll('<geometry>', '<wkb_geometry>')
@@ -328,7 +342,7 @@ export default function (
                           version 2.0.0. Currently only 3.1.1 is possible */
             $http({
               url:
-                descr.wfs.url +
+                descr.wfs.url.replace('geoserver', 'client/geoserver') +
                 '?' +
                 HsUtilsService.paramsToURL({
                   service: 'wfs',

@@ -18,6 +18,7 @@ import {getPreferedFormat} from '../../../common/format-utils';
  * @param HsLayoutService
  * @param HsUtilsService
  * @param HsConfig
+ * @param $location
  */
 export default function (
   $rootScope,
@@ -27,7 +28,8 @@ export default function (
   $timeout,
   HsLayoutService,
   HsUtilsService,
-  HsConfig
+  HsConfig,
+  $location
 ) {
   'ngInject';
   const me = this;
@@ -119,6 +121,12 @@ export default function (
       me.data.getMapUrl = removePortIfProxified(
         caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
       );
+      if (me.data.getMapUrl.includes($location.host() + '/geoserver')) {
+        me.data.getMapUrl = me.data.getMapUrl.replace(
+          'geoserver',
+          'client/geoserver'
+        );
+      }
       me.data.image_format = getPreferedFormat(me.data.image_formats, [
         'image/png; mode=8bit',
         'image/png',
@@ -194,19 +202,33 @@ export default function (
   function selectLayerByName(layerToSelect) {
     if (layerToSelect) {
       me.data.services.forEach((service) => {
-        service.Layer.forEach((layer) => {
-          if (layer.Name == layerToSelect) {
-            layer.checked = true;
-            me.checkboxChange(layer);
+        if (service.Layer) {
+          service.Layer.forEach((layer) => {
+            if (layer.Name == layerToSelect) {
+              layer.checked = true;
+              me.checkboxChange(layer);
+            }
+            $timeout(() => {
+              const id = `#hs-add-layer-${layer.Name}`;
+              const el = HsLayoutService.contentWrapper.querySelector(id);
+              if (el) {
+                el.scrollIntoView();
+              }
+            }, 1000);
+          });
+        } else {
+          if (service.Name == layerToSelect) {
+            service.checked = true;
+            me.checkboxChange(service);
           }
           $timeout(() => {
-            const id = `#hs-add-layer-${layer.Name}`;
+            const id = `#hs-add-layer-${service.Name}`;
             const el = HsLayoutService.contentWrapper.querySelector(id);
             if (el) {
               el.scrollIntoView();
             }
           }, 1000);
-        });
+        }
       });
     }
   }
@@ -375,7 +397,12 @@ export default function (
 
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {
-      legends.push(layer.Style[0].LegendURL[0].OnlineResource);
+      let legend = layer.Style[0].LegendURL[0].OnlineResource;
+      if (legend.includes($location.host() + '/geoserver')) {
+        legend = legend.replace('geoserver', 'client/geoserver');
+
+        legends.push(legend);
+      }
     }
     let styles = undefined;
     if (layer.styleSelected) {
