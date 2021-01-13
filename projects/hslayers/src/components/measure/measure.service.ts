@@ -13,6 +13,18 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 
+type Measurement = {
+  size: number;
+  type: string;
+  unit: string;
+};
+
+/**
+ * @param $rootScope
+ * @param HsMapService
+ * @param HsUtilsService
+ * @param $timeout
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -155,7 +167,7 @@ export class HsMeasureService {
    */
   mouseMoveHandler(evt): void {
     if (this.sketches.length > 0) {
-      let output: measurement;
+      let output: Measurement;
 
       for (const sketch of this.sketches) {
         const geom = sketch.getGeometry();
@@ -176,12 +188,12 @@ export class HsMeasureService {
    * @memberof HsMeasureService
    * @function addMultiple
    * @private
-   * @param {measurement} val1 Output of new object
-   * @param {measurement} val2 Old value
-   * @returns {measurement}
+   * @param {Measurement} val1 Output of new object
+   * @param {Measurement} val2 Old value
+   * @returns {Measurement}
    * @description Adds two measure results for multiple shape mode to display joined result
    */
-  addMultiple(val1: measurement, val2: measurement): measurement {
+  addMultiple(val1: Measurement, val2: Measurement): Measurement {
     if (val2 == undefined) {
       return val1;
     }
@@ -261,10 +273,10 @@ export class HsMeasureService {
    * @function formatLength
    * @private
    * @param {LineString} line
-   * @returns {measurement} numeric length of line with used units
+   * @returns {Measurement} numeric length of line with used units
    * @description Compute and format line length with correct units (m/km)
    */
-  formatLength(line: LineString): measurement {
+  formatLength(line: LineString): Measurement {
     let length = 0;
     const coordinates = line.getCoordinates();
     const sourceProj = this.HsMapService.getCurrentProj();
@@ -299,8 +311,7 @@ export class HsMeasureService {
    * @returns {object} area of polygon with used units
    * @description Compute and format polygon area with correct units (m2/km2)
    */
-  formatArea(polygon: Polygon): measurement {
-    //const sourceProj = this.getCurrentProj();
+  formatArea(polygon: Polygon): Measurement {
     const area = Math.abs(getArea(polygon));
     const output = {
       size: area,
@@ -317,9 +328,3 @@ export class HsMeasureService {
     return output;
   }
 }
-
-type measurement = {
-  size: number;
-  type: string;
-  unit: string;
-};
