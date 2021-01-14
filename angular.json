@@ -24,7 +24,7 @@
             "tsConfig": "projects/hslayers-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./hslayers/assets" }
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" }
             ],
             "styles": [
               "node_modules/ol/ol.css"
@@ -138,7 +138,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/hslayers-cesium/src",
+      "sourceRoot": "projects/",
       "prefix": "app",
       "architect": {
         "build": {
@@ -152,7 +152,7 @@
             "aot": true,
             "assets": [
               { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },         
-              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./hslayers/assets" },
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium/Assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Widgets", "output": "./assets/cesium/Widgets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Workers", "output": "./assets/cesium/Workers" }
@@ -221,7 +221,7 @@
           "configurations": {
             "hmr": {
               "hmr": true,
-              "browserTarget": "hslayers-app:build:hmr"
+              "browserTarget": "hslayers-cesium-app:build:hmr"
             },
             "production": {
               "browserTarget": "hslayers-cesium-app:build:production"
