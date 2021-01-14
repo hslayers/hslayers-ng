@@ -350,6 +350,7 @@ export default function (
                   request: 'GetFeature',
                   typeNames: `${endpoint.user}:${descr.name}`,
                   r: Math.random(),
+                  srsName: HsMapService.map.getView().getProjection().getCode(),
                 }),
               method: 'GET',
             }).then(
