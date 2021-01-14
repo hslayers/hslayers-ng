@@ -26,7 +26,7 @@ import {HsConfig} from '../../../hslayers/src/config.service';
 
 @Component({
   selector: 'hslayers-app',
-  templateUrl: './app.component.html',
+  templateUrl: './hslayers-app.component.html',
   styleUrls: [],
 })
 export class HslayersAppComponent {
