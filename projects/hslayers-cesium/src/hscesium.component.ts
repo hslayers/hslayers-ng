@@ -12,7 +12,7 @@ import {
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',
 })
-export class HsCesiumComponent {
+export class HslayersCesiumComponent {
   visible = true;
   constructor(
     public HsCesiumService: HsCesiumService,

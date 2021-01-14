@@ -6,14 +6,14 @@ import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Component, ComponentFactoryResolver} from '@angular/core';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
-import {HsCesiumComponent} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
+import {HslayersCesiumComponent} from 'hslayers-cesium';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
 import {Vector} from 'ol/source';
 
 @Component({
-  selector: 'hs-app',
+  selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
 })
@@ -64,7 +64,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      HsCesiumComponent
+      HslayersCesiumComponent
     );
 
     this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
