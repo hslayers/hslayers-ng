@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {HsConfig} from './config.service';
 
 @Component({
-  selector: 'hs',
+  selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],
 })
