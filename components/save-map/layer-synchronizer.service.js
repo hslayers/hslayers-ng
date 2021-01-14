@@ -126,8 +126,8 @@ export default function (
      * @param {Ol.source} source Openlayers VectorSource to store features in
      */
     async pull(layer, source) {
-      console.log(layer)
-      console.log(source)
+      console.log(layer);
+      console.log;
       layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
       const laymanEndpoint = me.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {
@@ -148,6 +148,10 @@ export default function (
           featureString = featureString.replace(
             /urn:x-ogc:def:crs:EPSG:3857/gm,
             'EPSG:3857'
+          );
+          featureString = featureString.replaceAll(
+            'http://www.opengis.net/gml/srs/epsg.xml#5514',
+            'EPSG:5514'
           );
           try {
             const features = format.readFeatures(featureString);
