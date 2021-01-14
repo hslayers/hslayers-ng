@@ -18,15 +18,9 @@
       "dom"
     ],
     "paths": {
-      "hslayers-ng": [
-        "dist/hslayers/hslayers",
-        "dist/hslayers"
-      ],
-      "hslayers-cesium": [
-        "dist/hslayers-cesium/hslayers-cesium",
-        "dist/hslayers-cesium"
-      ],
-      "@angular/*": [ "node_modules/@angular/*" ]
+      "@angular/*": [ "node_modules/@angular/*" ],
+      "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
+      "hslayers-cesium": ["projects/hslayers-cesium/src/public-api.ts"]
     }
   },
   "angularCompilerOptions": {
