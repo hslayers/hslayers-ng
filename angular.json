@@ -24,9 +24,7 @@
             "tsConfig": "projects/hslayers-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
-              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
-              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" }
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./hslayers/assets" }
             ],
             "styles": [
               "node_modules/ol/ol.css"
@@ -153,8 +151,8 @@
             "tsConfig": "projects/hslayers-cesium-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },
-              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
+              { "glob": "**/*", "input": "projects/hslayers-cesium-app/src/assets", "output": "./assets" },         
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./hslayers/assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Assets", "output": "./assets/cesium/Assets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Widgets", "output": "./assets/cesium/Widgets" },
               { "glob": "**/*", "input": "./node_modules/cesium/Source/Workers", "output": "./assets/cesium/Workers" }
