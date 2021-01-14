@@ -1,5 +1,5 @@
-import {AppComponent} from './app.component';
 import {HsConfig} from '../../../hslayers/src/config.service';
+import {HslayersAppComponent} from './hslayers-app.component';
 import {TestBed, async} from '@angular/core/testing';
 class HsConfigMock {
   constructor() {}
@@ -7,25 +7,25 @@ class HsConfigMock {
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [HslayersAppComponent],
       providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
     }).compileComponents();
   }));
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(HslayersAppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
   it(`should have as title 'hslayers-workspace'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(HslayersAppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('hslayers-workspace');
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(HslayersAppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(

@@ -25,11 +25,11 @@ import SparqlJson from '../../../hslayers/src/common/layers/hs.source.SparqlJson
 import {HsConfig} from '../../../hslayers/src/config.service';
 
 @Component({
-  selector: 'hs-app',
+  selector: 'hslayers-app',
   templateUrl: './app.component.html',
   styleUrls: [],
 })
-export class AppComponent {
+export class HslayersAppComponent {
   constructor(public HsConfig: HsConfig) {
     const w: any = window;
     w.ol = {

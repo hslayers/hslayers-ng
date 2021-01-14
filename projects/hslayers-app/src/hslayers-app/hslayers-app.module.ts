@@ -1,13 +1,13 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {AppComponent} from './app.component';
+import {HslayersAppComponent} from './hslayers-app.component';
 import {HslayersModule} from '../../../hslayers/src/public-api';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [HslayersAppComponent],
   imports: [BrowserModule, HslayersModule],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [HslayersAppComponent],
 })
 export class AppModule {}
