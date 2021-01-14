@@ -25,7 +25,8 @@
       "hslayers-cesium": [
         "dist/hslayers-cesium/hslayers-cesium",
         "dist/hslayers-cesium"
-      ]
+      ],
+      "@angular/*": [ "node_modules/@angular/*" ]
     }
   },
   "angularCompilerOptions": {
