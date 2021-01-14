@@ -21,7 +21,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~9.1.13",
     "@angular/common": "^9.1.13",
     "@angular/compiler": "^9.1.13",
     "@angular/core": "^9.1.13",
@@ -29,7 +28,6 @@
     "@angular/localize": "^9.1.13",
     "@angular/platform-browser": "^9.1.13",
     "@angular/platform-browser-dynamic": "^9.1.13",
-    "@angular/router": "~9.1.13",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
