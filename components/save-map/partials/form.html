@@ -24,28 +24,28 @@
             </label>
 
             <label class="form-group">
-                <translate>Read access rights</translate><div class="btn-group pl-3">
+                <translate>Read access rights</translate><div class="btn-group pl-5">
                      
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'EVERYONE'" 
                     ng-class="{'active':compoData.read == 'EVERYONE'}">
-                        Public
+                        <translate>Public</translate>
                     </button>
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'private'" 
                     ng-class="{'active':compoData.read == 'private'}">
-                        Private
+                    <translate>Private</translate> 
                     </button> 
                 </div>
             </label>
             <label class="form-group">
-                <translate>Write access rights</translate><div class="btn-group pl-3">
+                <translate>Write access rights</translate><div class="btn-group pl-5">
                      
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'EVERYONE'" 
                     ng-class="{'active':compoData.write == 'EVERYONE'}">
-                        Public
+                    <translate>Public</translate>
                     </button>
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'private'" 
                     ng-class="{'active':compoData.write == 'private'}">
-                        Private
+                    <translate>Private</translate> 
                     </button> 
                 </div>
             </label>
