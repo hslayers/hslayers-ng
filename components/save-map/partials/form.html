@@ -23,9 +23,9 @@
                 <input type="text" class="form-control" ng-model="compoData.keywords" />
             </label>
 
-            <label class="form-group">
+            <label class="form-group d-flex justify-content-around ">
                 <translate>Read access rights</translate>
-                <div class="btn-group pl-5">
+                <div class="btn-group">
             
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
                         ng-click="compoData.read = 'EVERYONE'" ng-class="{'active':compoData.read == 'EVERYONE'}" translate>
@@ -37,9 +37,9 @@
                     </button>
                 </div>
             </label>
-            <label class="form-group">
+            <label class="form-group d-flex justify-content-around">
                 <translate>Write access rights</translate>
-                <div class="btn-group pl-5">
+                <div class="btn-group">
             
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
                         ng-click="compoData.write = 'EVERYONE'" ng-class="{'active':compoData.write == 'EVERYONE'}" translate>
