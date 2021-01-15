@@ -27,7 +27,7 @@ export interface HsEndpoint {
     limit: number;
     next?;
     matched?;
-    loaded?: number;
+    loaded?: boolean;
   };
   paging?: {
     itemsPerPage: number;
