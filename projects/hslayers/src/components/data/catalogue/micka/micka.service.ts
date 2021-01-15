@@ -38,12 +38,12 @@ export class HsMickaBrowserService {
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-  async queryCatalog(
+   queryCatalog(
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
     textField: string
-  ): Promise<boolean> {
+  ) {
     const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
 
@@ -55,7 +55,7 @@ export class HsMickaBrowserService {
     //   delete dataset.httpCall;
     // }
 
-    dataset.httpCall = await this.http
+    dataset.httpCall = this.http
       .get(url, {
         //FIXME: dataset must be passed to datasetsReceived
         //timeout: dataset.canceler.promise,

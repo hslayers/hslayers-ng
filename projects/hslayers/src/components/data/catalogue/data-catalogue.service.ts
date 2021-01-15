@@ -85,8 +85,10 @@ export class HsDataCatalogueService {
       this.hsConfig.allowAddExternalDatasets = true;
     }
 
-    let mickaEndpoints = this.hsCommonEndpointsService.endpoints.filter(e=> e.type == 'micka')
-    this.paging.limit =  20 / mickaEndpoints.length; // add 1 if odd
+    const mickaEndpoints = this.hsCommonEndpointsService.endpoints.filter(
+      (e) => e.type == 'micka'
+    );
+    this.paging.limit = 20 / mickaEndpoints.length; // add 1 if odd
 
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
@@ -135,13 +137,13 @@ export class HsDataCatalogueService {
       this.HsDataCatalogueMapService.clearExtentLayer();
       const promises = [];
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-        endpoint.datasourcePaging = {...this.paging}
+        endpoint.datasourcePaging = {...this.paging};
         console.log(
           'query',
           this.paging.matched,
           endpoint.datasourcePaging.matched,
           endpoint.title
-        )
+        );
         const promise = this.queryCatalog(endpoint);
         promises.push(promise);
       }
@@ -164,10 +166,10 @@ export class HsDataCatalogueService {
           endpoint.datasourcePaging.matched,
           endpoint.title,
           endpoint.layers
-        )
+        );
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
-            layer.endpoint = endpoint; //add endpoint to interface
+            layer.endpoint = endpoint;
             this.catalogEntries.push(layer);
           });
         }
@@ -175,7 +177,8 @@ export class HsDataCatalogueService {
           if (this.paging.matched == 0) {
             this.paging.matched = endpoint.datasourcePaging.matched;
           } else {
-            this.paging.matched = this.paging.matched + endpoint.datasourcePaging.matched;
+            this.paging.matched =
+              this.paging.matched + endpoint.datasourcePaging.matched;
           }
         }
       }
@@ -197,7 +200,7 @@ export class HsDataCatalogueService {
     }
   }
 
-  getNextRecords(){
+  getNextRecords(): void {
     this.listStart += this.itemsPerPage;
     this.listNext += this.itemsPerPage;
     if (
@@ -222,7 +225,7 @@ export class HsDataCatalogueService {
     }
   }
 
-  resetList(){
+  resetList(): void {
     this.catalogEntries.length = 0;
     this.listStart = 0;
     this.listNext = this.itemsPerPage;
@@ -236,12 +239,12 @@ export class HsDataCatalogueService {
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-  async queryCatalog(catalog: HsEndpoint) {
+   queryCatalog(catalog: HsEndpoint) {
     this.HsDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
       case 'micka':
-        query = await this.hsMickaBrowserService.queryCatalog(
+        query =  this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data,
           (feature: Feature) =>
@@ -251,7 +254,7 @@ export class HsDataCatalogueService {
         return query;
       //FIX ME - await for laymanendpoint
       case 'layman':
-        query = await this.hsLaymanBrowserService.queryCatalog(catalog);
+        query =  this.hsLaymanBrowserService.queryCatalog(catalog);
         return query;
       default:
         break;

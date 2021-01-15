@@ -1,5 +1,5 @@
 import Feature from 'ol/Feature';
-import SparqlJson from '../../layers/hs.source.SparqlJson';
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
