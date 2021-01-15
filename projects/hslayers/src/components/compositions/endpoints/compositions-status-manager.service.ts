@@ -4,7 +4,6 @@ import {HsStatusManagerService} from '../../save-map/status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
