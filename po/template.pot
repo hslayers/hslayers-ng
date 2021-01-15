@@ -132,7 +132,7 @@ msgid "Additional information"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:20
-#: components/save-map/partials/form.html:123
+#: components/save-map/partials/form.html:125
 msgid "Address"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgstr ""
 msgid "Circle"
 msgstr ""
 
-#: components/save-map/partials/form.html:128
+#: components/save-map/partials/form.html:130
 msgid "City"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: components/save-map/partials/form.html:143
+#: components/save-map/partials/form.html:145
 msgid "Country"
 msgstr ""
 
@@ -475,7 +475,7 @@ msgstr ""
 msgid "Drawing to:"
 msgstr ""
 
-#: components/save-map/partials/form.html:153
+#: components/save-map/partials/form.html:155
 msgid "E-mail"
 msgstr ""
 
@@ -505,7 +505,7 @@ msgid "Extended search parameters for Micka"
 msgstr ""
 
 #: components/compositions/partials/dialog_info.html:24
-#: components/save-map/partials/form.html:54
+#: components/save-map/partials/form.html:56
 #: components/save-map/partials/panelmd.html:41
 #: components/save-map/partials/simpleform.html:37
 msgid "Extent"
@@ -932,7 +932,7 @@ msgstr ""
 msgid "Order by"
 msgstr ""
 
-#: components/save-map/partials/form.html:113
+#: components/save-map/partials/form.html:115
 msgid "Organization"
 msgstr ""
 
@@ -960,11 +960,11 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: components/save-map/partials/form.html:108
+#: components/save-map/partials/form.html:110
 msgid "Person"
 msgstr ""
 
-#: components/save-map/partials/form.html:148
+#: components/save-map/partials/form.html:150
 msgid "Phone"
 msgstr ""
 
@@ -992,11 +992,11 @@ msgstr ""
 msgid "Polygon features"
 msgstr ""
 
-#: components/save-map/partials/form.html:118
+#: components/save-map/partials/form.html:120
 msgid "Position"
 msgstr ""
 
-#: components/save-map/partials/form.html:138
+#: components/save-map/partials/form.html:140
 msgid "Postal code"
 msgstr ""
 
@@ -1022,12 +1022,12 @@ msgstr ""
 msgid "Print map"
 msgstr ""
 
-#: components/save-map/partials/form.html:35
+#: components/save-map/partials/form.html:34
 #: components/save-map/partials/form.html:48
 msgid "Private"
 msgstr ""
 
-#: components/save-map/partials/form.html:31
+#: components/save-map/partials/form.html:30
 #: components/save-map/partials/form.html:44
 msgid "Public"
 msgstr ""
@@ -1049,7 +1049,7 @@ msgstr ""
 msgid "Radius"
 msgstr ""
 
-#: components/save-map/partials/form.html:95
+#: components/save-map/partials/form.html:97
 msgid "Read"
 msgstr ""
 
@@ -1356,7 +1356,7 @@ msgstr ""
 msgid "Star"
 msgstr ""
 
-#: components/save-map/partials/form.html:133
+#: components/save-map/partials/form.html:135
 msgid "State"
 msgstr ""
 
@@ -1448,7 +1448,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: components/save-map/partials/form.html:83
+#: components/save-map/partials/form.html:85
 msgid "Toggle all"
 msgstr ""
 
@@ -1497,7 +1497,7 @@ msgid ""
 "                    extent"
 msgstr ""
 
-#: components/save-map/partials/form.html:69
+#: components/save-map/partials/form.html:71
 msgid "Use current map extent"
 msgstr ""
 
@@ -1552,11 +1552,11 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: components/save-map/partials/form.html:96
+#: components/save-map/partials/form.html:98
 msgid "Write"
 msgstr ""
 
-#: components/save-map/partials/form.html:40
+#: components/save-map/partials/form.html:41
 msgid "Write access rights"
 msgstr ""
 
