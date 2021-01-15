@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsEventBusService} from '../../core/event-bus.service';
-
+import {HsShareUrlService} from '../../permalink/share-url.service';
+import {HsDataService} from '../data.service';
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 
 @Component({
@@ -16,7 +17,9 @@ export class HsDataUrlComponent {
   constructor(
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
-    public hsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
+    public HsShareUrlService: HsShareUrlService,
+    public HsDataService: HsDataService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
@@ -50,17 +53,43 @@ export class HsDataUrlComponent {
     }
     this.typeSelected = '';
 
-    this.hsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
+    this.HsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
       this.typeSelected = type.toLowerCase();
-      this.hsEventBusService.owsConnecting.next({
+      this.HsEventBusService.owsConnecting.next({
         type: type,
         uri: uri,
         layer: layer,
       });
     });
+
+    console.log('URLstarting')
+    if (this.HsDataService.urlType){
+      this.selectType(this.HsDataService.urlType);
+      this.connectServiceFromUrlParam(this.HsDataService.urlType);
+    }
   }
 
   selectType(type: string): void {
     this.typeSelected = type;
   }
+
+  connectServiceFromUrlParam(type) {
+    const layers = this.HsShareUrlService.getParamValue(`${type}_layers`);
+    const url = this.HsShareUrlService.getParamValue(`${type}_to_connect`);
+
+    // const serviceName = `hsAddLayersWmsService`;
+    if (layers) {
+
+      for (const layer of layers.split(';')) {
+        this.HsEventBusService.owsConnecting.next({
+          type: type,
+          uri: url,
+          layer: layer,
+        });
+      }
+    } else {
+      this.HsEventBusService.owsConnecting.next({ type: type, uri: url });
+    }
+  }
+
 }
