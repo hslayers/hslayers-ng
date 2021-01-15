@@ -11,7 +11,6 @@ import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
-import {HsMickaFilterService} from './micka-filters.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
@@ -22,7 +21,6 @@ export class HsMickaBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsMapService: HsMapService,
-    public hsMickaFilterService: HsMickaFilterService,
     public hsUtilsService: HsUtilsService
   ) {}
 
