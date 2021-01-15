@@ -69,8 +69,8 @@ export class HsAddLayersComponent {
       });
     });
 
-    this.connectServiceFromUrlParam('wms');
-    this.connectServiceFromUrlParam('wfs');
+    // this.connectServiceFromUrlParam('wms');
+    // this.connectServiceFromUrlParam('wfs');
   }
 
   /**

@@ -9,6 +9,8 @@ import {Injectable} from '@angular/core';
 })
 export class HsDataService {
   typeSelected: string;
+  //Holds reference to data.url.component type selected
+  urlType: string; 
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
