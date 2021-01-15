@@ -217,7 +217,7 @@ export default {
         }
         switch ($scope.endpoint.type) {
           case 'layman':
-            $scope.steps = ['context', 'author'];
+            $scope.steps = ['context','author'];
             break;
           default:
             $scope.steps = ['context', 'access', 'author'];

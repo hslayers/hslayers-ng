@@ -41,6 +41,11 @@ export default function (
      * @description Save composition to Layman
      */
     save(compositionJson, endpoint, compoData, saveAsNew) {
+      const read =
+        compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
+      const write =
+        compoData.write == 'EVERYONE' ? compoData.write : endpoint.user;
+
       return new Promise((resolve, reject) => {
         const formdata = new FormData();
         formdata.append(
@@ -53,6 +58,8 @@ export default function (
         formdata.append('name', compoData.title);
         formdata.append('title', compoData.title);
         formdata.append('abstract', compoData.abstract);
+        formdata.append('access_rights.read', read);
+        formdata.append('access_rights.write', write);
         $http({
           url: `${endpoint.url}/rest/${endpoint.user}/maps${
             saveAsNew
