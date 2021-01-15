@@ -37,6 +37,8 @@ export default function (
       bbox: undefined,
       currentCompositionTitle: '',
       currentComposition: undefined,
+      write: 'EVERYONE',
+      read: 'EVERYONE',
     },
     userData: {
       email: '',

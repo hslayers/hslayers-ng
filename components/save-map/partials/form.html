@@ -23,6 +23,33 @@
                 <input type="text" class="form-control" ng-model="compoData.keywords" />
             </label>
 
+            <label class="form-group">
+                <translate>Read access rights</translate><div class="btn-group pl-3">
+                     
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'EVERYONE'" 
+                    ng-class="{'active':compoData.read == 'EVERYONE'}">
+                        Public
+                    </button>
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'private'" 
+                    ng-class="{'active':compoData.read == 'private'}">
+                        Private
+                    </button> 
+                </div>
+            </label>
+            <label class="form-group">
+                <translate>Write access rights</translate><div class="btn-group pl-3">
+                     
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'EVERYONE'" 
+                    ng-class="{'active':compoData.write == 'EVERYONE'}">
+                        Public
+                    </button>
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'private'" 
+                    ng-class="{'active':compoData.write == 'private'}">
+                        Private
+                    </button> 
+                </div>
+            </label>
+
             <div class="form-group">
                 <label for="stc-extent1" class="form-group" translate="">Extent</label>
                 <div class="form-row stc-extent-row">
