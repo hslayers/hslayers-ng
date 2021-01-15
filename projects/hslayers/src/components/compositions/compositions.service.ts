@@ -14,7 +14,7 @@ import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -72,16 +72,11 @@ export class HsCompositionsService {
     });
   }
 
-  async loadCompositions(ds, params): Promise<any> {
+  loadCompositions(ds, params): Observable<any> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
-    const promise = await this.managerByType(ds).loadList(
-      ds,
-      params,
-      bbox,
-      this.HsCompositionsMapService.extentLayer
-    );
-    return promise;
+    const Observable = this.managerByType(ds).loadList(ds, params, bbox);
+    return Observable;
   }
 
   resetCompositionCounter(): void {
@@ -92,7 +87,7 @@ export class HsCompositionsService {
     });
   }
 
-  managerByType(endpoint) {
+  managerByType(endpoint): any {
     switch (endpoint.type) {
       case 'micka':
         return this.HsCompositionsStatusManagerMickaJointService;
@@ -266,5 +261,8 @@ export class HsCompositionsService {
         this.$log.warn(e);
       }
     }
+  }
+  commonId(composition): string {
+    return composition.uuid || composition.id;
   }
 }

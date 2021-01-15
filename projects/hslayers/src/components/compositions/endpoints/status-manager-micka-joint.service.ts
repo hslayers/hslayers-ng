@@ -1,9 +1,11 @@
+import {EMPTY, Observable} from 'rxjs';
 import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -30,20 +32,22 @@ export class HsCompositionsStatusManagerMickaJointService {
    * @param params
    * @param bbox
    */
-  loadList(ds, params, bbox) {
-    return new Promise((resolve, reject) => {
-      this.HsCompositionsMickaService.loadList(
-        ds,
-        params,
-        bbox,
-        this.HsCompositionsMapService.extentLayer
-      ).then(() => {
+  loadList(ds, params, bbox): Observable<any> {
+    const Observable = this.HsCompositionsMickaService.loadList(
+      ds,
+      params,
+      bbox,
+      this.HsCompositionsMapService.extentLayer
+    ).pipe(
+      map((response: any) => {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
-        resolve();
-      });
-    });
+      }),
+      catchError((e) => {
+        return EMPTY;
+      })
+    );
+    return Observable;
   }
-
   async getInfo(composition): Promise<any> {
     const compLinks = composition.link || composition.links;
     if (compLinks === undefined) {
