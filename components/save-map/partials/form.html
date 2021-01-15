@@ -24,29 +24,31 @@
             </label>
 
             <label class="form-group">
-                <translate>Read access rights</translate><div class="btn-group pl-5">
-                     
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'EVERYONE'" 
-                    ng-class="{'active':compoData.read == 'EVERYONE'}">
-                        <translate>Public</translate>
+                <translate>Read access rights</translate>
+                <div class="btn-group pl-5">
+            
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                        ng-click="compoData.read = 'EVERYONE'" ng-class="{'active':compoData.read == 'EVERYONE'}" translate>
+                        Public
                     </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.read = 'private'" 
-                    ng-class="{'active':compoData.read == 'private'}">
-                    <translate>Private</translate> 
-                    </button> 
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                        ng-click="compoData.read = 'private'" ng-class="{'active':compoData.read == 'private'}" translate> 
+                        Private
+                    </button>
                 </div>
             </label>
             <label class="form-group">
-                <translate>Write access rights</translate><div class="btn-group pl-5">
-                     
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'EVERYONE'" 
-                    ng-class="{'active':compoData.write == 'EVERYONE'}">
-                    <translate>Public</translate>
+                <translate>Write access rights</translate>
+                <div class="btn-group pl-5">
+            
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                        ng-click="compoData.write = 'EVERYONE'" ng-class="{'active':compoData.write == 'EVERYONE'}" translate>
+                        Public
                     </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary" ng-click="compoData.write = 'private'" 
-                    ng-class="{'active':compoData.write == 'private'}">
-                    <translate>Private</translate> 
-                    </button> 
+                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                        ng-click="compoData.write = 'private'" ng-class="{'active':compoData.write == 'private'}" translate>
+                       Private
+                    </button>
                 </div>
             </label>
 
