@@ -44,11 +44,10 @@ export default function (
       const write =
         compoData.write == 'EVERYONE' ? compoData.write : endpoint.user;
       let read;
-      if (write == 'EVERYONE'){
-        read = write
-      }
-      else{
-        compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
+      if (write == 'EVERYONE') {
+        read = write;
+      } else {
+        read = compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
       }
 
       return new Promise((resolve, reject) => {
