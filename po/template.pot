@@ -116,6 +116,7 @@ msgid "Add layers"
 msgstr ""
 
 #: components/add-layers/wfs/add-wfs-layer.directive.html:30
+#: components/add-layers/wmts/add-wmts-layer.directive.html:23
 #: components/datasource-selector/partials/datasource_selector.html:59
 #: components/draw/draw-layer-metadata.html:81
 msgid "Add to map"
@@ -131,7 +132,7 @@ msgid "Additional information"
 msgstr ""
 
 #: components/compositions/partials/compositions.html:20
-#: components/save-map/partials/form.html:96
+#: components/save-map/partials/form.html:123
 msgid "Address"
 msgstr ""
 
@@ -212,7 +213,7 @@ msgstr ""
 msgid "Circle"
 msgstr ""
 
-#: components/save-map/partials/form.html:101
+#: components/save-map/partials/form.html:128
 msgid "City"
 msgstr ""
 
@@ -267,6 +268,8 @@ msgstr ""
 #: components/save-map/partials/dialog_result.html:23
 #: components/save-map/partials/dialog_result.html:8
 #: components/save-map/partials/dialog_save.html:8
+#: components/save-map/sync-error-dialog.html:16
+#: components/save-map/sync-error-dialog.html:9
 #: components/sensors/partials/unit-dialog.html:11
 #: components/styles/partials/styler.html:7
 #: components/tracking/partials/tracking.html:5
@@ -351,7 +354,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: components/save-map/partials/form.html:116
+#: components/save-map/partials/form.html:143
 msgid "Country"
 msgstr ""
 
@@ -472,7 +475,7 @@ msgstr ""
 msgid "Drawing to:"
 msgstr ""
 
-#: components/save-map/partials/form.html:126
+#: components/save-map/partials/form.html:153
 msgid "E-mail"
 msgstr ""
 
@@ -489,7 +492,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: components/save-map/sync-error-dialog.html:4
+#: components/save-map/sync-error-dialog.html:6
 msgid "Error when syncing"
 msgstr ""
 
@@ -502,7 +505,7 @@ msgid "Extended search parameters for Micka"
 msgstr ""
 
 #: components/compositions/partials/dialog_info.html:24
-#: components/save-map/partials/form.html:27
+#: components/save-map/partials/form.html:54
 #: components/save-map/partials/panelmd.html:41
 #: components/save-map/partials/simpleform.html:37
 msgid "Extent"
@@ -614,7 +617,6 @@ msgstr ""
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:4
 #: components/add-layers/wms/add-wms-layer.directive.html:8
 #: components/add-layers/wms/add-wms-layer.md.directive.html:4
-#: components/add-layers/wmts/add-wmts-layer.directive.html:20
 msgid "Image format"
 msgstr ""
 
@@ -729,6 +731,7 @@ msgid "Load layer from server"
 msgstr ""
 
 #: components/add-layers/wfs/add-wfs-layer.directive.html:34
+#: components/add-layers/wmts/add-wmts-layer.directive.html:5
 msgid "Loading features, please wait"
 msgstr ""
 
@@ -929,7 +932,7 @@ msgstr ""
 msgid "Order by"
 msgstr ""
 
-#: components/save-map/partials/form.html:86
+#: components/save-map/partials/form.html:113
 msgid "Organization"
 msgstr ""
 
@@ -957,11 +960,11 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: components/save-map/partials/form.html:81
+#: components/save-map/partials/form.html:108
 msgid "Person"
 msgstr ""
 
-#: components/save-map/partials/form.html:121
+#: components/save-map/partials/form.html:148
 msgid "Phone"
 msgstr ""
 
@@ -989,11 +992,11 @@ msgstr ""
 msgid "Polygon features"
 msgstr ""
 
-#: components/save-map/partials/form.html:91
+#: components/save-map/partials/form.html:118
 msgid "Position"
 msgstr ""
 
-#: components/save-map/partials/form.html:111
+#: components/save-map/partials/form.html:138
 msgid "Postal code"
 msgstr ""
 
@@ -1019,6 +1022,16 @@ msgstr ""
 msgid "Print map"
 msgstr ""
 
+#: components/save-map/partials/form.html:35
+#: components/save-map/partials/form.html:48
+msgid "Private"
+msgstr ""
+
+#: components/save-map/partials/form.html:31
+#: components/save-map/partials/form.html:44
+msgid "Public"
+msgstr ""
+
 #: components/permalink/partials/directive.html:24
 msgid "Pure map"
 msgstr ""
@@ -1036,8 +1049,12 @@ msgstr ""
 msgid "Radius"
 msgstr ""
 
-#: components/save-map/partials/form.html:68
+#: components/save-map/partials/form.html:95
 msgid "Read"
+msgstr ""
+
+#: components/save-map/partials/form.html:27
+msgid "Read access rights"
 msgstr ""
 
 #: components/query/feature-popup.component.js:63
@@ -1220,6 +1237,7 @@ msgstr ""
 #: components/add-layers/arcgis/add-arcgis-layer.md.directive.html:54
 #: components/add-layers/wfs/add-wfs-layer.directive.html:28
 #: components/add-layers/wms/add-wms-layer.md.directive.html:54
+#: components/add-layers/wmts/add-wmts-layer.directive.html:21
 msgid "Select All Layers"
 msgstr ""
 
@@ -1338,7 +1356,7 @@ msgstr ""
 msgid "Star"
 msgstr ""
 
-#: components/save-map/partials/form.html:106
+#: components/save-map/partials/form.html:133
 msgid "State"
 msgstr ""
 
@@ -1362,10 +1380,6 @@ msgstr ""
 msgid "Stroke width: {{linewidth}}"
 msgstr ""
 
-#: components/add-layers/wmts/add-wmts-layer.directive.html:29
-msgid "Style"
-msgstr ""
-
 #: components/layermanager/partials/layer-editor.html:143
 #: components/styles/partials/styler.html:3
 msgid "Style layer"
@@ -1381,6 +1395,10 @@ msgstr ""
 
 #: components/layermanager/partials/layermanager.html:61
 msgid "Terrains"
+msgstr ""
+
+#: components/save-map/sync-error-dialog.html:12
+msgid "There was a problem loading  layer"
 msgstr ""
 
 #: components/add-layers/partials/dialog_getcapabilities_error.html:11
@@ -1430,7 +1448,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: components/save-map/partials/form.html:56
+#: components/save-map/partials/form.html:83
 msgid "Toggle all"
 msgstr ""
 
@@ -1479,7 +1497,7 @@ msgid ""
 "                    extent"
 msgstr ""
 
-#: components/save-map/partials/form.html:42
+#: components/save-map/partials/form.html:69
 msgid "Use current map extent"
 msgstr ""
 
@@ -1534,8 +1552,12 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: components/save-map/partials/form.html:69
+#: components/save-map/partials/form.html:96
 msgid "Write"
+msgstr ""
+
+#: components/save-map/partials/form.html:40
+msgid "Write access rights"
 msgstr ""
 
 #: common/confirm/confirm-dialog.html:14
@@ -1583,7 +1605,7 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: components/map/map.service.js:315
+#: components/map/map.service.js:312
 msgid "Zoom to initial window"
 msgstr ""
 
