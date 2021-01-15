@@ -1684,7 +1684,7 @@ msgstr "Uložit do vrstvy"
 
 #: components/save-map/partials/form.html:27
 msgid "Read access rights"
-msgstr "Práva k zápisu"
+msgstr "Práva ke čtení"
 
 #: components/save-map/sync-error-dialog.html:12
 msgid "There was a problem loading  layer"
@@ -1692,7 +1692,7 @@ msgstr "Při načítaní nastala chyba"
 
 #: components/save-map/partials/form.html:40
 msgid "Write access rights"
-msgstr "Práva k čtení"
+msgstr "Práva k zápisu"
 
 #: components/save-map/partials/form.html:35
 #: components/save-map/partials/form.html:48
