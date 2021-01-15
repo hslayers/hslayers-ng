@@ -16,6 +16,7 @@ import {HsMapService} from '../../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {forkJoin} from 'rxjs';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -136,23 +137,27 @@ export class HsDataCatalogueService {
       this.layersLoading = true;
       this.HsDataCatalogueMapService.clearExtentLayer();
       const promises = [];
+
+      //Mark non funcctional endpoint
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-        endpoint.datasourcePaging = {...this.paging};
-        console.log(
-          'query',
-          this.paging.matched,
-          endpoint.datasourcePaging.matched,
-          endpoint.title
-        );
-        const promise = this.queryCatalog(endpoint);
-        promises.push(promise);
+        if (endpoint.type != 'statusmanager') {
+          endpoint.datasourcePaging = {...this.paging};
+          console.log(
+            'query',
+            this.paging.matched,
+            endpoint.datasourcePaging.matched,
+            endpoint.title
+          );
+          const promise = this.queryCatalog(endpoint);
+          promises.push(promise);
+        }
       }
-      //FIXME use allSettled instead of all
-      // ALL -   It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message
-      //ALL SETTLED - resolves after all of the given promises have either fulfilled or rejected
 
       //forkJOIN to be able to cancel
-      Promise.all(promises).then((results) => this.createLayerList());
+      forkJoin(promises).subscribe(() => {
+        this.createLayerList();
+      });
+      // Promise.all(promises).then((results) => this.createLayerList());
     });
   }
 
@@ -239,12 +244,12 @@ export class HsDataCatalogueService {
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-   queryCatalog(catalog: HsEndpoint) {
+  queryCatalog(catalog: HsEndpoint) {
     this.HsDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
       case 'micka':
-        query =  this.hsMickaBrowserService.queryCatalog(
+        query = this.hsMickaBrowserService.queryCatalog(
           catalog,
           this.data,
           (feature: Feature) =>
@@ -254,7 +259,7 @@ export class HsDataCatalogueService {
         return query;
       //FIX ME - await for laymanendpoint
       case 'layman':
-        query =  this.hsLaymanBrowserService.queryCatalog(catalog);
+        query = this.hsLaymanBrowserService.queryCatalog(catalog);
         return query;
       default:
         break;

@@ -50,10 +50,11 @@ export class HsMickaBrowserService {
     //FIXME
     // Currently not canceling multiple continuous requests
 
-    // if (dataset.httpCall) {
-    //   dataset.httpCall.unsubscribe();
-    //   delete dataset.httpCall;
-    // }
+    if (dataset.httpCall) {
+      // dataset.httpCall.unsubscribe();
+      console.log('remove')
+      delete dataset.httpCall;
+    }
 
     dataset.httpCall = this.http
       .get(url, {
@@ -68,6 +69,7 @@ export class HsMickaBrowserService {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
           this.datasetsReceived(x);
+          return x
         }),
         catchError((e) => {
           this.log.error(e);
@@ -75,7 +77,7 @@ export class HsMickaBrowserService {
           return EMPTY;
         })
       )
-      .toPromise();
+      // .subscribe(()=>{console.log('sub')});
     return dataset.httpCall;
   }
 
