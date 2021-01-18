@@ -21,7 +21,7 @@
         <ul class="nav flex-column flex-sm-row dss-tabs" role="tablist">
             <li class="nav-item" [ngClass]="{'hs-tab-single-datasources': !data.wms_connecting}"
                 *ngFor="let endpoint of (hsCommonEndpointsService.endpoints | endpointsWithDatasources); let i = index">
-                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" href="#"
+                <a class="nav-link" [ngClass]="{'btn-primary': data.id_selected == 'ds'+i}" 
                     [attr.data-target]="'#ds'+i" aria-controls="context" role="tab" data-toggle="tab"
                     (click)="datasetSelect('ds'+i, endpoint)">
                     {{endpoint.title}}
@@ -32,7 +32,7 @@
             </li>
             <li class="nav-item hs-tab-single-datasources"
                 *ngIf="hsConfig.allowAddExternalDatasets">
-                <a class="nav-link" href="#" aria-controls="OWS"
+                <a class="nav-link"  aria-controls="OWS"
                     [ngClass]="{'btn-primary active': data.wms_connecting || data.id_selected == 'OWS'}" role="tab"
                     (click)="datasetSelect('OWS')" data-toggle="tab">
                     {{'DATASOURCE_SELECTOR.externalData' | translate}}
@@ -67,7 +67,7 @@
                         <nav>
                             <ul class="pagination d-flex justify-content-center">
                                 <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.start == 0 }">
-                                    <a href="#" class="page-link" (click)='getPreviousRecords(endpoint)'><span
+                                    <a  class="page-link" (click)='getPreviousRecords(endpoint)'><span
                                             aria-hidden="true">&laquo;</span></a>
                                 </li>
                                 <li class="page-item" *ngIf="endpoint.datasourcePaging.next != 0"><span
@@ -84,7 +84,7 @@
                                     <span class="page-link"><span class="icon-refresh icon-spin"></span></span>
                                 </li>
                                 <li class="page-item" [ngClass]="{'disabled': endpoint.datasourcePaging.next == 0 }">
-                                    <a href="#" class="page-link" (click)='getNextRecords(endpoint)'><span
+                                    <a  class="page-link" (click)='getNextRecords(endpoint)'><span
                                             aria-hidden="true">&raquo;</span></a>
                                 </li>
                             </ul>

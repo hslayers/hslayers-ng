@@ -400,6 +400,15 @@ hr {
 	width: 100%;
 }
 
+.hs-sidebar-item {
+	color: $sidebar-item-color;
+	cursor: pointer;
+}
+
+a {
+	cursor: pointer;
+}
+
 .hs-sidebar-item [class*=" icon-"] {
 	margin-left: -4px;
 }

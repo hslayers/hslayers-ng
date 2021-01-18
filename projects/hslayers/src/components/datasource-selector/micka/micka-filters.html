@@ -31,7 +31,7 @@
                 </button>
                 <ul class="dropdown-menu" [ngClass]="{'show': keywordsDropdownVisible}">
                     <a *ngFor="let keyword of hsMickaFilterService.otnKeywords" class="dropdown-item"
-                        [ngClass]="{'active': query.Subject==keyword.title}" href="#"
+                        [ngClass]="{'active': query.Subject==keyword.title}" 
                         (click)="setOtnKeyword(keyword.title)">{{keyword.title}}</a>
 
                 </ul>

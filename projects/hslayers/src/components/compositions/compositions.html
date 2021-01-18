@@ -41,7 +41,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': sortMenuOpen}">
                         <li><a class="dropdown-item" (click)="setSortAttribute('bbox')"
-                                href="#">{{'COMMON.boundingBox' | translate}}</a>
+                                >{{'COMMON.boundingBox' | translate}}</a>
                         </li>
                         <li><a class="dropdown-item" (click)="setSortAttribute('title')">{{'COMMON.title' | translate}}</a></li>
                         <li><a class="dropdown-item" (click)="setSortAttribute('date')">{{'COMMON.date' | translate}}</a></li>
@@ -78,16 +78,16 @@
                                     (click)="compositionClicked(composition)" data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
                                     <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
                                     <div class="btn-group btn-block" [ngClass]="{'d-none': commonId(composition) != selectedCompId}" role="group">
-                                        <a class="btn btn-secondary" (click)="$event.stopPropagation();shareComposition(composition)" href="#">
+                                        <a class="btn btn-secondary" (click)="$event.stopPropagation();shareComposition(composition)" >
                                             <i class="icon-share-alt"></i>
                                         </a>
-                                        <a class="btn btn-secondary" href="#" (click)="$event.stopPropagation();edit(composition)">
+                                        <a class="btn btn-secondary"  (click)="$event.stopPropagation();edit(composition)">
                                             <i class="icon-edit"></i>
                                         </a>
-                                        <a class="btn btn-secondary" href="#" (click)="$event.stopPropagation();detailComposition(composition)">
+                                        <a class="btn btn-secondary"  (click)="$event.stopPropagation();detailComposition(composition)">
                                             <i class="icon-info-sign"></i>
                                         </a>
-                                        <a class="btn btn-secondary" href="#" [hidden]="!composition.editable" (click)="$event.stopPropagation();confirmDelete(composition)">
+                                        <a class="btn btn-secondary"  [hidden]="!composition.editable" (click)="$event.stopPropagation();confirmDelete(composition)">
                                             <i class="icon-trash"></i>
                                         </a>
                                     </div>
@@ -100,14 +100,14 @@
                             <nav>
                                 <ul class="pagination d-flex justify-content-center">
                                     <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.start == 0 }">
-                                        <a href="#" class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true">&laquo;</span></a>
+                                        <a  class="page-link" (click)="getPreviousCompositions(endpoint)"><span aria-hidden="true">&laquo;</span></a>
                                     </li>
                                     <li class="page-item" *ngIf="endpoint.compositionsPaging.next!= 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.next}}</span></li>
                                     <li class="page-item" *ngIf="endpoint.compositionsPaging.next == 0"><span class="page-link"> {{'COMMON.results' | translate}}
                                             {{endpoint.compositionsPaging.start + 1}} - {{endpoint.compositionsPaging.matched}}</span></li>
                                     <li class="page-item" [ngClass]="{'disabled': endpoint.compositionsPaging.next == 0 }">
-                                        <a href="#" class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true">&raquo;</span></a>
+                                        <a  class="page-link" (click)="getNextCompositions(endpoint)"><span aria-hidden="true">&raquo;</span></a>
                                     </li>
                                 </ul>
                             </nav>
