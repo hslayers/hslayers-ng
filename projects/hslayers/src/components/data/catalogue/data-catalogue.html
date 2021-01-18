@@ -32,7 +32,7 @@
                     <li [hidden]='HsDataCatalogueService.catalogEntries.length > 0 || HsDataCatalogueService.layersLoading'
                         class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li *ngFor='let layer of HsDataCatalogueService.catalogEntries | slice:HsDataCatalogueService.listStart:HsDataCatalogueService.listNext'
+                    <li [hidden]="HsDataCatalogueService.layersLoading" *ngFor='let layer of HsDataCatalogueService.catalogEntries | slice:HsDataCatalogueService.listStart:HsDataCatalogueService.listNext'
                         class="clearfix" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                         <hs-data-list-item [layer]="layer"></hs-data-list-item>
                     </li>

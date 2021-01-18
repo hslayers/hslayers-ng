@@ -49,6 +49,7 @@ export class HsDataCatalogueService {
   itemsPerPage = 20;
   listStart = 0;
   listNext = this.itemsPerPage;
+  catalogQuery;
 
   constructor(
     public hsConfig: HsConfig,
@@ -127,6 +128,11 @@ export class HsDataCatalogueService {
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(preserveLayers?: boolean): void {
+
+    if (this.catalogQuery) {
+      this.catalogQuery.unsubscribe();
+      delete this.catalogQuery;
+    }
     if (preserveLayers === undefined || !preserveLayers) {
       this.catalogEntries.length = 0;
       this.paging.start = 0;
@@ -136,28 +142,22 @@ export class HsDataCatalogueService {
     this.HsMapService.loaded().then(() => {
       this.layersLoading = true;
       this.HsDataCatalogueMapService.clearExtentLayer();
-      const promises = [];
+      const observables = [];
 
       //Mark non funcctional endpoint
       for (const endpoint of this.hsCommonEndpointsService.endpoints) {
         if (endpoint.type != 'statusmanager') {
+          //query only functional endpoints
           endpoint.datasourcePaging = {...this.paging};
-          console.log(
-            'query',
-            this.paging.matched,
-            endpoint.datasourcePaging.matched,
-            endpoint.title
-          );
+
           const promise = this.queryCatalog(endpoint);
-          promises.push(promise);
+          observables.push(promise);
         }
       }
 
-      //forkJOIN to be able to cancel
-      forkJoin(promises).subscribe(() => {
+      this.catalogQuery = forkJoin(observables).subscribe(() => {
         this.createLayerList();
       });
-      // Promise.all(promises).then((results) => this.createLayerList());
     });
   }
 
@@ -166,17 +166,18 @@ export class HsDataCatalogueService {
 
     for (const endpoint of this.hsCommonEndpointsService.endpoints) {
       if (endpoint.type != 'statusmanager') {
-        console.log(
-          this.paging.matched,
-          endpoint.datasourcePaging.matched,
-          endpoint.title,
-          endpoint.layers
-        );
         if (endpoint.layers) {
           endpoint.layers.forEach((layer) => {
             layer.endpoint = endpoint;
-            this.catalogEntries.push(layer);
+            // this.catalogEntries.push(layer);
           });
+          if (this.catalogEntries.length > 0) {
+            this.catalogEntries = this.catalogEntries.concat(
+              this.filterDuplicates(endpoint.layers)
+            );
+          } else {
+            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
+          }
         }
         if (endpoint.datasourcePaging) {
           if (this.paging.matched == 0) {
@@ -192,6 +193,37 @@ export class HsDataCatalogueService {
     this.layersLoading = false;
     console.log(this);
     this.checkIfPageIsFull();
+  }
+
+  filterDuplicates(responseArray) {
+    if (responseArray === undefined || responseArray?.length == 0) {
+      return [];
+    }
+    const hasUuId = responseArray.find((comp) => {
+      if (comp.uuid !== undefined) {
+        return true;
+      }
+    });
+
+    if (hasUuId) {
+      const laymanLayers = this.catalogEntries.filter(
+        (comp) => comp.uuid !== undefined
+      );
+      if (laymanLayers?.length > 0) {
+        return responseArray.filter(
+          (data) => laymanLayers.filter((u) => u.uuid == data.uuid).length == 0
+        );
+      } else {
+        return responseArray;
+      }
+    } else {
+      const mickaLayers = this.catalogEntries.filter(
+        (comp) => comp.id !== undefined
+      );
+      return responseArray.filter(
+        (data) => mickaLayers.filter((u) => u.id == data.id).length == 0
+      );
+    }
   }
 
   checkIfPageIsFull(): void {
