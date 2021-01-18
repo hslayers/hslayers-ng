@@ -2,12 +2,12 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
 
-import {EMPTY, of, Subscription} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError, finalize, map} from 'rxjs/operators';
 
-import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from '../addData-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -15,7 +15,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
-  httpCall: Subscription;
+  httpCall;
 
   constructor(
     private http: HttpClient,
@@ -274,7 +274,7 @@ export class HsMickaBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;

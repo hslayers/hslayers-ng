@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-center flex-column align-items-center m-3">
+    <div class="btn-group w-75 mt-3 flex-wrap">
+        <button *ngFor="let type of types" [ngClass]="{'active': type.id == typeSelected }" style="width: 33% !important;"
+            (click)="selectType(type.id)" class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
+            {{type.text}}</button>
+    </div>
+    <div class="w-100 pt-3">
+        <hs-add-data-url-arcgis *ngIf="typeSelected == 'arcgis'"></hs-add-data-url-arcgis>
+        <hs-add-data-url-wfs *ngIf="typeSelected == 'wfs'"></hs-add-data-url-wfs>
+        <hs-add-data-url-wms *ngIf="typeSelected == 'wms'"></hs-add-data-url-wms>
+        <hs-add-data-url-wmts *ngIf="typeSelected == 'wmts'"></hs-add-data-url-wmts>
+        <hs-add-data-url-vector *ngIf="typeSelected == 'kml' || typeSelected == 'geojson' "></hs-add-data-url-vector>
+    </div>
+</div>

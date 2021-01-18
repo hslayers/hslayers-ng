@@ -312,7 +312,7 @@ export class HsLayoutService {
       datasource_selector: 700,
       ows: 700,
       composition_browser: 500,
-      data: 700,
+      addData: 700,
     };
     const layoutWidth = this.layoutElement.clientWidth;
     Object.assign(panelWidths, this.HsConfig.panelWidths);
