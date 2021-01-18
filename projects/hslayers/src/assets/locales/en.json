@@ -1,105 +1,6 @@
 {
-  "COMPOSITONTYPES": {
-    "None": "None",
-    "Datasource": "Data",
-    "Service": "Service",
-    "Application": "Application",
-    "Feature catalogue": "Feature catalogue"
-  },
-  "COMPOSITONKEYWORDS": {
-    "Basemap": "Basemap",
-    "Borders": "Borders",
-    "PhysicalGeography": "PhysicalGeography",
-    "Demographics": "Demographics",
-    "Economics": "Economics",
-    "SocioPoliticalConditions": "SocioPoliticalConditions",
-    "Culture": "Culture",
-    "Transport": "Transport",
-    "LandUse": "LandUse",
-    "Environment": "Environment",
-    "Water": "Water",
-    "Hazards": "Hazards",
-    "Cadastre": "Cadastre",
-    "Infrastructure": "Infrastructure",
-    "RealEstate": "RealEstate",
-    "Planning": "Planning",
-    "ComplexInformation": "ComplexInformation"
-  },
-  "COMPOSITONSORTVALUES": {
-    "None": "None",
-    "Title": "Title",
-    "Date": "Date",
-    "Bbox": "Bounding box"
-  },
-  "COMPOSITONINSPIRETHEMES": {
-    "None": "None",
-    "Addresses": "Addresses",
-    "Administrative units": "Administrative units",
-    "Coordinate reference systems": "Coordinate reference systems",
-    "Geographical grid systems": "Geographical grid systems",
-    "Cadastral parcels": "Cadastral parcels",
-    "Geographical names": "Geographical names",
-    "Hydrography": "Hydrography",
-    "Protected sites": "Protected sites",
-    "Transport networks": "Transport networks",
-    "Elevation": "Elevation",
-    "Geology": "Geology",
-    "Land cover": "Land cover",
-    "Orthoimagery": "Orthoimagery",
-    "Agricultural and aquaculture facitilies": "Agricultural and aquaculture facitilies",
-    "Area management/restriction/regulation zones and reporting units": "Area management/restriction/regulation zones and reporting units",
-    "Atmospheric conditions": "Atmospheric conditions",
-    "Bio-geographical regions": "Bio-geographical regions",
-    "Buildings": "Buildings",
-    "Energy resources": "Energy resources",
-    "Environmental monitoring facilities": "Environmental monitoring facilities",
-    "Habitants and biotopes": "Habitants and biotopes",
-    "Human health and safety": "Human health and safety",
-    "Land use": "Land use",
-    "Mineral resources": "Mineral resources",
-    "Natural risk zones": "Natural risk zones",
-    "Oceanographic geographical features": "Oceanographic geographical features",
-    "Population distribution - demography": "Population distribution - demography",
-    "Production and industrial facilities": "Production and industrial facilities",
-    "Sea regions": "Sea regions",
-    "Soil": "Soil",
-    "Species distribution": "Species distribution",
-    "Statistical units": "Statistical units",
-    "Utility and governmental services": "Utility and governmental services",
-    "Meteorological geographical features": "Meteorological geographical features",
-    "Atmospheric Conditions and meteorological geographical features": "Atmospheric Conditions and meteorological geographical features"
-  },
   "ADDLAYERS": {
-    "SHP": {
-      "SLDStyleFile": "SLD style file",
-      "shapeFile": "Shape file (shp+dbf+shx)"
-    },
-    "TYPES": {
-      "ArcGIS": "ArcGIS Map Server",
-      "WFS": "Web feature service (WFS)",
-      "WMS": "Web map service (WMS)",
-      "shapeFile": "Shapefile",
-      "vectorFile": "Vector file (GeoJSON, KML)"
-    },
-    "VECTOR": {
-      "extractStyles": "Extract styles"
-    },
-    "Vector": {
-      "dragAndDropFiles": "Drag and drop files",
-      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files"
-    },
-    "WFS": {
-      "addToMap": "Add to map",
-      "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
-      "selectedLayerContains": "Selected layer contains"
-    },
-    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
-    "WMTS": {
-      "tileMatrix": "Tile matrix"
-    },
     "addSelected": "Add selected layers to the map",
-    "under": "Add under layer",
     "chooseFormat": "Choose format",
     "chooseType": "Choose type",
     "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
@@ -116,18 +17,44 @@
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
     "selectAllLayers": "Select All layers",
+    "SHP": {
+      "shapeFile": "Shape file (shp+dbf+shx)",
+      "SLDStyleFile": "SLD style file"
+    },
     "someErrorHappened": "Some error happened or input missing",
     "srs": "SRS",
     "thereWasErrorWhile": "There was error while parsing Capabilities response from given URL",
     "thisIsRequired": "This is required!",
     "tileSize": "Tile size",
+    "TYPES": {
+      "ArcGIS": "ArcGIS Map Server",
+      "shapeFile": "Shapefile",
+      "vectorFile": "Vector file (GeoJSON, KML)",
+      "WFS": "Web feature service (WFS)",
+      "WMS": "Web map service (WMS)"
+    },
+    "under": "Add under layer",
     "useProxy": "Use proxy",
-    "useTiles": "Use tiles"
+    "useTiles": "Use tiles",
+    "Vector": {
+      "dragAndDropFiles": "Drag and drop files",
+      "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
+      "uploadVectorFiles": "Upload vector files"
+    },
+    "VECTOR": {
+      "extractStyles": "Extract styles"
+    },
+    "WFS": {
+      "addToMap": "Add to map",
+      "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
+      "selectedLayerContains": "Selected layer contains"
+    },
+    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
+    "WMTS": {
+      "tileMatrix": "Tile matrix"
+    }
   },
   "COMMON": {
-    "Login": "Log in",
-    "Logout": "Log out",
-    "Sort": "Sort",
     "abstract": "Abstract",
     "add": "Add",
     "addAs": "Add as",
@@ -173,11 +100,15 @@
     "layer": "layer",
     "layers": "Layers",
     "legend": "Legend",
+    "less": "Less",
     "line": "Line",
     "lineColor": "Line color",
     "lineWidth": "Line width",
     "loading": "Loading",
+    "Login": "Log in",
+    "Logout": "Log out",
     "menu": "Menu",
+    "metadata": "Metadata",
     "more": "More",
     "name": "Name",
     "new": "New",
@@ -186,6 +117,7 @@
     "no": "No",
     "north": "North",
     "ok": "Ok",
+    "open": "Open",
     "orderBy": "Order by",
     "photo": "Photo",
     "point": "Point",
@@ -203,9 +135,13 @@
     "saveAs": "Save as..",
     "saveTo": "Save to",
     "scale": "Scale",
+    "search": "Search:",
     "service": "Service",
     "settings": "Settings",
+    "share": "Share",
     "showMore": "Show more",
+    "Sort": "Sort",
+    "sortBy": "Sort by",
     "south": "South",
     "stop": "Stop",
     "stroke": "Stroke",
@@ -222,25 +158,17 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "zoomTo": "zoom to",
-    "search": "Search:",
-    "less": "Less",
-    "sortBy": "Sort by",
-    "open": "Open",
-    "metadata": "Metadata",
-    "share": "Share"
+    "zoomTo": "zoom to"
   },
   "COMPOSITIONS": {
-    "Address": "Address",
     "addByAddress": "Add composition by address",
+    "Address": "Address",
+    "clearFilters": "Clear all filters",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },
     "dialogInfo": {
       "details": "details"
-    },
-    "dialogShare": {
-      "shareMap": "Share map"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Merge compositions",
@@ -250,13 +178,85 @@
       "whatDoYouWant": "What do you want to do before opening the selected map composition?",
       "youAreOpeningMap": "You are opening map"
     },
+    "dialogShare": {
+      "shareMap": "Share map"
+    },
     "filterByMap": "Filter by map extent",
     "import": "Import composition from a file on device",
-    "onlyMine": "Only mine",
     "inspireTheme": "INSPIRE theme",
     "loginToCatalogue": "Login to catalogue",
-    "selectKeywords": "Select keywords",
-    "clearFilters": "Clear all filters"
+    "onlyMine": "Only mine",
+    "selectKeywords": "Select keywords"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "Addresses": "Addresses",
+    "Administrative units": "Administrative units",
+    "Agricultural and aquaculture facilities": "Agricultural and aquaculture facilities",
+    "Area management/restriction/regulation zones and reporting units": "Area management/restriction/regulation zones and reporting units",
+    "Atmospheric conditions": "Atmospheric conditions",
+    "Atmospheric Conditions and meteorological geographical features": "Atmospheric Conditions and meteorological geographical features",
+    "Bio-geographical regions": "Bio-geographical regions",
+    "Buildings": "Buildings",
+    "Cadastral parcels": "Cadastral parcels",
+    "Coordinate reference systems": "Coordinate reference systems",
+    "Elevation": "Elevation",
+    "Energy resources": "Energy resources",
+    "Environmental monitoring facilities": "Environmental monitoring facilities",
+    "Geographical grid systems": "Geographical grid systems",
+    "Geographical names": "Geographical names",
+    "Geology": "Geology",
+    "Habitants and biotopes": "Habitants and biotopes",
+    "Human health and safety": "Human health and safety",
+    "Hydrography": "Hydrography",
+    "Land cover": "Land cover",
+    "Land use": "Land use",
+    "Meteorological geographical features": "Meteorological geographical features",
+    "Mineral resources": "Mineral resources",
+    "Natural risk zones": "Natural risk zones",
+    "None": "None",
+    "Oceanographic geographical features": "Oceanographic geographical features",
+    "Orthoimagery": "Orthoimagery",
+    "Population distribution - demography": "Population distribution - demography",
+    "Production and industrial facilities": "Production and industrial facilities",
+    "Protected sites": "Protected sites",
+    "Sea regions": "Sea regions",
+    "Soil": "Soil",
+    "Species distribution": "Species distribution",
+    "Statistical units": "Statistical units",
+    "Transport networks": "Transport networks",
+    "Utility and governmental services": "Utility and governmental services"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Basemap": "Basemap",
+    "Borders": "Borders",
+    "Cadastre": "Cadastre",
+    "Complex information": "Complex information",
+    "Culture": "Culture",
+    "Demographics": "Demographics",
+    "Economics": "Economics",
+    "Environment": "Environment",
+    "Hazards": "Hazards",
+    "Infrastructure": "Infrastructure",
+    "Land use": "Land use",
+    "Physical geography": "Physical geography",
+    "Planning": "Planning",
+    "Real estate": "Real estate",
+    "Socio political conditions": "Socio political conditions",
+    "Transport": "Transport",
+    "Water": "Water"
+  },
+  "COMPOSITONSORTVALUES": {
+    "Bbox": "Bounding box",
+    "Date": "Date",
+    "None": "None",
+    "Title": "Title"
+  },
+  "COMPOSITONTYPES": {
+    "Application": "Application",
+    "Datasource": "Data",
+    "Feature catalogue": "Feature catalogue",
+    "None": "None",
+    "Service": "Service"
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Add to map as",
@@ -282,12 +282,12 @@
     "suggestions": "Suggestions"
   },
   "DRAW": {
-    "Select layer": "Select layer",
     "activateDrawing": "Activate drawing by choosing a feature type",
     "activeLayers": "Active layers",
     "definedStyle": "Defined style",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
+    "drawingTo": "Drawing to:",
     "drawLayer": "Draw layer",
     "drawLayerMetadata": {
       "defaultAttributes": "Default attributes",
@@ -303,13 +303,13 @@
       "removeLastPoint": "Remove last point",
       "selectType": "Select type"
     },
-    "drawingTo": "Drawing to:",
     "fillOpacity": "Fill opacity:",
     "individualStyle": "Individual style for feature",
     "newGPS": "New GPS",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
     "saveDrawingToLayer": "Save drawing to layer",
+    "Select layer": "Select layer",
     "serverLayers": "Server layers",
     "unsavedDrawing": "Unsaved drawing"
   },
@@ -336,12 +336,11 @@
     "youHaveUnsavedChanges": "You have unsaved changes!"
   },
   "LAYERMANAGER": {
-    "User generated": "User generated",
+    "baselayers": "Baselayers",
     "baseMapGallery": {
       "grayscale": "Grayscale",
       "noBaseMap": "No basemap"
     },
-    "baselayers": "Baselayers",
     "dialogRemoveAll": {
       "dialogMessage": "Do you really want to remove all your layers?",
       "reloadComposition": "Reload composition",
@@ -395,7 +394,8 @@
     "other": "Other",
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
-    "terrains": "Terrains"
+    "terrains": "Terrains",
+    "User generated": "User generated"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
@@ -533,8 +533,8 @@
     "min": "Min",
     "oneHour": "1 hour",
     "phenomena": "Phenomena",
-    "sensorUnit": "Sensor unit",
-    "sensors": "Sensors"
+    "sensors": "Sensors",
+    "sensorUnit": "Sensor unit"
   },
   "SIDEBAR": {
     "descriptions": {

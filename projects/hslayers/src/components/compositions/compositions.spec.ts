@@ -1,6 +1,4 @@
 /* eslint-disable prefer-arrow-callback */
-/* eslint-disable angular/no-service-method */
-/* eslint-disable angular/di */
 'use strict';
 import {
   BrowserDynamicTestingModule,
@@ -12,6 +10,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
@@ -42,7 +41,7 @@ class emptyMock {
 }
 
 let mockedMapService;
-
+let CompositionsCatalogueService;
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -72,6 +71,7 @@ describe('compositions', () => {
       declarations: [HsCompositionsComponent],
       providers: [
         HsCompositionsService,
+        HsCompositionsCatalogueService,
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
@@ -117,6 +117,9 @@ describe('compositions', () => {
         resolve(compositionsJson);
       });
     };
+    CompositionsCatalogueService = TestBed.inject(
+      HsCompositionsCatalogueService
+    );
   });
 
   beforeEach(() => {
@@ -134,20 +137,20 @@ describe('compositions', () => {
   });
 
   it('compositions list should load', function () {
-    component.filterByExtent = false;
+    CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
-      url: 'http://cat.ccss.cz/csw/',
+      url: 'https://www.agrihub.cz/micka/csw',
       type: 'micka',
-      title: 'SuperCAT',
+      title: 'Micka AgriHub',
       compositionsPaging: {
         start: 0,
         limit: 15,
         loaded: false,
       },
     };
-    component.loadCompositions();
+    CompositionsCatalogueService.loadCompositions();
     //NOTE: have to make this check to work
-    //  expect(ds.compositions).toBeDefined();
+    // expect(ds.compositions).toBeDefined();
   });
 
   /**

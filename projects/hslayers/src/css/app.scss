@@ -1779,6 +1779,13 @@ li.hs-lm-header {
 	color: #495057;
 	background-color: rgba(0, 0, 0, 0.2);
 }
+.hs-extra-buttons {
+	margin-bottom: 0;
+	line-height: 1em;
+	float: right;
+	margin-right: 0.5em;
+	cursor: pointer;
+}
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}

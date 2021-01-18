@@ -1,35 +1,6 @@
 {
   "ADDLAYERS": {
-    "SHP": {
-      "SLDStyleFile": "SLD stila datne",
-      "shapeFile": "Ģeometrijas datne (shp+dbf+shx)"
-    },
-    "TYPES": {
-      "ArcGIS": "ArcGIS karšu serveris",
-      "WFS": "Tīmekļa grafisko objektu pakalpojums (WFS)",
-      "WMS": "Tīmekļa karšu pakalpojums (WMS)",
-      "shapeFile": "Ģeometrijas datne (Shapefile)",
-      "vectorFile": "Vektoru datne (GeoJSON, KML)"
-    },
-    "VECTOR": {
-      "extractStyles": "Izvilkt stilus"
-    },
-    "Vector": {
-      "dragAndDropFiles": "Velciet un nometiet failus",
-      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
-    },
-    "WFS": {
-      "addToMap": "Pievienot kartei",
-      "loadingToManyAtOnce": "grafiskie objekti. Pārāk daudzu objektu ielāde vienlaikus (kamēr karte ir tālināta) var ietekmēt lietotnes veiktspēju",
-      "selectedLayerContains": "Atlasītajā slānī ir"
-    },
-    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
-    "WMTS": {
-      "tileMatrix": "\"Flīžu\" matrica"
-    },
     "addSelected": "Pievienot izvēlētos slāņus kartei",
-    "under": "Pievienot zem slāņa",
     "chooseFormat": "Izvēlieties formātu",
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
@@ -46,18 +17,44 @@
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
     "selectAllLayers": "Atlasīt visus slāņus",
+    "SHP": {
+      "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
+      "SLDStyleFile": "SLD stila datne"
+    },
     "someErrorHappened": "Radās kļūda vai trūkst ievades",
     "srs": "Ģeodēziskā atskaites sistēma",
     "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
     "thisIsRequired": "Šis ir nepieciešams!",
     "tileSize": "\"Flīžu\" izmērs",
+    "TYPES": {
+      "ArcGIS": "ArcGIS karšu serveris",
+      "shapeFile": "Ģeometrijas datne (Shapefile)",
+      "vectorFile": "Vektoru datne (GeoJSON, KML)",
+      "WFS": "Tīmekļa grafisko objektu pakalpojums (WFS)",
+      "WMS": "Tīmekļa karšu pakalpojums (WMS)"
+    },
+    "under": "Pievienot zem slāņa",
     "useProxy": "Izmantojiet starpniekserveri",
-    "useTiles": "Izmantojiet \"flīzes\""
+    "useTiles": "Izmantojiet \"flīzes\"",
+    "Vector": {
+      "dragAndDropFiles": "Velciet un nometiet failus",
+      "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
+    },
+    "VECTOR": {
+      "extractStyles": "Izvilkt stilus"
+    },
+    "WFS": {
+      "addToMap": "Pievienot kartei",
+      "loadingToManyAtOnce": "grafiskie objekti. Pārāk daudzu objektu ielāde vienlaikus (kamēr karte ir tālināta) var ietekmēt lietotnes veiktspēju",
+      "selectedLayerContains": "Atlasītajā slānī ir"
+    },
+    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
+    "WMTS": {
+      "tileMatrix": "\"Flīžu\" matrica"
+    }
   },
   "COMMON": {
-    "Login": "Autorizēties",
-    "Logout": "Atteikties",
-    "Sort": "Kārtot",
     "abstract": "Apraksts",
     "add": "Pievienot",
     "addAs": "Pievienot kā",
@@ -103,11 +100,15 @@
     "layer": "slānis",
     "layers": "Slāņi",
     "legend": "Leģenda",
+    "less": "Mazāk",
     "line": "Līnija",
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
     "loading": "Notiek ielāde",
+    "Login": "Autorizēties",
+    "Logout": "Atteikties",
     "menu": "Izvēlne",
+    "metadata": "Metadati",
     "more": "Vairāk",
     "name": "Nosaukums",
     "new": "Jauna/s",
@@ -116,6 +117,7 @@
     "no": "No",
     "north": "Ziemeļi",
     "ok": "Labi",
+    "open": "Atvērt",
     "orderBy": "Kārtot pēc",
     "photo": "Bilde",
     "point": "Punkts",
@@ -133,9 +135,13 @@
     "saveAs": "Saglabāt kā..",
     "saveTo": "Saglabāt",
     "scale": "Mērogs",
+    "search": "Meklēt:",
     "service": "Service",
     "settings": "Uzstādījumi",
+    "share": "Kopīgot",
     "showMore": "Rādīt vairāk",
+    "Sort": "Kārtot",
+    "sortBy": "Kārtot pēc",
     "south": "Dienvidi",
     "stop": "Apturēt",
     "stroke": "Līnija",
@@ -155,16 +161,14 @@
     "zoomTo": "pietuvināt"
   },
   "COMPOSITIONS": {
-    "Address": "Adrese",
     "addByAddress": "Pievienot kompozīciju pēc adreses",
+    "Address": "Adrese",
+    "clearFilters": "Notīrīt filtrus",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
     },
     "dialogInfo": {
       "details": "detaļas"
-    },
-    "dialogShare": {
-      "shareMap": "Koplietot karti"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Apvienot kompozīcijas",
@@ -174,9 +178,85 @@
       "whatDoYouWant": "Ko Jūs vēlaties izdarīt pirms atlasītās kartes kompozīcijas atvēršanas?",
       "youAreOpeningMap": "Jūs atverat karti"
     },
+    "dialogShare": {
+      "shareMap": "Koplietot karti"
+    },
     "filterByMap": "Filtrēt pēc kartes",
     "import": "Importēt kompozīciju no faila vai ierīces",
-    "onlyMine": "Tikai manas"
+    "inspireTheme": "INSPIRE tēma",
+    "loginToCatalogue": "Pieslēgties katalogam",
+    "onlyMine": "Tikai manas",
+    "selectKeywords": "Izvēlieties atslēgvārdus"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "Addresses": "Adreses",
+    "Administrative units": "Administratīvās vienības",
+    "Agricultural and aquaculture facilities": "Lauksaimniecības un akvakultūras objekti",
+    "Area management/restriction/regulation zones and reporting units": "Teritorijas pārvaldības/ierobežošanas/regulēšanas zonas un ziņošanas vienības",
+    "Atmospheric conditions": "Atmosfēras apstākļi",
+    "Atmospheric Conditions and meteorological geographical features": "Atmosfēras apstākļi un meteoroloģiskās, ģeogrāfiskās pazīmes",
+    "Bio-geographical regions": "Bioģeogrāfiskie reģioni",
+    "Buildings": "Ēkas",
+    "Cadastral parcels": "Kadastra pakas",
+    "Coordinate reference systems": "Koordinātu atskaites sistēmas",
+    "Elevation": "Paaugstinājums",
+    "Energy resources": "Enerģijas resursi",
+    "Environmental monitoring facilities": "Vides monitoringa objekti",
+    "Geographical grid systems": "Ģeogrāfiskās režģu sistēmas",
+    "Geographical names": "Ģeogrāfiskie nosaukumi",
+    "Geology": "Ģeoloģija",
+    "Habitants and biotopes": "Iedzīvotāji un biotopi",
+    "Human health and safety": "Cilvēku veselība un drošība",
+    "Hydrography": "Hidrogrāfija",
+    "Land cover": "Zemes segums",
+    "Land use": "Zemes izmantošana",
+    "Meteorological geographical features": "Meteoroloģiskās, ģeogrāfiskās pazīmes",
+    "Mineral resources": "Minerālie resursi",
+    "Natural risk zones": "Dabas riska zonas",
+    "None": "Nav",
+    "Oceanographic geographical features": "Okeanogrāfiskās, ģeogrāfiskās iezīmes",
+    "Orthoimagery": "Ortofotogrāfija",
+    "Population distribution - demography": "Iedzīvotāju sadalījums - demogrāfija",
+    "Production and industrial facilities": "Ražošanas un rūpniecības objekti",
+    "Protected sites": "Aizsargājamās vietas",
+    "Sea regions": "Jūras reģioni",
+    "Soil": "Augsne",
+    "Species distribution": "Sugu izplatība",
+    "Statistical units": "Statistikas vienības",
+    "Transport networks": "Transporta tīkli",
+    "Utility and governmental services": "Komunālie un valsts dienesti"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Basemap": "Pamatkarte",
+    "Borders": "Robežas",
+    "Cadastre": "Kadastrs",
+    "Complex information": "Sarežģīta informācija",
+    "Culture": "Kultūra",
+    "Demographics": "Demogrāfiskie dati",
+    "Economics": "Ekonomika",
+    "Environment": "Vide",
+    "Hazards": "Apdraudējumi",
+    "Infrastructure": "Infrastruktūra",
+    "Land use": "Zemes izmantošana",
+    "Physical geography": "Fiziskā geogrāfija",
+    "Planning": "Plānošana",
+    "Real estate": "Nekustamais īpašums",
+    "Socio political conditions": "Sociāli politiskie apstākļi",
+    "Transport": "Transports",
+    "Water": "Ūdens"
+  },
+  "COMPOSITONSORTVALUES": {
+    "Bbox": "Ierobežojošais lodziņš",
+    "Date": "Datums",
+    "None": "Nav",
+    "Title": "Nosaukums"
+  },
+  "COMPOSITONTYPES": {
+    "Application": "Lietotne",
+    "Datasource": "Dati",
+    "Feature catalogue": "Funkciju katalogs",
+    "None": "Nav",
+    "Service": "Serviss"
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Pievienot kartē kā",
@@ -202,12 +282,12 @@
     "suggestions": "Ieteikumi"
   },
   "DRAW": {
-    "Select layer": "Izvēlieties slāni",
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
     "activeLayers": "Aktīvie slāņi",
     "definedStyle": "Definētais stils",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
+    "drawingTo": "Zīmējums uz:",
     "drawLayer": "Zīmēt slāni",
     "drawLayerMetadata": {
       "defaultAttributes": "Noklusējuma atribūti",
@@ -223,20 +303,19 @@
       "removeLastPoint": "Noņemt pēdējo punktu",
       "selectType": "Izvēlieties tipu"
     },
-    "drawingTo": "Zīmējums uz:",
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "individualStyle": "Individuāls stils objektam",
     "newGPS": "Jauns GPS",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
+    "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",
     "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
     "showFeatureStats": "Izvērst",
-    "sortBy": "Kārtot pēc",
     "sortFeaturesByValue": "Kārtot pēc objektu vērtības",
     "zoom to": "Pietuvināt"
   },
@@ -257,12 +336,11 @@
     "youHaveUnsavedChanges": "Jums ir nesaglabātas izmaiņas!"
   },
   "LAYERMANAGER": {
-    "User generated": "Lietotāja ģenerēti",
+    "baselayers": "Pamatslāņi",
     "baseMapGallery": {
       "grayscale": "Pelēktoņu",
       "noBaseMap": "Nav pamatkartes"
     },
-    "baselayers": "Pamatslāņi",
     "dialogRemoveAll": {
       "dialogMessage": "Vai Jūs tiešām vēlaties noņemt visus slāņus?",
       "reloadComposition": "Pārlādēt kompozīciju",
@@ -275,7 +353,6 @@
       "cluster": "Apvienot blakusesošos",
       "copyright": "Autortiesības",
       "declutter": "Izkliedēt datus",
-      "metadata": "Metadati",
       "metadataOfLayer": "Slāņa metadati iekš",
       "metadataOfService": "Servisa metadati",
       "opacity": "Necaurredzamība",
@@ -317,7 +394,8 @@
     "other": "Cits",
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
-    "terrains": "Reljefi"
+    "terrains": "Reljefi",
+    "User generated": "Lietotāja ģenerēti"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -366,7 +444,6 @@
     "newShare": "Jauna kopīgošana",
     "permalink": "Pastāvīgā saite",
     "pureMap": "Tikai karte",
-    "share": "Kopīgot",
     "shareOnSocialNetwork": "Kopīgot sociālajā tīklā",
     "sharePureMap": "Kopīgot tikai karti",
     "sharesMapWith": "*Kopīgot karti ar (visa) portāla funkcionalitāti",
@@ -443,24 +520,21 @@
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     }
   },
-  "SEARCH": {
-    "search": "Meklēt:"
-  },
   "SENSORS": {
     "1D": "1d",
     "1H": "1st",
     "1M": "1m",
     "1W": "1ned",
     "6M": "6m",
-    "at": "",
+    "at": "pie",
     "avg": "Vid.",
     "max": "Maks.",
     "measure": "mēra",
     "min": "Min",
     "oneHour": "1 stunda",
     "phenomena": "Parādība",
-    "sensorUnit": "Sensoru vienība",
-    "sensors": "Sensori"
+    "sensors": "Sensori",
+    "sensorUnit": "Sensoru vienība"
   },
   "SIDEBAR": {
     "descriptions": {
