@@ -161,7 +161,10 @@ angular
         .then((data) => {
           describeNewLayer(vm.endpoint, vm.name).then((descriptor) => {
             HsAddLayersWmsAddLayerService.addService(
-              descriptor.wms.url,
+              descriptor.wms.url.replace(
+                'geoserver',
+                'client/geoserver'
+              ),
               undefined,
               vm.name
             );

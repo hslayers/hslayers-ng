@@ -167,9 +167,13 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
         }
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
+          name: layer.Name,
           source: new TileWMS({
             url:
-              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource.replace(
+                'geoserver',
+                'client/geoserver'
+              ),
             attributions: attributions,
             styles:
               layer.Style && layer.Style.length > 0

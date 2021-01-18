@@ -459,7 +459,7 @@ export default function (
     HsWmsGetCapabilitiesService.requestGetCapabilities(url).then((resp) => {
       const ol_layers = HsWmsGetCapabilitiesService.service2layers(resp).filter(
         (layer) =>
-          angular.isUndefined(layerName) || layer.get('title') == layerName
+          angular.isUndefined(layerName) || layer.get('name') == layerName
       );
       ol_layers.forEach((layer) => {
         if (angular.isDefined(group)) {
