@@ -28,7 +28,7 @@ export class HsAddDataCatalogueComponent {
   advancedSearch: boolean;
   queryCatalogs;
   loaderImage;
-  
+
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -50,8 +50,9 @@ export class HsAddDataCatalogueComponent {
       }
     });
     this.loaderImage =
-    this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
-    // this.reload();
+      this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
+
+    this.reload();
   }
 
   extentFilterChanged(): void {
@@ -83,13 +84,20 @@ export class HsAddDataCatalogueComponent {
   }
 
   resultsVisible(): boolean {
-    return this.HsAddDataCatalogueService.listNext && this.HsAddDataCatalogueService.paging.matched ? true : false
+    return this.HsAddDataCatalogueService.listNext &&
+      this.HsAddDataCatalogueService.paging.matched
+      ? true
+      : false;
   }
-  
+
   nextPageAvailable(): boolean {
     const matched = this.HsAddDataCatalogueService.paging.matched;
-    const next = this.HsAddDataCatalogueService.listNext
-    return matched == next || this.HsAddDataCatalogueService.catalogEntries.length < this.HsAddDataCatalogueService.itemsPerPage
+    const next = this.HsAddDataCatalogueService.listNext;
+    return (
+      matched == next ||
+      this.HsAddDataCatalogueService.catalogEntries.length <
+        this.HsAddDataCatalogueService.itemsPerPage
+    );
   }
 
   datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {

@@ -7,7 +7,6 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 
-
 @Component({
   selector: 'hs-add-data',
   templateUrl: './addData.directive.html',
@@ -22,11 +21,9 @@ export class HsAddDataComponent {
     public HsShareUrlService: HsShareUrlService,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService
-
   ) {
     this.HsAddDataService.typeSelected = 'catalogue';
 
-    console.log('wmstoconnect')
     this.connectServiceFromUrlParam('wms');
     this.connectServiceFromUrlParam('wfs');
   }
@@ -35,7 +32,6 @@ export class HsAddDataComponent {
     this.HsAddDataService.selectType(type);
   }
 
-  
   connectServiceFromUrlParam(type: string): void {
     const url = this.HsShareUrlService.getParamValue(`${type}_to_connect`);
     if (url) {
