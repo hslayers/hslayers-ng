@@ -1,8 +1,8 @@
 <div>
-    <a href="#" (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
+    <span (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</span>
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
-            <a href="#" (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type" style="line-height: 2em;">{{HsSensorsUnitDialogService.translate(sensorType.name, 'SENSORTYPE')}}</a>
+            <span (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type" style="line-height: 2em;">{{HsSensorsUnitDialogService.translate(sensorType.name, 'SENSORTYPE')}}</span>
             <ul class="list-group" [hidden]="!sensorType.expanded">
                 <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
                     <div class="d-flex ">
@@ -10,13 +10,13 @@
                             <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)" [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                         </div>
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
-                            <a *ngIf="viewMode == 'sensornames'" class="hs-sensor" href="#" (click)="sensorClicked(sensor)">
-                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name, 'SENSORNAMES')}}</b></a>
+                            <span *ngIf="viewMode == 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name, 'SENSORNAMES')}}</b></span>
                             
-                            <a *ngIf="viewMode == 'sensors'" class="hs-sensor" href="#" (click)="sensorClicked(sensor)">
-                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name)}}</b><span class="ml-1">{{'SENSORS.measure' | translate}}</span> {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
-                            <a *ngIf="viewMode == 'phenomena'" class="hs-sensor" href="#" (click)="sensorClicked(sensor)">
-                                {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</a>
+                            <span *ngIf="viewMode == 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                                <b>{{HsSensorsUnitDialogService.translate(sensor.sensor_name)}}</b><span class="ml-1">{{'SENSORS.measure' | translate}}</span> {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</span>
+                            <span *ngIf="viewMode == 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
+                                {{HsSensorsUnitDialogService.translate(sensor.phenomenon_name, 'PHENOMENON')}}</span>
                         </div>
                         <div class="p-0">
                             <span class="badge badge-light badge-pill">{{sensor.lastObservationValue}} {{sensor.uom}} <br><small>{{'SENSORS.at' | translate}} {{sensor.lastObservationTimestamp}}</small></span>

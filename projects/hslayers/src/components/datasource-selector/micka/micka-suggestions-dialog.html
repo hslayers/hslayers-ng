@@ -26,7 +26,7 @@
                     <li *ngFor="let suggestion of hsMickaFilterService.suggestions | slice:0:10"
                         [ngClass]="'list-group-item'">
                         <b class="list-group-item-heading">
-                            <a href="#"
+                            <a 
                                 (click)="addSuggestion(suggestion[hsMickaFilterService.suggestionConfig.field]); hsMickaFilterService.suggestionsModalVisible = false"
                                 data-dismiss="modal">
                                 {{suggestion[hsMickaFilterService.suggestionConfig.field]}} <span

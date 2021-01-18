@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
-                        <a href="#" class="p-1 mb-1"
+                        <a class="p-1 mb-1"
                             (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' | translate}}</a>
                     </div>
                     <div [hidden]="!folderVisible">
@@ -76,7 +76,7 @@
                         <ul class="list-group w-100">
                             <li *ngFor="let layer of data.drawableLaymanLayers" class="clearfix"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
-                                <b><a href="#" data-toggle="tooltip"
+                                <b><a  data-toggle="tooltip"
                                         title="{{layer.description}}">{{layer.title}}</a></b>
                                 <span class="float-right">
                                     <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"

@@ -20,7 +20,7 @@
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-success" href="#"
+                <a role="button" class="btn btn-success" 
                     [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)' data-toggle="tooltip"
                     title="GeoDCAT-AP" target="_blank"
                     [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>

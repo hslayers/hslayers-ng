@@ -18,7 +18,7 @@
 
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class="md-raised md-secondary" href="#"
+            <md-button class="md-raised md-secondary" 
                 [href]='hsDatasourcesService.layerRDF(selectedDS, selectedLayer)' title="GeoDCAT-AP" target="_blank"
                 [hidden]='selectedDS.type!="micka" || hsDatasourcesService.layerRDF(selectedDS, selectedLayer) == "#"'>
                 {{'DATASOURCE_SELECTOR.layerRDF' | translate}}
