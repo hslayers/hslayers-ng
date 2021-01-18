@@ -24,6 +24,8 @@ export class HsDataComponent {
     public HsEventBusService: HsEventBusService
 
   ) {
+    this.HsDataService.typeSelected = 'catalogue';
+
     console.log('wmstoconnect')
     this.connectServiceFromUrlParam('wms');
     this.connectServiceFromUrlParam('wfs');
