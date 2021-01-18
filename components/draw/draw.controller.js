@@ -64,6 +64,7 @@ export default function (
             removable: true,
             editable: true,
             path: HsConfig.defaultDrawLayerPath || gettext('User generated'),
+            zIndex: Infinity,
           });
           HsDrawService.tmpDrawLayer = true;
           HsDrawService.selectedLayer = drawLayer;

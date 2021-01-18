@@ -118,6 +118,7 @@ export default function (
           format: 'hs.format.WFS',
           url: HsLaymanService.getLaymanEndpoint().url + '/wfs', //which endpoint? TODO
         },
+        zIndex: Infinity,
       });
       me.selectedLayer = drawLayer;
       const el = angular.element(
