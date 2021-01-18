@@ -430,7 +430,7 @@ export default function (
     const new_layer = new layer_class({
       title: layerName,
       source,
-      minResolution: layer.MinScaleDenominator,
+      minResolution: 0,
       maxResolution: layer.MaxScaleDenominator,
       saveState: true,
       removable: true,
