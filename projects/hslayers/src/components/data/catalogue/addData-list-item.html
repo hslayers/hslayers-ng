@@ -1,0 +1,45 @@
+<div class="d-flex align-items-center">
+    <div class="mr-auto p-2">
+        <strong><a href="#" data-toggle="tooltip" [title]="layer.description || ''"
+                (click)="showMetadata(layer.endpoint, layer)">{{layer.title || layer.description}}</a></strong>
+    </div>
+    <div class="p-0" [hidden]='HsAddDataCatalogueService.layerDownload(layer.endpoint,layer) == "#"'>
+        <a class="btn btn-sm btn-secondary" [href]='HsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
+            data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
+    </div>
+    <!-- <div class="p-0" [hidden]='layer.endpoint.type != "micka" || HsAddDataCatalogueService.layerRDF(layer.endpoint, layer) == "#"'>
+        <a class="btn btn-sm btn-secondary" [href]='HsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
+            data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
+    </div> -->
+    <div class="p-0" [hidden]="!selectTypeToAddLayerVisible">
+        <span class="btn btn-sm" disabled="true" aria-disabled="true">Add as&nbsp;</span>
+        <div class="btn-group btn-group-toggle h-100 pr-2 align-items-center" data-toggle="buttons">
+            <label class="btn btn-sm btn-outline-primary" [ngClass]="{'active': type == selectedType}"
+                *ngFor="let type of whatToAddTypes" (click)="selectedType = type; addLayerToMap(layer.endpoint, layer)">
+                <input type="radio" name="options"/>
+                {{type}}
+            </label>
+            <i class="btn btn-sm icon-question-sign btn-light btn-outline-secondary" (click)="toggleExplanations()"
+                data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translate"></i>
+        </div>
+    </div>
+    <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
+        <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(layer.endpoint, layer)"
+            data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate">
+            <i class="icon-plus"></i>
+        </button>
+    </div>
+    <div class="p-0" [hidden]="!selectTypeToAddLayerVisible || selectedType">
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="abortAdd()" data-toggle="tooltip"
+            [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translate">
+            <i class="icon-remove"></i>
+        </button>
+    </div>
+</div>
+<div class="d-flex">
+    <ul class="ml-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
+        <li class="text-secondary small" *ngFor="let type of whatToAddTypes">
+            {{type}} &ndash; {{getTypeDescription(type)}}
+        </li>
+    </ul>
+</div>

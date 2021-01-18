@@ -1,16 +1,16 @@
-import {EMPTY, of, Subscription} from 'rxjs';
+import {EMPTY, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError, map} from 'rxjs/operators';
 
-import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from '../addData-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
-  httpCall: Subscription;
+  httpCall;
 
   constructor(
     private http: HttpClient,
@@ -88,8 +88,8 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     dataset: HsEndpoint,
-    layer: HsDataLayerDescriptor
-  ): Promise<HsDataLayerDescriptor> {
+    layer: HsAddDataLayerDescriptor
+  ): Promise<HsAddDataLayerDescriptor> {
     let url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
     url = this.hsUtilsService.proxify(url);
     try {
@@ -124,7 +124,7 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
     return {

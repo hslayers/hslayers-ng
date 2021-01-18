@@ -63,12 +63,15 @@ export class HsSidebarService {
         icon: 'icon-layers',
       },
       {
-        panel: 'data',
-        module: 'hs.data',
+        panel: 'addData',
+        module: 'hs.addData',
         order: 18,
-        title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
+        title: () =>
+          this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
         description: () =>
-          this.HsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
+          this.HsLanguageService.getTranslation(
+            'SIDEBAR.descriptions.ADDLAYERS'
+          ),
         icon: 'icon-database',
       },
       {
