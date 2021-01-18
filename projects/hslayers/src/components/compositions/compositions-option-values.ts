@@ -1,25 +1,25 @@
 export const KEYWORDS: any[] = [
   {name: 'Basemap', value: 'Basemap', selected: false},
   {name: 'Borders', value: 'Borders', selected: false},
-  {name: 'PhysicalGeography', value: 'PhysicalGeography', selected: false},
+  {name: 'Physical geography', value: 'Physical geography', selected: false},
   {name: 'Demographics', value: 'Demographics', selected: false},
   {name: 'Economics', value: 'Economics', selected: false},
   {
-    name: 'SocioPoliticalConditions',
-    value: 'SocioPoliticalConditions',
+    name: 'Socio political conditions',
+    value: 'Socio political conditions',
     selected: false,
   },
   {name: 'Culture', value: 'Culture', selected: false},
   {name: 'Transport', value: 'Transport', selected: false},
-  {name: 'LandUse', value: 'LandUse', selected: false},
+  {name: 'Land use', value: 'Land use', selected: false},
   {name: 'Environment', value: 'Environment', selected: false},
   {name: 'Water', value: 'Water', selected: false},
   {name: 'Hazards', value: 'Hazards', selected: false},
   {name: 'Cadastre', value: 'Cadastre', selected: false},
   {name: 'Infrastructure', value: 'Infrastructure', selected: false},
-  {name: 'RealEstate', value: 'RealEstate', selected: false},
+  {name: 'Real estate', value: 'Real estate', selected: false},
   {name: 'Planning', value: 'Planning', selected: false},
-  {name: 'ComplexInformation', value: 'ComplexInformation', selected: false},
+  {name: 'Complex information', value: 'Complex information', selected: false},
 ];
 export const INSPIRETHEMES: any[] = [
   {name: 'None', value: 'None'},
@@ -37,8 +37,8 @@ export const INSPIRETHEMES: any[] = [
   {name: 'Land cover', value: 'Land cover'},
   {name: 'Orthoimagery', value: 'Orthoimagery'},
   {
-    name: 'Agricultural and aquaculture facitilies',
-    value: 'Agricultural and aquaculture facitilies',
+    name: 'Agricultural and aquaculture facilities',
+    value: 'Agricultural and aquaculture facilities',
   },
   {
     name: 'Area management/restriction/regulation zones and reporting units',

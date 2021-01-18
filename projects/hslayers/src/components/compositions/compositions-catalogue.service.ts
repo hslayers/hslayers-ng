@@ -79,6 +79,7 @@ export class HsCompositionsCatalogueService {
    */
   compositionsLoading: boolean;
   selectedCompId: any;
+  loadCompositionsQuery: any;
   constructor(
     public HsMapService: HsMapService,
     public HsCompositionsService: HsCompositionsService,
@@ -150,6 +151,10 @@ export class HsCompositionsCatalogueService {
    * @param keepCompositions
    */
   loadCompositions(keepCompositions?: boolean, fillPage?: boolean): void {
+    if (this.loadCompositionsQuery) {
+      this.loadCompositionsQuery.unsubscribe();
+      delete this.loadCompositionsQuery;
+    }
     this.HsMapService.loaded().then(() => {
       this.compositionsLoading = true;
       const observables = [];
@@ -172,14 +177,11 @@ export class HsCompositionsCatalogueService {
             );
           }
         }
-        forkJoin(observables).subscribe(() => {
+        this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
           this.createCompositionList();
         });
       }
     });
-    // Promise.all(promises).then(() => {
-    //   this.createCompositionList();
-    // });
   }
   /**
    * @public
@@ -200,17 +202,14 @@ export class HsCompositionsCatalogueService {
     });
   }
   createCompositionList(): void {
-    //ratio limits
+    //TODO: ratio limits
     this.paging.matched = 0;
     for (const endpoint of this.filteredEndpointsForCompositions()) {
       if (endpoint.compositionsPaging.matched) {
         this.paging.matched += endpoint.compositionsPaging.matched;
       }
-      if (
-        endpoint.compositions !== undefined &&
-        endpoint.compositions?.length > 0
-      ) {
-        if (this.compositionEntries?.length != 0) {
+      if (this.arrayContainsData(endpoint.compositions)) {
+        if (this.arrayContainsData(this.compositionEntries)) {
           this.compositionEntries = this.compositionEntries.concat(
             this.filterDuplicates(endpoint.compositions)
           );
@@ -222,41 +221,15 @@ export class HsCompositionsCatalogueService {
       }
     }
     this.compositionsLoading = false;
-    this.checkIfPageIsFull();
+    if (this.arrayContainsData(this.compositionEntries)) {
+      this.checkIfPageIsFull();
+    }
   }
-  filterDuplicates(responseArray): any[] {
-    if (responseArray === undefined || responseArray?.length == 0) {
-      return [];
-    }
-    const hasUuId = responseArray.find((comp) => {
-      if (comp.uuid !== undefined) {
-        return true;
-      }
-    });
-    if (hasUuId) {
-      const laymanComps = this.compositionEntries.filter(
-        (comp) => comp.uuid !== undefined
-      );
-      if (laymanComps?.length > 0) {
-        return responseArray.filter(
-          (data) => laymanComps.filter((u) => u.uuid == data.uuid).length == 0
-        );
-        // return this.compositionEntries.concat(
-        //   responseArray.filter(
-        //     (data) => laymanComps.filter((u) => u.uuid != data.uuid).length == 0
-        //   )
-        // );
-      } else {
-        return responseArray;
-      }
-    } else {
-      const regularComps = this.compositionEntries.filter(
-        (comp) => comp.id !== undefined
-      );
-      return responseArray.filter(
-        (data) => regularComps.filter((u) => u.id == data.id).length == 0
-      );
-    }
+  filterDuplicates(responseArray: any[]): any[] {
+    return responseArray.filter(
+      (data) =>
+        this.compositionEntries.filter((u) => u.id == data.id).length == 0
+    );
   }
   checkIfPageIsFull(): void {
     let boundByLimit: boolean;
@@ -281,6 +254,16 @@ export class HsCompositionsCatalogueService {
     this.listNext = this.recordsPerPage;
     this.compositionEntries = [];
     this.HsCompositionsService.resetCompositionCounter();
+    this.filteredEndpointsForCompositions().forEach(
+      (ep) => (ep.compositions = [])
+    );
+  }
+  arrayContainsData(arr: any[]): boolean {
+    if (arr !== undefined && arr.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
   loadOnlyLayman(): Observable<any> {
     this.filteredEndpointsForCompositions().forEach((ep: HsEndpoint) => {
@@ -356,8 +339,6 @@ export class HsCompositionsCatalogueService {
   }
   clearFilters(): void {
     this.data.query.title = '';
-    this.filterByExtent = true;
-    this.filterByOnlyMine = false;
     this.data.sortBy = SORTBYVALUES[0].name;
     this.data.type = TYPES[0].name;
     this.data.theme = INSPIRETHEMES[0].name;

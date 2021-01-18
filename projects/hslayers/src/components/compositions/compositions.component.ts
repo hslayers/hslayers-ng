@@ -184,4 +184,8 @@ export class HsCompositionsComponent {
       this.selectedCompId = '';
     }
   }
+  reload(): void {
+    this.clearFilters();
+    this.loadCompositions();
+  }
 }

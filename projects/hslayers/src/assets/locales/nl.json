@@ -1,135 +1,135 @@
 {
-    "COMMON": {
-        "abstract": "Samenvatting",
-        "advancedOptions": "Geavanceerde opties",
-        "attribute": "Attribuut",
-        "cancel": "Annuleer",
-        "circle": "Cirkel",
-        "close": "Sluit af",
-        "color": "Kleur",
-        "date": "Datum",
-        "distance": "Afstand",
-        "drawNewFeatures": "Teken nieuwe entiteiten",
-        "fill": "Vullen",
-        "filter": "Filter:",
-        "folder": "Map",
-        "from": "Van",
-        "hide": "Zich verstoppen",
-        "info": "Extra informatie",
-        "legend": "Legenda",
-        "line": "Lijn",
-        "newDrawingLayer": "Nieuwe tekenlaag",
-        "no": "Nee",
-        "ok": "Ok",
-        "point": "Punt",
-        "polygon": "Veelhoek",
-        "radius": "Straal",
-        "reload": "Herlaad",
-        "removeLayer": "Laag verwijderen",
-        "renameLayer": "Hernoem laag",
-        "rotation": "Rotatie",
-        "saveAs": "Opslaan als..",
-        "scale": "Schaal",
-        "stroke": "lijn",
-        "strokeWidth": "lijnbreedte",
-        "title": "Titel",
-        "to": "tot",
-        "width": "Breedte"
+  "COMMON": {
+    "abstract": "Samenvatting",
+    "advancedOptions": "Geavanceerde opties",
+    "attribute": "Attribuut",
+    "cancel": "Annuleer",
+    "circle": "Cirkel",
+    "close": "Sluit af",
+    "color": "Kleur",
+    "date": "Datum",
+    "distance": "Afstand",
+    "drawNewFeatures": "Teken nieuwe entiteiten",
+    "fill": "Vullen",
+    "filter": "Filter:",
+    "folder": "Map",
+    "from": "Van",
+    "hide": "Zich verstoppen",
+    "info": "Extra informatie",
+    "legend": "Legenda",
+    "line": "Lijn",
+    "newDrawingLayer": "Nieuwe tekenlaag",
+    "no": "Nee",
+    "ok": "Ok",
+    "point": "Punt",
+    "polygon": "Veelhoek",
+    "radius": "Straal",
+    "reload": "Herlaad",
+    "removeLayer": "Laag verwijderen",
+    "renameLayer": "Hernoem laag",
+    "rotation": "Rotatie",
+    "saveAs": "Opslaan als..",
+    "scale": "Schaal",
+    "stroke": "lijn",
+    "strokeWidth": "lijnbreedte",
+    "title": "Titel",
+    "to": "tot",
+    "width": "Breedte"
+  },
+  "DRAW": {
+    "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
+    "definedStyle": "Gedefinieerde stijl",
+    "disableDrawing": "Schakel tekenen uit",
+    "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
+    "drawingTo": "Tekenen naar:",
+    "drawLayerMetadata": {
+      "defaultAttributes": "Standaard attributen",
+      "defaultValue": "Standaardwaarde",
+      "layerTitle": "Laag titel",
+      "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
+      "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
+      "loadServerLayers": "Load layer from server"
     },
-    "DRAW": {
-        "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
-        "definedStyle": "Gedefinieerde stijl",
-        "disableDrawing": "Schakel tekenen uit",
-        "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
-        "drawingTo": "Tekenen naar:",
-        "drawLayerMetadata": {
-            "defaultAttributes": "Standaard attributen",
-            "defaultValue": "Standaardwaarde",
-            "layerTitle": "Laag titel",
-            "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
-            "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
-            "loadServerLayers": "Load layer from server"
-        },
-        "drawToolbar": {
-            "addDrawLayer": "Tekenlaag toevoegen",
-            "finishFeature": "Afwerking entiteit",
-            "removeLastPoint": "Verwijder het laatste punt"
-        },
-        "fillOpacity": "Vul de dekking:",
-        "individualStyle": "Individuele stijl voor entiteit",
-        "unsavedDrawing": "Niet-opgeslagen tekening",
-        "saveDrawingToLayer": "Save drawing to layer",
-        "activeLayers": "Active layers",
-        "serverLayers": "Server layers",
-        "notAuthorized":"User not authorized, drawings won´t be preserved"
+    "drawToolbar": {
+      "addDrawLayer": "Tekenlaag toevoegen",
+      "finishFeature": "Afwerking entiteit",
+      "removeLastPoint": "Verwijder het laatste punt"
     },
-    "LAYERMANAGER": {
-        "baselayers": "Basislagen",
-        "baseMapGallery": {
-            "grayscale": "Grijstinten",
-            "noBaseMap": "Geen basiskaart"
-        },
-        "dialogRemoveAll": {
-            "dialogMessage": "Bent u zeker dat u alle lagen wilt verwijderen?",
-            "reloadComposition": "Compostie opnieuw uploaden",
-            "removeAllAdded": "Verwijder alle toegevoegde lagen"
-        },
-        "dimensions": "Dimensies",
-        "layerEditor": {
-            "cluster": "Cluster",
-            "copyright": "Auteursrechten",
-            "declutter": "Declutter",
-            "metadata": "Metadata",
-            "metadataOfLayer": "Metadata van laag in",
-            "metadataOfService": "Metadata van service",
-            "opacity": "Doorzichtigheid",
-            "styleLayer": "Stijllaag",
-            "zoomToLayer": "Zoom in op laag"
-        },
-        "layerList": {
-            "layerIsQueryable": "Deze laag is beschikbaar",
-            "layerNotAvailable": "These laag is niet beschikbaar",
-            "noAvailableInScale": "Deze laag is niet beschikbaar op deze schaal",
-            "sendingToLayman": "Verzenden naar layman"
-        },
-        "layermanagerMd": {
-            "aboutLayer": "Over laag",
-            "filterFeatures": "Filter entiteiten",
-            "imageLayer": "Afbeeldingslaag",
-            "innerRadius": "Binnenradius",
-            "layerName": "Laag naam",
-            "layerOpacity": "Laagdekking",
-            "layerOptions": "Laagopties",
-            "layerStyle": "Laagstijl",
-            "lineFeatures": "Lijnentiteiten",
-            "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
-            "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
-            "outerRadius": "Buitenste straal",
-            "pointFeatures": "Punt entiteiten",
-            "polygonFeatures": "Polygoon-entiteitenn",
-            "sidesNumber": "Zijkanten nummer",
-            "star": "Ster"
-        },
-        "mapContent": "Mapinhoud",
-        "other": "Andere",
-        "removeAllLayers": "Verwijder alle lagen",
-        "resetMap": "Reset kaart",
-        "terrains": "Terreinen",
-        "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "fillOpacity": "Vul de dekking:",
+    "individualStyle": "Individuele stijl voor entiteit",
+    "unsavedDrawing": "Niet-opgeslagen tekening",
+    "saveDrawingToLayer": "Save drawing to layer",
+    "activeLayers": "Active layers",
+    "serverLayers": "Server layers",
+    "notAuthorized": "User not authorized, drawings won´t be preserved"
+  },
+  "LAYERMANAGER": {
+    "baselayers": "Basislagen",
+    "baseMapGallery": {
+      "grayscale": "Grijstinten",
+      "noBaseMap": "Geen basiskaart"
     },
-    "LEGEND": {
-        "noLegendExists": "Er bestaat geen laag met legenda!"
+    "dialogRemoveAll": {
+      "dialogMessage": "Bent u zeker dat u alle lagen wilt verwijderen?",
+      "reloadComposition": "Compostie opnieuw uploaden",
+      "removeAllAdded": "Verwijder alle toegevoegde lagen"
     },
-    "PANEL_HEADER": {
-        "DRAW": "Trek",
-        "LEGEND": "Legenda",
-        "LM": "Beheer lagen"
+    "dimensions": "Dimensies",
+    "layerEditor": {
+      "cluster": "Cluster",
+      "copyright": "Auteursrechten",
+      "declutter": "Declutter",
+      "metadataOfLayer": "Metadata van laag in",
+      "metadataOfService": "Metadata van service",
+      "opacity": "Doorzichtigheid",
+      "styleLayer": "Stijllaag",
+      "zoomToLayer": "Zoom in op laag"
     },
-    "TRIP_PLANNER": {
-        "totalDistance": "Total distance",
-        "waypoints": "Waypoints",
-        "clearWaypoints": "Clear waypoints",
-        "removeWaypoint": "Remove waypoint",
-        "waypointDrawingHint": "Please click on map to add waypoints"
-    }
+    "layerList": {
+      "layerIsQueryable": "Deze laag is beschikbaar",
+      "layerNotAvailable": "These laag is niet beschikbaar",
+      "noAvailableInScale": "Deze laag is niet beschikbaar op deze schaal",
+      "sendingToLayman": "Verzenden naar layman"
+    },
+    "layermanagerMd": {
+      "aboutLayer": "Over laag",
+      "filterFeatures": "Filter entiteiten",
+      "imageLayer": "Afbeeldingslaag",
+      "innerRadius": "Binnenradius",
+      "layerName": "Laag naam",
+      "layerOpacity": "Laagdekking",
+      "layerOptions": "Laagopties",
+      "layerStyle": "Laagstijl",
+      "lineFeatures": "Lijnentiteiten",
+      "moveLayerDownward": "Verplaats laag naar beneden, SHIFT-klik naar beneden",
+      "moveLayerUpward": "Verplaats de laag naar boven, SHIFT-klik naar boven",
+      "outerRadius": "Buitenste straal",
+      "pointFeatures": "Punt entiteiten",
+      "polygonFeatures": "Polygoon-entiteitenn",
+      "sidesNumber": "Zijkanten nummer",
+      "star": "Ster"
+    },
+    "mapContent": "Mapinhoud",
+    "other": "Andere",
+    "removeAllLayers": "Verwijder alle lagen",
+    "resetMap": "Reset kaart",
+    "terrains": "Terreinen",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+  },
+  "LEGEND": {
+    "noLegendExists": "Er bestaat geen laag met legenda!"
+  },
+  "PANEL_HEADER": {
+    "DRAW": "Trek",
+    "LEGEND": "Legenda",
+    "LM": "Beheer lagen"
+  },
+  "TRIP_PLANNER": {
+    "totalDistance": "Total distance",
+    "waypoints": "Waypoints",
+    "clearWaypoints": "Clear waypoints",
+    "removeWaypoint": "Remove waypoint",
+    "waypointDrawingHint": "Please click on map to add waypoints"
+  },
+  "COMPOSITONINSPIRETHEMES": {}
 }

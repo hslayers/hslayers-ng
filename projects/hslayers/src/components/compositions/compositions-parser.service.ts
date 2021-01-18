@@ -115,7 +115,6 @@ export class HsCompositionsParserService {
   parseWMC(response: string): any {
     let res: any = xml2Json.xml2js(response, {compact: true});
     res = res.ViewContext;
-    //console.log(res);
     const compositionJSON: any = {
       current_base_layer: {
         title: 'Composite_base_layer',
