@@ -103,6 +103,7 @@ export class HsLayoutService {
     filter: false,
     search: false,
     tripPlanner: false,
+    addData: true,
   };
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(null);
 
