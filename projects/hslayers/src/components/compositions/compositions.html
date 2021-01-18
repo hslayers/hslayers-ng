@@ -1,25 +1,25 @@
 <div class="card mainpanel hs-comp-mainpanel">
     <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translate">
         <extra-buttons>
-            <button class="but-title-sm" title="{{'PANEL_HEADER.SAVECOMPOSITION'|translate}}"
-                style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;"
+            <button class="but-title-sm hs-extra-buttons" (click)="reload()"
+                [title]="'COMMON.reload' | translate">
+                <i class="glyphicon icon-fatredo"></i>
+            </button>
+            <button class="but-title-sm hs-extra-buttons" title="{{'PANEL_HEADER.SAVECOMPOSITION'|translate}}"
                 (click)="openSaveMapPanel()">
                 <span class="icon-save-floppy"></span>
             </button>
-            <label class="but-title-sm btn-file" title="{{'COMPOSITIONS.import'|translate}}"
-                style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;">
+            <button class="but-title-sm btn-file hs-extra-buttons" title="{{'COMPOSITIONS.import'|translate}}">
                 <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept="json"
                     style="display: none;">
-            </label>
-            <button class="but-title-sm" title="{{'COMPOSITIONS.addByAddress'|translate}}"
-                style="margin-bottom: 0; line-height: 1em; float: right; margin-right: 0.5em; cursor: pointer;"
-                (click)="changeUrlButtonVisible()">
+            </button>
+            <button class="but-title-sm hs-extra-buttons" title="{{'COMPOSITIONS.addByAddress'|translate}}" (click)="changeUrlButtonVisible()">
                 <span class="icon-plus"></span>
             </button>
         </extra-buttons>
     </hs-panel-header>
     <div class="card-body">
-        <div class="input-group" [hidden]="!addCompositionUrlVisible">
+        <div class="input-group mb-2" [hidden]="!addCompositionUrlVisible">
             <input type="text" class="form-control" placeholder="{{'COMPOSITIONS.Address'|translate}}"
                 [(ngModel)]="urlToAdd" [ngModelOptions]="{standalone: true}">
             <div class="input-group-append">
@@ -95,18 +95,21 @@
                                             </div>
                                     </form> -->
 
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle"
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="background-color:rgba(0,0,0,.03); color: #495057">
+                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
-                                        <ul class="dropdown-menu" [ngClass]="{'show': keywordsVisible}">
-                                            <a *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords" class="dropdown-item"
+                                        <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}" style=" right: 0; top: 40%;">
+                                            <!-- <a *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords" class="dropdown-item"
                                                 [ngClass]="{'active': keyword.selected}"
                                                 (click)="$event.stopPropagation(); keywordChecked(keyword)">{{translateString('COMPOSITONKEYWORDS',
-                                                keyword.name)}}</a>
-                                        </ul>
+                                                keyword.name)}}</a> -->
+                                            <li *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;"  >
+                                                <label class="checkbox"><input class="mr-2" type="checkbox" [(ngModel)]="keyword.selected" name="keyword[index]" (change)="loadCompositions()">{{translateString('COMPOSITONKEYWORDS',
+                                                    keyword.name)}}</label></li>
+                                        </ul> 
                                     </td>
                                 </tr>
                                 <tr>

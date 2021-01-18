@@ -5,11 +5,11 @@ import {Injectable} from '@angular/core';
 import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
-import {EMPTY, Observable, Subscription} from 'rxjs';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {Observable, Subscription, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class HsCompositionsMickaService {
     private $http: HttpClient,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public log: HsLogService
+    public HsLogService: HsLogService
   ) {}
 
   getCompositionsQueryUrl(endpoint, params, bbox): string {
@@ -86,6 +86,7 @@ export class HsCompositionsMickaService {
     response: any
   ): HsEndpoint {
     if (!response.records) {
+      this.HsLogService.error('No data received');
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -128,7 +129,6 @@ export class HsCompositionsMickaService {
         //Composition not in extent
       }
     }
-    console.log('ENDING');
     return endpoint;
   }
 
@@ -141,12 +141,6 @@ export class HsCompositionsMickaService {
     params = this.checkForParams(endpoint, params);
     const url = this.getCompositionsQueryUrl(endpoint, params, bbox);
     endpoint.compositionsPaging.loaded = false;
-
-    if (endpoint.httpCall) {
-      // dataset.httpCall.unsubscribe();
-      console.log('remove');
-      delete endpoint.httpCall;
-    }
 
     endpoint.httpCall = this.$http
       .get(url, {
@@ -162,9 +156,9 @@ export class HsCompositionsMickaService {
           return ep;
         }),
         catchError((e) => {
-          this.log.error(e);
+          this.HsLogService.error(e);
           endpoint.datasourcePaging.loaded = true;
-          return EMPTY;
+          return of(e);
         })
       );
 

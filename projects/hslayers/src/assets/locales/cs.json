@@ -1,35 +1,6 @@
 {
   "ADDLAYERS": {
-    "SHP": {
-      "SLDStyleFile": "Soubor se styly SLD",
-      "shapeFile": "Soubory Shapefile (shp+dbf+shx)"
-    },
-    "TYPES": {
-      "ArcGIS": "ArcGIS Map Server",
-      "WFS": "Web Feature Service (WFS)",
-      "WMS": "Web Map Service (WMS)",
-      "shapeFile": "Shapefile",
-      "vectorFile": "vektorový soubor (GeoJSON, KML)"
-    },
-    "VECTOR": {
-      "extractStyles": "Extrahovat styly"
-    },
-    "Vector": {
-      "dragAndDropFiles": "Přetáhněte soubory",
-      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory"
-    },
-    "WFS": {
-      "addToMap": "Přidat do mapy",
-      "loadingToManyAtOnce": "prvků. Načítání příliš mnoha prvků najednou (při oddálení) může ovlivnit výkon aplikace",
-      "selectedLayerContains": "Vybraná vrstva obsahuje"
-    },
-    "WMSCapabilitiesParsingProblem": "Problém při syntaktické analýze WMS Capabilities",
-    "WMTS": {
-      "tileMatrix": "Matice dlaždic"
-    },
     "addSelected": "Přidat označené vrstvy do mapy",
-    "under": "Přidat pod vrstvu",
     "chooseFormat": "Vyberte formát",
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvažte použití dlaždic. Některé servery mají omezenou maximální velikost obrazu.",
@@ -46,18 +17,44 @@
     "registerMetadata": "Registrovat metadata",
     "resampleLayer": "Převzorkovat vrstvu",
     "selectAllLayers": "Vybrat všechny vrstvy",
+    "SHP": {
+      "shapeFile": "Soubory Shapefile (shp+dbf+shx)",
+      "SLDStyleFile": "Soubor se styly SLD"
+    },
     "someErrorHappened": "Nastala nespecifikovaná chyba nebo je chybný vstup",
     "srs": "SRS",
     "thereWasErrorWhile": "Nastala chyba při syntaktické analýze odpovědi Capabilities z dané URL",
     "thisIsRequired": "Toto je vyžadováno!",
     "tileSize": "Velikost dlaždice",
+    "TYPES": {
+      "ArcGIS": "ArcGIS Map Server",
+      "shapeFile": "Shapefile",
+      "vectorFile": "vektorový soubor (GeoJSON, KML)",
+      "WFS": "Web Feature Service (WFS)",
+      "WMS": "Web Map Service (WMS)"
+    },
+    "under": "Přidat pod vrstvu",
     "useProxy": "Použít proxy",
-    "useTiles": "Použít dlaždice"
+    "useTiles": "Použít dlaždice",
+    "Vector": {
+      "dragAndDropFiles": "Přetáhněte soubory",
+      "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
+      "uploadVectorFiles": "Nahrajte vektorové soubory"
+    },
+    "VECTOR": {
+      "extractStyles": "Extrahovat styly"
+    },
+    "WFS": {
+      "addToMap": "Přidat do mapy",
+      "loadingToManyAtOnce": "prvků. Načítání příliš mnoha prvků najednou (při oddálení) může ovlivnit výkon aplikace",
+      "selectedLayerContains": "Vybraná vrstva obsahuje"
+    },
+    "WMSCapabilitiesParsingProblem": "Problém při syntaktické analýze WMS Capabilities",
+    "WMTS": {
+      "tileMatrix": "Matice dlaždic"
+    }
   },
   "COMMON": {
-    "Login": "Přihlásit se",
-    "Logout": "Odhlásit",
-    "Sort": "Seřadit",
     "abstract": "Abstrakt",
     "add": "Přidat",
     "addAs": "Přidat jako",
@@ -107,6 +104,8 @@
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
     "loading": "Načítání",
+    "Login": "Přihlásit se",
+    "Logout": "Odhlásit",
     "menu": "Menu",
     "more": "Více",
     "name": "Název",
@@ -136,6 +135,7 @@
     "service": "Služba",
     "settings": "Nastavení",
     "showMore": "Zobrazit více",
+    "Sort": "Seřadit",
     "south": "Jižní",
     "stop": "Konec",
     "stroke": "Obrys",
@@ -155,16 +155,13 @@
     "zoomTo": "zvětšit na"
   },
   "COMPOSITIONS": {
-    "Address": "Adresa",
     "addByAddress": "Přidat kompozici z adresy",
+    "Address": "Adresa",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Chcete smazat tuto mapu?"
     },
     "dialogInfo": {
       "details": "detaily"
-    },
-    "dialogShare": {
-      "shareMap": "Sdílet mapu"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Spojit kompozice",
@@ -173,6 +170,9 @@
       "thereAreCurrentlyUnsavedChanges": "V mapovém okně jsou neuložené změny.",
       "whatDoYouWant": "Co chcete provést před otevřením vybrané mapové kompozice?",
       "youAreOpeningMap": "Otevíráte mapu."
+    },
+    "dialogShare": {
+      "shareMap": "Sdílet mapu"
     },
     "filterByMap": "Filtrovat na rozsah okna",
     "import": "Importovat kompozici ze souboru v tomto zařízení",
@@ -202,12 +202,12 @@
     "suggestions": "Návrhy"
   },
   "DRAW": {
-    "Select layer": "Vybrat vrstvu",
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",
     "activeLayers": "Aktivní vrstvy",
     "definedStyle": "Definovaný styl",
     "disableDrawing": "Vypnout kreslení",
     "drawInfo": "Při kreslení mnohoúhelníku nebo linie můžete držet klávesu SHIFT pro kreslení rukou; Poslední bod můžete vymazat klávesou Backspace",
+    "drawingTo": "Kreslím do:",
     "drawLayer": "Kreslicí vrstva",
     "drawLayerMetadata": {
       "defaultAttributes": "Výchozí atributy",
@@ -223,20 +223,19 @@
       "removeLastPoint": "Odebrat poslední bod",
       "selectType": "Zvolte typ"
     },
-    "drawingTo": "Kreslím do:",
     "fillOpacity": "Vyplňte neprůhlednost:",
     "individualStyle": "Individuální styl pro prvek",
     "newGPS": "Nové GPS",
     "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
     "saveDrawingToLayer": "Uložit do vrstvy",
+    "Select layer": "Vybrat vrstvu",
     "serverLayers": "Servrové vrstvy",
     "unsavedDrawing": "Neuložená kresba"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
     "showFeatureStats": "Expand",
-    "sortBy": "Sort by",
     "sortFeaturesByValue": "Zobrazte statistiky prvku",
     "zoom to": "zoom to"
   },
@@ -257,12 +256,11 @@
     "youHaveUnsavedChanges": "Máte neuložené změny!"
   },
   "LAYERMANAGER": {
-    "User generated": "Uživatelský",
+    "baselayers": "Podkladové vrstvy",
     "baseMapGallery": {
       "grayscale": "Šedotón",
       "noBaseMap": "Bez podkladu"
     },
-    "baselayers": "Podkladové vrstvy",
     "dialogRemoveAll": {
       "dialogMessage": "Opravdu chcete odstranit všechny vámi přidané vrstvy?",
       "reloadComposition": "Obnovit kompozici",
@@ -275,7 +273,6 @@
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
       "declutter": "Procedit",
-      "metadata": "Metadata",
       "metadataOfLayer": "Metadata vrstvy v ",
       "metadataOfService": "Metadata služby",
       "opacity": "Průhlednost",
@@ -317,7 +314,8 @@
     "other": "Jiný",
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
-    "terrains": "Terény"
+    "terrains": "Terény",
+    "User generated": "Uživatelský"
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
@@ -366,7 +364,6 @@
     "newShare": "Nové sdílení",
     "permalink": "Trvalý odkaz",
     "pureMap": "Pouze mapa",
-    "share": "Sdílet",
     "shareOnSocialNetwork": "Sdílejte na sociální síti",
     "sharePureMap": "Sdílet pouze mapu",
     "sharesMapWith": "*Sdílí mapu se (všemi) funkcemi portálu",
@@ -443,9 +440,6 @@
       "errorWhenSyncing": "Chyba při synchronizaci"
     }
   },
-  "SEARCH": {
-    "search": "Vyhledat:"
-  },
   "SENSORS": {
     "1D": "1D",
     "1H": "1H",
@@ -459,8 +453,8 @@
     "min": "Min",
     "oneHour": "1 hodina",
     "phenomena": "Jevy",
-    "sensorUnit": "Senzorová jednotka",
-    "sensors": "Senzory"
+    "sensors": "Senzory",
+    "sensorUnit": "Senzorová jednotka"
   },
   "SIDEBAR": {
     "descriptions": {

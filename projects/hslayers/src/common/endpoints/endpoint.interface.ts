@@ -7,6 +7,7 @@ export interface HsEndpoint {
   url: string;
   download?: boolean;
   language?;
+  listLoading?;
   layers?: HsDatasourceLayerDescriptor[];
   liferayProtocol?;
   originalConfiguredUser?;
