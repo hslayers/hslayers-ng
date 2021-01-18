@@ -24,6 +24,11 @@ export class HsLayerEditorService {
     oldTitle: string;
     layer: VectorLayer;
   }> = new Subject();
+
+  layerDimensionDefinitionChange: Subject<{
+    layer: Layer;
+  }> = new Subject();
+
   constructor(
     public HsMapService: HsMapService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,

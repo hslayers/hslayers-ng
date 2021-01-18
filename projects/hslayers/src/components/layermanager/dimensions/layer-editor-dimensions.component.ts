@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {HsDimensionDescriptor} from './dimension.class';
 import {HsDimensionService} from '../../../common/dimension.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLayerEditorService} from '../layer-editor.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
@@ -18,16 +19,24 @@ export class HsLayerEditorDimensionsComponent {
     public HsDimensionService: HsDimensionService,
     public HsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
-    public HsEventBusService: HsEventBusService
-  ) {}
+    public HsEventBusService: HsEventBusService,
+    public HsLayerEditorService: HsLayerEditorService
+  ) {
+    this.HsLayerEditorService.layerDimensionDefinitionChange.subscribe(
+      ({layer}) => {
+        if (layer == this.olLayer) {
+          this.ngOnChanges();
+        }
+      }
+    );
+  }
 
   ngOnChanges(): void {
     const layer = this.olLayer;
     this.dimensions = [];
-    if (layer.get('dimensions') && Object.entries(layer.get('dimensions'))) {
-      for (const [key, dimension] of <[any, any]>(
-        Object.entries(layer.get('dimensions'))
-      )) {
+    const dimensions = getDimensions(layer);
+    if (dimensions && Object.entries(dimensions)) {
+      for (const [key, dimension] of <[any, any]>Object.entries(dimensions)) {
         let available = true;
         if (this.HsUtilsService.isFunction(dimension.availability)) {
           available = dimension.availability(layer);
@@ -50,17 +59,18 @@ export class HsLayerEditorDimensionsComponent {
     if (layer == undefined) {
       return false;
     }
-    if (layer.get('dimensions') == undefined) {
+    const dimensions = getDimensions(layer);
+    if (dimensions == undefined) {
       return false;
     }
-    return Object.keys(layer.get('dimensions')).length > 0;
+    return Object.keys(dimensions).length > 0;
   }
 
   dimensionChanged(dimension: HsDimensionDescriptor): void {
     dimension.postProcessDimensionValue();
     //Dimension can be linked to multiple layers
     for (const layer of this.HsMapService.map.getLayers().getArray()) {
-      const iteratedDimensions = layer.get('dimensions');
+      const iteratedDimensions = getDimensions(layer);
       if (
         iteratedDimensions &&
         Object.keys(iteratedDimensions).filter(
@@ -86,4 +96,8 @@ export class HsLayerEditorDimensionsComponent {
       }
     }
   }
+}
+
+function getDimensions(layer: any) {
+  return layer.get('dimensions');
 }
