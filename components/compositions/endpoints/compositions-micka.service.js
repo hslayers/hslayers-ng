@@ -143,7 +143,7 @@ export default function (
                     endpoint.url + '?request=loadthumb&id=' + record.id;
                 }
                 const extent = HsCompositionsParserService.parseExtent(
-                  record.bbox
+                  record.bbox || ['180','180','180','180']
                 );
                 //Check if height or Width covers the whole screen
                 if (
