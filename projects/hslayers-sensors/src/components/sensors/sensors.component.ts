@@ -20,7 +20,7 @@ export class HsSensorsComponent implements HsPanelComponent {
     this.HsMapService.loaded().then(() => this.init());
   }
   viewRef: ViewRef;
-  data: any;
+  data: {viewMode?: string};
 
   /**
    * @memberof hs.sensors.component
@@ -29,6 +29,9 @@ export class HsSensorsComponent implements HsPanelComponent {
    * create some map functionality
    */
   init(): void {
+    if (this.data.viewMode) {
+      this.setViewMode(this.data.viewMode);
+    }
     this.HsSensorsService.getUnits();
   }
 
