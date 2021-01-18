@@ -2,10 +2,10 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
 
-import {EMPTY, Subscription} from 'rxjs';
+import {EMPTY, of, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, finalize, map} from 'rxjs/operators';
 
 import {HsDataLayerDescriptor} from '../data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
@@ -36,7 +36,7 @@ export class HsMickaBrowserService {
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
    */
-   queryCatalog(
+  queryCatalog(
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
@@ -45,21 +45,8 @@ export class HsMickaBrowserService {
     const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
 
-    //FIXME
-    // Currently not canceling multiple continuous requests
-
-    if (dataset.httpCall) {
-      // dataset.httpCall.unsubscribe();
-      console.log('remove')
-      delete dataset.httpCall;
-    }
-
     dataset.httpCall = this.http
       .get(url, {
-        //FIXME: dataset must be passed to datasetsReceived
-        //timeout: dataset.canceler.promise,
-        //dataset,
-        //extentFeatureCreated,
         responseType: 'json',
       })
       .pipe(
@@ -67,15 +54,15 @@ export class HsMickaBrowserService {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
           this.datasetsReceived(x);
-          return x
+          return x;
         }),
         catchError((e) => {
           this.log.error(e);
           dataset.datasourcePaging.loaded = true;
-          return EMPTY;
+          return of(e);
         })
-      )
-      // .subscribe(()=>{console.log('sub')});
+      );
+    // .subscribe(()=>{console.log('sub')});
     return dataset.httpCall;
   }
 
@@ -148,7 +135,7 @@ export class HsMickaBrowserService {
         'datarecieved',
         dataset.datasourcePaging.matched,
         dataset.title
-      )
+      );
       dataset.datasourcePaging.next = data.next;
       for (const lyr of data.records) {
         dataset.layers.push(lyr);
@@ -157,7 +144,7 @@ export class HsMickaBrowserService {
           data.extentFeatureCreated(extentFeature);
         }
       }
-      console.log('ending')
+      console.log('ending');
     }
   }
 
