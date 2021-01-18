@@ -1,19 +1,18 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Icon, Style} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {ImageArcGISRest, ImageStatic, TileArcGISRest, TileWMS, WMTS} from 'ol/source';
+import {
+  ImageArcGISRest,
+  ImageStatic,
+  TileArcGISRest,
+  TileWMS,
+  WMTS,
+} from 'ol/source';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 
-/**
- * @param HsMapService
- * @param HsUtilsService
- * @param $window
- * @param HsLayoutService
- * @param $log
- * @param $document
- */
 export default function (
+  HsConfig,
   HsMapService,
   HsUtilsService,
   $window,
@@ -509,17 +508,20 @@ export default function (
     },
   };
 
-  $window.addEventListener('beforeunload', (event) => {
-    const data = {};
-    const layers = [];
-    angular.forEach(HsMapService.map.getLayers(), (layer) => {
-      if (layer.get('saveState')) {
-        const lyr = me.layer2json(layer);
-        layers.push(lyr);
-      }
+  if (HsConfig.saveMapStateOnReload) {
+    $window.addEventListener('beforeunload', (event) => {
+      const data = {};
+      const layers = [];
+      angular.forEach(HsMapService.map.getLayers(), (layer) => {
+        if (layer.get('saveState')) {
+          const lyr = me.layer2json(layer);
+          layers.push(lyr);
+        }
+      });
+      data.layers = layers;
+      // Do not setItem when loading something on URL, only on page reload
+      localStorage.setItem('hs_layers', angular.toJson(data));
     });
-    data.layers = layers;
-    localStorage.setItem('hs_layers', angular.toJson(data));
-  });
+  }
   return me;
 }
