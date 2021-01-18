@@ -2,12 +2,12 @@ import {Feature} from 'ol';
 import {Injectable} from '@angular/core';
 
 //import {EndpointsWithDatasourcesPipe} from '../../common/widgets/endpoints-with-datasources.pipe';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../../config.service';
 import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
 import {HsAddDataService} from '../addData.service';
 import {HsAddDataVectorService} from '../vector/addData-vector.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsConfig} from '../../../config.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
@@ -113,14 +113,14 @@ export class HsAddDataCatalogueService {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
         this.resetList();
         this.queryCatalogs();
-        this.hsMickaFilterService.fillCodesets();
+        // this.hsMickaFilterService.fillCodesets();
       }
       this.calcExtentLayerVisibility();
     });
   }
   reloadData(): void {
     this.queryCatalogs();
-    this.hsMickaFilterService.fillCodesets();
+    // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
   }
   /**
@@ -128,7 +128,6 @@ export class HsAddDataCatalogueService {
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(preserveLayers?: boolean): void {
-
     if (this.catalogQuery) {
       this.catalogQuery.unsubscribe();
       delete this.catalogQuery;
@@ -362,7 +361,7 @@ export class HsAddDataCatalogueService {
       return whatToAdd.type;
     }
     if (whatToAdd.type == 'WMS') {
-      this.datasetSelect('OWS'); //OWS maybe will be necessary to change also somewhere else
+      this.datasetSelect('url'); //OWS maybe will be necessary to change also somewhere else
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
@@ -370,8 +369,8 @@ export class HsAddDataCatalogueService {
           layer: undefined,
         });
       });
-    } else if (whatToAdd.type == 'WFS') {
-      this.datasetSelect('OWS');
+    } else if (whatToAdd.type == 'url') {
+      this.datasetSelect('WFS');
       if (ds.type == 'micka') {
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
@@ -410,7 +409,6 @@ export class HsAddDataCatalogueService {
     return whatToAdd.type;
   }
 
-  //FIXME id_Selected more jsut like TYPE
   datasetSelect(id_selected: string): void {
     this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
@@ -449,12 +447,12 @@ export class HsAddDataCatalogueService {
    *
    */
   panelVisible(): boolean {
-    return this.hsLayoutService.panelVisible('data');
+    return this.hsLayoutService.panelVisible('addData');
   }
 
   calcExtentLayerVisibility(): void {
     this.HsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible() && this.data.id_selected != 'OWS'
+      this.panelVisible() && this.HsAddDataService.typeSelected == 'catalogue'
     );
   }
 }

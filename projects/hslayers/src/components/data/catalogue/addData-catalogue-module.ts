@@ -12,6 +12,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
 import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
+import {HsAddDataCatalogueService} from './addData-catalogue.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsMickaBrowserService} from './micka/micka.service';
@@ -39,6 +40,7 @@ import {HsMickaBrowserService} from './micka/micka.service';
     HsMickaBrowserService,
     HsLaymanBrowserService,
     HsAddDataCatalogueMapService,
+    HsAddDataCatalogueService,
   ],
   entryComponents: [
     HsAddDataCatalogueComponent,
