@@ -186,7 +186,8 @@
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
     "onlyMine": "Tikai manas",
-    "selectKeywords": "Izvēlieties atslēgvārdus"
+    "selectKeywords": "Izvēl. atslēgv.",
+    "selectThemes": "Izvēl. tēmas"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",

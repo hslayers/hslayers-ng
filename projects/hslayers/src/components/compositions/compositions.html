@@ -1,19 +1,19 @@
 <div class="card mainpanel hs-comp-mainpanel">
     <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translate">
         <extra-buttons>
-            <button class="but-title-sm hs-extra-buttons" (click)="reload()"
-                [title]="'COMMON.reload' | translate">
+            <button class="but-title-sm hs-extra-buttons" (click)="reload()" [title]="'COMMON.reload' | translate">
                 <i class="glyphicon icon-fatredo"></i>
             </button>
             <button class="but-title-sm hs-extra-buttons" title="{{'PANEL_HEADER.SAVECOMPOSITION'|translate}}"
                 (click)="openSaveMapPanel()">
                 <span class="icon-save-floppy"></span>
             </button>
-            <button class="but-title-sm btn-file hs-extra-buttons" title="{{'COMPOSITIONS.import'|translate}}">
-                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept="json"
-                    style="display: none;">
-            </button>
-            <button class="but-title-sm hs-extra-buttons" title="{{'COMPOSITIONS.addByAddress'|translate}}" (click)="changeUrlButtonVisible()">
+            <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;" title="{{'COMPOSITIONS.import'|translate}}">
+                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)"
+                    accept="json" style="display: none;">
+            </label>
+            <button class="but-title-sm hs-extra-buttons" title="{{'COMPOSITIONS.addByAddress'|translate}}"
+                (click)="changeUrlButtonVisible()">
                 <span class="icon-plus"></span>
             </button>
         </extra-buttons>
@@ -30,7 +30,8 @@
         <form>
             <div class="input-group mb-2">
                 <input type="text" class="form-control hs-filter" placeholder="{{'COMMON.search'|translate}}"
-                    name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title" (change)="loadCompositions()">
+                    name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
+                    (change)="loadCompositions()">
                 <span class="input-group-append">
                     <label class="hs-input-search-icon" (click)="loadCompositions()">
                         <i class="icon-search icon-primary"></i>
@@ -41,13 +42,14 @@
             <div class="d-flex flex-row pb-2 justify-content-between">
                 <div class="input-group-prepend">
                     <div class="input-group-text hs-borderless-input pl-0">
-                        <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByExtent" (change)='loadCompositions()'
-                            name="HsCompositionsCatalogueService.filterByExtent">
+                        <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByExtent"
+                            (change)='loadCompositions()' name="HsCompositionsCatalogueService.filterByExtent">
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
                     <div class="input-group-text hs-borderless-input" style="margin-left: 1.5em;"
                         [hidden]="!HsLaymanService.getLaymanEndpoint()">
-                        <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine" (change)='HsCompositionsCatalogueService.onlyMineClicked()'
+                        <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine"
+                            (change)='HsCompositionsCatalogueService.onlyMineClicked()'
                             name="HsCompositionsCatalogueService.filterByOnlyMine">
                         <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
                     </div>
@@ -67,9 +69,11 @@
                                         {{'COMMON.type' | translate}}
                                     </td>
                                     <td>
-                                        <select class="form-control" name="type" [(ngModel)]="HsCompositionsCatalogueService.data.type"
+                                        <select class="form-control" name="type"
+                                            [(ngModel)]="HsCompositionsCatalogueService.data.type"
                                             (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03);">
-                                            <option *ngFor="let type of HsCompositionsCatalogueService.types" [ngValue]="type.value">
+                                            <option *ngFor="let type of HsCompositionsCatalogueService.types"
+                                                [ngValue]="type.value">
                                                 {{translateString('COMPOSITONTYPES', type.name)}}</option>
                                         </select>
                                     </td>
@@ -79,37 +83,22 @@
                                         {{'COMMON.keywords' | translate}}
                                     </td>
                                     <td>
-                                        <!-- <form>
-                                            <div (click)="keywordsVisible = !keywordsVisible">
-                                              <select class="form-control" style="background-color:rgba(0,0,0,.03)">
-                                                <option>{{'COMPOSITIONS.selectKeywords' | translate}}</option>
-                                              </select>
-                                              <div class="overSelect"></div>
-                                            </div>
-                                            <div *ngFor="let keyword of keywords" [ngStyle]="{'display': keywordsVisible ? 'block' : 'none'}">
-                                                <label>
-                                                    <input type="checkbox" [(ngModel)]="keyword.selected" [ngModelOptions]="{standalone: true}"
-                                                         (click)="keywordChecked(keyword)">
-                                                    {{translateString('COMPOSITONKEYWORDS', keyword.name)}}
-                                                </label>
-                                            </div>
-                                    </form> -->
-
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important;">
+                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important;  border-radius: 0;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
-                                        <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}" style=" right: 0; top: 40%;">
-                                            <!-- <a *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords" class="dropdown-item"
-                                                [ngClass]="{'active': keyword.selected}"
-                                                (click)="$event.stopPropagation(); keywordChecked(keyword)">{{translateString('COMPOSITONKEYWORDS',
-                                                keyword.name)}}</a> -->
-                                            <li *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;"  >
-                                                <label class="checkbox"><input class="mr-2" type="checkbox" [(ngModel)]="keyword.selected" name="keyword[index]" (change)="loadCompositions()">{{translateString('COMPOSITONKEYWORDS',
-                                                    keyword.name)}}</label></li>
-                                        </ul> 
+                                        <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
+                                            style=" right: 0; top: 40%;  overflow-y: auto; max-height: 10rem;">
+                                            <li
+                                                *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
+                                                <label class="checkbox"><input class="mr-2" type="checkbox"
+                                                        [(ngModel)]="keyword.selected" name="keyword[index]"
+                                                        (change)="loadCompositions()">{{translateString('COMPOSITONKEYWORDS',
+                                                    keyword.name)}}</label>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 <tr>
@@ -117,32 +106,48 @@
                                         {{'COMPOSITIONS.inspireTheme' | translate}}
                                     </td>
                                     <td>
-                                        <select class="form-control" name="data.theme" [(ngModel)]="HsCompositionsCatalogueService.data.theme"
-                                            (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03)">
-                                            <option *ngFor="let theme of HsCompositionsCatalogueService.inspireThemes" [ngValue]="theme.value">
-                                                {{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</option>
-                                        </select>
-                                        <!-- <button type="button" class="btn btn-light btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                    (click)="themesVisible = !themesVisible"
-                                    style="background-color:rgba(0,0,0,.03); color: #495057;">
-                                    {{translateString('COMPOSITONINSPIRETHEMES', theme)}}
-                                </button>
-                                <ul class="dropdown-menu" [ngClass]="{'show': themesVisible}">
-                                    <a *ngFor="let theme of inspireThemes" class="dropdown-item"
-                                        
-                                        (click)="themeSelected(theme)">{{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</a>
-                                </ul> -->
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle hs-custom-dropdown-after p-2 border"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            (click)="themesVisible = !themesVisible"
+                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            {{'COMPOSITIONS.selectThemes' | translate}}
+                                        </button>
+                                        <ul class="dropdown-menu pl-2" [ngClass]="{'show': themesVisible}"
+                                            style="right: 0; top: 59%; overflow-y: auto; max-height: 10rem;">
+                                            <li
+                                                *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
+                                                <label class="checkbox"><input class="mr-2" type="checkbox"
+                                                        [(ngModel)]="theme.selected" name="theme[index]"
+                                                        (change)="loadCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
+                                                    theme.name)}}</label>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
+                                <!-- <tr>
+                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
+                                        {{'COMPOSITIONS.inspireTheme' | translate}}
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="data.theme"
+                                            [(ngModel)]="HsCompositionsCatalogueService.data.theme"
+                                            (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            <option *ngFor="let theme of HsCompositionsCatalogueService.inspireThemes"
+                                                [ngValue]="theme.value">
+                                                {{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</option>
+                                        </select>
+                                    </td>
+                                </tr> -->
                                 <tr>
                                     <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
                                         {{'COMMON.sortBy' | translate}}
                                     </td>
                                     <td class="tdbreak">
-                                        <select class="form-control" name="data.sortBy" [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
+                                        <select class="form-control" name="data.sortBy"
+                                            [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
                                             (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03)">
-                                            <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues" [ngValue]="item.value">
+                                            <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
+                                                [ngValue]="item.value">
                                                 {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
                                         </select>
                                     </td>
@@ -164,47 +169,53 @@
         <div class="card">
             <div class="card-body">
                 <ul class="hs-comp-list list-group">
-                    <li class='list-group-item text-primary text-center' *ngIf="HsCompositionsCatalogueService.compositionsLoading"><img class="pr-2"
-                        [src]="loaderImage" />{{'COMMON.loading' | translate}}</li>
+                    <li class='list-group-item text-primary text-center'
+                        *ngIf="HsCompositionsCatalogueService.compositionsLoading"><img class="pr-2"
+                            [src]="loaderImage" />{{'COMMON.loading' | translate}}</li>
                     <li [hidden]='HsCompositionsCatalogueService.compositionEntries.length > 0 || HsCompositionsCatalogueService.compositionsLoading'
                         class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li *ngFor="let composition of HsCompositionsCatalogueService.compositionEntries | slice:HsCompositionsCatalogueService.listStart:HsCompositionsCatalogueService.listNext"
-                        [hidden]="hideNotLayman(composition)"
-                        class="list-group-item hs-comp-item" style="cursor: pointer;"
-                        [ngClass]="{'activeComposition' : composition.highlighted}"
+                        [hidden]="hideNotLayman(composition)" class="list-group-item hs-comp-item"
+                        style="cursor: pointer;" [ngClass]="{'activeComposition' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
                         [attr.title]="composition.mdAbstract">
-                        <hs-compositions-list-item [composition]="composition" [selectedCompId]="selectedCompId"></hs-compositions-list-item>
+                        <hs-compositions-list-item [composition]="composition" [selectedCompId]="selectedCompId">
+                        </hs-compositions-list-item>
                     </li>
                 </ul>
             </div>
             <div class="card-footer" *ngIf="HsCompositionsCatalogueService.paging.matched != 0">
-                <ul class="pagination d-flex justify-content-center" *ngIf="HsCompositionsCatalogueService.paging.matched == 0">
+                <ul class="pagination d-flex justify-content-center"
+                    *ngIf="HsCompositionsCatalogueService.paging.matched == 0">
                     <li class="page-item">
                         <span aria-hidden="true">Loading...</span>
                     </li>
                 </ul>
-                <ul class="pagination d-flex justify-content-center" *ngIf="HsCompositionsCatalogueService.compositionEntries.length > 0">
+                <ul class="pagination d-flex justify-content-center"
+                    *ngIf="HsCompositionsCatalogueService.compositionEntries.length > 0">
                     <li class="page-item" [ngClass]="{'disabled': HsCompositionsCatalogueService.listStart == 0 }">
                         <a class="page-link" (click)="getPreviousCompositions()"><span
                                 aria-hidden="true">&laquo;</span></a>
                     </li>
-                    <li class="page-item" *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext != HsCompositionsCatalogueService.paging.matched"><span
-                            class="page-link">
+                    <li class="page-item"
+                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext != HsCompositionsCatalogueService.paging.matched">
+                        <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsCompositionsCatalogueService.listStart + 1}} -
-                            {{HsCompositionsCatalogueService.listNext}}</span></li>
-                    <li class="page-item" *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext == HsCompositionsCatalogueService.paging.matched"><span
-                            class="page-link">
+                            {{HsCompositionsCatalogueService.listNext}}</span>
+                    </li>
+                    <li class="page-item"
+                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext == HsCompositionsCatalogueService.paging.matched">
+                        <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsCompositionsCatalogueService.listStart + 1}} -
-                            {{HsCompositionsCatalogueService.paging.matched}}</span></li>
+                            {{HsCompositionsCatalogueService.paging.matched}}</span>
+                    </li>
                     <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }">
-                        <a class="page-link" (click)="getNextCompositions()"><span
-                                aria-hidden="true">&raquo;</span></a>
+                        <a class="page-link" (click)="getNextCompositions()"><span aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>
             </div>
