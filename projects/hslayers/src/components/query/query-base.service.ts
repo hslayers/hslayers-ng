@@ -90,24 +90,26 @@ export class HsQueryBaseService {
     this.map = this.HsMapService.map;
     this.activateQueries();
     this.map.on('singleclick', (evt) => {
-      this.HsEventBusService.mapClicked.next(
-        Object.assign(evt, {
-          coordinates: this.getCoordinate(evt.coordinate),
-        })
-      );
-      if (!this.queryActive) {
-        return;
-      }
-      this.popupClassname = '';
-      if (!this.dataCleared) {
-        this.clearData();
-      }
-      this.dataCleared = false;
-      this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-      this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
-      this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
-      this.data.selectedProj = this.data.coordinates[0].projections[0];
-      this.getFeatureInfoStarted.next(evt);
+      this.zone.run(() => {
+        this.HsEventBusService.mapClicked.next(
+          Object.assign(evt, {
+            coordinates: this.getCoordinate(evt.coordinate),
+          })
+        );
+        if (!this.queryActive) {
+          return;
+        }
+        this.popupClassname = '';
+        if (!this.dataCleared) {
+          this.clearData();
+        }
+        this.dataCleared = false;
+        this.currentQuery = (Math.random() + 1).toString(36).substring(7);
+        this.setData(this.getCoordinate(evt.coordinate), 'coordinates', true);
+        this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
+        this.data.selectedProj = this.data.coordinates[0].projections[0];
+        this.getFeatureInfoStarted.next(evt);
+      });
     });
 
     if (this.HsConfig.popUpDisplay && this.HsConfig.popUpDisplay === 'hover') {
