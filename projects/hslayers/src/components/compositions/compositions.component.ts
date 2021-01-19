@@ -172,6 +172,7 @@ export class HsCompositionsComponent {
     this.optionsMenuOpen = false;
     this.themesVisible = false;
     this.keywordsVisible = false;
+    this.selectedCompId = '';
     this.HsCompositionsCatalogueService.clearFilters();
   }
   changeUrlButtonVisible(): void {
