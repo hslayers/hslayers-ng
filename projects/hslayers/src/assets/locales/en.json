@@ -186,7 +186,8 @@
     "inspireTheme": "INSPIRE theme",
     "loginToCatalogue": "Login to catalogue",
     "onlyMine": "Only mine",
-    "selectKeywords": "Select keywords"
+    "selectKeywords": "Select keywords",
+    "selectThemes": "Select themes"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",

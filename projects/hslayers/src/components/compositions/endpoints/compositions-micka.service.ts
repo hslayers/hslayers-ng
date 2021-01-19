@@ -10,7 +10,7 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Observable, Subscription, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, timeout} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -51,16 +51,16 @@ export class HsCompositionsMickaService {
     let tmp = endpoint.url;
     for (const key of params.keywords) {
       if (key.selected) {
-        selected.push("subject='" + key.value + "'");
+        selected.push("Subject='" + key.value + "'");
       }
     }
-    if (params.theme !== undefined && params.theme != '') {
-      selected.push("subject='" + params.theme + "'");
+    for (const theme of params.themes) {
+      if (theme.selected) {
+        selected.push("Subject='" + theme.value + "'");
+      }
     }
     if (selected.length > 0) {
-      keywordFilter = encodeURIComponent(
-        ' AND (' + selected.join(' OR ') + ')'
-      );
+      keywordFilter = encodeURIComponent(' AND ' + selected.join(' OR '));
     }
 
     tmp +=
@@ -144,13 +144,10 @@ export class HsCompositionsMickaService {
 
     endpoint.httpCall = this.$http
       .get(url, {
-        //FIXME: dataset must be passed to datasetsReceived
-        //timeout: dataset.canceler.promise,
-        //dataset,
-        //extentFeatureCreated,
         responseType: 'json',
       })
       .pipe(
+        timeout(2000),
         map((response: any) => {
           const ep = this.compositionsReceived(endpoint, extentLayer, response);
           return ep;

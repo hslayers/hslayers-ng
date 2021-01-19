@@ -53,7 +53,7 @@ export class HsCompositionsCatalogueService {
     keywords: KEYWORDS,
     sortBy: SORTBYVALUES[0].name,
     type: TYPES[0].name,
-    theme: INSPIRETHEMES[0].name,
+    themes: INSPIRETHEMES,
   };
   paging: pagination = {
     start: 0,
@@ -195,7 +195,7 @@ export class HsCompositionsCatalogueService {
       sortBy: this.data.sortBy,
       filterExtent: this.filterByExtent,
       keywords: this.data.keywords,
-      theme: this.data.theme,
+      themes: this.data.themes,
       type: this.data.type,
       start: this.paging.start,
       limit: this.paging.limit,
@@ -343,6 +343,7 @@ export class HsCompositionsCatalogueService {
     this.data.type = TYPES[0].name;
     this.data.theme = INSPIRETHEMES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
+    this.data.themes.forEach((th) => (th.selected = false));
     this.loadCompositions();
   }
 }

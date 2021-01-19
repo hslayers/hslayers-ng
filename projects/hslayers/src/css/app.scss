@@ -1780,11 +1780,24 @@ li.hs-lm-header {
 	background-color: rgba(0, 0, 0, 0.2);
 }
 .hs-extra-buttons {
-	margin-bottom: 0;
 	line-height: 1em;
 	float: right;
 	margin-right: 0.5em;
-	cursor: pointer;
+}
+.dropdown-toggle::after {
+ 	display: inline-block;
+  	width: 0.47em;
+	height: 0.47em;
+	margin: -0.3em 0 0 0.4em;
+	vertical-align: middle;
+	content: "";
+	border: 0.3em solid;
+	border-width: 0 0.15em 0.15em 0;
+	transform: rotateZ(45deg);
+	color: #495057,
+}
+.hs-custom-dropdown-after::after {
+	margin-left: 1.4em;
 }
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
