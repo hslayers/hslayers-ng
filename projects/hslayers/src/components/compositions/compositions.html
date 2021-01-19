@@ -28,15 +28,15 @@
             </div>
         </div>
         <form>
-            <div class="input-group mb-2">
-                <input type="text" class="form-control hs-filter" placeholder="{{'COMMON.search'|translate}}"
+            <div class="input-group mb-2 ">
+                <input type="text" class="form-control border-right-0" placeholder="{{'COMMON.search'|translate}}"
                     name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
                     (change)="loadCompositions()">
-                <span class="input-group-append">
-                    <label class="hs-input-search-icon" (click)="loadCompositions()">
+                <div class="input-group-append">
+                    <label class="input-group-text text-secondary border-left-0" (click)="loadCompositions()">
                         <i class="icon-search icon-primary"></i>
                     </label>
-                </span>
+                </div>
                 <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
             </div>
             <div class="d-flex flex-row pb-2 justify-content-between">
