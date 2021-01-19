@@ -263,7 +263,7 @@ export default function (
         console.warn(e);
         HsCompositionsParserService.createErrorDialog(
           'Composition not found',
-          e.data
+          e.data ? e.data : e
         );
       });
     }
