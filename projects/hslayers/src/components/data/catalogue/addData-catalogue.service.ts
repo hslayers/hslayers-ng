@@ -190,7 +190,7 @@ export class HsAddDataCatalogueService {
     }
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
-    console.log(this);
+
     this.checkIfPageIsFull();
   }
 
@@ -198,31 +198,13 @@ export class HsAddDataCatalogueService {
     if (responseArray === undefined || responseArray?.length == 0) {
       return [];
     }
-    const hasUuId = responseArray.find((comp) => {
-      if (comp.uuid !== undefined) {
-        return true;
-      }
-    });
 
-    if (hasUuId) {
-      const laymanLayers = this.catalogEntries.filter(
-        (comp) => comp.uuid !== undefined
-      );
-      if (laymanLayers?.length > 0) {
-        return responseArray.filter(
-          (data) => laymanLayers.filter((u) => u.uuid == data.uuid).length == 0
-        );
-      } else {
-        return responseArray;
-      }
-    } else {
-      const mickaLayers = this.catalogEntries.filter(
-        (comp) => comp.id !== undefined
-      );
-      return responseArray.filter(
-        (data) => mickaLayers.filter((u) => u.id == data.id).length == 0
-      );
-    }
+    const mickaLayers = this.catalogEntries.filter(
+      (layer) => layer.id !== undefined
+    );
+    return responseArray.filter(
+      (data) => mickaLayers.filter((u) => u.id == data.id).length == 0
+    );
   }
 
   checkIfPageIsFull(): void {

@@ -73,6 +73,7 @@ export class HsLaymanBrowserService {
           title: layer.title,
           type: ['WMS', 'WFS'],
           name: layer.name,
+          id: layer.uuid,
         };
       });
     }
