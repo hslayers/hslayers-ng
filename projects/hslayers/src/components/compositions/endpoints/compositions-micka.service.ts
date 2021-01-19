@@ -147,7 +147,7 @@ export class HsCompositionsMickaService {
         responseType: 'json',
       })
       .pipe(
-        timeout(2000),
+        timeout(1000),
         map((response: any) => {
           const ep = this.compositionsReceived(endpoint, extentLayer, response);
           return ep;
