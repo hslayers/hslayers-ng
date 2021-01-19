@@ -23,6 +23,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsCompositionsComponent {
   keywordsVisible = false;
+  themesVisible = false;
   urlToAdd = '';
   addCompositionUrlVisible = false;
   optionsButtonLabel = 'more';
@@ -161,12 +162,16 @@ export class HsCompositionsComponent {
     this.optionsMenuOpen = !this.optionsMenuOpen;
     if (this.optionsMenuOpen) {
       this.optionsButtonLabel = 'less';
+      this.keywordsVisible = false;
+      this.themesVisible = false;
     } else {
       this.optionsButtonLabel = 'more';
     }
   }
   clearFilters(): void {
     this.optionsMenuOpen = false;
+    this.themesVisible = false;
+    this.keywordsVisible = false;
     this.HsCompositionsCatalogueService.clearFilters();
   }
   changeUrlButtonVisible(): void {
