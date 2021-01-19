@@ -151,8 +151,11 @@ export class HsCompositionsService {
         url = record.link;
       } else if (record.links !== undefined) {
         url = record.links.filter(
-          (l) => l.url.includes('/file') || l.url.includes('.wmc')
+          (l) => l.url.includes('/file') || l.url.endsWith('.wmc')
         )[0].url;
+      }
+      if (record?.endpoint?.type == 'layman') {
+        url = record.url + '/file' + '?timestamp=' + Date.now();
       }
       return url;
     } catch (e) {
@@ -263,6 +266,9 @@ export class HsCompositionsService {
     }
   }
   commonId(composition): string {
+    if (composition === undefined) {
+      return '';
+    }
     return composition.uuid || composition.id;
   }
 }
