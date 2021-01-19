@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, NgZone, ViewChild} from '@angular/core';
 
 import Map from 'ol/Map';
 import {transform} from 'ol/proj';
@@ -21,7 +21,8 @@ export class HsMapComponent implements AfterViewInit {
     public HsPermalinkUrlService: HsShareUrlService,
     public HsCoreService: HsCoreService,
     public HsConfig: HsConfig,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private zone: NgZone
   ) {
     this.unregisterMapSyncCenterHandler = this.HsEventBusService.mapCenterSynchronizations.subscribe(
       (data) => {
@@ -38,7 +39,7 @@ export class HsMapComponent implements AfterViewInit {
       );
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
-    this.HsMapService.init();
+    this.zone.runOutsideAngular(() => this.HsMapService.init());
     const hs_x = this.HsPermalinkUrlService.getParamValue('hs_x');
     const hs_y = this.HsPermalinkUrlService.getParamValue('hs_y');
     const hs_z = this.HsPermalinkUrlService.getParamValue('hs_z');
