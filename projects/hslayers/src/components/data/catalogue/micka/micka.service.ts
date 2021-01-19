@@ -131,11 +131,7 @@ export class HsMickaBrowserService {
       dataset.datasourcePaging.matched == 0;
     } else {
       dataset.datasourcePaging.matched = data.matched;
-      console.log(
-        'datarecieved',
-        dataset.datasourcePaging.matched,
-        dataset.title
-      );
+
       dataset.datasourcePaging.next = data.next;
       for (const lyr of data.records) {
         dataset.layers.push(lyr);
