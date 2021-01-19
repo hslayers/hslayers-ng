@@ -2,7 +2,7 @@ import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Feature, Map} from 'ol';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
@@ -74,7 +74,8 @@ export class HsQueryBaseService {
     public hsLanguageService: HsLanguageService,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
-    private DomSanitizer: DomSanitizer
+    private DomSanitizer: DomSanitizer,
+    private zone: NgZone
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
@@ -134,47 +135,59 @@ export class HsQueryBaseService {
       return;
     }
     const map = e.map;
-    this.featuresUnderMouse = map
-      .getFeaturesAtPixel(e.pixel)
-      .filter((feature: Feature) => {
-        const layer = this.HsMapService.getLayerForFeature(feature);
-        return layer && layer != this.queryLayer;
-      });
-    if (this.featuresUnderMouse.length) {
-      this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
-        this.HsMapService.getLayerForFeature(f)
-      );
-      this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
-        this.featureLayersUnderMouse,
-        'title'
-      );
-      this.featureLayersUnderMouse = this.featureLayersUnderMouse.map((l) => {
-        const layer = {
-          title: l.get('title'),
-          layer: l,
-          features: this.featuresUnderMouse.filter(
-            (f) => this.HsMapService.getLayerForFeature(f) == l
-          ),
-        };
-        return layer;
-      });
-      this.featuresUnderMouse.forEach((feature) => {
-        this.serializeFeatureAttributes(feature);
-        if (feature.get('features')) {
-          feature
-            .get('features')
-            .forEach((subfeature) =>
-              this.serializeFeatureAttributes(subfeature)
-            );
+    const tmpFeatures = this.getFeaturesUnderMouse(map, e.pixel);
+    if (
+      tmpFeatures.some((f) => !this.featuresUnderMouse.includes(f)) ||
+      this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
+    ) {
+      this.zone.run(() => {
+        this.featuresUnderMouse = tmpFeatures;
+        if (this.featuresUnderMouse.length) {
+          this.featureLayersUnderMouse = this.featuresUnderMouse.map((f) =>
+            this.HsMapService.getLayerForFeature(f)
+          );
+          this.featureLayersUnderMouse = this.HsUtilsService.removeDuplicates(
+            this.featureLayersUnderMouse,
+            'title'
+          );
+          this.featureLayersUnderMouse = this.featureLayersUnderMouse.map(
+            (l) => {
+              const layer = {
+                title: l.get('title'),
+                layer: l,
+                features: this.featuresUnderMouse.filter(
+                  (f) => this.HsMapService.getLayerForFeature(f) == l
+                ),
+              };
+              return layer;
+            }
+          );
+          this.featuresUnderMouse.forEach((feature) => {
+            this.serializeFeatureAttributes(feature);
+            if (feature.get('features')) {
+              feature
+                .get('features')
+                .forEach((subfeature) =>
+                  this.serializeFeatureAttributes(subfeature)
+                );
+            }
+          });
+        } else {
+          this.featuresUnderMouse = [];
         }
       });
-      const pixel = e.pixel;
-      pixel[0] += 2;
-      pixel[1] += 4;
-      this.hoverPopup.setPosition(map.getCoordinateFromPixel(pixel));
-    } else {
-      this.featuresUnderMouse = [];
     }
+    const pixel = e.pixel;
+    pixel[0] += 2;
+    pixel[1] += 4;
+    this.hoverPopup.setPosition(map.getCoordinateFromPixel(e.pixel));
+  }
+
+  private getFeaturesUnderMouse(map: Map, pixel: any) {
+    return map.getFeaturesAtPixel(pixel).filter((feature: Feature) => {
+      const layer = this.HsMapService.getLayerForFeature(feature);
+      return layer && layer != this.queryLayer;
+    });
   }
 
   /**
@@ -203,8 +216,8 @@ export class HsQueryBaseService {
           const index = attrsConfig.indexOf(key);
           if (index > -1) {
             attrsConfig[index] = {
-              'attribute': key,
-              'label': val,
+              attribute: key,
+              label: val,
             };
           }
         }
