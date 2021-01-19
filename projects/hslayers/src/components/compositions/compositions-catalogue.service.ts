@@ -58,9 +58,7 @@ export class HsCompositionsCatalogueService {
   paging: pagination = {
     start: 0,
     limit: 0,
-    loaded: false,
     matched: 0,
-    next: 0,
   };
   recordsPerPage = 20;
   listStart = 0;
@@ -78,7 +76,6 @@ export class HsCompositionsCatalogueService {
    * @description Store whether filter compositions by current window extent during composition search
    */
   compositionsLoading: boolean;
-  selectedCompId: any;
   loadCompositionsQuery: any;
   constructor(
     public HsMapService: HsMapService,
@@ -148,7 +145,8 @@ export class HsCompositionsCatalogueService {
   /**
    * @public
    * @description Load list of compositions for all endpoints
-   * @param keepCompositions
+   * @param {boolean} keepCompositions If true, all data will be erased before new requests are created
+   * @param {boolean} fillPage If true, new requests will be made, to fill the whole list page
    */
   loadCompositions(keepCompositions?: boolean, fillPage?: boolean): void {
     if (this.loadCompositionsQuery) {
@@ -167,14 +165,12 @@ export class HsCompositionsCatalogueService {
         if (fillPage) {
           this.filteredEndpointsForCompositions().forEach((ep: HsEndpoint) => {
             if (ep.compositionsPaging.matched > this.paging.limit) {
-              observables.push(this.loadCompositionFromEndpointObservable(ep));
+              observables.push(this.loadCompositionFromEndpoint(ep));
             }
           });
         } else {
           for (const endpoint of this.filteredEndpointsForCompositions()) {
-            observables.push(
-              this.loadCompositionFromEndpointObservable(endpoint)
-            );
+            observables.push(this.loadCompositionFromEndpoint(endpoint));
           }
         }
         this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
@@ -189,7 +185,7 @@ export class HsCompositionsCatalogueService {
    * (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
    * @param {HsEndpoint} ep
    */
-  loadCompositionFromEndpointObservable(ep: HsEndpoint): Observable<any> {
+  loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
     return this.HsCompositionsService.loadCompositions(ep, {
       query: this.data.query,
       sortBy: this.data.sortBy,
@@ -201,6 +197,10 @@ export class HsCompositionsCatalogueService {
       limit: this.paging.limit,
     });
   }
+  /**
+   * @public
+   * @description Creates list of compositions from all endpoints currently available
+   */
   createCompositionList(): void {
     //TODO: ratio limits
     this.paging.matched = 0;
@@ -225,12 +225,22 @@ export class HsCompositionsCatalogueService {
       this.checkIfPageIsFull();
     }
   }
+  /**
+   * @public
+   * @param {any[]} responseArray Array of compositions data
+   * @description Filters compositions from responseArray with the same id in already loaded compostionEntries array
+   */
   filterDuplicates(responseArray: any[]): any[] {
     return responseArray.filter(
       (data) =>
         this.compositionEntries.filter((u) => u.id == data.id).length == 0
     );
   }
+  /**
+   * @public
+   * @description Estimates if the loaded compositions list fills one full page, if not, calls the next set of compositions to be loaded until
+   *  at least one page is full
+   */
   checkIfPageIsFull(): void {
     let boundByLimit: boolean;
     if (
@@ -248,6 +258,10 @@ export class HsCompositionsCatalogueService {
       this.listNext = this.paging.matched;
     }
   }
+  /**
+   * @public
+   * @description Clears all data saved regarding loaded compositions, endpoints and paging
+   */
   clearCompositions(): void {
     this.listStart = 0;
     this.paging.start = 0;
@@ -258,6 +272,11 @@ export class HsCompositionsCatalogueService {
       (ep) => (ep.compositions = [])
     );
   }
+  /**
+   * @public
+   * @description Evaluates if array is defined and contains any data
+   * @param {any[]} arr
+   */
   arrayContainsData(arr: any[]): boolean {
     if (arr !== undefined && arr.length > 0) {
       return true;
@@ -265,6 +284,10 @@ export class HsCompositionsCatalogueService {
       return false;
     }
   }
+  /**
+   * @public
+   * @description Requests compositions to be loaded only from layman service
+   */
   loadOnlyLayman(): Observable<any> {
     this.filteredEndpointsForCompositions().forEach((ep: HsEndpoint) => {
       if (ep.type != 'layman') {
@@ -273,11 +296,14 @@ export class HsCompositionsCatalogueService {
       }
     });
     this.clearCompositions();
-    return this.loadCompositionFromEndpointObservable(
+    return this.loadCompositionFromEndpoint(
       this.HsLaymanService.getLaymanEndpoint()
     );
   }
-
+  /**
+   * @public
+   * @description Checks if next page for pagination is available
+   */
   nextPageAvailable(): boolean {
     if (
       this.listNext == this.paging.matched ||
@@ -321,6 +347,10 @@ export class HsCompositionsCatalogueService {
       this.listNext = this.paging.matched;
     }
   }
+  /**
+   * @public
+   * @description Trigerred after checking onlyMine checkbox
+   */
   onlyMineClicked(): void {
     if (this.filterByOnlyMine) {
       const observable = this.loadOnlyLayman();
@@ -331,12 +361,19 @@ export class HsCompositionsCatalogueService {
       this.loadCompositions();
     }
   }
-
+  /**
+   * @public
+   * @description Filters statusmanager endpoint out from rest of the endpoints
+   */
   filteredEndpointsForCompositions(): Array<HsEndpoint> {
     return this.HsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
   }
+  /**
+   * @public
+   * @description Clears all filters set for compostion list filtering
+   */
   clearFilters(): void {
     this.data.query.title = '';
     this.data.sortBy = SORTBYVALUES[0].name;
