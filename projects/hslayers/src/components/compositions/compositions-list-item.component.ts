@@ -32,6 +32,7 @@ export class HsCompostionsListItemComponent {
   openComposition(composition): void {
     this.HsCompositionsService.loadCompositionParser(composition)
       .then(() => {
+        //This should not be needed, as for that is the save map button created
         // this.HsSaveMapManagerService.openPanel(composition);
         this.HsLayoutService.setMainPanel('layermanager');
       })
