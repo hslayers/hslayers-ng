@@ -1,6 +1,7 @@
 import Feature from 'ol/Feature';
 import StyleFunction from 'ol/style/Style';
 import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
+import {DomSanitizer} from '@angular/platform-browser';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {ImageWMS, Source, ImageStatic as Static, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
@@ -15,7 +16,8 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsLegendService {
   constructor(
     public HsUtilsService: HsUtilsService,
-    public HsLayerSelectorService: HsLayerSelectorService
+    public HsLayerSelectorService: HsLayerSelectorService,
+    private sanitizer: DomSanitizer
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.getLayerLegendDescriptor(layer.layer);
@@ -191,7 +193,10 @@ export class HsLegendService {
     const row: any = {};
     row.style = {maxWidth: '35px', maxHeight: '35px', marginBottom: '10px'};
     if (image && this.HsUtilsService.instOf(image, Icon)) {
-      row.icon = {type: 'icon', src: image.getSrc()};
+      row.icon = {
+        type: 'icon',
+        src: this.sanitizer.bypassSecurityTrustResourceUrl(image.getSrc()),
+      };
     } else if (image && this.HsUtilsService.instOf(image, Circle)) {
       if (image.getStroke() && image.getFill()) {
         row.customCircle = {
