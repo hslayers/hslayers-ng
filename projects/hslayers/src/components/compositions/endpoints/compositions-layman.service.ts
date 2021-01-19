@@ -26,7 +26,7 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
       .pipe(
-        timeout(2000),
+        timeout(1000),
         map((response: any) => {
           const ep = this.compositionsReceived(endpoint, params, response);
           return ep;
@@ -106,6 +106,7 @@ export class HsCompositionsLaymanService {
       delete info.thumbnail;
     }
     info.abstract = info.description;
+    return info;
   }
 
   resetCompositionCounter(endpoint: HsEndpoint): void {
