@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input} from '@angular/core';
 
-import {HsConfig} from '../../../config.service';
 import {HsAddDataCatalogueService} from './addData-catalogue.service';
 import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
 import {HsAddDataMetadataDialogComponent} from './addData-catalogue-metadata-dialog.component';
+import {HsConfig} from '../../../config.service';
 import {HsDatasourcesMetadataService} from '../../datasource-selector/datasource-selector-metadata.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
@@ -69,6 +69,17 @@ export class HsAddDataListItemComponent {
   }
 
   /**
+   * @description Add layer by type click wrapper. Prevents bubbling of DOM event
+   * @param type One of 'WMS', 'WFS'
+   * @param event Mouse click event
+   */
+  selectTypeAndAdd(type: string, event: MouseEvent): void {
+    event.preventDefault();
+    this.selectedType = type;
+    this.addLayerToMap(this.layer.endpoint, this.layer);
+  }
+
+  /**
    * @description For a stringified type of service, it returns its description
    * @param type One of 'WMS', 'WFS'
    * @returns A brief description of a given type with its main advantage and disadvantage notes
@@ -112,5 +123,4 @@ export class HsAddDataListItemComponent {
       selectedDS: this.selected_ds,
     });
   }
-
 }

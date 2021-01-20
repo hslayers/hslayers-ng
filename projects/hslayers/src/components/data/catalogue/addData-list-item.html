@@ -15,7 +15,7 @@
         <span class="btn btn-sm" disabled="true" aria-disabled="true">Add as&nbsp;</span>
         <div class="btn-group btn-group-toggle h-100 pr-2 align-items-center" data-toggle="buttons">
             <label class="btn btn-sm btn-outline-primary" [ngClass]="{'active': type == selectedType}"
-                *ngFor="let type of whatToAddTypes" (click)="selectedType = type; addLayerToMap(layer.endpoint, layer)">
+                *ngFor="let type of whatToAddTypes" (click)="selectTypeAndAdd(type,$event)">
                 <input type="radio" name="options"/>
                 {{type}}
             </label>

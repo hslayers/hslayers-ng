@@ -351,8 +351,8 @@ export class HsAddDataCatalogueService {
           layer: undefined,
         });
       });
-    } else if (whatToAdd.type == 'url') {
-      this.datasetSelect('WFS');
+    } else if (whatToAdd.type == 'WFS') {
+      this.datasetSelect('url');
       if (ds.type == 'micka') {
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
