@@ -35,7 +35,8 @@ export class HsAddDataFileShpComponent implements OnInit {
   advancedPanelVisible = false;
   addUnder: BaseLayer = null;
   dropzoneActive = false;
-
+  errorOccured = false;
+  
   constructor(
     public HsAddDataFileShpService: HsAddDataFileShpService,
     public hsLayoutService: HsLayoutService,
