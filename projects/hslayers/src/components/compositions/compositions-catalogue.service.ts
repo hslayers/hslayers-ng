@@ -77,6 +77,7 @@ export class HsCompositionsCatalogueService {
    */
   compositionsLoading: boolean;
   loadCompositionsQuery: any;
+  filteredEndpoints: HsEndpoint[];
   constructor(
     public HsMapService: HsMapService,
     public HsCompositionsService: HsCompositionsService,
@@ -87,11 +88,8 @@ export class HsCompositionsCatalogueService {
     public HsDialogContainerService: HsDialogContainerService,
     public HsLaymanService: HsLaymanService
   ) {
-    if (!this.paging.limit) {
-      this.paging.limit = Math.ceil(
-        this.recordsPerPage / this.filteredEndpointsForCompositions().length
-      );
-    }
+    this.filteredEndpointsForCompositions();
+    this.setPagingLimit();
     HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
         this.HsLayoutService.mainpanel === 'composition_browser' ||
@@ -141,7 +139,11 @@ export class HsCompositionsCatalogueService {
       });
     });
   }
-
+  setPagingLimit(): void {
+    this.paging.limit = Math.ceil(
+      this.recordsPerPage / this.filteredEndpoints.length
+    );
+  }
   /**
    * @public
    * @description Load list of compositions for all endpoints
@@ -163,13 +165,13 @@ export class HsCompositionsCatalogueService {
         this.onlyMineClicked();
       } else {
         if (fillPage) {
-          this.filteredEndpointsForCompositions().forEach((ep: HsEndpoint) => {
+          this.filteredEndpoints.forEach((ep: HsEndpoint) => {
             if (ep.compositionsPaging.matched > this.paging.limit) {
               observables.push(this.loadCompositionFromEndpoint(ep));
             }
           });
         } else {
-          for (const endpoint of this.filteredEndpointsForCompositions()) {
+          for (const endpoint of this.filteredEndpoints) {
             observables.push(this.loadCompositionFromEndpoint(endpoint));
           }
         }
@@ -197,6 +199,14 @@ export class HsCompositionsCatalogueService {
       limit: this.paging.limit,
     });
   }
+  loadFilteredCompositions(): void {
+    this.clearCompositions();
+    this.filteredEndpoints = this.filteredEndpoints.filter(
+      (ep: HsEndpoint) => ep.type != 'layman'
+    );
+    this.setPagingLimit();
+    this.loadCompositions();
+  }
   /**
    * @public
    * @description Creates list of compositions from all endpoints currently available
@@ -204,7 +214,7 @@ export class HsCompositionsCatalogueService {
   createCompositionList(): void {
     //TODO: ratio limits
     this.paging.matched = 0;
-    for (const endpoint of this.filteredEndpointsForCompositions()) {
+    for (const endpoint of this.filteredEndpoints) {
       if (endpoint.compositionsPaging.matched) {
         this.paging.matched += endpoint.compositionsPaging.matched;
       }
@@ -268,9 +278,7 @@ export class HsCompositionsCatalogueService {
     this.listNext = this.recordsPerPage;
     this.compositionEntries = [];
     this.HsCompositionsService.resetCompositionCounter();
-    this.filteredEndpointsForCompositions().forEach(
-      (ep) => (ep.compositions = [])
-    );
+    this.filteredEndpoints.forEach((ep) => (ep.compositions = []));
   }
   /**
    * @public
@@ -289,12 +297,6 @@ export class HsCompositionsCatalogueService {
    * @description Requests compositions to be loaded only from layman service
    */
   loadOnlyLayman(): Observable<any> {
-    this.filteredEndpointsForCompositions().forEach((ep: HsEndpoint) => {
-      if (ep.type != 'layman') {
-        ep.compositions = [];
-        ep.compositionsPaging.matched = 0;
-      }
-    });
     this.clearCompositions();
     return this.loadCompositionFromEndpoint(
       this.HsLaymanService.getLaymanEndpoint()
@@ -353,11 +355,17 @@ export class HsCompositionsCatalogueService {
    */
   onlyMineClicked(): void {
     if (this.filterByOnlyMine) {
+      if (!this.filteredEndpoints.find((ep) => ep.type == 'layman')) {
+        this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
+      }
       const observable = this.loadOnlyLayman();
       observable.subscribe(() => {
         this.createCompositionList();
       });
     } else {
+      this.filteredEndpoints = this.filteredEndpoints.filter(
+        (ep: HsEndpoint) => ep.type != 'layman'
+      );
       this.loadCompositions();
     }
   }
@@ -365,8 +373,8 @@ export class HsCompositionsCatalogueService {
    * @public
    * @description Filters statusmanager endpoint out from rest of the endpoints
    */
-  filteredEndpointsForCompositions(): Array<HsEndpoint> {
-    return this.HsCommonEndpointsService.endpoints.filter(
+  filteredEndpointsForCompositions(): void {
+    this.filteredEndpoints = this.HsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
   }
@@ -381,6 +389,8 @@ export class HsCompositionsCatalogueService {
     this.data.theme = INSPIRETHEMES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
     this.data.themes.forEach((th) => (th.selected = false));
+    this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
+    this.setPagingLimit();
     this.loadCompositions();
   }
 }

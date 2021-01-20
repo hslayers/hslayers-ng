@@ -112,5 +112,6 @@ export class HsCompositionsLaymanService {
   resetCompositionCounter(endpoint: HsEndpoint): void {
     endpoint.compositionsPaging.start = 0;
     endpoint.compositionsPaging.next = this.data.limit;
+    endpoint.compositionsPaging.matched = 0;
   }
 }
