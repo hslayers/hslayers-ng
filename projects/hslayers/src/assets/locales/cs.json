@@ -152,7 +152,13 @@
     "west": "Západní",
     "width": "Šířka",
     "yes": "Ano",
-    "zoomTo": "zvětšit na"
+    "zoomTo": "zvětšit na",
+    "less": "Méně",
+    "metadata": "Metadata",
+    "open": "Otevřít",
+    "share": "Sdílet",
+    "sortBy": "Řadit podle",
+    "search": "Hledat:"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -176,7 +182,12 @@
     },
     "filterByMap": "Filtrovat na rozsah okna",
     "import": "Importovat kompozici ze souboru v tomto zařízení",
-    "onlyMine": "Jen moje vlastní"
+    "onlyMine": "Jen moje vlastní",
+    "selectKeywords": "Vybrat klíčová slova",
+    "inspireTheme": "téma INSPIRE",
+    "selectThemes": "Vybrat témata",
+    "clearFilters": "Vyčistit filtry",
+    "loginToCatalogue": "Přihlásit do katalogu"
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Přidat do mapy jako",
@@ -438,7 +449,11 @@
     },
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba při synchronizaci"
-    }
+    },
+    "private": "Soukromé",
+    "public": "Veřejné",
+    "readAccessRights": "Právo čtení",
+    "writeAccessRights": "Právo zápisu"
   },
   "SENSORS": {
     "1D": "1D",
@@ -491,5 +506,51 @@
     "totalDistance": "Celková vzdálenost",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypoints": "Body trasy"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "Addresses": "Adresy",
+    "Administrative units": "Územní správní jednotky",
+    "Agricultural and aquaculture facilities": "Zemědělská a vodohospodářská zařízení",
+    "Buildings": "Budovy",
+    "Cadastral parcels": "Parcely",
+    "Coordinate reference systems": "Souřadnicové referenční systémy",
+    "Elevation": "Nadmořská výška",
+    "Geographical names": "Zeměpisná jména",
+    "Geology": "Geologie",
+    "Hydrography": "Hydrografie",
+    "Land use": "Využití území",
+    "Orthoimagery": "Ortofotosnímky",
+    "Soil": "Půda",
+    "Statistical units": "Statistické jednotky",
+    "Transport networks": "Dopravní sítě"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Borders": "Hranice",
+    "Cadastre": "Katastr",
+    "Culture": "Kultura",
+    "Demographics": "Demografie",
+    "Economics": "Hospodářství",
+    "Environment": "Životní prostředí",
+    "Hazards": "Rizika",
+    "Infrastructure": "Infrastruktura",
+    "Land use": "Využití území",
+    "Physical geography": "Fyzická geografie",
+    "Planning": "Plánování",
+    "Real estate": "Nemovitosti",
+    "Transport": "Doprava",
+    "Water": "Voda"
+  },
+  "COMPOSITONSORTVALUES": {
+    "Bbox": "Rozsah mapy",
+    "Date": "Datum",
+    "None": "Žádný",
+    "Title": "Název"
+  },
+  "COMPOSITONTYPES": {
+    "Application": "Aplikace",
+    "Datasource": "Zdroj dat",
+    "Feature catalogue": "Katalog prvků",
+    "None": "Žádný",
+    "Service": "Služba"
   }
 }
