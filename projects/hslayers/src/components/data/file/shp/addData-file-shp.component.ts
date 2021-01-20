@@ -34,6 +34,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   folder_name = '';
   advancedPanelVisible = false;
   addUnder: BaseLayer = null;
+  dropzoneActive = false;
 
   constructor(
     public HsAddDataFileShpService: HsAddDataFileShpService,
@@ -47,6 +48,10 @@ export class HsAddDataFileShpComponent implements OnInit {
 
   ngOnInit(): void {
     this.pickEndpoint();
+  }
+
+  dropZoneState($event: boolean): void {
+    this.dropzoneActive = $event;
   }
 
   /**
@@ -107,16 +112,15 @@ export class HsAddDataFileShpComponent implements OnInit {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    this.HsAddDataFileShpService
-      .add(
-        this.endpoint,
-        this.files,
-        this.name,
-        this.title,
-        this.abstract,
-        this.srs,
-        this.sld
-      )
+    this.HsAddDataFileShpService.add(
+      this.endpoint,
+      this.files,
+      this.name,
+      this.title,
+      this.abstract,
+      this.srs,
+      this.sld
+    )
       .then((data) => {
         this.name = data[0].name; //Name translated to Layman-safe name
         return this.describeNewLayer(this.endpoint, this.name);
@@ -146,7 +150,8 @@ export class HsAddDataFileShpComponent implements OnInit {
 
   read(evt): void {
     const filesRead = [];
-    for (const file of evt.target.files) {
+    const files = evt.target ? evt.target.files : evt;
+    for (const file of files) {
       const reader = new FileReader();
       reader.onload = (loadEvent) => {
         filesRead.push({
@@ -157,7 +162,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       };
       reader.readAsArrayBuffer(file);
     }
-    if (evt.target.id === 'sld') {
+    if (evt.target?.id === 'sld') {
       this.sld = filesRead[0];
     } else {
       this.files = filesRead;

@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {TranslateModule} from '@ngx-translate/core';
 
+import {HsAddDataCommonVectorFileUploadDirective} from './addData-common-vector-file-upload.directive';
 import {HsAddDataTargetPositionComponent} from './addData-target-position.component';
 import {HsAddDataUrlComponent} from './addData-url.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog.component';
@@ -18,12 +19,14 @@ import {HsNestedLayersTableComponent} from './nested-layers-table.component';
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
+    HsAddDataCommonVectorFileUploadDirective,
   ],
   declarations: [
     HsAddDataUrlComponent,
     HsAddDataTargetPositionComponent,
     HsGetCapabilitiesErrorComponent,
     HsNestedLayersTableComponent,
+    HsAddDataCommonVectorFileUploadDirective,
   ],
   providers: [],
   entryComponents: [HsGetCapabilitiesErrorComponent],
