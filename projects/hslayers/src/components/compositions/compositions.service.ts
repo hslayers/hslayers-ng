@@ -80,9 +80,14 @@ export class HsCompositionsService {
   }
 
   resetCompositionCounter(): void {
-    this.HsCommonEndpointsService.endpoints.forEach((ds) => {
-      if (ds.type == 'micka') {
-        this.HsCompositionsMickaService.resetCompositionCounter(ds);
+    this.HsCommonEndpointsService.endpoints.forEach((ep) => {
+      switch (ep.type) {
+        case 'micka':
+          return this.HsCompositionsMickaService.resetCompositionCounter(ep);
+        case 'layman':
+          return this.HsCompositionsLaymanService.resetCompositionCounter(ep);
+        default:
+          this.$log.warn(`Endpoint type '${ep.type} not supported`);
       }
     });
   }

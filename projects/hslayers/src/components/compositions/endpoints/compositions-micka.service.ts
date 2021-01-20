@@ -167,6 +167,7 @@ export class HsCompositionsMickaService {
   resetCompositionCounter(endpoint) {
     endpoint.compositionsPaging.start = 0;
     endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
+    endpoint.compositionsPaging.matched = 0;
   }
   checkForParams(endpoint: HsEndpoint, params: any): any {
     if (params.sortBy == undefined || params.sortBy === 'None') {
