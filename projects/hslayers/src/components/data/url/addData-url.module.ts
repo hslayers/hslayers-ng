@@ -10,6 +10,7 @@ import {HsAddDataUrlComponent} from './addData-url.component';
 import {HsAddDataUrlWmsModule} from './wms/addData-url-wms.module';
 import {HsAddDataVectorModule} from '../vector/addData-vector.module';
 import {HsAddDataWfsModule} from './wfs/addData-url-wfs.module';
+import {HsAddDataWmtsModule} from './wmts/addData-url-wmts.module';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
@@ -24,6 +25,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsAddDataArcGisModule,
     HsAddDataWfsModule,
     HsAddDataVectorModule,
+    HsAddDataWmtsModule,
   ],
   exports: [HsAddDataUrlComponent],
   providers: [],
