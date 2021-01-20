@@ -111,7 +111,9 @@ export class HsCompositionsMickaService {
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }
-      const extent = this.HsCompositionsParserService.parseExtent(record.bbox);
+      const extent = this.HsCompositionsParserService.parseExtent(
+        record.bbox || ['180', '180', '180', '180']
+      );
       //Check if height or Width covers the whole screen
       if (
         extent &&

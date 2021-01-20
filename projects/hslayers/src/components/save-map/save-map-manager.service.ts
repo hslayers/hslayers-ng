@@ -34,6 +34,8 @@ export class HsSaveMapManagerService {
     bbox: {east: 0, south: 0, west: 0, north: 0},
     currentCompositionTitle: '',
     currentComposition: undefined,
+    write: 'EVERYONE',
+    read: 'EVERYONE',
   };
   userData: any = {
     email: '',
@@ -90,13 +92,15 @@ export class HsSaveMapManagerService {
         HsLayoutService.mainpanel == 'saveMap' ||
         HsLayoutService.mainpanel == 'statusCreator'
       ) {
-        this.fillCompositionData();
-        this.HsSaveMapService.generateThumbnail(
-          this.HsLayoutService.contentWrapper.querySelector(
-            '.hs-stc-thumbnail'
-          ),
-          this.compoData
-        );
+        HsMapService.loaded().then(() => {
+          this.fillCompositionData();
+          this.HsSaveMapService.generateThumbnail(
+            this.HsLayoutService.contentWrapper.querySelector(
+              '.hs-stc-thumbnail'
+            ),
+            this.compoData
+          );
+        });
       }
     });
 
@@ -155,7 +159,9 @@ export class HsSaveMapManagerService {
           this.HsStatusManagerService.findStatusmanagerEndpoint()
         );
       }
-      this.preSaveCheckCompleted.next({endpoint: this.HsStatusManagerService.findStatusmanagerEndpoint()});
+      this.preSaveCheckCompleted.next({
+        endpoint: this.HsStatusManagerService.findStatusmanagerEndpoint(),
+      });
     } catch (ex) {
       this.statusData.success = false;
     }

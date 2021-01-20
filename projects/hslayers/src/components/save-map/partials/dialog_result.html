@@ -21,7 +21,7 @@
                     {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translate}}</div>
                 <div class="alert alert-danger"
                     [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error')">
-                    <dl *ngFor="let item of HsSaveMapManagerService.statusData.error">
+                    <dl *ngFor="let item of HsSaveMapManagerService.statusData.error | keyvalue">
                         <dt>{{item.key}} </dt>
                         <dd>
                             <hs-widgets-recursive-dd [value]="item.value"></hs-widgets-recursive-dd>

@@ -38,6 +38,14 @@ export class HsLaymanService implements HsSaverService {
    * @description Save composition to Layman
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
+    const write =
+      compoData.write == 'EVERYONE' ? compoData.write : endpoint.user;
+    let read;
+    if (write == 'EVERYONE') {
+      read = write;
+    } else {
+      read = compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
+    }
     return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
@@ -53,6 +61,8 @@ export class HsLaymanService implements HsSaverService {
       const headers = new HttpHeaders();
       headers.append('Content-Type', null);
       headers.append('Accept', 'application/json');
+      formdata.append('access_rights.read', read);
+      formdata.append('access_rights.write', write);
       const options = {
         headers: headers,
       };
@@ -157,7 +167,9 @@ export class HsLaymanService implements HsSaverService {
         this.pushVectorSource(ds, geojson, {
           title: layerTitle,
           name: layerName,
-          crs: this.crs,
+          crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
+            ? this.crs
+            : 'EPSG:3857',
         }).then((response) => {
           setTimeout(() => {
             this.pullVectorSource(ds, layerName, layer).then((response) => {
@@ -204,6 +216,11 @@ export class HsLaymanService implements HsSaverService {
           if (layerDesc?.name) {
             this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
             try {
+              layerDesc.wfs.url = layerDesc.wfs.url.replace(
+                'geoserver',
+                'client/geoserver'
+              );
+              const srs = this.HsMapService.getCurrentProj().getCode();
               const wfsFormat = new WFS();
               const serializedFeature = wfsFormat.writeTransaction(
                 featuresToAdd,
@@ -213,10 +230,7 @@ export class HsLaymanService implements HsSaverService {
                   featureNS: 'http://' + endpoint.user,
                   featurePrefix: endpoint.user,
                   featureType: name,
-                  srsName: this.HsMapService.map
-                    .getView()
-                    .getProjection()
-                    .getCode(),
+                  srsName: srs,
                 }
               );
               const headers = new HttpHeaders();
@@ -310,7 +324,7 @@ export class HsLaymanService implements HsSaverService {
         version 2.0.0. Currently only 3.1.1 is possible */
       const response: string = await this.http
         .get(
-          descr.wfs.url +
+          descr.wfs.url.replace('geoserver', 'client/geoserver') +
             '?' +
             this.HsUtilsService.paramsToURL({
               service: 'wfs',
@@ -318,6 +332,7 @@ export class HsLaymanService implements HsSaverService {
               request: 'GetFeature',
               typeNames: `${endpoint.user}:${descr.name}`,
               r: Math.random(),
+              srsName: this.HsMapService.getCurrentProj().getCode(),
             }),
           {responseType: 'text'}
         )

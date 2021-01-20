@@ -186,8 +186,8 @@
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
     "onlyMine": "Tikai manas",
-    "selectKeywords": "Izvēl. atslēgv.",
-    "selectThemes": "Izvēl. tēmas"
+    "selectKeywords": "Izvēlēties atslēg",
+    "selectThemes": "Izvēlēties tēmas"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -519,7 +519,11 @@
     },
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
-    }
+    },
+    "private": "Privāts",
+    "public": "Publisks",
+    "readAccessRights": "Lasīšanas piekļuves tiesības",
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
   },
   "SENSORS": {
     "1D": "1d",
