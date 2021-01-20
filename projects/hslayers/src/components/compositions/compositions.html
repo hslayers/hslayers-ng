@@ -86,11 +86,11 @@
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="text-align:start; background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important;  border-radius: 0;">
+                                            style="text-align:mstart; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
-                                            style=" right: 0; top: 40%;  overflow-y: auto; max-height: 10rem;">
+                                            style="right: 0; top: 40%; overflow-y: auto; max-height: 10rem;">
                                             <li
                                                 *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
                                                 <label class="checkbox"><input class="mr-2" type="checkbox"
@@ -109,7 +109,7 @@
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="themesVisible = !themesVisible"
-                                            style="text-align:start; background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            style="text-align: start; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
                                             {{'COMPOSITIONS.selectThemes' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': themesVisible}"
