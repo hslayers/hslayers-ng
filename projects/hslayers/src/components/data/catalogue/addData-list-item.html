@@ -12,7 +12,7 @@
             data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
     </div> -->
     <div class="p-0" [hidden]="!selectTypeToAddLayerVisible">
-        <span class="btn btn-sm" disabled="true" aria-disabled="true">Add as&nbsp;</span>
+        <span class="btn btn-sm" disabled="true" aria-disabled="true">{{ 'ADDDATA.CATALOGUE.addAs' | translate}}&nbsp;</span>
         <div class="btn-group btn-group-toggle h-100 pr-2 align-items-center" data-toggle="buttons">
             <label class="btn btn-sm btn-outline-primary" [ngClass]="{'active': type == selectedType}"
                 *ngFor="let type of whatToAddTypes" (click)="selectTypeAndAdd(type,$event)">
@@ -39,7 +39,7 @@
 <div class="d-flex">
     <ul class="ml-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
         <li class="text-secondary small" *ngFor="let type of whatToAddTypes">
-            {{type}} &ndash; {{getTypeDescription(type)}}
+            {{type}} &ndash;  {{translateString('ADDDATA.CATALOGUE.DESC', type)}}
         </li>
     </ul>
 </div>

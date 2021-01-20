@@ -8,6 +8,7 @@ import {HsConfig} from '../../../config.service';
 import {HsDatasourcesMetadataService} from '../../datasource-selector/datasource-selector-metadata.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 
@@ -33,7 +34,8 @@ export class HsAddDataListItemComponent {
     public HsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
-    public hsLogService: HsLogService
+    public hsLogService: HsLogService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -84,15 +86,8 @@ export class HsAddDataListItemComponent {
    * @param type One of 'WMS', 'WFS'
    * @returns A brief description of a given type with its main advantage and disadvantage notes
    */
-  getTypeDescription(type: string): string {
-    switch (type.toLowerCase()) {
-      case 'wms':
-        return 'Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features.';
-      case 'wfs':
-        return 'Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.';
-      default:
-        return 'this type is unknown to HSLayers-NG ...';
-    }
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   toggleExplanations(): void {
