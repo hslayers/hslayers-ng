@@ -86,7 +86,7 @@
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="text-align:mstart; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            style="text-align:start; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
@@ -191,7 +191,7 @@
                 <ul class="pagination d-flex justify-content-center"
                     *ngIf="HsCompositionsCatalogueService.paging.matched == 0">
                     <li class="page-item">
-                        <span aria-hidden="true">Loading...</span>
+                        <span aria-hidden="true">{{'COMMON.loading' | translate}}...</span>
                     </li>
                 </ul>
                 <ul class="pagination d-flex justify-content-center"
