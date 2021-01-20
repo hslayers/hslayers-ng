@@ -88,7 +88,7 @@ export class HsCompositionsCatalogueService {
     public HsLaymanService: HsLaymanService
   ) {
     if (!this.paging.limit) {
-      this.paging.limit = Math.round(
+      this.paging.limit = Math.ceil(
         this.recordsPerPage / this.filteredEndpointsForCompositions().length
       );
     }

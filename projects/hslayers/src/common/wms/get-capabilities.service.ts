@@ -166,8 +166,10 @@ export class HsWmsGetCapabilitiesService {
           name: layer.Name.replace(/\//g, '&#47;'),
           path,
           source: new TileWMS({
-            url:
-              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+            url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource.replace(
+              'geoserver',
+              'client/geoserver'
+            ),
             attributions: attributions,
             styles:
               layer.Style && layer.Style.length > 0
