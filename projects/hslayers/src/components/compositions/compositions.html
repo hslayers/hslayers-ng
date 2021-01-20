@@ -71,7 +71,7 @@
                                     <td>
                                         <select class="form-control" name="type"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.type"
-                                            (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03);">
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03);">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
                                                 {{translateString('COMPOSITONTYPES', type.name)}}</option>
@@ -95,7 +95,7 @@
                                                 *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
                                                 <label class="checkbox"><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="keyword.selected" name="keyword[index]"
-                                                        (change)="loadCompositions()">{{translateString('COMPOSITONKEYWORDS',
+                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
                                                     keyword.name)}}</label>
                                             </li>
                                         </ul>
@@ -118,7 +118,7 @@
                                                 *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
                                                 <label class="checkbox"><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="theme.selected" name="theme[index]"
-                                                        (change)="loadCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
+                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
                                                     theme.name)}}</label>
                                             </li>
                                         </ul>
@@ -131,7 +131,7 @@
                                     <td>
                                         <select class="form-control" name="data.theme"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.theme"
-                                            (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03)">
                                             <option *ngFor="let theme of HsCompositionsCatalogueService.inspireThemes"
                                                 [ngValue]="theme.value">
                                                 {{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</option>
@@ -145,7 +145,7 @@
                                     <td class="tdbreak">
                                         <select class="form-control" name="data.sortBy"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
-                                            (change)="loadCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03)">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
                                                 {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
