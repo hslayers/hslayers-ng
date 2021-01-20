@@ -39,14 +39,14 @@
                 </div>
                 <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
             </div>
-            <div class="d-flex flex-row pb-2 justify-content-between">
+            <div class="d-flex flex-row pb-2 justify-content-around">
                 <div class="input-group-prepend">
                     <div class="input-group-text hs-borderless-input pl-0">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByExtent"
                             (change)='loadCompositions()' name="HsCompositionsCatalogueService.filterByExtent">
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
-                    <div class="input-group-text hs-borderless-input" style="margin-left: 1.5em;"
+                    <div class="input-group-text hs-borderless-input"
                         [hidden]="!HsLaymanService.getLaymanEndpoint()">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine"
                             (change)='HsCompositionsCatalogueService.onlyMineClicked()'
@@ -86,7 +86,7 @@
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important;  border-radius: 0;">
+                                            style="text-align:start; background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important;  border-radius: 0;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
@@ -106,10 +106,10 @@
                                         {{'COMPOSITIONS.inspireTheme' | translate}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle hs-custom-dropdown-after p-2 border"
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="themesVisible = !themesVisible"
-                                            style="background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            style="text-align:start; background-color:rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
                                             {{'COMPOSITIONS.selectThemes' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': themesVisible}"

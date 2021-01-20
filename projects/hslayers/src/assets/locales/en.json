@@ -519,7 +519,11 @@
     },
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
-    }
+    },
+    "readAccessRights": "Read access rights",
+    "writeAccessRights": "Write access rights",
+    "public": "Public",
+    "private": "Private"
   },
   "SENSORS": {
     "1D": "1D",

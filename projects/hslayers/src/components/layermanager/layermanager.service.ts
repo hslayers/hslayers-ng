@@ -157,7 +157,7 @@ export class HsLayerManagerService {
       this.HsLayerEditorVectorLayerService.cluster(
         true,
         layer,
-        this.HsConfig.clusteringDistance
+        this.HsConfig.clusteringDistance || 40
       );
     }
     if (layer.getZIndex() == undefined) {
