@@ -7,7 +7,6 @@
                 <button type="button" class=" btn pl-2 pr-2 "
                     [ngClass]="data.filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
                     [title]="'COMPOSITIONS.filterByMap' | translate"
-                    style="font-size:larger; line-height:1 !important; "
                     [ngStyle]="{'border-color': data.filterByExtent ? '#6c757d' : '#ced4da'}"
                     (click)="extentFilterChanged()">
                     <i class="icon-tabletscreensize"></i>
