@@ -10,9 +10,10 @@
             <li class="list-group-item hs-ows-layerlistheading clearfix">
                 <div>{{title}}</div>
             </li>
-            <li *ngFor="let layer of services" class="list-group-item clearfix" (click)="setCurrentLayer(layer, $index)" >
-                <input type="checkbox" ng-model="layer.checked" (change)="changed()" id="wmtslayer-{{$index}}"/> 
-                <label class="mw-100" for="wmtslayer-{{$index}}">{{layer.Title}}</label>
+            <li *ngFor="let layer of services; let index = index" class="list-group-item clearfix" >
+                <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()" [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}"/> 
+                <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'wmtslayer-'+index" 
+                [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ml-2" style="max-width: 90%;">{{layer.Title}}</span></label>
             </li>
         </ul>
         <li class="list-group-item hs-ows-layerlistheading clearfix">

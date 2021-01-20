@@ -5,6 +5,7 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/wmts/get-capabilities.service';
+import {HsLayoutService} from '../../../layout/layout.service';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
@@ -37,7 +38,8 @@ export class HsAddDataWmtsComponent {
     public HsUtilsService: HsUtilsService,
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsEventBusService: HsEventBusService,
-    public HsLogService: HsLogService
+    public HsLogService: HsLogService,
+    public HsLayoutService: HsLayoutService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()
@@ -50,7 +52,7 @@ export class HsAddDataWmtsComponent {
         if (type === 'WMTS') {
           try {
             if (this.showDetails == true) {
-              this.capabilitiesReceived(response.data);
+              this.capabilitiesReceived(response);
             }
           } catch (e) {
             console.warn(e);
@@ -59,7 +61,7 @@ export class HsAddDataWmtsComponent {
       }
     );
 
-    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
+    this.HsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'wmts') {
         this.layerToAdd = layer;
         this.setUrlAndConnect(uri);
@@ -107,9 +109,13 @@ export class HsAddDataWmtsComponent {
 
   addLayers(checkedOnly: boolean): void {
     this.addAll = checkedOnly;
-    for (const layer of this.HsAddDataWfsService.services) {
+    for (const layer of this.services) {
       this.addLayersRecursively(layer);
     }
+    this.HsLayoutService.setMainPanel('layermanager');
+    //FIX ME: to implement
+    // this.zoomToLayers();
+
   }
 
   private addLayersRecursively(layer): void {
