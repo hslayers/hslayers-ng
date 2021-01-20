@@ -36,7 +36,6 @@ export class HsAddDataMetadataDialogComponent
     this.selectedLayerKeys = this.selectedLayerKeys.filter(
       (e) => e !== 'endpoint'
     );
-    console.log(this.selectedLayerKeys);
   }
 
   /**

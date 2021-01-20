@@ -62,7 +62,6 @@ export class HsAddDataUrlComponent {
       });
     });
 
-    console.log('URLstarting');
     if (this.HsAddDataService.urlType) {
       this.selectType(this.HsAddDataService.urlType);
       this.connectServiceFromUrlParam(this.HsAddDataService.urlType);

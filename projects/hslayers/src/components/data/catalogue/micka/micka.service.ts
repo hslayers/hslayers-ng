@@ -140,7 +140,6 @@ export class HsMickaBrowserService {
           data.extentFeatureCreated(extentFeature);
         }
       }
-      console.log('ending');
     }
   }
 
