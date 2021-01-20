@@ -12,10 +12,26 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
         <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.shapeFile' | translate}} </label>
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
+    </div> -->
+    <div class="form-group">
+        <div class="d-flex flex-row justify-content-around align-items-baseline">
+            <div class="dropzone p-4" fileDrop (filesDropped)="read($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
+                    <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
+            </div>
+            <label class="dropzone-label">
+                <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
+            </label> 
+
+        </div>
+        <!-- TODO: Replace this with upcomming toast directive -->
+        <div class="text-light text-center bg-danger" *ngIf="errorOccured">
+            <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
+        </div>
     </div>
+
 
     <div class="form-group">
         <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>

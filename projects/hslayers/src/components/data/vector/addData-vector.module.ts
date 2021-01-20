@@ -5,7 +5,6 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCommonModule} from '../common/addData-common.module';
 import {HsAddDataVectorComponent} from './addData-vector.component';
-import {HsAddDataVectorFileUploadDirective} from './addData-vector.file-upload.directive';
 import {HsAddDataVectorService} from './addData-vector.service';
 import {HsVectorUrlParserService} from './addData-vector-url-parser.service';
 
@@ -13,7 +12,7 @@ import {HsVectorUrlParserService} from './addData-vector-url-parser.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, FormsModule, TranslateModule, HsAddDataCommonModule],
   exports: [HsAddDataVectorComponent],
-  declarations: [HsAddDataVectorComponent, HsAddDataVectorFileUploadDirective],
+  declarations: [HsAddDataVectorComponent],
   providers: [HsAddDataVectorService, HsVectorUrlParserService],
 })
 export class HsAddDataVectorModule {}

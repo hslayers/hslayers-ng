@@ -2,7 +2,7 @@ import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 @Directive({
   selector: '[fileDrop]',
 })
-export class HsAddDataVectorFileUploadDirective {
+export class HsAddDataCommonVectorFileUploadDirective {
   @Output() filesDropped = new EventEmitter<FileList>();
   @Output() filesHovered = new EventEmitter<boolean>();
   constructor() {}
