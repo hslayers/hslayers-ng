@@ -33,14 +33,14 @@ export class HsAddDataWfsComponent {
   constructor(
     public HsAddDataWfsService: HsAddDataWfsService,
     public HsDialogContainerService: HsDialogContainerService,
-    public hsEventBusService: HsEventBusService,
+    public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public hsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public hsUtilsService: HsUtilsService
   ) {
-    this.hsEventBusService.olMapLoads.subscribe(() => {
+    this.HsEventBusService.olMapLoads.subscribe(() => {
       this.mapProjection = this.HsMapService.map
         .getView()
         .getProjection()
@@ -48,7 +48,7 @@ export class HsAddDataWfsComponent {
         .toUpperCase();
     });
 
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response}) => {
         if (type === 'WFS') {
           try {
@@ -82,7 +82,7 @@ export class HsAddDataWfsComponent {
       }
     );
 
-    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
+    this.HsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'wfs') {
         this.layerToAdd = layer;
         this.setUrlAndConnect(uri);

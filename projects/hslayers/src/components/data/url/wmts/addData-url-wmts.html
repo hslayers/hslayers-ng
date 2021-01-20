@@ -1,0 +1,30 @@
+<form class="form-horizontal" name="frmConnect" role="form">
+    <hs-add-data-common-url type="wmts" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
+
+    <button [hidden]="!layersLoading"
+    class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
+        class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
+
+    <div [hidden]="!(showDetails && !layersLoading)" class="card">
+        <ul class="list-group">
+            <li class="list-group-item hs-ows-layerlistheading clearfix">
+                <div>{{title}}</div>
+            </li>
+            <li *ngFor="let layer of services" class="list-group-item clearfix" (click)="setCurrentLayer(layer, $index)" >
+                <input type="checkbox" ng-model="layer.checked" (change)="changed()" id="wmtslayer-{{$index}}"/> 
+                <label class="mw-100" for="wmtslayer-{{$index}}">{{layer.Title}}</label>
+            </li>
+        </ul>
+        <li class="list-group-item hs-ows-layerlistheading clearfix">
+            <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-between w-100" *ngIf="!loadingFeatures">
+                    <button class="btn btn-primary" (click)="selectAllLayers(services)" >{{'ADDDATA.URL.selectAll' | translate}}</button>
+                    <button class="btn btn-primary pull-right" (click)="addLayers(true)"
+                        title="{{'ADDLAYERS.WFS.addToMap'|translate}}" [disabled]="!isChecked"><i
+                            class="icon-plus"></i></button>
+                </div>
+            </div>
+        </li>
+    </div>
+    
+</form>
