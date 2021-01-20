@@ -1,7 +1,7 @@
 import {Feature} from 'ol';
 import {Injectable} from '@angular/core';
 
-//import {EndpointsWithDatasourcesPipe} from '../../common/widgets/endpoints-with-datasources.pipe';
+import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
 import {HsAddDataService} from '../addData.service';
@@ -63,7 +63,8 @@ export class HsAddDataCatalogueService {
     public hsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
     public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
-    public HsAddDataService: HsAddDataService /*private endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe*/
+    public HsAddDataService: HsAddDataService,
+    public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe
   ) {
     this.data.query = {
       textFilter: '',
@@ -87,10 +88,10 @@ export class HsAddDataCatalogueService {
       this.hsConfig.allowAddExternalDatasets = true;
     }
 
-    const mickaEndpoints = this.hsCommonEndpointsService.endpoints.filter(
-      (e) => e.type == 'micka'
+    const endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
+      this.hsCommonEndpointsService.endpoints
     );
-    this.paging.limit = 20 / mickaEndpoints.length; // add 1 if odd
+    this.paging.limit = Math.ceil(20 / endpointsWithDatasources.length);
 
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
@@ -144,14 +145,14 @@ export class HsAddDataCatalogueService {
       const observables = [];
 
       //Mark non funcctional endpoint
-      for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-        if (endpoint.type != 'statusmanager') {
-          //query only functional endpoints
-          endpoint.datasourcePaging = {...this.paging};
+      for (const endpoint of this.endpointsWithDatasourcesPipe.transform(
+        this.hsCommonEndpointsService.endpoints
+      )) {
+        //query only functional endpoints
+        endpoint.datasourcePaging = {...this.paging};
 
-          const promise = this.queryCatalog(endpoint);
-          observables.push(promise);
-        }
+        const promise = this.queryCatalog(endpoint);
+        observables.push(promise);
       }
 
       this.catalogQuery = forkJoin(observables).subscribe(() => {
@@ -198,12 +199,11 @@ export class HsAddDataCatalogueService {
     if (responseArray === undefined || responseArray?.length == 0) {
       return [];
     }
-
-    const mickaLayers = this.catalogEntries.filter(
+    const responseLayers = this.catalogEntries.filter(
       (layer) => layer.id !== undefined
     );
     return responseArray.filter(
-      (data) => mickaLayers.filter((u) => u.id == data.id).length == 0
+      (data) => responseLayers.filter((u) => u.id == data.id).length == 0
     );
   }
 
@@ -270,7 +270,6 @@ export class HsAddDataCatalogueService {
           this.data.textField
         );
         return query;
-      //FIX ME - await for laymanendpoint
       case 'layman':
         query = this.hsLaymanBrowserService.queryCatalog(catalog);
         return query;
@@ -343,7 +342,7 @@ export class HsAddDataCatalogueService {
       return whatToAdd.type;
     }
     if (whatToAdd.type == 'WMS') {
-      this.datasetSelect('url'); //OWS maybe will be necessary to change also somewhere else
+      this.datasetSelect('url'); 
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
@@ -415,13 +414,8 @@ export class HsAddDataCatalogueService {
    *
    */
   dataSourceExistsAndEmpty(): boolean {
-    return (
-      //TODO: This will be possible once we run on ng9 only
-      /*this.endpointsWithDatasourcesPipe
-        .transform(this.hsCommonEndpointsService.endpoints)*/
+    return !!this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
-        .filter((ep) => ep.type != 'statusmanager')
-        .filter((ep) => !ep.datasourcePaging.loaded).length > 0
     );
   }
 

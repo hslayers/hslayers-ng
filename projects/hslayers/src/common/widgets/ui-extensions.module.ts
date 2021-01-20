@@ -7,7 +7,7 @@ import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
 @NgModule({
   declarations: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
   imports: [CommonModule],
-  providers: [],
+  providers: [EndpointsWithDatasourcesPipe],
   entryComponents: [HsUiExtensionsRecursiveDd],
   exports: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
 })
