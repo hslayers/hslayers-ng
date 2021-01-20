@@ -54,6 +54,18 @@
       "tileMatrix": "Matice dlaždic"
     }
   },
+  "ADDDATA": {
+    "catalogue": "Datový katalog",
+    "file": "Soubor",
+    "CATALOGUE": {
+      "loading": "Načítání dat",
+      "addAs": "Přidat jako",
+      "DESC": {
+        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat.",
+        "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť."
+      }
+    }
+  },
   "COMMON": {
     "abstract": "Abstrakt",
     "add": "Přidat",

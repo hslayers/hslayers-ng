@@ -3,10 +3,9 @@
         <div class="input-group w-50">
             <input type="search" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search"
                 [(ngModel)]="data.query.title" (ngModelChange)="filterByTitle()">
-            <div class="input-group-append">
+            <div class="input-group-append" [title]="'COMPOSITIONS.filterByMap' | translate">
                 <button type="button" class=" btn pl-2 pr-2 "
                     [ngClass]="data.filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
-                    [title]="'COMPOSITIONS.filterByMap' | translate"
                     [ngStyle]="{'border-color': data.filterByExtent ? '#6c757d' : '#ced4da'}"
                     (click)="extentFilterChanged()">
                     <i class="icon-tabletscreensize"></i>
@@ -27,7 +26,7 @@
                      -->
                 <ul class="list-group">
                     <li class='list-group-item text-primary text-center' [hidden]="!HsAddDataCatalogueService.layersLoading"><img class="pr-2"
-                        [src]="loaderImage" />Loading data</li>
+                        [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='HsAddDataCatalogueService.catalogEntries.length > 0 || HsAddDataCatalogueService.layersLoading'
                         class='list-group-item'>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
