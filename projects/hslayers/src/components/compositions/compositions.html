@@ -8,9 +8,10 @@
                 (click)="openSaveMapPanel()">
                 <span class="icon-save-floppy"></span>
             </button>
-            <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;" title="{{'COMPOSITIONS.import'|translate}}">
-                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)"
-                    accept="json" style="display: none;">
+            <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="font-size: 14px; padding: 1px 6px;"
+                title="{{'COMPOSITIONS.import'|translate}}">
+                <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)" accept="json"
+                    style="display: none;">
             </label>
             <button class="but-title-sm hs-extra-buttons" title="{{'COMPOSITIONS.addByAddress'|translate}}"
                 (click)="changeUrlButtonVisible()">
@@ -46,8 +47,7 @@
                             (change)='loadCompositions()' name="HsCompositionsCatalogueService.filterByExtent">
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
-                    <div class="input-group-text hs-borderless-input"
-                        [hidden]="!HsLaymanService.getLaymanEndpoint()">
+                    <div class="input-group-text hs-borderless-input" [hidden]="!HsLaymanService.getLaymanEndpoint()">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine"
                             (change)='HsCompositionsCatalogueService.onlyMineClicked()'
                             name="HsCompositionsCatalogueService.filterByOnlyMine">
@@ -58,20 +58,21 @@
                     <button type="button" class="btn btn-light dropdown-toggle"
                         style="background-color: white; border: 0;color: #495057" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false" (click)="openOptionsMenu()">
-                        {{translateString('COMMON', optionsButtonLabel)}} <span class="caret"></span>
+                        {{translateString('COMMON', optionsButtonLabel)}}
                     </button>
                     <div class="dropdown-menu dropdown-menu-right p-2 m-1" [ngClass]="{'show': optionsMenuOpen}"
-                        style="min-width: 250px;">
-                        <table>
+                        style="min-width: 22rem; max-width: 21rem;">
+                        <table class="p-2 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
                             <tbody>
                                 <tr>
-                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
+                                    <td class="tdbreak">
                                         {{'COMMON.type' | translate}}
                                     </td>
                                     <td>
-                                        <select class="form-control" name="type"
+                                        <select class="form-control pl-1" name="type"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.type"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03);">
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="min-width: 11rem; max-width: 11rem; background-color:rgba(0,0,0,.03); border:0px;
+   outline:0px;">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
                                                 {{translateString('COMPOSITONTYPES', type.name)}}</option>
@@ -79,14 +80,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
+                                    <td class="tdbreak">
                                         {{'COMMON.keywords' | translate}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
+                                        <button type="button"
+                                            class="btn btn-light btn-sm dropdown-toggle p-2 pl-1 border-0"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="text-align:start; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            style="text-align:start; background-color: rgba(0,0,0,.03); color: #495057; min-width: 11rem; max-width: 11rem;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
@@ -102,18 +104,19 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
+                                    <td class="tdbreak">
                                         {{'COMPOSITIONS.inspireTheme' | translate}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle p-2 border"
+                                        <button type="button"
+                                            class="btn btn-light btn-sm dropdown-toggle p-2 pl-1 border-0"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="themesVisible = !themesVisible"
-                                            style="text-align: start; background-color: rgba(0,0,0,.03); color: #495057; border-color: #ced4da !important; width: 136px !important; border-radius: 0;">
+                                            style="text-align: start; background-color: rgba(0,0,0,.03); color: #495057; min-width: 11rem; max-width: 11rem;">
                                             {{'COMPOSITIONS.selectThemes' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': themesVisible}"
-                                            style="right: 0; top: 59%; overflow-y: auto; max-height: 10rem;">
+                                            style="right: 0; top: 57%; overflow-y: auto; max-height: 10rem;">
                                             <li
                                                 *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
                                                 <label class="checkbox"><input class="mr-2" type="checkbox"
@@ -124,28 +127,15 @@
                                         </ul>
                                     </td>
                                 </tr>
-                                <!-- <tr>
-                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
-                                        {{'COMPOSITIONS.inspireTheme' | translate}}
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="data.theme"
-                                            [(ngModel)]="HsCompositionsCatalogueService.data.theme"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03)">
-                                            <option *ngFor="let theme of HsCompositionsCatalogueService.inspireThemes"
-                                                [ngValue]="theme.value">
-                                                {{translateString('COMPOSITONINSPIRETHEMES', theme.name)}}</option>
-                                        </select>
-                                    </td>
-                                </tr> -->
                                 <tr>
-                                    <td class="tdbreak" style="min-width: 100px; max-width: 100px;">
+                                    <td class="tdbreak">
                                         {{'COMMON.sortBy' | translate}}
                                     </td>
                                     <td class="tdbreak">
-                                        <select class="form-control" name="data.sortBy"
+                                        <select class="form-control pl-1" name="data.sortBy"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03)">
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03); border:0px;
+   outline:0px; min-width: 11rem; max-width: 11rem;">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
                                                 {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
@@ -166,7 +156,7 @@
                 </div>
             </div>
         </form>
-        <div class="card">
+        <div class="card d-flex" style="font-size: 1rem !important;">
             <div class="card-body">
                 <ul class="hs-comp-list list-group">
                     <li class='list-group-item text-primary text-center'
