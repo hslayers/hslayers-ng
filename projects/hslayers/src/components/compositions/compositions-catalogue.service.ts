@@ -164,15 +164,9 @@ export class HsCompositionsCatalogueService {
       if (this.filterByOnlyMine) {
         this.onlyMineClicked();
       } else {
-        if (fillPage) {
-          this.filteredEndpoints.forEach((ep: HsEndpoint) => {
-            if (ep.compositionsPaging.matched > this.paging.limit) {
-              observables.push(this.loadCompositionFromEndpoint(ep));
-            }
-          });
-        } else {
-          for (const endpoint of this.filteredEndpoints) {
-            observables.push(this.loadCompositionFromEndpoint(endpoint));
+        for (const ep of this.filteredEndpoints) {
+          if (!fillPage || ep.compositionsPaging.matched > this.paging.limit) {
+            observables.push(this.loadCompositionFromEndpoint(ep));
           }
         }
         this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
