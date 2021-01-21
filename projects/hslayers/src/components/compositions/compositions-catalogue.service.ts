@@ -16,7 +16,7 @@ import {
 } from './compositions-option-values';
 import {Injectable} from '@angular/core';
 import {Observable, forkJoin} from 'rxjs';
-type pagination = {
+type Pagination = {
   start?: number;
   limit?: number;
   loaded?: boolean;
@@ -55,7 +55,7 @@ export class HsCompositionsCatalogueService {
     type: TYPES[0].name,
     themes: INSPIRETHEMES,
   };
-  paging: pagination = {
+  paging: Pagination = {
     start: 0,
     limit: 0,
     matched: 0,
