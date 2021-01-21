@@ -198,9 +198,7 @@ export class HsCompositionsCatalogueService {
   loadFilteredCompositions(): void {
     this.clearCompositions();
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
-      (ep: HsEndpoint) =>
-        (!this.filterByOnlyMine && ep.type != 'layman') ||
-        (this.filterByOnlyMine && ep.type == 'layman')
+      (ep: HsEndpoint) => !this.filterByOnlyMine || ep.type == 'layman'
     );
     this.setPagingLimit();
     this.loadCompositions();
