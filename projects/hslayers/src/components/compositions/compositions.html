@@ -41,7 +41,7 @@
                 </div>
                 <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
             </div>
-            <div class="d-flex flex-row pb-2 justify-content-around">
+            <div class="d-flex pb-2" style="justify-content: space-between;">
                 <div class="input-group-prepend">
                     <div class="input-group-text hs-borderless-input pl-0">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByExtent"
@@ -55,7 +55,7 @@
                         <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
                     </div>
                 </div>
-                <div ngbDropdown display="dynamic" class="btn-group">
+                <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
                     <button class="btn btn-light" style="background-color: white; border: 0;color: #495057"
                         (click)="openOptionsMenu()" ngbDropdownToggle>{{translateString('COMMON',
                         optionsButtonLabel)}}</button>
@@ -82,7 +82,7 @@
                                     <td class="tdbreak">
                                         {{'COMMON.keywords' | translate}}
                                     </td>
-                                    <td ngbDropdown display="dynamic">
+                                    <td ngbDropdown display="dynamic" placement="bottom-right">
                                         <button type="button" ngbDropdownToggle
                                             class="btn btn-light btn-sm p-2 pl-1 border-0"
                                             style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
@@ -104,7 +104,7 @@
                                     <td class="tdbreak">
                                         {{'COMPOSITIONS.inspireTheme' | translate}}
                                     </td>
-                                    <td ngbDropdown display="dynamic">
+                                    <td ngbDropdown display="dynamic" placement="bottom-right">
                                         <button type="button" ngbDropdownToggle
                                             class="btn btn-light btn-sm p-2 pl-1 border-0"
                                             style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
@@ -149,13 +149,6 @@
                         </table>
                     </div>
                 </div>
-                <!-- <div class="btn-group dropdown"> -->
-                <!-- <button type="button" class="btn btn-light dropdown-toggle"
-                        style="background-color: white; border: 0;color: #495057" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" (click)="openOptionsMenu()">
-                        {{translateString('COMMON', optionsButtonLabel)}}
-                    </button> -->
-                <!-- </div> -->
             </div>
         </form>
         <div class="card d-flex" style="font-size: 1rem !important;">
