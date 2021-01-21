@@ -4,7 +4,7 @@ import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsShareUrlService} from '../../permalink/share-url.service';
-// import {HsDragDropLayerService} from './drag-drop-layer.service';
+import {HsLayoutService} from '../../layout/layout.service';
 
 @Component({
   selector: 'hs-add-data-url',
@@ -19,7 +19,8 @@ export class HsAddDataUrlComponent {
     public HsLanguageService: HsLanguageService,
     public HsEventBusService: HsEventBusService,
     public HsShareUrlService: HsShareUrlService,
-    public HsAddDataService: HsAddDataService
+    public HsAddDataService: HsAddDataService,
+    public HsLayoutService: HsLayoutService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
@@ -87,6 +88,7 @@ export class HsAddDataUrlComponent {
       }
     } else {
       this.HsEventBusService.owsConnecting.next({type: type, uri: url});
+      this.HsLayoutService.setMainPanel('addData');
     }
   }
 }

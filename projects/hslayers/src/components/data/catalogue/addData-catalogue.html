@@ -25,13 +25,13 @@
                     </div>
                      -->
                 <ul class="list-group">
-                    <li class='list-group-item text-primary text-center' [hidden]="!HsAddDataCatalogueService.layersLoading"><img class="pr-2"
+                    <li class='list-group-item text-primary text-center py-2' [hidden]="!HsAddDataCatalogueService.layersLoading"><img class="pr-2"
                         [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='HsAddDataCatalogueService.catalogEntries.length > 0 || HsAddDataCatalogueService.layersLoading'
-                        class='list-group-item'>
+                        class='list-group-item '>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li [hidden]="HsAddDataCatalogueService.layersLoading" *ngFor='let layer of HsAddDataCatalogueService.catalogEntries | slice:HsAddDataCatalogueService.listStart:HsAddDataCatalogueService.listNext'
-                        class="clearfix" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                        class="clearfix py-2" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                         <hs-add-data-list-item [layer]="layer"></hs-add-data-list-item>
                     </li>
                 </ul>
