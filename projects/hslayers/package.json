@@ -3,9 +3,6 @@
   "version": "3.0.1-rc.0",
   "scripts": {},
   "peerDependencies": {
-    "@types/cesium": "^1.67.12",
-    "cesium": "^1.77.0",
-    "hslayers-ng-proxy": "^1.0.0",
     "bootstrap": "^4.0.0",
     "ol": "^6.0.0",
     "@angular/common": "^9.0.0",
