@@ -1,11 +1,11 @@
-<form class="form-horizontal" name="frmConnect" role="form">
+<form class="form-horizontal" name="frmConnect" role="form" (click)="log()">
     <hs-add-data-common-url type="wmts" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
 
     <button [hidden]="!layersLoading"
     class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
         class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
 
-    <div [hidden]="!(showDetails && !layersLoading)" class="card">
+    <div *ngIf="showDetails && !layersLoading" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix">
                 <div>{{title}}</div>

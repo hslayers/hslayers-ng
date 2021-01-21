@@ -86,10 +86,14 @@ export class HsAddDataWmsComponent {
   }
 
   connect = (layerToSelect: string): void => {
-    this.hsHistoryListService.addSourceHistory('wms', this.url);
-    this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
-    this.layerToSelect = layerToSelect;
-    this.showDetails = true;
+    try {
+      this.hsHistoryListService.addSourceHistory('wms', this.url);
+      this.layerToSelect = layerToSelect;
+      this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
+      this.showDetails = true;
+    } catch (e) {
+      this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
+    }
   };
 
   /**
