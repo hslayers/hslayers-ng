@@ -33,5 +33,5 @@ require('http')
     }
   })
   .listen(port, host, () => {
-    console.log('Running CORS Anywhere on ' + host + ':' + port);
+    console.log('Running proxy on ' + host + ':' + port);
   });
