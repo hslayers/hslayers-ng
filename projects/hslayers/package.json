@@ -30,7 +30,7 @@
     "zone.js": "0.10.3"
   },
   "devDependencies": {
-    "bootstrap": ">=4.4.1",
+    "bootstrap": ">=4.6.0",
     "ol": "^6.5.0",
     "@angular/common": "^9.1.13",
     "@angular/core": "^9.1.13",
