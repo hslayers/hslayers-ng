@@ -34,9 +34,9 @@
                     name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
                     (change)="loadCompositions()">
                 <div class="input-group-append">
-                    <label class="input-group-text text-secondary border-left-0" (click)="loadCompositions()">
+                    <button class="btn input-group-text text-secondary border-left-0" (click)="loadCompositions()">
                         <i class="icon-search icon-primary"></i>
-                    </label>
+                    </button>
                 </div>
                 <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
             </div>
