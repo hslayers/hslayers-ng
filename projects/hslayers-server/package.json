@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "BOSC",
+  "author": "plan4all",
   "dependencies": {
     "cors-anywhere": "^0.4.3",
     "http": "0.0.1-security"
