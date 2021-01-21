@@ -34,7 +34,7 @@
                     name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
                     (change)="loadCompositions()">
                 <div class="input-group-append">
-                    <button class="btn input-group-text text-secondary border-left-0" (click)="loadCompositions()">
+                    <button class="btn input-group-text text-secondary border-left-0" style="background-color: #f8f9fa" (click)="loadCompositions()">
                         <i class="icon-search icon-primary"></i>
                     </button>
                 </div>
@@ -61,8 +61,8 @@
                         {{translateString('COMMON', optionsButtonLabel)}}
                     </button>
                     <div class="dropdown-menu dropdown-menu-right p-2 m-1" [ngClass]="{'show': optionsMenuOpen}"
-                        style="min-width: 22rem; max-width: 21rem;">
-                        <table class="p-2 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
+                        style="min-width: 23rem; max-width: 23rem;">
+                        <table class="p-1 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
                             <tbody>
                                 <tr>
                                     <td class="tdbreak">
@@ -71,7 +71,7 @@
                                     <td>
                                         <select class="form-control pl-1" name="type"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.type"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="min-width: 11rem; max-width: 11rem; background-color:rgba(0,0,0,.03); border:0px;
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="min-width: 11rem; max-width: 11rem; background-color:rgba(0,0,0,.07); border:0px;
    outline:0px;">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
@@ -88,14 +88,14 @@
                                             class="btn btn-light btn-sm dropdown-toggle p-2 pl-1 border-0"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="keywordsVisible = !keywordsVisible"
-                                            style="text-align:start; background-color: rgba(0,0,0,.03); color: #495057; min-width: 11rem; max-width: 11rem;">
+                                            style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': keywordsVisible}"
                                             style="right: 0; top: 40%; overflow-y: auto; max-height: 10rem;">
                                             <li
                                                 *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
-                                                <label class="checkbox"><input class="mr-2" type="checkbox"
+                                                <label><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="keyword.selected" name="keyword[index]"
                                                         (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
                                                     keyword.name)}}</label>
@@ -112,14 +112,14 @@
                                             class="btn btn-light btn-sm dropdown-toggle p-2 pl-1 border-0"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             (click)="themesVisible = !themesVisible"
-                                            style="text-align: start; background-color: rgba(0,0,0,.03); color: #495057; min-width: 11rem; max-width: 11rem;">
+                                            style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                             {{'COMPOSITIONS.selectThemes' | translate}}
                                         </button>
                                         <ul class="dropdown-menu pl-2" [ngClass]="{'show': themesVisible}"
-                                            style="right: 0; top: 57%; overflow-y: auto; max-height: 10rem;">
+                                            style="right: 0; top: 57% !important; overflow-y: auto; max-height: 10rem;">
                                             <li
                                                 *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
-                                                <label class="checkbox"><input class="mr-2" type="checkbox"
+                                                <label><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="theme.selected" name="theme[index]"
                                                         (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
                                                     theme.name)}}</label>
@@ -134,7 +134,7 @@
                                     <td class="tdbreak">
                                         <select class="form-control pl-1" name="data.sortBy"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.03); border:0px;
+                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()" style="background-color:rgba(0,0,0,.07); border:0px;
    outline:0px; min-width: 11rem; max-width: 11rem;">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
@@ -145,7 +145,7 @@
                                 <tr>
                                     <td colspan="2" style="text-align: center; vertical-align: middle;">
                                         <a class="btn btn-block btn-light"
-                                            style="border-radius: 0.25rem; background-color:rgba(0,0,0,.03); color: #495057"
+                                            style="border-radius: 0.25rem; background-color:rgba(0,0,0,.07); color: #495057"
                                             (click)="clearFilters()">
                                             {{'COMPOSITIONS.clearFilters' | translate}}</a>
                                     </td>
@@ -186,7 +186,7 @@
                 </ul>
                 <ul class="pagination d-flex justify-content-center"
                     *ngIf="HsCompositionsCatalogueService.compositionEntries.length > 0">
-                    <li class="page-item" [ngClass]="{'disabled': HsCompositionsCatalogueService.listStart == 0 }">
+                    <li class="page-item" [ngClass]="{'disabled': HsCompositionsCatalogueService.listStart == 0 }" [ngStyle]="{'color' : HsCompositionsCatalogueService.listStart == 0 ? '#555' : '#007bff'}">
                         <a class="page-link" (click)="getPreviousCompositions()"><span
                                 aria-hidden="true">&laquo;</span></a>
                     </li>
@@ -204,7 +204,7 @@
                             {{HsCompositionsCatalogueService.listStart + 1}} -
                             {{HsCompositionsCatalogueService.paging.matched}}</span>
                     </li>
-                    <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }">
+                    <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }"  [ngStyle]="{'color' : nextPageAvailable() ? '#555' : '#007bff'}">
                         <a class="page-link" (click)="getNextCompositions()"><span aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>

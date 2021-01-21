@@ -209,10 +209,10 @@ export class HsCompositionsCatalogueService {
    */
   createCompositionList(): void {
     //TODO: ratio limits
-    this.paging.matched = 0;
+    let lastRequestMatched = 0;
     for (const endpoint of this.filteredEndpoints) {
       if (endpoint.compositionsPaging.matched) {
-        this.paging.matched += endpoint.compositionsPaging.matched;
+        lastRequestMatched += endpoint.compositionsPaging.matched;
       }
       if (this.arrayContainsData(endpoint.compositions)) {
         if (this.arrayContainsData(this.compositionEntries)) {
@@ -227,6 +227,9 @@ export class HsCompositionsCatalogueService {
       }
     }
     this.compositionsLoading = false;
+    if (lastRequestMatched > this.paging.matched) {
+      this.paging.matched = lastRequestMatched;
+    }
     if (this.arrayContainsData(this.compositionEntries)) {
       this.checkIfPageIsFull();
     }
@@ -249,13 +252,10 @@ export class HsCompositionsCatalogueService {
    */
   checkIfPageIsFull(): void {
     let boundByLimit: boolean;
-    if (
-      this.compositionEntries.length < this.paging.matched &&
-      this.compositionEntries.length < this.listNext
-    ) {
+    if (this.compositionEntries.length < this.paging.matched) {
       boundByLimit = true;
     }
-    if (this.compositionEntries.length < this.listNext && boundByLimit) {
+    if (this.compositionEntries.length <= this.listNext && boundByLimit) {
       this.paging.start += this.paging.limit;
       this.loadCompositions(true, true);
     }
@@ -271,6 +271,7 @@ export class HsCompositionsCatalogueService {
   clearCompositions(): void {
     this.listStart = 0;
     this.paging.start = 0;
+    this.paging.matched = 0;
     this.listNext = this.recordsPerPage;
     this.compositionEntries = [];
     this.HsCompositionsService.resetCompositionCounter();

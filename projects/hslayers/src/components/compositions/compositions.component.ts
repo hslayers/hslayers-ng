@@ -43,8 +43,7 @@ export class HsCompositionsComponent {
     public HsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public HsLaymanService: HsLaymanService
   ) {
-    this.loaderImage =
-      this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
+    this.loaderImage = this.HsUtilsService.getAjaxLoaderIcon();
     this.loadCompositions = () =>
       HsCompositionsCatalogueService.loadCompositions();
 
