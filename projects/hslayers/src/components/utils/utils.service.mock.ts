@@ -115,4 +115,8 @@ export class HsUtilsServiceMock {
     }
     return str.trim() != '' ? str : undefined;
   }
+
+  getAjaxLoaderIcon(): string {
+    return this.getAssetsPath() + 'img/ajax-loader.gif';
+  }
 }
