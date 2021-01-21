@@ -235,6 +235,7 @@ export class HsAddDataWmtsComponent {
         info_format: this.getPreferredInfoFormat(layer.ResourceURL),
         source: new WMTS({}),
         queryCapabilities: false,
+        removable: true,
       });
       // Get WMTS Capabilities and create WMTS source base on it
       const options = optionsFromCapabilities(this.caps, {
