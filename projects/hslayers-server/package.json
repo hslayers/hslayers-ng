@@ -1,9 +1,12 @@
 {
   "name": "hslayers-server",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "hslayers-server": "./server.js"
   },
   "author": "plan4all",
   "dependencies": {
