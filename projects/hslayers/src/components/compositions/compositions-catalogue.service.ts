@@ -88,7 +88,7 @@ export class HsCompositionsCatalogueService {
     public HsDialogContainerService: HsDialogContainerService,
     public HsLaymanService: HsLaymanService
   ) {
-    this.filteredEndpointsForCompositions();
+    this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
     this.setPagingLimit();
     HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
@@ -161,18 +161,20 @@ export class HsCompositionsCatalogueService {
       if (keepCompositions === undefined || !keepCompositions) {
         this.clearCompositions();
       }
-      if (this.filterByOnlyMine) {
-        this.onlyMineClicked();
-      } else {
-        for (const ep of this.filteredEndpoints) {
-          if (!fillPage || ep.compositionsPaging.matched > this.paging.limit) {
+      if (fillPage) {
+        this.filteredEndpoints.forEach((ep: HsEndpoint) => {
+          if (ep.compositionsPaging.matched > this.paging.limit) {
             observables.push(this.loadCompositionFromEndpoint(ep));
           }
-        }
-        this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
-          this.createCompositionList();
         });
+      } else {
+        for (const endpoint of this.filteredEndpoints) {
+          observables.push(this.loadCompositionFromEndpoint(endpoint));
+        }
       }
+      this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
+        this.createCompositionList();
+      });
     });
   }
   /**
@@ -195,8 +197,10 @@ export class HsCompositionsCatalogueService {
   }
   loadFilteredCompositions(): void {
     this.clearCompositions();
-    this.filteredEndpoints = this.filteredEndpoints.filter(
-      (ep: HsEndpoint) => ep.type != 'layman'
+    this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
+      (ep: HsEndpoint) =>
+        (!this.filterByOnlyMine && ep.type != 'layman') ||
+        (this.filterByOnlyMine && ep.type == 'layman')
     );
     this.setPagingLimit();
     this.loadCompositions();
@@ -286,16 +290,7 @@ export class HsCompositionsCatalogueService {
       return false;
     }
   }
-  /**
-   * @public
-   * @description Requests compositions to be loaded only from layman service
-   */
-  loadOnlyLayman(): Observable<any> {
-    this.clearCompositions();
-    return this.loadCompositionFromEndpoint(
-      this.HsLaymanService.getLaymanEndpoint()
-    );
-  }
+
   /**
    * @public
    * @description Checks if next page for pagination is available
@@ -343,32 +338,13 @@ export class HsCompositionsCatalogueService {
       this.listNext = this.paging.matched;
     }
   }
-  /**
-   * @public
-   * @description Trigerred after checking onlyMine checkbox
-   */
-  onlyMineClicked(): void {
-    if (this.filterByOnlyMine) {
-      if (!this.filteredEndpoints.find((ep) => ep.type == 'layman')) {
-        this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
-      }
-      const observable = this.loadOnlyLayman();
-      observable.subscribe(() => {
-        this.createCompositionList();
-      });
-    } else {
-      this.filteredEndpoints = this.filteredEndpoints.filter(
-        (ep: HsEndpoint) => ep.type != 'layman'
-      );
-      this.loadCompositions();
-    }
-  }
+
   /**
    * @public
    * @description Filters statusmanager endpoint out from rest of the endpoints
    */
-  filteredEndpointsForCompositions(): void {
-    this.filteredEndpoints = this.HsCommonEndpointsService.endpoints.filter(
+  getFilteredEndpointsForCompositions(): HsEndpoint[] {
+    return this.HsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
   }

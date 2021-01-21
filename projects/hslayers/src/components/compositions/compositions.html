@@ -49,7 +49,7 @@
                     </div>
                     <div class="input-group-text hs-borderless-input" [hidden]="!HsLaymanService.getLaymanEndpoint()">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine"
-                            (change)='HsCompositionsCatalogueService.onlyMineClicked()'
+                            (change)='HsCompositionsCatalogueService.loadFilteredCompositions()'
                             name="HsCompositionsCatalogueService.filterByOnlyMine">
                         <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
                     </div>
