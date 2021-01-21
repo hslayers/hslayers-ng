@@ -1,14 +1,17 @@
 import {Component} from '@angular/core';
 
+import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
+import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/wmts/get-capabilities.service';
-import {HsLayoutService} from '../../../layout/layout.service';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import {Subject} from 'rxjs';
 import {Tile} from 'ol/layer';
 import {addAnchors} from '../../../../common/attribution-utils';
 
@@ -19,19 +22,19 @@ import {addAnchors} from '../../../../common/attribution-utils';
 })
 export class HsAddDataWmtsComponent {
   [x: string]: any;
-  style = '';
   tileMatrixSet = '';
   image_format = '';
   map_projection: any;
-  loaderImage: any;
-  layersLoading: boolean;
-  showDetails: boolean;
+  layersLoading = false;
+  showDetails = false;
   url: any;
   caps: any;
   title: any;
   description: any;
   version: any;
   services: any;
+  wmtsCapabilitiesError: Subject<any> = new Subject();
+  error;
 
   constructor(
     public HsMapService: HsMapService,
@@ -39,7 +42,8 @@ export class HsAddDataWmtsComponent {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsEventBusService: HsEventBusService,
     public HsLogService: HsLogService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
+    public HsDialogContainerService: HsDialogContainerService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()
@@ -51,11 +55,15 @@ export class HsAddDataWmtsComponent {
       async ({type, response}) => {
         if (type === 'WMTS') {
           try {
-            if (this.showDetails == true) {
-              this.capabilitiesReceived(response);
-            }
+            this.capabilitiesReceived(response);
           } catch (e) {
-            console.warn(e);
+            if (e.status == 401) {
+              this.wmtsCapabilitiesError.next(
+                'Unauthorized access. You are not authorized to query data from this service'
+              );
+              return;
+            }
+            this.wmtsCapabilitiesError.next(e);
           }
         }
       }
@@ -67,16 +75,36 @@ export class HsAddDataWmtsComponent {
         this.setUrlAndConnect(uri);
       }
     });
+
+    this.wmtsCapabilitiesError.subscribe((e) => {
+      this.HsLogService.warn(e);
+      this.url = null;
+      this.showDetails = false;
+      this.layersLoading = false;
+
+      this.error = e.toString();
+
+      this.HsDialogContainerService.create(
+        HsGetCapabilitiesErrorComponent,
+        this.error
+      );
+      //throw "WMS Capabilities parsing problem";
+    });
+  }
+
+  log() {
+    console.log(this.layersLoading, this.showDetails);
   }
 
   connect = (): void => {
     try {
+      console.log('console');
       this.layersLoading = true;
       this.HsWmtsGetCapabilitiesService.requestGetCapabilities(this.url);
+      this.showDetails = true;
     } catch (e) {
-      console.warn(e);
+      this.wmtsCapabilitiesError.next(e);
     }
-    this.showDetails = true;
   };
 
   selectAllLayers(layers: any[]): void {
@@ -89,7 +117,7 @@ export class HsAddDataWmtsComponent {
     this.changed();
   }
 
-  checked(): boolean {
+  private checked(): boolean {
     for (const layer of this.services) {
       if (layer.checked) {
         return true;
@@ -98,7 +126,7 @@ export class HsAddDataWmtsComponent {
     return false;
   }
 
-  changed(): void {
+  private changed(): void {
     this.isChecked = this.checked();
   }
 
@@ -115,7 +143,6 @@ export class HsAddDataWmtsComponent {
     this.HsLayoutService.setMainPanel('layermanager');
     //FIX ME: to implement
     // this.zoomToLayers();
-
   }
 
   private addLayersRecursively(layer): void {
@@ -148,10 +175,7 @@ export class HsAddDataWmtsComponent {
 
       this.layersLoading = false;
     } catch (e) {
-      if (console) {
-        this.HsLogService.log(e);
-      }
-      //throw "wmts Capabilities parsing problem";
+      this.wmtsCapabilitiesError.next(e);
     }
   }
 
@@ -249,10 +273,7 @@ export class HsAddDataWmtsComponent {
       wmts.setSource(wmtsSource);
       this.HsMapService.addLayer(wmts, true);
     } catch (e) {
-      if (console) {
-        this.HsLogService.log(e);
-      }
-      //throw "wmts Capabilities parsing problem";
+      this.wmtsCapabilitiesError.next(e);
     }
   }
 }
