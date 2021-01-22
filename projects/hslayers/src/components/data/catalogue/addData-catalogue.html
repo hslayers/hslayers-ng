@@ -1,10 +1,29 @@
 <div class="card hs-main-panel">
     <div class="m-3 pl-1 d-flex justify-content-between">
         <div class="input-group w-50">
+            <div class="input-group-prepend">
+                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" type="button"
+                    (click)="filterTypeMenu = !filterTypeMenu" data-toggle="dropdown">
+                </button>
+                <div class="dropdown-menu" [ngClass]="{'show': filterTypeMenu}">
+                    <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.filterType' | translate}}</h6>
+                    <div class="dropdown-menu-item m-2" *ngFor="let type of textFieldTypes; let index = index"
+                        [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
+                        <input class="d-none" type="checkbox" [(ngModel)]="data.textField" (change)="selectType(type)"
+                            [attr.id]="'textfield-'+index" name="textfield-{{index}}" />
+                        <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
+                            [attr.for]="'textfield-'+index"
+                            [ngClass]="{'hs-checkmark': data.textField == type,'hs-uncheckmark':data.textField != type}"><span
+                                class="ml-2" style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.filterTypes',
+                                type)}}</span></label>
+                    </div>
+                </div>
+            </div>
             <input type="search" class="form-control w-50" [placeholder]="'SEARCH.search' | translate" name="search"
-                [(ngModel)]="data.query.title" (ngModelChange)="filterByTitle()">
+                [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
             <div class="input-group-append" [title]="'COMPOSITIONS.filterByMap' | translate">
-                <button type="button" class=" btn pl-2 pr-2 "
+
+                <button type="button" class="btn pl-2 pr-2 "
                     [ngClass]="data.filterByExtent ? 'btn-secondary' : 'btn-light btn-outline-secondary'"
                     [ngStyle]="{'border-color': data.filterByExtent ? '#6c757d' : '#ced4da'}"
                     (click)="extentFilterChanged()">
@@ -25,32 +44,40 @@
                     </div>
                      -->
                 <ul class="list-group">
-                    <li class='list-group-item text-primary text-center py-2' [hidden]="!HsAddDataCatalogueService.layersLoading"><img class="pr-2"
-                        [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
+                    <li class='list-group-item text-primary text-center py-2'
+                        [hidden]="!HsAddDataCatalogueService.layersLoading"><img class="pr-2"
+                            [src]="loaderImage" />{{'ADDDATA.CATALOGUE.loading' | translate}}</li>
                     <li [hidden]='HsAddDataCatalogueService.catalogEntries.length > 0 || HsAddDataCatalogueService.layersLoading'
                         class='list-group-item '>
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li [hidden]="HsAddDataCatalogueService.layersLoading" *ngFor='let layer of HsAddDataCatalogueService.catalogEntries | slice:HsAddDataCatalogueService.listStart:HsAddDataCatalogueService.listNext'
+                    <li [hidden]="HsAddDataCatalogueService.layersLoading"
+                        *ngFor='let layer of HsAddDataCatalogueService.catalogEntries | slice:HsAddDataCatalogueService.listStart:HsAddDataCatalogueService.listNext'
                         class="clearfix py-2" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
                         <hs-add-data-list-item [layer]="layer"></hs-add-data-list-item>
                     </li>
                 </ul>
             </div>
-    
+
             <div class="card-footer" *ngIf="HsAddDataCatalogueService.paging.matched != 0">
                 <ul class="pagination d-flex justify-content-center">
                     <li class="page-item" [ngClass]="{'disabled': HsAddDataCatalogueService.listStart == 0 }">
                         <a href="#" class="page-link" (click)="getPreviousRecords()"><span
-                           aria-hidden="true">&laquo;</span></a>
+                                aria-hidden="true">&laquo;</span></a>
                     </li>
-                    <li class="page-item" *ngIf="resultsVisible() && HsAddDataCatalogueService.listNext != HsAddDataCatalogueService.paging.matched"><span class="page-link">
+                    <li class="page-item"
+                        *ngIf="resultsVisible() && HsAddDataCatalogueService.listNext != HsAddDataCatalogueService.paging.matched">
+                        <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsAddDataCatalogueService.listStart + 1}} -
-                            {{HsAddDataCatalogueService.listNext}}</span></li>
-                    <li class="page-item" *ngIf="resultsVisible() && HsAddDataCatalogueService.listNext == HsAddDataCatalogueService.paging.matched"><span class="page-link">
+                            {{HsAddDataCatalogueService.listNext}}</span>
+                    </li>
+                    <li class="page-item"
+                        *ngIf="resultsVisible() && HsAddDataCatalogueService.listNext == HsAddDataCatalogueService.paging.matched">
+                        <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsAddDataCatalogueService.listStart + 1}} -
-                            {{HsAddDataCatalogueService.paging.matched}}</span></li>
+                            {{HsAddDataCatalogueService.paging.matched}}</span>
+                    </li>
                     <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }">
                         <a href="#" class="page-link" (click)="getNextRecords()"><span
                                 aria-hidden="true">&raquo;</span></a>
