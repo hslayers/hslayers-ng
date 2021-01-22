@@ -7,6 +7,7 @@ import {HsCompositionsStatusManagerMickaJointService} from './endpoints/status-m
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
@@ -36,6 +37,7 @@ export class HsCompositionsService {
     public HsCompositionsMickaService: HsCompositionsMickaService,
     public HsCompositionsStatusManagerMickaJointService: HsCompositionsStatusManagerMickaJointService,
     public HsCompositionsLaymanService: HsCompositionsLaymanService,
+    public HsLanguageService: HsLanguageService,
     public $log: HsLogService,
     public HsCommonEndpointsService: HsCommonEndpointsService,
     public HsCompositionsMapService: HsCompositionsMapService,
@@ -275,5 +277,9 @@ export class HsCompositionsService {
       return '';
     }
     return composition.uuid || composition.id;
+  }
+
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 }

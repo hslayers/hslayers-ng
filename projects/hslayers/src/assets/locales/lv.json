@@ -158,7 +158,8 @@
     "west": "Rietumi",
     "width": "Platums",
     "yes": "Jā",
-    "zoomTo": "pietuvināt"
+    "zoomTo": "pietuvināt",
+    "ignoreAndContinue": "Ignorēt un turpināt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -187,7 +188,12 @@
     "loginToCatalogue": "Pieslēgties katalogam",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
-    "selectThemes": "Izvēlēties tēmas"
+    "selectThemes": "Izvēlēties tēmas",
+    "dialogWarning": {
+      "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
+      "title": "Brīdinājums!",
+      "toContinue": "Lai turpinātu kompozīcijas ielādi, nopiediet pogu 'Ignorēt un turpināt'."
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",

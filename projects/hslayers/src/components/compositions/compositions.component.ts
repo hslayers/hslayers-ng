@@ -5,7 +5,6 @@ import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
@@ -39,7 +38,6 @@ export class HsCompositionsComponent {
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService,
     public HsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public HsLaymanService: HsLaymanService
   ) {
@@ -152,11 +150,6 @@ export class HsCompositionsComponent {
       }
     );
   }
-
-  translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
-  }
-
   openOptionsMenu(): void {
     this.optionsMenuOpen = !this.optionsMenuOpen;
     if (this.optionsMenuOpen) {

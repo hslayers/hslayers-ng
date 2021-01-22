@@ -158,7 +158,8 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "zoomTo": "zoom to"
+    "zoomTo": "zoom to",
+    "ignoreAndContinue": "Ignore and continue"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -187,7 +188,12 @@
     "loginToCatalogue": "Login to catalogue",
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
-    "selectThemes": "Select themes"
+    "selectThemes": "Select themes",
+    "dialogWarning": {
+      "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
+      "toContinue": "To continue loading composition, press 'Ignore and continue' button.",
+      "title": "Warning!"
+    }
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
