@@ -78,7 +78,7 @@ export default function (
         title: lyr_def.title,
         from_composition: true,
         maxResolution: lyr_def.maxResolution || Number.Infinity,
-        minResolution: lyr_def.minResolution || 0,
+        minResolution: 0,
         minScale: lyr_def.minScale || Number.Infinity,
         maxScale: lyr_def.maxScale || 0,
         show_in_manager: lyr_def.displayInLayerSwitcher,
