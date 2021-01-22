@@ -1790,6 +1790,18 @@ li.hs-lm-header {
 .dropdown-toggle.hs-custom-toggle:focus {
 	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
+.hs-light-background {
+	background-color: #f8f9fa !important;
+	color: #495057 !important;
+}
+.hs-white-background {
+	background-color: white !important;
+	border: 0;color: #495057 !important;
+}
+.hs-background-alfa {
+	background-color: rgba(0,0,0,.07) !important;
+ 	color: #495057 !important;
+}
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}

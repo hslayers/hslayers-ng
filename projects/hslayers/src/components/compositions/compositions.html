@@ -34,7 +34,7 @@
                     name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
                     (change)="loadCompositions()">
                 <div class="input-group-append">
-                    <button class="btn input-group-text text-secondary border-left-0" style="background-color: #f8f9fa"
+                    <button class="btn input-group-text text-secondary hs-light-background border-left-0"
                         (click)="loadCompositions()">
                         <i class="icon-search icon-primary"></i>
                     </button>
@@ -56,10 +56,10 @@
                     </div>
                 </div>
                 <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
-                    <button class="btn btn-light" style="background-color: white; border: 0;color: #495057"
+                    <button class="btn btn-light hs-white-background"
                         (click)="openOptionsMenu()" ngbDropdownToggle>{{translateString('COMMON',
                         optionsButtonLabel)}}</button>
-                    <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1" style="min-width: 23rem; max-width: 23rem;"
+                    <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1" style="min-width: 23rem; max-width: 23rem;  overflow: visible"
                         aria-labelledby="filtersDropdown">
                         <table class="p-1 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
                             <tbody>
@@ -68,10 +68,10 @@
                                         {{'COMMON.type' | translate}}
                                     </td>
                                     <td>
-                                        <select class="form-control pl-1" name="type"
+                                        <select class="form-control hs-background-alfa pl-1" name="type"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.type"
                                             (change)="HsCompositionsCatalogueService.loadFilteredCompositions()"
-                                            style="min-width: 11rem; max-width: 11rem; background-color:rgba(0,0,0,.07); border:0px">
+                                            style="min-width: 11rem; max-width: 11rem;border:0px">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
                                                 {{translateString('COMPOSITONTYPES', type.name)}}</option>
@@ -84,8 +84,8 @@
                                     </td>
                                     <td ngbDropdown display="dynamic" placement="bottom-right">
                                         <button type="button" ngbDropdownToggle
-                                            class="btn btn-light btn-sm hs-custom-toggle p-2 pl-1 border-0"
-                                            style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
+                                            class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                            style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                             {{'COMPOSITIONS.selectKeywords' | translate}}
                                         </button>
                                         <ul ngbDropdownMenu aria-labelledby="keywords" class="pl-2"
@@ -106,8 +106,8 @@
                                     </td>
                                     <td ngbDropdown display="dynamic" placement="bottom-right">
                                         <button type="button" ngbDropdownToggle
-                                            class="btn btn-light btn-sm hs-custom-toggle p-2 pl-1 border-0"
-                                            style="text-align:start; background-color: rgba(0,0,0,.07); color: #495057; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
+                                            class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                            style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
                                             {{'COMPOSITIONS.selectThemes' | translate}}
                                         </button>
                                         <ul ngbDropdownMenu aria-labelledby="inspireThemes" class="pl-2"
@@ -127,10 +127,10 @@
                                         {{'COMMON.sortBy' | translate}}
                                     </td>
                                     <td class="tdbreak">
-                                        <select class="form-control pl-1" name="data.sortBy"
+                                        <select class="form-control hs-background-alfa pl-1" name="data.sortBy"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
                                             (change)="HsCompositionsCatalogueService.loadFilteredCompositions()"
-                                            style="background-color:rgba(0,0,0,.07); border:0px; min-width: 11rem; max-width: 11rem;">
+                                            style="border:0px; min-width: 11rem; max-width: 11rem;">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
                                                 {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
@@ -139,8 +139,8 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="text-align: center; vertical-align: middle;">
-                                        <button class="btn btn-block btn-light"
-                                            style="border-radius: 0.25rem; background-color:rgba(0,0,0,.07); color: #495057"
+                                        <button class="btn btn-block btn-light hs-background-alfa"
+                                            style="border-radius: 0.25rem;"
                                             (click)="clearFilters()">
                                             {{'COMPOSITIONS.clearFilters' | translate}}</button>
                                     </td>
