@@ -228,6 +228,8 @@ export class HsCoreService {
         this.HsLayoutService.smallWidth = false; //deprecated?
         this.HsLayoutService.sidebarLabels = true;
       }
+    } else {
+      console.log('Map not yet initialized!');
     }
     const neededSize = {
       width: map.offsetWidth,

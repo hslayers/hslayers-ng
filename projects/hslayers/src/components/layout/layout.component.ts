@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -17,7 +18,7 @@ import {HsUtilsService} from '../utils/utils.service';
   styleUrls: ['../../css/app.scss', '../../css/whhg-font/css/whhg.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class HsLayoutComponent {
+export class HsLayoutComponent implements AfterViewInit {
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
@@ -42,25 +43,6 @@ export class HsLayoutComponent {
     private HsUtilsService: HsUtilsService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
-    setTimeout(() => {
-      const hsapp = elementRef.nativeElement.parentElement;
-      if (getComputedStyle(hsapp).display == 'inline') {
-        hsapp.style.display = 'block';
-        console.warn(
-          'Main element (#hs-app) needs display property to be defined...fallback value added'
-        );
-      }
-      if (hsapp.style.height == 0) {
-        hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
-        console.warn(
-          'Main element (#hs-app) needs height property to be defined...fallback value added'
-        );
-      }
-    }, 250);
-    this.HsEventBusService.layoutLoads.next({
-      element: elementRef.nativeElement,
-      innerElement: '.hs-map-container',
-    });
   }
 
   ngOnInit(): void {
@@ -85,6 +67,23 @@ export class HsLayoutComponent {
 
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    const hsapp = this.elementRef.nativeElement.parentElement;
+    if (getComputedStyle(hsapp).display == 'inline') {
+      hsapp.style.display = 'block';
+      console.warn(
+        'Main element (#hs-app) needs display property to be defined...fallback value added'
+      );
+    }
+    if (hsapp.style.height == 0) {
+      hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+      console.warn(
+        'Main element (#hs-app) needs height property to be defined...fallback value added'
+      );
+    }
+    this.HsEventBusService.layoutLoads.next({
+      element: this.elementRef.nativeElement,
+      innerElement: '.hs-map-container',
+    });
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     this.cdr.detectChanges();
   }
