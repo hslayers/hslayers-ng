@@ -119,6 +119,7 @@ export class HsAddDataCatalogueService {
       this.calcExtentLayerVisibility();
     });
   }
+
   reloadData(): void {
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
@@ -144,11 +145,11 @@ export class HsAddDataCatalogueService {
       this.HsAddDataCatalogueMapService.clearExtentLayer();
       const observables = [];
 
-      //Mark non funcctional endpoint
+      //TODO Mark non functional endpoint
       for (const endpoint of this.endpointsWithDatasourcesPipe.transform(
         this.hsCommonEndpointsService.endpoints
       )) {
-        //query only functional endpoints
+        //TODO query only functional endpoints
         endpoint.datasourcePaging = {...this.paging};
 
         const promise = this.queryCatalog(endpoint);
@@ -164,28 +165,28 @@ export class HsAddDataCatalogueService {
   createLayerList(): void {
     this.paging.matched = 0;
 
-    for (const endpoint of this.hsCommonEndpointsService.endpoints) {
-      if (endpoint.type != 'statusmanager') {
-        if (endpoint.layers) {
-          endpoint.layers.forEach((layer) => {
-            layer.endpoint = endpoint;
-            // this.catalogEntries.push(layer);
-          });
-          if (this.catalogEntries.length > 0) {
-            this.catalogEntries = this.catalogEntries.concat(
-              this.filterDuplicates(endpoint.layers)
-            );
-          } else {
-            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
-          }
+    for (const endpoint of this.endpointsWithDatasourcesPipe.transform(
+      this.hsCommonEndpointsService.endpoints
+    )) {
+      if (endpoint.layers) {
+        endpoint.layers.forEach((layer) => {
+          layer.endpoint = endpoint;
+          // this.catalogEntries.push(layer);
+        });
+        if (this.catalogEntries.length > 0) {
+          this.catalogEntries = this.catalogEntries.concat(
+            this.filterDuplicates(endpoint.layers)
+          );
+        } else {
+          this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
         }
-        if (endpoint.datasourcePaging) {
-          if (this.paging.matched == 0) {
-            this.paging.matched = endpoint.datasourcePaging.matched;
-          } else {
-            this.paging.matched =
-              this.paging.matched + endpoint.datasourcePaging.matched;
-          }
+      }
+      if (endpoint.datasourcePaging) {
+        if (this.paging.matched == 0) {
+          this.paging.matched = endpoint.datasourcePaging.matched;
+        } else {
+          this.paging.matched =
+            this.paging.matched + endpoint.datasourcePaging.matched;
         }
       }
     }
@@ -195,7 +196,7 @@ export class HsAddDataCatalogueService {
     this.checkIfPageIsFull();
   }
 
-  filterDuplicates(responseArray) {
+  filterDuplicates(responseArray: Array<any>): Array<any> {
     if (responseArray === undefined || responseArray?.length == 0) {
       return [];
     }
@@ -342,7 +343,7 @@ export class HsAddDataCatalogueService {
       return whatToAdd.type;
     }
     if (whatToAdd.type == 'WMS') {
-      this.datasetSelect('url'); 
+      this.datasetSelect('url');
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),

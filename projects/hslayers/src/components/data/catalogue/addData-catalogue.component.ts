@@ -28,7 +28,8 @@ export class HsAddDataCatalogueComponent {
   advancedSearch: boolean;
   queryCatalogs;
   loaderImage;
-
+  filterTypeMenu;
+  textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -55,14 +56,26 @@ export class HsAddDataCatalogueComponent {
     this.reload();
   }
 
+  translateString(module: string, text: string): string {
+    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+  }
+
   extentFilterChanged(): void {
     this.data.filterByExtent = !this.data.filterByExtent;
     this.queryCatalogs();
   }
 
-  filterByTitle() {
+  queryByFilter() {
     this.HsAddDataCatalogueService.resetList();
-    this.queryCatalogs();
+      this.queryCatalogs();
+  }
+
+  selectType(type) {
+    this.data.textField = type;
+    if (this.data.query.title.length > 0) {
+      this.queryByFilter();
+    }
+    this.filterTypeMenu = !this.filterTypeMenu;
   }
 
   /**
