@@ -217,22 +217,14 @@ export class HsCompositionsCatalogueService {
     let filtersFound = false;
     for (const key in this.data) {
       switch (key) {
-        case 'keywords':
-          if (
-            this.data.keywords.filter((kw) => kw.selected == true).length != 0
-          ) {
-            filtersFound = true;
-          }
-          break;
         case 'type':
           if (this.data.type !== 'None') {
             filtersFound = true;
           }
           break;
         case 'themes':
-          if (
-            this.data.keywords.filter((kw) => kw.selected == true).length != 0
-          ) {
+        case 'keywords':
+          if (this.data[key].filter((kw) => kw.selected == true).length != 0) {
             filtersFound = true;
           }
           break;
