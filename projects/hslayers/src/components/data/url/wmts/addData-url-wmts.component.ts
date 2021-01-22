@@ -126,7 +126,7 @@ export class HsAddDataWmtsComponent {
     return false;
   }
 
-  private changed(): void {
+  changed(): void {
     this.isChecked = this.checked();
   }
 
