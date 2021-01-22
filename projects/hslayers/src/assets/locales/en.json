@@ -191,7 +191,7 @@
     "selectThemes": "Select themes",
     "dialogWarning": {
       "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
-      "toContinue": "To continue loading composition, press 'Ignore and continue' button.",
+      "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders.",
       "title": "Warning!"
     }
   },

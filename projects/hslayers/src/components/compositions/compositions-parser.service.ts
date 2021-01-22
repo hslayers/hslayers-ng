@@ -1,16 +1,17 @@
 import * as xml2Json from 'xml-js';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {transform, transformExtent} from 'ol/proj';
-
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
+import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsConfig} from '../../config.service';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {transform, transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
 })
@@ -38,16 +39,17 @@ export class HsCompositionsParserService {
   current_composition_title = '';
   current_composition_url: string;
   current_composition: any;
-
   constructor(
     public HsMapService: HsMapService,
     public HsConfig: HsConfig,
     private $http: HttpClient,
     public HsUtilsService: HsUtilsService,
     public HsCompositionsLayerParserService: HsCompositionsLayerParserService,
+    public HsDialogContainerService: HsDialogContainerService,
     public HsLayoutService: HsLayoutService,
     public $log: HsLogService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -185,7 +187,6 @@ export class HsCompositionsParserService {
       response.includes('LayerList') /*.wmc micka*/
     );
   }
-
   loadCompositionObject(
     obj,
     overwrite: boolean,
@@ -199,9 +200,17 @@ export class HsCompositionsParserService {
     this.current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (possibleExtent !== undefined) {
-      this.HsMapService.map
-        .getView()
-        .fit(this.parseExtent(possibleExtent), this.HsMapService.map.getSize());
+      const extent = this.parseExtent(possibleExtent);
+      if (
+        (extent[0][0] < -90 && extent[0][1] < -180) ||
+        (extent[1][0] > 90 && extent[1][1] > 180)
+      ) {
+        this.loadWarningBootstrap(extent);
+      } else {
+        this.HsMapService.map
+          .getView()
+          .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
+      }
     }
 
     const layers = this.jsonToLayers(obj);
@@ -223,7 +232,7 @@ export class HsCompositionsParserService {
 
   finalizeCompositionLoading(responseData): void {
     if (this.HsConfig.open_lm_after_comp_loaded) {
-      //this.HsLayoutService.setMainPanel('layermanager');
+      this.HsLayoutService.setMainPanel('layermanager');
     }
 
     this.composition_edited = false;
@@ -281,24 +290,40 @@ export class HsCompositionsParserService {
     return response.data || response;
   }
 
-  parseExtent(b: string | Array<number>): Array<number> {
-    let boundArray;
-    if (!b) {
+  transformExtent(pairs: Array<number>): Array<number> {
+    if (!pairs) {
       return;
     }
-    if (typeof b == 'string') {
-      boundArray = b.split(' ');
-    } else {
-      boundArray = b;
-    }
-    let first_pair = [parseFloat(boundArray[0]), parseFloat(boundArray[1])];
-    let second_pair = [parseFloat(boundArray[2]), parseFloat(boundArray[3])];
     const currentProj = this.HsMapService.getCurrentProj();
-    first_pair = transform(first_pair, 'EPSG:4326', currentProj);
-    second_pair = transform(second_pair, 'EPSG:4326', currentProj);
+    const first_pair = transform(pairs[0], 'EPSG:4326', currentProj);
+    const second_pair = transform(pairs[1], 'EPSG:4326', currentProj);
     return [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
   }
-
+  parseExtent(extent: string | Array<number>): Array<number> {
+    if (!extent) {
+      return;
+    }
+    let boundArray;
+    const pairs = [];
+    if (typeof extent == 'string') {
+      boundArray = extent.split(' ');
+    } else {
+      boundArray = extent;
+    }
+    pairs.push([parseFloat(boundArray[0]), parseFloat(boundArray[1])]);
+    pairs.push([parseFloat(boundArray[2]), parseFloat(boundArray[3])]);
+    return pairs;
+  }
+  loadWarningBootstrap(extent): void {
+    this.HsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
+      extent: extent,
+      composition_title: this.current_composition_title,
+      message: this.HsLanguageService.getTranslationIgnoreNonExisting(
+        'COMPOSITIONS.dialogWarning',
+        'outOfBounds'
+      ),
+    });
+  }
   /**
    * @name HsCompositionsParserService#jsonToLayers
    * @public
