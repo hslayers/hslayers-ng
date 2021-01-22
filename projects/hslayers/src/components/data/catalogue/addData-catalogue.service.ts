@@ -272,7 +272,10 @@ export class HsAddDataCatalogueService {
         );
         return query;
       case 'layman':
-        query = this.hsLaymanBrowserService.queryCatalog(catalog);
+        query = this.hsLaymanBrowserService.queryCatalog(
+          catalog,
+          this.data.query.textFilter
+        );
         return query;
       default:
         break;

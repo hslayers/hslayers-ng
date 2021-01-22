@@ -72,7 +72,7 @@ export class HsAddDataCatalogueComponent {
 
   selectType(type) {
     this.data.textField = type;
-    if (this.data.query.title.length > 0) {
+    if (this.data.query.textFilter.length > 0) {
       this.queryByFilter();
     }
     this.filterTypeMenu = !this.filterTypeMenu;
