@@ -24,7 +24,7 @@ export class HsLaymanBrowserService {
    * extent feature is created. Has one parameter: feature
    * @description Loads datasets metadata from Layman
    */
-  queryCatalog(endpoint: HsEndpoint) {
+  queryCatalog(endpoint: HsEndpoint, textFilter?: string): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
     url = this.hsUtilsService.proxify(url);
@@ -37,7 +37,7 @@ export class HsLaymanBrowserService {
       .pipe(
         map((x: any) => {
           x.dataset = endpoint;
-          this.datasetsReceived(x);
+          this.datasetsReceived(x, textFilter);
           return x;
         }),
         catchError((e) => {
@@ -55,7 +55,7 @@ export class HsLaymanBrowserService {
    * @param {object} data HTTP response containing all the layers
    * @description (PRIVATE) Callback for catalogue http query
    */
-  private datasetsReceived(data): void {
+  private datasetsReceived(data, textFilter?: string): void {
     if (!data.dataset) {
       this.log.error('Malformed data received');
       return;
@@ -76,6 +76,12 @@ export class HsLaymanBrowserService {
           id: layer.uuid,
         };
       });
+      if (textFilter) {
+        dataset.layers = dataset.layers.filter((layer) => {
+          return layer.title.includes(textFilter);
+        });
+        dataset.datasourcePaging.matched = dataset.layers.length;
+      }
     }
   }
 
@@ -130,7 +136,7 @@ export class HsLaymanBrowserService {
     const lyr = await this.fillLayerMetadata(ds, layer);
     return {
       type: lyr.type,
-      link: lyr.wms.url.replace('geoserver','client/geoserver'),
+      link: lyr.wms.url.replace('geoserver', 'client/geoserver'),
       layer: lyr.name,
       name: lyr.name,
       title: lyr.title,
