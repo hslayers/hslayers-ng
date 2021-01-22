@@ -78,6 +78,7 @@ export class HsCompositionsCatalogueService {
   compositionsLoading: boolean;
   loadCompositionsQuery: any;
   filteredEndpoints: HsEndpoint[];
+  filtersActive = false;
   constructor(
     public HsMapService: HsMapService,
     public HsCompositionsService: HsCompositionsService,
@@ -197,11 +198,48 @@ export class HsCompositionsCatalogueService {
   }
   loadFilteredCompositions(): void {
     this.clearCompositions();
+    this.checkForActiveFilters();
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
-      (ep: HsEndpoint) => !this.filterByOnlyMine || ep.type == 'layman'
+      (ep: HsEndpoint) => {
+        if (this.filtersActive && !this.filterByOnlyMine) {
+          return ep.type != 'layman';
+        } else if (this.filterByOnlyMine) {
+          return !this.filterByOnlyMine || ep.type == 'layman';
+        } else {
+          return true;
+        }
+      }
     );
     this.setPagingLimit();
     this.loadCompositions();
+  }
+  checkForActiveFilters(): void {
+    let filtersFound = false;
+    for (const key in this.data) {
+      switch (key) {
+        case 'keywords':
+          if (
+            this.data.keywords.filter((kw) => kw.selected == true).length != 0
+          ) {
+            filtersFound = true;
+          }
+          break;
+        case 'type':
+          if (this.data.type !== 'None') {
+            filtersFound = true;
+          }
+          break;
+        case 'themes':
+          if (
+            this.data.keywords.filter((kw) => kw.selected == true).length != 0
+          ) {
+            filtersFound = true;
+          }
+          break;
+        default:
+      }
+    }
+    this.filtersActive = filtersFound;
   }
   /**
    * @public
@@ -352,6 +390,7 @@ export class HsCompositionsCatalogueService {
    * @description Clears all filters set for compostion list filtering
    */
   clearFilters(): void {
+    this.filtersActive = false;
     this.data.query.title = '';
     this.data.sortBy = SORTBYVALUES[0].name;
     this.data.type = TYPES[0].name;
