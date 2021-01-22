@@ -13,10 +13,8 @@
                 <br>{{'COMPOSITIONS.dialogWarning.toContinue' | translate}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary compositions-btn-warning" (click)="ignoreContinue()"
+                <button type="button" class="btn btn-primary compositions-btn-warning" (click)="close()"
                     data-dismiss="modal">{{'COMMON.ignoreAndContinue' | translate}}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
-                    data-dismiss="modal">{{'COMMON.cancel' | translate}}</button>
             </div>
         </div>
     </div>

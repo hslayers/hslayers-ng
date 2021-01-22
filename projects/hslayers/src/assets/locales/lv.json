@@ -192,7 +192,7 @@
     "dialogWarning": {
       "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
       "title": "Brīdinājums!",
-      "toContinue": "Lai turpinātu kompozīcijas ielādi, nopiediet pogu 'Ignorēt un turpināt'."
+      "toContinue": "Norādītā kompozīcijas ģeometrija vai tās apjoms var netikt iekļauts dotajā kartē un tās robežās."
     }
   },
   "COMPOSITONINSPIRETHEMES": {
