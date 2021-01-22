@@ -9,6 +9,7 @@ import {HsCompositionsLayerParserModule} from './layer-parser/layer-parser.modul
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
+import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsCompostionsListItemComponent} from './compositions-list-item.component';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -22,6 +23,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCompositionsDeleteDialogComponent,
     HsCompositionsShareDialogComponent,
     HsCompositionsInfoDialogComponent,
+    HsCompositionsWarningDialogComponent,
     HsCompostionsListItemComponent,
   ],
   imports: [
@@ -38,6 +40,7 @@ import {TranslateModule} from '@ngx-translate/core';
   entryComponents: [
     HsCompositionsComponent,
     HsCompositionsOverwriteDialogComponent,
+    HsCompositionsWarningDialogComponent,
     HsCompositionsDeleteDialogComponent,
     HsCompositionsShareDialogComponent,
     HsCompositionsInfoDialogComponent,

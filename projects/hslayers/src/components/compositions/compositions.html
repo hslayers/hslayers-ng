@@ -57,7 +57,7 @@
                 </div>
                 <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
                     <button class="btn btn-light hs-white-background"
-                        (click)="openOptionsMenu()" ngbDropdownToggle>{{translateString('COMMON',
+                        (click)="openOptionsMenu()" ngbDropdownToggle>{{HsCompositionsService.translateString('COMMON',
                         optionsButtonLabel)}}</button>
                     <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1" style="min-width: 23rem; max-width: 23rem;  overflow: visible"
                         aria-labelledby="filtersDropdown">
@@ -74,7 +74,7 @@
                                             style="min-width: 11rem; max-width: 11rem;border:0px">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
-                                                {{translateString('COMPOSITONTYPES', type.name)}}</option>
+                                                {{HsCompositionsService.translateString('COMPOSITONTYPES', type.name)}}</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -94,7 +94,7 @@
                                                 *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
                                                 <label><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="keyword.selected" name="keyword[index]"
-                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
+                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONKEYWORDS',
                                                     keyword.name)}}</label>
                                             </li>
                                         </ul>
@@ -116,7 +116,7 @@
                                                 *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
                                                 <label><input class="mr-2" type="checkbox" [(ngModel)]="theme.selected"
                                                         name="theme[index]"
-                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{translateString('COMPOSITONINSPIRETHEMES',
+                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONINSPIRETHEMES',
                                                     theme.name)}}</label>
                                             </li>
                                         </ul>
@@ -133,7 +133,7 @@
                                             style="border:0px; min-width: 11rem; max-width: 11rem;">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
-                                                {{translateString('COMPOSITONSORTVALUES', item.name)}}</option>
+                                                {{HsCompositionsService.translateString('COMPOSITONSORTVALUES', item.name)}}</option>
                                         </select>
                                     </td>
                                 </tr>
