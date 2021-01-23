@@ -13,29 +13,14 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class HsCoreService {
   /**
-   * @ngdoc property
-   * @name HsCore#scopes_registered
    * @public
-   * @type {Array}
-   * @description DEPRECATED?
    */
   embededEnabled = true;
-  /**
-   * @ngdoc property
-   * @name HsCore#_exist_cache
-   * @public
-   * @type {object}
-   * @description DEPRECATED?
-   */
-  _exist_cache: any = {};
-
   language = 'en';
   config: any;
   _puremapApp = false;
   initCalled: boolean;
   missingLRFunctionsWarned: any;
-  singleDatasourcesWarningShown: boolean;
-  existsWarningShown: any;
 
   constructor(
     public HsMapService: HsMapService,

@@ -122,22 +122,4 @@ export class HsWfsGetCapabilitiesService {
     }
     return found;
   }
-
-  /**
-   * (DEPRECATED ?)
-   *
-   * @param url
-   * @param use_proxy
-   */
-  getUrl(url: string, use_proxy?: boolean): string {
-    if (use_proxy == undefined || !use_proxy) {
-      return url;
-    } else {
-      return (
-        '/cgi-bin/proxy4ows.cgi?OWSURL=' +
-        encodeURIComponent(url) +
-        '&owsService=WMS'
-      );
-    }
-  }
 }
