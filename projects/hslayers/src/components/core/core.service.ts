@@ -71,84 +71,6 @@ export class HsCoreService {
     });
   }
 
-  /**
-   * @deprecated Replaced by HsLayoutService#setMainPanel
-   * @param which
-   * @param by_gui
-   */
-  setMainPanel(which, by_gui): void {
-    this.log.warn(
-      'setMainPanel will be removed from HsCore in future. Use HsLayoutService#setMainPanel method instead'
-    );
-    this.HsLayoutService.setMainPanel(which, by_gui);
-  }
-
-  /**
-   * @deprecated Replaced by HsLayoutService#setDefaultPanel
-   * @param which
-   */
-  setDefaultPanel(which) {
-    this.log.warn(
-      'setDefaultPanel will be removed from HsCore in future. Use HsLayoutService#setDefaultPanel method instead'
-    );
-    return this.HsLayoutService.setDefaultPanel(which);
-  }
-
-  /**
-   * @deprecated Replaced by HsLayoutService#panelVisible
-   * @param {*} which
-   * @param {*} scope
-   */
-  panelVisible(which, scope) {
-    this.log.warn(
-      'panelVisible will be removed from HsCore in future. Use HsLayoutService#panelVisible method instead'
-    );
-    return this.HsLayoutService.panelVisible(which, scope);
-  }
-
-  /**
-   * @deprecated Replaced by HsLayoutService#panelEnabled
-   * @param {*} which
-   * @param {*} status
-   */
-  panelEnabled(which, status) {
-    this.log.warn(
-      'panelEnabled will be removed from HsCore in future. Use HsLayoutService#panelEnabled method instead'
-    );
-    return this.HsLayoutService.panelEnabled(which, status);
-  }
-
-  /**
-   * @deprecated Replaced by HsLayoutService#closePanel
-   * @param {*} which
-   * @memberof HsCoreService
-   */
-  closePanel(which) {
-    this.log.warn(
-      'closePanel will be removed from HsCore in future. Use HsLayoutService#closePanel method instead'
-    );
-    return this.HsLayoutService.closePanel(which);
-  }
-  /**
-   * @deprecated Replaced by config.allowAddExternalDatasets
-   */
-  get singleDatasources() {
-    return this.HsConfig.allowAddExternalDatasets;
-  }
-
-  /**
-   * @deprecated Replaced by config.allowAddExternalDatasets
-   */
-  set singleDatasources(newName) {
-    if (!this.singleDatasourcesWarningShown) {
-      this.singleDatasourcesWarningShown = true;
-      this.log.warn(
-        'singleDatasources will be removed from HsCore in future. Use config.allowAddExternalDatasets instead or hide datasource_selector panel using config.panelsEnabled object'
-      );
-    }
-    this.HsConfig.allowAddExternalDatasets = newName;
-  }
-
   //TODO: element, options not used anymore
   /**
    * @ngdoc method
@@ -292,19 +214,6 @@ export class HsCoreService {
     } else {
       return '';
     }
-  }
-
-  /**
-   * @deprecated Replaced by panelsEnabled config
-   */
-  exists(): true {
-    if (!this.existsWarningShown) {
-      this.existsWarningShown = true;
-      this.log.warn(
-        'Core.exists function will be removed. Please use panelsEnabled config option to set the statuses'
-      );
-    }
-    return true;
   }
 
   /**
