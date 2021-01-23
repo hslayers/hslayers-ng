@@ -158,7 +158,8 @@
     "open": "Otevřít",
     "share": "Sdílet",
     "sortBy": "Řadit podle",
-    "search": "Hledat:"
+    "search": "Hledat:",
+    "ignoreAndContinue": "Ignorovat a pokračovat"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -187,7 +188,12 @@
     "inspireTheme": "Téma INSPIRE",
     "selectThemes": "Vybrat témata",
     "clearFilters": "Vyčistit filtry",
-    "loginToCatalogue": "Přihlásit do katalogu"
+    "loginToCatalogue": "Přihlásit do katalogu",
+    "dialogWarning": {
+      "title": "Varování",
+      "outOfBounds": "Rozsah kompozice je mimo rozsah systému EPSG:4326",
+      "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
+    }
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Přidat do mapy jako",
@@ -522,7 +528,28 @@
     "Orthoimagery": "Ortofotosnímky",
     "Soil": "Půda",
     "Statistical units": "Statistické jednotky",
-    "Transport networks": "Dopravní sítě"
+    "Transport networks": "Dopravní sítě",
+    "Atmospheric Conditions and meteorological geographical features": "Stav ovzduší a zeměpisné meteorologické prvky",
+    "Area management/restriction/regulation zones and reporting units": "Správní oblasti/chráněná pásma/regulovaná území a jednotky podávající hlášení",
+    "Atmospheric conditions": "Stav ovzduší",
+    "Bio-geographical regions": "Bioregiony",
+    "Energy resources": "Energetické zdroje",
+    "Environmental monitoring facilities": "Zařízení pro sledování životního prostředí",
+    "Geographical grid systems": "Zeměpisné soustavy souřadnicových sítí",
+    "Habitants and biotopes": "Stanoviště a biotopy",
+    "Human health and safety": "Lidské zdraví a bezpečnost",
+    "Land cover": "Krajinný pokryv",
+    "Meteorological geographical features": "Zeměpisné meteorologické prvky",
+    "Mineral resources": "Nerostné suroviny",
+    "Natural risk zones": "Oblasti ohrožené přírodními riziky",
+    "None": "Žádné",
+    "Oceanographic geographical features": "Zeměpisné oceánografické prvky",
+    "Population distribution - demography": "Rozložení obyvatelstva – demografie",
+    "Production and industrial facilities": "Výrobní a průmyslová zařízení",
+    "Protected sites": "Chráněná území",
+    "Sea regions": "Mořské oblasti",
+    "Species distribution": "Rozložení druhů",
+    "Utility and governmental services": "Veřejné služby a služby veřejné správy"
   },
   "COMPOSITONKEYWORDS": {
     "Borders": "Hranice",
@@ -538,7 +565,10 @@
     "Planning": "Plánování",
     "Real estate": "Nemovitosti",
     "Transport": "Doprava",
-    "Water": "Voda"
+    "Water": "Voda",
+    "Basemap": "Podkladová mapa",
+    "Complex information": "Komplexní informace",
+    "Socio political conditions": "Socio-politické podmínky"
   },
   "COMPOSITONSORTVALUES": {
     "Bbox": "Rozsah mapy",
