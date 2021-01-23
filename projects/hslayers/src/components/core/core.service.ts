@@ -47,13 +47,11 @@ export class HsCoreService {
     private translate: TranslateService
   ) {
     /**
-     * @ngdoc property
-     * @name HsCore#config
+     * Service shortcut to config module defined by app.ts for application
      * @public
      * @type {object}
-     * @description Service shortcut to config module defined by app.js for application
      */
-    this.config = this.HsConfig;
+    this.config = HsConfig;
     if (window.innerWidth < 767 || this.HsConfig.sidebarClosed) {
       this.HsLayoutService.sidebarExpanded = false;
       this.HsLayoutService.sidebarLabels = false;
@@ -71,14 +69,10 @@ export class HsCoreService {
     });
   }
 
-  //TODO: element, options not used anymore
   /**
-   * @ngdoc method
-   * @name HsCore#init
+   * Initialization function for HSLayers elements and their sizes.
+   * Stores element and container references and sets event listeners for map resizing.
    * @public
-   * @param {object} element HS layers element gained from directive link
-   * @param {object} options Optional options object when HS app has not CSS sizes declared. Parent property is Boolean type when size should be taken from HS element parent. Element property is string for any css like selector
-   * @description Initialization function for HS layers elements and their sizes. Stores element and container references and sets event listeners for map resizing.
    */
   init(): void {
     if (this.initCalled) {
@@ -93,12 +87,10 @@ export class HsCoreService {
     });
   }
   /**
-   * @ngdoc method
-   * @name HsCore#updateVH
+   * Define and change size of CSS custom variable --vh used as reference for hs.app-height
    * @private
-   * @description Define and change size of CSS custom variable --vh used as reference for hs.app-height
    */
-  updateVH() {
+  private updateVH() {
     if (this.HsUtilsService.runningInBrowser()) {
       const vh = window.innerHeight * 0.01;
       document.body.style.setProperty('--vh', `${vh}px`);
@@ -112,10 +104,8 @@ export class HsCoreService {
     }
   }
   /**
-   * @ngdoc method
-   * @name HsCore#initSizeListeners
+   * Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    * @public
-   * @description Add event listeners for updating HS element and map size after browser resizing or complete load of application.
    */
   initSizeListeners(): void {
     window.addEventListener('resize', () => {
@@ -130,11 +120,10 @@ export class HsCoreService {
       )();
     });
   }
+
   /**
-   * @ngdoc method
-   * @name HsCore#updateMapSize
+   * Update map size.
    * @public
-   * @description Update map size.
    */
   updateMapSize(): void {
     const map = this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map');
@@ -164,11 +153,9 @@ export class HsCoreService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCore#isAuthorized
+   * Do authorization check of User, currently authorization is possible only in connection with Liferay app
    * @public
-   * @returns {boolean} Check result - true for authorized user
-   * @description Do authorization check of User, currently authorization is possible only in connection with Lifearray app
+   * @returns Check result - true for authorized user
    */
   isAuthorized(): boolean {
     if (window['getLRUser'] === undefined && !this.missingLRFunctionsWarned) {
@@ -184,29 +171,18 @@ export class HsCoreService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCore#resetMap
+   * Do complete reset of map (view, layers) according to app config
    * @public
-   * @description Do complete reset of map (view, layers) according to app config
    */
   resetMap(): void {
     this.HsMapService.reset();
-    /**
-     * @ngdoc event
-     * @name HsCore#core.map_reset
-     * @eventType broadcast on $rootScope
-     * @description Fires when map completely reset
-     */
     this.HsEventBusService.mapResets.next();
-    //$rootScope.$broadcast('core.map_reset', {});
   }
 
   /**
-   * @ngdoc method
-   * @name HsCore#isMobile
+   * Tests if screen of used device is mobile type (current breakdown is screen width 800px)
    * @public
-   * @returns {string} Returns "mobile" or ""
-   * @description Test if screen of used device is mobile type (current breakdown is screen width 800px)
+   * @returns "mobile" or ""
    */
   isMobile(): string {
     if (window['cordova']) {
@@ -217,11 +193,8 @@ export class HsCoreService {
   }
 
   /**
-   * @ngdoc property
-   * @name HsCore#puremapApp
+   * Whether app is running in puremapApp mode
    * @public
-   * @type {boolean} false
-   * @description If app is running in puremapApp mode
    */
   get puremapApp() {
     return this._puremapApp;

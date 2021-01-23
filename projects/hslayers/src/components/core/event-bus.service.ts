@@ -7,9 +7,9 @@ import {Injectable} from '@angular/core';
  * HsEventBusService provides observable events which you can subscribe to or fire them
  *
  * @example
- * HsEventBusService.sizeChanges.subscribe((size) => {
+ * HsEventBusService.sizeChanges.subscribe((size) =\> \{
  *              doSomethingWith(size);
- * })
+ * \})
  * @example
  * HsEventBusService.layerLoads.next();
  */
@@ -18,13 +18,17 @@ import {Injectable} from '@angular/core';
 })
 export class HsEventBusService {
   sizeChanges: Subject<any> = new Subject();
+  /**
+   * Fires when map completely reset
+   * @event mapResets
+   */
   mapResets: Subject<any> = new Subject();
   layerManagerUpdates: Subject<any> = new Subject();
   compositionLoadStarts: Subject<any> = new Subject();
   compositionDeletes: Subject<any> = new Subject();
   /**
+   * Fires when composition is loaded or not loaded with Error message
    * @event compositionLoads
-   * @description Fires when composition is loaded or not loaded with Error message
    */
   compositionLoads: Subject<any> = new Subject();
   layerRemovals: Subject<any> = new Subject();
@@ -53,8 +57,9 @@ export class HsEventBusService {
   cesiumResizes: Subject<any> = new Subject();
   zoomTo: Subject<any> = new Subject();
   /**
+   * Fires when map extent change (move, zoom, resize).
+   * Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
    * @event mapExtentChanges
-   * @description Fires when map extent change (move, zoom, resize). Fires with two parameters: map element and new calculated {@link http://openlayers.org/en/latest/apidoc/ol.html#.Extent extent}
    */
   mapExtentChanges: Subject<any> = new Subject();
   mapCenterSynchronizations: Subject<any> = new Subject();
@@ -70,9 +75,9 @@ export class HsEventBusService {
    */
   olMapLoads: Subject<Map> = new Subject();
   /**
-   * @event compositionLoading
-   * @description Fires when composition is downloaded from server and parsing begins
+   * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
+   * @event compositionLoading
    */
   compositionLoading: Subject<any> = new Subject();
   /**
@@ -113,8 +118,8 @@ export class HsEventBusService {
     response: any;
   }> = new Subject();
   /**
+   * Fires when layerSelected parameter is found in the URL
    * @event layerSelectedFromUrl
-   * @description Fires when layerSelected parameter is found in the URL
    */
   layerSelectedFromUrl: BehaviorSubject<VectorLayer> = new BehaviorSubject(
     null
