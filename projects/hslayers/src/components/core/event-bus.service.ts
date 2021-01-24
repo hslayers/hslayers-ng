@@ -42,7 +42,9 @@ export class HsEventBusService {
   vectorQueryFeatureSelection: Subject<any> = new Subject();
   vectorQueryFeatureDeselection: Subject<any> = new Subject();
   /**
+   * Fires when current mainpanel change - toggle, change of opened panel.
    * replaces 'core.mainpanel_changed'
+   * @event mainPanelChanges
    */
   mainPanelChanges: Subject<any> = new Subject();
   /**

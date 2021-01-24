@@ -13,88 +13,70 @@ import {HsLogService} from '../../common/log/log.service';
 })
 export class HsLayoutService {
   /**
-   * @name HsLayoutService#defaultPanel
+   * Storage of default main panel.
+   * This panel is opened during initialization of app and also when other panel than default is closed.
    * @public
-   * @type {string} null
-   * @description Storage of default (main) panel (panel which is opened during initialization of app and also when other panel than default is closed).
+   * @default ''
    */
   defaultPanel = '';
   /**
-   * @name HsLayoutService#panel_statuses
    * @public
-   * @type {object}
    */
   panel_statuses = {};
   /**
-   * @name HsLayoutService#panel_enabled
    * @public
-   * @type {object}
    * @description DEPRACATED?
    */
   panel_enabled = {};
   /**
-   * @name HsLayoutService#mainpanel
+   * Storage of current main panel (panel which is opened).
+   * When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
    * @public
-   * @type {string}
    * @default ''
-   * @description Storage of current main panel (panel which is opened). When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
    */
   mainpanel = '';
   /**
-   * @name HsCore#sidebarRight
+   * Side on which sidebar will be shown (true = right side of map, false = left side of map)
    * @public
-   * @type {boolean}
    * @default true
-   * @description Side on which sidebar will be shown (true - right side of map, false - left side of map)
    */
   sidebarRight = true;
   /**
-   * @name HsLayoutService#sidebarLabels
-   * @public
-   * @type {boolean}
-   * @default true
-   * @description Whether to display labels of sidebar buttons or not.
+   * Whether to display labels of sidebar buttons or not.
    * Used in CSS classes assertion on hs-panelspace.
+   * @public
+   * @default true
    */
   sidebarLabels = true;
   /**
-   * @name HsLayoutService#sidebarToggleable
+   * Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
    * @public
-   * @type {boolean}
    * @default true
-   * @description Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
    */
   sidebarToggleable = true;
   /**
-   * @name HsLayoutService#sidebarButtons
+   * DEPRECATED?
    * @public
-   * @type {boolean}
    * @default true
-   * @description DEPRECATED?
    */
   sidebarButtons = true;
   /**
-   * @name HsLayoutService#smallWidth
+   * Helper property for showing some button on smaller screens
    * @public
-   * @type {boolean}
    * @default false
-   * @description Helper property for showing some button on smaller screens
    */
   smallWidth = false;
   /**
-   * @name HsLayoutService#sidebarExpanded
+   * Show if any sidebar panel is opened (sidebar is completely expanded).
+   * When hs.sidebar module is used in app, it change automatically to true during initialization.
    * @public
-   * @type {boolean}
    * @default false
-   * @description Show if any sidebar panel is opened (sidebar is completely expanded). When hs.sidebar module is used in app, it change automatically to true during initialization.
    */
   sidebarExpanded = false;
   /**
-   * @name HsLayoutService#minisidebar
+   * Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
    * @public
-   * @type {boolean}
    * @default false
-   * @description Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
    */
   minisidebar = false;
   contentWrapper: any;
@@ -203,10 +185,10 @@ export class HsLayoutService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#hidePanels
+   * Close opened panel programmaticaly.
+   * If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels.
+   * Cannot resolve unpinned panels.
    * @public
-   * @description Close opened panel programmaticaly. If sidebar toolbar is used in app, sidebar stay expanded with sidebar labels. Cannot resolve unpinned panels.
    */
   hidePanels() {
     this.mainpanel = '';
@@ -251,16 +233,16 @@ export class HsLayoutService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#panelEnabled
+   * Get or set panel visibility in sidebar.
+   * When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but its functionality is running.
+   * Use with status parameter as setter.
    * @public
-   * @param {string} which Selected panel (panel name)
-   * @param {boolean} status Visibility status of panel to set
-   * @returns {boolean} Panel enabled/disabled status for getter function
-   * @description Get or set panel visibility in sidebar. When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but it's functionality is running. Use with status parameter as setter.
+   * @param which - Selected panel (panel name)
+   * @param status - Visibility status of panel to set
+   * @returns Panel enabled/disabled status for getter function
    */
-  panelEnabled(which: string, status?: boolean) {
-    if (status == undefined) {
+  panelEnabled(which: string, status?: boolean): boolean {
+    if (status === undefined) {
       if (this.panel_enabled[which] != undefined) {
         return this.panel_enabled[which];
       } else {
@@ -281,14 +263,13 @@ export class HsLayoutService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#setMainPanel
+   * Sets new main panel (Panel displayed in expanded sidebar).
+   * Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
    * @public
-   * @param {string} which New panel to activate (panel name)
-   * @param {boolean} by_gui Whether function call came as result of GUI action
-   * @description Sets new main panel (Panel displayed in expanded sidebar). Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
+   * @param which - New panel to activate (panel name)
+   * @param by_gui - Whether function call came as result of GUI action
    */
-  setMainPanel(which, by_gui?: boolean) {
+  setMainPanel(which: string, by_gui?: boolean): void {
     if (!this.panelEnabled(which)) {
       return;
     }
@@ -306,23 +287,15 @@ export class HsLayoutService {
       this.sidebarLabels = false;
     }
     this.mainpanel = which;
-    /**
-     * @ngdoc event
-     * @name HsEventBusService#mainPanelChanges
-     * @eventType broadcast on HsEventBusService
-     * @description Fires when current mainpanel change - toggle, change of opened panel
-     */
     this.HsEventBusService.mainPanelChanges.next(which);
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayoutService#setDefaultPanel
+   * Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
    * @public
-   * @param {string} which New panel to be default (specify panel name)
-   * @description Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
+   * @param which - New panel to be default (specify panel name)
    */
-  setDefaultPanel(which) {
+  setDefaultPanel(which: string): void {
     this.defaultPanel = which;
     this.setMainPanel(which);
   }

@@ -32,7 +32,7 @@ export class HsCoreService {
     private translate: TranslateService
   ) {
     /**
-     * Service shortcut to config module defined by app.ts for application
+     * Service shortcut to config module defined by app.component.ts for application
      * @public
      * @type {object}
      */
