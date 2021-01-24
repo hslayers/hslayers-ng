@@ -2,6 +2,13 @@
 
 HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a foundation to build map GUI and extra components such as layer manager, permalink generating, styling of vector features, including OpenGIS® Web Map Service Interface Standard (WMS) layers to the map in a user friendly way etc.
 
+
+| Hslayers version | Angular version     | Bootstrap   |
+| ---------------- | -----------------   |------------ |
+| 1                | 1.7                 | 4.5.3       |
+| 2                | 1.7 + 9.1.x (hybrid)| >=4.4       |
+| 3                | 9.x                 | 4.x         |
+
 ## Demo
 
 Check out the examples to get an idea:  
