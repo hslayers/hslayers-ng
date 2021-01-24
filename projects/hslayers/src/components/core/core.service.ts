@@ -188,7 +188,6 @@ export class HsCoreService {
   set puremapApp(value) {
     this._puremapApp = value;
     if (value) {
-      this.HsLayoutService.createComponentsEnabledConfigIfNeeded();
       this.HsConfig.componentsEnabled.toolbar = false;
       this.HsConfig.componentsEnabled.sidebar = false;
       this.HsConfig.componentsEnabled.geolocationButton = false;

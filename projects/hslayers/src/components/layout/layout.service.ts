@@ -157,19 +157,6 @@ export class HsLayoutService {
     for (const key of Object.keys(this.panelsEnabledDefaults)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }
-    this.createComponentsEnabledConfigIfNeeded();
-    // For backwards-compatibility
-    if (this.HsConfig.locationButtonVisible) {
-      this.$log.warn(
-        'config.locationButtonVisible parameter is deprecated. Use config.componentsEnabled.geolocationButton instead'
-      );
-      if (this.HsConfig.componentsEnabled.geolocationButton == undefined) {
-        this.HsConfig.componentsEnabled.geolocationButton = this.HsConfig.locationButtonVisible;
-      }
-    }
-    if (this.HsConfig.componentsEnabled?.basemapGallery == undefined) {
-      this.HsConfig.componentsEnabled.basemapGallery = false;
-    }
   }
 
   getPanelEnableState(panel): boolean {
@@ -194,17 +181,6 @@ export class HsLayoutService {
     }
   }
 
-  /**
-   * @ngdoc method
-   * @name HsLayoutService#createComponentsEnabledConfigIfNeeded
-   * @public
-   * @description Creates componentsEnabled config if Needed
-   */
-  createComponentsEnabledConfigIfNeeded() {
-    if (this.HsConfig.componentsEnabled === undefined) {
-      this.HsConfig.componentsEnabled = {};
-    }
-  }
   /**
    * @ngdoc method
    * @name HsLayoutService#panelVisible
@@ -295,12 +271,13 @@ export class HsLayoutService {
     }
   }
 
-  componentEnabled(which) {
-    return (
-      this.HsConfig.componentsEnabled == undefined ||
-      this.HsConfig.componentsEnabled[which] == undefined ||
-      this.HsConfig.componentsEnabled[which]
-    );
+  /**
+   * Wrapper for accesing HsConfig.componentsEnabled settings.
+   * @param which - Name of the GUI component to check
+   * @returns true if set to true (default), false otherwise
+   */
+  componentEnabled(which: string): boolean {
+    return this.HsConfig.componentsEnabled[which];
   }
 
   /**

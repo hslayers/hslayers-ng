@@ -4,7 +4,18 @@ import {Subject} from 'rxjs';
 
 export class HsConfig {
   cesiumTime?: any;
-  componentsEnabled?: any = {toolbar: true};
+  componentsEnabled?: any = {
+    guiOverlay: true,
+    sidebar: true,
+    toolbar: true,
+    drawToolbar: true,
+    searchToolbar: true,
+    measureToolbar: true,
+    geolocationButton: true,
+    defaultViewButton: true,
+    mapControls: true,
+    basemapGallery: false,
+  };
   mapInteractionsEnabled?: boolean;
   allowAddExternalDatasets?: boolean;
   sidebarClosed?: boolean;
@@ -88,16 +99,15 @@ export class HsConfig {
   panelWidths?: any;
   sidebarToggleable?: any;
   sizeMode?: string;
-  locationButtonVisible?: any;
   openQueryPanelOnDrawEnd?: boolean;
   assetsPath?: string;
+  reverseLayerList?: boolean;
 
   /**
    * Triggered when config is updated using 'update' function of HsConfig.
    * The full resulting config is provided in the subscriber as a parameter
    */
   configChanges?: Subject<HsConfig> = new Subject();
-  reverseLayerList?: boolean;
   constructor() {}
 
   update?(newConfig: HsConfig): void {
