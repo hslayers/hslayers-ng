@@ -58,6 +58,7 @@ export default function (
         ) {
           const drawLayer = new VectorLayer({
             title: 'tmpDrawLayer',
+            name: 'tmpDrawLayer',
             source: new Vector(),
             show_in_manager: false,
             visible: true,
