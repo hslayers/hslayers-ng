@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, OnInit, ViewRef} from '@angular/core';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
 import {HsPanelComponent} from 'hslayers-ng';
@@ -8,19 +8,21 @@ import {HsSensorsService} from './sensors.service';
   selector: 'hs-sensors',
   templateUrl: './partials/panel.html',
 })
-export class HsSensorsComponent implements HsPanelComponent {
+export class HsSensorsComponent implements HsPanelComponent, OnInit {
   viewMode = 'sensors';
   viewExpanded = false;
   query: any = {description: ''};
+  viewRef: ViewRef;
+  data: {viewMode?: string};
+
   constructor(
     public HsMapService: HsMapService,
     public HsSensorsService: HsSensorsService,
     public HsLayoutService: HsLayoutService
-  ) {
+  ) {}
+  ngOnInit(): void {
     this.HsMapService.loaded().then(() => this.init());
   }
-  viewRef: ViewRef;
-  data: {viewMode?: string};
 
   /**
    * @memberof hs.sensors.component
