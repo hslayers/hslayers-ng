@@ -205,25 +205,6 @@ export class HsQueryBaseService {
     if (layer.get('popUp')?.attributes) {
       //must be an array
       attrsConfig = layer.get('popUp').attributes;
-    } else if (layer.get('hoveredKeys')) {
-      //only for backwards-compatibility with HSLayers 1.10 .. 1.22
-      //should be dropped in future releases
-      //expected to be an array
-      attrsConfig = layer.get('hoveredKeys');
-      if (layer.get('hoveredKeysTranslations')) {
-        //expected to be an object
-        for (const [key, val] of Object.entries(
-          layer.get('hoveredKeysTranslations')
-        )) {
-          const index = attrsConfig.indexOf(key);
-          if (index > -1) {
-            attrsConfig[index] = {
-              attribute: key,
-              label: val,
-            };
-          }
-        }
-      }
     } else {
       // Layer is not configured to show pop-ups
       return;
