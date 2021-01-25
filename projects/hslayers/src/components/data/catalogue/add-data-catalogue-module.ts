@@ -5,14 +5,14 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HsAddDataCatalogueComponent} from './addData-catalogue.component';
-import {HsAddDataListItemComponent} from './addData-list-item.component';
-import {HsAddDataMetadataDialogComponent} from './addData-catalogue-metadata-dialog.component';
+import {HsAddDataCatalogueComponent} from './add-data-catalogue.component';
+import {HsAddDataListItemComponent} from './add-data-list-item.component';
+import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
-import {HsAddDataCatalogueService} from './addData-catalogue.service';
+import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
+import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsMickaBrowserService} from './micka/micka.service';

@@ -3,9 +3,9 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataCommonModule} from '../../common/addData-common.module';
-import {HsAddDataWfsComponent} from './addData-url-wfs.component';
-import {HsAddDataWfsService} from './addData-url-wfs.service';
+import {HsAddDataCommonModule} from '../../common/add-data-common.module';
+import {HsAddDataWfsComponent} from './add-data-url-wfs.component';
+import {HsAddDataWfsService} from './add-data-url-wfs.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

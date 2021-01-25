@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {bbox} from 'ol/loadingstrategy';
 import {transformExtent} from 'ol/proj';
 
-import {HsAddDataWfsService} from './addData-url-wfs.service';
+import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
@@ -15,7 +15,7 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabiliti
 
 @Component({
   selector: 'hs-add-data-url-wfs',
-  templateUrl: './addData-wfs-layer.directive.html',
+  templateUrl: './add-data-wfs-layer.directive.html',
 })
 export class HsAddDataWfsComponent {
   url: string;

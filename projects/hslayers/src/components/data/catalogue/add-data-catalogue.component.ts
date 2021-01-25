@@ -5,8 +5,8 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsCoreService} from '../../core/core.service';
 
-import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
-import {HsAddDataCatalogueService} from './addData-catalogue.service';
+import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
+import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -19,7 +19,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-data-catalogue',
-  templateUrl: './addData-catalogue.html',
+  templateUrl: './add-data-catalogue.html',
 })
 export class HsAddDataCatalogueComponent {
   typeSelected: string;

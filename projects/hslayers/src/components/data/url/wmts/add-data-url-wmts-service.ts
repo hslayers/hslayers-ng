@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {HsAddDataService} from '../../addData.service';
+import {HsAddDataService} from '../../add-data.service';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsLayoutService} from '../../../layout/layout.service';

@@ -11,7 +11,7 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsConfig} from '../../../config.service';
-import {HsAddDataVectorComponent} from './addData-vector.component';
+import {HsAddDataVectorComponent} from './add-data-vector.component';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';

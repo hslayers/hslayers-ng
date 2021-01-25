@@ -5,12 +5,12 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HsAddDataArcGisModule} from './arcgis/addData-url-arcgis.module';
-import {HsAddDataUrlComponent} from './addData-url.component';
-import {HsAddDataUrlWmsModule} from './wms/addData-url-wms.module';
-import {HsAddDataVectorModule} from '../vector/addData-vector.module';
-import {HsAddDataWfsModule} from './wfs/addData-url-wfs.module';
-import {HsAddDataWmtsModule} from './wmts/addData-url-wmts.module';
+import {HsAddDataArcGisModule} from './arcgis/add-data-url-arcgis.module';
+import {HsAddDataUrlComponent} from './add-data-url.component';
+import {HsAddDataUrlWmsModule} from './wms/add-data-url-wms.module';
+import {HsAddDataVectorModule} from '../vector/add-data-vector.module';
+import {HsAddDataWfsModule} from './wfs/add-data-url-wfs.module';
+import {HsAddDataWmtsModule} from './wmts/add-data-url-wmts.module';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({

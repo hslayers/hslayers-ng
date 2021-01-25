@@ -2,10 +2,10 @@ import {Feature} from 'ol';
 import {Injectable} from '@angular/core';
 
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
-import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
-import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
-import {HsAddDataService} from '../addData.service';
-import {HsAddDataVectorService} from '../vector/addData-vector.service';
+import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
+import {HsAddDataService} from '../add-data.service';
+import {HsAddDataVectorService} from '../vector/add-data-vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../config.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';

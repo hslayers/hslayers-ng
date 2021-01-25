@@ -31,7 +31,7 @@ import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
 import {TranslateModule} from '@ngx-translate/core';
-import {HsAddDataModule} from '../data/addData.module';
+import {HsAddDataModule} from '../data/add-data.module';
 
 @NgModule({
   declarations: [

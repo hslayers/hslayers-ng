@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
-import {HsAddDataArcGisService} from './addData-url-arcgis.service';
+import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 
 @Component({
   selector: 'hs-add-data-url-arcgis',
-  templateUrl: './addData-url-arcgis.directive.html',
+  templateUrl: './add-data-url-arcgis.directive.html',
   //TODO: require('./add-arcgis-layer.md.directive.html')
 })
 export class HsAddDataArcGisComponent {

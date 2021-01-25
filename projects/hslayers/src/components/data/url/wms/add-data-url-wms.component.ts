@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HsAddDataUrlWmsService} from './addData-url-wms.service';
+import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
@@ -9,7 +9,7 @@ import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabiliti
 
 @Component({
   selector: 'hs-add-data-url-wms',
-  templateUrl: './addData-url-wms.directive.html',
+  templateUrl: './add-data-url-wms.directive.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmsComponent {

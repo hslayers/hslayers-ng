@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
-import {HsAddDataService} from '../addData.service';
+import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
-import {HsShareUrlService} from '../../permalink/share-url.service';
 import {HsLayoutService} from '../../layout/layout.service';
+import {HsShareUrlService} from '../../permalink/share-url.service';
 
 @Component({
   selector: 'hs-add-data-url',
-  templateUrl: './addData-url.html',
+  templateUrl: './add-data-url.html',
 })
 export class HsAddDataUrlComponent {
   typeSelected: string;

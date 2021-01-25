@@ -5,14 +5,14 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HsAddDataComponent} from './addData.component';
+import {HsAddDataComponent} from './add-data.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataCatalogueModule} from './catalogue/addData-catalogue-module';
-import {HsAddDataFileModule} from './file/addData-file.module';
-import {HsAddDataService} from './addData.service';
-import {HsAddDataUrlModule} from './url/addData-url.module';
+import {HsAddDataCatalogueModule} from './catalogue/add-data-catalogue-module';
+import {HsAddDataFileModule} from './file/add-data-file.module';
+import {HsAddDataService} from './add-data.service';
+import {HsAddDataUrlModule} from './url/add-data-url.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
