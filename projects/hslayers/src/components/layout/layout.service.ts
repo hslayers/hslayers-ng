@@ -55,14 +55,16 @@ export class HsLayoutService {
    */
   sidebarToggleable = true;
   /**
-   * DEPRECATED?
+   * DEPRECATED Always true
    * @public
+   * @deprecated
    * @default true
    */
   sidebarButtons = true;
   /**
-   * Helper property for showing some button on smaller screens
+   * DEPRECATED Helper property for showing some button on smaller screens
    * @public
+   * @deprecated
    * @default false
    */
   smallWidth = false;

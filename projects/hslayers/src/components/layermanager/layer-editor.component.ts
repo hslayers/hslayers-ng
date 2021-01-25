@@ -1,4 +1,3 @@
-/* eslint-disable angular/definedundefined */
 import moment from 'moment';
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service';
@@ -42,17 +41,6 @@ export class HsLayerEditorComponent {
 
   layerIsWmsT(): boolean {
     return this.HsLayerManagerWmstService.layerIsWmsT(this.currentLayer);
-  }
-
-  /**
-   * @function isLayerWMS
-   * @memberOf HsLayerEditorComponent
-   * @param {Layer} layer Selected layer
-   * @description Test if layer is WMS layer
-   * @deprecated TODO
-   */
-  isLayerWMS(layer: Layer): boolean {
-    return this.HsLayerUtilsService.isLayerWMS(layer);
   }
 
   /**
@@ -367,11 +355,9 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function title
-   * @memberOf HsLayerEditorComponent
-   * @param {string} newTitle New title to set
-   * @desription Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
-   * @returns {string} Title
+   * Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
+   * @param newTitle - New title to set
+   * @returns Title
    */
   set title(newTitle: string) {
     const newLayerTitle = newTitle.trim();
