@@ -50,6 +50,7 @@ export class HsAddDataCatalogueService {
   listStart = 0;
   listNext = this.itemsPerPage;
   catalogQuery;
+  endpointsWithDatasources: any[];
 
   constructor(
     public hsConfig: HsConfig,
@@ -88,10 +89,10 @@ export class HsAddDataCatalogueService {
       this.hsConfig.allowAddExternalDatasets = true;
     }
 
-    const endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
+    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
     );
-    this.paging.limit = Math.ceil(20 / endpointsWithDatasources.length);
+    this.paging.limit = Math.ceil(20 / this.endpointsWithDatasources.length);
 
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
@@ -130,44 +131,42 @@ export class HsAddDataCatalogueService {
    * @description Queries all configured catalogs for datasources (layers)
    */
   queryCatalogs(preserveLayers?: boolean): void {
-    if (this.catalogQuery) {
-      this.catalogQuery.unsubscribe();
-      delete this.catalogQuery;
-    }
-    if (preserveLayers === undefined || !preserveLayers) {
-      this.catalogEntries.length = 0;
-      this.paging.start = 0;
-      this.paging.matched = 0;
-    }
-
-    this.HsMapService.loaded().then(() => {
-      this.layersLoading = true;
-      this.HsAddDataCatalogueMapService.clearExtentLayer();
-      const observables = [];
-
-      //TODO Mark non functional endpoint
-      for (const endpoint of this.endpointsWithDatasourcesPipe.transform(
-        this.hsCommonEndpointsService.endpoints
-      )) {
-        //TODO query only functional endpoints
-        endpoint.datasourcePaging = {...this.paging};
-
-        const promise = this.queryCatalog(endpoint);
-        observables.push(promise);
+    if (this.endpointsWithDatasources.length > 0) {
+      if (this.catalogQuery) {
+        this.catalogQuery.unsubscribe();
+        delete this.catalogQuery;
+      }
+      if (preserveLayers === undefined || !preserveLayers) {
+        this.catalogEntries.length = 0;
+        this.paging.start = 0;
+        this.paging.matched = 0;
       }
 
-      this.catalogQuery = forkJoin(observables).subscribe(() => {
-        this.createLayerList();
+      this.HsMapService.loaded().then(() => {
+        this.layersLoading = true;
+        this.HsAddDataCatalogueMapService.clearExtentLayer();
+        const observables = [];
+
+        //TODO Mark non functional endpoint
+        for (const endpoint of this.endpointsWithDatasources) {
+          //TODO query only functional endpoints
+          endpoint.datasourcePaging = {...this.paging};
+
+          const promise = this.queryCatalog(endpoint);
+          observables.push(promise);
+        }
+
+        this.catalogQuery = forkJoin(observables).subscribe(() => {
+          this.createLayerList();
+        });
       });
-    });
+    }
   }
 
   createLayerList(): void {
     this.paging.matched = 0;
 
-    for (const endpoint of this.endpointsWithDatasourcesPipe.transform(
-      this.hsCommonEndpointsService.endpoints
-    )) {
+    for (const endpoint of this.endpointsWithDatasources) {
       if (endpoint.layers) {
         endpoint.layers.forEach((layer) => {
           layer.endpoint = endpoint;
@@ -418,9 +417,7 @@ export class HsAddDataCatalogueService {
    *
    */
   dataSourceExistsAndEmpty(): boolean {
-    return !!this.endpointsWithDatasourcesPipe.transform(
-      this.hsCommonEndpointsService.endpoints
-    );
+    return !!this.endpointsWithDatasources;
   }
 
   /**
