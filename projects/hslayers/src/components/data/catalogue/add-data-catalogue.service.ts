@@ -164,8 +164,7 @@ export class HsAddDataCatalogueService {
   }
 
   createLayerList(): void {
-    this.paging.matched = 0;
-
+    let lastRequestMatched = 0;
     for (const endpoint of this.endpointsWithDatasources) {
       if (endpoint.layers) {
         endpoint.layers.forEach((layer) => {
@@ -180,15 +179,15 @@ export class HsAddDataCatalogueService {
           this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
         }
       }
-      if (endpoint.datasourcePaging) {
-        if (this.paging.matched == 0) {
-          this.paging.matched = endpoint.datasourcePaging.matched;
-        } else {
-          this.paging.matched =
-            this.paging.matched + endpoint.datasourcePaging.matched;
-        }
+      if (endpoint.datasourcePaging?.matched) {
+        lastRequestMatched += endpoint.datasourcePaging.matched;
       }
     }
+
+    if (lastRequestMatched > this.paging.matched) {
+      this.paging.matched = lastRequestMatched;
+    }
+
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
 
