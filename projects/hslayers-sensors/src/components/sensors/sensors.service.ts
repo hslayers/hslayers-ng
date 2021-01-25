@@ -75,11 +75,12 @@ export class HsSensorsService {
     public HsEventBusService: HsEventBusService,
     public HsSensorsUnitDialogService: HsSensorsUnitDialogService
   ) {
-    this.endpoint = this.HsConfig.senslog;
-    if (this.endpoint.liteApiPath == undefined) {
-      this.endpoint.liteApiPath = 'senslog-lite2';
-    }
-    this.HsSensorsUnitDialogService.endpoint = this.endpoint;
+    this.setEndpoint();
+    this.HsConfig.configChanges.subscribe(() => {
+      if (this.HsConfig.senslog != this.endpoint) {
+        this.setEndpoint();
+      }
+    });
 
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       HsUtilsService.debounce(
@@ -102,6 +103,16 @@ export class HsSensorsService {
         this
       );
     });
+  }
+
+  private setEndpoint() {
+    if (this.HsConfig.senslog) {
+      this.endpoint = this.HsConfig.senslog;
+      if (this.endpoint.liteApiPath == undefined) {
+        this.endpoint.liteApiPath = 'senslog-lite2';
+      }
+      this.HsSensorsUnitDialogService.endpoint = this.endpoint;
+    }
   }
 
   selectSensor(sensor): void {
