@@ -61,10 +61,10 @@ export class HsQueryComponent {
       this.HsQueryBaseService.getFeatureInfoCollected.subscribe(
         (coordinate) => {
           const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
-          const bodyElements = this.checkForBodyElements(
+          const bodyElementsFound = this.checkForBodyElements(
             invisiblePopup.contentDocument.body.children
           );
-          if (bodyElements?.length > 0) {
+          if (bodyElementsFound) {
             //TODO: dont count style, title, meta towards length
             if (this.HsQueryBaseService.popupClassname.length > 0) {
               this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
@@ -94,17 +94,10 @@ export class HsQueryComponent {
       );
     });
   }
-  checkForBodyElements(docChildren: any): any[] {
-    if (docChildren.length == 0) {
-      return;
-    }
-    const children: any[] = [];
-    for (const ch of docChildren) {
-      if (ch.tagName != 'META' && ch.tagName != 'STYLE') {
-        children.push(ch.tagName);
-      }
-    }
-    return children;
+  checkForBodyElements(docChildren: any): boolean {
+    return docChildren.some(
+      (ch) => ch.tagName != 'META' && ch.tagName != 'STYLE'
+    );
   }
   showQueryDialog(ev) {
     //TODO Rewrite this to new material design
