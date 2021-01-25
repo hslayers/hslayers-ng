@@ -29,7 +29,9 @@ export class HsSaveMapService {
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService
-  ) {}
+  ) {
+    this.initOnPageReloadListener();
+  }
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
@@ -142,6 +144,20 @@ export class HsSaveMapService {
     return current_base_layer;
   }
 
+  initOnPageReloadListener(): void {
+    window.addEventListener('beforeunload', () => {
+      const data: any = {};
+      const layers = [];
+      this.HsMapService.map.getLayers().forEach((layer) => {
+        if (layer.get('saveState')) {
+          const lyr = this.layer2json(layer);
+          layers.push(lyr);
+        }
+      });
+      data.layers = layers;
+      localStorage.setItem('hs_layers', JSON.stringify(data));
+    });
+  }
   /**
    * Converts map layers into a JSON object. If $scope is defined, stores only layers checked in form
    * Uses layer2json().
