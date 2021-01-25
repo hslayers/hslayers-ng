@@ -1,14 +1,14 @@
 import BaseLayer from 'ol/layer/Base';
 import {Component} from '@angular/core';
-import {HsAddDataService} from '../addData.service';
-import {HsAddDataVectorService} from './addData-vector.service';
+import {HsAddDataService} from '../add-data.service';
+import {HsAddDataVectorService} from './add-data-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-data-url-vector',
-  templateUrl: './addData-vector.directive.html',
+  templateUrl: './add-data-vector.directive.html',
 })
 export class HsAddDataVectorComponent {
   srs = 'EPSG:4326';

@@ -1,5 +1,5 @@
 import '../../styles/styles.module';
-import {HsAddDataVectorService} from './addData-vector.service';
+import {HsAddDataVectorService} from './add-data-vector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsShareUrlService} from '../../permalink/share-url.service';
 import {Injectable} from '@angular/core';

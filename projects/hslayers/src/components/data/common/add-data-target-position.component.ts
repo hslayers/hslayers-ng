@@ -5,7 +5,7 @@ import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 
 @Component({
   selector: 'hs-add-data-target-position',
-  templateUrl: './addData-target-position.component.html',
+  templateUrl: './add-data-target-position.component.html',
 })
 export class HsAddDataTargetPositionComponent {
   @Input() addUnder: BaseLayer | null; // @type'; TODO: comes from another scope

@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError, finalize, map} from 'rxjs/operators';
 
-import {HsAddDataLayerDescriptor} from '../addData-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';

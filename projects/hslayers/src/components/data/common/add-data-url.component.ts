@@ -3,7 +3,7 @@ import {HsHistoryListService} from '../../../common/history-list/history-list.se
 
 @Component({
   selector: 'hs-add-data-common-url',
-  templateUrl: './addData-url.directive.html',
+  templateUrl: './add-data-url.directive.html',
 })
 export class HsAddDataUrlComponent {
   items;

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input} from '@angular/core';
 
-import {HsAddDataCatalogueService} from './addData-catalogue.service';
-import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
-import {HsAddDataMetadataDialogComponent} from './addData-catalogue-metadata-dialog.component';
+import {HsAddDataCatalogueService} from './add-data-catalogue.service';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
+import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
 import {HsConfig} from '../../../config.service';
 import {HsDatasourcesMetadataService} from '../../datasource-selector/datasource-selector-metadata.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
@@ -14,7 +14,7 @@ import {HsLogService} from '../../../common/log/log.service';
 
 @Component({
   selector: 'hs-add-data-list-item',
-  templateUrl: 'addData-list-item.html',
+  templateUrl: 'add-data-list-item.html',
 })
 export class HsAddDataListItemComponent {
   @Input() layer;

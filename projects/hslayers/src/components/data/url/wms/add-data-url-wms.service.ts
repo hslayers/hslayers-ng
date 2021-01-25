@@ -8,7 +8,7 @@ import {transformExtent} from 'ol/proj';
 
 //FIX ME
 //refactor
-import {HsAddDataService} from '../../addData.service';
+import {HsAddDataService} from '../../add-data.service';
 import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsLayoutService} from '../../../layout/layout.service';

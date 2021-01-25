@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
-import {HsAddDataService} from './addData.service';
+import {HsAddDataService} from './add-data.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -9,7 +9,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
   selector: 'hs-add-data',
-  templateUrl: './addData.directive.html',
+  templateUrl: './add-data.directive.html',
 })
 export class HsAddDataComponent {
   types: any[];

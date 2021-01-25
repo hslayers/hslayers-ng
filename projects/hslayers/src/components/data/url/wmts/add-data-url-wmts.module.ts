@@ -3,9 +3,9 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {HsAddDataCommonModule} from '../../common/addData-common.module';
-import {HsAddDataUrlWmtsService} from './addData-url-wmts-service';
-import {HsAddDataWmtsComponent} from './addData-url-wmts.component';
+import {HsAddDataCommonModule} from '../../common/add-data-common.module';
+import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
+import {HsAddDataWmtsComponent} from './add-data-url-wmts.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

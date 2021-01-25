@@ -6,7 +6,7 @@ import {HsLanguageService} from '../../language/language.service';
 
 @Component({
   selector: 'hs-add-data-file',
-  templateUrl: './addData-file.html',
+  templateUrl: './add-data-file.html',
 })
 export class HsAddDataFileComponent {
   typeSelected: string;

@@ -17,7 +17,7 @@ import {addAnchors} from '../../../../common/attribution-utils';
 
 @Component({
   selector: 'hs-add-data-url-wmts',
-  templateUrl: './addData-url-wmts.html',
+  templateUrl: './add-data-url-wmts.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
 export class HsAddDataWmtsComponent {

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataCatalogueMapService} from './addData-catalogue-map.service';
-import {HsAddDataCatalogueService} from './addData-catalogue.service';
-import {HsAddDataLayerDescriptor} from './addData-layer-descriptor.interface';
+import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
+import {HsAddDataCatalogueService} from './add-data-catalogue.service';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 import {HsConfig} from '../../../config.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
@@ -10,7 +10,7 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 
 @Component({
   selector: 'hs-add-data-metadata-dialog',
-  templateUrl: './addData-catalogue-metadata-dialog.html',
+  templateUrl: './add-data-catalogue-metadata-dialog.html',
 })
 export class HsAddDataMetadataDialogComponent
   implements HsDialogComponent, OnInit {

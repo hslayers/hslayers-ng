@@ -7,7 +7,7 @@ import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsCoreService} from './core.service';
-import {HsAddDataModule} from '../data/addData.module';
+import {HsAddDataModule} from '../data/add-data.module';
 import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
 import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw/draw.module';

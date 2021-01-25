@@ -1,7 +1,7 @@
 import '../../styles/styles.module';
 import BaseLayer from 'ol/layer/Base';
 import {GeoJSON} from 'ol/format';
-import {HsAddDataService} from '../addData.service';
+import {HsAddDataService} from '../add-data.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
