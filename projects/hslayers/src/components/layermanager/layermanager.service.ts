@@ -189,7 +189,9 @@ export class HsLayerManagerService {
     new_layer.trackBy = layer.ol_uid + ' ' + new_layer.position;
 
     layer.on('propertychange', (event) => {
-      new_layer.title = this.HsLayerUtilsService.getLayerTitle(layer);
+      if (event.key == 'title') {
+        new_layer.title = this.HsLayerUtilsService.getLayerTitle(layer);
+      }
     });
 
     this.HsLayermanagerWmstService.setupTimeLayerIfNeeded(new_layer);
