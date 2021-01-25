@@ -92,6 +92,10 @@ export class HsConfig {
   openQueryPanelOnDrawEnd?: boolean;
   assetsPath?: string;
 
+  /**
+   * Triggered when config is updated using 'update' function of HsConfig.
+   * The full resulting config is provided in the subscriber as a parameter
+   */
   configChanges?: Subject<HsConfig> = new Subject();
   reverseLayerList?: boolean;
   constructor() {}
