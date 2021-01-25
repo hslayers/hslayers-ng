@@ -96,7 +96,7 @@ export class HsCompositionsCatalogueService {
         this.HsLayoutService.mainpanel === 'composition_browser' ||
         this.HsLayoutService.mainpanel === 'composition'
       ) {
-        this.loadCompositions();
+        this.loadFilteredCompositions();
       }
     });
 
@@ -111,7 +111,7 @@ export class HsCompositionsCatalogueService {
             return;
           }
           if (this.filterByExtent) {
-            this.loadCompositions();
+            this.loadFilteredCompositions();
           }
         },
         400,
@@ -128,7 +128,7 @@ export class HsCompositionsCatalogueService {
       if (deleteDialog) {
         deleteDialog.parentNode.remove(deleteDialog);
       }
-      this.loadCompositions();
+      this.loadFilteredCompositions();
     });
 
     this.HsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
@@ -151,7 +151,7 @@ export class HsCompositionsCatalogueService {
    * @param {boolean} keepCompositions If true, all data will be erased before new requests are created
    * @param {boolean} fillPage If true, new requests will be made, to fill the whole list page
    */
-  loadCompositions(keepCompositions?: boolean, fillPage?: boolean): void {
+  loadCompositions(fillPage?: boolean): void {
     if (this.loadCompositionsQuery) {
       this.loadCompositionsQuery.unsubscribe();
       delete this.loadCompositionsQuery;
@@ -159,9 +159,6 @@ export class HsCompositionsCatalogueService {
     this.HsMapService.loaded().then(() => {
       this.compositionsLoading = true;
       const observables = [];
-      if (keepCompositions === undefined || !keepCompositions) {
-        this.clearCompositions();
-      }
       if (fillPage) {
         this.filteredEndpoints.forEach((ep: HsEndpoint) => {
           if (ep.compositionsPaging.matched > this.paging.limit) {
@@ -220,6 +217,11 @@ export class HsCompositionsCatalogueService {
         case 'type':
           if (this.data.type !== 'None') {
             filtersFound = true;
+          }
+          break;
+        case 'query':
+          if (this.data.query.title != '') {
+            this.data.query.title = this.data.query.title.trim();
           }
           break;
         case 'themes':
@@ -287,7 +289,7 @@ export class HsCompositionsCatalogueService {
     }
     if (this.compositionEntries.length <= this.listNext && boundByLimit) {
       this.paging.start += this.paging.limit;
-      this.loadCompositions(true, true);
+      this.loadCompositions(true);
     }
 
     if (this.paging.matched < this.recordsPerPage) {
@@ -361,7 +363,7 @@ export class HsCompositionsCatalogueService {
       this.compositionEntries.length < this.paging.matched
     ) {
       this.paging.start += this.paging.limit;
-      this.loadCompositions(true);
+      this.loadCompositions();
     }
     if (this.listNext > this.paging.matched) {
       this.listNext = this.paging.matched;
@@ -391,6 +393,6 @@ export class HsCompositionsCatalogueService {
     this.data.themes.forEach((th) => (th.selected = false));
     this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
     this.setPagingLimit();
-    this.loadCompositions();
+    this.loadFilteredCompositions();
   }
 }

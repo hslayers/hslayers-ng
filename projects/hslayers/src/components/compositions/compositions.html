@@ -32,10 +32,10 @@
             <div class="input-group mb-2 ">
                 <input type="text" class="form-control border-right-0" placeholder="{{'COMMON.search'|translate}}"
                     name="hs-filter-by-name" [(ngModel)]="HsCompositionsCatalogueService.data.query.title"
-                    (change)="loadCompositions()">
+                    (change)="loadFilteredCompositions()">
                 <div class="input-group-append">
                     <button class="btn input-group-text text-secondary hs-light-background border-left-0"
-                        (click)="loadCompositions()">
+                        (click)="loadFilteredCompositions()">
                         <i class="icon-search icon-primary"></i>
                     </button>
                 </div>
@@ -45,12 +45,12 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text hs-borderless-input pl-0">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByExtent"
-                            (change)='loadCompositions()' name="HsCompositionsCatalogueService.filterByExtent">
+                            (change)='loadFilteredCompositions()' name="HsCompositionsCatalogueService.filterByExtent">
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
                     <div class="input-group-text hs-borderless-input" [hidden]="!HsLaymanService.getLaymanEndpoint()">
                         <input type="checkbox" [(ngModel)]="HsCompositionsCatalogueService.filterByOnlyMine"
-                            (change)='HsCompositionsCatalogueService.loadFilteredCompositions()'
+                            (change)='loadFilteredCompositions()'
                             name="HsCompositionsCatalogueService.filterByOnlyMine">
                         <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
                     </div>
@@ -70,7 +70,7 @@
                                     <td>
                                         <select class="form-control hs-background-alfa pl-1" name="type"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.type"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()"
+                                            (change)="loadFilteredCompositions()"
                                             style="min-width: 11rem; max-width: 11rem;border:0px">
                                             <option *ngFor="let type of HsCompositionsCatalogueService.types"
                                                 [ngValue]="type.value">
@@ -94,7 +94,7 @@
                                                 *ngFor="let keyword of HsCompositionsCatalogueService.data.keywords, let index = index;">
                                                 <label><input class="mr-2" type="checkbox"
                                                         [(ngModel)]="keyword.selected" name="keyword[index]"
-                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONKEYWORDS',
+                                                        (change)="loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONKEYWORDS',
                                                     keyword.name)}}</label>
                                             </li>
                                         </ul>
@@ -116,7 +116,7 @@
                                                 *ngFor="let theme of HsCompositionsCatalogueService.data.themes, let index = index;">
                                                 <label><input class="mr-2" type="checkbox" [(ngModel)]="theme.selected"
                                                         name="theme[index]"
-                                                        (change)="HsCompositionsCatalogueService.loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONINSPIRETHEMES',
+                                                        (change)="loadFilteredCompositions()">{{HsCompositionsService.translateString('COMPOSITONINSPIRETHEMES',
                                                     theme.name)}}</label>
                                             </li>
                                         </ul>
@@ -129,7 +129,7 @@
                                     <td class="tdbreak">
                                         <select class="form-control hs-background-alfa pl-1" name="data.sortBy"
                                             [(ngModel)]="HsCompositionsCatalogueService.data.sortBy"
-                                            (change)="HsCompositionsCatalogueService.loadFilteredCompositions()"
+                                            (change)="loadFilteredCompositions()"
                                             style="border:0px; min-width: 11rem; max-width: 11rem;">
                                             <option *ngFor="let item of HsCompositionsCatalogueService.sortByValues"
                                                 [ngValue]="item.value">
