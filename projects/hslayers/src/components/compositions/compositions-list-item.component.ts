@@ -57,8 +57,12 @@ export class HsCompostionsListItemComponent {
    */
   async shareComposition(record): Promise<void> {
     try {
-      const url = await this.HsCompositionsService.shareComposition(record);
-      this.shareDialogBootstrap(record, url);
+      await this.HsCompositionsService.shareComposition(record).then(
+        async () => {
+          const url = await this.HsCompositionsService.getShareUrl();
+          this.shareDialogBootstrap(record, url);
+        }
+      );
     } catch (ex) {
       this.HsLogService.error(ex);
     }
