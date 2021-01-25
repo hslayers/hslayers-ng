@@ -13,7 +13,7 @@ import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
@@ -25,6 +25,7 @@ export class HsCompositionsService {
   compositionToLoad: {url: string; title: string};
   notSavedCompositionLoading: Subject<string> = new Subject();
   compositionNotFoundAtUrl: Subject<any> = new Subject();
+  shareId: string;
   constructor(
     private http: HttpClient,
     public HsMapService: HsMapService,
@@ -117,31 +118,37 @@ export class HsCompositionsService {
       this.HsCore.isMobile() && permalinkOverride
         ? permalinkOverride.origin + permalinkOverride.pathname
         : `${location.origin}${location.pathname}?composition=${recordLink}`;
-    const shareId = this.HsUtilsService.generateUuid();
-    const response: any = await this.http
+    this.shareId = this.HsUtilsService.generateUuid();
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'text/plain; charset=utf-8'
+    );
+    return await this.http
       .post(
         this.HsStatusManagerService.endpointUrl(),
         JSON.stringify({
           request: 'socialShare',
-          id: shareId,
+          id: this.shareId,
           url: encodeURIComponent(compositionUrl),
           title: record.title,
           description: record.abstract,
           image: record.thumbnail || 'https://ng.hslayers.org/img/logo.png',
-        })
+        }),
+        {headers, responseType: 'text'}
       )
       .toPromise();
+  }
+  async getShareUrl(): Promise<string> {
     try {
       return await this.HsUtilsService.shortUrl(
         this.HsStatusManagerService.endpointUrl() +
           '?request=socialshare&id=' +
-          shareId
+          this.shareId
       );
     } catch (ex) {
       this.$log.log('Error creating short Url');
     }
   }
-
   getCompositionInfo(composition, cb): void {
     this.managerByType(composition.endpoint)
       .getInfo(composition)
