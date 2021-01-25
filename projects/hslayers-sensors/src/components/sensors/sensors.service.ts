@@ -201,6 +201,7 @@ export class HsSensorsService {
       })
       .subscribe((response) => {
         this.units = response;
+        this.layer.getSource().clear();
         const features = this.units
           .filter(
             (unit: HsSensorUnit) =>
