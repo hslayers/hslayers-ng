@@ -10,6 +10,7 @@ import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLaymanService} from './layman.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -29,7 +30,8 @@ export class HsLayerSynchronizerService {
     public HsMapService: HsMapService,
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    private HsLogService: HsLogService
   ) {}
 
   init(map: Map): void {
@@ -121,42 +123,43 @@ export class HsLayerSynchronizerService {
    * @param {Source} source Openlayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
-    layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
-    const laymanEndpoint = this.findLaymanForWfsLayer(layer);
-    if (laymanEndpoint) {
-      layer.set('hs-layman-synchronizing', true);
-      const response: string = await this.HsLaymanService.pullVectorSource(
-        laymanEndpoint,
-        this.HsLaymanService.getLayerName(layer),
-        layer
-      );
-      let featureString;
-      if (response) {
-        featureString = response;
-      }
-      layer.set('hs-layman-synchronizing', false);
-      if (featureString) {
-        source.loading = true;
-        const format = new WFS();
-        featureString = featureString.replace(
-          /urn:x-ogc:def:crs:EPSG:3857/gm,
-          'EPSG:3857'
+    try {
+      layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
+      const laymanEndpoint = this.findLaymanForWfsLayer(layer);
+      if (laymanEndpoint) {
+        layer.set('hs-layman-synchronizing', true);
+        const response: string = await this.HsLaymanService.pullVectorSource(
+          laymanEndpoint,
+          this.HsLaymanService.getLayerName(layer),
+          layer
         );
-        featureString = featureString.replaceAll(
-          'http://www.opengis.net/gml/srs/epsg.xml#5514',
-          'EPSG:5514'
-        );
-        try {
-          const features = format.readFeatures(featureString);
-          source.addFeatures(features);
-          features.forEach((f) => this.observeFeature(f));
-        } catch (ex) {
-          console.warn(featureString, ex);
+        let featureString;
+        if (response) {
+          featureString = response;
         }
-        source.loading = false;
+        layer.set('hs-layman-synchronizing', false);
+        if (featureString) {
+          source.loading = true;
+          const format = new WFS();
+          featureString = featureString.replace(
+            /urn:x-ogc:def:crs:EPSG:3857/gm,
+            'EPSG:3857'
+          );
+          try {
+            const features = format.readFeatures(featureString);
+            source.addFeatures(features);
+            features.forEach((f) => this.observeFeature(f));
+          } catch (ex) {
+            console.warn(featureString, ex);
+          }
+          source.loading = false;
+        }
       }
+    } catch (ex) {
+      this.HsLogService.warn(`Layer ${layer} could not be pulled.`);
+    } finally {
+      layer.set('events-suspended', (layer.get('events-suspended') || 0) - 1);
     }
-    layer.set('events-suspended', (layer.get('events-suspended') || 0) - 1);
   }
 
   /**

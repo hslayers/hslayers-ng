@@ -212,7 +212,7 @@ export class HsLaymanService implements HsSaverService {
         name,
         layer.get('laymanLayerDescriptor')
       )
-        .then((layerDesc: HsLaymanLayerDescriptor) => {
+        .then((layerDesc: HsLaymanLayerDescriptor | null) => {
           if (layerDesc?.name) {
             this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
             try {
@@ -286,39 +286,43 @@ export class HsLaymanService implements HsSaverService {
     _endpoint: HsEndpoint,
     layerName: string,
     layer: Layer
-  ): Promise<string> {
+  ): Promise<string | null> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized any moment */
     const endpoint = {..._endpoint};
-    const descr: HsLaymanLayerDescriptor = await this.describeLayer(
-      endpoint,
-      layerName
-    );
-    if (descr === null) {
-      //In case of response?.code == 15
+    let descr: HsLaymanLayerDescriptor;
+    try {
+      descr = await this.describeLayer(endpoint, layerName);
+      if (descr === null) {
+        //In case of response?.code == 15
+        return null;
+      }
+      if (descr?.name) {
+        this.cacheLaymanDescriptor(layer, descr, endpoint);
+      }
+      if (
+        descr.wfs.status == 'NOT_AVAILABLE' &&
+        descr.wms.status == 'NOT_AVAILABLE'
+      ) {
+        return null;
+      }
+      if (descr.wfs.status == 'NOT_AVAILABLE') {
+        setTimeout(async () => {
+          const response = await this.pullVectorSource(
+            endpoint,
+            layerName,
+            layer
+          );
+          return response;
+        }, 2000);
+        return;
+      }
+    } catch (ex) {
+      //If layman returned 404
       return null;
     }
-    if (descr?.name) {
-      this.cacheLaymanDescriptor(layer, descr, endpoint);
-    }
-    if (
-      descr.wfs.status == 'NOT_AVAILABLE' &&
-      descr.wms.status == 'NOT_AVAILABLE'
-    ) {
-      return null;
-    }
-    if (descr.wfs.status == 'NOT_AVAILABLE') {
-      setTimeout(async () => {
-        const response = await this.pullVectorSource(
-          endpoint,
-          layerName,
-          layer
-        );
-        return response;
-      }, 2000);
-      return;
-    }
+
     try {
       /* When OL will support GML3.2, then we can use WFS
         version 2.0.0. Currently only 3.1.1 is possible */
@@ -393,20 +397,22 @@ export class HsLaymanService implements HsSaverService {
     endpoint,
     layerName: string,
     layerDesc
-  ): Promise<HsLaymanLayerDescriptor> {
+  ): Promise<HsLaymanLayerDescriptor | null> {
     return new Promise((resolve, reject) => {
       if (layerDesc == undefined) {
-        this.describeLayer(endpoint, layerName).then(
-          (description: HsLaymanLayerDescriptor) => {
+        this.describeLayer(endpoint, layerName)
+          .then((description: HsLaymanLayerDescriptor) => {
             if (description?.code == 15) {
-              resolve();
+              resolve(null);
             } else if (description?.name) {
               resolve(description);
             } else {
-              resolve();
+              resolve(null);
             }
-          }
-        );
+          })
+          .catch((err) => {
+            resolve(null);
+          });
       } else {
         resolve(layerDesc);
       }
