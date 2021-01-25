@@ -121,10 +121,10 @@ export class HsCoreService {
       map.style.minHeight = `${mapSpace.offsetHeight}px`;
       this.HsMapService.map.updateSize();
       if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
-        this.HsLayoutService.smallWidth = true; //deprecated?
+        this.HsLayoutService.smallWidth = true; //deprecated
         this.HsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.smallWidth = false; //deprecated?
+        this.HsLayoutService.smallWidth = false; //deprecated
         this.HsLayoutService.sidebarLabels = true;
       }
     } else {
