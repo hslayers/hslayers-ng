@@ -40,7 +40,8 @@ export class HsCompositionsLaymanService {
     return endpoint.listLoading;
   }
   compositionsReceived(endpoint: HsEndpoint, params, response): HsEndpoint {
-    if (!response) {
+    if (!response && response.length == 0) {
+      endpoint.compositionsPaging.matched = 0;
       this.HsLogService.error('No data received');
       return;
     }
@@ -63,11 +64,7 @@ export class HsCompositionsLaymanService {
     } else {
       endpoint.compositions = response;
     }
-    if (response && response.length > 0) {
-      endpoint.compositionsPaging.matched = response.length;
-    } else {
-      endpoint.compositionsPaging.matched = 0;
-    }
+    endpoint.compositionsPaging.matched = endpoint.compositions.length;
 
     for (const record of endpoint.compositions) {
       record.editable = true;

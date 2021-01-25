@@ -29,7 +29,7 @@ export class HsCompositionsComponent {
   optionsMenuOpen = false;
   selectedCompId: any;
   loaderImage: string;
-  loadCompositions: any;
+  loadFilteredCompositions: any;
   constructor(
     public HsCompositionsService: HsCompositionsService,
     public HsCompositionsParserService: HsCompositionsParserService,
@@ -42,8 +42,8 @@ export class HsCompositionsComponent {
     public HsLaymanService: HsLaymanService
   ) {
     this.loaderImage = this.HsUtilsService.getAjaxLoaderIcon();
-    this.loadCompositions = () =>
-      HsCompositionsCatalogueService.loadCompositions();
+    this.loadFilteredCompositions = () =>
+      HsCompositionsCatalogueService.loadFilteredCompositions();
 
     this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
       this.HsCompositionsService.compositionToLoad = {url, title: ''};
@@ -61,12 +61,6 @@ export class HsCompositionsComponent {
     } else {
       return false;
     }
-  }
-  keywordChecked(keyword): void {
-    this.HsCompositionsCatalogueService.data.keywords.find(
-      (kw) => kw == keyword
-    ).selected = !keyword.selected;
-    this.loadCompositions();
   }
   resultsVisible(): boolean {
     if (
@@ -184,6 +178,6 @@ export class HsCompositionsComponent {
   }
   reload(): void {
     this.clearFilters();
-    this.loadCompositions();
+    this.loadFilteredCompositions();
   }
 }
