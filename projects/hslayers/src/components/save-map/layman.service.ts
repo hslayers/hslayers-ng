@@ -45,16 +45,13 @@ export class HsLaymanService implements HsSaverService {
   ) {}
 
   /**
-   * @function save
-   * @memberof HsLaymanService
-   * @public
-   * @param {JSON} compositionJson Json with composition definition
-   * @param {object} endpoint Endpoint description
-   * @param {object} compoData Additional fields for composition such
-   * @param {boolean} saveAsNew Save as new composition
+   * Save composition to Layman
+   * @param compositionJson Json with composition definition
+   * @param endpoint Endpoint description
+   * @param compoData Additional fields for composition such
+   * @param saveAsNew Save as new composition
    * as title, name
    * @returns {Promise<any>} Promise result of POST
-   * @description Save composition to Layman
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
     const write =
@@ -104,12 +101,12 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Send layer definition and features to Layman
-   * @param {HsEndpoint} endpoint Endpoint description
-   * @param {string} geojson Geojson object with features to send to server
-   * @param {object} description Object containing {name, title, crs} of
+   * @param endpoint Endpoint description
+   * @param geojson Geojson object with features to send to server
+   * @param description Object containing {name, title, crs} of
    * layer to retrieve
-   * @param {object} layerDesc Previously fetched layer descriptor
-   * @returns {Promise<boolean>} Promise result of POST/PATCH
+   * @param layerDesc Previously fetched layer descriptor
+   * @returns Promise result of POST/PATCH
    */
   private async makeUpsertLayerRequest(
     endpoint,
@@ -157,9 +154,9 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * create Layman layer if needed and send all features
-   * @param {HsEndpoint} endpoint Endpoint description
-   * @param {Layer} layer Layer to get Layman friendly name for
+   * Create Layman layer if needed and send all features
+   * @param endpoint Endpoint description
+   * @param layer Layer to get Layman friendly name for
    * get features
    */
   public async upsertLayer(ep: HsEndpoint, layer: Layer): Promise<void> {
@@ -190,8 +187,8 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Sync wfs features using transaction. Publish layer first if needed
-   * @param {WfsSyncParams} p
-   * @returns {Promise<void>} Promise result of POST
+   * @param param0
+   * @returns Promise result of POST
    */
   async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
@@ -274,9 +271,9 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * @param layer
-   * @param {object} endpoint Endpoint description
-   * @param {string} layerName Escaped name of layer
-   * @returns {Promise<string>} Promise with WFS xml (GML3.1) response
+   * @param endpoint Endpoint description
+   * @param layerName Escaped name of layer
+   * @returns Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    * Retrieve layers features from server
    */
@@ -327,13 +324,11 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @function describeLayer
-   * @public
-   * @param {object} endpoint Endpoint description
-   * @param {string} layerName Layer name
-   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns layers
+   * Try getting layer description from layman.
+   * @param endpoint Endpoint description
+   * @param layerName Layer name
+   * @returns Promise which returns layers
    * description containig name, file, wms, wfs urls etc.
-   * @description Try getting layer description from layman.
    */
   async describeLayer(
     endpoint: HsEndpoint,
@@ -361,10 +356,8 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @function removeLayer
+   * Removes selected layer from layman.
    * @param layer
-   * @public
-   * @description Removes selected layer from layman.
    */
   removeLayer(layer: Layer) {
     (this.HsCommonEndpointsService.endpoints || [])
@@ -377,8 +370,8 @@ export class HsLaymanService implements HsSaverService {
   }
 
   getLaymanEndpoint() {
-    return this.HsCommonEndpointsService.endpoints
-      .filter((e) => e.type == 'layman')
-      .pop();
+    return this.HsCommonEndpointsService.endpoints.find(
+      (e) => e.type == 'layman'
+    );
   }
 }
