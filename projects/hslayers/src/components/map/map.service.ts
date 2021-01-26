@@ -461,7 +461,10 @@ export class HsMapService {
     const newUrl = newSource.getUrl == null ? '' : newSource.getUrl();
     const existingUrls =
       existingSource.getUrls == null ? '' : existingSource.getUrls();
-    const newUrls = newSource.getUrls == null ? [''] : newSource.getUrls();
+    let newUrls = newSource.getUrls == null
+      ? ['']
+      : newSource.getUrls();
+    newUrls = newUrls ? newUrls : [''];
     const urlsEqual =
       existingUrls == newUrls ||
       (newUrls.length > 0 && existingUrls.indexOf(newUrls[0]) > -1);
