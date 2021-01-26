@@ -135,9 +135,14 @@ export class HsLaymanService implements HsSaverService {
       headers: headers,
     };
     try {
-      const layerDesc2 = layerDesc
-        ? layerDesc
-        : await this.describeLayer(endpoint, description.name);
+      let layerDesc2 = layerDesc;
+      try {
+        if (layerDesc2 == undefined) {
+          layerDesc2 = await this.describeLayer(endpoint, description.name);
+        }
+      } catch (ex) {
+        this.HsLogService.log(`Creating layer ${description.name}`);
+      }
       const response: any = await this.http[
         layerDesc2?.name ? 'patch' : 'post'
       ](
@@ -168,7 +173,7 @@ export class HsLaymanService implements HsSaverService {
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
 
-    if (((ep?.version.split('.').join() as unknown) as number) < 171) {
+    if (((ep?.version?.split('.').join() as unknown) as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     layer.set('hs-layman-synchronizing', true);
