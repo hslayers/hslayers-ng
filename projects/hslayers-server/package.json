@@ -1,6 +1,6 @@
 {
   "name": "hslayers-server",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +11,10 @@
   "author": "plan4all",
   "dependencies": {
     "cors-anywhere": "^0.4.3",
-    "http": "0.0.1-security"
+    "http": "0.0.1-security",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.3",
+    "pug": "^3.0.0"
   }
 }
