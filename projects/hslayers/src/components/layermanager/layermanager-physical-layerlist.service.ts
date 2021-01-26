@@ -52,25 +52,37 @@ export class HsLayermanagerPhysicalListService {
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
     this.HsEventBusService.layerManagerUpdates.next(layer);
   }
-  moveToBottom(baseLayer: BaseLayer): void {
+  moveToBottom(layer: any): void {
+    if (layer === undefined) {
+      return;
+    }
     const preferredZIndex = this.reversed ? this.getMinZ() : this.getMaxZ();
-    this.moveAndShift(baseLayer, preferredZIndex, true);
+    this.moveAndShift(this.getOlLayer(layer), preferredZIndex, true);
   }
 
-  moveToTop(baseLayer: BaseLayer): void {
+  moveToTop(layer: any): void {
+    if (layer === undefined) {
+      return;
+    }
     const preferredZIndex = this.reversed ? this.getMaxZ() : this.getMinZ();
-    this.moveAndShift(baseLayer, preferredZIndex, false);
+    this.moveAndShift(this.getOlLayer(layer), preferredZIndex, false);
   }
 
-  private moveAndShift(layer: any, preferredZIndex: number, shiftDir: boolean) {
-    if (layer.layer.getZIndex() != preferredZIndex) {
+  private moveAndShift(
+    selectedLayer: any,
+    preferredZIndex: number,
+    shiftDir: boolean
+  ) {
+    if (selectedLayer.getZIndex() != preferredZIndex) {
       let zIndexVariable = this.getZIndexVariable(shiftDir);
-      for (const lyr of this.layersCopy.filter((lyr) => lyr != layer)) {
+      for (const lyr of this.layersCopy.filter(
+        (lyr) => lyr.layer != selectedLayer
+      )) {
         lyr.layer.setZIndex(zIndexVariable);
         zIndexVariable += this.reversed ? -1 : 1;
       }
-      layer.layer.setZIndex(preferredZIndex);
-      this.HsEventBusService.layerManagerUpdates.next(layer);
+      selectedLayer.setZIndex(preferredZIndex);
+      this.HsEventBusService.layerManagerUpdates.next(selectedLayer);
     }
   }
 
@@ -81,7 +93,13 @@ export class HsLayermanagerPhysicalListService {
       return toTheListTop ? this.getMinZ() : this.getMinZ() + 1;
     }
   }
-
+  private getOlLayer(layer: any): any {
+    if (layer?.layer) {
+      return layer.layer;
+    } else {
+      return layer;
+    }
+  }
   private zIndexList() {
     return this.layersCopy.map((lyr) => lyr.layer.getZIndex() || 0);
   }
