@@ -23,6 +23,7 @@ import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerPhysicalListComponent} from './layermanager-physical-layerlist.component';
 import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerlist.service';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -70,6 +71,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerWmstService,
     HsLayerEditorStylesService,
     HsLayerSelectorService,
+    HsLayermanagerPhysicalListService,
   ],
   entryComponents: [
     HsLayerManagerComponent,
