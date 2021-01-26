@@ -1,15 +1,15 @@
-<div class="list-group-item hs-lm-list pb-1" *ngIf="layersCopy.length != 0">
+<div class="list-group-item hs-lm-list pb-1" *ngIf="HsLayermanagerPhysicalListService.layersCopy.length != 0">
     <ul class="list-group row pl-1">
-        <li *ngFor="let layer of layersCopy;" class="list-group-item hs-lm-item" [ngClass]="{'activeLayer': layer.active}">
+        <li *ngFor="let layer of HsLayermanagerPhysicalListService.layersCopy;" class="list-group-item hs-lm-item" [ngClass]="{'activeLayer': layer.active}">
             <div class="d-flex"> 
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" style="word-break:break-all">
-                    {{HsLayerUtilsService.translateTitle(layer.title)}}
+                    {{HsLayerUtilsService.translateTitle(layer.title)}} {{layer.layer.getZIndex()}}
                 </div>
                 <div class="p-0 info_btn text-right">
                     <span class="icon-arrow-up" [title]="'LAYERMANAGER.layerList.moveLayerUp' | translate"
-                        (click)="moveLayer(layer, 'up')"></span>
+                        (click)="HsLayermanagerPhysicalListService.moveLayer(layer, 'up')"></span>
                     <span class="icon-arrow-down" [title]="'LAYERMANAGER.layerList.moveLayerDown' | translate"
-                        (click)="moveLayer(layer, 'down')"></span>
+                        (click)="HsLayermanagerPhysicalListService.moveLayer(layer, 'down')"></span>
                 </div>
             </div>
         </li>
