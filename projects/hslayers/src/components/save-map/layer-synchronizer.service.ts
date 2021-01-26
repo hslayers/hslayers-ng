@@ -14,7 +14,6 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getLayerName} from './layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -64,9 +63,7 @@ export class HsLayerSynchronizerService {
 
   /**
    * Start synchronizing layer to database
-   *
    * @memberof HsLayerSynchronizerService
-   * @function addLayer
    * @param {object} layer Layer to add
    */
   addLayer(layer: Layer): void {
@@ -87,11 +84,8 @@ export class HsLayerSynchronizerService {
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initialy also get features from server
-   *
-   * @memberof HsLayerSynchronizerService
-   * @function startMonitoring
-   * @param {object} layer Layer to add
-   * @returns {boolean} If layer is synchronizable
+   * @param layer Layer to add
+   * @returns If layer is synchronizable
    */
   async startMonitoringIfNeeded(layer: Layer): Promise<boolean> {
     const layerSource = layer.getSource();
@@ -116,12 +110,10 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * @description Get features from Layman endpoint as WFS string, parse and add
+   * Get features from Layman endpoint as WFS string, parse and add
    * them to Openlayers VectorSource
-   * @memberof HsLayerSynchronizerService
-   * @function pull
-   * @param {Layer} layer Layer to get Layman friendly name for
-   * @param {Source} source Openlayers VectorSource to store features in
+   * @param layer Layer to get Layman friendly name for
+   * @param source Openlayers VectorSource to store features in
    */
   async pull(layer: Layer, source: Source): Promise<void> {
     try {
@@ -165,7 +157,7 @@ export class HsLayerSynchronizerService {
   /**
    * @param f
    */
-  observeFeature(f): void {
+  observeFeature(f: Feature): void {
     f.getGeometry().on(
       'change',
       this.HsUtilsService.debounce(
@@ -243,9 +235,7 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * @description Stop synchronizing layer to database
-   * @memberof HsLayerSynchronizerService
-   * @function removeLayer
+   * Stop synchronizing layer to database
    * @param {Layer} layer Layer to remove from legend
    */
   removeLayer(layer: Layer): void {
