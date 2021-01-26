@@ -1,5 +1,4 @@
 import * as xml2Json from 'xml-js';
-import {GML as GML3, WFS} from 'ol/format';
 import {HsConfig} from '../../../../config.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -9,6 +8,7 @@ import {Injectable} from '@angular/core';
 import {Renderer2, RendererFactory2} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
+import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
@@ -74,7 +74,7 @@ export class HsAddDataWfsService {
           options.url,
           me.HsUtilsService.paramsToURLWoEncode({
             service: 'wfs',
-            version: me.version == '2.0.0' ? '1.1.0' : me.version,
+            version: me.version, // == '2.0.0' ? '1.1.0' : me.version,
             request: 'GetFeature',
             typeName: options.layer.Name,
             srsName: srs,
@@ -136,21 +136,9 @@ export class HsAddDataWfsService {
     this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
       ? caps.FeatureTypeList.FeatureType
       : [caps.FeatureTypeList.FeatureType];
-    this.output_formats = layer.OutputFormats?.Format || [];
     this.bbox = layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
-    if (typeof this.output_formats == 'string') {
-      this.output_formats = [
-        this.version == '2.0.0' ? 'GML2' : this.output_formats,
-      ];
-    }
-
-    this.output_formats.forEach((format, index) => {
-      if (format == 'text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0') {
-        this.output_formats[index] = 'GML3';
-      }
-    });
-    this.output_format = this.getPreferredFormat(this.output_formats);
+    this.output_format = this.getPreferredFormat(this.version);
 
     this.services = caps.FeatureTypeList.FeatureType[0]
       ? caps.FeatureTypeList.FeatureType
@@ -207,13 +195,17 @@ export class HsAddDataWfsService {
     return this.bbox;
   }
 
-  getPreferredFormat(formats: string[]): string {
-    for (const format of formats) {
-      if (format.includes('geojson') || format.includes('GML')) {
-        return format;
-      }
+  getPreferredFormat(version: string): string {
+    switch (version) {
+      case '1.0.0':
+        return 'GML2';
+      case '1.1.0':
+        return 'GML3';
+      case '2.0.0':
+        return 'GML32';
+      default:
+        return 'GML3';
     }
-    return 'GML3';
   }
 
   parseFeatureCount(): void {
@@ -222,7 +214,7 @@ export class HsAddDataWfsService {
         this.HsWfsGetCapabilitiesService.service_url.split('?')[0],
         this.HsUtilsService.paramsToURLWoEncode({
           service: 'wfs',
-          version: this.version == '2.0.0' ? '1.1.0' : this.version,
+          version: this.version, //== '2.0.0' ? '1.1.0' : this.version,
           request: 'GetFeature',
           typeName: service.Name,
           resultType: 'hits',
@@ -237,6 +229,11 @@ export class HsAddDataWfsService {
             const oDOM = oParser.parseFromString(response, 'application/xml');
             const doc = oDOM.documentElement;
             service.featureCount = doc.getAttribute('numberOfFeatures');
+            //WFS 2.0.0
+            if (service.featureCount == 0 || !service.featureCount){
+              service.featureCount = doc.getAttribute('numberMatched');
+            }
+
             service.featureCount > 1000
               ? (service.limitFeatureCount = true)
               : (service.limitFeatureCount = false);
@@ -296,14 +293,7 @@ export class HsAddDataWfsService {
 
   readFeatures(doc) {
     let features;
-    if (this.output_format == 'GML3') {
-      const gml = new GML3();
-      features = gml.readFeatures(doc, {
-        dataProjection: this.srs,
-        featureProjection: this.HsMapService.map.getView().getProjection(),
-      });
-    } else {
-      const wfs = new WFS();
+      const wfs = new WFS({version: this.version});
       features = wfs.readFeatures(doc, {
         dataProjection: this.srs,
         featureProjection:
@@ -311,7 +301,6 @@ export class HsAddDataWfsService {
             ? ''
             : this.HsMapService.map.getView().getProjection(),
       });
-    }
     return features;
   }
 }
