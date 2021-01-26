@@ -14,6 +14,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getLayerName} from './layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -130,7 +131,6 @@ export class HsLayerSynchronizerService {
         layer.set('hs-layman-synchronizing', true);
         const response: string = await this.HsLaymanService.pullVectorSource(
           laymanEndpoint,
-          this.HsLaymanService.getLayerName(layer),
           layer
         );
         let featureString;
@@ -211,7 +211,7 @@ export class HsLayerSynchronizerService {
         inserted,
         updated,
         deleted,
-        this.HsLaymanService.getLayerName(layer),
+        getLayerName(layer),
         layer
       ).then((response: string) => {
         if (response.indexOf('Exception') > -1) {

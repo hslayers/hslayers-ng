@@ -25,6 +25,7 @@ import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
 
 class emptyMock {
   constructor() {}
@@ -106,28 +107,28 @@ describe('HsSaveMap', () => {
   it('format layer name into a Layman-friendly form', () => {
     // Safe value should not be changed
     let name = 'some_safe_name';
-    let laymanName = service.getLaymanFriendlyLayerName(name);
+    let laymanName = getLaymanFriendlyLayerName(name);
     expect(laymanName).toEqual(name);
 
     // Capitals should ne lowercased adn spaces replaced with underscores
     name = 'Some Unsafe English Name';
-    laymanName = service.getLaymanFriendlyLayerName(name);
+    laymanName = getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_unsafe_english_name');
 
     // Non-ASCII characters should be omitted
     // and "" should be omitted
     name = 'Some Czech Name Like "Vážně hustý název"';
-    laymanName = service.getLaymanFriendlyLayerName(name);
+    laymanName = getLaymanFriendlyLayerName(name);
     expect(laymanName).toBe('some_czech_name_like_vn_hust_nzev');
   });
 
   it('read layer title/name attributes and escape for layman', () => {
-    let laymanName = service.getLayerName(
+    let laymanName = getLayerName(
       new VectorLayer({title: 'Areas of interest'})
     );
     expect(laymanName).toBe('areas_of_interest');
 
-    laymanName = service.getLayerName(
+    laymanName = getLayerName(
       new VectorLayer({name: 'Aoi', title: 'Areas of interest'})
     );
     expect(laymanName).toBe('aoi');
