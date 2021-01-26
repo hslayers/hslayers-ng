@@ -195,8 +195,9 @@ export class HsLayerSynchronizerService {
       layer.set('hs-layman-synchronizing', true);
       this.HsLaymanService.sync({ep, add, upd, del, layer}).then(
         (response: string) => {
-          if (response.indexOf('Exception') > -1) {
+          if (response?.includes('Exception')) {
             this.displaySyncErrorDialog(response);
+            return;
           }
           if (add[0]) {
             const id = new DOMParser()
