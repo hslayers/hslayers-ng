@@ -75,7 +75,7 @@ export class HsWmsGetCapabilitiesService {
   async requestGetCapabilities(
     service_url: string,
     {castOwsCapabilitiesReceived} = {
-      castOwsCapabilitiesReceived: true,
+      'castOwsCapabilitiesReceived': true,
     }
   ): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
