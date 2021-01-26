@@ -137,6 +137,10 @@ export class HsLayerSynchronizerService {
             /urn:x-ogc:def:crs:EPSG:3857/gm,
             'EPSG:3857'
           );
+          featureString = featureString.replaceAll(
+            'http://www.opengis.net/gml/srs/epsg.xml#',
+            'EPSG:'
+          );
           try {
             const features = format.readFeatures(featureString);
             source.addFeatures(features);
