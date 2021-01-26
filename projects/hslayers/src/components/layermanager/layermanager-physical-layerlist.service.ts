@@ -12,7 +12,7 @@ export class HsLayermanagerPhysicalListService {
     layer: BaseLayer;
     active?: boolean;
   }> = [];
-  private readonly reversed = this.HsConfig.reverseLayerList;
+  private readonly reversed = this.HsConfig.reverseLayerList || false;
 
   constructor(
     public HsEventBusService: HsEventBusService,
@@ -53,7 +53,7 @@ export class HsLayermanagerPhysicalListService {
     this.HsEventBusService.layerManagerUpdates.next(layer);
   }
   moveToBottom(baseLayer: BaseLayer): void {
-    const preferredZIndex = this.reversed ? this.getMaxZ() : this.getMinZ();
+    const preferredZIndex = this.reversed ? this.getMinZ() : this.getMaxZ();
     this.moveAndShift(baseLayer, preferredZIndex, true);
   }
 
