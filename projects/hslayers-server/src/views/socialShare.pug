@@ -1,0 +1,25 @@
+html
+  head
+    meta(charset='utf-8')
+    title= record.title
+
+    meta(name='description', content= record.description)
+    meta(itemprop='name', content= record.title)
+    meta(itemprop='description', content= record.description)
+    meta(itemprop='image', content= record.image)
+
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@publisher_handle')
+    meta(name='twitter:title', content= record.title)
+    meta(name='twitter:description', content= record.description)
+    meta(name='twitter:creator', content='@author_handle')
+    meta(name='twitter:image:src', content= record.image)
+
+    meta(property='og:title', content= record.title)
+    meta(property='og:description', content= record.description)
+    meta(property='og:type', content='article')
+    meta(property='og:image', content= record.image)
+    meta(property='og:image:width', content='256')
+    meta(property='og:image:height', content='256')
+
+    script window.location.replace(decodeURIComponent('#{record.url}'));
