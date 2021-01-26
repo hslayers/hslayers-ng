@@ -15,6 +15,7 @@ import {HsAddLayersVectorService} from '../../add-layers/vector/add-layers-vecto
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
+import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -41,10 +42,7 @@ export class HsCompositionsLayerParserService {
     const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    let url = decodeURIComponent(lyr_def.url);
-    if (url.includes(window.location.host + '/geoserver')) {
-      url = url.replace('geoserver', 'client/geoserver');
-    }
+    const url = tweakGeoserverUrl(decodeURIComponent(lyr_def.url));
     const source = new source_class({
       url: url,
       attributions: lyr_def.attribution

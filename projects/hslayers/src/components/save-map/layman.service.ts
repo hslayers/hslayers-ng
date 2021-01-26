@@ -10,6 +10,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
+import {tweakGeoserverUrl} from './layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -216,10 +217,7 @@ export class HsLaymanService implements HsSaverService {
           if (layerDesc?.name) {
             this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
             try {
-              layerDesc.wfs.url = layerDesc.wfs.url.replace(
-                'geoserver',
-                'client/geoserver'
-              );
+              layerDesc.wfs.url = tweakGeoserverUrl(layerDesc.wfs.url);
               const srs = this.HsMapService.getCurrentProj().getCode();
               const wfsFormat = new WFS();
               const serializedFeature = wfsFormat.writeTransaction(
@@ -328,7 +326,7 @@ export class HsLaymanService implements HsSaverService {
         version 2.0.0. Currently only 3.1.1 is possible */
       const response: string = await this.http
         .get(
-          descr.wfs.url.replace('geoserver', 'client/geoserver') +
+          tweakGeoserverUrl(descr.wfs.url) +
             '?' +
             this.HsUtilsService.paramsToURL({
               service: 'wfs',

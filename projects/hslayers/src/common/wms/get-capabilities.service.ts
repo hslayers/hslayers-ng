@@ -9,6 +9,7 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {getPreferedFormat} from '../format-utils';
+import {tweakGeoserverUrl} from '../../components/save-map/layman-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService {
@@ -166,9 +167,8 @@ export class HsWmsGetCapabilitiesService {
           name: layer.Name.replace(/\//g, '&#47;'),
           path,
           source: new TileWMS({
-            url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource.replace(
-              'geoserver',
-              'client/geoserver'
+            url: tweakGeoserverUrl(
+              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
             ),
             attributions: attributions,
             styles:
