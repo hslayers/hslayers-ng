@@ -124,7 +124,7 @@ export class HsWmsGetCapabilitiesService {
     const parser = new WMSCapabilities();
     const caps = parser.read(capabilities_xml);
     let service = caps.Capability.Layer;
-    if (service.length == undefined && service.Layer! + undefined) {
+    if (service.length == undefined && service.Layer != undefined) {
       service = [service];
     }
     //const srss = caps.Capability.Layer.CRS;
