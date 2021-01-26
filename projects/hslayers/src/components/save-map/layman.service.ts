@@ -17,6 +17,19 @@ import {
   wfsNotAvailable,
 } from './layman-utils';
 
+export type WfsSyncParams = {
+  /** Endpoint description */
+  ep: HsEndpoint;
+  /** Array of features to add */
+  add;
+  /** Array of features to update */
+  upd;
+  /** Array of features to delete */
+  del;
+  /** Openlayers layer which has to have a title attribute */
+  layer: Layer;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -90,69 +103,66 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @function pushVectorSource
-   * @public
-   * @param {object} endpoint Endpoint description
+   * Send layer definition and features to Layman
+   * @param {HsEndpoint} endpoint Endpoint description
    * @param {string} geojson Geojson object with features to send to server
    * @param {object} description Object containing {name, title, crs} of
    * layer to retrieve
    * @param {object} layerDesc Previously fetched layer descriptor
    * @returns {Promise<boolean>} Promise result of POST/PATCH
-   * @description Send layer definition and features to Layman
    */
-  pushVectorSource(endpoint, geojson, description, layerDesc?) {
-    return new Promise(async (resolve, reject) => {
-      const formdata = new FormData();
-      formdata.append(
-        'file',
-        new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
-        'blob.geojson'
-      );
-      formdata.append(
-        'sld',
-        new Blob([], {type: 'application/octet-stream'}),
-        ''
-      );
-      formdata.append('name', description.name);
-      formdata.append('title', description.title);
-      formdata.append('crs', description.crs);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', null);
-      headers.append('Accept', 'application/json');
-      const options = {
-        headers: headers,
-      };
-      try {
-        const layerDesc2 = await this.checkIfLayerExists(
-          endpoint,
-          description.name,
-          layerDesc
-        );
-        const response: any = await this.http[
-          layerDesc2?.name ? 'patch' : 'post'
-        ](
-          `${endpoint.url}/rest/${endpoint.user}/layers${
-            layerDesc2?.name ? '/' + description.name : ''
-          }?${Math.random()}`,
-          formdata,
-          options
-        ).toPromise();
-        resolve(response);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  private async makeUpsertLayerRequest(
+    endpoint,
+    geojson,
+    description,
+    layerDesc?
+  ): Promise<string> {
+    const formdata = new FormData();
+    formdata.append(
+      'file',
+      new Blob([JSON.stringify(geojson)], {type: 'application/geo+json'}),
+      'blob.geojson'
+    );
+    formdata.append(
+      'sld',
+      new Blob([], {type: 'application/octet-stream'}),
+      ''
+    );
+    formdata.append('name', description.name);
+    formdata.append('title', description.title);
+    formdata.append('crs', description.crs);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', null);
+    headers.append('Accept', 'application/json');
+    const options = {
+      headers: headers,
+    };
+    try {
+      const layerDesc2 = layerDesc
+        ? layerDesc
+        : await this.describeLayer(endpoint, description.name);
+      const response: any = await this.http[
+        layerDesc2?.name ? 'patch' : 'post'
+      ](
+        `${endpoint.url}/rest/${endpoint.user}/layers${
+          layerDesc2?.name ? '/' + description.name : ''
+        }?${Math.random()}`,
+        formdata,
+        options
+      ).toPromise();
+      return response;
+    } catch (err) {
+      throw err;
+    }
   }
 
   /**
-   * Send all features to Layman endpoint as WFS string
-   *
-   * @memberof HsLayerSynchronizerService
-   * @function push
+   * create Layman layer if needed and send all features
+   * @param {HsEndpoint} endpoint Endpoint description
    * @param {Layer} layer Layer to get Layman friendly name for
    * get features
    */
-  push(layer: Layer): void {
+  public async upsertLayer(ep: HsEndpoint, layer: Layer): Promise<void> {
     if (layer.getSource().loading) {
       return;
     }
@@ -160,111 +170,99 @@ export class HsLaymanService implements HsSaverService {
     let layerTitle = layer.get('title');
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
-    (this.HsCommonEndpointsService.endpoints || [])
-      .filter((ds) => ds.type == 'layman')
-      .forEach((ds) => {
-        if (
-          ds.version !== undefined &&
-          ((ds.version.split('.').join() as unknown) as number) < 171
-        ) {
-          layerTitle = getLaymanFriendlyLayerName(layerTitle);
-        }
-        layer.set('hs-layman-synchronizing', true);
-        this.pushVectorSource(ds, geojson, {
-          title: layerTitle,
-          name: layerName,
-          crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
-            ? this.crs
-            : 'EPSG:3857',
-        }).then((response) => {
-          setTimeout(() => {
-            this.pullVectorSource(ds, layer).then((response) => {
-              layer.set('hs-layman-synchronizing', false);
-            });
-          }, 2000);
-        });
-      });
+
+    if (((ep?.version.split('.').join() as unknown) as number) < 171) {
+      layerTitle = getLaymanFriendlyLayerName(layerTitle);
+    }
+    layer.set('hs-layman-synchronizing', true);
+    await this.makeUpsertLayerRequest(ep, geojson, {
+      title: layerTitle,
+      name: layerName,
+      crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
+        ? this.crs
+        : 'EPSG:3857',
+    });
+    setTimeout(async () => {
+      await this.makeGetLayerRequest(ep, layer);
+      layer.set('hs-layman-synchronizing', false);
+    }, 2000);
   }
 
   /**
-   * @function addFeature
-   * @memberof HsLaymanService
-   * @public
-   * @param {object} endpoint Endpoint description
-   * @param _endpoint
-   * @param {Array} featuresToAdd Array of features to add
-   * @param {Array} featuresToUpd Array of features to update
-   * @param {Array} featuresToDel Array of features to delete
-   * @param {string} name Name of layer
-   * @param {Layer} layer Openlayers layer
-   * @returns {Promise<boolean>} Promise result of POST
-   * @description Insert a feature
+   * Sync wfs features using transaction. Publish layer first if needed
+   * @param {WfsSyncParams} p
+   * @returns {Promise<void>} Promise result of POST
    */
-  createWfsTransaction(
-    _endpoint: HsEndpoint,
-    featuresToAdd,
-    featuresToUpd,
-    featuresToDel,
-    name: string,
-    layer: Layer
-  ): Promise<any> {
+  async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized any moment */
-    const endpoint = {..._endpoint};
-    return new Promise((resolve, reject) => {
-      this.checkIfLayerExists(
-        endpoint,
-        name,
-        layer.get('laymanLayerDescriptor')
-      )
-        .then((layerDesc: HsLaymanLayerDescriptor | null) => {
-          if (layerDesc?.name) {
-            this.cacheLaymanDescriptor(layer, layerDesc, endpoint);
-            try {
-              layerDesc.wfs.url = tweakGeoserverUrl(layerDesc.wfs.url);
-              const srs = this.HsMapService.getCurrentProj().getCode();
-              const wfsFormat = new WFS();
-              const serializedFeature = wfsFormat.writeTransaction(
-                featuresToAdd,
-                featuresToUpd,
-                featuresToDel,
-                {
-                  featureNS: 'http://' + endpoint.user,
-                  featurePrefix: endpoint.user,
-                  featureType: name,
-                  srsName: srs,
-                }
-              );
-              const headers = new HttpHeaders();
-              headers.append('Content-Type', 'application/xml');
-              headers.append('Accept', 'application/xml');
-              const httpOptions: any = {
-                headers,
-                responseType: 'text',
-              };
-              const body = serializedFeature.outerHTML
-                .replace(/<geometry>/gm, '<wkb_geometry>')
-                .replace(/<\/geometry>/gm, '</wkb_geometry>');
-              this.http
-                .post(layerDesc.wfs.url, body, httpOptions)
-                .subscribe((response) => {
-                  resolve(response);
-                });
-            } catch (ex) {
-              this.HsLogService.error(ex);
-            }
-          } else {
-            this.push(layer);
-          }
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    const endpoint = {...ep};
+    try {
+      let desc = layer.get('laymanLayerDescriptor');
+      const name = getLayerName(layer);
+      try {
+        if (!desc) {
+          desc = await this.describeLayer(endpoint, name);
+          this.cacheLaymanDescriptor(layer, desc, endpoint);
+        }
+        if (desc.name == undefined) {
+          throw `Layer or its name didn't exist`;
+        }
+      } catch (ex) {
+        this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
+        this.upsertLayer(ep, layer);
+        return;
+      }
+      desc.wfs.url = tweakGeoserverUrl(desc.wfs.url);
+      return this.makeWfsRequest(
+        {ep: endpoint, add, upd, del, layer},
+        desc.wfs.url
+      );
+    } catch (ex) {
+      throw ex;
+    }
   }
 
-  cacheLaymanDescriptor(
+  /**
+   * Make WFS transaction request
+   * @param param0 Object describing endpoint, layer and arrays
+   * for each of the methods: update, del, insert containing the features to be processed
+   * @param url Layman client / geoserver
+   */
+  private async makeWfsRequest(
+    {ep, add, upd, del, layer}: WfsSyncParams,
+    url: string
+  ): Promise<string> {
+    try {
+      const srsName = this.HsMapService.getCurrentProj().getCode();
+      const featureType = getLayerName(layer);
+      const wfsFormat = new WFS();
+      const options = {
+        featureNS: 'http://' + ep.user,
+        featurePrefix: ep.user,
+        featureType,
+        srsName,
+      };
+      const featureNode = wfsFormat.writeTransaction(add, upd, del, options);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'application/xml');
+      headers.append('Accept', 'application/xml');
+      const httpOptions: any = {
+        headers,
+        responseType: 'text',
+      };
+      const body = featureNode.outerHTML
+        .replace(/<geometry>/gm, '<wkb_geometry>')
+        .replace(/<\/geometry>/gm, '</wkb_geometry>');
+      const r: any = await this.http.post(url, body, httpOptions).toPromise();
+      return r;
+    } catch (ex) {
+      this.HsLogService.error(ex);
+    }
+  }
+
+  private cacheLaymanDescriptor(
     layer: Layer,
     desc: HsLaymanLayerDescriptor,
     endpoint: HsEndpoint
@@ -275,24 +273,18 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @function pullVectorSource
-   * @memberof HsLaymanService
    * @param layer
-   * @public
    * @param {object} endpoint Endpoint description
    * @param {string} layerName Escaped name of layer
    * @returns {Promise<string>} Promise with WFS xml (GML3.1) response
    * with features for a specified layer
-   * @description Retrieve layers features from server
+   * Retrieve layers features from server
    */
-  async pullVectorSource(
-    _endpoint: HsEndpoint,
-    layer: Layer
-  ): Promise<string | null> {
+  async makeGetLayerRequest(ep: HsEndpoint, layer: Layer): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized any moment */
-    const endpoint = {..._endpoint};
+    const endpoint = {...ep};
     let descr: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
@@ -304,13 +296,6 @@ export class HsLaymanService implements HsSaverService {
         return null;
       } else if (descr?.name && !wfsNotAvailable(descr)) {
         this.cacheLaymanDescriptor(layer, descr, endpoint);
-      }
-      if (wfsNotAvailable(descr)) {
-        setTimeout(async () => {
-          const response = await this.pullVectorSource(endpoint, layer);
-          return response;
-        }, 2000);
-        return;
       }
     } catch (ex) {
       //If layman returned 404
@@ -373,44 +358,6 @@ export class HsLaymanService implements HsSaverService {
       this.HsLogService.error(ex);
       throw ex;
     }
-  }
-
-  /**
-   * @function checkIfLayerExists
-   * @public
-   * @param {object} endpoint Endpoint description
-   * @param {string} layerName Name of layer
-   * @param {object} layerDesc Previously loaded layer descriptor
-   * @returns {Promise<HsLaymanLayerDescriptor>} Promise which returns boolean if layer
-   * exists in Layman
-   * @description Try getting layer description from layman. If it
-   * succeeds, that means that layer is there and can be updated
-   * instead of posting a new one
-   */
-  checkIfLayerExists(
-    endpoint,
-    layerName: string,
-    layerDesc
-  ): Promise<HsLaymanLayerDescriptor | null> {
-    return new Promise((resolve, reject) => {
-      if (layerDesc == undefined) {
-        this.describeLayer(endpoint, layerName)
-          .then((description: HsLaymanLayerDescriptor) => {
-            if (description?.code == 15) {
-              resolve(null);
-            } else if (description?.name) {
-              resolve(description);
-            } else {
-              resolve(null);
-            }
-          })
-          .catch((err) => {
-            resolve(null);
-          });
-      } else {
-        resolve(layerDesc);
-      }
-    });
   }
 
   /**
