@@ -33,6 +33,7 @@ export * from './components/layout/dialogs/dialog-item';
 export * from './components/layout/dialogs/dialog-container.component';
 export * from './components/compositions/compositions-parser.service';
 export * from './components/layermanager/layer-editor.service';
+export * from './components/layermanager/layermanager-physical-layerlist.service';
 export * from './components/layermanager/layermanager.service';
 export * from './components/save-map/save-map.service';
 export * from './components/styles/styler.service';
