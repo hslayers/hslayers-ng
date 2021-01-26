@@ -1,3 +1,5 @@
+import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
 import {
   ImageArcGISRest,
@@ -15,6 +17,7 @@ import {HsAddLayersVectorService} from '../../add-layers/vector/add-layers-vecto
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
+import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 
 @Injectable({
@@ -24,8 +27,51 @@ export class HsCompositionsLayerParserService {
   constructor(
     public HsMapService: HsMapService,
     public HsAddLayersVectorService: HsAddLayersVectorService,
-    public HsStylerService: HsStylerService
+    public HsStylerService: HsStylerService,
+    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService
   ) {}
+
+  /**
+   * @ngdoc method
+   * @name hs.compositions.config_parsers.service#createWMTSLayer
+   * @public
+   * @param {object} lyr_def Layer definition object
+   * @returns {object} Ol Tile layer
+   * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
+   */
+  createWMTSLayer(lyr_def): any {
+    const wmts = new Tile({
+      title: lyr_def.title,
+      info_format: lyr_def.info_format,
+      source: new WMTS({}),
+    });
+
+    // Get WMTS Capabilities and create WMTS source base on it
+    this.HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url).then(
+      (res) => {
+        try {
+          //parse the XML response and create options object...
+          const parser = new WMTSCapabilities();
+          const result = parser.read(res);
+          // ...create WMTS Capabilities based on the parsed options
+          const options = optionsFromCapabilities(result, {
+            layer: lyr_def.layer,
+            matrixSet: lyr_def.matrixSet,
+            format: lyr_def.format,
+          });
+          // WMTS source for raster tiles layer
+          wmts.setSource(new WMTS(options));
+          this.HsMapService.proxifyLayerLoader(wmts, true);
+        } catch (error) {
+          console.error(error);
+          this.HsMapService.map.getLayers().remove(wmts);
+        }
+      }
+    );
+
+    wmts.setVisible(lyr_def.visibility);
+    return wmts;
+  }
 
   /**
    * @ngdoc method

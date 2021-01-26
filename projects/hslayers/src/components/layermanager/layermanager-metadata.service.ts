@@ -204,6 +204,9 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layer: Layer): Promise<any> {
     const url = this.HsLayerUtilsService.getURL(layer);
+    if (!url) {
+      return;
+    }
     const metadata = {
       metainfo: {'OnlineResource': layer.get('Metadata')},
     };

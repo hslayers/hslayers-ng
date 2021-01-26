@@ -9,6 +9,7 @@ import {
   TileArcGISRest,
   TileWMS,
   XYZ,
+  WMTS,
 } from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
@@ -396,6 +397,15 @@ export class HsSaveMapService {
       }
       if (src.attributions_) {
         json.attributions = encodeURIComponent(src.attributions_);
+      }
+
+      if (this.HsUtilsService.instOf(src, WMTS)) {
+        json.className = 'HSLayers.Layer.WMTS';
+        json.matrixSet = src.getMatrixSet();
+        json.layer = src.getLayer();
+        json.format = src.getFormat();
+        json.info_format = layer.get('info_format');
+        json.url = src.getUrls()[0];
       }
     }
 

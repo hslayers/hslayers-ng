@@ -363,6 +363,9 @@ export class HsCompositionsParserService {
           lyr_def
         );
         break;
+      case 'HSLayers.Layer.WMTS':
+        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
+        break;
       case 'ArcGISRest':
         resultLayer = this.HsCompositionsLayerParserService.createArcGISLayer(
           lyr_def
