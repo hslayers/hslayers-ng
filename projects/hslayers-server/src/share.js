@@ -10,6 +10,7 @@ share.use(express.json());
 //// handle CORS
 //share.use(cors())
 share.set('view engine', 'pug')
+share.set('views', __dirname+'/views/');
 
 
 // handle GET requests
@@ -36,7 +37,7 @@ share.get('/', context => {
 });
 
 // handle POST requests
-share.post('/', context => {
+share.post('/', express.json({strict: false, type: '*/*'}), context => {
   if (context.body && context.body.request) {
     switch (context.body.request.toLowerCase()) {
       case 'save':
