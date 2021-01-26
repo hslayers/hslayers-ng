@@ -167,13 +167,14 @@ export class HsDrawService {
     const layman = this.HsLaymanService.getLaymanEndpoint();
     const drawLayer = new VectorLayer({
       title: tmpTitle,
+      //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
       show_in_manager: true,
       visible: true,
       removable: true,
       style: this.defaultStyle,
       editable: true,
-      path: this.HsConfig.defaultDrawLayerPath || 'User generated',
+      path: this.HsConfig.defaultDrawLayerPath || 'User generated', //TODO: Translate this
       definition: {
         format: layman ? 'hs.format.WFS' : null,
         url: layman ? layman.url + '/wfs' : null,
