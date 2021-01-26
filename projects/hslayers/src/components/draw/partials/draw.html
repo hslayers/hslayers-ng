@@ -85,7 +85,7 @@
     </div>
     <div [hidden]="HsDrawService.type == null " class="pt-2">
         <div class="form-check" style="font-size: smaller">
-            <input class="ng-hide" type="checkbox" id="individualStyle" [(ngModel)]="useIndividualStyle" [ngModelOptions]="{standalone: true}"/>
+            <input class="d-none" type="checkbox" id="individualStyle" [(ngModel)]="useIndividualStyle" [ngModelOptions]="{standalone: true}"/>
             <label for="individualStyle"
                 [ngClass]="{'hs-checkmark':useIndividualStyle,'hs-uncheckmark':!useIndividualStyle}">{{'DRAW.individualStyle' | translate}}</label>
         </div>
