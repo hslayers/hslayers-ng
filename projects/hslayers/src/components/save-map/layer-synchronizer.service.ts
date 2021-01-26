@@ -129,7 +129,7 @@ export class HsLayerSynchronizerService {
       const laymanEndpoint = this.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {
         layer.set('hs-layman-synchronizing', true);
-        const response: string = await this.HsLaymanService.pullVectorSource(
+        const response: string = await this.HsLaymanService.makeGetLayerRequest(
           laymanEndpoint,
           layer
         );
@@ -189,50 +189,40 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * @param inserted
-   * @param updated
-   * @param deleted
+   * @param add
+   * @param upd
+   * @param del
    * @param layer
    */
-  sync(
-    inserted: Feature[],
-    updated: Feature[],
-    deleted: Feature[],
-    layer: Layer
-  ): void {
+  sync(add: Feature[], upd: Feature[], del: Feature[], layer: Layer): void {
     if ((layer.get('events-suspended') || 0) > 0) {
       return;
     }
-    const laymanEndpoint = this.findLaymanForWfsLayer(layer);
-    if (laymanEndpoint) {
+    const ep = this.findLaymanForWfsLayer(layer);
+    if (ep) {
       layer.set('hs-layman-synchronizing', true);
-      this.HsLaymanService.createWfsTransaction(
-        laymanEndpoint,
-        inserted,
-        updated,
-        deleted,
-        getLayerName(layer),
-        layer
-      ).then((response: string) => {
-        if (response.indexOf('Exception') > -1) {
-          this.displaySyncErrorDialog(response);
-        }
-        if (inserted[0]) {
-          const id = new DOMParser()
-            .parseFromString(response, 'application/xml')
-            .getElementsByTagName('ogc:FeatureId')[0]
-            .getAttribute('fid');
-          inserted[0].setId(id);
+      this.HsLaymanService.sync({ep, add, upd, del, layer}).then(
+        (response: string) => {
+          if (response.indexOf('Exception') > -1) {
+            this.displaySyncErrorDialog(response);
+          }
+          if (add[0]) {
+            const id = new DOMParser()
+              .parseFromString(response, 'application/xml')
+              .getElementsByTagName('ogc:FeatureId')[0]
+              .getAttribute('fid');
+            add[0].setId(id);
 
-          const geometry = inserted[0].getGeometry();
-          inserted[0].setGeometryName('wkb_geometry');
-          inserted[0].setGeometry(geometry);
-          inserted[0].unset('geometry', true);
+            const geometry = add[0].getGeometry();
+            add[0].setGeometryName('wkb_geometry');
+            add[0].setGeometry(geometry);
+            add[0].unset('geometry', true);
 
-          this.observeFeature(inserted[0]);
+            this.observeFeature(add[0]);
+          }
+          layer.set('hs-layman-synchronizing', false);
         }
-        layer.set('hs-layman-synchronizing', false);
-      });
+      );
     }
   }
 
