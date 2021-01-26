@@ -10,7 +10,12 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {tweakGeoserverUrl} from './layman-utils';
+import {
+  getLayerName,
+  getLaymanFriendlyLayerName,
+  tweakGeoserverUrl,
+  wfsNotAvailable,
+} from './layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -72,7 +77,7 @@ export class HsLaymanService implements HsSaverService {
           `${endpoint.url}/rest/${endpoint.user}/maps${
             saveAsNew
               ? `?${Math.random()}`
-              : '/' + this.getLaymanFriendlyLayerName(compoData.title)
+              : '/' + getLaymanFriendlyLayerName(compoData.title)
           }`,
           formdata,
           options
@@ -151,7 +156,7 @@ export class HsLaymanService implements HsSaverService {
     if (layer.getSource().loading) {
       return;
     }
-    const layerName = this.getLayerName(layer);
+    const layerName = getLayerName(layer);
     let layerTitle = layer.get('title');
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
@@ -162,7 +167,7 @@ export class HsLaymanService implements HsSaverService {
           ds.version !== undefined &&
           ((ds.version.split('.').join() as unknown) as number) < 171
         ) {
-          layerTitle = this.getLaymanFriendlyLayerName(layerTitle);
+          layerTitle = getLaymanFriendlyLayerName(layerTitle);
         }
         layer.set('hs-layman-synchronizing', true);
         this.pushVectorSource(ds, geojson, {
@@ -173,7 +178,7 @@ export class HsLaymanService implements HsSaverService {
             : 'EPSG:3857',
         }).then((response) => {
           setTimeout(() => {
-            this.pullVectorSource(ds, layerName, layer).then((response) => {
+            this.pullVectorSource(ds, layer).then((response) => {
               layer.set('hs-layman-synchronizing', false);
             });
           }, 2000);
@@ -282,7 +287,6 @@ export class HsLaymanService implements HsSaverService {
    */
   async pullVectorSource(
     _endpoint: HsEndpoint,
-    layerName: string,
     layer: Layer
   ): Promise<string | null> {
     /* Clone because endpoint.user can change while the request is processed
@@ -290,28 +294,20 @@ export class HsLaymanService implements HsSaverService {
     Should not cache anonymous layers, because layer can be authorized any moment */
     const endpoint = {..._endpoint};
     let descr: HsLaymanLayerDescriptor;
+    const layerName = getLayerName(layer);
     try {
       descr = await this.describeLayer(endpoint, layerName);
-      if (descr === null) {
-        //In case of response?.code == 15
-        return null;
-      }
-      if (descr?.name) {
-        this.cacheLaymanDescriptor(layer, descr, endpoint);
-      }
       if (
-        descr.wfs.status == 'NOT_AVAILABLE' &&
-        descr.wms.status == 'NOT_AVAILABLE'
+        descr === null || //In case of response?.code == 15
+        (descr.wfs.status == descr.wms.status && wfsNotAvailable(descr))
       ) {
         return null;
+      } else if (descr?.name && !wfsNotAvailable(descr)) {
+        this.cacheLaymanDescriptor(layer, descr, endpoint);
       }
-      if (descr.wfs.status == 'NOT_AVAILABLE') {
+      if (wfsNotAvailable(descr)) {
         setTimeout(async () => {
-          const response = await this.pullVectorSource(
-            endpoint,
-            layerName,
-            layer
-          );
+          const response = await this.pullVectorSource(endpoint, layer);
           return response;
         }, 2000);
         return;
@@ -359,7 +355,7 @@ export class HsLaymanService implements HsSaverService {
     layerName: string
   ): Promise<HsLaymanLayerDescriptor> {
     try {
-      layerName = this.getLaymanFriendlyLayerName(layerName); //Better safe than sorry
+      layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
       const response: any = await this.http
         .get(
           `${endpoint.url}/rest/${
@@ -418,39 +414,6 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * @description Get Layman friendly name for layer based on its title by
-   * replacing spaces with underscores, converting to lowercase, etc.
-   * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
-   * @function getLaymanFriendlyLayerName
-   * @param {string} title Title to get Layman-friendly name for
-   * @returns {string} New layer name
-   */
-  getLaymanFriendlyLayerName(title: string): string {
-    //TODO: Unidecode on server side or just drop the unsupported letters.
-    title = title
-      .toLowerCase()
-      .replace(/[^\w\s\-\.]/gm, '') //Remove spaces
-      .trim()
-      .replace(/[\s\-\._]+/gm, '_') //Remove dashes
-      .replace(/[^\x00-\x7F]/g, ''); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
-    return title;
-  }
-
-  /**
-   * Get layman friendly name of layer based primary on name
-   * and secondary on title attributes.
-   *
-   * @param layer Layr to get the name for
-   */
-  getLayerName(layer: Layer): string {
-    const layerName = layer.get('name') || layer.get('title');
-    if (layerName == undefined) {
-      this.$log.warn('Layer title/name not set for', layer);
-    }
-    return this.getLaymanFriendlyLayerName(layerName);
-  }
-
-  /**
    * @function removeLayer
    * @param layer
    * @public
@@ -461,23 +424,9 @@ export class HsLaymanService implements HsSaverService {
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
         this.http
-          .delete(
-            `${ds.url}/rest/${ds.user}/layers/${this.getLayerName(layer)}`
-          )
+          .delete(`${ds.url}/rest/${ds.user}/layers/${getLayerName(layer)}`)
           .toPromise();
       });
-  }
-  /**
-   * @function laymanEndpointExists
-   * @public
-   * @description Checks whether the layman endpoint exists or not
-   */
-  laymanEndpointExists() {
-    return (
-      this.HsCommonEndpointsService.endpoints.findIndex(
-        (endpoint) => endpoint.type === 'layman'
-      ) >= 0
-    );
   }
 
   getLaymanEndpoint() {
