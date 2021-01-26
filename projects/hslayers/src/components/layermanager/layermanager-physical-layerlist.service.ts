@@ -12,6 +12,8 @@ export class HsLayermanagerPhysicalListService {
     layer: BaseLayer;
     active?: boolean;
   }> = [];
+  private readonly reversed = this.HsConfig.reverseLayerList;
+
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -51,73 +53,44 @@ export class HsLayermanagerPhysicalListService {
     this.HsEventBusService.layerManagerUpdates.next(layer);
   }
   moveToBottom(baseLayer: BaseLayer): void {
-    let preferredZIndex: number;
-    if (this.HsConfig.reverseLayerList) {
-      preferredZIndex = this.getMinZIndex();
-    } else {
-      preferredZIndex = this.getMaxZIndex();
-    }
-    if (baseLayer.layer.getZIndex() != preferredZIndex) {
-      this.shiftLayers(baseLayer, true);
-      baseLayer.layer.setZIndex(preferredZIndex);
-      this.HsEventBusService.layerManagerUpdates.next(baseLayer);
-    }
+    const preferredZIndex = this.reversed ? this.getMaxZ() : this.getMinZ();
+    this.moveAndShift(baseLayer, preferredZIndex, true);
   }
+
   moveToTop(baseLayer: BaseLayer): void {
-    let preferredZIndex: number;
-    if (this.HsConfig.reverseLayerList) {
-      preferredZIndex = this.getMaxZIndex();
-    } else {
-      preferredZIndex = this.getMinZIndex();
-    }
-    if (baseLayer.layer.getZIndex() != preferredZIndex) {
-      this.shiftLayers(baseLayer, false);
-      baseLayer.layer.setZIndex(preferredZIndex);
-      this.HsEventBusService.layerManagerUpdates.next(baseLayer);
-    }
+    const preferredZIndex = this.reversed ? this.getMaxZ() : this.getMinZ();
+    this.moveAndShift(baseLayer, preferredZIndex, false);
   }
-  shiftLayers(baseLayer: BaseLayer, toTheListTop: boolean): void {
-    let zIndexVariable = this.getZIndexVariable(toTheListTop);
-    this.layersCopy.forEach((lyr) => {
-      if (lyr != baseLayer) {
+
+  private moveAndShift(layer: any, preferredZIndex: number, shiftDir: boolean) {
+    if (layer.layer.getZIndex() != preferredZIndex) {
+      let zIndexVariable = this.getZIndexVariable(shiftDir);
+      for (const lyr of this.layersCopy.filter((lyr) => lyr != layer)) {
         lyr.layer.setZIndex(zIndexVariable);
-        if (this.HsConfig.reverseLayerList) {
-          --zIndexVariable;
-        } else {
-          ++zIndexVariable;
-        }
+        zIndexVariable += this.reversed ? -1 : 1;
       }
-    });
-  }
-  getZIndexVariable(toTheListTop: boolean): number {
-    let zIndexVariable: number;
-    if (this.HsConfig.reverseLayerList) {
-      if (!toTheListTop) {
-        zIndexVariable = this.getMaxZIndex() - 1;
-      } else {
-        zIndexVariable = this.getMaxZIndex();
-      }
-    } else {
-      if (toTheListTop) {
-        zIndexVariable = this.getMinZIndex();
-      } else {
-        zIndexVariable = this.getMinZIndex() + 1;
-      }
+      layer.layer.setZIndex(preferredZIndex);
+      this.HsEventBusService.layerManagerUpdates.next(layer);
     }
-    return zIndexVariable;
   }
-  getMaxZIndex(): number {
-    return Math.max(
-      ...this.layersCopy.map((lyr) => {
-        return lyr.layer.getZIndex() || 0;
-      })
-    );
+
+  getZIndexVariable(toTheListTop: boolean): number {
+    if (this.reversed) {
+      return !toTheListTop ? this.getMaxZ() - 1 : this.getMaxZ();
+    } else {
+      return toTheListTop ? this.getMinZ() : this.getMinZ() + 1;
+    }
   }
-  getMinZIndex(): number {
-    return Math.min(
-      ...this.layersCopy.map((lyr) => {
-        return lyr.layer.getZIndex() || 0;
-      })
-    );
+
+  private zIndexList() {
+    return this.layersCopy.map((lyr) => lyr.layer.getZIndex() || 0);
+  }
+
+  getMaxZ(): number {
+    return Math.max(...this.zIndexList());
+  }
+
+  getMinZ(): number {
+    return Math.min(...this.zIndexList());
   }
 }
