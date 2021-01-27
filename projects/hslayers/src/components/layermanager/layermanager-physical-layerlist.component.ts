@@ -1,5 +1,4 @@
-import BaseLayer from 'ol/layer/Base';
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
