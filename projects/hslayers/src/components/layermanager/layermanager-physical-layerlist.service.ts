@@ -12,13 +12,14 @@ export class HsLayermanagerPhysicalListService {
     layer: BaseLayer;
     active?: boolean;
   }> = [];
-  private readonly reversed = this.HsConfig.reverseLayerList || false;
-
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
     public HsConfig: HsConfig
   ) {}
+  /**
+   * Copies layers from Layermanager layer list for the physical layer list
+   */
   fillLayers(): any {
     if (this.HsLayerManagerService.data.layers == undefined) {
       return;
@@ -29,9 +30,14 @@ export class HsLayermanagerPhysicalListService {
       })
     );
   }
-  moveLayer(baseLayer: BaseLayer, orient: string): void {
+  /**
+   * Changes selected layers ZIndex value - layer with the largest ZIndex will be rendered on top of all other layers
+   * @param baseLayer Selected layer from physical layer list
+   * @param direction Direction in which to move the selected layer - up/down
+   */
+  moveLayer(baseLayer: BaseLayer, direction: string): void {
     const currentLayerIndex = this.layersCopy.indexOf(baseLayer);
-    switch (orient.toLocaleLowerCase()) {
+    switch (direction.toLocaleLowerCase()) {
       case 'up':
         if (currentLayerIndex != 0) {
           this.setLayerZIndex(currentLayerIndex - 1, baseLayer.layer);
@@ -45,69 +51,95 @@ export class HsLayermanagerPhysicalListService {
       default:
     }
   }
-  setLayerZIndex(indexTo: number, layer: any): void {
+  /**
+   * Applies a new ZIndex value to the selected layer that is responsible for layer rendering on the map
+   * @param indexTo new ZIndex value for the selected layer
+   * @param layer Selected layer from physical layer list
+   */
+  private setLayerZIndex(indexTo: number, layer: any): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
     layerSwitchedWith.setZIndex(interactedLayerZIndex);
     this.HsEventBusService.layerManagerUpdates.next(layer);
   }
+  /**
+   * Move the provided layer under all other rendered layers on the map
+   * @param layer provided layer
+   */
   moveToBottom(layer: any): void {
     if (layer === undefined) {
       return;
     }
-    const preferredZIndex = this.reversed ? this.getMinZ() : this.getMaxZ();
-    this.moveAndShift(this.getOlLayer(layer), preferredZIndex, true);
+    this.moveAndShift(this.getOlLayer(layer), this.getMinZ(), true);
   }
-
+  /**
+   * Move the provided layer over all other rendered layers on the map
+   * @param layer provided layer
+   */
   moveToTop(layer: any): void {
     if (layer === undefined) {
       return;
     }
-    const preferredZIndex = this.reversed ? this.getMaxZ() : this.getMinZ();
-    this.moveAndShift(this.getOlLayer(layer), preferredZIndex, false);
+    this.moveAndShift(this.getOlLayer(layer), this.getMaxZ(), false);
   }
-
+  /**
+   * Move and shift layer order to make changes on the map
+   * @param providedLayer provided layer
+   * @param preferredZIndex ZIndex value to switch to
+   * @param shiftDir
+   */
   private moveAndShift(
-    selectedLayer: any,
+    providedLayer: any,
     preferredZIndex: number,
     shiftDir: boolean
-  ) {
-    if (selectedLayer.getZIndex() != preferredZIndex) {
+  ): void {
+    if (providedLayer.getZIndex() != preferredZIndex) {
       let zIndexVariable = this.getZIndexVariable(shiftDir);
       for (const lyr of this.layersCopy.filter(
-        (lyr) => lyr.layer != selectedLayer
+        (lyr) => lyr.layer != providedLayer
       )) {
         lyr.layer.setZIndex(zIndexVariable);
-        zIndexVariable += this.reversed ? -1 : 1;
+        zIndexVariable++;
       }
-      selectedLayer.setZIndex(preferredZIndex);
-      this.HsEventBusService.layerManagerUpdates.next(selectedLayer);
+      providedLayer.setZIndex(preferredZIndex);
+      this.HsEventBusService.layerManagerUpdates.next(providedLayer);
     }
   }
-
-  getZIndexVariable(toTheListTop: boolean): number {
-    if (this.reversed) {
-      return !toTheListTop ? this.getMaxZ() - 1 : this.getMaxZ();
-    } else {
-      return toTheListTop ? this.getMinZ() : this.getMinZ() + 1;
-    }
+  /**
+   * Gets zIndexVariable value for layer shifting
+   * @param shiftDir If true (bottom map rendered layer), set min value + 1
+   * @returns Returns resolved ZIndexVariable value
+   */
+  private getZIndexVariable(shiftDir: boolean): number {
+    return shiftDir ? this.getMinZ() + 1 : this.getMinZ();
   }
-  private getOlLayer(layer: any): any {
-    if (layer?.layer) {
-      return layer.layer;
-    } else {
-      return layer;
-    }
+  /**
+   * Gets ol layer from provided layer
+   * @param layer Provided layer
+   * @returns Returns ol layer
+   */
+  private getOlLayer(providedLayer: any): any {
+    return providedLayer?.layer ? providedLayer.layer : providedLayer;
   }
-  private zIndexList() {
+  /**
+   * Gets all layer ZIndex values from the layer list
+   * @returns Returns array of ZIndex values
+   */
+  private zIndexList(): number[] {
     return this.layersCopy.map((lyr) => lyr.layer.getZIndex() || 0);
   }
-
+  /**
+   * Gets maximum value from ZIndex value array
+   * @returns Returns max ZIndex value
+   */
   getMaxZ(): number {
     return Math.max(...this.zIndexList());
   }
-
+  /**
+   * Gets minimum value from ZIndex value array
+   * @returns Returns min ZIndex value
+   */
   getMinZ(): number {
     return Math.min(...this.zIndexList());
   }
