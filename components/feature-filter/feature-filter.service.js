@@ -6,8 +6,14 @@ import {unByKey} from 'ol/Observable';
  * @param $rootScope
  * @param HsLayermanagerService
  * @param HsUtilsService
+ * @param HsQueryVectorService
  */
-export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQueryVectorService) {
+export default function (
+  $rootScope,
+  HsLayermanagerService,
+  HsUtilsService,
+  HsQueryVectorService
+) {
   'ngInject';
   const me = {
     applyFilters: function (layer) {
@@ -31,7 +37,12 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
       let filteredFeatures = source.getFeatures();
 
       source.forEachFeature((feature) => {
-        if (HsQueryVectorService.selector.getFeatures().getArray().indexOf(feature) == -1) {
+        if (
+          HsQueryVectorService.selector
+            .getFeatures()
+            .getArray()
+            .indexOf(feature) == -1
+        ) {
           feature.setStyle(null);
         }
       });
@@ -51,10 +62,10 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
             break;
           case 'arrayset':
             displayFeature = function (feature) {
-              if(!filter.selected || filter.selected.length === 0){
+              if (!filter.selected || filter.selected.length === 0) {
                 return true;
-              };
-              var arrayset = feature.getProperties()[filter.valueField];
+              }
+              const arrayset = feature.getProperties()[filter.valueField];
               switch (filter.type.parameters) {
                 case 'or':
                   var d = false;
@@ -68,12 +79,12 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
                 default:
                   var d = true;
                   filter.selected.forEach((item) => {
-                    if (arrayset.indexOf(item) == -1){
+                    if (arrayset.indexOf(item) == -1) {
                       d = false;
                     }
                   });
                   break;
-              };
+              }
               return d;
             };
             break;
@@ -131,7 +142,9 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
       }
 
       layer.filteredFeatures = filteredFeatures;
-      if (!$rootScope.$$phase) $rootScope.$digest();
+      if (!$rootScope.$$phase) {
+        $rootScope.$digest();
+      }
       return filteredFeatures;
     },
 
@@ -170,20 +183,15 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
               case 'arrayset':
                 const layersource = layer.layer.getSource();
                 layersource.forEachFeature((feature) => {
-                  if (Array.isArray(feature.getProperties()[filter.valueField])){
-                    var arrayset = feature.getProperties()[filter.valueField];
+                  if (
+                    Array.isArray(feature.getProperties()[filter.valueField])
+                  ) {
+                    const arrayset = feature.getProperties()[filter.valueField];
                     arrayset.forEach((item) => {
-                      if (
-                        filter.values.indexOf(
-                          item
-                        ) === -1
-                      ) {
-                        filter.values.push(
-                          item
-                        );
+                      if (filter.values.indexOf(item) === -1) {
+                        filter.values.push(item);
                       }
                     });
-
                   }
                 });
                 filter.values.sort((a, b) => {
@@ -215,6 +223,7 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
 
           if (
             filter.selected === undefined &&
+            filter.values &&
             filter.values.length > 0
           ) {
             switch (filter.type.type) {
@@ -225,7 +234,6 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
                 filter.selected = [];
                 break;
             }
-
           }
         }
       }
