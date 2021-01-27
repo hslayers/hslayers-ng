@@ -160,7 +160,8 @@ export class HsSearchService {
    */
   cleanResults(): void {
     if (this.data.providers !== undefined) {
-      for (const provider of this.data.providers) {
+      for (const key of Object.keys(this.data.providers)) {
+        const provider = this.data.providers[key];
         if (provider.results !== undefined) {
           provider.results.length = 0;
         }
