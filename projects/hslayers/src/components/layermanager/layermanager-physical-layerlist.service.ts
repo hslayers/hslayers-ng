@@ -97,7 +97,16 @@ export class HsLayermanagerPhysicalListService {
     if (layer === undefined) {
       return;
     }
-    this.moveAndShift(this.getOlLayer(layer), this.getMiddleZ(), false, true);
+    if (target.layer != undefined) {
+      //Wrapped layer provided
+      target = this.layersCopy.indexOf(target);
+    } else if (typeof target != 'number') {
+      //OL layer provided
+      target = this.layersCopy.indexOf(
+        this.layersCopy.find((l) => l.layer == target)
+      );
+    }
+    this.moveAndShift(this.getOlLayer(layer), target, false, true);
   }
   /**
    * Move and shift layer order to make changes on the map
@@ -160,8 +169,5 @@ export class HsLayermanagerPhysicalListService {
    */
   getMinZ(): number {
     return Math.min(...this.zIndexList());
-  }
-  getMiddleZ(): number {
-    return this.zIndexList()[Math.floor(this.zIndexList().length / 2)];
   }
 }
