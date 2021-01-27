@@ -99,12 +99,10 @@ export class HsLayermanagerPhysicalListService {
     }
     if (target.layer != undefined) {
       //Wrapped layer provided
-      target = this.layersCopy.indexOf(target);
+      target = target.layer.getZIndex();
     } else if (typeof target != 'number') {
       //OL layer provided
-      target = this.layersCopy.indexOf(
-        this.layersCopy.find((l) => l.layer == target)
-      );
+      target = target.getZIndex();
     }
     this.moveAndShift(this.getOlLayer(layer), target);
   }
