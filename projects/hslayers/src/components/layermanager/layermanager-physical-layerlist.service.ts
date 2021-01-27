@@ -3,15 +3,18 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {Injectable} from '@angular/core';
+
+export type PhysicalListItem = {
+  title: string;
+  layer: BaseLayer;
+  active?: boolean;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayermanagerPhysicalListService {
-  layersCopy: Array<{
-    title: string;
-    layer: BaseLayer;
-    active?: boolean;
-  }> = [];
+  layersCopy: PhysicalListItem[];
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -20,7 +23,7 @@ export class HsLayermanagerPhysicalListService {
   /**
    * Copies layers from Layermanager layer list for the physical layer list
    */
-  fillLayers(): any {
+  fillLayers(): void {
     if (this.HsLayerManagerService.data.layers == undefined) {
       return;
     }
@@ -35,7 +38,7 @@ export class HsLayermanagerPhysicalListService {
    * @param baseLayer Selected layer from physical layer list
    * @param direction Direction in which to move the selected layer - up/down
    */
-  moveLayer(baseLayer: BaseLayer, direction: string): void {
+  moveLayer(baseLayer: PhysicalListItem, direction: string): void {
     const currentLayerIndex = this.layersCopy.indexOf(baseLayer);
     switch (direction.toLocaleLowerCase()) {
       case 'up':
@@ -56,7 +59,7 @@ export class HsLayermanagerPhysicalListService {
    * @param indexTo new ZIndex value for the selected layer
    * @param layer Selected layer from physical layer list
    */
-  private setLayerZIndex(indexTo: number, layer: any): void {
+  private setLayerZIndex(indexTo: number, layer: BaseLayer): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
@@ -67,7 +70,7 @@ export class HsLayermanagerPhysicalListService {
    * Move the provided layer under all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToBottom(layer: any): void {
+  moveToBottom(layer: PhysicalListItem | BaseLayer): void {
     if (layer === undefined) {
       return;
     }
@@ -77,7 +80,7 @@ export class HsLayermanagerPhysicalListService {
    * Move the provided layer over all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToTop(layer: any): void {
+  moveToTop(layer: PhysicalListItem | BaseLayer): void {
     if (layer === undefined) {
       return;
     }
@@ -87,7 +90,10 @@ export class HsLayermanagerPhysicalListService {
    * Move the provided layer in the middle between all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToMiddle(layer: any): void {
+  moveTo(
+    layer: PhysicalListItem | BaseLayer,
+    target: number | PhysicalListItem | BaseLayer
+  ): void {
     if (layer === undefined) {
       return;
     }
@@ -101,7 +107,7 @@ export class HsLayermanagerPhysicalListService {
    * @param toMiddle
    */
   private moveAndShift(
-    providedLayer: any,
+    providedLayer: BaseLayer,
     preferredZIndex: number,
     shiftDir: boolean,
     toMiddle?: boolean
@@ -131,7 +137,7 @@ export class HsLayermanagerPhysicalListService {
    * @param layer Provided layer
    * @returns Returns ol layer
    */
-  private getOlLayer(providedLayer: any): any {
+  private getOlLayer(providedLayer: PhysicalListItem | BaseLayer): BaseLayer {
     return providedLayer?.layer ? providedLayer.layer : providedLayer;
   }
   /**
