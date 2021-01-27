@@ -386,7 +386,7 @@ export class HsCompositionsLayerParserService {
           lyr_def.name || title,
           title,
           lyr_def.abstract,
-          lyr_def.projection.toUpperCase(),
+          lyr_def.projection?.toUpperCase(),
           Object.assign(options, {extractStyles})
         );
         break;
@@ -397,7 +397,7 @@ export class HsCompositionsLayerParserService {
           lyr_def.name || title,
           title,
           lyr_def.abstract,
-          lyr_def.projection.toUpperCase(),
+          lyr_def.projection?.toUpperCase(),
           options
         );
         break;
@@ -409,7 +409,7 @@ export class HsCompositionsLayerParserService {
           lyr_def.name || title,
           title,
           lyr_def.abstract,
-          lyr_def.projection.toUpperCase(),
+          lyr_def.projection?.toUpperCase(),
           options
         );
         break;
