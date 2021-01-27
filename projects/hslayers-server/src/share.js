@@ -2,16 +2,16 @@ require('dotenv').config();
 
 const express = require('express');
 //const cors = require('cors');
-const { MongoClient } = require("mongodb");
 const share = express();
+
+const Database = require('better-sqlite3');
 
 // parse incoming POST requests body to JSON
 share.use(express.json());
-//// handle CORS
+// handle CORS
 //share.use(cors())
 share.set('view engine', 'pug')
-share.set('views', __dirname+'/views/');
-
+share.set('views', __dirname + '/views/');
 
 // handle GET requests
 share.get('/', context => {
@@ -27,47 +27,46 @@ share.get('/', context => {
         break;
 
       default:
-        formatResponseJson({ success: false, error: "Request not specified" }, context);
+        formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
         break;
     }
   }
   else {
-    context.res.send('HSLayers map share service');
+    formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
   }
 });
 
 // handle POST requests
-share.post('/', express.json({strict: false, type: '*/*'}), context => {
+share.post('/', express.json({ strict: false, type: '*/*' }), context => {
   if (context.body && context.body.request) {
     switch (context.body.request.toLowerCase()) {
       case 'save':
-        insertRecord("composition", {
-          id: context.body.id,
-          data: context.body.data
-        }, context);
+        insertRecord({ id: context.body.id, data: JSON.stringify(context.body.data) }, context);
         break;
 
       case 'socialshare':
-        insertRecord("socialShare", {
+        insertRecord({
           id: context.body.id,
-          url: context.body.url,
-          title: context.body.title,
-          description: context.body.description,
-          image: context.body.image
+          data: JSON.stringify({
+            url: context.body.url,
+            title: context.body.title,
+            description: context.body.description,
+            image: context.body.image
+          })
         }, context);
         break;
 
       default:
-        formatResponseJson({ success: false, error: "Request not specified" }, context);
+        formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
     }
   }
   else {
-
+    formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
   }
 });
 
 // start the service on the port xxxx
-share.listen(3000, () => console.log('HSLayers map share service listening on port 3000...'));
+share.listen(process.env.SHARING_PORT || 8086, () => console.log(`HSLayers map share service listening on port ${process.env.SHARING_PORT || 8086}`));
 
 
 /**
@@ -75,12 +74,9 @@ share.listen(3000, () => console.log('HSLayers map share service listening on po
  * @param {any} id ID of the composition to look for
  * @param {any} context HTTP context of the request
  */
-async function getCompositionRecord(id, context) {
-  await queryCollection("composition", { id: id }, function (result, success) {
-    if (success)
-      formatResponseJson({ success: true, id: result.id, data: result.data }, context);
-    else
-      formatResponseJson(result, context);
+function getCompositionRecord(id, context) {
+  queryCollection(id, function (result) {
+    formatResponseJson(result, context);
   });
 }
 
@@ -89,80 +85,72 @@ async function getCompositionRecord(id, context) {
  * @param {any} id ID of the composition to look for
  * @param {any} context HTTP context of the request
  */
-async function getSocialShareRecord(id, context) {
-  await queryCollection("socialShare", { id: id }, function (result, success) {
-    if (success)
-      context.res.render('socialShare', { record: result });
-    else
-      formatResponseJson(result, context);
+function getSocialShareRecord(id, context) {
+  queryCollection(id, function (result) {
+    context.res.render('socialShare', { record: result.data });
   });
 }
 
 /**
- * Generic method to find an item in the DB collection
- * @param {any} collName Name of the collection
- * @param {any} query MongoDB query expression
+ * Query record with the ID specified
+ * @param {any} id Record id
  * @param {any} callback Callback function
  */
-async function queryCollection(collName, query, callback) {
-  const client = new MongoClient(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
+function queryCollection(id, callback) {
+  const db = new Database(process.env.DB_PATH, process.env.DEBUG == "true" ? { verbose: console.log } : {});
 
   try {
-    await client.connect();
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collName);
-    const result = await collection.findOne(query);
+    const result = db.prepare('SELECT * FROM share WHERE id = ?').get(id);
 
     if (result) {
-      callback(result, true);
+      callback({ success: true, id: result.id, data: JSON.parse(result.data) });
     }
     else {
-      callback({ success: false, id: query.id, error: `${collName} record not found` }, false);
+      formatResponseJson({ success: false, id: id, error: 'record not found' }, context, 404);
     }
   }
   catch (err) {
-    callback({ success: false, id: query.id, error: err }, false);
+    formatResponseJson({ success: false, id: id, error: err.message }, context, 500);
   }
   finally {
-    client.close();
+    db.close();
   }
 }
 
 /**
- * Generic method to insert an item in the DB collection
- * @param {any} collName Name of the collection
+ * Generic method to insert an item in the DB
  * @param {any} record Item to be inserted
  * @param {any} context HTTP context of the request
  */
-async function insertRecord(collName, record, context) {
-  const client = new MongoClient(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopology: true });
+function insertRecord(record, context) {
+  const db = new Database(process.env.DB_PATH, process.env.DEBUG ? { verbose: console.log } : {});
 
   try {
-    await client.connect();
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collName);
+    const sqlinsert = db.prepare('INSERT INTO share (id, data) VALUES (@id, @data)');
 
-    var result = await collection.insertOne(record);
-    if (result.insertedCount > 0)
-      formatResponseJson({ success: true, id: record.id }, context);
-    else
-      formatResponseJson({ success: false, id: record.id, error: err }, context);
+    const insertInto = db.transaction((comp) => {
+      sqlinsert.run(comp);
+    });
+    insertInto(record);
+
+    formatResponseJson({ success: true, id: record.id }, context);
   }
-  catch (err2) {
-    formatResponseJson({ success: false, id: record.id, error: err2 }, context);
+  catch (err) {
+    formatResponseJson({ success: false, id: record.id, error: err.message }, context, 500);
   }
   finally {
-    client.close();
+    db.close();
   }
 }
 
 /**
- * Format and send object as a JSON HTTP response
+ * Format and send object as a JSON HTTP response. Returns pretty json if ?f=pjson is specified in the request.
  * @param {any} obj Object to be sended in the response
  * @param {any} context HTTP context of the request
  */
-function formatResponseJson(obj, context) {
+function formatResponseJson(obj, context, statusCode = 200) {
   context.res.header("Content-Type", 'application/json');
+  context.res.statusCode = statusCode;
 
   if (context.query && context.query.f && context.query.f == 'pjson')
     context.res.send(JSON.stringify(obj, null, 4));
