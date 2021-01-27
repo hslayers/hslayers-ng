@@ -84,35 +84,47 @@ export class HsLayermanagerPhysicalListService {
     this.moveAndShift(this.getOlLayer(layer), this.getMaxZ(), false);
   }
   /**
+   * Move the provided layer in the middle between all other rendered layers on the map
+   * @param layer provided layer
+   */
+  moveToMiddle(layer: any): void {
+    if (layer === undefined) {
+      return;
+    }
+    this.moveAndShift(this.getOlLayer(layer), this.getMiddleZ(), false, true);
+  }
+  /**
    * Move and shift layer order to make changes on the map
    * @param providedLayer provided layer
    * @param preferredZIndex ZIndex value to switch to
    * @param shiftDir
+   * @param toMiddle
    */
   private moveAndShift(
     providedLayer: any,
     preferredZIndex: number,
-    shiftDir: boolean
+    shiftDir: boolean,
+    toMiddle?: boolean
   ): void {
     if (providedLayer.getZIndex() != preferredZIndex) {
-      let zIndexVariable = this.getZIndexVariable(shiftDir);
+      let zIndexVariable = shiftDir ? this.getMinZ() + 1 : this.getMinZ();
       for (const lyr of this.layersCopy.filter(
         (lyr) => lyr.layer != providedLayer
       )) {
-        lyr.layer.setZIndex(zIndexVariable);
+        providedLayer.getZIndex() > preferredZIndex &&
+        lyr.layer.getZIndex() == preferredZIndex &&
+        toMiddle
+          ? lyr.layer.setZIndex(++zIndexVariable)
+          : providedLayer.getZIndex() < preferredZIndex &&
+            lyr.layer.getZIndex() == preferredZIndex &&
+            toMiddle
+          ? lyr.layer.setZIndex(zIndexVariable++)
+          : lyr.layer.setZIndex(zIndexVariable);
         zIndexVariable++;
       }
       providedLayer.setZIndex(preferredZIndex);
       this.HsEventBusService.layerManagerUpdates.next(providedLayer);
     }
-  }
-  /**
-   * Gets zIndexVariable value for layer shifting
-   * @param shiftDir If true (bottom map rendered layer), set min value + 1
-   * @returns Returns resolved ZIndexVariable value
-   */
-  private getZIndexVariable(shiftDir: boolean): number {
-    return shiftDir ? this.getMinZ() + 1 : this.getMinZ();
   }
   /**
    * Gets ol layer from provided layer
@@ -142,5 +154,8 @@ export class HsLayermanagerPhysicalListService {
    */
   getMinZ(): number {
     return Math.min(...this.zIndexList());
+  }
+  getMiddleZ(): number {
+    return this.zIndexList()[Math.floor(this.zIndexList().length / 2)];
   }
 }
