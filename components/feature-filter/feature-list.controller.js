@@ -52,7 +52,9 @@ export default function (
     }
   };
 
-  const POPUP = new Popup();
+  const POPUP = new Popup({
+    offset: HsConfig.popupOffset || [0, 0],
+  });
 
   HsMapService.loaded().then((map) => {
     map.addOverlay(POPUP);
