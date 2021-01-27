@@ -2,6 +2,7 @@ import BaseLayer from 'ol/layer/Base';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
+import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
 
 export type PhysicalListItem = {
@@ -15,20 +16,31 @@ export type PhysicalListItem = {
 })
 export class HsLayermanagerPhysicalListService {
   layersCopy: PhysicalListItem[];
+
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    public HsMapService: HsMapService
   ) {}
+
+  private get logicalListLayers() {
+    return this.HsLayerManagerService.data.layers;
+  }
+
+  private get mapLayers(): BaseLayer[] {
+    return this.HsMapService.map.getLayers().getArray();
+  }
+
   /**
    * Copies layers from Layermanager layer list for the physical layer list
    */
   fillLayers(): void {
-    if (this.HsLayerManagerService.data.layers == undefined) {
+    if (this.logicalListLayers == undefined) {
       return;
     }
     this.layersCopy = this.HsLayerManagerService.sortLayersByZ(
-      this.HsLayerManagerService.data.layers.map((l) => {
+      this.logicalListLayers.map((l) => {
         return {title: l.title, layer: l.layer};
       })
     );
@@ -71,9 +83,6 @@ export class HsLayermanagerPhysicalListService {
    * @param layer provided layer
    */
   moveToBottom(layer: PhysicalListItem | BaseLayer): void {
-    if (layer === undefined) {
-      return;
-    }
     this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
   }
   /**
@@ -81,9 +90,6 @@ export class HsLayermanagerPhysicalListService {
    * @param layer provided layer
    */
   moveToTop(layer: PhysicalListItem | BaseLayer): void {
-    if (layer === undefined) {
-      return;
-    }
     this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
   }
   /**
@@ -94,9 +100,6 @@ export class HsLayermanagerPhysicalListService {
     layer: PhysicalListItem | BaseLayer,
     target: number | PhysicalListItem | BaseLayer
   ): void {
-    if (layer === undefined) {
-      return;
-    }
     if (target.layer != undefined) {
       //Wrapped layer provided
       target = target.layer.getZIndex();
@@ -115,19 +118,20 @@ export class HsLayermanagerPhysicalListService {
     providedLayer: BaseLayer,
     preferredZIndex: number
   ): void {
+    if (providedLayer === undefined) {
+      return;
+    }
     if (providedLayer.getZIndex() != preferredZIndex) {
       const indexFrom = providedLayer.getZIndex();
       const indexTo = preferredZIndex;
       const incrementValue = indexTo > indexFrom ? -1 : 1;
-      for (const lyr of this.layersCopy.filter(
-        (lyr) => lyr.layer != providedLayer
-      )) {
-        const currentZIndex = lyr.layer.getZIndex();
+      for (const lyr of this.mapLayers.filter((lyr) => lyr != providedLayer)) {
+        const currentZIndex = lyr.getZIndex();
         if (
           (currentZIndex >= indexFrom && currentZIndex <= indexTo) ||
           (currentZIndex <= indexFrom && currentZIndex >= indexTo)
         ) {
-          lyr.layer.setZIndex(lyr.layer.getZIndex() + incrementValue);
+          lyr.setZIndex(lyr.getZIndex() + incrementValue);
         }
       }
       providedLayer.setZIndex(preferredZIndex);
@@ -135,7 +139,7 @@ export class HsLayermanagerPhysicalListService {
     }
   }
   /**
-   * Gets ol layer from provided layer
+   * Gets layer property of container object or the actual provided ol layer
    * @param layer Provided layer
    * @returns Returns ol layer
    */
@@ -147,7 +151,7 @@ export class HsLayermanagerPhysicalListService {
    * @returns Returns array of ZIndex values
    */
   private zIndexList(): number[] {
-    return this.layersCopy.map((lyr) => lyr.layer.getZIndex() || 0);
+    return this.mapLayers.map((lyr) => lyr.getZIndex() || 0);
   }
   /**
    * Gets maximum value from ZIndex value array
