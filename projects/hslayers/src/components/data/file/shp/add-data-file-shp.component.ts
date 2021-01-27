@@ -13,6 +13,7 @@ import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {tweakGeoserverUrl} from '../../../save-map/layman-utils';
 
 @Component({
   selector: 'hs-add-data-file-shp',
@@ -129,7 +130,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       .then((descriptor) => {
         this.resultCode = 'success';
         this.HsAddDataUrlWmsService.addService(
-          descriptor.wms.url,
+          tweakGeoserverUrl(descriptor.wms.url),
           undefined,
           this.name,
           undefined,

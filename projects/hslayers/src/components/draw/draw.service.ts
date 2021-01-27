@@ -4,7 +4,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify} from 'ol/interaction';
-import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsAddDataVectorService} from '../data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
@@ -98,7 +98,7 @@ export class HsDrawService {
     public HsLaymanService: HsLaymanService,
     public HsLanguageService: HsLanguageService,
     public HsLaymanBrowserService: HsLaymanBrowserService,
-    public HsAddLayersVectorService: HsAddLayersVectorService,
+    public HsAddDataVectorService: HsAddDataVectorService,
     public HsUtilsService: HsUtilsService,
     public HsCommonLaymanService: HsCommonLaymanService
   ) {
@@ -234,7 +234,7 @@ export class HsDrawService {
   async selectLayer(layer) {
     let lyr = layer;
     if (layer.type) {
-      lyr = await this.HsAddLayersVectorService.addVectorLayer(
+      lyr = await this.HsAddDataVectorService.addVectorLayer(
         'wfs',
         this.laymanEndpoint.url,
         layer.name,
