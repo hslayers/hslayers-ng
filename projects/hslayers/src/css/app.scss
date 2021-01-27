@@ -1784,7 +1784,6 @@ li.hs-lm-header {
   	width: 0.47em;
 	height: 0.47em;
 	margin: -1em 0 0 0.4em;
-	vertical-align: middle;
 	content: "";
 	border: 0.3em solid;
 	border-width: 0 0.15em 0.15em 0;
@@ -1828,4 +1827,5 @@ hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
 hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}
 .hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)}
+.hs-draw-layer-toggle div {display: inline-block; max-width: 7em; overflow-x:hidden}
 }

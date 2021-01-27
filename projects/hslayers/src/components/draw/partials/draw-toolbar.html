@@ -5,12 +5,12 @@
         <i [ngClass]="{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}" data-toggle="tooltip"
             [title]="'PANEL_HEADER.DRAW' | translate"></i></button>
     <div class="btn-group" *ngIf="drawToolbarExpanded">
-        <button type="button" class="btn btn-light rounded-0 btn-secondary dropdown-toggle" data-toggle="dropdown"
+        <button type="button" class="btn btn-light rounded-0 btn-secondary dropdown-toggle hs-draw-layer-toggle" data-toggle="dropdown"
             aria-haspopup="true" [hidden]="!(HsDrawService.drawableLayers.length > 0 || HsDrawService.tmpDrawLayer)"
             (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers() "
             [attr.aria-expanded]="layersExpanded" style="max-width: 125px; overflow: hidden; font-size: smaller; z-index: 2;"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
-            {{HsDrawService.selectedLayerString()}}
+            <div>{{HsDrawService.selectedLayerString()}}</div>
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
             <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
