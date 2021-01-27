@@ -7,9 +7,9 @@
                 </div>
                 <div class="p-0 info_btn text-right">
                     <span class="icon-arrow-up" [title]="'LAYERMANAGER.layerList.moveLayerUp' | translate"
-                        (click)="HsLayermanagerPhysicalListService.moveLayer(layer, 'up')"></span>
+                        (click)="HsLayermanagerPhysicalListService.swapSibling(layer, 'up')"></span>
                     <span class="icon-arrow-down" [title]="'LAYERMANAGER.layerList.moveLayerDown' | translate"
-                        (click)="HsLayermanagerPhysicalListService.moveLayer(layer, 'down')"></span>
+                        (click)="HsLayermanagerPhysicalListService.swapSibling(layer, 'down')"></span>
                 </div>
             </div>
         </li>

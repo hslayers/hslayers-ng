@@ -38,7 +38,7 @@ export class HsLayermanagerPhysicalListService {
    * @param baseLayer Selected layer from physical layer list
    * @param direction Direction in which to move the selected layer - up/down
    */
-  moveLayer(baseLayer: PhysicalListItem, direction: string): void {
+  swapSibling(baseLayer: PhysicalListItem, direction: string): void {
     const currentLayerIndex = this.layersCopy.indexOf(baseLayer);
     switch (direction.toLocaleLowerCase()) {
       case 'up':
