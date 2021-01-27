@@ -458,6 +458,12 @@ export class HsLayerManagerService {
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next();
+    if (
+      this.zIndexValue >
+      this.data.layers.length + this.data.baselayers.length
+    ) {
+      this.zIndexValue--;
+    }
   }
 
   /**
