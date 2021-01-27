@@ -3,15 +3,18 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {Injectable} from '@angular/core';
+
+export type PhysicalListItem = {
+  title: string;
+  layer: BaseLayer;
+  active?: boolean;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayermanagerPhysicalListService {
-  layersCopy: Array<{
-    title: string;
-    layer: BaseLayer;
-    active?: boolean;
-  }> = [];
+  layersCopy: PhysicalListItem[];
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -20,7 +23,7 @@ export class HsLayermanagerPhysicalListService {
   /**
    * Copies layers from Layermanager layer list for the physical layer list
    */
-  fillLayers(): any {
+  fillLayers(): void {
     if (this.HsLayerManagerService.data.layers == undefined) {
       return;
     }
@@ -35,7 +38,7 @@ export class HsLayermanagerPhysicalListService {
    * @param baseLayer Selected layer from physical layer list
    * @param direction Direction in which to move the selected layer - up/down
    */
-  moveLayer(baseLayer: BaseLayer, direction: string): void {
+  swapSibling(baseLayer: PhysicalListItem, direction: string): void {
     const currentLayerIndex = this.layersCopy.indexOf(baseLayer);
     switch (direction.toLocaleLowerCase()) {
       case 'up':
@@ -56,7 +59,7 @@ export class HsLayermanagerPhysicalListService {
    * @param indexTo new ZIndex value for the selected layer
    * @param layer Selected layer from physical layer list
    */
-  private setLayerZIndex(indexTo: number, layer: any): void {
+  private setLayerZIndex(indexTo: number, layer: BaseLayer): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
     const interactedLayerZIndex = layer.getZIndex();
     layer.setZIndex(layerSwitchedWith.getZIndex());
@@ -67,59 +70,78 @@ export class HsLayermanagerPhysicalListService {
    * Move the provided layer under all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToBottom(layer: any): void {
+  moveToBottom(layer: PhysicalListItem | BaseLayer): void {
     if (layer === undefined) {
       return;
     }
-    this.moveAndShift(this.getOlLayer(layer), this.getMinZ(), true);
+    this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
   }
   /**
    * Move the provided layer over all other rendered layers on the map
    * @param layer provided layer
    */
-  moveToTop(layer: any): void {
+  moveToTop(layer: PhysicalListItem | BaseLayer): void {
     if (layer === undefined) {
       return;
     }
-    this.moveAndShift(this.getOlLayer(layer), this.getMaxZ(), false);
+    this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
+  }
+  /**
+   * Move the provided layer in the middle between all other rendered layers on the map
+   * @param layer provided layer
+   */
+  moveTo(
+    layer: PhysicalListItem | BaseLayer,
+    target: number | PhysicalListItem | BaseLayer
+  ): void {
+    if (layer === undefined) {
+      return;
+    }
+    if (target.layer != undefined) {
+      //Wrapped layer provided
+      target = this.layersCopy.indexOf(target);
+    } else if (typeof target != 'number') {
+      //OL layer provided
+      target = this.layersCopy.indexOf(
+        this.layersCopy.find((l) => l.layer == target)
+      );
+    }
+    this.moveAndShift(this.getOlLayer(layer), target);
   }
   /**
    * Move and shift layer order to make changes on the map
    * @param providedLayer provided layer
    * @param preferredZIndex ZIndex value to switch to
-   * @param shiftDir
    */
   private moveAndShift(
-    providedLayer: any,
-    preferredZIndex: number,
-    shiftDir: boolean
+    providedLayer: BaseLayer,
+    preferredZIndex: number
   ): void {
     if (providedLayer.getZIndex() != preferredZIndex) {
-      let zIndexVariable = this.getZIndexVariable(shiftDir);
+      const indexFrom = providedLayer.getZIndex();
+      const indexTo = preferredZIndex;
+      const incrementValue = indexTo > indexFrom ? -1 : 1;
       for (const lyr of this.layersCopy.filter(
         (lyr) => lyr.layer != providedLayer
       )) {
-        lyr.layer.setZIndex(zIndexVariable);
-        zIndexVariable++;
+        const currentZIndex = lyr.layer.getZIndex();
+        if (
+          (currentZIndex >= indexFrom && currentZIndex <= indexTo) ||
+          (currentZIndex <= indexFrom && currentZIndex >= indexTo)
+        ) {
+          lyr.layer.setZIndex(lyr.layer.getZIndex() + incrementValue);
+        }
       }
       providedLayer.setZIndex(preferredZIndex);
       this.HsEventBusService.layerManagerUpdates.next(providedLayer);
     }
   }
   /**
-   * Gets zIndexVariable value for layer shifting
-   * @param shiftDir If true (bottom map rendered layer), set min value + 1
-   * @returns Returns resolved ZIndexVariable value
-   */
-  private getZIndexVariable(shiftDir: boolean): number {
-    return shiftDir ? this.getMinZ() + 1 : this.getMinZ();
-  }
-  /**
    * Gets ol layer from provided layer
    * @param layer Provided layer
    * @returns Returns ol layer
    */
-  private getOlLayer(providedLayer: any): any {
+  private getOlLayer(providedLayer: PhysicalListItem | BaseLayer): BaseLayer {
     return providedLayer?.layer ? providedLayer.layer : providedLayer;
   }
   /**
