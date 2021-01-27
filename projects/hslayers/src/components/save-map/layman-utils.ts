@@ -1,5 +1,5 @@
+import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {Layer} from 'ol/layer';
-import { HsLaymanLayerDescriptor } from './layman-layer-descriptor.interface';
 
 /**
  * Fix wrong wfs endpoint url if it doesnt run through layman client.
@@ -9,7 +9,8 @@ import { HsLaymanLayerDescriptor } from './layman-layer-descriptor.interface';
  *
  */
 export function tweakGeoserverUrl(url: string): string {
-  return url.includes('client')
+  return url.includes('client') ||
+    !url.includes(window.location.host + '/geoserver')
     ? url
     : url.replace('/geoserver', '/client/geoserver');
 }
