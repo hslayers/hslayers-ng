@@ -26,6 +26,10 @@ share.get('/', context => {
         getSocialShareRecord(context.query.id, context);
         break;
 
+      case 'loadsocialsharethumb':
+        getThumbnail(context.query.id, context);
+        break;
+
       default:
         formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
         break;
@@ -88,6 +92,31 @@ function getCompositionRecord(id, context) {
 function getSocialShareRecord(id, context) {
   queryCollection(id, function (result) {
     context.res.render('socialShare', { record: result.data });
+  });
+}
+
+function getThumbnail(id, context) {
+  queryCollection(id, function (result) {
+    if (result.data.image) {
+      if (result.data.image.startsWith('data:')) {
+        var contentType = result.data.image.substring(5, result.data.image.indexOf("base64") - 1);
+        var base64Data = result.data.image.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+        var img = Buffer.from(base64Data, 'base64');
+
+        context.res.writeHead(200, {
+          'Content-Type': contentType,
+          'Content-Length': img.length
+        });
+        context.res.end(img);
+      }
+      else {
+        // TODO
+        context.res.send(result.data.image);
+      }
+    }
+    else {
+      formatResponseJson({ success: false, id: id, error: 'thumbnail not available for specified record' }, context, 404);
+    }
   });
 }
 
