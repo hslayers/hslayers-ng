@@ -13,10 +13,10 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Injectable} from '@angular/core';
 
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddLayersVectorService} from '../../add-layers/vector/add-layers-vector.service';
+import {HsAddDataVectorService} from '../../data/vector/add-data-vector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
-import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
+import {HsVectorLayerOptions} from '../../data/vector/vector-layer-options.type';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 
@@ -26,7 +26,7 @@ import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 export class HsCompositionsLayerParserService {
   constructor(
     public HsMapService: HsMapService,
-    public HsAddLayersVectorService: HsAddLayersVectorService,
+    public HsAddDataVectorService: HsAddDataVectorService,
     public HsStylerService: HsStylerService,
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService
   ) {}
@@ -380,7 +380,7 @@ export class HsCompositionsLayerParserService {
     let layer;
     switch (format) {
       case 'ol.format.KML':
-        layer = this.HsAddLayersVectorService.createVectorLayer(
+        layer = this.HsAddDataVectorService.createVectorLayer(
           'kml',
           lyr_def.protocol.url,
           lyr_def.name || title,
@@ -391,7 +391,7 @@ export class HsCompositionsLayerParserService {
         );
         break;
       case 'ol.format.GeoJSON':
-        layer = this.HsAddLayersVectorService.createVectorLayer(
+        layer = this.HsAddDataVectorService.createVectorLayer(
           'geojson',
           lyr_def.protocol.url,
           lyr_def.name || title,
@@ -403,7 +403,7 @@ export class HsCompositionsLayerParserService {
         break;
       case 'hs.format.WFS':
       case 'WFS':
-        layer = this.HsAddLayersVectorService.createVectorLayer(
+        layer = this.HsAddDataVectorService.createVectorLayer(
           'wfs',
           lyr_def.protocol.url,
           lyr_def.name || title,
@@ -417,7 +417,7 @@ export class HsCompositionsLayerParserService {
         layer = this.createSparqlLayer(lyr_def);
         break;
       default:
-        layer = this.HsAddLayersVectorService.createVectorLayer(
+        layer = this.HsAddDataVectorService.createVectorLayer(
           '',
           undefined,
           lyr_def.name || title,
