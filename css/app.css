@@ -1684,6 +1684,12 @@ div.hs-infopanel-header button.close {
 	margin-bottom: 0;
 }
 
+div.feature-list md-card md-icon {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+
 div.feature-list md-content img {
 	max-width: 100%;
 	display: block;

@@ -88,43 +88,56 @@ export default function (
               return d;
             };
             break;
+          case 'compare':
           case 'slider':
-            switch (filter.type.parameters) {
-              case 'lt':
-                displayFeature = function (feature) {
-                  return (
-                    feature.getProperties()[filter.valueField] < filter.value
-                  );
-                };
-                break;
-              case 'le':
-                displayFeature = function (feature) {
-                  return (
-                    feature.getProperties()[filter.valueField] <= filter.value
-                  );
-                };
-                break;
-              case 'gt':
-                displayFeature = function (feature) {
-                  return (
-                    feature.getProperties()[filter.valueField] > filter.value
-                  );
-                };
-                break;
-              case 'ge':
-                displayFeature = function (feature) {
-                  return (
-                    feature.getProperties()[filter.valueField] >= filter.value
-                  );
-                };
-                break;
-              case 'eq':
-                displayFeature = function (feature) {
-                  return (
-                    feature.getProperties()[filter.valueField] === filter.value
-                  );
-                };
-                break;
+            if (filter.selected) {
+              switch (filter.type.parameters) {
+                case 'eq':
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] ===
+                      filter.value
+                    );
+                  };
+                  break;
+                case 'neq':
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] !==
+                      filter.value
+                    );
+                  };
+                  break;
+                case 'le':
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] <= filter.value
+                    );
+                  };
+                  break;
+                case 'lt':
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] < filter.value
+                    );
+                  };
+                  break;
+                case 'ge':
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] >= filter.value
+                    );
+                  };
+                  break;
+                case 'gt':
+                default:
+                  displayFeature = function (feature) {
+                    return (
+                      feature.getProperties()[filter.valueField] > filter.value
+                    );
+                  };
+              }
+              break;
             }
           default:
             displayFeature = function (feature) {

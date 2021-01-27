@@ -1,6 +1,13 @@
-<div class="md-chips" ng-if="LayMan.currentLayer.hsFilters">
-	<md-chip ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-click="showFilter($event, filter)" ng-class="{active: filterChanged(filter)}">
-		{{ filter.title }}
-		<md-icon ng-if="filterChanged(filter)" ng-click="resetFilter($event, filter)">close</md-icon>
-	</md-chip-template>
+<div class="md-chips" ng-if="LayMan.currentLayer.hsFilters" style="display: flex;">
+	<div ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-switch="filter.type.type">
+		<md-chip ng-switch-when="compare" ng-click="filter.selected = !filter.selected; applyFilters()" ng-class="{active: filter.selected}">
+			<md-checkbox ng-checked="filter.selected"
+				style="width: 24px;"></md-checkbox>
+			{{ filter.title }}
+		</md-chip>
+		<md-chip ng-switch-default ng-click="showFilter($event, filter)" ng-class="{active: filterChanged(filter)}">
+			{{ filter.title }}
+			<md-icon ng-if="filterChanged(filter)" ng-click="resetFilter($event, filter)">close</md-icon>
+		</md-chip>
+	</div>
 </div>
