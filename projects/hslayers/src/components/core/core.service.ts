@@ -216,10 +216,13 @@ export class HsCoreService {
    */
   updateMapSize(): void {
     const map = this.HsLayoutService.contentWrapper.querySelector('.hs-ol-map');
+    const mapSpace = this.HsLayoutService.contentWrapper.querySelector('.hs-map-space');
     if (map === null) {
       return;
     }
     if (this.HsMapService.map) {
+      //Next line is needed on safari because height: 100% doesn't work good there.
+      map.style.minHeight = `${mapSpace.offsetHeight}px`;
       this.HsMapService.map.updateSize();
       if (window.innerWidth < 767 || this.HsLayoutService.mainpanel != '') {
         this.HsLayoutService.smallWidth = true; //deprecated?
