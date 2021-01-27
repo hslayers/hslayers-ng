@@ -1071,6 +1071,10 @@ div.hs-info-composition-edited {
 	.hs-sb-bottom .hs-ol-map {
 		width: 100% !important;
 	}
+	/* Next is needed on iPhone/Safari even if the position gets 
+	overridden with 'relative' afterwards. Without 'absolute' here the 
+	map doesn't display - height stays 0px. */
+	.ol-viewport {position: absolute!important}; 
 	.hs-panelspace-wrapper {
 		display: flex;
 		flex-direction: column;
