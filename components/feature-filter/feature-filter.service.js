@@ -173,15 +173,12 @@ export default function ($rootScope, HsLayermanagerService, HsUtilsService, HsQu
     (e, layer) => {
       if (HsUtilsService.instOf(layer.layer, VectorLayer)) {
         const source = layer.layer.getSource();
-        console.log(source.getFeatures());
-        console.log(source.getState());
         if (source.getFeatures()) {
           me.prepLayerFilter(layer);
           me.applyFilters(layer);
         }
         const listenerKey = source.on('change', (e) => {
           if (source.getState() === 'ready') {
-            console.log(source.getState());
             unByKey(listenerKey);
             me.prepLayerFilter(layer);
             me.applyFilters(layer);
