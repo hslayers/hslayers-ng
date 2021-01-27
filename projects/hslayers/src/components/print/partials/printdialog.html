@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="print-title" class="control-label">{{'COMMON.title' | translate}}</label>
-                <input type="text" class="form-control" id="print-title" ng-model="title" />
+                <input type="text" class="form-control" id="print-title" [(ngModel)]="title" />
             </div>
             <button type="button" class="btn btn-primary" (click)="print()">{{'COMMON.print' | translate}}</button>
         </div>
