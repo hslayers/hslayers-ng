@@ -12,14 +12,14 @@ import VectorLayer from 'ol/layer/Vector';
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsAddLayersVectorService} from '../add-layers/vector/add-layers-vector.service';
+import {HsAddDataVectorService} from '../data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
+import {HsLaymanBrowserService} from '../data/catalogue/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -93,7 +93,7 @@ describe('HsDraw', () => {
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
         {provide: HsLaymanService, useValue: mockLaymanService},
         {provide: HsLaymanBrowserService, useValue: new emptyMock()},
-        {provide: HsAddLayersVectorService, useValue: new emptyMock()},
+        {provide: HsAddDataVectorService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsCommonLaymanService,

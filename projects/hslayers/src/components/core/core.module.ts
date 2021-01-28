@@ -2,13 +2,12 @@ import * as merge from 'deepmerge';
 import cs from '../../assets/locales/cs.json';
 import en from '../../assets/locales/en.json';
 import lv from '../../assets/locales/lv.json';
+import {HsAddDataModule} from '../data/add-data.module';
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsCoreService} from './core.service';
-import {HsAddDataModule} from '../data/add-data.module';
-import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
 import {HsDragModule} from './../drag/drag.module';
 import {HsDrawModule} from '../draw/draw.module';
 import {HsFeatureTableModule} from './../feature-table/feature-table.module';
@@ -108,7 +107,6 @@ export function getWebpackTranslateLoader(
     HsFeatureTableModule,
     HsGeolocationModule,
     HttpClientModule,
-    HsDatasourcesModule,
     HsLayoutModule,
     HsLegendModule,
     HsMeasureModule,

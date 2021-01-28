@@ -1,8 +1,8 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {HsAddDataModule} from '../data/add-data.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
-import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogContainerService} from './dialogs/dialog-container.service';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
@@ -31,7 +31,6 @@ import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
 import {TranslateModule} from '@ngx-translate/core';
-import {HsAddDataModule} from '../data/add-data.module';
 
 @NgModule({
   declarations: [
@@ -53,7 +52,6 @@ import {HsAddDataModule} from '../data/add-data.module';
     HsInfoModule,
     HsSidebarModule,
     HsLegendModule,
-    HsDatasourcesModule,
     HsCompositionsModule,
     HsMeasureModule,
     HsPrintModule,

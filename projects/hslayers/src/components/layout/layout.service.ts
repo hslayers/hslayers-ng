@@ -91,7 +91,6 @@ export class HsLayoutService {
     toolbar: true,
     mobile_settings: false,
     draw: false,
-    datasource_selector: true,
     layermanager: true,
     print: true,
     saveMap: true,
@@ -310,7 +309,6 @@ export class HsLayoutService {
   panelSpaceWidth() {
     const panelWidths = {
       default: 400,
-      datasource_selector: 700,
       ows: 700,
       composition_browser: 500,
       addData: 700,
