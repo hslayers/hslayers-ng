@@ -13,6 +13,9 @@ share.use(express.json());
 share.set('view engine', 'pug')
 share.set('views', __dirname + '/views/');
 
+if (process.env.NODE_ENV !== "production")
+  share.disable('view cache');
+
 // handle GET requests
 share.get('/', context => {
   if (context.query.request) {
@@ -90,13 +93,13 @@ function getCompositionRecord(id, context) {
  * @param {any} context HTTP context of the request
  */
 function getSocialShareRecord(id, context) {
-  queryCollection(id, function (result) {
-    context.res.render('socialShare', { record: result.data });
+  queryCollection(id, context, function (result) {
+    context.res.render('socialShare', { id: id, record: result.data });
   });
 }
 
 function getThumbnail(id, context) {
-  queryCollection(id, function (result) {
+  queryCollection(id, context, function (result) {
     if (result.data.image) {
       if (result.data.image.startsWith('data:')) {
         var contentType = result.data.image.substring(5, result.data.image.indexOf("base64") - 1);
@@ -125,8 +128,8 @@ function getThumbnail(id, context) {
  * @param {any} id Record id
  * @param {any} callback Callback function
  */
-function queryCollection(id, callback) {
-  const db = new Database(process.env.DB_PATH, process.env.DEBUG == "true" ? { verbose: console.log } : {});
+function queryCollection(id, context, callback) {
+  const db = new Database(process.env.DB_PATH, process.env.NODE_ENV == "production" ? {} : { verbose: console.log });
 
   try {
     const result = db.prepare('SELECT * FROM share WHERE id = ?').get(id);
@@ -152,7 +155,7 @@ function queryCollection(id, callback) {
  * @param {any} context HTTP context of the request
  */
 function insertRecord(record, context) {
-  const db = new Database(process.env.DB_PATH, process.env.DEBUG ? { verbose: console.log } : {});
+  const db = new Database(process.env.DB_PATH, process.env.NODE_ENV == "production" ? {} : { verbose: console.log });
 
   try {
     const sqlinsert = db.prepare('INSERT INTO share (id, data) VALUES (@id, @data)');
