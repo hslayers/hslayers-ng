@@ -122,6 +122,10 @@ export class HsCompositionsCatalogueService {
         },
       });
     });
+
+    this.HsCommonLaymanService.authChange.subscribe(() => {
+      this.loadFilteredCompositions();
+    });
   }
   /**
    * Load list of compositions for all endpoints
