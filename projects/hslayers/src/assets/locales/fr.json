@@ -36,8 +36,10 @@
     "to": "à",
     "width": "Largeur"
   },
+  "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
     "activateDrawing": "Activer le dessin en choisissant un type d'entité",
+    "activeLayers": "Active layers",
     "definedStyle": "Style défini",
     "disableDrawing": "Désactiver le dessin",
     "drawInfo": "Lorsque vous dessinez un polygone ou une ligne, vous pouvez maintenir la touche MAJ enfoncée pour dessiner à main levée; Vous pouvez supprimer le dernier point avec la touche Backspace",
@@ -47,8 +49,8 @@
       "defaultValue": "Valeur par défaut",
       "layerTitle": "Titre du calque",
       "layerWillBeAdded": "*Le calque sera ajouté à la carte et pourra être géré ultérieurement dans le panneau \"Gestionnaire des calques\"",
-      "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches",
-      "loadServerLayers": "Load layer from server"
+      "loadServerLayers": "Load layer from server",
+      "nameOfFolder": "Nom du dossier dans la hiérarchie du gestionnaire de couches"
     },
     "drawToolbar": {
       "addDrawLayer": "Ajouter un calque de dessin",
@@ -57,11 +59,10 @@
     },
     "fillOpacity": "Remplir l'opacité:",
     "individualStyle": "Style individuel pour entité",
-    "unsavedDrawing": "Dessin non enregistré",
+    "notAuthorized": "User not authorized, drawings won´t be preserved",
     "saveDrawingToLayer": "Save drawing to layer",
-    "activeLayers": "Active layers",
     "serverLayers": "Server layers",
-    "notAuthorized": "User not authorized, drawings won´t be preserved"
+    "unsavedDrawing": "Dessin non enregistré"
   },
   "LAYERMANAGER": {
     "baselayers": "Fond de carte de base",
@@ -75,6 +76,7 @@
       "removeAllAdded": "Supprimer les calques ajoutés"
     },
     "dimensions": "",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Grappe",
       "copyright": "Droits d'auteur",
@@ -114,8 +116,7 @@
     "other": "Autre",
     "removeAllLayers": "Supprimer toutes les couches",
     "resetMap": "Réinitialiser la carte",
-    "terrains": "Terrains",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "terrains": "Terrains"
   },
   "LEGEND": {
     "noLegendExists": "Aucune couche avec légende n'existe!"
@@ -126,11 +127,10 @@
     "LM": "Gestionnaire des calques"
   },
   "TRIP_PLANNER": {
-    "totalDistance": "Total distance",
-    "waypoints": "Waypoints",
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
-    "waypointDrawingHint": "Please click on map to add waypoints"
-  },
-  "COMPOSITONINSPIRETHEMES": {}
+    "totalDistance": "Total distance",
+    "waypointDrawingHint": "Please click on map to add waypoints",
+    "waypoints": "Waypoints"
+  }
 }

@@ -1,4 +1,27 @@
 {
+  "ADDDATA": {
+    "catalogue": "Datový katalog",
+    "CATALOGUE": {
+      "addAs": "Přidat jako",
+      "DESC": {
+        "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
+        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
+      },
+      "filterType": "Typ vyhledávání",
+      "filterTypes": {
+        "Abstract": "Abstrakt",
+        "AnyText": "Vše",
+        "Title": "Titulek"
+      },
+      "loading": "Načítání dat",
+      "searchType": "Typ vyhledávání",
+      "selectFilterType": "Změnit nastavení vyhledávání"
+    },
+    "file": "Soubor",
+    "URL": {
+      "selectAll": "Označit všechny vrstvy"
+    }
+  },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
     "chooseFormat": "Izvēlieties formātu",
@@ -95,6 +118,7 @@
     "fullText": "Full text",
     "hide": "Paslēpt",
     "icon": "Ikona",
+    "ignoreAndContinue": "Ignorēt un turpināt",
     "info": "Papildu informācija",
     "keywords": "Atslēgvārdi",
     "layer": "slānis",
@@ -158,8 +182,7 @@
     "west": "Rietumi",
     "width": "Platums",
     "yes": "Jā",
-    "zoomTo": "pietuvināt",
-    "ignoreAndContinue": "Ignorēt un turpināt"
+    "zoomTo": "pietuvināt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -182,18 +205,18 @@
     "dialogShare": {
       "shareMap": "Koplietot karti"
     },
+    "dialogWarning": {
+      "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
+      "title": "Brīdinājums!",
+      "toContinue": "Norādītā kompozīcijas ģeometrija vai tās apjoms var netikt iekļauts dotajā kartē un tās robežās."
+    },
     "filterByMap": "Filtrēt pēc kartes",
     "import": "Importēt kompozīciju no faila vai ierīces",
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
-    "selectThemes": "Izvēlēties tēmas",
-    "dialogWarning": {
-      "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
-      "title": "Brīdinājums!",
-      "toContinue": "Norādītā kompozīcijas ģeometrija vai tās apjoms var netikt iekļauts dotajā kartē un tās robežās."
-    }
+    "selectThemes": "Izvēlēties tēmas"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -523,12 +546,12 @@
       "useMapExtent": "Izmantot kartes apmēru",
       "youAreNotAuthorized": "Jums nav atļauts saglabāt kompozīciju. Lūdzu, pierakstieties vai sazinieties ar administratoru, lai iegūtu Jūsu akreditācijas datus."
     },
-    "syncErrorDialog": {
-      "errorWhenSyncing": "Sinhronizējot radās kļūda"
-    },
     "private": "Privāts",
     "public": "Publisks",
     "readAccessRights": "Lasīšanas piekļuves tiesības",
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Sinhronizējot radās kļūda"
+    },
     "writeAccessRights": "Rakstīšanas piekļuves tiesības"
   },
   "SENSORS": {
