@@ -1,5 +1,5 @@
 <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
-<form class="form-horizontal" role="form">
+<form class="form-horizontal m-3" role="form">
     <hs-add-data-common-url *ngIf="HsAddDataService.typeSelected == 'url'" type="vector" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
 
     <div class="form-group"  *ngIf="HsAddDataService.typeSelected == 'file'">
