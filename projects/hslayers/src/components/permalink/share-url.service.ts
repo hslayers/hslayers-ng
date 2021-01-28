@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgZone} from '@angular/core';
 import {Location} from '@angular/common';
 import {Subject} from 'rxjs';
 
@@ -41,7 +41,8 @@ export class HsShareUrlService {
     public HsLanguageService: HsLanguageService,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
-    private Location: Location
+    private Location: Location,
+    private zone: NgZone
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
@@ -297,7 +298,9 @@ export class HsShareUrlService {
       this.HsEventBusService.mapExtentChanges.subscribe(
         this.HsUtilsService.debounce(
           (data) => {
-            this.update();
+            this.zone.run(() => {
+              this.update();
+            });
           },
           200,
           false,

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import {Feature} from 'ol';
@@ -34,7 +34,8 @@ export class HsAddDataCatalogueMapService {
 
   constructor(
     public hsMapService: HsMapService,
-    public hsLogService: HsLogService
+    public hsLogService: HsLogService,
+    private zone: NgZone
   ) {
     this.hsMapService.loaded().then((map) => this.init(map));
   }
@@ -43,21 +44,27 @@ export class HsAddDataCatalogueMapService {
    * @param evt
    */
   mapPointerMoved(evt): void {
-    const features = this.extentLayer
+    const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    this.extentLayer
+    const highlightedFeatures = this.extentLayer
       .getSource()
       .getFeatures()
-      .forEach((feature) => {
-        if (feature.get('record').highlighted) {
-          feature.get('record').highlighted = false;
-        }
-      });
-    if (features.length) {
-      features.forEach((feature) => {
-        if (!feature.get('record').highlighted) {
+      .filter((feature) => feature.get('record').highlighted);
+
+    const dontHighlight = highlightedFeatures.filter(
+      (feature) => !featuresUnderMouse.includes(feature)
+    );
+    const highlight = featuresUnderMouse.filter(
+      (feature) => !highlightedFeatures.includes(feature)
+    );
+    if (dontHighlight.length > 0 || highlight.length > 0) {
+      this.zone.run(() => {
+        for (const feature of highlight) {
           feature.get('record').highlighted = true;
+        }
+        for (const feature of dontHighlight) {
+          feature.get('record').highlighted = false;
         }
       });
     }

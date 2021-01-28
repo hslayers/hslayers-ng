@@ -1,5 +1,5 @@
 import {Feature} from 'ol';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 import {EndpointsWithDatasourcesPipe} from '../../../common/widgets/endpoints-with-datasources.pipe';
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
@@ -65,7 +65,8 @@ export class HsAddDataCatalogueService {
     public HsMapService: HsMapService,
     public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public HsAddDataService: HsAddDataService,
-    public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe
+    public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
+    private zone: NgZone
   ) {
     this.data.query = {
       textFilter: '',
@@ -101,8 +102,10 @@ export class HsAddDataCatalogueService {
             return;
           }
           if (this.data.filterByExtent) {
-            this.resetList();
-            this.queryCatalogs();
+            this.zone.run(() => {
+              this.resetList();
+              this.queryCatalogs();
+            });
           }
         },
         500,
