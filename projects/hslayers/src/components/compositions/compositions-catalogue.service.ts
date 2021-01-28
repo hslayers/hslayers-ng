@@ -15,7 +15,7 @@ import {
   SORTBYVALUES,
   TYPES,
 } from './compositions-option-values';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Observable, forkJoin} from 'rxjs';
 
 @Injectable({
@@ -69,7 +69,8 @@ export class HsCompositionsCatalogueService {
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLaymanService: HsLaymanService,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public HsCommonLaymanService: HsCommonLaymanService,
+    private zone: NgZone
   ) {
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
     HsEventBusService.mainPanelChanges.subscribe(() => {
@@ -108,7 +109,9 @@ export class HsCompositionsCatalogueService {
       if (deleteDialog) {
         deleteDialog.parentNode.remove(deleteDialog);
       }
-      this.loadFilteredCompositions();
+      this.zone.run(() => {
+        this.loadFilteredCompositions();
+      });
     });
 
     this.HsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
