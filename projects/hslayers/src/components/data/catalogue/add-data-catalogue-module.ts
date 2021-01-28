@@ -16,6 +16,7 @@ import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsMickaBrowserService} from './micka/micka.service';
+import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -41,6 +42,7 @@ import {HsMickaBrowserService} from './micka/micka.service';
     HsLaymanBrowserService,
     HsAddDataCatalogueMapService,
     HsAddDataCatalogueService,
+    HsAddDataMetadataService,
   ],
   entryComponents: [
     HsAddDataCatalogueComponent,

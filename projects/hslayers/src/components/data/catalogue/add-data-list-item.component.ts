@@ -5,7 +5,7 @@ import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
 import {HsConfig} from '../../../config.service';
-import {HsDatasourcesMetadataService} from '../../datasource-selector/datasource-selector-metadata.service';
+import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
@@ -30,7 +30,7 @@ export class HsAddDataListItemComponent {
 
   constructor(
     public hsConfig: HsConfig, //used in template
-    public hsDatasourcesMetadataService: HsDatasourcesMetadataService,
+    public hsDatasourcesMetadataService: HsAddDataMetadataService,
     public HsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsLaymanBrowserService: HsLaymanBrowserService,

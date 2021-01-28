@@ -77,7 +77,7 @@ export class HsAddDataCatalogueMapService {
 
   /**
    * @function clearDatasetFeatures
-   * @memberof HsDatasourceBrowserService
+   * @memberof HsAddDataCatalogueService
    * @param {object} dataset Configuration of selected datasource (from app config)
    * @description Remove layer extent features from map
    */

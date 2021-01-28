@@ -63,18 +63,6 @@ export class HsSidebarService {
         icon: 'icon-layers',
       },
       {
-        panel: 'addData',
-        module: 'hs.addData',
-        order: 18,
-        title: () =>
-          this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
-        description: () =>
-          this.HsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.ADDLAYERS'
-          ),
-        icon: 'icon-database',
-      },
-      {
         panel: 'legend',
         module: 'hs.legend',
         order: 1,
@@ -106,8 +94,8 @@ export class HsSidebarService {
         icon: 'icon-map',
       },
       {
-        panel: 'datasource_selector',
-        module: 'hs.datasource_selector',
+        panel: 'addData',
+        module: 'hs.addData',
         order: 4,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),

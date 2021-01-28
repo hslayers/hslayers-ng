@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import {HsDatasourcesMapService} from '../../components/datasource-selector/datasource-selector-map.service';
+import {HsAddDataCatalogueMapService} from '../../components/data/catalogue/add-data-catalogue-map.service';
 @Component({
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.html',
@@ -10,7 +10,7 @@ export class HsUiExtensionsRecursiveDd {
   entries;
 
   constructor(
-    public hsDSMapService: HsDatasourcesMapService // used in template
+    public hsDSMapService: HsAddDataCatalogueMapService // used in template
   ) {}
   isIterable(): boolean {
     if (this.value && typeof this.value === 'object') {

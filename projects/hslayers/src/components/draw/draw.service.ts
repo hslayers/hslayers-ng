@@ -13,7 +13,7 @@ import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata.componen
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLaymanBrowserService} from '../datasource-selector/layman/layman.service';
+import {HsLaymanBrowserService} from '../data/catalogue/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
