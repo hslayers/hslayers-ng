@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
-        <button type="button" class="btn btn-sm btn-primary" (click)="addLayerToMap(layer.endpoint, layer)"
+        <button type="button" class="btn btn-sm btn-primary align-middle" (click)="addLayerToMap(layer.endpoint, layer)"
             data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translate"
             [ngClass]="{' btn-light text-primary' : layer.highlighted }">
             <i class="icon-plus"></i>
