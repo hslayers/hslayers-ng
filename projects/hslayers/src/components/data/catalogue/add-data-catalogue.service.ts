@@ -7,6 +7,7 @@ import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from '../vector/add-data-vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -17,7 +18,6 @@ import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {forkJoin} from 'rxjs';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -157,19 +157,18 @@ export class HsAddDataCatalogueService {
 
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
-          if (this.data.onlyMine && endpoint.type != 'layman') {
-            return;
+          if (!this.data.onlyMine || endpoint.type == 'layman') {
+            //TODO query only functional endpoints
+            endpoint.datasourcePaging = {...this.paging};
+
+            const promise = this.queryCatalog(endpoint);
+            observables.push(promise);
+
+            this.catalogQuery = forkJoin(observables).subscribe(() => {
+              this.createLayerList();
+            });
           }
-          //TODO query only functional endpoints
-          endpoint.datasourcePaging = {...this.paging};
-
-          const promise = this.queryCatalog(endpoint);
-          observables.push(promise);
         }
-
-        this.catalogQuery = forkJoin(observables).subscribe(() => {
-          this.createLayerList();
-        });
       });
     }
   }
@@ -177,21 +176,23 @@ export class HsAddDataCatalogueService {
   createLayerList(): void {
     let lastRequestMatched = 0;
     for (const endpoint of this.endpointsWithDatasources) {
-      if (endpoint.layers) {
-        endpoint.layers.forEach((layer) => {
-          layer.endpoint = endpoint;
-          // this.catalogEntries.push(layer);
-        });
-        if (this.catalogEntries.length > 0) {
-          this.catalogEntries = this.catalogEntries.concat(
-            this.filterDuplicates(endpoint.layers)
-          );
-        } else {
-          this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
+      if (!this.data.onlyMine || endpoint.type == 'layman') {
+        if (endpoint.layers) {
+          endpoint.layers.forEach((layer) => {
+            layer.endpoint = endpoint;
+            // this.catalogEntries.push(layer);
+          });
+          if (this.catalogEntries.length > 0) {
+            this.catalogEntries = this.catalogEntries.concat(
+              this.filterDuplicates(endpoint.layers)
+            );
+          } else {
+            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
+          }
         }
-      }
-      if (endpoint.datasourcePaging?.matched) {
-        lastRequestMatched += endpoint.datasourcePaging.matched;
+        if (endpoint.datasourcePaging?.matched) {
+          lastRequestMatched += endpoint.datasourcePaging.matched;
+        }
       }
     }
 
