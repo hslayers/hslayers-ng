@@ -1,4 +1,27 @@
 {
+  "ADDDATA": {
+    "catalogue": "Data Catalogue",
+    "CATALOGUE": {
+      "addAs": "Add as",
+      "DESC": {
+        "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.",
+        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features."
+      },
+      "filterType": "Search within",
+      "filterTypes": {
+        "Abstract": "Abstract",
+        "AnyText": "All",
+        "Title": "Title"
+      },
+      "loading": "Loading data",
+      "searchType": "Search filter type",
+      "selectFilterType": "Change search filter type"
+    },
+    "file": "File",
+    "URL": {
+      "selectAll": "Select All Layers"
+    }
+  },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",
     "chooseFormat": "Choose format",
@@ -54,29 +77,6 @@
       "tileMatrix": "Tile matrix"
     }
   },
-  "ADDDATA": {
-    "catalogue": "Data Catalogue",
-    "file": "File",
-    "CATALOGUE": {
-      "loading": "Loading data",
-      "addAs": "Add as",
-      "DESC": {
-        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features.",
-        "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info."
-      },
-      "selectFilterType": "Change search filter type",
-      "searchType": "Search filter type",
-      "filterType": "Search within",
-      "filterTypes":{
-        "AnyText": "All",
-        "Abstract": "Abstract",
-        "Title": "Title"
-      }
-    },
-    "URL": {
-      "selectAll": "Select All Layers"
-    }
-  },
   "COMMON": {
     "abstract": "Abstract",
     "add": "Add",
@@ -118,6 +118,7 @@
     "fullText": "Full text",
     "hide": "Hide",
     "icon": "Icon",
+    "ignoreAndContinue": "Ignore and continue",
     "info": "Additional information",
     "keywords": "Keywords",
     "layer": "layer",
@@ -181,8 +182,7 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "zoomTo": "zoom to",
-    "ignoreAndContinue": "Ignore and continue"
+    "zoomTo": "zoom to"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -205,18 +205,18 @@
     "dialogShare": {
       "shareMap": "Share map"
     },
+    "dialogWarning": {
+      "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
+      "title": "Warning!",
+      "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders."
+    },
     "filterByMap": "Filter by map extent",
     "import": "Import composition from a file on device",
     "inspireTheme": "INSPIRE theme",
     "loginToCatalogue": "Login to catalogue",
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
-    "selectThemes": "Select themes",
-    "dialogWarning": {
-      "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
-      "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders.",
-      "title": "Warning!"
-    }
+    "selectThemes": "Select themes"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
@@ -546,13 +546,13 @@
       "useMapExtent": "Use map extent",
       "youAreNotAuthorized": "You are not authorized to store composition. Please sign in or contact administrator for your credentials."
     },
+    "private": "Private",
+    "public": "Public",
+    "readAccessRights": "Read access rights",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },
-    "readAccessRights": "Read access rights",
-    "writeAccessRights": "Write access rights",
-    "public": "Public",
-    "private": "Private"
+    "writeAccessRights": "Write access rights"
   },
   "SENSORS": {
     "1D": "1D",

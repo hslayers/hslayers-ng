@@ -36,8 +36,10 @@
     "to": "tot",
     "width": "Breedte"
   },
+  "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
     "activateDrawing": "Activeer tekening door een entiteitstype te kiezen",
+    "activeLayers": "Active layers",
     "definedStyle": "Gedefinieerde stijl",
     "disableDrawing": "Schakel tekenen uit",
     "drawInfo": "Tijdens het tekenen van een polygoon of lijn kunt u SHIFT ingedrukt houden om uit de vrije hand te tekenen; U kunt het laatste punt verwijderen met de Backspace-toets",
@@ -47,8 +49,8 @@
       "defaultValue": "Standaardwaarde",
       "layerTitle": "Laag titel",
       "layerWillBeAdded": "*De laag wordt aan de kaart toegevoegd en kan verder worden beheerd in het paneel \"Beheer lagen\"",
-      "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder",
-      "loadServerLayers": "Load layer from server"
+      "loadServerLayers": "Load layer from server",
+      "nameOfFolder": "Naam van de map in de hiërararchie van de laagbeheerder"
     },
     "drawToolbar": {
       "addDrawLayer": "Tekenlaag toevoegen",
@@ -57,11 +59,10 @@
     },
     "fillOpacity": "Vul de dekking:",
     "individualStyle": "Individuele stijl voor entiteit",
-    "unsavedDrawing": "Niet-opgeslagen tekening",
+    "notAuthorized": "User not authorized, drawings won´t be preserved",
     "saveDrawingToLayer": "Save drawing to layer",
-    "activeLayers": "Active layers",
     "serverLayers": "Server layers",
-    "notAuthorized": "User not authorized, drawings won´t be preserved"
+    "unsavedDrawing": "Niet-opgeslagen tekening"
   },
   "LAYERMANAGER": {
     "baselayers": "Basislagen",
@@ -75,6 +76,7 @@
       "removeAllAdded": "Verwijder alle toegevoegde lagen"
     },
     "dimensions": "Dimensies",
+    "enablePhysicalLayerList": "Enable/Disable physical layer list",
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Auteursrechten",
@@ -114,8 +116,7 @@
     "other": "Andere",
     "removeAllLayers": "Verwijder alle lagen",
     "resetMap": "Reset kaart",
-    "terrains": "Terreinen",
-    "enablePhysicalLayerList": "Enable/Disable physical layer list"
+    "terrains": "Terreinen"
   },
   "LEGEND": {
     "noLegendExists": "Er bestaat geen laag met legenda!"
@@ -126,11 +127,10 @@
     "LM": "Beheer lagen"
   },
   "TRIP_PLANNER": {
-    "totalDistance": "Total distance",
-    "waypoints": "Waypoints",
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
-    "waypointDrawingHint": "Please click on map to add waypoints"
-  },
-  "COMPOSITONINSPIRETHEMES": {}
+    "totalDistance": "Total distance",
+    "waypointDrawingHint": "Please click on map to add waypoints",
+    "waypoints": "Waypoints"
+  }
 }

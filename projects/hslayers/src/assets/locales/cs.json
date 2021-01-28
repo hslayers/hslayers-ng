@@ -1,4 +1,27 @@
 {
+  "ADDDATA": {
+    "catalogue": "Datový katalog",
+    "CATALOGUE": {
+      "addAs": "Přidat jako",
+      "DESC": {
+        "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
+        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
+      },
+      "filterType": "Typ vyhledávání",
+      "filterTypes": {
+        "Abstract": "Abstrakt",
+        "AnyText": "Vše",
+        "Title": "Titulek"
+      },
+      "loading": "Načítání dat",
+      "searchType": "Typ vyhledávání",
+      "selectFilterType": "Změnit nastavení vyhledávání"
+    },
+    "file": "Soubor",
+    "URL": {
+      "selectAll": "Označit všechny vrstvy"
+    }
+  },
   "ADDLAYERS": {
     "addSelected": "Přidat označené vrstvy do mapy",
     "chooseFormat": "Vyberte formát",
@@ -54,29 +77,6 @@
       "tileMatrix": "Matice dlaždic"
     }
   },
-  "ADDDATA": {
-    "catalogue": "Datový katalog",
-    "file": "Soubor",
-    "CATALOGUE": {
-      "loading": "Načítání dat",
-      "addAs": "Přidat jako",
-      "DESC": {
-        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat.",
-        "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť."
-      },
-      "selectFilterType": "Změnit nastavení vyhledávání",
-      "searchType": "Typ vyhledávání",
-      "filterType": "Typ vyhledávání",
-      "filterTypes":{
-        "AnyText": "Vše",
-        "Abstract": "Abstrakt",
-        "Title": "Titulek"
-      }
-    },
-    "URL": {
-      "selectAll": "Označit všechny vrstvy"
-    }
-  },
   "COMMON": {
     "abstract": "Abstrakt",
     "add": "Přidat",
@@ -118,11 +118,13 @@
     "fullText": "Fulltext",
     "hide": "Skrýt",
     "icon": "Ikona",
+    "ignoreAndContinue": "Ignorovat a pokračovat",
     "info": "Další informace",
     "keywords": "Klíčová slova",
     "layer": "vrstva",
     "layers": "Vrstvy",
     "legend": "Legenda",
+    "less": "Méně",
     "line": "Linie",
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
@@ -130,6 +132,7 @@
     "Login": "Přihlásit se",
     "Logout": "Odhlásit",
     "menu": "Menu",
+    "metadata": "Metadata",
     "more": "Více",
     "name": "Název",
     "new": "Nový",
@@ -138,6 +141,7 @@
     "no": "Ne",
     "north": "Severní",
     "ok": "Ok",
+    "open": "Otevřít",
     "orderBy": "Seřadit podle",
     "photo": "Foto",
     "point": "Bod",
@@ -155,10 +159,13 @@
     "saveAs": "Uložit jako..",
     "saveTo": "Uložit do",
     "scale": "Měřítko",
+    "search": "Hledat:",
     "service": "Služba",
     "settings": "Nastavení",
+    "share": "Sdílet",
     "showMore": "Zobrazit více",
     "Sort": "Seřadit",
+    "sortBy": "Řadit podle",
     "south": "Jižní",
     "stop": "Konec",
     "stroke": "Obrys",
@@ -175,18 +182,12 @@
     "west": "Západní",
     "width": "Šířka",
     "yes": "Ano",
-    "zoomTo": "zvětšit na",
-    "less": "Méně",
-    "metadata": "Metadata",
-    "open": "Otevřít",
-    "share": "Sdílet",
-    "sortBy": "Řadit podle",
-    "search": "Hledat:",
-    "ignoreAndContinue": "Ignorovat a pokračovat"
+    "zoomTo": "zvětšit na"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
     "Address": "Adresa",
+    "clearFilters": "Vyčistit filtry",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Chcete smazat tuto mapu?"
     },
@@ -204,19 +205,88 @@
     "dialogShare": {
       "shareMap": "Sdílet mapu"
     },
+    "dialogWarning": {
+      "outOfBounds": "Rozsah kompozice je mimo rozsah systému EPSG:4326",
+      "title": "Varování",
+      "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
+    },
     "filterByMap": "Filtrovat na rozsah okna",
     "import": "Importovat kompozici ze souboru v tomto zařízení",
+    "inspireTheme": "Téma INSPIRE",
+    "loginToCatalogue": "Přihlásit do katalogu",
     "onlyMine": "Jen moje vlastní",
     "selectKeywords": "Vybrat klíčová slova",
-    "inspireTheme": "Téma INSPIRE",
-    "selectThemes": "Vybrat témata",
-    "clearFilters": "Vyčistit filtry",
-    "loginToCatalogue": "Přihlásit do katalogu",
-    "dialogWarning": {
-      "title": "Varování",
-      "outOfBounds": "Rozsah kompozice je mimo rozsah systému EPSG:4326",
-      "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
-    }
+    "selectThemes": "Vybrat témata"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "Addresses": "Adresy",
+    "Administrative units": "Územní správní jednotky",
+    "Agricultural and aquaculture facilities": "Zemědělská a vodohospodářská zařízení",
+    "Area management/restriction/regulation zones and reporting units": "Správní oblasti/chráněná pásma/regulovaná území a jednotky podávající hlášení",
+    "Atmospheric conditions": "Stav ovzduší",
+    "Atmospheric Conditions and meteorological geographical features": "Stav ovzduší a zeměpisné meteorologické prvky",
+    "Bio-geographical regions": "Bioregiony",
+    "Buildings": "Budovy",
+    "Cadastral parcels": "Parcely",
+    "Coordinate reference systems": "Souřadnicové referenční systémy",
+    "Elevation": "Nadmořská výška",
+    "Energy resources": "Energetické zdroje",
+    "Environmental monitoring facilities": "Zařízení pro sledování životního prostředí",
+    "Geographical grid systems": "Zeměpisné soustavy souřadnicových sítí",
+    "Geographical names": "Zeměpisná jména",
+    "Geology": "Geologie",
+    "Habitants and biotopes": "Stanoviště a biotopy",
+    "Human health and safety": "Lidské zdraví a bezpečnost",
+    "Hydrography": "Hydrografie",
+    "Land cover": "Krajinný pokryv",
+    "Land use": "Využití území",
+    "Meteorological geographical features": "Zeměpisné meteorologické prvky",
+    "Mineral resources": "Nerostné suroviny",
+    "Natural risk zones": "Oblasti ohrožené přírodními riziky",
+    "None": "Žádné",
+    "Oceanographic geographical features": "Zeměpisné oceánografické prvky",
+    "Orthoimagery": "Ortofotosnímky",
+    "Population distribution - demography": "Rozložení obyvatelstva – demografie",
+    "Production and industrial facilities": "Výrobní a průmyslová zařízení",
+    "Protected sites": "Chráněná území",
+    "Sea regions": "Mořské oblasti",
+    "Soil": "Půda",
+    "Species distribution": "Rozložení druhů",
+    "Statistical units": "Statistické jednotky",
+    "Transport networks": "Dopravní sítě",
+    "Utility and governmental services": "Veřejné služby a služby veřejné správy"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Basemap": "Podkladová mapa",
+    "Borders": "Hranice",
+    "Cadastre": "Katastr",
+    "Complex information": "Komplexní informace",
+    "Culture": "Kultura",
+    "Demographics": "Demografie",
+    "Economics": "Hospodářství",
+    "Environment": "Životní prostředí",
+    "Hazards": "Rizika",
+    "Infrastructure": "Infrastruktura",
+    "Land use": "Využití území",
+    "Physical geography": "Fyzická geografie",
+    "Planning": "Plánování",
+    "Real estate": "Nemovitosti",
+    "Socio political conditions": "Socio-politické podmínky",
+    "Transport": "Doprava",
+    "Water": "Voda"
+  },
+  "COMPOSITONSORTVALUES": {
+    "Bbox": "Rozsah mapy",
+    "Date": "Datum",
+    "None": "Žádný",
+    "Title": "Název"
+  },
+  "COMPOSITONTYPES": {
+    "Application": "Aplikace",
+    "Datasource": "Zdroj dat",
+    "Feature catalogue": "Katalog prvků",
+    "None": "Žádný",
+    "Service": "Služba"
   },
   "DATASOURCE_SELECTOR": {
     "addToMapAs": "Přidat do mapy jako",
@@ -476,12 +546,12 @@
       "useMapExtent": "Použijte rozsah mapy",
       "youAreNotAuthorized": "Nemáte oprávnění k uložení kompozic. Přihlaste se nebo se obraťte na administrátora pro vaše přihlašovací údaje."
     },
-    "syncErrorDialog": {
-      "errorWhenSyncing": "Chyba při synchronizaci"
-    },
     "private": "Soukromé",
     "public": "Veřejné",
     "readAccessRights": "Právo čtení",
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Chyba při synchronizaci"
+    },
     "writeAccessRights": "Právo zápisu"
   },
   "SENSORS": {
@@ -535,75 +605,5 @@
     "totalDistance": "Celková vzdálenost",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypoints": "Body trasy"
-  },
-  "COMPOSITONINSPIRETHEMES": {
-    "Addresses": "Adresy",
-    "Administrative units": "Územní správní jednotky",
-    "Agricultural and aquaculture facilities": "Zemědělská a vodohospodářská zařízení",
-    "Buildings": "Budovy",
-    "Cadastral parcels": "Parcely",
-    "Coordinate reference systems": "Souřadnicové referenční systémy",
-    "Elevation": "Nadmořská výška",
-    "Geographical names": "Zeměpisná jména",
-    "Geology": "Geologie",
-    "Hydrography": "Hydrografie",
-    "Land use": "Využití území",
-    "Orthoimagery": "Ortofotosnímky",
-    "Soil": "Půda",
-    "Statistical units": "Statistické jednotky",
-    "Transport networks": "Dopravní sítě",
-    "Atmospheric Conditions and meteorological geographical features": "Stav ovzduší a zeměpisné meteorologické prvky",
-    "Area management/restriction/regulation zones and reporting units": "Správní oblasti/chráněná pásma/regulovaná území a jednotky podávající hlášení",
-    "Atmospheric conditions": "Stav ovzduší",
-    "Bio-geographical regions": "Bioregiony",
-    "Energy resources": "Energetické zdroje",
-    "Environmental monitoring facilities": "Zařízení pro sledování životního prostředí",
-    "Geographical grid systems": "Zeměpisné soustavy souřadnicových sítí",
-    "Habitants and biotopes": "Stanoviště a biotopy",
-    "Human health and safety": "Lidské zdraví a bezpečnost",
-    "Land cover": "Krajinný pokryv",
-    "Meteorological geographical features": "Zeměpisné meteorologické prvky",
-    "Mineral resources": "Nerostné suroviny",
-    "Natural risk zones": "Oblasti ohrožené přírodními riziky",
-    "None": "Žádné",
-    "Oceanographic geographical features": "Zeměpisné oceánografické prvky",
-    "Population distribution - demography": "Rozložení obyvatelstva – demografie",
-    "Production and industrial facilities": "Výrobní a průmyslová zařízení",
-    "Protected sites": "Chráněná území",
-    "Sea regions": "Mořské oblasti",
-    "Species distribution": "Rozložení druhů",
-    "Utility and governmental services": "Veřejné služby a služby veřejné správy"
-  },
-  "COMPOSITONKEYWORDS": {
-    "Borders": "Hranice",
-    "Cadastre": "Katastr",
-    "Culture": "Kultura",
-    "Demographics": "Demografie",
-    "Economics": "Hospodářství",
-    "Environment": "Životní prostředí",
-    "Hazards": "Rizika",
-    "Infrastructure": "Infrastruktura",
-    "Land use": "Využití území",
-    "Physical geography": "Fyzická geografie",
-    "Planning": "Plánování",
-    "Real estate": "Nemovitosti",
-    "Transport": "Doprava",
-    "Water": "Voda",
-    "Basemap": "Podkladová mapa",
-    "Complex information": "Komplexní informace",
-    "Socio political conditions": "Socio-politické podmínky"
-  },
-  "COMPOSITONSORTVALUES": {
-    "Bbox": "Rozsah mapy",
-    "Date": "Datum",
-    "None": "Žádný",
-    "Title": "Název"
-  },
-  "COMPOSITONTYPES": {
-    "Application": "Aplikace",
-    "Datasource": "Zdroj dat",
-    "Feature catalogue": "Katalog prvků",
-    "None": "Žádný",
-    "Service": "Služba"
   }
 }
