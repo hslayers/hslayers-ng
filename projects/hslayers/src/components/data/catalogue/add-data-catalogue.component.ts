@@ -78,6 +78,11 @@ export class HsAddDataCatalogueComponent {
     this.filterTypeMenu = !this.filterTypeMenu;
   }
 
+  highlightLayer(layer, state: boolean): void {
+    layer.highlighted = state;
+    this.HsAddDataCatalogueMapService.highlightLayer(layer, state);
+  }
+
   /**
    * @function getPreviousRecords
    * @param {HsEndpoint} endpoint Selected datasource

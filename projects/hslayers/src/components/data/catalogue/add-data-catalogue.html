@@ -52,7 +52,9 @@
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li [hidden]="HsAddDataCatalogueService.layersLoading"
                         *ngFor='let layer of HsAddDataCatalogueService.catalogEntries | slice:HsAddDataCatalogueService.listStart:HsAddDataCatalogueService.listNext'
-                        class="clearfix py-2" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                        class="clearfix py-2" [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')"
+                        (mouseover)="highlightLayer(layer, true)"
+                        (mouseleave)="highlightLayer(layer, false)">
                         <hs-add-data-list-item [layer]="layer"></hs-add-data-list-item>
                     </li>
                 </ul>
