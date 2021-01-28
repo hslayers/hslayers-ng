@@ -1,25 +1,25 @@
 {
   "ADDDATA": {
-    "catalogue": "Datový katalog",
+    "catalogue": "Datu katalogs",
     "CATALOGUE": {
-      "addAs": "Přidat jako",
+      "addAs": "Pievienot kā",
       "DESC": {
-        "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
-        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
+        "WFS": "Web Feature Service - pievieno slāni kā vektoru grafisko objektu kopumu. Tas ir vairāk resursu patērējošs, it īpaši ar lieliem slāņiem, taču tas ļauj rediģēt objektus vai parādīt atsevišķu informāciju par objektiem",
+        "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām."
       },
-      "filterType": "Typ vyhledávání",
+      "filterType": "Meklēt pēc",
       "filterTypes": {
-        "Abstract": "Abstrakt",
-        "AnyText": "Vše",
-        "Title": "Titulek"
+        "Abstract": "Apraksta",
+        "AnyText": "Visa",
+        "Title": "Nosaukuma"
       },
-      "loading": "Načítání dat",
-      "searchType": "Typ vyhledávání",
-      "selectFilterType": "Změnit nastavení vyhledávání"
+      "loading": "Notiek ielāde",
+      "searchType": "Filtra tips",
+      "selectFilterType": "Nomainīt filtra tipu"
     },
-    "file": "Soubor",
+    "file": "Fails",
     "URL": {
-      "selectAll": "Označit všechny vrstvy"
+      "selectAll": "Izvēlēties visus slāņus"
     }
   },
   "ADDLAYERS": {
