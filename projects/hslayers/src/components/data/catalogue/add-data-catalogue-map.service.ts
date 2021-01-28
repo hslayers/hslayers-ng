@@ -123,7 +123,7 @@ export class HsAddDataCatalogueMapService {
     this.extentLayer.getSource().addFeatures([extentFeature]);
   }
 
-  highlightComposition(composition, state): void {
+  highlightLayer(composition, state): void {
     if (composition.feature !== undefined) {
       composition.feature.set('highlighted', state);
     }
