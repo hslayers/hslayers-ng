@@ -66,8 +66,7 @@ export class HsAddDataCatalogueComponent {
   }
 
   queryByFilter() {
-    this.HsAddDataCatalogueService.resetList();
-      this.queryCatalogs();
+    this.HsAddDataCatalogueService.reloadData();
   }
 
   selectType(type) {
