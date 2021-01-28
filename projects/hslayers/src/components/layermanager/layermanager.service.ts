@@ -160,12 +160,6 @@ export class HsLayerManagerService {
         this.HsConfig.clusteringDistance || 40
       );
     }
-    if (layer.getZIndex() == undefined) {
-      layer.setZIndex(this.zIndexValue++);
-    } else if (layer.getZIndex() > this.zIndexValue) {
-      this.zIndexValue = layer.getZIndex() + 1;
-    }
-
     /**
      * @ngdoc property
      * @name HsLayermanagerService#layer
@@ -458,10 +452,8 @@ export class HsLayerManagerService {
     this.HsEventBusService.layerManagerUpdates.next(e.element);
     this.HsEventBusService.layerRemovals.next(e.element);
     this.HsEventBusService.compositionEdits.next();
-    if (
-      this.zIndexValue >
-      this.data.layers.length + this.data.baselayers.length
-    ) {
+    const layers = this.HsMapService.map.getLayers().getArray();
+    if (this.zIndexValue > layers.length) {
       this.zIndexValue--;
     }
   }
@@ -882,6 +874,7 @@ export class HsLayerManagerService {
   async init(): Promise<void> {
     this.map = this.HsMapService.map;
     this.HsMapService.map.getLayers().forEach((lyr) => {
+      this.applyZIndex(lyr);
       this.layerAdded(
         {
           element: lyr,
@@ -919,12 +912,20 @@ export class HsLayerManagerService {
     );
 
     this.map.getLayers().on('add', (e) => {
+      this.applyZIndex(e.element);
       if (e.element.get('show_in_manager') == false) {
         return;
       }
       this.layerAdded(e);
     });
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
+  }
+  applyZIndex(layer): void {
+    if (layer.getZIndex() == undefined) {
+      layer.setZIndex(this.zIndexValue++);
+    } else if (layer.getZIndex() > this.zIndexValue) {
+      this.zIndexValue = layer.getZIndex() + 1;
+    }
   }
   checkLayerFromUrl(layerTitle: string): any {
     const layerFound = this.getLayerFromUrl(layerTitle);

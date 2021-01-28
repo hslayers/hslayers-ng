@@ -29,7 +29,10 @@ export class HsLayermanagerPhysicalListService {
   }
 
   private get mapLayers(): BaseLayer[] {
-    return this.HsMapService.map.getLayers().getArray();
+    return this.HsMapService.map
+      .getLayers()
+      .getArray()
+      .filter((layer) => layer.get('base') != true);
   }
 
   /**
