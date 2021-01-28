@@ -17,6 +17,7 @@ import {HsMickaBrowserService} from './micka/micka.service';
 import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {forkJoin} from 'rxjs';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {
@@ -66,7 +67,8 @@ export class HsAddDataCatalogueService {
     public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public HsAddDataService: HsAddDataService,
     public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
-    private zone: NgZone
+    private zone: NgZone,
+    public HsCommonLaymanService: HsCommonLaymanService
   ) {
     this.data.query = {
       textFilter: '',
@@ -80,6 +82,7 @@ export class HsAddDataCatalogueService {
     this.data.wms_connecting = false;
     this.data.id_selected = 'OWS';
     this.data.filterByExtent = true;
+    this.data.onlyMine = false;
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
@@ -103,8 +106,7 @@ export class HsAddDataCatalogueService {
           }
           if (this.data.filterByExtent) {
             this.zone.run(() => {
-              this.resetList();
-              this.queryCatalogs();
+              this.reloadData();
             });
           }
         },
@@ -116,15 +118,18 @@ export class HsAddDataCatalogueService {
 
     this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
-        this.resetList();
-        this.queryCatalogs();
-        // this.hsMickaFilterService.fillCodesets();
+        this.reloadData();
       }
       this.calcExtentLayerVisibility();
+    });
+
+    this.HsCommonLaymanService.authChange.subscribe(() => {
+      this.reloadData();
     });
   }
 
   reloadData(): void {
+    this.resetList();
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
@@ -152,6 +157,9 @@ export class HsAddDataCatalogueService {
 
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
+          if (this.data.onlyMine && endpoint.type != 'layman') {
+            return;
+          }
           //TODO query only functional endpoints
           endpoint.datasourcePaging = {...this.paging};
 
