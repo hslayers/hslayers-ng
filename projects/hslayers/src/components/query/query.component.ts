@@ -95,8 +95,8 @@ export class HsQueryComponent {
     });
   }
   checkForBodyElements(docChildren: any): boolean {
-    return docChildren.some(
-      (ch) => ch.tagName != 'META' && ch.tagName != 'STYLE'
+    return Array.from(docChildren).some(
+      (ch: any) => ch.tagName != 'META' && ch.tagName != 'STYLE'
     );
   }
   showQueryDialog(ev) {
