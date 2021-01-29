@@ -2,6 +2,7 @@ import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
+import {getTitle, setTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
@@ -28,7 +29,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;
-    this.title = this.layer.get('title');
+    this.title = getTitle(this.layer);
     this.path = this.layer.get('path');
     this.endpoint = this.data.laymanEndpoint;
 
@@ -38,7 +39,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   }
 
   titleChanged(): void {
-    this.layer.set('title', this.title);
+    setTitle(this.layer, this.title);
   }
 
   confirm(): void {

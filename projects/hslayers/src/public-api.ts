@@ -40,3 +40,4 @@ export * from './components/styles/styler.service';
 export * from './common/log/log.module';
 export * from './common/log/log.service';
 export * from './common/layers/hs.source.SparqlJson';
+export * from './common/layer-extensions';

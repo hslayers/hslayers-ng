@@ -1,5 +1,6 @@
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {Layer} from 'ol/layer';
+import {getName, getTitle} from '../../common/layer-extensions';
 
 /**
  * Fix wrong wfs endpoint url if it doesnt run through layman client.
@@ -41,7 +42,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
  * @param layer Layr to get the name for
  */
 export function getLayerName(layer: Layer): string {
-  const layerName = layer.get('name') || layer.get('title');
+  const layerName = getName(layer) || getTitle(layer);
   if (layerName == undefined) {
     this.$log.warn('Layer title/name not set for', layer);
   }

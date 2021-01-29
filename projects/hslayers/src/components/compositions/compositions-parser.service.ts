@@ -11,6 +11,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {getTitle} from '../../common/layer-extensions';
 import {transform, transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
@@ -221,8 +222,8 @@ export class HsCompositionsParserService {
     if (obj.current_base_layer) {
       this.HsMapService.map.getLayers().forEach((lyr) => {
         if (
-          lyr.get('title') == obj.current_base_layer.title ||
-          lyr.get('title') == obj.current_base_layer
+          getTitle(lyr) == obj.current_base_layer.title ||
+          getTitle(lyr) == obj.current_base_layer
         ) {
           lyr.setVisible(true);
         }
@@ -445,7 +446,7 @@ export class HsCompositionsParserService {
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(
-          (l) => l.get('title') == lyr_def.title
+          (l) => getTitle(l) == lyr_def.title
         );
         if (existing != undefined) {
           existing.setZIndex(undefined);

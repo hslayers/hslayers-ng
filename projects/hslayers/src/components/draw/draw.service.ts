@@ -25,6 +25,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
+import {getName, getTitle} from '../../common/layer-extensions';
 
 type activateParams = {
   onDrawStart?;
@@ -34,6 +35,8 @@ type activateParams = {
   changeStyle?;
   drawState?: boolean;
 };
+
+const TMP_LAYER_TITLE = 'tmpDrawLayer';
 
 @Injectable({
   providedIn: 'root',
@@ -141,11 +144,11 @@ export class HsDrawService {
 
   selectedLayerString(): string {
     if (this.selectedLayer) {
-      return this.selectedLayer.get('title') == 'tmpDrawLayer'
+      const title = getTitle(this.selectedLayer);
+      return title == TMP_LAYER_TITLE
         ? this.HsLanguageService.getTranslation('DRAW.unsavedDrawing')
-        : this.HsLayerUtilsService.translateTitle(
-            this.selectedLayer.get('title')
-          ) || this.selectedLayer.get('name');
+        : this.HsLayerUtilsService.translateTitle(title) ||
+            getName(this.selectedLayer);
     } else {
       return this.HsLanguageService.getTranslation('DRAW.Select layer');
     }
@@ -155,7 +158,7 @@ export class HsDrawService {
     this.previouslySelected = this.selectedLayer;
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
 
-    const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer');
+    const tmpLayer = this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE);
     const tmpSource = tmpLayer ? tmpLayer.getSource() : new VectorSource();
 
     let i = 1;
@@ -192,7 +195,7 @@ export class HsDrawService {
       this.type = null;
       this.deactivateDrawing();
       const tmpLayer =
-        this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
+        this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;
       if (tmpLayer) {
         this.HsMapService.map.removeLayer(tmpLayer);
         this.tmpDrawLayer = false;
@@ -204,7 +207,7 @@ export class HsDrawService {
     //console.log(this.selectedLayer);
     if (this.drawableLayers.length == 0 && !this.tmpDrawLayer) {
       const drawLayer = new VectorLayer({
-        title: 'tmpDrawLayer',
+        title: TMP_LAYER_TITLE,
         source: new VectorSource(),
         show_in_manager: false,
         visible: true,
@@ -248,7 +251,7 @@ export class HsDrawService {
     if (lyr != this.selectedLayer) {
       if (
         this.selectedLayer &&
-        this.selectedLayer.get('title') == 'tmpDrawLayer'
+        getTitle(this.selectedLayer) == TMP_LAYER_TITLE
       ) {
         this.tmpDrawLayer = false;
         this.HsMapService.map.removeLayer(this.selectedLayer);
@@ -433,7 +436,9 @@ export class HsDrawService {
     } else if (drawables.length > 0) {
       if (
         !drawables.some(
-          (layer) => layer.get('title') == this.selectedLayer?.get('title')
+          (layer) =>
+            this.selectedLayer &&
+            getTitle(layer) == getTitle(this.selectedLayer)
         ) ||
         !this.selectedLayer
       ) {
@@ -478,7 +483,7 @@ export class HsDrawService {
       if (this.selectedLayer.get('definition')?.format == 'hs.format.WFS') {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
-      if (this.selectedLayer.get('title') == 'tmpDrawLayer') {
+      if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {
         this.tmpDrawLayer = false;
       }
       this.selectedLayer = null;

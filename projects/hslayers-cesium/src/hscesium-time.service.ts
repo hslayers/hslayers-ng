@@ -3,7 +3,7 @@ import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImage
 import knockout from 'cesium/Source/ThirdParty/knockout';
 import moment from 'moment';
 import {HsCesiumLayersService} from './hscesium-layers.service';
-import {HsEventBusService} from 'hslayers-ng';
+import {HsEventBusService, getTitle} from 'hslayers-ng';
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -92,7 +92,7 @@ export class HsCesiumTimeService {
       if (prmCache) {
         const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
         tmp.push({
-          name: this.HsCesiumLayersService.findOlLayer(layer).get('title'),
+          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer)),
           time: moment.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }

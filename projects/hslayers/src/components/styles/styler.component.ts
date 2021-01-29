@@ -11,6 +11,7 @@ import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {getTitle} from '../../common/layer-extensions';
 
 type StyleJson = {
   fill?: any;
@@ -424,7 +425,7 @@ export class HsStylerComponent {
 
     this.readCurrentStyle(this.HsStylerService.layer);
 
-    this.layerTitle = this.HsStylerService.layer.get('title');
+    this.layerTitle = getTitle(this.HsStylerService.layer);
   }
 
   readCurrentStyle(layer: VectorLayer): void {
