@@ -64,7 +64,7 @@
                 </ul>
             </div>
 
-            <div class="card-footer" *ngIf="HsAddDataCatalogueService.paging.matched != 0">
+            <div class="card-footer" *ngIf="HsAddDataCatalogueService.paging.matched > 20">
                 <ul class="pagination d-flex justify-content-center">
                     <li class="page-item" [ngClass]="{'disabled': HsAddDataCatalogueService.listStart == 0 }">
                         <a href="#" class="page-link" (click)="getPreviousRecords()"><span
