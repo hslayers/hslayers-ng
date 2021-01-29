@@ -26,7 +26,7 @@
                     </div>
                     <!-- Copyright -->
                     <div *ngIf="hasCopyright(currentLayer)">
-                        <a class="card-href" href="{{currentLayer.layer.get('Attribution').OnlineResource}}"
+                        <a class="card-href" href="{{getAttribution(currentLayer.layer).onlineResource}}"
                             target="_blank" [title]="'LAYERMANAGER.layerEditor.copyright' | translate">
                             {{'LAYERMANAGER.layerEditor.copyright' | translate}}</a>
                     </div>

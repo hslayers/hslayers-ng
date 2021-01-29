@@ -4,6 +4,22 @@ const TITLE = 'title';
 const NAME = 'name';
 const ABSTRACT = 'abstract';
 const ACTIVE = 'active';
+const ATTRIBUTION = 'attribution';
+const CAPABILITIES = 'capabilities';
+
+export type Attribution = {
+  onlineResource?: string;
+  title?: string;
+  logoUrl?: {
+    format?: string;
+    onlineResource?: string;
+  };
+  /**
+   * If set to true even if get capabilities receives some attribution,
+   * it will not be updated and existing hardcoded attribution will be used
+   */
+  locked?: boolean;
+};
 
 export function setTitle(layer: Layer, title: string): void {
   layer.set(TITLE, title);
@@ -37,6 +53,22 @@ export function getActive(group: Group): boolean {
   return group.get(ACTIVE);
 }
 
+export function setAttribution(layer: Layer, attribution: Attribution): void {
+  layer.set(ATTRIBUTION, attribution);
+}
+
+export function getAttribution(layer: Layer): Attribution {
+  return layer.get(ATTRIBUTION);
+}
+
+export function getCachedCapabilities(layer: Layer): any {
+  return layer.get(CAPABILITIES);
+}
+
+export function cacheCapabilities(layer: Layer, capabilities: any): void {
+  layer.set(CAPABILITIES, capabilities);
+}
+
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -46,4 +78,8 @@ export const HsLayerExt = {
   getAbstract,
   setActive,
   getActive,
+  setAttribution,
+  getAttribution,
+  getCachedCapabilities,
+  cacheCapabilities,
 };

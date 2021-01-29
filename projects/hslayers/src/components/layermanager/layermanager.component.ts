@@ -16,7 +16,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getActive} from '../../common/layer-extensions';
+import {getActive, getAttribution} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -199,21 +199,14 @@ export class HsLayerManagerComponent implements OnInit {
   }
 
   /**
-   * @function hasCopyright
-   * @memberOf hs.layermanager.controller
-   * @description Determines if layer has copyright information avaliable *
-   * @param {HsLayerDescriptor} layer Selected layer (HsLayerManagerService.currentLayer)
+   * Determines if layer has copyright information avaliable *
+   * @param layer Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.HsLayerManagerService.currentLayer) {
       return;
     } else {
-      if (layer.layer.get('Attribution')) {
-        const attr = layer.layer.get('Attribution');
-        return attr.OnlineResource ? true : false;
-      } else {
-        return false;
-      }
+      return getAttribution(layer.layer)?.onlineResource != undefined;
     }
   }
 
