@@ -16,6 +16,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -155,7 +156,7 @@ export class HsQueryBaseService {
           this.featureLayersUnderMouse = this.featureLayersUnderMouse.map(
             (l) => {
               const layer = {
-                title: l.get('title'),
+                title: getTitle(l),
                 layer: l,
                 features: this.featuresUnderMouse.filter(
                   (f) => this.HsMapService.getLayerForFeature(f) == l

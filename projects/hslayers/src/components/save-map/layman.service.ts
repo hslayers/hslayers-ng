@@ -16,6 +16,7 @@ import {
   tweakGeoserverUrl,
   wfsNotAvailable,
 } from './layman-utils';
+import {getTitle} from '../../common/layer-extensions';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -169,7 +170,7 @@ export class HsLaymanService implements HsSaverService {
       return;
     }
     const layerName = getLayerName(layer);
-    let layerTitle = layer.get('title');
+    let layerTitle = getTitle(layer);
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
 

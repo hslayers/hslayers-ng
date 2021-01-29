@@ -13,6 +13,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {Layer} from 'ol/layer';
+import {getTitle, setTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -368,10 +369,10 @@ export class HsLayerEditorComponent {
     layer.title = newLayerTitle;
     this.HsLayerEditorService.layerTitleChange.next({
       newTitle: newLayerTitle,
-      oldTitle: layer.get('title'),
+      oldTitle: getTitle(layer),
       layer,
     });
-    layer.set('title', newLayerTitle);
+    setTitle(layer, newLayerTitle);
     this.HsEventBusService.layerManagerUpdates.next();
   }
 
@@ -380,7 +381,7 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    return layer.get('title');
+    return getTitle(layer);
   }
 
   set abstract(newAbstract: string) {

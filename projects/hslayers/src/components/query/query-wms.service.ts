@@ -12,6 +12,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getName, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -142,7 +143,7 @@ export class HsQueryWmsService {
           const group = {
             name: 'Feature',
             attributes: doc.childNodes[1]['attributes'],
-            layer: layer.get('title') || layer.get('name'),
+            layer: getTitle(layer) || getName(layer),
             customInfoTemplate: customInfoTemplate,
           };
           if (customInfoTemplate) {
@@ -183,7 +184,7 @@ export class HsQueryWmsService {
       features = doc.querySelectorAll('featureMember');
     }
     for (const feature of features) {
-      const layerName = layer.get('title') || layer.get('name');
+      const layerName = getTitle(layer) || getName(layer);
       const layers = feature.getElementsByTagName('Layer');
       for (const fioLayer of layers) {
         const featureName = fioLayer.attributes[0].nodeValue;

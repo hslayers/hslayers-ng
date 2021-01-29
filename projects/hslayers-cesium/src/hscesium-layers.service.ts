@@ -19,13 +19,19 @@ import moment from 'moment';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
+import {
+  HsConfig,
+  HsEventBusService,
+  HsMapService,
+  HsUtilsService,
+  getTitle,
+} from 'hslayers-ng';
 import {ImageWMS, Source} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {OSM, TileWMS} from 'ol/source';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 import {default as proj4} from 'proj4';
-import { HsConfig, HsEventBusService, HsMapService, HsUtilsService } from 'hslayers-ng';
 /**
  * @param proxy.proxy
  * @param proxy
@@ -378,7 +384,7 @@ export class HsCesiumLayersService {
           this.viewer.dataSources
         ) {
           this.viewer.dataSources.add(<DataSource>cesium_layer);
-          if (lyr.get('title') != 'Point clicked') {
+          if (getTitle(lyr) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (<VectorLayer>lyr).getSource(),
               cesium_layer
@@ -433,7 +439,7 @@ export class HsCesiumLayersService {
         clampToGround: ol_lyr.getSource().get('clampToGround') || true,
       });
     } else {
-      const new_source = new GeoJsonDataSource(ol_lyr.get('title'));
+      const new_source = new GeoJsonDataSource(getTitle(ol_lyr));
       //link to cesium layer will be set also for OL layers source object, when this function returns.
       this.ol2CsMappings.push({olObject: ol_lyr, csObject: new_source});
       ol_lyr.on('change:visible', (e) => {

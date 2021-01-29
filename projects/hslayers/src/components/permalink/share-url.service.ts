@@ -12,6 +12,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {
@@ -66,7 +67,7 @@ export class HsShareUrlService {
         return;
       }
       if (lyr.getVisible()) {
-        visible_layers.push(lyr.get('title'));
+        visible_layers.push(getTitle(lyr));
       }
       if (lyr.get('manuallyAdded')) {
         added_layers.push(lyr);

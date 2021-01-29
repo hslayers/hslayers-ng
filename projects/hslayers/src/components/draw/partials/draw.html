@@ -37,7 +37,7 @@
                         <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' | translate}}</label>
                             <a class="dropdown-item"  *ngFor="let layer of HsDrawService.drawableLayers"
-                                (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(layer.get('title'))}}</a>
+                                (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer))}}</a>
                         </div>
                         <div class="d-flex align-items-center w-100 flex-column"
                             *ngIf="HsDrawService.drawableLaymanLayers.length > 0">

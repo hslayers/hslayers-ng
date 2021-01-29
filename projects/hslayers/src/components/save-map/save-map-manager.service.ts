@@ -12,6 +12,7 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -277,7 +278,7 @@ export class HsSaveMapManagerService {
       )
       .map((lyr) => {
         return {
-          title: lyr.get('title'),
+          title: getTitle(lyr),
           checked: true,
           layer: lyr,
         };

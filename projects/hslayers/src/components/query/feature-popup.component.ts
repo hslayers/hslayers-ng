@@ -9,6 +9,7 @@ import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-popup',
@@ -99,7 +100,7 @@ export class HsQueryFeaturePopupComponent {
       {
         message: this.HsLanguageService.getTranslation(
           'QUERY.reallyDeleteAllFeaturesFrom'
-        ).replace('{0}', layer.get('title')),
+        ).replace('{0}', getTitle(layer)),
         title: this.HsLanguageService.getTranslation('QUERY.confirmClear'),
       }
     );

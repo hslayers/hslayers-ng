@@ -21,6 +21,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
+import {getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -142,7 +143,7 @@ export class HsSaveMapService {
         lyr.getVisible()
       ) {
         current_base_layer = {
-          title: lyr.get('title'),
+          title: getTitle(lyr),
         };
       }
     }
@@ -315,8 +316,8 @@ export class HsSaveMapService {
     json.visibility = layer.getVisible();
     json.opacity = layer.getOpacity();
     json.base = layer.get('base');
-    json.title = layer.get('title');
-    if (layer.get('title') == undefined) {
+    json.title = getTitle(layer);
+    if (getTitle(layer) == undefined) {
       this.HsLogService.warn('Layer title undefined', layer);
     }
     //json.index = layer.map.getLayerIndex(layer);

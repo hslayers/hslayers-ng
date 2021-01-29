@@ -1,12 +1,9 @@
 import {Component} from '@angular/core';
 
-import Vector from 'ol/source/Vector';
-import VectorLayer from 'ol/layer/Vector';
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-
 import {HsDrawService} from './draw.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-toolbar',
@@ -16,6 +13,7 @@ export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
   drawTypeExpanded = false;
+  getTitle = getTitle;
 
   constructor(
     public HsDrawService: HsDrawService,
@@ -36,7 +34,7 @@ export class HsDrawToolbarComponent {
     if (!this.drawToolbarExpanded) {
       this.HsDrawService.stopDrawing();
     }
-    this.HsDrawService.fillDrawableLayers()
+    this.HsDrawService.fillDrawableLayers();
   }
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);

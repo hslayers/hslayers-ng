@@ -7,6 +7,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 
 type FeatureDescriptor = {
   name: string;
@@ -59,7 +60,7 @@ export class HsFeatureTableService {
    */
   wrapLayer(layer: Layer): any {
     return {
-      title: layer.get('title'),
+      title: getTitle(layer),
       lyr: layer,
       type: 'vector',
     };

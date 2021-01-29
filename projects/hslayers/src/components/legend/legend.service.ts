@@ -9,6 +9,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -337,7 +338,7 @@ export class HsLegendService {
         );
       }
       return {
-        title: layer.get('title'),
+        title: getTitle(layer),
         lyr: layer,
         type: 'wms',
         subLayerLegends: subLayerLegends,
@@ -349,7 +350,7 @@ export class HsLegendService {
         layer.get('show_in_manager') == true)
     ) {
       return {
-        title: layer.get('title'),
+        title: getTitle(layer),
         lyr: layer,
         type: 'vector',
         visible: layer.getVisible(),
@@ -359,14 +360,14 @@ export class HsLegendService {
       this.HsUtilsService.instOf(layer.getSource(), Static)
     ) {
       return {
-        title: layer.get('title'),
+        title: getTitle(layer),
         lyr: layer,
         type: 'static',
         visible: layer.getVisible(),
       };
     } else if (this.HsUtilsService.instOf(layer.getSource(), XYZ)) {
       return {
-        title: layer.get('title'),
+        title: getTitle(layer),
         lyr: layer,
         type: 'static',
         visible: layer.getVisible(),

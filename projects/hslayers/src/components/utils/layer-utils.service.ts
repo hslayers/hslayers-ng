@@ -14,6 +14,7 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
+import {getName, getTitle} from '../../common/layer-extensions';
 import {isEmpty} from 'ol/extent';
 
 @Injectable()
@@ -109,8 +110,8 @@ export class HsLayerUtilsService {
    * @description Get title of selected layer
    */
   getLayerTitle(layer: Layer): string {
-    if (layer.get('title') !== undefined && layer.get('title') != '') {
-      return layer.get('title').replace(/&#47;/g, '/');
+    if (getTitle(layer) !== undefined && getTitle(layer) != '') {
+      return getTitle(layer).replace(/&#47;/g, '/');
     } else {
       return 'Void';
     }
@@ -207,7 +208,7 @@ export class HsLayerUtilsService {
    * @description Test if layer is has a title
    */
   hasLayerTitle(layer: Layer): boolean {
-    return layer.get('title') !== undefined && layer.get('title') !== '';
+    return getTitle(layer) !== undefined && getTitle(layer) !== '';
   }
 
   /**
@@ -244,7 +245,7 @@ export class HsLayerUtilsService {
     ) {
       return '';
     } else {
-      const layerName = layer.get('title') || layer.get('name');
+      const layerName = getTitle(layer) || getName(layer);
       return layerName;
     }
   }

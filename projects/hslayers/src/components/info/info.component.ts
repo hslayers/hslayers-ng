@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsUtilsService} from './../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 /**
  * @memberof hs.info
  * @ngdoc component
@@ -95,14 +96,14 @@ export class HsInfoComponent {
       this.composition_edited = false;
     });
     this.HsEventBusService.layerLoadings.subscribe((layer) => {
-      if (!(layer.get('title') in this.layer_loading)) {
-        this.layer_loading.push(layer.get('title'));
+      if (!(getTitle(layer) in this.layer_loading)) {
+        this.layer_loading.push(getTitle(layer));
       }
       this.composition_loaded = false;
     });
     this.HsEventBusService.layerLoads.subscribe((layer) => {
       for (let i = 0; i < this.layer_loading.length; i++) {
-        if (this.layer_loading[i] == layer.get('title')) {
+        if (this.layer_loading[i] == getTitle(layer)) {
           this.layer_loading.splice(i, 1);
         }
       }

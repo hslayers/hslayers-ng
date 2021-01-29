@@ -46,6 +46,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -425,7 +426,7 @@ export class HsMapService {
     const layers = this.map.getLayers().getArray();
     let tmp = null;
     for (const layer of layers) {
-      if (layer.get('title') == title) {
+      if (getTitle(layer) == title) {
         tmp = layer;
       }
     }
@@ -452,14 +453,12 @@ export class HsMapService {
     }
     const existingSource = existingLayers.getSource();
     const newSource = newLayer.getSource();
-    const existingTitle = existingLayers.get('title');
-    const newTitle = newLayer.get('title');
+    const existingTitle = getTitle(existingLayers);
+    const newTitle = getTitle(newLayer);
     const existingSourceType = typeof existingSource;
     const newSourceType = typeof newSource;
     const existingLAYERS =
-      existingSource.getParams == null
-        ? ''
-        : existingSource.getParams().LAYERS;
+      existingSource.getParams == null ? '' : existingSource.getParams().LAYERS;
     const newLAYERS =
       newSource.getParams == null ? '' : newSource.getParams().LAYERS;
     const existingUrl =
@@ -723,7 +722,7 @@ export class HsMapService {
    */
   layerTitleInArray(lyr, array) {
     if (array) {
-      return array.filter((title) => title == lyr.get('title')).length > 0;
+      return array.filter((title) => title == getTitle(lyr)).length > 0;
     }
     return lyr.getVisible();
   }
