@@ -17,6 +17,7 @@
 
     <span class="hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="HsLayoutService.setMainPanel('sidebar')" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">
         <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"></i>
+        <span class="hs-sidebar-item-title">{{HsSidebarService.getButtonTitle(HsSidebarService.miniSidebarButton)}}</span>
     </span>
     <hs-impressum class="mt-auto"></hs-impressum>
 </div>

@@ -588,7 +588,8 @@
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
       "SEARCH": "Meklēt atrašanās vietu",
       "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus"
-    }
+    },
+    "additionalPanels": "Papildu paneļi"
   },
   "STYLER": {
     "features": "Objekti",

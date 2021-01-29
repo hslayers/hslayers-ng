@@ -588,7 +588,8 @@
       "SAVECOMPOSITION": "Save content of map to composition",
       "SEARCH": "Search for location",
       "TRIP_PLANNER": "Create new trip routes"
-    }
+    },
+    "additionalPanels": "Additional panels"
   },
   "STYLER": {
     "features": "Features",
