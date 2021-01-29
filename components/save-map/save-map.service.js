@@ -506,10 +506,11 @@ export default function (
         }
       }
     },
-  };
 
-  if (HsConfig.saveMapStateOnReload) {
-    $window.addEventListener('beforeunload', (event) => {
+    /**
+     * @private
+     */
+    save2storage(evt) {
       const data = {};
       const layers = [];
       angular.forEach(HsMapService.map.getLayers(), (layer) => {
@@ -519,9 +520,18 @@ export default function (
         }
       });
       data.layers = layers;
-      // Do not setItem when loading something on URL, only on page reload
+      //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
+      // but remove it if leaving the site for good
       localStorage.setItem('hs_layers', angular.toJson(data));
-    });
+    },
+  };
+
+  // Set saveMapStateOnReload=true as default value
+  if (HsConfig.saveMapStateOnReload === undefined) {
+    HsConfig.saveMapStateOnReload = true;
+  }
+  if (HsConfig.saveMapStateOnReload) {
+    $window.addEventListener('beforeunload', me.save2storage);
   }
   return me;
 }
