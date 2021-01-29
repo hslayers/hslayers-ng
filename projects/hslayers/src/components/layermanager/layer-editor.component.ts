@@ -15,6 +15,7 @@ import {HsStylerService} from '../styles/styler.service';
 import {Layer} from 'ol/layer';
 import {
   getAbstract,
+  getAttribution,
   getTitle,
   setAbstract,
   setTitle,
@@ -30,6 +31,7 @@ export class HsLayerEditorComponent {
     value: 40,
   };
   layer_renamer_visible = false;
+  getAttribution = getAttribution;
 
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -234,21 +236,14 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function hasCopyright
-   * @memberOf HsLayerEditorComponent
-   * @description Determines if layer has copyright information avaliable *
-   * @param {HsLayerDescriptor} layer Selected layer (HsLayerManagerService.currentLayer)
+   * Determines if layer has copyright information avaliable *
+   * @param layer Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.currentLayer) {
       return;
     } else {
-      if (layer.layer.get('Attribution')) {
-        const attr = layer.layer.get('Attribution');
-        return attr.OnlineResource ? true : false;
-      } else {
-        return false;
-      }
+      return getAttribution(layer.layer)?.onlineResource != undefined;
     }
   }
 

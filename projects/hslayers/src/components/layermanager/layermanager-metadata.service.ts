@@ -2,6 +2,13 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
+import {
+  Attribution,
+  cacheCapabilities,
+  getAttribution,
+  getCachedCapabilities,
+  setAttribution,
+} from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
@@ -129,7 +136,6 @@ export class HsLayerManagerMetadataService {
     fromSublayerParam: boolean
   ): void {
     const layerObject = []; //array of layer objects representing added layer
-
     if (layer_name.includes(',')) {
       const layers = [];
       const legends = [];
@@ -159,10 +165,11 @@ export class HsLayerManagerMetadataService {
           layerObject[i]
         );
       }
-      if (!layer.paramsSet) {
-        layer.setProperties(layerObject[0]);
-        layer.paramsSet = true;
+      if (getCachedCapabilities(layer) == undefined) {
+        cacheCapabilities(layer, layerObject[0]);
+        layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
       }
+
       this.setOrUpdate(layer, 'Layer', layers);
       this.setOrUpdate(layer, 'Legends', legends);
       this.setOrUpdate(layer, 'MetadataURL', {
@@ -174,10 +181,10 @@ export class HsLayerManagerMetadataService {
         layer_name,
         caps.Capability.Layer
       );
-
-      if (!layer.paramsSet) {
-        layer.setProperties(layerObject[0]);
-        layer.paramsSet = true;
+      if (getCachedCapabilities(layer) == undefined) {
+        cacheCapabilities(layer, layerObject[0]);
+        layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
+        this.parseAttribution(layer, layerObject[0]);
       }
       if (layerObject[0].Style) {
         layer.set(
@@ -194,6 +201,24 @@ export class HsLayerManagerMetadataService {
         this.setOrUpdate(layer, 'Layer', layerObject);
       }
     }
+  }
+
+  parseAttribution(layer: Layer, caps: any) {
+    if (getAttribution(layer)?.locked) {
+      return;
+    }
+    const attr = caps.Attribution;
+    const parsedAttribution: Attribution = {
+      title: attr.Title,
+      onlineResource: attr.OnlineResource,
+      logoUrl: attr.LogoURL
+        ? {
+            format: attr.LogoURL.Format,
+            onlineResource: attr.LogoURL.OnlineResource,
+          }
+        : undefined,
+    };
+    setAttribution(layer, parsedAttribution);
   }
 
   /**
@@ -232,12 +257,6 @@ export class HsLayerManagerMetadataService {
             src.updateParams(params);
           }
 
-          //prioritize config values
-          if (layer.get('Copyright')) {
-            layer.set('Attribution', {
-              'OnlineResource': layer.get('Copyright'),
-            });
-          }
           if (layer.get('Metadata')) {
             layer.set('MetadataURL', metadata);
             return layer;
@@ -280,13 +299,9 @@ export class HsLayerManagerMetadataService {
           const parser = new WMTSCapabilities();
           const caps = parser.read(capabilities_xml);
           layer.setProperties(caps);
-          if (layer.get('Copyright')) {
-            layer.set('Attribution', {
-              'OnlineResource': layer.get('Copyright'),
-            });
-          } else {
-            layer.set('Attribution', {
-              'OnlineResource': caps.ServiceProvider.ProviderSite,
+          if (!getAttribution(layer)?.locked) {
+            setAttribution(layer, {
+              onlineResource: caps.ServiceProvider.ProviderSite,
             });
           }
           if (layer.get('Metadata')) {
@@ -312,13 +327,9 @@ export class HsLayerManagerMetadataService {
               'application/xml'
             );
             const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
-            if (layer.get('Copyright')) {
-              layer.set('Attribution', {
-                'OnlineResource': layer.get('Copyright'),
-              });
-            } else {
-              layer.set('Attribution', {
-                'OnlineResource': el[0].getAttribute('xlink:href'),
+            if (!getAttribution(layer)?.locked) {
+              setAttribution(layer, {
+                onlineResource: el[0].getAttribute('xlink:href')
               });
             }
             return true;
