@@ -190,7 +190,6 @@ export class HsAddDataCatalogueService {
             this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
           }
         }
-        console.log(endpoint.datasourcePaging.matched)
 
         if (endpoint.datasourcePaging?.matched) {
           lastRequestMatched += endpoint.datasourcePaging.matched;
