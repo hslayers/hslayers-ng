@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';

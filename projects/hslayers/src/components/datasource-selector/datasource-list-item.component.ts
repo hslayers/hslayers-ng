@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input} from '@angular/core';
 
 import {HsConfig} from '../../config.service';
@@ -108,14 +107,10 @@ export class HsDatasourceListItemComponent {
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
 
-    this.hsDialogContainerService.create(
-      HsDatasourcesMetadataDialogComponent,
-      {
-        selectedLayer: this.selected_layer,
-        selectedDS: this.selected_ds,
-      }
-    );
-  
+    this.hsDialogContainerService.create(HsDatasourcesMetadataDialogComponent, {
+      selectedLayer: this.selected_layer,
+      selectedDS: this.selected_ds,
+    });
   }
 
   /**
