@@ -28,6 +28,10 @@ export class HsSidebarService {
   unimportantExist = false;
   visibleButtons: Array<HsButton> = [];
   showUnimportant: boolean;
+  miniSidebarButton = {
+    title: () =>
+      this.HsLanguageService.getTranslation('SIDEBAR.additionalPanels'),
+  };
 
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -58,6 +62,7 @@ export class HsSidebarService {
         panel: 'layermanager',
         module: 'hs.layermanager',
         order: 0,
+        fits: true,
         title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.LM'),
         description: () =>
           this.HsLanguageService.getTranslation('SIDEBAR.descriptions.LM'),
@@ -67,6 +72,7 @@ export class HsSidebarService {
         panel: 'legend',
         module: 'hs.legend',
         order: 1,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.LEGEND'),
         description: () =>
@@ -77,6 +83,7 @@ export class HsSidebarService {
         panel: 'info',
         module: 'hs.query',
         order: 7,
+        fits: true,
         title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.INFO'),
         description: () =>
           this.HsLanguageService.getTranslation('SIDEBAR.descriptions.INFO'),
@@ -86,6 +93,7 @@ export class HsSidebarService {
         panel: 'composition_browser',
         module: 'hs.compositions',
         order: 3,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.MAPCOMPOSITIONS'),
         description: () =>
@@ -98,6 +106,7 @@ export class HsSidebarService {
         panel: 'addData',
         module: 'hs.addData',
         order: 4,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.ADDLAYERS'),
         description: () =>
@@ -110,6 +119,7 @@ export class HsSidebarService {
         panel: 'feature_crossfilter',
         module: 'hs.feature_crossfilter.controller',
         order: 5,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.FILTERFEATURES'),
         description: () =>
@@ -122,6 +132,7 @@ export class HsSidebarService {
         panel: 'sensors',
         module: 'hs.sensors',
         order: 6,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.SENSORS'),
         description: '',
@@ -131,6 +142,7 @@ export class HsSidebarService {
         panel: 'measure',
         module: 'hs.measure',
         order: 2,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.MEASURE'),
         description: () =>
@@ -142,6 +154,7 @@ export class HsSidebarService {
         panel: 'print',
         module: 'hs.print',
         order: 10,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.PRINT'),
         description: () =>
@@ -152,6 +165,7 @@ export class HsSidebarService {
         panel: 'permalink',
         module: 'hs.permalink',
         order: 11,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.PERMALINK'),
         description: () =>
@@ -164,6 +178,7 @@ export class HsSidebarService {
         panel: 'saveMap',
         module: 'hs.save-map',
         order: 12,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.SAVECOMPOSITION'),
         description: () =>
@@ -176,6 +191,7 @@ export class HsSidebarService {
         panel: 'language',
         module: 'hs.language',
         order: 13,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.LANGUAGE'),
         description: () =>
@@ -190,6 +206,7 @@ export class HsSidebarService {
         panel: 'feature_table',
         module: 'hs.feature-table',
         order: 14,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.FEATURE_TABLE'),
         description: () =>
@@ -198,24 +215,26 @@ export class HsSidebarService {
           ),
         icon: 'icon-indexmanager',
       },
-      {
-        panel: 'mobile_settings',
-        module: 'hs.mobile_settings.controller',
-        order: 14,
-        title: () =>
-          this.HsLanguageService.getTranslation(
-            'PANEL_HEADER.APPLICATIONSETTINGS'
-          ),
-        description: () =>
-          this.HsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.APPLICATIONSETTINGS'
-          ),
-        icon: 'icon-settingsandroid',
-      },
+      // {
+      //   panel: 'mobile_settings',
+      //   module: 'hs.mobile_settings.controller',
+      //   order: 14,
+      //   fits: true,
+      //   title: () =>
+      //     this.HsLanguageService.getTranslation(
+      //       'PANEL_HEADER.APPLICATIONSETTINGS'
+      //     ),
+      //   description: () =>
+      //     this.HsLanguageService.getTranslation(
+      //       'SIDEBAR.descriptions.APPLICATIONSETTINGS'
+      //     ),
+      //   icon: 'icon-settingsandroid',
+      // },
       {
         panel: 'search',
         module: 'hs.search',
         order: 15,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.SEARCH'),
         description: () =>
@@ -226,6 +245,7 @@ export class HsSidebarService {
         panel: 'draw',
         module: 'hs.draw',
         order: 16,
+        fits: true,
         title: () => this.HsLanguageService.getTranslation('PANEL_HEADER.DRAW'),
         description: () =>
           this.HsLanguageService.getTranslation('SIDEBAR.descriptions.DRAW'),
@@ -235,6 +255,7 @@ export class HsSidebarService {
         panel: 'tripPlanner',
         module: 'hs.trip_planner',
         order: 17,
+        fits: true,
         title: () =>
           this.HsLanguageService.getTranslation('PANEL_HEADER.TRIP_PLANNER'),
         description: () =>
@@ -257,12 +278,12 @@ export class HsSidebarService {
     });
 
     this.HsEventBusService.layoutResizes.subscribe(() => {
-      this.setFitState();
+      this.setButtonVisibility();
     });
   }
 
-  setFitState() {
-    console.log('fits')
+  setButtonVisibility() {
+    console.log('fits');
     for (const button of this.buttons) {
       const fits = this.fitsSidebar(button.panel);
       button.fits = fits ? false : true;
@@ -366,11 +387,13 @@ export class HsSidebarService {
   fitsSidebar(which: HsButton): boolean {
     const dimensionToCheck =
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
+
+    const maxNumberofButtons = Math.floor(
+      this.HsLayoutService.layoutElement[dimensionToCheck] / 60
+    );
     if (
-      this.visibleButtons.indexOf(which) + 1 >=
-        this.HsLayoutService.layoutElement[dimensionToCheck] / 60 &&
-      this.HsLayoutService.layoutElement[dimensionToCheck] / 60 <=
-        this.visibleButtons.length - 1
+      this.visibleButtons.indexOf(which) + 1 >= maxNumberofButtons &&
+      maxNumberofButtons <= this.visibleButtons.length - 1
     ) {
       this.HsLayoutService.minisidebar = true;
       return true;

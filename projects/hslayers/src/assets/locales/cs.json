@@ -588,7 +588,8 @@
       "SAVECOMPOSITION": "Uložit obsah mapy do kompozice",
       "SEARCH": "Vyhledat místo",
       "TRIP_PLANNER": "Vytvořit novou trasu výletu"
-    }
+    },
+    "additionalPanels": "Další panely"
   },
   "STYLER": {
     "features": "Prvky",

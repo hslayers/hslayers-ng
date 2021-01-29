@@ -35,7 +35,7 @@ export class HsSidebarComponent implements OnInit {
     });
     this.HsSidebarService.sidebarLoad.next();
 
-    this.HsSidebarService.setFitState();
+    this.HsSidebarService.setButtonVisibility();
   }
 
   /**
