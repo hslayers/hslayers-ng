@@ -74,8 +74,16 @@ export class HsLayoutComponent implements AfterViewInit {
         'Main element (#hs-app) needs display property to be defined...fallback value added'
       );
     }
-    if (hsapp.style.height == 0) {
-      hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+
+    //In case the app height is not set on hslayers element in tihs moment height is determined by
+    //the main panel height which vary frin 0 if no mainpanel is set to 90 or even 208 in some cases . 
+    //Value of 300 or less /would mean that height is not set we need do something
+    if (hsapp.clientHeight < 300) {
+      hsapp.style.height = '100%';
+      //If its still the same, height is not even set on parents of hslayers elemnt - we want fullscreen app
+      if(hsapp.clientHeight < 300){
+        hsapp.style.height = 'calc(var(--vh, 1vh) * 100)';
+      }
       console.warn(
         'Main element (#hs-app) needs height property to be defined...fallback value added'
       );

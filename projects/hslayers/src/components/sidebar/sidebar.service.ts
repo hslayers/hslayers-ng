@@ -28,6 +28,7 @@ export class HsSidebarService {
   unimportantExist = false;
   visibleButtons: Array<HsButton> = [];
   showUnimportant: boolean;
+
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
@@ -254,6 +255,18 @@ export class HsSidebarService {
         this.HsCoreService.updateMapSize();
       }, 550);
     });
+
+    this.HsEventBusService.layoutResizes.subscribe(() => {
+      this.setFitState();
+    });
+  }
+
+  setFitState() {
+    console.log('fits')
+    for (const button of this.buttons) {
+      const fits = this.fitsSidebar(button.panel);
+      button.fits = fits ? false : true;
+    }
   }
 
   getButtonTitle(button): any {
@@ -351,25 +364,22 @@ export class HsSidebarService {
    * @description Toggles minisidebar button
    */
   fitsSidebar(which: HsButton): boolean {
-    if (window.innerWidth > 767) {
-      this.HsLayoutService.minisidebar = false;
+    const dimensionToCheck =
+      window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
+    if (
+      this.visibleButtons.indexOf(which) + 1 >=
+        this.HsLayoutService.layoutElement[dimensionToCheck] / 60 &&
+      this.HsLayoutService.layoutElement[dimensionToCheck] / 60 <=
+        this.visibleButtons.length - 1
+    ) {
+      this.HsLayoutService.minisidebar = true;
       return true;
-    } else {
-      if (
-        this.visibleButtons.indexOf(which) + 1 >=
-          this.HsLayoutService.layoutElement.clientWidth / 60 &&
-        this.HsLayoutService.layoutElement.clientWidth / 60 <=
-          this.visibleButtons.length - 1
-      ) {
-        this.HsLayoutService.minisidebar = true;
-        return true;
-      }
-      if (
-        this.HsLayoutService.layoutElement.clientWidth >
-        (this.visibleButtons.length - 1) * 60
-      ) {
-        this.HsLayoutService.minisidebar = false;
-      }
+    }
+    if (
+      this.HsLayoutService.layoutElement[dimensionToCheck] >
+      (this.visibleButtons.length - 1) * 60
+    ) {
+      this.HsLayoutService.minisidebar = false;
     }
   }
 }

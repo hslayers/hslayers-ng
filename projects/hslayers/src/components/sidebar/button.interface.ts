@@ -1,4 +1,5 @@
 export interface HsButton {
+  fits: boolean;
   panel?;
   module?: string;
   order?: number;
