@@ -15,6 +15,15 @@ $sidebar-item-active: #007bff !default;
 
 @import "~ol/ol";
 
+.hsl,
+.hsl::before,
+.hsl::after,
+.hsl *
+.hsl *::before,
+.hsl *::after {
+  all: revert;
+}
+
 .hsl{
 
 

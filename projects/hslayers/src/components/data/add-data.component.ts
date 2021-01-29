@@ -9,7 +9,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 
 @Component({
   selector: 'hs-add-data',
-  templateUrl: './add-data.directive.html',
+  templateUrl: './add-data.component.html',
 })
 export class HsAddDataComponent {
   types: any[];
