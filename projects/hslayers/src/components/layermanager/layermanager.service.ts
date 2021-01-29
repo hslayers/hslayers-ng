@@ -26,6 +26,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getAbstract} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -173,8 +174,8 @@ export class HsLayerManagerService {
      */
     const new_layer: any = {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
-      abstract: layer.get('abstract'),
-      layer: layer,
+      abstract: getAbstract(layer),
+      layer,
       grayed: !this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       position: layer.get('position'),

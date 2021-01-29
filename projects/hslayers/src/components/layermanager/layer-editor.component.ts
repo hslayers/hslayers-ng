@@ -13,7 +13,12 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from '../styles/styler.service';
 import {Layer} from 'ol/layer';
-import {getTitle, setTitle} from '../../common/layer-extensions';
+import {
+  getAbstract,
+  getTitle,
+  setAbstract,
+  setTitle,
+} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -389,7 +394,7 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    layer.set('abstract', newAbstract);
+    setAbstract(layer, newAbstract);
   }
 
   get abstract(): string {
@@ -397,7 +402,7 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    return layer.get('abstract');
+    return getAbstract(layer);
   }
 
   hasSubLayers(): boolean | undefined {
