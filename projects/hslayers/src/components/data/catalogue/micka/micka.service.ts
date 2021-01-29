@@ -127,8 +127,8 @@ export class HsMickaBrowserService {
     dataset.loading = false;
     dataset.layers = [];
     dataset.datasourcePaging.loaded = true;
-    if (data.records === null) {
-      dataset.datasourcePaging.matched == 0;
+    if (data.records.length == 0) {
+      dataset.datasourcePaging.matched = 0;
     } else {
       dataset.datasourcePaging.matched = data.matched;
 

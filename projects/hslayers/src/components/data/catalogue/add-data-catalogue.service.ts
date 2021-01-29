@@ -164,11 +164,11 @@ export class HsAddDataCatalogueService {
             const promise = this.queryCatalog(endpoint);
             observables.push(promise);
 
-            this.catalogQuery = forkJoin(observables).subscribe(() => {
-              this.createLayerList();
-            });
           }
         }
+        this.catalogQuery = forkJoin(observables).subscribe(() => {
+          this.createLayerList();
+        });
       });
     }
   }
@@ -190,6 +190,8 @@ export class HsAddDataCatalogueService {
             this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
           }
         }
+        console.log(endpoint.datasourcePaging.matched)
+
         if (endpoint.datasourcePaging?.matched) {
           lastRequestMatched += endpoint.datasourcePaging.matched;
         }
