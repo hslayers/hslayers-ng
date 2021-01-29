@@ -26,7 +26,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getAbstract} from '../../common/layer-extensions';
+import {getAbstract, getActive, setActive} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -464,13 +464,9 @@ export class HsLayerManagerService {
   }
 
   /**
-   * (PRIVATE)
-   *
-   * @function boxLayersInit
-   * @memberOf HsLayermanagerService
-   * @description Initilaze box layers and their starting active state
+   * Initilaze box layers and their starting active state
    */
-  boxLayersInit(): void {
+  private boxLayersInit(): void {
     if (this.HsConfig.box_layers != undefined) {
       this.data.box_layers = this.HsConfig.box_layers;
       for (const box of this.data.box_layers) {
@@ -483,7 +479,7 @@ export class HsLayerManagerService {
             visible = true;
           }
         }
-        box.set('active', baseVisible ? baseVisible : visible);
+        setActive(box, baseVisible ? baseVisible : visible);
       }
     }
   }
@@ -632,17 +628,15 @@ export class HsLayerManagerService {
   }
 
   /**
-   * @function activateTheme
-   * @memberOf HsLayermanagerService
-   * @description Show all layers of particular layer group (when groups are defined)
-   * @param {Group} theme Group layer to activate
+   * Show all layers of particular layer group (when groups are defined)
+   * @param theme Group layer to activate
    */
   activateTheme(theme: Group): void {
     let switchOn = true;
-    if (theme.get('active') == true) {
+    if (getActive(theme) == true) {
       switchOn = false;
     }
-    theme.set('active', switchOn);
+    setActive(theme, switchOn);
     let baseSwitched = false;
     theme.setVisible(switchOn);
     for (const layer of theme.get('layers')) {
