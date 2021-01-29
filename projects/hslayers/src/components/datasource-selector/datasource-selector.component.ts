@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component} from '@angular/core';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
@@ -9,7 +8,6 @@ import {HsDatasourcesService} from './datasource-selector.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
 
 @Component({
   selector: 'hs-datasource-selector',
