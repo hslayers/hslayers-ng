@@ -68,7 +68,6 @@ export class HsLaymanBrowserService {
       dataset.datasourcePaging.matched = 0;
     } else {
       dataset.datasourcePaging.matched = data.length;
-      console.log(dataset.datasourcePaging.matched)
       dataset.layers = data.map((layer) => {
         return {
           title: layer.title,
