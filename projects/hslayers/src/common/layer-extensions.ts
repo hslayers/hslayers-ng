@@ -1,8 +1,9 @@
-import Layer from 'ol/layer/Layer';
+import {Group, Layer} from 'ol/layer';
 
 const TITLE = 'title';
 const NAME = 'name';
-const ABSTRACT = 'name';
+const ABSTRACT = 'abstract';
+const ACTIVE = 'active';
 
 export function setTitle(layer: Layer, title: string): void {
   layer.set(TITLE, title);
@@ -28,6 +29,14 @@ export function getAbstract(layer: Layer): string {
   return layer.get(ABSTRACT);
 }
 
+export function setActive(group: Group, active: boolean): void {
+  group.set(ACTIVE, active);
+}
+
+export function getActive(group: Group): boolean {
+  return group.get(ACTIVE);
+}
+
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -35,4 +44,6 @@ export const HsLayerExt = {
   getName,
   setAbstract,
   getAbstract,
+  setActive,
+  getActive,
 };
