@@ -98,7 +98,7 @@ export class HsCoreService {
         function () {
           this.updateVH();
           this.updateMapSize();
-        },
+          this.HsEventBusService.layoutResizes.next();        },
         300,
         false,
         this

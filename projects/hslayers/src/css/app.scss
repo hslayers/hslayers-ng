@@ -725,7 +725,7 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 	height: 100%;
 }
 
-.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) .hs-sidebar-list {
+.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
 	width: 48px;
 }
 
@@ -1035,6 +1035,33 @@ div.hs-info-composition-edited {
 	font-size: x-large !important;
 }
 
+
+hs-sidebar .hs-sidebar-item.hs-panel-hidden {
+	display: none !important;
+}
+hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden){
+	display: none !important;
+}
+
+hs-mini-sidebar .hs-sidebar-list {
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	margin: auto;
+}
+hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+}
+hs-mini-sidebar .hs-sidebar-item-title {
+	display: block !important;
+	margin: 0;
+	font-size: 10px;
+}
+
 /**********************************/
 /** SIDEBAR&TOOLBAR RESPONSIVITY **/
 /**********************************/
@@ -1080,6 +1107,7 @@ div.hs-info-composition-edited {
 	.hs-sb-bottom .hs-ol-map {
 		width: 100% !important;
 	}
+
 	/* Next is needed on iPhone/Safari even if the position gets 
 	overridden with 'relative' afterwards. Without 'absolute' here the 
 	map doesn't display - height stays 0px. */
@@ -1120,13 +1148,13 @@ div.hs-info-composition-edited {
 		white-space: normal;
 	}
 
-	.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) .hs-sidebar-list {
+	.hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
 		width: 100%;
 	}
 	div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper{
 		width: 100%;
 	}
-	.hs-content-wrapper div.hs-panelspace:not(.labels) .hs-sidebar-list {
+	.hs-content-wrapper div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
 		width: 100%;
 	}
 
@@ -1157,11 +1185,7 @@ div.hs-info-composition-edited {
 		flex-wrap: wrap;
 		margin: auto;
 	}
-	hs-mini-sidebar .hs-sidebar-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
+	hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
 		width: 25%;
 		height: 80px;
 	}

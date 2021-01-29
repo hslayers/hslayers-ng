@@ -4,7 +4,7 @@
     </span>
 
     <span *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'" class="hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))" (click)="HsSidebarService.buttonClicked(button)"
-        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : HsSidebarService.fitsSidebar(button.panel)}" title="{{HsSidebarService.getButtonDescription(button)}}">
+        [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : !button.fits}" title="{{HsSidebarService.getButtonDescription(button)}}">
 
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{HsSidebarService.getButtonDescription(button)}}">{{button.content()}}</span>
