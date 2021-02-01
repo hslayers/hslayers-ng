@@ -10,7 +10,7 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Observable, Subscription, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -150,14 +150,12 @@ export class HsCompositionsMickaService {
         responseType: 'json',
       })
       .pipe(
-        timeout(1000),
         map((response: any) => {
           const ep = this.compositionsReceived(endpoint, extentLayer, response);
           return ep;
         }),
         catchError((e) => {
           this.HsLogService.error(e);
-          endpoint.datasourcePaging.loaded = true;
           return of(e);
         })
       );

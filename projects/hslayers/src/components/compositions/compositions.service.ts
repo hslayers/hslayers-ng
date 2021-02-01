@@ -75,10 +75,8 @@ export class HsCompositionsService {
     });
   }
 
-  loadCompositions(ds, params, keepExtentLayer?: boolean): Observable<any> {
-    if (keepExtentLayer === undefined || !keepExtentLayer) {
-      this.HsCompositionsMapService.clearExtentLayer();
-    }
+  loadCompositions(ds, params): Observable<any> {
+    this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
     const Observable = this.managerByType(ds).loadList(ds, params, bbox);
     return Observable;

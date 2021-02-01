@@ -25,8 +25,8 @@ export class HsCompostionsListItemComponent {
 
   /**
    * @function openComposition
-   * @description Load selected composition
-   * @param {object} composition Selected composition
+   * Load selected composition
+   * @param composition Selected composition
    */
   openComposition(composition): void {
     this.HsCompositionsService.loadCompositionParser(composition)
@@ -40,9 +40,8 @@ export class HsCompostionsListItemComponent {
       });
   }
   /**
-   * @public
-   * @param {object} record Composition to show details
-   * @description Load info about composition through service and display composition info dialog
+   * @param record Composition to show details
+   * Load info about composition through service and display composition info dialog
    */
   detailComposition(record): void {
     this.HsCompositionsService.getCompositionInfo(record, (info) => {
@@ -50,9 +49,8 @@ export class HsCompostionsListItemComponent {
     });
   }
   /**
-   * @public
-   * @param {object} record Composition to share
-   * @description Prepare share object on server and display share dialog to share composition
+   * @param record Composition to share
+   * Prepare share object on server and display share dialog to share composition
    */
   async shareComposition(record): Promise<void> {
     try {
@@ -67,8 +65,7 @@ export class HsCompostionsListItemComponent {
     }
   }
   /**
-   * @public
-   * @param {object} composition Composition selected for deletion
+   * @param composition Composition selected for deletion
    * @description Display delete dialog of composition
    */
   confirmDelete(composition): void {

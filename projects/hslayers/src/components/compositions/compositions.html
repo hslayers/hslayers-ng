@@ -160,7 +160,7 @@
                     <li [hidden]="HsCompositionsCatalogueService.compositionEntries.length != 0 || HsCompositionsCatalogueService.compositionsLoading"
                         class="list-group-item">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
-                    <li *ngFor="let composition of HsCompositionsCatalogueService.compositionEntries | slice:HsCompositionsCatalogueService.listStart:HsCompositionsCatalogueService.listNext"
+                    <li *ngFor="let composition of HsCompositionsCatalogueService.compositionEntries"
                         class="list-group-item hs-comp-item"
                         style="cursor: pointer;" [ngClass]="{'activeComposition' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
