@@ -28,7 +28,6 @@ export class HsCompositionsComponent {
   optionsButtonLabel = 'more';
   optionsMenuOpen = false;
   selectedCompId: any;
-  loaderImage: string;
   loadFilteredCompositions: any;
   constructor(
     public HsCompositionsService: HsCompositionsService,
@@ -41,7 +40,6 @@ export class HsCompositionsComponent {
     public HsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public HsLaymanService: HsLaymanService
   ) {
-    this.loaderImage = this.HsUtilsService.getAjaxLoaderIcon();
     this.loadFilteredCompositions = () =>
       HsCompositionsCatalogueService.loadFilteredCompositions();
 
@@ -50,22 +48,10 @@ export class HsCompositionsComponent {
       this.loadUnsavedDialogBootstrap(url, '');
     });
   }
-
-  hideNotLayman(composition: any): boolean {
-    if (this.HsCompositionsCatalogueService.filterByOnlyMine) {
-      if (composition.endpoint.type != 'layman') {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
   resultsVisible(): boolean {
     if (
       this.HsCompositionsCatalogueService.listNext &&
-      this.HsCompositionsCatalogueService.paging.matched
+      this.HsCompositionsCatalogueService.matchedCompositions
     ) {
       return true;
     } else {

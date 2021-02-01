@@ -154,14 +154,14 @@
         <div class="card d-flex" style="font-size: 1rem !important;">
             <div class="card-body">
                 <ul class="hs-comp-list list-group">
-                    <li class='list-group-item text-primary text-center'
+                    <li class="list-group-item text-primary text-center"
                         *ngIf="HsCompositionsCatalogueService.compositionsLoading"><img class="pr-2"
-                            [src]="loaderImage" />{{'COMMON.loading' | translate}}</li>
-                    <li [hidden]='HsCompositionsCatalogueService.compositionEntries.length > 0 || HsCompositionsCatalogueService.compositionsLoading'
-                        class='list-group-item'>
+                            [src]="HsUtilsService.getAjaxLoaderIcon()" />{{'COMMON.loading' | translate}}</li>
+                    <li [hidden]="HsCompositionsCatalogueService.compositionEntries.length != 0 || HsCompositionsCatalogueService.compositionsLoading"
+                        class="list-group-item">
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li *ngFor="let composition of HsCompositionsCatalogueService.compositionEntries | slice:HsCompositionsCatalogueService.listStart:HsCompositionsCatalogueService.listNext"
-                        [hidden]="hideNotLayman(composition)" class="list-group-item hs-comp-item"
+                        class="list-group-item hs-comp-item"
                         style="cursor: pointer;" [ngClass]="{'activeComposition' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
                         (mouseleave)="highlightComposition(composition, false)"
@@ -172,33 +172,26 @@
                     </li>
                 </ul>
             </div>
-            <div class="card-footer" *ngIf="HsCompositionsCatalogueService.paging.matched != 0">
-                <ul class="pagination d-flex justify-content-center"
-                    *ngIf="HsCompositionsCatalogueService.paging.matched == 0">
-                    <li class="page-item">
-                        <span aria-hidden="true">{{'COMMON.loading' | translate}}...</span>
-                    </li>
-                </ul>
-                <ul class="pagination d-flex justify-content-center"
-                    *ngIf="HsCompositionsCatalogueService.compositionEntries.length > 0">
+            <div class="card-footer" *ngIf="HsCompositionsCatalogueService.matchedCompositions != 0 && !HsCompositionsCatalogueService.compositionsLoading">
+                <ul class="pagination d-flex justify-content-center">
                     <li class="page-item" [ngClass]="{'disabled': HsCompositionsCatalogueService.listStart == 0 }"
                         [ngStyle]="{'color' : HsCompositionsCatalogueService.listStart == 0 ? '#555' : '#007bff'}">
                         <a class="page-link" (click)="getPreviousCompositions()"><span
                                 aria-hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item"
-                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext != HsCompositionsCatalogueService.paging.matched">
+                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext != HsCompositionsCatalogueService.matchedCompositions">
                         <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsCompositionsCatalogueService.listStart + 1}} -
                             {{HsCompositionsCatalogueService.listNext}}</span>
                     </li>
                     <li class="page-item"
-                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext == HsCompositionsCatalogueService.paging.matched">
+                        *ngIf="resultsVisible() && HsCompositionsCatalogueService.listNext == HsCompositionsCatalogueService.matchedCompositions">
                         <span class="page-link">
                             {{'COMMON.results' | translate}}
                             {{HsCompositionsCatalogueService.listStart + 1}} -
-                            {{HsCompositionsCatalogueService.paging.matched}}</span>
+                            {{HsCompositionsCatalogueService.matchedCompositions}}</span>
                     </li>
                     <li class="page-item" [ngClass]="{'disabled': nextPageAvailable() }"
                         [ngStyle]="{'color' : nextPageAvailable() ? '#555' : '#007bff'}">
