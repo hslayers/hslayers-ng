@@ -6,7 +6,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,17 +26,15 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
       .pipe(
-        timeout(1000),
         map((response: any) => {
           const ep = this.compositionsReceived(endpoint, params, response);
           return ep;
         }),
         catchError((e) => {
-          endpoint.datasourcePaging.loaded = true;
+          this.HsLogService.error(e);
           return of(e);
         })
       );
-
     return endpoint.listLoading;
   }
   compositionsReceived(endpoint: HsEndpoint, params, response): HsEndpoint {

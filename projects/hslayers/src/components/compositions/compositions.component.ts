@@ -62,26 +62,23 @@ export class HsCompositionsComponent {
     return this.HsCompositionsCatalogueService.nextPageAvailable();
   }
   /**
-   * @public
-   * @description Load previous list of compositions to display on pager
+   * Load previous list of compositions to display on pager
    */
   getPreviousCompositions(): void {
     this.HsCompositionsCatalogueService.getPreviousCompositions();
   }
 
   /**
-   * @public
-   * @description Load next list of compositions to display on pager
+   * Load next list of compositions to display on pager
    */
   getNextCompositions(): void {
     this.HsCompositionsCatalogueService.getNextCompositions();
   }
 
   /**
-   * @public
-   * @param {object} composition Composition to highlight
-   * @param {boolean} state Target state of composition ( True - highlighted, False - normal)
-   * @description Highlight (or dim) composition, toogle visual state of composition extent on map
+   * @param composition Composition to highlight
+   * @param state Target state of composition ( True - highlighted, False - normal)
+   * Highlight (or dim) composition, toogle visual state of composition extent on map
    */
   highlightComposition(composition, state: boolean): void {
     composition.highlighted = state;
@@ -89,10 +86,9 @@ export class HsCompositionsComponent {
   }
 
   /**
-   * @public
    * @param url
-   * @param {object} record Composition to be loaded
-   * @description Load selected composition in map, if current composition was edited display Ovewrite dialog
+   * @param record Composition to be loaded
+   * Load selected composition in map, if current composition was edited display Ovewrite dialog
    */
 
   addCompositionUrl(url): void {
