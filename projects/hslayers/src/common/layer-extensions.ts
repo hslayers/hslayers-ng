@@ -7,6 +7,8 @@ const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
+const BOUNDINGBOX = 'boundingBox';
+
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -76,6 +78,13 @@ export function getBase(layer: Layer): boolean {
 export function setBase(layer: Layer, baseActive: boolean): void {
   layer.set(BASE, baseActive);
 }
+export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
+  return layer.get(BOUNDINGBOX);
+}
+
+export function setBoundingBox(layer: Layer, extent: number[]): void {
+  layer.set(BOUNDINGBOX, extent);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -91,4 +100,6 @@ export const HsLayerExt = {
   getCachedCapabilities,
   setBase,
   getBase,
+  setBoundingBox,
+  getBoundingBox
 };

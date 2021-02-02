@@ -14,6 +14,7 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
+import {getBoundingBox, setBoundingBox} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -56,7 +57,7 @@ export class HsLayerEditorService {
    */
   async zoomToLayer(layer: Layer) {
     let extent = null;
-    if (layer.get('BoundingBox')) {
+    if (getBoundingBox(layer)) {
       extent = this.getExtentFromBoundingBoxAttribute(layer);
     } else if (layer.getSource().getExtent != undefined) {
       extent = layer.getSource().getExtent();
@@ -156,7 +157,7 @@ export class HsLayerEditorService {
    */
   fitIfExtentSet(extent: number[], layer: Layer): void {
     if (extent !== null) {
-      layer.set('BoundingBox', extent);
+      setBoundingBox(layer, extent);
       this.HsMapService.map
         .getView()
         .fit(extent, this.HsMapService.map.getSize());
@@ -184,7 +185,7 @@ export class HsLayerEditorService {
    */
   getExtentFromBoundingBoxAttribute(layer: Layer): number[] {
     let extent = null;
-    const bbox = layer.get('BoundingBox');
+    const bbox = getBoundingBox(layer);
     if (Array.isArray(bbox) && bbox.length == 4) {
       extent = this.transformToCurrentProj(bbox);
     } else {
