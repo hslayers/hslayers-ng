@@ -25,6 +25,7 @@ import {
   getBase,
   getDefinition,
   getDimensions,
+  getMetadata,
   getTitle,
 } from '../../common/layer-extensions';
 @Injectable({
@@ -299,7 +300,7 @@ export class HsSaveMapService {
    */
   layer2json(layer: Layer): any {
     const json: any = {
-      metadata: layer.get('metadata') || {},
+      metadata: getMetadata(layer) || {},
     };
 
     /*
