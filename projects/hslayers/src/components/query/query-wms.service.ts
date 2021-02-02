@@ -12,7 +12,12 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getBase, getName, getTitle} from '../../common/layer-extensions';
+import {
+  getBase,
+  getCustomInfoTemplate,
+  getName,
+  getTitle,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -123,7 +128,7 @@ export class HsQueryWmsService {
      * var format = new GML();
      *  console.log(format.readFeatures(response, {}));
      */
-    const customInfoTemplate = layer.get('customInfoTemplate') || false;
+    const customInfoTemplate = getCustomInfoTemplate(layer) || false;
 
     if (infoFormat.includes('xml') || infoFormat.includes('gml')) {
       const oParser = new DOMParser();
