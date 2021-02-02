@@ -14,7 +14,11 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getDefinition} from '../../common/layer-extensions';
+import {
+  getDefinition,
+  getEventsSuspended,
+  setEventsSuspended,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -118,7 +122,7 @@ export class HsLayerSynchronizerService {
    */
   async pull(layer: Layer, source: Source): Promise<void> {
     try {
-      layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
+      setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
       const laymanEndpoint = this.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {
         layer.set('hs-layman-synchronizing', true);
@@ -155,7 +159,7 @@ export class HsLayerSynchronizerService {
     } catch (ex) {
       this.HsLogService.warn(`Layer ${layer} could not be pulled.`);
     } finally {
-      layer.set('events-suspended', (layer.get('events-suspended') || 0) - 1);
+      setEventsSuspended(layer, (getEventsSuspended(layer) || 0) - 1);
     }
   }
 
@@ -192,7 +196,7 @@ export class HsLayerSynchronizerService {
    * @param layer
    */
   sync(add: Feature[], upd: Feature[], del: Feature[], layer: Layer): void {
-    if ((layer.get('events-suspended') || 0) > 0) {
+    if ((getEventsSuspended(layer) || 0) > 0) {
       return;
     }
     const ep = this.findLaymanForWfsLayer(layer);

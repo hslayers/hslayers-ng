@@ -15,6 +15,7 @@ const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
 const ENABLEPROXY = 'enableProxy';
+const EVENTSSUSPENDED = 'eventsSuspended';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -159,6 +160,17 @@ export function setEnableProxy(layer: Layer, enableProxyActive: boolean): void {
 export function getEnableProxy(layer: Layer): boolean {
   return layer.get(ENABLEPROXY);
 }
+
+export function setEventsSuspended(
+  layer: Layer,
+  eventsSuspended: number
+): void {
+  layer.set(EVENTSSUSPENDED, eventsSuspended);
+}
+
+export function getEventsSuspended(layer: Layer): number {
+  return layer.get(EVENTSSUSPENDED);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -190,4 +202,6 @@ export const HsLayerExt = {
   getEditor,
   setEnableProxy,
   getEnableProxy,
+  setEventsSuspended,
+  getEventsSuspended,
 };
