@@ -18,6 +18,7 @@ import {
   getBoundingBox,
   getCluster,
   getDeclutter,
+  getInlineLegend,
   setBoundingBox,
   setCluster,
   setDeclutter,
@@ -221,8 +222,10 @@ export class HsLayerEditorService {
   legendVisible(): boolean {
     return (
       this.HsLegendService.legendValid(this.legendDescriptor) &&
-      (this.legendDescriptor.lyr.get('inlineLegend') ||
-        !this.HsLayoutService.panelEnabled('legend'))
+      getInlineLegend(
+        this.legendDescriptor.lyr ||
+          !this.HsLayoutService.panelEnabled('legend')
+      )
     );
   }
 }

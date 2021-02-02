@@ -24,6 +24,7 @@ const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
 const HSORIGINALSTYLE = 'hsOriginalStyle';
 const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
 const INFOFORMAT = 'infoFormat';
+const INLINELEGEND = 'inlineLegend';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -248,6 +249,13 @@ export function getInfoFormat(layer: Layer): string {
   return layer.get(INFOFORMAT);
 }
 
+export function setInlineLegend(layer: Layer, inlineLegend: boolean): void {
+  layer.set(INLINELEGEND, inlineLegend);
+}
+
+export function getInlineLegend(layer: Layer): boolean {
+  return layer.get(INLINELEGEND);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -295,4 +303,6 @@ export const HsLayerExt = {
   getHsLaymanSynchronizing,
   setInfoFormat,
   getInfoFormat,
+  setInlineLegend,
+  getInlineLegend,
 };
