@@ -14,7 +14,7 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
-import {getName, getTitle} from '../../common/layer-extensions';
+import {getBoundingBox, getName, getTitle} from '../../common/layer-extensions';
 import {isEmpty} from 'ol/extent';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class HsLayerUtilsService {
     if (typeof layer == 'undefined') {
       return false;
     }
-    if (layer.get('BoundingBox')) {
+    if (getBoundingBox(layer)) {
       return true;
     }
     if (this.isLayerWMS(layer)) {
