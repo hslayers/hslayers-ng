@@ -11,7 +11,7 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {getTitle} from '../../common/layer-extensions';
+import {getFromComposition, getTitle} from '../../common/layer-extensions';
 import {transform, transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
@@ -266,7 +266,7 @@ export class HsCompositionsParserService {
   removeCompositionLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (lyr.get('from_composition')) {
+      if (getFromComposition(lyr)) {
         to_be_removed.push(lyr);
       }
     });
