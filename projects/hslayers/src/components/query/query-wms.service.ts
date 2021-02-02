@@ -17,6 +17,7 @@ import {
   getCustomInfoTemplate,
   getFeatureInfoLang,
   getFeatureInfoTarget,
+  getInfoFormat,
   getName,
   getTitle,
 } from '../../common/layer-extensions';
@@ -364,7 +365,7 @@ export class HsQueryWmsService {
       }
       if (
         this.HsUtilsService.instOf(layer.getSource(), WMTS) &&
-        layer.get('info_format')
+        getInfoFormat(layer)
       ) {
         return true;
       }

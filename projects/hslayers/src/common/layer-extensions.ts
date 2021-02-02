@@ -23,6 +23,7 @@ const FROMCOMPOSITION = 'fromComposition';
 const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
 const HSORIGINALSTYLE = 'hsOriginalStyle';
 const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
+const INFOFORMAT = 'infoFormat';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -235,6 +236,18 @@ export function setHsLaymanSynchronizing(
 export function getHsLaymanSynchronizing(layer: Layer): boolean {
   return layer.get(HSLAYMANSYNCHRONIZING);
 }
+
+export function setInfoFormat(
+  layer: Layer,
+  infoFormat: string
+): void {
+  layer.set(INFOFORMAT, infoFormat);
+}
+
+export function getInfoFormat(layer: Layer): string {
+  return layer.get(INFOFORMAT);
+}
+
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -280,4 +293,6 @@ export const HsLayerExt = {
   getHsOriginalStyle,
   setHsLaymanSynchronizing,
   getHsLaymanSynchronizing,
+  setInfoFormat,
+  getInfoFormat,
 };
