@@ -8,7 +8,7 @@ const ATTRIBUTION = 'attribution';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const BOUNDINGBOX = 'boundingBox';
-
+const CLUSTER = 'cluster';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -85,6 +85,13 @@ export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
 export function setBoundingBox(layer: Layer, extent: number[]): void {
   layer.set(BOUNDINGBOX, extent);
 }
+export function getCluster(layer: Layer): boolean {
+  return layer.get(BOUNDINGBOX);
+}
+
+export function setCluster(layer: Layer, clusterActive: boolean): void {
+  layer.set(CLUSTER, clusterActive);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -101,5 +108,7 @@ export const HsLayerExt = {
   setBase,
   getBase,
   setBoundingBox,
-  getBoundingBox
+  getBoundingBox,
+  setCluster,
+  getCluster,
 };

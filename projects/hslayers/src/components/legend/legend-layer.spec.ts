@@ -26,6 +26,7 @@ import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {getCluster, setCluster} from '../../common/layer-extensions';
 
 describe('HsLegendLayerComponent', () => {
   beforeAll(() => {
@@ -172,7 +173,7 @@ describe('HsLegendLayerComponent', () => {
     component.layer = expectedLayer;
     fixture.detectChanges();
     component.ngOnInit();
-    component.layer.lyr.set('cluster', false);
+    setCluster(component.layer.lyr, false);
     fixture.detectChanges();
     const customStyle = new Style({
       image: new Circle({
@@ -194,7 +195,7 @@ describe('HsLegendLayerComponent', () => {
       customStyle.getImage()
     );
     component.ngOnInit();
-    expect(component.layer.lyr.get('cluster')).toBeFalse();
+    expect(getCluster(component.layer.lyr)).toBeFalse();
     expect(component.styles[0].customCircle.fill).toEqual(
       'rgba(255, 0, 0, 0.4)'
     );

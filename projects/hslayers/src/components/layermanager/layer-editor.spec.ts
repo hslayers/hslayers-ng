@@ -31,6 +31,7 @@ import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
+import { getCluster } from '../../common/layer-extensions';
 
 class HsConfigMock {
   reverseLayerList = true;
@@ -107,8 +108,7 @@ describe('layermanager', () => {
 
   it('clusterization', () => {
     component.cluster = true;
-
-    expect(layerForCluster.get('cluster')).toBe(true);
+    expect(getCluster(layerForCluster)).toBe(true);
     expect(layerForCluster.getSource().getSource).toBeDefined();
 
     component.distance.value = 15;
@@ -117,7 +117,7 @@ describe('layermanager', () => {
 
     //Turn clusterization off
     component.cluster = false;
-    expect(layerForCluster.get('cluster')).toBe(false);
+    expect(getCluster(layerForCluster)).toBe(false);
     expect(layerForCluster.getSource().getSource).toBeUndefined();
   });
 });

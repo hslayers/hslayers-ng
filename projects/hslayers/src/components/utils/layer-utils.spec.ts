@@ -12,6 +12,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
+import {setCluster} from '../../common/layer-extensions';
 
 describe('HsLayerUtilsService', () => {
   const vectorLayer = new VectorLayer({
@@ -79,11 +80,11 @@ describe('HsLayerUtilsService', () => {
   it('check if layer is clustered', () => {
     const source = new Vector();
     vectorLayer.setSource(new Cluster({source: source}));
-    vectorLayer.set('cluster', true);
+    setCluster(vectorLayer, true);
     let isClustered = hsLayerUtils.isLayerClustered(vectorLayer);
     expect(isClustered).toBe(true);
     vectorLayer.setSource(source);
-    vectorLayer.set('cluster', false);
+    setCluster(vectorLayer, false);
     isClustered = hsLayerUtils.isLayerClustered(vectorLayer);
     expect(isClustered).toBe(false);
   });
