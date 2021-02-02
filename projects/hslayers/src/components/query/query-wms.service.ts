@@ -16,6 +16,7 @@ import {
   getBase,
   getCustomInfoTemplate,
   getFeatureInfoLang,
+  getFeatureInfoTarget,
   getName,
   getTitle,
 } from '../../common/layer-extensions';
@@ -167,7 +168,7 @@ export class HsQueryWmsService {
       if (response.length <= 1) {
         return;
       }
-      if (layer.get('getFeatureInfoTarget') == 'info-panel') {
+      if (getFeatureInfoTarget(layer) == 'info-panel') {
         this.HsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
         this.HsQueryBaseService.fillIframeAndResize(response, true);

@@ -19,6 +19,7 @@ const EVENTSSUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
 const FEATUREINFOLANG = 'featureInfoLang';
 const FROMCOMPOSITION = 'fromComposition';
+const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -201,6 +202,17 @@ export function setFromComposition(
 export function getFromComposition(layer: Layer): boolean {
   return layer.get(FROMCOMPOSITION);
 }
+
+export function setFeatureInfoTarget(
+  layer: Layer,
+  featureInfoTarget: string
+): void {
+  layer.set(GETFEATUREINFOTARGET, featureInfoTarget);
+}
+
+export function getFeatureInfoTarget(layer: Layer): string {
+  return layer.get(GETFEATUREINFOTARGET);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -240,4 +252,6 @@ export const HsLayerExt = {
   getFeatureInfoLang,
   setFromComposition,
   getFromComposition,
+  setFeatureInfoTarget,
+  getFeatureInfoTarget,
 };
