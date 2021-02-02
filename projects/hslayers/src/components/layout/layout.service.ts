@@ -261,7 +261,11 @@ export class HsLayoutService {
    * @returns true if set to true (default), false otherwise
    */
   componentEnabled(which: string): boolean {
-    return this.HsConfig.componentsEnabled[which];
+    return (
+      this.HsConfig.componentsEnabled == undefined ||
+      this.HsConfig.componentsEnabled[which] == undefined ||
+      this.HsConfig.componentsEnabled[which]
+    );
   }
 
   /**
