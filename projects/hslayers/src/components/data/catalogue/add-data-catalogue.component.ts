@@ -102,19 +102,13 @@ export class HsAddDataCatalogueComponent {
 
   resultsVisible(): boolean {
     return this.HsAddDataCatalogueService.listNext &&
-      this.HsAddDataCatalogueService.paging.matched
+      this.HsAddDataCatalogueService.matchedLayers
       ? true
       : false;
   }
 
   nextPageAvailable(): boolean {
-    const matched = this.HsAddDataCatalogueService.paging.matched;
-    const next = this.HsAddDataCatalogueService.listNext;
-    return (
-      matched == next ||
-      this.HsAddDataCatalogueService.catalogEntries.length <
-        this.HsAddDataCatalogueService.itemsPerPage
-    );
+   return this.HsAddDataCatalogueService.matchedLayers > this.HsAddDataCatalogueService.listNext;
   }
 
   datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {
