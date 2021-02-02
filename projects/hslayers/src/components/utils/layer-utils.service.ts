@@ -17,6 +17,7 @@ import {Injectable} from '@angular/core';
 import {
   getBoundingBox,
   getCluster,
+  getEditor,
   getName,
   getTitle,
 } from '../../common/layer-extensions';
@@ -225,10 +226,10 @@ export class HsLayerUtilsService {
    * @description Test if layers features are editable
    */
   isLayerEditable(layer: Layer): boolean {
-    if (layer.get('editor') === undefined) {
+    if (getEditor(layer) === undefined) {
       return true;
     }
-    const editorConfig = layer.get('editor');
+    const editorConfig = getEditor(layer);
     if (editorConfig.editable === undefined) {
       return true;
     }

@@ -2,7 +2,12 @@ import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
-import {getTitle, setTitle} from '../../common/layer-extensions';
+import {
+  getEditor,
+  getTitle,
+  setEditor,
+  setTitle,
+} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
@@ -53,10 +58,10 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     this.attributes.forEach((a) => {
       dic[a.name] = a.value;
     });
-    let editorConfig = this.layer.get('editor');
+    let editorConfig = getEditor(this.layer);
     if (!editorConfig) {
       editorConfig = {};
-      this.layer.set('editor', editorConfig);
+      setEditor(this.layer, editorConfig);
     }
     editorConfig.defaultAttributes = dic;
 

@@ -25,7 +25,12 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
-import {getDefinition, getName, getTitle} from '../../common/layer-extensions';
+import {
+  getDefinition,
+  getEditor,
+  getName,
+  getTitle,
+} from '../../common/layer-extensions';
 
 type activateParams = {
   onDrawStart?;
@@ -301,10 +306,10 @@ export class HsDrawService {
   }
 
   onDrawEnd(e): void {
-    if (!this.selectedLayer.get('editor')) {
+    if (!getEditor(this.selectedLayer)) {
       return;
     }
-    const editorConfig = this.selectedLayer.get('editor');
+    const editorConfig = getEditor(this.selectedLayer);
     if (editorConfig.defaultAttributes) {
       for (const key in editorConfig.defaultAttributes) {
         const value = editorConfig.defaultAttributes[key];

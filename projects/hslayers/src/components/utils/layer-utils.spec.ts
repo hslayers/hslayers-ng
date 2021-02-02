@@ -12,7 +12,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {setCluster} from '../../common/layer-extensions';
+import {setCluster, setEditor} from '../../common/layer-extensions';
 
 describe('HsLayerUtilsService', () => {
   const vectorLayer = new VectorLayer({
@@ -166,10 +166,10 @@ describe('HsLayerUtilsService', () => {
   it('check if layer is editable', () => {
     let isLayerEditable = hsLayerUtils.isLayerEditable(vectorLayer);
     expect(isLayerEditable).toBe(true);
-    vectorLayer.set('editor', {editable: undefined});
+    setEditor(vectorLayer, {editable: undefined});
     isLayerEditable = hsLayerUtils.isLayerEditable(vectorLayer);
     expect(isLayerEditable).toBe(true);
-    vectorLayer.set('editor', {editable: false});
+    setEditor(vectorLayer, {editable: false});
     isLayerEditable = hsLayerUtils.isLayerEditable(vectorLayer);
     expect(isLayerEditable).toBe(false);
   });
@@ -185,7 +185,7 @@ describe('HsLayerUtilsService', () => {
   it('check if layer is drawable', () => {
     vectorLayer.set('show_in_manager', true);
     vectorLayer.set('title', 'vectorLayer');
-    vectorLayer.set('editor', undefined);
+    setEditor(vectorLayer, undefined);
     let isLayerDrawable = hsLayerUtils.isLayerDrawable(vectorLayer);
     expect(isLayerDrawable).toBe(true);
     vectorLayer.set('title', '');

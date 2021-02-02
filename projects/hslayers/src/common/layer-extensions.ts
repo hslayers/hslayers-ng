@@ -13,6 +13,7 @@ const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
 const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
+const EDITOR = 'editor';
 
 export type Attribution = {
   onlineResource?: string;
@@ -30,6 +31,10 @@ export type Attribution = {
 export type Definition = {
   format?: string;
   url?: string;
+};
+export type Editor = {
+  editable?: boolean;
+  defaultAttributes?: any;
 };
 
 export function setTitle(layer: Layer, title: string): void {
@@ -138,6 +143,14 @@ export function setDimensions(layer: Layer, dimensions: any): void {
 export function getDimensions(layer: Layer): any {
   return layer.get(DIMENSIONS);
 }
+
+export function setEditor(layer: Layer, editor: Editor): void {
+  layer.set(EDITOR, editor);
+}
+
+export function getEditor(layer: Layer): Editor {
+  return layer.get(EDITOR);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -165,4 +178,6 @@ export const HsLayerExt = {
   getDefinition,
   setDimensions,
   getDimensions,
+  setEditor,
+  getEditor,
 };
