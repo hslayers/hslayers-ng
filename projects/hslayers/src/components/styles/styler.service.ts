@@ -9,6 +9,7 @@ import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getHsOriginalStyle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -106,7 +107,7 @@ export class HsStylerService {
         (isClustered !== undefined && isClustered) ||
         layer.getSource()?.getSource
       ) {
-        style = layer.get('hsOriginalStyle');
+        style = getHsOriginalStyle(layer);
       } else {
         style = layer.getStyle();
       }
@@ -179,8 +180,8 @@ export class HsStylerService {
 
     const originalStyle = featureStyle
       ? featureStyle
-      : layer.get('hsOriginalStyle')
-      ? layer.get('hsOriginalStyle')
+      : getHsOriginalStyle(layer)
+      ? getHsOriginalStyle(layer)
       : createDefaultStyle;
 
     let appliedStyle = this.applyStyleIfNeeded(

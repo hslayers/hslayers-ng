@@ -11,7 +11,7 @@ import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {getTitle} from '../../common/layer-extensions';
+import {getTitle, setHsOriginalStyle} from '../../common/layer-extensions';
 
 type StyleJson = {
   fill?: any;
@@ -291,7 +291,7 @@ export class HsStylerComponent {
         if (this.isClustered) {
           /* hsOriginalStyle is used only for cluster layers 
           when styling clusters with just one feature in it */
-          this.HsStylerService.layer.set('hsOriginalStyle', style);
+          setHsOriginalStyle(this.HsStylerService.layer, style);
         } else {
           layer.setStyle(style);
         }
