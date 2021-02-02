@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {getInfoFormat} from '../../common/layer-extensions';
 import {transform} from 'ol/proj';
 
 import {HsMapService} from '../map/map.service';
@@ -10,7 +11,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsQueryWmtsService {
   constructor(
     private HsMapService: HsMapService,
-    private HsUtilsService: HsUtilsService,
+    private HsUtilsService: HsUtilsService
   ) {}
 
   async parseRequestUrl(layer, coordinate) {
@@ -46,7 +47,7 @@ export class HsQueryWmtsService {
     const params = {
       LAYER: source.getLayer(),
       service: 'WMTS',
-      INFOFORMAT: layer.get('info_format'),
+      INFOFORMAT: getInfoFormat(layer),
       REQUEST: 'GetFeatureInfo',
       TileCol: tileCoord[1],
       TileRow: tileCoord[2],
