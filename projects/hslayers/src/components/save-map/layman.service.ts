@@ -17,8 +17,10 @@ import {
   wfsNotAvailable,
 } from './layman-utils';
 import {
+  getLaymanLayerDescriptor,
   getTitle,
   setHsLaymanSynchronizing,
+  setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
 
 export type WfsSyncParams = {
@@ -205,7 +207,7 @@ export class HsLaymanService implements HsSaverService {
     Should not cache anonymous layers, because layer can be authorized any moment */
     const endpoint = {...ep};
     try {
-      let desc = layer.get('laymanLayerDescriptor');
+      let desc = getLaymanLayerDescriptor(layer);
       const name = getLayerName(layer);
       try {
         if (!desc) {
@@ -274,7 +276,7 @@ export class HsLaymanService implements HsSaverService {
     endpoint: HsEndpoint
   ): void {
     if (endpoint.user != 'browser') {
-      layer.set('laymanLayerDescriptor', desc);
+      setLaymanLayerDescriptor(layer, desc);
     }
   }
 

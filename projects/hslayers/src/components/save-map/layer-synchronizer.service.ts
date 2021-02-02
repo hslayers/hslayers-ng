@@ -19,6 +19,7 @@ import {
   getEventsSuspended,
   setEventsSuspended,
   setHsLaymanSynchronizing,
+  setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
 
 @Injectable({
@@ -61,7 +62,7 @@ export class HsLayerSynchronizerService {
   private reloadLayersOnAuthChange() {
     for (const layer of this.syncedLayers) {
       const layerSource = layer.getSource();
-      layer.set('laymanLayerDescriptor', undefined);
+      setLaymanLayerDescriptor(layer, undefined);
       layerSource.clear();
       this.pull(layer, layerSource);
     }

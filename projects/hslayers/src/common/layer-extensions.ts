@@ -1,3 +1,4 @@
+import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Group, Layer} from 'ol/layer';
 import {Style} from 'ol/style';
 
@@ -25,6 +26,7 @@ const HSORIGINALSTYLE = 'hsOriginalStyle';
 const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
 const INFOFORMAT = 'infoFormat';
 const INLINELEGEND = 'inlineLegend';
+const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor'
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -256,6 +258,14 @@ export function setInlineLegend(layer: Layer, inlineLegend: boolean): void {
 export function getInlineLegend(layer: Layer): boolean {
   return layer.get(INLINELEGEND);
 }
+
+export function setLaymanLayerDescriptor(layer: Layer, hsLaymanLayerDescriptor: HsLaymanLayerDescriptor): void {
+  layer.set(LAYMANLAYERDESCRIPTOR, hsLaymanLayerDescriptor);
+}
+
+export function getLaymanLayerDescriptor(layer: Layer): HsLaymanLayerDescriptor {
+  return layer.get(LAYMANLAYERDESCRIPTOR);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -305,4 +315,6 @@ export const HsLayerExt = {
   getInfoFormat,
   setInlineLegend,
   getInlineLegend,
+  setLaymanLayerDescriptor,
+  getLaymanLayerDescriptor,
 };
