@@ -4,10 +4,10 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 import {
   Attribution,
-  cacheCapabilities,
   getAttribution,
   getCachedCapabilities,
   setAttribution,
+  setCacheCapabilities,
 } from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -166,7 +166,7 @@ export class HsLayerManagerMetadataService {
         );
       }
       if (getCachedCapabilities(layer) == undefined) {
-        cacheCapabilities(layer, layerObject[0]);
+        setCacheCapabilities(layer, layerObject[0]);
         layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
       }
 
@@ -182,7 +182,7 @@ export class HsLayerManagerMetadataService {
         caps.Capability.Layer
       );
       if (getCachedCapabilities(layer) == undefined) {
-        cacheCapabilities(layer, layerObject[0]);
+        setCacheCapabilities(layer, layerObject[0]);
         layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
         this.parseAttribution(layer, layerObject[0]);
       }
@@ -329,7 +329,7 @@ export class HsLayerManagerMetadataService {
             const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
             if (!getAttribution(layer)?.locked) {
               setAttribution(layer, {
-                onlineResource: el[0].getAttribute('xlink:href')
+                onlineResource: el[0].getAttribute('xlink:href'),
               });
             }
             return true;
