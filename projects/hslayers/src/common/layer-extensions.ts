@@ -65,7 +65,7 @@ export function getCachedCapabilities(layer: Layer): any {
   return layer.get(CAPABILITIES);
 }
 
-export function cacheCapabilities(layer: Layer, capabilities: any): void {
+export function setCacheCapabilities(layer: Layer, capabilities: any): void {
   layer.set(CAPABILITIES, capabilities);
 }
 
@@ -81,5 +81,5 @@ export const HsLayerExt = {
   setAttribution,
   getAttribution,
   getCachedCapabilities,
-  cacheCapabilities,
+  setCacheCapabilities,
 };
