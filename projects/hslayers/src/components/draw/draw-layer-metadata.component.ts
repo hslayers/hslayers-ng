@@ -4,6 +4,7 @@ import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-c
 import {HsMapService} from '../map/map.service';
 import {
   getEditor,
+  getHsLaymanSynchronizing,
   getTitle,
   setEditor,
   setTitle,
@@ -88,7 +89,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   }
 
   async awaitLayerSync(layer) {
-    while (layer.get('hs-layman-synchronizing')) {
+    while (getHsLaymanSynchronizing(layer)) {
       await new Promise((r) => setTimeout(r, 200));
     }
     return true;

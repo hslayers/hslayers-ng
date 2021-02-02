@@ -18,6 +18,7 @@ import {
   getDefinition,
   getEventsSuspended,
   setEventsSuspended,
+  setHsLaymanSynchronizing,
 } from '../../common/layer-extensions';
 
 @Injectable({
@@ -125,7 +126,7 @@ export class HsLayerSynchronizerService {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
       const laymanEndpoint = this.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {
-        layer.set('hs-layman-synchronizing', true);
+        setHsLaymanSynchronizing(layer, true);
         const response: string = await this.HsLaymanService.makeGetLayerRequest(
           laymanEndpoint,
           layer
@@ -134,7 +135,7 @@ export class HsLayerSynchronizerService {
         if (response) {
           featureString = response;
         }
-        layer.set('hs-layman-synchronizing', false);
+        setHsLaymanSynchronizing(layer, false);
         if (featureString) {
           source.loading = true;
           const format = new WFS();
@@ -201,7 +202,7 @@ export class HsLayerSynchronizerService {
     }
     const ep = this.findLaymanForWfsLayer(layer);
     if (ep) {
-      layer.set('hs-layman-synchronizing', true);
+      setHsLaymanSynchronizing(layer, true);
       this.HsLaymanService.sync({ep, add, upd, del, layer}).then(
         (response: string) => {
           if (response?.includes('Exception')) {
@@ -222,7 +223,7 @@ export class HsLayerSynchronizerService {
 
             this.observeFeature(add[0]);
           }
-          layer.set('hs-layman-synchronizing', false);
+          setHsLaymanSynchronizing(layer, false);
         }
       );
     }

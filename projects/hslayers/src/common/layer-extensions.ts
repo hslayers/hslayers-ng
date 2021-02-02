@@ -22,6 +22,7 @@ const FEATUREINFOLANG = 'featureInfoLang';
 const FROMCOMPOSITION = 'fromComposition';
 const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
 const HSORIGINALSTYLE = 'hsOriginalStyle';
+const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -224,6 +225,16 @@ export function getHsOriginalStyle(layer: Layer): Style {
   return layer.get(HSORIGINALSTYLE);
 }
 
+export function setHsLaymanSynchronizing(
+  layer: Layer,
+  hsLaymanSynchronizing: boolean
+): void {
+  layer.set(HSLAYMANSYNCHRONIZING, hsLaymanSynchronizing);
+}
+
+export function getHsLaymanSynchronizing(layer: Layer): boolean {
+  return layer.get(HSLAYMANSYNCHRONIZING);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -267,4 +278,6 @@ export const HsLayerExt = {
   getFeatureInfoTarget,
   setHsOriginalStyle,
   getHsOriginalStyle,
+  setHsLaymanSynchronizing,
+  getHsLaymanSynchronizing,
 };
