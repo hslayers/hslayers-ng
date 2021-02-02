@@ -40,18 +40,12 @@ export class HsAddDataCatalogueService {
   selectedEndpoint: HsEndpoint;
   catalogEntries = [];
   layersLoading: boolean;
-  paging = {
-    start: 0,
-    limit: 20,
-    loaded: false,
-    matched: 0,
-    next: 20, //default, change by config?
-  };
   itemsPerPage = 20;
   listStart = 0;
   listNext = this.itemsPerPage;
   catalogQuery;
   endpointsWithDatasources: any[];
+  matchedLayers: number;
 
   constructor(
     public hsConfig: HsConfig,
@@ -96,7 +90,6 @@ export class HsAddDataCatalogueService {
     this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
       this.hsCommonEndpointsService.endpoints
     );
-    this.paging.limit = Math.ceil(20 / this.endpointsWithDatasources.length);
 
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
@@ -134,21 +127,18 @@ export class HsAddDataCatalogueService {
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
   }
+
   /**
    * @function queryCatalogs
    * @description Queries all configured catalogs for datasources (layers)
    */
-  queryCatalogs(preserveLayers?: boolean): void {
+  queryCatalogs(suspendLimitCalculation?: boolean): void {
     if (this.endpointsWithDatasources.length > 0) {
       if (this.catalogQuery) {
         this.catalogQuery.unsubscribe();
         delete this.catalogQuery;
       }
-      if (preserveLayers === undefined || !preserveLayers) {
-        this.catalogEntries.length = 0;
-        this.paging.start = 0;
-        this.paging.matched = 0;
-      }
+      this.clearLoadedData();
 
       this.HsMapService.loaded().then(() => {
         this.layersLoading = true;
@@ -158,23 +148,50 @@ export class HsAddDataCatalogueService {
         //TODO Mark non functional endpoint
         for (const endpoint of this.endpointsWithDatasources) {
           if (!this.data.onlyMine || endpoint.type == 'layman') {
-            //TODO query only functional endpoints
-            endpoint.datasourcePaging = {...this.paging};
-
             const promise = this.queryCatalog(endpoint);
             observables.push(promise);
-
           }
         }
         this.catalogQuery = forkJoin(observables).subscribe(() => {
-          this.createLayerList();
+          suspendLimitCalculation ? 
+          this.createLayerList() :
+          this.calculateEndpointLimits();
         });
       });
     }
   }
+  /**
+  * Calculates each endpoint compostion request limit, based on the matched compostions ratio
+  * from all endpoint matched compostions
+  */
+ calculateEndpointLimits(): void {
+   this.matchedLayers = 0;
+   this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
+     (ep) => ep.datasourcePaging.matched != 0
+   );
+   if (this.endpointsWithDatasources.length == 0) {
+     this.layersLoading = false;
+     return;
+   }
+   this.endpointsWithDatasources.forEach(
+     (ep) => (this.matchedLayers += ep.datasourcePaging.matched)
+   );
+   let sumLimits = 0;
+   this.endpointsWithDatasources.forEach((ep) => {
+     ep.datasourcePaging.limit = Math.floor(
+       (ep.datasourcePaging.matched / this.matchedLayers) *
+         this.itemsPerPage
+     );
+     if (ep.datasourcePaging.limit == 0) {
+       ep.datasourcePaging.limit = 1;
+     }
+     sumLimits += ep.datasourcePaging.limit;
+   });
+   this.itemsPerPage = sumLimits;
+   this.queryCatalogs(true);
+ }
 
   createLayerList(): void {
-    let lastRequestMatched = 0;
     for (const endpoint of this.endpointsWithDatasources) {
       if (!this.data.onlyMine || endpoint.type == 'layman') {
         if (endpoint.layers) {
@@ -182,83 +199,103 @@ export class HsAddDataCatalogueService {
             layer.endpoint = endpoint;
             // this.catalogEntries.push(layer);
           });
-          if (this.catalogEntries.length > 0) {
-            this.catalogEntries = this.catalogEntries.concat(
-              this.filterDuplicates(endpoint.layers)
-            );
-          } else {
-            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
-          }
-        }
 
-        if (endpoint.datasourcePaging?.matched) {
-          lastRequestMatched += endpoint.datasourcePaging.matched;
+          if (endpoint.type == 'layman') {
+            endpoint.layers = endpoint.layers.slice(
+              endpoint.datasourcePaging.start,
+              endpoint.datasourcePaging.start + endpoint.datasourcePaging.limit
+            );
+          }
+
+          if (this.catalogEntries.length > 0) {
+            this.filterDuplicates(endpoint)
+          } else {
+            this.catalogEntries = this.catalogEntries.concat(
+              endpoint.layers
+            );
+          }
         }
       }
     }
 
-    if (lastRequestMatched > this.paging.matched) {
-      this.paging.matched = lastRequestMatched;
+    if (this.matchedLayers < this.itemsPerPage) {
+      this.listNext = this.matchedLayers;
     }
 
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
 
-    this.checkIfPageIsFull();
   }
 
-  filterDuplicates(responseArray: Array<any>): Array<any> {
-    if (responseArray === undefined || responseArray?.length == 0) {
+  filterDuplicates(endpoint: HsEndpoint): Array<any> {
+    if (endpoint.layers === undefined || endpoint.layers?.length == 0) {
       return [];
     }
-    const responseLayers = this.catalogEntries.filter(
-      (layer) => layer.id !== undefined
-    );
-    return responseArray.filter(
-      (data) => responseLayers.filter((u) => u.id == data.id).length == 0
-    );
-  }
 
-  checkIfPageIsFull(): void {
-    let boundByLimit: boolean;
-    if (this.catalogEntries.length < this.paging.matched) {
-      boundByLimit = true;
+    const filteredLayers = endpoint.layers.filter(
+      (layer) =>
+        this.catalogEntries.filter((u) => u.id == layer.id).length == 0
+    );
+
+    if (endpoint.type != 'layman') {
+      this.matchedLayers -=
+        endpoint.layers.length - filteredLayers.length;
     }
-    if (this.catalogEntries.length < this.listNext && boundByLimit) {
-      this.paging.start += this.paging.limit;
-      this.queryCatalogs(true);
-    }
+    this.catalogEntries = this.catalogEntries.concat(
+      filteredLayers
+    );
   }
 
   getNextRecords(): void {
     this.listStart += this.itemsPerPage;
     this.listNext += this.itemsPerPage;
-    if (
-      this.listNext > this.catalogEntries.length &&
-      this.catalogEntries.length < this.paging.matched
-    ) {
-      this.paging.start += this.paging.limit;
-      this.queryCatalogs(true);
+    console.log('netxt',this.listNext)
+    if (this.listNext > this.matchedLayers) {
+      this.listNext = this.matchedLayers;
     }
-    if (this.listNext > this.paging.matched) {
-      this.listNext = this.paging.matched;
-    }
+    this.endpointsWithDatasources.forEach(
+      (ep) => (ep.datasourcePaging.start += ep.datasourcePaging.limit)
+    );
+    this.queryCatalogs(true);
   }
 
   getPreviousRecords(): void {
-    if (this.listStart - this.itemsPerPage < 0) {
+    if (this.listStart - this.itemsPerPage <= 0) {
       this.listStart = 0;
       this.listNext = this.itemsPerPage;
+      this.endpointsWithDatasources.forEach(
+        (ep: HsEndpoint) => (ep.datasourcePaging.start = 0)
+      );
     } else {
       this.listStart -= this.itemsPerPage;
       this.listNext = this.listStart + this.itemsPerPage;
+      this.endpointsWithDatasources.forEach(
+        (ep: HsEndpoint) =>
+          (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
+      );
     }
+    this.queryCatalogs(true)
   }
 
   resetList(): void {
-    this.catalogEntries.length = 0;
     this.listStart = 0;
     this.listNext = this.itemsPerPage;
+    this.endpointsWithDatasources.forEach(
+      (ep: HsEndpoint) => {
+        ep.datasourcePaging.start = 0;
+        ep.datasourcePaging.next = ep.datasourcePaging.limit;
+        ep.datasourcePaging.matched = 0;
+      }
+
+    );
+    
+//    this.HsCompositionsService.resetCompositionCounter();
+
+  }
+
+  clearLoadedData(): void {
+    this.catalogEntries = [];
+    this.endpointsWithDatasources.forEach((ep) => (ep.layers = []));
   }
 
   /**
