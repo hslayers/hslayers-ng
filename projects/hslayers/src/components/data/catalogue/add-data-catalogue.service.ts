@@ -266,7 +266,6 @@ export class HsAddDataCatalogueService {
   getNextRecords(): void {
     this.listStart += this.itemsPerPage;
     this.listNext += this.itemsPerPage;
-    console.log('netxt',this.listNext)
     if (this.listNext > this.matchedLayers) {
       this.listNext = this.matchedLayers;
     }
