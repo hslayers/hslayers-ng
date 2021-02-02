@@ -16,6 +16,7 @@ import {Layer} from 'ol/layer';
 import {
   getAbstract,
   getAttribution,
+  getBase,
   getTitle,
   setAbstract,
   setTitle,
@@ -32,7 +33,7 @@ export class HsLayerEditorComponent {
   };
   layer_renamer_visible = false;
   getAttribution = getAttribution;
-
+  getBase = getBase;
   constructor(
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsLayerManagerWmstService: HsLayerManagerWmstService,

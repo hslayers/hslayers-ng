@@ -6,7 +6,7 @@ const ABSTRACT = 'abstract';
 const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
 const CAPABILITIES = 'capabilities';
-
+const BASE = 'base';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -69,6 +69,13 @@ export function setCacheCapabilities(layer: Layer, capabilities: any): void {
   layer.set(CAPABILITIES, capabilities);
 }
 
+export function getBase(layer: Layer): boolean {
+  return layer.get(BASE);
+}
+
+export function setBase(layer: Layer, baseActive: boolean): void {
+  layer.set(BASE, baseActive);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -80,6 +87,8 @@ export const HsLayerExt = {
   getActive,
   setAttribution,
   getAttribution,
-  getCachedCapabilities,
   setCacheCapabilities,
+  getCachedCapabilities,
+  setBase,
+  getBase,
 };
