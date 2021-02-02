@@ -102,6 +102,14 @@ export class HsConfig {
   openQueryPanelOnDrawEnd?: boolean;
   assetsPath?: string;
   reverseLayerList?: boolean;
+  /**
+   * When set to 'true', the map layers are stored temporarily to localStorage
+   * on page reload, loaded when it starts and deleted afterwards.
+   * Otherwise, nothing is stored to localStorage and only default_layers are loaded
+   * after page reloads.
+   * @default true
+   */
+  saveMapStateOnReload?: boolean;
 
   /**
    * Triggered when config is updated using 'update' function of HsConfig.

@@ -13,6 +13,7 @@ import {
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
+import {HsConfig} from 'hslayers-ng';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -24,6 +25,7 @@ import {Layer} from 'ol/layer';
 })
 export class HsSaveMapService {
   constructor(
+    public hsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
@@ -31,17 +33,20 @@ export class HsSaveMapService {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.initOnPageReloadListener();
+    if (hsConfig.saveMapStateOnReload === undefined) {
+      hsConfig.saveMapStateOnReload = true;
+    }
+    if (hsConfig.saveMapStateOnReload) {
+      window.addEventListener('beforeunload', this.save2storage);
+    }
   }
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
-   *
-   * @memberof HsSaveMapService
-   * @function map2json
-   * @param {Ol.map} map Selected map object
-   * @param {object} compoData Composition general metadata
-   * @param {object} userData Metadata about user
-   * @param {object} statusData Metadata about permissions
+   * @param {Ol.map} map - Selected map object
+   * @param {object} compoData - Composition general metadata
+   * @param {object} userData - Metadata about user
+   * @param {object} statusData - Metadata about permissions
    * @returns {object} JSON object with all required map composition metadata
    */
   map2json(map, compoData, userData, statusData) {
@@ -525,5 +530,22 @@ export class HsSaveMapService {
         rendered();
       }
     }
+  }
+
+  save2storage(evt): void {
+    const data = {
+      layers: [],
+    };
+    const layers = [];
+    this.HsMapService.map.getLayers().forEach((layer) => {
+      if (layer.get('saveState')) {
+        const lyr = this.layer2json(layer);
+        layers.push(lyr);
+      }
+    });
+    data.layers = layers;
+    //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
+    // but remove it if leaving the site for good
+    localStorage.setItem('hs_layers', JSON.stringify(data));
   }
 }
