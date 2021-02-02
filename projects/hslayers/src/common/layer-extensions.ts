@@ -9,6 +9,7 @@ const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const BOUNDINGBOX = 'boundingBox';
 const CLUSTER = 'cluster';
+const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -78,6 +79,7 @@ export function getBase(layer: Layer): boolean {
 export function setBase(layer: Layer, baseActive: boolean): void {
   layer.set(BASE, baseActive);
 }
+
 export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
   return layer.get(BOUNDINGBOX);
 }
@@ -85,12 +87,24 @@ export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
 export function setBoundingBox(layer: Layer, extent: number[]): void {
   layer.set(BOUNDINGBOX, extent);
 }
+
 export function getCluster(layer: Layer): boolean {
-  return layer.get(BOUNDINGBOX);
+  return layer.get(CLUSTER);
 }
 
 export function setCluster(layer: Layer, clusterActive: boolean): void {
   layer.set(CLUSTER, clusterActive);
+}
+
+export function getCustomInfoTemplate(layer: Layer): string {
+  return layer.get(CUSTOMINFOTEMPLATE);
+}
+
+export function setCustomInfoTemplate(
+  layer: Layer,
+  customInfoTemplate: string
+): void {
+  layer.set(CUSTOMINFOTEMPLATE, customInfoTemplate);
 }
 export const HsLayerExt = {
   setTitle,
@@ -111,4 +125,6 @@ export const HsLayerExt = {
   getBoundingBox,
   setCluster,
   getCluster,
+  setCustomInfoTemplate,
+  getCustomInfoTemplate,
 };

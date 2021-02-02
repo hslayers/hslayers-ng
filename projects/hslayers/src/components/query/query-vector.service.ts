@@ -17,6 +17,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMeasureService} from '../measure/measure.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getCustomInfoTemplate} from '../../common/layer-extensions';
 
 type AttributeValuePair = {
   name;
@@ -255,8 +256,8 @@ export class HsQueryVectorService {
       }
     });
     const layer = this.HsMapService.getLayerForFeature(feature);
-    if (layer?.get('customInfoTemplate')) {
-      customInfoTemplate = layer.get('customInfoTemplate');
+    if (!layer || getCustomInfoTemplate(layer)) {
+      customInfoTemplate = getCustomInfoTemplate(layer);
     }
     if (layer?.get('virtualAttributes')) {
       const virtualAttributes = layer.get('virtualAttributes');
