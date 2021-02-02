@@ -13,7 +13,7 @@ import {
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
-import {HsConfig} from 'hslayers-ng';
+import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
