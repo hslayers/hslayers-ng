@@ -7,6 +7,7 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getCluster} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class HsLayerEditorVectorLayerService {
    */
   declutter(newValue: boolean, layer: Layer): void {
     const index = this.HsMapService.map.getLayers().getArray().indexOf(layer);
-    if (newValue == true && !layer.get('cluster')) {
+    if (newValue == true && !getCluster(layer)) {
       this.HsMapService.map.removeLayer(layer);
       this.HsMapService.map
         .getLayers()

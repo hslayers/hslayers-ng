@@ -14,7 +14,12 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
-import {getBoundingBox, setBoundingBox} from '../../common/layer-extensions';
+import {
+  getBoundingBox,
+  getCluster,
+  setBoundingBox,
+  setCluster,
+} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -121,11 +126,11 @@ export class HsLayerEditorService {
       return;
     }
     if (newValue != undefined) {
-      layer.set('cluster', newValue);
+      setCluster(layer, newValue);
       this.HsLayerEditorVectorLayerService.cluster(newValue, layer, distance);
       this.HsEventBusService.compositionEdits.next();
     } else {
-      return layer.get('cluster');
+      return getCluster(layer);
     }
   }
 

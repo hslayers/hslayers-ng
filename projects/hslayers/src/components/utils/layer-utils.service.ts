@@ -14,7 +14,12 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
-import {getBoundingBox, getName, getTitle} from '../../common/layer-extensions';
+import {
+  getBoundingBox,
+  getCluster,
+  getName,
+  getTitle,
+} from '../../common/layer-extensions';
 import {isEmpty} from 'ol/extent';
 
 @Injectable()
@@ -278,7 +283,7 @@ export class HsLayerUtilsService {
    */
   isLayerClustered(layer: Layer): boolean {
     return this.isLayerVectorLayer(layer) &&
-      layer.get('cluster') &&
+      getCluster(layer) &&
       layer.getSource()?.getSource
       ? true
       : false;

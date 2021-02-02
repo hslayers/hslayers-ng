@@ -30,6 +30,7 @@ import {
   getAbstract,
   getActive,
   getBase,
+  getCluster,
   setActive,
 } from '../../common/layer-extensions';
 
@@ -155,14 +156,14 @@ export class HsLayerManagerService {
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      layer.get('cluster') &&
+      getCluster(layer) &&
       layer.get('declutter')
     ) {
       layer.set('declutter', false);
     }
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      layer.get('cluster')
+      getCluster(layer)
     ) {
       this.HsLayerEditorVectorLayerService.cluster(
         true,
