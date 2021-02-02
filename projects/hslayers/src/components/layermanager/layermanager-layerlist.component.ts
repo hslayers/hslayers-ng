@@ -1,4 +1,3 @@
-import BaseLayer from 'ol/layer/Base';
 import {Component, Input} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -10,6 +9,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
+import {getHsLaymanSynchronizing} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -26,7 +26,7 @@ export class HsLayerListComponent {
    */
   layer_titles: Array<any> = [];
   filtered_layers: Array<any> = [];
-
+  getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,

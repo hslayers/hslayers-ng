@@ -16,7 +16,10 @@ import {
   tweakGeoserverUrl,
   wfsNotAvailable,
 } from './layman-utils';
-import {getTitle} from '../../common/layer-extensions';
+import {
+  getTitle,
+  setHsLaymanSynchronizing,
+} from '../../common/layer-extensions';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -177,7 +180,7 @@ export class HsLaymanService implements HsSaverService {
     if (((ep?.version?.split('.').join() as unknown) as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
-    layer.set('hs-layman-synchronizing', true);
+    setHsLaymanSynchronizing(layer, true);
     await this.makeUpsertLayerRequest(ep, geojson, {
       title: layerTitle,
       name: layerName,
@@ -187,7 +190,7 @@ export class HsLaymanService implements HsSaverService {
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);
-      layer.set('hs-layman-synchronizing', false);
+      setHsLaymanSynchronizing(layer, false);
     }, 2000);
   }
 
