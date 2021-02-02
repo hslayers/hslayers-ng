@@ -9,7 +9,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {getBase, getTitle} from '../../common/layer-extensions';
+import {getBase, getEnableProxy, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -304,10 +304,7 @@ export class HsLegendService {
       '&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=' +
       layer_name +
       '&format=image%2Fpng';
-    if (
-      layer.get('enableProxy') === undefined ||
-      layer.get('enableProxy') == true
-    ) {
+    if (getEnableProxy(layer) === undefined || getEnableProxy(layer) == true) {
       source_url = this.HsUtilsService.proxify(source_url, false);
     }
     return source_url;
