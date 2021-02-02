@@ -77,7 +77,7 @@ export class HsLayerSynchronizerService {
     const definition = layer.get('definition');
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      definition?.format.toLowerCase().includes('wfs')
+      definition?.format?.toLowerCase().includes('wfs')
     );
   }
 

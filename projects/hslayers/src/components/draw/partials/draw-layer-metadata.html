@@ -14,7 +14,7 @@
                 <p class="m-0 p-0" style="font-size: x-small; color: red;">
                     {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translate}}</p>
             </div>
-            <div *ngIf="!data.isAuthorized" class="alert alert-danger" role="alert">
+            <div *ngIf="!data.isAuthorized && this.data.laymanEndpoint != undefined" class="alert alert-danger" role="alert">
                 <p class="text-center">
                     {{'DRAW.notAuthorized' | translate}}
                 </p>
@@ -89,7 +89,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="data.isAuthorized && type == 'draw' || data.tmpDrawLayer"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="((data.isAuthorized || data.laymanEndpoint == undefined) && type == 'draw') || data.tmpDrawLayer"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
