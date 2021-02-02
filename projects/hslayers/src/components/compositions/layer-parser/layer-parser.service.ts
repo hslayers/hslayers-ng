@@ -18,6 +18,8 @@ import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
+import {HsVectorLayerOptions} from '../../add-layers/vector/vector-layer-options.type';
+import {setDefinition} from '../../../common/layer-extensions';
 import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 
 @Injectable({
@@ -434,7 +436,7 @@ export class HsCompositionsLayerParserService {
           }
         );
     }
-    layer.set('definition', lyr_def.protocol);
+    setDefinition(layer, lyr_def.protocol);
     return layer;
   }
 }

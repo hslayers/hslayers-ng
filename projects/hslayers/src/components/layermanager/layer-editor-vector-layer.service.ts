@@ -7,7 +7,7 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCluster} from '../../common/layer-extensions';
+import {getCluster, getDeclutter} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +66,7 @@ export class HsLayerEditorVectorLayerService {
    * @param {number} distance
    */
   cluster(newValue: boolean, layer: Layer, distance: number): void {
-    if (newValue == true && !layer.get('declutter')) {
+    if (newValue == true && !getDeclutter(layer)) {
       layer.set('hsOriginalStyle', layer.getStyle());
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));

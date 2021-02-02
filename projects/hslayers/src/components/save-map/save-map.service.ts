@@ -21,7 +21,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getBase, getTitle} from '../../common/layer-extensions';
+import {getBase, getDefinition, getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -418,7 +418,7 @@ export class HsSaveMapService {
       }
       json.name = layer.get('name');
       json.className = 'Vector';
-      const definition = layer.get('definition');
+      const definition = getDefinition(layer);
       if (definition && definition.url) {
         json.protocol = {
           url: encodeURIComponent(definition.url),

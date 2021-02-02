@@ -17,8 +17,10 @@ import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.ser
 import {
   getBoundingBox,
   getCluster,
+  getDeclutter,
   setBoundingBox,
   setCluster,
+  setDeclutter,
 } from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
@@ -147,11 +149,11 @@ export class HsLayerEditorService {
       return;
     }
     if (newValue != undefined) {
-      layer.set('declutter', newValue);
+      setDeclutter(layer, newValue);
       this.HsLayerEditorVectorLayerService.declutter(newValue, layer);
       this.HsEventBusService.compositionEdits.next();
     } else {
-      return layer.get('declutter');
+      return getDeclutter(layer);
     }
   }
 

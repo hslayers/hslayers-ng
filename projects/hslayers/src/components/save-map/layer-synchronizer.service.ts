@@ -14,6 +14,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getDefinition} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -74,7 +75,7 @@ export class HsLayerSynchronizerService {
   }
 
   isLayerSynchronizable(layer: Layer): boolean {
-    const definition = layer.get('definition');
+    const definition = getDefinition(layer);
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
       definition?.format?.toLowerCase().includes('wfs')
@@ -101,7 +102,7 @@ export class HsLayerSynchronizerService {
   }
 
   findLaymanForWfsLayer(layer: Layer) {
-    const layerDefinition = layer.get('definition');
+    const layerDefinition = getDefinition(layer);
     return (this.HsCommonEndpointsService.endpoints || [])
       .filter(
         (ds) => ds.type == 'layman' && layerDefinition?.url.includes(ds.url)
