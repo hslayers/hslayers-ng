@@ -26,7 +26,9 @@ const HSORIGINALSTYLE = 'hsOriginalStyle';
 const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
 const INFOFORMAT = 'infoFormat';
 const INLINELEGEND = 'inlineLegend';
-const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor'
+const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor';
+const MAXRESOLUTIONDENOMINATOR = 'maxResolutionDenominator';
+const METADATA = 'metadata';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -266,6 +268,25 @@ export function setLaymanLayerDescriptor(layer: Layer, hsLaymanLayerDescriptor: 
 export function getLaymanLayerDescriptor(layer: Layer): HsLaymanLayerDescriptor {
   return layer.get(LAYMANLAYERDESCRIPTOR);
 }
+
+export function setMaxResolutionDenominator(layer: Layer, maxResolutionDenominator: number): void {
+  layer.set(MAXRESOLUTIONDENOMINATOR, maxResolutionDenominator);
+}
+
+export function getMaxResolutionDenominator(layer: Layer): number {
+  return layer.get(MAXRESOLUTIONDENOMINATOR);
+}
+
+export function setMetadata(
+  layer: Layer,
+  metadata: any
+): void {
+  layer.set(METADATA, metadata);
+}
+
+export function getMetadata(layer: Layer): any {
+  return layer.get(METADATA);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -317,4 +338,8 @@ export const HsLayerExt = {
   getInlineLegend,
   setLaymanLayerDescriptor,
   getLaymanLayerDescriptor,
+  setMaxResolutionDenominator,
+  getMaxResolutionDenominator,
+  setMetadata,
+  getMetadata,
 };

@@ -33,6 +33,7 @@ import {
   getCluster,
   getDeclutter,
   getExclusive,
+  getMetadata,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -847,7 +848,7 @@ export class HsLayerManagerService {
     if (!layer) {
       return;
     } else {
-      return layer.layer.get('MetadataURL') ? true : false;
+      return getMetadata(layer.layer) ? true : false;
     }
   }
   /**

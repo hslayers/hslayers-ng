@@ -11,7 +11,11 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {getFromComposition, getTitle} from '../../common/layer-extensions';
+import {
+  getFromComposition,
+  getTitle,
+  setMetadata,
+} from '../../common/layer-extensions';
 import {transform, transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
@@ -455,7 +459,7 @@ export class HsCompositionsParserService {
         return;
     }
     if (resultLayer) {
-      resultLayer.set('metadata', lyr_def.metadata);
+      setMetadata(resultLayer, lyr_def.metadata);
     }
     return resultLayer;
   }

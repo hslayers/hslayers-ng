@@ -6,8 +6,11 @@ import {
   Attribution,
   getAttribution,
   getCachedCapabilities,
+  getMaxResolutionDenominator,
+  getMetadata,
   setAttribution,
   setCacheCapabilities,
+  setMetadata,
 } from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -70,7 +73,7 @@ export class HsLayerManagerMetadataService {
   }
 
   metadataArray(layer: Layer): Array<any> {
-    const obj = layer.layer.get('MetadataURL');
+    const obj = getMetadata(layer.layer);
     return Object.entries(obj).map((e) => e[1]);
   }
 
@@ -233,7 +236,7 @@ export class HsLayerManagerMetadataService {
       return;
     }
     const metadata = {
-      metainfo: {'OnlineResource': layer.get('Metadata')},
+      metainfo: {'OnlineResource': getMetadata(layer)},
     };
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
@@ -257,21 +260,21 @@ export class HsLayerManagerMetadataService {
             src.updateParams(params);
           }
 
-          if (layer.get('Metadata')) {
-            layer.set('MetadataURL', metadata);
+          if (getMetadata(layer)) {
+            setMetadata(layer, metadata);
             return layer;
           }
-          if (!layer.get('MetadataURL')) {
-            layer.set('MetadataURL', {
+          if (!getMetadata(layer)) {
+            setMetadata(layer, {
               '0': caps.Service,
             });
           }
           //Identify max resolution of layer. If layer has sublayers the heighest value is selected
           setTimeout(() => {
-            if (layer.get('MaxScaleDenominator')) {
+            if (getMaxResolutionDenominator(layer)) {
               layer.set(
                 'maxResolution',
-                this.roundToHundreds(layer.get('MaxScaleDenominator'))
+                this.roundToHundreds(getMaxResolutionDenominator(layer))
               );
               return;
             }
@@ -304,8 +307,8 @@ export class HsLayerManagerMetadataService {
               onlineResource: caps.ServiceProvider.ProviderSite,
             });
           }
-          if (layer.get('Metadata')) {
-            layer.set('MetadataURL', metadata);
+          if (getMetadata(layer)) {
+            setMetadata(layer, metadata);
           }
           return true;
         })
