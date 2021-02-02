@@ -32,6 +32,7 @@ import {
   getBase,
   getCluster,
   getDeclutter,
+  getExclusive,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -504,7 +505,7 @@ export class HsLayerManagerService {
     layer.visible = visibility;
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
     //Set the other layers in the same folder invisible
-    if (visibility && layer.layer.get('exclusive') == true) {
+    if (visibility && getExclusive(layer.layer) == true) {
       for (const other_layer of this.data.layers) {
         if (
           other_layer.layer.get('path') == layer.layer.get('path') &&

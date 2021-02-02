@@ -16,6 +16,7 @@ const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
 const ENABLEPROXY = 'enableProxy';
 const EVENTSSUSPENDED = 'eventsSuspended';
+const EXCLUSIVE = 'exclusive';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -171,6 +172,14 @@ export function setEventsSuspended(
 export function getEventsSuspended(layer: Layer): number {
   return layer.get(EVENTSSUSPENDED);
 }
+
+export function setExclusive(layer: Layer, exclusiveActive: boolean): void {
+  layer.set(EXCLUSIVE, exclusiveActive);
+}
+
+export function getExclusive(layer: Layer): boolean {
+  return layer.get(EXCLUSIVE);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -204,4 +213,6 @@ export const HsLayerExt = {
   getEnableProxy,
   setEventsSuspended,
   getEventsSuspended,
+  setExclusive,
+  getExclusive,
 };
