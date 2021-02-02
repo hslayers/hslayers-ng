@@ -1,4 +1,5 @@
 import {Group, Layer} from 'ol/layer';
+import {Style} from 'ol/style';
 
 const TITLE = 'title';
 const NAME = 'name';
@@ -20,6 +21,7 @@ const EXCLUSIVE = 'exclusive';
 const FEATUREINFOLANG = 'featureInfoLang';
 const FROMCOMPOSITION = 'fromComposition';
 const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
+const HSORIGINALSTYLE = 'hsOriginalStyle';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -213,6 +215,15 @@ export function setFeatureInfoTarget(
 export function getFeatureInfoTarget(layer: Layer): string {
   return layer.get(GETFEATUREINFOTARGET);
 }
+
+export function setHsOriginalStyle(layer: Layer, hsOriginalStyle: Style): void {
+  layer.set(HSORIGINALSTYLE, hsOriginalStyle);
+}
+
+export function getHsOriginalStyle(layer: Layer): Style {
+  return layer.get(HSORIGINALSTYLE);
+}
+
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -254,4 +265,6 @@ export const HsLayerExt = {
   getFromComposition,
   setFeatureInfoTarget,
   getFeatureInfoTarget,
+  setHsOriginalStyle,
+  getHsOriginalStyle,
 };

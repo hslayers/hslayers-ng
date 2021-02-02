@@ -7,7 +7,12 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCluster, getDeclutter} from '../../common/layer-extensions';
+import {
+  getCluster,
+  getDeclutter,
+  getHsOriginalStyle,
+  setHsOriginalStyle,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -67,14 +72,14 @@ export class HsLayerEditorVectorLayerService {
    */
   cluster(newValue: boolean, layer: Layer, distance: number): void {
     if (newValue == true && !getDeclutter(layer)) {
-      layer.set('hsOriginalStyle', layer.getStyle());
+      setHsOriginalStyle(layer, layer.getStyle());
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         this.HsStylerService.styleClusteredLayer(layer);
         this.updateFeatureTableLayers(layer);
       }
     } else {
-      layer.setStyle(layer.get('hsOriginalStyle'));
+      layer.setStyle(getHsOriginalStyle(layer));
       layer.setSource(layer.getSource().getSource());
     }
   }
