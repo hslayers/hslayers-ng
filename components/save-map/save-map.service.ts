@@ -8,6 +8,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Map} from 'ol';
 
+import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -22,12 +23,32 @@ export class HsSaveMapService {
     require(/* webpackChunkName: "img" */ './notAvailable.png')
   );
   constructor(
+    public hsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
-    public HsLayerUtilsService: HsLayerUtilsService
-  ) {}
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public WINDOW: Window
+  ) {
+    if (hsConfig.saveMapStateOnReload) {
+      WINDOW.addEventListener('beforeunload', (event) => {
+        const data = {
+          layers: [],
+        };
+        const layers = [];
+        this.HsMapService.map.getLayers().forEach((layer) => {
+          if (layer.get('saveState')) {
+            const lyr = this.layer2json(layer);
+            layers.push(lyr);
+          }
+        });
+        data.layers = layers;
+        // Do not setItem when loading something on URL, only on page reload
+        localStorage.setItem('hs_layers', JSON.stringify(data));
+      });
+    }
+  }
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
