@@ -30,22 +30,11 @@ export class HsSaveMapService {
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
+    if (hsConfig.saveMapStateOnReload === undefined) {
+      hsConfig.saveMapStateOnReload = true;
+    }
     if (hsConfig.saveMapStateOnReload) {
-      window.addEventListener('beforeunload', (event) => {
-        const data = {
-          layers: [],
-        };
-        const layers = [];
-        this.HsMapService.map.getLayers().forEach((layer) => {
-          if (layer.get('saveState')) {
-            const lyr = this.layer2json(layer);
-            layers.push(lyr);
-          }
-        });
-        data.layers = layers;
-        // Do not setItem when loading something on URL, only on page reload
-        localStorage.setItem('hs_layers', JSON.stringify(data));
-      });
+      window.addEventListener('beforeunload', this.save2storage);
     }
   }
 
@@ -523,5 +512,22 @@ export class HsSaveMapService {
         rendered();
       }
     }
+  }
+
+  save2storage(evt): void {
+    const data = {
+      layers: [],
+    };
+    const layers = [];
+    this.HsMapService.map.getLayers().forEach((layer) => {
+      if (layer.get('saveState')) {
+        const lyr = this.layer2json(layer);
+        layers.push(lyr);
+      }
+    });
+    data.layers = layers;
+    //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
+    // but remove it if leaving the site for good
+    localStorage.setItem('hs_layers', JSON.stringify(data));
   }
 }
