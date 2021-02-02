@@ -28,11 +28,10 @@ export class HsSaveMapService {
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public WINDOW: Window
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {
     if (hsConfig.saveMapStateOnReload) {
-      WINDOW.addEventListener('beforeunload', (event) => {
+      window.addEventListener('beforeunload', (event) => {
         const data = {
           layers: [],
         };
