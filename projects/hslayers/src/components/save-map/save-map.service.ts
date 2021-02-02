@@ -21,7 +21,12 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getBase, getDefinition, getTitle} from '../../common/layer-extensions';
+import {
+  getBase,
+  getDefinition,
+  getDimensions,
+  getTitle,
+} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -352,8 +357,8 @@ export class HsSaveMapService {
         json.wmsMaxScale = layer.get('maxScale');
       }
       json.displayInLayerSwitcher = layer.get('show_in_manager');
-      if (layer.get('dimensions')) {
-        json.dimensions = layer.get('dimensions');
+      if (getDimensions(layer)) {
+        json.dimensions = getDimensions(layer);
       }
       if (this.HsUtilsService.instOf(src, XYZ)) {
         json.className = 'XYZ';
