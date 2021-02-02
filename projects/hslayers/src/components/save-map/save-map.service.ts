@@ -32,7 +32,6 @@ export class HsSaveMapService {
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.initOnPageReloadListener();
     if (hsConfig.saveMapStateOnReload === undefined) {
       hsConfig.saveMapStateOnReload = true;
     }
@@ -149,20 +148,6 @@ export class HsSaveMapService {
     return current_base_layer;
   }
 
-  initOnPageReloadListener(): void {
-    window.addEventListener('beforeunload', () => {
-      const data: any = {};
-      const layers = [];
-      this.HsMapService.map.getLayers().forEach((layer) => {
-        if (layer.get('saveState')) {
-          const lyr = this.layer2json(layer);
-          layers.push(lyr);
-        }
-      });
-      data.layers = layers;
-      localStorage.setItem('hs_layers', JSON.stringify(data));
-    });
-  }
   /**
    * Converts map layers into a JSON object. If $scope is defined, stores only layers checked in form
    * Uses layer2json().
@@ -216,11 +201,10 @@ export class HsSaveMapService {
   }
 
   /**
-   * Convert layer style object into JSON object, partial function of layer2style (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
+   * Convert layer style object into JSON object, partial function of layer2style
+   * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
-   * @memberof HsSaveMapService
-   * @function serializeStyle
-   * @param {Style} s Style to convert
+   * @param s - Style to convert
    * @returns {object} Converted JSON object for style
    */
   serializeStyle(s: Style) {
