@@ -25,7 +25,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {fromCircle} from 'ol/geom/Polygon';
-import {getName, getTitle} from '../../common/layer-extensions';
+import {getDefinition, getName, getTitle} from '../../common/layer-extensions';
 
 type activateParams = {
   onDrawStart?;
@@ -480,7 +480,7 @@ export class HsDrawService {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
-      if (this.selectedLayer.get('definition')?.format == 'hs.format.WFS') {
+      if (getDefinition(this.selectedLayer)?.format == 'hs.format.WFS') {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {

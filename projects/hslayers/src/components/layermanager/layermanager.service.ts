@@ -31,7 +31,9 @@ import {
   getActive,
   getBase,
   getCluster,
+  getDeclutter,
   setActive,
+  setDeclutter,
 } from '../../common/layer-extensions';
 
 @Injectable({
@@ -157,9 +159,9 @@ export class HsLayerManagerService {
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer) &&
-      layer.get('declutter')
+      getDeclutter(layer)
     ) {
-      layer.set('declutter', false);
+      setDeclutter(layer, false);
     }
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&

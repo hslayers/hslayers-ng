@@ -10,6 +10,8 @@ const BASE = 'base';
 const BOUNDINGBOX = 'boundingBox';
 const CLUSTER = 'cluster';
 const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
+const DECLUTTER = 'declutter';
+const DEFINITION = 'definition';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -22,6 +24,10 @@ export type Attribution = {
    * it will not be updated and existing hardcoded attribution will be used
    */
   locked?: boolean;
+};
+export type Definition = {
+  format?: string;
+  url?: string;
 };
 
 export function setTitle(layer: Layer, title: string): void {
@@ -72,32 +78,28 @@ export function setCacheCapabilities(layer: Layer, capabilities: any): void {
   layer.set(CAPABILITIES, capabilities);
 }
 
-export function getBase(layer: Layer): boolean {
-  return layer.get(BASE);
-}
-
 export function setBase(layer: Layer, baseActive: boolean): void {
   layer.set(BASE, baseActive);
 }
 
-export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
-  return layer.get(BOUNDINGBOX);
+export function getBase(layer: Layer): boolean {
+  return layer.get(BASE);
 }
 
 export function setBoundingBox(layer: Layer, extent: number[]): void {
   layer.set(BOUNDINGBOX, extent);
 }
 
-export function getCluster(layer: Layer): boolean {
-  return layer.get(CLUSTER);
+export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
+  return layer.get(BOUNDINGBOX);
 }
 
 export function setCluster(layer: Layer, clusterActive: boolean): void {
   layer.set(CLUSTER, clusterActive);
 }
 
-export function getCustomInfoTemplate(layer: Layer): string {
-  return layer.get(CUSTOMINFOTEMPLATE);
+export function getCluster(layer: Layer): boolean {
+  return layer.get(CLUSTER);
 }
 
 export function setCustomInfoTemplate(
@@ -105,6 +107,26 @@ export function setCustomInfoTemplate(
   customInfoTemplate: string
 ): void {
   layer.set(CUSTOMINFOTEMPLATE, customInfoTemplate);
+}
+
+export function getCustomInfoTemplate(layer: Layer): string {
+  return layer.get(CUSTOMINFOTEMPLATE);
+}
+
+export function setDeclutter(layer: Layer, declutterActive: boolean): void {
+  layer.set(DECLUTTER, declutterActive);
+}
+
+export function getDeclutter(layer: Layer): boolean {
+  return layer.get(DECLUTTER);
+}
+
+export function setDefinition(layer: Layer, definition: Definition): void {
+  layer.set(DEFINITION, definition);
+}
+
+export function getDefinition(layer: Layer): Definition {
+  return layer.get(DEFINITION);
 }
 export const HsLayerExt = {
   setTitle,
@@ -127,4 +149,8 @@ export const HsLayerExt = {
   getCluster,
   setCustomInfoTemplate,
   getCustomInfoTemplate,
+  setDeclutter,
+  getDeclutter,
+  setDefinition,
+  getDefinition,
 };
