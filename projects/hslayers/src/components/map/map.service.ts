@@ -46,7 +46,12 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getBase, getDimensions, getTitle} from '../../common/layer-extensions';
+import {
+  getBase,
+  getDimensions,
+  getEnableProxy,
+  getTitle,
+} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -741,7 +746,7 @@ export class HsMapService {
    */
   proxifyLayerLoader(lyr, tiled) {
     const src = lyr.getSource();
-    if (lyr.get('enableProxy') && lyr.get('enableProxy') == false) {
+    if (getEnableProxy(lyr) && getEnableProxy(lyr) == false) {
       return;
     }
     if (tiled) {

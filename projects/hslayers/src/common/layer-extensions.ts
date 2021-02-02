@@ -14,7 +14,7 @@ const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
-
+const ENABLEPROXY = 'enableProxy';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -151,6 +151,14 @@ export function setEditor(layer: Layer, editor: Editor): void {
 export function getEditor(layer: Layer): Editor {
   return layer.get(EDITOR);
 }
+
+export function setEnableProxy(layer: Layer, enableProxyActive: boolean): void {
+  layer.set(ENABLEPROXY, enableProxyActive);
+}
+
+export function getEnableProxy(layer: Layer): boolean {
+  return layer.get(ENABLEPROXY);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -180,4 +188,6 @@ export const HsLayerExt = {
   getDimensions,
   setEditor,
   getEditor,
+  setEnableProxy,
+  getEnableProxy,
 };
