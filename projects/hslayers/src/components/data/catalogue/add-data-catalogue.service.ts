@@ -121,8 +121,25 @@ export class HsAddDataCatalogueService {
     });
   }
 
+  resetList(): void {
+    this.listStart = 0;
+    this.listNext = this.itemsPerPage;
+    this.endpointsWithDatasources.forEach(
+      (ep: HsEndpoint) => {
+        ep.datasourcePaging.start = 0;
+        ep.datasourcePaging.next = ep.datasourcePaging.limit;
+        ep.datasourcePaging.matched = 0;
+      }
+
+    ); 
+  }
+
   reloadData(): void {
+    this.endpointsWithDatasources = this.endpointsWithDatasourcesPipe.transform(
+      this.hsCommonEndpointsService.endpoints
+    );
     this.resetList();
+
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
@@ -275,22 +292,6 @@ export class HsAddDataCatalogueService {
       );
     }
     this.queryCatalogs(true)
-  }
-
-  resetList(): void {
-    this.listStart = 0;
-    this.listNext = this.itemsPerPage;
-    this.endpointsWithDatasources.forEach(
-      (ep: HsEndpoint) => {
-        ep.datasourcePaging.start = 0;
-        ep.datasourcePaging.next = ep.datasourcePaging.limit;
-        ep.datasourcePaging.matched = 0;
-      }
-
-    );
-    
-//    this.HsCompositionsService.resetCompositionCounter();
-
   }
 
   clearLoadedData(): void {
