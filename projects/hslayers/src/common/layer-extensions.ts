@@ -18,6 +18,7 @@ const ENABLEPROXY = 'enableProxy';
 const EVENTSSUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
 const FEATUREINFOLANG = 'featureInfoLang';
+const FROMCOMPOSITION = 'fromComposition';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -88,8 +89,8 @@ export function setCacheCapabilities(layer: Layer, capabilities: any): void {
   layer.set(CAPABILITIES, capabilities);
 }
 
-export function setBase(layer: Layer, baseActive: boolean): void {
-  layer.set(BASE, baseActive);
+export function setBase(layer: Layer, base: boolean): void {
+  layer.set(BASE, base);
 }
 
 export function getBase(layer: Layer): boolean {
@@ -155,8 +156,8 @@ export function getEditor(layer: Layer): Editor {
   return layer.get(EDITOR);
 }
 
-export function setEnableProxy(layer: Layer, enableProxyActive: boolean): void {
-  layer.set(ENABLEPROXY, enableProxyActive);
+export function setEnableProxy(layer: Layer, enableProxy: boolean): void {
+  layer.set(ENABLEPROXY, enableProxy);
 }
 
 export function getEnableProxy(layer: Layer): boolean {
@@ -174,19 +175,31 @@ export function getEventsSuspended(layer: Layer): number {
   return layer.get(EVENTSSUSPENDED);
 }
 
-export function setExclusive(layer: Layer, exclusiveActive: boolean): void {
-  layer.set(EXCLUSIVE, exclusiveActive);
+export function setExclusive(layer: Layer, exclusive: boolean): void {
+  layer.set(EXCLUSIVE, exclusive);
 }
 
 export function getExclusive(layer: Layer): boolean {
   return layer.get(EXCLUSIVE);
 }
+
 export function setFeatureInfoLang(layer: Layer, featureInfoLang: any): void {
   layer.set(FEATUREINFOLANG, featureInfoLang);
 }
 
 export function getFeatureInfoLang(layer: Layer): any {
   return layer.get(FEATUREINFOLANG);
+}
+
+export function setFromComposition(
+  layer: Layer,
+  fromCompostion: boolean
+): void {
+  layer.set(FROMCOMPOSITION, fromCompostion);
+}
+
+export function getFromComposition(layer: Layer): boolean {
+  return layer.get(FROMCOMPOSITION);
 }
 export const HsLayerExt = {
   setTitle,
@@ -225,4 +238,6 @@ export const HsLayerExt = {
   getExclusive,
   setFeatureInfoLang,
   getFeatureInfoLang,
+  setFromComposition,
+  getFromComposition,
 };

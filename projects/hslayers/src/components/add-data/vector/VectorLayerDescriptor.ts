@@ -10,7 +10,7 @@ export class VectorLayerDescriptor {
     name: any;
     title: any;
     opacity: any;
-    from_composition: boolean;
+    fromComposition: boolean;
     style: any;
     source?: VectorSource;
     removable?: boolean;
@@ -42,7 +42,7 @@ export class VectorLayerDescriptor {
       name,
       title,
       opacity: options.opacity || 1,
-      from_composition: options.from_composition || false,
+      fromComposition: options.fromComposition || false,
       style: options.style,
       removable: true,
       path: options.path,

@@ -113,7 +113,7 @@ export class HsCompositionsLayerParserService {
     });
     const new_layer = new layer_class({
       title: lyr_def.title,
-      from_composition: true,
+      fromComposition: true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       minScale: lyr_def.minScale || Infinity,
@@ -174,7 +174,7 @@ export class HsCompositionsLayerParserService {
     });
     const new_layer = new layer_class({
       title: lyr_def.title,
-      from_composition: true,
+      fromComposition: true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       minScale: lyr_def.minScale || Infinity,
@@ -230,7 +230,7 @@ export class HsCompositionsLayerParserService {
     });
     const new_layer = new layer_class({
       title: lyr_def.title,
-      from_composition: true,
+      fromComposition: true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       minScale: lyr_def.minScale || Infinity,
@@ -287,7 +287,7 @@ export class HsCompositionsLayerParserService {
     });
     const new_layer = new layer_class({
       title: lyr_def.title,
-      from_composition: true,
+      fromComposition: true,
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       minScale: lyr_def.minScale || Infinity,
@@ -334,7 +334,7 @@ export class HsCompositionsLayerParserService {
     });
 
     const lyr = new VectorLayer({
-      from_composition: true,
+      fromComposition: true,
       definition: definition,
       source: src,
       opacity: lyr_def.opacity || 1,
@@ -369,7 +369,7 @@ export class HsCompositionsLayerParserService {
     }
     const options: HsVectorLayerOptions = {
       opacity: lyr_def.opacity || 1,
-      from_composition: true,
+      fromComposition: true,
       path: lyr_def.path,
       visible: lyr_def.visibility,
     };
@@ -430,7 +430,7 @@ export class HsCompositionsLayerParserService {
             opacity: lyr_def.opacity,
             visible: lyr_def.visibility,
             path: lyr_def.path,
-            from_composition: lyr_def.from_composition,
+            fromComposition: lyr_def.fromComposition,
             style: lyr_def.style,
             features: lyr_def.features,
           }
