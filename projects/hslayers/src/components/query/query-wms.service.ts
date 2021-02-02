@@ -15,6 +15,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {
   getBase,
   getCustomInfoTemplate,
+  getFeatureInfoLang,
   getName,
   getTitle,
 } from '../../common/layer-extensions';
@@ -323,12 +324,12 @@ export class HsQueryWmsService {
         }
       );
       if (
-        layer.get('featureInfoLang') &&
-        layer.get('featureInfoLang')[this.HsLanguageService.language]
+        getFeatureInfoLang(layer) &&
+        getFeatureInfoLang(layer)[this.HsLanguageService.language]
       ) {
         url = url.replace(
           source.getUrl(),
-          layer.get('featureInfoLang')[this.HsLanguageService.language]
+          getFeatureInfoLang(layer)[this.HsLanguageService.language]
         );
       }
       if (url) {

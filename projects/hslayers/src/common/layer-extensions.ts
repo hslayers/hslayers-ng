@@ -17,6 +17,7 @@ const EDITOR = 'editor';
 const ENABLEPROXY = 'enableProxy';
 const EVENTSSUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
+const FEATUREINFOLANG = 'featureInfoLang';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -180,6 +181,13 @@ export function setExclusive(layer: Layer, exclusiveActive: boolean): void {
 export function getExclusive(layer: Layer): boolean {
   return layer.get(EXCLUSIVE);
 }
+export function setFeatureInfoLang(layer: Layer, featureInfoLang: any): void {
+  layer.set(FEATUREINFOLANG, featureInfoLang);
+}
+
+export function getFeatureInfoLang(layer: Layer): any {
+  return layer.get(FEATUREINFOLANG);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -215,4 +223,6 @@ export const HsLayerExt = {
   getEventsSuspended,
   setExclusive,
   getExclusive,
+  setFeatureInfoLang,
+  getFeatureInfoLang,
 };
