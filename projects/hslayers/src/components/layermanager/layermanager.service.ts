@@ -26,7 +26,12 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getAbstract, getActive, setActive} from '../../common/layer-extensions';
+import {
+  getAbstract,
+  getActive,
+  getBase,
+  setActive,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -195,7 +200,7 @@ export class HsLayerManagerService {
 
     this.HsLayermanagerWmstService.setupTimeLayerIfNeeded(new_layer);
 
-    if (layer.get('base') != true) {
+    if (getBase(layer) != true) {
       this.populateFolders(layer);
       if (layer.get('legends')) {
         new_layer.legends = layer.get('legends');
@@ -214,7 +219,7 @@ export class HsLayerManagerService {
         this.data.baselayers.push(new_layer);
     }
 
-    if (layer.getVisible() && layer.get('base')) {
+    if (layer.getVisible() && getBase(layer)) {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
     if (!suspendEvents) {
@@ -258,7 +263,7 @@ export class HsLayerManagerService {
    * @param e
    */
   layerVisibilityChanged(e): void {
-    if (e.target.get('base') != true) {
+    if (getBase(e.target) != true) {
       for (const layer of this.data.layers) {
         if (layer.layer == e.target) {
           layer.visible = e.target.getVisible();
@@ -473,7 +478,7 @@ export class HsLayerManagerService {
         let visible = false;
         let baseVisible = false;
         for (const layer of box.get('layers').getArray()) {
-          if (layer.get('visible') == true && layer.get('base') == true) {
+          if (layer.get('visible') == true && getBase(layer) == true) {
             baseVisible = true;
           } else if (layer.get('visible') == true) {
             visible = true;
@@ -611,7 +616,7 @@ export class HsLayerManagerService {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (lyr.get('removable') == true) {
-        if (lyr.get('base') == undefined || lyr.get('base') == false) {
+        if (getBase(lyr) == undefined || getBase(lyr) == false) {
           if (
             lyr.get('show_in_manager') == undefined ||
             lyr.get('show_in_manager') == true
@@ -640,10 +645,10 @@ export class HsLayerManagerService {
     let baseSwitched = false;
     theme.setVisible(switchOn);
     for (const layer of theme.get('layers')) {
-      if (layer.get('base') == true && !baseSwitched) {
+      if (getBase(layer) == true && !baseSwitched) {
         this.changeBaseLayerVisibility();
         baseSwitched = true;
-      } else if (layer.get('base') == true) {
+      } else if (getBase(layer) == true) {
         return;
       } else {
         layer.setVisible(switchOn);

@@ -4,6 +4,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
+import {getBase} from '../../common/layer-extensions';
 
 export type PhysicalListItem = {
   title: string;
@@ -32,7 +33,7 @@ export class HsLayermanagerPhysicalListService {
     return this.HsMapService.map
       .getLayers()
       .getArray()
-      .filter((layer) => layer.get('base') != true);
+      .filter((layer) => getBase(layer) != true);
   }
 
   /**

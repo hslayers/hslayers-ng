@@ -12,7 +12,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getName, getTitle} from '../../common/layer-extensions';
+import {getBase, getName, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class HsQueryWmsService {
     this.HsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
       this.HsMapService.map.getLayers().forEach((layer) => {
-        if (layer.get('base') == true || layer.get('queriable') == false) {
+        if (getBase(layer) == true || layer.get('queriable') == false) {
           return;
         }
         if (layer.get('queryFilter') != undefined) {

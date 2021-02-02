@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsLayerManagerService} from './layermanager.service';
-import {HsLayoutService} from '../layout/layout.service';
-
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayoutService} from '../layout/layout.service';
 import {Layer} from 'ol/layer';
+import {getBase} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
@@ -42,7 +42,8 @@ export class HsLayerManagerGalleryComponent {
         this.HsLayerManagerService.changeBaseLayerVisibility(true, layer);
         this.baseLayersExpanded = false;
         this.HsLayerManagerService.menuExpanded = false;
-        if (this.HsLayerManagerService.currentLayer?.layer.get('base')) {
+        const olLayer = this.HsLayerManagerService.currentLayer?.layer;
+        if (!olLayer || getBase(olLayer)) {
           this.HsLayerManagerService.currentLayer = null;
         }
       }

@@ -46,7 +46,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getBase, getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -574,7 +574,7 @@ export class HsMapService {
     visibilityOverrides?: Array<string>
   ): Layer {
     if (removeIfExists && this.layerAlreadyExists(lyr)) {
-      if (lyr.get('base') == true) {
+      if (getBase(lyr) == true) {
         return;
       }
       this.removeDuplicate(lyr);

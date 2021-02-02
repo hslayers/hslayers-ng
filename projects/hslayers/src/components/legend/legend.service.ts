@@ -9,7 +9,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getBase, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -322,7 +322,7 @@ export class HsLegendService {
    * @param {Layer} layer Openlayers layer
    */
   getLayerLegendDescriptor(layer: Layer): HsLegendDescriptor | undefined {
-    if (layer.get('base')) {
+    if (getBase(layer)) {
       return;
     }
     if (
