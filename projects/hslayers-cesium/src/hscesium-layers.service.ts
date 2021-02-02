@@ -24,6 +24,7 @@ import {
   HsEventBusService,
   HsMapService,
   HsUtilsService,
+  getDimensions,
   getTitle,
 } from 'hslayers-ng';
 import {ImageWMS, Source} from 'ol/source';
@@ -472,7 +473,7 @@ export class HsCesiumLayersService {
         }),
       }),
       layers: src.getParams().LAYERS,
-      dimensions: ol_lyr.get('dimensions'),
+      dimensions: getDimensions(ol_lyr),
       getFeatureInfoFormats: [new GetFeatureInfoFormat('text', 'text/plain')],
       enablePickFeatures: true,
       parameters: params,
@@ -531,7 +532,7 @@ export class HsCesiumLayersService {
         }),
       }),
       layers: src.getParams().LAYERS,
-      dimensions: ol_lyr.get('dimensions'),
+      dimensions: getDimensions(ol_lyr),
       getFeatureInfoFormats: [new GetFeatureInfoFormat('text', 'text/plain')],
       enablePickFeatures: true,
       parameters: params,

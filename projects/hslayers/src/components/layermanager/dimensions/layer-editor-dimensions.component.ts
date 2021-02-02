@@ -7,6 +7,7 @@ import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Layer} from 'ol/layer';
+import {getDimensions} from '../../../common/layer-extensions';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.html',
@@ -96,8 +97,4 @@ export class HsLayerEditorDimensionsComponent {
       }
     }
   }
-}
-
-function getDimensions(layer: any) {
-  return layer.get('dimensions');
 }

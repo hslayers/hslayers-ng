@@ -12,6 +12,8 @@ const CLUSTER = 'cluster';
 const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
 const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
+const DIMENSIONS = 'dimensions';
+
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -128,6 +130,14 @@ export function setDefinition(layer: Layer, definition: Definition): void {
 export function getDefinition(layer: Layer): Definition {
   return layer.get(DEFINITION);
 }
+
+export function setDimensions(layer: Layer, dimensions: any): void {
+  layer.set(DIMENSIONS, dimensions);
+}
+
+export function getDimensions(layer: Layer): any {
+  return layer.get(DIMENSIONS);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -153,4 +163,6 @@ export const HsLayerExt = {
   getDeclutter,
   setDefinition,
   getDefinition,
+  setDimensions,
+  getDimensions,
 };

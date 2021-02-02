@@ -46,7 +46,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getBase, getTitle} from '../../common/layer-extensions';
+import {getBase, getDimensions, getTitle} from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
 })
@@ -749,8 +749,8 @@ export class HsMapService {
         src.getTileUrlFunction() || src.tileUrlFunction();
       src.setTileUrlFunction((b, c, d) => {
         let url = tile_url_function.call(src, b, c, d);
-        if (lyr.get('dimensions')) {
-          const dimensions = lyr.get('dimensions');
+        if (getDimensions(lyr)) {
+          const dimensions = getDimensions(lyr);
           Object.keys(dimensions).forEach((dimension) => {
             url = url.replace(`{${dimension}}`, dimensions[dimension].value);
           });

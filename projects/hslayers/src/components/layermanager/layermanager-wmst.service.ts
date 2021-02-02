@@ -4,6 +4,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {getDimensions} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -172,12 +173,9 @@ export class HsLayerManagerWmstService {
     ) {
       return true;
     }
-    if (
-      layer.get('dimensions') &&
-      typeof layer.get('dimensions').time == 'object'
-    ) {
+    if (getDimensions(layer) && typeof getDimensions(layer).time == 'object') {
       const metadata: any = {};
-      let value = layer.get('dimensions').time.values;
+      let value = getDimensions(layer).time.values;
       if (Array.isArray(value)) {
         value = value[0];
       }
@@ -264,8 +262,8 @@ export class HsLayerManagerWmstService {
         new_layer.layer.get('dimensions_time') ||
         new_layer.layer.dimensions_time;
       let time;
-      if (new_layer.layer.get('dimensions').time.default != undefined) {
-        time = new Date(new_layer.layer.get('dimensions').time.default);
+      if (getDimensions(new_layer.layer).time.default != undefined) {
+        time = new Date(getDimensions(new_layer.layer).time.default);
       } else {
         time = new Date(dimensions_time.timeInterval[0]);
       }
