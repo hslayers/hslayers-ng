@@ -31,6 +31,7 @@ const MAXRESOLUTIONDENOMINATOR = 'maxResolutionDenominator';
 const METADATA = 'metadata';
 const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
 const ONFEATURESELECTED = 'onFeatureSelected';
+const PATH = 'path';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -313,6 +314,14 @@ export function setOnFeatureSelected(
 export function getOnFeatureSelected(layer: Layer): any {
   return layer.get(ONFEATURESELECTED);
 }
+
+export function setPath(layer: Layer, path: string): void {
+  layer.set(PATH, path);
+}
+
+export function getPath(layer: Layer): string {
+  return layer.get(PATH);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -372,4 +381,6 @@ export const HsLayerExt = {
   getMinimumTerrainLevel,
   setOnFeatureSelected,
   getOnFeatureSelected,
+  setPath,
+  getPath,
 };

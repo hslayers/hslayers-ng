@@ -27,6 +27,7 @@ import {
   getDimensions,
   getMetadata,
   getName,
+  getPath,
   getTitle,
 } from '../../common/layer-extensions';
 @Injectable({
@@ -328,7 +329,7 @@ export class HsSaveMapService {
       this.HsLogService.warn('Layer title undefined', layer);
     }
     //json.index = layer.map.getLayerIndex(layer);
-    json.path = layer.get('path');
+    json.path = getPath(layer);
 
     if (layer.getExtent()) {
       const ex = layer.getExtent();
