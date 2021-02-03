@@ -9,7 +9,7 @@ import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getPopUp, getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-query-feature-popup',
@@ -43,7 +43,7 @@ export class HsQueryFeaturePopupComponent {
         if (!layer) {
           return false;
         }
-        return layer.get('popUp') != undefined;
+        return getPopUp(layer) != undefined;
       }
     );
     const featureCount = featuresWithPopup.length;

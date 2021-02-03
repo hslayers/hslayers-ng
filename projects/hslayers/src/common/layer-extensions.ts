@@ -32,6 +32,7 @@ const METADATA = 'metadata';
 const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
 const ONFEATURESELECTED = 'onFeatureSelected';
 const PATH = 'path';
+const POPUP = 'popUp';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -53,7 +54,14 @@ export type Editor = {
   editable?: boolean;
   defaultAttributes?: any;
 };
-
+export type popUpAttribute = {
+  attribute?: string;
+  displayFunction?: any;
+  label?: string;
+};
+export type popUp = {
+  attributes?: Array<popUpAttribute>;
+};
 export function setTitle(layer: Layer, title: string): void {
   layer.set(TITLE, title);
 }
@@ -322,6 +330,14 @@ export function setPath(layer: Layer, path: string): void {
 export function getPath(layer: Layer): string {
   return layer.get(PATH);
 }
+
+export function setPopUp(layer: Layer, popUp: popUp): void {
+  layer.set(POPUP, popUp);
+}
+
+export function getPopUp(layer: Layer): popUp {
+  return layer.get(POPUP);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -383,4 +399,6 @@ export const HsLayerExt = {
   getOnFeatureSelected,
   setPath,
   getPath,
+  setPopUp,
+  getPopUp,
 };

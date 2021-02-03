@@ -16,7 +16,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getPopUp, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -203,9 +203,9 @@ export class HsQueryBaseService {
       return;
     }
     let attrsConfig = [];
-    if (layer.get('popUp')?.attributes) {
+    if (getPopUp(layer)?.attributes) {
       //must be an array
-      attrsConfig = layer.get('popUp').attributes;
+      attrsConfig = getPopUp(layer).attributes;
     } else {
       // Layer is not configured to show pop-ups
       return;
