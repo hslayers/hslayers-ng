@@ -17,6 +17,7 @@ import {
   getAbstract,
   getAttribution,
   getBase,
+  getRemovable,
   getTitle,
   setAbstract,
   setTitle,
@@ -301,7 +302,7 @@ export class HsLayerEditorComponent {
   isLayerRemovable(): boolean {
     const layer = this.olLayer();
     return (
-      layer?.get('removable') == undefined || layer?.get('removable') == true
+      !layer || getRemovable(layer) == undefined || getRemovable(layer) == true
     );
   }
 

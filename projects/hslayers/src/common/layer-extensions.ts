@@ -37,6 +37,7 @@ const POPUPCLASS = 'popupClass';
 const QUERYABLE = 'queryable';
 const QUERYCAPABILITIES = 'queryCapabilities';
 const QUERYFILTER = 'queryFilter';
+const REMOVABLE = 'removable';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -358,6 +359,7 @@ export function setQueryable(layer: Layer, queryable: boolean): void {
 export function getQueryable(layer: Layer): boolean {
   return layer.get(QUERYABLE);
 }
+
 export function setQueryCapabilities(
   layer: Layer,
   queryCapabilities: boolean
@@ -375,6 +377,14 @@ export function setQueryFilter(layer: Layer, queryFilter: any): void {
 
 export function getQueryFilter(layer: Layer): any {
   return layer.get(QUERYFILTER);
+}
+
+export function setRemovable(layer: Layer, removable: boolean): void {
+  layer.set(REMOVABLE, removable);
+}
+
+export function getRemovable(layer: Layer): boolean {
+  return layer.get(REMOVABLE);
 }
 export const HsLayerExt = {
   setTitle,
@@ -447,4 +457,6 @@ export const HsLayerExt = {
   getQueryCapabilities,
   setQueryFilter,
   getQueryFilter,
+  setRemovable,
+  getRemovable,
 };

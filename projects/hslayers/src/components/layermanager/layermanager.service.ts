@@ -36,6 +36,7 @@ import {
   getMetadata,
   getPath,
   getQueryCapabilities,
+  getRemovable,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -622,7 +623,7 @@ export class HsLayerManagerService {
   removeAllLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
-      if (lyr.get('removable') == true) {
+      if (getRemovable(lyr) == true) {
         if (getBase(lyr) == undefined || getBase(lyr) == false) {
           if (
             lyr.get('show_in_manager') == undefined ||
