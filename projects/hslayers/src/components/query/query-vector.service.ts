@@ -21,6 +21,7 @@ import {
   getCustomInfoTemplate,
   getOnFeatureSelected,
   getQueryable,
+  getVirtualAttributes,
 } from '../../common/layer-extensions';
 
 type AttributeValuePair = {
@@ -263,8 +264,8 @@ export class HsQueryVectorService {
     if (!layer || getCustomInfoTemplate(layer)) {
       customInfoTemplate = getCustomInfoTemplate(layer);
     }
-    if (layer?.get('virtualAttributes')) {
-      const virtualAttributes = layer.get('virtualAttributes');
+    if (!layer || getVirtualAttributes(layer)) {
+      const virtualAttributes = getVirtualAttributes(layer);
       for (const key of Object.keys(virtualAttributes)) {
         const value = virtualAttributes[key](feature);
         const obj: AttributeValuePair = {
