@@ -8,6 +8,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, XYZ} from 'ol/source';
 import {Map} from 'ol';
 
+import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -22,12 +23,20 @@ export class HsSaveMapService {
     require(/* webpackChunkName: "img" */ './notAvailable.png')
   );
   constructor(
+    public hsConfig: HsConfig,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayoutService: HsLayoutService,
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService
-  ) {}
+  ) {
+    if (hsConfig.saveMapStateOnReload === undefined) {
+      hsConfig.saveMapStateOnReload = true;
+    }
+    if (hsConfig.saveMapStateOnReload) {
+      window.addEventListener('beforeunload', (e) => this.save2storage(e));
+    }
+  }
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
@@ -503,5 +512,22 @@ export class HsSaveMapService {
         rendered();
       }
     }
+  }
+
+  save2storage(evt): void {
+    const data = {
+      layers: [],
+    };
+    const layers = [];
+    this.HsMapService.map.getLayers().forEach((layer) => {
+      if (layer.get('saveState')) {
+        const lyr = this.layer2json(layer);
+        layers.push(lyr);
+      }
+    });
+    data.layers = layers;
+    //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
+    // but remove it if leaving the site for good
+    localStorage.setItem('hs_layers', JSON.stringify(data));
   }
 }

@@ -66,5 +66,6 @@ export class HsConfig {
   sizeMode: string;
   locationButtonVisible: any;
   openQueryPanelOnDrawEnd: boolean;
+  saveMapStateOnReload: boolean;
   constructor() {}
 }
