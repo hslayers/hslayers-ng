@@ -5,7 +5,11 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
-import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
+import {
+  getHighlighted,
+  getRecord,
+  setHighlighted,
+} from '../../common/feature-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -64,15 +68,15 @@ export class HsCompositionsMapService {
       .getFeaturesAtCoordinate(evt.coordinate);
     let somethingDone = false;
     for (const feature of this.extentLayer.getSource().getFeatures()) {
-      if (feature.get('record').highlighted) {
-        feature.get('record').highlighted = false;
+      if (getRecord(feature).highlighted) {
+        getRecord(feature).highlighted = false;
         somethingDone = true;
       }
     }
     if (features.length) {
       for (const feature of features) {
-        if (!feature.get('record').highlighted) {
-          feature.get('record').highlighted = true;
+        if (!getRecord(feature).highlighted) {
+          getRecord(feature).highlighted = true;
           somethingDone = true;
         }
       }
@@ -94,8 +98,8 @@ export class HsCompositionsMapService {
   }
 
   getFeatureRecordAndUnhighlight(feature, selector) {
-    if (feature.get('is_hs_composition_extent') && feature.get('record')) {
-      const record = feature.get('record');
+    if (feature.get('is_hs_composition_extent') && getRecord(feature)) {
+      const record = getRecord(feature);
       setHighlighted(feature, false);
       selector.getFeatures().clear();
       return record;
