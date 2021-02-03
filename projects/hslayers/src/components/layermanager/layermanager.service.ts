@@ -35,6 +35,7 @@ import {
   getExclusive,
   getMetadata,
   getPath,
+  getQueryCapabilities,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -212,7 +213,7 @@ export class HsLayerManagerService {
         new_layer.legends = layer.get('legends');
       }
       this.data.layers.push(new_layer);
-      if (layer.get('queryCapabilities') != false) {
+      if (getQueryCapabilities(layer) != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
           setTimeout(() => {
             new_layer.grayed = !this.isLayerInResolutionInterval(layer);
