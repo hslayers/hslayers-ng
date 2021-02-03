@@ -10,6 +10,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
+import { getFeatureTitle } from '../../common/feature-extensions';
 
 @Component({
   selector: 'hs-query-feature-popup',
@@ -62,8 +63,8 @@ export class HsQueryFeaturePopupComponent {
     if (feature.get('name')) {
       return feature.get('name');
     }
-    if (feature.get('title')) {
-      return feature.get('title');
+    if (getFeatureTitle(feature)) {
+      return getFeatureTitle(feature);
     }
     if (feature.get('label')) {
       return feature.get('label');

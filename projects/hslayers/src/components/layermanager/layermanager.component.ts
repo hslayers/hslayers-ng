@@ -16,7 +16,11 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getActive, getAttribution} from '../../common/layer-extensions';
+import {
+  getActive,
+  getAttribution,
+  getTitle,
+} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layer-manager',
@@ -80,7 +84,7 @@ export class HsLayerManagerComponent implements OnInit {
     'wifi8.svg',
   ];
   getActive = getActive;
-
+  getTitle = getTitle;
   constructor(
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
