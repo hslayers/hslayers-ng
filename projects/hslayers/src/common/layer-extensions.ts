@@ -34,6 +34,7 @@ const ONFEATURESELECTED = 'onFeatureSelected';
 const PATH = 'path';
 const POPUP = 'popUp';
 const POPUPCLASS = 'popupClass';
+const QUERYABLE = 'queryable';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -347,6 +348,14 @@ export function setPopupClass(layer: Layer, popupClass: string): void {
 export function getPopupClass(layer: Layer): string {
   return layer.get(POPUPCLASS);
 }
+
+export function setQueryable(layer: Layer, queryable: boolean): void {
+  layer.set(QUERYABLE, queryable);
+}
+
+export function getQueryable(layer: Layer): boolean {
+  return layer.get(QUERYABLE);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -412,4 +421,6 @@ export const HsLayerExt = {
   getPopUp,
   setPopupClass,
   getPopupClass,
+  setQueryable,
+  getQueryable,
 };

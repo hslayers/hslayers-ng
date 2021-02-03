@@ -17,7 +17,11 @@ import {HsMapService} from '../map/map.service';
 import {HsMeasureService} from '../measure/measure.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCustomInfoTemplate, getOnFeatureSelected} from '../../common/layer-extensions';
+import {
+  getCustomInfoTemplate,
+  getOnFeatureSelected,
+  getQueryable,
+} from '../../common/layer-extensions';
 
 type AttributeValuePair = {
   name;
@@ -50,7 +54,7 @@ export class HsQueryVectorService {
         if (layer === null) {
           return;
         }
-        if (layer.get('queryable') === false) {
+        if (getQueryable(layer) === false) {
           return false;
         } else {
           return true;
