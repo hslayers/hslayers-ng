@@ -10,7 +10,7 @@
             <div *ngFor="let feature of layerDesc.features">
                 <!-- Layout for clustered layers -->
                 <div *ngIf="isClustered(feature)" style="font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 2px solid rgb(199, 199, 199)">
-                    <div *ngFor="let subFeature of feature.get('features')" class="d-flex flex-column" class="hs-hover-popup-feature">
+                    <div *ngFor="let subFeature of getFeatures(feature)" class="d-flex flex-column" class="hs-hover-popup-feature">
                         <div class="d-flex flex-row">
                             <div class="p-1 flex-grow-1"><em>{{serializeFeatureName(subFeature)}}</em></div>
                             <a class="p-1"  *ngIf="HsQueryVectorService.isFeatureRemovable(subFeature)" (click)="removeFeature(subFeature)" data-toggle="tooltip" [title]="'QUERY.featurePopup.removeClusterPart' | translate">

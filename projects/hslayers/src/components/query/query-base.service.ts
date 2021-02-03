@@ -16,6 +16,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getFeatures} from '../../common/feature-extensions';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -167,12 +168,10 @@ export class HsQueryBaseService {
           );
           this.featuresUnderMouse.forEach((feature) => {
             this.serializeFeatureAttributes(feature);
-            if (feature.get('features')) {
-              feature
-                .get('features')
-                .forEach((subfeature) =>
-                  this.serializeFeatureAttributes(subfeature)
-                );
+            if (getFeatures(feature)) {
+              getFeatures(feature).forEach((subfeature) =>
+                this.serializeFeatureAttributes(subfeature)
+              );
             }
           });
         } else {
