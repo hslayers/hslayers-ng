@@ -1,4 +1,5 @@
 import Feature from 'ol/Feature';
+import {Waypoint} from '../components/trip_planner/trip-planner.service';
 
 const TITLE = 'title';
 const HIGHLIGHTED = 'highlighted';
@@ -7,6 +8,8 @@ const NAME = 'name';
 const RECORD = 'record';
 const FEATURES = 'features';
 const UNITID = 'unitId';
+const WAYPOINT = 'wp';
+
 export function setFeatureTitle(feature: Feature, title: string): void {
   feature.set(TITLE, title);
 }
@@ -62,6 +65,15 @@ export function setUnitId(feature: Feature, unitId: string | number): void {
 export function getUnitId(feature: Feature): string | number {
   return feature.get(UNITID);
 }
+
+export function setWaypoint(feature: Feature, wp: Waypoint): void {
+  feature.set(WAYPOINT, wp);
+}
+
+export function getWaypoint(feature: Feature): Waypoint {
+  return feature.get(WAYPOINT);
+}
+
 export const HsFeatureExt = {
   setFeatureTitle,
   getFeatureTitle,
@@ -77,4 +89,6 @@ export const HsFeatureExt = {
   getFeatures,
   setUnitId,
   getUnitId,
+  setWaypoint,
+  getWaypoint,
 };

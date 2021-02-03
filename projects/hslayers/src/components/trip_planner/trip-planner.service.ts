@@ -14,7 +14,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsUtilsService} from './../utils/utils.service';
-import {getHighlighted} from '../../common/feature-extensions';
+import {getHighlighted, getWaypoint} from '../../common/feature-extensions';
 
 export type Waypoint = {
   name: string;
@@ -108,7 +108,7 @@ export class HsTripPlannerService {
 
   getTextOnFeature(feature: Feature): string {
     let tmp = '';
-    const wp: Waypoint = feature.get('wp');
+    const wp: Waypoint = getWaypoint(feature);
     if (wp) {
       tmp = wp.name;
       if (wp.routes.to) {
