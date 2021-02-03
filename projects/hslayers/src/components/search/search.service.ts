@@ -36,7 +36,7 @@ export class HsSearchService {
       title: 'Search results',
       source: new Vector({}),
       style: this.HsStylerService.pin_white_blue_highlight,
-      show_in_manager: false,
+      showInLayerManager: false,
     });
   }
 

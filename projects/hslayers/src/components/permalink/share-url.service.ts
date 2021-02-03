@@ -12,7 +12,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {
@@ -60,9 +60,9 @@ export class HsShareUrlService {
     const added_layers = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
       if (
-        lyr.get('show_in_manager') !== undefined &&
-        lyr.get('show_in_manager') !== null &&
-        lyr.get('show_in_manager') == false
+        getShowInLayerManager(lyr) !== undefined &&
+        getShowInLayerManager(lyr) !== null &&
+        getShowInLayerManager(lyr) == false
       ) {
         return;
       }
@@ -311,8 +311,8 @@ export class HsShareUrlService {
       map.getLayers().on('add', (e) => {
         const layer = e.element;
         if (
-          layer.get('show_in_manager') !== null &&
-          layer.get('show_in_manager') == false
+          getShowInLayerManager(layer) !== null &&
+          getShowInLayerManager(layer) == false
         ) {
           return;
         }

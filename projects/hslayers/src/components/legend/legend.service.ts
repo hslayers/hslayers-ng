@@ -9,7 +9,12 @@ import {Injectable} from '@angular/core';
 import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {getBase, getEnableProxy, getTitle} from '../../common/layer-extensions';
+import {
+  getBase,
+  getEnableProxy,
+  getShowInLayerManager,
+  getTitle,
+} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -343,8 +348,8 @@ export class HsLegendService {
       };
     } else if (
       this.HsUtilsService.instOf(layer, VectorLayer) &&
-      (layer.get('show_in_manager') === undefined ||
-        layer.get('show_in_manager') == true)
+      (getShowInLayerManager(layer) === undefined ||
+        getShowInLayerManager(layer) == true)
     ) {
       return {
         title: getTitle(layer),

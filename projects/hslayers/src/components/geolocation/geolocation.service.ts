@@ -282,7 +282,7 @@ export class HsGeolocationService {
 
     this.position_layer = new VectorLayer({
       title: 'Position',
-      show_in_manager: false,
+      showInLayerManager: false,
       removable: false,
       source: new Vector(),
     });

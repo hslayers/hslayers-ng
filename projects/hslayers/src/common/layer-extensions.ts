@@ -38,6 +38,7 @@ const QUERYABLE = 'queryable';
 const QUERYCAPABILITIES = 'queryCapabilities';
 const QUERYFILTER = 'queryFilter';
 const REMOVABLE = 'removable';
+const SHOWINLAYERMANAGER = 'showInLayerManager';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -386,6 +387,17 @@ export function setRemovable(layer: Layer, removable: boolean): void {
 export function getRemovable(layer: Layer): boolean {
   return layer.get(REMOVABLE);
 }
+
+export function setShowInLayerManager(
+  layer: Layer,
+  showInLayerManager: boolean
+): void {
+  layer.set(SHOWINLAYERMANAGER, showInLayerManager);
+}
+
+export function getShowInLayerManager(layer: Layer): boolean {
+  return layer.get(SHOWINLAYERMANAGER);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -459,4 +471,6 @@ export const HsLayerExt = {
   getQueryFilter,
   setRemovable,
   getRemovable,
+  setShowInLayerManager,
+  getShowInLayerManager,
 };

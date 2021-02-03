@@ -7,7 +7,11 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsQueryVectorService} from './../query/query-vector.service';
 import {HsUtilsService} from './../utils/utils.service';
-import {getTitle, getBase} from '../../common/layer-extensions';
+import {
+  getBase,
+  getShowInLayerManager,
+  getTitle,
+} from '../../common/layer-extensions';
 
 type FeatureDescriptor = {
   name: string;
@@ -44,8 +48,8 @@ export class HsFeatureTableService {
     if (
       !getBase(layer) &&
       this.HsUtilsService.instOf(layer, VectorLayer) &&
-      (layer.get('show_in_manager') === undefined ||
-        layer.get('show_in_manager') == true)
+      (getShowInLayerManager(layer) === undefined ||
+        getShowInLayerManager(layer) == true)
     ) {
       return this.wrapLayer(layer);
     }

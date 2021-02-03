@@ -12,7 +12,7 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getTitle} from '../../common/layer-extensions';
+import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -273,8 +273,8 @@ export class HsSaveMapManagerService {
       .getArray()
       .filter(
         (lyr) =>
-          lyr.get('show_in_manager') == undefined ||
-          lyr.get('show_in_manager') == true
+          getShowInLayerManager(lyr) == undefined ||
+          getShowInLayerManager(lyr) == true
       )
       .map((lyr) => {
         return {
