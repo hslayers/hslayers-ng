@@ -12,7 +12,13 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {setCluster, setEditor} from '../../common/layer-extensions';
+import {
+  getTitle,
+  setCluster,
+  setEditor,
+  setName,
+  setTitle,
+} from '../../common/layer-extensions';
 
 describe('HsLayerUtilsService', () => {
   const vectorLayer = new VectorLayer({
@@ -174,8 +180,8 @@ describe('HsLayerUtilsService', () => {
     expect(isLayerEditable).toBe(false);
   });
   it('try to get layer name', () => {
-    vectorLayer.set('title', 'vector layer name');
-    vectorLayer.set('name', 'vector layer name');
+    setTitle(vectorLayer, 'vector layer name');
+    setName(vectorLayer, 'vector layer name');
     let layerName = hsLayerUtils.getLayerName(vectorLayer);
     expect(layerName).toEqual('vector layer name');
     vectorLayer.set('show_in_manager', false);
@@ -196,7 +202,7 @@ describe('HsLayerUtilsService', () => {
   });
   it('try to translate the layer title', () => {
     vectorLayer.set('title', 'vectorLayer');
-    const layerTitle = hsLayerUtils.translateTitle(vectorLayer.get('title'));
+    const layerTitle = hsLayerUtils.translateTitle(getTitle(vectorLayer));
     expect(layerTitle).toEqual('vectorLayer');
   });
   it('check if layer is loaded', () => {
