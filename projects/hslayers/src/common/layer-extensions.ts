@@ -30,6 +30,7 @@ const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor';
 const MAXRESOLUTIONDENOMINATOR = 'maxResolutionDenominator';
 const METADATA = 'metadata';
 const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
+const ONFEATURESELECTED = 'onFeatureSelected';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -301,6 +302,17 @@ export function setMinimumTerrainLevel(
 export function getMinimumTerrainLevel(layer: Layer): number {
   return layer.get(MINIMUMTERRAINLEVEL);
 }
+
+export function setOnFeatureSelected(
+  layer: Layer,
+  onFeatureSelected: any
+): void {
+  layer.set(ONFEATURESELECTED, onFeatureSelected);
+}
+
+export function getOnFeatureSelected(layer: Layer): any {
+  return layer.get(ONFEATURESELECTED);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -358,4 +370,6 @@ export const HsLayerExt = {
   getMetadata,
   setMinimumTerrainLevel,
   getMinimumTerrainLevel,
+  setOnFeatureSelected,
+  getOnFeatureSelected,
 };
