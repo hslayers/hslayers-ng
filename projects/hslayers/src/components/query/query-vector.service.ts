@@ -17,7 +17,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMeasureService} from '../measure/measure.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCustomInfoTemplate} from '../../common/layer-extensions';
+import {getCustomInfoTemplate, getOnFeatureSelected} from '../../common/layer-extensions';
 
 type AttributeValuePair = {
   name;
@@ -81,10 +81,10 @@ export class HsQueryVectorService {
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
         const layer = this.HsMapService.getLayerForFeature(e.feature);
-        if (layer?.get('onFeatureSelected')) {
+        if (!layer || getOnFeatureSelected(layer)) {
           const originalFeature = this.getSelectedFeature(e.feature);
           if (originalFeature) {
-            layer.get('onFeatureSelected')(originalFeature);
+            getOnFeatureSelected(layer)(originalFeature);
           }
         }
       }
