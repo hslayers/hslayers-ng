@@ -34,6 +34,7 @@ import {
   getDeclutter,
   getExclusive,
   getMetadata,
+  getPath,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -344,8 +345,8 @@ export class HsLayerManagerService {
    * @description Place layer into layer manager folder structure based on path property hsl-path of layer
    */
   populateFolders(lyr: Layer): void {
-    if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
-      const path = lyr.get('path') || '';
+    if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
+      const path = getPath(lyr) || '';
       const parts = path.split('/');
       let curfolder = this.data.folders;
       for (let i = 0; i < parts.length; i++) {
@@ -400,8 +401,8 @@ export class HsLayerManagerService {
     if (lyr.get('show_in_manager') == false) {
       return;
     }
-    if (lyr.get('path') != undefined && lyr.get('path') !== 'undefined') {
-      const path = lyr.get('path');
+    if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
+      const path = getPath(lyr);
       const parts = path.split('/');
       let curfolder = this.data.folders;
       for (let i = 0; i < parts.length; i++) {
@@ -509,7 +510,7 @@ export class HsLayerManagerService {
     if (visibility && getExclusive(layer.layer) == true) {
       for (const other_layer of this.data.layers) {
         if (
-          other_layer.layer.get('path') == layer.layer.get('path') &&
+          getPath(other_layer.layer) == getPath(layer.layer) &&
           other_layer != layer
         ) {
           other_layer.layer.setVisible(false);

@@ -9,7 +9,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getHsLaymanSynchronizing} from '../../common/layer-extensions';
+import {getHsLaymanSynchronizing, getPath} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -130,9 +130,8 @@ export class HsLayerListComponent {
 
     for (const layer of this.HsLayerManagerService.data.layers) {
       if (
-        layer.layer.get('path') == this.folder.hsl_path ||
-        ((layer.layer.get('path') == undefined ||
-          layer.layer.get('path') == '') &&
+        getPath(layer.layer) == this.folder.hsl_path ||
+        ((getPath(layer.layer) == undefined || getPath(layer.layer) == '') &&
           this.folder.hsl_path == '')
       ) {
         tmp.push(layer);

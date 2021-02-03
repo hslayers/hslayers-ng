@@ -5,8 +5,10 @@ import {HsMapService} from '../map/map.service';
 import {
   getEditor,
   getHsLaymanSynchronizing,
+  getPath,
   getTitle,
   setEditor,
+  setPath,
   setTitle,
 } from '../../common/layer-extensions';
 
@@ -36,7 +38,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   ngOnInit(): void {
     this.layer = this.data.selectedLayer;
     this.title = getTitle(this.layer);
-    this.path = this.layer.get('path');
+    this.path = getPath(this.layer);
     this.endpoint = this.data.laymanEndpoint;
 
     if (this.data.isAuthorized !== true) {
@@ -96,7 +98,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   }
 
   pathChanged(): void {
-    this.layer.set('path', this.path);
+    setPath(this.layer, this.path);
   }
 
   addAttr(): void {
