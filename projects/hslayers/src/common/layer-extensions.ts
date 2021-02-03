@@ -33,6 +33,7 @@ const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
 const ONFEATURESELECTED = 'onFeatureSelected';
 const PATH = 'path';
 const POPUP = 'popUp';
+const POPUPCLASS = 'popupClass';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -338,6 +339,14 @@ export function setPopUp(layer: Layer, popUp: popUp): void {
 export function getPopUp(layer: Layer): popUp {
   return layer.get(POPUP);
 }
+
+export function setPopupClass(layer: Layer, popupClass: string): void {
+  layer.set(POPUPCLASS, popupClass);
+}
+
+export function getPopupClass(layer: Layer): string {
+  return layer.get(POPUPCLASS);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -401,4 +410,6 @@ export const HsLayerExt = {
   getPath,
   setPopUp,
   getPopUp,
+  setPopupClass,
+  getPopupClass,
 };
