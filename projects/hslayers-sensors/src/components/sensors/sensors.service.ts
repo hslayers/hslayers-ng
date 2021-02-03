@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import moment from 'moment';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {HsConfig} from 'hslayers-ng';
+import {HsConfig, getFeatureName, setFeatureName} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
@@ -173,7 +173,7 @@ export class HsSensorsService {
         editable: false,
       },
       style: function (feature) {
-        me.labelStyle.getText().setText(feature.get('name'));
+        me.labelStyle.getText().setText(getFeatureName(feature));
         return me.bookmarkStyle;
       },
       source: new VectorSource({}),
@@ -213,7 +213,7 @@ export class HsSensorsService {
               dataProjection: 'EPSG:4326',
               featureProjection: 'EPSG:3857',
             });
-            feature.set('name', unit.description);
+            setFeatureName(feature, unit.description);
             feature.set('unit_id', unit.unit_id);
             unit.feature = feature;
             return feature;

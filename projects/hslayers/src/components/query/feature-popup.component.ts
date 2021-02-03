@@ -11,6 +11,7 @@ import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {
   getFeatureLabel,
+  getFeatureName,
   getFeatureTitle,
 } from '../../common/feature-extensions';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
@@ -63,8 +64,8 @@ export class HsQueryFeaturePopupComponent {
   }
 
   serializeFeatureName(feature) {
-    if (feature.get('name')) {
-      return feature.get('name');
+    if (getFeatureName(feature)) {
+      return getFeatureName(feature);
     }
     if (getFeatureTitle(feature)) {
       return getFeatureTitle(feature);
