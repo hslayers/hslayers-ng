@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 const TITLE = 'title';
 const HIGHLIGHTED = 'highlighted';
 const LABEL = 'label';
+const NAME = 'name';
 export function setFeatureTitle(feature: Feature, title: string): void {
   feature.set(TITLE, title);
 }
@@ -26,6 +27,14 @@ export function setFeatureLabel(feature: Feature, label: string): void {
 export function getFeatureLabel(feature: Feature): string {
   return feature.get(LABEL);
 }
+
+export function setFeatureName(feature: Feature, name: string): void {
+  feature.set(NAME, name);
+}
+
+export function getFeatureName(feature: Feature): string {
+  return feature.get(NAME);
+}
 export const HsFeatureExt = {
   setFeatureTitle,
   getFeatureTitle,
@@ -33,4 +42,6 @@ export const HsFeatureExt = {
   getHighlighted,
   setFeatureLabel,
   getFeatureLabel,
+  setFeatureName,
+  getFeatureName,
 };
