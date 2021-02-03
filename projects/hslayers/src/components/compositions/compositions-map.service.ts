@@ -5,6 +5,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
+import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class HsCompositionsMapService {
         new Style({
           stroke: new Stroke({
             color: '#005CB6',
-            width: feature.get('highlighted') ? 4 : 1,
+            width: getHighlighted(feature) ? 4 : 1,
           }),
           fill: new Fill({
             color: 'rgba(0, 0, 255, 0.01)',
@@ -84,7 +85,7 @@ export class HsCompositionsMapService {
 
   highlightComposition(composition, state) {
     if (composition.feature) {
-      composition.feature.set('highlighted', state);
+      setHighlighted(composition.feature, state);
     }
   }
 
@@ -95,7 +96,7 @@ export class HsCompositionsMapService {
   getFeatureRecordAndUnhighlight(feature, selector) {
     if (feature.get('is_hs_composition_extent') && feature.get('record')) {
       const record = feature.get('record');
-      feature.set('highlighted', false);
+      setHighlighted(feature, false);
       selector.getFeatures().clear();
       return record;
     }

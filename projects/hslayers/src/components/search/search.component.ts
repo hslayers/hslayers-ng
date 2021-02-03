@@ -56,7 +56,7 @@ export class HsSearchComponent implements OnInit {
   //  */
   // highlightResult(result: any, state: any): void {
   //   if (result.feature !== undefined) {
-  //     result.feature.set('highlighted', state);
+  //     setHighlighted(result.feature, state);
   //   }
   // }
   /**

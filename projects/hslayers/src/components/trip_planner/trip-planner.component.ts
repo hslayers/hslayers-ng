@@ -6,6 +6,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {setHighlighted} from '../../common/feature-extensions';
 
 /**
  * @memberof hs.trip_planner
@@ -80,6 +81,6 @@ export class HsTripPlannerComponent implements OnInit {
   toggleEdit(waypoint: Feature): void {
     waypoint.name_editing = !waypoint.name_editing;
     this.HsTripPlannerService.storeWaypoints();
-    waypoint.feature.set('highlighted', waypoint.name_editing);
+    setHighlighted(waypoint.feature, waypoint.name_editing);
   }
 }

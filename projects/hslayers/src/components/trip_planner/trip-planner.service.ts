@@ -14,6 +14,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsUtilsService} from './../utils/utils.service';
+import {getHighlighted} from '../../common/feature-extensions';
 
 export type Waypoint = {
   name: string;
@@ -47,7 +48,7 @@ export class HsTripPlannerService {
           width: 3,
         }),
         image: new Icon({
-          src: feature.get('highlighted')
+          src: getHighlighted(feature)
             ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
             : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
           crossOrigin: 'anonymous',

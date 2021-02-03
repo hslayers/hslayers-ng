@@ -9,6 +9,7 @@ import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getHighlighted} from '../../common/feature-extensions';
 import {getHsOriginalStyle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -75,7 +76,7 @@ export class HsStylerService {
     return [
       new Style({
         image: new Icon({
-          src: feature.get('highlighted')
+          src: getHighlighted(feature)
             ? this.HsUtilsService.getAssetsPath() + 'img/pin_white_red32.png'
             : this.HsUtilsService.getAssetsPath() + 'img/pin_white_blue32.png',
           crossOrigin: 'anonymous',
