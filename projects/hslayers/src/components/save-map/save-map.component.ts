@@ -11,7 +11,8 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 })
 export class HsSaveMapComponent {
   endpoint = null;
-
+  isAuthorized = false;
+  advancedForm: boolean;
   constructor(
     //Used in template
     public HsConfig: HsConfig,
@@ -21,6 +22,10 @@ export class HsSaveMapComponent {
     //Running in background and watching observables
     public HsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService
   ) {
+    this.advancedForm =
+      HsConfig.advancedForm == undefined || HsConfig.advancedForm
+        ? true
+        : false;
     this.HsSaveMapManagerService.panelOpened.subscribe((composition) => {
       if (composition && composition.endpoint) {
         const openedType = composition.endpoint.type;
@@ -53,7 +58,13 @@ export class HsSaveMapComponent {
         if (endpoint.getCurrentUserIfNeeded) {
           endpoint.getCurrentUserIfNeeded(endpoint);
         }
+        console.log(this.endpoint.type)
       }
+    });
+
+    this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+      this.isAuthorized =
+        endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     });
   }
 }
