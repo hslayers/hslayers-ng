@@ -13,6 +13,7 @@ import {
   getFeatureLabel,
   getFeatureName,
   getFeatureTitle,
+  getFeatures,
 } from '../../common/feature-extensions';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
 
@@ -21,6 +22,7 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
   templateUrl: './partials/feature-popup.html',
 })
 export class HsQueryFeaturePopupComponent {
+  getFeatures = getFeatures;
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
@@ -60,7 +62,7 @@ export class HsQueryFeaturePopupComponent {
     this.HsQueryBaseService.featuresUnderMouse = [];
   }
   isClustered(feature) {
-    return feature.get('features') && feature.get('features').length > 0;
+    return getFeatures(feature) && getFeatures(feature).length > 0;
   }
 
   serializeFeatureName(feature) {
@@ -73,12 +75,9 @@ export class HsQueryFeaturePopupComponent {
     if (getFeatureLabel(feature)) {
       return getFeatureLabel(feature);
     }
-    if (feature.get('features')) {
+    if (getFeatures(feature)) {
       return (
-        'Cluster containing ' +
-        feature.get('features').length +
-        ' ' +
-        'features'
+        'Cluster containing ' + getFeatures(feature).length + ' ' + 'features'
       );
     }
     return this.HsLanguageService.getTranslation('QUERY.untitledFeature');

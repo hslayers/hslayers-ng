@@ -23,6 +23,7 @@ import {
   getQueryable,
   getVirtualAttributes,
 } from '../../common/layer-extensions';
+import {getFeatures} from '../../common/feature-extensions';
 
 type AttributeValuePair = {
   name;
@@ -104,8 +105,8 @@ export class HsQueryVectorService {
   }
   getSelectedFeature(feature: any): any {
     let original = feature;
-    if (original.get('features') && original.get('features').length == 1) {
-      original = original.get('features')[0];
+    if (getFeatures(original) && getFeatures(original).length == 1) {
+      original = getFeatures(original)[0];
     }
     return original;
   }
@@ -248,7 +249,7 @@ export class HsQueryVectorService {
         return;
       }
       if (key == 'features') {
-        for (const subFeature of feature.get('features')) {
+        for (const subFeature of getFeatures(feature)) {
           tmp = tmp.concat(this.getFeatureAttributes(subFeature));
         }
       } else {
@@ -276,7 +277,7 @@ export class HsQueryVectorService {
         attributes.push(obj);
       }
     }
-    if (!feature.get('features')) {
+    if (!getFeatures(feature)) {
       const featureDescription = {
         layer: this.getFeatureLayerName(feature),
         name: 'Feature',

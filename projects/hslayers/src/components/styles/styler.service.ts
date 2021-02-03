@@ -9,7 +9,7 @@ import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getHighlighted} from '../../common/feature-extensions';
+import {getFeatures, getHighlighted} from '../../common/feature-extensions';
 import {getHsOriginalStyle} from '../../common/layer-extensions';
 
 @Injectable({
@@ -156,7 +156,7 @@ export class HsStylerService {
   styleClusteredLayer(layer: VectorLayer): void {
     const styleCache = {};
     layer.setStyle((feature: Feature, resolution: number) => {
-      const size = feature.get('features')?.length || 0;
+      const size = getFeatures(feature)?.length || 0;
       if (size > 1) {
         return this.makeClusterMarker(styleCache, size);
       } else {
@@ -175,8 +175,8 @@ export class HsStylerService {
     resolution: number,
     layer: VectorLayer
   ) {
-    const featureStyle = feature.get('features')
-      ? feature.get('features')[0].getStyle()
+    const featureStyle = getFeatures(feature)
+      ? getFeatures(feature)[0].getStyle()
       : feature.getStyle();
 
     const originalStyle = featureStyle
@@ -211,8 +211,8 @@ export class HsStylerService {
   }
 
   private isSelectedFeature(feature: Feature): boolean {
-    if (feature.get('features')) {
-      return this.isSelectedFeature(feature.get('features')[0]);
+    if (getFeatures(feature)) {
+      return this.isSelectedFeature(getFeatures(feature)[0]);
     }
     return (
       this.HsQueryVectorService.selector
@@ -259,7 +259,7 @@ export class HsStylerService {
     style: any,
     clusteredContainerFeature: Feature
   ): Style | Style[] {
-    const originalFeature = clusteredContainerFeature.get('features') || [
+    const originalFeature = getFeatures(clusteredContainerFeature) || [
       clusteredContainerFeature,
     ];
     let newStyle;
