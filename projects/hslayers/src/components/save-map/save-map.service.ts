@@ -26,6 +26,7 @@ import {
   getDefinition,
   getDimensions,
   getMetadata,
+  getName,
   getTitle,
 } from '../../common/layer-extensions';
 @Injectable({
@@ -422,7 +423,7 @@ export class HsSaveMapService {
       if (this.HsLayerUtilsService.isLayerClustered(layer)) {
         src = src.getSource();
       }
-      json.name = layer.get('name');
+      json.name = getName(layer);
       json.className = 'Vector';
       const definition = getDefinition(layer);
       if (definition && definition.url) {

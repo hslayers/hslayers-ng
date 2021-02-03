@@ -31,6 +31,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
+import {getTitle} from '../../common/layer-extensions';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
@@ -167,7 +168,7 @@ describe('compositions', () => {
   it('should load composition from json', function () {
     loadComposition(component);
     expect(mockedMapService.map.getLayers().getLength()).toBe(4);
-    expect(mockedMapService.map.getLayers().item(0).get('title')).toBe(
+    expect(getTitle(mockedMapService.map.getLayers().item(0))).toBe(
       'Measurement sketches'
     );
   });
