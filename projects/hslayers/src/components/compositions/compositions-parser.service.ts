@@ -162,7 +162,7 @@ export class HsCompositionsParserService {
         opacity: layer.Extension['ol:opacity']
           ? parseFloat(layer.Extension['ol:opacity']._text)
           : 1,
-        show_in_manager: layer.Extension['ol:displayInLayerSwitcher']._text,
+        showInLayerManager: layer.Extension['ol:displayInLayerSwitcher']._text,
         params: {
           FORMAT: 'image/png',
 

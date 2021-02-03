@@ -12,7 +12,7 @@ import {Vector} from 'ol/source';
 export class HsCompositionsMapService {
   extentLayer = new VectorLayer({
     title: 'Composition extents',
-    show_in_manager: false,
+    showInLayerManager: false,
     source: new Vector(),
     removable: false,
     style: function (feature, resolution) {

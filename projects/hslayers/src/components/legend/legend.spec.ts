@@ -74,7 +74,7 @@ describe('HsLegendComponent', () => {
           FORMAT: 'image/png',
         },
       }),
-      show_in_manager: false,
+      showInLayerManager: false,
       visible: true,
     });
 
@@ -99,7 +99,7 @@ describe('HsLegendComponent', () => {
           FORMAT: 'image/png',
         },
       }),
-      show_in_manager: false,
+      showInLayerManager: false,
       visible: true,
     });
     component.addLayerToLegends(layer);

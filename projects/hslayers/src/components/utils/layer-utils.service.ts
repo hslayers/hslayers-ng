@@ -19,6 +19,7 @@ import {
   getCluster,
   getEditor,
   getName,
+  getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
 import {isEmpty} from 'ol/extent';
@@ -195,14 +196,14 @@ export class HsLayerUtilsService {
    * @ngdoc method
    * @name HsLayerUtilsService#isLayerInManager
    * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if show_in_manager attribute is set to true
+   * @returns {boolean} True if showInLayerManager attribute is set to true
    * @description Test if layer is shown in layer switcher
    * (if not some internal hslayers layer like selected feature layer)
    */
   isLayerInManager(layer: Layer): boolean {
     return (
-      layer.get('show_in_manager') === undefined ||
-      layer.get('show_in_manager') == true
+      getShowInLayerManager(layer) === undefined ||
+      getShowInLayerManager(layer) == true
     );
   }
 
@@ -246,8 +247,8 @@ export class HsLayerUtilsService {
   getLayerName(layer: Layer): string {
     if (
       layer === undefined ||
-      (layer.get('show_in_manager') !== undefined &&
-        layer.get('show_in_manager') === false)
+      (getShowInLayerManager(layer) !== undefined &&
+        getShowInLayerManager(layer) === false)
     ) {
       return '';
     } else {

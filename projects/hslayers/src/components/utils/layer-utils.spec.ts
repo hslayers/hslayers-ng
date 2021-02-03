@@ -17,6 +17,7 @@ import {
   setCluster,
   setEditor,
   setName,
+  setShowInLayerManager,
   setTitle,
 } from '../../common/layer-extensions';
 
@@ -111,7 +112,7 @@ describe('HsLayerUtilsService', () => {
   it('try to get layer title', () => {
     let layerTitle = hsLayerUtils.getLayerTitle(tileWMSLayer);
     expect(layerTitle).toEqual('tileWMSLayer');
-    vectorLayer.set('title', '&#47;vectorLayer');
+    setTitle(vectorLayer, '&#47;vectorLayer');
     layerTitle = hsLayerUtils.getLayerTitle(vectorLayer);
     expect(layerTitle).toEqual('/vectorLayer');
     layerTitle = hsLayerUtils.getLayerTitle(imageWMSNoParams);
@@ -153,8 +154,8 @@ describe('HsLayerUtilsService', () => {
     );
   });
   it('check if layer is in LayerManager', () => {
-    tileWMTSLayer.set('show_in_manager', true);
-    tileOSMLayer.set('show_in_manager', false);
+    setShowInLayerManager(tileWMTSLayer, true);
+    setShowInLayerManager(tileOSMLayer, false);
     let isLayerInManager = hsLayerUtils.isLayerInManager(tileWMTSLayer);
     expect(isLayerInManager).toBe(true);
     isLayerInManager = hsLayerUtils.isLayerInManager(tileOSMLayer);
@@ -165,7 +166,7 @@ describe('HsLayerUtilsService', () => {
     expect(layerHasTitle).toBe(true);
     layerHasTitle = hsLayerUtils.hasLayerTitle(imageWMSNoParams);
     expect(layerHasTitle).toBe(false);
-    imageWMSNoParams.set('title', '');
+    setTitle(imageWMSNoParams, '');
     layerHasTitle = hsLayerUtils.hasLayerTitle(imageWMSNoParams);
     expect(layerHasTitle).toBe(false);
   });
@@ -184,24 +185,24 @@ describe('HsLayerUtilsService', () => {
     setName(vectorLayer, 'vector layer name');
     let layerName = hsLayerUtils.getLayerName(vectorLayer);
     expect(layerName).toEqual('vector layer name');
-    vectorLayer.set('show_in_manager', false);
+    setShowInLayerManager(vectorLayer, false);
     layerName = hsLayerUtils.getLayerName(vectorLayer);
     expect(layerName).toEqual('');
   });
   it('check if layer is drawable', () => {
-    vectorLayer.set('show_in_manager', true);
-    vectorLayer.set('title', 'vectorLayer');
+    setShowInLayerManager(vectorLayer, true);
+    setTitle(vectorLayer, 'vectorLayer');
     setEditor(vectorLayer, undefined);
     let isLayerDrawable = hsLayerUtils.isLayerDrawable(vectorLayer);
     expect(isLayerDrawable).toBe(true);
-    vectorLayer.set('title', '');
+    setTitle(vectorLayer, '');
     isLayerDrawable = hsLayerUtils.isLayerDrawable(vectorLayer);
     expect(isLayerDrawable).toBe(false);
     isLayerDrawable = hsLayerUtils.isLayerDrawable(tileWMSLayer);
     expect(isLayerDrawable).toBe(false);
   });
   it('try to translate the layer title', () => {
-    vectorLayer.set('title', 'vectorLayer');
+    setTitle(vectorLayer, 'vectorLayer');
     const layerTitle = hsLayerUtils.translateTitle(getTitle(vectorLayer));
     expect(layerTitle).toEqual('vectorLayer');
   });

@@ -48,7 +48,7 @@ export class HsQueryBaseService {
         }),
       ],
     }),
-    show_in_manager: false,
+    showInLayerManager: false,
     removable: false,
     style: (feature) => this.pointClickedStyle(feature),
   });

@@ -28,6 +28,7 @@ import {
   getMetadata,
   getName,
   getPath,
+  getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
 @Injectable({
@@ -126,7 +127,7 @@ export class HsSaveMapService {
     // Layers properties
     let layers = map.getLayers().getArray();
     layers = layers.filter(
-      (l) => l.get('show_in_manager') == undefined || l.get('show_in_manager')
+      (l) => getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
     );
     json.layers = this.layers2json(layers, compoData.layers);
     json.current_base_layer = this.getCurrentBaseLayer(map);
@@ -145,8 +146,8 @@ export class HsSaveMapService {
     let current_base_layer = null;
     for (const lyr of map.getLayers().getArray()) {
       if (
-        (lyr.get('show_in_manager') == undefined ||
-          lyr.get('show_in_manager') == true) &&
+        (getShowInLayerManager(lyr) == undefined ||
+          getShowInLayerManager(lyr) == true) &&
         getBase(lyr) == true &&
         lyr.getVisible()
       ) {
@@ -359,7 +360,7 @@ export class HsSaveMapService {
       if (layer.get('maxScale') !== null) {
         json.wmsMaxScale = layer.get('maxScale');
       }
-      json.displayInLayerSwitcher = layer.get('show_in_manager');
+      json.displayInLayerSwitcher = getShowInLayerManager(layer);
       if (getDimensions(layer)) {
         json.dimensions = getDimensions(layer);
       }

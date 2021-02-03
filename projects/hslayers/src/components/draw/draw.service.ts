@@ -177,7 +177,7 @@ export class HsDrawService {
       title: tmpTitle,
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
-      show_in_manager: true,
+      showInLayerManager: true,
       visible: true,
       removable: true,
       style: this.defaultStyle,
@@ -214,7 +214,7 @@ export class HsDrawService {
       const drawLayer = new VectorLayer({
         title: TMP_LAYER_TITLE,
         source: new VectorSource(),
-        show_in_manager: false,
+        showInLayerManager: false,
         visible: true,
         removable: true,
         editable: true,

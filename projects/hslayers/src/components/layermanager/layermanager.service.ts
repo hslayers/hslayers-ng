@@ -37,6 +37,7 @@ import {
   getPath,
   getQueryCapabilities,
   getRemovable,
+  getShowInLayerManager,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -147,14 +148,14 @@ export class HsLayerManagerService {
    * @name HsLayermanagerService#layerAdded
    * @private
    * @param {CollectionEvent} e Event object emited by Ol add layer event
-   * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (show_in_manager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
+   * @description Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    */
   layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
-      layer.get('show_in_manager') !== null &&
-      layer.get('show_in_manager') == false
+      getShowInLayerManager(layer) !== null &&
+      getShowInLayerManager(layer) == false
     ) {
       return;
     }
@@ -400,7 +401,7 @@ export class HsLayerManagerService {
    * @description Remove layer from layer folder structure a clean empty folder
    */
   cleanFolders(lyr: Layer): void {
-    if (lyr.get('show_in_manager') == false) {
+    if (getShowInLayerManager(lyr) == false) {
       return;
     }
     if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
@@ -626,8 +627,8 @@ export class HsLayerManagerService {
       if (getRemovable(lyr) == true) {
         if (getBase(lyr) == undefined || getBase(lyr) == false) {
           if (
-            lyr.get('show_in_manager') == undefined ||
-            lyr.get('show_in_manager') == true
+            getShowInLayerManager(lyr) == undefined ||
+            getShowInLayerManager(lyr) == true
           ) {
             to_be_removed.push(lyr);
           }
@@ -921,7 +922,7 @@ export class HsLayerManagerService {
 
     this.map.getLayers().on('add', (e) => {
       this.applyZIndex(e.element);
-      if (e.element.get('show_in_manager') == false) {
+      if (getShowInLayerManager(e.element) == false) {
         return;
       }
       this.layerAdded(e);
