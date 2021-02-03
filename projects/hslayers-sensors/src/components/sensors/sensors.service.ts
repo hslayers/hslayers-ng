@@ -1,7 +1,13 @@
 import VectorLayer from 'ol/layer/Vector';
 import moment from 'moment';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {HsConfig, getFeatureName, setFeatureName} from 'hslayers-ng';
+import {
+  HsConfig,
+  getFeatureName,
+  getUnitId,
+  setFeatureName,
+  setUnitId,
+} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
@@ -92,8 +98,7 @@ export class HsSensorsService {
             this.units.forEach((unit: HsSensorUnit) => (unit.expanded = false));
             this.selectUnit(
               this.units.filter(
-                (unit: HsSensorUnit) =>
-                  unit.unit_id == event.feature.get('unit_id')
+                (unit: HsSensorUnit) => unit.unit_id == getUnitId(event.feature)
               )[0]
             );
           }
@@ -214,7 +219,7 @@ export class HsSensorsService {
               featureProjection: 'EPSG:3857',
             });
             setFeatureName(feature, unit.description);
-            feature.set('unit_id', unit.unit_id);
+            setUnitId(feature, unit.unit_id);
             unit.feature = feature;
             return feature;
           });

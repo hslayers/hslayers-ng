@@ -6,6 +6,7 @@ const LABEL = 'label';
 const NAME = 'name';
 const RECORD = 'record';
 const FEATURES = 'features';
+const UNITID = 'unitId';
 export function setFeatureTitle(feature: Feature, title: string): void {
   feature.set(TITLE, title);
 }
@@ -53,6 +54,14 @@ export function setFeatures(feature: Feature, features: Array<Feature>): void {
 export function getFeatures(feature: Feature): Array<Feature> {
   return feature.get(FEATURES);
 }
+
+export function setUnitId(feature: Feature, unitId: string | number): void {
+  feature.set(UNITID, unitId);
+}
+
+export function getUnitId(feature: Feature): string | number {
+  return feature.get(UNITID);
+}
 export const HsFeatureExt = {
   setFeatureTitle,
   getFeatureTitle,
@@ -66,4 +75,6 @@ export const HsFeatureExt = {
   getRecord,
   setFeatures,
   getFeatures,
+  setUnitId,
+  getUnitId,
 };
