@@ -7,13 +7,19 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label">{{'COMMON.saveTo' | translate}}</span>
                 </div>
-                <select class="form-control" [(ngModel)]="endpoint" (change)="HsSaveMapManagerService.selectEndpoint(endpoint)" name="endpoint">
+                <select class="form-control" [(ngModel)]="endpoint"
+                    (change)="HsSaveMapManagerService.selectEndpoint(endpoint)" name="endpoint">
                     <option *ngFor="let e of HsCommonEndpointsService.endpoints" [ngValue]="e">{{e.title}}</option>
                 </select>
             </div>
         </div>
+        <div [hidden]="endpoint?.type != 'layman' || isAuthorized">
+            <div class="alert alert-info" translate>
+                {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translate}} </div>
+        </div>
         <hs-layman-current-user *ngIf="endpoint?.type == 'layman'" [endpoint]="endpoint"></hs-layman-current-user>
-        <hs-save-map-advanced-form *ngIf="HsConfig.advancedForm == undefined || HsConfig.advancedForm"></hs-save-map-advanced-form>
-        <hs-save-map-simple-form *ngIf="HsConfig.advancedForm === false"></hs-save-map-simple-form>
+        <hs-save-map-advanced-form *ngIf="advancedForm && (isAuthorized || endpoint?.type != 'layman')">
+        </hs-save-map-advanced-form>
+        <hs-save-map-simple-form *ngIf="!advancedForm"></hs-save-map-simple-form>
     </div>
 </div>
