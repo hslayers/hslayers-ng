@@ -20,8 +20,8 @@
             <div *ngFor="let box of data.box_layers" class="col-xs-2 col-md-2 list-group-item-primary"
                 style="padding-right: 2px; padding-left: 2px;">
                 <a  [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}"
-                    title="{{box.get('title')}}" (click)="activateTheme(box)">
-                    <img src="{{box.get('img')}}" alt="{{box.get('title')}}">
+                    title="{{getTitle(box)}}" (click)="activateTheme(box)">
+                    <img src="{{box.get('img')}}" alt="{{getTitle(box)}}">
                 </a>
             </div>
         </div>
