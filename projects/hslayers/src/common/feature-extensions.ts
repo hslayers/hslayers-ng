@@ -4,6 +4,7 @@ const TITLE = 'title';
 const HIGHLIGHTED = 'highlighted';
 const LABEL = 'label';
 const NAME = 'name';
+const RECORD = 'record';
 export function setFeatureTitle(feature: Feature, title: string): void {
   feature.set(TITLE, title);
 }
@@ -35,6 +36,14 @@ export function setFeatureName(feature: Feature, name: string): void {
 export function getFeatureName(feature: Feature): string {
   return feature.get(NAME);
 }
+
+export function setRecord(feature: Feature, record: any): void {
+  feature.set(RECORD, record);
+}
+
+export function getRecord(feature: Feature): any {
+  return feature.get(RECORD);
+}
 export const HsFeatureExt = {
   setFeatureTitle,
   getFeatureTitle,
@@ -44,4 +53,6 @@ export const HsFeatureExt = {
   getFeatureLabel,
   setFeatureName,
   getFeatureName,
+  setRecord,
+  getRecord,
 };
