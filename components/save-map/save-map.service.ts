@@ -34,7 +34,7 @@ export class HsSaveMapService {
       hsConfig.saveMapStateOnReload = true;
     }
     if (hsConfig.saveMapStateOnReload) {
-      window.addEventListener('beforeunload', this.save2storage);
+      window.addEventListener('beforeunload', (e) => this.save2storage(e));
     }
   }
 
