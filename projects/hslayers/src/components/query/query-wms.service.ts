@@ -19,6 +19,7 @@ import {
   getFeatureInfoTarget,
   getInfoFormat,
   getName,
+  getPopupClass,
   getTitle,
 } from '../../common/layer-extensions';
 
@@ -173,9 +174,9 @@ export class HsQueryWmsService {
         this.HsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
         this.HsQueryBaseService.fillIframeAndResize(response, true);
-        if (layer.get('popupClass') != undefined) {
+        if (getPopupClass(layer) != undefined) {
           this.HsQueryBaseService.popupClassname =
-            'ol-popup ' + layer.get('popupClass');
+            'ol-popup ' + getPopupClass(layer);
         }
       }
     }
