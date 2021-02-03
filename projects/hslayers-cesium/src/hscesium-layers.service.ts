@@ -25,6 +25,7 @@ import {
   HsMapService,
   HsUtilsService,
   getDimensions,
+  getMinimumTerrainLevel,
   getTitle,
 } from 'hslayers-ng';
 import {ImageWMS, Source} from 'ol/source';
@@ -402,7 +403,7 @@ export class HsCesiumLayersService {
     if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
         show: ol_lyr.getVisible(),
-        minimumTerrainLevel: ol_lyr.get('minimumTerrainLevel') || 15,
+        minimumTerrainLevel: getMinimumTerrainLevel(ol_lyr) || 15,
       });
     } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
       return this.createTileProvider(ol_lyr);
