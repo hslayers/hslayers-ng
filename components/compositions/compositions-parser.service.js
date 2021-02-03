@@ -23,7 +23,8 @@ export default function (
   HsCompositionsLayerParserService,
   HsLayoutService,
   $log,
-  $compile
+  $compile,
+  $timeout
 ) {
   'ngInject';
   const me = {
@@ -258,7 +259,15 @@ export default function (
       }
       const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
-        HsMapService.addLayer(lyr, true);
+        $timeout(() => {
+          try {
+            HsMapService.addLayer(lyr, true);
+          } catch (e) {
+            const error = `Layer ${lyr.get('title')} failed to load`;
+            $log.warn(error);
+            me.createErrorDialog(error);
+          }
+        }, 150);
       });
 
       if (angular.isObject(obj.current_base_layer)) {
