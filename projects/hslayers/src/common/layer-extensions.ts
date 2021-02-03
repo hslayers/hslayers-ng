@@ -40,6 +40,7 @@ const QUERYFILTER = 'queryFilter';
 const REMOVABLE = 'removable';
 const SHOWINLAYERMANAGER = 'showInLayerManager';
 const THUMBNAIL = 'thumbnail';
+const VIRTUALATTRIBUTES = 'virtualAttributes';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -407,6 +408,17 @@ export function setThumbnail(layer: Layer, thumbnail: any): void {
 export function getThumbnail(layer: Layer): any {
   return layer.get(THUMBNAIL);
 }
+
+export function setVirtualAttributes(
+  layer: Layer,
+  virtualAttributes: any
+): void {
+  layer.set(VIRTUALATTRIBUTES, virtualAttributes);
+}
+
+export function getVirtualAttributes(layer: Layer): any {
+  return layer.get(VIRTUALATTRIBUTES);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -484,4 +496,6 @@ export const HsLayerExt = {
   getShowInLayerManager,
   setThumbnail,
   getThumbnail,
+  setVirtualAttributes,
+  getVirtualAttributes,
 };
