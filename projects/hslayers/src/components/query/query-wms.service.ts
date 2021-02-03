@@ -20,6 +20,7 @@ import {
   getInfoFormat,
   getName,
   getPopupClass,
+  getQueryFilter,
   getTitle,
 } from '../../common/layer-extensions';
 
@@ -46,8 +47,8 @@ export class HsQueryWmsService {
         if (getBase(layer) == true || layer.get('queriable') == false) {
           return;
         }
-        if (layer.get('queryFilter') != undefined) {
-          const filter = layer.get('queryFilter');
+        if (getQueryFilter(layer) != undefined) {
+          const filter = getQueryFilter(layer);
           if (filter(HsMapService.map, layer, evt.pixel)) {
             this.queryWmsLayer(layer, evt.coordinate);
           }
