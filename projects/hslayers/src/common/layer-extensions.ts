@@ -1,5 +1,5 @@
-import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Group, Layer} from 'ol/layer';
+import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Style} from 'ol/style';
 
 const TITLE = 'title';
@@ -29,6 +29,7 @@ const INLINELEGEND = 'inlineLegend';
 const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor';
 const MAXRESOLUTIONDENOMINATOR = 'maxResolutionDenominator';
 const METADATA = 'metadata';
+const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -242,10 +243,7 @@ export function getHsLaymanSynchronizing(layer: Layer): boolean {
   return layer.get(HSLAYMANSYNCHRONIZING);
 }
 
-export function setInfoFormat(
-  layer: Layer,
-  infoFormat: string
-): void {
+export function setInfoFormat(layer: Layer, infoFormat: string): void {
   layer.set(INFOFORMAT, infoFormat);
 }
 
@@ -261,15 +259,23 @@ export function getInlineLegend(layer: Layer): boolean {
   return layer.get(INLINELEGEND);
 }
 
-export function setLaymanLayerDescriptor(layer: Layer, hsLaymanLayerDescriptor: HsLaymanLayerDescriptor): void {
+export function setLaymanLayerDescriptor(
+  layer: Layer,
+  hsLaymanLayerDescriptor: HsLaymanLayerDescriptor
+): void {
   layer.set(LAYMANLAYERDESCRIPTOR, hsLaymanLayerDescriptor);
 }
 
-export function getLaymanLayerDescriptor(layer: Layer): HsLaymanLayerDescriptor {
+export function getLaymanLayerDescriptor(
+  layer: Layer
+): HsLaymanLayerDescriptor {
   return layer.get(LAYMANLAYERDESCRIPTOR);
 }
 
-export function setMaxResolutionDenominator(layer: Layer, maxResolutionDenominator: number): void {
+export function setMaxResolutionDenominator(
+  layer: Layer,
+  maxResolutionDenominator: number
+): void {
   layer.set(MAXRESOLUTIONDENOMINATOR, maxResolutionDenominator);
 }
 
@@ -277,15 +283,23 @@ export function getMaxResolutionDenominator(layer: Layer): number {
   return layer.get(MAXRESOLUTIONDENOMINATOR);
 }
 
-export function setMetadata(
-  layer: Layer,
-  metadata: any
-): void {
+export function setMetadata(layer: Layer, metadata: any): void {
   layer.set(METADATA, metadata);
 }
 
 export function getMetadata(layer: Layer): any {
   return layer.get(METADATA);
+}
+
+export function setMinimumTerrainLevel(
+  layer: Layer,
+  minimumTerrainLevel: number
+): void {
+  layer.set(MINIMUMTERRAINLEVEL, minimumTerrainLevel);
+}
+
+export function getMinimumTerrainLevel(layer: Layer): number {
+  return layer.get(MINIMUMTERRAINLEVEL);
 }
 export const HsLayerExt = {
   setTitle,
@@ -342,4 +356,6 @@ export const HsLayerExt = {
   getMaxResolutionDenominator,
   setMetadata,
   getMetadata,
+  setMinimumTerrainLevel,
+  getMinimumTerrainLevel,
 };
