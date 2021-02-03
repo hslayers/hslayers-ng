@@ -39,6 +39,7 @@ const QUERYCAPABILITIES = 'queryCapabilities';
 const QUERYFILTER = 'queryFilter';
 const REMOVABLE = 'removable';
 const SHOWINLAYERMANAGER = 'showInLayerManager';
+const THUMBNAIL = 'thumbnail';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -398,6 +399,14 @@ export function setShowInLayerManager(
 export function getShowInLayerManager(layer: Layer): boolean {
   return layer.get(SHOWINLAYERMANAGER);
 }
+
+export function setThumbnail(layer: Layer, thumbnail: any): void {
+  layer.set(THUMBNAIL, thumbnail);
+}
+
+export function getThumbnail(layer: Layer): any {
+  return layer.get(THUMBNAIL);
+}
 export const HsLayerExt = {
   setTitle,
   getTitle,
@@ -473,4 +482,6 @@ export const HsLayerExt = {
   getRemovable,
   setShowInLayerManager,
   getShowInLayerManager,
+  setThumbnail,
+  getThumbnail,
 };

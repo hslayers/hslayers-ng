@@ -38,6 +38,7 @@ import {
   getQueryCapabilities,
   getRemovable,
   getShowInLayerManager,
+  getThumbnail,
   setActive,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -245,7 +246,7 @@ export class HsLayerManagerService {
    * @description Function for adding baselayer thumbnail visible in basemap gallery.
    */
   getImage(layer: Layer) {
-    const thumbnail = layer.get('thumbnail');
+    const thumbnail = getThumbnail(layer);
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
