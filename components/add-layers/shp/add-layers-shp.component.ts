@@ -127,7 +127,8 @@ export class HsAddLayersShpComponent implements OnInit {
         this.hsAddLayersWmsService.addService(
           descriptor.wms.url,
           undefined,
-          this.name
+          this.name,
+          this.folder_name
         );
         this.loading = false;
         this.hsLayoutService.setMainPanel('layermanager');

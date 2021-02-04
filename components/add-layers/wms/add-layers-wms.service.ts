@@ -386,14 +386,23 @@ export class HsAddLayersWmsService {
    * @description Add service and its layers to project
    * @function addService
    * @param {string} url Service url
+   * @param path {string} Folder name with path to group layers
    * @param {Group} group Group layer to which add layer to
    * @param {string} layerName Name of layer to add. If not specified then all layers are added
    */
-  addService(url: string, group: Group, layerName: string): void {
+  addService(
+    url: string,
+    group: Group,
+    layerName: string,
+    path?: string
+  ): void {
     this.hsWmsGetCapabilitiesService
       .requestGetCapabilities(url)
       .then((resp) => {
-        let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(resp);
+        let ol_layers = this.hsWmsGetCapabilitiesService.service2layers(
+          resp,
+          path
+        );
         if (layerName) {
           ol_layers = ol_layers.filter(
             (layer) =>
