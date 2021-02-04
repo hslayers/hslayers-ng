@@ -10,6 +10,7 @@ import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageArcGISRest, ImageWMS} from 'ol/source';
+import {SparqlJson} from './components/layers/hs.source.SparqlJson';
 import {Vector} from 'ol/source';
 
 declare const window: any;
@@ -30,6 +31,7 @@ window.ol = {
     BingMaps,
     ImageWMS,
     ImageArcGISRest,
+    SparqlJson,
   },
   format: {
     GeoJSON,
