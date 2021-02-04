@@ -262,10 +262,10 @@ export class HsQueryVectorService {
       }
     });
     const layer = this.HsMapService.getLayerForFeature(feature);
-    if (!layer || getCustomInfoTemplate(layer)) {
+    if (layer && getCustomInfoTemplate(layer)) {
       customInfoTemplate = getCustomInfoTemplate(layer);
     }
-    if (!layer || getVirtualAttributes(layer)) {
+    if (layer && getVirtualAttributes(layer)) {
       const virtualAttributes = getVirtualAttributes(layer);
       for (const key of Object.keys(virtualAttributes)) {
         const value = virtualAttributes[key](feature);
