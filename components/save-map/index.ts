@@ -15,7 +15,6 @@ import {HsSaveMapResultDialogComponent} from './save-map.result-dialog.component
 import {HsSaveMapService} from './save-map.service';
 import {HsSaveMapSimpleFormComponent} from './save-map-simple-form.component';
 import {HsStatusManagerService} from './status-manager.service';
-import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
 import {downgrade} from '../../common/downgrader';
 import {downgradeComponent, downgradeInjectable} from '@angular/upgrade/static';
 
@@ -126,11 +125,6 @@ angular
    * @description Save map panel
    */
   .directive('hs.saveMap', downgradeComponent({component: HsSaveMapComponent}))
-
-  .directive(
-    'hsSyncErrorDialog',
-    downgradeComponent({component: HsSyncErrorDialogComponent})
-  );
 
 angular.module('hs.save-map', [downgradedModule]);
 
