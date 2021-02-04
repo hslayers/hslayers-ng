@@ -60,6 +60,10 @@ export type Definition = {
 };
 export type Editor = {
   editable?: boolean;
+  /**
+   * Object of key value pairs where key is the attribute name and value
+   * is the default attribute value to set
+   */
   defaultAttributes?: any;
 };
 export type popUpAttribute = {
@@ -169,6 +173,17 @@ export function getDefinition(layer: Layer): Definition {
   return layer.get(DEFINITION);
 }
 
+/**
+ * Set the dimensions defintion. TODO: Extend description
+ * @param layer 
+ * @param dimensions Example: {
+      time: { label: 'Local time', type: 'datetime', value: moment().startOf('minute').toDate() },
+      level: { label: 'Level hPa', value: 'surface', values: ['surface', '950mb - 500m', '900mb - 1km'], 
+      availability: function(layer){
+        return layer.get('title') != 'Temperature observations'
+      } 
+    }
+ */
 export function setDimensions(layer: Layer, dimensions: any): void {
   layer.set(DIMENSIONS, dimensions);
 }
