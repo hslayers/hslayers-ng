@@ -348,6 +348,10 @@ export class HsShareService {
       this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
       (canvas) => {
         if (canvas.width > 0) {
+          //console.log('canvas loop', this.isCanvasTainted(canvas), canvas);
+          /* canvases retrieved from mapElement might be already tainted because they can contain
+           * images (i.e. maps) retrieved from another sources without CORS
+           */
           const opacity = canvas.parentNode.style.opacity;
           ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
           const transform = canvas.style.transform;
@@ -378,11 +382,22 @@ export class HsShareService {
       width,
       height
     );
+    //console.log('image drawn', this.isCanvasTainted(targetCanvas));
+    /**
+     * from now on, the targetCanvas is also tainted because another tainted canvas was used
+     * to draw inside it
+     */
 
     try {
+      /**
+       * targetCanvas.toDataURL() fires a SecurityError here
+       * see https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image#security_and_tainted_canvases
+       */
       $element.setAttribute('src', targetCanvas.toDataURL('image/png'));
       this.data.thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
     } catch (e) {
+      console.log('catched, is tainted?', this.isCanvasTainted(targetCanvas));
+      //console.log(targetCanvas);
       this.HsLogService.warn(e);
       $element.setAttribute(
         'src',
@@ -391,5 +406,15 @@ export class HsShareService {
     }
     $element.style.width = width + 'px';
     $element.style.height = height + 'px';
+  }
+
+  private isCanvasTainted(canvas: HTMLCanvasElement): boolean {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const pixel = canvas.getContext('2d').getImageData(0, 0, 1, 1);
+      return false;
+    } catch (err) {
+      return err.code === 18;
+    }
   }
 }
