@@ -4,6 +4,7 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 import {
   Attribution,
+  MetadataUrl,
   getAttribution,
   getCachedCapabilities,
   getMaxResolutionDenominator,
@@ -12,6 +13,7 @@ import {
   setCacheCapabilities,
   setMetadata,
 } from '../../common/layer-extensions';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
@@ -72,9 +74,20 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  metadataArray(layer: Layer): Array<any> {
-    const obj = getMetadata(layer.layer);
-    return Object.entries(obj).map((e) => e[1]);
+  metadataArray(layer: Layer): Array<MetadataUrl> {
+    return getMetadata(layer.layer)?.urls;
+  }
+
+  /**
+   * Determines if layer has metadata information avaliable *
+   * @param layer Current layer
+   */
+  hasMetadata(layer: HsLayerDescriptor): boolean {
+    if (!layer) {
+      return false;
+    } else {
+      return layer && getMetadata(layer.layer)?.urls ? true : false;
+    }
   }
 
   private roundToHundreds(num: number): number {
@@ -175,10 +188,7 @@ export class HsLayerManagerMetadataService {
 
       this.setOrUpdate(layer, 'Layer', layers);
       this.setOrUpdate(layer, 'Legends', legends);
-      this.setOrUpdate(layer, 'MetadataURL', {
-        //use service metadata for layers with multiple layer.LAYERS inputs
-        '0': caps.Service,
-      });
+      this.fillMetadataUrlsIfNotExist(layer, caps);
     } else {
       layerObject[0] = this.identifyLayerObject(
         layer_name,
@@ -207,10 +217,10 @@ export class HsLayerManagerMetadataService {
   }
 
   parseAttribution(layer: Layer, caps: any) {
-    if (getAttribution(layer)?.locked) {
+    const attr = caps.Attribution;
+    if (getAttribution(layer)?.locked || attr == undefined) {
       return;
     }
-    const attr = caps.Attribution;
     const parsedAttribution: Attribution = {
       title: attr.Title,
       onlineResource: attr.OnlineResource,
@@ -260,15 +270,7 @@ export class HsLayerManagerMetadataService {
             src.updateParams(params);
           }
 
-          if (getMetadata(layer)) {
-            setMetadata(layer, metadata);
-            return layer;
-          }
-          if (!getMetadata(layer)) {
-            setMetadata(layer, {
-              '0': caps.Service,
-            });
-          }
+          this.fillMetadataUrlsIfNotExist(layer, caps);
           //Identify max resolution of layer. If layer has sublayers the heighest value is selected
           setTimeout(() => {
             if (getMaxResolutionDenominator(layer)) {
@@ -288,6 +290,7 @@ export class HsLayerManagerMetadataService {
           return true;
         })
         .catch((e) => {
+          throw e;
           this.hsLog.warn('GetCapabilities call invalid', e);
           return e;
         });
@@ -306,9 +309,6 @@ export class HsLayerManagerMetadataService {
             setAttribution(layer, {
               onlineResource: caps.ServiceProvider.ProviderSite,
             });
-          }
-          if (getMetadata(layer)) {
-            setMetadata(layer, metadata);
           }
           return true;
         })
@@ -342,6 +342,14 @@ export class HsLayerManagerMetadataService {
           });
         return capabilities;
       }
+    }
+  }
+
+  private fillMetadataUrlsIfNotExist(layer: any, caps: any) {
+    if (getMetadata(layer) == undefined) {
+      setMetadata(layer, {
+        urls: [{onlineResource: caps.Service}],
+      });
     }
   }
 }

@@ -9,17 +9,17 @@
         <div *ngIf="currentLayer.settings">
             <form>
                 <!-- Metadata/Copyright -->
-                <div class="form-group" *ngIf="HsLayerManagerService.hasMetadata(currentLayer)">
+                <div class="form-group" *ngIf="HsLayerManagerMetadataService.hasMetadata(currentLayer)">
                     <!-- Metadata -->
                     <div class="pt-2">
                         <a class="card-href"
-                            *ngFor="let metadata of HsLayerManagerMetadataService.metadataArray(currentLayer)"
-                            href="{{metadata.OnlineResource}}" target="_blank"
+                            *ngFor="let metadataUrl of HsLayerManagerMetadataService.metadataArray(currentLayer)"
+                            href="{{metadataUrl.onlineResource}}" target="_blank"
                             [title]="'COMMON.metadata' | translate">
-                            <span [hidden]="!metadata.type">
-                                {{'LAYERMANAGER.layerEditor.metadataOfLayer' | translate}} {{metadata.type}}
+                            <span [hidden]="!metadataUrl.type">
+                                {{'LAYERMANAGER.layerEditor.metadataOfLayer' | translate}} {{metadataUrl.type}}
                             </span>
-                            <span [hidden]="metadata.type">
+                            <span [hidden]="metadataUrl.type">
                                 {{'LAYERMANAGER.layerEditor.metadataOfService' | translate}}
                             </span>
                         </a>

@@ -33,7 +33,6 @@ import {
   getCluster,
   getDeclutter,
   getExclusive,
-  getMetadata,
   getPath,
   getQueryCapabilities,
   getRemovable,
@@ -842,19 +841,6 @@ export class HsLayerManagerService {
     return false;
   }
 
-  /**
-   * @function hasCopyright
-   * @memberOf hs.layermanager.controller
-   * @description Determines if layer has metadata information avaliable *
-   * @param {HsLayerDescriptor} layer Selected layer (LayMan.currentLayer)
-   */
-  hasMetadata(layer: HsLayerDescriptor): boolean | undefined {
-    if (!layer) {
-      return;
-    } else {
-      return getMetadata(layer.layer) ? true : false;
-    }
-  }
   /**
    * @function setGreyscale
    * @memberOf hs.layermanager.service

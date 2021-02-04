@@ -321,16 +321,27 @@ export function getMaxResolutionDenominator(layer: Layer): number {
   return layer.get(MAXRESOLUTIONDENOMINATOR);
 }
 
+export type MetadataUrl = {
+  type?: string;
+  format?: string;
+  onlineResource?: string;
+};
+
+export type Metadata = {
+  urls?: MetadataUrl[];
+  styles?: any;
+};
+
 /**
  * Store metadata which were parsed from layer definition in composition json.
  * @param layer
  * @param metadata
  */
-export function setMetadata(layer: Layer, metadata: any): void {
+export function setMetadata(layer: Layer, metadata: Metadata): void {
   layer.set(METADATA, metadata);
 }
 
-export function getMetadata(layer: Layer): any {
+export function getMetadata(layer: Layer): Metadata {
   return layer.get(METADATA);
 }
 

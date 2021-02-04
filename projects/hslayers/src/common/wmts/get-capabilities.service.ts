@@ -8,6 +8,7 @@ import {WMTS} from 'ol/source';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {HsWmsGetCapabilitiesService} from '../wms/get-capabilities.service';
 import {getPreferedFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
@@ -17,7 +18,8 @@ export class HsWmtsGetCapabilitiesService {
     private HttpClient: HttpClient,
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
   ) {}
 
   /**
@@ -153,6 +155,9 @@ export class HsWmtsGetCapabilitiesService {
             }),
           ];
         }
+        const metadata = this.HsWmsGetCapabilitiesService.getMetadataObjectWithUrls(
+          layer
+        );
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           source: new WMTS({
@@ -172,7 +177,7 @@ export class HsWmtsGetCapabilitiesService {
           }),
           abstract: layer.Abstract,
           useInterimTilesOnError: false,
-          MetadataURL: layer.MetadataURL,
+          metadata,
           extent: layer.BoundingBox,
         });
         tmp.push(new_layer);
