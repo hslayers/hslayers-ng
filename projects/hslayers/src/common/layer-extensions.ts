@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature';
 import {Group, Layer} from 'ol/layer';
 import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Style} from 'ol/style';
@@ -353,14 +354,18 @@ export function getMinimumTerrainLevel(layer: Layer): number {
   return layer.get(MINIMUMTERRAINLEVEL);
 }
 
+interface FeatureSelector {
+  (feature: Feature): void;
+}
+
 export function setOnFeatureSelected(
   layer: Layer,
-  onFeatureSelected: any
+  onFeatureSelected: FeatureSelector
 ): void {
   layer.set(ONFEATURESELECTED, onFeatureSelected);
 }
 
-export function getOnFeatureSelected(layer: Layer): any {
+export function getOnFeatureSelected(layer: Layer): FeatureSelector {
   return layer.get(ONFEATURESELECTED);
 }
 

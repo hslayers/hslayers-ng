@@ -87,7 +87,7 @@ export class HsQueryVectorService {
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
         const layer = this.HsMapService.getLayerForFeature(e.feature);
-        if (!layer || getOnFeatureSelected(layer)) {
+        if (layer && getOnFeatureSelected(layer)) {
           const originalFeature = this.getSelectedFeature(e.feature);
           if (originalFeature) {
             getOnFeatureSelected(layer)(originalFeature);
