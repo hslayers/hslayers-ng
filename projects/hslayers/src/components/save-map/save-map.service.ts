@@ -518,7 +518,7 @@ export class HsSaveMapService {
         $element.setAttribute('src', canvas2.toDataURL('image/png'));
         this.thumbnail = canvas2.toDataURL('image/jpeg', 0.8);
       } catch (e) {
-        this.$log.warn(e);
+        this.HsLogService.warn(e);
         $element.setAttribute(
           'src',
           this.HsUtilsService.getAssetsPath() + 'img/notAvailable.png'
