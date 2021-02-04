@@ -173,7 +173,7 @@ export class HsWmtsGetCapabilitiesService {
           abstract: layer.Abstract,
           useInterimTilesOnError: false,
           MetadataURL: layer.MetadataURL,
-          BoundingBox: layer.BoundingBox,
+          extent: layer.BoundingBox,
         });
         tmp.push(new_layer);
       }

@@ -15,7 +15,6 @@ import {
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
 import {
-  getBoundingBox,
   getCluster,
   getEditor,
   getName,
@@ -44,7 +43,7 @@ export class HsLayerUtilsService {
     if (typeof layer == 'undefined') {
       return false;
     }
-    if (getBoundingBox(layer)) {
+    if (layer.getExtent()) {
       return true;
     }
     if (this.isLayerWMS(layer)) {
