@@ -30,11 +30,15 @@ import {getLayerName, getLaymanFriendlyLayerName} from './layman-utils';
 class emptyMock {
   constructor() {}
 }
-
 class HsSaveMapManagerServiceMock {
   constructor() {}
   panelOpened: Subject<any> = new Subject();
   endpointSelected: Subject<any> = new Subject();
+}
+
+class HsCommonLaymanServiceMock {
+  constructor() {}
+  authChange: Subject<any> = new Subject();
 }
 
 class HsEventBusServiceMock {
@@ -93,7 +97,10 @@ describe('HsSaveMap', () => {
         },
         {provide: HsDialogContainerService, useValue: new emptyMock()},
         {provide: HsLayoutService, useValue: new emptyMock()},
-        {provide: HsCommonLaymanService, useValue: new emptyMock()},
+        {
+          provide: HsCommonLaymanService,
+          useValue: new HsCommonLaymanServiceMock(),
+        },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
       ],
