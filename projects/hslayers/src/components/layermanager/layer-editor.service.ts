@@ -222,10 +222,8 @@ export class HsLayerEditorService {
   legendVisible(): boolean {
     return (
       this.HsLegendService.legendValid(this.legendDescriptor) &&
-      getInlineLegend(
-        this.legendDescriptor.lyr ||
-          !this.HsLayoutService.panelEnabled('legend')
-      )
+      (getInlineLegend(this.legendDescriptor.lyr) ||
+        !this.HsLayoutService.panelEnabled('legend'))
     );
   }
 }
