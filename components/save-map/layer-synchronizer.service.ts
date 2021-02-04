@@ -1,17 +1,17 @@
+import * as xml2Json from 'xml-js';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
-import {WFS} from 'ol/format';
-
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLaymanService} from './layman.service';
 import {HsMapService} from '../map/map.service';
-import {HsSyncErrorDialogComponent} from './sync-error-dialog.component';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Injectable} from '@angular/core';
+import {Layer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
+import {WFS} from 'ol/format';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,8 @@ export class HsLayerSynchronizerService {
     public HsCommonEndpointsService: HsCommonEndpointsService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsMapService: HsMapService,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public HsCommonLaymanService: HsCommonLaymanService,
+    public HsToastService: HsToastService
   ) {}
 
   init(map: Map): void {
@@ -227,9 +228,17 @@ export class HsLayerSynchronizerService {
   }
 
   displaySyncErrorDialog(error: string): void {
-    this.HsDialogContainerService.create(HsSyncErrorDialogComponent, {
-      exception: error,
-    });
+    const exception: any = xml2Json.xml2js(error, {compact: true});
+    this.HsToastService.show(
+      exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
+        ._text,
+      {
+        header: 'Error',
+        delay: 3000,
+        autohide: true,
+        classname: 'bg-danger text-light',
+      }
+    );
   }
 
   /**
