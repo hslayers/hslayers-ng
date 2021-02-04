@@ -173,6 +173,19 @@ export function getDefinition(layer: Layer): Definition {
   return layer.get(DEFINITION);
 }
 
+export interface Dimension {
+  label: string;
+  type?: 'datetime' | 'date';
+  value?: any;
+  default: any;
+  values?: any[];
+  availability?();
+}
+
+export interface DimensionsList {
+  [key: string]: Dimension;
+}
+
 /**
  * Set the dimensions defintion. TODO: Extend description
  * @param layer 
@@ -184,11 +197,11 @@ export function getDefinition(layer: Layer): Definition {
       } 
     }
  */
-export function setDimensions(layer: Layer, dimensions: any): void {
+export function setDimensions(layer: Layer, dimensions: DimensionsList): void {
   layer.set(DIMENSIONS, dimensions);
 }
 
-export function getDimensions(layer: Layer): any {
+export function getDimensions(layer: Layer): DimensionsList {
   return layer.get(DIMENSIONS);
 }
 
@@ -318,8 +331,8 @@ export function getMaxResolutionDenominator(layer: Layer): number {
 
 /**
  * Store metadata which were parsed from layer definition in composition json.
- * @param layer 
- * @param metadata 
+ * @param layer
+ * @param metadata
  */
 export function setMetadata(layer: Layer, metadata: any): void {
   layer.set(METADATA, metadata);

@@ -173,10 +173,11 @@ export class HsLayerManagerWmstService {
     ) {
       return true;
     }
-    if (getDimensions(layer) && typeof getDimensions(layer).time == 'object') {
+    const dimensions = getDimensions(layer);
+    if (dimensions && dimensions['time']) {
       const metadata: any = {};
-      let value = getDimensions(layer).time.values;
-      if (Array.isArray(value)) {
+      let value;
+      if (Array.isArray(dimensions['time'].values)) {
         value = value[0];
       }
       if (
@@ -262,8 +263,9 @@ export class HsLayerManagerWmstService {
         new_layer.layer.get('dimensions_time') ||
         new_layer.layer.dimensions_time;
       let time;
-      if (getDimensions(new_layer.layer).time.default != undefined) {
-        time = new Date(getDimensions(new_layer.layer).time.default);
+      const dimensions = getDimensions(new_layer.layer);
+      if (dimensions['time'].default != undefined) {
+        time = new Date(dimensions['time'].default);
       } else {
         time = new Date(dimensions_time.timeInterval[0]);
       }
