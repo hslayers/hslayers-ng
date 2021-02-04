@@ -5,15 +5,17 @@ import {Vector} from 'ol/source';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 /**
+ * This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
+ * Adam Cole, 2011-Sept-14
+ * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+ * based on http://stackoverflow.com/a/7419630
+ *
  * @param numOfSteps
  * @param step
  * @param opacity
+ * @returns {string} RGBA color
  */
-function rainbow(numOfSteps, step, opacity) {
-  // based on http://stackoverflow.com/a/7419630
-  // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
-  // Adam Cole, 2011-Sept-14
-  // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rainbow(numOfSteps: number, step: number, opacity) {
   let r, g, b;
   const h = step / (numOfSteps * 1.00000001);
   const i = ~~(h * 4);
@@ -128,7 +130,6 @@ function loadFeatures(
       }
     }
     if (objects[key]['http://www.opengis.net/ont/geosparql#asWKT']) {
-      console.log('foo');
       const g_feature = format.readFeature(
         objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase()
       );
@@ -165,7 +166,7 @@ function loadFeatures(
       features[i].color = rainbow(category_id, features[i].category_id, 0.7);
     }
   }
-  console.log(features);
+  //console.log(features);
   return features;
 }
 
@@ -187,99 +188,96 @@ function extendAttributes(options, objects) {
   }
 }
 
+type SparqlOptions = {
+  clear_on_move?: boolean;
+  hsproxy?: boolean;
+  geom_attribute?: string;
+  url: string;
+  updates_url?: string;
+  category?: string;
+  strategy?;
+  projection;
+};
+
 /**
- * @param options
+ * Provides a source of features from SPAQRL endpoint
+ *
+ * @param {object} options
+ * @param {boolean} [options.clear_on_move]
+ * @param {boolean} [options.hsproxy]
+ * @param {string} [options.geom_attribute]
+ * @param {string} options.url
+ * @param {string} [options.updates_url]
+ * @param {string} [options.category]
+ * @param {any} [options.strategy]
+ * @param {any} options.projection
+ * @returns {Vector} New vector source
  */
-export default function (options): void {
-  const category_map = {};
-  const category_id = 0;
-  const occupied_xy = {};
-  const src = new Vector({
-    format: new GeoJSON(),
-    loader: async function (extent, resolution, projection) {
-      this.set('loaded', false);
-      if (
-        typeof this.options.clear_on_move !== 'undefined' &&
-        this.options.clear_on_move
-      ) {
-        this.clear();
-      }
-      if (typeof options.hsproxy == 'undefined') {
-        options.hsproxy = false;
-      }
-      if (typeof options.geom_attribute == 'undefined') {
-        options.geom_attribute =
-          'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
-      }
-      if (this.options.url == '') {
-        return;
-      }
-      let p = this.options.url;
-      let first_pair = [extent[0], extent[1]];
-      let second_pair = [extent[2], extent[3]];
-      first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
-      second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
-      extent = [first_pair[0], first_pair[1], second_pair[0], second_pair[1]];
-      const s_extent = encodeURIComponent(
-        'FILTER(geof:sfIntersects("POLYGON((' +
-          extent[0] +
-          ' ' +
-          extent[1] +
-          ', ' +
-          extent[0] +
-          ' ' +
-          extent[3] +
-          ', ' +
-          extent[2] +
-          ' ' +
-          extent[3] +
-          ', ' +
-          extent[2] +
-          ' ' +
-          extent[1] +
-          ', ' +
-          extent[0] +
-          ' ' +
-          extent[1] +
-          '))"^^geo:wktLiteral, ' +
-          options.geom_attribute +
-          ')).'
-      );
-      const tmp = p.split('&query=');
-      p =
-        tmp[0] +
-        '&query=' +
-        encodeURIComponent(
-          'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
-            'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
-        ) +
-        tmp[1];
-      p = p.replace(/<extent>/g, s_extent);
-      if (options.hsproxy) {
-        p =
-          '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
-      }
-      if (console && typeof src.get('geoname') != 'undefined') {
-        console.log('Get ', src.get('geoname'));
-      }
-      this.loadCounter += 1;
-      this.loadTotal += 1;
-      const responseObject = await fetch(p, {
-        method: 'GET',
-      });
-      const response = await responseObject.json();
-      if (console) {
-        console.log(
-          'Finish ',
-          this.get('geoname'),
-          response.data.results.bindings.length
+export class SparqlJson extends Vector {
+  category_map = {};
+  category_id = 0;
+  legend_categories;
+  loadCounter: number;
+  loadTotal: number;
+  occupied_xy = {};
+
+  /**
+   * @param options - Only 'url' and 'projection' are mandatory
+   */
+  constructor(options: SparqlOptions) {
+    super({
+      format: new GeoJSON(),
+      loader: async function (extent, resolution, projection) {
+        this.set('loaded', false);
+        if (
+          typeof options.clear_on_move !== 'undefined' &&
+          options.clear_on_move
+        ) {
+          this.clear();
+        }
+        if (typeof options.hsproxy === 'undefined') {
+          options.hsproxy = false;
+        }
+        if (typeof options.geom_attribute === 'undefined') {
+          options.geom_attribute =
+            'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
+        }
+        if (options.url == '') {
+          return;
+        }
+        let p = options.url;
+        let first_pair = [extent[0], extent[1]];
+        let second_pair = [extent[2], extent[3]];
+        first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
+        second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
+        extent = [...first_pair, ...second_pair];
+        const s_extent = encodeURIComponent(
+          'FILTER(geof:sfIntersects("POLYGON((' +
+            extent[0] +
+            ' ' +
+            extent[1] +
+            ', ' +
+            extent[0] +
+            ' ' +
+            extent[3] +
+            ', ' +
+            extent[2] +
+            ' ' +
+            extent[3] +
+            ', ' +
+            extent[2] +
+            ' ' +
+            extent[1] +
+            ', ' +
+            extent[0] +
+            ' ' +
+            extent[1] +
+            '))"^^geo:wktLiteral, ' +
+            options.geom_attribute +
+            ')).'
         );
-      }
-      src.loadCounter -= 1;
-      if (this.options.updates_url) {
-        let updates_query = this.options.updates_url;
-        const tmp = updates_query.split('&query=');
-        updates_query =
+        const tmp = p.split('&query=');
+        p =
           tmp[0] +
           '&query=' +
           encodeURIComponent(
@@ -287,131 +285,164 @@ export default function (options): void {
               'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
           ) +
           tmp[1];
-        updates_query = updates_query.replace(/<extent>/g, s_extent);
-        src.loadCounter += 1;
-        src.loadTotal += 1;
-        const responseObject = await fetch(updates_query, {
+        p = p.replace(/<extent>/g, s_extent);
+        if (options.hsproxy) {
+          p =
+            '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' +
+            encodeURIComponent(p);
+        }
+        if (console && typeof this.get('geoname') !== 'undefined') {
+          console.log('Get ', this.get('geoname'));
+        }
+        this.loadCounter += 1;
+        this.loadTotal += 1;
+        const response = await fetch(p, {
           method: 'GET',
         });
-        const updates_response = await responseObject.json();
-        if (console && typeof this.get('geoname') != 'undefined') {
+        const data = await response.json();
+        /*if (console) {
           console.log(
-            'Finish updates ',
+            'Finish ',
             this.get('geoname'),
-            response.data.results.bindings.length,
-            updates_response.data.results.bindings.length
+            data.results.bindings.length
           );
-        }
-        const objects = {};
-        for (const item of response.data.results.bindings) {
-          if (typeof objects[item.o.value] === 'undefined') {
-            objects[item.o.value] = {
-              'poi_id': item.o.value,
-            };
+        }*/
+        this.loadCounter -= 1;
+        if (options.updates_url) {
+          let updates_query = options.updates_url;
+          const tmp = updates_query.split('&query=');
+          updates_query =
+            tmp[0] +
+            '&query=' +
+            encodeURIComponent(
+              'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
+                'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
+            ) +
+            tmp[1];
+          updates_query = updates_query.replace(/<extent>/g, s_extent);
+          this.loadCounter += 1;
+          this.loadTotal += 1;
+          const response = await fetch(updates_query, {
+            method: 'GET',
+          });
+          const updates_data = await response.json();
+          if (console && typeof this.get('geoname') !== 'undefined') {
+            console.log(
+              'Finish updates ',
+              this.get('geoname'),
+              data.results.bindings.length,
+              updates_data.results.bindings.length
+            );
           }
-          objects[item.o.value][item.p.value] = item.s.value;
-        }
-        for (const item of updates_response.data.results.bindings) {
-          let attribute_name = item.attr.value;
-          //Because photos can be more than one
-          if (
-            typeof objects[item.o.value][attribute_name] != 'undefined' &&
-            attribute_name == 'http://xmlns.com/foaf/0.1/depiction'
-          ) {
-            for (let try_i = 1; try_i < 20; try_i++) {
-              if (
-                typeof objects[item.o.value][attribute_name + try_i] ==
-                'undefined'
-              ) {
-                attribute_name = attribute_name + try_i;
-                break;
+          const objects = {};
+          for (const item of data.results.bindings) {
+            if (typeof objects[item.o.value] === 'undefined') {
+              objects[item.o.value] = {
+                'poi_id': item.o.value,
+              };
+            }
+            objects[item.o.value][item.p.value] = item.s.value;
+          }
+          for (const item of updates_data.results.bindings) {
+            let attribute_name = item.attr.value;
+            //Because photos can be more than one
+            if (
+              typeof objects[item.o.value][attribute_name] !== 'undefined' &&
+              attribute_name == 'http://xmlns.com/foaf/0.1/depiction'
+            ) {
+              for (let try_i = 1; try_i < 20; try_i++) {
+                if (
+                  typeof objects[item.o.value][attribute_name + try_i] ==
+                  'undefined'
+                ) {
+                  attribute_name = attribute_name + try_i;
+                  break;
+                }
               }
             }
+            objects[item.o.value][attribute_name] = item.value.value;
           }
-          objects[item.o.value][attribute_name] = item.value.value;
-        }
-        if (typeof options.category != 'undefined') {
-          for (const i in objects) {
-            objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-              options.category;
+          if (typeof options.category != 'undefined') {
+            for (const i in objects) {
+              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
+                options.category;
+            }
+          }
+          extendAttributes(options, objects);
+          if (console) {
+            console.log('Add features', objects);
+          }
+          this.addFeatures(
+            loadFeatures(
+              objects,
+              this,
+              options,
+              this.occupied_xy,
+              this.category_map,
+              this.category_id
+            )
+          );
+          this.loadCounter -= 1;
+          this.set('last_feature_count', Object.keys(objects).length);
+          if (this.loadCounter == 0) {
+            this.set('loaded', true);
+            this.dispatchEvent('imageloadend');
+          }
+        } else {
+          const objects = {};
+          for (const b of data.results.bindings) {
+            if (objects[b.o.value] === undefined) {
+              objects[b.o.value] = {
+                'poi_id': b.o.value,
+              };
+            }
+            objects[b.o.value][b.p.value] = b.s.value;
+          }
+          if (typeof options.category !== 'undefined') {
+            for (const i in objects) {
+              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
+                options.category;
+            }
+          }
+          extendAttributes(options, objects);
+          this.addFeatures(
+            loadFeatures(
+              objects,
+              this,
+              options,
+              this.occupied_xy,
+              this.category_map,
+              this.category_id
+            )
+          );
+          this.styleAble = true;
+          this.hasPoint = true;
+          this.loadCounter -= 1;
+          this.set('last_feature_count', Object.keys(objects).length);
+          if (this.loadCounter == 0) {
+            this.set('loaded', true);
+            this.dispatchEvent('imageloadend');
           }
         }
-        extendAttributes(options, objects);
-        if (console) {
-          console.log('Add features', objects);
-        }
-        this.addFeatures(
-          loadFeatures(
-            objects,
-            this,
-            options,
-            occupied_xy,
-            category_map,
-            category_id
-          )
-        );
-        src.loadCounter -= 1;
-        this.set('last_feature_count', Object.keys(objects).length);
-        if (src.loadCounter == 0) {
-          this.set('loaded', true);
-          this.dispatchEvent('imageloadend');
-        }
-      } else {
-        const objects = {};
-        for (const b of response.data.results.bindings) {
-          if (objects[b.o.value] === undefined) {
-            objects[b.o.value] = {
-              'poi_id': b.o.value,
-            };
-          }
-          objects[b.o.value][b.p.value] = b.s.value;
-        }
-        if (typeof options.category != 'undefined') {
-          for (const i in objects) {
-            objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-              options.category;
-          }
-        }
-        extendAttributes(options, objects);
-        this.addFeatures(
-          loadFeatures(
-            objects,
-            this,
-            options,
-            occupied_xy,
-            category_map,
-            category_id
-          )
-        );
-        this.styleAble = true;
-        this.hasPoint = true;
-        src.loadCounter -= 1;
-        this.set('last_feature_count', Object.keys(objects).length);
-        if (src.loadCounter == 0) {
-          this.set('loaded', true);
-          this.dispatchEvent('imageloadend');
-        }
-      }
-    },
-    strategy:
-      options.strategy ||
-      function (extent, resolution) {
-        const tmp = [extent[0], extent[1], extent[2], extent[3]];
-        if (extent[2] - extent[0] > 65735) {
-          tmp[0] = (extent[2] + extent[0]) / 2.0 - 65735 / 2.0;
-          tmp[2] = (extent[2] + extent[0]) / 2.0 + 65735 / 2.0;
-          tmp[1] = (extent[3] + extent[1]) / 2.0 - 35000 / 2.0;
-          tmp[3] = (extent[3] + extent[1]) / 2.0 + 35000 / 2.0;
-        }
-        return [tmp];
       },
-    projection: options.projection,
-  });
-  src.loadCounter = 0;
-  src.loadTotal = 0;
-  src.options = options;
-  src.legend_categories = category_map;
-  console.log('src');
-  console.log(src);
-  return src;
+      strategy:
+        options.strategy ||
+        function (extent, resolution) {
+          const tmp = [extent[0], extent[1], extent[2], extent[3]];
+          if (extent[2] - extent[0] > 65735) {
+            tmp[0] = (extent[2] + extent[0]) / 2.0 - 65735 / 2.0;
+            tmp[2] = (extent[2] + extent[0]) / 2.0 + 65735 / 2.0;
+            tmp[1] = (extent[3] + extent[1]) / 2.0 - 35000 / 2.0;
+            tmp[3] = (extent[3] + extent[1]) / 2.0 + 35000 / 2.0;
+          }
+          return [tmp];
+        },
+      projection: options.projection,
+    });
+    this.loadCounter = 0;
+    this.loadTotal = 0;
+    this.legend_categories = this.category_map;
+  }
 }
+
+export default SparqlJson;
