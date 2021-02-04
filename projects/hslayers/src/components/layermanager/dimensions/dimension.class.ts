@@ -6,7 +6,7 @@ export class HsDimensionDescriptor {
   public label?: string;
   public values?: Array<any>;
   public format: string;
-  public modelTimeValue: { hour: any; minute: any; };
+  public modelTimeValue: {hour: any; minute: any};
 
   //Original dimension object can be shared between multiple layers.
   constructor(public name: string, public originalDimension: any) {
@@ -17,7 +17,7 @@ export class HsDimensionDescriptor {
       this.modelValue = {
         year: this.value.getFullYear(),
         month: this.value.getMonth() + 1,
-        day: this.value.getDate()
+        day: this.value.getDate(),
       };
       this.modelTimeValue = {
         hour: this.value.getHours(),
