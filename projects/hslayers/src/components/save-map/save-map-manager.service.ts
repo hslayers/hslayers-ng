@@ -284,7 +284,7 @@ export class HsSaveMapManagerService {
         };
       })
       .sort((a, b) => {
-        return a.layer.get('position') - b.layer.get('position');
+        return a.layer.getZIndex() - b.layer.getZIndex();
       });
   }
 
