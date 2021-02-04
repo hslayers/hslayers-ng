@@ -102,7 +102,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/hslayers-app/src/test.ts",
+            "main": "projects/hslayers-app/test/test.ts",
             "polyfills": "projects/hslayers-app/src/polyfills.ts",
             "tsConfig": "projects/hslayers-app/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-app/karma.conf.js",
@@ -237,7 +237,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/hslayers-cesium-app/src/test.ts",
+            "main": "projects/hslayers-cesium-app/test/test.ts",
             "polyfills": "projects/hslayers-cesium-app/src/polyfills.ts",
             "tsConfig": "projects/hslayers-cesium-app/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-cesium-app/karma.conf.js",
@@ -314,7 +314,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/hslayers-sensors/src/test.ts",
+            "main": "projects/hslayers-sensors/test/test.ts",
             "tsConfig": "projects/hslayers-sensors/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-sensors/karma.conf.js"
           }
@@ -342,7 +342,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/hslayers-cesium/src/test.ts",
+            "main": "projects/hslayers-cesium/test/test.ts",
             "tsConfig": "projects/hslayers-cesium/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-cesium/karma.conf.js"
           }
