@@ -8,6 +8,7 @@ import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {Metadata} from '../layer-extensions';
 import {getPreferedFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})
@@ -155,7 +156,6 @@ export class HsArcgisGetCapabilitiesService {
           }),
           abstract: layer.Abstract,
           useInterimTilesOnError: false,
-          MetadataURL: layer.MetadataURL,
           extent: layer.BoundingBox,
         });
         this.HsMapService.proxifyLayerLoader(new_layer, true);

@@ -8,6 +8,7 @@ import {WMSCapabilities} from 'ol/format';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
+import {Metadata} from '../layer-extensions';
 import {getPreferedFormat} from '../format-utils';
 import {tweakGeoserverUrl} from '../../components/save-map/layman-utils';
 
@@ -166,6 +167,7 @@ export class HsWmsGetCapabilitiesService {
             }),
           ];
         }
+        const metadata: Metadata = this.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           name: layer.Name.replace(/\//g, '&#47;'),
@@ -188,7 +190,7 @@ export class HsWmsGetCapabilitiesService {
           }),
           abstract: layer.Abstract,
           useInterimTilesOnError: false,
-          MetadataURL: layer.MetadataURL,
+          metadata,
           extent: layer.BoundingBox,
         });
         this.HsMapService.proxifyLayerLoader(new_layer, true);
@@ -196,6 +198,21 @@ export class HsWmsGetCapabilitiesService {
       });
     });
     return tmp;
+  }
+
+  getMetadataObjectWithUrls(layer: any): Metadata {
+    if (layer.MetadataURL) {
+      const metadata = {
+        urls: layer.MetadataURL.map((url) => {
+          return {
+            type: url.type,
+            format: url.Format,
+            onlineResource: url.OnlineResource,
+          };
+        }),
+      };
+      return metadata;
+    }
   }
 
   /**
