@@ -15,11 +15,9 @@ import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
 import {
-  getBoundingBox,
   getCluster,
   getDeclutter,
   getInlineLegend,
-  setBoundingBox,
   setCluster,
   setDeclutter,
 } from '../../common/layer-extensions';
@@ -65,8 +63,8 @@ export class HsLayerEditorService {
    */
   async zoomToLayer(layer: Layer) {
     let extent = null;
-    if (getBoundingBox(layer)) {
-      extent = this.getExtentFromBoundingBoxAttribute(layer);
+    if (layer.getExtent()) {
+      extent = layer.getExtent();
     } else if (layer.getSource().getExtent != undefined) {
       extent = layer.getSource().getExtent();
     }
@@ -165,7 +163,7 @@ export class HsLayerEditorService {
    */
   fitIfExtentSet(extent: number[], layer: Layer): void {
     if (extent !== null) {
-      setBoundingBox(layer, extent);
+      layer.setExtent(extent);
       this.HsMapService.map
         .getView()
         .fit(extent, this.HsMapService.map.getSize());
@@ -181,42 +179,6 @@ export class HsLayerEditorService {
       'EPSG:4326',
       this.HsMapService.getCurrentProj()
     );
-  }
-
-  /**
-   * (PRIVATE) Get transformated extent from layer "BoundingBox" property
-   *
-   * @function getExtentFromBoundingBoxAttribute
-   * @memberOf hs.layermanager.controller
-   * @param {Layer} layer Selected layer
-   * @returns {Extent} Extent
-   */
-  getExtentFromBoundingBoxAttribute(layer: Layer): number[] {
-    let extent = null;
-    const bbox = getBoundingBox(layer);
-    if (Array.isArray(bbox) && bbox.length == 4) {
-      extent = this.transformToCurrentProj(bbox);
-    } else {
-      for (let ix = 0; ix < bbox.length; ix++) {
-        if (getProj(bbox[ix].crs) != undefined) {
-          const crs = bbox[ix].crs;
-          const b = bbox[ix].extent;
-          let first_pair = [b[0], b[1]];
-          let second_pair = [b[2], b[3]];
-          const currentProj = this.HsMapService.getCurrentProj();
-          first_pair = transform(first_pair, crs, currentProj);
-          second_pair = transform(second_pair, crs, currentProj);
-          extent = [
-            first_pair[0],
-            first_pair[1],
-            second_pair[0],
-            second_pair[1],
-          ];
-          break;
-        }
-      }
-    }
-    return extent;
   }
 
   legendVisible(): boolean {

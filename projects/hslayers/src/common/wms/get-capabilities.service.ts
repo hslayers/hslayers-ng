@@ -189,7 +189,7 @@ export class HsWmsGetCapabilitiesService {
           abstract: layer.Abstract,
           useInterimTilesOnError: false,
           MetadataURL: layer.MetadataURL,
-          BoundingBox: layer.BoundingBox,
+          extent: layer.BoundingBox,
         });
         this.HsMapService.proxifyLayerLoader(new_layer, true);
         tmp.push(new_layer);

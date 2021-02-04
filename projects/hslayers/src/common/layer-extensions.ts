@@ -10,7 +10,6 @@ const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
-const BOUNDINGBOX = 'boundingBox';
 const CLUSTER = 'cluster';
 const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
 const DECLUTTER = 'declutter';
@@ -129,14 +128,6 @@ export function setBase(layer: Layer, base: boolean): void {
 
 export function getBase(layer: Layer): boolean {
   return layer.get(BASE);
-}
-
-export function setBoundingBox(layer: Layer, extent: number[]): void {
-  layer.set(BOUNDINGBOX, extent);
-}
-
-export function getBoundingBox(layer: Layer): Array<number> | Array<any> {
-  return layer.get(BOUNDINGBOX);
 }
 
 export function setCluster(layer: Layer, clusterActive: boolean): void {
@@ -472,8 +463,6 @@ export const HsLayerExt = {
   getCachedCapabilities,
   setBase,
   getBase,
-  setBoundingBox,
-  getBoundingBox,
   setCluster,
   getCluster,
   setCustomInfoTemplate,
