@@ -4,7 +4,7 @@ export type HsVectorLayerOptions = {
   opacity?: number;
   visible?: boolean;
   path?: string;
-  from_composition?: boolean;
+  fromComposition?: boolean;
   style?: any;
   extractStyles?: boolean;
   features?: Feature[];

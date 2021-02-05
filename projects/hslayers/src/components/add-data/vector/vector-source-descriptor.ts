@@ -9,7 +9,7 @@ export class VectorSourceDescriptor {
   mapProjection;
   sourceParams: {
     extractStyles?: any;
-    from_composition?: boolean;
+    fromComposition?: boolean;
     srs?: any;
     url?: string;
     format?: any;
@@ -37,7 +37,7 @@ export class VectorSourceDescriptor {
     this.mapProjection = mapProjection;
 
     this.sourceParams = {
-      from_composition: options.from_composition || false,
+      fromComposition: options.fromComposition || false,
       srs,
     };
 
