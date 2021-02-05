@@ -384,11 +384,14 @@ export class HsSaveMapService {
       ) {
         json.className = 'HSLayers.Layer.WMS';
         json.singleTile = this.HsUtilsService.instOf(src, ImageWMS);
-        if (layer.get('legends')) {
+        if (layer.get('legendImage')) {
           json.legends = [];
-          const legends = layer.get('legends');
-          for (let i = 0; i < legends.length; i++) {
-            json.legends.push(encodeURIComponent(legends[i]));
+          const legends = layer.get('legendImage');
+          if (Array.isArray(legends)) {
+            json.legends = legends.map((l) => encodeURIComponent(l));
+          }
+          if (typeof legends == 'string') {
+            json.legends = [legends];
           }
         }
         if (src.getProjection()) {

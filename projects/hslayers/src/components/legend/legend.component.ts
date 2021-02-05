@@ -1,6 +1,7 @@
 import Map from 'ol/Map';
 import {Component} from '@angular/core';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
 import {Layer} from 'ol/layer';
@@ -33,6 +34,12 @@ export class HsLegendComponent {
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
+      layer.on('change:legendImage', (e) => {
+        const oldDescriptor = this.findLayerDescriptor(e.target);
+        this.layerDescriptors[
+          this.layerDescriptors.indexOf(oldDescriptor)
+        ] = this.HsLegendService.getLayerLegendDescriptor(e.target);
+      });
       layer.getSource().on('change', (e) => this.layerSourcePropChanged(e));
     }
   }
@@ -143,11 +150,8 @@ export class HsLegendComponent {
    * @returns {object} Object describing the legend
    * @param {ol/layer} layer OpenLayers layer
    */
-  findLayerDescriptor(layer) {
-    const found = this.layerDescriptors.filter((ld) => ld.lyr == layer);
-    if (found.length > 0) {
-      return found[0];
-    }
+  findLayerDescriptor(layer): HsLegendDescriptor {
+    return this.layerDescriptors.find((ld) => ld.lyr == layer);
   }
 
   /**

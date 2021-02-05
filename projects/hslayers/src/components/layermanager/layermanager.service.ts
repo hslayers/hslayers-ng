@@ -210,8 +210,8 @@ export class HsLayerManagerService {
 
     if (getBase(layer) != true) {
       this.populateFolders(layer);
-      if (layer.get('legends')) {
-        new_layer.legends = layer.get('legends');
+      if (layer.get('legendImage')) {
+        new_layer.legends = layer.get('legendImage');
       }
       this.data.layers.push(new_layer);
       if (getQueryCapabilities(layer) != false) {

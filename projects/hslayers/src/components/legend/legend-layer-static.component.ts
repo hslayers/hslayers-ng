@@ -19,7 +19,10 @@ export class HsLegendLayerStaticComponent {
   constructor(private sanitizer: DomSanitizer) {}
 
   fillContent(): void {
-    const legendImage = this.layer.lyr.get('legendImage');
+    let legendImage = this.layer.lyr.get('legendImage');
+    if (Array.isArray(legendImage)) {
+      legendImage = legendImage[0];
+    }
     if (legendImage) {
       this.lastLegendImage = legendImage;
       if (legendImage.indexOf('<svg') > -1) {
@@ -40,6 +43,7 @@ export class HsLegendLayerStaticComponent {
     }
     this.layer.lyr.on('change', (e) => {
       //TODO: Maybe rewrite this to something more fancy like Observable
+      debugger;
       if (this.layer.lyr.get('legendImage') != this.lastLegendImage) {
         this.fillContent();
       }

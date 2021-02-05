@@ -163,8 +163,11 @@ export class HsLayerManagerMetadataService {
           layer_name[i],
           caps.Capability.Layer
         );
-        if (layerObject[i].Style) {
-          legends.push(layerObject[i].Style[0].LegendURL[0].OnlineResource);
+        const styleWithLegend = layerObject[i].Style.find(
+          (style) => style.LegendURL != undefined
+        );
+        if (styleWithLegend) {
+          legends.push(styleWithLegend.LegendURL[0].OnlineResource);
         }
         if (layerObject[i].Layer !== undefined) {
           if (fromSublayerParam) {
@@ -187,7 +190,7 @@ export class HsLayerManagerMetadataService {
       }
 
       this.setOrUpdate(layer, 'Layer', layers);
-      this.setOrUpdate(layer, 'Legends', legends);
+      layer.set('legendImage', legends);
       this.fillMetadataUrlsIfNotExist(layer, caps);
     } else {
       layerObject[0] = this.identifyLayerObject(
@@ -199,11 +202,11 @@ export class HsLayerManagerMetadataService {
         layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
         this.parseAttribution(layer, layerObject[0]);
       }
-      if (layerObject[0].Style) {
-        layer.set(
-          'Legends',
-          layerObject[0].Style[0].LegendURL[0].OnlineResource
-        );
+      const styleWithLegend = layerObject[0].Style.find(
+        (style) => style.LegendURL != undefined
+      );
+      if (styleWithLegend) {
+        layer.set('legendImage', styleWithLegend.LegendURL[0].OnlineResource);
       }
 
       if (layerObject[0].Layer && fromSublayerParam) {
@@ -348,7 +351,7 @@ export class HsLayerManagerMetadataService {
   private fillMetadataUrlsIfNotExist(layer: any, caps: any) {
     if (getMetadata(layer) == undefined) {
       setMetadata(layer, {
-        urls: [{onlineResource: caps.Service}],
+        urls: [{onlineResource: caps.Service.OnlineResource}],
       });
     }
   }
