@@ -1040,6 +1040,9 @@ div.hs-info-composition-edited {
 	font-size: x-large !important;
 }
 
+hs-sidebar hs-panel-header.sidebar-header {
+	display:  none;
+}
 
 hs-sidebar .hs-sidebar-item.hs-panel-hidden {
 	display: none !important;
@@ -1190,6 +1193,11 @@ hs-mini-sidebar .hs-sidebar-item-title {
 		flex-wrap: wrap;
 		margin: auto;
 	}
+
+	hs-mini-sidebar hs-panel-header.sidebar-header {
+		display:  none;
+	}
+
 	hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden {
 		width: 25%;
 		height: 80px;
