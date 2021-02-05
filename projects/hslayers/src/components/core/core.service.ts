@@ -66,6 +66,7 @@ export class HsCoreService {
     this.HsMapService.loaded().then(() => {
       this.initSizeListeners();
       setTimeout(() => {
+        this.updateVH();
         this.updateMapSize();
       }, 750);
       this.initCalled = true;
