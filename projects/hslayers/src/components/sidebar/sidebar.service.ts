@@ -302,15 +302,17 @@ export class HsSidebarService {
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded
    *
-   * @memberof HsSidebarService
-   * @function setButtonImportancy
    * @param panelName
    * @param state
    */
-  setButtonImportancy(panelName: string, state: any): void {
-    this.buttons.filter((b) => b.panel == panelName)[0].important = state;
-    this.unimportantExist =
-      this.buttons.filter((b) => b.important == false).length > 0;
+  setButtonImportancy(panelName: string, state: boolean): void {
+    const backCompat = {datasource_selector: 'addData'};
+    panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
+    const button = this.buttons.find((b) => b.panel == panelName);
+    if (button) {
+      button.important = state;
+    }
+    this.unimportantExist = this.buttons.some((b) => b.important == false);
   }
   buttonClicked(button: HsButton): void {
     if (button.click) {
