@@ -175,8 +175,8 @@ export class HsAddDataCatalogueService {
     }
   }
   /**
-   * Calculates each endpoint compostion request limit, based on the matched compostions ratio
-   * from all endpoint matched compostions
+   * Calculates each endpoint layer request limit, based on the matched layers ratio
+   * from all endpoint matched layers
    */
   calculateEndpointLimits(): void {
     this.matchedLayers = 0;
