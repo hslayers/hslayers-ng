@@ -302,6 +302,15 @@ export class HsLegendService {
     if (source.getParams().VERSION) {
       version = source.getParams().VERSION;
     }
+    if (layer.get('legendImage')) {
+      const legendImage = layer.get('legendImage');
+      if (typeof legendImage == 'string') {
+        return legendImage;
+      }
+      if (Array.isArray(legendImage)) {
+        return legendImage[0];
+      }
+    }
     source_url +=
       (source_url.indexOf('?') > 0 ? '' : '?') +
       '&version=' +
