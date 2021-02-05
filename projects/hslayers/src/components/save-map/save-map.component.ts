@@ -58,7 +58,6 @@ export class HsSaveMapComponent {
         if (endpoint.getCurrentUserIfNeeded) {
           endpoint.getCurrentUserIfNeeded(endpoint);
         }
-        console.log(this.endpoint.type)
       }
     });
 

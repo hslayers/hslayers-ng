@@ -283,7 +283,6 @@ export class HsSidebarService {
   }
 
   setButtonVisibility() {
-    console.log('fits');
     for (const button of this.buttons) {
       const fits = this.fitsSidebar(button.panel);
       button.fits = fits ? false : true;
