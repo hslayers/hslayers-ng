@@ -259,7 +259,6 @@ export default function (
       }
       const layers = me.jsonToLayers(obj);
       layers.forEach((lyr) => {
-        $timeout(() => {
           try {
             HsMapService.addLayer(lyr, true);
           } catch (e) {
@@ -267,7 +266,6 @@ export default function (
             $log.warn(error);
             me.createErrorDialog(error);
           }
-        }, 150);
       });
 
       if (angular.isObject(obj.current_base_layer)) {

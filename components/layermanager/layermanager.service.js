@@ -18,6 +18,8 @@ import {TileWMS} from 'ol/source';
  * @param HsLayermanagerMetadata
  * @param $timeout
  * @param HsLayoutService
+ * @param $log
+ * @param $compile
  */
 export default function (
   $rootScope,
@@ -780,16 +782,15 @@ export default function (
   function init() {
     map = HsMapService.map;
     HsMapService.map.getLayers().forEach((lyr) => {
-      $timeout(() => {
-        try {
-          layerAdded({
-            element: lyr,
-          });        } catch (e) {
-          const error = `Layer ${lyr.get('title')} failed to load`;
-          $log.warn(error);
-          me.createErrorDialog(error);
-        }
-      }, 50);
+      try {
+        layerAdded({
+          element: lyr,
+        });
+      } catch (e) {
+        const error = `Layer ${lyr.get('title')} failed to load`;
+        $log.warn(error);
+        me.createErrorDialog(error);
+      }
     });
 
     boxLayersInit();
