@@ -248,9 +248,6 @@ export class HsLayerManagerMetadataService {
     if (!url) {
       return;
     }
-    const metadata = {
-      metainfo: {'OnlineResource': getMetadata(layer)},
-    };
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
       const capabilities = this.HsWmsGetCapabilitiesService.requestGetCapabilities(
