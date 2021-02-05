@@ -156,6 +156,7 @@ export class HsCompositionsCatalogueService {
    */
   calculateEndpointLimits(): void {
     this.matchedCompositions = 0;
+    this.recordsPerPage = 20;
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep) => ep.compositionsPaging.matched != 0
     );
