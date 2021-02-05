@@ -124,14 +124,11 @@ export class HsAddDataCatalogueService {
   resetList(): void {
     this.listStart = 0;
     this.listNext = this.itemsPerPage;
-    this.endpointsWithDatasources.forEach(
-      (ep: HsEndpoint) => {
-        ep.datasourcePaging.start = 0;
-        ep.datasourcePaging.next = ep.datasourcePaging.limit;
-        ep.datasourcePaging.matched = 0;
-      }
-
-    ); 
+    this.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
+      ep.datasourcePaging.start = 0;
+      ep.datasourcePaging.next = ep.datasourcePaging.limit;
+      ep.datasourcePaging.matched = 0;
+    });
   }
 
   reloadData(): void {
@@ -170,43 +167,43 @@ export class HsAddDataCatalogueService {
           }
         }
         this.catalogQuery = forkJoin(observables).subscribe(() => {
-          suspendLimitCalculation ? 
-          this.createLayerList() :
-          this.calculateEndpointLimits();
+          suspendLimitCalculation
+            ? this.createLayerList()
+            : this.calculateEndpointLimits();
         });
       });
     }
   }
   /**
-  * Calculates each endpoint compostion request limit, based on the matched compostions ratio
-  * from all endpoint matched compostions
-  */
- calculateEndpointLimits(): void {
-   this.matchedLayers = 0;
-   this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
-     (ep) => ep.datasourcePaging.matched != 0
-   );
-   if (this.endpointsWithDatasources.length == 0) {
-     this.layersLoading = false;
-     return;
-   }
-   this.endpointsWithDatasources.forEach(
-     (ep) => (this.matchedLayers += ep.datasourcePaging.matched)
-   );
-   let sumLimits = 0;
-   this.endpointsWithDatasources.forEach((ep) => {
-     ep.datasourcePaging.limit = Math.floor(
-       (ep.datasourcePaging.matched / this.matchedLayers) *
-         this.itemsPerPage
-     );
-     if (ep.datasourcePaging.limit == 0) {
-       ep.datasourcePaging.limit = 1;
-     }
-     sumLimits += ep.datasourcePaging.limit;
-   });
-   this.itemsPerPage = sumLimits;
-   this.queryCatalogs(true);
- }
+   * Calculates each endpoint compostion request limit, based on the matched compostions ratio
+   * from all endpoint matched compostions
+   */
+  calculateEndpointLimits(): void {
+    this.matchedLayers = 0;
+    this.itemsPerPage = 20;
+    this.endpointsWithDatasources = this.endpointsWithDatasources.filter(
+      (ep) => ep.datasourcePaging.matched != 0
+    );
+    if (this.endpointsWithDatasources.length == 0) {
+      this.layersLoading = false;
+      return;
+    }
+    this.endpointsWithDatasources.forEach(
+      (ep) => (this.matchedLayers += ep.datasourcePaging.matched)
+    );
+    let sumLimits = 0;
+    this.endpointsWithDatasources.forEach((ep) => {
+      ep.datasourcePaging.limit = Math.floor(
+        (ep.datasourcePaging.matched / this.matchedLayers) * this.itemsPerPage
+      );
+      if (ep.datasourcePaging.limit == 0) {
+        ep.datasourcePaging.limit = 1;
+      }
+      sumLimits += ep.datasourcePaging.limit;
+    });
+    this.itemsPerPage = sumLimits;
+    this.queryCatalogs(true);
+  }
 
   createLayerList(): void {
     for (const endpoint of this.endpointsWithDatasources) {
@@ -225,11 +222,9 @@ export class HsAddDataCatalogueService {
           }
 
           if (this.catalogEntries.length > 0) {
-            this.filterDuplicates(endpoint)
+            this.filterDuplicates(endpoint);
           } else {
-            this.catalogEntries = this.catalogEntries.concat(
-              endpoint.layers
-            );
+            this.catalogEntries = this.catalogEntries.concat(endpoint.layers);
           }
         }
       }
@@ -241,7 +236,6 @@ export class HsAddDataCatalogueService {
 
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.layersLoading = false;
-
   }
 
   filterDuplicates(endpoint: HsEndpoint): Array<any> {
@@ -250,17 +244,13 @@ export class HsAddDataCatalogueService {
     }
 
     const filteredLayers = endpoint.layers.filter(
-      (layer) =>
-        this.catalogEntries.filter((u) => u.id == layer.id).length == 0
+      (layer) => this.catalogEntries.filter((u) => u.id == layer.id).length == 0
     );
 
     if (endpoint.type != 'layman') {
-      this.matchedLayers -=
-        endpoint.layers.length - filteredLayers.length;
+      this.matchedLayers -= endpoint.layers.length - filteredLayers.length;
     }
-    this.catalogEntries = this.catalogEntries.concat(
-      filteredLayers
-    );
+    this.catalogEntries = this.catalogEntries.concat(filteredLayers);
   }
 
   getNextRecords(): void {
@@ -290,7 +280,7 @@ export class HsAddDataCatalogueService {
           (ep.datasourcePaging.start -= ep.datasourcePaging.limit)
       );
     }
-    this.queryCatalogs(true)
+    this.queryCatalogs(true);
   }
 
   clearLoadedData(): void {
