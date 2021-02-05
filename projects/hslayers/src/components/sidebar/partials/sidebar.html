@@ -1,18 +1,15 @@
 <div class="hs-sidebar-list list-group">
+    <hs-panel-header class="sidebar-header" *ngIf="HsLayoutService.minisidebar" name="additional" [title]="'SIDEBAR.additionalPanels' | translate"></hs-panel-header>
+
     <span class="hs-sidebar-item list-group-item" *ngIf="HsLayoutService.sidebarToggleable" (click)="toggleSidebar()">
         <i class="menu-icon" [ngClass]="HsLayoutService.sidebarExpanded ? (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (HsConfig.sidebarPosition == 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
     </span>
 
-    <span *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'" class="hs-sidebar-item list-group-item" [hidden]="!(button.visible && HsSidebarService.visibilityByImportancy(button))" (click)="HsSidebarService.buttonClicked(button)"
+    <span *ngFor="let button of HsSidebarService.buttons | sortBy: 'asc': 'order'" class="hs-sidebar-item list-group-item" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
         [ngClass]="{'active': HsLayoutService.mainpanel == button.panel,  'hs-panel-hidden' : !button.fits}" title="{{HsSidebarService.getButtonDescription(button)}}">
-
         <i *ngIf="button.icon" class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
         <span *ngIf="button.content" data-toggle="tooltip" data-container="body" data-placement="auto" class="" title="{{HsSidebarService.getButtonDescription(button)}}">{{button.content()}}</span>
         <span class="hs-sidebar-item-title">{{HsSidebarService.getButtonTitle(button)}}</span>
-    </span>
-
-    <span class="hs-sidebar-item  list-group-item" *ngIf="HsSidebarService.unimportantExist && !HsLayoutService.sidebarBottom()" (click)="toggleUnimportant()">
-        <i class="menu-icon" [ngClass]="{'icon-minus' : HsSidebarService.showUnimportant, 'icon-plus': !HsSidebarService.showUnimportant}" data-toggle="tooltip" data-container="body" data-placement="auto" title="{{'Expand/collapse'}}"></i>
     </span>
 
     <span class="hs-sidebar-item  list-group-item" *ngIf="HsLayoutService.minisidebar" (click)="HsLayoutService.setMainPanel('sidebar', true)" [ngClass]="{'active': HsLayoutService.mainpanel == 'sidebar'}">

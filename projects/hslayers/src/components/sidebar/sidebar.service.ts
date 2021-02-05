@@ -32,6 +32,8 @@ export class HsSidebarService {
     title: () =>
       this.HsLanguageService.getTranslation('SIDEBAR.additionalPanels'),
   };
+  numberOfUnimportant: number;
+  importantButtons: HsButton[];
 
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -283,9 +285,15 @@ export class HsSidebarService {
   }
 
   setButtonVisibility() {
-    for (const button of this.buttons) {
-      const fits = this.fitsSidebar(button.panel);
-      button.fits = fits ? false : true;
+    this.importantButtons = this.buttons.filter((button) => {
+      return (
+        button.important != false && this.visibleButtons.includes(button.panel)
+      );
+    });
+    this.numberOfUnimportant =
+      this.buttons.length - this.importantButtons.length;
+    for (const button of this.importantButtons) {
+      button.fits = this.fitsSidebar(button);
     }
   }
 
@@ -310,9 +318,13 @@ export class HsSidebarService {
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
     const button = this.buttons.find((b) => b.panel == panelName);
     if (button) {
+      //Unimportant buttons are automatically placed inside minisidebar
+      button.fits = state;
       button.important = state;
     }
+
     this.unimportantExist = this.buttons.some((b) => b.important == false);
+    this.HsLayoutService.minisidebar = this.unimportantExist;
   }
   buttonClicked(button: HsButton): void {
     if (button.click) {
@@ -337,26 +349,6 @@ export class HsSidebarService {
     }
   }
 
-  /**
-   * Returns if a button should be visible by its 'important'
-   * property and current view mode defined in showUnimportant variable
-   *
-   * @memberof HsSidebarService
-   * @function visibilityByImportancy
-   * @param {HsButton} button Sidebar button
-   */
-  visibilityByImportancy(button: HsButton): boolean {
-    if (this.HsLayoutService.sidebarBottom()) {
-      return true;
-    } else {
-      return (
-        button.important ||
-        button.important === undefined ||
-        !this.unimportantExist ||
-        this.showUnimportant
-      );
-    }
-  }
   /**
    * Checks whether the panels, which could be placed both in map or
    * in sidebar, have state defined in config.panelsEnabled. If yes it
@@ -385,25 +377,25 @@ export class HsSidebarService {
    * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
    * @description Toggles minisidebar button
    */
-  fitsSidebar(which: HsButton): boolean {
+  fitsSidebar(button: HsButton): boolean {
     const dimensionToCheck =
       window.innerWidth > 767 ? 'clientHeight' : 'clientWidth';
 
-    const maxNumberofButtons = Math.floor(
+    let maxNumberofButtons = Math.floor(
       this.HsLayoutService.layoutElement[dimensionToCheck] / 60
     );
+    maxNumberofButtons =
+      dimensionToCheck == 'clientHeight'
+        ? maxNumberofButtons - 1
+        : maxNumberofButtons;
+
     if (
-      this.visibleButtons.indexOf(which) + 1 >= maxNumberofButtons &&
-      maxNumberofButtons <= this.visibleButtons.length - 1
+      this.importantButtons.findIndex((btn) => btn.panel === button.panel) +
+        2 <=
+      maxNumberofButtons
     ) {
       this.HsLayoutService.minisidebar = true;
       return true;
-    }
-    if (
-      this.HsLayoutService.layoutElement[dimensionToCheck] >
-      (this.visibleButtons.length - 1) * 60
-    ) {
-      this.HsLayoutService.minisidebar = false;
     }
   }
 }
