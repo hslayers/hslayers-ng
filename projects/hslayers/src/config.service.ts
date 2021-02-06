@@ -53,6 +53,7 @@ export class HsConfig {
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;
+    measure?: boolean;
     info?: boolean;
     composition_browser?: boolean;
     toolbar?: boolean;
