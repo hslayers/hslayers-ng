@@ -1478,6 +1478,29 @@ md-bottom-sheet .content {
 	color: #0062bf;
 }
 
+.hs-fulltext-searchbox {
+	border-radius: 16px;
+	height: 32px;
+  line-height: 24px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.hs-fulltext-suggestions {
+	position: fixed;
+	z-index: 81;
+	background-color: white;
+}
+
+.hs-fulltext-suggestions-line {
+  padding: 4px;
+  display: block;
+}
+
+.hs-fulltext-suggestions :hover {
+  background-color: #eee;
+}
+
 .hs-gallery-slideshow {
 	position: relative;
 	overflow: hidden;

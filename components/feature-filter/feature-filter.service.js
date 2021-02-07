@@ -1,6 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import {Style} from 'ol/style';
 import {unByKey} from 'ol/Observable';
+import MiniSearch from 'minisearch';
 
 /**
  * @param $rootScope
@@ -139,6 +140,53 @@ export default function (
               }
               break;
             }
+            case 'fulltext':
+              var miniSearch = new MiniSearch({
+                fields: filter.valueFields,
+                idField: filter.idField,
+                searchOptions: { fuzzy: 0.1 }
+              });
+              var target = document.getElementById('fulltextInput');
+              var resultIds = null;
+              $rootScope.suggests = null;
+              if (target != null) {
+                if (target.value != null && target.value != '') {
+                  var features = layer.layer.getSource().getFeatures();
+                  for (var f = 0; f < features.length; f++) {
+                    miniSearch.add(features[f].getProperties())
+                  }
+
+                  let results = miniSearch.search(target.value);
+
+                  if (results != null) {
+                    resultIds = results.map(({id}) => id);
+                  }
+
+                  if (filter.suggestions) {
+                    let autoSuggests = miniSearch.autoSuggest(target.value);
+                    if (autoSuggests != null) {
+                      $rootScope.suggests = autoSuggests.map(({suggestion}) => suggestion).slice(0, 10);
+                    }
+                  }
+
+                }
+
+              }
+              displayFeature = function (feature) {
+                if (resultIds == null) {
+                  return true
+                }
+                else {
+                  return (
+                    resultIds.indexOf(
+                      feature.getProperties()[filter.idField]
+                    ) !== -1
+                  );
+                }
+
+              };
+              break;
+
           default:
             displayFeature = function (feature) {
               return true;
@@ -216,6 +264,8 @@ export default function (
                   );
                 });
 
+                break;
+              case 'fulltext':
                 break;
               case 'dateExtent':
                 // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype

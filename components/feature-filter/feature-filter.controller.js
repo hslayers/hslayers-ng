@@ -23,6 +23,11 @@ export default function (
     'slider': require('./partials/slider-filter-md.html'),
   };
 
+  $scope.assignValue = function (value){
+    document.getElementById('fulltextInput').value = value;
+    $scope.applyFilters();
+  }
+
   $scope.applyFilters = HsFeatureFilterService.applyFilters;
 
   $scope.allSelected = function (filter) {
@@ -88,6 +93,10 @@ export default function (
       case 'arrayset':
         return filter.selected && filter.selected.length > 0;
         break;
+      case 'fulltext':
+        var element = document.getElementById('fulltextInput');
+        return element.value != '';
+        break;
     }
   };
 
@@ -100,6 +109,9 @@ export default function (
         break;
       case 'arrayset':
         filter.selected = [];
+        break;
+      case 'fulltext':
+        document.getElementById("fulltextInput").value = '';
         break;
     }
     $scope.applyFilters();

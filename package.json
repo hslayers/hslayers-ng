@@ -103,6 +103,7 @@
     "js-cookie": "2.2.1",
     "karma-webpack": "^4.0.2",
     "md-color-picker": "^0.2.6",
+    "minisearch": "^3.0.2",
     "moment": "^2.24.0",
     "moment-interval": "^0.2.1",
     "ng-focus-if": "^1.0.7",
