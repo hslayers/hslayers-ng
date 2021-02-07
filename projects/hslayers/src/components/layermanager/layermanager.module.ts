@@ -1,7 +1,3 @@
-/**
- * @namespace hs.legend
- * @memberOf hs
- */
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -20,6 +16,7 @@ import {HsLayerManagerGalleryComponent} from './layermanager-gallery.component';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './remove-all-dialog.component';
 import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerPhysicalListComponent} from './layermanager-physical-layerlist.component';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -40,6 +37,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],
   imports: [
@@ -60,6 +58,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],
   providers: [
@@ -81,6 +80,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
+    HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
   ],
 })

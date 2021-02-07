@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -15,16 +15,16 @@ import {getHsLaymanSynchronizing, getPath} from '../../common/layer-extensions';
   selector: 'hs-layermanager-layer-list',
   templateUrl: './partials/layerlist.html',
 })
-export class HsLayerListComponent {
+export class HsLayerListComponent implements OnInit {
   @Input() folder: any;
   /**
-   * @ngdoc property
-   * @name hs.layermanager.layerlistDirective#layer_titles
+   * List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
    * @public
-   * @type {Array}
-   * @description List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
    */
   layer_titles: Array<any> = [];
+  /**
+   * List of layers which belong to folder hierarchy level of directive instance
+   */
   filtered_layers: Array<any> = [];
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   constructor(
@@ -43,16 +43,14 @@ export class HsLayerListComponent {
     });
   }
   /**
-   * @function layerLoaded
-   * @memberOf hs.layermanager-layerlist
-   * @param {Layer} layer Selected layer
-   * @description Test if selected layer is loaded in map
+   * Test if selected layer is loaded in map
+   * @param layer - Selected layer
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 
-  changeSublayerVisibilityState(layer, state) {
+  changeSublayerVisibilityState(layer, state): void {
     if (layer.layer.checkedSubLayers) {
       Object.keys(layer.layer.checkedSubLayers).forEach((key) => {
         layer.layer.checkedSubLayers[key] = state;
@@ -66,23 +64,19 @@ export class HsLayerListComponent {
   }
 
   /**
-   * @function layerValid
-   * @memberOf hs.layermanager.controller
-   * @param {Ol.layer} layer Selected layer
+   * Test if selected layer is valid (true for invalid)
+   * @param layer - Selected layer
    * @returns
-   * @description Test if selected layer is valid (true for invalid)
    */
   layerValid(layer) {
     return this.HsLayerUtilsService.layerInvalid(layer);
   }
 
   /**
-   * @function toggleSublayersVisibility
-   * @memberOf hs.layermanager.layerlist
-   * @description Controls state of layer´s sublayers checkboxes with layer visibility changes
-   * @param {object} layer Selected layer
+   * Controls state of layer's sublayers checkboxes with layer visibility changes
+   * @param layer - Selected layer
    */
-  toggleSublayersVisibility(layer: HsLayerDescriptor) {
+  toggleSublayersVisibility(layer: HsLayerDescriptor): void {
     if (!layer.visible) {
       if (this.HsLayerManagerService.currentLayer === layer) {
         if (this.HsLayerEditorSublayerService.hasSubLayers()) {
@@ -108,24 +102,16 @@ export class HsLayerListComponent {
       }
     }
   }
+
   ngOnInit() {
-    /**
-     * @ngdoc property
-     * @name hs.layermanager.layerlistDirective#filtered_layers
-     * @public
-     * @type {Array}
-     * @description List of layers which belong to folder hierarchy level of directive instance
-     */
     this.filtered_layers = this.filterLayers();
   }
 
   /**
-   * @ngdoc method
-   * @name hs.layermanager.layerlistDirective#filterLayers
+   * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
    * @private
-   * @description Filters layers, and returns only the ones belonging to folder hiearchy level of directive
    */
-  filterLayers() {
+  private filterLayers(): Array<any> {
     const tmp = [];
 
     for (const layer of this.HsLayerManagerService.data.layers) {
@@ -141,12 +127,10 @@ export class HsLayerListComponent {
   }
 
   /**
-   * @ngdoc method
-   * @name hs.layermanager.layerlistDirective#filtered_layers
+   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects can't be used because DragDropList functionality can handle only simple structures.
    * @public
-   * @description Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects cant be used because DragDropList functionality can handle only simple structures.
    */
-  generateLayerTitlesArray() {
+  generateLayerTitlesArray(): void {
     this.layer_titles = [];
     for (let i = 0; i < this.filtered_layers.length; i++) {
       this.layer_titles.push(this.filtered_layers[i].title);
@@ -154,22 +138,18 @@ export class HsLayerListComponent {
   }
 
   /**
-   * @function isLayerQueryable
-   * @memberOf hs.layermanager.layerlist
-   * @param {object} layer_container Selected layer - wrapped in layer object
-   * @description Test if layer is queryable (WMS layer with Info format)
+   * Test if layer is queryable (WMS layer with Info format)
+   * @param layer_container - Selected layer - wrapped in layer object
    */
   isLayerQueryable(layer_container): boolean {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   }
 
   /**
-   * @ngdoc method
-   * @name hs.layermanager.layerlist#updateLayers
+   * Update layers list
    * @private
-   * @description Update layers list
    */
-  updateLayers(): void {
+  private updateLayers(): void {
     this.filtered_layers = this.filterLayers();
     this.generateLayerTitlesArray();
   }
