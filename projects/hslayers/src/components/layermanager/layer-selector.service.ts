@@ -10,12 +10,10 @@ export class HsLayerSelectorService {
   constructor() {}
 
   /**
-   * @function select
-   * @memberOf HsLayerSelectorService
-   * @description Multicasts new HsLayerManagerService.currentLayer to observers listening to the layerSelected subject.
-   * @param {HsLayerDescriptor} HsLayer Selected layer (HsLayerManagerService.currentLayer)
+   * Multicasts new HsLayerManagerService.currentLayer to observers listening to the layerSelected subject.
+   * @param hsLayer - Selected layer (HsLayerManagerService.currentLayer)
    */
-  select(HsLayer: HsLayerDescriptor) {
-    this.layerSelected.next(HsLayer);
+  select(hsLayer: HsLayerDescriptor): void {
+    this.layerSelected.next(hsLayer);
   }
 }
