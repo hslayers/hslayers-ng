@@ -199,7 +199,8 @@
         "csw_url": "CSW saite",
         "identifier": "Identifikators",
         "record_url": "Ieraksta saite"
-      }
+      },
+      "metadataAboutMetadata": "Metadati par metadatiem"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Apvienot kompozīcijas",

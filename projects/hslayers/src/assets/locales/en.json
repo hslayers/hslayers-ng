@@ -199,7 +199,8 @@
         "csw_url": "CSW URL",
         "identifier": "Identifier",
         "record_url": "Record URL"
-      }
+      },
+      "metadataAboutMetadata": "Metadata about metadata"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Merge compositions",
