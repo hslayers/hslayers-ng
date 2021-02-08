@@ -18,13 +18,14 @@ import {Tile} from 'ol/layer';
  * @param HsWmtsGetCapabilitiesService
  * @param HsUtilsService
  * @param $location
+ * @param $http
  */
 export default function (
   HsMapService,
   HsAddLayersVectorService,
   HsWmtsGetCapabilitiesService,
   HsUtilsService,
-  $location
+  $location,
 ) {
   'ngInject';
   const me = {
@@ -111,6 +112,7 @@ export default function (
         title: lyr_def.title,
         info_format: lyr_def.info_format,
         source: new WMTS({}),
+        base: lyr_def.base ? lyr_def.base : false,
       });
 
       // Get WMTS Capabilities and create WMTS source base on it
@@ -130,12 +132,11 @@ export default function (
             wmts.setSource(new WMTS(options));
             HsMapService.proxifyLayerLoader(wmts, true);
           } catch (error) {
-            console.error(error);
+            console.error('WMTS Layer loading error', error);
             me.map.getLayers().remove(wmts);
           }
         }
       );
-
       wmts.setVisible(lyr_def.visibility);
       return wmts;
     },

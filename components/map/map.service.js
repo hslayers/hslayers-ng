@@ -25,6 +25,7 @@ import {
   ImageWMS,
   TileArcGISRest,
   TileWMS,
+  WMTS,
   XYZ,
 } from 'ol/source';
 import {
@@ -220,7 +221,10 @@ export default function (
 
     me.repopulateLayers(me.visibleLayersInUrl);
 
-    proj4.defs('EPSG:5514', '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs');
+    proj4.defs(
+      'EPSG:5514',
+      '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs'
+    );
     proj4.defs(
       'EPSG:4258',
       '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'
@@ -270,7 +274,6 @@ export default function (
       constrainOnlyCenter: template.options_.constrainOnlyCenter || false,
       smoothExtentConstraint: template.options_.smoothExtentConstraint || true,
       multiWorld: template.options_.multiWorld || false,
-
     });
     return view;
   }
@@ -509,6 +512,14 @@ export default function (
     const newTitle = newLayer.get('title');
     const existingSourceType = typeof existingSource;
     const newSourceType = typeof newSource;
+
+    if (
+      HsUtilsService.instOf(existingSource, WMTS) &&
+      HsUtilsService.instOf(newSource, WMTS)
+    ) {
+      return existingTitle == newTitle;
+    }
+
     const existingLAYERS = angular.isUndefined(existingSource.getParams)
       ? ''
       : existingSource.getParams().LAYERS;
@@ -548,14 +559,19 @@ export default function (
    * @returns {boolean} True if layer is already present in the map, false otherwise
    */
   this.layerDuplicate = (lyr) => {
-    const duplicateLayers = me.map
-      .getLayers()
-      .getArray()
-      .filter((existing) => {
-        const equal = layersEqual(existing, lyr);
-        return equal;
-      });
-    return duplicateLayers.length > 0;
+    try {
+      const duplicateLayers = me.map
+        .getLayers()
+        .getArray()
+        .filter((existing) => {
+          const equal = layersEqual(existing, lyr);
+          return equal;
+        });
+      return duplicateLayers.length > 0;
+    } catch (error) {
+      console.log(lyr, error);
+      return true;
+    }
   };
 
   this.removeDuplicate = (lyr) => {
@@ -584,46 +600,54 @@ export default function (
    * @returns {ol/Layer} OL layer
    */
   this.addLayer = (lyr, removeIfExists, visibilityOverrides) => {
-    if (removeIfExists && me.layerDuplicate(lyr)) {
-      if (lyr.get('base') == true){
-        return
+    try {
+      if (removeIfExists && me.layerDuplicate(lyr)) {
+        if (lyr.get('base') == true) {
+          return;
+        }
+        me.removeDuplicate(lyr);
       }
-      me.removeDuplicate(lyr);
+
+      if (angular.isDefined(visibilityOverrides)) {
+        lyr.setVisible(me.layerTitleInArray(lyr, visibilityOverrides));
+      }
+      lyr.manuallyAdded = false;
+      const source = lyr.getSource();
+      if (
+        HsUtilsService.instOf(source, ImageWMS) ||
+        HsUtilsService.instOf(source, ImageArcGISRest)
+      ) {
+        me.proxifyLayerLoader(lyr, false);
+      }
+      if (
+        HsUtilsService.instOf(source, TileWMS) ||
+        HsUtilsService.instOf(source, TileArcGISRest)
+      ) {
+        me.proxifyLayerLoader(lyr, true);
+      }
+      if (
+        HsUtilsService.instOf(source, XYZ) &&
+        !HsUtilsService.instOf(source, OSM) &&
+        source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
+          .length == 0
+      ) {
+        me.proxifyLayerLoader(lyr, true);
+      }
+      if (HsUtilsService.instOf(source, Vector)) {
+        me.getVectorType(lyr);
+      }
+      if (HsUtilsService.instOf(source, Static)) {
+        //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
+        source.url_ = HsUtilsService.proxify(source.getUrl());
+      }
+      me.map.addLayer(lyr);
+      return lyr;
+    } catch (error) {
+      console.error(
+        `There was a problem adding layer ${lyr.get('title')}`,
+        error
+      );
     }
-    if (angular.isDefined(visibilityOverrides)) {
-      lyr.setVisible(me.layerTitleInArray(lyr, visibilityOverrides));
-    }
-    lyr.manuallyAdded = false;
-    const source = lyr.getSource();
-    if (
-      HsUtilsService.instOf(source, ImageWMS) ||
-      HsUtilsService.instOf(source, ImageArcGISRest)
-    ) {
-      me.proxifyLayerLoader(lyr, false);
-    }
-    if (
-      HsUtilsService.instOf(source, TileWMS) ||
-      HsUtilsService.instOf(source, TileArcGISRest)
-    ) {
-      me.proxifyLayerLoader(lyr, true);
-    }
-    if (
-      HsUtilsService.instOf(source, XYZ) &&
-      !HsUtilsService.instOf(source, OSM) &&
-      source.getUrls().filter((url) => url.indexOf('openstreetmap') > -1)
-        .length == 0
-    ) {
-      me.proxifyLayerLoader(lyr, true);
-    }
-    if (HsUtilsService.instOf(source, Vector)) {
-      me.getVectorType(lyr);
-    }
-    if (HsUtilsService.instOf(source, Static)) {
-      //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-      source.url_ = HsUtilsService.proxify(source.getUrl());
-    }
-    me.map.addLayer(lyr);
-    return lyr;
   };
 
   /**
