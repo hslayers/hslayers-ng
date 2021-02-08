@@ -98,7 +98,10 @@ export class HsCompositionsMapService {
   }
 
   getFeatureRecordAndUnhighlight(feature, selector) {
-    if (feature.get('is_hs_composition_extent') && getRecord(feature)) {
+    if (
+      this.HsMapService.getLayerForFeature(feature) == this.extentLayer &&
+      getRecord(feature)
+    ) {
       const record = getRecord(feature);
       setHighlighted(feature, false);
       selector.getFeatures().clear();
