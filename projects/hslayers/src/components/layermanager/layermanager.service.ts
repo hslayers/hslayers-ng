@@ -883,11 +883,7 @@ export class HsLayerManagerService {
       );
     });
     this.HsEventBusService.layerManagerUpdates.next();
-    if (this.HsShareUrlService.getParamValue('layerSelected')) {
-      const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
-      const layerFound = await this.checkLayerFromUrl(layerTitle);
-      this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
-    }
+    this.toggleEditLayerByUrlParam();
     this.boxLayersInit();
     this.map.getView().on(
       'change:resolution',
@@ -920,27 +916,31 @@ export class HsLayerManagerService {
     });
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
   }
+
+  /**
+   * Opens editor for layer specified in 'layerSelected' url parameter
+   */
+  private toggleEditLayerByUrlParam() {
+    const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
+    if (layerTitle != undefined) {
+      const layerFound = this.data.layers.find(
+        (layer) => layer.title == layerTitle
+      );
+      if (layerFound !== undefined) {
+        setTimeout(() => {
+          this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
+        }, 500);
+        this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
+      }
+    }
+  }
+
   applyZIndex(layer): void {
     if (layer.getZIndex() == undefined) {
       layer.setZIndex(this.zIndexValue++);
     } else if (layer.getZIndex() > this.zIndexValue) {
       this.zIndexValue = layer.getZIndex() + 1;
     }
-  }
-  checkLayerFromUrl(layerTitle: string): any {
-    const layerFound = this.getLayerFromUrl(layerTitle);
-    if (layerFound !== undefined && layerFound.length > 0) {
-      setTimeout(() => {
-        this.toggleLayerEditor(layerFound[0], 'settings', 'sublayers');
-      }, 500);
-      return layerFound[0].layer;
-    }
-  }
-  getLayerFromUrl(layerTitle: string): any {
-    const layerFound = this.data.layers.filter(
-      (layer) => layer.title == layerTitle
-    );
-    return layerFound;
   }
   expandLayer(layer: Layer): void {
     if (layer.expanded == undefined) {
