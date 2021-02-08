@@ -6,7 +6,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, timeout} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,9 +26,9 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
       .pipe(
+        timeout(2000),
         map((response: any) => {
-          const ep = this.compositionsReceived(endpoint, params, response);
-          return ep;
+          this.compositionsReceived(endpoint, params, response);
         }),
         catchError((e) => {
           this.HsLogService.error(e);
@@ -37,7 +37,7 @@ export class HsCompositionsLaymanService {
       );
     return endpoint.listLoading;
   }
-  compositionsReceived(endpoint: HsEndpoint, params, response): HsEndpoint {
+  compositionsReceived(endpoint: HsEndpoint, params, response): void {
     if (!response && response.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.HsLogService.error('No data received');
@@ -69,7 +69,6 @@ export class HsCompositionsLaymanService {
       record.url = `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`;
       record.endpoint = endpoint;
     }
-    return endpoint;
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
     let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;

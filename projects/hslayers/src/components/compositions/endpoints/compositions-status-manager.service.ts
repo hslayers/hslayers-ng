@@ -4,6 +4,8 @@ import {HsStatusManagerService} from '../../save-map/status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {catchError, map, timeout} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -50,9 +52,19 @@ export class HsCompositionsStatusManagerService {
       ds.listLoading.unsubscribe();
       delete ds.listLoading;
     }
-    ds.listLoading = this.$http.get(url).subscribe(
+    const listLoading = this.$http.get(url).pipe(
+      timeout(2000),
+      map((response: any) => response),
+      catchError((e) => {
+        return of(e);
+      })
+    );
+    ds.listLoading = listLoading.subscribe(
       (response: any) => {
-        if (ds.compositions == undefined) {
+        if (response.results === undefined) {
+          return;
+        }
+        if (ds.compositions === undefined) {
           ds.compositions = [];
           ds.matched = 0;
         }

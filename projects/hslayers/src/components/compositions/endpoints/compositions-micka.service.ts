@@ -10,7 +10,7 @@ import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Observable, Subscription, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, timeout} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -84,7 +84,7 @@ export class HsCompositionsMickaService {
     endpoint: HsEndpoint,
     extentLayer: any,
     response: any
-  ): HsEndpoint {
+  ): void {
     if (!response.records) {
       this.HsLogService.error('No data received');
       return;
@@ -132,7 +132,6 @@ export class HsCompositionsMickaService {
         //Composition not in extent
       }
     }
-    return endpoint;
   }
 
   loadList(
@@ -150,9 +149,9 @@ export class HsCompositionsMickaService {
         responseType: 'json',
       })
       .pipe(
+        timeout(2000),
         map((response: any) => {
-          const ep = this.compositionsReceived(endpoint, extentLayer, response);
-          return ep;
+          this.compositionsReceived(endpoint, extentLayer, response);
         }),
         catchError((e) => {
           this.HsLogService.error(e);
