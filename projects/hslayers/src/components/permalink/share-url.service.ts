@@ -55,6 +55,7 @@ export class HsShareUrlService {
 
     const externalLayers = this.HsMapService.map
       .getLayers()
+      .getArray()
       .filter((lyr) => !(getShowInLayerManager(lyr) === false));
     const visibleLayers = externalLayers
       .filter((lyr) => lyr.getVisible())
