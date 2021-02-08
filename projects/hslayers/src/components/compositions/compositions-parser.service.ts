@@ -284,12 +284,59 @@ export class HsCompositionsParserService {
   async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    const response: any = await this.$http
-      .get(url, {responseType: 'json'})
-      .toPromise();
+    let options;
+    options = {responseType: 'json'};
+    let response;
+    if (url.endsWith('.wmc')) {
+      options = {responseType: 'text'};
+      response = await this.$http.get(url, options).toPromise();
+      response = this.parseMickaWmcInfo(response);
+    } else {
+      response = await this.$http.get(url, options).toPromise();
+    }
     return response.data || response;
   }
-
+  parseMickaWmcInfo(response): any {
+    let res: any = xml2Json.xml2js(response, {compact: true});
+    const layersInfo = res.ViewContext.LayerList.Layer;
+    res = res.ViewContext.General;
+    const infoDetails: any = {
+      title: res.Title?._text,
+      abstract: res.Abstract?._text,
+      srs: res.BoundingBox._attributes?.SRS,
+      extent: [
+        parseFloat(res.BoundingBox?._attributes['maxx']),
+        parseFloat(res.BoundingBox?._attributes['maxy']),
+        parseFloat(res.BoundingBox?._attributes['minx']),
+        parseFloat(res.BoundingBox?._attributes['miny']),
+      ],
+      contactAddress: {
+        address: res.ContactInformation.ContactAddress.Address?._text,
+        city: res.ContactInformation.ContactAddress.City?._text,
+        country: res.ContactInformation.ContactAddress.Country?._text,
+        postalCode: res.ContactInformation.ContactAddress.PostCode?._text,
+        stateOrProvince:
+          res.ContactInformation.ContactAddress.StateOrProvince?._text,
+      },
+      contactPersonPrimary: {
+        organization:
+          res.ContactInformation.ContactPersonPrimary.ContactOrganization
+            ?._text,
+        person: res.ContactInformation.ContactPersonPrimary.ContactPerson._text,
+        phone: res.ContactInformation.ContactVoiceTelephone?._text,
+        email: res.ContactInformation.ContactElectronicMailAddress?._text,
+      },
+      layers: layersInfo.map((lyr) => {
+        return {
+          title: lyr.Title._text,
+        };
+      }),
+    };
+    Array.isArray(res.KeywordList.Keyword)
+      ? (infoDetails.keywords = res.KeywordList.Keyword?.map((kw) => kw._text))
+      : (infoDetails.keywords = res.KeywordList.Keyword._text);
+    return infoDetails;
+  }
   transformExtent(pairs: Array<number>): Array<number> {
     if (!pairs) {
       return;
@@ -364,7 +411,9 @@ export class HsCompositionsParserService {
         );
         break;
       case 'HSLayers.Layer.WMTS':
-        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
+        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(
+          lyr_def
+        );
         break;
       case 'ArcGISRest':
         resultLayer = this.HsCompositionsLayerParserService.createArcGISLayer(

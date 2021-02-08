@@ -1,10 +1,10 @@
-import {EMPTY, Observable} from 'rxjs';
 import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
@@ -43,7 +43,7 @@ export class HsCompositionsStatusManagerMickaJointService {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
       }),
       catchError((e) => {
-        return EMPTY;
+        return of(e);
       })
     );
     return Observable;
@@ -54,15 +54,12 @@ export class HsCompositionsStatusManagerMickaJointService {
       return;
     }
     const compUrls = this.getCompositionUrls(compLinks);
-    const info: any = {};
-    if (Array.isArray(compUrls)) {
-      for (const url of compUrls) {
-        info.text = await this.HsCompositionsParserService.loadInfo(url);
-      }
-    } else {
-      info.text = await this.HsCompositionsParserService.loadInfo(compUrls);
-    }
-    info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
+    let info: any = {};
+    let url = '';
+    Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
+    info = await this.HsCompositionsParserService.loadInfo(url);
+    //TODO: find out if this is even available
+    // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
     return info;
   }
 
