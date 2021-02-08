@@ -55,10 +55,13 @@
                 <br>
                 </div>
                 <div *ngIf="data.info.metadata">
+                    <div class="row">
+                         <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translate}}</b></div>
+                    </div>
                      <div *ngFor="let metadata of data.info.metadata | keyvalue">
                          <div class="row" *ngIf="metadata.value">
-                            <div class="col-md-4"><b>{{HsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
-                            <div class="col-md-8">{{metadata.value}}</div>
+                            <div class="col-md-3"><b>{{HsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
+                            <div class="col-md-9">{{metadata.value}}</div>
                          </div>
                      </div>
                 </div>

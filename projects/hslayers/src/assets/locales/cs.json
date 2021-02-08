@@ -199,7 +199,8 @@
         "csw_url": "CSW URL",
         "identifier": "Identifikátor",
         "record_url": "Zaznamenejte URL"
-      }
+      },
+      "metadataAboutMetadata": "Metadata o metadatech"
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Spojit kompozice",
