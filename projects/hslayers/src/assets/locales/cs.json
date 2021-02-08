@@ -193,7 +193,13 @@
       "doYouWantToDeleteMap": "Chcete smazat tuto mapu?"
     },
     "dialogInfo": {
-      "details": "detaily"
+      "details": "detaily",
+      "metadata": {
+        "comparison_url": "Srovnávací URL",
+        "csw_url": "CSW URL",
+        "identifier": "Identifikátor",
+        "record_url": "Zaznamenejte URL"
+      }
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Spojit kompozice",
