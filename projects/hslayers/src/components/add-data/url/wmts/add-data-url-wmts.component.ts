@@ -30,7 +30,6 @@ export class HsAddDataWmtsComponent {
     public HsLanguageService: HsLanguageService,
     public HsAddDataUrlWmtsService: HsAddDataUrlWmtsService
   ) {
-
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription = this.HsEventBusService.owsConnecting.subscribe(
       ({type, uri, layer}) => {
@@ -53,7 +52,6 @@ export class HsAddDataWmtsComponent {
       this.HsAddDataUrlWmtsService.url
     );
     this.HsAddDataUrlWmtsService.showDetails = true;
-
   };
 
   selectAllLayers(layers: any[]): void {
@@ -86,7 +84,7 @@ export class HsAddDataWmtsComponent {
 
   addLayers(checkedOnly: boolean): void {
     this.HsAddDataUrlWmtsService.addLayers(checkedOnly);
-    //FIX ME: to implement
+    //FIXME: to implement
     // this.zoomToLayers();
   }
 }

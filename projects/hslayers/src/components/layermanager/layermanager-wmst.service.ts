@@ -1,9 +1,12 @@
 import moment from 'moment';
+import {Injectable} from '@angular/core';
+
+import {Layer} from 'ol/layer';
+import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
 import {getDimensions} from '../../common/layer-extensions';
 
 @Injectable({
@@ -158,6 +161,7 @@ export class HsLayerManagerWmstService {
       return false;
     }
     if (
+      //TODO: 'dimensions_time' is deprecated
       (layer.get('dimensions_time') &&
         Array.isArray(layer.get('dimensions_time').timeInterval)) ||
       (layer.get('dimensions')?.time &&
@@ -213,16 +217,14 @@ export class HsLayerManagerWmstService {
    * @param {number} dateIncrement - Value days, months or years by which to increment start time to reach current selected time in the range control
    */
   setLayerTime(currentLayer: HsLayerDescriptor, dateIncrement): void {
-    if (currentLayer == undefined || currentLayer.layer == undefined) {
+    if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    const dimensions_time =
-      currentLayer.layer.get('dimensions_time') ||
-      currentLayer.layer.dimensions_time;
-    if (dimensions_time == undefined) {
+    const timeDef = currentLayer.layer.get('dimensions').time;
+    if (timeDef === undefined || timeDef.timeInterval === undefined) {
       return;
     }
-    let d: moment.Moment = moment.utc(dimensions_time.timeInterval[0]);
+    let d: moment.Moment = moment.utc(timeDef.timeInterval[0]);
     switch ((currentLayer as any).time_unit) {
       case 'FullYear':
         d.set({year: dateIncrement});
@@ -274,6 +276,15 @@ export class HsLayerManagerWmstService {
       this.setLayerTimeSliderIntervals(new_layer, dimensions_time);
       this.setLayerTime(new_layer, 0);
     }
+  }
+
+  getAvailableTimes(getCapabilitiesResponse, format: 'WMS' | 'WMTS') {
+    console.log('src', getCapabilitiesResponse);
+    const parser =
+      format === 'WMS' ? new WMSCapabilities() : new WMTSCapabilities();
+    const caps = parser.read(getCapabilitiesResponse);
+    console.log('caps', caps);
+    return [];
   }
 }
 
