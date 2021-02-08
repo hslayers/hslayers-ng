@@ -441,11 +441,11 @@ export function getShowInLayerManager(layer: Layer): boolean {
   return layer.get(SHOWINLAYERMANAGER);
 }
 
-export function setThumbnail(layer: Layer, thumbnail: any): void {
+export function setThumbnail(layer: Layer, thumbnail: string): void {
   layer.set(THUMBNAIL, thumbnail);
 }
 
-export function getThumbnail(layer: Layer): any {
+export function getThumbnail(layer: Layer): string {
   return layer.get(THUMBNAIL);
 }
 

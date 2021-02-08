@@ -21,7 +21,7 @@
                 style="padding-right: 2px; padding-left: 2px;">
                 <a  [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}"
                     title="{{getTitle(box)}}" (click)="activateTheme(box)">
-                    <img src="{{box.get('img')}}" alt="{{getTitle(box)}}">
+                    <img src="{{getThumbnail(box)}}" alt="{{getTitle(box)}}">
                 </a>
             </div>
         </div>
