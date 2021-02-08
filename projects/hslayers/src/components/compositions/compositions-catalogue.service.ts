@@ -92,7 +92,9 @@ export class HsCompositionsCatalogueService {
             return;
           }
           if (this.filterByExtent) {
-            this.loadFilteredCompositions();
+            this.zone.run(() => {
+              this.loadFilteredCompositions();
+            });
           }
         },
         400,
