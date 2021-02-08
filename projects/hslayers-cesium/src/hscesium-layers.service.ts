@@ -360,8 +360,6 @@ export class HsCesiumLayersService {
           this.HsMapService.visibleLayersInUrl
         ) || lyr.getVisible()
       );
-      lyr.set('manuallyAdded', false);
-
       if (this.HsUtilsService.instOf(lyr, ImageLayer)) {
         if (
           this.HsUtilsService.instOf((<ImageLayer>lyr).getSource(), ImageWMS)
