@@ -33,6 +33,7 @@ import {
   getCluster,
   getDeclutter,
   getExclusive,
+  getLegends,
   getPath,
   getQueryCapabilities,
   getRemovable,
@@ -209,9 +210,7 @@ export class HsLayerManagerService {
 
     if (getBase(layer) != true) {
       this.populateFolders(layer);
-      if (layer.get('legendImage')) {
-        new_layer.legends = layer.get('legendImage');
-      }
+      new_layer.legends = getLegends(layer);
       this.data.layers.push(new_layer);
       if (getQueryCapabilities(layer) != false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {

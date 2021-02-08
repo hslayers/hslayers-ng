@@ -41,6 +41,7 @@ const REMOVABLE = 'removable';
 const SHOWINLAYERMANAGER = 'showInLayerManager';
 const THUMBNAIL = 'thumbnail';
 const VIRTUALATTRIBUTES = 'virtualAttributes';
+const LEGENDS = 'legends';
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -308,6 +309,23 @@ export function getLaymanLayerDescriptor(
   layer: Layer
 ): HsLaymanLayerDescriptor {
   return layer.get(LAYMANLAYERDESCRIPTOR);
+}
+
+export function setLegends(layer: Layer, path: string | string[]): void {
+  layer.set(LEGENDS, path);
+}
+
+export function getLegends(layer: Layer): string | string[] {
+  if (
+    layer.get(LEGENDS) == undefined &&
+    layer.get('legendImage') !== undefined
+  ) {
+    console.warn(
+      '"legendImage" layer property is deprecated in favor of "legends"'
+    );
+    return layer.get('legendImage');
+  }
+  return layer.get(LEGENDS);
 }
 
 export function setMaxResolutionDenominator(

@@ -34,7 +34,7 @@ export class HsLegendComponent {
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
-      layer.on('change:legendImage', (e) => {
+      layer.on('change:legends', (e) => {
         const oldDescriptor = this.findLayerDescriptor(e.target);
         this.layerDescriptors[
           this.layerDescriptors.indexOf(oldDescriptor)

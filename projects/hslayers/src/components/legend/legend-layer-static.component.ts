@@ -4,6 +4,7 @@ import {
   SafeHtml,
   SafeResourceUrl,
 } from '@angular/platform-browser';
+import {getLegends} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-legend-layer-static',
@@ -19,7 +20,7 @@ export class HsLegendLayerStaticComponent {
   constructor(private sanitizer: DomSanitizer) {}
 
   fillContent(): void {
-    let legendImage = this.layer.lyr.get('legendImage');
+    let legendImage = getLegends(this.layer.lyr);
     if (Array.isArray(legendImage)) {
       legendImage = legendImage[0];
     }
@@ -38,13 +39,12 @@ export class HsLegendLayerStaticComponent {
   }
 
   ngOnInit(): void {
-    if (this.layer.lyr.get('legendImage')) {
+    if (getLegends(this.layer.lyr)) {
       this.fillContent();
     }
     this.layer.lyr.on('change', (e) => {
       //TODO: Maybe rewrite this to something more fancy like Observable
-      debugger;
-      if (this.layer.lyr.get('legendImage') != this.lastLegendImage) {
+      if (getLegends(this.layer.lyr) != this.lastLegendImage) {
         this.fillContent();
       }
     });
