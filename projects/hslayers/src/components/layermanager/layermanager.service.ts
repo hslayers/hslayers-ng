@@ -923,15 +923,16 @@ export class HsLayerManagerService {
   private toggleEditLayerByUrlParam() {
     const layerTitle = this.HsShareUrlService.getParamValue('layerSelected');
     if (layerTitle != undefined) {
-      const layerFound = this.data.layers.find(
-        (layer) => layer.title == layerTitle
-      );
-      if (layerFound !== undefined) {
-        setTimeout(() => {
+      setTimeout(() => {
+        const layerFound = this.data.layers.find(
+          (layer) => layer.title == layerTitle
+        );
+        if (layerFound !== undefined) {
           this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
-        }, 500);
-        this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
-      }
+
+          this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
+        }
+      }, 500);
     }
   }
 
