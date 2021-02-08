@@ -32,13 +32,17 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsLayerManagerService {
   /**
-   * @ngdoc property
-   * @name HsLayermanagerService#data
-   * @public
-   * @type {object}
-   * @description Containg object for all properties which are shared with controllers.
+   * Containg object for all properties which are shared with controllers.
    */
-  data: any = {
+  data: {
+    folders: any;
+    layers: HsLayerDescriptor[];
+    baselayers: any[];
+    terrainlayers: any[];
+    baselayersVisible: boolean;
+    baselayer?: string;
+    box_layers?: any[];
+  } = {
     /**
      * @ngdoc property
      * @name HsLayermanagerService.data#folders
@@ -66,7 +70,7 @@ export class HsLayerManagerService {
      * @name HsLayermanagerService.data#layers
      * @public
      * @type {Array}
-     * @description List of all layers (overlay layers, baselayers are excluded) loaded in layer manager.
+     * @description List of all layers (baselayers are excluded) loaded in layer manager.
      */
     layers: [],
     /**
@@ -929,8 +933,7 @@ export class HsLayerManagerService {
         );
         if (layerFound !== undefined) {
           this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
-
-          this.HsEventBusService.layerSelectedFromUrl.next(layerFound);
+          this.HsEventBusService.layerSelectedFromUrl.next(layerFound.layer);
         }
       }, 500);
     }
