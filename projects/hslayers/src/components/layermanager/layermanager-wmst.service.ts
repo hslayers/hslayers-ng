@@ -1,6 +1,6 @@
 import moment from 'moment';
-import {Collection} from 'ol';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
@@ -17,10 +17,7 @@ export class HsLayerManagerWmstService {
 
   /**
    * Get date format of time data based on time unit property
-   *
-   * @function getDateFormatForTimeSlider
-   * @memberOf HsLayermanagerWmstService
-   * @param {string} time_unit
+   * @param time_unit
    */
   getDateFormatForTimeSlider(time_unit: string): string {
     switch (time_unit) {
@@ -35,11 +32,8 @@ export class HsLayerManagerWmstService {
 
   /**
    * Set time intervals for WMS-T (WMS with time support)
-   *
-   * @function setLayerTimeSliderIntervals
-   * @memberOf HsLayermanagerWmstService
-   * @param {object} new_layer Layer to set time intervals
-   * @param {object} metadata Time dimension metadata for layer
+   * @param {object} new_layer - Layer to set time intervals
+   * @param {object} metadata - Time dimension metadata for layer
    */
   setLayerTimeSliderIntervals(new_layer, metadata): void {
     let d;
@@ -69,10 +63,8 @@ export class HsLayerManagerWmstService {
   }
 
   /**
-   * @function parseInterval
-   * @memberOf HsLayermanagerWmstService
-   * @param {string} interval Interval time string
-   * @description Parse interval string to get interval in Date format
+   * Parse interval string to get interval in Date format
+   * @param interval - Interval time string
    */
   parseInterval(interval: string): number {
     let dateComponent;
@@ -153,32 +145,38 @@ export class HsLayerManagerWmstService {
   }
 
   /**
-   * @function layerIsWmsT
-   * @memberOf HsLayermanagerWmstService
-   * @param {Collection} layer_container Container object of layer (layer_container.layer expected)
-   * @returns {boolean} True for WMS layer with time support
    * Test if WMS layer have time support (WMS-T). WMS layer has to have dimensions_time or dimension property, function converts dimension to dimensions_time
+   * @param layer_container - Container object of layer (layer_container.layer expected)
+   * @returns True for WMS layer with time support
    */
-  layerIsWmsT(layer_container: Collection): boolean {
-    if (layer_container == undefined || layer_container === null) {
+  layerIsWmsT(layer_container: HsLayerDescriptor): boolean {
+    if (!layer_container) {
       return false;
     }
     const layer = layer_container.layer;
-    if (layer == undefined) {
+    if (!layer) {
       return false;
     }
     if (
-      layer.get('dimensions_time') &&
-      Array.isArray(layer.get('dimensions_time').timeInterval)
+      (layer.get('dimensions_time') &&
+        Array.isArray(layer.get('dimensions_time').timeInterval)) ||
+      (layer.get('dimensions')?.time &&
+        typeof layer.get('dimensions')?.time === 'object')
     ) {
+      this.parseDimensionParam(layer);
       return true;
     }
+    return false;
+  }
+
+  //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up
+  parseDimensionParam(layer: Layer): void {
     const dimensions = getDimensions(layer);
     if (dimensions && dimensions['time']) {
-      const metadata: any = {};
-      let value;
-      if (Array.isArray(dimensions['time'].values)) {
-        value = dimensions['time'].values[0];
+      const timedata: any = {};
+      let value = dimensions['time'].values || dimensions['time'].value;
+      if (Array.isArray(value)) {
+        value = value[0];
       }
       if (
         typeof value === 'string' ||
@@ -195,31 +193,26 @@ export class HsLayerManagerWmstService {
           });
 
           if (interval.length == 3) {
-            metadata.timeStep = this.parseInterval(interval[2]);
+            timedata.timeStep = this.parseInterval(interval[2]);
             interval.pop();
           }
           if (interval.length == 2) {
-            metadata.timeInterval = interval;
+            timedata.timeInterval = interval;
           }
         }
-        Object.assign(layer, {
-          dimensions_time: metadata,
-        });
+        layer.set('dimensions_time', timedata);
       }
 
-      return Object.keys(metadata).length > 0;
+      //return Object.keys(timedata).length > 0;
     }
-    return false;
   }
 
   /**
-   * @function setLayerTime
-   * @memberOf HsLayermanagerWmstService
-   * @param {Layer} currentLayer Selected layer
-   * @param {number} dateIncrement Value days, months or years by which to increment start time to reach current selected time in the range control
-   * @description Update layer time parameter
+   * Update layer time parameter
+   * @param currentLayer - Selected layer
+   * @param {number} dateIncrement - Value days, months or years by which to increment start time to reach current selected time in the range control
    */
-  setLayerTime(currentLayer: Layer, dateIncrement): void {
+  setLayerTime(currentLayer: HsLayerDescriptor, dateIncrement): void {
     if (currentLayer == undefined || currentLayer.layer == undefined) {
       return;
     }
@@ -230,7 +223,7 @@ export class HsLayerManagerWmstService {
       return;
     }
     let d: moment.Moment = moment.utc(dimensions_time.timeInterval[0]);
-    switch (currentLayer.time_unit) {
+    switch ((currentLayer as any).time_unit) {
       case 'FullYear':
         d.set({year: dateIncrement});
         break;
@@ -257,7 +250,7 @@ export class HsLayerManagerWmstService {
     });
   }
 
-  setupTimeLayerIfNeeded(new_layer: Layer): void {
+  setupTimeLayerIfNeeded(new_layer: HsLayerDescriptor): void {
     if (this.layerIsWmsT(new_layer)) {
       const dimensions_time =
         new_layer.layer.get('dimensions_time') ||

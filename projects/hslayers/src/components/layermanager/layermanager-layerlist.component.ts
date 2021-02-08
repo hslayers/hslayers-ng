@@ -4,6 +4,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerManagerService} from './layermanager.service';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
@@ -30,6 +31,7 @@ export class HsLayerListComponent implements OnInit {
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,
+    public hsLayerManagerWmstService: HsLayerManagerWmstService,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
@@ -42,6 +44,7 @@ export class HsLayerListComponent implements OnInit {
       this.updateLayers();
     });
   }
+
   /**
    * Test if selected layer is loaded in map
    * @param layer - Selected layer
@@ -103,7 +106,7 @@ export class HsLayerListComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.filtered_layers = this.filterLayers();
   }
 
@@ -143,6 +146,10 @@ export class HsLayerListComponent implements OnInit {
    */
   isLayerQueryable(layer_container): boolean {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
+  }
+
+  isLayerWmsT(layer): boolean {
+    return this.hsLayerManagerWmstService.layerIsWmsT(layer);
   }
 
   /**

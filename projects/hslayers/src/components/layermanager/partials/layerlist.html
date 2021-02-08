@@ -33,7 +33,7 @@
                         (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="p-0" [hidden]="!layerValid(layer.layer)">
-                    <i class="icon-warning-sign alert-danger bg-white    hs-lm-warning-error"
+                    <i class="icon-warning-sign alert-danger bg-white hs-lm-warning-error"
                         [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translate" data-toggle="tooltip"
                         data-container="body" data-placement="auto" (click)="$event.stopPropagation()"></i>
                 </div>
@@ -54,7 +54,7 @@
                         data-placement="auto"></span>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex" *ngIf="isLayerWmsT(layer)">
                 <hs-layermanager-time-editor></hs-layermanager-time-editor>
             </div>
         </li>

@@ -246,10 +246,6 @@ export class HsLayerManagerComponent implements OnInit {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 
-  setLayerTime(layer: Layer, metadata) {
-    return this.HsLayermanagerWmstService.setLayerTime(layer, metadata);
-  }
-
   /**
    * @param m
    */
