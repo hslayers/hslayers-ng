@@ -37,6 +37,9 @@ export class HsEventBusService {
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<any> = new Subject();
+  /**
+   * TODO: UNUSED
+   */
   layerTimeChanges: Subject<any> = new Subject();
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
