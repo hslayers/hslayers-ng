@@ -127,7 +127,6 @@ export class HsCompositionsMickaService {
         )
       ) {
         attributes.geometry = polygonFromExtent(extent);
-        attributes.is_hs_composition_extent = true;
         const newFeature = new Feature(attributes);
         record.feature = newFeature;
         extentLayer.getSource().addFeatures([newFeature]);
