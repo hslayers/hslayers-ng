@@ -1,3 +1,5 @@
+import * as xml2Json from 'xml-js';
+
 /**
  * @param HsCompositionsStatusManagerService
  * @param HsCompositionsMickaService
@@ -42,15 +44,54 @@ export default function (
     },
     getInfo(composition) {
       return new Promise((resolve, reject) => {
-        const url = composition.link;
+        const compLinks = composition.link || composition.links;
+        if (compLinks === undefined) {
+          return;
+        }
+        let url;
+        const compUrls = this.getCompositionUrls(compLinks);
+        if (Array.isArray(compUrls)) {
+          url = compUrls[0];
+        } else {
+          url = compUrls;
+        }
+
         HsCompositionsParserService.loadInfo(url, (info) => {
-          info.thumbnail = composition.thumbnail;
-          resolve(info);
+          // info.thumbnail = composition.thumbnail;
+          const infoDetails = {};
+
+          if (url.endsWith('wmc')) {
+            const caps = xml2Json.xml2js(info, {compact: true});
+            infoDetails.abstract = caps.ViewContext.General.Abstract._text;
+            infoDetails.url = url;
+            infoDetails.title = caps.ViewContext.General.Title._text;
+            infoDetails.layers = caps.ViewContext.LayerList.Layer;
+            if (infoDetails.layers) {
+              infoDetails.layers.forEach((layer) => {
+                layer.title = layer.Title._text;
+              });
+            }
+            console.log(caps);
+          }
+
+          resolve(infoDetails);
         });
       });
     },
     delete(endpoint, composition) {
       HsCompositionsStatusManagerService(endpoint, composition);
+    },
+
+    getCompositionUrls(compData) {
+      if (typeof compData == 'string') {
+        return compData;
+      }
+      if (typeof compData == 'object' && compData.url !== undefined) {
+        return compData.url;
+      }
+      return compData.map((link) =>
+        typeof link == 'object' && link.url !== undefined ? link.url : link
+      );
     },
   });
   return me;

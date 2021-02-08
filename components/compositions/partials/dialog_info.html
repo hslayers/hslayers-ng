@@ -12,7 +12,7 @@
                     <div class="col-md-3"><b translate>Abstract</b></div>
                     <div class="col-md-9">{{info.abstract}}</div>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="info.thumbnail">
                     <div class="col-md-3"><b translate>Thumbnail</b></div>
                     <div class="col-md-9"><img src="{{info.thumbnail}}"></div>
                 </div>
@@ -30,6 +30,7 @@
                         <div class="col-md-9">{{layer.title}}</div>
                     </div>
                     <div class="row" ng-if="!$first">
+                        <div class="col-md-3"><b translate></b></div>
                         <div class="col-md-offset-3 col-md-9">{{layer.title}}</div>
                     </div>
                 </div>
