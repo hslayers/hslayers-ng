@@ -22,8 +22,6 @@ export class HsShareUrlService {
   shareId = null;
   current_url = '';
   permalinkRequestUrl = '';
-  //TODO: remove keeping track of added layers, because permalink should also be generated on other cases like remove layer, visibility change etc.
-  added_layers = [];
   params = {};
   customParams = {};
   updateDebouncer = {};
@@ -54,21 +52,19 @@ export class HsShareUrlService {
   update(): void {
     const view = this.HsMapService.map.getView();
     this.id = this.HsUtilsService.generateUuid();
-    const visible_layers = [];
-    const added_layers = [];
-    this.HsMapService.map.getLayers().forEach((lyr) => {
-      const external = getShowInLayerManager(lyr);
-      if (external !== undefined && external !== null && external == false) {
-        return;
-      }
-      if (lyr.getVisible()) {
-        visible_layers.push(getTitle(lyr));
-      }
-      if (lyr.get('manuallyAdded')) {
-        added_layers.push(lyr);
-      }
-    });
-    this.added_layers = this.HsSaveMapService.layers2json(added_layers);
+
+    const externalLayers = this.HsMapService.map
+      .getLayers()
+      .filter((lyr) => !(getShowInLayerManager(lyr) === false));
+    const visibleLayers = externalLayers
+      .filter((lyr) => lyr.getVisible())
+      .map((lyr) => getTitle(lyr));
+
+    const addedLayers = externalLayers.filter(
+      (lyr) => !this.HsConfig.default_layers?.includes(lyr)
+    );
+    //This might become useful, but url size is limited, so we are not using it
+    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
     if (this.HsLayoutService.mainpanel) {
       if (this.HsLayoutService.mainpanel == 'permalink') {
@@ -83,7 +79,7 @@ export class HsShareUrlService {
     if (this.HsLanguageService.language) {
       this.push('lang', this.HsLanguageService.language);
     }
-    this.push('visible_layers', visible_layers.join(';'));
+    this.push('visible_layers', visibleLayers.join(';'));
     if (this.HsCore.puremapApp) {
       this.push('puremap', 'true');
     }

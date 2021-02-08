@@ -587,7 +587,6 @@ export class HsMapService {
     if (visibilityOverrides) {
       lyr.setVisible(this.layerTitleInArray(lyr, visibilityOverrides));
     }
-    lyr.set('manuallyAdded', false);
     const source = lyr.getSource();
     if (this.HsUtilsService.instOf(source, Vector)) {
       this.getVectorType(lyr);
