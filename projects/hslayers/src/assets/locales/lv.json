@@ -193,7 +193,13 @@
       "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
     },
     "dialogInfo": {
-      "details": "detaļas"
+      "details": "detaļas",
+      "metadata": {
+        "comparison_url": "Salīdzinājuma saite",
+        "csw_url": "CSW saite",
+        "identifier": "Identifikators",
+        "record_url": "Ieraksta saite"
+      }
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Apvienot kompozīcijas",

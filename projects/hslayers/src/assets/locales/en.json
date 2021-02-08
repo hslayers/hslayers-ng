@@ -193,7 +193,13 @@
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },
     "dialogInfo": {
-      "details": "details"
+      "details": "details",
+      "metadata": {
+        "comparison_url": "Comparison URL",
+        "csw_url": "CSW URL",
+        "identifier": "Identifier",
+        "record_url": "Record URL"
+      }
     },
     "dialogoverwriteConfirm": {
       "mergeCompositions": "Merge compositions",

@@ -54,7 +54,15 @@
                     </div>
                 <br>
                 </div>
-                <div class="row">
+                <div *ngIf="data.info.metadata">
+                     <div *ngFor="let metadata of data.info.metadata | keyvalue">
+                         <div class="row" *ngIf="metadata.value">
+                            <div class="col-md-4"><b>{{HsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
+                            <div class="col-md-8">{{metadata.value}}</div>
+                         </div>
+                     </div>
+                </div>
+                <div class="row" *ngIf="data.info.contactAddress || data.info.contactPersonPrimary">
                     <div class="col"><b>{{'COMMON.contactInformation' | translate}}</b></div>
                 </div>
                  <div *ngIf="data.info.contactAddress">
