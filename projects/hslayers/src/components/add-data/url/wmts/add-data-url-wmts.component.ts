@@ -80,7 +80,7 @@ export class HsAddDataWmtsComponent {
 
   addLayers(checkedOnly: boolean): void {
     this.HsAddDataUrlWmtsService.addLayers(checkedOnly);
-    //FIX ME: to implement
+    //FIXME: to implement
     // this.zoomToLayers();
   }
 }
