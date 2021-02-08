@@ -297,7 +297,7 @@ export default function (
       }
       //json.index = layer.map.getLayerIndex(layer);
       json.path = layer.get('path');
-
+      json.base = layer.get('base');
       if (layer.getExtent()) {
         const ex = layer.getExtent();
         json.maxExtent = {
