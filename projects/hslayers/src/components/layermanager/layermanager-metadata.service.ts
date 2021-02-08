@@ -11,6 +11,7 @@ import {
   getMetadata,
   setAttribution,
   setCacheCapabilities,
+  setLegends,
   setMetadata,
 } from '../../common/layer-extensions';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -154,7 +155,7 @@ export class HsLayerManagerMetadataService {
     const layerObject = []; //array of layer objects representing added layer
     if (layer_name.includes(',')) {
       const layers = [];
-      const legends = [];
+      const legends: string[] = [];
 
       layer_name = layer_name.split(',');
       //loop over layers from layer.LAYERS
@@ -190,7 +191,7 @@ export class HsLayerManagerMetadataService {
       }
 
       this.setOrUpdate(layer, 'Layer', layers);
-      layer.set('legendImage', legends);
+      setLegends(layer, legends);
       this.fillMetadataUrlsIfNotExist(layer, caps);
     } else {
       layerObject[0] = this.identifyLayerObject(
@@ -206,7 +207,7 @@ export class HsLayerManagerMetadataService {
         (style) => style.LegendURL != undefined
       );
       if (styleWithLegend) {
-        layer.set('legendImage', styleWithLegend.LegendURL[0].OnlineResource);
+        setLegends(layer, styleWithLegend.LegendURL[0].OnlineResource);
       }
 
       if (layerObject[0].Layer && fromSublayerParam) {

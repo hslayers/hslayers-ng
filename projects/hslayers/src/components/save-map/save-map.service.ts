@@ -25,6 +25,7 @@ import {
   getBase,
   getDefinition,
   getDimensions,
+  getLegends,
   getMetadata,
   getName,
   getPath,
@@ -384,9 +385,9 @@ export class HsSaveMapService {
       ) {
         json.className = 'HSLayers.Layer.WMS';
         json.singleTile = this.HsUtilsService.instOf(src, ImageWMS);
-        if (layer.get('legendImage')) {
+        if (getLegends(layer)) {
           json.legends = [];
-          const legends = layer.get('legendImage');
+          const legends = getLegends(layer);
           if (Array.isArray(legends)) {
             json.legends = legends.map((l) => encodeURIComponent(l));
           }

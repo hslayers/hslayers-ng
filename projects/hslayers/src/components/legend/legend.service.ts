@@ -12,6 +12,7 @@ import {HsUtilsService} from '../utils/utils.service';
 import {
   getBase,
   getEnableProxy,
+  getLegends,
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
@@ -302,8 +303,8 @@ export class HsLegendService {
     if (source.getParams().VERSION) {
       version = source.getParams().VERSION;
     }
-    if (layer.get('legendImage')) {
-      const legendImage = layer.get('legendImage');
+    const legendImage = getLegends(layer);
+    if (legendImage !== undefined) {
       if (typeof legendImage == 'string') {
         return legendImage;
       }
