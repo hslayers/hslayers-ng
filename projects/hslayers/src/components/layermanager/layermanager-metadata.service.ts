@@ -202,7 +202,7 @@ export class HsLayerManagerMetadataService {
         layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
         this.parseAttribution(layer, layerObject[0]);
       }
-      const styleWithLegend = layerObject[0].Style.find(
+      const styleWithLegend = layerObject[0].Style?.find(
         (style) => style.LegendURL != undefined
       );
       if (styleWithLegend) {
