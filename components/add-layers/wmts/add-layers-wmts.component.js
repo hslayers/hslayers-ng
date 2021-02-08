@@ -168,7 +168,7 @@ export default {
      * Returns prefered tile format 
      *
      * @memberof hs.addLayersWMTS
-     * @function getPreferedFormat
+     * @function getPreferredFormat
      * @param {object} formats Set of avaliable formats for layer being added
      */
     $scope.getPreferredFormat = function (formats) {
@@ -181,7 +181,7 @@ export default {
      * otherwise returns 3857 as trial(some services support 3857 matrix set even though its not clear from capabilities )
      *
      * @memberof hs.addLayersWMTS
-     * @function getPreferedMatrixSet
+     * @function getPreferredMatrixSet
      * @param {object} sets Set of avaliable matrixSets
      */
     $scope.getPreferredMatrixSet = function (sets) {
@@ -243,8 +243,8 @@ export default {
         // Get WMTS Capabilities and create WMTS source base on it
         const options = optionsFromCapabilities($scope.caps, {
           layer: layer.Identifier,
-          matrixSet: $scope.getPreferedMatrixSet(layer.TileMatrixSetLink),
-          format: $scope.getPreferedFormat(layer.Format),
+          matrixSet: $scope.getPreferredMatrixSet(layer.TileMatrixSetLink),
+          format: $scope.getPreferredFormat(layer.Format),
         });
         // WMTS source for raster tiles layer
         const wmtsSource = new WMTS(options);
