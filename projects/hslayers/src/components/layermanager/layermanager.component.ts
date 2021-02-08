@@ -19,6 +19,7 @@ import {Layer} from 'ol/layer';
 import {
   getActive,
   getAttribution,
+  getThumbnail,
   getTitle,
 } from '../../common/layer-extensions';
 
@@ -85,6 +86,7 @@ export class HsLayerManagerComponent implements OnInit {
   ];
   getActive = getActive;
   getTitle = getTitle;
+  getThumbnail = getThumbnail;
   constructor(
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
@@ -215,19 +217,12 @@ export class HsLayerManagerComponent implements OnInit {
   }
 
   /**
-   * @function hasBoxLayers
-   * @memberOf hs.layermanager.controller
-   * @description Test if box layers are loaded
+   * Test if box layers are loaded
    */
   hasBoxImages(): boolean {
-    if (this.data.box_layers != undefined) {
-      for (const layer of this.data.box_layers) {
-        if (layer.get('img')) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return this.data.box_layers?.some(
+      (layer) => getThumbnail(layer) !== undefined
+    );
   }
 
   /**
