@@ -4,7 +4,6 @@ export interface HsLayerDescriptor {
   layer: Layer;
   active?: boolean;
   grayed?: boolean;
-  hsFilters?: any;
   position?: number;
   settings?: boolean;
   sublayers?: boolean;

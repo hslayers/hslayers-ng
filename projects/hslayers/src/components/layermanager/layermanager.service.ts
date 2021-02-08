@@ -192,7 +192,6 @@ export class HsLayerManagerService {
       layer,
       grayed: !this.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
-      hsFilters: layer.get('hsFilters'),
       uid: this.HsUtilsService.generateUuid(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
