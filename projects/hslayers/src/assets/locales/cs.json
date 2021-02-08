@@ -121,7 +121,7 @@
     "ignoreAndContinue": "Ignorovat a pokračovat",
     "info": "Další informace",
     "keywords": "Klíčová slova",
-    "layer": "vrstva",
+    "layer": "Vrstva",
     "layers": "Vrstvy",
     "legend": "Legenda",
     "less": "Méně",
@@ -182,7 +182,8 @@
     "west": "Západní",
     "width": "Šířka",
     "yes": "Ano",
-    "zoomTo": "zvětšit na"
+    "zoomTo": "zvětšit na",
+    "contactInformation": "Kontaktní informace"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -524,7 +525,7 @@
       "address": "Adresa",
       "city": "Město",
       "country": "Země",
-      "eMail": "E-mail",
+      "email": "E-mail",
       "organization": "Organizace",
       "overwrite": "přepsat",
       "person": "Osoba",
