@@ -121,7 +121,7 @@
     "ignoreAndContinue": "Ignore and continue",
     "info": "Additional information",
     "keywords": "Keywords",
-    "layer": "layer",
+    "layer": "Layer",
     "layers": "Layers",
     "legend": "Legend",
     "less": "Less",
@@ -182,7 +182,8 @@
     "west": "West",
     "width": "Width",
     "yes": "Yes",
-    "zoomTo": "zoom to"
+    "zoomTo": "zoom to",
+    "contactInformation": "Contact Information"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -524,7 +525,7 @@
       "address": "Address",
       "city": "City",
       "country": "Country",
-      "eMail": "Email",
+      "email": "Email",
       "organization": "Organization",
       "overwrite": "Overwrite",
       "person": "Person",

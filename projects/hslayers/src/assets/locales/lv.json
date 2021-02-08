@@ -121,7 +121,7 @@
     "ignoreAndContinue": "Ignorēt un turpināt",
     "info": "Papildu informācija",
     "keywords": "Atslēgvārdi",
-    "layer": "slānis",
+    "layer": "Slānis",
     "layers": "Slāņi",
     "legend": "Leģenda",
     "less": "Mazāk",
@@ -182,7 +182,8 @@
     "west": "Rietumi",
     "width": "Platums",
     "yes": "Jā",
-    "zoomTo": "pietuvināt"
+    "zoomTo": "pietuvināt",
+    "contactInformation": "Kontaktinformācija"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -524,7 +525,7 @@
       "address": "Adrese",
       "city": "Pilsēta",
       "country": "Valsts",
-      "eMail": "E-pasts",
+      "email": "E-pasts",
       "organization": "Organizācija",
       "overwrite": "Pārrakstīt",
       "person": "Persona",
