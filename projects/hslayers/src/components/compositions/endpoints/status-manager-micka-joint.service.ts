@@ -2,11 +2,11 @@ import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
+import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -16,7 +16,8 @@ export class HsCompositionsStatusManagerMickaJointService {
     public HsCompositionsMickaService: HsCompositionsMickaService,
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsCompositionsParserService: HsCompositionsParserService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsToastService: HsToastService
   ) {}
   /**
    * @ngdoc method
@@ -43,6 +44,11 @@ export class HsCompositionsStatusManagerMickaJointService {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
       }),
       catchError((e) => {
+        this.HsToastService.createToastPopupMessage(
+          'COMPOSITIONS.errorWhileRequestingCompositions',
+          ds.title + ': ' + e.message,
+          'danger'
+        );
         return of(e);
       })
     );

@@ -1,7 +1,7 @@
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLogService} from '../../../common/log/log.service';
+import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -17,7 +17,7 @@ export class HsCompositionsLaymanService {
     public HsUtilsService: HsUtilsService,
     public HsCompositionsParserService: HsCompositionsParserService,
     public HsEventBusService: HsEventBusService,
-    public HsLogService: HsLogService
+    public HsToastService: HsToastService
   ) {}
 
   loadList(endpoint: HsEndpoint, params): Observable<any> {
@@ -26,12 +26,16 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
       .pipe(
-        timeout(2000),
+        timeout(5000),
         map((response: any) => {
           this.compositionsReceived(endpoint, params, response);
         }),
         catchError((e) => {
-          this.HsLogService.error(e);
+          this.HsToastService.createToastPopupMessage(
+            'COMPOSITIONS.errorWhileRequestingCompositions',
+            endpoint.title + ': ' + e.message,
+            'danger'
+          );
           return of(e);
         })
       );
@@ -40,7 +44,11 @@ export class HsCompositionsLaymanService {
   compositionsReceived(endpoint: HsEndpoint, params, response): void {
     if (!response && response.length == 0) {
       endpoint.compositionsPaging.matched = 0;
-      this.HsLogService.error('No data received');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        endpoint.title + ': ' + 'COMMON.noDataReceived',
+        'warning'
+      );
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -80,15 +88,29 @@ export class HsCompositionsLaymanService {
   async getInfo(composition: any): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
-      this.HsLogService.warn('Compositions name attribute is not defined!');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        endpoint.title +
+          ': ' +
+          'COMPOSITIONS.compostionsNameAttributeIsNotDefined',
+        'warning'
+      );
       return;
     }
     if (endpoint.user == undefined) {
-      this.HsLogService.warn('Endpoint user is not defined!');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        endpoint.title + ': ' + 'COMPOSITIONS.endpointUserIsNotDefined',
+        'warning'
+      );
       return;
     }
     if (endpoint.url == undefined) {
-      this.HsLogService.warn('Endpoint url is not defined!');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        endpoint.title + ': ' + 'COMPOSITIONS.endpointUrlIsNotDefined',
+        'warning'
+      );
       return;
     }
     const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;

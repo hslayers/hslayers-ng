@@ -2,16 +2,16 @@ import Feature from 'ol/Feature';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform, transformExtent} from 'ol/proj';
 
-import {EMPTY, of} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError, finalize, map} from 'rxjs/operators';
-
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
+import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {catchError, map, timeout} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
@@ -21,7 +21,8 @@ export class HsMickaBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public HsToastService: HsToastService
   ) {}
 
   /**
@@ -50,6 +51,7 @@ export class HsMickaBrowserService {
         responseType: 'json',
       })
       .pipe(
+        timeout(5000),
         map((x: any) => {
           x.dataset = dataset;
           x.extentFeatureCreated = extentFeatureCreated;
@@ -57,7 +59,11 @@ export class HsMickaBrowserService {
           return x;
         }),
         catchError((e) => {
-          this.log.error(e);
+          this.HsToastService.createToastPopupMessage(
+            'ADDLAYERS.errorWhileRequestingLayers',
+            dataset.title + ': ' + e.message,
+            'danger'
+          );
           dataset.datasourcePaging.loaded = true;
           return of(e);
         })

@@ -225,17 +225,13 @@ export class HsLayerSynchronizerService {
 
   displaySyncErrorDialog(error: string): void {
     const exception: any = xml2Json.xml2js(error, {compact: true});
-    this.HsToastService.show(
+    this.HsToastService.createToastPopupMessage(
+      this.HsLanguageService.getTranslation(
+        'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing'
+      ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
-      {
-        header: this.HsLanguageService.getTranslation(
-          'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing'
-        ),
-        delay: 3000,
-        autohide: true,
-        classname: 'bg-danger text-light',
-      }
+      'danger'
     );
   }
 

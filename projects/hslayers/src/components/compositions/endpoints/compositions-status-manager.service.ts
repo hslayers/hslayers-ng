@@ -1,6 +1,7 @@
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsStatusManagerService} from '../../save-map/status-manager.service';
+import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -16,7 +17,8 @@ export class HsCompositionsStatusManagerService {
     public HsConfig: HsConfig,
     public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public HsToastService: HsToastService
   ) {}
   /**
    * @ngdoc method
@@ -56,6 +58,11 @@ export class HsCompositionsStatusManagerService {
       timeout(2000),
       map((response: any) => response),
       catchError((e) => {
+        this.HsToastService.createToastPopupMessage(
+          'COMPOSITIONS.errorWhileRequestingCompositions',
+          ds.title + ': ' + e.message,
+          'danger'
+        );
         return of(e);
       })
     );

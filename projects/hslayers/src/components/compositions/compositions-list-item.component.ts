@@ -6,7 +6,7 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsToastService} from '../layout/toast/toast.service';
 
 @Component({
   selector: 'hs-compositions-list-item',
@@ -18,7 +18,7 @@ export class HsCompostionsListItemComponent {
   constructor(
     public HsCompositionsService: HsCompositionsService,
     public HsLayoutService: HsLayoutService,
-    public HsLogService: HsLogService,
+    public HsToastService: HsToastService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsConfig: HsConfig
   ) {}
@@ -57,11 +57,19 @@ export class HsCompostionsListItemComponent {
       await this.HsCompositionsService.shareComposition(record).then(
         async () => {
           const url = await this.HsCompositionsService.getShareUrl();
-          this.shareDialogBootstrap(record, url);
+          if (url !== undefined) {
+            this.shareDialogBootstrap(record, url);
+          } else {
+            throw new Error('COMPOSITIONS.sharingUrlIsNotAvailable');
+          }
         }
       );
     } catch (ex) {
-      this.HsLogService.error(ex);
+      this.HsToastService.createToastPopupMessage(
+        'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
+        ex.message,
+        'danger'
+      );
     }
   }
   /**

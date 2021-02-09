@@ -5,8 +5,9 @@
                 <h4 class="modal-title">
                     {{'SAVECOMPOSITION.dialogResult.savingCompositionStatus' | translate}}
                 </h4>
-                <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
-                        aria-hidden="true"></span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
+              <button type="button" (click)="close()" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="max-height:600px; overflow-y:auto">
                 <div class="alert alert-status" [hidden]="!HsSaveMapManagerService.statusData.status">
