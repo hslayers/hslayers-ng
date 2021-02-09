@@ -183,7 +183,8 @@
     "width": "Šířka",
     "yes": "Ano",
     "zoomTo": "zvětšit na",
-    "contactInformation": "Kontaktní informace"
+    "contactInformation": "Kontaktní informace",
+    "warning": "Varování!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -215,7 +216,6 @@
     },
     "dialogWarning": {
       "outOfBounds": "Rozsah kompozice je mimo rozsah systému EPSG:4326",
-      "title": "Varování",
       "toContinue": "Na základě dané velikosti mapy nebude mapa zobrazovat geometrii nebo rozsah dané kompozice"
     },
     "filterByMap": "Filtrovat na rozsah okna",

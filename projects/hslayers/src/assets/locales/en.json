@@ -75,7 +75,8 @@
     "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    }
+    },
+    "errorWhileRequestingLayers": "Error while requesting layers!"
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -183,7 +184,9 @@
     "width": "Width",
     "yes": "Yes",
     "zoomTo": "zoom to",
-    "contactInformation": "Contact Information"
+    "contactInformation": "Contact Information",
+    "noDataReceived": "No data received!",
+    "warning": "Warning!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -215,7 +218,6 @@
     },
     "dialogWarning": {
       "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
-      "title": "Warning!",
       "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders."
     },
     "filterByMap": "Filter by map extent",
@@ -224,7 +226,13 @@
     "loginToCatalogue": "Login to catalogue",
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
-    "selectThemes": "Select themes"
+    "selectThemes": "Select themes",
+    "sharingUrlIsNotAvailable": "Sharing URL is not available!",
+    "errorWhileRequestingCompositions": "Error while requesting compositions!",
+    "compostionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
+    "endpointUserIsNotDefined": "Endpoint user is not defined!",
+    "endpointUrlIsNotDefined": "Endpoint url is not defined!",
+    "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
