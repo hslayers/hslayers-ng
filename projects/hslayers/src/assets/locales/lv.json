@@ -75,7 +75,8 @@
     "WMSCapabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    }
+    },
+    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus!"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -183,7 +184,9 @@
     "width": "Platums",
     "yes": "Jā",
     "zoomTo": "pietuvināt",
-    "contactInformation": "Kontaktinformācija"
+    "contactInformation": "Kontaktinformācija",
+    "warning": "Brīdinājums!",
+    "noDataReceived": "Dati nav saņemti!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -215,7 +218,6 @@
     },
     "dialogWarning": {
       "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
-      "title": "Brīdinājums!",
       "toContinue": "Norādītā kompozīcijas ģeometrija vai tās apjoms var netikt iekļauts dotajā kartē un tās robežās."
     },
     "filterByMap": "Filtrēt pēc kartes",
@@ -224,7 +226,13 @@
     "loginToCatalogue": "Pieslēgties katalogam",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
-    "selectThemes": "Izvēlēties tēmas"
+    "selectThemes": "Izvēlēties tēmas",
+    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
+    "compostionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
+    "endpointUrlIsNotDefined": "Saites galapunkts nav definēts!",
+    "endpointUserIsNotDefined": "Galapunkta lietotājs nav definēts!",
+    "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas!",
+    "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
