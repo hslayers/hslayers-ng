@@ -22,7 +22,7 @@ export class HsMickaBrowserService {
     private log: HsLogService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService
+    public hsToastService: HsToastService
   ) {}
 
   /**
@@ -59,10 +59,9 @@ export class HsMickaBrowserService {
           return x;
         }),
         catchError((e) => {
-          this.HsToastService.createToastPopupMessage(
+          this.hsToastService.createToastPopupMessage(
             'ADDLAYERS.errorWhileRequestingLayers',
-            dataset.title + ': ' + e.message,
-            'danger'
+            dataset.title + ': ' + e.message
           );
           dataset.datasourcePaging.loaded = true;
           return of(e);

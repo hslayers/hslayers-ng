@@ -16,7 +16,7 @@ export class HsLaymanBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService
+    public hsToastService: HsToastService
   ) {}
 
   /**
@@ -43,10 +43,9 @@ export class HsLaymanBrowserService {
           return x;
         }),
         catchError((e) => {
-          this.HsToastService.createToastPopupMessage(
+          this.hsToastService.createToastPopupMessage(
             'ADDLAYERS.errorWhileRequestingLayers',
-            endpoint.title + ': ' + e.message,
-            'danger'
+            endpoint.title + ': ' + e.message
           );
           endpoint.datasourcePaging.loaded = true;
           return of(e);
@@ -63,10 +62,10 @@ export class HsLaymanBrowserService {
    */
   private datasetsReceived(data, textFilter?: string): void {
     if (!data.dataset) {
-      this.HsToastService.createToastPopupMessage(
+      this.hsToastService.createToastPopupMessage(
         'COMMON.warning',
         data.dataset.title + ': ' + 'COMMON.noDataReceived',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }

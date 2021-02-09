@@ -22,20 +22,22 @@ export class HsToastService {
     this.toasts.push({textOrTpl, ...options});
   }
   /**
+   * Creates new toast message with custom text and custom styling
    * @param header Header text to display
    * @param text Toast body text to display
-   * @param backgroundType Toast message background type (primary, secondary, success, danger, warning, info, light, dark, white)
+   * @param toastStyleClasses Toast message background and text style classes, for example - background: (bg-primary, bg-secondary, bg-success, bg-danger, bg-warning, bg-info, bg-light, bg-dark, bg-white)
+   * and text: (text-primary, text-secondary, text-success, text-danger, text-warning, text-info, text-light, text-dark, text-white, text-muted)
    */
   createToastPopupMessage(
     header: string,
     text: string,
-    backgroundType: string
+    toastStyleClasses?: string
   ): void {
     this.show(this.HsLanguageService.getTranslation(text), {
       header: this.HsLanguageService.getTranslation(header),
       delay: 3000,
       autohide: true,
-      classname: `bg-${backgroundType} text-light`,
+      classname: toastStyleClasses || `bg-danger text-light`,
     });
   }
 }

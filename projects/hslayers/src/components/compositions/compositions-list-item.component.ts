@@ -67,8 +67,7 @@ export class HsCompostionsListItemComponent {
     } catch (ex) {
       this.HsToastService.createToastPopupMessage(
         'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
-        ex.message,
-        'danger'
+        ex.message
       );
     }
   }

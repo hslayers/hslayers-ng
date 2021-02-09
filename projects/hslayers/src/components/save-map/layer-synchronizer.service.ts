@@ -230,8 +230,7 @@ export class HsLayerSynchronizerService {
         'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing'
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
-        ._text,
-      'danger'
+        ._text
     );
   }
 

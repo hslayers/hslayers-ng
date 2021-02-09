@@ -33,8 +33,7 @@ export class HsCompositionsLaymanService {
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(
             'COMPOSITIONS.errorWhileRequestingCompositions',
-            endpoint.title + ': ' + e.message,
-            'danger'
+            endpoint.title + ': ' + e.message
           );
           return of(e);
         })
@@ -47,7 +46,7 @@ export class HsCompositionsLaymanService {
       this.HsToastService.createToastPopupMessage(
         'COMMON.warning',
         endpoint.title + ': ' + 'COMMON.noDataReceived',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }
@@ -93,7 +92,7 @@ export class HsCompositionsLaymanService {
         endpoint.title +
           ': ' +
           'COMPOSITIONS.compostionsNameAttributeIsNotDefined',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }
@@ -101,7 +100,7 @@ export class HsCompositionsLaymanService {
       this.HsToastService.createToastPopupMessage(
         'COMMON.warning',
         endpoint.title + ': ' + 'COMPOSITIONS.endpointUserIsNotDefined',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }
@@ -109,7 +108,7 @@ export class HsCompositionsLaymanService {
       this.HsToastService.createToastPopupMessage(
         'COMMON.warning',
         endpoint.title + ': ' + 'COMPOSITIONS.endpointUrlIsNotDefined',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }
