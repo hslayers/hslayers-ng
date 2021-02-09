@@ -28,17 +28,36 @@ export default {
     $scope.tileMatrixSet = '';
     $scope.image_format = '';
     $scope.loaderImage = require('../../../img/ajax-loader.gif');
-
-
     $scope.connect = function () {
-      try {
-        $scope.layersLoading = true;
-        HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url).then((r)=> {
-        })
-      } catch (e) {
-        console.warn(e);
-      }
       $scope.showDetails = true;
+      $scope.layersLoading = true;
+      HsWmtsGetCapabilitiesService.requestGetCapabilities($scope.url)
+        .then((r) => {})
+        .catch((e) => {
+          console.warn(e);
+          $scope.layersLoading = false;
+          $scope.showDetails = false;
+
+          $scope.error = e.toString();
+          const previousDialog = HsLayoutService.contentWrapper.querySelector(
+            '.hs-ows-wms-capabilities-error'
+          );
+          if (previousDialog) {
+            previousDialog.parentNode.removeChild(previousDialog);
+          }
+          const el = angular.element(
+            '<div hs.wmts.capabilities_error_directive></div>'
+          );
+          HsLayoutService.contentWrapper
+            .querySelector('.hs-dialog-area')
+            .appendChild(el[0]);
+          $compile(el)($scope);
+          //throw "wmts Capabilities parsing problem";
+
+          if (!$scope.$$phase) {
+            $scope.$digest();
+          }
+        });
     };
 
     $scope.$on('ows.wmts_connecting', (event, url, layer) => {
@@ -68,7 +87,8 @@ export default {
         $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
         $scope.version = caps.Version || caps.version;
         $scope.services = caps.Contents.Layer;
-        $scope.capabilitiesURL = caps.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href;
+        $scope.capabilitiesURL =
+          caps.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href;
 
         $scope.layersLoading = false;
       } catch (e) {
@@ -93,7 +113,7 @@ export default {
       }
     };
 
-        /**
+    /**
      * @function selectAllLayers
      * @memberOf hs.addLayersWfs
      * @description Select all layers from service.
@@ -116,7 +136,7 @@ export default {
     };
 
     $scope.$on('ows_wmts.capabilities_received', (event, response) => {
-      if ($scope.showDetails == true){
+      if ($scope.showDetails == true) {
         $scope.capabilitiesReceived(response.data);
       }
     });
@@ -166,7 +186,7 @@ export default {
     };
 
     /**
-     * Returns prefered tile format 
+     * Returns prefered tile format
      *
      * @memberof hs.addLayersWMTS
      * @function getPreferredFormat
@@ -192,7 +212,9 @@ export default {
       );
       if (prefered.length != 0) {
         const preferCurrent = prefered.find((set) =>
-          set.TileMatrixSet.includes(HsMapService.map.getView().getProjection().getCode())
+          set.TileMatrixSet.includes(
+            HsMapService.map.getView().getProjection().getCode()
+          )
         );
         return preferCurrent
           ? preferCurrent.TileMatrixSet
@@ -206,6 +228,7 @@ export default {
      * if possible picks HTML, otherwise first from the list of supported is selected
      *
      * @memberof hs.addLayersWMTS
+     * @param formats
      * @function getPreferedInfoFormat
      * @param {object} response Set of avaliable info formats for layer being added
      */
@@ -230,6 +253,7 @@ export default {
      * Uses previously recieved capabilities response as a reference for the source
      *
      * @memberof hs.addLayersWMTS
+     * @param layer
      * @function getPreferedInfoFormat
      * @param {object} response Set of avaliable info formats for layer being added
      */
