@@ -1,6 +1,7 @@
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSelectorService} from './layer-selector.service';
+import {getCachedCapabilities} from '../../common/layer-extensions';
 
 import {Layer} from 'ol/layer';
 
@@ -49,7 +50,10 @@ export class HsLayerEditorSublayerService {
     }
     this.populateSubLayers();
 
-    return this.HsLayerManagerService.currentLayer.layer.get('Layer');
+    return (
+      getCachedCapabilities(this.HsLayerManagerService.currentLayer.layer)
+        ?.Layer || []
+    );
   }
 
   populateSubLayers() {
@@ -57,7 +61,7 @@ export class HsLayerEditorSublayerService {
     if (this.populatedLayers.includes(layer.ol_uid)) {
       return;
     }
-    const subLayers = layer.get('Layer');
+    const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers?.length > 0) {
       //Visibility of leaf layers the same as oldest ancestor
       const visible = layer.getVisible();

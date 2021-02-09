@@ -9,11 +9,11 @@ import {
   getCachedCapabilities,
   getMaxResolutionDenominator,
   getMetadata,
+  getSubLayers,
   setAttribution,
   setCacheCapabilities,
   setLegends,
   setMetadata,
-  getSubLayers,
 } from '../../common/layer-extensions';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -67,7 +67,7 @@ export class HsLayerManagerMetadataService {
    */
   async fillMetadata(layer: Layer) {
     await this.queryMetadata(layer);
-    const subLayers = layer.get('Layer');
+    const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
       if (!layer.hasSublayers) {
         layer.hasSublayers = true;
@@ -147,77 +147,52 @@ export class HsLayerManagerMetadataService {
     }
   }
 
-  parseInfoForLayer(
-    layer, //TODO:TYPE
-    layer_name: string,
-    caps: any,
-    fromSublayerParam: boolean
-  ): void {
-    const layerObject = []; //array of layer objects representing added layer
-    if (layer_name.includes(',')) {
-      const layers = [];
-      const legends: string[] = [];
-
-      const subLayers = layer_name.split(',');
-      //loop over layers from layer.LAYERS
-      for (let i = 0; i < subLayers.length; i++) {
-        layerObject[i] = this.identifyLayerObject(
-          subLayers[i],
-          caps.Capability.Layer
-        );
-        const styleWithLegend = layerObject[i].Style.find(
-          (style) => style.LegendURL != undefined
-        );
-        if (styleWithLegend) {
-          legends.push(styleWithLegend.LegendURL[0].OnlineResource);
+  parseLayerInfo(layer: Layer, layerName: string, caps: any): void {
+    const legends: string[] = [];
+    const layerCaps = caps.Capability.Layer;
+    let layerObj; //Main object representing layer created from capabilities which will be cached
+    if (layerName.includes(',')) {
+      const layerObjs = []; //array of layer objects representing added layer
+      for (const subLayer of layerName.split(',')) {
+        const layerSubObject = this.identifyLayerObject(subLayer, layerCaps);
+        layerObjs.push(layerSubObject);
+        this.collectLegend(layerSubObject, legends);
+        if (layerSubObject.Layer !== undefined && getSubLayers(layer)) {
+          delete layerSubObject.Layer;
         }
-        if (layerObject[i].Layer !== undefined) {
-          if (fromSublayerParam) {
-            delete layerObject[i].Layer;
-            layers.push(layerObject[i]);
-          } else {
-            //loop over sublayers of layer from layer.LAYERS
-            for (let j = 0; j < layerObject[i].Layer.length; j++) {
-              layers.push(layerObject[i].Layer[j]); //merge sublayers
-            }
-          }
-        }
-        layerObject[i].maxResolution = this.searchForScaleDenominator(
-          layerObject[i]
-        );
       }
       if (getCachedCapabilities(layer) == undefined) {
-        setCacheCapabilities(layer, layerObject[0]);
-        layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
+        layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
+          maxResolution: Math.max(
+            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer))
+          ),
+          Layer: layerObjs,
+        });
       }
-
-      this.setOrUpdate(layer, 'Layer', layers);
-      setLegends(layer, legends);
       this.fillMetadataUrlsIfNotExist(layer, caps);
     } else {
-      layerObject[0] = this.identifyLayerObject(
-        layer_name,
-        caps.Capability.Layer
-      );
-      if (getCachedCapabilities(layer) == undefined) {
-        setCacheCapabilities(layer, layerObject[0]);
-        layer.setProperties(layerObject[0]); //TODO: Remove it later to not mix everything in the same layer object
-        this.parseAttribution(layer, layerObject[0]);
+      layerObj = this.identifyLayerObject(layerName, layerCaps);
+      if (layerObj.Layer && getSubLayers(layer)) {
+        layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+        delete layerObj.Layer;
       }
-      const styleWithLegend = layerObject[0].Style?.find(
-        (style) => style.LegendURL != undefined
-      );
-      if (styleWithLegend) {
-        setLegends(layer, styleWithLegend.LegendURL[0].OnlineResource);
-      }
+      this.collectLegend(layerObj, legends);
+    }
+    if (getCachedCapabilities(layer) == undefined) {
+      setCacheCapabilities(layer, layerObj);
+    }
+    this.parseAttribution(layer, getCachedCapabilities(layer));
+    if (legends.length > 0) {
+      setLegends(layer, legends);
+    }
+  }
 
-      if (layerObject[0].Layer && fromSublayerParam) {
-        layerObject[0].maxResolution = this.searchForScaleDenominator(
-          layerObject[0]
-        );
-        delete layerObject[0].Layer;
-        this.setOrUpdate(layer, 'Layer', layerObject);
-      }
+  private collectLegend(layerObject: any, legends: string[]) {
+    const styleWithLegend = layerObject.Style?.find(
+      (style) => style.LegendURL != undefined
+    );
+    if (styleWithLegend) {
+      legends.push(styleWithLegend.LegendURL[0].OnlineResource);
     }
   }
 
@@ -261,10 +236,8 @@ export class HsLayerManagerMetadataService {
           const caps = parser.read(capabilities_xml);
           const paramLayers: string = layer.getSource().getParams().LAYERS;
 
-          this.parseInfoForLayer(layer, paramLayers, caps, false);
+          this.parseLayerInfo(layer, paramLayers, caps, getSubLayers(layer));
           if (getSubLayers(layer)) {
-            this.parseInfoForLayer(layer, getSubLayers(layer), caps, true);
-
             const src = layer.getSource();
             const params = src.getParams();
             params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
