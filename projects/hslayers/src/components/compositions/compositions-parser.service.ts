@@ -298,12 +298,13 @@ export class HsCompositionsParserService {
   }
   parseMickaWmcInfo(response): any {
     let res: any = xml2Json.xml2js(response, {compact: true});
-    const layersInfo = res.ViewContext.LayerList.Layer;
+    const layersInfo = res.ViewContext.LayerList?.Layer;
+    const keywordsInfo = res.ViewContext.General.KeywordList?.Keyword;
     res = res.ViewContext.General;
     const infoDetails: any = {
       title: res.Title?._text,
       abstract: res.Abstract?._text,
-      srs: res.BoundingBox._attributes?.SRS,
+      srs: res.BoundingBox?._attributes?.SRS,
       extent: [
         parseFloat(res.BoundingBox?._attributes['maxx']),
         parseFloat(res.BoundingBox?._attributes['maxy']),
@@ -311,30 +312,35 @@ export class HsCompositionsParserService {
         parseFloat(res.BoundingBox?._attributes['miny']),
       ],
       contactAddress: {
-        address: res.ContactInformation.ContactAddress.Address?._text,
-        city: res.ContactInformation.ContactAddress.City?._text,
-        country: res.ContactInformation.ContactAddress.Country?._text,
-        postalCode: res.ContactInformation.ContactAddress.PostCode?._text,
+        address: res.ContactInformation?.ContactAddress?.Address?._text,
+        city: res.ContactInformation?.ContactAddress?.City?._text,
+        country: res.ContactInformation?.ContactAddress?.Country?._text,
+        postalCode: res.ContactInformation?.ContactAddress?.PostCode?._text,
         stateOrProvince:
-          res.ContactInformation.ContactAddress.StateOrProvince?._text,
+          res.ContactInformation?.ContactAddress?.StateOrProvince?._text,
       },
       contactPersonPrimary: {
         organization:
-          res.ContactInformation.ContactPersonPrimary.ContactOrganization
+          res.ContactInformation?.ContactPersonPrimary?.ContactOrganization
             ?._text,
-        person: res.ContactInformation.ContactPersonPrimary.ContactPerson._text,
-        phone: res.ContactInformation.ContactVoiceTelephone?._text,
-        email: res.ContactInformation.ContactElectronicMailAddress?._text,
+        person:
+          res.ContactInformation?.ContactPersonPrimary?.ContactPerson?._text,
+        phone: res.ContactInformation?.ContactVoiceTelephone?._text,
+        email: res.ContactInformation?.ContactElectronicMailAddress?._text,
       },
-      layers: layersInfo.map((lyr) => {
-        return {
-          title: lyr.Title._text,
-        };
-      }),
     };
-    Array.isArray(res.KeywordList.Keyword)
-      ? (infoDetails.keywords = res.KeywordList.Keyword?.map((kw) => kw._text))
-      : (infoDetails.keywords = res.KeywordList.Keyword._text);
+    if (layersInfo !== undefined) {
+      infoDetails.layers = layersInfo.map((lyr) => {
+        return {
+          title: lyr.Title?._text,
+        };
+      });
+    }
+    if (keywordsInfo !== undefined) {
+      Array.isArray(keywordsInfo)
+        ? (infoDetails.keywords = keywordsInfo.map((kw) => kw._text))
+        : (infoDetails.keywords = keywordsInfo._text);
+    }
     return infoDetails;
   }
   transformExtent(pairs: Array<number>): Array<number> {
