@@ -1,5 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
+import {
+  HsLayerEditorSublayerService,
+  KeyBooleanDict,
+} from './layer-editor.sub-layer.service';
 import {HsLayerManagerService} from './layermanager.service';
 
 @Component({
@@ -9,8 +12,8 @@ import {HsLayerManagerService} from './layermanager.service';
 export class HsLayerEditorSubLayerCheckboxesComponent {
   @Input() subLayer: any;
   expanded = false;
-  checkedSubLayers: any;
-  withChildren: any;
+  checkedSubLayers: KeyBooleanDict;
+  withChildren: KeyBooleanDict;
 
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
@@ -40,7 +43,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
    * @param {object} state New state of sublayer
    */
   subLayerSelected(sublayer?, state?) {
-    //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail 
+    //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail
     if (sublayer != undefined && sublayer.Layer) {
       for (const children of sublayer.Layer) {
         Object.assign(this.checkedSubLayers, {

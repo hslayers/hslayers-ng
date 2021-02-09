@@ -6,15 +6,19 @@ import {Layer} from 'ol/layer';
 
 import {Injectable} from '@angular/core';
 
+export type KeyBooleanDict = {
+  [key: string]: boolean;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerEditorSublayerService {
-  checkedSubLayers: any = {};
-  withChildren: any = {};
+  checkedSubLayers: KeyBooleanDict = {};
+  withChildren: KeyBooleanDict = {};
   populatedLayers: Array<any> = [];
-  withChildrenTmp: any = {};
-  checkedSubLayersTmp: any = {};
+  withChildrenTmp: KeyBooleanDict = {};
+  checkedSubLayersTmp: KeyBooleanDict = {};
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
     public HsLayerSelectorService: HsLayerSelectorService
@@ -49,64 +53,38 @@ export class HsLayerEditorSublayerService {
   }
 
   populateSubLayers() {
-    if (
-      this.populatedLayers.includes(
-        this.HsLayerManagerService.currentLayer.layer.ol_uid
-      )
-    ) {
+    const layer = this.HsLayerManagerService.currentLayer.layer;
+    if (this.populatedLayers.includes(layer.ol_uid)) {
       return;
     }
-    const sublayers = this.HsLayerManagerService.currentLayer.layer.get(
-      'Layer'
-    );
-    if (sublayers) {
-      this.populatedLayers.push(
-        this.HsLayerManagerService.currentLayer.layer.ol_uid
-      );
-      for (const layer of sublayers) {
-        if (layer.Layer) {
-          Object.assign(
-            this.HsLayerManagerService.currentLayer.layer.withChildren,
-            {
-              [layer.Name]: this.HsLayerManagerService.currentLayer.layer.getVisible(),
-            }
-          );
-          for (const sublayer of layer.Layer) {
-            Object.assign(
-              this.HsLayerManagerService.currentLayer.layer.checkedSubLayers,
-              {
-                [sublayer.Name]: this.HsLayerManagerService.currentLayer.layer.getVisible(),
-              }
-            );
-          }
-        } else {
-          Object.assign(
-            this.HsLayerManagerService.currentLayer.layer.checkedSubLayers,
-            {
-              [layer.Name]: this.HsLayerManagerService.currentLayer.layer.getVisible(),
-            }
-          );
-        }
-      }
-      this.checkedSubLayers = this.HsLayerManagerService.currentLayer.layer.checkedSubLayers;
-      this.withChildren = this.HsLayerManagerService.currentLayer.layer.withChildren;
+    const subLayers = layer.get('Layer');
+    if (subLayers?.length > 0) {
+      //Visibility of leaf layers the same as oldest ancestor
+      const visible = layer.getVisible();
+      //We don't want to overwrite saved sub-layer states when changing current layer
+      const clone = (src) => Object.assign({}, src);
+      //Function which converts list of layers to dictionary of their names and visibility
+      const toDictionary = (d, layer) => ((d[layer.Name] = visible), d);
 
-      this.HsLayerManagerService.currentLayer.layer.checkedSubLayersTmp = this.checkedSubLayersTmp = Object.assign(
-        {},
-        this.checkedSubLayers
-      );
-      this.HsLayerManagerService.currentLayer.layer.withChildrenTmp = this.withChildrenTmp = Object.assign(
-        {},
-        this.withChildren
-      );
+      this.populatedLayers.push(layer.ol_uid);
+      const subLayersWithChild = subLayers.filter((sl) => sl.Layer);
+      const subSubLayers = subLayersWithChild.map((sl) => sl.Layer).flat();
+      layer.withChildren = subLayersWithChild.reduce(toDictionary, {});
+      //List either 3rd level layers or second if no 3rd level layer exists
+      const leafs = subSubLayers.length > 0 ? subSubLayers : subLayers;
+      layer.checkedSubLayers = leafs.reduce(toDictionary, {});
+
+      this.checkedSubLayers = layer.checkedSubLayers;
+      this.withChildren = layer.withChildren;
+      this.checkedSubLayersTmp = clone(this.checkedSubLayers);
+      layer.checkedSubLayersTmp = this.checkedSubLayersTmp;
+      this.withChildrenTmp = clone(this.withChildren);
+      layer.withChildrenTmp = this.withChildrenTmp;
 
       if (!this.HsLayerManagerService.currentLayer.visible) {
-        Object.keys(this.checkedSubLayersTmp).forEach(
-          (v) => (this.checkedSubLayersTmp[v] = true)
-        );
-        Object.keys(this.withChildrenTmp).forEach(
-          (v) => (this.withChildrenTmp[v] = true)
-        );
+        for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
+          Object.keys(dict).forEach((v) => (dict[v] = true));
+        }
       }
     }
   }
