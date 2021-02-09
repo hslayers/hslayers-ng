@@ -68,6 +68,7 @@ export default {
         $scope.description = addAnchors(caps.ServiceIdentification.Abstract);
         $scope.version = caps.Version || caps.version;
         $scope.services = caps.Contents.Layer;
+        $scope.capabilitiesURL = caps.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href;
 
         $scope.layersLoading = false;
       } catch (e) {
@@ -239,6 +240,8 @@ export default {
           info_format: $scope.getPreferedInfoFormat(layer.ResourceURL),
           source: new WMTS({}),
           queryCapabilities: false,
+          //compatibility of ArcGIS Server WMTS in compositions
+          capabilitiesURL: $scope.capabilitiesURL,
         });
         // Get WMTS Capabilities and create WMTS source base on it
         const options = optionsFromCapabilities($scope.caps, {

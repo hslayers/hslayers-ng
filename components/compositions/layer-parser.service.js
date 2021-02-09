@@ -25,7 +25,7 @@ export default function (
   HsAddLayersVectorService,
   HsWmtsGetCapabilitiesService,
   HsUtilsService,
-  $location,
+  $location
 ) {
   'ngInject';
   const me = {
@@ -113,11 +113,13 @@ export default function (
         info_format: lyr_def.info_format,
         source: new WMTS({}),
         base: lyr_def.base ? lyr_def.base : false,
+        //compatibility of ArcGIS Server WMTS in compositions
+        capabilitiesURL: lyr_def.url,
       });
 
       // Get WMTS Capabilities and create WMTS source base on it
-      HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url).then(
-        (res) => {
+      HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url)
+        .then((res) => {
           try {
             //parse the XML response and create options object...
             const parser = new WMTSCapabilities();
@@ -135,8 +137,10 @@ export default function (
             console.error('WMTS Layer loading error', error);
             me.map.getLayers().remove(wmts);
           }
-        }
-      );
+        })
+        .catch((e) => {
+          console.error('WMTS Layer loading error', e);
+        });
       wmts.setVisible(lyr_def.visibility);
       return wmts;
     },
