@@ -46,8 +46,7 @@ export class HsCompositionsStatusManagerMickaJointService {
       catchError((e) => {
         this.HsToastService.createToastPopupMessage(
           'COMPOSITIONS.errorWhileRequestingCompositions',
-          ds.title + ': ' + e.message,
-          'danger'
+          ds.title + ': ' + e.message
         );
         return of(e);
       })

@@ -88,7 +88,7 @@ export class HsCompositionsMickaService {
       this.HsToastService.createToastPopupMessage(
         'COMMON.warning',
         endpoint.title + ': ' + 'COMMON.noDataReceived',
-        'warning'
+        'bg-warning text-light'
       );
       return;
     }
@@ -159,8 +159,7 @@ export class HsCompositionsMickaService {
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(
             'COMPOSITIONS.errorWhileRequestingCompositions',
-            endpoint.title + ': ' + e.message,
-            'danger'
+            endpoint.title + ': ' + e.message
           );
           return of(e);
         })
