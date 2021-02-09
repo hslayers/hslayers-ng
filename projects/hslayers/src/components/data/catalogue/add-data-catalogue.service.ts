@@ -15,7 +15,6 @@ import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMickaBrowserService} from './micka/micka.service';
-import {HsMickaFilterService} from '../../datasource-selector/micka/micka-filters.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {forkJoin} from 'rxjs';
 
@@ -51,7 +50,6 @@ export class HsAddDataCatalogueService {
     public hsConfig: HsConfig,
     public HsAddDataVectorService: HsAddDataVectorService,
     public hsEventBusService: HsEventBusService,
-    public hsMickaFilterService: HsMickaFilterService,
     public hsMickaBrowserService: HsMickaBrowserService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLayoutService: HsLayoutService,
@@ -80,7 +78,7 @@ export class HsAddDataCatalogueService {
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
-      this.hsMickaFilterService.fillCodesets();
+      // this.hsMickaFilterService.fillCodesets();
     }
 
     if (this.hsConfig.allowAddExternalDatasets === undefined) {

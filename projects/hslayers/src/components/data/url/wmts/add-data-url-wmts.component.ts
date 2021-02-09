@@ -91,11 +91,6 @@ export class HsAddDataWmtsComponent {
       //throw "WMS Capabilities parsing problem";
     });
   }
-
-  log() {
-    console.log(this.layersLoading, this.showDetails);
-  }
-
   connect = (): void => {
     try {
       console.log('console');
