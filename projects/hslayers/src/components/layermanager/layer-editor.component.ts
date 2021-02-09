@@ -17,6 +17,7 @@ import {
   getAbstract,
   getAttribution,
   getBase,
+  getCachedCapabilities,
   getRemovable,
   getTitle,
   setAbstract,
@@ -406,7 +407,7 @@ export class HsLayerEditorComponent {
     if (this.currentLayer === null) {
       return;
     }
-    const subLayers = this.currentLayer.layer.get('Layer');
+    const subLayers = getCachedCapabilities(this.currentLayer.layer)?.Layer;
     return subLayers != undefined && subLayers.length > 0;
   }
 
