@@ -2,7 +2,11 @@
 declare type NameType = string;
 declare type TitleType = string;
 declare type AbstractType = string;
-declare type KeywordType = string;
+declare type KeywordType =
+  | string
+  | {
+      vocabulary?: string;
+    };
 declare type KeywordListType = KeywordType[];
 declare type OnlineResourceType = string; // URL
 declare type FormatType = string;
@@ -123,6 +127,12 @@ declare type LayerType = {
   MinScaleDenominator?: number;
   MaxScaleDenominator?: number;
   Layer?: LayerType | LayerType[];
+  queryable?: boolean;
+  cascaded?: number; // UInt not yet supported by TS
+  opaque?: boolean;
+  noSubsets?: boolean;
+  fixedWidth?: number; // UInt not yet supported by TS
+  fixedHeight?: number; // UInt not yet supported by TS
 };
 
 export interface WMSCapabilities {
@@ -135,9 +145,9 @@ export interface WMSCapabilities {
     ContactInformation?: ContactInformationType;
     Fees?: string;
     AccessConstraints?: string;
-    LayerLimit?: number; //UInt not yet supported by TS
-    MaxWidth?: number; //UInt not yet supported by TS
-    MaxHeight?: number; //UInt not yet supported by TS
+    LayerLimit?: number; // UInt not yet supported by TS
+    MaxWidth?: number; // UInt not yet supported by TS
+    MaxHeight?: number; // UInt not yet supported by TS
   };
   Capability: {
     Request: {
@@ -152,4 +162,6 @@ export interface WMSCapabilities {
     [_ExtendedCapabilities: string]: unknown;
     Layer?: LayerType;
   };
+  version: string;
+  updateSequence?: string;
 }
