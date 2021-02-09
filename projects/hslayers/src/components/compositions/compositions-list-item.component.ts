@@ -44,9 +44,20 @@ export class HsCompostionsListItemComponent {
    * Load info about composition through service and display composition info dialog
    */
   detailComposition(record): void {
-    this.HsCompositionsService.getCompositionInfo(record, (info) => {
-      this.infoDialogBootstrap(info);
-    });
+    try {
+      this.HsCompositionsService.getCompositionInfo(record, (info) => {
+        if (info !== undefined) {
+          this.infoDialogBootstrap(info);
+        } else {
+          throw new Error('COMPOSITIONS.metadataNotAvailable');
+        }
+      });
+    } catch (ex) {
+      this.HsToastService.createToastPopupMessage(
+        'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
+        ex.message
+      );
+    }
   }
   /**
    * @param record Composition to share

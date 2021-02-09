@@ -76,7 +76,7 @@
     "WMTS": {
       "tileMatrix": "Tile matrix"
     },
-    "errorWhileRequestingLayers": "Error while requesting layers!"
+    "errorWhileRequestingLayers": "Error while requesting layers"
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -186,7 +186,7 @@
     "zoomTo": "zoom to",
     "contactInformation": "Contact Information",
     "noDataReceived": "No data received!",
-    "warning": "Warning!"
+    "warning": "Warning"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -228,11 +228,13 @@
     "selectKeywords": "Select keywords",
     "selectThemes": "Select themes",
     "sharingUrlIsNotAvailable": "Sharing URL is not available!",
-    "errorWhileRequestingCompositions": "Error while requesting compositions!",
+    "errorWhileRequestingCompositions": "Error while requesting compositions",
     "compostionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
     "endpointUserIsNotDefined": "Endpoint user is not defined!",
     "endpointUrlIsNotDefined": "Endpoint url is not defined!",
-    "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network!"
+    "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network",
+    "metadataNotAvailable": "Metadata are not available!",
+    "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
@@ -512,7 +514,7 @@
       "removeFeature": "Remove feature"
     },
     "infoPanel": {
-      "clickOnMap": "Click on map for query results!"
+      "clickOnMap": "Click on map for query results"
     },
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",

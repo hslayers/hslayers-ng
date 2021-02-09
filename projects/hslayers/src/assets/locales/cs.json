@@ -184,7 +184,7 @@
     "yes": "Ano",
     "zoomTo": "zvětšit na",
     "contactInformation": "Kontaktní informace",
-    "warning": "Varování!"
+    "warning": "Varování"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -504,7 +504,7 @@
       "removeFeature": "Odebrat prvek"
     },
     "infoPanel": {
-      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu!"
+      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu"
     },
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
