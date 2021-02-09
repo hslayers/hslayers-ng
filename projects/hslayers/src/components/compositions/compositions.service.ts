@@ -1,3 +1,4 @@
+import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
@@ -9,7 +10,6 @@ import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
-import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';

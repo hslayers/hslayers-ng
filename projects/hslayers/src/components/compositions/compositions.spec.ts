@@ -22,6 +22,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -73,6 +74,12 @@ describe('compositions', () => {
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
+        {
+          HsSaveMapService,
+          useValue: {
+            internalLayers: [],
+          },
+        },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
