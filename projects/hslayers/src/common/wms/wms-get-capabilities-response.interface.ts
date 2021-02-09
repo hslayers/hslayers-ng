@@ -135,7 +135,7 @@ declare type LayerType = {
   fixedHeight?: number; // UInt not yet supported by TS
 };
 
-export interface WMSCapabilities {
+export interface WMSGetCapabilitiesResponse {
   Service: {
     Name: 'WMS';
     Title: TitleType;

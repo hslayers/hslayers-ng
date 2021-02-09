@@ -45,4 +45,4 @@ export * from './common/layer-extensions';
 export * from './common/layers/hs.source.SparqlJson';
 export * from './common/log/log.module';
 export * from './common/log/log.service';
-export * from './common/wms/wms-capabilities.interface';
+export * from './common/wms/wms-get-capabilities-response.interface';
