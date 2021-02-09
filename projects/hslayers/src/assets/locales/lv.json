@@ -76,7 +76,7 @@
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
     },
-    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus!"
+    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -185,7 +185,7 @@
     "yes": "Jā",
     "zoomTo": "pietuvināt",
     "contactInformation": "Kontaktinformācija",
-    "warning": "Brīdinājums!",
+    "warning": "Brīdinājums",
     "noDataReceived": "Dati nav saņemti!"
   },
   "COMPOSITIONS": {
@@ -231,8 +231,10 @@
     "compostionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
     "endpointUrlIsNotDefined": "Saites galapunkts nav definēts!",
     "endpointUserIsNotDefined": "Galapunkta lietotājs nav definēts!",
-    "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas!",
-    "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos!"
+    "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas",
+    "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos",
+    "metadataNotAvailable": "Metadati nav pieejami!",
+    "errorWhileLoadingCompositionMetadata": "Radusies kļūda ielādējot kompozīcijas metadatus"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -379,7 +381,7 @@
     "newMap": "Jauna karte",
     "unsavedMap": "Nesaglabāta karte",
     "viewComposeAndAnalyse": "Skatiet, sastādiet un analizējiet telpiskos datus",
-    "youHaveUnsavedChanges": "Jums ir nesaglabātas izmaiņas!"
+    "youHaveUnsavedChanges": "Jums ir nesaglabātas izmaiņas"
   },
   "LAYERMANAGER": {
     "baselayers": "Pamatslāņi",
@@ -512,7 +514,7 @@
       "removeFeature": "Noņemt objektu"
     },
     "infoPanel": {
-      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus!"
+      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus"
     },
     "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",
