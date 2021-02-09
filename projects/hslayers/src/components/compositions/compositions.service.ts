@@ -149,13 +149,12 @@ export class HsCompositionsService {
       this.$log.log('Error creating short Url');
     }
   }
-  getCompositionInfo(composition, cb): void {
-    this.managerByType(composition.endpoint)
-      .getInfo(composition)
-      .then((info) => {
-        this.data.info = info;
-        cb(info);
-      });
+  async getCompositionInfo(composition): Promise<any> {
+    const info = await this.managerByType(composition.endpoint).getInfo(
+      composition
+    );
+    this.data.info = info;
+    return info;
   }
 
   getRecordLink(record): string {
