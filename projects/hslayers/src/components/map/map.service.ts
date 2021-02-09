@@ -52,6 +52,13 @@ import {
   getEnableProxy,
   getTitle,
 } from '../../common/layer-extensions';
+
+export enum DuplicateHandling {
+  AddDuplicate = 0,
+  IgnoreNew = 1,
+  RemoveOriginal = 2,
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -471,9 +478,7 @@ export class HsMapService {
     const newUrl = newSource.getUrl == null ? '' : newSource.getUrl();
     const existingUrls =
       existingSource.getUrls == null ? '' : existingSource.getUrls();
-    let newUrls = newSource.getUrls == null
-      ? ['']
-      : newSource.getUrls();
+    let newUrls = newSource.getUrls == null ? [''] : newSource.getUrls();
     newUrls = newUrls ? newUrls : [''];
     const urlsEqual =
       existingUrls == newUrls ||
@@ -562,30 +567,36 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#addLayer
-   * @param {Layer} lyr Layer to add
-   * @param {boolean} removeIfExists True if we want to remove a layer with the same title in case it exists
-   * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
-   * @description Function to add layer to map which also checks if
+   * Function to add layer to map which also checks if
    * the layer is not already present and also proxifies the layer if needed.
    * Generally for non vector layers it would be better to use this function than to add to OL map directly
    * and rely on layer manager service to do the proxifiction and also it's shorter than to use HsMapService.map.addLayer.
-   * @returns {Layer} OL layer
+   *
+   * @param lyr Layer to add
+   * @param duplicateHandling How to handle duplicate layers (same class and title)
+   * @param visibleOverride Override the visibility using an array layer titles, which
    */
   addLayer(
     lyr: Layer,
-    removeIfExists: boolean,
-    visibilityOverrides?: Array<string>
-  ): Layer {
-    if (removeIfExists && this.layerAlreadyExists(lyr)) {
-      if (getBase(lyr) == true) {
-        return;
+    duplicateHandling?: DuplicateHandling,
+    visibleOverride?: string[]
+  ): void {
+    if (this.layerAlreadyExists(lyr)) {
+      switch (duplicateHandling) {
+        case DuplicateHandling.RemoveOriginal:
+          if (getBase(lyr) == true) {
+            return;
+          }
+          this.removeDuplicate(lyr);
+          break;
+        case DuplicateHandling.IgnoreNew:
+          return;
+        case DuplicateHandling.AddDuplicate:
+        default:
       }
-      this.removeDuplicate(lyr);
     }
-    if (visibilityOverrides) {
-      lyr.setVisible(this.layerTitleInArray(lyr, visibilityOverrides));
+    if (visibleOverride) {
+      lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
     }
     const source = lyr.getSource();
     if (this.HsUtilsService.instOf(source, Vector)) {
@@ -596,7 +607,6 @@ export class HsMapService {
       this.proxifyLayer(e.target);
     });
     this.map.addLayer(lyr);
-    return lyr;
   }
 
   /**
@@ -613,14 +623,18 @@ export class HsMapService {
     if (this.HsConfig.box_layers) {
       this.HsConfig.box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray()) {
-          this.addLayer(lyr, false, visibilityOverrides);
+          this.addLayer(
+            lyr,
+            DuplicateHandling.AddDuplicate,
+            visibilityOverrides
+          );
         }
       });
     }
 
     if (this.HsConfig.default_layers) {
       this.HsConfig.default_layers.forEach((lyr) => {
-        this.addLayer(lyr, false, visibilityOverrides);
+        this.addLayer(lyr, DuplicateHandling.AddDuplicate, visibilityOverrides);
       });
     }
   }

@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 
+import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmtsGetCapabilitiesService} from '../../../../common/wmts/get-capabilities.service';
 
@@ -276,7 +276,7 @@ export class HsAddDataWmtsComponent {
       const wmtsSource = new WMTS(options);
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
-      this.HsMapService.addLayer(wmts, true);
+      this.HsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
     } catch (e) {
       this.wmtsCapabilitiesError.next(e);
     }

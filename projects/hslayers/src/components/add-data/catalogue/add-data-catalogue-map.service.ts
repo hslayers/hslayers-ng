@@ -8,6 +8,7 @@ import {transform} from 'ol/proj';
 
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
+import {HsSaveMapService} from '../../save-map/save-map.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ import {HsMapService} from '../../map/map.service';
 export class HsAddDataCatalogueMapService {
   extentLayer: VectorLayer = new VectorLayer({
     title: 'Datasources extents',
-    show_in_manager: false,
+    showInLayerManager: false,
     source: new Vector(),
     style: function (feature, resolution) {
       return [
@@ -35,6 +36,7 @@ export class HsAddDataCatalogueMapService {
   constructor(
     public hsMapService: HsMapService,
     public hsLogService: HsLogService,
+    private hsSaveMapService: HsSaveMapService,
     private zone: NgZone
   ) {
     this.hsMapService.loaded().then((map) => this.init(map));
@@ -76,6 +78,7 @@ export class HsAddDataCatalogueMapService {
   init(map): void {
     map.on('pointermove', (evt) => this.mapPointerMoved(evt));
     map.addLayer(this.extentLayer);
+    this.hsSaveMapService.internalLayers.push(this.extentLayer);
   }
 
   clearExtentLayer(): void {

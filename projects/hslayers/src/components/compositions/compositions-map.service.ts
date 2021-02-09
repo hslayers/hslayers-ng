@@ -3,6 +3,7 @@ import {Fill, Stroke, Style} from 'ol/style';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {Injectable} from '@angular/core';
 import {Vector} from 'ol/source';
 import {
@@ -38,11 +39,13 @@ export class HsCompositionsMapService {
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
+    private HsSaveMapService: HsSaveMapService
   ) {
     this.HsMapService.loaded().then((map) => {
       map.on('pointermove', (e) => this.mapPointerMoved(e));
       map.addLayer(this.extentLayer);
+      this.HsSaveMapService.internalLayers.push(this.extentLayer);
     });
 
     this.HsEventBusService.mainPanelChanges.subscribe(() => {

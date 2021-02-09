@@ -9,7 +9,7 @@ import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -229,7 +229,7 @@ export class HsCompositionsService {
       this.HsCompositionsParserService.removeCompositionLayers();
       const layers = this.HsCompositionsParserService.jsonToLayers(data);
       for (let i = 0; i < layers.length; i++) {
-        this.HsMapService.addLayer(layers[i], true);
+        this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
     } else {
       this.$log.log('Error loading permalink layers');
@@ -254,7 +254,7 @@ export class HsCompositionsService {
         JSON.parse(data)
       );
       for (let i = 0; i < layers.length; i++) {
-        this.HsMapService.addLayer(layers[i], false);
+        this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
       localStorage.removeItem('hs_layers');
     }

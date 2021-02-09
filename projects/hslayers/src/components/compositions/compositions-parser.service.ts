@@ -7,7 +7,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -220,7 +220,7 @@ export class HsCompositionsParserService {
 
     const layers = this.jsonToLayers(obj);
     layers.forEach((lyr) => {
-      this.HsMapService.addLayer(lyr, true);
+      this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
     });
 
     if (obj.current_base_layer) {

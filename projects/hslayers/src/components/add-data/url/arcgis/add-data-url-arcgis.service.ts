@@ -243,7 +243,6 @@ export class HsAddDataArcGisService {
       source,
       //minResolution: layer.minScale,
       //maxResolution: layer.maxScale,
-      saveState: true,
       removable: true,
       path,
     });
@@ -268,7 +267,7 @@ export class HsAddDataArcGisService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.hsMapService.addLayer(layer, true);
+            this.hsMapService.addLayer(layer);
           }
         });
       });

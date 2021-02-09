@@ -8,8 +8,8 @@ import {
   ImageWMS,
   TileArcGISRest,
   TileWMS,
-  XYZ,
   WMTS,
+  XYZ,
 } from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
@@ -36,6 +36,7 @@ import {
   providedIn: 'root',
 })
 export class HsSaveMapService {
+  public internalLayers: Layer[] = [];
   constructor(
     public hsConfig: HsConfig,
     public HsMapService: HsMapService,
@@ -542,16 +543,12 @@ export class HsSaveMapService {
 
   save2storage(evt): void {
     const data = {
-      layers: [],
+      layers: this.HsMapService.map
+        .getLayers()
+        .getArray()
+        .filter((lyr) => !this.internalLayers.includes(lyr))
+        .map((lyr) => this.layer2json(lyr)),
     };
-    const layers = [];
-    this.HsMapService.map.getLayers().forEach((layer) => {
-      if (layer.get('saveState')) {
-        const lyr = this.layer2json(layer);
-        layers.push(lyr);
-      }
-    });
-    data.layers = layers;
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good
     localStorage.setItem('hs_layers', JSON.stringify(data));
