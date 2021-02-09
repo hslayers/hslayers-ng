@@ -42,6 +42,8 @@ const SHOWINLAYERMANAGER = 'showInLayerManager';
 const THUMBNAIL = 'thumbnail';
 const VIRTUALATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
+const SUB_LAYERS = 'sublayers';
+
 export type Attribution = {
   onlineResource?: string;
   title?: string;
@@ -457,6 +459,23 @@ export function setShowInLayerManager(
 
 export function getShowInLayerManager(layer: Layer): boolean {
   return layer.get(SHOWINLAYERMANAGER);
+}
+
+/**
+ * Set list of all possible sub-layers for WMS
+ * @param layer
+ * @param sublayers String of all possible WMS layers sub-layer names separated by comma
+ */
+export function setSubLayers(layer: Layer, sublayers: string): void {
+  layer.set(SUB_LAYERS, sublayers);
+}
+
+/**
+ * Get list of all possible sub-layers for WMS
+ * @param layer
+ */
+export function getSubLayers(layer: Layer): string {
+  return layer.get(SUB_LAYERS);
 }
 
 export function setThumbnail(layer: Layer, thumbnail: string): void {
