@@ -241,8 +241,6 @@ export class HsAddDataArcGisService {
     const new_layer = new layer_class({
       title: layerName,
       source,
-      //minResolution: layer.minScale,
-      //maxResolution: layer.maxScale,
       removable: true,
       path,
     });

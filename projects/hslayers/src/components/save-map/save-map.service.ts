@@ -290,7 +290,7 @@ export class HsSaveMapService {
    *                            group, displayInLayerSwitcher, *visibility, *opacity
    *                            attribution, transitionEffect,
    *                             isBaseLayer, minResolution,
-   *                            maxResolution, minScale, maxScale, metadata,
+   *                            maxResolution, metadata,
    *                            abstract, opacity, singleTile, removable,
    *                            queryable, legend, projections,
    *                            wmsMinScale, wmsMaxScale
@@ -356,11 +356,12 @@ export class HsSaveMapService {
       if (layer.getMinResolution() !== null) {
         json.minResolution = layer.getMinResolution();
       }
-      if (layer.get('minScale') !== null) {
-        json.wmsMinScale = layer.get('minScale');
+      if (layer.getMinResolution() !== null) {
+        //TODO: Should be renamed in the composition specification tp minResolution
+        json.wmsMinScale = layer.getMinResolution();
       }
-      if (layer.get('maxScale') !== null) {
-        json.wmsMaxScale = layer.get('maxScale');
+      if (layer.getMaxResolution() !== null) {
+        json.wmsMaxScale = layer.getMaxResolution();
       }
       json.displayInLayerSwitcher = getShowInLayerManager(layer);
       if (getDimensions(layer)) {
