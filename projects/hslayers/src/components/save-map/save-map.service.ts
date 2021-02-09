@@ -30,6 +30,7 @@ import {
   getName,
   getPath,
   getShowInLayerManager,
+  getSubLayers,
   getTitle,
 } from '../../common/layer-extensions';
 @Injectable({
@@ -402,7 +403,7 @@ export class HsSaveMapService {
         }
         json.params = src.getParams();
         json.ratio = src.get('ratio') || src.ratio_;
-        json.subLayers = layer.get('subLayers');
+        json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }
       if (src.getUrl) {

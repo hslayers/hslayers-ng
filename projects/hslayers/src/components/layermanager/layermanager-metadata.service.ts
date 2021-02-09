@@ -13,6 +13,7 @@ import {
   setCacheCapabilities,
   setLegends,
   setMetadata,
+  getSubLayers,
 } from '../../common/layer-extensions';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -148,7 +149,7 @@ export class HsLayerManagerMetadataService {
 
   parseInfoForLayer(
     layer, //TODO:TYPE
-    layer_name: any,
+    layer_name: string,
     caps: any,
     fromSublayerParam: boolean
   ): void {
@@ -157,11 +158,11 @@ export class HsLayerManagerMetadataService {
       const layers = [];
       const legends: string[] = [];
 
-      layer_name = layer_name.split(',');
+      const subLayers = layer_name.split(',');
       //loop over layers from layer.LAYERS
-      for (let i = 0; i < layer_name.length; i++) {
+      for (let i = 0; i < subLayers.length; i++) {
         layerObject[i] = this.identifyLayerObject(
-          layer_name[i],
+          subLayers[i],
           caps.Capability.Layer
         );
         const styleWithLegend = layerObject[i].Style.find(
@@ -258,16 +259,15 @@ export class HsLayerManagerMetadataService {
         .then((capabilities_xml) => {
           const parser = new WMSCapabilities();
           const caps = parser.read(capabilities_xml);
-          const layer_name = layer.getSource().getParams().LAYERS;
-          const layer_name_params = layer.getSource().getParams().LAYERS;
+          const paramLayers: string = layer.getSource().getParams().LAYERS;
 
-          this.parseInfoForLayer(layer, layer_name_params, caps, false);
-          if (layer.get('sublayers')) {
-            this.parseInfoForLayer(layer, layer.get('sublayers'), caps, true);
+          this.parseInfoForLayer(layer, paramLayers, caps, false);
+          if (getSubLayers(layer)) {
+            this.parseInfoForLayer(layer, getSubLayers(layer), caps, true);
 
             const src = layer.getSource();
             const params = src.getParams();
-            params.LAYERS = params.LAYERS.concat(',', layer.get('sublayers'));
+            params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
             src.updateParams(params);
           }
 
