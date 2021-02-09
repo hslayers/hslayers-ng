@@ -3,14 +3,13 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
-import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
-
 import {HsCompositionsParserService} from '../compositions-parser.service';
-import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
+import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Observable, Subscription, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
+import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +21,7 @@ export class HsCompositionsMickaService {
     private $http: HttpClient,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsLogService: HsLogService
+    public HsToastService: HsToastService
   ) {}
 
   getCompositionsQueryUrl(endpoint, params, bbox): string {
@@ -86,7 +85,11 @@ export class HsCompositionsMickaService {
     response: any
   ): void {
     if (!response.records) {
-      this.HsLogService.error('No data received');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        endpoint.title + ': ' + 'COMMON.noDataReceived',
+        'warning'
+      );
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -149,12 +152,16 @@ export class HsCompositionsMickaService {
         responseType: 'json',
       })
       .pipe(
-        timeout(2000),
+        timeout(5000),
         map((response: any) => {
           this.compositionsReceived(endpoint, extentLayer, response);
         }),
         catchError((e) => {
-          this.HsLogService.error(e);
+          this.HsToastService.createToastPopupMessage(
+            'COMPOSITIONS.errorWhileRequestingCompositions',
+            endpoint.title + ': ' + e.message,
+            'danger'
+          );
           return of(e);
         })
       );

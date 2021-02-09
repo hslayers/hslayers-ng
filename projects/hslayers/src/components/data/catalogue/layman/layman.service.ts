@@ -1,12 +1,12 @@
-import {EMPTY, Observable, of} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError, map} from 'rxjs/operators';
-
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
+import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {catchError, map, timeout} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
@@ -15,7 +15,8 @@ export class HsLaymanBrowserService {
   constructor(
     private http: HttpClient,
     private log: HsLogService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public HsToastService: HsToastService
   ) {}
 
   /**
@@ -35,13 +36,18 @@ export class HsLaymanBrowserService {
         responseType: 'json',
       })
       .pipe(
+        timeout(5000),
         map((x: any) => {
           x.dataset = endpoint;
           this.datasetsReceived(x, textFilter);
           return x;
         }),
         catchError((e) => {
-          this.log.error(e);
+          this.HsToastService.createToastPopupMessage(
+            'ADDLAYERS.errorWhileRequestingLayers',
+            endpoint.title + ': ' + e.message,
+            'danger'
+          );
           endpoint.datasourcePaging.loaded = true;
           return of(e);
         })
@@ -57,7 +63,11 @@ export class HsLaymanBrowserService {
    */
   private datasetsReceived(data, textFilter?: string): void {
     if (!data.dataset) {
-      this.log.error('Malformed data received');
+      this.HsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        data.dataset.title + ': ' + 'COMMON.noDataReceived',
+        'warning'
+      );
       return;
     }
     const dataset = data.dataset;
