@@ -141,12 +141,17 @@ export default function (
               break;
             }
             case 'fulltext':
+              var target = document.getElementById('fulltextInput');
               var miniSearch = new MiniSearch({
                 fields: filter.valueFields,
                 idField: filter.idField,
-                searchOptions: { fuzzy: 0.1 }
+                searchOptions: {
+                  fuzzy: term => term.length > 2 ? 0.2 : null,
+                  combineWith: 'AND',
+                  prefix: term => term.length > 3
+                },
+                tokenize: (string) => string.split(/<|\s|,|&|;/)
               });
-              var target = document.getElementById('fulltextInput');
               var resultIds = null;
               $rootScope.suggests = null;
               if (target != null) {
