@@ -12,14 +12,14 @@ import VectorLayer from 'ol/layer/Vector';
 import {Polygon} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsAddDataVectorService} from '../data/vector/add-data-vector.service';
+import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawService} from './draw.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLaymanBrowserService} from '../data/catalogue/layman/layman.service';
+import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
 import {HsLaymanService} from '../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';

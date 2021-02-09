@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HsAddDataModule} from '../data/add-data.module';
+import {HsAddDataModule} from '../add-data/add-data.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
