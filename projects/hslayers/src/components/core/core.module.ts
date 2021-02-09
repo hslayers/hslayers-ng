@@ -2,7 +2,7 @@ import * as merge from 'deepmerge';
 import cs from '../../assets/locales/cs.json';
 import en from '../../assets/locales/en.json';
 import lv from '../../assets/locales/lv.json';
-import {HsAddDataModule} from '../data/add-data.module';
+import {HsAddDataModule} from '../add-data/add-data.module';
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfig} from '../../config.service';

@@ -1,4 +1,4 @@
-import {HsAddDataLayerDescriptor} from '../../components/data/catalogue/add-data-layer-descriptor.interface';
+import {HsAddDataLayerDescriptor} from '../../components/add-data/catalogue/add-data-layer-descriptor.interface';
 
 export interface HsEndpoint {
   httpCall: any;

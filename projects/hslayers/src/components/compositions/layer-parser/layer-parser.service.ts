@@ -13,10 +13,10 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Injectable} from '@angular/core';
 
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
-import {HsAddDataVectorService} from '../../data/vector/add-data-vector.service';
+import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
-import {HsVectorLayerOptions} from '../../data/vector/vector-layer-options.type';
+import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 

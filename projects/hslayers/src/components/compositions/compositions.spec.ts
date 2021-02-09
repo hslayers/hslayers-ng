@@ -8,7 +8,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HsAddDataVectorService} from '../data/vector/add-data-vector.service';
+import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
