@@ -11,36 +11,36 @@ const ATTRIBUTION = 'attribution';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const CLUSTER = 'cluster';
-const CUSTOMINFOTEMPLATE = 'customInfoTemplate';
+const CUSTOM_INFO_TEMPLATE = 'customInfoTemplate';
 const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
 const ENABLEPROXY = 'enableProxy';
-const EVENTSSUSPENDED = 'eventsSuspended';
+const EVENTS_SUSPENDED = 'eventsSuspended';
 const EXCLUSIVE = 'exclusive';
-const FEATUREINFOLANG = 'featureInfoLang';
-const FROMCOMPOSITION = 'fromComposition';
-const GETFEATUREINFOTARGET = 'getFeatureInfoTarget';
-const HSORIGINALSTYLE = 'hsOriginalStyle';
-const HSLAYMANSYNCHRONIZING = 'hsLaymanSynchronizing';
-const INFOFORMAT = 'infoFormat';
-const INLINELEGEND = 'inlineLegend';
-const LAYMANLAYERDESCRIPTOR = 'laymanLayerDescriptor';
-const MAXRESOLUTIONDENOMINATOR = 'maxResolutionDenominator';
+const FEATURE_INFO_LANG = 'featureInfoLang';
+const FROM_COMPOSITION = 'fromComposition';
+const GET_FEATURE_INFO_TARGET = 'getFeatureInfoTarget';
+const HS_ORIGINAL_STYLE = 'hsOriginalStyle';
+const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
+const INFO_FORMAT = 'infoFormat';
+const INLINE_LEGEND = 'inlineLegend';
+const LAYMAN_LAYER_DESCRIPTOR = 'laymanLayerDescriptor';
+const MAX_RESOLUTION_DENOMINATOR = 'maxResolutionDenominator';
 const METADATA = 'metadata';
-const MINIMUMTERRAINLEVEL = 'minimumTerrainLevel';
-const ONFEATURESELECTED = 'onFeatureSelected';
+const MINIMUM_TERRAIN_LEVEL = 'minimumTerrainLevel';
+const ON_FEATURE_SELECTED = 'onFeatureSelected';
 const PATH = 'path';
 const POPUP = 'popUp';
-const POPUPCLASS = 'popupClass';
+const POPUP_CLASS = 'popupClass';
 const QUERYABLE = 'queryable';
-const QUERYCAPABILITIES = 'queryCapabilities';
-const QUERYFILTER = 'queryFilter';
+const QUERY_CAPABILITIES = 'queryCapabilities';
+const QUERY_FILTER = 'queryFilter';
 const REMOVABLE = 'removable';
-const SHOWINLAYERMANAGER = 'showInLayerManager';
+const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
 const THUMBNAIL = 'thumbnail';
-const VIRTUALATTRIBUTES = 'virtualAttributes';
+const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 
@@ -145,11 +145,11 @@ export function setCustomInfoTemplate(
   layer: Layer,
   customInfoTemplate: string
 ): void {
-  layer.set(CUSTOMINFOTEMPLATE, customInfoTemplate);
+  layer.set(CUSTOM_INFO_TEMPLATE, customInfoTemplate);
 }
 
 export function getCustomInfoTemplate(layer: Layer): string {
-  return layer.get(CUSTOMINFOTEMPLATE);
+  return layer.get(CUSTOM_INFO_TEMPLATE);
 }
 
 export function setDeclutter(layer: Layer, declutterActive: boolean): void {
@@ -220,11 +220,11 @@ export function setEventsSuspended(
   layer: Layer,
   eventsSuspended: number
 ): void {
-  layer.set(EVENTSSUSPENDED, eventsSuspended);
+  layer.set(EVENTS_SUSPENDED, eventsSuspended);
 }
 
 export function getEventsSuspended(layer: Layer): number {
-  return layer.get(EVENTSSUSPENDED);
+  return layer.get(EVENTS_SUSPENDED);
 }
 
 export function setExclusive(layer: Layer, exclusive: boolean): void {
@@ -236,81 +236,81 @@ export function getExclusive(layer: Layer): boolean {
 }
 
 export function setFeatureInfoLang(layer: Layer, featureInfoLang: any): void {
-  layer.set(FEATUREINFOLANG, featureInfoLang);
+  layer.set(FEATURE_INFO_LANG, featureInfoLang);
 }
 
 export function getFeatureInfoLang(layer: Layer): any {
-  return layer.get(FEATUREINFOLANG);
+  return layer.get(FEATURE_INFO_LANG);
 }
 
 export function setFromComposition(
   layer: Layer,
   fromCompostion: boolean
 ): void {
-  layer.set(FROMCOMPOSITION, fromCompostion);
+  layer.set(FROM_COMPOSITION, fromCompostion);
 }
 
 export function getFromComposition(layer: Layer): boolean {
-  return layer.get(FROMCOMPOSITION);
+  return layer.get(FROM_COMPOSITION);
 }
 
 export function setFeatureInfoTarget(
   layer: Layer,
   featureInfoTarget: string
 ): void {
-  layer.set(GETFEATUREINFOTARGET, featureInfoTarget);
+  layer.set(GET_FEATURE_INFO_TARGET, featureInfoTarget);
 }
 
 export function getFeatureInfoTarget(layer: Layer): string {
-  return layer.get(GETFEATUREINFOTARGET);
+  return layer.get(GET_FEATURE_INFO_TARGET);
 }
 
 export function setHsOriginalStyle(layer: Layer, hsOriginalStyle: Style): void {
-  layer.set(HSORIGINALSTYLE, hsOriginalStyle);
+  layer.set(HS_ORIGINAL_STYLE, hsOriginalStyle);
 }
 
 export function getHsOriginalStyle(layer: Layer): Style {
-  return layer.get(HSORIGINALSTYLE);
+  return layer.get(HS_ORIGINAL_STYLE);
 }
 
 export function setHsLaymanSynchronizing(
   layer: Layer,
   hsLaymanSynchronizing: boolean
 ): void {
-  layer.set(HSLAYMANSYNCHRONIZING, hsLaymanSynchronizing);
+  layer.set(HS_LAYMAN_SYNCHRONIZING, hsLaymanSynchronizing);
 }
 
 export function getHsLaymanSynchronizing(layer: Layer): boolean {
-  return layer.get(HSLAYMANSYNCHRONIZING);
+  return layer.get(HS_LAYMAN_SYNCHRONIZING);
 }
 
 export function setInfoFormat(layer: Layer, infoFormat: string): void {
-  layer.set(INFOFORMAT, infoFormat);
+  layer.set(INFO_FORMAT, infoFormat);
 }
 
 export function getInfoFormat(layer: Layer): string {
-  return layer.get(INFOFORMAT);
+  return layer.get(INFO_FORMAT);
 }
 
 export function setInlineLegend(layer: Layer, inlineLegend: boolean): void {
-  layer.set(INLINELEGEND, inlineLegend);
+  layer.set(INLINE_LEGEND, inlineLegend);
 }
 
 export function getInlineLegend(layer: Layer): boolean {
-  return layer.get(INLINELEGEND);
+  return layer.get(INLINE_LEGEND);
 }
 
 export function setLaymanLayerDescriptor(
   layer: Layer,
   hsLaymanLayerDescriptor: HsLaymanLayerDescriptor
 ): void {
-  layer.set(LAYMANLAYERDESCRIPTOR, hsLaymanLayerDescriptor);
+  layer.set(LAYMAN_LAYER_DESCRIPTOR, hsLaymanLayerDescriptor);
 }
 
 export function getLaymanLayerDescriptor(
   layer: Layer
 ): HsLaymanLayerDescriptor {
-  return layer.get(LAYMANLAYERDESCRIPTOR);
+  return layer.get(LAYMAN_LAYER_DESCRIPTOR);
 }
 
 export function setLegends(layer: Layer, path: string | string[]): void {
@@ -334,11 +334,11 @@ export function setMaxResolutionDenominator(
   layer: Layer,
   maxResolutionDenominator: number
 ): void {
-  layer.set(MAXRESOLUTIONDENOMINATOR, maxResolutionDenominator);
+  layer.set(MAX_RESOLUTION_DENOMINATOR, maxResolutionDenominator);
 }
 
 export function getMaxResolutionDenominator(layer: Layer): number {
-  return layer.get(MAXRESOLUTIONDENOMINATOR);
+  return layer.get(MAX_RESOLUTION_DENOMINATOR);
 }
 
 export type MetadataUrl = {
@@ -369,11 +369,11 @@ export function setMinimumTerrainLevel(
   layer: Layer,
   minimumTerrainLevel: number
 ): void {
-  layer.set(MINIMUMTERRAINLEVEL, minimumTerrainLevel);
+  layer.set(MINIMUM_TERRAIN_LEVEL, minimumTerrainLevel);
 }
 
 export function getMinimumTerrainLevel(layer: Layer): number {
-  return layer.get(MINIMUMTERRAINLEVEL);
+  return layer.get(MINIMUM_TERRAIN_LEVEL);
 }
 
 interface FeatureSelector {
@@ -384,11 +384,11 @@ export function setOnFeatureSelected(
   layer: Layer,
   onFeatureSelected: FeatureSelector
 ): void {
-  layer.set(ONFEATURESELECTED, onFeatureSelected);
+  layer.set(ON_FEATURE_SELECTED, onFeatureSelected);
 }
 
 export function getOnFeatureSelected(layer: Layer): FeatureSelector {
-  return layer.get(ONFEATURESELECTED);
+  return layer.get(ON_FEATURE_SELECTED);
 }
 
 export function setPath(layer: Layer, path: string): void {
@@ -408,11 +408,11 @@ export function getPopUp(layer: Layer): popUp {
 }
 
 export function setPopupClass(layer: Layer, popupClass: string): void {
-  layer.set(POPUPCLASS, popupClass);
+  layer.set(POPUP_CLASS, popupClass);
 }
 
 export function getPopupClass(layer: Layer): string {
-  return layer.get(POPUPCLASS);
+  return layer.get(POPUP_CLASS);
 }
 
 export function setQueryable(layer: Layer, queryable: boolean): void {
@@ -427,19 +427,19 @@ export function setQueryCapabilities(
   layer: Layer,
   queryCapabilities: boolean
 ): void {
-  layer.set(QUERYCAPABILITIES, queryCapabilities);
+  layer.set(QUERY_CAPABILITIES, queryCapabilities);
 }
 
 export function getQueryCapabilities(layer: Layer): boolean {
-  return layer.get(QUERYCAPABILITIES);
+  return layer.get(QUERY_CAPABILITIES);
 }
 
 export function setQueryFilter(layer: Layer, queryFilter: any): void {
-  layer.set(QUERYFILTER, queryFilter);
+  layer.set(QUERY_FILTER, queryFilter);
 }
 
 export function getQueryFilter(layer: Layer): any {
-  return layer.get(QUERYFILTER);
+  return layer.get(QUERY_FILTER);
 }
 
 export function setRemovable(layer: Layer, removable: boolean): void {
@@ -454,11 +454,11 @@ export function setShowInLayerManager(
   layer: Layer,
   showInLayerManager: boolean
 ): void {
-  layer.set(SHOWINLAYERMANAGER, showInLayerManager);
+  layer.set(SHOW_IN_LAYER_MANAGER, showInLayerManager);
 }
 
 export function getShowInLayerManager(layer: Layer): boolean {
-  return layer.get(SHOWINLAYERMANAGER);
+  return layer.get(SHOW_IN_LAYER_MANAGER);
 }
 
 /**
@@ -490,11 +490,11 @@ export function setVirtualAttributes(
   layer: Layer,
   virtualAttributes: any
 ): void {
-  layer.set(VIRTUALATTRIBUTES, virtualAttributes);
+  layer.set(VIRTUAL_ATTRIBUTES, virtualAttributes);
 }
 
 export function getVirtualAttributes(layer: Layer): any {
-  return layer.get(VIRTUALATTRIBUTES);
+  return layer.get(VIRTUAL_ATTRIBUTES);
 }
 export const HsLayerExt = {
   setTitle,
