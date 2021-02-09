@@ -6,7 +6,6 @@ export class VectorLayerDescriptor {
   layerParams: {
     abstract: any;
     definition: any;
-    saveState: boolean;
     name: any;
     title: any;
     opacity: any;
@@ -38,7 +37,6 @@ export class VectorLayerDescriptor {
     this.layerParams = {
       abstract,
       definition,
-      saveState: true,
       name,
       title,
       opacity: options.opacity || 1,

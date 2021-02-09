@@ -389,7 +389,6 @@ export class HsAddDataUrlWmsService {
       source,
       minResolution: layer.MinScaleDenominator,
       maxResolution: layer.MaxScaleDenominator,
-      saveState: true,
       removable: true,
       abstract: layer.Abstract,
       MetadataURL: layer.MetadataURL,

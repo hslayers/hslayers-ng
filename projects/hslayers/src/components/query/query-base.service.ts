@@ -15,6 +15,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getFeatures} from '../../common/feature-extensions';
 import {getPopUp, getTitle} from '../../common/layer-extensions';
@@ -76,6 +77,7 @@ export class HsQueryBaseService {
     public hsLanguageService: HsLanguageService,
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
+    private HsSaveMapService: HsSaveMapService,
     private DomSanitizer: DomSanitizer,
     private zone: NgZone
   ) {
@@ -350,6 +352,7 @@ export class HsQueryBaseService {
     this.queryActive = true;
     this.HsMapService.loaded().then((map) => {
       map.addLayer(this.queryLayer);
+      this.HsSaveMapService.internalLayers.push(this.queryLayer);
       this.queryStatusChanges.next(true);
     });
   }
