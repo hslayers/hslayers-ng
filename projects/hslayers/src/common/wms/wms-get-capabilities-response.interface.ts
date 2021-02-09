@@ -108,7 +108,7 @@ declare type StyleType = {
   StyleSheetURL?: StyleSheetURLType;
   StyleURL?: StyleURLType;
 };
-declare type LayerType = {
+export type WmsLayer = {
   Name?: NameType;
   Title: TitleType;
   Abstract?: AbstractType;
@@ -126,7 +126,7 @@ declare type LayerType = {
   Style?: StyleType | StyleType[];
   MinScaleDenominator?: number;
   MaxScaleDenominator?: number;
-  Layer?: LayerType | LayerType[];
+  Layer?: WmsLayer | WmsLayer[];
   queryable?: boolean;
   cascaded?: number; // UInt not yet supported by TS
   opaque?: boolean;
@@ -160,7 +160,7 @@ export interface WMSGetCapabilitiesResponse {
       Format: FormatType | FormatType[];
     };
     [_ExtendedCapabilities: string]: unknown;
-    Layer?: LayerType;
+    Layer?: WmsLayer;
   };
   version: string;
   updateSequence?: string;
