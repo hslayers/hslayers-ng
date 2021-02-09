@@ -43,15 +43,14 @@ export class HsCompostionsListItemComponent {
    * @param record Composition to show details
    * Load info about composition through service and display composition info dialog
    */
-  detailComposition(record): void {
+  async detailComposition(record): Promise<void> {
     try {
-      this.HsCompositionsService.getCompositionInfo(record, (info) => {
-        if (info !== undefined) {
-          this.infoDialogBootstrap(info);
-        } else {
-          throw new Error('COMPOSITIONS.metadataNotAvailable');
-        }
-      });
+      const info = await this.HsCompositionsService.getCompositionInfo(record);
+      if (info !== undefined) {
+        this.infoDialogBootstrap(info);
+      } else {
+        throw new Error('COMPOSITIONS.metadataNotAvailable');
+      }
     } catch (ex) {
       this.HsToastService.createToastPopupMessage(
         'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
