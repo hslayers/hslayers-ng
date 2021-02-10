@@ -72,11 +72,12 @@
       "loadingToManyAtOnce": "prvků. Načítání příliš mnoha prvků najednou (při oddálení) může ovlivnit výkon aplikace",
       "selectedLayerContains": "Vybraná vrstva obsahuje"
     },
-    "WMSCapabilitiesParsingProblem": "Problém při syntaktické analýze WMS Capabilities",
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
     },
-    "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru"
+    "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru",
+    "capabilitiesParsingProblem": "Problém při načítání informací o službě",
+    "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategorií"
   },
   "COMMON": {
     "abstract": "Abstrakt",

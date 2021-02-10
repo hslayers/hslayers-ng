@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -43,7 +44,8 @@ export class HsAddDataWmtsComponent {
     public HsEventBusService: HsEventBusService,
     public HsLogService: HsLogService,
     public HsLayoutService: HsLayoutService,
-    public HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.map_projection = this.HsMapService.map
       .getView()
@@ -66,6 +68,9 @@ export class HsAddDataWmtsComponent {
             this.wmtsCapabilitiesError.next(e);
           }
         }
+        if (type === 'error') {
+          this.wmtsCapabilitiesError.next(response.message);
+        }
       }
     );
 
@@ -83,6 +88,12 @@ export class HsAddDataWmtsComponent {
       this.layersLoading = false;
 
       this.error = e.toString();
+      if (this.error.includes('property')) {
+        this.error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          'serviceTypeNotMatching'
+        );
+      }
 
       this.HsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,
@@ -93,7 +104,6 @@ export class HsAddDataWmtsComponent {
   }
   connect = (): void => {
     try {
-      console.log('console');
       this.layersLoading = true;
       this.HsWmtsGetCapabilitiesService.requestGetCapabilities(this.url);
       this.showDetails = true;

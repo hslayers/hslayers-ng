@@ -4,6 +4,7 @@ import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 
@@ -17,7 +18,6 @@ export class HsAddDataWmsComponent {
   hasNestedLayers;
   getDimensionValues;
   sourceHistory;
-  showDetails: boolean;
   url: string;
   layerToSelect: any;
   error: any;
@@ -27,7 +27,8 @@ export class HsAddDataWmsComponent {
     public hsHistoryListService: HsHistoryListService,
     public hsLog: HsLogService,
     public HsDialogContainerService: HsDialogContainerService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.data = this.HsAddDataUrlWmsService.data;
     this.url = '';
@@ -59,14 +60,25 @@ export class HsAddDataWmsComponent {
             this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
           }
         }
+        if (type === 'error') {
+          this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(
+            response.message
+          );
+        }
       }
     );
     this.HsAddDataUrlWmsService.getWmsCapabilitiesError.subscribe((e) => {
       this.hsLog.warn(e);
       this.url = null;
-      this.showDetails = false;
+      this.HsAddDataUrlWmsService.showDetails = false;
 
       this.error = e.toString();
+      if (this.error.includes('property')) {
+        this.error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          'serviceTypeNotMatching'
+        );
+      }
       this.HsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,
         this.error
@@ -82,7 +94,7 @@ export class HsAddDataWmsComponent {
    */
   clear(): void {
     this.updateUrl('');
-    this.showDetails = false;
+    this.HsAddDataUrlWmsService.showDetails = false;
   }
 
   connect = (layerToSelect: string): void => {
@@ -90,7 +102,6 @@ export class HsAddDataWmsComponent {
       this.hsHistoryListService.addSourceHistory('wms', this.url);
       this.layerToSelect = layerToSelect;
       this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
-      this.showDetails = true;
     } catch (e) {
       this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
     }

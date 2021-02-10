@@ -39,7 +39,7 @@ export class HsAddDataArcGisService {
   //TODO: all dimension related things need to be refactored into seperate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
 
-  capabilitiesReceived(response, layerToSelect): void {
+  capabilitiesReceived(response, layerToSelect: string): void {
     try {
       const caps = response;
       this.data.mapProjection = this.hsMapService.map

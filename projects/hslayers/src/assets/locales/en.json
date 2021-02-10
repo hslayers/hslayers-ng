@@ -72,11 +72,12 @@
       "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
       "selectedLayerContains": "Selected layer contains"
     },
-    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsing problem",
     "WMTS": {
       "tileMatrix": "Tile matrix"
     },
-    "errorWhileRequestingLayers": "Error while requesting layers"
+    "errorWhileRequestingLayers": "Error while requesting layers",
+    "capabilitiesParsingProblem": "Capabilities parsing problem",
+    "serviceTypeNotMatching": "URL service type does't not match selected category"
   },
   "COMMON": {
     "abstract": "Abstract",

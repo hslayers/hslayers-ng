@@ -110,7 +110,11 @@ export class HsWmsGetCapabilitiesService {
       }
       return r;
     } catch (e) {
-      throw e;
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'error',
+        response: e,
+      });
+      throw e
     }
   }
 

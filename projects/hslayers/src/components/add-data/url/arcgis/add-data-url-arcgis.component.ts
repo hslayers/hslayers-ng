@@ -1,32 +1,87 @@
 import {Component} from '@angular/core';
 
-import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
+import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
+import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLogService} from '../../../../common/log/log.service';
 
 @Component({
   selector: 'hs-add-data-url-arcgis',
   templateUrl: './add-data-url-arcgis.directive.html',
-  //TODO: require('./add-arcgis-layer.md.directive.html')
 })
 export class HsAddDataArcGisComponent {
   data;
   showDetails;
   sourceHistory;
   url;
+  layerToSelect: any;
+  error: any;
 
   constructor(
     public HsAddDataArcGisService: HsAddDataArcGisService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
-    public hsHistoryListService: HsHistoryListService
+    public hsHistoryListService: HsHistoryListService,
+    public HsLanguageService: HsLanguageService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public hsLog: HsLogService
   ) {
     this.data = HsAddDataArcGisService.data;
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type === 'arcgis') {
         this.setUrlAndConnect(uri, layer);
       }
+    });
+
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
+      async ({type, response}) => {
+        if (type === 'ArcGIS') {
+          try {
+            await this.HsAddDataArcGisService.capabilitiesReceived(
+              response,
+              this.layerToSelect
+            );
+            if (this.layerToSelect) {
+              this.addLayers(true);
+            }
+          } catch (e) {
+            if (e.status == 401) {
+              this.HsAddDataArcGisService.arcgisCapsParseError.next(
+                'Unauthorized access. You are not authorized to query data from this service'
+              );
+              return;
+            }
+            this.HsAddDataArcGisService.arcgisCapsParseError.next(e);
+          }
+        }
+        if (type === 'error') {
+          this.HsAddDataArcGisService.arcgisCapsParseError.next(
+            response.message
+          );
+        }
+      }
+    );
+
+    this.HsAddDataArcGisService.arcgisCapsParseError.subscribe((e) => {
+      this.hsLog.warn(e);
+      this.url = null;
+      this.showDetails = false;
+
+      this.error = e.toString();
+      if (this.error.includes('property')) {
+        this.error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          'serviceTypeNotMatching'
+        );
+      }
+      this.HsDialogContainerService.create(
+        HsGetCapabilitiesErrorComponent,
+        this.error
+      );
     });
     //TODO: this.sourceHistory = this.HsAddDataArcGisService.sourceHistory;
   }
@@ -45,17 +100,9 @@ export class HsAddDataArcGisComponent {
 
   connect = (layerToSelect): void => {
     this.hsHistoryListService.addSourceHistory('Arcgis', this.url);
-    this.hsArcgisGetCapabilitiesService
-      .requestGetCapabilities(this.url)
-      .then((capabilities) => {
-        this.HsAddDataArcGisService.data.getMapUrl = this.url;
-        setTimeout((_) => {
-          this.HsAddDataArcGisService.capabilitiesReceived(
-            capabilities,
-            layerToSelect
-          );
-        }, 0);
-      });
+    this.hsArcgisGetCapabilitiesService.requestGetCapabilities(this.url);
+    this.HsAddDataArcGisService.data.getMapUrl = this.url;
+
     this.showDetails = true;
   };
 

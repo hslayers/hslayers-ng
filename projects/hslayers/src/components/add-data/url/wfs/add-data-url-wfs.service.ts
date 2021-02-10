@@ -118,81 +118,86 @@ export class HsAddDataWfsService {
    * @returns {Promise}
    */
   async parseCapabilities(response: string): Promise<any> {
-    this.loadingFeatures = false;
+    try {
+      this.loadingFeatures = false;
 
-    let caps: any = xml2Json.xml2js(response, {compact: true});
-    if (caps['wfs:WFS_Capabilities']) {
-      caps = caps['wfs:WFS_Capabilities'];
-    } else {
-      caps = caps['WFS_Capabilities'];
-    }
-    this.parseWFSJson(caps);
-    this.title = caps.ServiceIdentification.Title;
-    // this.description = addAnchors(caps.ServiceIdentification.Abstract);
-    this.version = caps.ServiceIdentification.ServiceTypeVersion;
-    const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
-      ? caps.FeatureTypeList.FeatureType[0]
-      : caps.FeatureTypeList.FeatureType;
-    this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
-      ? caps.FeatureTypeList.FeatureType
-      : [caps.FeatureTypeList.FeatureType];
-    this.bbox = layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
-
-    this.output_format = this.getPreferredFormat(this.version);
-
-    this.services = caps.FeatureTypeList.FeatureType[0]
-      ? caps.FeatureTypeList.FeatureType
-      : [caps.FeatureTypeList.FeatureType];
-
-    const srsType = layer.DefaultSRS ? 'SRS' : 'CRS';
-    if (layer['Default' + srsType] !== undefined) {
-      this.srss = [layer['Default' + srsType]];
-    } else {
-      this.srss = [];
-      this.srss.push('EPSG:4326');
-    }
-
-    const otherSRS = layer['Other' + srsType];
-    if (otherSRS) {
-      if (typeof otherSRS == 'string') {
-        this.srss.push(otherSRS);
+      let caps: any = xml2Json.xml2js(response, {compact: true});
+      if (caps['wfs:WFS_Capabilities']) {
+        caps = caps['wfs:WFS_Capabilities'];
       } else {
-        for (const srs of layer['Other' + srsType]) {
+        caps = caps['WFS_Capabilities'];
+      }
+      this.parseWFSJson(caps);
+      this.title = caps.ServiceIdentification.Title;
+      // this.description = addAnchors(caps.ServiceIdentification.Abstract);
+      this.version = caps.ServiceIdentification.ServiceTypeVersion;
+      const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
+        ? caps.FeatureTypeList.FeatureType[0]
+        : caps.FeatureTypeList.FeatureType;
+      this.layers = Array.isArray(caps.FeatureTypeList.FeatureType)
+        ? caps.FeatureTypeList.FeatureType
+        : [caps.FeatureTypeList.FeatureType];
+      this.bbox =
+        layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
+
+      this.output_format = this.getPreferredFormat(this.version);
+
+      this.services = caps.FeatureTypeList.FeatureType[0]
+        ? caps.FeatureTypeList.FeatureType
+        : [caps.FeatureTypeList.FeatureType];
+
+      const srsType = layer.DefaultSRS ? 'SRS' : 'CRS';
+      if (layer['Default' + srsType] !== undefined) {
+        this.srss = [layer['Default' + srsType]];
+      } else {
+        this.srss = [];
+        this.srss.push('EPSG:4326');
+      }
+
+      const otherSRS = layer['Other' + srsType];
+      if (otherSRS) {
+        if (typeof otherSRS == 'string') {
+          this.srss.push(otherSRS);
+        } else {
+          for (const srs of layer['Other' + srsType]) {
+            this.srss.push(srs);
+          }
+        }
+      }
+
+      if (this.srss[0] === undefined) {
+        this.srss = [caps.FeatureTypeList.FeatureType[0]['Default' + srsType]];
+        for (const srs of caps.FeatureTypeList.FeatureType[0][
+          'Other' + srsType
+        ]) {
           this.srss.push(srs);
         }
       }
-    }
-
-    if (this.srss[0] === undefined) {
-      this.srss = [caps.FeatureTypeList.FeatureType[0]['Default' + srsType]];
-      for (const srs of caps.FeatureTypeList.FeatureType[0][
-        'Other' + srsType
-      ]) {
-        this.srss.push(srs);
+      this.srss = this.parseEPSG(this.srss);
+      if (this.srss.length == 0) {
+        this.srss = ['EPSG:3857'];
       }
-    }
-    this.srss = this.parseEPSG(this.srss);
-    if (this.srss.length == 0) {
-      this.srss = ['EPSG:3857'];
-    }
 
-    this.srs = (() => {
-      for (const srs of this.srss) {
-        if (srs.includes('3857')) {
-          return srs;
+      this.srs = (() => {
+        for (const srs of this.srss) {
+          if (srs.includes('3857')) {
+            return srs;
+          }
         }
-      }
-      return this.srss[0];
-    })();
+        return this.srss[0];
+      })();
 
-    setTimeout(() => {
-      try {
-        this.parseFeatureCount();
-      } catch (e) {
-        this.wfsCapabilitiesError.next(e);
-      }
-    });
-    return this.bbox;
+      setTimeout(() => {
+        try {
+          this.parseFeatureCount();
+        } catch (e) {
+          this.wfsCapabilitiesError.next(e);
+        }
+      });
+      return this.bbox;
+    } catch (e) {
+      this.wfsCapabilitiesError.next(e);
+    }
   }
 
   getPreferredFormat(version: string): string {
@@ -230,7 +235,7 @@ export class HsAddDataWfsService {
             const doc = oDOM.documentElement;
             service.featureCount = doc.getAttribute('numberOfFeatures');
             //WFS 2.0.0
-            if (service.featureCount == 0 || !service.featureCount){
+            if (service.featureCount == 0 || !service.featureCount) {
               service.featureCount = doc.getAttribute('numberMatched');
             }
 
@@ -272,9 +277,7 @@ export class HsAddDataWfsService {
         }
       }
     } catch (e) {
-      throw new Error(
-        'GetCapabilities parsing failed. Likely unexpected implementation'
-      );
+      throw new Error(e);
     }
   }
 
@@ -293,14 +296,14 @@ export class HsAddDataWfsService {
 
   readFeatures(doc) {
     let features;
-      const wfs = new WFS({version: this.version});
-      features = wfs.readFeatures(doc, {
-        dataProjection: this.srs,
-        featureProjection:
-          this.HsMapService.map.getView().getProjection().getCode() == this.srs
-            ? ''
-            : this.HsMapService.map.getView().getProjection(),
-      });
+    const wfs = new WFS({version: this.version});
+    features = wfs.readFeatures(doc, {
+      dataProjection: this.srs,
+      featureProjection:
+        this.HsMapService.map.getView().getProjection().getCode() == this.srs
+          ? ''
+          : this.HsMapService.map.getView().getProjection(),
+    });
     return features;
   }
 }
