@@ -236,7 +236,7 @@ export class HsLayerManagerMetadataService {
           const caps = parser.read(capabilities_xml);
           const paramLayers: string = layer.getSource().getParams().LAYERS;
 
-          this.parseLayerInfo(layer, paramLayers, caps, getSubLayers(layer));
+          this.parseLayerInfo(layer, paramLayers, caps);
           if (getSubLayers(layer)) {
             const src = layer.getSource();
             const params = src.getParams();
