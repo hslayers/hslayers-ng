@@ -7,6 +7,7 @@ import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -38,7 +39,8 @@ export class HsAddDataWfsComponent {
     public hsLog: HsLogService,
     public HsMapService: HsMapService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public HsLanguageService: HsLanguageService
   ) {
     this.HsEventBusService.olMapLoads.subscribe(() => {
       this.mapProjection = this.HsMapService.map
@@ -79,6 +81,9 @@ export class HsAddDataWfsComponent {
             this.HsAddDataWfsService.wfsCapabilitiesError.next(e);
           }
         }
+        if (type === 'error') {
+          this.HsAddDataWfsService.wfsCapabilitiesError.next(response.message);
+        }
       }
     );
 
@@ -95,12 +100,12 @@ export class HsAddDataWfsComponent {
       this.showDetails = false;
 
       this.error = e.toString();
-      // const previousDialog = HsLayoutService.contentWrapper.querySelector(
-      //   '.hs-ows-wms-capabilities-error'
-      // );
-      // if (previousDialog) {
-      //   previousDialog.parentNode.removeChild(previousDialog);
-      // }
+      if (this.error.includes('TypeError')) {
+        this.error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          'serviceTypeNotMatching'
+        );
+      }
       this.HsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,
         this.error

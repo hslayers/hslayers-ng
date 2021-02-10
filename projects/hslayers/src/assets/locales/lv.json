@@ -72,11 +72,12 @@
       "loadingToManyAtOnce": "grafiskie objekti. Pārāk daudzu objektu ielāde vienlaikus (kamēr karte ir tālināta) var ietekmēt lietotnes veiktspēju",
       "selectedLayerContains": "Atlasītajā slānī ir"
     },
-    "WMSCapabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
     },
-    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus"
+    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
+    "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
+    "serviceTypeNotMatching": "URL service type does't not match selected category"
   },
   "COMMON": {
     "abstract": "Apraksts",

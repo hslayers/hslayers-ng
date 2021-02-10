@@ -25,6 +25,7 @@ export class HsAddDataUrlWmsService {
   getDimensionValues;
   data;
   getWmsCapabilitiesError: Subject<any> = new Subject();
+  showDetails: boolean;
   constructor(
     public hsMapService: HsMapService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -148,6 +149,7 @@ export class HsAddDataUrlWmsService {
         'text/html',
       ]);
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
+      this.showDetails = true;
     } catch (e) {
       this.getWmsCapabilitiesError.next(e);
     }

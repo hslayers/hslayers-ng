@@ -88,16 +88,24 @@ export class HsWmtsGetCapabilitiesService {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.HsUtilsService.proxify(url);
-    const r = await this.HttpClient.get(url, {
-      responseType: 'text',
-    }).toPromise();
+    try {
+      url = this.HsUtilsService.proxify(url);
+      const r = await this.HttpClient.get(url, {
+        responseType: 'text',
+      }).toPromise();
 
-    this.HsEventBusService.owsCapabilitiesReceived.next({
-      type: 'WMTS',
-      response: r,
-    });
-    return r;
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'WMTS',
+        response: r,
+      });
+      return r;
+    } catch (error) {
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'error',
+        response: error,
+      });
+      throw error;
+    }
   }
 
   /**
