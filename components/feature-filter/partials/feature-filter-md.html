@@ -5,15 +5,12 @@
 				style="width: 24px;"></md-checkbox>
 			{{ filter.title }}
 		</md-chip>
-		<md-chip ng-switch-when="fulltext"  ng-class="{active: filterChanged(filter)}">
+		<md-chip ng-switch-when="fulltext" ng-class="{active: filterChanged(filter)}">
 			<md-input-container md-no-float class="hs-fulltext-searchbox">
-				<input id="fulltextInput" class="hs-fulltext-searchbox-input" ng-model="searchString" ng-change="applyFilters()" placeholder="{{filter.title}}">
+				<input id="fulltextInput" class="hs-fulltext-searchbox-input" ng-model="searchString" ng-change="applyFilters()" ng-focus="showFilter($event, filter)" placeholder="{{filter.title}}">
 				</input>
 			</md-input-container>
 			<md-icon ng-if="filterChanged(filter)" ng-click="resetFilter($event, filter)">close</md-icon>
-			<div class="hs-fulltext-suggestions">
-				<li class="hs-fulltext-suggestions-line" ng-repeat="value in suggests" ng-click="assignValue(value)">{{value}}</li>
-			</div>
 		</md-chip>
 		<md-chip ng-switch-default ng-click="showFilter($event, filter)" ng-class="{active: filterChanged(filter)}">
 			{{ filter.title }}

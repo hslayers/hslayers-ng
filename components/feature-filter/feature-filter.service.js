@@ -67,9 +67,10 @@ export default function (
                 return true;
               }
               const arrayset = feature.getProperties()[filter.valueField];
+              let d;
               switch (filter.type.parameters) {
                 case 'or':
-                  var d = false;
+                  d = false;
                   arrayset.forEach((item) => {
                     if (filter.selected.indexOf(item) !== -1) {
                       d = true;
@@ -78,7 +79,7 @@ export default function (
                   break;
                 case 'and':
                 default:
-                  var d = true;
+                  d = true;
                   filter.selected.forEach((item) => {
                     if (arrayset.indexOf(item) == -1) {
                       d = false;
@@ -140,57 +141,56 @@ export default function (
               }
               break;
             }
-            case 'fulltext':
-              var target = document.getElementById('fulltextInput');
-              var miniSearch = new MiniSearch({
-                fields: filter.valueFields,
-                idField: filter.idField,
-                searchOptions: {
-                  fuzzy: term => term.length > 2 ? 0.2 : null,
-                  combineWith: 'AND',
-                  prefix: term => term.length > 3
-                },
-                tokenize: (string) => string.split(/<|\s|,|&|;/)
-              });
-              var resultIds = null;
-              $rootScope.suggests = null;
-              if (target != null) {
-                if (target.value != null && target.value != '') {
-                  var features = layer.layer.getSource().getFeatures();
-                  for (var f = 0; f < features.length; f++) {
-                    miniSearch.add(features[f].getProperties())
-                  }
+            break;
+          case 'fulltext':
+            const target = document.getElementById('fulltextInput');
+            const miniSearch = new MiniSearch({
+              fields: filter.valueFields,
+              idField: filter.idField,
+              searchOptions: {
+                fuzzy: term => term.length > 2 ? 0.2 : null,
+                combineWith: 'AND',
+                prefix: term => term.length > 3
+              },
+              tokenize: (string) => string.split(/[\s<,&;]+/),
+            });
+            let resultIds = null;
+            if (target !== null) {
+              if (target.value !== null && target.value !== '') {
+                const features = layer.layer
+                  .getSource()
+                  .getFeatures()
+                  .map(f => f.getProperties());
 
-                  let results = miniSearch.search(target.value);
+                miniSearch.addAll(features);
 
-                  if (results != null) {
-                    resultIds = results.map(({id}) => id);
-                  }
+                const results = miniSearch.search(target.value);
 
-                  if (filter.suggestions) {
-                    let autoSuggests = miniSearch.autoSuggest(target.value);
-                    if (autoSuggests != null) {
-                      $rootScope.suggests = autoSuggests.map(({suggestion}) => suggestion).slice(0, 10);
-                    }
-                  }
-
+                if (results !== null) {
+                  resultIds = results.map(({id}) => id);
                 }
 
+                if (filter.suggestions) {
+                  const autoSuggests = miniSearch.autoSuggest(target.value);
+                  if (autoSuggests !== null) {
+                    filter.autoSuggests = autoSuggests.map(({suggestion}) => suggestion).slice(0, 10);
+                  }
+                }
               }
-              displayFeature = function (feature) {
-                if (resultIds == null) {
-                  return true
-                }
-                else {
-                  return (
-                    resultIds.indexOf(
-                      feature.getProperties()[filter.idField]
-                    ) !== -1
-                  );
-                }
+            }
+            displayFeature = function (feature) {
+              if (resultIds === null) {
+                return true;
+              } else {
+                return (
+                  resultIds.indexOf(
+                    feature.getProperties()[filter.idField]
+                  ) !== -1
+                );
+              }
 
-              };
-              break;
+            };
+            break;
 
           default:
             displayFeature = function (feature) {
@@ -276,7 +276,7 @@ export default function (
                 // // TODO: create time range from date extents of the features, convert datetime fields to datetime datatype
                 // if (filter.range === undefined) filter.range = [];
 
-                // var source = layer.layer.getSource();
+                // let source = layer.layer.getSource();
                 // source.forEachFeature(function (feature) {
                 //     if (feature.getProperties()[filter.valueField] < filter.range[0] || filter.range[0] === undefined) {
                 //         filter.range[0] = feature.getProperties()[filter.valueField];

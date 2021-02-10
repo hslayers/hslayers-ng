@@ -21,6 +21,7 @@ export default function (
     'fieldset': require('./partials/fieldset-filter-md.html'),
     'arrayset': require('./partials/multiplefields-filter-md.html'),
     'slider': require('./partials/slider-filter-md.html'),
+    'fulltext': require('./partials/fulltext-filter-md.html'),
   };
 
   $scope.assignValue = function (value){
@@ -138,7 +139,7 @@ export default function (
       template: FILTERS[filter.type.type],
       panelClass: 'filter-panel md-whiteframe-8dp',
       scope: this,
-      trapFocus: true,
+      focusOnOpen: false,
       clickOutsideToClose: true,
       clickEscapeToClose: true,
     };
