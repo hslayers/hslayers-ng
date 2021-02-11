@@ -348,6 +348,7 @@ export type MetadataUrl = {
 };
 
 export type Metadata = {
+  id?: string | number;
   urls?: MetadataUrl[];
   styles?: any;
 };
