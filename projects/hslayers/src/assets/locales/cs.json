@@ -77,7 +77,7 @@
     },
     "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru",
     "capabilitiesParsingProblem": "Problém při načítání informací o službě",
-    "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategorií"
+    "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií"
   },
   "COMMON": {
     "abstract": "Abstrakt",

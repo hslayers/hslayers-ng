@@ -77,7 +77,7 @@
     },
     "errorWhileRequestingLayers": "Error while requesting layers",
     "capabilitiesParsingProblem": "Capabilities parsing problem",
-    "serviceTypeNotMatching": "URL service type does't not match selected category"
+    "serviceTypeNotMatching": "URL service type does not match selected category"
   },
   "COMMON": {
     "abstract": "Abstract",
