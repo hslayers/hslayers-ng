@@ -1,0 +1,23 @@
+/**CARD**/
+$card-bg: var(--card-bg);
+$card-cap-color: var(--text-color);
+/**TOAST**/
+$toast-header-background-color: #fff;
+
+/**COLORS & THEMES**/
+
+$primary: var(--primary);
+$light: var(--light);
+$secondary: var(--secondary);
+
+$theme-colors: (
+  'primary': var(--primary),
+  'light': var(--light),
+  'secondary': var(--secondary),
+ );
+
+$white: var(--white);
+
+$gray-200: var(--gray-200);
+$gray-700: var(--text-color);
+$gray-900: var(--gray-900);

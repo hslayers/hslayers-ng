@@ -5,14 +5,6 @@
 $mobile-layout-breakpoint-value: 767 !default; 	//will be used in TS files
 $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //this will be used in hsl styles
 
-//*****Sidebar*****//
-//Background color of sidebar
-$sidebar-bg-color: #fff	 !default;
-//Color of sidebar icon
-$sidebar-item-color: #007bff !default;
-//Background color of active sidebar item
-$sidebar-item-active: #007bff !default;
-
 @import "~ol/ol";
 
 .hsl,
@@ -24,12 +16,22 @@ $sidebar-item-active: #007bff !default;
   all: revert;
 }
 
+
+
 .hsl{
+color: var(--text-color);
 
-
-@import "~bootstrap/scss/_functions";
-@import "~bootstrap/scss/_variables";
+@import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/_mixins";
+
+// override bootstrap functions to comply with --vars
+@import 'functions-override';
+
+// Override Boostrap variables
+@import 'bootstrap-variables';
+
+@import "~bootstrap/scss/_variables";
+
 @import "~bootstrap/scss/root";
 @import "~bootstrap/scss/reboot";
 @import "~bootstrap/scss/type";
@@ -117,6 +119,7 @@ $sidebar-item-active: #007bff !default;
 .hs-main-panel {
 	border: none;
 	margin-bottom: 0;
+	margin-top: 0.25rem !important;
 }
 
 div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
@@ -153,7 +156,7 @@ div.hs-main-panel:not(.hs-stc-mainpanel) > div.card-body {
 }
 
 .hs-filter {
-	border-right: 0;
+	border: 0 !important;
 	border-top-left-radius: .25rem !important;
     border-bottom-left-radius: .25rem !important;
 }
@@ -178,12 +181,12 @@ div.list-group-item.hs-lm-list {
 .dropzone {
 	text-align: center;
 	min-height: 80px;
-	border: dashed 2px rgba(0, 0, 0, 0.35);
+	border: dashed 2px $primary;
 	border-radius: 5px;
 	color: #495057 !important;
 }
 .dropzone.active {
-	border: solid 3px $primary;
+	border: solid 3px $secondary;
 	color: rgba(0, 0, 0, 0.35) !important;
 	opacity: 0.4;
 }
@@ -201,7 +204,7 @@ ul.hs-lm-baselayerlist {
 ul.hs-lm-mapcontentlist {
 	margin-top: 0;
 	margin-bottom: 0;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--panel-wrapper-bg-color);
 }
 ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
 	padding: 0.3em;
@@ -266,10 +269,10 @@ li.hs-lm-item.hovering {
 	color: rgba(0, 0, 0, 0.25);
 }
 .hs-lm-list li .info_btn .icon-arrow-up:hover::before {
-	color: black;
+	color: hsl(0, 0%, 0%);
 }
 .hs-lm-list li .info_btn .icon-arrow-down:hover::before {
-	color:black;
+	color:hsl(0, 0%, 0%);
 }
 
 .hs-layermanager-card li.hs-lm-item,
@@ -419,7 +422,8 @@ hr {
 }
 
 .hs-sidebar-item {
-	color: $sidebar-item-color;
+	color: var(--sidebar-item-color);
+	background-color: var(--sidebar-bg-color);
 	cursor: pointer;
 }
 
@@ -436,7 +440,7 @@ a {
 }
 
 .hs-locate:not(.ol-collapsed) {
-	background: rgba(255, 255, 255, 0.8);
+	background: hsla(0, 0%, 100%, 0.8);
 }
 .hs-locate,
 .ol-control button,
@@ -482,7 +486,7 @@ a {
 	opacity: 0%;
 }
 .ol-rotate button:not(.active) {
-	background-color: rgba(133, 135, 136, 0.7);
+	background-color: hsla(200, 1%, 53%, 0.7);
 }
 
 
@@ -495,7 +499,7 @@ div.hs-infopanel.ng-scope .second-col {
 	overflow-x: auto;
 }
 .dc-chart g.row text {
-	fill: black;
+	fill: hsl(0, 0%, 0%);
 }
 #right-pane {
 	pointer-events: auto;
@@ -505,17 +509,15 @@ div.hs-infopanel.ng-scope .second-col {
 	font-size: 14px;
 	font-weight: 700;
 	line-height: 17px;
-	color: #000;
-	text-shadow: 0 1px 0 #fff;
+	color: $secondary;
 	filter: alpha(opacity=20);
-	opacity: 0.2;
+	opacity: 0.35;
 }
 .but-title-sm:hover {
-	color: #000;
 	text-decoration: none;
 	cursor: pointer;
 	filter: alpha(opacity=50);
-	opacity: 0.5;
+	opacity: 0.8;
 }
 button.but-title-sm {
 	-webkit-appearance: none;
@@ -532,7 +534,7 @@ button.but-title-sm {
 }
 
 .list-group-item.active .datasource_addlayer {
-	color: #fff;
+	color: hsl(0, 0%, 100%);
 }
 
 .thumbnail {
@@ -557,8 +559,9 @@ button.but-title-sm {
 	color: #fff;
 }
 .list-group-item.active {
-	background-color: $sidebar-item-active;
-	border-color:  $sidebar-item-active;
+	background-color: var(--sidebar-bg-color-active);
+	border-color:  var(--sidebar-bg-color-active);
+	color: var(--sidebar-item-color-active);
  }
 
 .hs-lm-deactivated-layer {
@@ -595,11 +598,11 @@ button.but-title-sm {
 }
 
 .basemapGallery .dropdown-item:not(.active){
-	background: #cccccc82;
+	background: hsla(0, 0%, 80%, 0.51);
 }
 .basemapGallery img.active,
 .basemapGallery div.active {
-	border: 0.1rem solid rgb(0, 123, 255);
+	border: 0.1rem solid hsl(211, 100%, 50%);
 }
 .basemapGallery div span.glyphicon {
 	font-size: smaller;
@@ -608,14 +611,14 @@ button.but-title-sm {
 .basemapGallery .hs-miniMenu {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(81, 100, 121, 0.7658);
-	border: 0.1rem solid rgb(0, 123, 255);
+	background-color: hsla(212, 20%, 40%, 0.766);
+	border: 0.1rem solid hsl(211, 100%, 50%);
 
 	display: flex;
 	flex-direction: column;
     justify-content: center;
 	align-items: center;
-	color: white;
+	color: hsl(0, 0%, 100%);
 	cursor: auto;
 	right: 0;
 	transition: all 0.4s ease, right 0ms;
@@ -623,7 +626,7 @@ button.but-title-sm {
 .basemapGallery .hs-miniMenu > div {
 	display: flex;
 	flex-direction: row;
-	background-color: rgba(192, 189, 189, 0.644);
+	background-color: hsla(0, 2%, 75%, 0.644);
 	cursor: pointer;
 }
 .basemapGallery .hs-miniMenu p{
@@ -644,13 +647,13 @@ button.but-title-sm {
 }
 
 .basemapGallery .hs-miniMenu.expanded hs-layer-editor label{
-	color: #007bff;
+	color: hsl(211, 100%, 50%);
 }
 
 /******SIDEBAR****************/
 .hs-panelspace {
-	box-shadow: -36px -12px 61px -39px rgba(0, 0, 0, 0.3);
-	background-color: white;
+	box-shadow: -36px -12px 61px -39px hsla(0, 0%, 0%, 0.3);
+	background-color: var(--panel-wrapper-bg-color);
 	height: 100%;
 	overflow-x: visible;
 	overflow-y: visible;
@@ -687,18 +690,18 @@ hs-sidebar {
 	bottom: 0;
 	position: absolute;
 	top: 0;
-	background: $sidebar-bg-color;
+	background: var(--sidebar-bg-color);
 	transition: width 100ms ease-out;
 	z-index: 2;
 }
 
 hs-sidebar div.hs-sidebar-list a:not(.active){
 	background-color: transparent ;
-	color: $sidebar-item-color;
+	color: var(--sidebar-item-color);
 }
 
 .hs-content-wrapper.hs-open .hs-panelspace:not(.labels) hs-sidebar {
-	border-right: 1px solid #ddd;
+	border-right: 1px solid hsl(0, 0%, 87%);
 }
 
 .hs-panelspace.labels hs-sidebar {
@@ -709,20 +712,20 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 }
 
 .hs-content-wrapper.hs-sb-left:not(.hs-open) hs-sidebar {
-	background-color: $sidebar-bg-color;
+	background-color: var(--sidebar-bg-color);
 	right: auto;
 	width: 48px;
 }
 
 .hs-content-wrapper.hs-sb-right:not(.hs-open) hs-sidebar {
-	background-color: $sidebar-bg-color;
+	background-color: var(--sidebar-bg-color);
 	left: auto;
 	width: 48px;
 }
 
 .hs-content-wrapper:not(.hs-open) .hs-panelspace {
 	width: 48px;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid hsl(0, 0%, 87%);
 }
 
 .hs-content-wrapper.hs-open .hs-sidebar-list {
@@ -832,7 +835,7 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 }
 .hs-checkmark::before,
 .hs-uncheckmark::before {
-	color: white;
+	color: hsl(0, 0%, 100%);
 	display: inline-block;
 	width: 1.5em;
 	height: 1.5em;
@@ -843,12 +846,12 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	font-size: small;
 }
 .hs-uncheckmark::before {
-	background-color: white;
+	background-color: hsl(0, 0%, 100%);
 	box-shadow: inset 0 0 0 0.2em $primary;
 }
 .hs-checkmark.hs-btn-baselayers::before {
 	color: $primary;
-	background-color: white;
+	background-color: hsl(0, 0%, 100%);
 }
 .sublayerContainer .hs-checkmark::before,
 .sublayerContainer .hs-uncheckmark::before,
@@ -906,7 +909,7 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 }
 
 .hs-ows-layerlistheading {
-	background-color: #eee;
+	background-color: hsl(0, 0%, 93%);
 }
 
 /************/
@@ -924,7 +927,7 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	width: 25px;
     height: 25px;
     margin: -5px -4.5px;
-    border: 1px solid black;
+    border: 1px solid hsl(0, 0%, 0%);
     z-index: 10;
 }
 .hs-styler-remove:hover {
@@ -945,11 +948,11 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 	height: 51px;
 	display: inline-block;
 	padding: 2px 0 0 0;
-	border: 2px solid white;
+	border: 2px solid hsl(0, 0%, 100%);
 }
 
 .hs-styler-iconbox:hover {
-	border: 2px dashed black;
+	border: 2px dashed hsl(0, 0%, 0%);
 }
 
 .hs-styler-selected-icon-box {
@@ -966,10 +969,10 @@ div.hs-panelspace:not(.buttons) hs-sidebar ~ div.hs-panelplace {
 }
 
 div.hs-info-area {
-	background-color: rgba(47, 88, 141, 0.4);
+	background-color: hsla(214, 50%, 37%, 0.4);
 	border-radius: 4px;
 	bottom: 8px;
-	color: white;
+	color: hsl(0, 0%, 100%);
 	left: 0.5em;
 	padding: 1px;
 	pointer-events: initial;
@@ -987,7 +990,7 @@ div.hs-info-composition-image {
 	width: 2em;
 	top: -30px;
 	left: 3px;
-	background-color: rgba(0, 60, 136, 0.3);
+	background-color: hsla(214, 100%, 27%, 0.3);
 }
 
 div.hs-info-composition {
@@ -1030,14 +1033,29 @@ div.hs-info-composition-edited {
 }
 .galleryButton {
 	opacity: 0.9 !important;
-	background: rgba(0, 60, 136, 0.5) !important;
-	color: white !important;
+	background: hsla(214, 100%, 27%, 0.5) !important;
+	color: hsl(0, 0%, 100%) !important;
 }
 .galleryButton:hover {
-	background-color: rgba(0, 60, 136, 0.7) !important;
+	background-color: hsla(214, 100%, 27%, 0.7) !important;
 }
 .x-large {
 	font-size: x-large !important;
+}
+
+
+@each $color, $value in $theme-colors {
+	$hsl: to-hsl($value);
+	$light: map-get(to-hsl(var(--light)), l);
+	$l: calc(#{$light} - 5%);
+	.list-group-item-#{$color} {
+		background-color: hsl( map-get($hsl, h), 65%, $l);
+		color: var(--text-color);
+	}
+  }
+
+hs-panel-header {
+	background-color: var(--sidebar-bg-color);
 }
 
 hs-sidebar hs-panel-header.sidebar-header {
@@ -1379,7 +1397,7 @@ button.hs_draw_new_extended {
 	padding-right: 0.25rem;
 }
 .card-href {
-	color: #212529;
+	color: $gray-900;
 	width: 100%;
 	display: inline-block;
 }
@@ -1443,7 +1461,7 @@ button.hs_draw_new_extended {
 .ol-popup {
 	display: none;
 	position: absolute;
-	background-color: white;
+	background-color: hsl(0, 0%, 100%);
 	padding: 15px 25px 15px 15px;
 	border: 1px solid #cccccc;
 	bottom: 12px;
@@ -1462,7 +1480,7 @@ button.hs_draw_new_extended {
 }
 
 .ol-popup:after {
-	border-top-color: white;
+	border-top-color: hsl(0, 0%, 100%);
 	border-width: 10px;
 	left: 48px;
 	margin-left: -10px;
@@ -1623,11 +1641,11 @@ md-icon.geolocation.off {
 }
 
 md-icon.geolocation.searching {
-	color: rgb(177, 234, 241);
+	color: hsl(187, 70%, 82%);
 }
 
 md-icon.geolocation.on {
-	color: rgb(2, 168, 243);
+	color: hsl(199, 98%, 48%);
 }
 
 md-bottom-sheet-collapsible {
@@ -1646,7 +1664,7 @@ md-bottom-sheet-collapsible.minimized .bottom-sheet-switcher md-icon {
 }
 
 md-bottom-sheet {
-	box-shadow: 0 -5px 10px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 -5px 10px 1px hsla(0, 0%, 0%, 0.3);
 	max-height: 80%;
 	touch-action: pan-y;
 	overflow: scroll;
@@ -1805,20 +1823,25 @@ li.hs-lm-header {
 	border-left: 0;
 	border-right: 0;
 	padding-left: 2em;
+
+	$hsl: to-hsl($primary);
+	$l: calc(#{$light} - 10%);
+
+	background-color: hsl( map-get($hsl, h), 65%, $l);
 }
 .hs-lm-map-content-header {
 	height: 2.56em;
 }
 
-.hs-borderless-input {
-	border: 0 !important;
-	background-color: white !important;
-}
+// .border-0 {
+// 	border: 0 !important;
+// 	background-color: hsl(0, 0%, 100%) !important;
+// }
 .hs-dotted-line {
 	border: 1px dotted #495057;
 	border-style: none none dotted;
 	color: #495057;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: hsla(0, 0%, 0%, 0.2);
 }
 .hs-extra-buttons {
 	line-height: 1em;
@@ -1837,20 +1860,25 @@ li.hs-lm-header {
 	color: #495057;
 }
 .dropdown-toggle.hs-custom-toggle:focus {
-	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+	box-shadow: 0 0 0 0.2rem hsla(211, 100%, 50%, 0.25) !important;
 }
-.hs-light-background {
-	background-color: #f8f9fa !important;
-	color: #495057 !important;
-}
-.hs-white-background {
-	background-color: white !important;
-	border: 0;color: #495057 !important;
-}
+// .hs-light-background {
+// 	background-color: #f8f9fa !important;
+// 	color: #495057 !important;
+// }
+// .hs-white-background {
+// 	background-color: hsl(0, 0%, 100%) !important;
+// 	border: 0;color: #495057 !important;
+// }
 .hs-background-alfa {
-	background-color: rgba(0,0,0,.07) !important;
- 	color: #495057 !important;
+	background-color: var(--light);
+ 	// color: #495057 !important;
 }
+
+.alert-danger{
+	color:var(--text-color);
+}
+
 .hs-content-wrapper label.form-group { display: block; }
 .ol-overlaycontainer-stopevent {pointer-events: none;}
 .ol-overlaycontainer-stopevent *{pointer-events: auto;}
@@ -1858,8 +1886,8 @@ li.hs-lm-header {
 
 .hs-toolbar-button{height: 2.4em}
 .dropdown-menu.datetime-picker-menu {min-width: 22rem;}
-a.hs-sensor-type {color: black}
-a.hs-sensor-unit{color: black; font-weight: bold;}
+a.hs-sensor-type {color: hsl(0, 0%, 0%)}
+a.hs-sensor-unit{color: hsl(0, 0%, 0%); font-weight: bold;}
 .hs-sensor{line-height: 1.9em;}
 .hs-date-time-chevron:not(*:root) { /* Supports only WebKit browsers */
 	visibility: hidden;
@@ -1872,6 +1900,10 @@ hs-layer-editor .card-body {padding: 0.65rem}
 hs-layer-editor hr {margin-top: 0.3rem; margin-bottom: 0.3rem;}
 hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 .hs-layerpanel {overflow-x: hidden;}
-.hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid rgb(199, 199, 199)}
+.hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid hsl(0, 0%, 78%)}
 .hs-draw-layer-toggle div {display: inline-block; max-width: 7em; overflow-x:hidden}
+
+.ol-control button {
+	background-color: var(--map-controls-bg);
+}
 }

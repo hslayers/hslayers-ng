@@ -28,12 +28,12 @@
         <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
     <div class="d-flex ml-4">
-        <div class="input-group-text hs-borderless-input pl-0">
+        <div class="input-group-text border-0 pl-0">
             <input type="checkbox"  [(ngModel)]="data.filterByExtent"
             (ngModelChange)="queryByFilter()" name="filterByExtent">
             <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
         </div>
-        <div class="input-group-text hs-borderless-input" [hidden]="!HsLaymanService.getLaymanEndpoint()">
+        <div class="input-group-text border-0" [hidden]="!HsLaymanService.getLaymanEndpoint()">
             <input type="checkbox" [(ngModel)]="data.onlyMine"
             (ngModelChange)="queryByFilter()"
                 name="onlyMine">
