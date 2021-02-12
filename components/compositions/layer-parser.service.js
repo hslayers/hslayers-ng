@@ -18,6 +18,7 @@ import {Tile} from 'ol/layer';
  * @param HsWmtsGetCapabilitiesService
  * @param HsUtilsService
  * @param $location
+ * @param $http
  */
 export default function (
   HsMapService,
@@ -111,11 +112,14 @@ export default function (
         title: lyr_def.title,
         info_format: lyr_def.info_format,
         source: new WMTS({}),
+        base: lyr_def.base ? lyr_def.base : false,
+        //compatibility of ArcGIS Server WMTS in compositions
+        capabilitiesURL: lyr_def.url,
       });
 
       // Get WMTS Capabilities and create WMTS source base on it
-      HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url).then(
-        (res) => {
+      HsWmtsGetCapabilitiesService.requestGetCapabilities(lyr_def.url)
+        .then((res) => {
           try {
             //parse the XML response and create options object...
             const parser = new WMTSCapabilities();
@@ -130,12 +134,13 @@ export default function (
             wmts.setSource(new WMTS(options));
             HsMapService.proxifyLayerLoader(wmts, true);
           } catch (error) {
-            console.error(error);
+            console.error('WMTS Layer loading error', error);
             me.map.getLayers().remove(wmts);
           }
-        }
-      );
-
+        })
+        .catch((e) => {
+          console.error('WMTS Layer loading error', e);
+        });
       wmts.setVisible(lyr_def.visibility);
       return wmts;
     },

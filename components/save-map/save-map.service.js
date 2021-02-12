@@ -297,7 +297,7 @@ export default function (
       }
       //json.index = layer.map.getLayerIndex(layer);
       json.path = layer.get('path');
-
+      json.base = layer.get('base');
       if (layer.getExtent()) {
         const ex = layer.getExtent();
         json.maxExtent = {
@@ -380,7 +380,7 @@ export default function (
           json.layer = src.getLayer();
           json.format = src.getFormat();
           json.info_format = layer.get('info_format');
-          json.url = src.getUrls()[0];
+          json.url = layer.get('capabilitiesURL') || src.getUrls()[0];
         }
       }
 

@@ -18,6 +18,8 @@ import {TileWMS} from 'ol/source';
  * @param HsLayermanagerMetadata
  * @param $timeout
  * @param HsLayoutService
+ * @param $log
+ * @param $compile
  */
 export default function (
   $rootScope,
@@ -29,7 +31,9 @@ export default function (
   HsLayerEditorVectorLayerService,
   HsLayermanagerMetadata,
   $timeout,
-  HsLayoutService
+  HsLayoutService,
+  $log,
+  $compile
 ) {
   'ngInject';
   const me = {};
@@ -748,6 +752,25 @@ export default function (
     }, 100);
   };
 
+  me.createErrorDialog = function (
+    text = 'Unspecified processing error',
+    e = ''
+  ) {
+    const error = e.message ? e.message : e;
+    const scope = $rootScope.$new();
+    Object.assign(scope, {
+      text,
+      error,
+    });
+    const el = angular.element(
+      '<hs.compositions.error_dialog_component error="text" msg = "error" ></hs.compositions.error_dialog_component>'
+    );
+    HsLayoutService.contentWrapper
+      .querySelector('.hs-dialog-area')
+      .appendChild(el[0]);
+    $compile(el)(scope);
+  };
+
   let timer = null;
   /**
    * (PRIVATE)
@@ -759,9 +782,15 @@ export default function (
   function init() {
     map = HsMapService.map;
     HsMapService.map.getLayers().forEach((lyr) => {
-      layerAdded({
-        element: lyr,
-      });
+      try {
+        layerAdded({
+          element: lyr,
+        });
+      } catch (e) {
+        const error = `Layer ${lyr.get('title')} failed to load`;
+        $log.warn(error);
+        me.createErrorDialog(error);
+      }
     });
 
     boxLayersInit();

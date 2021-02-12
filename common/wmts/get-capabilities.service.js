@@ -99,11 +99,19 @@ export default function ($http, HsMapService, HsUtilsService, $rootScope) {
     let url = [path, me.params2String(params)].join('?');
 
     url = HsUtilsService.proxify(url);
-    const promise = $http.get(url);
-    promise.then((r) => {
-      $rootScope.$broadcast('ows_wmts.capabilities_received', r);
+
+    return new Promise((resolve, reject) => {
+      $http
+        .get(url)
+        .then((r) => {
+          $rootScope.$broadcast('ows_wmts.capabilities_received', r);
+          resolve(r.data);
+        })
+        .catch((e) => {
+          console.log('Unsuccessful WMTS getCapabilities request')
+          reject(e);
+        });
     });
-    return promise;
   };
 
   /**
