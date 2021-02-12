@@ -11,6 +11,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsUtilsService} from '../utils/utils.service';
+import {HsThemeService} from './themes/theme.service';
 
 @Component({
   selector: 'hs-layout',
@@ -38,6 +39,7 @@ export class HsLayoutComponent implements AfterViewInit {
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
+    public HsThemeService: HsThemeService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private HsUtilsService: HsUtilsService
@@ -63,6 +65,8 @@ export class HsLayoutComponent implements AfterViewInit {
       );
     }
     //this.$emit('scope_loaded', 'Layout');
+
+    this.HsThemeService.setDarkTheme();
   }
 
   ngAfterViewInit() {
@@ -98,4 +102,13 @@ export class HsLayoutComponent implements AfterViewInit {
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     this.cdr.detectChanges();
   }
+
+  toggleTheme() {
+    if (this.HsThemeService.isDarkTheme()) {
+      this.HsThemeService.setLightTheme();
+    } else {
+      this.HsThemeService.setDarkTheme();
+    }
+  }
+
 }

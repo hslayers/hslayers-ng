@@ -110,7 +110,7 @@
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate }}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders" [hidden]="physicalLayerListEnabled">
-                <li class="list-group-item hs-lm-layerlist-header list-group-item-secondary"
+                <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     (click)="value.visible = !value.visible">
                     <span>{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
                     <span class="glyphicon"
