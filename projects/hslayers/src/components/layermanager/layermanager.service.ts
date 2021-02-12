@@ -158,7 +158,6 @@ export class HsLayerManagerService {
     ) {
       return;
     }
-    //WMST.layerIsWmsT(layer);
     this.loadingEvents(layer);
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
     if (
@@ -183,7 +182,7 @@ export class HsLayerManagerService {
      * @private
      * @type {object}
      */
-    const new_layer: any = {
+    const layerDescriptor: any = {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
       abstract: getAbstract(layer),
       layer,
@@ -194,38 +193,40 @@ export class HsLayerManagerService {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
     };
-    new_layer.trackBy = layer.ol_uid + ' ' + new_layer.position;
+    layerDescriptor.trackBy = layer.ol_uid + ' ' + layerDescriptor.position;
 
     layer.on('propertychange', (event) => {
       if (event.key == 'title') {
-        new_layer.title = this.HsLayerUtilsService.getLayerTitle(layer);
+        layerDescriptor.title = this.HsLayerUtilsService.getLayerTitle(layer);
       }
     });
 
-    this.HsLayermanagerWmstService.setupTimeLayerIfNeeded(new_layer);
-
-    if (getBase(layer) != true) {
+    if (getBase(layer) !== true) {
       this.populateFolders(layer);
-      new_layer.legends = getLegends(layer);
-      this.data.layers.push(new_layer);
-      if (getQueryCapabilities(layer) != false) {
+      layerDescriptor.legends = getLegends(layer);
+      this.data.layers.push(layerDescriptor);
+      if (getQueryCapabilities(layer) !== false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
+          // TODO: make it possible to also handle WM(T)S-t baselayers
+          if (this.HsLayermanagerWmstService.layerIsWmsT(layerDescriptor)) {
+            this.HsLayermanagerWmstService.setupTimeLayer(layerDescriptor);
+          }
           setTimeout(() => {
-            new_layer.grayed = !this.isLayerInResolutionInterval(layer);
+            layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
           }, 50);
         });
       }
     } else {
-      new_layer.active = layer.getVisible();
-      (new_layer.thumbnail = this.getImage(layer)),
-        this.data.baselayers.push(new_layer);
+      layerDescriptor.active = layer.getVisible();
+      (layerDescriptor.thumbnail = this.getImage(layer)),
+        this.data.baselayers.push(layerDescriptor);
     }
 
     if (layer.getVisible() && getBase(layer)) {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
     if (!suspendEvents) {
-      this.HsEventBusService.layerAdditions.next(new_layer);
+      this.HsEventBusService.layerAdditions.next(layerDescriptor);
       this.HsEventBusService.layerManagerUpdates.next(layer);
       this.HsEventBusService.compositionEdits.next();
     }
@@ -590,6 +591,7 @@ export class HsLayerManagerService {
     }
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
   }
+
   /**
    * Remove all non-base layers that were added to the map by user.
    * Doesn't remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
@@ -833,6 +835,7 @@ export class HsLayerManagerService {
       layer.galleryMiniMenu = false;
     }, 100);
   }
+
   /**
    * Initialization of needed controllers, run when map object is available
    * (PRIVATE)

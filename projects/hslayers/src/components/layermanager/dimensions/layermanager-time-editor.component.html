@@ -1,5 +1,14 @@
 <div class="p-0">
-  <i class="glyphicon cursor-pointer icon-chevron-left" (click)="previousTime()"></i>
-  <select>TODO</select>
-  <i class="glyphicon cursor-pointer icon-chevron-right" (click)="followingTime()"></i>
+  <button type="button" class="btn btn-sm text-info" (click)="previousTime()" [disabled]="!hasPreviousTime()">
+    <i class="glyphicon icon-chevron-left"></i>
+  </button>
+  <span class="text-info cursor-pointer" (click)="$event.preventDefault();showTimeSelect()"
+    [hidden]="selectVisible">{{currentTime}}</span>
+  <select class="hs-lm-time-selector" [hidden]="!selectVisible"
+    (change)="selectTime($event);hideTimeSelect();" (blur)="hideTimeSelect()">
+    <option *ngFor="let time of availableTimes" [ngValue]="time">{{time}}</option>
+  </select>
+  <button type="button" class="btn btn-sm text-info" (click)="followingTime()" [disabled]="!hasFollowingTime()">
+    <i class="glyphicon icon-chevron-right"></i>
+  </button>
 </div>

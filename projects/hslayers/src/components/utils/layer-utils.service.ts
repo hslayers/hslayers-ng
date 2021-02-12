@@ -124,11 +124,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerWMS
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for ol.layer.Tile and ol.layer.Image
-   * @description Test if layer is WMS layer
+   * Test if layer is WMS layer
+   * @param layer - Selected layer
+   * @returns True for ol.layer.Tile and ol.layer.Image
    */
   isLayerWMS(layer: Layer): boolean {
     if (

@@ -148,15 +148,15 @@ export class HsLayerManagerWmstService {
   }
 
   /**
-   * Test if WMS layer have time support (WMS-T). WMS layer has to have dimensions_time or dimension property, function converts dimension to dimensions_time
-   * @param layer_container - Container object of layer (layer_container.layer expected)
+   * Test if WMS layer has time support (WMS-T). WMS layer has to have dimension property
+   * @param layerDescriptor - Container object of layer (layerContainer.layer expected)
    * @returns True for WMS layer with time support
    */
-  layerIsWmsT(layer_container: HsLayerDescriptor): boolean {
-    if (!layer_container) {
+  layerIsWmsT(layerDescriptor: HsLayerDescriptor): boolean {
+    if (!layerDescriptor) {
       return false;
     }
-    const layer = layer_container.layer;
+    const layer = layerDescriptor.layer;
     if (!layer) {
       return false;
     }
@@ -211,20 +211,54 @@ export class HsLayerManagerWmstService {
     }
   }
 
+  setupTimeLayer(layerDescriptor: HsLayerDescriptor): void {
+    console.log('setupTimeLayer@wmst', layerDescriptor);
+    const hsLayerTimeConfig =
+      layerDescriptor.layer.get('dimensions').time ??
+      layerDescriptor.layer.get('dimensions_time') ?? //backwards compatibility
+      layerDescriptor.layer.dimensions_time; //backwards compatibility
+    const serviceLayerTimeConfig = layerDescriptor.layer
+      .get('Dimension')
+      ?.filter((dim) => dim.name == 'time')[0]; // Let's assume there will be only one time dimension..
+    console.log(serviceLayerTimeConfig);
+    layerDescriptor.time = {
+      default:
+        hsLayerTimeConfig.default ??
+        serviceLayerTimeConfig.default ??
+        (hsLayerTimeConfig.timeInterval
+          ? hsLayerTimeConfig.timeInterval[0]
+          : null),
+      timePoints: this.parseTimePoints(serviceLayerTimeConfig.values),
+      time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
+      time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
+      date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
+      //date_from: new Date(hsLayerTimeConfig.timeInterval[0]), //TODO: cleanup this
+      //date_till: new Date(hsLayerTimeConfig.timeInterval[1]), //TODO: cleanup this
+      //date_increment: time.getTime(), //TODO: cleanup this
+    };
+    console.log('after fill', layerDescriptor);
+    //this.setLayerTimeSliderIntervals(layerDescriptor, hsLayerTimeConfig); //TODO: cleanup this
+    this.setLayerTime(layerDescriptor, '0'); //TODO: cleanup this
+  }
+
+  private parseTimePoints(values: string): Array<string> {
+    return values.trim().split(',');
+  }
+
   /**
-   * Update layer time parameter
+   * Update layer TIME parameter
    * @param currentLayer - Selected layer
-   * @param {number} dateIncrement - Value days, months or years by which to increment start time to reach current selected time in the range control
+   * @param newTime - ISO string of a date and time to set
    */
-  setLayerTime(currentLayer: HsLayerDescriptor, dateIncrement): void {
+  setLayerTime(currentLayer: HsLayerDescriptor, newTime: string): void {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
     const timeDef = currentLayer.layer.get('dimensions').time;
-    if (timeDef === undefined || timeDef.timeInterval === undefined) {
+    if (timeDef === undefined /*|| timeDef.timeInterval === undefined*/) {
       return;
     }
-    let d: moment.Moment = moment.utc(timeDef.timeInterval[0]);
+    /*let d: moment.Moment = moment.utc(timeDef.timeInterval[0]);
     switch ((currentLayer as any).time_unit) {
       case 'FullYear':
         d.set({year: dateIncrement});
@@ -240,51 +274,16 @@ export class HsLayerManagerWmstService {
           dateIncrement = currentLayer.max_time;
         }
         d = moment.utc(parseInt(dateIncrement));
-    }
-
-    currentLayer.time = d.toDate();
+    }*/
+    //currentLayer.time = d.toDate();
+    console.log('wmst-service, setting time to ', newTime);
     currentLayer.layer.getSource().updateParams({
-      'TIME': d.toISOString(),
+      'TIME': newTime, //d.toISOString(),
     });
     this.HsEventBusService.layerTimeChanges.next({
-      layer: currentLayer.layer,
-      time: d.toISOString(),
+      layer: currentLayer,
+      time: newTime,
     });
-  }
-
-  setupTimeLayerIfNeeded(new_layer: HsLayerDescriptor): void {
-    if (this.layerIsWmsT(new_layer)) {
-      const dimensions_time =
-        new_layer.layer.get('dimensions_time') ||
-        new_layer.layer.dimensions_time;
-      let time;
-      const dimensions = getDimensions(new_layer.layer);
-      if (dimensions['time'].default != undefined) {
-        time = new Date(dimensions['time'].default);
-      } else {
-        time = new Date(dimensions_time.timeInterval[0]);
-      }
-      Object.assign(new_layer, {
-        time_step: dimensions_time.timeStep,
-        time_unit: dimensions_time.timeUnit,
-        date_format: this.getDateFormatForTimeSlider(dimensions_time.timeUnit),
-        date_from: new Date(dimensions_time.timeInterval[0]),
-        date_till: new Date(dimensions_time.timeInterval[1]),
-        time: time,
-        date_increment: time.getTime(),
-      });
-      this.setLayerTimeSliderIntervals(new_layer, dimensions_time);
-      this.setLayerTime(new_layer, 0);
-    }
-  }
-
-  getAvailableTimes(getCapabilitiesResponse, format: 'WMS' | 'WMTS') {
-    console.log('src', getCapabilitiesResponse);
-    const parser =
-      format === 'WMS' ? new WMSCapabilities() : new WMTSCapabilities();
-    const caps = parser.read(getCapabilitiesResponse);
-    console.log('caps', caps);
-    return [];
   }
 }
 
