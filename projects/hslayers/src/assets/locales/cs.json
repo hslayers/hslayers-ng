@@ -75,7 +75,8 @@
     "WMSCapabilitiesParsingProblem": "Problém při syntaktické analýze WMS Capabilities",
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
-    }
+    },
+    "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru"
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -184,7 +185,8 @@
     "yes": "Ano",
     "zoomTo": "zvětšit na",
     "contactInformation": "Kontaktní informace",
-    "warning": "Varování"
+    "warning": "Varování",
+    "noDataReceived": "Nebyla přijata žádná data!"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -224,7 +226,15 @@
     "loginToCatalogue": "Přihlásit do katalogu",
     "onlyMine": "Jen moje vlastní",
     "selectKeywords": "Vybrat klíčová slova",
-    "selectThemes": "Vybrat témata"
+    "selectThemes": "Vybrat témata",
+    "compostionsNameAttributeIsNotDefined": "Atribut název kompozice není definován!",
+    "endpointUrlIsNotDefined": "Není definováno URL serveru!",
+    "endpointUserIsNotDefined": "Není definován uživatel katalogu",
+    "errorWhileLoadingCompositionMetadata": "Chyba při načítání metadat kompozice",
+    "errorWhileRequestingCompositions": "Chyba při žádosti o kompozice",
+    "errorWhileSharingOnSocialNetwork": "Chyba při sdílení kompozice na sociální síť",
+    "metadataNotAvailable": "Metadata nejsou dostupná!",
+    "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
