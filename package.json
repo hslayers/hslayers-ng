@@ -82,7 +82,7 @@
     "test-watch": "karma start test/karma.conf.js --auto-watch=true --single-run=false",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-    "release": "npm run-script build && dotenv -- release-it",
+    "release": "dotenv -- release-it",
     "isolate-bootstrap": "node scripts/bootstrap-isolate.js",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
