@@ -157,28 +157,32 @@ export default function (
         extent = layer.getSource().getExtent();
       }
     } else {
+      const currentProj = HsMapService.map.getView().getProjection();
+      const preffered = bbox.filter(
+        (bboxInCrs) => bboxInCrs.crs == currentProj.getCode()
+      )[0];
+      if (preffered) {
+        const crs = preffered.crs;
+        const b = preffered.extent;
+        extent = transformExtent(
+          b,
+          crs,
+          HsMapService.map.getView().getProjection()
+        );
+        return extent;
+      }
       for (let ix = 0; ix < bbox.length; ix++) {
-        if (angular.isDefined(getProj(bbox[ix].crs))) {
+        if (
+          angular.isDefined(getProj(bbox[ix].crs)) &&
+          bbox[ix].crs != 'CRS:84'
+        ) {
           const crs = bbox[ix].crs;
           const b = bbox[ix].extent;
-          let first_pair = [b[0], b[1]];
-          let second_pair = [b[2], b[3]];
-          first_pair = transform(
-            first_pair,
+          extent = transformExtent(
+            b,
             crs,
             HsMapService.map.getView().getProjection()
           );
-          second_pair = transform(
-            second_pair,
-            crs,
-            HsMapService.map.getView().getProjection()
-          );
-          extent = [
-            first_pair[0],
-            first_pair[1],
-            second_pair[0],
-            second_pair[1],
-          ];
           break;
         }
       }
