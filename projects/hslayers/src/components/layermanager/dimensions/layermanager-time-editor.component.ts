@@ -35,11 +35,14 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   }
 
   hasPreviousTime(): boolean {
-    return this.currentTimeIdx > 0;
+    return this.availableTimes && this.currentTimeIdx > 0;
   }
 
   hasFollowingTime(): boolean {
-    return this.currentTimeIdx < this.availableTimes.length - 2;
+    return (
+      this.availableTimes &&
+      this.currentTimeIdx < this.availableTimes.length - 2
+    );
   }
 
   previousTime(): void {
