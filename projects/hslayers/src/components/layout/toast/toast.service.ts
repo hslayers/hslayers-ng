@@ -35,7 +35,7 @@ export class HsToastService {
   ): void {
     this.show(this.HsLanguageService.getTranslation(text), {
       header: this.HsLanguageService.getTranslation(header),
-      delay: 3000,
+      delay: 6000,
       autohide: true,
       classname: toastStyleClasses || `bg-danger text-light`,
     });
