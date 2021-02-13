@@ -54,9 +54,7 @@
                         data-placement="auto"></span>
                 </div>
             </div>
-            <div class="d-flex" *ngIf="isLayerWmsT(layer)">
-                <hs-layermanager-time-editor [layer]="layer"></hs-layermanager-time-editor>
-            </div>
+            <hs-layermanager-time-editor [layer]="layer" class="d-flex" *ngIf="isLayerWmsT(layer)"></hs-layermanager-time-editor>
         </li>
     </ul>
 </div>
