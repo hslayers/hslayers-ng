@@ -3,8 +3,11 @@
     <i class="glyphicon icon-chevron-left"></i>
   </button>
   <button class="btn btn-sm text-info" (click)="$event.preventDefault();showTimeSelect()"
-    [hidden]="selectVisible">{{currentTime}}</button>
-  <select class="hs-lm-time-selector" [hidden]="!selectVisible"
+    [hidden]="selectVisible">
+    <span [hidden]="!currentTimeDefined()">{{currentTime}}</span>
+    <span [hidden]="currentTimeDefined()" class="bg-warning text-dark">Selected time is out of range</span>
+  </button>
+  <select #hstimeselector [hidden]="!selectVisible"
     (change)="selectTime($event);hideTimeSelect();" (blur)="hideTimeSelect()">
     <option *ngFor="let time of availableTimes" [ngValue]="time">{{time}}</option>
   </select>
@@ -13,10 +16,10 @@
   </button>
 </div>
 <div class="p-0">
-  <!-- TODO: synchronization of time between layers here -->
   <button type="button" class="btn btn-sm"
     [ngClass]="{'btn-info': timesInSync, 'text-secondary': !timesInSync}"
     (click)="synchronizeTimes()" title="Synchronize time for all layers">
     <i class="glyphicon icon-timeline"></i>
+    <span class="sr-only">Synchronize times</span>
   </button>
 </div>
