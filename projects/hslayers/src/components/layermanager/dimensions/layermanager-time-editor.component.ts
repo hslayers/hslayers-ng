@@ -14,6 +14,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   currentTimeIdx: number;
   availableTimes: Array<any>;
   selectVisible: boolean;
+  timesInSync: boolean;
 
   constructor(
     public hsEventBusService: HsEventBusService,
@@ -32,6 +33,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectVisible = false;
+    this.timesInSync = false;
   }
 
   hasPreviousTime(): boolean {
@@ -86,5 +88,10 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
 
   hideTimeSelect(): void {
     this.selectVisible = false;
+  }
+
+  synchronizeTimes(): void {
+    this.timesInSync = !this.timesInSync;
+    throw new Error('Not implemented');
   }
 }
