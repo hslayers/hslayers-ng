@@ -1,0 +1,23 @@
+<div ng-class="{'in': laymanErrorModalVisible}" class="modal hs-layman-error-dialog" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" translate="">
+                   Layer removal unsuccessful
+                </h4>
+                <button type="button" ng-click="laymanErrorModalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate="">Close</span></button>
+            </div>
+            <div class="modal-body" style="max-height:600px; overflow-y:auto">
+               
+               <div class="alert alert-danger" role="alert">
+                <h5 class="alert-heading">There was a problem removing layer: </h5>
+                <p>{{error.message}}</p>
+              </div>
+                <p class="text-danger"> Layer was not removed from database</p>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-primary" ng-click="laymanErrorModalVisible = false" data-dismiss="modal" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>

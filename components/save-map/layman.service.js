@@ -495,9 +495,33 @@ export default function (
       (HsCommonEndpointsService.endpoints || [])
         .filter((ds) => ds.type == 'layman')
         .forEach((ds) => {
-          $http.delete(
-            `${ds.url}/rest/${ds.user}/layers/${me.getLayerName(layer)}`
-          );
+          $http
+            .delete(
+              `${ds.url}/rest/${ds.user}/layers/${me.getLayerName(layer)}`
+            )
+            .catch((error) => {
+              console.log(error)
+              const previousDialog = HsLayoutService.contentWrapper.querySelector(
+                '.hs-layman-error-dialog'
+              );
+              if (previousDialog) {
+                previousDialog.parentNode.removeChild(previousDialog);
+              }
+              const scope = $rootScope.$new();
+              Object.assign(scope, {
+                error,
+              });
+              const el = angular.element(
+                '<div hs.save-map.layman-error-dialog-directive></span>'
+              );
+              HsLayoutService.contentWrapper
+                .querySelector('.hs-dialog-area')
+                .appendChild(el[0]);
+              $compile(el)(scope);
+              if (!$rootScope.$$phase) {
+                $rootScope.$digest();
+              }
+            });
         });
     },
 
