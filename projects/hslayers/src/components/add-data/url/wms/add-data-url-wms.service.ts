@@ -18,6 +18,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 import {Subject} from 'rxjs';
 import {addAnchors} from '../../../../common/attribution-utils';
+import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferedFormat} from '../../../../common/format-utils';
 
 @Injectable({providedIn: 'root'})
@@ -383,6 +384,9 @@ export class HsAddDataUrlWmsService {
       ),
       crossOrigin: 'anonymous',
     });
+    const metadata = this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(
+      layer
+    );
     const new_layer = new layer_class({
       title: layerName,
       name: layerName,
@@ -391,8 +395,8 @@ export class HsAddDataUrlWmsService {
       maxResolution: layer.MaxScaleDenominator,
       removable: true,
       abstract: layer.Abstract,
-      MetadataURL: layer.MetadataURL,
-      BoundingBox: boundingbox,
+      metadata,
+      extent: boundingbox,
       path,
       dimensions: dimensions,
       legends: legends,
@@ -428,9 +432,9 @@ export class HsAddDataUrlWmsService {
         if (layerName) {
           ol_layers = ol_layers.filter(
             (layer) =>
-              layer.get('name') == layerName ||
-              (typeof layer.get('name') == 'undefined' && //Backwards compatibility with layman when title==name
-                layer.get('title') == layerName)
+              getName(layer) == layerName ||
+              (getName(layer) == undefined && //Backwards compatibility with layman when title==name
+                getTitle(layer) == layerName)
           );
         }
         ol_layers.forEach((layer) => {

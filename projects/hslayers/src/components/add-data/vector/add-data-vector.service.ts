@@ -10,6 +10,7 @@ import {Injectable} from '@angular/core';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {VectorLayerDescriptor} from './VectorLayerDescriptor';
 import {VectorSourceDescriptor} from './vector-source-descriptor';
+import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -89,12 +90,12 @@ export class HsAddDataVectorService {
         so layer synchronizer would know if to sync 
         */
         if (url !== undefined) {
-          lyr.set('definition', {
+          setDefinition(lyr, {
             format: 'hs.format.WFS',
             url: url.replace('ows', 'wfs'),
           });
         } else {
-          lyr.set('definition', {
+          setDefinition(lyr, {
             format: 'hs.format.WFS',
           });
         }
