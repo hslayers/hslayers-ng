@@ -76,6 +76,16 @@ angular
     };
   })
 
+  .directive('hs.saveMap.laymanErrorDialogDirective', (HsConfig) => {
+    'ngInject';
+    return {
+      template: require('./partials/layman_error.html'),
+      link: function (scope, element, attrs) {
+        scope.laymanErrorModalVisible = true;
+      },
+    };
+  })
+
   /**
    * @ngdoc directive
    * @name hs.saveMap.saveDialogDirective
