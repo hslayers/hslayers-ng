@@ -38,6 +38,10 @@ export class HsEventBusService {
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<any> = new Subject();
   layerTimeChanges: Subject<any> = new Subject();
+  layerTimeSynchronizations: Subject<{
+    sync: boolean;
+    time?: string;
+  }> = new Subject();
   layermanagerDimensionChanges: Subject<any> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
   vectorQueryFeatureDeselection: Subject<any> = new Subject();

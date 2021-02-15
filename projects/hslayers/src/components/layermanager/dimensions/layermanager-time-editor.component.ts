@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerWmstService} from '../layermanager-wmst.service';
@@ -10,11 +10,16 @@ import {HsLayoutService} from '../../layout/layout.service';
 })
 export class HsLayerManagerTimeEditorComponent implements OnInit {
   @Input() layer: HsLayerDescriptor;
-  currentTime;
+  /**
+   * ISO format time
+   */
+  currentTime: string;
   currentTimeIdx: number;
-  availableTimes: Array<any>;
+  availableTimes: Array<string>;
+  @ViewChild('hstimeselector') selectElement;
   selectVisible: boolean;
   timesInSync: boolean;
+  ac;
 
   constructor(
     public hsEventBusService: HsEventBusService,
@@ -23,17 +28,35 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   ) {
     this.hsEventBusService.layerTimeChanges.subscribe(({layer, _}) => {
       if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
-        //this.timeLayerConfig = this.layer.layer.get('dimensions').time;
         this.availableTimes = layer.time.timePoints;
-        this.currentTime = this.layer.time.default ?? this.availableTimes[0];
-        this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+        this.setCurrentTimeIfAvailable(this.layer.time.default);
+        if (!this.currentTimeDefined()) {
+          this.currentTime = this.availableTimes[0];
+          this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+        }
       }
     });
+    this.hsEventBusService.layerTimeSynchronizations.subscribe(
+      ({sync, time}) => {
+        this.timesInSync = sync;
+        if (sync) {
+          this.hideTimeSelect();
+          this.setCurrentTimeIfAvailable(time);
+          if (this.currentTime) {
+            this.setLayerTime();
+          }
+        }
+      }
+    );
   }
 
   ngOnInit(): void {
     this.selectVisible = false;
     this.timesInSync = false;
+  }
+
+  currentTimeDefined(): boolean {
+    return this.currentTime !== undefined && this.currentTime !== null;
   }
 
   hasPreviousTime(): boolean {
@@ -50,27 +73,49 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   previousTime(): void {
     if (this.hasPreviousTime()) {
       this.currentTime = this.availableTimes[--this.currentTimeIdx];
+      if (this.timesInSync) {
+        this.hsEventBusService.layerTimeSynchronizations.next({
+          sync: this.timesInSync,
+          time: this.currentTime,
+        });
+      }
       this.setLayerTime();
     }
-    console.log(this.currentTimeIdx);
-    console.log(this.currentTime);
   }
 
   followingTime(): void {
     if (this.hasFollowingTime()) {
       this.currentTime = this.availableTimes[++this.currentTimeIdx];
+      if (this.timesInSync) {
+        this.hsEventBusService.layerTimeSynchronizations.next({
+          sync: this.timesInSync,
+          time: this.currentTime,
+        });
+      }
       this.setLayerTime();
     }
-    console.log(this.currentTimeIdx);
-    console.log(this.currentTime);
   }
 
   selectTime(evt: Event): void {
     this.currentTime = (evt.target as HTMLSelectElement).value;
     this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+    if (this.timesInSync) {
+      this.hsEventBusService.layerTimeSynchronizations.next({
+        sync: this.timesInSync,
+        time: this.currentTime,
+      });
+    }
     this.setLayerTime();
-    console.log(this.currentTimeIdx);
-    console.log(this.currentTime);
+  }
+
+  setCurrentTimeIfAvailable(time: string): void {
+    if (this.availableTimes.includes(time)) {
+      this.currentTime = time;
+      this.currentTimeIdx = this.availableTimes.indexOf(time);
+    } else {
+      this.currentTime = null;
+      this.currentTimeIdx = -1;
+    }
   }
 
   setLayerTime(): void {
@@ -81,9 +126,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
 
   showTimeSelect(): void {
     this.selectVisible = true;
-    this.hsLayoutService.contentWrapper
-      .querySelector('.hs-lm-time-selector')
-      .focus(); //TODO: not focusing, why?
+    this.selectElement.nativeElement.focus(); //FIXME: this just refuse to work...
   }
 
   hideTimeSelect(): void {
@@ -92,6 +135,9 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
 
   synchronizeTimes(): void {
     this.timesInSync = !this.timesInSync;
-    throw new Error('Not implemented');
+    this.hsEventBusService.layerTimeSynchronizations.next({
+      sync: this.timesInSync,
+      time: this.currentTime,
+    });
   }
 }
