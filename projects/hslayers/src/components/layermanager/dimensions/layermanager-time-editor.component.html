@@ -14,4 +14,9 @@
 </div>
 <div class="p-0">
   <!-- TODO: synchronization of time between layers here -->
+  <button type="button" class="btn btn-sm"
+    [ngClass]="{'btn-info': timesInSync, 'text-secondary': !timesInSync}"
+    (click)="synchronizeTimes()" title="Synchronize time for all layers">
+    <i class="glyphicon icon-timeline"></i>
+  </button>
 </div>
