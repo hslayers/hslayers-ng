@@ -1,6 +1,4 @@
 /* eslint-disable prefer-arrow-callback */
-/* eslint-disable angular/no-service-method */
-/* eslint-disable angular/di */
 'use strict';
 import {
   BrowserDynamicTestingModule,
@@ -10,8 +8,8 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HsConfig} from '../../../config.service';
 import {HsAddDataVectorComponent} from './add-data-vector.component';
+import {HsConfig} from '../../../config.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
@@ -22,6 +20,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {Layer} from 'ol/layer';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
+import {getTitle} from '../../../common/layer-extensions';
 class emptyMock {
   constructor() {}
 }
@@ -100,6 +99,6 @@ describe('add-layers-vector', () => {
 
     const layer: Layer = await component.add();
     expect(layer).toBeDefined();
-    expect(layer.get('title')).toEqual('Cancer rates');
+    expect(getTitle(layer)).toEqual('Cancer rates');
   });
 });

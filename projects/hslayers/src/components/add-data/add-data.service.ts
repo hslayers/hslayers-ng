@@ -3,6 +3,7 @@ import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
+import {getBase} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +11,11 @@ import {Injectable} from '@angular/core';
 export class HsAddDataService {
   typeSelected: string;
   //Holds reference to data.url.component type selected
-  urlType: string; 
+  urlType: string;
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsConfig: HsConfig,
+    public HsConfig: HsConfig
   ) {}
 
   addLayer(layer: BaseLayer, underLayer?: BaseLayer) {
@@ -22,7 +23,7 @@ export class HsAddDataService {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();
       layer.setZIndex(underZ);
-      for (const iLayer of layers.filter((l) => !l.get('base'))) {
+      for (const iLayer of layers.filter((l) => !getBase(l))) {
         if (iLayer.getZIndex() >= underZ) {
           iLayer.setZIndex(iLayer.getZIndex() + 1);
         }

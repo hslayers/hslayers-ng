@@ -9,6 +9,11 @@ import {transform} from 'ol/proj';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsSaveMapService} from '../../save-map/save-map.service';
+import {
+  getHighlighted,
+  getRecord,
+  setHighlighted,
+} from '../../../common/feature-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +28,7 @@ export class HsAddDataCatalogueMapService {
         new Style({
           stroke: new Stroke({
             color: '#005CB6',
-            width: feature.get('highlighted') ? 4 : 1,
+            width: getHighlighted(feature) ? 4 : 1,
           }),
           fill: new Fill({
             color: 'rgba(0, 0, 255, 0.01)',
@@ -52,7 +57,7 @@ export class HsAddDataCatalogueMapService {
     const highlightedFeatures = this.extentLayer
       .getSource()
       .getFeatures()
-      .filter((feature) => feature.get('record').highlighted);
+      .filter((feature) => getRecord(feature).highlighted);
 
     const dontHighlight = highlightedFeatures.filter(
       (feature) => !featuresUnderMouse.includes(feature)
@@ -63,10 +68,10 @@ export class HsAddDataCatalogueMapService {
     if (dontHighlight.length > 0 || highlight.length > 0) {
       this.zone.run(() => {
         for (const feature of highlight) {
-          feature.get('record').highlighted = true;
+          getRecord(feature).highlighted = true;
         }
         for (const feature of dontHighlight) {
-          feature.get('record').highlighted = false;
+          getRecord(feature).highlighted = false;
         }
       });
     }
@@ -128,7 +133,7 @@ export class HsAddDataCatalogueMapService {
 
   highlightLayer(composition, state): void {
     if (composition.feature !== undefined) {
-      composition.feature.set('highlighted', state);
+      setHighlighted(composition.feature, state);
     }
   }
 
