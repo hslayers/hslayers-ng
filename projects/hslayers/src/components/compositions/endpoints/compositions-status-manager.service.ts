@@ -1,5 +1,6 @@
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsStatusManagerService} from '../../save-map/status-manager.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -7,7 +8,6 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError, map, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +18,8 @@ export class HsCompositionsStatusManagerService {
     public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
     public HsEventBusService: HsEventBusService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
   /**
    * @ngdoc method
@@ -59,8 +60,17 @@ export class HsCompositionsStatusManagerService {
       map((response: any) => response),
       catchError((e) => {
         this.HsToastService.createToastPopupMessage(
-          'COMPOSITIONS.errorWhileRequestingCompositions',
-          ds.title + ': ' + e.message
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.errorWhileRequestingCompositions'
+          ),
+          ds.title +
+            ': ' +
+            this.HsLanguageService.getTranslationIgnoreNonExisting(
+              'ERRORMESSAGES',
+              e.statusText || e.message,
+              {value: url}
+            ),
+          true
         );
         return of(e);
       })

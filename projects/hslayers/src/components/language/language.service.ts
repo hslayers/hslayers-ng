@@ -75,8 +75,12 @@ export class HsLanguageService {
     return this.TranslateService.instant(str, params);
   }
 
-  getTranslationIgnoreNonExisting(module: string, text: string): string {
-    const tmp = this.getTranslation(module + '.' + text);
+  getTranslationIgnoreNonExisting(
+    module: string,
+    text: string,
+    params?: any
+  ): string {
+    const tmp = this.getTranslation(module + '.' + text, params || undefined);
     if (tmp.includes(module + '.')) {
       return text;
     }

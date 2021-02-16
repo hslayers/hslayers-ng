@@ -2,6 +2,7 @@ import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsStatusManagerService} from './compositions-status-manager.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {Injectable} from '@angular/core';
@@ -17,7 +18,8 @@ export class HsCompositionsStatusManagerMickaJointService {
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsCompositionsParserService: HsCompositionsParserService,
     public HsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
   /**
    * @ngdoc method
@@ -45,8 +47,17 @@ export class HsCompositionsStatusManagerMickaJointService {
       }),
       catchError((e) => {
         this.HsToastService.createToastPopupMessage(
-          'COMPOSITIONS.errorWhileRequestingCompositions',
-          ds.title + ': ' + e.message
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.errorWhileRequestingCompositions'
+          ),
+          ds.title +
+            ': ' +
+            this.HsLanguageService.getTranslationIgnoreNonExisting(
+              'ERRORMESSAGES',
+              e.statusText,
+              {value: ds.url}
+            ),
+          true
         );
         return of(e);
       })
@@ -62,10 +73,24 @@ export class HsCompositionsStatusManagerMickaJointService {
     let info: any = {};
     let url = '';
     Array.isArray(compUrls) ? (url = compUrls[0]) : (url = compUrls);
-    info = await this.HsCompositionsParserService.loadInfo(url);
-    //TODO: find out if this is even available
-    // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
-    return info;
+    try {
+      info = await this.HsCompositionsParserService.loadInfo(url);
+      //TODO: find out if this is even available
+      // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
+      return info;
+    } catch (ex) {
+      this.HsToastService.createToastPopupMessage(
+        this.HsLanguageService.getTranslation(
+          'COMPOSITIONS.errorWhileLoadingCompositionMetadata'
+        ),
+        this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ERRORMESSAGES',
+          ex.statusText || ex.message,
+          {value: url}
+        ),
+        true
+      );
+    }
   }
 
   delete(endpoint, composition) {
