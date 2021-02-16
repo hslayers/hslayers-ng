@@ -25,19 +25,26 @@ export class HsToastService {
    * Creates new toast message with custom text and custom styling
    * @param header Header text to display
    * @param text Toast body text to display
+   * @param disableLocalization Disable text translation
    * @param toastStyleClasses Toast message background and text style classes, for example - background: (bg-primary, bg-secondary, bg-success, bg-danger, bg-warning, bg-info, bg-light, bg-dark, bg-white)
    * and text: (text-primary, text-secondary, text-success, text-danger, text-warning, text-info, text-light, text-dark, text-white, text-muted)
    */
   createToastPopupMessage(
     header: string,
     text: string,
+    disableLocalization?: boolean,
     toastStyleClasses?: string
   ): void {
-    this.show(this.HsLanguageService.getTranslation(text), {
-      header: this.HsLanguageService.getTranslation(header),
-      delay: 6000,
-      autohide: true,
-      classname: toastStyleClasses || `bg-danger text-light`,
-    });
+    this.show(
+      disableLocalization ? text : this.HsLanguageService.getTranslation(text),
+      {
+        header: disableLocalization
+          ? header
+          : this.HsLanguageService.getTranslation(header),
+        delay: 7000,
+        autohide: true,
+        classname: toastStyleClasses || `bg-danger text-light`,
+      }
+    );
   }
 }
