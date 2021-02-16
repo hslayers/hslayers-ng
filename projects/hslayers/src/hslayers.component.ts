@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HsConfig} from './config.service';
 
 @Component({
@@ -6,6 +6,12 @@ import {HsConfig} from './config.service';
   templateUrl: './hslayers.html',
   styles: [],
 })
-export class HslayersComponent {
+export class HslayersComponent implements OnInit {
+  @Input() config: HsConfig;
   constructor(public HsConfig: HsConfig) {}
+  ngOnInit(): void {
+    if (this.config) {
+      this.HsConfig.update(this.config);
+    }
+  }
 }
