@@ -54,14 +54,7 @@ export class HsCompositionsLaymanService {
   compositionsReceived(endpoint: HsEndpoint, params, response): void {
     if (!response && response.length == 0) {
       endpoint.compositionsPaging.matched = 0;
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation('COMMON.warning'),
-        endpoint.title +
-          ': ' +
-          this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
-        true,
-        'bg-warning text-light'
-      );
+      this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
       return;
     }
     endpoint.compositionsPaging.loaded = true;
@@ -101,41 +94,23 @@ export class HsCompositionsLaymanService {
   async getInfo(composition: any): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation('COMMON.warning'),
-        endpoint.title +
-          ': ' +
-          this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
-          ),
-        true,
-        'bg-warning text-light'
+      this.displayWarningToast(
+        endpoint,
+        'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
       );
       return;
     }
     if (endpoint.user == undefined) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation('COMMON.warning'),
-        endpoint.title +
-          ': ' +
-          this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.endpointUserIsNotDefined'
-          ),
-        true,
-        'bg-warning text-light'
+      this.displayWarningToast(
+        endpoint,
+        'COMPOSITIONS.endpointUserIsNotDefined'
       );
       return;
     }
     if (endpoint.url == undefined) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation('COMMON.warning'),
-        endpoint.title +
-          ': ' +
-          this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.endpointUrlIsNotDefined'
-          ),
-        true,
-        'bg-warning text-light'
+      this.displayWarningToast(
+        endpoint,
+        'COMPOSITIONS.endpointUrlIsNotDefined'
       );
       return;
     }
@@ -155,5 +130,13 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.start = 0;
     endpoint.compositionsPaging.next = this.data.limit;
     endpoint.compositionsPaging.matched = 0;
+  }
+  displayWarningToast(endpoint: HsEndpoint, message: string): void {
+    this.HsToastService.createToastPopupMessage(
+      this.HsLanguageService.getTranslation('COMMON.warning'),
+      endpoint.title + ': ' + this.HsLanguageService.getTranslation(message),
+      true,
+      'bg-warning text-light'
+    );
   }
 }
