@@ -5,9 +5,9 @@ import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsToastService} from '../layout/toast/toast.service';
-
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.html',
@@ -20,7 +20,8 @@ export class HsCompostionsListItemComponent {
     public HsLayoutService: HsLayoutService,
     public HsToastService: HsToastService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsConfig: HsConfig
+    public HsConfig: HsConfig,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -44,18 +45,9 @@ export class HsCompostionsListItemComponent {
    * Load info about composition through service and display composition info dialog
    */
   async detailComposition(record): Promise<void> {
-    try {
-      const info = await this.HsCompositionsService.getCompositionInfo(record);
-      if (info !== undefined) {
-        this.infoDialogBootstrap(info);
-      } else {
-        throw new Error('COMPOSITIONS.metadataNotAvailable');
-      }
-    } catch (ex) {
-      this.HsToastService.createToastPopupMessage(
-        'COMPOSITIONS.errorWhileLoadingCompositionMetadata',
-        ex.message
-      );
+    const info = await this.HsCompositionsService.getCompositionInfo(record);
+    if (info !== undefined) {
+      this.infoDialogBootstrap(info);
     }
   }
   /**
@@ -63,10 +55,11 @@ export class HsCompostionsListItemComponent {
    * Prepare share object on server and display share dialog to share composition
    */
   async shareComposition(record): Promise<void> {
+    let url: string;
     try {
       await this.HsCompositionsService.shareComposition(record).then(
         async () => {
-          const url = await this.HsCompositionsService.getShareUrl();
+          url = await this.HsCompositionsService.getShareUrl();
           if (url !== undefined) {
             this.shareDialogBootstrap(record, url);
           } else {
@@ -76,8 +69,15 @@ export class HsCompostionsListItemComponent {
       );
     } catch (ex) {
       this.HsToastService.createToastPopupMessage(
-        'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
-        ex.message
+        this.HsLanguageService.getTranslation(
+          'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
+        ),
+        this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ERRORMESSAGES',
+          ex.statusText || ex.message,
+          {value: url}
+        ),
+        true
       );
     }
   }

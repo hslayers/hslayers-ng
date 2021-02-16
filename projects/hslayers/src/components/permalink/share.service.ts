@@ -1,16 +1,17 @@
 import 'share-api-polyfill';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -42,6 +43,8 @@ export class HsShareService {
     public HsLayoutService: HsLayoutService,
     public HsSaveMapService: HsSaveMapService,
     public HsEventBusService: HsEventBusService,
+    public HsLanguageService: HsLanguageService,
+    public HsToastService: HsToastService,
     public HsLogService: HsLogService,
     private HttpClient: HttpClient,
     rendererFactory: RendererFactory2
@@ -256,7 +259,16 @@ export class HsShareService {
         console.log(response);
       })
       .catch((error) => {
-        console.error(error);
+        this.HsToastService.createToastPopupMessage(
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
+          ),
+          this.HsLanguageService.getTranslationIgnoreNonExisting(
+            'ERRORMESSAGES',
+            error
+          ),
+          true
+        );
       });
   }
 

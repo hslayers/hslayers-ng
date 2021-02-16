@@ -625,5 +625,12 @@
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypoints": "Waypoints"
+  },
+  "ERRORMESSAGES": {
+    "Unknown Error": "Http failure response for {{value}}: 0 Unknown Error",
+    "Not Found": "Http failure response for {{value}}: 404 Not Found",
+    "Timeout has occurred": "Http failure response for {{value}}: Timeout Out",
+    "Bad Gateway": "Http failure response for {{value}}: 502 Bad Gateway",
+    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!"
   }
 }

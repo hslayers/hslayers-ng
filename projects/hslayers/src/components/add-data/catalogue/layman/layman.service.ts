@@ -1,5 +1,6 @@
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -16,7 +17,8 @@ export class HsLaymanBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsUtilsService: HsUtilsService,
-    public hsToastService: HsToastService
+    public hsToastService: HsToastService,
+    public hsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -44,8 +46,17 @@ export class HsLaymanBrowserService {
         }),
         catchError((e) => {
           this.hsToastService.createToastPopupMessage(
-            'ADDLAYERS.errorWhileRequestingLayers',
-            endpoint.title + ': ' + e.message
+            this.hsLanguageService.getTranslation(
+              'ADDLAYERS.errorWhileRequestingLayers'
+            ),
+            endpoint.title +
+              ': ' +
+              this.hsLanguageService.getTranslationIgnoreNonExisting(
+                'ERRORMESSAGES',
+                e.statusText || e.message,
+                {value: url}
+              ),
+            true
           );
           endpoint.datasourcePaging.loaded = true;
           return of(e);
@@ -63,8 +74,11 @@ export class HsLaymanBrowserService {
   private datasetsReceived(data, textFilter?: string): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
-        'COMMON.warning',
-        data.dataset.title + ': ' + 'COMMON.noDataReceived',
+        this.hsLanguageService.getTranslation('COMMON.warning'),
+        data.dataset.title +
+          ': ' +
+          this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
+        true,
         'bg-warning text-light'
       );
       return;

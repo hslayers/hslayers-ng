@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -21,7 +22,8 @@ export class HsCompositionsMickaService {
     private $http: HttpClient,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   getCompositionsQueryUrl(endpoint, params, bbox): string {
@@ -86,8 +88,11 @@ export class HsCompositionsMickaService {
   ): void {
     if (!response.records) {
       this.HsToastService.createToastPopupMessage(
-        'COMMON.warning',
-        endpoint.title + ': ' + 'COMMON.noDataReceived',
+        this.HsLanguageService.getTranslation('COMMON.warning'),
+        endpoint.title +
+          ': ' +
+          this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
+        true,
         'bg-warning text-light'
       );
       return;
@@ -157,8 +162,17 @@ export class HsCompositionsMickaService {
         }),
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(
-            'COMPOSITIONS.errorWhileRequestingCompositions',
-            endpoint.title + ': ' + e.message
+            this.HsLanguageService.getTranslation(
+              'COMPOSITIONS.errorWhileRequestingCompositions'
+            ),
+            endpoint.title +
+              ': ' +
+              this.HsLanguageService.getTranslationIgnoreNonExisting(
+                'ERRORMESSAGES',
+                e.statusText || e.message,
+                {value: url}
+              ),
+            true
           );
           return of(e);
         })

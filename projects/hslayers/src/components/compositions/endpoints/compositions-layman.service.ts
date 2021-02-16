@@ -1,6 +1,7 @@
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
@@ -17,7 +18,8 @@ export class HsCompositionsLaymanService {
     public HsUtilsService: HsUtilsService,
     public HsCompositionsParserService: HsCompositionsParserService,
     public HsEventBusService: HsEventBusService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   loadList(endpoint: HsEndpoint, params): Observable<any> {
@@ -32,8 +34,17 @@ export class HsCompositionsLaymanService {
         }),
         catchError((e) => {
           this.HsToastService.createToastPopupMessage(
-            'COMPOSITIONS.errorWhileRequestingCompositions',
-            endpoint.title + ': ' + e.message
+            this.HsLanguageService.getTranslation(
+              'COMPOSITIONS.errorWhileRequestingCompositions'
+            ),
+            endpoint.title +
+              ': ' +
+              this.HsLanguageService.getTranslationIgnoreNonExisting(
+                'ERRORMESSAGES',
+                e.statusText || e.message,
+                {value: endpoint.url}
+              ),
+            true
           );
           return of(e);
         })
@@ -44,8 +55,11 @@ export class HsCompositionsLaymanService {
     if (!response && response.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.HsToastService.createToastPopupMessage(
-        'COMMON.warning',
-        endpoint.title + ': ' + 'COMMON.noDataReceived',
+        this.HsLanguageService.getTranslation('COMMON.warning'),
+        endpoint.title +
+          ': ' +
+          this.HsLanguageService.getTranslation('COMMON.noDataReceived'),
+        true,
         'bg-warning text-light'
       );
       return;
@@ -88,26 +102,39 @@ export class HsCompositionsLaymanService {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.HsToastService.createToastPopupMessage(
-        'COMMON.warning',
+        this.HsLanguageService.getTranslation('COMMON.warning'),
         endpoint.title +
           ': ' +
-          'COMPOSITIONS.compostionsNameAttributeIsNotDefined',
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
+          ),
+        true,
         'bg-warning text-light'
       );
       return;
     }
     if (endpoint.user == undefined) {
       this.HsToastService.createToastPopupMessage(
-        'COMMON.warning',
-        endpoint.title + ': ' + 'COMPOSITIONS.endpointUserIsNotDefined',
+        this.HsLanguageService.getTranslation('COMMON.warning'),
+        endpoint.title +
+          ': ' +
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.endpointUserIsNotDefined'
+          ),
+        true,
         'bg-warning text-light'
       );
       return;
     }
     if (endpoint.url == undefined) {
       this.HsToastService.createToastPopupMessage(
-        'COMMON.warning',
-        endpoint.title + ': ' + 'COMPOSITIONS.endpointUrlIsNotDefined',
+        this.HsLanguageService.getTranslation('COMMON.warning'),
+        endpoint.title +
+          ': ' +
+          this.HsLanguageService.getTranslation(
+            'COMPOSITIONS.endpointUrlIsNotDefined'
+          ),
+        true,
         'bg-warning text-light'
       );
       return;
