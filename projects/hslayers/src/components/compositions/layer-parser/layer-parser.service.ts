@@ -2,13 +2,6 @@ import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
-import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styles/styler.service';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
-import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {
   ImageArcGISRest,
   ImageStatic,
@@ -18,7 +11,16 @@ import {
   XYZ,
 } from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+
 import {Injectable} from '@angular/core';
+
+import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
+import {HsLanguageService} from '../../language/language.service';
+import {HsMapService} from '../../map/map.service';
+import {HsStylerService} from '../../styles/styler.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
+import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {setDefinition} from '../../../common/layer-extensions';
 import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 @Injectable({
