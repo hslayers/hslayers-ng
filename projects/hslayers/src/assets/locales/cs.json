@@ -625,5 +625,8 @@
     "totalDistance": "Celková vzdálenost",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypoints": "Body trasy"
+  },
+  "SAVEMAP":{
+    "removeLayerError":"Vrstva '{{layer}}' nebyla odstraněna z databáze. {{error}}"
   }
 }
