@@ -7,11 +7,13 @@ import {HsToastService} from './toast.service';
   styles: [
     `
       :host {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        z-index: 9999;
+        position: absolute;
+        bottom: 0.1rem;
+        z-index: 150;
         border-style: none;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
       }
     `,
   ],

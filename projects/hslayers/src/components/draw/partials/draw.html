@@ -24,7 +24,7 @@
             [ngClass]="HsLayoutService.sidebarBottom() ? 'btn-group-lg' : 'btn-group-sm'">
 
             <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
-                <p class="m-0 p-0" style="color: blue;">{{'DRAW.drawingTo' | translate}}</p>
+                <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.drawingTo' | translate}}</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "

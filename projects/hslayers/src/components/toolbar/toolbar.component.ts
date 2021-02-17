@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsThemeService} from '../layout/themes/theme.service';
 
 @Component({
   selector: 'hs-toolbar',
@@ -15,7 +16,8 @@ export class HsToolbarComponent {
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
-    public HsCoreService: HsCoreService
+    public HsCoreService: HsCoreService,
+    public HsThemeService: HsThemeService
   ) {
     this.HsEventBusService.mapResets.subscribe(() => {
       setTimeout(() => {
@@ -44,4 +46,12 @@ export class HsToolbarComponent {
     return this.collapsed;
   }
   // $scope.$emit('scope_loaded', 'Toolbar');
+
+  toggleTheme() {
+    if (this.HsThemeService.isDarkTheme()) {
+      this.HsThemeService.setLightTheme();
+    } else {
+      this.HsThemeService.setDarkTheme();
+    }
+  }
 }

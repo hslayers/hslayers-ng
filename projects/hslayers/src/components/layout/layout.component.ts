@@ -6,12 +6,13 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from './layout.service';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsUtilsService} from '../utils/utils.service';
 import {HsThemeService} from './themes/theme.service';
+import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-layout',
@@ -102,13 +103,4 @@ export class HsLayoutComponent implements AfterViewInit {
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     this.cdr.detectChanges();
   }
-
-  toggleTheme() {
-    if (this.HsThemeService.isDarkTheme()) {
-      this.HsThemeService.setLightTheme();
-    } else {
-      this.HsThemeService.setDarkTheme();
-    }
-  }
-
 }
