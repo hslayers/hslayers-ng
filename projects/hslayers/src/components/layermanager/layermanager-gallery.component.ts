@@ -63,4 +63,5 @@ export class HsLayerManagerGalleryComponent {
     this.HsLayerManagerService.menuExpanded = !this.HsLayerManagerService
       .menuExpanded;
   }
+
 }
