@@ -41,6 +41,8 @@ export const light: Theme = {
     '--gray-200-s': '16%',
     '--gray-200-l': '93%',
     '--gray-200-a': 1,
+    //*GREY-800 */
+    '--gray-800': 'hsl(210, 10%, 23%)',
     //*GREY-900 */
     '--gray-900': 'hsl(210, 11%, 15%)', 
     /* WHITE */
@@ -92,6 +94,8 @@ export const dark: Theme = {
     '--gray-200-s': '29%',
     '--gray-200-l': '22%',
     '--gray-200-a': 1,
+    //*GREY-800 */
+    '--gray-800': 'hsla(0, 0%, 100%, 60%)',
     //*GREY-900 */
     '--gray-900': 'hsla(0, 0%, 100%, 69%)',
     /* WHITE */
