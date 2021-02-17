@@ -54,7 +54,7 @@ export class HsCompositionsStatusManagerMickaJointService {
             ': ' +
             this.HsLanguageService.getTranslationIgnoreNonExisting(
               'ERRORMESSAGES',
-              e.statusText,
+              e.status.toString() || e.message,
               {value: ds.url}
             ),
           true
@@ -85,7 +85,7 @@ export class HsCompositionsStatusManagerMickaJointService {
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          ex.statusText || ex.message,
+          ex.status.toString() || ex.message,
           {value: url}
         ),
         true
