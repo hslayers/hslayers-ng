@@ -10,7 +10,7 @@
             <div *ngFor="let layer of HsLayerManagerService.data.baselayers" (click)="toggleBasemap(layer)"
                 [ngStyle]="{'position':'relative'}" class="m-0">
                 <div style="position:absolute;top:5px; right:5px;z-index:5"
-                    [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'rgb(0, 123, 255)'}"
+                    [ngStyle]="layer.galleryMiniMenu && {'color':'white'} || {'color': 'var(--primary)'}"
                     *ngIf="layer.active" (click)="toggleMiniMenu(layer)">
                     <span class="glyphicon icon-menu icon-small"></span>
                 </div>
@@ -38,7 +38,7 @@
                     style="white-space: pre-line;">{{HsLayerUtilsService.translateTitle(layer.title)}}</a>
             </div>
             <div (click)="toggleBasemap()">
-                <div style="height: 4em; width: 100%" [ngClass]="{'active': !data.baselayersVisible}" alt=""></div>
+                <div style="height: 4em; width: 100%; background: white" [ngClass]="{'active': !data.baselayersVisible}" alt=""></div>
                 <a class="dropdown-item" 
                     [ngClass]="{'active': !data.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap' | translate}}</a>
             </div>

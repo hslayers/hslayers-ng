@@ -250,7 +250,7 @@ export class HsLayerManagerService {
         return this.HsUtilsService.getAssetsPath() + 'img/' + thumbnail;
       }
     } else {
-      this.HsUtilsService.getAssetsPath() + 'img/default.png';
+      return this.HsUtilsService.getAssetsPath() + 'img/default.png';
     }
   }
   /**

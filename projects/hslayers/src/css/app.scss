@@ -546,6 +546,9 @@ button.but-title-sm {
 .basemapGallery .dropdown-item:not(.active){
 	background: hsla(0, 0%, 80%, 0.51);
 }
+.basemapGallery .dropdown-item.active{
+	color: hsla(0, 0%, 100%, 89%);
+}
 .basemapGallery img.active,
 .basemapGallery div.active {
 	border: 0.1rem solid hsl(211, 100%, 50%);
@@ -557,7 +560,7 @@ button.but-title-sm {
 .basemapGallery .hs-miniMenu {
 	width: 100%;
 	height: 100%;
-	background-color: hsla(212, 20%, 40%, 0.766);
+	background-color: hsla(212, 20%, 40%, 0.94);
 	border: 0.1rem solid hsl(211, 100%, 50%);
 
 	display: flex;
@@ -593,16 +596,16 @@ button.but-title-sm {
 }
 
 .basemapGallery .hs-miniMenu.expanded hs-layer-editor label{
-	color: hsl(211, 100%, 50%);
+	color: hsl(0, 0%, 100%);
 }
 
 .galleryButton {
 	opacity: 0.9 !important;
-	background: hsla(214, 100%, 27%, 0.5) !important;
+	background-color: var(--map-controls-bg) !important;
 	color: hsl(0, 0%, 100%) !important;
 }
 .galleryButton:hover {
-	background-color: hsla(214, 100%, 27%, 0.7) !important;
+	background-color: $primary !important;
 }
 
 /******SIDEBAR****************/
@@ -1473,5 +1476,8 @@ hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 
 .ol-control button {
 	background-color: var(--map-controls-bg);
+}
+.ol-control button:hover {
+	background-color: $primary;
 }
 }
