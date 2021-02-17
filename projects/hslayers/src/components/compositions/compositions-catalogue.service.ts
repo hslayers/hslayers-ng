@@ -126,6 +126,12 @@ export class HsCompositionsCatalogueService {
     });
 
     this.HsCommonLaymanService.authChange.subscribe(() => {
+      if (
+        this.HsLayoutService.mainpanel != 'composition_browser' &&
+        this.HsLayoutService.mainpanel != 'composition'
+      ) {
+        return;
+      }
       this.loadFilteredCompositions();
     });
   }

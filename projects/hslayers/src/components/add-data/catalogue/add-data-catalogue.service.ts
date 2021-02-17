@@ -115,7 +115,9 @@ export class HsAddDataCatalogueService {
     });
 
     this.HsCommonLaymanService.authChange.subscribe(() => {
-      this.reloadData();
+      if (this.panelVisible()) {
+        this.reloadData();
+      }
     });
   }
 
@@ -453,14 +455,14 @@ export class HsAddDataCatalogueService {
   /**
    *
    */
-  dataSourceExistsAndEmpty(): boolean {
+  private dataSourceExistsAndEmpty(): boolean {
     return !!this.endpointsWithDatasources;
   }
 
   /**
    *
    */
-  panelVisible(): boolean {
+  private panelVisible(): boolean {
     return this.hsLayoutService.panelVisible('addData');
   }
 

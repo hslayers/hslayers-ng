@@ -632,5 +632,8 @@
     "502": "Http pieprasījuma kļūda uz {{value}}: 502 Nederīga vārteja",
     "Timeout has occurred": "Http pieprasījuma kļūda uz {{value}}: Iestājās pieprasījuma noilgums",
     "Invalid Params": "Lūdzu, pārbaudiet, vai ir aizpildīti visi nepieciešamie teksta lauki pirms kartes koplietošanas!"
+  },
+  "SAVEMAP":{
+    "removeLayerError":"Layer {{layer}} was not deleted from the database. {{error}}"
   }
 }

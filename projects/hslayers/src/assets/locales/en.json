@@ -632,5 +632,8 @@
     "502": "Http failure response for {{value}}: 502 Bad Gateway",
     "Timeout has occurred": "Http failure response for {{value}}: Timeout Out",
     "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!"
+  },
+  "SAVEMAP":{
+    "removeLayerError":"Layer {{layer}} was not deleted from the database. {{error}}"
   }
 }
