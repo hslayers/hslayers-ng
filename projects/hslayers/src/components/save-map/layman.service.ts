@@ -386,7 +386,7 @@ export class HsLaymanService implements HsSaverService {
             this.HsToastService.createToastPopupMessage(
               this.HsLanguageService.getTranslation('COMMON.warning'),
               this.HsLanguageService.getTranslationIgnoreNonExisting(
-                'SAVEMAP',
+                'SAVECOMPOSITION',
                 'removeLayerError',
                 {error: error.error.message, layer: layer.get('title')}
               )

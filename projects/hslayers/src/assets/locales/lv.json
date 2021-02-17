@@ -571,7 +571,8 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
-    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības",
+    "removeLayerError":"Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}"
   },
   "SENSORS": {
     "1D": "1d",
@@ -627,13 +628,10 @@
     "waypoints": "Pieturas punkti"
   },
   "ERRORMESSAGES": {
-    "0": "Http pieprasījuma kļūda uz {{value}}: 0 Nezināma kļūda",
-    "404": "Http pieprasījuma kļūda uz {{value}}: 404 Serveris nevarēja atrast pieprasītos datus",
-    "502": "Http pieprasījuma kļūda uz {{value}}: 502 Nederīga vārteja",
-    "Timeout has occurred": "Http pieprasījuma kļūda uz {{value}}: Iestājās pieprasījuma noilgums",
+    "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
+    "404": "Http pieprasījuma kļūda uz {{url}}: 404 Serveris nevarēja atrast pieprasītos datus",
+    "502": "Http pieprasījuma kļūda uz {{url}}: 502 Nederīga vārteja",
+    "Timeout has occurred": "Http pieprasījuma kļūda uz {{url}}: Iestājās pieprasījuma noilgums",
     "Invalid Params": "Lūdzu, pārbaudiet, vai ir aizpildīti visi nepieciešamie teksta lauki pirms kartes koplietošanas!"
-  },
-  "SAVEMAP":{
-    "removeLayerError":"Layer {{layer}} was not deleted from the database. {{error}}"
   }
 }

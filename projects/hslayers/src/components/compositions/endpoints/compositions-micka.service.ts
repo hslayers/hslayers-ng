@@ -170,7 +170,7 @@ export class HsCompositionsMickaService {
               this.HsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status.toString() || e.message,
-                {value: url}
+                {url: url}
               ),
             true
           );
