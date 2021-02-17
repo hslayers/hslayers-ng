@@ -14,7 +14,7 @@
             </div>
         </div>
         <div [hidden]="endpoint?.type != 'layman' || isAuthorized">
-            <div class="alert alert-info" translate>
+            <div class="alert alert-info text-gray" translate>
                 {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translate}} </div>
         </div>
         <hs-layman-current-user *ngIf="endpoint?.type == 'layman'" [endpoint]="endpoint"></hs-layman-current-user>

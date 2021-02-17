@@ -110,8 +110,8 @@
         </table>
 
 
-        <div class="w-100 d-flex justify-content-between bg-light pb-2" style="position: sticky;
-        bottom: 0">
+        <div class="w-100 d-flex justify-content-between pb-2" style="position: sticky;
+        bottom: 0; background: var(--panel-wrapper-bg-color)">
             <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
             <button class="btn btn-primary" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
         </div>

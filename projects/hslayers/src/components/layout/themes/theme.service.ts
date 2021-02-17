@@ -32,9 +32,8 @@ export class HsThemeService {
 
   setActiveTheme(theme: Theme): void {
     this.active = theme;
-
     Object.keys(this.active.properties).forEach((property) => {
-      document.documentElement.style.setProperty(
+      this.HsLayoutService.layoutElement.style.setProperty(
         property,
         this.active.properties[property]
       );
