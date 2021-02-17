@@ -295,6 +295,10 @@ export class HsSidebarService {
     for (const button of this.importantButtons) {
       button.fits = this.fitsSidebar(button);
     }
+    if (!this.unimportantExist)
+    this.HsLayoutService.minisidebar = this.importantButtons.some(
+      (b) => b.fits == false
+    );
   }
 
   getButtonTitle(button): any {
@@ -389,13 +393,10 @@ export class HsSidebarService {
         ? maxNumberofButtons - 1
         : maxNumberofButtons;
 
-    if (
+    return (
       this.importantButtons.findIndex((btn) => btn.panel === button.panel) +
         2 <=
       maxNumberofButtons
-    ) {
-      this.HsLayoutService.minisidebar = true;
-      return true;
-    }
+    );
   }
 }
