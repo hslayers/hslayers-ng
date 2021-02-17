@@ -69,7 +69,7 @@ export class HsMickaBrowserService {
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status.toString() || e.message,
-                {value: url}
+                {url: url}
               ),
             true
           );

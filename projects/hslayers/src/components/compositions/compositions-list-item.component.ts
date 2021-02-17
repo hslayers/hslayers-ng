@@ -75,7 +75,7 @@ export class HsCompostionsListItemComponent {
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           ex.message,
-          {value: url}
+          {url: url}
         ),
         true
       );
