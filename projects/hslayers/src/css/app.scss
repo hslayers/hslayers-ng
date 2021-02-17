@@ -1574,49 +1574,6 @@ body {
 	width: 15px;
 }
 
-md-sidenav md-content {
-	touch-action: pan-y;
-}
-
-div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper.md-sidenav {
-    width: 0
-}
-
-md-icon.fab,
-md-bottom-sheet-collapsible .bottom-sheet-switcher md-icon {
-	transition: 0.3s;
-}
-
-md-icon.fab.opened {
-	transform: rotate(135deg) scale(1.15);
-}
-
-md-fab-actions button.md-button.md-fab md-icon {
-	color: #4a4a4a !important;
-}
-
-md-list-item > div.md-primary > md-icon:not(.md-avatar-icon),
-md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon),
-md-list-item > md-icon:first-child:not(.md-avatar-icon),
-md-list-item > md-icon.md-secondary:not(.md-avatar-icon),
-md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon),
-md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon),
-md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon),
-md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
-	line-height: initial;
-	margin-top: 10px;
-	margin-bottom: 12px;
-}
-
-md-icon > span,
-md-icon > span.glyphicon {
-	top: 50%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -100%);
-	font-size: initial;
-}
-
 .hs-map-container {
 	position: relative;
 }
@@ -1631,64 +1588,6 @@ md-icon > span.glyphicon {
 
 .map-floating-gui * {
 	pointer-events: initial;
-}
-
-.md-fab.geolocation {
-}
-
-md-icon.geolocation.off {
-	/*color: rgb(117, 117, 117);*/
-}
-
-md-icon.geolocation.searching {
-	color: hsl(187, 70%, 82%);
-}
-
-md-icon.geolocation.on {
-	color: hsl(199, 98%, 48%);
-}
-
-md-bottom-sheet-collapsible {
-	touch-action: none;
-	overflow-y: scroll;
-}
-
-md-bottom-sheet-collapsible .bottom-sheet-switcher {
-	position: absolute;
-	bottom: -8px;
-	left: calc(50% - 26px);
-}
-
-md-bottom-sheet-collapsible.minimized .bottom-sheet-switcher md-icon {
-	transform: rotate(180deg);
-}
-
-md-bottom-sheet {
-	box-shadow: 0 -5px 10px 1px hsla(0, 0%, 0%, 0.3);
-	max-height: 80%;
-	touch-action: pan-y;
-	overflow: scroll;
-	padding-top: 0;
-	padding-left: 0;
-	padding-right: 0;
-}
-
-md-bottom-sheet md-toolbar {
-	/*position: fixed;*/
-	/*overflow: none;*/
-}
-
-md-bottom-sheet .content {
-	/*height: calc(100% - 56px);*/
-	/*overflow-y: scroll;*/
-	/*max-height: 400px;*/
-}
-
-.md-panel.baselayers-panel {
-	background-color: #fff;
-	min-width: 56px;
-	/*max-width: 248px;*/
-	min-height: 56px;
 }
 
 .baselayer-tile {
@@ -1708,29 +1607,11 @@ md-bottom-sheet .content {
 	padding: 10px;
 }
 
-.baselayer-tile .md-avatar {
-	-webkit-box-flex: 0;
-	-webkit-flex: none;
-	flex: none;
-	width: 40px;
-	height: 40px;
-	padding: 6px;
-	margin: 0 auto;
-	border-radius: 50%;
-	box-sizing: content-box;
-}
-
 .baselayer-tile .remove-layer {
 	position: absolute;
 	top: 0;
 	right: -4px;
 	padding: 0;
-}
-
-.baselayer-tile.selected-basemap .md-avatar {
-	border: 2px solid #0062bf;
-	padding: 4px;
-	border-radius: 50%;
 }
 
 .baselayer-tile.selected-basemap p {
@@ -1739,16 +1620,8 @@ md-bottom-sheet .content {
 }
 
 @media only screen and (min-width: 600px) {
-	md-sidenav {
-		width: 100%;
-	}
-
 	.hs-layout .layout-row {
 		position: relative;
-	}
-
-	md-backdrop.md-sidenav-backdrop {
-		display: none;
 	}
 }
 
@@ -1763,60 +1636,8 @@ md-bottom-sheet .content {
 }
 /* Material Design Section */
 
-.md-scroll-mask {
-	display: none !important;
-}
-
-div.md-sidenav {
-	z-index: 90;
-}
-
-md-content.card-collection {
-	column-count: 1;
-	column-gap: 10px;
-}
-
-md-card {
-	break-inside: avoid;
-	cursor: pointer;
-}
-
-.md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-left,
-.md-toast-open-bottom md-fab-speed-dial.md-fab-bottom-right {
-	-webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-	transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-	-webkit-transform: translate3d(0, -42px, 0);
-	transform: translate3d(0, -42px, 0);
-}
-
-md-fab-speed-dial.md-fab-bottom-left,
-md-fab-speed-dial.md-fab-bottom-right {
-	-webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-	transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-	-webkit-transition-property: background-color, box-shadow, -webkit-transform;
-	transition-property: background-color, box-shadow, -webkit-transform;
-	transition-property: background-color, box-shadow, transform;
-	transition-property: background-color, box-shadow, transform, -webkit-transform;
-}
-
-md-checkbox {
-	margin-bottom: 0px;
-}
-
 .select-all-checkboxes {
 	padding-left: 30px;
-}
-
-@media (min-width: 960px) {
-	md-content.card-collection {
-		column-count: 2;
-	}
-}
-
-@media (min-width: 1280px) {
-	md-content.card-collection {
-		column-count: 3;
-	}
 }
 
 li.hs-lm-header {
