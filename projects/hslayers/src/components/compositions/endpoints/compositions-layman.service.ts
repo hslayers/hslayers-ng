@@ -42,7 +42,7 @@ export class HsCompositionsLaymanService {
               this.HsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
                 e.status.toString() || e.message,
-                {value: endpoint.url}
+                {url: endpoint.url}
               ),
             true
           );
