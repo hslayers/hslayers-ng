@@ -97,7 +97,7 @@ export class HsLayoutComponent implements AfterViewInit {
     }
     this.HsEventBusService.layoutLoads.next({
       element: this.elementRef.nativeElement,
-      innerElement: '.hs-map-container',
+      innerElement: '.hs-map-space',
     });
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
     this.cdr.detectChanges();
