@@ -5,11 +5,14 @@ import {Layer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
+import {HsLanguageService} from '../language/language.service';
 import {HsLaymanLayerDescriptor} from './layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
+
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
@@ -47,7 +50,9 @@ export class HsLaymanService implements HsSaverService {
     public HsMapService: HsMapService,
     public HsLogService: HsLogService,
     public HsCommonEndpointsService: HsCommonEndpointsService,
-    public $log: HsLogService
+    public $log: HsLogService,
+    public HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {}
 
   /**
@@ -376,7 +381,17 @@ export class HsLaymanService implements HsSaverService {
       .forEach((ds) => {
         this.http
           .delete(`${ds.url}/rest/${ds.user}/layers/${getLayerName(layer)}`)
-          .toPromise();
+          .toPromise()
+          .catch((error) => {
+            this.HsToastService.createToastPopupMessage(
+              this.HsLanguageService.getTranslation('COMMON.warning'),
+              this.HsLanguageService.getTranslationIgnoreNonExisting(
+                'SAVEMAP',
+                'removeLayerError',
+                {error: error.error.message, layer: layer.get('title')}
+              )
+            );
+          });
       });
   }
 
