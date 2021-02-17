@@ -629,6 +629,8 @@
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
+    "400": "Http failure response for {{url}}: 400 Bad Request",
+    "403": "Http failure response for {{url}}: 403 Forbidden",
     "404": "Http failure response for {{url}}: 404 Not Found",
     "502": "Http failure response for {{url}}: 502 Bad Gateway",
     "Timeout has occurred": "Http failure response for {{url}}: Timeout Out",

@@ -629,6 +629,8 @@
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
+    "400": "Http pieprasījuma kļūda uz {{url}}: 400 Neizdevies pieprasījums",
+    "403": "Http pieprasījuma kļūda uz {{url}}: 403 Aizliegta darbība",
     "404": "Http pieprasījuma kļūda uz {{url}}: 404 Serveris nevarēja atrast pieprasītos datus",
     "502": "Http pieprasījuma kļūda uz {{url}}: 502 Nederīga vārteja",
     "Timeout has occurred": "Http pieprasījuma kļūda uz {{url}}: Iestājās pieprasījuma noilgums",
