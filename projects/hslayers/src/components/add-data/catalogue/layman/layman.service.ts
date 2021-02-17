@@ -53,7 +53,7 @@ export class HsLaymanBrowserService {
               ': ' +
               this.hsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
-                e.statusText || e.message,
+                e.status.toString() || e.message,
                 {value: url}
               ),
             true

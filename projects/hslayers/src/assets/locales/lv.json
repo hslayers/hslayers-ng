@@ -627,10 +627,10 @@
     "waypoints": "Pieturas punkti"
   },
   "ERRORMESSAGES": {
-    "Not Found": "Http pieprasījuma kļūda uz {{value}}: 0 Nezināma kļūda",
-    "Unknown Error": "Http pieprasījuma kļūda uz {{value}}: 404 Serveris nevarēja atrast pieprasītos datus",
+    "0": "Http pieprasījuma kļūda uz {{value}}: 0 Nezināma kļūda",
+    "404": "Http pieprasījuma kļūda uz {{value}}: 404 Serveris nevarēja atrast pieprasītos datus",
+    "502": "Http pieprasījuma kļūda uz {{value}}: 502 Nederīga vārteja",
     "Timeout has occurred": "Http pieprasījuma kļūda uz {{value}}: Iestājās pieprasījuma noilgums",
-    "Bad Gateway": "Http pieprasījuma kļūda uz {{value}}: 502 Nederīga vārteja",
     "Invalid Params": "Lūdzu, pārbaudiet, vai ir aizpildīti visi nepieciešamie teksta lauki pirms kartes koplietošanas!"
   }
 }

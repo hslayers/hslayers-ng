@@ -169,7 +169,7 @@ export class HsCompositionsMickaService {
               ': ' +
               this.HsLanguageService.getTranslationIgnoreNonExisting(
                 'ERRORMESSAGES',
-                e.statusText || e.message,
+                e.status.toString() || e.message,
                 {value: url}
               ),
             true
