@@ -2,7 +2,7 @@
     <hs-add-data-common-url type="Arcgis" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
 
     <div [hidden]="!showDetails">
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate}}</span>
@@ -33,7 +33,7 @@
                     <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
                 </select>
             </div>
-        </div>
+        </div> -->
 
         <div class="form-group">
             <div class="input-group">
@@ -63,8 +63,10 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary pull-right" style="position: fixed;
-        margin-left: 570px; bottom:30px;" (click)="addLayers(true)"><i
-            class="icon-plus"></i></button>
+        <div class="w-100 d-flex justify-content-between bg-light pb-2" style="position: sticky;
+        bottom: 0">
+            <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
+            <button class="btn btn-primary" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+        </div>
     </div>
 </form>
