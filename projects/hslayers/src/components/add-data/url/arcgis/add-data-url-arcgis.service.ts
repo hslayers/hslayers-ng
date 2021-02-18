@@ -260,6 +260,7 @@ export class HsAddDataArcGisService {
       source,
       removable: true,
       path,
+      maxResolution: layer.minScale,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
     this.hsMapService.map.addLayer(new_layer);

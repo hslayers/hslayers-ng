@@ -7,7 +7,7 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {ImageWMS, TileWMS} from 'ol/source';
+import {ImageWMS, TileArcGISRest, TileWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
@@ -736,7 +736,8 @@ export class HsLayerManagerService {
   isWms(layer: Layer): boolean {
     return (
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
-      this.HsUtilsService.instOf(layer.getSource(), ImageWMS)
+      this.HsUtilsService.instOf(layer.getSource(), ImageWMS) ||
+      this.HsUtilsService.instOf(layer.getSource(), TileArcGISRest)
     );
   }
 
@@ -882,27 +883,18 @@ export class HsLayerManagerService {
     this.HsEventBusService.layerManagerUpdates.next();
     this.toggleEditLayerByUrlParam();
     this.boxLayersInit();
-    this.map.getView().on(
-      'change:resolution',
-      this.HsUtilsService.debounce(
-        () => {
-          setTimeout(() => {
-            for (let i = 0; i < this.data.layers.length; i++) {
-              const tmp = !this.isLayerInResolutionInterval(
-                this.data.layers[i].layer
-              );
-              if (this.data.layers[i].grayed != tmp) {
-                this.data.layers[i].grayed = tmp;
-              }
-            }
-            this.timer = null;
-          }, 250);
-        },
-        750,
-        false,
-        this
-      )
-    );
+
+    this.map
+      .getView()
+      .on(
+        'change:resolution',
+        this.HsUtilsService.debounce(
+          this.resolutionChangeDebounceCallback,
+          200,
+          false,
+          this
+        )
+      );
 
     this.map.getLayers().on('add', (e) => {
       this.applyZIndex(e.element);
@@ -912,6 +904,20 @@ export class HsLayerManagerService {
       this.layerAdded(e);
     });
     this.map.getLayers().on('remove', (e) => this.layerRemoved(e));
+  }
+
+  private resolutionChangeDebounceCallback(): void {
+    setTimeout(() => {
+      for (let i = 0; i < this.data.layers.length; i++) {
+        const tmp = !this.isLayerInResolutionInterval(
+          this.data.layers[i].layer
+        );
+        if (this.data.layers[i].grayed != tmp) {
+          this.data.layers[i].grayed = tmp;
+        }
+      }
+      this.timer = null;
+    }, 250);
   }
 
   /**
