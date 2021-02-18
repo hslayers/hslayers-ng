@@ -74,25 +74,37 @@ export class HsAddDataArcGisService {
     }
   }
 
-  /**
-   * @param layerToSelect
-   */
-  selectLayerByName(layerToSelect): void {
-    if (layerToSelect) {
-      this.data.services.forEach((service) => {
-        service.Layer.forEach((layer) => {
-          if (layer.name == layerToSelect) {
+  selectLayerByName(layerToSelect: string): void {
+    if (!layerToSelect) {
+      return;
+    }
+    for (const service of this.data.services) {
+      if (service.Layer) {
+        for (const layer of service.Layer) {
+          if (layer.Name == layerToSelect) {
             layer.checked = true;
+            setTimeout(() => {
+              const id = `#hs-add-layer-${layer.Name}`;
+              const el = this.hsLayoutService.contentWrapper.querySelector(id);
+              if (el) {
+                el.scrollIntoView();
+              }
+            }, 1000);
+            return;
           }
+        }
+      } else {
+        if (service.Name == layerToSelect) {
+          service.checked = true;
           setTimeout(() => {
-            const id = `#hs-add-layer-${layer.Name}`;
+            const id = `#hs-add-layer-${service.Name}`;
             const el = this.hsLayoutService.contentWrapper.querySelector(id);
             if (el) {
               el.scrollIntoView();
             }
           }, 1000);
-        });
-      });
+        }
+      }
     }
   }
 
@@ -109,44 +121,49 @@ export class HsAddDataArcGisService {
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
    * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
    */
-  addLayers(checked: boolean): void {
-    /**
-     * @param layer
-     */
-    function recurse(layer) {
-      if (!checked || layer.checked) {
-        if (layer.Layer === undefined) {
-          this.addLayer(
-            layer,
-            layer.name.replace(/\//g, '&#47;'),
-            this.hsUtilsService.undefineEmptyString(this.data.path),
-            this.data.image_format,
-            this.data.query_format,
-            this.getSublayerNames(layer)
-          );
-        } else {
-          const clone = this.hsUtilsService.structuredClone(layer);
-          delete clone.Layer;
-          this.addLayer(
-            layer,
-            layer.name.replace(/\//g, '&#47;'),
-            this.hsUtilsService.undefineEmptyString(this.data.path),
-            this.data.image_format,
-            this.data.query_format,
-            this.getSublayerNames(layer)
-          );
-        }
-      }
-      if (layer.Layer) {
-        for (const sublayer of layer.Layer) {
-          recurse(sublayer);
-        }
-      }
+  addLayers(checkedOnly: boolean): void {
+    if (this.data.services === undefined) {
+      return;
     }
     for (const layer of this.data.services) {
-      recurse(layer);
+      this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
     }
     this.hsLayoutService.setMainPanel('layermanager');
+  }
+
+  private addLayersRecursively(layer, {checkedOnly = true}) {
+    if (!checkedOnly || layer.checked) {
+      if (layer.Layer === undefined) {
+        this.addLayer(
+          layer,
+          layer.name.replace(/\//g, '&#47;'),
+          this.hsUtilsService.undefineEmptyString(this.data.path),
+          this.data.image_format,
+          this.data.query_format,
+          this.data.tile_size,
+          this.data.srs,
+          this.getSublayerNames(layer)
+        );
+      } else {
+        const clone = this.hsUtilsService.structuredClone(layer);
+        delete clone.Layer;
+        this.addLayer(
+          layer,
+          layer.name.replace(/\//g, '&#47;'),
+          this.hsUtilsService.undefineEmptyString(this.data.path),
+          this.data.image_format,
+          this.data.query_format,
+          this.data.tile_size,
+          this.data.srs,
+          this.getSublayerNames(layer)
+        );
+      }
+    }
+    if (layer.Layer) {
+      for (const sublayer of layer.Layer) {
+        this.addLayersRecursively(sublayer, {checkedOnly: checkedOnly});
+      }
+    }
   }
 
   /**

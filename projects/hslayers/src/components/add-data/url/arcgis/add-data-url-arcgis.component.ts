@@ -110,20 +110,12 @@ export class HsAddDataArcGisComponent {
    * @function selectAllLayers
    * @description Select all layers from service.
    */
-  selectAllLayers(): void {
-    /**
-     * @param layer
-     */
-    function recurse(layer) {
-      layer.checked = true;
+  selectAllLayers(layers: any[]): void {
+    for (const layer of layers) {
+      layer.checked = !layer.checked;
       if (layer.Layer) {
-        for (const sublayer of layer.Layer) {
-          recurse(sublayer);
-        }
+        this.selectAllLayers(layer.Layer);
       }
-    }
-    for (const layer of this.data.services.Layer) {
-      recurse(layer);
     }
   }
 
