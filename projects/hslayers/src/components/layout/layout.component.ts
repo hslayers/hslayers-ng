@@ -67,7 +67,15 @@ export class HsLayoutComponent implements AfterViewInit {
     }
     //this.$emit('scope_loaded', 'Layout');
 
-    this.HsThemeService.setDarkTheme();
+    switch (this.HsConfig.theme) {
+      case 'dark':
+        this.HsThemeService.setDarkTheme();
+        break;
+
+      default:
+        this.HsThemeService.setLightTheme();
+        break;
+    }
   }
 
   ngAfterViewInit() {
