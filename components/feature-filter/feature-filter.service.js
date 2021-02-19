@@ -150,7 +150,7 @@ export default function (
               searchOptions: {
                 fuzzy: term => term.length > 2 ? 0.2 : null,
                 combineWith: 'AND',
-                prefix: term => term.length > 3
+                prefix: true
               },
               tokenize: (string) => string.split(/[\s<,&;]+/),
             });
