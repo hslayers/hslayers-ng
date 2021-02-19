@@ -1,5 +1,6 @@
 /* eslint-disable prefer-arrow-callback */
 'use strict';
+import {BehaviorSubject} from 'rxjs';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -114,6 +115,7 @@ describe('compositions', () => {
           provide: HsCommonEndpointsService,
           useValue: {
             endpoints: [],
+            endpointsFilled: new BehaviorSubject(null),
           },
         },
       ],
