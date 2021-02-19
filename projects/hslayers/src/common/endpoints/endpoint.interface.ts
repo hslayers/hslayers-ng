@@ -56,7 +56,7 @@ export interface HsEndpoint {
 }
 
 function isErrorHandlerFunction(object: any): object is EndpointErrorHandler {
-  if (typeof object == 'string') {
+  if (typeof object == 'string' || object === undefined) {
     return false;
   }
   return 'handle' in object;
