@@ -2,6 +2,8 @@ import {Layer} from 'ol/layer';
 
 export interface HsLayerDescriptor {
   layer: Layer;
+  abstract?: string;
+  legends?: string | string[];
   active?: boolean;
   grayed?: boolean;
   position?: number;
