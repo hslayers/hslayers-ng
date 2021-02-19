@@ -88,6 +88,10 @@ export class HsArcgisGetCapabilitiesService {
       });
       return r;
     } catch (e) {
+      this.HsEventBusService.owsCapabilitiesReceived.next({
+        type: 'error',
+        response: e,
+      });
       throw e;
     }
   }

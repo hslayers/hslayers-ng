@@ -1,8 +1,4 @@
 import * as xml2Json from 'xml-js';
-import {HsConfig} from '../../../../config.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Renderer2, RendererFactory2} from '@angular/core';
@@ -11,6 +7,18 @@ import {Vector} from 'ol/source';
 import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+
+import {HsConfig} from '../../../../config.service';
+import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
+import {HsEventBusService} from '../../../core/event-bus.service';
+import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLayoutService} from '../../../layout/layout.service';
+import {HsLogService} from '../../../../common/log/log.service';
+import {HsMapService} from '../../../map/map.service';
+import {HsUtilsService} from '../../../utils/utils.service';
+import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +38,12 @@ export class HsAddDataWfsService {
   services: any;
   srss: any[];
   srs: any;
+  addAll: boolean;
+  url: string;
+  showDetails: boolean;
+  mapProjection: any;
+  layerToAdd: any;
+  folderName = 'WFS';
 
   constructor(
     public HsConfig: HsConfig,
@@ -37,6 +51,11 @@ export class HsAddDataWfsService {
     public HsUtilsService: HsUtilsService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsMapService: HsMapService,
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsEventBusService: HsEventBusService,
+    public HsLayoutService: HsLayoutService,
+    public hsLog: HsLogService,
+    public HsLanguageService: HsLanguageService,
     rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -47,6 +66,68 @@ export class HsAddDataWfsService {
       'EPSG:4258',
       'EPSG:4326',
     ];
+
+    this.HsEventBusService.olMapLoads.subscribe(() => {
+      this.mapProjection = this.HsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
+
+    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+      async ({type, response}) => {
+        if (type === 'WFS') {
+          try {
+            const bbox = await this.parseCapabilities(response);
+            if (this.layerToAdd) {
+              for (const layer of this.services) {
+                //TODO: If Layman allows layers with different casing,
+                // then remove the case lowering
+                if (
+                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase()
+                ) {
+                  layer.checked = true;
+                }
+              }
+              this.addLayers(true);
+              this.layerToAdd = null;
+              this.zoomToBBox(bbox);
+            }
+          } catch (e) {
+            if (e.status == 401) {
+              this.wfsCapabilitiesError.next(
+                'Unauthorized access. You are not authorized to query data from this service'
+              );
+              return;
+            }
+            this.wfsCapabilitiesError.next(e);
+          }
+        }
+        if (type === 'error') {
+          this.wfsCapabilitiesError.next(response.message);
+        }
+      }
+    );
+
+    this.wfsCapabilitiesError.subscribe((e) => {
+      this.hsLog.warn(e);
+      this.url = null;
+      this.showDetails = false;
+
+      let error = e.toString();
+      if (error.includes('property')) {
+        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'ADDLAYERS',
+          'serviceTypeNotMatching'
+        );
+      }
+      this.HsDialogContainerService.create(
+        HsGetCapabilitiesErrorComponent,
+        error
+      );
+      //throw "WMS Capabilities parsing problem";
+    });
   }
 
   //FIXME: context
@@ -295,9 +376,8 @@ export class HsAddDataWfsService {
   }
 
   readFeatures(doc) {
-    let features;
     const wfs = new WFS({version: this.version});
-    features = wfs.readFeatures(doc, {
+    const features = wfs.readFeatures(doc, {
       dataProjection: this.srs,
       featureProjection:
         this.HsMapService.map.getView().getProjection().getCode() == this.srs
@@ -305,5 +385,81 @@ export class HsAddDataWfsService {
           : this.HsMapService.map.getView().getProjection(),
     });
     return features;
+  }
+
+  /**
+   * @function addLayers
+   * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
+   * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
+   */
+  addLayers(checkedOnly: boolean): void {
+    this.addAll = checkedOnly;
+    for (const layer of this.services) {
+      this.addLayersRecursively(layer);
+    }
+  }
+
+  addLayersRecursively(layer): void {
+    if (!this.addAll || layer.checked) {
+      this.addLayer(
+        layer,
+        layer.Title.replace(/\//g, '&#47;'),
+        this.HsUtilsService.undefineEmptyString(this.folderName),
+        this.srs
+      );
+    }
+    if (layer.Layer) {
+      for (const sublayer of layer.Layer) {
+        this.addLayersRecursively(sublayer);
+      }
+    }
+  }
+
+  /**
+   * @function addLayer
+   * @private
+   * @description (PRIVATE) Add selected layer to map???
+   * @param {object} layer capabilities layer object
+   * @param {string} layerName layer name in the map
+   * @param {string} folder name
+   * @param {OpenLayers.Projection} srs of the layer
+   */
+  private addLayer(layer, layerName: string, folder: string, srs): void {
+    const options = {
+      layer: layer,
+      url: this.HsWfsGetCapabilitiesService.service_url.split('?')[0],
+      strategy: bbox,
+      srs: srs,
+    };
+
+    const new_layer = new VectorLayer({
+      title: layerName,
+      source: this.createWfsSource(options),
+      path: folder,
+      renderOrder: null,
+      removable: true,
+    });
+    this.HsMapService.map.addLayer(new_layer);
+    this.HsLayoutService.setMainPanel('layermanager');
+  }
+
+  private zoomToBBox(bbox: any) {
+    if (!bbox) {
+      return;
+    }
+    if (bbox.LowerCorner) {
+      bbox = [
+        bbox.LowerCorner.split(' ')[0],
+        bbox.LowerCorner.split(' ')[1],
+        bbox.UpperCorner.split(' ')[0],
+        bbox.UpperCorner.split(' ')[1],
+      ];
+    }
+    const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
+    if (extent) {
+      this.HsMapService.map
+        .getView()
+        .fit(extent, this.HsMapService.map.getSize());
+    }
   }
 }

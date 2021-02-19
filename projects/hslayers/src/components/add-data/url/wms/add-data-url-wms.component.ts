@@ -1,26 +1,26 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'hs-add-data-url-wms',
   templateUrl: './add-data-url-wms.directive.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
-export class HsAddDataWmsComponent {
+export class HsAddDataWmsComponent implements OnDestroy {
   data;
   hasNestedLayers;
   getDimensionValues;
   sourceHistory;
   url: string;
   layerToSelect: any;
-  error: any;
+  owsConnectingSubscription: Subscription;
   constructor(
     public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
@@ -31,62 +31,22 @@ export class HsAddDataWmsComponent {
     public HsLanguageService: HsLanguageService
   ) {
     this.data = this.HsAddDataUrlWmsService.data;
-    this.url = '';
     //FIXME: is it even fired?
-    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'wms') {
-        this.setUrlAndConnect(uri, layer);
-      }
-    });
 
-    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response}) => {
-        if (type === 'WMS') {
-          try {
-            await this.HsAddDataUrlWmsService.capabilitiesReceived(
-              response,
-              this.layerToSelect
-            );
-            if (this.layerToSelect) {
-              this.addLayers(true);
-            }
-          } catch (e) {
-            if (e.status == 401) {
-              this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(
-                'Unauthorized access. You are not authorized to query data from this service'
-              );
-              return;
-            }
-            this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
-          }
-        }
-        if (type === 'error') {
-          this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(
-            response.message
-          );
+    this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
+      ({type, uri, layer}) => {
+        if (type == 'wms') {
+          this.setUrlAndConnect(uri, layer);
         }
       }
     );
-    this.HsAddDataUrlWmsService.getWmsCapabilitiesError.subscribe((e) => {
-      this.hsLog.warn(e);
-      this.url = null;
-      this.HsAddDataUrlWmsService.showDetails = false;
-
-      this.error = e.toString();
-      if (this.error.includes('property')) {
-        this.error = this.HsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS',
-          'serviceTypeNotMatching'
-        );
-      }
-      this.HsDialogContainerService.create(
-        HsGetCapabilitiesErrorComponent,
-        this.error
-      );
-    });
 
     this.getDimensionValues = HsAddDataUrlWmsService.getDimensionValues;
     this.hasNestedLayers = HsAddDataUrlWmsService.hasNestedLayers;
+  }
+
+  ngOnDestroy(): void {
+    this.owsConnectingSubscription.unsubscribe();
   }
 
   /**
@@ -99,9 +59,14 @@ export class HsAddDataWmsComponent {
 
   connect = (layerToSelect: string): void => {
     try {
-      this.hsHistoryListService.addSourceHistory('wms', this.url);
-      this.layerToSelect = layerToSelect;
-      this.hsWmsGetCapabilitiesService.requestGetCapabilities(this.url);
+      this.hsHistoryListService.addSourceHistory(
+        'wms',
+        this.HsAddDataUrlWmsService.url
+      );
+      this.HsAddDataUrlWmsService.layerToSelect = layerToSelect;
+      this.hsWmsGetCapabilitiesService.requestGetCapabilities(
+        this.HsAddDataUrlWmsService.url
+      );
     } catch (e) {
       this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
     }
@@ -146,6 +111,6 @@ export class HsAddDataWmsComponent {
    * @param {string} url URL to be set
    */
   private updateUrl(url: string): void {
-    this.url = url;
+    this.HsAddDataUrlWmsService.url = url;
   }
 }
