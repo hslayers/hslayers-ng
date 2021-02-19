@@ -14,7 +14,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsUtilsService} from './../utils/utils.service';
-import {getHighlighted, getWaypoint} from '../../common/feature-extensions';
+import {getHighlighted} from '../../common/feature-extensions';
 
 export type Waypoint = {
   name: string;
@@ -25,6 +25,16 @@ export type Waypoint = {
   feature;
   loading: boolean;
 };
+
+const WAYPOINT = 'wp';
+
+export function setWaypoint(feature: Feature, wp: Waypoint): void {
+  feature.set(WAYPOINT, wp);
+}
+
+export function getWaypoint(feature: Feature): Waypoint {
+  return feature.get(WAYPOINT);
+}
 
 @Injectable({
   providedIn: 'root',
