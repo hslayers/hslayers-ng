@@ -1,21 +1,16 @@
 import * as xml2Json from 'xml-js';
+import VectorLayer from 'ol/layer/Vector';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Renderer2, RendererFactory2} from '@angular/core';
-import {Subject} from 'rxjs';
 import {Vector} from 'ol/source';
 import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
-import VectorLayer from 'ol/layer/Vector';
 
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
-import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
@@ -24,9 +19,6 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabiliti
   providedIn: 'root',
 })
 export class HsAddDataWfsService {
-  private renderer: Renderer2;
-  wfsCapabilitiesError: Subject<any> = new Subject();
-
   definedProjections: string[];
   version: any;
   output_format: any;
@@ -51,15 +43,10 @@ export class HsAddDataWfsService {
     public HsUtilsService: HsUtilsService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsMapService: HsMapService,
-    public HsDialogContainerService: HsDialogContainerService,
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
-    public HsLanguageService: HsLanguageService,
-    rendererFactory: RendererFactory2
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
-    this.renderer = rendererFactory.createRenderer(null, null);
-
     this.definedProjections = [
       'EPSG:3857',
       'EPSG:5514',
@@ -76,8 +63,12 @@ export class HsAddDataWfsService {
     });
 
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response}) => {
+      async ({type, response, error}) => {
         if (type === 'WFS') {
+          if (error) {
+            this.throwParsingError(response.message);
+            return;
+          }
           try {
             const bbox = await this.parseCapabilities(response);
             if (this.layerToAdd) {
@@ -96,38 +87,22 @@ export class HsAddDataWfsService {
             }
           } catch (e) {
             if (e.status == 401) {
-              this.wfsCapabilitiesError.next(
+              this.throwParsingError(
                 'Unauthorized access. You are not authorized to query data from this service'
               );
               return;
             }
-            this.wfsCapabilitiesError.next(e);
+            this.throwParsingError(e);
           }
-        }
-        if (type === 'error') {
-          this.wfsCapabilitiesError.next(response.message);
         }
       }
     );
+  }
 
-    this.wfsCapabilitiesError.subscribe((e) => {
-      this.hsLog.warn(e);
-      this.url = null;
-      this.showDetails = false;
-
-      let error = e.toString();
-      if (error.includes('property')) {
-        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS',
-          'serviceTypeNotMatching'
-        );
-      }
-      this.HsDialogContainerService.create(
-        HsGetCapabilitiesErrorComponent,
-        error
-      );
-      //throw "WMS Capabilities parsing problem";
-    });
+  throwParsingError(e) {
+    this.url = null;
+    this.showDetails = false;
+    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   //FIXME: context
@@ -272,12 +247,12 @@ export class HsAddDataWfsService {
         try {
           this.parseFeatureCount();
         } catch (e) {
-          this.wfsCapabilitiesError.next(e);
+          throw new Error(e);
         }
       });
       return this.bbox;
     } catch (e) {
-      this.wfsCapabilitiesError.next(e);
+      throw new Error(e);
     }
   }
 
@@ -326,12 +301,12 @@ export class HsAddDataWfsService {
           },
           (e) => {
             if (e.status == 401) {
-              this.wfsCapabilitiesError.next(
+              this.throwParsingError(
                 'Unauthorized access. You are not authorized to query data from this service'
               );
               return;
             }
-            this.wfsCapabilitiesError.next(e.data);
+            this.throwParsingError(e);
           }
         );
     }

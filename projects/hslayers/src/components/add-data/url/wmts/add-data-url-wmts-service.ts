@@ -1,20 +1,15 @@
-import BaseLayer from 'ol/layer/Base';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 import {Tile} from 'ol/layer';
 
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
 import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
-import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 import {addAnchors} from '../../../../common/attribution-utils';
@@ -32,7 +27,6 @@ export class HsAddDataUrlWmtsService {
   description: any;
   version: any;
   services: any;
-  wmtsCapabilitiesError: Subject<any> = new Subject();
   tileMatrixSet = '';
   image_format = '';
   addAll: boolean;
@@ -43,57 +37,42 @@ export class HsAddDataUrlWmtsService {
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
     public HsUtilsService: HsUtilsService,
     public HsConfig: HsConfig,
     public HsAddDataService: HsAddDataService,
     public HsEventBusService: HsEventBusService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService,
-    public HsLogService: HsLogService
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response}) => {
+      async ({type, response, error}) => {
         if (type === 'WMTS') {
+          if (error) {
+            this.throwParsingError(response.message);
+            return;
+          }
           try {
             //TODO AWAIT and add-layer if layerToSelect
             this.capabilitiesReceived(response);
           } catch (e) {
             if (e.status == 401) {
-              this.wmtsCapabilitiesError.next(
+              this.throwParsingError(
                 'Unauthorized access. You are not authorized to query data from this service'
               );
               return;
             }
-            this.wmtsCapabilitiesError.next(e);
+            this.throwParsingError(e);
           }
         }
-        if (type === 'error') {
-          this.wmtsCapabilitiesError.next(response.message);
-        }
       }
-    ),
-      this.wmtsCapabilitiesError.subscribe((e) => {
-        this.HsLogService.warn(e);
-        this.url = null;
-        this.showDetails = false;
-        this.layersLoading = false;
-
-        let error = e.toString();
-        if (error.includes('property')) {
-          error = this.HsLanguageService.getTranslationIgnoreNonExisting(
-            'ADDLAYERS',
-            'serviceTypeNotMatching'
-          );
-        }
-        this.HsDialogContainerService.create(
-          HsGetCapabilitiesErrorComponent,
-          error
-        );
-        //throw "WMS Capabilities parsing problem";
-      });
+    );
   }
 
+  throwParsingError(e: any): void {
+    this.url = null;
+    this.showDetails = false;
+    this.layersLoading = false;
+    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+  }
   /**
    * Parse information recieved in WMTS getCapabilities respond
    *
@@ -101,7 +80,7 @@ export class HsAddDataUrlWmtsService {
    * @function capabilitiesReceived
    * @param {object} response Url of requested service
    */
-  capabilitiesReceived(response) {
+  capabilitiesReceived(response: string): void {
     try {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
@@ -112,12 +91,11 @@ export class HsAddDataUrlWmtsService {
       this.version = caps.Version || caps.version;
       this.services = caps.Contents.Layer;
 
-
       //TODO Layer to select
 
       this.layersLoading = false;
     } catch (e) {
-      this.wmtsCapabilitiesError.next(e);
+      throw new Error(e);
     }
   }
 
@@ -226,7 +204,7 @@ export class HsAddDataUrlWmtsService {
       wmts.setSource(wmtsSource);
       this.HsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
     } catch (e) {
-      this.wmtsCapabilitiesError.next(e);
+      throw new Error(e);
     }
   }
 }

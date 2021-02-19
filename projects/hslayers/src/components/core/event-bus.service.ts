@@ -118,6 +118,7 @@ export class HsEventBusService {
   owsCapabilitiesReceived: Subject<{
     type: string;
     response: any;
+    error?: boolean;
   }> = new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL

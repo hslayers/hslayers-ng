@@ -89,8 +89,9 @@ export class HsArcgisGetCapabilitiesService {
       return r;
     } catch (e) {
       this.HsEventBusService.owsCapabilitiesReceived.next({
-        type: 'error',
+        type: 'ArcGIS',
         response: e,
+        error: true,
       });
       throw e;
     }

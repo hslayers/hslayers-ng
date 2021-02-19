@@ -1,19 +1,15 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
 
 import {Attribution} from 'ol/control';
 import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
-import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {addAnchors} from '../../../../common/attribution-utils';
@@ -22,8 +18,6 @@ import {getPreferedFormat} from '../../../../common/format-utils';
 @Injectable({providedIn: 'root'})
 export class HsAddDataArcGisService {
   data;
-  arcgisCapsParsed = new Subject();
-  arcgisCapsParseError = new Subject();
   url: string;
   showDetails: boolean;
   layerToSelect: string;
@@ -34,11 +28,10 @@ export class HsAddDataArcGisService {
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public hsLog: HsLogService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
+    console.log('arcgis');
     this.data = {
       useResampling: false,
       useTiles: true,
@@ -48,8 +41,12 @@ export class HsAddDataArcGisService {
     };
 
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response}) => {
+      async ({type, response, error}) => {
         if (type === 'ArcGIS') {
+          if (error) {
+            this.throwParsingError(response.message);
+            return;
+          }
           try {
             await this.capabilitiesReceived(response, this.layerToSelect);
             if (this.layerToSelect) {
@@ -57,41 +54,26 @@ export class HsAddDataArcGisService {
             }
           } catch (e) {
             if (e.status == 401) {
-              this.arcgisCapsParseError.next(
+              this.throwParsingError(
                 'Unauthorized access. You are not authorized to query data from this service'
               );
               return;
             }
-            this.arcgisCapsParseError.next(e);
+            this.throwParsingError(e);
           }
-        }
-        if (type === 'error') {
-          this.arcgisCapsParseError.next(response.message);
         }
       }
     );
-
-    this.arcgisCapsParseError.subscribe((e) => {
-      this.hsLog.warn(e);
-      this.url = null;
-      this.showDetails = false;
-
-      let error = e.toString();
-      if (error.includes('property')) {
-        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS',
-          'serviceTypeNotMatching'
-        );
-      }
-      this.HsDialogContainerService.create(
-        HsGetCapabilitiesErrorComponent,
-        error
-      );
-    });
   }
 
   //TODO: all dimension related things need to be refactored into seperate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
+
+  throwParsingError(e) {
+    this.url = null;
+    this.showDetails = false;
+    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+  }
 
   capabilitiesReceived(response, layerToSelect: string): void {
     try {
@@ -122,9 +104,8 @@ export class HsAddDataArcGisService {
         'geoJSON',
         'JSON',
       ]);
-      this.arcgisCapsParsed.next();
     } catch (e) {
-      this.arcgisCapsParseError.next(e);
+      throw new Error(e);
     }
   }
 
@@ -314,7 +295,7 @@ export class HsAddDataArcGisService {
       source,
       removable: true,
       path,
-      maxResolution: layer.minScale > 0 ? layer.minScale : undefined ,
+      maxResolution: layer.minScale > 0 ? layer.minScale : undefined,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
     this.hsMapService.map.addLayer(new_layer);
