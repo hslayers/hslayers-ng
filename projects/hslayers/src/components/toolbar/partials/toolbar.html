@@ -1,6 +1,6 @@
 <div class="hs-toolbar">
     <nav class="navbar navbar-expand p-0">
-        <div class="nav-item"> 
+        <div class="nav-item" *ngIf="HsLayoutService.componentEnabled('themeToggle')"> 
             <button (click)="toggleTheme()" class="btn rounded-0 hs-toolbar-button btn-light btn-outline-secondary">
                 <i [ngClass]="HsThemeService.active.name == 'light' ? 'icon-moon-night' : 'icon-sun-day'" ></i></button>
         </div>

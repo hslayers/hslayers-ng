@@ -15,6 +15,7 @@ export class HsConfig {
     defaultViewButton: true,
     mapControls: true,
     basemapGallery: false,
+    themeToggle: true,
   };
   mapInteractionsEnabled?: boolean;
   allowAddExternalDatasets?: boolean;
@@ -95,7 +96,7 @@ export class HsConfig {
   open_lm_after_comp_loaded?: any;
   draggable_windows?: boolean;
   connectTypes?: any;
-  theme?: any;
+  theme?: string;
   datasources?: any;
   panelWidths?: any;
   sidebarToggleable?: any;
@@ -111,7 +112,6 @@ export class HsConfig {
    * @default true
    */
   saveMapStateOnReload?: boolean;
-
   /**
    * Triggered when config is updated using 'update' function of HsConfig.
    * The full resulting config is provided in the subscriber as a parameter
