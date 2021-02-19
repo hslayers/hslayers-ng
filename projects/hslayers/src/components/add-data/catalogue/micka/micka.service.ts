@@ -139,7 +139,7 @@ export class HsMickaBrowserService {
         sortby:
           query.sortby !== undefined && query.sortby != ''
             ? query.sortby
-            : 'title',
+            : 'date',
         limit: dataset.datasourcePaging.limit,
         start: dataset.datasourcePaging.start,
       });
