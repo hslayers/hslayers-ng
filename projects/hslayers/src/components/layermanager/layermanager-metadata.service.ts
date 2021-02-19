@@ -16,6 +16,7 @@ import {
   setMetadata,
 } from '../../common/layer-extensions';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
@@ -34,6 +35,7 @@ export class HsLayerManagerMetadataService {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public HsLayerManagerWmstService: HsLayerManagerWmstService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLog: HsLogService
   ) {}
@@ -44,10 +46,7 @@ export class HsLayerManagerMetadataService {
    * @param layerName
    * @param currentLayer
    */
-  identifyLayerObject(
-    layerName: string,
-    currentLayer: WmsLayer
-  ): WmsLayer | false {
+  identifyLayerObject(layerName: string, currentLayer: WmsLayer): WmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'
     if (layerName.includes(':')) {
       layerName = layerName.slice(layerName.indexOf(':'));
@@ -66,16 +65,17 @@ export class HsLayerManagerMetadataService {
     } else if (currentLayer.Layer) {
       return this.identifyLayerObject(layerName, currentLayer.Layer);
     }
-    return false;
+    return null;
   }
 
   /**
    * Adds hasSublayers parameter if layer has sub-layers
-   * @param layer - Selected layer
+   * @param layerDescriptor - Selected layer
    */
-  async fillMetadata(layer: Layer): Promise<void> {
+  async fillMetadata(layerDescriptor: HsLayerDescriptor): Promise<void> {
+    const layer = layerDescriptor.layer;
     console.log('filling metadata of ', layer);
-    await this.queryMetadata(layer);
+    await this.queryMetadata(layerDescriptor);
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
       if (!layer.hasSublayers) {
@@ -157,11 +157,11 @@ export class HsLayerManagerMetadataService {
   }
 
   parseLayerInfo(
-    olLayer: Layer,
+    layerDescriptor: HsLayerDescriptor,
     layerName: string,
-    caps: WMSGetCapabilitiesResponse,
-    fromSublayerParam: boolean
+    caps: WMSGetCapabilitiesResponse
   ): void {
+    const olLayer = layerDescriptor.layer;
     const legends: string[] = [];
     const layerCaps = caps.Capability.Layer;
     let layerObj; //Main object representing layer created from capabilities which will be cached
@@ -191,7 +191,16 @@ export class HsLayerManagerMetadataService {
     } else {
       layerObj = this.identifyLayerObject(layerName, layerCaps);
       console.log('parsing..', layerObj);
-      if (layerObj.Layer && getSubLayers(olLayer) && fromSublayerParam) {
+      if (
+        layerObj.Dimension?.name === 'time' ||
+        layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
+      ) {
+        this.HsLayerManagerWmstService.setupTimeLayer(
+          layerDescriptor,
+          layerObj
+        );
+      }
+      if (layerObj.Layer && getSubLayers(olLayer)) {
         layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
         delete layerObj.Layer;
       }
@@ -235,10 +244,11 @@ export class HsLayerManagerMetadataService {
 
   /**
    * Callback function, adds getCapabilities response metadata to layer object
-   * @param layer - Selected layer
+   * @param layerDescriptor - Selected layer
    * @returns Promise
    */
-  async queryMetadata(layer: Layer): Promise<any> {
+  async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<any> {
+    const layer = layerDescriptor.layer;
     const url = this.HsLayerUtilsService.getURL(layer);
     if (!url) {
       return;
@@ -256,13 +266,11 @@ export class HsLayerManagerMetadataService {
           );
           const src = layer.getSource();
           const params = src.getParams();
-          const layerNameInParams = params.LAYERS;
+          const layerNameInParams: string = params.LAYERS;
           console.log('caps received', caps, layerNameInParams);
 
-          this.parseLayerInfo(layer, layerNameInParams, caps, false);
+          this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
           if (getSubLayers(layer)) {
-            this.parseLayerInfo(layer, getSubLayers(layer), caps, true);
-
             params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
             src.updateParams(params);
           }
@@ -287,9 +295,8 @@ export class HsLayerManagerMetadataService {
           return true;
         })
         .catch((e) => {
-          throw e;
           this.hsLog.warn('GetCapabilities call invalid', e);
-          return e;
+          throw e;
         });
       return capabilities;
     }

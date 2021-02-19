@@ -205,7 +205,7 @@ export class HsLayerManagerService {
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
       if (getQueryCapabilities(layer) !== false) {
-        this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
+        this.HsLayerManagerMetadata.fillMetadata(layerDescriptor).then(() => {
           setTimeout(() => {
             layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
           }, 50);

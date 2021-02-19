@@ -7,6 +7,7 @@ import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
+import {WmsLayer} from '../../common/wms/wms-get-capabilities-response.interface';
 import {getDimensions} from '../../common/layer-extensions';
 
 @Injectable({
@@ -149,14 +150,14 @@ export class HsLayerManagerWmstService {
 
   /**
    * Test if WMS layer has time support (WMS-T). WMS layer has to have dimension property
-   * @param layerDescriptor - Container object of layer (layerContainer.layer expected)
+   * @param layer - Container object of layer (layerContainer.layer expected)
    * @returns True for WMS layer with time support
    */
-  layerIsWmsT(layerDescriptor: HsLayerDescriptor): boolean {
-    if (!layerDescriptor) {
-      return false;
+  layerIsWmsT(layer: HsLayerDescriptor | Layer): boolean {
+    if (layer?.layer) {
+      // case of HsLayerDescriptor, Layer would have 'sublayers' property instead
+      layer = layer.layer;
     }
-    const layer = layerDescriptor.layer;
     if (!layer) {
       return false;
     }
@@ -211,17 +212,26 @@ export class HsLayerManagerWmstService {
     }
   }
 
-  setupTimeLayer(layerDescriptor: HsLayerDescriptor): void {
-    console.log('setupTimeLayer@wmst', layerDescriptor);
+  setupTimeLayer(
+    currentLayer: HsLayerDescriptor,
+    serviceLayer: WmsLayer
+  ): void {
+    const olLayer = currentLayer.layer;
+    console.log('setupTimeLayer@wmst', currentLayer);
     const hsLayerTimeConfig =
-      layerDescriptor.layer.get('dimensions').time ??
-      layerDescriptor.layer.get('dimensions_time') ?? //backwards compatibility
-      layerDescriptor.layer.dimensions_time; //backwards compatibility
-    const serviceLayerTimeConfig = layerDescriptor.layer
-      .get('Dimension')
-      ?.filter((dim) => dim.name == 'time')[0]; // Let's assume there will be only one time dimension..
+      getDimensions(olLayer).time ??
+      olLayer.get('dimensions_time') ?? //backwards compatibility
+      olLayer.dimensions_time; //backwards compatibility
+    let serviceLayerTimeConfig;
+    if (!Array.isArray(serviceLayer.Dimension)) {
+      serviceLayerTimeConfig = serviceLayer.Dimension;
+    } else {
+      serviceLayerTimeConfig = serviceLayer.Dimension?.filter(
+        (dim) => dim.name == 'time'
+      )[0]; // Let's assume there will be only one time dimension..
+    }
     console.log(serviceLayerTimeConfig);
-    layerDescriptor.time = {
+    currentLayer.time = {
       default:
         hsLayerTimeConfig.default ??
         serviceLayerTimeConfig.default ??
@@ -236,9 +246,9 @@ export class HsLayerManagerWmstService {
       //date_till: new Date(hsLayerTimeConfig.timeInterval[1]), //TODO: cleanup this
       //date_increment: time.getTime(), //TODO: cleanup this
     };
-    console.log('after fill', layerDescriptor);
+    console.log('after fill', currentLayer);
     //this.setLayerTimeSliderIntervals(layerDescriptor, hsLayerTimeConfig); //TODO: cleanup this
-    this.setLayerTime(layerDescriptor, '0'); //TODO: cleanup this
+    this.setLayerTime(currentLayer, '0'); //TODO: cleanup this
   }
 
   private parseTimePoints(values: string): Array<string> {
@@ -254,7 +264,7 @@ export class HsLayerManagerWmstService {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    const timeDef = currentLayer.layer.get('dimensions').time;
+    const timeDef = getDimensions(currentLayer.layer).time;
     if (timeDef === undefined /*|| timeDef.timeInterval === undefined*/) {
       return;
     }
