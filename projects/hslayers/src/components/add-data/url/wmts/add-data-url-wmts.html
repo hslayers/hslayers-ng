@@ -1,16 +1,16 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-data-common-url type="wmts" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
+    <hs-add-data-common-url type="wmts" [(url)]="HsAddDataUrlWmtsService.url" [(connect)]="connect"></hs-add-data-common-url>
 
-    <button [hidden]="!layersLoading"
+    <button [hidden]="!HsAddDataUrlWmtsService.layersLoading"
     class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
         class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
 
-    <div *ngIf="showDetails && !layersLoading" class="card">
+    <div *ngIf="HsAddDataUrlWmtsService.showDetails && !HsAddDataUrlWmtsService.layersLoading" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix">
-                <div>{{title}}</div>
+                <div>{{HsAddDataUrlWmtsService.title}}</div>
             </li>
-            <li *ngFor="let layer of services; let index = index" class="list-group-item clearfix" >
+            <li *ngFor="let layer of HsAddDataUrlWmtsService.services; let index = index" class="list-group-item clearfix" >
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()" [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}"/> 
                 <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'wmtslayer-'+index" 
                 [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ml-2" style="max-width: 90%;">{{layer.Title}}</span></label>
@@ -18,8 +18,8 @@
         </ul>
         <li class="list-group-item hs-ows-layerlistheading clearfix">
             <div class="d-flex justify-content-center">
-                <div class="d-flex justify-content-between w-100" *ngIf="!loadingFeatures">
-                    <button class="btn btn-primary" (click)="selectAllLayers(services)" >{{'ADDDATA.URL.selectAll' | translate}}</button>
+                <div class="d-flex justify-content-between w-100" *ngIf="!HsAddDataUrlWmtsService.layersLoading">
+                    <button class="btn btn-primary" (click)="selectAllLayers(HsAddDataUrlWmtsService.services)" >{{'ADDDATA.URL.selectAll' | translate}}</button>
                     <button class="btn btn-primary pull-right" (click)="addLayers(true)"
                         title="{{'ADDLAYERS.WFS.addToMap'|translate}}" [disabled]="!isChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
                 </div>
