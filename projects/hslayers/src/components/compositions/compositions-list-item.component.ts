@@ -67,14 +67,14 @@ export class HsCompostionsListItemComponent {
           }
         }
       );
-    } catch (ex) {
+    } catch (e) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileSharingOnSocialNetwork'
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          ex.message,
+          e.message,
           {url: url}
         ),
         true

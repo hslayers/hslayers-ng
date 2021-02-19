@@ -69,7 +69,7 @@ export class HsCompositionsStatusManagerMickaJointService {
                 ': ' +
                 this.HsLanguageService.getTranslationIgnoreNonExisting(
                   'ERRORMESSAGES',
-                  e.status.toString() || e.message,
+                  e.status ? e.status.toString() : e.message,
                   {url: ds.url}
                 ),
               true
@@ -94,14 +94,14 @@ export class HsCompositionsStatusManagerMickaJointService {
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
       return info;
-    } catch (ex) {
+    } catch (e) {
       this.HsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
           'COMPOSITIONS.errorWhileLoadingCompositionMetadata'
         ),
         this.HsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
-          ex.status.toString() || ex.message,
+          e.status ? e.status.toString() : e.message,
           {url: url}
         ),
         true
