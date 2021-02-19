@@ -178,7 +178,7 @@ export class HsLayerManagerWmstService {
       const metadata: any = {};
       let value;
       if (Array.isArray(dimensions['time'].values)) {
-        value = value[0];
+        value = dimensions['time'].values[0];
       }
       if (
         typeof value === 'string' ||
