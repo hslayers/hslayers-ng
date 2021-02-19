@@ -7,6 +7,7 @@ import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsStatusManagerMickaJointService} from './endpoints/status-manager-micka-joint.service';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
+import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -75,7 +76,7 @@ export class HsCompositionsService {
     });
   }
 
-  loadCompositions(ds, params): Observable<any> {
+  loadCompositions(ds: HsEndpoint, params): Observable<any> {
     this.HsCompositionsMapService.clearExtentLayer();
     const bbox = this.HsMapService.getMapExtentInEpsg4326();
     const Observable = this.managerByType(ds).loadList(ds, params, bbox);

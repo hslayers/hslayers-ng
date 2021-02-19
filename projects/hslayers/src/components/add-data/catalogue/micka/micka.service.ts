@@ -1,6 +1,11 @@
 import Feature from 'ol/Feature';
+import {
+  EndpointErrorHandler,
+  EndpointErrorHandling,
+  HsEndpoint,
+  isErrorHandlerFunction,
+} from '../../../../common/endpoints/endpoint.interface';
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -60,19 +65,32 @@ export class HsMickaBrowserService {
           return x;
         }),
         catchError((e) => {
-          this.hsToastService.createToastPopupMessage(
-            this.hsLanguageService.getTranslation(
-              'ADDLAYERS.errorWhileRequestingLayers'
-            ),
-            dataset.title +
-              ': ' +
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'ERRORMESSAGES',
-                e.status.toString() || e.message,
-                {url: url}
-              ),
-            true
-          );
+          if (isErrorHandlerFunction(dataset.onError?.compositionLoad)) {
+            (<EndpointErrorHandler>dataset.onError?.compositionLoad).handle(
+              dataset,
+              e
+            );
+            return of(e);
+          }
+          switch (dataset.onError?.compositionLoad) {
+            case EndpointErrorHandling.ignore:
+              break;
+            case EndpointErrorHandling.toast:
+            default:
+              this.hsToastService.createToastPopupMessage(
+                this.hsLanguageService.getTranslation(
+                  'ADDLAYERS.errorWhileRequestingLayers'
+                ),
+                dataset.title +
+                  ': ' +
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
+                    'ERRORMESSAGES',
+                    e.status.toString() || e.message,
+                    {url: url}
+                  ),
+                true
+              );
+          }
           dataset.datasourcePaging.loaded = true;
           return of(e);
         })

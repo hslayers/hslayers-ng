@@ -1,5 +1,10 @@
+import {
+  EndpointErrorHandler,
+  EndpointErrorHandling,
+  HsEndpoint,
+  isErrorHandlerFunction,
+} from '../../../../common/endpoints/endpoint.interface';
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
@@ -45,19 +50,32 @@ export class HsLaymanBrowserService {
           return x;
         }),
         catchError((e) => {
-          this.hsToastService.createToastPopupMessage(
-            this.hsLanguageService.getTranslation(
-              'ADDLAYERS.errorWhileRequestingLayers'
-            ),
-            endpoint.title +
-              ': ' +
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'ERRORMESSAGES',
-                e.status.toString() || e.message,
-                {url: url}
-              ),
-            true
-          );
+          if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
+            (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
+              endpoint,
+              e
+            );
+            return of(e);
+          }
+          switch (endpoint.onError?.compositionLoad) {
+            case EndpointErrorHandling.ignore:
+              break;
+            case EndpointErrorHandling.toast:
+            default:
+              this.hsToastService.createToastPopupMessage(
+                this.hsLanguageService.getTranslation(
+                  'ADDLAYERS.errorWhileRequestingLayers'
+                ),
+                endpoint.title +
+                  ': ' +
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
+                    'ERRORMESSAGES',
+                    e.status.toString() || e.message,
+                    {url: url}
+                  ),
+                true
+              );
+          }
           endpoint.datasourcePaging.loaded = true;
           return of(e);
         })

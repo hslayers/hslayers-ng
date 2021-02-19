@@ -1,5 +1,14 @@
 import {HsAddDataLayerDescriptor} from '../../components/add-data/catalogue/add-data-layer-descriptor.interface';
 
+export enum EndpointErrorHandling {
+  ignore = 'ignore',
+  toast = 'toast',
+}
+
+export interface EndpointErrorHandler {
+  handle(endpoint: HsEndpoint, error: any);
+}
+
 export interface HsEndpoint {
   httpCall: any;
   type: string;
@@ -33,5 +42,24 @@ export interface HsEndpoint {
   paging?: {
     itemsPerPage: number;
   };
+  /**
+   * Examples:
+   *  onError: {compositionLoad: {handle: (e)=>{alert(e.message)}}},
+   *  onError: onError: {compositionLoad: EndpointErrorHandling.ignore},
+   *  onError: onError: {compositionLoad: EndpointErrorHandling.toast}, //Default
+   */
+  onError?: {
+    compositionLoad?: EndpointErrorHandling | EndpointErrorHandler;
+    addDataCatalogueLoad?: EndpointErrorHandling | EndpointErrorHandler;
+  };
   getCurrentUserIfNeeded?(endpoint: HsEndpoint): Promise<void>;
 }
+
+function isErrorHandlerFunction(object: any): object is EndpointErrorHandler {
+  if (typeof object == 'string') {
+    return false;
+  }
+  return 'handle' in object;
+}
+
+export {isErrorHandlerFunction};

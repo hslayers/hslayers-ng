@@ -1,3 +1,9 @@
+import {
+  EndpointErrorHandler,
+  EndpointErrorHandling,
+  HsEndpoint,
+  isErrorHandlerFunction,
+} from '../../../common/endpoints/endpoint.interface';
 import {HsCompositionsMapService} from '../compositions-map.service';
 import {HsCompositionsMickaService} from './compositions-micka.service';
 import {HsCompositionsParserService} from '../compositions-parser.service';
@@ -35,7 +41,7 @@ export class HsCompositionsStatusManagerMickaJointService {
    * @param params
    * @param bbox
    */
-  loadList(ds, params, bbox): Observable<any> {
+  loadList(ds: HsEndpoint, params, bbox): Observable<any> {
     const Observable = this.HsCompositionsMickaService.loadList(
       ds,
       params,
@@ -46,19 +52,29 @@ export class HsCompositionsStatusManagerMickaJointService {
         this.HsCompositionsStatusManagerService.loadList(ds, params, bbox);
       }),
       catchError((e) => {
-        this.HsToastService.createToastPopupMessage(
-          this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.errorWhileRequestingCompositions'
-          ),
-          ds.title +
-            ': ' +
-            this.HsLanguageService.getTranslationIgnoreNonExisting(
-              'ERRORMESSAGES',
-              e.status.toString() || e.message,
-              {url: ds.url}
-            ),
-          true
-        );
+        if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
+          (<EndpointErrorHandler>ds.onError?.compositionLoad).handle(ds, e);
+          return of(e);
+        }
+        switch (ds.onError?.compositionLoad) {
+          case EndpointErrorHandling.ignore:
+            break;
+          case EndpointErrorHandling.toast:
+          default:
+            this.HsToastService.createToastPopupMessage(
+              this.HsLanguageService.getTranslation(
+                'COMPOSITIONS.errorWhileRequestingCompositions'
+              ),
+              ds.title +
+                ': ' +
+                this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  'ERRORMESSAGES',
+                  e.status.toString() || e.message,
+                  {url: ds.url}
+                ),
+              true
+            );
+        }
         return of(e);
       })
     );

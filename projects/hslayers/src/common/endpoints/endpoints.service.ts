@@ -1,7 +1,7 @@
 import {BehaviorSubject} from 'rxjs';
+import {EndpointErrorHandling, HsEndpoint} from './endpoint.interface';
 import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsConfig} from '../../config.service';
-import {HsEndpoint} from './endpoint.interface';
 import {Injectable} from '@angular/core';
 
 @Injectable({providedIn: 'root'})
@@ -25,6 +25,7 @@ export class HsCommonEndpointsService {
               type: 'statusmanager',
               title: 'Status manager',
               url: this.hsConfig.status_manager_url,
+              onError: {compositionLoad: EndpointErrorHandling.ignore},
             },
           ]
         : []),
@@ -33,6 +34,7 @@ export class HsCommonEndpointsService {
           url: ds.url,
           type: ds.type,
           title: ds.title,
+          onError: ds.onError,
           datasourcePaging: {
             start: 0,
             limit: this.getItemsPerPageConfig(ds),

@@ -1,5 +1,10 @@
+import {
+  EndpointErrorHandler,
+  EndpointErrorHandling,
+  HsEndpoint,
+  isErrorHandlerFunction,
+} from '../../../common/endpoints/endpoint.interface';
 import {HsCompositionsParserService} from '../compositions-parser.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
@@ -33,19 +38,33 @@ export class HsCompositionsLaymanService {
           this.compositionsReceived(endpoint, params, response);
         }),
         catchError((e) => {
-          this.HsToastService.createToastPopupMessage(
-            this.HsLanguageService.getTranslation(
-              'COMPOSITIONS.errorWhileRequestingCompositions'
-            ),
-            endpoint.title +
-              ': ' +
-              this.HsLanguageService.getTranslationIgnoreNonExisting(
-                'ERRORMESSAGES',
-                e.status.toString() || e.message,
-                {url: endpoint.url}
-              ),
-            true
-          );
+          if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
+            (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
+              endpoint,
+              e
+            );
+            return of(e);
+          }
+          switch (endpoint.onError?.compositionLoad) {
+            case EndpointErrorHandling.ignore:
+              break;
+            case EndpointErrorHandling.toast:
+            default:
+              this.HsToastService.createToastPopupMessage(
+                this.HsLanguageService.getTranslation(
+                  'COMPOSITIONS.errorWhileRequestingCompositions'
+                ),
+                endpoint.title +
+                  ': ' +
+                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                    'ERRORMESSAGES',
+                    e.status.toString() || e.message,
+                    {url: endpoint.url}
+                  ),
+                true
+              );
+              break;
+          }
           return of(e);
         })
       );
