@@ -103,8 +103,9 @@ export class HsWmtsGetCapabilitiesService {
       return r;
     } catch (error) {
       this.HsEventBusService.owsCapabilitiesReceived.next({
-        type: 'error',
+        type: 'WMTS',
         response: error,
+        error: true,
       });
       throw error;
     }

@@ -96,8 +96,9 @@ export class HsWfsGetCapabilitiesService {
       return r;
     } catch (e) {
       this.HsEventBusService.owsCapabilitiesReceived.next({
-        type: 'error',
+        type: 'WFS',
         response: e,
+        error: true,
       });
       throw e;
     }

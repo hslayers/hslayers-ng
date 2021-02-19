@@ -11,14 +11,11 @@ import {Subject} from 'rxjs';
 //FIX ME
 //refactor
 import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsGetCapabilitiesErrorComponent} from '../../common/capabilities-error-dialog.component';
-import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
@@ -39,13 +36,11 @@ export class HsAddDataUrlWmsService {
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
     public hsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
     public HsAddDataService: HsAddDataService,
     public HsEventBusService: HsEventBusService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
     this.url = '';
     this.data = {
@@ -58,8 +53,11 @@ export class HsAddDataUrlWmsService {
     };
 
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
-      async ({type, response}) => {
+      async ({type, response, error}) => {
         if (type === 'WMS') {
+          if (error) {
+            this.throwParsingError(response.message);
+          }
           try {
             await this.capabilitiesReceived(response, this.layerToSelect);
             if (this.layerToSelect) {
@@ -67,39 +65,24 @@ export class HsAddDataUrlWmsService {
             }
           } catch (e) {
             if (e.status == 401) {
-              this.getWmsCapabilitiesError.next(
+              this.throwParsingError(
                 'Unauthorized access. You are not authorized to query data from this service'
               );
               return;
             }
-            this.getWmsCapabilitiesError.next(e);
+            this.throwParsingError(e);
           }
-        }
-        if (type === 'error') {
-          this.getWmsCapabilitiesError.next(response.message);
         }
       }
     );
-
-    this.getWmsCapabilitiesError.subscribe((e) => {
-      this.hsLog.warn(e);
-      this.url = null;
-      this.showDetails = false;
-
-      let error = e.toString();
-      if (error.includes('property')) {
-        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
-          'ADDLAYERS',
-          'serviceTypeNotMatching'
-        );
-      }
-      this.HsDialogContainerService.create(
-        HsGetCapabilitiesErrorComponent,
-        error
-      );
-    });
     //TODO: all dimension related things need to be refactored into seperate module
     this.getDimensionValues = hsDimensionService.getDimensionValues;
+  }
+
+  throwParsingError(e): void {
+    this.url = null;
+    this.showDetails = false;
+    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   /**
@@ -205,7 +188,7 @@ export class HsAddDataUrlWmsService {
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
       this.showDetails = true;
     } catch (e) {
-      this.getWmsCapabilitiesError.next(e);
+      throw new Error(e);
     }
   }
 

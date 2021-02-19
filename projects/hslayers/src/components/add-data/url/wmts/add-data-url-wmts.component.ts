@@ -48,17 +48,14 @@ export class HsAddDataWmtsComponent {
   }
 
   connect = (layerToSelect): void => {
-    try {
-      this.HsAddDataUrlWmtsService.layerToSelect = layerToSelect;
+    this.HsAddDataUrlWmtsService.layerToSelect = layerToSelect;
 
-      this.HsAddDataUrlWmtsService.layersLoading = true;
-      this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
-        this.HsAddDataUrlWmtsService.url
-      );
-      this.HsAddDataUrlWmtsService.showDetails = true;
-    } catch (e) {
-      this.HsAddDataUrlWmtsService.wmtsCapabilitiesError.next(e);
-    }
+    this.HsAddDataUrlWmtsService.layersLoading = true;
+    this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
+      this.HsAddDataUrlWmtsService.url
+    );
+    this.HsAddDataUrlWmtsService.showDetails = true;
+
   };
 
   selectAllLayers(layers: any[]): void {
