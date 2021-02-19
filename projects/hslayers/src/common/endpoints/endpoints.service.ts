@@ -10,20 +10,25 @@ export class HsCommonEndpointsService {
   endpoints: HsEndpoint[];
 
   constructor(
-    public HsConfig: HsConfig,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public hsConfig: HsConfig,
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
+    this.fillEndpoints();
+    this.hsConfig.configChanges.subscribe(() => this.fillEndpoints());
+  }
+
+  private fillEndpoints() {
     this.endpoints = [
-      ...(this.HsConfig.status_manager_url
+      ...(this.hsConfig.status_manager_url
         ? [
             {
               type: 'statusmanager',
               title: 'Status manager',
-              url: this.HsConfig.status_manager_url,
+              url: this.hsConfig.status_manager_url,
             },
           ]
         : []),
-      ...(this.HsConfig.datasources || []).map((ds) => {
+      ...(this.hsConfig.datasources || []).map((ds) => {
         const tmp = {
           url: ds.url,
           type: ds.type,
@@ -45,7 +50,7 @@ export class HsCommonEndpointsService {
           liferayProtocol: ds.liferayProtocol,
           originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: async () =>
-            await this.HsCommonLaymanService.getCurrentUserIfNeeded(tmp),
+            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp),
         };
         return tmp;
       }),
@@ -60,6 +65,6 @@ export class HsCommonEndpointsService {
   getItemsPerPageConfig(ds) {
     return ds.paging !== undefined && ds.paging.itemsPerPage !== undefined
       ? ds.paging.itemsPerPage
-      : this.HsConfig.dsPaging || 10;
+      : this.hsConfig.dsPaging || 10;
   }
 }

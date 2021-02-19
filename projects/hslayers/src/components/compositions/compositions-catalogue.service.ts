@@ -73,6 +73,10 @@ export class HsCompositionsCatalogueService {
     private zone: NgZone
   ) {
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
+    this.HsCommonEndpointsService.endpointsFilled.subscribe(
+      () =>
+        (this.filteredEndpoints = this.getFilteredEndpointsForCompositions())
+    );
     HsEventBusService.mainPanelChanges.subscribe(() => {
       if (
         this.HsLayoutService.mainpanel === 'composition_browser' ||
