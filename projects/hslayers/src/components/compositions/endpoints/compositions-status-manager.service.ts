@@ -1,3 +1,8 @@
+import {
+  EndpointErrorHandler,
+  EndpointErrorHandling,
+  isErrorHandlerFunction,
+} from '../../../common/endpoints/endpoint.interface';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
@@ -59,19 +64,29 @@ export class HsCompositionsStatusManagerService {
       timeout(2000),
       map((response: any) => response),
       catchError((e) => {
-        this.HsToastService.createToastPopupMessage(
-          this.HsLanguageService.getTranslation(
-            'COMPOSITIONS.errorWhileRequestingCompositions'
-          ),
-          ds.title +
-            ': ' +
-            this.HsLanguageService.getTranslationIgnoreNonExisting(
-              'ERRORMESSAGES',
-              e.status.toString() || e.message,
-              {url: url}
-            ),
-          true
-        );
+        if (isErrorHandlerFunction(ds.onError?.compositionLoad)) {
+          (<EndpointErrorHandler>ds.onError?.compositionLoad).handle(ds, e);
+          return of(e);
+        }
+        switch (ds.onError?.compositionLoad) {
+          case EndpointErrorHandling.ignore:
+            break;
+          case EndpointErrorHandling.toast:
+          default:
+            this.HsToastService.createToastPopupMessage(
+              this.HsLanguageService.getTranslation(
+                'COMPOSITIONS.errorWhileRequestingCompositions'
+              ),
+              ds.title +
+                ': ' +
+                this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  'ERRORMESSAGES',
+                  e.status.toString() || e.message,
+                  {url: url}
+                ),
+              true
+            );
+        }
         return of(e);
       })
     );
