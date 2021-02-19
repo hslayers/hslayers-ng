@@ -70,7 +70,7 @@ export class HsLaymanBrowserService {
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
-                    e.status.toString() || e.message,
+                    e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
                 true

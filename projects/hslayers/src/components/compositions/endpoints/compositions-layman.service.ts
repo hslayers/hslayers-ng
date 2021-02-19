@@ -58,7 +58,7 @@ export class HsCompositionsLaymanService {
                   ': ' +
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
-                    e.status.toString() || e.message,
+                    e.status ? e.status.toString() : e.message,
                     {url: endpoint.url}
                   ),
                 true
