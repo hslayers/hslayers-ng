@@ -4,7 +4,6 @@ import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLanguageService} from '../../../language/language.service';
-import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
@@ -27,7 +26,6 @@ export class HsAddDataWmtsComponent {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsEventBusService: HsEventBusService,
     public HsLogService: HsLogService,
-    public HsLayoutService: HsLayoutService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
     public HsAddDataUrlWmtsService: HsAddDataUrlWmtsService
@@ -87,11 +85,7 @@ export class HsAddDataWmtsComponent {
   }
 
   addLayers(checkedOnly: boolean): void {
-    this.HsAddDataUrlWmtsService.addAll = checkedOnly;
-    for (const layer of this.HsAddDataUrlWmtsService.services) {
-      this.HsAddDataUrlWmtsService.addLayersRecursively(layer);
-    }
-    this.HsLayoutService.setMainPanel('layermanager');
+    this.HsAddDataUrlWmtsService.addLayers(checkedOnly);
     //FIX ME: to implement
     // this.zoomToLayers();
   }

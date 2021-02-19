@@ -36,12 +36,12 @@ export class HsAddDataUrlWmtsService {
     public HsMapService: HsMapService,
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
-    public hsLayoutService: HsLayoutService,
+    public HsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
     public HsConfig: HsConfig,
     public HsAddDataService: HsAddDataService,
     public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public HsAddDataUrlService: HsAddDataUrlService,
   ) {
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
@@ -52,7 +52,19 @@ export class HsAddDataUrlWmtsService {
           }
           try {
             //TODO AWAIT and add-layer if layerToSelect
-            this.capabilitiesReceived(response);
+            await this.capabilitiesReceived(response);
+            if (this.layerToSelect) {
+              for (const layer of this.services) {
+                //TODO: If Layman allows layers with different casing,
+                // then remove the case lowering
+                if (
+                  layer.Title.toLowerCase() === this.layerToSelect.toLowerCase()
+                ) {
+                  layer.checked = true;
+                }
+              }
+              this.addLayers(true);
+            }
           } catch (e) {
             if (e.status == 401) {
               this.throwParsingError(
@@ -80,7 +92,7 @@ export class HsAddDataUrlWmtsService {
    * @function capabilitiesReceived
    * @param {object} response Url of requested service
    */
-  capabilitiesReceived(response: string): void {
+  capabilitiesReceived(response: string): Promise<any> {
     try {
       const parser = new WMTSCapabilities();
       const caps = parser.read(response);
@@ -94,6 +106,7 @@ export class HsAddDataUrlWmtsService {
       //TODO Layer to select
 
       this.layersLoading = false;
+      return this.title;
     } catch (e) {
       throw new Error(e);
     }
@@ -108,6 +121,16 @@ export class HsAddDataUrlWmtsService {
         this.addLayersRecursively(sublayer);
       }
     }
+  }
+
+  addLayers(checkedOnly: boolean): void {
+    this.addAll = checkedOnly;
+    for (const layer of this.services) {
+      this.addLayersRecursively(layer);
+    }
+    this.HsLayoutService.setMainPanel('layermanager');
+    //FIX ME: to implement
+    // this.zoomToLayers();
   }
 
   /**
