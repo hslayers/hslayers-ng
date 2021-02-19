@@ -147,7 +147,7 @@ export class HsLayerManagerService {
    * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
    * @param e - Event object emited by OL add layer event
-   * @param suspendEvents
+   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
    */
   layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
     const layer = e.element;
@@ -180,9 +180,8 @@ export class HsLayerManagerService {
     /**
      * Wrapper for layers in layer manager structure. Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer. Each layer wrapper is accessible from layer list or folder structure.
      * @private
-     * @type {object}
      */
-    const layerDescriptor: any = {
+    const layerDescriptor: HsLayerDescriptor = {
       title: this.HsLayerUtilsService.getLayerTitle(layer),
       abstract: getAbstract(layer),
       layer,
@@ -207,10 +206,6 @@ export class HsLayerManagerService {
       this.data.layers.push(layerDescriptor);
       if (getQueryCapabilities(layer) !== false) {
         this.HsLayerManagerMetadata.fillMetadata(layer).then(() => {
-          // TODO: make it possible to also handle WM(T)S-t baselayers
-          if (this.HsLayermanagerWmstService.layerIsWmsT(layerDescriptor)) {
-            this.HsLayermanagerWmstService.setupTimeLayer(layerDescriptor);
-          }
           setTimeout(() => {
             layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
           }, 50);
@@ -236,7 +231,7 @@ export class HsLayerManagerService {
    * Function for adding baselayer thumbnail visible in basemap gallery.
    * @param layer - Base layer added to map
    */
-  getImage(layer: Layer) {
+  getImage(layer: Layer): string {
     const thumbnail = getThumbnail(layer);
     if (thumbnail) {
       if (thumbnail.length > 10) {
