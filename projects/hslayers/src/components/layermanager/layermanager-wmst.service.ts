@@ -2,21 +2,22 @@ import moment from 'moment';
 import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLogService} from '../../common/log/log.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {WmsLayer} from '../../common/wms/wms-get-capabilities-response.interface';
-import {getDimensions} from '../../common/layer-extensions';
+import {getDimensions, setDimensions} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerManagerWmstService {
   constructor(
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public hsLog: HsLogService,
+    public HsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -161,20 +162,39 @@ export class HsLayerManagerWmstService {
     if (!layer) {
       return false;
     }
+    /*
+     * 'dimensions_time' is deprecated
+     * backwards compatibility with HSL < 3.0
+     */
     if (
-      //TODO: 'dimensions_time' is deprecated
-      (layer.get('dimensions_time') &&
-        Array.isArray(layer.get('dimensions_time').timeInterval)) ||
-      (layer.get('dimensions')?.time &&
-        typeof layer.get('dimensions')?.time === 'object')
+      layer.get('dimensions_time') &&
+      Array.isArray(layer.get('dimensions_time').timeInterval)
     ) {
-      this.parseDimensionParam(layer);
+      this.hsLog.warn(
+        '"dimensions_time" is deprecated, use "dimensions" param with "time" object instead'
+      );
+      const currentDimensions = getDimensions(layer);
+      const newTimeDimension = {
+        label: 'time',
+        default: layer.get('dimensions_time').value,
+      };
+      if (!currentDimensions) {
+        setDimensions(layer, {'time': newTimeDimension});
+      } else {
+        setDimensions(
+          layer,
+          Object.assign(currentDimensions, {'time': newTimeDimension})
+        );
+      }
+    }
+    if (getDimensions(layer)?.time) {
+      //this.parseDimensionParam(layer);
       return true;
     }
     return false;
   }
 
-  //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up
+  //TODO: just copy-pasted from "layerIsWmsT()", needs clean-up FIXME: delete
   parseDimensionParam(layer: Layer): void {
     const dimensions = getDimensions(layer);
     if (dimensions && dimensions['time']) {
@@ -218,10 +238,9 @@ export class HsLayerManagerWmstService {
   ): void {
     const olLayer = currentLayer.layer;
     console.log('setupTimeLayer@wmst', currentLayer);
-    const hsLayerTimeConfig =
-      getDimensions(olLayer).time ??
-      olLayer.get('dimensions_time') ?? //backwards compatibility
-      olLayer.dimensions_time; //backwards compatibility
+    //parse config set at a Layer level
+    const hsLayerTimeConfig = getDimensions(olLayer).time;
+    //parse parametres available at the WM(T)S level
     let serviceLayerTimeConfig;
     if (!Array.isArray(serviceLayer.Dimension)) {
       serviceLayerTimeConfig = serviceLayer.Dimension;
@@ -230,25 +249,36 @@ export class HsLayerManagerWmstService {
         (dim) => dim.name == 'time'
       )[0]; // Let's assume there will be only one time dimension..
     }
+    const timePoints = this.parseTimePoints(serviceLayerTimeConfig.values);
+    // Gracefully fallback throught time settings to find the best default value
+    let today = new Date().toISOString();
+    today = today.slice(0, today.indexOf('T'));
+    console.log('now', today);
+    let defaultTime;
+    if (timePoints.includes(hsLayerTimeConfig?.default)) {
+      defaultTime = hsLayerTimeConfig.default;
+    } else if (timePoints.includes(serviceLayerTimeConfig?.default)) {
+      defaultTime = serviceLayerTimeConfig.default;
+    } else if (timePoints.some((point) => point.startsWith(today))) {
+      defaultTime = timePoints[timePoints.indexOf(today)];
+    } else {
+      defaultTime = timePoints[0];
+    }
     console.log(serviceLayerTimeConfig);
     currentLayer.time = {
-      default:
-        hsLayerTimeConfig.default ??
-        serviceLayerTimeConfig.default ??
-        (hsLayerTimeConfig.timeInterval
-          ? hsLayerTimeConfig.timeInterval[0]
-          : null),
+      default: defaultTime,
       timePoints: this.parseTimePoints(serviceLayerTimeConfig.values),
-      time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
-      time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
-      date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
+      //TODO: time format dependent display, drop dead code
+      //time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
+      //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
+      //date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
       //date_from: new Date(hsLayerTimeConfig.timeInterval[0]), //TODO: cleanup this
       //date_till: new Date(hsLayerTimeConfig.timeInterval[1]), //TODO: cleanup this
       //date_increment: time.getTime(), //TODO: cleanup this
     };
     console.log('after fill', currentLayer);
     //this.setLayerTimeSliderIntervals(layerDescriptor, hsLayerTimeConfig); //TODO: cleanup this
-    this.setLayerTime(currentLayer, '0'); //TODO: cleanup this
+    this.setLayerTime(currentLayer, defaultTime);
   }
 
   private parseTimePoints(values: string): Array<string> {
