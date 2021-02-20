@@ -49,7 +49,9 @@ export default function (
       });
 
       for (const filter of filters) {
-        let displayFeature;
+        let displayFeature = function (feature) {
+          return true;
+        };
 
         switch (filter.type.type) {
           case 'fieldset':
@@ -105,6 +107,7 @@ export default function (
                 case 'neq':
                   displayFeature = function (feature) {
                     return (
+                      Object.keys(feature.getProperties()).includes(filter.valueField) &&
                       feature.getProperties()[filter.valueField] !==
                       filter.value
                     );
@@ -191,11 +194,6 @@ export default function (
 
             };
             break;
-
-          default:
-            displayFeature = function (feature) {
-              return true;
-            };
         }
 
         filteredFeatures = filteredFeatures.filter(displayFeature);
