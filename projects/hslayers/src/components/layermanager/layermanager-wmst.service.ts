@@ -232,6 +232,11 @@ export class HsLayerManagerWmstService {
     }
   }
 
+  /**
+   * Make initial setup for WM(T)S-t layers
+   * @param currentLayer - Layer for which the time is being set up
+   * @param serviceLayer - Description of that layer's capabilities in a service
+   */
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
     serviceLayer: WmsLayer
@@ -267,7 +272,6 @@ export class HsLayerManagerWmstService {
     currentLayer.time = {
       default: defaultTime,
       timePoints: this.parseTimePoints(serviceLayerTimeConfig.values),
-      //TODO: time format dependent display, drop dead code
       //time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
       //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
       //date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
