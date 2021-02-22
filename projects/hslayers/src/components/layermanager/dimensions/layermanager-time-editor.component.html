@@ -2,7 +2,7 @@
   <button type="button" class="btn btn-sm text-info" (click)="previousTime()" [disabled]="!hasPreviousTime()">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
-  <button class="btn btn-sm text-info" (click)="$event.preventDefault();showTimeSelect()"
+  <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()"
     [hidden]="selectVisible">
     <span [hidden]="!currentTimeDefined()">{{currentTime}}</span>
     <span [hidden]="currentTimeDefined()" class="bg-warning text-dark">Selected time is out of range</span>
