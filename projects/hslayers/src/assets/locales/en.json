@@ -445,7 +445,12 @@
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
     "terrains": "Terrains",
-    "User generated": "User generated"
+    "User generated": "User generated",
+    "time": {
+      "syncTimes": "Synchronize times",
+      "outOfRange": "Selected time is out of range",
+      "syncTimesTooltip": "Synchronize time for all layers"
+    }
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
@@ -573,7 +578,7 @@
       "errorWhenSyncing": "Error when syncing"
     },
     "writeAccessRights": "Write access rights",
-    "removeLayerError":"Layer {{layer}} was not deleted from the database. {{error}}"
+    "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}"
   },
   "SENSORS": {
     "1D": "1D",

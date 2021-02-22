@@ -18,6 +18,13 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   availableTimes: Array<string>;
   @ViewChild('hstimeselector') selectElement;
   selectVisible: boolean;
+  timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
+  /**
+   * currently hard-coded and not changes
+   * TODO: needs to load locale data via registerLocaleData() from '\@angular/common'
+   * see https://stackoverflow.com/questions/34904683/how-to-set-locale-in-datepipe-in-angular-2
+   */
+  timeDisplayLocale = 'en-US';
   timesInSync: boolean;
 
   constructor(
@@ -28,6 +35,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
     this.hsEventBusService.layerTimeChanges.subscribe(({layer, _}) => {
       if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
         this.availableTimes = layer.time.timePoints;
+        this.setDateTimeFormatting();
         this.setCurrentTimeIfAvailable(this.layer.time.default);
         if (!this.currentTimeDefined()) {
           this.currentTime = this.availableTimes[0];
@@ -95,8 +103,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
     }
   }
 
-  selectTime(evt: Event): void {
-    this.currentTime = (evt.target as HTMLSelectElement).value;
+  selectTime(): void {
     this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
     if (this.timesInSync) {
       this.hsEventBusService.layerTimeSynchronizations.next({
@@ -138,5 +145,25 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
       sync: this.timesInSync,
       time: this.currentTime,
     });
+  }
+
+  private setDateTimeFormatting() {
+    if (
+      this.availableTimes.every((time) => time.endsWith('00-00T00:00:00.000Z'))
+    ) {
+      this.timeDisplayFormat = 'yyyy';
+    } else if (
+      this.availableTimes.every((time) => time.endsWith('00T00:00:00.000Z'))
+    ) {
+      this.timeDisplayFormat = 'yyyy-MM';
+    } else if (
+      this.availableTimes.every((time) => time.endsWith('00:00:00.000Z'))
+    ) {
+      this.timeDisplayFormat = 'yyyy-MM-dd';
+    } else if (this.availableTimes.every((time) => time.endsWith('00.000Z'))) {
+      this.timeDisplayFormat = 'y-MM-dd HH:mm';
+    } else if (this.availableTimes.every((time) => time.endsWith('000Z'))) {
+      this.timeDisplayFormat = 'y-MM-dd HH:mm:ss';
+    }
   }
 }
