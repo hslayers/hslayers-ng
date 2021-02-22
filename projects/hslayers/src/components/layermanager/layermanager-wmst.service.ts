@@ -245,15 +245,14 @@ export class HsLayerManagerWmstService {
     if (!Array.isArray(serviceLayer.Dimension)) {
       serviceLayerTimeConfig = serviceLayer.Dimension;
     } else {
-      serviceLayerTimeConfig = serviceLayer.Dimension?.filter(
+      serviceLayerTimeConfig = serviceLayer.Dimension?.find(
         (dim) => dim.name == 'time'
-      )[0]; // Let's assume there will be only one time dimension..
+      ); // Let's assume there will be only one time dimension..
     }
     const timePoints = this.parseTimePoints(serviceLayerTimeConfig.values);
     // Gracefully fallback throught time settings to find the best default value
     let today = new Date().toISOString();
     today = today.slice(0, today.indexOf('T'));
-    console.log('now', today);
     let defaultTime;
     if (timePoints.includes(hsLayerTimeConfig?.default)) {
       defaultTime = hsLayerTimeConfig.default;

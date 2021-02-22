@@ -444,7 +444,12 @@
     "removeAllLayers": "Odstranit všechny vrstvy",
     "resetMap": "Obnovit mapu",
     "terrains": "Terény",
-    "User generated": "Uživatelský"
+    "User generated": "Uživatelský",
+    "time": {
+      "syncTimes": "Synchronizovat časy",
+      "outOfRange": "Vybraný čas je mimo meze",
+      "syncTimesTooltip": "Synchronizovat čas všech vrstev"
+    }
   },
   "LEGEND": {
     "noLegendExists": "Žádná vrstva s legendou neexistuje!"
@@ -572,7 +577,7 @@
       "errorWhenSyncing": "Chyba při synchronizaci"
     },
     "writeAccessRights": "Právo zápisu",
-    "removeLayerError":"Vrstva '{{layer}}' nebyla odstraněna z databáze. {{error}}"
+    "removeLayerError": "Vrstva '{{layer}}' nebyla odstraněna z databáze. {{error}}"
   },
   "SENSORS": {
     "1D": "1D",

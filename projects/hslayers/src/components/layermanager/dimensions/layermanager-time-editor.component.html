@@ -4,22 +4,28 @@
   </button>
   <button class="btn btn-sm text-info px-0" (click)="$event.preventDefault();showTimeSelect()"
     [hidden]="selectVisible">
-    <span [hidden]="!currentTimeDefined()">{{currentTime}}</span>
-    <span [hidden]="currentTimeDefined()" class="bg-warning text-dark">Selected time is out of range</span>
+    <span [hidden]="!currentTimeDefined()">
+      {{currentTime | date:timeDisplayFormat:'cs'}}
+    </span>
+    <span [hidden]="currentTimeDefined()" class="bg-warning text-dark">
+      {{'LAYERMANAGER.time.outOfRange' | translate}}
+    </span>
   </button>
-  <select #hstimeselector [hidden]="!selectVisible"
-    (change)="selectTime($event);hideTimeSelect();" (blur)="hideTimeSelect()">
-    <option *ngFor="let time of availableTimes" [ngValue]="time">{{time}}</option>
+  <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime"
+    (change)="selectTime();hideTimeSelect();" (blur)="hideTimeSelect()">
+    <option *ngFor="let time of availableTimes" [ngValue]="time">
+      {{time | date:timeDisplayFormat:timeDisplayLocale}}
+    </option>
   </select>
   <button type="button" class="btn btn-sm text-info" (click)="followingTime()" [disabled]="!hasFollowingTime()">
     <i class="glyphicon icon-chevron-right"></i>
   </button>
 </div>
 <div class="p-0">
-  <button type="button" class="btn btn-sm pr-0"
+  <button type="button" class="btn btn-sm px-0"
     [ngClass]="{'btn-info': timesInSync, 'text-secondary': !timesInSync}"
-    (click)="synchronizeTimes()" title="Synchronize time for all layers">
+    (click)="synchronizeTimes()" title="{{'LAYERMANAGER.time.syncTimesTooltip' | translate}}">
     <i class="glyphicon icon-timeline"></i>
-    <span class="sr-only">Synchronize times</span>
+    <span class="sr-only">{{'LAYERMANAGER.time.syncTimes' | translate}}</span>
   </button>
 </div>
