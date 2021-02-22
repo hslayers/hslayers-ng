@@ -260,7 +260,7 @@ export class HsLayerManagerWmstService {
     } else if (timePoints.includes(serviceLayerTimeConfig?.default)) {
       defaultTime = serviceLayerTimeConfig.default;
     } else if (timePoints.some((point) => point.startsWith(today))) {
-      defaultTime = timePoints[timePoints.indexOf(today)];
+      defaultTime = timePoints.find((point) => point.startsWith(today));
     } else {
       defaultTime = timePoints[0];
     }

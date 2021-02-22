@@ -19,7 +19,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   @ViewChild('hstimeselector') selectElement;
   selectVisible: boolean;
   timesInSync: boolean;
-  ac;
 
   constructor(
     public hsEventBusService: HsEventBusService,
