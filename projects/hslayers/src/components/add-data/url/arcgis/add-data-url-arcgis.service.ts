@@ -31,7 +31,6 @@ export class HsAddDataArcGisService {
     public HsEventBusService: HsEventBusService,
     public HsAddDataUrlService: HsAddDataUrlService
   ) {
-    console.log('arcgis');
     this.data = {
       useResampling: false,
       useTiles: true,

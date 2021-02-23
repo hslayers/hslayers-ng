@@ -52,6 +52,14 @@ export class HsAddDataUrlWmsService {
       addUnder: null,
     };
 
+    this.HsEventBusService.olMapLoads.subscribe(() => {
+      this.data.mapProjection = this.hsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
+    });
+
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'WMS') {
@@ -372,12 +380,24 @@ export class HsAddDataUrlWmsService {
     }
 
     let boundingbox = layer.BoundingBox;
-    if (crs !== undefined) {
+    let preferred;
+    if (Array.isArray(layer.BoundingBox)) {
+      preferred = boundingbox.filter((bboxInCrs) => {
+        return bboxInCrs.crs == this.data.mapProjection;
+      })[0];
+    }
+    if (preferred) {
+      boundingbox = preferred.extent;
+    } else if (crs !== undefined) {
       if (layer.EX_GeographicBoundingBox !== undefined) {
-        boundingbox = layer.EX_GeographicBoundingBox;
+        boundingbox = transformExtent(
+          layer.EX_GeographicBoundingBox,
+          'EPSG:4326',
+          this.hsMapService.map.getView().getProjection()
+        );
       }
     } else {
-      if (this.data.map_projection != crs) {
+      if (this.data.mapProjection != crs) {
         boundingbox = layer.LatLonBoundingBox;
       }
     }
