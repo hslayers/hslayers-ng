@@ -444,7 +444,12 @@
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
     "terrains": "Reljefi",
-    "User generated": "Lietotāja ģenerēti"
+    "User generated": "Lietotāja ģenerēti",
+    "time": {
+      "outOfRange": "Atlasītais laiks ir ārpus diapazona",
+      "syncTimes": "Sinhronizēt laikus",
+      "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
+    }
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -572,7 +577,7 @@
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
     "writeAccessRights": "Rakstīšanas piekļuves tiesības",
-    "removeLayerError":"Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}"
+    "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}"
   },
   "SENSORS": {
     "1D": "1d",
