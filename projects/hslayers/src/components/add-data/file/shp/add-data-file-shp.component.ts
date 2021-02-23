@@ -6,8 +6,10 @@ import {HsAddDataFileShpService} from './add-data-file-shp.service';
 
 import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
 
+import {HsAddDataService} from '../../add-data.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLaymanLayerDescriptor} from '../../../save-map/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
@@ -37,7 +39,8 @@ export class HsAddDataFileShpComponent implements OnInit {
   addUnder: BaseLayer = null;
   dropzoneActive = false;
   errorOccured = false;
-  
+  showDetails = false;
+
   constructor(
     public HsAddDataFileShpService: HsAddDataFileShpService,
     public hsLayoutService: HsLayoutService,
@@ -45,7 +48,9 @@ export class HsAddDataFileShpComponent implements OnInit {
     public hsLog: HsLogService,
     public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public HsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService
   ) {}
 
   ngOnInit(): void {
@@ -129,23 +134,34 @@ export class HsAddDataFileShpComponent implements OnInit {
       })
       .then((descriptor) => {
         this.resultCode = 'success';
-        this.HsAddDataUrlWmsService.addService(
-          tweakGeoserverUrl(descriptor.wms.url),
-          undefined,
-          this.name,
-          undefined,
-          this.hsUtilsService.undefineEmptyString(this.folder_name)
-        );
-        this.loading = false;
+        // this.HsAddDataUrlWmsService.addService(
+        //   tweakGeoserverUrl(descriptor.wms.url),
+        //   undefined,
+        //   this.name,
+        //   undefined,
+        //   this.hsUtilsService.undefineEmptyString(this.folder_name)
+        // );
+        console.log('selecting');
+
+        this.HsAddDataService.selectType('url');
+        console.log('owsFilling');
+        setTimeout(() => {
+          this.hsEventBusService.owsFilling.next({
+            type: 'wms',
+            uri: descriptor.wms.url,
+            layer: this.name,
+          });
+        }, 500);
         this.hsLayoutService.setMainPanel('layermanager');
       })
       .catch((err) => {
         this.hsLog.error(err);
         this.loading = false;
+
         this.resultCode = 'error';
         this.errorMessage = err?.error?.message ?? err?.message;
-        this.errorDetails = err?.error?.detail
-          ? Object.entries(err.error.detail)
+        this.errorDetails = err?.error?.detail.missing_extensions
+          ? Object.values(err.error.detail.missing_extensions)
           : [];
       });
   }
@@ -153,17 +169,38 @@ export class HsAddDataFileShpComponent implements OnInit {
   read(evt): void {
     const filesRead = [];
     const files = evt.target ? evt.target.files : evt;
+
+    const promises = [];
     for (const file of files) {
-      const reader = new FileReader();
-      reader.onload = (loadEvent) => {
-        filesRead.push({
-          name: file.name,
-          type: file.type,
-          content: loadEvent.target.result,
-        });
-      };
-      reader.readAsArrayBuffer(file);
+      const filePromise = new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (loadEvent) => {
+          filesRead.push({
+            name: file.name,
+            type: file.type,
+            content: loadEvent.target.result,
+          });
+          resolve(reader.result);
+        };
+        reader.readAsArrayBuffer(file);
+      });
+      promises.push(filePromise);
     }
+    Promise.all(promises).then((fileContents) => {
+      if (this.files.length >= 3) {
+        this.showDetails = true;
+        this.resultCode = 'success';
+      } else {
+        this.showDetails = false;
+        this.resultCode = 'error';
+        this.errorMessage =
+          'Missing one or more ShapeFile files.. Load files with extensions *.shp, *.shx, *.dbf';
+        setTimeout(() => {
+          this.resultCode = '';
+        }, 6000);
+      }
+    });
+
     if (evt.target?.id === 'sld') {
       this.sld = filesRead[0];
     } else {
