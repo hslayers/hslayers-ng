@@ -1,71 +1,72 @@
-<p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 <form class="form-horizontal m-3" role="form">
-    <hs-add-data-common-url *ngIf="HsAddDataService.typeSelected == 'url'" type="vector" [(url)]="url" [(connect)]="connect"></hs-add-data-common-url>
+    <hs-add-data-common-url *ngIf="HsAddDataService.typeSelected == 'url'" type="vector" [(url)]="url"
+        [(connect)]="connect"></hs-add-data-common-url>
 
-    <div class="form-group"  *ngIf="HsAddDataService.typeSelected == 'file'">
+    <div class="form-group" *ngIf="HsAddDataService.typeSelected == 'file'">
         <div class="d-flex flex-row justify-content-around align-items-baseline w-100">
             <!-- <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label> -->
-            <div class="dropzone p-4" fileDrop (filesDropped)="handleFileUpload($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
-                    <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
+            <div class="dropzone p-4" fileDrop (filesDropped)="handleFileUpload($event)"
+                (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
+                <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
             </div>
             <label class="dropzone-label">
                 <input type="file" (change)="handleFileUpload($event.target.files)">
-            </label> 
+            </label>
 
         </div>
-        <!-- TODO: Replace this with upcomming toast directive -->
-        <div class="text-light text-center bg-danger" *ngIf="errorOccured">
-            <p>{{'ADDLAYERS.couldNotUploadSelectedFile' | translate}}</p>
-        </div>
     </div>
 
-    <div class="form-group">
-        <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
-        <input class="form-control" name="title" [(ngModel)]="title" />
-    </div>
+    <div [hidden]="!showDetails">
+        <p><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate}}</sub></p>
 
-    <div class="form-group">
-        <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
-        <input class="form-control" name="name" [(ngModel)]="name" />
-    </div>
-    <div class="form-group" [hidden]="featureCount == 0">
-        <label class="capabilities_label control-label">{{'ADDLAYERS.featureCount' | translate}}</label>
-        <input class="form-control" name="featureCount" [(ngModel)]="featureCount" readonly/>
-    </div>
-    <div class="form-group">
-        <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
-        <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
-            name="abstract" [(ngModel)]="abstract">
-        </textarea>
-    </div>
-
-    <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-        (click)="advancedPanelVisible = !advancedPanelVisible">
-        {{'COMMON.advancedOptions' | translate}}
-    </button>
-
-    <div class="collapse hs-ows-vector-advanced" *ngIf="advancedPanelVisible">
-        <div class="form-group" >
-            <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
-            <input class="form-control" name="srs" [(ngModel)]="srs" />
+        <div class="form-group">
+            <label class="capabilities_label control-label">{{'COMMON.title' | translate}}</label>
+            <input class="form-control" name="title" [(ngModel)]="title" />
         </div>
 
         <div class="form-group">
-            <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
-            <input class="form-control" name="folder" [(ngModel)]="folder_name" />
+            <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
+            <input class="form-control" name="name" [(ngModel)]="name" />
         </div>
-
-        <div class="form-group" *ngIf="isKml()">
-            <label class="capabilities_label control-label">{{'ADDLAYERS.VECTOR.extractStyles' | translate}}</label>
-            <input type="checkbox" name="extractStyles" [(ngModel)]="extract_styles" />
+        <div class="form-group" [hidden]="featureCount == 0">
+            <label class="capabilities_label control-label">{{'ADDLAYERS.featureCount' | translate}}</label>
+            <input class="form-control" name="featureCount" [(ngModel)]="featureCount" readonly />
         </div>
-
         <div class="form-group">
-            <hs-add-layers-target-position [(addUnder)]="addUnder" ></hs-add-layers-target-position>
+            <label class="capabilities_label control-label">{{'COMMON.abstract' | translate}}</label>
+            <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate"
+                name="abstract" [(ngModel)]="abstract">
+            </textarea>
         </div>
-    </div>
 
-    <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
-        {{'COMMON.add' | translate}}
-    </button>
+        <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+            (click)="advancedPanelVisible = !advancedPanelVisible">
+            {{'COMMON.advancedOptions' | translate}}
+        </button>
+
+        <div class="collapse hs-ows-vector-advanced" *ngIf="advancedPanelVisible">
+            <div class="form-group">
+                <label class="capabilities_label control-label">{{'ADDLAYERS.srs' | translate}}</label>
+                <input class="form-control" name="srs" [(ngModel)]="srs" />
+            </div>
+
+            <div class="form-group">
+                <label class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translate}}</label>
+                <input class="form-control" name="folder" [(ngModel)]="folder_name" />
+            </div>
+
+            <div class="form-group" *ngIf="isKml()">
+                <label class="capabilities_label control-label">{{'ADDLAYERS.VECTOR.extractStyles' | translate}}</label>
+                <input type="checkbox" name="extractStyles" [(ngModel)]="extract_styles" />
+            </div>
+
+            <div class="form-group">
+                <hs-add-layers-target-position [(addUnder)]="addUnder"></hs-add-layers-target-position>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" [disabled]="!title" (click)="add()"><i class="icon-plus"></i>
+            {{'COMMON.add' | translate}}
+        </button>
+    </div>
 </form>

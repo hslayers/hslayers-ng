@@ -247,12 +247,13 @@ export class HsAddDataVectorService {
         const fileToJSON = JSON.parse(<string>fileContents);
         if (fileToJSON !== undefined) {
           if (fileToJSON.features.length > 0) {
+            fileToJSON.name = file.name.split('.')[0];
             uploadedData = this.createVectorObjectFromJson(fileToJSON);
             return uploadedData;
           }
         }
       } catch (e) {
-        console.log('Uploaded file is not supported!');
+        console.log('Uploaded file is not supported!', e);
       }
     }
   }

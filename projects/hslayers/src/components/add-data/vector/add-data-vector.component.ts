@@ -1,10 +1,13 @@
 import BaseLayer from 'ol/layer/Base';
 import {Component} from '@angular/core';
+
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsUtilsService} from '../../utils/utils.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsLanguageService} from '../../language/language.service';
 
 @Component({
   selector: 'hs-add-data-url-vector',
@@ -26,19 +29,22 @@ export class HsAddDataVectorComponent {
   type = '';
   errorOccured = false;
   addUnder: BaseLayer = null;
+  showDetails = false;
 
   constructor(
     public HsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public HsAddDataService: HsAddDataService
+    public HsAddDataService: HsAddDataService,
+    public hsToastService: HsToastService,
+    public hsLanguageService: HsLanguageService
+
   ) {}
 
-  connect = (): void => {
-    this.hsHistoryListService.addSourceHistory('vector', this.url);
-    this.isKml();
-    //this.showDetails = true;
+  connect = async (): Promise<void> => {
+      this.hsHistoryListService.addSourceHistory('vector', this.url);
+      this.showDetails = true;
   };
 
   isKml(): boolean {
@@ -71,6 +77,7 @@ export class HsAddDataVectorComponent {
     this.HsAddDataVectorService.fitExtent(layer);
     this.hsLayoutService.setMainPanel('layermanager');
     this.setToDefault();
+    this.showDetails = false;
     return layer;
   }
   dropZoneState($event: boolean): void {
@@ -78,7 +85,9 @@ export class HsAddDataVectorComponent {
   }
   handleFileUpload(fileList: FileList): any {
     Array.from(fileList).forEach(async (f) => {
-      const uploadedData = await this.HsAddDataVectorService.readUploadedFile(f);
+      const uploadedData = await this.HsAddDataVectorService.readUploadedFile(
+        f
+      );
       if (uploadedData !== undefined) {
         uploadedData.url !== undefined
           ? (this.base64url = uploadedData.url)
@@ -113,12 +122,21 @@ export class HsAddDataVectorComponent {
         } else {
           this.type = '';
         }
+        this.showDetails = true;
       } else {
         this.setToDefault();
-        this.errorOccured = true;
-        setTimeout(() => {
-          this.errorOccured = false;
-        }, 3000);
+
+        this.hsToastService.createToastPopupMessage(
+          this.hsLanguageService.getTranslation(
+            'ADDLAYERS.someErrorHappened'
+          ),
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'ADDLAYERS',
+            'couldNotUploadSelectedFile'
+          ),
+          true
+        );
+
       }
     });
   }
