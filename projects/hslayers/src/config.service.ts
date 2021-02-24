@@ -1,6 +1,7 @@
 import BaseLayer from 'ol/layer/Base';
 import View from 'ol/View';
 import {Subject} from 'rxjs';
+import {Themes} from './components/layout/themes/theme';
 
 export class HsConfig {
   cesiumTime?: any;
@@ -96,7 +97,7 @@ export class HsConfig {
   open_lm_after_comp_loaded?: any;
   draggable_windows?: boolean;
   connectTypes?: any;
-  theme?: string;
+  theme?: Themes;
   datasources?: any;
   panelWidths?: any;
   sidebarToggleable?: any;

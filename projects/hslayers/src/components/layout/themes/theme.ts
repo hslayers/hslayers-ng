@@ -3,8 +3,13 @@ export interface Theme {
   properties?;
 }
 
+export enum Themes {
+  dark = 'dark',
+  light = 'light',
+}
+
 export const light: Theme = {
-  name: 'light',
+  name: Themes.light,
   properties: {
     '--text-color': 'hsl(0, 0%, 0%)',
     '--panel-wrapper-bg-color': 'hsl(0, 0%, 100%)',
@@ -57,7 +62,7 @@ export const light: Theme = {
 };
 
 export const dark: Theme = {
-  name: 'dark',
+  name: Themes.dark,
   properties: {
     '--text-color': 'hsla(0, 0%, 100%, 87%)',
     '--panel-wrapper-bg-color': 'hsl(220, 29%, 12%)',
