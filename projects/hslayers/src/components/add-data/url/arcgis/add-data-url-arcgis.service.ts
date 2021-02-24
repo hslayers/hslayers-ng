@@ -91,8 +91,12 @@ export class HsAddDataArcGisService {
         : [];
       this.data.srss = [caps.spatialReference.wkid];
       this.data.services = caps.layers;
-      this.selectLayerByName(layerToSelect);
 
+      this.HsAddDataUrlService.selectLayerByName(
+        layerToSelect,
+        this.data.services,
+        'Name'
+      );
       this.data.image_format = getPreferedFormat(this.data.image_formats, [
         'PNG32',
         'PNG',
@@ -105,40 +109,6 @@ export class HsAddDataArcGisService {
       ]);
     } catch (e) {
       throw new Error(e);
-    }
-  }
-
-  selectLayerByName(layerToSelect: string): void {
-    if (!layerToSelect) {
-      return;
-    }
-    for (const service of this.data.services) {
-      if (service.Layer) {
-        for (const layer of service.Layer) {
-          if (layer.Name == layerToSelect) {
-            layer.checked = true;
-            setTimeout(() => {
-              const id = `#hs-add-layer-${layer.Name}`;
-              const el = this.hsLayoutService.contentWrapper.querySelector(id);
-              if (el) {
-                el.scrollIntoView();
-              }
-            }, 1000);
-            return;
-          }
-        }
-      } else {
-        if (service.Name == layerToSelect) {
-          service.checked = true;
-          setTimeout(() => {
-            const id = `#hs-add-layer-${service.Name}`;
-            const el = this.hsLayoutService.contentWrapper.querySelector(id);
-            if (el) {
-              el.scrollIntoView();
-            }
-          }, 1000);
-        }
-      }
     }
   }
 
