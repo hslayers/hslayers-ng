@@ -41,7 +41,7 @@ export class HsAddDataUrlWmtsService {
     public HsConfig: HsConfig,
     public HsAddDataService: HsAddDataService,
     public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService,
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
@@ -55,15 +55,8 @@ export class HsAddDataUrlWmtsService {
             await this.capabilitiesReceived(response);
             if (this.layerToSelect) {
               for (const layer of this.services) {
-                //TODO: If Layman allows layers with different casing,
-                // then remove the case lowering
-                if (
-                  layer.Title.toLowerCase() === this.layerToSelect.toLowerCase()
-                ) {
-                  layer.checked = true;
-                }
+                this.addLayers(true);
               }
-              this.addLayers(true);
             }
           } catch (e) {
             if (e.status == 401) {
@@ -103,6 +96,11 @@ export class HsAddDataUrlWmtsService {
       this.version = caps.Version || caps.version;
       this.services = caps.Contents.Layer;
 
+      this.HsAddDataUrlService.selectLayerByName(
+        this.layerToSelect,
+        this.services,
+        'Title'
+      );
       //TODO Layer to select
 
       this.layersLoading = false;
@@ -206,7 +204,7 @@ export class HsAddDataUrlWmtsService {
    * @function getPreferedInfoFormat
    * @param {object} response Set of avaliable info formats for layer being added
    */
-  addLayer(layer) {
+  addLayer(layer): void {
     try {
       const wmts = new Tile({
         title: layer.Title,

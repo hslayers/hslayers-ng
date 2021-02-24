@@ -167,7 +167,11 @@ export class HsAddDataUrlWmsService {
         this.data.services[0].EX_GeographicBoundingBox ||
         this.data.services[0].BoundingBox;
 
-      this.selectLayerByName(layerToSelect);
+      this.HsAddDataUrlService.selectLayerByName(
+        layerToSelect,
+        this.data.services,
+        'Name'
+      );
 
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
@@ -244,43 +248,6 @@ export class HsAddDataUrlWmsService {
       return url.replace(':' + proxyPort.toString(), '');
     }
     return url;
-  }
-
-  /**
-   * @param layerToSelect
-   */
-  selectLayerByName(layerToSelect: string): void {
-    if (!layerToSelect) {
-      return;
-    }
-    for (const service of this.data.services) {
-      if (service.Layer) {
-        for (const layer of service.Layer) {
-          if (layer.Name == layerToSelect) {
-            layer.checked = true;
-            setTimeout(() => {
-              const id = `#hs-add-layer-${layer.Name}`;
-              const el = this.hsLayoutService.contentWrapper.querySelector(id);
-              if (el) {
-                el.scrollIntoView();
-              }
-            }, 1000);
-            return;
-          }
-        }
-      } else {
-        if (service.Name == layerToSelect) {
-          service.checked = true;
-          setTimeout(() => {
-            const id = `#hs-add-layer-${service.Name}`;
-            const el = this.hsLayoutService.contentWrapper.querySelector(id);
-            if (el) {
-              el.scrollIntoView();
-            }
-          }, 1000);
-        }
-      }
-    }
   }
 
   srsChanged(): void {
