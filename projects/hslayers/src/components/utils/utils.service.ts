@@ -131,19 +131,17 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#getParamsFromUrl
+   * Parse parameters and their values from URL string
    * @public
-   * @param {string} str Url to parse for parameters
-   * @returns {object} Object with parsed parameters as properties
-   * @description Parse parameters and their values from Url string
+   * @param str - URL to parse parameters from
+   * @returns Object with parsed parameters as properties
    */
   getParamsFromUrl(str: string): any {
     if (typeof str !== 'string') {
       return {};
     }
 
-    if (str.indexOf('?') > -1) {
+    if (str.includes('?')) {
       str = str.substring(str.indexOf('?') + 1);
     } else {
       return {};
@@ -154,7 +152,7 @@ export class HsUtilsService {
       .split('&')
       .reduce((ret, param) => {
         if (!param) {
-          return {};
+          return ret;
         }
         const parts = param.replace(/\+/g, ' ').split('=');
         let key = parts[0];
