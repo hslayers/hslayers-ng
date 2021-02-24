@@ -22,6 +22,8 @@ export * from './components/sidebar/sidebar.service';
 export * from './components/layout/dialogs/dialog-component.interface';
 export * from './components/layout/dialogs/dialog-host.directive';
 export * from './components/layout/toast/toast.service';
+export * from './components/layout/themes/theme';
+export * from './components/layout/themes/theme.service';
 export * from './components/permalink/share-url.service';
 export * from './components/permalink/share.service';
 export * from './components/layout/panels/panel-container.service';
