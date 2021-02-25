@@ -169,12 +169,13 @@ export function getDefinition(layer: Layer): Definition {
 }
 
 export interface Dimension {
+  disabled?: boolean;
   label: string;
   type?: 'datetime' | 'date';
   value?: any;
-  default: any;
+  default?: any;
   values?: any[];
-  availability?();
+  availability?(): boolean;
 }
 
 export interface DimensionsList {
@@ -184,13 +185,19 @@ export interface DimensionsList {
 /**
  * Set the dimensions defintion. TODO: Extend description
  * @param layer 
- * @param dimensions Example: {
-      time: { label: 'Local time', type: 'datetime', value: moment().startOf('minute').toDate() },
-      level: { label: 'Level hPa', value: 'surface', values: ['surface', '950mb - 500m', '900mb - 1km'], 
-      availability: function(layer){
-        return layer.get('title') != 'Temperature observations'
-      } 
-    }
+ * @param dimensions
+ * @example
+ *  dimensions: \{
+      time: \{ label: 'Local time', default: '2020-02-25T01:00' \},
+      level: \{
+        label: 'Level hPa',
+        value: 'surface',
+        values: ['surface', '950mb - 500m', '900mb - 1km'],
+        availability: function(layer) \{
+          return layer.get('title') != 'Temperature observations'
+        \}
+      \}
+    \}
  */
 export function setDimensions(layer: Layer, dimensions: DimensionsList): void {
   layer.set(DIMENSIONS, dimensions);
@@ -198,6 +205,37 @@ export function setDimensions(layer: Layer, dimensions: DimensionsList): void {
 
 export function getDimensions(layer: Layer): DimensionsList {
   return layer.get(DIMENSIONS);
+}
+
+/**
+ * If no dimensions are defined then creates a new dimension object,
+ * if dimensions exist but the type is not present yet, it appends that dimension,
+ * if dimensions exist and the type is present already, it replaces that dimension
+ * @param layer - OL layer object
+ * @param dimension - a dimension definition object
+ * @param type - dimension type, e.g. 'time', 'height', etc.
+ */
+export function setDimension(
+  layer: Layer,
+  dimension: Dimension,
+  type: string
+): void {
+  if (layer.get(DIMENSIONS)) {
+    const dims = layer.get(DIMENSIONS);
+    dims[type] = dimension;
+    layer.set(DIMENSIONS, dims);
+  } else {
+    layer.set(DIMENSIONS, {[type]: dimension});
+  }
+}
+
+/**
+ * @param layer - OL layer object
+ * @param type - dimension type, e.g. 'time', 'height', etc.
+ * @returns Single dimension object definition
+ */
+export function getDimension(layer: Layer, type: string): Dimension {
+  return layer.get(DIMENSIONS) ? layer.get(DIMENSIONS)[type] : undefined;
 }
 
 export function setEditor(layer: Layer, editor: Editor): void {
