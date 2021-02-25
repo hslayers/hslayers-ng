@@ -244,7 +244,10 @@ export class HsLayerManagerWmstService {
     const olLayer = currentLayer.layer;
     console.log('setupTimeLayer@wmst', currentLayer);
     //parse config set at a Layer level
-    const hsLayerTimeConfig = getDimensions(olLayer).time;
+    const hsLayerTimeConfig = getDimensions(olLayer)?.time;
+    if (hsLayerTimeConfig?.disabled) {
+      return;
+    }
     //parse parametres available at the WM(T)S level
     let serviceLayerTimeConfig;
     if (!Array.isArray(serviceLayer.Dimension)) {
@@ -285,7 +288,14 @@ export class HsLayerManagerWmstService {
   }
 
   private parseTimePoints(values: string): Array<string> {
-    return values.trim().split(',');
+    const timeValues = values.trim().split(',');
+    if (timeValues.length == 3 && timeValues[2].startsWith('P')) {
+      // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
+      //TODO: not implemented
+      throw new Error('Not implemented!');
+      return;
+    }
+    return timeValues;
   }
 
   /**

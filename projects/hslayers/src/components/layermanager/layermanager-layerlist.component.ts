@@ -10,7 +10,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
-import {getHsLaymanSynchronizing, getPath} from '../../common/layer-extensions';
+import {getDimension, getHsLaymanSynchronizing, getPath} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -148,8 +148,11 @@ export class HsLayerListComponent implements OnInit {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   }
 
-  isLayerWmsT(layer): boolean {
-    return this.hsLayerManagerWmstService.layerIsWmsT(layer);
+  showLayerWmsT(layer: HsLayerDescriptor): boolean {
+    return (
+      this.hsLayerManagerWmstService.layerIsWmsT(layer) &&
+      !getDimension(layer.layer, 'time')?.disabled
+    );
   }
 
   /**
