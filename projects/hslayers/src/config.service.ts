@@ -16,7 +16,7 @@ export class HsConfig {
     defaultViewButton: true,
     mapControls: true,
     basemapGallery: false,
-    themeToggle: true,
+    themeToggle: false,
   };
   mapInteractionsEnabled?: boolean;
   allowAddExternalDatasets?: boolean;

@@ -1043,6 +1043,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		input[type="checkbox"] {
 			transform: scale(2, 2);
 			margin-right: 0.5em;
+			margin-left: 0.5em;
 		}
 		input[type="radio"] {
 			transform: scale(2, 2);
@@ -1202,6 +1203,14 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		}
 		.ol-attribution.ol-uncollapsible{
 			bottom: 0.2em;
+		}
+
+		.ol-attribution ul {
+			margin: 0;
+		}
+
+		.ol-control button {
+			font-size: 1.5em;
 		}
 
 		.hs-ol-map .ol-zoom {
@@ -1471,7 +1480,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	hs-sidebar ~ div.hs-panelplace {overflow-x: hidden;}
 	.hs-layerpanel {overflow-x: hidden;}
 	.hs-hover-popup-feature {font-size: small; line-height: 1; margin-bottom: 2px; border-bottom: 1px solid hsl(0, 0%, 78%)}
-	.hs-draw-layer-toggle div {display: inline-block; max-width: 7em; overflow-x:hidden}
+	.hs-draw-layer-toggle div {display: inline-block; max-width: 7em; overflow-x:hidden; line-height: normal;}
 	.ol-control button:hover {
 		background-color: $primary;
 	}

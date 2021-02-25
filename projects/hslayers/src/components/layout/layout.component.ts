@@ -81,6 +81,11 @@ export class HsLayoutComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
+
+    if (window.innerWidth < 767) {
+      document.body.style.margin = '0px';
+    }
+
     if (getComputedStyle(hsapp).display == 'inline') {
       hsapp.style.display = 'block';
       console.warn(
