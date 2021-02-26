@@ -1,4 +1,11 @@
-import {AfterViewInit, Component, ElementRef, NgZone, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  NgZone,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 
 import Map from 'ol/Map';
 import {transform} from 'ol/proj';
@@ -13,7 +20,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
   selector: 'hs-map',
   templateUrl: './partials/map.html',
 })
-export class HsMapComponent implements AfterViewInit {
+export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;
   unregisterMapSyncCenterHandler: any;
   constructor(
@@ -30,7 +37,7 @@ export class HsMapComponent implements AfterViewInit {
       }
     );
   }
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.HsMapService.mapElement = this.map.nativeElement;
 
     if (this.HsPermalinkUrlService.getParamValue('visible_layers')) {
@@ -67,7 +74,7 @@ export class HsMapComponent implements AfterViewInit {
     this.HsMapService.map.updateSize();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.unregisterMapSyncCenterHandler) {
       this.unregisterMapSyncCenterHandler.unsubscribe();
     }

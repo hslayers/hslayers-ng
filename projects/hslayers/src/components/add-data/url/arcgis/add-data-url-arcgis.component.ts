@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
   selector: 'hs-add-data-url-arcgis',
   templateUrl: './add-data-url-arcgis.directive.html',
 })
-export class HsAddDataArcGisComponent {
+export class HsAddDataArcGisComponent implements OnDestroy {
   data;
   sourceHistory;
   layerToSelect: any;
@@ -40,7 +40,7 @@ export class HsAddDataArcGisComponent {
   hasNestedLayers = this.HsAddDataArcGisService.hasNestedLayers;
   getDimensionValues = this.HsAddDataArcGisService.getDimensionValues;
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
   }
 

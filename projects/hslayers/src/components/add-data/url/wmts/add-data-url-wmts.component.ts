@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
@@ -16,7 +16,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './add-data-url-wmts.html',
   //TODO: require('./add-wms-layer.md.directive.html')
 })
-export class HsAddDataWmtsComponent {
+export class HsAddDataWmtsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
   isChecked: boolean;
 
@@ -40,7 +40,7 @@ export class HsAddDataWmtsComponent {
     );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
   }
 
