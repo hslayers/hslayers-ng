@@ -1,5 +1,5 @@
 <div [hidden]="!isLayerWithDimensions()">
-    <p style="text-align: center;font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
+    <p style="text-align: center; font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
     <div class="form-inline" *ngFor="let dimension of dimensions">
         <label class="control-label" style="width: 100%; justify-content: left;">{{dimension.label || dimension.name}}:</label>
 
@@ -8,6 +8,30 @@
                 {{dimension_value}}</option>
         </select>
         <!-- replaced by layermanger-time-editor component -->
+        <!-- Time slider -->
+        <!--
+        <div class="form-group" [hidden]="!dimensionIsTime(dimension)">
+            <label>{{'COMMON.date' | translate}}</label>
+            <input type="range" name="layer-date" step="{{layer.time_step}}"
+                min="{{layer.min_time}}" max="{{layer.max_time}}" class="form-control"
+                style="width: 100%;height: 21px;" [(ngModel)]="layer.date_increment"
+                (change)="hsLayerManagerWmstService.setLayerTime(layer, '')">
+        -->
+            <!-- currentLayer.date_increment -->
+        <!--
+            <div class="row">
+                <div class="col-md-4">
+                    <small>{{formatDate(dateToNonUtc(layer.date_from), layer.date_format)}}</small>
+                </div>
+                <div class="col-md-4">
+                    <small><b>{{formatDate(dateToNonUtc(layer.time), layer.date_format)}}</b></small>
+                </div>
+                <div class="col-md-4">
+                    <small>{{formatDate(dateToNonUtc(layer.date_till), layer.date_format)}}</small>
+                </div>
+            </div>
+        </div>
+        -->
         <!--
         <div class="input-group flex-fill" *ngIf="dimension.type == 'datetime' || dimension.type == 'date'">
             <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>

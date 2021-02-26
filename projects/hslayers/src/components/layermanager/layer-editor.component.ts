@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {Component, Input} from '@angular/core';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -413,26 +412,5 @@ export class HsLayerEditorComponent {
 
   getSubLayers() {
     return this.HsLayerEditorSublayerService.getSubLayers();
-  }
-
-  //TODO refactor to some helper service
-  /**
-   * @function dateToNonUtc
-   * @memberOf HsLayerEditorComponent
-   * @param {Date} d Date to convert
-   * @description Convert date to non Utc format
-   * @returns {Date} Date with timezone added
-   */
-  dateToNonUtc(d: Date): Date | undefined {
-    if (d == undefined) {
-      return;
-    }
-    const noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
-    return noutc;
-  }
-
-  //TODO refactor to some helper service
-  formatDate(date, format) {
-    return moment(date).format(format);
   }
 }
