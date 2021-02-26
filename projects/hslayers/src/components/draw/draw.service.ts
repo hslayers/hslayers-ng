@@ -455,7 +455,7 @@ export class HsDrawService {
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
-      this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint);
+      this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint).toPromise();
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {
