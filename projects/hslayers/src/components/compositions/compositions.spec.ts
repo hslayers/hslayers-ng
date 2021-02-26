@@ -39,6 +39,16 @@ class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
 }
+class HsCompositionsMickaServiceMock {
+  constructor() {}
+  loadList() {
+    return;
+  }
+}
+class HsSaveMapServiceMock {
+  internalLayers = [];
+  constructor() {}
+}
 
 class emptyMock {
   constructor() {}
@@ -76,15 +86,18 @@ describe('compositions', () => {
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
+        HsCompositionsMickaServiceMock,
         {
-          HsSaveMapService,
-          useValue: {
-            internalLayers: [],
-          },
+          provide: HsSaveMapService,
+          useValue: HsSaveMapServiceMock,
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
+        {
+          provide: HsCompositionsMickaService,
+          useValue: new HsCompositionsMickaServiceMock(),
+        },
         {
           provide: HsLayoutService,
           useValue: {
@@ -121,9 +134,11 @@ describe('compositions', () => {
         },
       ],
     });
-    const hsCompositionsMickaService = TestBed.inject(HsCompositionsMickaService);
+    const hsCompositionsMickaService = TestBed.inject(
+      HsCompositionsMickaServiceMock
+    );
     //Mock server response
-    hsCompositionsMickaService.getCompositions = () => {
+    hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
         resolve(compositionsJson);
       });
