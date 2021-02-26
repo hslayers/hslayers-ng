@@ -31,25 +31,6 @@
                             {{'LAYERMANAGER.layerEditor.copyright' | translate}}</a>
                     </div>
                 </div>
-                <!-- Time slider -->
-                <div class="form-group" [hidden]="!layerIsWmsT()">
-                    <label>{{'COMMON.date' | translate}}</label>
-                    <input type="range" name="layer-date" step="{{currentLayer.time_step}}"
-                        min="{{currentLayer.min_time}}" max="{{currentLayer.max_time}}" class="form-control"
-                        style="width: 100%;height: 21px;" [(ngModel)]="currentLayer.date_increment"
-                        (change)="HsLayerManagerWmstService.setLayerTime(currentLayer, '')"> <!-- currentLayer.date_increment -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <small>{{formatDate(dateToNonUtc(currentLayer.date_from), currentLayer.date_format)}}</small>
-                        </div>
-                        <div class="col-md-4">
-                            <small><b>{{formatDate(dateToNonUtc(currentLayer.time), currentLayer.date_format)}}</b></small>
-                        </div>
-                        <div class="col-md-4">
-                            <small>{{formatDate(dateToNonUtc(currentLayer.date_till), currentLayer.date_format)}}</small>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Abstract -->
                 <div class="form-group" [hidden]="!abstract">
@@ -95,7 +76,10 @@
                         <hr />
                     </div>
                 </div>
-                <hs-layer-editor-dimensions [ol-layer]="olLayer()"></hs-layer-editor-dimensions>
+
+                <!-- Dimensions -->
+                <hs-layer-editor-dimensions [layer]="olLayer()"></hs-layer-editor-dimensions>
+
                 <!-- Opacity slider -->
                 <div class="form-group">
                     <label>{{'LAYERMANAGER.layerEditor.opacity' | translate}}</label>
