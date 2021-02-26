@@ -51,7 +51,6 @@ export class HsLayerManagerMetadataService {
     if (layerName.includes(':')) {
       layerName = layerName.slice(layerName.indexOf(':'));
     }
-    console.log(layerName, currentLayer);
     // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementationally simpler
     if (layerName == currentLayer.Name) {
       return currentLayer;
@@ -74,7 +73,6 @@ export class HsLayerManagerMetadataService {
    */
   async fillMetadata(layerDescriptor: HsLayerDescriptor): Promise<void> {
     const layer = layerDescriptor.layer;
-    console.log('filling metadata of ', layer);
     await this.queryMetadata(layerDescriptor);
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 0) {
@@ -190,7 +188,6 @@ export class HsLayerManagerMetadataService {
       this.fillMetadataUrlsIfNotExist(olLayer, caps);
     } else {
       layerObj = this.identifyLayerObject(layerName, layerCaps);
-      console.log('parsing..', layerObj);
       if (
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
@@ -267,7 +264,6 @@ export class HsLayerManagerMetadataService {
           const src = layer.getSource();
           const params = src.getParams();
           const layerNameInParams: string = params.LAYERS;
-          console.log('caps received', caps, layerNameInParams);
 
           this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
           if (getSubLayers(layer)) {

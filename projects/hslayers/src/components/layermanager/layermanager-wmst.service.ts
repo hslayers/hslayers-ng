@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 
+import {HsDimensionDescriptor} from './dimensions/dimension.class';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
@@ -242,7 +243,6 @@ export class HsLayerManagerWmstService {
     serviceLayer: WmsLayer
   ): void {
     const olLayer = currentLayer.layer;
-    console.log('setupTimeLayer@wmst', currentLayer);
     //parse config set at a Layer level
     const hsLayerTimeConfig = getDimensions(olLayer)?.time;
     if (hsLayerTimeConfig?.disabled) {
@@ -271,7 +271,6 @@ export class HsLayerManagerWmstService {
     } else {
       defaultTime = timePoints[0];
     }
-    console.log(serviceLayerTimeConfig);
     currentLayer.time = {
       default: defaultTime,
       timePoints: this.parseTimePoints(serviceLayerTimeConfig.values),
@@ -282,7 +281,6 @@ export class HsLayerManagerWmstService {
       //date_till: new Date(hsLayerTimeConfig.timeInterval[1]), //TODO: cleanup this
       //date_increment: time.getTime(), //TODO: cleanup this
     };
-    console.log('after fill', currentLayer);
     //this.setLayerTimeSliderIntervals(layerDescriptor, hsLayerTimeConfig); //TODO: cleanup this
     this.setLayerTime(currentLayer, defaultTime);
   }
@@ -301,16 +299,16 @@ export class HsLayerManagerWmstService {
   /**
    * Update layer TIME parameter
    * @param currentLayer - Selected layer
-   * @param newTime - ISO string of a date and time to set
+   * @param newTime - ISO8601 string of a date and time to set
    */
   setLayerTime(currentLayer: HsLayerDescriptor, newTime: string): void {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    const timeDef = getDimensions(currentLayer.layer).time;
-    if (timeDef === undefined /*|| timeDef.timeInterval === undefined*/) {
-      return;
-    }
+    //const timeDef = getDimensions(currentLayer.layer).time;
+    //if (timeDef === undefined /*|| timeDef.timeInterval === undefined*/) {
+    //  return;
+    //}
     /*let d: moment.Moment = moment.utc(timeDef.timeInterval[0]);
     switch ((currentLayer as any).time_unit) {
       case 'FullYear':
@@ -329,13 +327,19 @@ export class HsLayerManagerWmstService {
         d = moment.utc(parseInt(dateIncrement));
     }*/
     //currentLayer.time = d.toDate();
-    console.log('wmst-service, setting time to ', newTime);
     currentLayer.layer.getSource().updateParams({
       'TIME': newTime, //d.toISOString(),
     });
     this.HsEventBusService.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
+    });
+    // For sync with hsCesium part
+    // TODO: refactor HsDimensionDescriptor class to not use moment and so on,
+    // then replace the null here with a meaningful value
+    this.HsEventBusService.layermanagerDimensionChanges.next({
+      layer: currentLayer.layer,
+      dimension: null,
     });
   }
 }

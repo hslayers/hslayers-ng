@@ -1,5 +1,10 @@
 import {Layer} from 'ol/layer';
 
+export type HsLayerTimeDescriptor = {
+  default: string;
+  timePoints: Array<string>;
+};
+
 export interface HsLayerDescriptor {
   layer: Layer;
   abstract?: string;
@@ -17,13 +22,13 @@ export interface HsLayerDescriptor {
   expandFilter?: boolean;
   expandInfo?: boolean;
   idString?: any;
-  time?: any; //moment?
-  date_increment?: number;
-  date_from?: any;
-  date_till?: any;
-  date_format?: any;
+  time?: HsLayerTimeDescriptor;
+  //date_increment?: number;
+  //date_from?: any;
+  //date_till?: any;
+  //date_format?: any;
   grayscale?: boolean;
-  time_step?: number;
-  min_time?: number;
-  max_time?: number;
+  //time_step?: number;
+  //min_time?: number;
+  //max_time?: number;
 }
