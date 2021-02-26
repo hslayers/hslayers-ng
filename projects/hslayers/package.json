@@ -42,7 +42,7 @@
     "ngx-cookie-service": "^10.0.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.7.0",
-    "rxjs": "^6.6.3",
+    "rxjs": "^6.6.6",
     "share-api-polyfill": "^1.0.18",
     "xml-js": "^1.6.11"
   },

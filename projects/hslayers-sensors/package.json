@@ -34,7 +34,7 @@
     "moment": "^2.24.0",
     "moment-interval": "^0.2.1",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
-    "rxjs": "^6.6.3",
+    "rxjs": "^6.6.6",
     "vega": "^5.19.1",
     "vega-embed": "^6.15.1",
     "vega-lite": "^4.17.0"
