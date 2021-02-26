@@ -357,6 +357,7 @@
     "newGPS": "Jauns GPS",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
+    "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",

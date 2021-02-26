@@ -479,6 +479,9 @@ export class HsDrawService {
         message: this.HsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer'
         ),
+        note: this.HsLanguageService.getTranslation(
+          'DRAW.deleteNote'
+        ),
         title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
