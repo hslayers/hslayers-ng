@@ -24,6 +24,6 @@
     "hslayers-ng": "^3.0.1-rc.0"
   },
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "^2.0.0"
   }
 }
