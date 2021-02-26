@@ -23,6 +23,7 @@ import {HsLayerManagerWmstService} from './layermanager-wmst.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -124,21 +125,22 @@ export class HsLayerManagerService {
   currentResolution: number;
   zIndexValue = 0;
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService,
     public HsConfig: HsConfig,
-    public HsLayermanagerWmstService: HsLayerManagerWmstService,
-    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    public HsLayerManagerMetadata: HsLayerManagerMetadataService,
+    public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
-    public HsLayoutService: HsLayoutService,
-    public HsLayerEditorStylesService: HsLayerEditorStylesService,
-    public HsLayerSelectorService: HsLayerSelectorService,
-    public sanitizer: DomSanitizer,
     public HsLanguageService: HsLanguageService,
+    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    public HsLayerEditorStylesService: HsLayerEditorStylesService,
+    public HsLayerManagerMetadata: HsLayerManagerMetadataService,
+    public HsLayermanagerWmstService: HsLayerManagerWmstService,
+    public HsLayerSelectorService: HsLayerSelectorService,
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public HsLayoutService: HsLayoutService,
+    public HsLog: HsLogService,
+    public HsMapService: HsMapService,
     private HsShareUrlService: HsShareUrlService,
-    public HsDrawService: HsDrawService
+    public HsUtilsService: HsUtilsService,
+    public sanitizer: DomSanitizer
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -251,7 +253,7 @@ export class HsLayerManagerService {
     if (this.isWms(layer)) {
       const src = layer.getSource();
       if (src.getParams().LAYERS == undefined) {
-        console.warn('Layer', layer, 'is missing LAYERS parameter');
+        this.HsLog.warn('Layer', layer, 'is missing LAYERS parameter');
       }
     }
   }
@@ -793,12 +795,12 @@ export class HsLayerManagerService {
       layer.layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
-    if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
+    /*if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
       this.currentLayer.time = new Date(
         layer.layer.getSource().getParams().TIME
       );
       this.currentLayer.date_increment = this.currentLayer.time.getTime();
-    }
+    }*/
     const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-layerpanel'
     );

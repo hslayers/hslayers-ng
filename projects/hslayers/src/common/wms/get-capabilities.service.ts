@@ -82,17 +82,17 @@ export class HsWmsGetCapabilitiesService {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.HsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
-    if (params.request == undefined && params.REQUEST == undefined) {
+    if (params.request === undefined && params.REQUEST === undefined) {
       params.request = 'GetCapabilities';
-    } else if (params.request != undefined) {
+    } else if (params.request !== undefined) {
       params.request = 'GetCapabilities';
-    } else if (params.REQUEST != undefined) {
+    } else if (params.REQUEST !== undefined) {
       params.REQUEST = 'GetCapabilities';
     }
-    if (params.service == undefined && params.SERVICE == undefined) {
+    if (params.service === undefined && params.SERVICE === undefined) {
       params.service = 'WMS';
     }
-    if (params.version == undefined && params.VERSION == undefined) {
+    if (params.version === undefined && params.VERSION === undefined) {
       params.version = '1.3.0';
     }
     let url = [path, this.params2String(params)].join('?');

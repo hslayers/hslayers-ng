@@ -1,7 +1,10 @@
-import Map from 'ol/Map';
-import VectorLayer from 'ol/layer/Vector';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
+
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Map} from 'ol';
+
+import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -37,12 +40,26 @@ export class HsEventBusService {
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<any> = new Subject();
+  /**
+   * Fires when time is initially set up in HsLayerDescriptor
+   * Used to set up time correctly in layermanager-time-editor
+   */
   layerTimeChanges: Subject<any> = new Subject();
+  /**
+   * Fires when user enables layer time synchronization in the UI
+   * Used to synchronize time in PARAMS across WM(T)S-t layers
+   */
   layerTimeSynchronizations: Subject<{
     sync: boolean;
     time?: string;
   }> = new Subject();
-  layermanagerDimensionChanges: Subject<any> = new Subject();
+  /**
+   * Used to listen for changes of dimension settings in layermanager-dimensions component
+   */
+  layermanagerDimensionChanges: Subject<{
+    layer: Layer;
+    dimension: HsDimensionDescriptor;
+  }> = new Subject();
   vectorQueryFeatureSelection: Subject<any> = new Subject();
   vectorQueryFeatureDeselection: Subject<any> = new Subject();
   /**
