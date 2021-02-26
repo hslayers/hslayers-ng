@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -11,7 +11,7 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabiliti
   selector: 'hs-add-data-url-wfs',
   templateUrl: './add-data-wfs-layer.directive.html',
 })
-export class HsAddDataWfsComponent {
+export class HsAddDataWfsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
 
   addAll: boolean;
@@ -37,7 +37,7 @@ export class HsAddDataWfsComponent {
     );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
   }
 

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
   selector: 'hs-add-data-url-arcgis',
   templateUrl: './add-data-url-arcgis.directive.html',
 })
-export class HsAddDataArcGisComponent {
+export class HsAddDataArcGisComponent implements OnDestroy {
   data;
   sourceHistory;
   layerToSelect: any;
