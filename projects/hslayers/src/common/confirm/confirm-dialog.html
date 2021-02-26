@@ -8,7 +8,8 @@
                 <button type="button" (click)="no()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{'COMMON.close' | translate}}</span></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
-                {{data.message}}
+                <p class="font-weight-bold h6">{{data.message}}</p>
+                <p class="h6 small">{{data.note}}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translate" data-dismiss="modal">{{'COMMON.yes' | translate}}</button>

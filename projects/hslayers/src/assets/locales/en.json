@@ -357,6 +357,7 @@
     "newGPS": "New GPS",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
+    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "saveDrawingToLayer": "Save drawing to layer",
     "Select layer": "Select layer",
     "serverLayers": "Server layers",

@@ -357,6 +357,7 @@
     "newGPS": "Nové GPS",
     "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
+    "deleteNote": "*Vrstva bude kompletně vymazána. V případe, že ji chcete vymazat jenom z aktuální kompozice (ne i z databáze) můžete tak udelat v panelu 'Správce vrstev'",
     "saveDrawingToLayer": "Uložit do vrstvy",
     "Select layer": "Vybrat vrstvu",
     "serverLayers": "Servrové vrstvy",
