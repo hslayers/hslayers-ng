@@ -57,7 +57,7 @@
     "@angular-eslint/eslint-plugin": "^1.2.0",
     "@angular-eslint/eslint-plugin-template": "^1.2.0",
     "@angular-eslint/template-parser": "^1.2.0",
-    "@angular/cli": "~9.1.14",
+    "@angular/cli": "~9.1.15",
     "@angular/compiler-cli": "~9.1.13",
     "@angularclass/hmr": "^3.0.0",
     "@compodoc/compodoc": "^1.1.11",
