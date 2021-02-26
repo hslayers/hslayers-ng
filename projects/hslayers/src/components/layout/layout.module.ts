@@ -70,7 +70,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsAddDataModule,
   ],
   providers: [HsLayoutService, HsDialogContainerService, HsThemeService],
-  entryComponents: [HsDialogContainerComponent, HsLayoutComponent],
   exports: [HsDialogContainerComponent, HsLayoutComponent],
 })
 export class HsLayoutModule {

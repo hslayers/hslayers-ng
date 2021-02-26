@@ -46,10 +46,5 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsAddDataCatalogueService,
     HsAddDataMetadataService,
   ],
-  entryComponents: [
-    HsAddDataCatalogueComponent,
-    HsAddDataListItemComponent,
-    HsAddDataMetadataDialogComponent,
-  ],
 })
 export class HsAddDataCatalogueModule {}

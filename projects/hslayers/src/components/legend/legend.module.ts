@@ -27,6 +27,5 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
   ],
   exports: [HsLegendComponent, HsLegendLayerComponent],
   providers: [HsLegendService],
-  entryComponents: [HsLegendComponent, HsLegendLayerComponent],
 })
 export class HsLegendModule {}

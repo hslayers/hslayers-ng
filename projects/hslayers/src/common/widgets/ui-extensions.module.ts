@@ -13,7 +13,6 @@ import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
   ],
   imports: [CommonModule],
   providers: [EndpointsWithDatasourcesPipe],
-  entryComponents: [HsUiExtensionsRecursiveDd],
   exports: [
     HsUiExtensionsRecursiveDd,
     EndpointsWithDatasourcesPipe,

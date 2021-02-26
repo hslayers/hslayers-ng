@@ -45,11 +45,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerSynchronizerService,
     HsSaveMapDialogSpawnerService,
   ],
-  entryComponents: [
-    HsSaveMapComponent,
-    HsSaveMapAdvancedFormComponent,
-    HsSaveMapResultDialogComponent,
-    HsSaveMapDialogComponent,
-  ],
 })
 export class HsSaveMapModule {}

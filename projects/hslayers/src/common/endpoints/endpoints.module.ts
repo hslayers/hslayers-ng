@@ -6,7 +6,6 @@ import {NgModule} from '@angular/core';
   declarations: [],
   imports: [CommonModule],
   providers: [HsCommonEndpointsService],
-  entryComponents: [],
   exports: [],
 })
 export class HsCommonEndpointsModule {}

@@ -15,7 +15,6 @@ import {NgModule} from '@angular/core';
     HsWmtsGetCapabilitiesService,
     HsDimensionService,
   ],
-  entryComponents: [],
   exports: [],
 })
 export class HsGetCapabilitiesModule {}

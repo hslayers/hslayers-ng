@@ -23,6 +23,5 @@ import {TranslateModule} from '@ngx-translate/core';
   ],
   exports: [HsAddDataFileComponent],
   providers: [],
-  entryComponents: [HsAddDataFileComponent],
 })
 export class HsAddDataFileModule {}

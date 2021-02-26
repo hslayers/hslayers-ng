@@ -25,6 +25,5 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     TranslateModule,
   ],
   exports: [HsToolbarComponent],
-  entryComponents: [HsToolbarComponent],
 })
 export class HsToolbarModule {}

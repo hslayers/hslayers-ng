@@ -30,6 +30,5 @@ import {TranslateModule} from '@ngx-translate/core';
   ],
   exports: [HsAddDataUrlComponent],
   providers: [HsAddDataUrlService],
-  entryComponents: [HsAddDataUrlComponent],
 })
 export class HsAddDataUrlModule {}

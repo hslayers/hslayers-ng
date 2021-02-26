@@ -40,10 +40,5 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsDrawToolbarComponent,
   ],
   providers: [HsDrawService],
-  entryComponents: [
-    HsDrawComponent,
-    HsDrawLayerMetadataDialogComponent,
-    HsDrawToolbarComponent,
-  ],
 })
 export class HsDrawModule {}

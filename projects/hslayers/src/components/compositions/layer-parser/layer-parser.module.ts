@@ -8,6 +8,5 @@ import {TranslateModule} from '@ngx-translate/core';
   imports: [TranslateModule],
   exports: [],
   providers: [HsCompositionsLayerParserService],
-  entryComponents: [],
 })
 export class HsCompositionsLayerParserModule {}

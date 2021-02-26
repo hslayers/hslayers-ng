@@ -75,16 +75,5 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerSelectorService,
     HsLayermanagerPhysicalListService,
   ],
-  entryComponents: [
-    HsLayerManagerComponent,
-    HsLayerEditorDimensionsComponent,
-    HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerManagerGalleryComponent,
-    HsLayerManagerFolderComponent,
-    HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent,
-    HsLayerManagerTimeEditorComponent,
-    HsLayerPhysicalListComponent,
-  ],
 })
 export class HsLayerManagerModule {}

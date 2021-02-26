@@ -23,6 +23,5 @@ import {TranslateModule} from '@ngx-translate/core';
   ],
   exports: [HsMeasureComponent],
   providers: [HsMeasureService],
-  entryComponents: [HsMeasureComponent],
 })
 export class HsMeasureModule {}

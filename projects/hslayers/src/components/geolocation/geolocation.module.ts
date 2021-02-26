@@ -13,14 +13,8 @@ import {TranslateModule} from '@ngx-translate/core';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsGeolocationComponent],
-  imports: [
-    FormsModule,
-    CommonModule,
-    HsPanelHelpersModule,
-    TranslateModule,
-  ],
+  imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsGeolocationComponent],
   providers: [HsGeolocationService],
-  entryComponents: [HsGeolocationComponent],
 })
 export class HsGeolocationModule {}
