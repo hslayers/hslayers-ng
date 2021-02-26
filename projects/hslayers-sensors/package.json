@@ -13,7 +13,7 @@
     "@angular/localize": "^11.2.5",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.1",
     "moment-interval": "^0.2.1",
     "bootstrap": "^4.1.0",
     "ol-popup": "^4.0.0",
