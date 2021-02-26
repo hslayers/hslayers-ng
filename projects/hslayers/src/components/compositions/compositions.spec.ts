@@ -14,6 +14,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
+import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
@@ -25,6 +26,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -44,10 +46,6 @@ class HsCompositionsMickaServiceMock {
   loadList() {
     return;
   }
-}
-class HsSaveMapServiceMock {
-  internalLayers = [];
-  constructor() {}
 }
 
 class emptyMock {
@@ -87,6 +85,7 @@ describe('compositions', () => {
         HsCompositionsService,
         HsCompositionsCatalogueService,
         HsCompositionsMickaServiceMock,
+        HsCompositionsMapService,
         {
           provide: HsSaveMapService,
           useValue: HsSaveMapServiceMock,
