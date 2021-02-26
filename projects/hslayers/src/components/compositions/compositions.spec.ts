@@ -120,7 +120,7 @@ describe('compositions', () => {
         },
       ],
     });
-    const hsCompositionsMickaService = TestBed.get(HsCompositionsMickaService);
+    const hsCompositionsMickaService = TestBed.inject(HsCompositionsMickaService);
     //Mock server response
     hsCompositionsMickaService.getCompositions = () => {
       return new Promise((resolve, reject) => {

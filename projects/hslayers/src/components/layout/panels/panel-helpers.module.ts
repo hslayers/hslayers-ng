@@ -15,7 +15,6 @@ import {NgModule} from '@angular/core';
   ],
   imports: [],
   providers: [HsPanelContainerService],
-  entryComponents: [HsPanelHeaderComponent, HsPanelContainerComponent],
   exports: [HsPanelHeaderComponent, HsPanelContainerComponent],
 })
 export class HsPanelHelpersModule {}

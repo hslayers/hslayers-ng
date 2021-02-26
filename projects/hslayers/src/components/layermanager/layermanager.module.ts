@@ -72,16 +72,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsLayerSelectorService,
     HsLayermanagerPhysicalListService,
   ],
-  entryComponents: [
-    HsLayerManagerComponent,
-    HsLayerEditorDimensionsComponent,
-    HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerManagerGalleryComponent,
-    HsLayerManagerFolderComponent,
-    HsLayerListComponent,
-    HsLayerManagerRemoveAllDialogComponent,
-    HsLayerManagerTimeEditorComponent,
-    HsLayerPhysicalListComponent,
-  ],
 })
 export class HsLayerManagerModule {}

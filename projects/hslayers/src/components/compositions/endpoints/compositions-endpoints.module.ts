@@ -17,6 +17,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsCompositionsStatusManagerService,
     HsCompositionsStatusManagerMickaJointService,
   ],
-  entryComponents: [],
 })
 export class HsCompositionsEndpointsModule {}

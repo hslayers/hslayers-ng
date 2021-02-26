@@ -14,6 +14,5 @@ import {HsMapService} from './map.service';
   imports: [CommonModule],
   exports: [HsMapComponent],
   providers: [HsMapService],
-  entryComponents: [HsMapComponent],
 })
 export class HsMapModule {}

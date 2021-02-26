@@ -29,6 +29,5 @@ import {HsNestedLayersTableComponent} from './nested-layers-table.component';
     HsAddDataCommonVectorFileUploadDirective,
   ],
   providers: [],
-  entryComponents: [HsGetCapabilitiesErrorComponent],
 })
 export class HsAddDataCommonModule {}

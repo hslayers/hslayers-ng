@@ -37,14 +37,5 @@ import {TranslateModule} from '@ngx-translate/core';
   ],
   exports: [HsCompositionsComponent],
   providers: [HsCompositionsService, HsCompositionsCatalogueService],
-  entryComponents: [
-    HsCompositionsComponent,
-    HsCompositionsOverwriteDialogComponent,
-    HsCompositionsWarningDialogComponent,
-    HsCompositionsDeleteDialogComponent,
-    HsCompositionsShareDialogComponent,
-    HsCompositionsInfoDialogComponent,
-    HsCompostionsListItemComponent,
-  ],
 })
 export class HsCompositionsModule {}

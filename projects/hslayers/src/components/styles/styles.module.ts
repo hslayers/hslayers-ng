@@ -26,6 +26,5 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   exports: [HsStylerComponent, HsStylerColorComponent],
   providers: [HsStylerService, HsStylerColorService],
-  entryComponents: [HsStylerComponent, HsStylerColorComponent],
 })
 export class HsStylerModule {}

@@ -8,7 +8,6 @@ import {HsUiExtensionsRecursiveDd} from './recursive-dd.component';
   declarations: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
   imports: [CommonModule],
   providers: [EndpointsWithDatasourcesPipe],
-  entryComponents: [HsUiExtensionsRecursiveDd],
   exports: [HsUiExtensionsRecursiveDd, EndpointsWithDatasourcesPipe],
 })
 export class HsUiExtensionsModule {}

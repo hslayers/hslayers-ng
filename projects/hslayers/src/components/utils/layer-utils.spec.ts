@@ -81,7 +81,7 @@ describe('HsLayerUtilsService', () => {
         },
       ],
     });
-    hsLayerUtils = TestBed.get(HsLayerUtilsService);
+    hsLayerUtils = TestBed.inject(HsLayerUtilsService);
   });
 
   it('check if layer is clustered', () => {

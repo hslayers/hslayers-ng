@@ -35,6 +35,5 @@ import {HsLogModule} from 'hslayers-ng';
     HsSensorsUnitListItemComponent,
   ],
   providers: [HsSensorsService, HsSensorsUnitDialogService],
-  entryComponents: [HsSensorsComponent, HsSensorsUnitDialogComponent],
 })
 export class HsSensorsModule {}

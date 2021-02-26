@@ -22,6 +22,5 @@ import {TranslateModule} from '@ngx-translate/core';
   imports: [CommonModule, HsPanelHelpersModule, TranslateModule],
   exports: [HsLegendComponent, HsLegendLayerComponent],
   providers: [HsLegendService],
-  entryComponents: [HsLegendComponent, HsLegendLayerComponent],
 })
 export class HsLegendModule {}

@@ -16,6 +16,5 @@ import {TranslateModule} from '@ngx-translate/core';
   imports: [FormsModule, CommonModule, TranslateModule, HsPanelHelpersModule],
   exports: [HsTripPlannerComponent],
   providers: [HsTripPlannerService],
-  entryComponents: [HsTripPlannerComponent],
 })
 export class HsTripPlannerModule {}

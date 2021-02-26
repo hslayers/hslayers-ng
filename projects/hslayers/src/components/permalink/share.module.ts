@@ -28,6 +28,5 @@ import {WINDOW_PROVIDERS} from '../utils/window';
     {provide: APP_BASE_HREF, useValue: '/'},
     WINDOW_PROVIDERS,
   ],
-  entryComponents: [HsShareComponent],
 })
 export class HsShareModule {}

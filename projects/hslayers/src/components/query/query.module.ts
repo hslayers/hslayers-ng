@@ -38,6 +38,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsQueryWmsService,
     HsQueryWmtsService,
   ],
-  entryComponents: [HsQueryComponent, HsQueryFeaturePopupComponent],
 })
 export class HsQueryModule {}

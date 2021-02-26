@@ -67,7 +67,7 @@ describe('HsLegendLayerComponent', () => {
     parentFixture.detectChanges();
     fixture = TestBed.createComponent(HsLegendLayerComponent);
     component = fixture.componentInstance;
-    service = TestBed.get(HsLegendService);
+    service = TestBed.inject(HsLegendService);
   });
   it('should create', () => {
     expect(parentComponent).toBeTruthy();

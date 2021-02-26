@@ -10,6 +10,5 @@ import {TranslateModule} from '@ngx-translate/core';
   imports: [CommonModule, TranslateModule],
   exports: [HsLaymanLoginComponent, HsLaymanCurrentUserComponent],
   providers: [HsCommonLaymanService],
-  entryComponents: [HsLaymanLoginComponent, HsLaymanCurrentUserComponent],
 })
 export class HsLaymanModule {}

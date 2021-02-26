@@ -129,7 +129,7 @@ describe('HsStyler', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);
-    service = TestBed.get(HsStylerService);
+    service = TestBed.inject(HsStylerService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     service.layer = layer;

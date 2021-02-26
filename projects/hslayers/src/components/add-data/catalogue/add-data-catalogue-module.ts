@@ -44,10 +44,5 @@ import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
     HsAddDataCatalogueService,
     HsAddDataMetadataService,
   ],
-  entryComponents: [
-    HsAddDataCatalogueComponent,
-    HsAddDataListItemComponent,
-    HsAddDataMetadataDialogComponent,
-  ],
 })
 export class HsAddDataCatalogueModule {}

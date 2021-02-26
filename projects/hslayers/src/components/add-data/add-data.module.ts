@@ -28,6 +28,5 @@ import {HsAddDataUrlModule} from './url/add-data-url.module';
   ],
   exports: [HsAddDataComponent],
   providers: [HsAddDataService],
-  entryComponents: [HsAddDataComponent],
 })
 export class HsAddDataModule {}

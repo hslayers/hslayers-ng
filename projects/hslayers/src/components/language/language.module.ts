@@ -12,6 +12,5 @@ import {TranslateModule, TranslateStore} from '@ngx-translate/core';
   imports: [FormsModule, CommonModule, TranslateModule, HsPanelHelpersModule],
   exports: [HsLanguageComponent],
   providers: [HsLanguageService, TranslateStore],
-  entryComponents: [HsLanguageComponent],
 })
 export class HsLanguageModule {}

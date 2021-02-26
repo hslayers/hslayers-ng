@@ -33,6 +33,5 @@ import {TranslateModule} from '@ngx-translate/core';
     HsFeatureFilterPipe,
   ],
   providers: [HsFeatureTableService],
-  entryComponents: [HsFeatureTableComponent, HsLayerFeaturesComponent],
 })
 export class HsFeatureTableModule {}
