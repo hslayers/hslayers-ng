@@ -53,7 +53,10 @@ export class HsQueryComponent {
     this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
       this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
         this.popup.hide();
-        if (this.HsQueryBaseService.currentPanelQueryable()) {
+        if (
+          this.HsQueryBaseService.currentPanelQueryable() &&
+          this.HsLayoutService.mainpanel != 'draw'
+        ) {
           this.HsLayoutService.setMainPanel('info');
         }
       });
