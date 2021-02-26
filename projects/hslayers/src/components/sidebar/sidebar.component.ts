@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/require-returns */
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
