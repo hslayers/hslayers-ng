@@ -358,7 +358,7 @@ export default function (
             }
           }
           if (src.getProjection()) {
-            json.projection = src.getProjection().getCode().toLowerCase();
+            json.projection = src.getProjection().getCode();
           }
           json.params = src.getParams();
           json.ratio = src.get('ratio') || src.ratio_;
