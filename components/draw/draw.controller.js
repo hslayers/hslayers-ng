@@ -28,7 +28,8 @@ export default function (
   gettext,
   HsQueryBaseService,
   HsAddLayersVectorService,
-  HsMapService
+  HsMapService,
+  $timeout
 ) {
   'ngInject';
   angular.extend($scope, {
@@ -199,9 +200,11 @@ export default function (
      */
     removeLayer() {
       HsDrawService.removeLayer();
-      if (!$scope.$$phase) {
-        $scope.$digest();
-      }
+      $timeout(() => {
+        if (!$scope.$$phase) {
+          $scope.$digest();
+        }
+      }, 500);
     },
   });
 
