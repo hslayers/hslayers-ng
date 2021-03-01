@@ -15,7 +15,6 @@ import {HsShareComponent} from './share.component';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
 import {TranslateModule} from '@ngx-translate/core';
-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsShareComponent],
