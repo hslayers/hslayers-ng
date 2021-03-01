@@ -72,7 +72,9 @@ export default function (
           : undefined,
         params: params,
         crossOrigin: 'anonymous',
-        projection: lyr_def.projection,
+        projection: lyr_def.projection
+          ? lyr_def.projection.toUpperCase() //backwards compatibility for layers with EPSG in lowerCase
+          : lyr_def.projection,
         ratio: lyr_def.ratio,
       });
       const new_layer = new layer_class({
