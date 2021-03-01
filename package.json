@@ -33,7 +33,7 @@
     "@ngx-translate/http-loader": "^5.0.0",
     "@types/cesium": "^1.67.12",
     "bootstrap": "^4.6.0",
-    "cesium": "^1.78.0",
+    "cesium": "^1.79.0",
     "deepmerge": "^4.2.2",
     "moment": "^2.29.1",
     "moment-interval": "^0.2.1",
