@@ -9,7 +9,7 @@ export default {
     HsDrawService,
     HsMapService,
     HsCommonEndpointsService,
-    $element,
+    HsLaymanService
   ) {
     'ngInject';
     this.modalVisible = true;
@@ -74,7 +74,7 @@ export default {
         vm.layer.getSource().forEachFeature((f) => {
           f.setProperties(dic);
         });
-
+        vm.layer.set('name', HsLaymanService.getLayerName(vm.layer))
         HsDrawService.changeDrawSource();
         HsDrawService.addDrawLayer(vm.layer);
         HsDrawService.fillDrawableLayers();
