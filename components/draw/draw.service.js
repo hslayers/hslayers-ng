@@ -502,5 +502,10 @@ export default function (
       me.selectedFeatures.remove(feature);
     }
   );
+
+  const unregisterAuthChange = $rootScope.$on('authChange', (endpoint) => {
+    me.fillDrawableLayers();
+  });
+
   return me;
 }
