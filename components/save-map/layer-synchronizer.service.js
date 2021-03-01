@@ -126,8 +126,6 @@ export default function (
      * @param {Ol.source} source Openlayers VectorSource to store features in
      */
     async pull(layer, source) {
-      console.log(layer);
-      console.log;
       layer.set('events-suspended', (layer.get('events-suspended') || 0) + 1);
       const laymanEndpoint = me.findLaymanForWfsLayer(layer);
       if (laymanEndpoint) {

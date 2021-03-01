@@ -108,7 +108,6 @@ export default function (
       }
       const drawLayer = new VectorLayer({
         title: tmpTitle,
-        name: tmpTitle,
         source: tmpSource,
         show_in_manager: true,
         visible: true,
