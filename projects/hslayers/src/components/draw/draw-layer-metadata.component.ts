@@ -8,9 +8,11 @@ import {
   getPath,
   getTitle,
   setEditor,
+  setName,
   setPath,
   setTitle,
 } from '../../common/layer-extensions';
+import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
@@ -53,6 +55,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
   confirm(): void {
     const dic = {};
 
+    setName(this.layer, getLaymanFriendlyLayerName(getTitle(this.layer)));
     const tmpLayer = this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
     if (tmpLayer) {
       this.HsMapService.map.removeLayer(tmpLayer);
