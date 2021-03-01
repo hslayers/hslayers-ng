@@ -15,7 +15,6 @@ import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLayerUtilsServiceMock} from './layer-utils.service.mock';
 import {HsLogService} from './../../common/log/log.service';
 import {HsUtilsService} from './utils.service';
-import {WINDOW_PROVIDERS} from './window';
 
 class EmptyMock {
   constructor() {}
@@ -37,7 +36,6 @@ describe('HsUtilsService', () => {
       providers: [
         HsUtilsService,
         HsConfig,
-        WINDOW_PROVIDERS[0],
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
 
         {provide: HsLogService, userValue: new EmptyMock()},
