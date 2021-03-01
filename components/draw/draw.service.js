@@ -389,7 +389,9 @@ export default function (
           me.tmpDrawLayer = false;
         }
         me.selectedLayer = null;
-        me.fillDrawableLayers();
+        $timeout(() => {
+          me.fillDrawableLayers();
+        }, 500);
       }
     },
     /**
