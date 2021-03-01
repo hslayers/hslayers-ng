@@ -1,16 +1,16 @@
-import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
+import Feature from 'ol/Feature';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Observable, Subscription, of} from 'rxjs';
+import {catchError, map, timeout} from 'rxjs/operators';
+import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
-import Feature from 'ol/Feature';
 import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsEndpoint} from './../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {Observable, Subscription, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
-import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
 @Injectable({
   providedIn: 'root',
