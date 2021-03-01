@@ -5,7 +5,7 @@
     "find-circular": "npx madge --circular --extensions ts ./"
   },
   "peerDependencies": {
-    "ol": "^6.5.0",
+    "ol": "^6.0.0",
     "@angular/common": "^11.2.3",
     "@angular/compiler": "^11.2.3",
     "@angular/core": "^11.2.3",
@@ -13,14 +13,14 @@
     "@angular/localize": "^11.2.3",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
-    "moment": "^2.29.1",
+    "moment": "^2.24.0",
     "moment-interval": "^0.2.1",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^4.0.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.7.0",
-    "rxjs": "^6.6.6",
-    "vega": "5.19.1",
-    "vega-embed": "6.15.2",
+    "rxjs": "^6.0.0",
+    "vega": "5.0.0",
+    "vega-embed": "6.0.0",
     "vega-lite": "^5.0.0"
   },
   "devDependencies": {
