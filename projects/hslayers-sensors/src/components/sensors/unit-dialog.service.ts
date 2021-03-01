@@ -112,7 +112,7 @@ export class HsSensorsUnitDialogService {
    */
   getObservationHistory(unit, interval) {
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const url = this.HsUtilsService.proxify(
         `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`
       );
