@@ -121,7 +121,10 @@ export class HsConfig {
   constructor() {}
 
   update?(newConfig: HsConfig): void {
+    Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    delete newConfig.componentsEnabled;
     Object.assign(this, newConfig);
+
     this.configChanges.next(this);
   }
 }
