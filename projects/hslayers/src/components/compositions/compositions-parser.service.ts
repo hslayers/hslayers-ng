@@ -77,7 +77,7 @@ export class HsCompositionsParserService {
   ): Promise<void> {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
-    url = this.HsUtilsService.proxify(url);
+    //url = this.HsUtilsService.proxify(url);
     let options;
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
