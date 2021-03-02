@@ -31,7 +31,7 @@ export class HsCompositionsLaymanService {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
     endpoint.listLoading = this.$http
-      .get(`${endpoint.url}/rest/${endpoint.user}/maps`)
+      .get(`${endpoint.url}/rest/${endpoint.user}/maps`, { withCredentials: true })
       .pipe(
         timeout(5000),
         map((response: any) => {
@@ -105,7 +105,6 @@ export class HsCompositionsLaymanService {
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
     let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-    url = this.HsUtilsService.proxify(url);
     await this.$http.delete(url).toPromise();
     this.HsEventBusService.compositionDeletes.next(composition);
   }

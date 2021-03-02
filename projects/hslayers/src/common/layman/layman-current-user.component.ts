@@ -32,12 +32,13 @@ export class HsLaymanCurrentUserComponent {
     this.HsCommonLaymanService.logout(this.endpoint);
   }
 
-  protocolsMatch() {
-    return location.protocol.slice(0, -1) == this.endpoint.liferayProtocol;
+  sameDomain() {
+    let endpointUrl = new URL(this.endpoint.url);
+    return (location.protocol == endpointUrl.protocol && location.host == endpointUrl.host);
   }
 
   authUrl() {
-    return this.endpoint.url + '/authn/oauth2-liferay/login';
+    return this.endpoint.url + '/login';
   }
 
   /**
@@ -71,7 +72,7 @@ export class HsLaymanCurrentUserComponent {
 
   login(): void {
     this.monitorUser();
-    if (!this.protocolsMatch()) {
+    if (!this.sameDomain()) {
       return;
     }
     this.HsDialogContainerService.create(
