@@ -15,18 +15,19 @@ export class HsConfirmDialog {
    * @returns {Promise} Promise which returns 'yes' / 'no' as
    * an argument based on which button the user clicked
    */
-  show(message, title) {
+  show(message, title, note = '') {
     return new Promise((resolve, reject) => {
       const scope = this.$rootScope.$new();
       Object.assign(scope, {
         title,
         message,
+        note,
         callback: function (result) {
           resolve(result);
         },
       });
       const el = angular.element(
-        '<hs.confirm-dialog title="title" message="message" callback="callback"></hs.confirm-dialog>'
+        '<hs.confirm-dialog title="title" message="message" note="note" callback="callback"></hs.confirm-dialog>'
       );
       this.HsLayoutService.contentWrapper
         .querySelector('.hs-dialog-area')

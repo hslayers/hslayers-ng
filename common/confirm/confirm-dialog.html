@@ -8,7 +8,8 @@
                 <button type="button" ng-click="$ctrl.modalVisible = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" translate>Close</span></button>
             </div>
             <div translate class="modal-body" style="overflow-y:auto">
-                {{$ctrl.message | translate}}
+                <p class="font-weight-bold h6">{{$ctrl.message | translate}}</p>
+                <p class="h6 small">{{$ctrl.note | translate}}</p>
             </div>
             <div class="modal-footer" >
                 <button type="button" class="btn btn-primary" ng-click="$ctrl.yes()" title="Yes" data-dismiss="modal">{{'Yes' | translate}}</button>
