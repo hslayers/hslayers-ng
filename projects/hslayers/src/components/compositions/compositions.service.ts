@@ -259,7 +259,7 @@ export class HsCompositionsService {
       }
       const layers = this.HsCompositionsParserService.jsonToLayers(parsed);
       for (let i = 0; i < layers.length; i++) {
-        this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
+        this.HsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }
       localStorage.removeItem('hs_layers');
     }
