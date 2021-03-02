@@ -33,5 +33,5 @@ require('http')
     }
   })
   .listen(port, host, () => {
-    console.log('Running proxy on ' + host + ':' + port);
+    console.log('HSLayers proxy listening on ' + host + ':' + port);
   });
