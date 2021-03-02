@@ -33,6 +33,9 @@ import {
   getSubLayers,
   getTitle,
 } from '../../common/layer-extensions';
+
+const LCLSTORAGE_EXPIRE = 5000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -545,6 +548,7 @@ export class HsSaveMapService {
 
   save2storage(evt): void {
     const data = {
+      expires: new Date().getTime() + LCLSTORAGE_EXPIRE,
       layers: this.HsMapService.map
         .getLayers()
         .getArray()

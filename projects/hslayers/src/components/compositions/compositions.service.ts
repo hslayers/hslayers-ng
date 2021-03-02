@@ -45,7 +45,9 @@ export class HsCompositionsService {
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsEventBusService: HsEventBusService
   ) {
-    this.tryParseCompositionFromCookie();
+    setTimeout(() => {
+      this.tryParseCompositionFromCookie();
+    }, 500);
     this.tryParseCompositionFromUrlParam();
     if (HsPermalinkUrlService.getParamValue('permalink')) {
       this.parsePermalinkLayers();
@@ -251,9 +253,11 @@ export class HsCompositionsService {
       if (!data) {
         return;
       }
-      const layers = this.HsCompositionsParserService.jsonToLayers(
-        JSON.parse(data)
-      );
+      const parsed = JSON.parse(data);
+      if (parsed.expires && parsed.expires < new Date().getTime()) {
+        return;
+      }
+      const layers = this.HsCompositionsParserService.jsonToLayers(parsed);
       for (let i = 0; i < layers.length; i++) {
         this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
