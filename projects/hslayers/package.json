@@ -3,7 +3,7 @@
   "version": "3.0.1-rc.0",
   "scripts": {},
   "peerDependencies": {
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.1.0",
     "ol": "^6.0.0",
     "@angular/common": "^11.2.3",
     "@angular/compiler": "^11.2.3",
