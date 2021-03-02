@@ -34,9 +34,8 @@ export class HsToolbarComponent {
   /**
    * Change/read collapsed setting
    *
-   * @memberof hs.toolbar.controller
    * @function collapsed
-   * @returns {boolean} Collapsed state
+   * @return {boolean} Collapsed state
    * @param {boolean} is Value to set collapsed state to
    */
   isCollapsed(is) {
@@ -46,7 +45,6 @@ export class HsToolbarComponent {
     return this.collapsed;
   }
   // $scope.$emit('scope_loaded', 'Toolbar');
-
   toggleTheme() {
     if (this.HsThemeService.isDarkTheme()) {
       this.HsThemeService.setLightTheme();

@@ -66,7 +66,6 @@ export class HsLayoutComponent implements AfterViewInit {
       );
     }
     //this.$emit('scope_loaded', 'Layout');
-
     switch (this.HsConfig.theme) {
       case 'dark':
         this.HsThemeService.setDarkTheme();
@@ -81,7 +80,6 @@ export class HsLayoutComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement.parentElement;
-
     if (window.innerWidth < 767) {
       document.body.style.margin = '0px';
     }
