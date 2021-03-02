@@ -2,3 +2,4 @@
 
 require('./src/proxy');
 require('./src/share');
+require('./src/layman');
