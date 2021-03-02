@@ -7,6 +7,8 @@ import {
   getUnitId,
   setFeatureName,
   setUnitId,
+  HsSidebarService,
+  HsLanguageService,
 } from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
@@ -79,8 +81,20 @@ export class HsSensorsService {
     public HsDialogContainerService: HsDialogContainerService,
     private http: HttpClient,
     public HsEventBusService: HsEventBusService,
-    public HsSensorsUnitDialogService: HsSensorsUnitDialogService
+    public HsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    private HsSidebarService: HsSidebarService,
+    private HsLanguageService: HsLanguageService
   ) {
+    this.HsSidebarService.buttons.push({
+      panel: 'sensors',
+      module: 'hs.sensors',
+      order: 6,
+      fits: true,
+      title: () =>
+        this.HsLanguageService.getTranslation('PANEL_HEADER.SENSORS'),
+      description: '',
+      icon: 'icon-weightscale',
+    });
     this.setEndpoint();
     this.HsConfig.configChanges.subscribe(() => {
       if (this.HsConfig.senslog != this.endpoint) {

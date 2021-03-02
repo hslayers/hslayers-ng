@@ -118,29 +118,6 @@ export class HsSidebarService {
         icon: 'icon-database',
       },
       {
-        panel: 'feature_crossfilter',
-        module: 'hs.feature_crossfilter.controller',
-        order: 5,
-        fits: true,
-        title: () =>
-          this.HsLanguageService.getTranslation('PANEL_HEADER.FILTERFEATURES'),
-        description: () =>
-          this.HsLanguageService.getTranslation(
-            'SIDEBAR.descriptions.FILTERFEATURES'
-          ),
-        icon: 'icon-analytics-piechart',
-      },
-      {
-        panel: 'sensors',
-        module: 'hs.sensors',
-        order: 6,
-        fits: true,
-        title: () =>
-          this.HsLanguageService.getTranslation('PANEL_HEADER.SENSORS'),
-        description: '',
-        icon: 'icon-weightscale',
-      },
-      {
         panel: 'measure',
         module: 'hs.measure',
         order: 2,
@@ -295,10 +272,11 @@ export class HsSidebarService {
     for (const button of this.importantButtons) {
       button.fits = this.fitsSidebar(button);
     }
-    if (!this.unimportantExist)
-    this.HsLayoutService.minisidebar = this.importantButtons.some(
-      (b) => b.fits == false
-    );
+    if (!this.unimportantExist) {
+      this.HsLayoutService.minisidebar = this.importantButtons.some(
+        (b) => b.fits == false
+      );
+    }
   }
 
   getButtonTitle(button): any {
