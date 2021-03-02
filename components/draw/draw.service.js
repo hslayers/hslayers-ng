@@ -378,7 +378,10 @@ export default function (
     async removeLayer() {
       const confirmed = await HsConfirmDialogService.show(
         gettext('Really delete selected draw layer?'),
-        gettext('Confirm delete')
+        gettext('Confirm delete'),
+        gettext(
+          "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel."
+        )
       );
       if (confirmed == 'yes') {
         HsMapService.map.removeLayer(me.selectedLayer);

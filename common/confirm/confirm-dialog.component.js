@@ -4,6 +4,7 @@ export default {
     message: '<',
     title: '<',
     callback: '<',
+    note: '<'
   },
   controller: function ($scope) {
     'ngInject';

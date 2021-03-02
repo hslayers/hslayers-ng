@@ -1614,6 +1614,10 @@ msgstr "Aktivujte kreslení výběrem typu prvku"
 msgid "Really delete selected draw layer?"
 msgstr "Opravdu chcete odstranit vybranou kreslicí vrstvu?"
 
+#: components/draw/draw.controller.js:199
+msgid "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel."
+msgstr "*Vrstva bude kompletně vymazána. V případe, že ji chcete vymazat jenom z aktuální kompozice (ne i z databáze) můžete tak udelat v panelu 'Správce vrstev'"
+
 #: common/layman/layman-current-user.html:2
 msgid "Log in"
 msgstr "Přihlásit se"
