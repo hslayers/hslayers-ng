@@ -247,9 +247,9 @@ export default function (
    * @param {boolean} changed - Layer or sublayer of service to be added to map
    */
   me.checkboxChange = function (changed) {
-    me.checkedLayers[changed.name] = changed.checked;
-    me.checked = Object.keys(me.checkedLayers).some((k) => {
-      return me.checkedLayers[k] == true;
+    me.checkedLayers[changed.Name] = changed.checked;
+    me.checked = Object.values(me.checkedLayers).some((value) => {
+      return value == true;
     });
   };
   /**

@@ -50,6 +50,12 @@ export default {
       $scope.setUrlAndConnect(url, layer);
     });
 
+    $scope.checked = function (services) {
+      $scope.hasChecked = services.some((service) => {
+        return service.checked;
+      });
+    };
+
     /**
      * @function selectAllLayers
      * @memberOf hs.addLayersArcgis.controller

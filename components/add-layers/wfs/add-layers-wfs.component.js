@@ -168,12 +168,9 @@ export default {
       return;
     };
     $scope.checked = function () {
-      for (const layer of HsAddLayersWfsService.services) {
-        if (layer.checked) {
-          return true;
-        }
-      }
-      return false;
+      return HsAddLayersWfsService.services.some((service) => {
+        return service.checked;
+      });
     };
     $scope.changed = function () {
       $scope.isChecked = $scope.checked();

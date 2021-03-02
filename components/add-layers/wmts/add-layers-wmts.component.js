@@ -142,12 +142,9 @@ export default {
     });
 
     $scope.checked = function () {
-      for (const layer of $scope.services) {
-        if (layer.checked) {
-          return true;
-        }
-      }
-      return false;
+      return $scope.services.some((service) => {
+        return service.checked;
+      });
     };
     $scope.changed = function () {
       $scope.isChecked = $scope.checked();
