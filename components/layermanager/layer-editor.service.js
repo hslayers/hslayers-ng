@@ -123,7 +123,7 @@ export default function (
    */
   function fitIfExtentSet(extent, layer) {
     if (extent !== null) {
-      layer.set('BoundingBox', extent);
+      // layer.set('BoundingBox', extent);
       HsMapService.map.getView().fit(extent, HsMapService.map.getSize());
     }
   }
@@ -156,7 +156,7 @@ export default function (
       angular.isNumber(bbox[0])
     ) {
       extent = transformToCurrentProj(bbox);
-      if (!bbox.some(isNaN)) {
+      if (bbox.some(isNaN)) {
         layer.unset('BoundingBox');
         extent = layer.getSource().getExtent();
       }
