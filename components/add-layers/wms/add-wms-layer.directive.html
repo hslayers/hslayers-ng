@@ -96,7 +96,13 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary btn-sm" style="position: sticky;
-        bottom: 1.5rem; float: right;" ng-click="addLayers(HsAddLayersWmsAddLayerService.checked)"><i class="icon-plus"></i></button>
+        <!-- <button class="btn btn-primary btn-sm" style="position: sticky;
+        bottom: 1.5rem; float: right;"  ng-disabled="!HsAddLayersWmsAddLayerService.checked" ng-click="addLayers(HsAddLayersWmsAddLayerService.checked)" translate>Add to map</i></button> -->
+        <div class="d-flex justify-content-between w-100 bg-white pb-2" style="position: sticky;
+        bottom: 0; float: right;">
+            <button class="btn btn-primary" ng-click="selectAllLayers()" translate>Select All Layers</button>
+            <button class="btn btn-primary pull-right"  ng-click="addLayers(HsAddLayersWmsAddLayerService.checked)"
+                title="{{'Add to map'|translate}}" ng-disabled="!HsAddLayersWmsAddLayerService.checked" translate>Add to map</i></button>
+        </div>
     </div>
 </form>

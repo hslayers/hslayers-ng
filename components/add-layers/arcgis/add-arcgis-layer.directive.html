@@ -58,13 +58,11 @@
             </thead>
             <tbody ng-repeat="service in data.services">
                 <tr>
-                    <td><input type="checkbox"ng-model="service.checked" /></td>
+                    <td><input type="checkbox" ng-model="service.checked" ng-change="checked(data.services)"/></td>
                     <td>{{service.name}}</td>
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary pull-right" style="position: fixed;
-        margin-left: 570px; bottom:30px;" ng-click="addLayers(true)"><i
-            class="icon-plus"></i></button>
+        <button class="btn btn-primary mb-2 float-right" ng-disabled="!hasChecked" ng-click="addLayers(true)" translate>Add to map</button>
     </div>
 </form>

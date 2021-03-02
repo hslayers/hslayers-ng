@@ -80,13 +80,14 @@ export default {
        * @param layer
        */
       function recurse(layer) {
-        layer.checked = true;
+        layer.checked = !layer.checked;
+        $scope.checkboxChange(layer)
 
         angular.forEach(layer.Layer, (sublayer) => {
           recurse(sublayer);
         });
       }
-      angular.forEach($scope.data.services.Layer, (layer) => {
+      angular.forEach($scope.data.services, (layer) => {
         recurse(layer);
       });
     };
