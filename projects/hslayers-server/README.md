@@ -50,6 +50,8 @@ Liferay portal is being currently used as an identity provider. Following env va
 `OAUTH2_CALLBACK_URL=http://localhost:8087/callback` - OAuth2 successful authentication callback endpoint (served by the Layman Auth Client)
 `CORS_WHITELIST=["http://localhost:4200", "https://hub.lesprojekt.cz"]` - origins allowed to use the Layman Auth Client for authentication
 
+The client can be configured for any Layman instance. If your application runs in the same domain as the client, OAuth2 identity provider authorization form will appear in modal window.
+If the application runs in different domain (or localhost), authorization form will open in a new window.
 
 ## Installation
 
