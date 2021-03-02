@@ -49,7 +49,6 @@ export class HsCommonEndpointsService {
             itemsPerPage: this.getItemsPerPageConfig(ds),
           },
           user: ds.user,
-          liferayProtocol: ds.liferayProtocol,
           originalConfiguredUser: ds.user,
           getCurrentUserIfNeeded: async () =>
             await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp),

@@ -35,11 +35,11 @@ export class HsLaymanBrowserService {
   queryCatalog(endpoint: HsEndpoint, textFilter?: string): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
-    url = this.hsUtilsService.proxify(url);
     endpoint.datasourcePaging.loaded = false;
 
     endpoint.httpCall = this.http
       .get(url, {
+        withCredentials: true,
         responseType: 'json',
       })
       .pipe(
@@ -139,13 +139,13 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor
   ): Promise<HsAddDataLayerDescriptor> {
     let url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
-    url = this.hsUtilsService.proxify(url);
     try {
       return await this.http
         .get(url, {
           //timeout: dataset.canceler.promise,
           //dataset,
           responseType: 'json',
+          withCredentials: true
         })
         .toPromise()
         .then((data: any) => {

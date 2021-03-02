@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -18,7 +18,7 @@ export class HsCommonLaymanService {
   async detectAuthChange(endpoint): Promise<boolean> {
     const url = `${endpoint.url}/rest/current-user`;
     try {
-      const res: any = await this.$http.get(url).toPromise();
+      const res: any = await this.$http.get(url, { withCredentials: true }).toPromise();
 
       let somethingChanged = false;
       if (res.username) {

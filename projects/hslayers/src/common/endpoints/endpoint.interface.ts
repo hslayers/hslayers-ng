@@ -18,7 +18,6 @@ export interface HsEndpoint {
   language?;
   listLoading?;
   layers?: HsAddDataLayerDescriptor[];
-  liferayProtocol?;
   originalConfiguredUser?;
   user?;
   code_list_url?: string;
