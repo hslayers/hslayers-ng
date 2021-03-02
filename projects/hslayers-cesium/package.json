@@ -4,7 +4,7 @@
   "scripts": {},
   "peerDependencies": {
     "@types/cesium": "^1.67.12",
-    "cesium": "^1.77.0",
+    "cesium": "^1.65.0",
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
     "@angular/forms": "^9.0.0",
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "ol": "^6.5.0",
-    "cesium": "^1.78.0",
+    "cesium": "^1.79.1",
     "hslayers-ng": "^3.0.1-rc.0"
   },
   "dependencies": {
