@@ -1,4 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
+
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -6,7 +8,6 @@ import {HsHistoryListService} from '../../../../common/history-list/history-list
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'hs-add-data-url-wms',
@@ -21,6 +22,9 @@ export class HsAddDataWmsComponent implements OnDestroy {
   url: string;
   layerToSelect: any;
   owsConnectingSubscription: Subscription;
+  checkedLayers = {};
+  hasChecked = false;
+
   constructor(
     public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
@@ -57,8 +61,17 @@ export class HsAddDataWmsComponent implements OnDestroy {
     this.HsAddDataUrlWmsService.showDetails = false;
   }
 
+  searchForChecked(service) {
+    this.checkedLayers[service.Name] = service.checked;
+    this.hasChecked = Object.values(this.checkedLayers).some(
+      (value) => value === true
+    );
+  }
+
   connect = (layerToSelect: string): void => {
     try {
+      this.hasChecked = false;
+      this.checkedLayers = {};
       this.hsHistoryListService.addSourceHistory(
         'wms',
         this.HsAddDataUrlWmsService.url

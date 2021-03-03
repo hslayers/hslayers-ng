@@ -68,7 +68,7 @@ export class HsAddDataUrlService {
     }
   }
 
-  scrollToLayer(name: string): void{
+  scrollToLayer(name: string): void {
     setTimeout(() => {
       const id = `#hs-add-layer-${name}`;
       const el = this.HsLayoutService.contentWrapper.querySelector(id);
@@ -76,5 +76,9 @@ export class HsAddDataUrlService {
         el.scrollIntoView();
       }
     }, 1000);
+  }
+
+  searchForChecked(services: Array<any>): boolean {
+    return services.some((service) => service.checked);
   }
 }

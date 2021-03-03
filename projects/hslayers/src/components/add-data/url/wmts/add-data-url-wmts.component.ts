@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -18,7 +19,7 @@ import {Subscription} from 'rxjs';
 })
 export class HsAddDataWmtsComponent {
   owsConnectingSubscription: Subscription;
-  isChecked: boolean;
+  hasChecked: boolean;
 
   constructor(
     public HsMapService: HsMapService,
@@ -28,9 +29,9 @@ export class HsAddDataWmtsComponent {
     public HsLogService: HsLogService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
-    public HsAddDataUrlWmtsService: HsAddDataUrlWmtsService
+    public HsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
-
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription = this.HsEventBusService.owsConnecting.subscribe(
       ({type, uri, layer}) => {
@@ -45,7 +46,8 @@ export class HsAddDataWmtsComponent {
     this.owsConnectingSubscription.unsubscribe();
   }
 
-  connect = (layerToSelect): void => {
+  connect = (layerToSelect: string): void => {
+    this.hasChecked = false;
     this.HsAddDataUrlWmtsService.layerToSelect = layerToSelect;
 
     this.HsAddDataUrlWmtsService.layersLoading = true;
@@ -53,7 +55,6 @@ export class HsAddDataWmtsComponent {
       this.HsAddDataUrlWmtsService.url
     );
     this.HsAddDataUrlWmtsService.showDetails = true;
-
   };
 
   selectAllLayers(layers: any[]): void {
@@ -66,17 +67,10 @@ export class HsAddDataWmtsComponent {
     this.changed();
   }
 
-  private checked(): boolean {
-    for (const layer of this.HsAddDataUrlWmtsService.services) {
-      if (layer.checked) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   changed(): void {
-    this.isChecked = this.checked();
+    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+      this.HsAddDataUrlWmtsService.services
+    );
   }
 
   setUrlAndConnect(url: string, layer?: string): void {

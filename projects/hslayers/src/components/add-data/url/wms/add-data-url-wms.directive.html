@@ -88,7 +88,7 @@
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr>
-                    <td><input type="checkbox" [(ngModel)]="service.checked" name="service" /></td>
+                    <td><input type="checkbox" [(ngModel)]="service.checked" name="service" (change)="searchForChecked(service)"/></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
@@ -103,7 +103,7 @@
                 </tr>
                 <tr [hidden]="!hasNestedLayers(service)">
                     <td colspan="4" style="padding-left: 1em">
-                        <hs-nested-layers-table [layers]="service.Layer"></hs-nested-layers-table>
+                        <hs-nested-layers-table [layers]="service.Layer" (layerChecked)="searchForChecked($event)"></hs-nested-layers-table> 
                     </td>
                 </tr>
             </tbody>
@@ -113,7 +113,7 @@
         <div class="w-100 d-flex justify-content-between pb-2" style="position: sticky;
         bottom: 0; background: var(--panel-wrapper-bg-color)">
             <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
-            <button class="btn btn-primary" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+            <button class="btn btn-primary" [disabled]="!hasChecked" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
         </div>
     </div>
 </form>

@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabilities.service';
 
 @Component({
   selector: 'hs-add-data-url-wfs',
@@ -14,7 +15,7 @@ export class HsAddDataWfsComponent {
   owsConnectingSubscription: Subscription;
 
   addAll: boolean;
-  isChecked: boolean;
+  hasChecked: boolean;
   loadingFeatures: boolean;
   title = ''; //FIXME: unused
 
@@ -22,7 +23,8 @@ export class HsAddDataWfsComponent {
     public HsAddDataWfsService: HsAddDataWfsService,
     public HsEventBusService: HsEventBusService,
     public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public HsUtilsService: HsUtilsService //used in template
+    public HsUtilsService: HsUtilsService, //used in template,
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription = this.HsEventBusService.owsConnecting.subscribe(
@@ -49,6 +51,7 @@ export class HsAddDataWfsComponent {
   }
 
   connect = (): void => {
+    this.hasChecked = false;
     this.HsWfsGetCapabilitiesService.requestGetCapabilities(
       this.HsAddDataWfsService.url
     );
@@ -93,16 +96,9 @@ export class HsAddDataWfsComponent {
     }
   }
 
-  checked(): boolean {
-    for (const layer of this.HsAddDataWfsService.services) {
-      if (layer.checked) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   changed(): void {
-    this.isChecked = this.checked();
+    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+      this.HsAddDataWfsService.services
+    );
   }
 }
