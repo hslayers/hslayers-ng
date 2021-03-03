@@ -472,16 +472,17 @@ export class HsDrawService {
    * @memberOf HsDrawController
    * @description Removes selected drawing layer from both Layermanager and Layman
    */
-  async removeLayer() {
+  async removeLayer(): Promise<void> {
+    const note = this.isAuthorized
+      ? this.HsLanguageService.getTranslation('DRAW.deleteNote')
+      : '';
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
         message: this.HsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer'
         ),
-        note: this.HsLanguageService.getTranslation(
-          'DRAW.deleteNote'
-        ),
+        note: note,
         title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
