@@ -83,7 +83,8 @@ export class HsLayerEditorService {
         url = layer.getSource().getUrl();
       }
       const capabilities_xml = await this.HsWmsGetCapabilitiesService.requestGetCapabilities(
-        url
+        url,
+        {castOwsCapabilitiesReceived: false}
       );
       const parser = new WMSCapabilities();
       const caps = parser.read(capabilities_xml);
