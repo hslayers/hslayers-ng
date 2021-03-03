@@ -45,6 +45,7 @@ export class HsAddDataCatalogueService {
   catalogQuery;
   endpointsWithDatasources: any[];
   matchedLayers: number;
+  extentChangeSuppressed = false;
 
   constructor(
     public hsConfig: HsConfig,
@@ -92,7 +93,8 @@ export class HsAddDataCatalogueService {
     this.hsEventBusService.mapExtentChanges.subscribe(
       this.hsUtilsService.debounce(
         (e) => {
-          if (!this.panelVisible()) {
+          if (!this.panelVisible() || this.extentChangeSuppressed) {
+            this.extentChangeSuppressed = false;
             return;
           }
           if (this.data.filterByExtent) {
@@ -110,6 +112,7 @@ export class HsAddDataCatalogueService {
     this.hsEventBusService.mainPanelChanges.subscribe(() => {
       if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
         this.reloadData();
+        this.extentChangeSuppressed = true;
       }
       this.calcExtentLayerVisibility();
     });

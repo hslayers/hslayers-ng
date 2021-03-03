@@ -60,6 +60,7 @@ export class HsCompositionsCatalogueService {
   loadCompositionsQuery: any;
   filteredEndpoints: HsEndpoint[];
   filtersActive = false;
+  extentChangeSuppressed = false;
   constructor(
     public HsMapService: HsMapService,
     public HsCompositionsService: HsCompositionsService,
@@ -83,6 +84,7 @@ export class HsCompositionsCatalogueService {
         this.HsLayoutService.mainpanel === 'composition'
       ) {
         this.loadFilteredCompositions();
+        this.extentChangeSuppressed = true;
       }
     });
     const extentChangeDebouncer = {};
@@ -90,9 +92,11 @@ export class HsCompositionsCatalogueService {
       HsUtilsService.debounce(
         () => {
           if (
-            this.HsLayoutService.mainpanel != 'composition_browser' &&
-            this.HsLayoutService.mainpanel != 'composition'
+            (this.HsLayoutService.mainpanel != 'composition_browser' &&
+              this.HsLayoutService.mainpanel != 'composition') ||
+            this.extentChangeSuppressed
           ) {
+            this.extentChangeSuppressed = false;
             return;
           }
           if (this.filterByExtent) {
