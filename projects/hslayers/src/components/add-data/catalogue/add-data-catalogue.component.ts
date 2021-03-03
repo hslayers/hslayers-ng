@@ -53,7 +53,7 @@ export class HsAddDataCatalogueComponent {
     this.loaderImage =
       this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
 
-    this.reload();
+    console.log('ts')
   }
 
   translateString(module: string, text: string): string {
@@ -108,7 +108,10 @@ export class HsAddDataCatalogueComponent {
   }
 
   nextPageAvailable(): boolean {
-   return this.HsAddDataCatalogueService.matchedLayers > this.HsAddDataCatalogueService.listNext;
+    return (
+      this.HsAddDataCatalogueService.matchedLayers >
+      this.HsAddDataCatalogueService.listNext
+    );
   }
 
   datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {
@@ -116,8 +119,5 @@ export class HsAddDataCatalogueComponent {
     if (endpoint) {
       this.HsAddDataCatalogueService.selectedEndpoint = endpoint;
     }
-  }
-  reload(): void {
-    this.HsAddDataCatalogueService.reloadData();
   }
 }

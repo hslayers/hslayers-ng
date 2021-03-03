@@ -119,6 +119,12 @@ export class HsAddDataCatalogueService {
         this.reloadData();
       }
     });
+
+    this.HsAddDataService.datasetSelected.subscribe(({type}) => {
+      if (type == 'catalogue' && this.panelVisible()) {
+        this.reloadData();
+      }
+    });
   }
 
   resetList(): void {

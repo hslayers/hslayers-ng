@@ -27,7 +27,6 @@ export class HsAddDataComponent {
     this.connectServiceFromUrlParam('wms');
     this.connectServiceFromUrlParam('wfs');
     this.connectServiceFromUrlParam('wmts');
-
   }
 
   datasetSelect(type: string): void {

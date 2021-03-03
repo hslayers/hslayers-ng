@@ -1,9 +1,12 @@
 import BaseLayer from 'ol/layer/Base';
+
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {getBase} from '../../common/layer-extensions';
+
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {getBase} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,8 @@ export class HsAddDataService {
   typeSelected: string;
   //Holds reference to data.url.component type selected
   urlType: string;
+  datasetSelected: Subject<{type: any}> = new Subject();
+
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
@@ -37,5 +42,6 @@ export class HsAddDataService {
 
   selectType(type: string): void {
     this.typeSelected = type;
+    this.datasetSelected.next({type: type});
   }
 }
