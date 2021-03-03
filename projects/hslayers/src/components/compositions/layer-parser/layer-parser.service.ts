@@ -120,7 +120,7 @@ export class HsCompositionsLayerParserService {
       styles: lyr_def.metadata ? lyr_def.metadata.styles : undefined,
       params: params,
       crossOrigin: 'anonymous',
-      projection: lyr_def.projection,
+      projection: lyr_def.projection?.toUpperCase(),
       ratio: lyr_def.ratio,
     });
     const new_layer = new layer_class({
@@ -178,7 +178,7 @@ export class HsCompositionsLayerParserService {
         : undefined,
       params: params,
       crossOrigin: 'anonymous',
-      projection: lyr_def.projection,
+      projection: lyr_def.projection?.toUpperCase(),
       ratio: lyr_def.ratio,
     });
     const new_layer = new layer_class({
@@ -230,7 +230,7 @@ export class HsCompositionsLayerParserService {
           ]
         : undefined,
       crossOrigin: 'anonymous',
-      projection: lyr_def.projection,
+      projection: lyr_def.projection?.toUpperCase(),
       wrapX: lyr_def.wrapX,
       //TODO Add the rest of parameters and describe in the composition schema
     });
@@ -284,7 +284,7 @@ export class HsCompositionsLayerParserService {
         : undefined,
       imageExtent: lyr_def.extent,
       crossOrigin: 'anonymous',
-      projection: lyr_def.projection,
+      projection: lyr_def.projection?.toUpperCase(),
       wrapX: lyr_def.wrapX,
       //TODO Add the rest of parameters and describe in the composition schema
     });
