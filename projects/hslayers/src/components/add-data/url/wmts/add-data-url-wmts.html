@@ -21,7 +21,7 @@
                 <div class="d-flex justify-content-between w-100" *ngIf="!HsAddDataUrlWmtsService.layersLoading">
                     <button class="btn btn-primary" (click)="selectAllLayers(HsAddDataUrlWmtsService.services)" >{{'ADDDATA.URL.selectAll' | translate}}</button>
                     <button class="btn btn-primary pull-right" (click)="addLayers(true)"
-                        title="{{'ADDLAYERS.WFS.addToMap'|translate}}" [disabled]="!isChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+                        title="{{'ADDLAYERS.WFS.addToMap'|translate}}" [disabled]="!hasChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
                 </div>
             </div>
         </li>

@@ -58,7 +58,7 @@
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr>
-                    <td><input type="checkbox" name="service" [(ngModel)]="service.checked" /></td>
+                    <td><input type="checkbox" name="service" (change)="changed()"[(ngModel)]="service.checked" /></td>
                     <td>{{service.name}}</td>
                 </tr>
             </tbody>
@@ -66,7 +66,7 @@
         <div class="w-100 d-flex justify-content-between bg-light pb-2" style="position: sticky;
         bottom: 0">
             <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
-            <button class="btn btn-primary" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+            <button class="btn btn-primary" [disabled]="!hasChecked" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
         </div>
     </div>
 </form>

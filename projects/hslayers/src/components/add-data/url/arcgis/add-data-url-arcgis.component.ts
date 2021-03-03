@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
+import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
@@ -17,12 +18,14 @@ export class HsAddDataArcGisComponent {
   error: any;
 
   owsConnectingSubscription: Subscription;
+  hasChecked: boolean;
 
   constructor(
     public HsAddDataArcGisService: HsAddDataArcGisService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
-    public hsHistoryListService: HsHistoryListService
+    public hsHistoryListService: HsHistoryListService,
+    public HsAddDataUrlService: HsAddDataUrlService
   ) {
     this.data = HsAddDataArcGisService.data;
 
@@ -40,11 +43,12 @@ export class HsAddDataArcGisComponent {
   hasNestedLayers = this.HsAddDataArcGisService.hasNestedLayers;
   getDimensionValues = this.HsAddDataArcGisService.getDimensionValues;
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
   }
 
-  connect = (layerToSelect): void => {
+  connect = (layerToSelect: string): void => {
+    this.hasChecked = false;
     this.hsHistoryListService.addSourceHistory(
       'Arcgis',
       this.HsAddDataArcGisService.url
@@ -53,7 +57,6 @@ export class HsAddDataArcGisComponent {
       this.HsAddDataArcGisService.url
     );
     this.HsAddDataArcGisService.data.getMapUrl = this.HsAddDataArcGisService.url;
-
     this.HsAddDataArcGisService.showDetails = true;
   };
 
@@ -70,12 +73,18 @@ export class HsAddDataArcGisComponent {
     }
   }
 
-  addLayers(checked): void {
+  addLayers(checked: boolean): void {
     this.HsAddDataArcGisService.addLayers(checked);
   }
 
   srsChanged(): void {
     this.HsAddDataArcGisService.srsChanged();
+  }
+
+  changed(): void {
+    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+      this.data.services
+    );
   }
 
   /**
@@ -85,7 +94,7 @@ export class HsAddDataArcGisComponent {
    * @param {string} layer Optional layer to select, when
    * getCapabilities arrives
    */
-  setUrlAndConnect(url: string, layer): void {
+  setUrlAndConnect(url: string, layer: string): void {
     this.HsAddDataArcGisService.url = url;
     this.connect(layer);
   }

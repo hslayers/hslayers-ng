@@ -29,7 +29,7 @@
                     <div class="d-flex justify-content-between w-100" >
                         <button class="btn btn-primary" (click)="selectAllLayers(HsAddDataWfsService.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
                         <button class="btn btn-primary pull-right" (click)="addLayers(true)" [title]="'ADDLAYERS.WFS.addToMap' | translate"
-                            [disabled]="!isChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+                            [disabled]="!hasChecked">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
                     </div>
                     <button *ngIf="HsAddDataWfsService.loadingFeatures" class="btn btn-primary btn-block w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate}}<img class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
                 </div>
