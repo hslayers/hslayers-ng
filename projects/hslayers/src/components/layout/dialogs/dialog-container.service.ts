@@ -4,7 +4,6 @@ import {Subject} from 'rxjs';
 
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogItem} from './dialog-item';
-
 @Injectable({
   providedIn: 'root',
 })
