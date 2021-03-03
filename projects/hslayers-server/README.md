@@ -39,8 +39,8 @@ Liferay portal is being currently used as an identity provider. Following env va
 
 * `LAYMAN_PORT=8087` - (optional, default port 8087) specify port on which the service will 
 * `DB_PATH=src/data/hslayers-server.db` - path to the SQLite database for storing user sessions
-* `SESSION_SECRET=XXXXX` - OAuth2 session secret key
-* `SESSION_MAX_AGE=604800` - session cookie expiration
+* `SESSION_SECRET=XXXXX` - OAuth2 session secret key (session between your application and Layman Auth Client)
+* `SESSION_MAX_AGE=604800` - session cookie expiration, eg. 60 * 60 * 24 * 7 = 604800 s = 7 days
 * `LAYMAN_BASEURL=https://[layman.server]` - Layman instance URL
 * `LAYMAN_USER_PROFILE_URL=https://[layman.server]/rest/current-user` - URL of Layman REST API method that returns the identity of currently logged in user
 * `OAUTH2_AUTH_URL=https://[layman.server]/o/oauth2/authorize` - URL of Identity provider OAuth2 authorization endpoint
