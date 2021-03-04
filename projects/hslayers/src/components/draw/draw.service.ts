@@ -504,7 +504,7 @@ export class HsDrawService {
    * @param event
    */
   keyUp(event) {
-    if (event.keyCode === 8) {
+    if (event.key == 'Backspace') {
       this.removeLastPoint();
     }
   }

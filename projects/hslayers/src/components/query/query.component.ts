@@ -99,7 +99,10 @@ export class HsQueryComponent {
   }
   checkForBodyElements(docChildren: any): boolean {
     return Array.from(docChildren).some(
-      (ch: any) => ch.tagName != 'META' && ch.tagName != 'STYLE'
+           (ch: any) =>
+        ch.tagName != 'SERVICEEXCEPTIONREPORT' &&
+        ch.tagName != 'META' &&
+        ch.tagName != 'STYLE'
     );
   }
   showQueryDialog(ev) {
