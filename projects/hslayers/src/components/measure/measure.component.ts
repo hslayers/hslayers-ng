@@ -23,7 +23,7 @@ export class HsMeasureComponent {
 
     if (this.HsUtilsService.runningInBrowser()) {
       document.addEventListener('keyup', (e) => {
-        if (e.keyCode == 17) {
+        if (e.key == 'Control') {
           //ControlLeft
           setTimeout(() => {
             this.HsMeasureService.switchMultipleMode();

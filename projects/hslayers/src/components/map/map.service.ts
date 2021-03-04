@@ -294,27 +294,28 @@ export class HsMapService {
    */
   init() {
     if (this.map) {
-      this.removeAllLayers();
+      this.map.setTarget(this.mapElement);
+    } else {
+      this.map = new Map({
+        controls: this.controls,
+        target: this.mapElement,
+        interactions: [],
+        view: this.cloneView(
+          this.HsConfig.default_view || this.createPlaceholderView()
+        ),
+      });
+
+      this.map.getView().on('change:center', (e) => {
+        this.extentChanged(e);
+      });
+      this.map.getView().on('change:resolution', (e) => {
+        this.extentChanged(e);
+      });
+
+      this.map.on('moveend', (e) => {
+        this.extentChanged(e);
+      });
     }
-    this.map = new Map({
-      controls: this.controls,
-      target: this.mapElement,
-      interactions: [],
-      view: this.cloneView(
-        this.HsConfig.default_view || this.createPlaceholderView()
-      ),
-    });
-
-    this.map.getView().on('change:center', (e) => {
-      this.extentChanged(e);
-    });
-    this.map.getView().on('change:resolution', (e) => {
-      this.extentChanged(e);
-    });
-
-    this.map.on('moveend', (e) => {
-      this.extentChanged(e);
-    });
 
     if (this.HsConfig.mapInteractionsEnabled != false) {
       Object.values(this.interactions).forEach((value) => {
@@ -623,18 +624,14 @@ export class HsMapService {
     if (this.HsConfig.box_layers) {
       this.HsConfig.box_layers.forEach((box) => {
         for (const lyr of box.getLayers().getArray()) {
-          this.addLayer(
-            lyr,
-            DuplicateHandling.AddDuplicate,
-            visibilityOverrides
-          );
+          this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
         }
       });
     }
 
     if (this.HsConfig.default_layers) {
       this.HsConfig.default_layers.forEach((lyr) => {
-        this.addLayer(lyr, DuplicateHandling.AddDuplicate, visibilityOverrides);
+        this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
       });
     }
   }
