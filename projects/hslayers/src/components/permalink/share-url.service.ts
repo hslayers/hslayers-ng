@@ -1,5 +1,5 @@
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {Location} from '@angular/common';
+import {Location, PlatformLocation} from '@angular/common';
 import {Subject} from 'rxjs';
 
 import {Map} from 'ol';
@@ -41,7 +41,8 @@ export class HsShareUrlService {
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
     private Location: Location,
-    private zone: NgZone
+    private zone: NgZone,
+    private PlatformLocation: PlatformLocation
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
   }
@@ -92,13 +93,17 @@ export class HsShareUrlService {
     }
     this.HsUtilsService.debounce(
       () => {
-        const locationPath = this.pathName();
+        let locationPath = this.pathName();
         const paramsSerialized = Object.keys(this.params)
           .map((key) => {
             return {key, value: this.params[key]};
           })
           .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
           .join('&');
+        const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
+        if (locationPath.indexOf(baseHref) == 0) {
+          locationPath = locationPath.replace(baseHref, '');
+        }
         this.Location.replaceState(locationPath, paramsSerialized);
         this.browserUrlUpdated.next();
       },
