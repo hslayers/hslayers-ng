@@ -40,7 +40,7 @@
     "ngx-cookie-service": "^10.0.0",
     "ol": "^6.5.0",
     "ol-popup": "^4.0.0",
-    "proj4": "^2.7.0",
+    "proj4": "^2.7.2",
     "rxjs": "^6.6.6",
     "share-api-polyfill": "^1.0.20",
     "tslib": "^1.10.0",
