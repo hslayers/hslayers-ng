@@ -1,29 +1,37 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
+
 /**
- * @memberof hs.search
- * @ngdoc component
  * @name HsSearchInputComponent
- * @description Add search input template to page
+ * Add search input template to page
  */
 @Component({
   selector: 'hs-search-input',
   templateUrl: './partials/searchinput.html',
 })
-export class HsSearchInputComponent implements OnInit {
+export class HsSearchInputComponent implements OnInit, OnDestroy {
   query = '';
   searchInputVisible: boolean;
   clearvisible = false;
+  searchResultsReceivedSubscription: Subscription;
   constructor(
     public HsSearchService: HsSearchService,
     public HsEventBusService: HsEventBusService,
     public HsShareUrlService: HsShareUrlService
   ) {
-    this.HsEventBusService.searchResultsReceived.subscribe((_) => {
-      this.clearvisible = true;
-    });
+    this.searchResultsReceivedSubscription = this.HsEventBusService.searchResultsReceived.subscribe(
+      (_) => {
+        this.clearvisible = true;
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.searchResultsReceivedSubscription.unsubscribe();
   }
 
   ngOnInit(): void {

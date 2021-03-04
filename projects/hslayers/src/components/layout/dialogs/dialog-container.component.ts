@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+
 import {Subscription} from 'rxjs';
 
 import {HsDialogComponent} from './dialog-component.interface';
@@ -25,6 +26,9 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
   ngOnInit(): void {
     this.subscriptions.push(
       this.HsDialogContainerService.dialogObserver.subscribe(
@@ -40,10 +44,6 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
         }
       )
     );
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   destroyDialog(dialog: HsDialogComponent): void {

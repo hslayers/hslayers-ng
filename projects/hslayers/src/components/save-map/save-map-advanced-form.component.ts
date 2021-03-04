@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -8,14 +11,14 @@ import {HsUtilsService} from './../utils/utils.service';
   selector: 'hs-save-map-advanced-form',
   templateUrl: './partials/form.html',
 })
-export class HsSaveMapAdvancedFormComponent {
+export class HsSaveMapAdvancedFormComponent implements OnDestroy {
   btnSelectDeselectClicked = true;
   step = 'context';
   steps = ['context', 'access', 'author'];
   endpoint: any;
   overwrite = false;
   downloadableData: string;
-
+  subscriptions: Subscription[] = [];
   constructor(
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsEventBusService: HsEventBusService,
@@ -23,38 +26,49 @@ export class HsSaveMapAdvancedFormComponent {
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
-    this.HsEventBusService.mapResets.subscribe(() => {
-      this.step = 'context';
-    });
-
-    this.HsEventBusService.mainPanelChanges.subscribe((which: string) => {
-      if (which == 'saveMap') {
+    this.subscriptions.push(
+      this.HsEventBusService.mapResets.subscribe(() => {
         this.step = 'context';
-      }
-    });
+      })
+    );
 
-    this.HsSaveMapManagerService.endpointSelected.subscribe((endpoint) => {
-      this.endpoint = endpoint;
-      switch (endpoint?.type) {
-        case 'layman':
-          this.steps = ['context', 'author'];
-          break;
-        default:
-          this.steps = ['context', 'access', 'author'];
-      }
-    });
+    this.subscriptions.push(
+      this.HsEventBusService.mainPanelChanges.subscribe((which: string) => {
+        if (which == 'saveMap') {
+          this.step = 'context';
+        }
+      })
+    );
 
-    this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
-      if (statusData.status) {
-        this.step = 'context';
-      }
-      if (statusData.overWriteNeeded) {
-        this.overwrite = true;
-      }
-    });
+    this.subscriptions.push(
+      this.HsSaveMapManagerService.endpointSelected.subscribe((endpoint) => {
+        this.endpoint = endpoint;
+        switch (endpoint?.type) {
+          case 'layman':
+            this.steps = ['context', 'author'];
+            break;
+          default:
+            this.steps = ['context', 'access', 'author'];
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
+        if (statusData.status) {
+          this.step = 'context';
+        }
+        if (statusData.overWriteNeeded) {
+          this.overwrite = true;
+        }
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  selectDeselectAllLayers() {
+  selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
     this.HsSaveMapManagerService.compoData.layers.forEach(
       (layer) => (layer.checked = this.btnSelectDeselectClicked)
@@ -65,7 +79,6 @@ export class HsSaveMapAdvancedFormComponent {
    * Callback function for clicking Next button, create download link for map context and show save, saveas buttons
    *
    * @function next
-   * @memberof hs.save-map
    */
   next() {
     const ixCurrent = this.steps.indexOf(this.step);

@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -10,9 +13,10 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.html',
 })
-export class HsAddDataUrlComponent {
+export class HsAddDataUrlComponent implements OnDestroy {
   typeSelected: string;
   types: any[];
+  owsFillingSubscription: Subscription;
 
   constructor(
     public hsConfig: HsConfig,
@@ -54,26 +58,31 @@ export class HsAddDataUrlComponent {
     }
     this.typeSelected = '';
 
-    this.HsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
-      this.typeSelected = type.toLowerCase();
-      this.HsEventBusService.owsConnecting.next({
-        type: type,
-        uri: uri,
-        layer: layer,
-      });
-    });
+    this.owsFillingSubscription = this.HsEventBusService.owsFilling.subscribe(
+      ({type, uri, layer}) => {
+        this.typeSelected = type.toLowerCase();
+        this.HsEventBusService.owsConnecting.next({
+          type: type,
+          uri: uri,
+          layer: layer,
+        });
+      }
+    );
 
     if (this.HsAddDataService.urlType) {
       this.selectType(this.HsAddDataService.urlType);
       this.connectServiceFromUrlParam(this.HsAddDataService.urlType);
     }
   }
+  ngOnDestroy(): void {
+    this.owsFillingSubscription.unsubscribe();
+  }
 
   selectType(type: string): void {
     this.typeSelected = type;
   }
 
-  connectServiceFromUrlParam(type) {
+  connectServiceFromUrlParam(type): void {
     const layers = this.HsShareUrlService.getParamValue(`${type}_layers`);
     const url = this.HsShareUrlService.getParamValue(`${type}_to_connect`);
 

@@ -1,4 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -9,7 +12,8 @@ import {HsSidebarService} from './sidebar.service';
   selector: 'hs-sidebar',
   templateUrl: './partials/sidebar.html',
 })
-export class HsSidebarComponent implements OnInit {
+export class HsSidebarComponent implements OnInit, OnDestroy {
+  configChangesSubscription: Subscription;
   constructor(
     public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
@@ -17,6 +21,9 @@ export class HsSidebarComponent implements OnInit {
     public HsPermalinkUrlService: HsShareUrlService,
     public HsConfig: HsConfig
   ) {}
+  ngOnDestroy(): void {
+    this.configChangesSubscription.unsubscribe();
+  }
   ngOnInit(): void {
     if (this.HsCoreService.config.createExtraMenu !== undefined) {
       this.HsCoreService.config.createExtraMenu(this.HsSidebarService);
@@ -29,9 +36,11 @@ export class HsSidebarComponent implements OnInit {
       }
     }
     this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
-    this.HsConfig.configChanges.subscribe((_) => {
-      this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
-    });
+    this.configChangesSubscription = this.HsConfig.configChanges.subscribe(
+      (_) => {
+        this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
+      }
+    );
     this.HsSidebarService.sidebarLoad.next();
 
     this.HsSidebarService.setButtonVisibility();
@@ -40,9 +49,6 @@ export class HsSidebarComponent implements OnInit {
   /**
    * Seat whether to show all sidebar buttons or just a
    * subset of important ones
-   *
-   * @memberof HsSidebarComponent
-   * @function toggleUnimportant
    */
   toggleUnimportant(): void {
     this.HsSidebarService.showUnimportant = !this.HsSidebarService
@@ -50,9 +56,6 @@ export class HsSidebarComponent implements OnInit {
   }
   /**
    * Toggle sidebar mode between expanded and narrow
-   *
-   * @memberof HsSidebarComponent
-   * @function toggleSidebar
    */
   toggleSidebar(): void {
     this.HsLayoutService.sidebarExpanded = !this.HsLayoutService

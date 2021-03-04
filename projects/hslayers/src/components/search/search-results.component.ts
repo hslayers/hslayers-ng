@@ -1,39 +1,43 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
+
 /**
- * @memberof hs.search
- * @ngdoc component
  * @name HsSearchResultsComponent
- * @description Add search results template to page
+ * Add search results template to page
  */
 @Component({
   selector: 'hs-search-results',
   templateUrl: './partials/searchresults.html',
 })
-export class HsSearchResultsComponent {
+export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
   data: any = {};
   fcode_zoom_map: any;
+  subscriptions: Subscription[] = [];
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsSearchService: HsSearchService
   ) {
-    this.HsEventBusService.searchResultsReceived.subscribe((_) => {
-      this.searchResultsReceived();
-    });
-    this.HsEventBusService.clearSearchResults.subscribe((_) => {
-      this.clear();
-    });
+    this.subscriptions.push(
+      this.HsEventBusService.searchResultsReceived.subscribe((_) => {
+        this.searchResultsReceived();
+      })
+    );
+    this.subscriptions.push(
+      this.HsEventBusService.clearSearchResults.subscribe((_) => {
+        this.clear();
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
   /**
    * Handler for receiving results of search request, sends results to correct parser
-   *
-   * @memberof HsSearchResultsComponent
-   * @function searchResultsReceived
-   * @param result
-   * @param {object} r Result of search request
-   * @param {string} provider Which provider sent the search results
    */
   searchResultsReceived(): void {
     this.data = this.HsSearchService.data;
@@ -46,9 +50,7 @@ export class HsSearchResultsComponent {
   /**
    * Zoom map to selected result from results list
    *
-   * @memberof HsSearchResultsComponent
-   * @function zoomTo
-   * @param {object} result Selected result
+   * @param result Selected result
    */
   zoomTo(result: any): void {
     this.fcode_zoom_map = {

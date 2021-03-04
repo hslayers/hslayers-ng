@@ -7,7 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import Map from 'ol/Map';
+import {Subscription} from 'rxjs';
+
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';
@@ -22,7 +23,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;
-  unregisterMapSyncCenterHandler: any;
+  unregisterMapSyncCenterSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -31,7 +32,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     private zone: NgZone
   ) {
-    this.unregisterMapSyncCenterHandler = this.HsEventBusService.mapCenterSynchronizations.subscribe(
+    this.unregisterMapSyncCenterSubscription = this.HsEventBusService.mapCenterSynchronizations.subscribe(
       (data) => {
         this.onCenterSync(data);
       }
@@ -75,17 +76,12 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.unregisterMapSyncCenterHandler) {
-      this.unregisterMapSyncCenterHandler.unsubscribe();
-    }
+    this.unregisterMapSyncCenterSubscription.unsubscribe();
   }
   /**
-   * @ngdoc method
-   * @name HsMapController#onCenterSync
-   * @private
-   * @param {event} event Info about angularjs broadcasted event
-   * @param {Array} data Coordinates in lon/lat and resolution
-   * @description This gets called from Cesium map, to
+   * @param event Info about angularjs broadcasted event
+   * @param data Coordinates in lon/lat and resolution
+   * This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps
    */
   onCenterSync(data?) {
@@ -103,12 +99,9 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapController#zoomForResolution
-   * @private
-   * @param {number} resolution Resolution
-   * @description Calculates zoom level for a given resolution
-   * @returns {number} Zoom level for resolution. If resolution
+   * @param resolution Resolution
+   * Calculates zoom level for a given resolution
+   * @return Zoom level for resolution. If resolution
    * was greater than 156543.03390625 return 0
    */
   zoomForResolution(resolution) {

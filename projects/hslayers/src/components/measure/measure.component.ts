@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
@@ -8,10 +11,10 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-measure',
   templateUrl: './partials/measure.html',
 })
-export class HsMeasureComponent {
+export class HsMeasureComponent implements OnDestroy {
   type: string;
   data;
-
+  subscriptions: Subscription[] = [];
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
@@ -31,21 +34,27 @@ export class HsMeasureComponent {
         }
       });
     }
-    this.HsEventBusService.measurementStarts.subscribe(() => {
-      this.HsLayoutService.panelEnabled('toolbar', false);
-    });
+    this.subscriptions.push(
+      this.HsEventBusService.measurementStarts.subscribe(() => {
+        this.HsLayoutService.panelEnabled('toolbar', false);
+      })
+    );
 
-    this.HsEventBusService.measurementEnds.subscribe(() => {
-      this.HsLayoutService.panelEnabled('toolbar', true);
-    });
+    this.subscriptions.push(
+      this.HsEventBusService.measurementEnds.subscribe(() => {
+        this.HsLayoutService.panelEnabled('toolbar', true);
+      })
+    );
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
-      if (HsLayoutService.mainpanel == 'measure') {
-        this.HsMeasureService.activateMeasuring(this.type);
-      } else {
-        this.HsMeasureService.deactivateMeasuring();
-      }
-    });
+    this.subscriptions.push(
+      this.HsEventBusService.mainPanelChanges.subscribe(() => {
+        if (HsLayoutService.mainpanel == 'measure') {
+          this.HsMeasureService.activateMeasuring(this.type);
+        } else {
+          this.HsMeasureService.deactivateMeasuring();
+        }
+      })
+    );
 
     //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
     if (this.HsLayoutService.mainpanel == 'measure') {
@@ -53,6 +62,9 @@ export class HsMeasureComponent {
     }
 
     //$scope.$emit('scope_loaded', 'Measure');
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   changeMeasureParams(): void {
@@ -63,10 +75,7 @@ export class HsMeasureComponent {
   }
 
   /**
-   * @memberof hs.measure.controller
-   * @function clearAll
-   * @public
-   * @description Reset sketch and all measurements to start new drawing
+   * Reset sketch and all measurements to start new drawing
    */
   clearAll(): void {
     this.HsMeasureService.clearMeasurement();

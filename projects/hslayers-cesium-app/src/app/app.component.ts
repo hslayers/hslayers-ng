@@ -1,23 +1,41 @@
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import View from 'ol/View';
-import {BingMaps, OSM, TileArcGISRest, TileWMS, WMTS, XYZ} from 'ol/source';
+import {
+  BingMaps,
+  ImageArcGISRest,
+  ImageWMS,
+  OSM,
+  TileArcGISRest,
+  TileWMS,
+  Vector,
+  WMTS,
+  XYZ,
+} from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component, ComponentFactoryResolver} from '@angular/core';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
+
 import {HsConfig} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HslayersCesiumComponent} from 'hslayers-cesium';
-import {ImageArcGISRest, ImageWMS} from 'ol/source';
-import {Vector} from 'ol/source';
 
 @Component({
   selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  mapSpaceRefSubscription: Subscription;
   constructor(
     public HsConfig: HsConfig,
     private HsLayoutService: HsLayoutService,
@@ -60,6 +78,9 @@ export class AppComponent {
       Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
     }
   }
+  ngOnDestroy(): void {
+    this.mapSpaceRefSubscription.unsubscribe();
+  }
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
@@ -67,10 +88,12 @@ export class AppComponent {
       HslayersCesiumComponent
     );
 
-    this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
-      if (mapSpace) {
-        mapSpace.createComponent(componentFactory);
+    this.mapSpaceRefSubscription = this.HsLayoutService.mapSpaceRef.subscribe(
+      (mapSpace) => {
+        if (mapSpace) {
+          mapSpace.createComponent(componentFactory);
+        }
       }
-    });
+    );
   }
 }
