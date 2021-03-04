@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
-import {HsCesiumService} from './hscesium.service';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {
   HsCoreService,
   HsEventBusService,
@@ -8,12 +10,16 @@ import {
   HsShareUrlService,
   HsSidebarService,
 } from 'hslayers-ng';
+
+import {HsCesiumService} from './hscesium.service';
+
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.html',
 })
-export class HslayersCesiumComponent {
+export class HslayersCesiumComponent implements AfterViewInit, OnDestroy {
   visible = true;
+  subscriptions: Subscription[] = [];
   constructor(
     public HsCesiumService: HsCesiumService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -23,6 +29,9 @@ export class HslayersCesiumComponent {
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService //Used in template
   ) {}
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
   ngAfterViewInit(): void {
     //Timeout needed because view container might not
@@ -46,23 +55,24 @@ export class HslayersCesiumComponent {
       click: () => this.toggleCesiumMap(),
     });
 
-    this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
-      this.HsCesiumService.dimensionChanged(data.layer, data.dimension)
+    this.subscriptions.push(
+      this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
+        this.HsCesiumService.dimensionChanged(data.layer, data.dimension)
+      )
     );
 
-    this.HsEventBusService.sizeChanges.subscribe((size) =>
-      this.HsCesiumService.resize(size)
+    this.subscriptions.push(
+      this.HsEventBusService.sizeChanges.subscribe((size) =>
+        this.HsCesiumService.resize(size)
+      )
     );
     this.HsCesiumService.resize();
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumController#toggleCesiumMap
-   * @private
-   * @description Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
+   * Toggles between Cesium and OL maps by setting hs_map.visible variable which is monitored by ng-show. ng-show is set on map directive in map.js link function.
    */
-  toggleCesiumMap() {
+  toggleCesiumMap(): void {
     this.HsMapService.visible = !this.HsMapService.visible;
     this.visible = !this.HsMapService.visible;
     this.HsPermalinkUrlService.updateCustomParams({

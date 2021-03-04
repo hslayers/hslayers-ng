@@ -1,4 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
+import {Layer} from 'ol/layer';
+import {
+  getDimension,
+  getExclusive,
+  getHsLaymanSynchronizing,
+  getPath,
+} from '../../common/layer-extensions';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -9,18 +20,12 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
-import {
-  getDimension,
-  getExclusive,
-  getHsLaymanSynchronizing,
-  getPath,
-} from '../../common/layer-extensions';
+
 @Component({
   selector: 'hs-layermanager-layer-list',
   templateUrl: './partials/layerlist.html',
 })
-export class HsLayerListComponent implements OnInit {
+export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;
   /**
    * List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
@@ -33,6 +38,7 @@ export class HsLayerListComponent implements OnInit {
   filtered_layers: Array<HsLayerDescriptor> = [];
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   getExclusive = getExclusive;
+  layerManagerUpdatesSubscription: Subscription;
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,
@@ -44,13 +50,20 @@ export class HsLayerListComponent implements OnInit {
     public HsEventBusService: HsEventBusService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.HsLayerManagerService.updateLayerListPositions();
-      this.updateLayers();
-    });
+    this.layerManagerUpdatesSubscription = this.HsEventBusService.layerManagerUpdates.subscribe(
+      () => {
+        this.HsLayerManagerService.updateLayerListPositions();
+        this.updateLayers();
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.layerManagerUpdatesSubscription.unsubscribe();
   }
 
   /**
+   * @param layer Selected layer
+   * @return {boolean} True if layer is loaded
    * Test if selected layer is loaded in map
    * @param layer - Selected layer
    */
@@ -110,8 +123,11 @@ export class HsLayerListComponent implements OnInit {
       }
     }
   }
-
   ngOnInit(): void {
+    /**
+     * @type {Array}
+     * List of layers which belong to folder hierarchy level of directive instance
+     */
     this.filtered_layers = this.filterLayers();
   }
 
@@ -122,7 +138,7 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
-   * @private
+   * @return {Array} Available layers
    */
   private filterLayers(): Array<HsLayerDescriptor> {
     const tmp = [];
@@ -139,8 +155,7 @@ export class HsLayerListComponent implements OnInit {
   }
 
   /**
-   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects can't be used because DragDropList functionality can handle only simple structures.
-   * @public
+   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects cant be used because DragDropList functionality can handle only simple structures.
    */
   generateLayerTitlesArray(): void {
     this.layer_titles = [];
@@ -150,6 +165,8 @@ export class HsLayerListComponent implements OnInit {
   }
 
   /**
+   * @param layer_container Selected layer - wrapped in layer object
+   * @return {boolean} True if layer is queryable
    * Test if layer is queryable (WMS layer with Info format)
    * @param layer_container - Selected layer - wrapped in layer object
    */
@@ -166,7 +183,6 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Update layers list
-   * @private
    */
   private updateLayers(): void {
     this.filtered_layers = this.filterLayers();

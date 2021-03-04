@@ -1,8 +1,15 @@
+import {Component, OnDestroy} from '@angular/core';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+
+import {Subscription} from 'rxjs';
+
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component} from '@angular/core';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+
+import {getTitle, setHsOriginalStyle} from '../../common/layer-extensions';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -10,8 +17,6 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {getTitle, setHsOriginalStyle} from '../../common/layer-extensions';
 
 type StyleJson = {
   fill?: any;
@@ -24,7 +29,7 @@ type StyleJson = {
   selector: 'hs-styles',
   templateUrl: './partials/styler.html',
 })
-export class HsStylerComponent {
+export class HsStylerComponent implements OnDestroy {
   icons: any;
   imagetypes: Array<any> = [
     {
@@ -55,6 +60,7 @@ export class HsStylerComponent {
   level: 'feature' | 'cluster' | 'layer' = 'layer';
   isClustered: boolean;
   hasFeatures: boolean;
+  subscriptions: Subscription[] = [];
   constructor(
     public HsStylerService: HsStylerService,
     public HsLayoutService: HsLayoutService,
@@ -66,73 +72,80 @@ export class HsStylerComponent {
     public HsStylerColorService: HsStylerColorService,
     public HsSaveMapService: HsSaveMapService
   ) {
-    this.HsEventBusService.layerSelectedFromUrl.subscribe((layerFound) => {
-      if (layerFound !== null) {
-        this.HsStylerService.layer = layerFound;
-        this.resolveLayerStyle();
-      }
-    });
-    this.HsEventBusService.mainPanelChanges.subscribe((e) => {
-      if (e == 'styler') {
-        if (!this.icons) {
-          const assetsPath = this.HsUtilsService.getAssetsPath();
-          this.icons = [
-            assetsPath + 'img/icons/bag1.svg',
-            assetsPath + 'img/icons/banking4.svg',
-            assetsPath + 'img/icons/bar.svg',
-            assetsPath + 'img/icons/beach17.svg',
-            assetsPath + 'img/icons/bicycles.svg',
-            assetsPath + 'img/icons/building103.svg',
-            assetsPath + 'img/icons/bus4.svg',
-            assetsPath + 'img/icons/cabinet9.svg',
-            assetsPath + 'img/icons/camping13.svg',
-            assetsPath + 'img/icons/caravan.svg',
-            assetsPath + 'img/icons/church15.svg',
-            assetsPath + 'img/icons/church1.svg',
-            assetsPath + 'img/icons/coffee-shop1.svg',
-            assetsPath + 'img/icons/disabled.svg',
-            assetsPath + 'img/icons/favourite28.svg',
-            assetsPath + 'img/icons/football1.svg',
-            assetsPath + 'img/icons/footprint.svg',
-            assetsPath + 'img/icons/gift-shop.svg',
-            assetsPath + 'img/icons/gps40.svg',
-            assetsPath + 'img/icons/gps41.svg',
-            assetsPath + 'img/icons/gps42.svg',
-            assetsPath + 'img/icons/gps43.svg',
-            assetsPath + 'img/icons/gps5.svg',
-            assetsPath + 'img/icons/hospital.svg',
-            assetsPath + 'img/icons/hot-air-balloon2.svg',
-            assetsPath + 'img/icons/information78.svg',
-            assetsPath + 'img/icons/library21.svg',
-            assetsPath + 'img/icons/location6.svg',
-            assetsPath + 'img/icons/luggage13.svg',
-            assetsPath + 'img/icons/monument1.svg',
-            assetsPath + 'img/icons/mountain42.svg',
-            assetsPath + 'img/icons/museum35.svg',
-            assetsPath + 'img/icons/park11.svg',
-            assetsPath + 'img/icons/parking28.svg',
-            assetsPath + 'img/icons/pharmacy17.svg',
-            assetsPath + 'img/icons/port2.svg',
-            assetsPath + 'img/icons/restaurant52.svg',
-            assetsPath + 'img/icons/road-sign1.svg',
-            assetsPath + 'img/icons/sailing-boat2.svg',
-            assetsPath + 'img/icons/ski1.svg',
-            assetsPath + 'img/icons/swimming26.svg',
-            assetsPath + 'img/icons/telephone119.svg',
-            assetsPath + 'img/icons/toilets2.svg',
-            assetsPath + 'img/icons/train-station.svg',
-            assetsPath + 'img/icons/university2.svg',
-            assetsPath + 'img/icons/warning.svg',
-            assetsPath + 'img/icons/wifi8.svg',
-          ].map((icon) =>
-            this.sanitizer.bypassSecurityTrustResourceUrl(
-              this.HsUtilsService.resolveEsModule(icon)
-            )
-          );
+    this.subscriptions.push(
+      this.HsEventBusService.layerSelectedFromUrl.subscribe((layerFound) => {
+        if (layerFound !== null) {
+          this.HsStylerService.layer = layerFound;
           this.resolveLayerStyle();
         }
-      }
-    });
+      })
+    );
+    this.subscriptions.push(
+      this.HsEventBusService.mainPanelChanges.subscribe((e) => {
+        if (e == 'styler') {
+          if (!this.icons) {
+            const assetsPath = this.HsUtilsService.getAssetsPath();
+            this.icons = [
+              assetsPath + 'img/icons/bag1.svg',
+              assetsPath + 'img/icons/banking4.svg',
+              assetsPath + 'img/icons/bar.svg',
+              assetsPath + 'img/icons/beach17.svg',
+              assetsPath + 'img/icons/bicycles.svg',
+              assetsPath + 'img/icons/building103.svg',
+              assetsPath + 'img/icons/bus4.svg',
+              assetsPath + 'img/icons/cabinet9.svg',
+              assetsPath + 'img/icons/camping13.svg',
+              assetsPath + 'img/icons/caravan.svg',
+              assetsPath + 'img/icons/church15.svg',
+              assetsPath + 'img/icons/church1.svg',
+              assetsPath + 'img/icons/coffee-shop1.svg',
+              assetsPath + 'img/icons/disabled.svg',
+              assetsPath + 'img/icons/favourite28.svg',
+              assetsPath + 'img/icons/football1.svg',
+              assetsPath + 'img/icons/footprint.svg',
+              assetsPath + 'img/icons/gift-shop.svg',
+              assetsPath + 'img/icons/gps40.svg',
+              assetsPath + 'img/icons/gps41.svg',
+              assetsPath + 'img/icons/gps42.svg',
+              assetsPath + 'img/icons/gps43.svg',
+              assetsPath + 'img/icons/gps5.svg',
+              assetsPath + 'img/icons/hospital.svg',
+              assetsPath + 'img/icons/hot-air-balloon2.svg',
+              assetsPath + 'img/icons/information78.svg',
+              assetsPath + 'img/icons/library21.svg',
+              assetsPath + 'img/icons/location6.svg',
+              assetsPath + 'img/icons/luggage13.svg',
+              assetsPath + 'img/icons/monument1.svg',
+              assetsPath + 'img/icons/mountain42.svg',
+              assetsPath + 'img/icons/museum35.svg',
+              assetsPath + 'img/icons/park11.svg',
+              assetsPath + 'img/icons/parking28.svg',
+              assetsPath + 'img/icons/pharmacy17.svg',
+              assetsPath + 'img/icons/port2.svg',
+              assetsPath + 'img/icons/restaurant52.svg',
+              assetsPath + 'img/icons/road-sign1.svg',
+              assetsPath + 'img/icons/sailing-boat2.svg',
+              assetsPath + 'img/icons/ski1.svg',
+              assetsPath + 'img/icons/swimming26.svg',
+              assetsPath + 'img/icons/telephone119.svg',
+              assetsPath + 'img/icons/toilets2.svg',
+              assetsPath + 'img/icons/train-station.svg',
+              assetsPath + 'img/icons/university2.svg',
+              assetsPath + 'img/icons/warning.svg',
+              assetsPath + 'img/icons/wifi8.svg',
+            ].map((icon) =>
+              this.sanitizer.bypassSecurityTrustResourceUrl(
+                this.HsUtilsService.resolveEsModule(icon)
+              )
+            );
+            this.resolveLayerStyle();
+          }
+        }
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
   resolveLayerStyle(): void {
     this.isClustered = this.HsLayerUtilsService.isLayerClustered(
@@ -307,7 +320,7 @@ export class HsStylerComponent {
    * Force repainting of clusters by reapplying cluster style which
    * was created in cluster method
    *
-   * @param {VectorLayer} layer Vector layer
+   * @param layer Vector layer
    */
   repaintCluster(layer: VectorLayer): void {
     layer.setStyle(layer.getStyle());
@@ -317,8 +330,8 @@ export class HsStylerComponent {
    * Sets style for all features in a given layer.
    * For cluster layers the style is set for underlying sources features.
    *
-   * @param {VectorLayer} layer Layer for whose features is the style set.
-   * @param {StyleLike|null} style Style to set for the feature. Can be null
+   * @param layer Layer for whose features is the style set.
+   * @param style Style to set for the feature. Can be null
    */
   private setStyleForFeatures(layer: VectorLayer, style: Style | null): void {
     const underlyingSource = this.HsStylerService.getLayerSource(
@@ -341,10 +354,8 @@ export class HsStylerComponent {
   }
 
   /**
-   * @function iconSelected
-   * @memberof HsStylerComponent
-   * @param {SafeResourceUrl} i Sanitized icon resource
-   * @description Load selected SVG icon and use it for layer
+   * @param i Sanitized icon resource
+   * Load selected SVG icon and use it for layer
    */
   iconSelected(i: SafeResourceUrl): void {
     const headers = new HttpHeaders();
@@ -366,9 +377,7 @@ export class HsStylerComponent {
   }
 
   /**
-   * @function colorIcon
-   * @memberof HsStylerComponent
-   * @description Change colors of selected icon based on user input. Decode modified icon into Base-64
+   * Change colors of selected icon based on user input. Decode modified icon into Base-64
    */
   colorIcon(): void {
     if (this.HsUtilsService.runningInBrowser()) {
@@ -396,10 +405,8 @@ export class HsStylerComponent {
     }
   }
   /**
-   * @function setImageType
-   * @memberof HsStylerComponent
-   * @param {string} t New image type
-   * @description Change image type for point geometry and redraw style
+   * @param t New image type
+   * Change image type for point geometry and redraw style
    */
   setImageType(t: string): void {
     this.imagetype = t;
@@ -411,11 +418,9 @@ export class HsStylerComponent {
   }
 
   /**
-   * @function refreshLayerDefinition
-   * @memberof HsStylerComponent
-   * @description (PRIVATE) Get geometry type and title for selected layer
+   * Get geometry type and title for selected layer
    */
-  refreshLayerDefinition(): void {
+  private refreshLayerDefinition(): void {
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null

@@ -1,7 +1,11 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
+import {Component, OnDestroy} from '@angular/core';
+
 import Popup from 'ol-popup';
-import {Component} from '@angular/core';
+
+import {Subject, Subscription} from 'rxjs';
+
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -10,16 +14,15 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsQueryWmsService} from './query-wms.service';
-import {Subject} from 'rxjs';
 
 @Component({
   selector: 'hs-query',
   templateUrl: './partials/infopanel.html',
 })
-export class HsQueryComponent {
+export class HsQueryComponent implements OnDestroy {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
-
+  subscriptions: Subscription[] = [];
   constructor(
     public HsConfig: HsConfig,
     public HsQueryBaseService: HsQueryBaseService,
@@ -35,71 +38,83 @@ export class HsQueryComponent {
     });
 
     //add current panel queriable - activate/deactivate
-    this.HsEventBusService.mainPanelChanges.subscribe((closed) => {
-      if (this.HsQueryBaseService.currentPanelQueryable()) {
-        if (
-          !this.HsQueryBaseService.queryActive &&
-          !this.HsDrawService.drawActive
-        ) {
-          this.HsQueryBaseService.activateQueries();
-        }
-      } else {
-        if (this.HsQueryBaseService.queryActive) {
-          this.HsQueryBaseService.deactivateQueries();
-        }
-      }
-    });
-
-    this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
-      this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
-        this.popup.hide();
-        if (
-          this.HsQueryBaseService.currentPanelQueryable() &&
-          this.HsLayoutService.mainpanel != 'draw'
-        ) {
-          this.HsLayoutService.setMainPanel('info');
-        }
-      });
-
-      this.HsQueryBaseService.getFeatureInfoCollected.subscribe(
-        (coordinate) => {
-          const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
-          const bodyElementsFound = this.checkForBodyElements(
-            invisiblePopup.contentDocument.body.children
-          );
-          if (bodyElementsFound) {
-            //TODO: dont count style, title, meta towards length
-            if (this.HsQueryBaseService.popupClassname.length > 0) {
-              this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
-            } else {
-              this.popup.getElement().className = 'ol-popup';
-            }
-            this.popup.show(
-              coordinate,
-              invisiblePopup.contentDocument.body.innerHTML
-            );
-            this.popupOpens.next('hs.query');
+    this.subscriptions.push(
+      this.HsEventBusService.mainPanelChanges.subscribe((closed) => {
+        if (this.HsQueryBaseService.currentPanelQueryable()) {
+          if (
+            !this.HsQueryBaseService.queryActive &&
+            !this.HsDrawService.drawActive
+          ) {
+            this.HsQueryBaseService.activateQueries();
+          }
+        } else {
+          if (this.HsQueryBaseService.queryActive) {
+            this.HsQueryBaseService.deactivateQueries();
           }
         }
-      );
-    });
+      })
+    );
 
-    this.popupOpens.subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
+    this.subscriptions.push(
+      this.HsQueryBaseService.queryStatusChanges.subscribe(() => {
+        this.subscriptions.push(
+          this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
+            this.popup.hide();
+            if (this.HsQueryBaseService.currentPanelQueryable()) {
+              this.HsLayoutService.setMainPanel('info');
+            }
+          })
+        );
 
-    this.HsQueryVectorService.featureRemovals.subscribe((feature) => {
-      this.HsQueryBaseService.data.features.splice(
-        this.HsQueryBaseService.data.features.indexOf(feature),
-        1
-      );
-    });
+        this.subscriptions.push(
+          this.HsQueryBaseService.getFeatureInfoCollected.subscribe(
+            (coordinate) => {
+              const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
+              const bodyElementsFound = this.checkForBodyElements(
+                invisiblePopup.contentDocument.body.children
+              );
+              if (bodyElementsFound) {
+                //TODO: dont count style, title, meta towards length
+                if (this.HsQueryBaseService.popupClassname.length > 0) {
+                  this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
+                } else {
+                  this.popup.getElement().className = 'ol-popup';
+                }
+                this.popup.show(
+                  coordinate,
+                  invisiblePopup.contentDocument.body.innerHTML
+                );
+                this.popupOpens.next('hs.query');
+              }
+            }
+          )
+        );
+      })
+    );
+
+    this.subscriptions.push(
+      this.popupOpens.subscribe((source) => {
+        if (source && source != 'hs.query' && this.popup !== undefined) {
+          this.popup.hide();
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.HsQueryVectorService.featureRemovals.subscribe((feature) => {
+        this.HsQueryBaseService.data.features.splice(
+          this.HsQueryBaseService.data.features.indexOf(feature),
+          1
+        );
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
   checkForBodyElements(docChildren: any): boolean {
     return Array.from(docChildren).some(
-           (ch: any) =>
+      (ch: any) =>
         ch.tagName != 'SERVICEEXCEPTIONREPORT' &&
         ch.tagName != 'META' &&
         ch.tagName != 'STYLE'

@@ -15,7 +15,7 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 export class HsAddDataMetadataDialogComponent
   implements HsDialogComponent, OnInit {
   @Input() data;
-  metadataModalVisible: boolean;
+
   selectedLayer;
   selectedLayerKeys;
   selectedDS;
@@ -29,7 +29,6 @@ export class HsAddDataMetadataDialogComponent
   ) {}
 
   ngOnInit(): void {
-    this.metadataModalVisible = true;
     this.selectedDS = this.data.selectedDS;
     this.selectedLayer = this.data.selectedLayer;
     this.selectedLayerKeys = Object.keys(this.selectedLayer);
@@ -53,7 +52,6 @@ export class HsAddDataMetadataDialogComponent
   }
 
   close(): void {
-    this.metadataModalVisible = false;
     this.hsDialogContainerService.destroy(this);
   }
 }
