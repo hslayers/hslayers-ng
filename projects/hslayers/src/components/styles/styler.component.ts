@@ -420,7 +420,7 @@ export class HsStylerComponent implements OnDestroy {
   /**
    * Get geometry type and title for selected layer
    */
-  private refreshLayerDefinition(): void {
+  refreshLayerDefinition(): void {
     if (
       this.HsStylerService.layer === undefined ||
       this.HsStylerService.layer === null
