@@ -60,14 +60,18 @@ export class HsLayerEditorDimensionsComponent {
    * @returns true if layer has any dimensions
    */
   isLayerWithDimensions(): boolean {
-    if (this.layer == undefined) {
+    if (this.layer === undefined) {
       return false;
     }
     const dimensions = getDimensions(this.layer);
-    if (dimensions == undefined) {
+    if (dimensions === undefined) {
       return false;
     }
-    return Object.keys(dimensions).length > 0;
+    return (
+      Object.values(dimensions).filter((dim) => {
+        return dim.onlyInEditor;
+      }).length > 0
+    );
   }
 
   dimensionChanged(dimension: HsDimensionDescriptor): void {
