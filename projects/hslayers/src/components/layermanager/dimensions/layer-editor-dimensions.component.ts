@@ -1,6 +1,4 @@
 import {Component, Input} from '@angular/core';
-
-import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Layer} from 'ol/layer';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
@@ -50,52 +48,6 @@ export class HsLayerEditorDimensionsComponent {
         if (available) {
           this.dimensions.push(new HsDimensionDescriptor(key, dimension));
         }
-      }
-    }
-  }
-
-  /**
-   * Test if layer has dimensions
-   * @returns true if layer has any dimensions
-   */
-  isLayerWithDimensions(): boolean {
-    if (this.layer === undefined) {
-      return false;
-    }
-    const dimensions = getDimensions(this.layer);
-    if (dimensions === undefined) {
-      return false;
-    }
-    return Object.values(dimensions).length > 0;
-  }
-
-  dimensionChanged(dimension: HsDimensionDescriptor): void {
-    dimension.postProcessDimensionValue();
-    //Dimension can be linked to multiple layers
-    for (const layer of this.hsMapService.map.getLayers().getArray()) {
-      const iteratedDimensions = getDimensions(layer);
-      if (
-        iteratedDimensions &&
-        Object.keys(iteratedDimensions).filter(
-          (dimensionIterator) =>
-            iteratedDimensions[dimensionIterator] == dimension.originalDimension
-        ).length > 0 //Dimension also linked to this layer?
-      ) {
-        const src = layer.getSource();
-        if (
-          this.hsUtilsService.instOf(src, TileWMS) ||
-          this.hsUtilsService.instOf(src, ImageWMS)
-        ) {
-          const params = src.getParams();
-          params[dimension.name] = dimension.value;
-          src.updateParams(params);
-        } else if (this.hsUtilsService.instOf(src, XYZ)) {
-          src.refresh();
-        }
-        this.hsEventBusService.layermanagerDimensionChanges.next({
-          layer: layer,
-          dimension: dimension.originalDimension,
-        });
       }
     }
   }

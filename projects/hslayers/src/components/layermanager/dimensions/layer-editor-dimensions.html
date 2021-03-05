@@ -1,9 +1,9 @@
-<div [hidden]="!isLayerWithDimensions()">
+<div [hidden]="!hsDimensionService.isLayerWithDimensions(layer)">
     <p style="text-align: center; font-weight: bold;">{{'LAYERMANAGER.dimensions' | translate}}</p>
     <div class="form-inline" *ngFor="let dimension of dimensions">
         <label class="control-label" style="width: 100%; justify-content: left;">{{dimension.label || dimension.name}}:</label>
 
-        <select class="form-control" style="width: 100%" [(ngModel)]="dimension.modelValue" [ngModelOptions]="{standalone: true}" *ngIf="dimension.type == null" (change)="dimensionChanged(dimension)">
+        <select class="form-control" style="width: 100%" [(ngModel)]="dimension.modelValue" [ngModelOptions]="{standalone: true}" *ngIf="dimension.type == null" (change)="hsDimensionService.dimensionChanged(dimension)">
             <option [ngValue]="dimension_value" *ngFor="let dimension_value of dimension.values">
                 {{dimension_value}}</option>
         </select>
@@ -31,11 +31,11 @@
             </div> -->
         </div>
         <div class="input-group flex-fill" *ngIf="dimension.type == 'datetime' || dimension.type == 'date'">
-            <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>
+            <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
             </div>
         </div>
-        <ngb-timepicker *ngIf="dimension.type == 'datetime'" size="small" [(ngModel)]="dimension.modelTimeValue" (ngModelChange)="dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+        <ngb-timepicker *ngIf="dimension.type == 'datetime'" size="small" [(ngModel)]="dimension.modelTimeValue" (ngModelChange)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
     </div>
 </div>
