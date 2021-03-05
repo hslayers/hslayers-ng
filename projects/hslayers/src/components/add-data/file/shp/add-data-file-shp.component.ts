@@ -134,17 +134,7 @@ export class HsAddDataFileShpComponent implements OnInit {
       })
       .then((descriptor) => {
         this.resultCode = 'success';
-        // this.HsAddDataUrlWmsService.addService(
-        //   tweakGeoserverUrl(descriptor.wms.url),
-        //   undefined,
-        //   this.name,
-        //   undefined,
-        //   this.hsUtilsService.undefineEmptyString(this.folder_name)
-        // );
-        console.log('selecting');
-
         this.HsAddDataService.selectType('url');
-        console.log('owsFilling');
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
             type: 'wms',
