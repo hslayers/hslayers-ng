@@ -180,7 +180,7 @@ export class HsLayerSynchronizerService {
         this
       )
     );
-    f.on('propertychange', (e) => this.handleFeatureChange(e.target));
+    f.on('propertychange', (e) => this.handleFeaturePropertyChange(e.target));
   }
 
   /**
@@ -188,16 +188,14 @@ export class HsLayerSynchronizerService {
    * @param feature
    */
   handleFeatureChange(feature: Feature): void {
-    const featureCopy = feature;
-    this.sync([], [], [feature], this.HsMapService.getLayerForFeature(feature));
-    this.sync(
-      [featureCopy],
-      [],
-      [],
-      this.HsMapService.getLayerForFeature(featureCopy)
-    );
+    this.sync([], [feature], [], this.HsMapService.getLayerForFeature(feature));
   }
-
+  handleFeaturePropertyChange(feature: Feature): void {
+    //NOTE Due to WFS specification, attribute addition is not possible, so we must delete the feature before.
+    this.sync([], [], [feature], this.HsMapService.getLayerForFeature(feature));
+    //NOTE only then we can add feature with new attributes again.
+    this.sync([feature], [], [], this.HsMapService.getLayerForFeature(feature));
+  }
   /**
    * @param add
    * @param upd
