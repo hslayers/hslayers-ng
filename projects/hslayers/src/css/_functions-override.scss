@@ -112,6 +112,17 @@
   // @return (h: $h, s: $s, l: $l, a: $a);
 }
 
+@function getUnit($value) {
+  @return str-slice($value * 0 + "", 2, -1);
+}
+
+@function unitValid($value){
+  @if (type-of($value) != 'string' and getUnit($value) == ""){
+    $value: $value + 0%;
+  };
+  @return $value
+}
+
 @function render-hsla($h, $s, $l, $a: 1) {
   @return hsla($h, $s, $l, $a);
 }
@@ -143,8 +154,9 @@
 
   $c: to-hsl($color);
   $h: map-get($c, h);
-  $s: map-get($c, s);
-  $l: map-get($c, l);
+  $s: unitValid(map-get($c, s));
+  $l: unitValid(map-get($c, l));
+  
   @return render-hsla($h, $s, $l, $alpha);
 }
 
