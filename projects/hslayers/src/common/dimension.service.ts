@@ -1,14 +1,25 @@
 import moment from 'moment';
 import momentinterval from 'moment-interval';
+import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 
+import {HsDimensionDescriptor} from '../components/layermanager/dimensions/dimension.class';
+import {HsEventBusService} from '../components/core/event-bus.service';
 import {HsLogService} from './log/log.service';
+import {HsMapService} from '../components/map/map.service';
+import {HsUtilsService} from '../components/utils/utils.service';
+import {getDimensions} from './layer-extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsDimensionService {
-  constructor(public $log: HsLogService) {}
+  constructor(
+    public $log: HsLogService,
+    private hsEventBusService: HsEventBusService,
+    private hsUtilsService: HsUtilsService,
+    private hsMapService: HsMapService
+  ) {}
 
   prepareTimeSteps(step_string) {
     const step_array = step_string.split(',');
@@ -97,5 +108,53 @@ export class HsDimensionService {
         }
       }
     }
+  }
+
+  dimensionChanged(dimension: HsDimensionDescriptor): void {
+    dimension.postProcessDimensionValue();
+    //Dimension can be linked to multiple layers
+    for (const layer of this.hsMapService.map.getLayers().getArray()) {
+      const iteratedDimensions = getDimensions(layer);
+      if (
+        iteratedDimensions &&
+        Object.keys(iteratedDimensions).filter(
+          (dimensionIterator) =>
+            iteratedDimensions[dimensionIterator] == dimension.originalDimension
+        ).length > 0 //Dimension also linked to this layer?
+      ) {
+        const src = layer.getSource();
+        if (
+          this.hsUtilsService.instOf(src, TileWMS) ||
+          this.hsUtilsService.instOf(src, ImageWMS)
+        ) {
+          const params = src.getParams();
+          params[dimension.name == 'time' ? 'TIME' : dimension.name] =
+            dimension.value;
+          src.updateParams(params);
+        } else if (this.hsUtilsService.instOf(src, XYZ)) {
+          src.refresh();
+        }
+        this.hsEventBusService.layermanagerDimensionChanges.next({
+          layer: layer,
+          dimension: dimension.originalDimension,
+        });
+      }
+    }
+  }
+
+  /**
+   * Test if layer has dimensions
+   * @returns true if layer has any dimensions
+   */
+  isLayerWithDimensions(layer): boolean {
+    if (layer === undefined) {
+      return false;
+    }
+
+    const dimensions = getDimensions(layer);
+    if (dimensions === undefined) {
+      return false;
+    }
+    return Object.values(dimensions).length > 0;
   }
 }
