@@ -66,11 +66,7 @@ export class HsLayerEditorDimensionsComponent {
     if (dimensions === undefined) {
       return false;
     }
-    return (
-      Object.values(dimensions).filter((dim) => {
-        return dim.onlyInEditor;
-      }).length > 0
-    );
+    return Object.values(dimensions).length > 0;
   }
 
   dimensionChanged(dimension: HsDimensionDescriptor): void {
