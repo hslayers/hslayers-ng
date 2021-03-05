@@ -1,25 +1,15 @@
 const refresh = require('passport-oauth2-refresh');
+const got = require('got');
 require('dotenv').config();
 
-//const refresh_authn_info_if_needed = async (req, res, next) => {
-//  if (req.session.passport && req.session.passport.user) {
-//    const user = req.session.passport.user;
-//    const provider = PROVIDERS[user.authn.iss_id];
-//    await provider.refresh_authn_info_if_needed(req);
-//  }
-//};
 
+exports.addIncomingTimestamp = (req, res) => {
+  req.incoming_timestamp = Date.now();
+};
 
-//exports.add_incoming_timestamp = (req, res, next) => {
-//  const d = new Date();
-//  const seconds = Math.round(d.getTime() / 1000);
-//  req.incoming_timestamp = seconds;
-//};
-
-exports.ensure_username = async (access_token, profile) => {
+exports.ensureUsername = async (access_token, profile) => {
   if (!profile['username']) {
     var response = await got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
-      method: 'PATCH',
       responseType: 'json',
       headers: {
         'AuthorizationIssUrl': process.env.OAUTH2_AUTH_URL,
@@ -32,23 +22,35 @@ exports.ensure_username = async (access_token, profile) => {
   return profile;
 };
 
-const get_authn_headers = (user) => {
+exports.deleteUserSession = async (req) => {
+  let authenticated = !!(req.session.passport && req.session.passport.user);
+  if (authenticated) {
+    const user = req.session.passport.user;
+
+    try {
+
+      let response = await got.delete(process.env.LAYMAN_USER_PROFILE_URL, {
+        headers: getAuthenticationHeaders(user)
+      });
+
+    } catch (e) {
+      console.log('Error during DELETE User Session', e);
+    }
+  }
+  return null;
+};
+
+const getAuthenticationHeaders = (user) => {
   return {
-    AuthorizationIssUrl: user.authn.iss,
+    AuthorizationIssUrl: process.env.OAUTH2_AUTH_URL,
     Authorization: `Bearer ${user.authn.accessToken}`,
   }
 };
 
-exports.add_authn_headers = (proxyReq, req, res) => {
-  this.check_token_expiration(req, 'oauth2');
-
-  const d = new Date();
-  const seconds = Math.round(d.getTime() / 1000);
-  proxyReq.incoming_timestamp = seconds;
-
+exports.addAuthenticationHeaders = (proxyReq, req, res) => {
   if (req.session.passport && req.session.passport.user) {
     const user = req.session.passport.user;
-    const headers = get_authn_headers(user);
+    const headers = getAuthenticationHeaders(user);
     Object.keys(headers).forEach(k => {
       const v = headers[k];
       proxyReq.setHeader(k, v);
@@ -56,7 +58,7 @@ exports.add_authn_headers = (proxyReq, req, res) => {
   }
 };
 
-exports.allow_origin = (proxyRes, req, res) => {
+exports.allowOrigin = (proxyRes, req, res) => {
   var whitelist = JSON.parse(process.env.CORS_WHITELIST);
   var origin = req.header('Origin');
   if (whitelist.indexOf(origin) !== -1) {
@@ -64,17 +66,41 @@ exports.allow_origin = (proxyRes, req, res) => {
   }
 };
 
-exports.check_token_expiration = (req, strategyName) => {
+exports.checkTokenExpiration = (req, strategyName) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authn) {
-    if (Math.round(Date.now() / 1000) - 10 > req.session.passport.user.authn.expires) {
-      refresh.requestNewAccessToken(strategyName, req.session.passport.user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
-        req.session.passport.user.authn = {
-          accessToken: accessToken,
-          expires: Date.now() + extraParams.expires_in,
-          refreshToken: refreshToken,
-          iss: process.env.OAUTH2_AUTH_URL
-        };
-      });
+    let incomingTimestamp = req.incoming_timestamp;
+    let refreshBeforeTimeSpan = process.env.REFRESH_SESSION_BEFORE || 10000; // 10 seconds
+
+    // session is about to expire in the given time span, refresh the token
+    if (incomingTimestamp - refreshBeforeTimeSpan > req.session.passport.user.authn.expires) {
+      refreshAuthentication(req, req.session.passport.user, strategyName);
     }
   }
+};
+
+const refreshAuthentication = (req, user, strategyName) => {
+  if (user.authn.refreshing) {
+    let i = 0;
+    const timer = setTimeout(() => {
+      user = req.session.passport && req.session.passport.user;
+      if (!user || !user.authn.refreshing || i > 100) {
+        clearTimeout(timer);
+      }
+    }, 100);
+    if (i > 100) {
+      throw Error('OAuth2 refresh timeout reached!');
+    }
+    return;
+  }
+
+  user.authn.refreshing = true;
+
+  refresh.requestNewAccessToken(strategyName, user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
+    req.session.passport.user.authn = {
+      accessToken: accessToken,
+      expires: Date.now() + extraParams.expires_in,
+      refreshToken: refreshToken,
+      iss: process.env.OAUTH2_AUTH_URL
+    };
+  });
 };

@@ -11,8 +11,8 @@ const sqlite = require('better-sqlite3');
 const got = require('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const authn_util = require("./oauth2/util");
-const session_util = require('./oauth2/session');
+const authnUtil = require("./oauth2/util");
+const sessionUtil = require('./oauth2/session');
 
 const app = express();
 
@@ -31,11 +31,11 @@ var strategy = new OAuth2({
   callbackURL: process.env.OAUTH2_CALLBACK_URL
 },
   async function (accessToken, refreshToken, extraParams, profile, cb) {
-    profile = await authn_util.ensure_username(accessToken, profile);
+    profile = await authnUtil.ensureUsername(accessToken, profile);
 
     profile.authn = {
       accessToken: accessToken,
-      expires: Math.round(Date.now() / 1000) + extraParams.expires_in,
+      expires: req.incoming_timestamp + extraParams.expires_in,
       refreshToken: refreshToken,
       iss: process.env.OAUTH2_AUTH_URL
     };
@@ -55,9 +55,10 @@ passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
-app.use(session_util.create_express_session());
+app.use(sessionUtil.createExpressSession());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(authnUtil.addIncomingTimestamp);
 
 // Get user profile from Layman instead of Liferay
 OAuth2.prototype.userProfile = (access_token, done) => {
@@ -86,15 +87,32 @@ app.use(`/rest`,
   createProxyMiddleware({
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
-    onProxyReq: authn_util.add_authn_headers,
-    onProxyRes: authn_util.allow_origin
+    onProxyReq: (proxyReq, req, res) => {
+      authnUtil.addIncomingTimestamp(req, res);
+      authnUtil.checkTokenExpiration(req, strategy.name);
+      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+    },
+    onProxyRes: authnUtil.allowOrigin
+  }),
+);
+// Layman proxy for WFS transactions endpoint
+app.use(`/geoserver`,
+  createProxyMiddleware({
+    target: process.env.LAYMAN_BASEURL,
+    changeOrigin: true,
+    onProxyReq: (proxyReq, req, res) => {
+      authnUtil.addIncomingTimestamp(req, res);
+      authnUtil.checkTokenExpiration(req, strategy.name);
+      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+    },
+    onProxyRes: authnUtil.allowOrigin
   }),
 );
 
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    authn_util.check_token_expiration(req, strategy.name);
+    authnUtil.checkTokenExpiration(req, strategy.name);
     res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
   }
   else
@@ -103,11 +121,15 @@ app.get('/', (req, res) => {
 
 app.get('/login', passport.authenticate('oauth2'));
 
-// TODO logout !!!
+app.get('/logout', (req, res) => {
+  authnUtil.deleteUserSession(req);
+  req.logout();
+  res.redirect('/');
+});
 
 app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    authn_util.check_token_expiration(req, strategy.name);
+    authnUtil.checkTokenExpiration(req, strategy.name);
     //res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
     res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>`);
   }
