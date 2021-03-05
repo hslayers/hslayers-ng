@@ -52,8 +52,6 @@ export class HsAddDataCatalogueComponent {
     });
     this.loaderImage =
       this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
-
-    console.log('ts')
   }
 
   translateString(module: string, text: string): string {
