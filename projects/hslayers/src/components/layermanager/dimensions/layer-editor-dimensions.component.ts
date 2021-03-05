@@ -106,9 +106,9 @@ export class HsLayerEditorDimensionsComponent {
     const type = Object.keys(dimensions).find(
       (key) => dimensions[key] === dimension
     );
-    // value of time.disabled used inversely here intentionally
+    // value of time.onlyInEditor used inversely here intentionally
     // ( => replacement for inline time-editor)
-    return type === 'time' && dimensions.time?.disabled;
+    return type === 'time' && dimensions.time?.onlyInEditor;
   }
 
   //TODO: remove with moment elimination

@@ -70,12 +70,12 @@ export type Editor = {
   defaultAttributes?: any;
 };
 export type popUpAttribute = {
-  attribute?: string;
+  attribute: string;
   displayFunction?: any;
   label?: string;
 };
 export type popUp = {
-  attributes?: Array<popUpAttribute>;
+  attributes?: Array<popUpAttribute | string>;
 };
 export function setTitle(layer: Layer, title: string): void {
   layer.set(TITLE, title);
@@ -169,8 +169,8 @@ export function getDefinition(layer: Layer): Definition {
 }
 
 export interface Dimension {
-  disabled?: boolean;
   label: string;
+  onlyInEditor?: boolean;
   type?: 'datetime' | 'date';
   value?: any;
   default?: any;
