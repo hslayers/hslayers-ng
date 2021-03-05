@@ -1,4 +1,4 @@
-import {Component, Input, ViewRef} from '@angular/core';
+import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
@@ -18,10 +18,10 @@ import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
   selector: 'hs-draw-layer-metadata',
   templateUrl: './partials/draw-layer-metadata.html',
 })
-export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
+export class HsDrawLayerMetadataDialogComponent
+  implements HsDialogComponent, OnInit {
   @Input() data: any;
 
-  AddNewDrawLayerModalVisible = true;
   newLayerPath: string;
   attributes: Array<any> = [];
   layer: any;
@@ -79,21 +79,20 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
 
     this.data.addDrawLayer(this.layer);
     this.data.fillDrawableLayers();
-    this.AddNewDrawLayerModalVisible = false;
     this.data.tmpDrawLayer = false;
 
     this.awaitLayerSync(this.layer).then(() => {
       this.layer.getSource().dispatchEvent('addfeature');
     });
-  }
-
-  cancel() {
-    this.data.selectedLayer = this.data.previouslySelected;
-    this.AddNewDrawLayerModalVisible = false;
     this.HsDialogContainerService.destroy(this);
   }
 
-  async awaitLayerSync(layer) {
+  cancel(): void {
+    this.data.selectedLayer = this.data.previouslySelected;
+    this.HsDialogContainerService.destroy(this);
+  }
+
+  async awaitLayerSync(layer): Promise<any> {
     while (getHsLaymanSynchronizing(layer)) {
       await new Promise((r) => setTimeout(r, 200));
     }
@@ -108,8 +107,7 @@ export class HsDrawLayerMetadataDialogComponent implements HsDialogComponent {
     this.attributes.push({id: Math.random(), name: '', value: ''});
   }
 
-  selectLayer(layer) {
+  selectLayer(layer): void {
     this.data.selectLayer(layer);
-    this.AddNewDrawLayerModalVisible = false;
   }
 }

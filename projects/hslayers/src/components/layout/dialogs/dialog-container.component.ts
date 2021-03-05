@@ -1,9 +1,13 @@
 import {
   Component,
   ComponentFactoryResolver,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
 import {HsDialogHostDirective} from './dialog-host.directive';
@@ -13,26 +17,35 @@ import {HsDialogItem} from './dialog-item';
   selector: 'hs-dialog-container',
   templateUrl: './dialog-container.html',
 })
-export class HsDialogContainerComponent implements OnInit {
+export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
+  subscriptions: Subscription[] = [];
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngOnInit(): void {
-    this.HsDialogContainerService.dialogObserver.subscribe(
-      (item: HsDialogItem) => {
-        this.loadDialog(item);
-      }
+    this.subscriptions.push(
+      this.HsDialogContainerService.dialogObserver.subscribe(
+        (item: HsDialogItem) => {
+          this.loadDialog(item);
+        }
+      )
     );
-    this.HsDialogContainerService.dialogDestroyObserver.subscribe(
-      (item: HsDialogComponent) => {
-        this.destroyDialog(item);
-      }
+    this.subscriptions.push(
+      this.HsDialogContainerService.dialogDestroyObserver.subscribe(
+        (item: HsDialogComponent) => {
+          this.destroyDialog(item);
+        }
+      )
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   destroyDialog(dialog: HsDialogComponent) {
