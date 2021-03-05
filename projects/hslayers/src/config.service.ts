@@ -119,6 +119,7 @@ export class HsConfig {
    * The full resulting config is provided in the subscriber as a parameter
    */
   configChanges?: Subject<HsConfig> = new Subject();
+  timeDisplayFormat?: string;
   constructor() {}
 
   update?(newConfig: HsConfig): void {
