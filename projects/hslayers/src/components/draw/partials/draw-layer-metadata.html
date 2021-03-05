@@ -1,4 +1,4 @@
-<div [ngClass]="{'in': AddNewDrawLayerModalVisible}" class="modal hs-draw-layer-metadata" tabindex="-1" role="dialog"
+<div class="modal in hs-draw-layer-metadata" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -7,7 +7,7 @@
                     <h4 class="modal-title">
                         {{'COMMON.newDrawingLayer' | translate}}
                     </h4>
-                    <button type="button" (click)="AddNewDrawLayerModalVisible = false" class="close"
+                    <button type="button" (click)="cancel()" class="close"
                         data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                             class="sr-only">{{'COMMON.close' | translate}}</span></button>
                 </div>
