@@ -18,7 +18,7 @@
                 (change)="hsLayerManagerWmstService.setLayerTime(layer, '')">
             -->
             <!-- currentLayer.date_increment -->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-4">
                     <small>{{formatDate(dateToNonUtc(layer.date_from), layer.date_format)}}</small>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="col-md-4">
                     <small>{{formatDate(dateToNonUtc(layer.date_till), layer.date_format)}}</small>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="input-group flex-fill" *ngIf="dimension.type == 'datetime' || dimension.type == 'date'">
             <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>

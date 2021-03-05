@@ -12,7 +12,6 @@ import {HsLayerManagerWmstService} from '../layermanager-wmst.service';
 import {HsMapService} from '../../map/map.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
-import moment from 'moment';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.html',
@@ -113,26 +112,5 @@ export class HsLayerEditorDimensionsComponent {
     // value of time.onlyInEditor used inversely here intentionally
     // ( => replacement for inline time-editor)
     return type === 'time' && dimensions.time?.onlyInEditor;
-  }
-
-  //TODO: remove with moment elimination
-  /**
-   * @function dateToNonUtc
-   * @memberOf HsLayerEditorComponent
-   * @param {Date} d Date to convert
-   * @description Convert date to non Utc format
-   * @returns {Date} Date with timezone added
-   */
-  dateToNonUtc(d: Date): Date | undefined {
-    if (d == undefined) {
-      return;
-    }
-    const noutc = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
-    return noutc;
-  }
-
-  //TODO: remove with moment elimination
-  formatDate(date, format) {
-    return moment(date).format(format);
   }
 }
