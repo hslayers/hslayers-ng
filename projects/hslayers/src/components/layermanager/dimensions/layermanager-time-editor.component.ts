@@ -1,4 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerWmstService} from '../layermanager-wmst.service';
@@ -30,7 +31,8 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   constructor(
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService,
-    public hsLayoutService: HsLayoutService
+    public hsLayoutService: HsLayoutService,
+    private hsConfig: HsConfig
   ) {
     this.hsEventBusService.layerTimeChanges.subscribe(({layer, _}) => {
       if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
@@ -148,7 +150,9 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   }
 
   private setDateTimeFormatting() {
-    if (
+    if (this.hsConfig.timeDisplayFormat) {
+      this.timeDisplayFormat = this.hsConfig.timeDisplayFormat;
+    } else if (
       this.availableTimes.every((time) => time.endsWith('00-00T00:00:00.000Z'))
     ) {
       this.timeDisplayFormat = 'yyyy';
