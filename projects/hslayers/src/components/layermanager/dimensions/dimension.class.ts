@@ -11,8 +11,9 @@ export class HsDimensionDescriptor {
   //Original dimension object can be shared between multiple layers.
   constructor(public name: string, public originalDimension: any) {
     this.type = this.originalDimension.type;
-    this.value = this.originalDimension.value;
-    this.modelValue = this.originalDimension.value;
+    this.value = this.originalDimension.value ?? this.originalDimension.default;
+    this.modelValue =
+      this.originalDimension.value ?? this.originalDimension.default;
     if (typeof this.value.getMonth !== 'function') {
       // Duck-type check if the passed value is an instance of Date.
       // If not, do not process it.
