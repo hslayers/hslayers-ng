@@ -245,7 +245,7 @@ export class HsLayerManagerWmstService {
     const olLayer = currentLayer.layer;
     //parse config set at a Layer level
     const hsLayerTimeConfig = getDimensions(olLayer)?.time;
-    if (hsLayerTimeConfig?.disabled) {
+    if (hsLayerTimeConfig?.onlyInEditor) {
       return;
     }
     //parse parametres available at the WM(T)S level
