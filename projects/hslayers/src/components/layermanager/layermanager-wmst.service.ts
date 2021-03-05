@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 
 import {HsDimensionDescriptor} from './dimensions/dimension.class';
+import {HsDimensionService} from '../../common/dimension.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
@@ -18,7 +19,8 @@ export class HsLayerManagerWmstService {
   constructor(
     public HsEventBusService: HsEventBusService,
     public hsLog: HsLogService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    private hsDimensionService: HsDimensionService
   ) {}
 
   /**
@@ -240,7 +242,7 @@ export class HsLayerManagerWmstService {
    */
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
-    serviceLayer: WmsLayer
+    serviceLayer?: WmsLayer
   ): void {
     const olLayer = currentLayer.layer;
     //parse config set at a Layer level
@@ -250,14 +252,21 @@ export class HsLayerManagerWmstService {
     }
     //parse parametres available at the WM(T)S level
     let serviceLayerTimeConfig;
-    if (!Array.isArray(serviceLayer.Dimension)) {
-      serviceLayerTimeConfig = serviceLayer.Dimension;
-    } else {
-      serviceLayerTimeConfig = serviceLayer.Dimension?.find(
-        (dim) => dim.name == 'time'
-      ); // Let's assume there will be only one time dimension..
+    if (serviceLayer) {
+      if (!Array.isArray(serviceLayer.Dimension)) {
+        serviceLayerTimeConfig = serviceLayer.Dimension;
+      } else {
+        serviceLayerTimeConfig = serviceLayer.Dimension?.find(
+          (dim) => dim.name == 'time'
+        ); // Let's assume there will be only one time dimension..
+      }
+    } else if (hsLayerTimeConfig) {
+      serviceLayerTimeConfig = hsLayerTimeConfig;
     }
-    const timePoints = this.parseTimePoints(serviceLayerTimeConfig.values);
+
+    const timePoints = Array.isArray(serviceLayerTimeConfig.values)
+      ? serviceLayerTimeConfig.values
+      : this.parseTimePoints(serviceLayerTimeConfig.values);
     // Gracefully fallback throught time settings to find the best default value
     let today = new Date().toISOString();
     today = today.slice(0, today.indexOf('T'));
@@ -273,7 +282,7 @@ export class HsLayerManagerWmstService {
     }
     currentLayer.time = {
       default: defaultTime,
-      timePoints: this.parseTimePoints(serviceLayerTimeConfig.values),
+      timePoints,
       //time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
       //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
       //date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
@@ -327,9 +336,15 @@ export class HsLayerManagerWmstService {
         d = moment.utc(parseInt(dateIncrement));
     }*/
     //currentLayer.time = d.toDate();
-    currentLayer.layer.getSource().updateParams({
-      'TIME': newTime, //d.toISOString(),
-    });
+    const dimensions = getDimensions(currentLayer.layer);
+    this.hsDimensionService.dimensionChanged(
+      new HsDimensionDescriptor('time', dimensions['time'])
+    );
+    if (currentLayer.layer.getSource().updateParams) {
+      currentLayer.layer.getSource().updateParams({
+        'TIME': newTime, //d.toISOString(),
+      });
+    }
     this.HsEventBusService.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
