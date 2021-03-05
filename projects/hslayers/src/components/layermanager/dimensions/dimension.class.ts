@@ -14,28 +14,26 @@ export class HsDimensionDescriptor {
     this.value = this.originalDimension.value ?? this.originalDimension.default;
     this.modelValue =
       this.originalDimension.value ?? this.originalDimension.default;
-    if (typeof this.value.getMonth !== 'function') {
+    if (typeof this.value.getMonth == 'function') {
       // Duck-type check if the passed value is an instance of Date.
-      // If not, do not process it.
-      return;
-    }
-    if (this.type == 'datetime') {
-      this.modelValue = {
-        year: this.value.getFullYear(),
-        month: this.value.getMonth() + 1,
-        day: this.value.getDate(),
-      };
-      this.modelTimeValue = {
-        hour: this.value.getHours(),
-        minute: this.value.getMinutes(),
-      };
-    }
-    if (this.type == 'date') {
-      this.modelValue = {
-        year: this.value.getFullYear(),
-        month: this.value.getMonth() + 1,
-        day: this.value.getDate(),
-      };
+      if (this.type == 'datetime') {
+        this.modelValue = {
+          year: this.value.getFullYear(),
+          month: this.value.getMonth() + 1,
+          day: this.value.getDate(),
+        };
+        this.modelTimeValue = {
+          hour: this.value.getHours(),
+          minute: this.value.getMinutes(),
+        };
+      }
+      if (this.type == 'date') {
+        this.modelValue = {
+          year: this.value.getFullYear(),
+          month: this.value.getMonth() + 1,
+          day: this.value.getDate(),
+        };
+      }
     }
     this.label = this.originalDimension.label;
     this.values = this.originalDimension.values;
