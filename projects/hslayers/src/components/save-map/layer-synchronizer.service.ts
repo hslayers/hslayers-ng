@@ -92,7 +92,7 @@ export class HsLayerSynchronizerService {
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initialy also get features from server
    * @param layer Layer to add
-   * @returns If layer is synchronizable
+   * @return If layer is synchronizable
    */
   async startMonitoringIfNeeded(layer: Layer): Promise<boolean> {
     const layerSource = layer.getSource();
