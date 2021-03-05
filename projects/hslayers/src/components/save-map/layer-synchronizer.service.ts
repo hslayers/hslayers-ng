@@ -188,7 +188,14 @@ export class HsLayerSynchronizerService {
    * @param feature
    */
   handleFeatureChange(feature: Feature): void {
-    this.sync([], [feature], [], this.HsMapService.getLayerForFeature(feature));
+    const featureCopy = feature;
+    this.sync([], [], [feature], this.HsMapService.getLayerForFeature(feature));
+    this.sync(
+      [featureCopy],
+      [],
+      [],
+      this.HsMapService.getLayerForFeature(featureCopy)
+    );
   }
 
   /**
