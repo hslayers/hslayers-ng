@@ -169,18 +169,26 @@ function extendAttributes(options, objects) {
   }
 }
 
+/**
+ * @param {string} url SPARQL query URL
+ * @returns true if the query is against SPOI endpoint (currently foodie-cloud)
+ */
+function isSpoiUrl(url) {
+  return url.includes('foodie-cloud.org/sparql');
+}
+
 const $http = angular.injector(['ng']).get('$http');
 
 /**
  * @param {object} options
+ * @param {string} options.url
+ * @param {any} options.projection
  * @param {boolean} [options.clear_on_move]
  * @param {boolean} [options.hsproxy]
  * @param {string} [options.geom_attribute]
- * @param {string} options.url
  * @param {string} [options.updates_url]
  * @param {string} [options.category]
  * @param {any} [options.strategy]
- * @param {any} options.projection
  * @returns {Vector} New vector source
  */
 export const SparqlJson = function (options) {
@@ -213,30 +221,14 @@ export const SparqlJson = function (options) {
       first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
       second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
       extent = [...first_pair, ...second_pair];
+      const geof = isSpoiUrl(options.url)
+        ? 'bif:st_may_intersect'
+        : 'geof:sfIntersects';
       const s_extent = encodeURIComponent(
-        'FILTER(geof:sfIntersects("POLYGON((' +
-          extent[0] +
-          ' ' +
-          extent[1] +
-          ', ' +
-          extent[0] +
-          ' ' +
-          extent[3] +
-          ', ' +
-          extent[2] +
-          ' ' +
-          extent[3] +
-          ', ' +
-          extent[2] +
-          ' ' +
-          extent[1] +
-          ', ' +
-          extent[0] +
-          ' ' +
-          extent[1] +
-          '))"^^geo:wktLiteral, ' +
-          options.geom_attribute +
-          ')).'
+        `FILTER(${geof}(
+          "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
+        ${options.geom_attribute}
+        )).`
       );
       const tmp = p.split('&query=');
       p =
@@ -252,19 +244,19 @@ export const SparqlJson = function (options) {
         p =
           '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' + encodeURIComponent(p);
       }
-      if (console && typeof src.get('geoname') !== 'undefined') {
-        //console.log('Get ', src.get('geoname'));
-      }
+      /*if (console && typeof src.get('geoname') !== 'undefined') {
+        console.log('Get ', src.get('geoname'));
+      }*/
       this.loadCounter += 1;
       this.loadTotal += 1;
       $http({url: p}).then((response) => {
-        if (console) {
-          /*console.log(
+        /*if (console) {
+          console.log(
             'Finish ',
             this.get('geoname'),
             response.data.results.bindings.length
-          );*/
-        }
+          );
+        }*/
         src.loadCounter -= 1;
         if (this.options.updates_url) {
           let updates_query = this.options.updates_url;
