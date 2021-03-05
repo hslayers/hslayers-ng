@@ -16,6 +16,7 @@ import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
@@ -33,6 +34,7 @@ import {
   getBase,
   getCluster,
   getDeclutter,
+  getDimensions,
   getExclusive,
   getLegends,
   getPath,
@@ -140,9 +142,23 @@ export class HsLayerManagerService {
     public HsMapService: HsMapService,
     private HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private hsLayerEditorService: HsLayerEditorService
   ) {
     this.HsMapService.loaded().then(() => this.init());
+    this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
+      ({layer}) => {
+        const layerDescriptor = this.data.layers.find(
+          (ld) => ld.layer == layer
+        );
+        if (
+          layerDescriptor &&
+          this.HsLayermanagerWmstService.layerIsWmsT(layerDescriptor.layer)
+        ) {
+          this.HsLayermanagerWmstService.setupTimeLayer(layerDescriptor);
+        }
+      }
+    );
   }
 
   /**
