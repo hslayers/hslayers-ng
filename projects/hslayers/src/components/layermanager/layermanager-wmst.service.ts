@@ -337,24 +337,15 @@ export class HsLayerManagerWmstService {
     }*/
     //currentLayer.time = d.toDate();
     const dimensions = getDimensions(currentLayer.layer);
-    this.hsDimensionService.dimensionChanged(
-      new HsDimensionDescriptor('time', dimensions['time'])
+    const dimensionDesc = new HsDimensionDescriptor(
+      'time',
+      dimensions['time'] || dimensions['TIME']
     );
-    if (currentLayer.layer.getSource().updateParams) {
-      currentLayer.layer.getSource().updateParams({
-        'TIME': newTime, //d.toISOString(),
-      });
-    }
+    dimensionDesc.modelValue = newTime;
+    this.hsDimensionService.dimensionChanged(dimensionDesc);
     this.HsEventBusService.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
-    });
-    // For sync with hsCesium part
-    // TODO: refactor HsDimensionDescriptor class to not use moment and so on,
-    // then replace the null here with a meaningful value
-    this.HsEventBusService.layermanagerDimensionChanges.next({
-      layer: currentLayer.layer,
-      dimension: null,
     });
   }
 }
