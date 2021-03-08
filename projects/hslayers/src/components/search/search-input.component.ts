@@ -42,6 +42,10 @@ export class HsSearchInputComponent implements OnInit {
    * @function queryChanged
    */
   queryChanged(): void {
+    if (this.query.length == 0){
+      this.clear();
+      return;
+    }
     this.HsSearchService.request(this.query);
   }
   /**
