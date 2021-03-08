@@ -25,7 +25,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
     this.data = HsAddDataArcGisService.data;
 
@@ -61,7 +61,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   };
 
   /**
-   * @function selectAllLayers
+   * @param layers
    * @description Select all layers from service.
    */
   selectAllLayers(layers: any[]): void {
@@ -82,7 +82,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   }
 
   changed(): void {
-    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
       this.data.services
     );
   }

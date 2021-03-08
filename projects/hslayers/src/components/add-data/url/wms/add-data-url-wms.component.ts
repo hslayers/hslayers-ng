@@ -61,7 +61,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
     this.HsAddDataUrlWmsService.showDetails = false;
   }
 
-  searchForChecked(service) {
+  searchForChecked(service): void {
     this.checkedLayers[service.Name] = service.checked;
     this.hasChecked = Object.values(this.checkedLayers).some(
       (value) => value === true

@@ -9,7 +9,6 @@ export class HsNestedLayersTableComponent {
   @Output() layerChecked = new EventEmitter<string>(); //output
 
   constructor() {}
-
   checked(layer): void {
     this.layerChecked.emit(layer);
   }
