@@ -7,12 +7,12 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 
 @import "~ol/ol";
 
-.hsl,
-.hsl::before,
-.hsl::after,
-.hsl *
-.hsl *::before,
-.hsl *::after {
+hslayers,
+hslayers::before,
+hslayers::after,
+hslayers *,
+hslayers *::before,
+hslayers *::after {
   all: revert;
 }
 
