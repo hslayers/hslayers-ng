@@ -4,13 +4,8 @@
             class="btn btn-light btn-outline-secondary rounded-0 hs-toolbar-button"><i class="glyphicon icon-search"
                 [title]="'COMMON.search' | translate"></i></button>
     </div>
-    <input [(ngModel)]="query" [hidden]="!searchInputVisible" name="query"
+    <input [(ngModel)]="query" [hidden]="!searchInputVisible" name="query" 
         class="form-control hs-search-address-input rounded-0 hs-toolbar-button" [placeholder]="'COMMON.search' | translate"
         (ngModelChange)="queryChanged()">
-    <div class="input-group-append" *ngIf="clearvisible">
-        <button class="btn btn-light btn-outline-secondary" (click)="clear()"><span aria-hidden="true"
-                class="close"></span>x<span class="sr-only">
-                {{'COMMON.clear' | translate}}
-            </span></button>
-    </div>
+    <button class="clearSearch" (click)="clear()" *ngIf="clearvisible"><i class="icon-remove-circle"></i></button>
 </div>
