@@ -12,7 +12,7 @@ import {HsToastService} from './toast.service';
         z-index: 150;
         border-style: none;
         display: flex;
-        width: 100%;
+        max-height: 90%;
         flex-direction: column;
       }
     `,
