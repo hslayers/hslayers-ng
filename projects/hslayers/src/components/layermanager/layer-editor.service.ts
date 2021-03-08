@@ -7,6 +7,7 @@ import {get as getProj, transform, transformExtent} from 'ol/proj';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -14,6 +15,7 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
+
 import {
   getCluster,
   getDeclutter,
@@ -44,7 +46,8 @@ export class HsLayerEditorService {
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
     public HsLegendService: HsLegendService,
-    public HsLayerSelectorService: HsLayerSelectorService
+    public HsLayerSelectorService: HsLayerSelectorService,
+    public HsLayerManagerMetadataService: HsLayerManagerMetadataService
   ) {
     this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.legendDescriptor = this.HsLegendService.getLayerLegendDescriptor(
@@ -88,9 +91,12 @@ export class HsLayerEditorService {
       const parser = new WMSCapabilities();
       const caps = parser.read(capabilities_xml);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
-        const foundDefs = caps.Capability.Layer.Layer.filter(
-          (layer_def) => layer_def.Name == layer.getSource().getParams().LAYERS
-        );
+        const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
+          this.HsLayerManagerMetadataService.identifyLayerObject(
+            layer.getSource().getParams().LAYERS,
+            lyr
+          )
+        ).filter((item) => item);
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
           extent = foundDef.EX_GeographicBoundingBox || foundDef.BoundingBox;
