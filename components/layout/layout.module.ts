@@ -1,6 +1,10 @@
-import {BootstrapComponent} from '../../bootstrap.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+
+import {BootstrapComponent} from '../../bootstrap.component';
+
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsCompositionsModule} from '../compositions/compositions.module';
 import {HsConfirmModule} from './../../common/confirm/confirm.module';
 import {HsDatasourcesModule} from '../datasource-selector/datasource-selector.module';
@@ -28,10 +32,11 @@ import {HsSearchModule} from '../search/search.module';
 import {HsShareModule} from '../permalink/share.module';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsStylerModule} from '../styles/styles.module';
+import {HsToastComponent} from './toast/toast.component';
 import {HsToastModule} from './toast/toast.module';
 import {HsToolbarModule} from '../toolbar/toolbar.module';
 import {HsTripPlannerModule} from '../trip_planner/trip-planner.module';
-import {TranslateModule} from '@ngx-translate/core';
+
 @NgModule({
   declarations: [
     BootstrapComponent,
@@ -74,6 +79,7 @@ import {TranslateModule} from '@ngx-translate/core';
     BootstrapComponent,
     HsDialogContainerComponent,
     HsLayoutComponent,
+    HsToastComponent,
   ],
   exports: [BootstrapComponent, HsDialogContainerComponent, HsLayoutComponent],
 })
