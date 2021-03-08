@@ -3,7 +3,7 @@ import {HsToastService} from './toast.service';
 
 @Component({
   selector: 'hs-toast',
-  templateUrl: './toast.html',
+  template: require('./toast.html'),
   styles: [
     `
       :host {
