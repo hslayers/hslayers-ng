@@ -188,29 +188,37 @@ function extendAttributes(options, objects) {
   }
 }
 
+/**
+ * @param {string} url SPARQL query URL
+ * @returns {boolean} true if the query is against SPOI endpoint (currently foodie-cloud)
+ */
+function isSpoiUrl(url: string): boolean {
+  return url.includes('foodie-cloud.org/sparql');
+}
+
 type SparqlOptions = {
+  url: string;
+  projection;
   clear_on_move?: boolean;
   hsproxy?: boolean;
   geom_attribute?: string;
-  url: string;
   updates_url?: string;
   category?: string;
   strategy?;
-  projection;
 };
 
 /**
  * Provides a source of features from SPAQRL endpoint
  *
  * @param {object} options
+ * @param {string} options.url
+ * @param {any} options.projection
  * @param {boolean} [options.clear_on_move]
  * @param {boolean} [options.hsproxy]
  * @param {string} [options.geom_attribute]
- * @param {string} options.url
  * @param {string} [options.updates_url]
  * @param {string} [options.category]
  * @param {any} [options.strategy]
- * @param {any} options.projection
  * @returns {Vector} New vector source
  */
 export class SparqlJson extends Vector {
@@ -251,30 +259,14 @@ export class SparqlJson extends Vector {
         first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
         second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
         extent = [...first_pair, ...second_pair];
+        const geof = isSpoiUrl(options.url)
+          ? 'bif:st_may_intersect'
+          : 'geof:sfIntersects';
         const s_extent = encodeURIComponent(
-          'FILTER(geof:sfIntersects("POLYGON((' +
-            extent[0] +
-            ' ' +
-            extent[1] +
-            ', ' +
-            extent[0] +
-            ' ' +
-            extent[3] +
-            ', ' +
-            extent[2] +
-            ' ' +
-            extent[3] +
-            ', ' +
-            extent[2] +
-            ' ' +
-            extent[1] +
-            ', ' +
-            extent[0] +
-            ' ' +
-            extent[1] +
-            '))"^^geo:wktLiteral, ' +
-            options.geom_attribute +
-            ')).'
+          `FILTER(${geof}(
+            "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
+          ${options.geom_attribute}
+          )).`
         );
         const tmp = p.split('&query=');
         p =
