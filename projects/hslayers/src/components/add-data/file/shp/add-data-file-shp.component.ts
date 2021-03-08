@@ -82,7 +82,7 @@ export class HsAddDataFileShpComponent implements OnInit {
   /**
    * @param endpoint Selected endpoint (should be Layman)
    * @param layerName Name of the layer to describe
-   * @returns {Promise} Description of Layman layer
+   * @return {Promise} Description of Layman layer
    */
   async describeNewLayer(
     endpoint: HsEndpoint,
@@ -133,7 +133,9 @@ export class HsAddDataFileShpComponent implements OnInit {
       })
       .then((descriptor) => {
         this.resultCode = 'success';
+
         this.HsAddDataService.selectType('url');
+
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
             type: 'wms',

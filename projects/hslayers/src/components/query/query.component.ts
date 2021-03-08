@@ -60,7 +60,10 @@ export class HsQueryComponent implements OnDestroy {
         this.subscriptions.push(
           this.HsQueryBaseService.getFeatureInfoStarted.subscribe((e) => {
             this.popup.hide();
-            if (this.HsQueryBaseService.currentPanelQueryable()) {
+            if (
+              this.HsQueryBaseService.currentPanelQueryable() &&
+              this.HsLayoutService.mainpanel != 'draw'
+            ) {
               this.HsLayoutService.setMainPanel('info');
             }
           })
