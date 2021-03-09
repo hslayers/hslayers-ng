@@ -15,6 +15,7 @@ require('http')
   .createServer((req, res) => {
     try {
       if (req.url == "" || req.url == "/") {
+        res.write('HSLayers server proxy<br />');
         res.write(`${getIP()}:${port}`);
         res.end();
       }
