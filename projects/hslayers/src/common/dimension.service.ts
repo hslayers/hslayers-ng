@@ -155,6 +155,10 @@ export class HsDimensionService {
     if (dimensions === undefined) {
       return false;
     }
-    return Object.values(dimensions).length > 0;
+    return (
+      Object.keys(dimensions).filter((k) => {
+        return k == 'time' ? dimensions[k].onlyInEditor : true;
+      }).length > 0
+    );
   }
 }
