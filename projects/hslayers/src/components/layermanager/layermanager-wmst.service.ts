@@ -24,53 +24,6 @@ export class HsLayerManagerWmstService {
   ) {}
 
   /**
-   * Get date format of time data based on time unit property
-   * @param time_unit
-   */
-  getDateFormatForTimeSlider(time_unit: string): string {
-    switch (time_unit) {
-      case 'FullYear':
-      case 'Month':
-      case 'Day':
-        return 'dd-MM-yyyy';
-      default:
-        return 'dd-MM-yyyy HH:mm';
-    }
-  }
-
-  /**
-   * Set time intervals for WMS-T (WMS with time support)
-   * @param {object} new_layer - Layer to set time intervals
-   * @param {object} metadata - Time dimension metadata for layer
-   */
-  setLayerTimeSliderIntervals(new_layer, metadata): void {
-    let d;
-    switch (new_layer.time_unit) {
-      case 'FullYear':
-        d = new Date(metadata.timeInterval[0]);
-        new_layer.min_time = d.getFullYear();
-        d = new Date(metadata.timeInterval[1]);
-        new_layer.max_time = d.getFullYear();
-        break;
-      case 'Month':
-        d = new Date(metadata.timeInterval[0]);
-        new_layer.min_time = 0;
-        const d2 = new Date(metadata.timeInterval[1]);
-        new_layer.max_time = d.monthDiff(d2);
-        break;
-      default:
-        new_layer.min_time = moment
-          .utc(metadata.timeInterval[0])
-          .toDate()
-          .getTime();
-        new_layer.max_time = moment
-          .utc(metadata.timeInterval[1])
-          .toDate()
-          .getTime();
-    }
-  }
-
-  /**
    * Parse interval string to get interval in Date format
    * @param interval - Interval time string
    */
@@ -283,25 +236,20 @@ export class HsLayerManagerWmstService {
     currentLayer.time = {
       default: defaultTime,
       timePoints,
-      //time_step: hsLayerTimeConfig.timeStep, //TODO: cleanup this
       //time_unit: hsLayerTimeConfig.timeUnit, //TODO: cleanup this
-      //date_format: this.getDateFormatForTimeSlider(hsLayerTimeConfig.timeUnit), //TODO: cleanup this
-      //date_from: new Date(hsLayerTimeConfig.timeInterval[0]), //TODO: cleanup this
-      //date_till: new Date(hsLayerTimeConfig.timeInterval[1]), //TODO: cleanup this
-      //date_increment: time.getTime(), //TODO: cleanup this
     };
-    //this.setLayerTimeSliderIntervals(layerDescriptor, hsLayerTimeConfig); //TODO: cleanup this
     this.setLayerTime(currentLayer, defaultTime);
   }
 
   private parseTimePoints(values: string): Array<string> {
-    const timeValues = values.trim().split(',');
+    let timeValues = values.trim().split('/');
     if (timeValues.length == 3 && timeValues[2].startsWith('P')) {
       // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
       //TODO: not implemented
       throw new Error('Not implemented!');
       return;
     }
+    timeValues = values.trim().split(',');
     return timeValues;
   }
 
@@ -314,28 +262,6 @@ export class HsLayerManagerWmstService {
     if (currentLayer === undefined || currentLayer.layer === undefined) {
       return;
     }
-    //const timeDef = getDimensions(currentLayer.layer).time;
-    //if (timeDef === undefined /*|| timeDef.timeInterval === undefined*/) {
-    //  return;
-    //}
-    /*let d: moment.Moment = moment.utc(timeDef.timeInterval[0]);
-    switch ((currentLayer as any).time_unit) {
-      case 'FullYear':
-        d.set({year: dateIncrement});
-        break;
-      case 'Month':
-        d.add(dateIncrement, 'months');
-        break;
-      default:
-        if (dateIncrement < currentLayer.min_time) {
-          dateIncrement = currentLayer.min_time;
-        }
-        if (dateIncrement > currentLayer.max_time) {
-          dateIncrement = currentLayer.max_time;
-        }
-        d = moment.utc(parseInt(dateIncrement));
-    }*/
-    //currentLayer.time = d.toDate();
     const dimensions = getDimensions(currentLayer.layer);
     const dimensionDesc = new HsDimensionDescriptor(
       'time',

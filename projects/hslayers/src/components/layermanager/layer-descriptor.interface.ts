@@ -23,12 +23,5 @@ export interface HsLayerDescriptor {
   expandInfo?: boolean;
   idString?: any;
   time?: HsLayerTimeDescriptor;
-  //date_increment?: number;
-  //date_from?: any;
-  //date_till?: any;
-  //date_format?: any;
   grayscale?: boolean;
-  //time_step?: number;
-  //min_time?: number;
-  //max_time?: number;
 }
