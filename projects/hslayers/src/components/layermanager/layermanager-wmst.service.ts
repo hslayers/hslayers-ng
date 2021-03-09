@@ -24,8 +24,9 @@ export class HsLayerManagerWmstService {
   ) {}
 
   /**
-   * Parse interval string to get interval in Date format
+   * Parse interval string to get interval as a number
    * @param interval - Interval time string
+   * @returns - Number of milliseconds representing the interval
    */
   parseInterval(interval: string): number {
     let dateComponent;
@@ -34,12 +35,12 @@ export class HsLayerManagerWmstService {
     let year;
     let month;
     let day;
-    let week;
     let hour;
     let minute;
     let second;
 
-    year = month = week = day = hour = minute = second = 0;
+    // eslint-disable-next-line no-multi-assign
+    year = month = day = hour = minute = second = 0;
 
     const indexOfT = interval.search('T');
 
@@ -56,8 +57,6 @@ export class HsLayerManagerWmstService {
         dateComponent.search('Y') > -1 ? dateComponent.search('Y') : undefined;
       const indexOfM =
         dateComponent.search('M') > -1 ? dateComponent.search('M') : undefined;
-      const indexOfW =
-        dateComponent.search('W') > -1 ? dateComponent.search('W') : undefined;
       const indexOfD =
         dateComponent.search('D') > -1 ? dateComponent.search('D') : undefined;
 
@@ -144,7 +143,6 @@ export class HsLayerManagerWmstService {
       }
     }
     if (getDimensions(layer)?.time) {
-      //this.parseDimensionParam(layer);
       return true;
     }
     return false;
@@ -181,10 +179,7 @@ export class HsLayerManagerWmstService {
             timedata.timeInterval = interval;
           }
         }
-        layer.set('dimensions_time', timedata);
       }
-
-      //return Object.keys(timedata).length > 0;
     }
   }
 
@@ -241,18 +236,6 @@ export class HsLayerManagerWmstService {
     this.setLayerTime(currentLayer, defaultTime);
   }
 
-  private parseTimePoints(values: string): Array<string> {
-    let timeValues = values.trim().split('/');
-    if (timeValues.length == 3 && timeValues[2].startsWith('P')) {
-      // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
-      //TODO: not implemented
-      throw new Error('Not implemented!');
-      return;
-    }
-    timeValues = values.trim().split(',');
-    return timeValues;
-  }
-
   /**
    * Update layer TIME parameter
    * @param currentLayer - Selected layer
@@ -273,6 +256,48 @@ export class HsLayerManagerWmstService {
       layer: currentLayer,
       time: newTime,
     });
+  }
+
+  private parseTimePoints(values: string): Array<string> {
+    values = values.trim();
+    if (values.includes('/')) {
+      const timeValues = values.split('/');
+      if (timeValues.length == 3 && timeValues[2].trim().startsWith('P')) {
+        // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
+        return this.timePointsFromInterval(
+          timeValues[0],
+          timeValues[1],
+          this.parseInterval(timeValues[2])
+        );
+      } else if (timeValues.length == 2) {
+        // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00"
+        // TODO: hourly interval is a pure guessing here and will be most like overkill for usual cases
+        // TODO: => try better guessing
+        return this.timePointsFromInterval(
+          timeValues[0],
+          timeValues[1],
+          3600000
+        );
+      } else {
+        throw new Error(`Invalid time definition provided: ${values}`);
+      }
+    }
+    return values.split(',');
+  }
+
+  private timePointsFromInterval(
+    start: string,
+    end: string,
+    step: number
+  ): Array<string> {
+    const timePoints = [];
+    const endMillis = new Date(end).getTime();
+    let tempMillis = new Date(start).getTime();
+    while (tempMillis <= endMillis) {
+      timePoints.push(new Date(tempMillis).toISOString());
+      tempMillis += step;
+    }
+    return timePoints;
   }
 }
 
