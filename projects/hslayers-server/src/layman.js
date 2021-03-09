@@ -35,7 +35,7 @@ var strategy = new OAuth2({
 
     profile.authn = {
       accessToken: accessToken,
-      expires: req.incoming_timestamp + extraParams.expires_in,
+      expires: Date.now() + extraParams.expires_in * 1000,
       refreshToken: refreshToken,
       iss: process.env.OAUTH2_AUTH_URL
     };
@@ -88,7 +88,6 @@ app.use(`/rest`,
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
     onProxyReq: (proxyReq, req, res) => {
-      authnUtil.addIncomingTimestamp(req, res);
       authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
     },
@@ -101,7 +100,6 @@ app.use(`/geoserver`,
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
     onProxyReq: (proxyReq, req, res) => {
-      authnUtil.addIncomingTimestamp(req, res);
       authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
     },
