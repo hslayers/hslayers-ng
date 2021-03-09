@@ -11,9 +11,10 @@ All three services are configured using [.env file](https://github.com/motdotla/
 
 ### Proxy
 
-Used to proxify requests made from the map client applications. Following env variables can be set:
+Used to proxify requests made from the map client applications. In case a request to GeoNames API comes, the proxy adds an API key to it. Following env variables can be set:
 
 `PROXY_PORT=8085` - (optional, default port 8085) specify port on which the service will run
+`HS_GEONAMES_API_KEY=*****` - (optional) GeoNames API key that will be used to authorize the GN request
 
 
 ### Share
