@@ -63,7 +63,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 
 	/*Overwrite cascading of style from liferay */
 	.navbar-expand .nav-item{
-	align-items: flex-start;
+		align-items: flex-start;
 	}
 	.basemapGallery .dropdown-menu{
 		overflow: visible;
@@ -573,7 +573,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		background: hsla(0, 0%, 80%, 0.51);
 	}
 	.basemapGallery .dropdown-item.active{
-		color: hsla(0, 0%, 100%, 89%);
+		color: hsla(0, 0%, 100%, 89%) !important;
 	}
 	.basemapGallery img.active,
 	.basemapGallery div.active {
