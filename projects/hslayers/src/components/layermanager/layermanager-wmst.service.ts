@@ -300,16 +300,3 @@ export class HsLayerManagerWmstService {
     return timePoints;
   }
 }
-
-declare global {
-  interface Date {
-    monthDiff: (d2) => number;
-  }
-}
-Date.prototype.monthDiff = function (d2) {
-  let months: number;
-  months = (d2.getFullYear() - this.getFullYear()) * 12;
-  months -= this.getMonth() + 1;
-  months += d2.getMonth();
-  return months <= 0 ? 0 : months;
-};
