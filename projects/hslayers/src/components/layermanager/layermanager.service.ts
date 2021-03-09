@@ -811,12 +811,6 @@ export class HsLayerManagerService {
       layer.layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
-    /*if (this.HsLayermanagerWmstService.layerIsWmsT(layer)) {
-      this.currentLayer.time = new Date(
-        layer.layer.getSource().getParams().TIME
-      );
-      this.currentLayer.date_increment = this.currentLayer.time.getTime();
-    }*/
     const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
       '.hs-layerpanel'
     );
