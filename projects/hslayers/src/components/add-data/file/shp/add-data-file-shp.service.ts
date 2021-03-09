@@ -52,8 +52,8 @@ export class HsAddDataFileShpService {
       this.httpClient
         .post(
           `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
-          formdata //,
-          //{headers: new HttpHeaders({'Content-Type': null})}
+          formdata,
+          { withCredentials: true }
         )
         .toPromise()
         .then((data: any) => {

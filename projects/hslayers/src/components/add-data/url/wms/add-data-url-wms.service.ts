@@ -178,12 +178,6 @@ export class HsAddDataUrlWmsService {
       this.data.getMapUrl = this.removePortIfProxified(
         caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
       );
-      if (this.data.getMapUrl.includes(location.host + '/geoserver')) {
-        this.data.getMapUrl = this.data.getMapUrl.replace(
-          'geoserver',
-          'client/geoserver'
-        );
-      }
       this.data.image_format = getPreferedFormat(this.data.image_formats, [
         'image/png; mode=8bit',
         'image/png',
@@ -378,11 +372,7 @@ export class HsAddDataUrlWmsService {
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {
       let legend = layer.Style[0].LegendURL[0].OnlineResource;
-      if (legend.includes(location.host + '/geoserver')) {
-        legend = legend.replace('geoserver', 'client/geoserver');
-
-        legends.push(legend);
-      }
+      legends.push(legend);
     }
 
     let styles = undefined;

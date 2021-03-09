@@ -78,11 +78,12 @@ export class HsCompositionsParserService {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     //url = this.HsUtilsService.proxify(url);
-    let options;
+    let options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
-      options = {responseType: 'text'};
+      options['responseType'] = 'text' ;
     }
+    options['withCredentials'] = true;
     const data: any = await this.$http.get(url, options).toPromise();
     if (data?.file) {
       // Layman composition wrapper
