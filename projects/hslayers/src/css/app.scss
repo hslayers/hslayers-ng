@@ -7,14 +7,15 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 
 @import "~ol/ol";
 
-hslayers,
-hslayers::before,
-hslayers::after,
-hslayers *,
-hslayers *::before,
-hslayers *::after {
+.hsl,
+.hsl::before,
+.hsl::after,
+.hsl *
+.hsl *::before,
+.hsl *::after {
   all: revert;
 }
+
 
 
 .hsl{
@@ -405,7 +406,7 @@ hslayers *::after {
 		top: 50%;
 		transform: translateY(-50%);
 		border: 0;
-		color: var(--gray-800);
+		color: hsl(0, 0%, 0%);
 		z-index: 5;
 		background: transparent;
 	}

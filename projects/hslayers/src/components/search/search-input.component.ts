@@ -42,7 +42,7 @@ export class HsSearchInputComponent implements OnInit {
    * @function queryChanged
    */
   queryChanged(): void {
-    if (this.query.length == 0){
+    if (this.query.length == 0) {
       this.clear();
       return;
     }
@@ -59,5 +59,11 @@ export class HsSearchInputComponent implements OnInit {
     this.clearvisible = false;
     this.HsSearchService.cleanResults();
     this.HsEventBusService.clearSearchResults.next();
+  }
+  toggleSearchInput(): void {
+    this.searchInputVisible = !this.searchInputVisible;
+    if (this.query != '') {
+      this.clear();
+    }
   }
 }
