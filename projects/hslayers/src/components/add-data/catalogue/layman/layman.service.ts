@@ -177,7 +177,7 @@ export class HsLaymanBrowserService {
     const lyr = await this.fillLayerMetadata(ds, layer);
     return {
       type: lyr.type,
-      link: lyr.wms.url.replace('geoserver', 'client/geoserver'),
+      link: lyr.wms.url,
       layer: lyr.name,
       name: lyr.name,
       title: lyr.title,
