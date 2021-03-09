@@ -72,7 +72,7 @@ export class HsStylerService {
     public sanitizer: DomSanitizer
   ) {}
 
-  pin_white_blue_highlight(feature: Feature, resolution): Array<Style> {
+  pin_white_blue_highlight = (feature: Feature, resolution): Array<Style> => {
     return [
       new Style({
         image: new Icon({
