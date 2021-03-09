@@ -3,8 +3,9 @@ const got = require('got');
 require('dotenv').config();
 
 
-exports.addIncomingTimestamp = (req, res) => {
+exports.addIncomingTimestamp = (req, res, next) => {
   req.incoming_timestamp = Date.now();
+  next();
 };
 
 exports.ensureUsername = async (access_token, profile) => {
@@ -96,11 +97,17 @@ const refreshAuthentication = (req, user, strategyName) => {
   user.authn.refreshing = true;
 
   refresh.requestNewAccessToken(strategyName, user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
-    req.session.passport.user.authn = {
-      accessToken: accessToken,
-      expires: Date.now() + extraParams.expires_in,
-      refreshToken: refreshToken,
-      iss: process.env.OAUTH2_AUTH_URL
-    };
+    if (err) {
+      console.error(err);
+      throw Error(err);
+    }
+    else {
+      req.session.passport.user.authn = {
+        accessToken: accessToken,
+        expires: Date.now() + extraParams.expires_in * 1000,
+        refreshToken: refreshToken,
+        iss: process.env.OAUTH2_AUTH_URL
+      };
+    }
   });
 };
