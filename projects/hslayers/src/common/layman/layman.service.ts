@@ -50,7 +50,7 @@ export class HsCommonLaymanService {
   }
 
   async logout(endpoint): Promise<void> {
-    const url = `${endpoint.url}/authn/logout`;
+    const url = `${endpoint.url}/logout`;
     try {
       const response = await this.$http.get(url).toPromise();
     } catch (ex) {
