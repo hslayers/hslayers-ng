@@ -1,5 +1,4 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-
 import {Subscription} from 'rxjs';
 
 import {Layer} from 'ol/layer';
@@ -62,8 +61,6 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @param layer Selected layer
-   * @return {boolean} True if layer is loaded
    * Test if selected layer is loaded in map
    * @param layer - Selected layer
    */
@@ -123,11 +120,8 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   ngOnInit(): void {
-    /**
-     * @type {Array}
-     * List of layers which belong to folder hierarchy level of directive instance
-     */
     this.filtered_layers = this.filterLayers();
   }
 
@@ -138,9 +132,10 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
 
   /**
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
-   * @return {Array} Available layers
+   * @private
+   * @return {Array} HsLayerManagerService.data.layers
    */
-  private filterLayers(): Array<HsLayerDescriptor> {
+  private filterLayers(): Array<any> {
     const tmp = [];
     for (const layer of this.HsLayerManagerService.data.layers) {
       if (
@@ -155,7 +150,8 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects cant be used because DragDropList functionality can handle only simple structures.
+   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects can't be used because DragDropList functionality can handle only simple structures.
+   * @public
    */
   generateLayerTitlesArray(): void {
     this.layer_titles = [];
@@ -165,8 +161,6 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @param layer_container Selected layer - wrapped in layer object
-   * @return {boolean} True if layer is queryable
    * Test if layer is queryable (WMS layer with Info format)
    * @param layer_container - Selected layer - wrapped in layer object
    */
@@ -183,6 +177,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
 
   /**
    * Update layers list
+   * @private
    */
   private updateLayers(): void {
     this.filtered_layers = this.filterLayers();

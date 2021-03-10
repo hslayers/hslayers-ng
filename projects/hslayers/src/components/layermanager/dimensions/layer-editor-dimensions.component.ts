@@ -2,8 +2,9 @@ import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Layer} from 'ol/layer';
+
+import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 
 import {HsDimensionDescriptor} from './dimension.class';
 import {HsDimensionService} from '../../../common/dimension.service';
@@ -19,7 +20,7 @@ import {getDimensions} from '../../../common/layer-extensions';
   templateUrl: './layer-editor-dimensions.html',
 })
 export class HsLayerEditorDimensionsComponent implements OnChanges, OnDestroy {
-  @Input() olLayer: Layer;
+  @Input() layer: Layer;
   dimensions: Array<HsDimensionDescriptor> = [];
   layerDimensionDefinitionChangeSubscription: Subscription;
   constructor(
@@ -32,7 +33,7 @@ export class HsLayerEditorDimensionsComponent implements OnChanges, OnDestroy {
   ) {
     this.layerDimensionDefinitionChangeSubscription = this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
       ({layer}) => {
-        if (layer == this.olLayer) {
+        if (layer == this.layer) {
           this.ngOnChanges();
         }
       }
@@ -43,7 +44,7 @@ export class HsLayerEditorDimensionsComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    const layer = this.olLayer;
+    const layer = this.layer;
     this.dimensions = [];
     const dimensions = getDimensions(layer);
     if (dimensions && Object.entries(dimensions)) {
@@ -64,7 +65,7 @@ export class HsLayerEditorDimensionsComponent implements OnChanges, OnDestroy {
    * @return Returns if layers has any dimensions
    */
   isLayerWithDimensions(): boolean {
-    const layer = this.olLayer;
+    const layer = this.layer;
     if (layer == undefined) {
       return false;
     }

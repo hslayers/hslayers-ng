@@ -39,7 +39,9 @@ export * from './components/layermanager/layermanager-physical-layerlist.service
 export * from './components/layermanager/layermanager.service';
 export * from './components/save-map/save-map.service';
 export * from './components/styles/styler.service';
+
 export * from './common/endpoints/endpoint.interface';
+
 export * from './common/feature-extensions';
 export * from './common/layer-extensions';
 export * from './common/layers/hs.source.SparqlJson';

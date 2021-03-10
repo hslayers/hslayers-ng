@@ -72,5 +72,8 @@
 .icon-moon-night:before {content: '\f207'}
 .icon-sun-day:before {content: '\f206'}
 .icon-timeline:before {content: '\f253'}
+<<<<<<< HEAD
 .icon-uploadalt:before {content: '\f11b';}
 .icon-opennewwindow:before {content: '\f332';}
+=======
+>>>>>>> f3e398b17... Ported  issue01548/wms-t
