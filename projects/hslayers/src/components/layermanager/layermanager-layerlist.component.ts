@@ -1,14 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-
 import {Subscription} from 'rxjs';
-
-import {Layer} from 'ol/layer';
-
-import {
-  getDimension,
-  getHsLaymanSynchronizing,
-  getPath,
-} from '../../common/layer-extensions';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -20,6 +11,13 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {Layer} from 'ol/layer';
+
+import {
+  getDimension,
+  getHsLaymanSynchronizing,
+  getPath,
+} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -61,9 +59,9 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @param layer Selected layer
-   * @return {boolean} True if layer is loaded
    * Test if selected layer is loaded in map
+   * @param layer - Selected layer
+   * @return {boolean} True if layer is loaded
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
@@ -83,17 +81,17 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @param layer Selected layer
-   * @return {boolean} True if layer is valid
    * Test if selected layer is valid (true for invalid)
+   * @param layer - Selected layer
+   * @return {boolean} True, if layer is valid
    */
-  layerValid(layer): boolean {
+  layerValid(layer) {
     return this.HsLayerUtilsService.layerInvalid(layer);
   }
 
   /**
-   * Controls state of layer´s sublayers checkboxes with layer visibility changes
-   * @param layer Selected layer
+   * Controls state of layer's sublayers checkboxes with layer visibility changes
+   * @param layer - Selected layer
    */
   toggleSublayersVisibility(layer: HsLayerDescriptor): void {
     if (!layer.visible) {
@@ -121,19 +119,17 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   ngOnInit(): void {
-    /**
-     * @type {Array}
-     * List of layers which belong to folder hierarchy level of directive instance
-     */
     this.filtered_layers = this.filterLayers();
   }
 
   /**
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
-   * @return {Array} Available layers
+   * @private
+   * @return {Array} HsLayerManagerService.data.layers
    */
-  private filterLayers(): Array<HsLayerDescriptor> {
+  private filterLayers(): Array<any> {
     const tmp = [];
 
     for (const layer of this.HsLayerManagerService.data.layers) {
@@ -149,7 +145,8 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects cant be used because DragDropList functionality can handle only simple structures.
+   * Generate list of layer titles out of {@link hs.layermanager.layerlistDirective#filtered_layers filtered_layers}. Complex layer objects can't be used because DragDropList functionality can handle only simple structures.
+   * @public
    */
   generateLayerTitlesArray(): void {
     this.layer_titles = [];
@@ -159,9 +156,9 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @param layer_container Selected layer - wrapped in layer object
-   * @return {boolean} True if layer is queryable
    * Test if layer is queryable (WMS layer with Info format)
+   * @param layer_container - Selected layer - wrapped in layer object
+   * @return {boolean} True, if layer is queryable
    */
   isLayerQueryable(layer_container): boolean {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
@@ -176,6 +173,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
 
   /**
    * Update layers list
+   * @private
    */
   private updateLayers(): void {
     this.filtered_layers = this.filterLayers();

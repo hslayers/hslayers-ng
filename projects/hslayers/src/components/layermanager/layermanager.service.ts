@@ -248,6 +248,7 @@ export class HsLayerManagerService {
   /**
    * Function for adding baselayer thumbnail visible in basemap gallery.
    * @param layer - Base layer added to map
+   * @return {string}
    */
   getImage(layer: Layer): string {
     const thumbnail = getThumbnail(layer);
@@ -317,8 +318,8 @@ export class HsLayerManagerService {
 
   /**
    * (PRIVATE) Get layer by its title
-   * @private
    * @param title
+   * @return
    */
   getLayerByTitle(title: string): Layer | undefined {
     let tmp;
@@ -334,7 +335,7 @@ export class HsLayerManagerService {
    * Get layer container object for OL layer
    * @private
    * @param layer - to get layer title
-   * @returns Layer container which is used in layer-list directive
+   * @return Layer container which is used in layer-list directive
    */
   getLayerDescriptorForOlLayer(layer: Layer) {
     const tmp = this.data.layers.filter((l) => l.layer == layer);
@@ -609,8 +610,6 @@ export class HsLayerManagerService {
    * Remove all non-base layers that were added to the map by user.
    * Doesn't remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
    * (PRIVATE)
-   * @private
-   */
   removeAllLayers(): void {
     const to_be_removed = [];
     this.HsMapService.map.getLayers().forEach((lyr) => {
@@ -735,6 +734,7 @@ export class HsLayerManagerService {
   /**
    * Test if layer (WMS) resolution is within map resolution interval
    * @param lyr - Selected layer
+   * @return
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
     let cur_res;
@@ -786,6 +786,7 @@ export class HsLayerManagerService {
   /**
    * Opens detailed panel for manipulating selected layer and viewing metadata
    * @param layer - Selected layer to edit or view - Wrapped layer object
+   * @return
    */
   toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
     if (this.currentLayer == layer) {

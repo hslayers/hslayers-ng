@@ -5,7 +5,6 @@ import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';

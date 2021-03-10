@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
@@ -24,9 +23,9 @@ export class HsLayerManagerWmstService {
   ) {}
 
   /**
-   * Parse interval string to get interval as a number
+   * Parse interval string to get interval in Date format
    * @param interval - Interval time string
-   * @returns - Number of milliseconds representing the interval
+   * @return {number}
    */
   parseInterval(interval: string): number {
     let dateComponent;
@@ -107,7 +106,7 @@ export class HsLayerManagerWmstService {
   /**
    * Test if WMS layer has time support (WMS-T). WMS layer has to have dimension property
    * @param layer - Container object of layer (layerContainer.layer expected)
-   * @returns True for WMS layer with time support
+   * @return True for WMS layer with time support
    */
   layerIsWmsT(layer: HsLayerDescriptor | Layer): boolean {
     if (layer?.layer) {
@@ -143,6 +142,7 @@ export class HsLayerManagerWmstService {
       }
     }
     if (getDimensions(layer)?.time) {
+      //this.parseDimensionParam(layer);
       return true;
     }
     return false;
@@ -179,7 +179,10 @@ export class HsLayerManagerWmstService {
             timedata.timeInterval = interval;
           }
         }
+        layer.set('dimensions_time', timedata);
       }
+
+      //return Object.keys(timedata).length > 0;
     }
   }
 
@@ -236,6 +239,18 @@ export class HsLayerManagerWmstService {
     this.setLayerTime(currentLayer, defaultTime);
   }
 
+  private parseTimePoints(values: string): Array<string> {
+    let timeValues = values.trim().split('/');
+    if (timeValues.length == 3 && timeValues[2].startsWith('P')) {
+      // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
+      //TODO: not implemented
+      throw new Error('Not implemented!');
+      return;
+    }
+    timeValues = values.trim().split(',');
+    return timeValues;
+  }
+
   /**
    * Update layer TIME parameter
    * @param currentLayer - Selected layer
@@ -256,33 +271,6 @@ export class HsLayerManagerWmstService {
       layer: currentLayer,
       time: newTime,
     });
-  }
-
-  private parseTimePoints(values: string): Array<string> {
-    values = values.trim();
-    if (values.includes('/')) {
-      const timeValues = values.split('/');
-      if (timeValues.length == 3 && timeValues[2].trim().startsWith('P')) {
-        // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00/PT8766H"
-        return this.timePointsFromInterval(
-          timeValues[0],
-          timeValues[1],
-          this.parseInterval(timeValues[2])
-        );
-      } else if (timeValues.length == 2) {
-        // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00"
-        // TODO: hourly interval is a pure guessing here and will be most like overkill for usual cases
-        // TODO: => try better guessing
-        return this.timePointsFromInterval(
-          timeValues[0],
-          timeValues[1],
-          3600000
-        );
-      } else {
-        throw new Error(`Invalid time definition provided: ${values}`);
-      }
-    }
-    return values.split(',');
   }
 
   private timePointsFromInterval(
