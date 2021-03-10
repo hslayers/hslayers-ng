@@ -177,9 +177,16 @@ export class HsAddDataFileShpComponent implements OnInit {
       promises.push(filePromise);
     }
     Promise.all(promises).then((fileContents) => {
-      if (this.files.length >= 3) {
+      if (this.files.length == 3) {
         this.showDetails = true;
         this.resultCode = 'success';
+      } else if (this.files.length > 3) {
+        this.showDetails = false;
+        this.resultCode = 'error';
+        this.errorMessage = `Maximum number of 3 files allowed but ${this.files.length} selected`;
+        setTimeout(() => {
+          this.resultCode = '';
+        }, 6000);
       } else {
         this.showDetails = false;
         this.resultCode = 'error';

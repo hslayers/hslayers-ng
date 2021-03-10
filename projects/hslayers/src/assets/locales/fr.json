@@ -34,7 +34,8 @@
     "strokeWidth": "Largeur du trait",
     "title": "Titre",
     "to": "à",
-    "width": "Largeur"
+    "width": "Largeur",
+    "or": "or"
   },
   "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
@@ -134,5 +135,10 @@
   },
   "SIDEBAR": {
     "additionalPanels": "Panneaux supplémentaires"
+  },
+  "ADDLAYERS": {
+    "Vector": {
+      "chooseFiles": "Choose files..."
+    }
   }
 }

@@ -3,15 +3,17 @@
         [(connect)]="connect"></hs-add-data-common-url>
 
     <div class="form-group" *ngIf="HsAddDataService.typeSelected == 'file'">
-        <div class="d-flex flex-row justify-content-around align-items-baseline w-100">
+        <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
             <!-- <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label> -->
             <div class="dropzone p-4" fileDrop (filesDropped)="handleFileUpload($event)"
                 (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
                 <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
             </div>
+            <p class="px-5">{{'COMMON.or' | translate}}</p>
             <label class="dropzone-label">
-                <input type="file" (change)="handleFileUpload($event.target.files)">
-            </label>
+                <input type="file" id="hs-vector-file" class="inputfile" (change)="handleFileUpload($event.target.files)">
+                <label for="hs-vector-file" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i> {{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
+            </label> 
 
         </div>
     </div>

@@ -1,6 +1,6 @@
 <form class="form-horizontal m-3" role="form">
 
-    <div class="form-group">
+    <!-- <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text control-label">{{'COMMON.saveTo' | translate}}</span>
@@ -10,19 +10,21 @@
                     [ngValue]="endpoint">{{endpoint.title}}</option>
             </select>
         </div>
-    </div>
+    </div> -->
 
     <!-- <div class="form-group">
         <label class="capabilities_label control-label">{{'ADDLAYERS.SHP.shapeFile' | translate}} </label>
         <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
     </div> -->
     <div class="form-group">
-        <div class="d-flex flex-row justify-content-around align-items-baseline w-100">
+        <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
             <div class="dropzone p-4" fileDrop (filesDropped)="read($event)" (filesHovered)="dropZoneState($event)" [ngClass]="{'active': dropzoneActive}">
                     <p class="dropzone-label mt-2 text-primary">{{'ADDLAYERS.Vector.dragAndDropFiles' | translate}}</p>
             </div>
+            <p class="px-5">{{'COMMON.or' | translate}}</p>
             <label class="dropzone-label">
-                <input name="file" type="file" (change)="read($event)" id="shpdbfshx" multiple>
+                <input name="file" type="file" class="inputfile" (change)="read($event)" id="shpdbfshx" multiple>
+                <label for="shpdbfshx" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i>{{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
             </label> 
 
         </div>
@@ -33,6 +35,15 @@
     </div>
 
     <div [hidden]="!showDetails"> 
+        <div class="d-flex flex-row justify-content-around">
+            <div class="d-flex flex-column justify-content-center">
+                <p class="p-2 bg-success rounded" style="color: white;"> {{files.length}} files selected</p>
+            </div>
+            <div class="d-flex flex-column mw-75">
+                <p *ngFor="let file of files">{{file.name}}</p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
             <input class="form-control" name="name" [(ngModel)]="name" />

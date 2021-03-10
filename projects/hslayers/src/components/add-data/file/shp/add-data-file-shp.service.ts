@@ -53,7 +53,7 @@ export class HsAddDataFileShpService {
         .post(
           `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
           formdata,
-          { withCredentials: true }
+          {withCredentials: true}
         )
         .toPromise()
         .then((data: any) => {
