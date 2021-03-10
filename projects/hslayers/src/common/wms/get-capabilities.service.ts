@@ -102,6 +102,7 @@ export class HsWmsGetCapabilitiesService {
     try {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
+        withCredentials: true
       }).toPromise();
       if (castOwsCapabilitiesReceived) {
         this.HsEventBusService.owsCapabilitiesReceived.next({
