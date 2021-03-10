@@ -34,7 +34,8 @@
     "strokeWidth": "lijnbreedte",
     "title": "Titel",
     "to": "tot",
-    "width": "Breedte"
+    "width": "Breedte",
+    "or": "or"
   },
   "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
@@ -134,5 +135,10 @@
   },
   "SIDEBAR": {
     "additionalPanels": "Extra panelen"
+  },
+  "ADDLAYERS": {
+    "Vector": {
+      "chooseFiles": "Choose files..."
+    }
   }
 }

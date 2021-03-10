@@ -4,11 +4,12 @@ import {Component} from '@angular/core';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsUtilsService} from '../../utils/utils.service';
-import {HsToastService} from '../../layout/toast/toast.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLayoutService} from '../../layout/layout.service';
+import {HsToastService} from '../../layout/toast/toast.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
+import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 @Component({
   selector: 'hs-add-data-url-vector',
   templateUrl: './add-data-vector.directive.html',
@@ -39,12 +40,11 @@ export class HsAddDataVectorComponent {
     public HsAddDataService: HsAddDataService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService
-
   ) {}
 
   connect = async (): Promise<void> => {
-      this.hsHistoryListService.addSourceHistory('vector', this.url);
-      this.showDetails = true;
+    this.hsHistoryListService.addSourceHistory('vector', this.url);
+    this.showDetails = true;
   };
 
   isKml(): boolean {
@@ -75,11 +75,24 @@ export class HsAddDataVectorComponent {
       this.addUnder
     );
     this.HsAddDataVectorService.fitExtent(layer);
+
+    this.awaitLayerSync(layer).then(() => {
+      layer.getSource().dispatchEvent('addfeature');
+    });
+
     this.hsLayoutService.setMainPanel('layermanager');
     this.setToDefault();
     this.showDetails = false;
     return layer;
   }
+
+  async awaitLayerSync(layer): Promise<any> {
+    while (getHsLaymanSynchronizing(layer)) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    return true;
+  }
+
   dropZoneState($event: boolean): void {
     this.dropzoneActive = $event;
   }
@@ -92,6 +105,8 @@ export class HsAddDataVectorComponent {
         uploadedData.url !== undefined
           ? (this.base64url = uploadedData.url)
           : ((this.url = ''), (this.base64url = ''));
+
+        //add layman endpoint url as url to allow sync
 
         uploadedData.name !== undefined
           ? (this.name = uploadedData.name)
@@ -127,16 +142,13 @@ export class HsAddDataVectorComponent {
         this.setToDefault();
 
         this.hsToastService.createToastPopupMessage(
-          this.hsLanguageService.getTranslation(
-            'ADDLAYERS.someErrorHappened'
-          ),
+          this.hsLanguageService.getTranslation('ADDLAYERS.someErrorHappened'),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             'couldNotUploadSelectedFile'
           ),
           true
         );
-
       }
     });
   }
@@ -154,5 +166,6 @@ export class HsAddDataVectorComponent {
     this.features = [];
     this.featureCount = 0;
     this.type = '';
+    this.showDetails = false;
   }
 }

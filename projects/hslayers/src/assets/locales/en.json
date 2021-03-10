@@ -62,7 +62,8 @@
     "Vector": {
       "dragAndDropFiles": "Drag and drop files",
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files"
+      "uploadVectorFiles": "Upload vector files",
+      "chooseFiles": "Choose files..."
     },
     "VECTOR": {
       "extractStyles": "Extract styles"
@@ -187,7 +188,8 @@
     "zoomTo": "zoom to",
     "contactInformation": "Contact Information",
     "noDataReceived": "No data received!",
-    "warning": "Warning"
+    "warning": "Warning",
+    "or": "or"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

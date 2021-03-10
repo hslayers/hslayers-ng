@@ -62,7 +62,8 @@
     "Vector": {
       "dragAndDropFiles": "Přetáhněte soubory",
       "note": "*Poznámka: Pokud připojíte soubor se souřadnicemi v jiném systému, než WGS84 (délka/šířka), pak prosím nastavte SRS v sekci \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové soubory"
+      "uploadVectorFiles": "Nahrajte vektorové soubory",
+      "chooseFiles": "Vyberte soubory..."
     },
     "VECTOR": {
       "extractStyles": "Extrahovat styly"
@@ -187,7 +188,8 @@
     "zoomTo": "zvětšit na",
     "contactInformation": "Kontaktní informace",
     "warning": "Varování",
-    "noDataReceived": "Nebyla přijata žádná data!"
+    "noDataReceived": "Nebyla přijata žádná data!",
+    "or": "anebo"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
