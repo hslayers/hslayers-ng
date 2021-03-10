@@ -1,4 +1,7 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
@@ -9,7 +12,7 @@ import {HsLayoutService} from '../../layout/layout.service';
   selector: 'hs-layermanager-time-editor',
   templateUrl: 'layermanager-time-editor.component.html',
 })
-export class HsLayerManagerTimeEditorComponent implements OnInit {
+export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @Input() layer: HsLayerDescriptor;
   /**
    * ISO format time
@@ -27,30 +30,37 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
    */
   timeDisplayLocale = 'en-US';
   timesInSync: boolean;
-
+  subscriptions: Subscription[] = [];
   constructor(
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService,
     public hsLayoutService: HsLayoutService,
     private hsConfig: HsConfig
   ) {
-    this.hsEventBusService.layerTimeChanges.subscribe(({layer, time}) => {
-      if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
-        this.fillAvailableTimes(layer);
-      }
-    });
-    this.hsEventBusService.layerTimeSynchronizations.subscribe(
-      ({sync, time}) => {
-        this.timesInSync = sync;
-        if (sync) {
-          this.hideTimeSelect();
-          this.setCurrentTimeIfAvailable(time);
-          if (this.currentTime) {
-            this.setLayerTime();
+    this.subscriptions.push(
+      this.hsEventBusService.layerTimeChanges.subscribe(({layer, time}) => {
+        if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
+          this.fillAvailableTimes(layer);
+        }
+      })
+    );
+    this.subscriptions.push(
+      this.hsEventBusService.layerTimeSynchronizations.subscribe(
+        ({sync, time}) => {
+          this.timesInSync = sync;
+          if (sync) {
+            this.hideTimeSelect();
+            this.setCurrentTimeIfAvailable(time);
+            if (this.currentTime) {
+              this.setLayerTime();
+            }
           }
         }
-      }
+      )
     );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   /**
