@@ -23,7 +23,7 @@ import {HsShareUrlService} from '../permalink/share-url.service';
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;
-  unregisterMapSyncCenterSubscription: Subscription;
+  unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -32,7 +32,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     private zone: NgZone
   ) {
-    this.unregisterMapSyncCenterSubscription = this.HsEventBusService.mapCenterSynchronizations.subscribe(
+    this.unregisterMapSyncCenterHandlerSubscription = this.HsEventBusService.mapCenterSynchronizations.subscribe(
       (data) => {
         this.onCenterSync(data);
       }
@@ -76,7 +76,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unregisterMapSyncCenterSubscription.unsubscribe();
+    this.unregisterMapSyncCenterHandlerSubscription.unsubscribe();
   }
   /**
    * @param event Info about angularjs broadcasted event

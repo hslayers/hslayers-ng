@@ -19,7 +19,7 @@ import {getDimensions} from '../../../common/layer-extensions';
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.html',
 })
-export class HsLayerEditorDimensionsComponent implements OnChanges, OnDestroy {
+export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   @Input() layer: Layer;
   dimensions: Array<HsDimensionDescriptor> = [];
   layerDimensionDefinitionChangeSubscription: Subscription;
