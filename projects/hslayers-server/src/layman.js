@@ -87,11 +87,25 @@ app.use(`/rest`,
   createProxyMiddleware({
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
+    selfHandleResponse: true,
     onProxyReq: (proxyReq, req, res) => {
       authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
     },
-    onProxyRes: authnUtil.allowOrigin
+    onProxyRes: (proxyRes, req, res) => {
+      authnUtil.allowOrigin(proxyRes, req, res);
+
+      var body = [];
+      proxyRes.on('data', function (chunk) {
+        body.push(chunk);
+      });
+      proxyRes.on('end', function () {
+        let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/'), "g");
+        let replWith = process.env.OAUTH2_CALLBACK_URL.replace("/callback", "").trimEnd('/');
+        body = Buffer.concat(body).toString().replace(repl, replWith);
+        res.end(body);
+      });
+    }
   }),
 );
 // Layman proxy for WFS transactions endpoint
@@ -106,7 +120,6 @@ app.use(`/geoserver`,
     onProxyRes: authnUtil.allowOrigin
   }),
 );
-
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
