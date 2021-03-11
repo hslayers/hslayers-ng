@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -39,7 +40,8 @@ export class HsAddDataVectorComponent {
     public hsUtilsService: HsUtilsService,
     public HsAddDataService: HsAddDataService,
     public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService,
+    public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   connect = async (): Promise<void> => {
@@ -107,6 +109,11 @@ export class HsAddDataVectorComponent {
           : ((this.url = ''), (this.base64url = ''));
 
         //add layman endpoint url as url to allow sync
+        if (this.url == '') {
+          this.url = this.HsCommonEndpointsService.endpoints.filter(
+            (ep) => ep.type == 'layman'
+          )[0].url;
+        }
 
         uploadedData.name !== undefined
           ? (this.name = uploadedData.name)

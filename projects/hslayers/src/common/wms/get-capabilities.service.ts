@@ -102,7 +102,7 @@ export class HsWmsGetCapabilitiesService {
     try {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
-        withCredentials: true
+        withCredentials: true,
       }).toPromise();
       if (castOwsCapabilitiesReceived) {
         this.HsEventBusService.owsCapabilitiesReceived.next({
@@ -117,7 +117,7 @@ export class HsWmsGetCapabilitiesService {
         response: e,
         error: true,
       });
-      throw e
+      throw e;
     }
   }
 
@@ -175,9 +175,8 @@ export class HsWmsGetCapabilitiesService {
           name: layer.Name.replace(/\//g, '&#47;'),
           path,
           source: new TileWMS({
-            url: tweakGeoserverUrl(
-              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource
-            ),
+            url:
+              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
             attributions: attributions,
             styles:
               layer.Style && layer.Style.length > 0
