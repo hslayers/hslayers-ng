@@ -1,5 +1,5 @@
 import BaseLayer from 'ol/layer/Base';
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
@@ -16,6 +16,8 @@ import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
   templateUrl: './add-data-vector.directive.html',
 })
 export class HsAddDataVectorComponent {
+  @ViewChild('vectorFileInput') vectorFileInput: ElementRef;
+
   srs = 'EPSG:4326';
   title = '';
   extract_styles = true;
@@ -174,5 +176,6 @@ export class HsAddDataVectorComponent {
     this.featureCount = 0;
     this.type = '';
     this.showDetails = false;
+    this.vectorFileInput.nativeElement.value = '';
   }
 }

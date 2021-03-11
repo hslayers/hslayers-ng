@@ -11,7 +11,7 @@
             </div>
             <p class="px-5">{{'COMMON.or' | translate}}</p>
             <label class="dropzone-label">
-                <input type="file" id="hs-vector-file" class="inputfile" (change)="handleFileUpload($event.target.files)">
+                <input #vectorFileInput type="file" id="hs-vector-file" class="inputfile" (change)="handleFileUpload($event.target.files)">
                 <label for="hs-vector-file" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i> {{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
             </label> 
 
