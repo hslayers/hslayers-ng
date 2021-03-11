@@ -99,7 +99,10 @@ describe('add-layers-vector', () => {
     expect(component).toBeTruthy();
   });
 
+  const viewChild = jasmine.createSpyObj('vectorFileInput', ['nativeElement']);
+
   it('GeoJSON layer should be added', async () => {
+    component.vectorFileInput = viewChild;
     component.url =
       'http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson';
     component.title = 'Cancer rates';
