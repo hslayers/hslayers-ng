@@ -23,7 +23,12 @@ export class HsUtilsService {
    * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
    */
   proxify(url: string, toEncoding?: boolean): string {
-    if (url.startsWith(this.HsConfig.proxyPrefix)) {
+    if (
+      url.startsWith(this.HsConfig.proxyPrefix) ||
+      url.startsWith(
+        this.HsConfig.datasources?.filter((ep) => ep.type == 'layman')[0].url
+      )
+    ) {
       return url;
     }
     if (url.startsWith('data:application')) {
