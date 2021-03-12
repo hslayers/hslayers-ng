@@ -785,23 +785,7 @@ export class HsMapService {
               .url
           )
         ) {
-          const xhr = new XMLHttpRequest();
-          xhr.withCredentials = true;
-          xhr.responseType = 'arraybuffer';
-          xhr.open('GET', src);
-
-          xhr.addEventListener('loadend', function (evt) {
-            if (this.response !== undefined) {
-              const arrayBufferView = new Uint8Array(this.response);
-              const blob = new Blob([arrayBufferView], {type: 'image/png'});
-              const urlCreator = window.URL || window.webkitURL;
-              const imageUrl = urlCreator.createObjectURL(blob);
-              tile.getImage().src = imageUrl;
-            } else {
-              tile.setState(TileState.ERROR);
-            }
-          });
-          xhr.send();
+          this.laymanWmsLoadingFunction(tile, src);
         } else {
           tile.getImage().src = src;
         }
@@ -815,8 +799,31 @@ export class HsMapService {
     if (src.indexOf(this.HsConfig.proxyPrefix) == 0) {
       image.getImage().src = src;
     } else {
-      image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+      if (
+        src.startsWith(
+          this.HsConfig.datasources?.filter((ep) => ep.type == 'layman')[0].url
+        )
+      ) {
+        this.laymanWmsLoadingFunction(image, src);
+      } else {
+        image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+      }
     }
+  }
+
+  laymanWmsLoadingFunction(image, src: string) {
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.responseType = 'arraybuffer';
+    xhr.open('GET', src);
+    xhr.addEventListener('loadend', function (evt) {
+      const arrayBufferView = new Uint8Array(this.response);
+      const blob = new Blob([arrayBufferView], {type: 'image/png'});
+      const urlCreator = window.URL || window.webkitURL;
+      const imageUrl = urlCreator.createObjectURL(blob);
+      image.getImage().src = imageUrl;
+    });
+    xhr.send();
   }
 
   /**
