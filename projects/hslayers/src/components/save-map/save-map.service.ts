@@ -360,13 +360,6 @@ export class HsSaveMapService {
       if (layer.getMinResolution() !== null) {
         json.minResolution = layer.getMinResolution();
       }
-      if (layer.getMinResolution() !== null) {
-        //TODO: Should be renamed in the composition specification tp minResolution
-        json.wmsMinScale = layer.getMinResolution();
-      }
-      if (layer.getMaxResolution() !== null) {
-        json.wmsMaxScale = layer.getMaxResolution();
-      }
       json.displayInLayerSwitcher = getShowInLayerManager(layer);
       if (getDimensions(layer)) {
         json.dimensions = getDimensions(layer);
