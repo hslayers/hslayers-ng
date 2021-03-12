@@ -53,6 +53,8 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 
+import TileState from 'ol/TileState';
+
 export enum DuplicateHandling {
   AddDuplicate = 0,
   IgnoreNew = 1,
@@ -174,7 +176,7 @@ export class HsMapService {
    * feature when features are listed in info panel.
    *
    * @param feature
-   * @returns {Vector} Layer.
+   * @return {Vector} Layer.
    */
   getLayerForFeature(feature) {
     if (typeof feature.getId() == 'undefined') {
@@ -432,7 +434,7 @@ export class HsMapService {
    * @name HsMapService#findLayerByTitle
    * @public
    * @param {string} title Title of the layer (from layer creation)
-   * @returns {Ol.layer} Ol.layer object
+   * @return {Ol.layer} Ol.layer object
    * @description Find layer object by title of layer
    */
   findLayerByTitle(title) {
@@ -449,7 +451,7 @@ export class HsMapService {
   /**
    * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
    * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
-   * @returns {boolean} True if layers are equal
+   * @return {boolean} True if layers are equal
    */
   layersEqual(existingLayers, newLayer) {
     if (newLayer === 'undefined') {
@@ -498,7 +500,7 @@ export class HsMapService {
    * @name HsMapService#layerAlreadyExists
    * @description Checks if a layer with the same title already exists in the map
    * @param {ol/Layer} lyr A layer to check
-   * @returns {boolean} True if layer is already present in the map, false otherwise
+   * @return {boolean} True if layer is already present in the map, false otherwise
    */
   layerAlreadyExists(lyr) {
     const duplicateLayers = this.map
@@ -731,7 +733,7 @@ export class HsMapService {
    * @public
    * @param {ol.Layer} lyr Layer for which to determine visibility
    * @param {Array} array Layer title to check in.
-   * @returns {boolean} Detected visibility of layer
+   * @return {boolean} Detected visibility of layer
    * @description Checks if layer title is present in an array of layer titles.
    * Used to set visibility by URL parameter which contains visible layer titles
    */
@@ -774,6 +776,34 @@ export class HsMapService {
           return url;
         } else {
           return this.HsUtilsService.proxify(url);
+        }
+      });
+      src.setTileLoadFunction((tile, src) => {
+        if (
+          src.startsWith(
+            this.HsConfig.datasources?.filter((ep) => ep.type == 'layman')[0]
+              .url
+          )
+        ) {
+          const xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+          xhr.responseType = 'arraybuffer';
+          xhr.open('GET', src);
+
+          xhr.addEventListener('loadend', function (evt) {
+            if (this.response !== undefined) {
+              const arrayBufferView = new Uint8Array(this.response);
+              const blob = new Blob([arrayBufferView], {type: 'image/png'});
+              const urlCreator = window.URL || window.webkitURL;
+              const imageUrl = urlCreator.createObjectURL(blob);
+              tile.getImage().src = imageUrl;
+            } else {
+              tile.setState(TileState.ERROR);
+            }
+          });
+          xhr.send();
+        } else {
+          tile.getImage().src = src;
         }
       });
     } else {
@@ -825,7 +855,7 @@ export class HsMapService {
    * @name HsMapService#getMap
    * @public
    * @description Get ol.Map object from service
-   * @returns {ol.Map} ol.Map
+   * @return {ol.Map} ol.Map
    */
   getMap() {
     return this.map;
