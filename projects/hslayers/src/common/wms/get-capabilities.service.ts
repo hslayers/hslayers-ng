@@ -5,12 +5,12 @@ import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 
+import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {Metadata} from '../layer-extensions';
 import {getPreferedFormat} from '../format-utils';
-import {tweakGeoserverUrl} from '../../components/save-map/layman-utils';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService {
@@ -18,14 +18,15 @@ export class HsWmsGetCapabilitiesService {
     private HttpClient: HttpClient,
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   /**
    * Get WMS service location without parameters from url string
    *
-   * @param str - Url string to parse
-   * @returns WMS service Url
+   * @param str Url string to parse
+   * @return WMS service Url
    */
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
@@ -39,8 +40,8 @@ export class HsWmsGetCapabilitiesService {
    * Create WMS parameter string from parameter object
    * TODO: Probably the same as utils.paramsToURL
    *
-   * @param obj - Object with stored WMS service parameters
-   * @returns Parameter string or empty string if no object given
+   * @param obj Object with stored WMS service parameters
+   * @return Parameter string or empty string if no object given
    */
   params2String(obj): string {
     return obj
@@ -67,7 +68,7 @@ export class HsWmsGetCapabilitiesService {
   /**
    * Parse added service url and sends GetCapabalities request to WMS service
    *
-   * @param service_url - Raw Url localization of service
+   * @param service_url Raw Url localization of service
    * @param [options]
    * @param [options.castOwsCapabilitiesReceived=true] - Whether or not to cast
    *   next value of owsCapabilitiesReceived subject
@@ -102,7 +103,11 @@ export class HsWmsGetCapabilitiesService {
     try {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
-        withCredentials: true,
+        withCredentials: url.includes(
+          this.HsCommonEndpointsService?.endpoints.filter(
+            (ep) => ep.type == 'layman'
+          )[0]?.url
+        ),
       }).toPromise();
       if (castOwsCapabilitiesReceived) {
         this.HsEventBusService.owsCapabilitiesReceived.next({
@@ -124,8 +129,9 @@ export class HsWmsGetCapabilitiesService {
   /**
    * Load all layers of selected service to the map
    *
-   * @param capabilities_xml - XML response of GetCapabilities of selected service
-   * @returns List of layers from service
+   * @param capabilities_xml XML response of GetCapabilities of selected service
+   * @param path
+   * @return List of layers from service
    */
   service2layers(capabilities_xml, path: string): Layer[] {
     const parser = new WMSCapabilities();
@@ -219,8 +225,8 @@ export class HsWmsGetCapabilitiesService {
   /**
    * Test if current map projection is in supported projection list
    *
-   * @param srss - List of supported projections
-   * @returns True if map projection is in list, otherwise false
+   * @param srss List of supported projections
+   * @return True if map projection is in list, otherwise false
    */
   currentProjectionSupported(srss: string[]): boolean {
     let found = false;

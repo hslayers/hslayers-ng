@@ -1,6 +1,7 @@
 import * as xml2Json from 'xml-js';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -54,7 +55,8 @@ export class HsCompositionsParserService {
     public HsLayoutService: HsLayoutService,
     public $log: HsLogService,
     public HsEventBusService: HsEventBusService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsCommonEndpointsService: HsCommonEndpointsService
   ) {}
 
   /**
@@ -77,13 +79,17 @@ export class HsCompositionsParserService {
   ): Promise<void> {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
-    //url = this.HsUtilsService.proxify(url);
+    url = this.HsUtilsService.proxify(url);
     let options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
       options['responseType'] = 'text' ;
     }
-    options['withCredentials'] = true;
+    options['withCredentials'] = url.includes(
+      this.HsCommonEndpointsService?.endpoints.filter(
+        (ep) => ep.type == 'layman'
+      )[0]?.url
+    );
     const data: any = await this.$http.get(url, options).toPromise();
     if (data?.file) {
       // Layman composition wrapper
@@ -176,7 +182,6 @@ export class HsCompositionsParserService {
         title: layer.Extension['hsl:layer_title']._text,
         url: layer.Server.OnlineResource._attributes['xlink:href'],
         visibility: true,
-        wmsMaxScale: 0,
       };
       compositionJSON.layers.push(layerToAdd);
     }

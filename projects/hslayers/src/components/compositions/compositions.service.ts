@@ -188,7 +188,7 @@ export class HsCompositionsService {
           break;
         case 'layman':
           url =
-            record.url.replace('http://', location.protocol + '://') + '/file';
+            record.url + '/file';
           break;
         default:
           this.$log.warn(

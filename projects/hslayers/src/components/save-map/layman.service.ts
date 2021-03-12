@@ -16,7 +16,6 @@ import {HsUtilsService} from '../utils/utils.service';
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
-  tweakGeoserverUrl,
   wfsNotAvailable,
 } from './layman-utils';
 import {
@@ -62,7 +61,7 @@ export class HsLaymanService implements HsSaverService {
    * @param compoData Additional fields for composition such
    * @param saveAsNew Save as new composition
    * as title, name
-   * @returns {Promise<any>} Promise result of POST
+   * @return {Promise<any>} Promise result of POST
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
     const write =
@@ -92,6 +91,7 @@ export class HsLaymanService implements HsSaverService {
       formdata.append('access_rights.write', write);
       const options = {
         headers: headers,
+        withCredentials: true,
       };
       try {
         const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
@@ -117,7 +117,7 @@ export class HsLaymanService implements HsSaverService {
    * @param description Object containing {name, title, crs} of
    * layer to retrieve
    * @param layerDesc Previously fetched layer descriptor
-   * @returns Promise result of POST/PATCH
+   * @return Promise result of POST/PATCH
    */
   private async makeUpsertLayerRequest(
     endpoint,
@@ -144,6 +144,7 @@ export class HsLaymanService implements HsSaverService {
     headers.append('Accept', 'application/json');
     const options = {
       headers: headers,
+      withCredentials: true,
     };
     try {
       let layerDesc2 = layerDesc;
@@ -172,6 +173,7 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Create Layman layer if needed and send all features
    * @param endpoint Endpoint description
+   * @param ep
    * @param layer Layer to get Layman friendly name for
    * get features
    */
@@ -204,7 +206,12 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Sync wfs features using transaction. Publish layer first if needed
    * @param param0
-   * @returns Promise result of POST
+   * @param param0.ep
+   * @param param0.add
+   * @param param0.upd
+   * @param param0.del
+   * @param param0.layer
+   * @return Promise result of POST
    */
   async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
@@ -227,7 +234,7 @@ export class HsLaymanService implements HsSaverService {
         this.upsertLayer(ep, layer);
         return;
       }
-      desc.wfs.url = tweakGeoserverUrl(desc.wfs.url);
+      desc.wfs.url = desc.wfs.url;
       return this.makeWfsRequest(
         {ep: endpoint, add, upd, del, layer},
         desc.wfs.url
@@ -241,7 +248,12 @@ export class HsLaymanService implements HsSaverService {
    * Make WFS transaction request
    * @param param0 Object describing endpoint, layer and arrays
    * for each of the methods: update, del, insert containing the features to be processed
+   * @param param0.add
+   * @param param0.ep
    * @param url Layman client / geoserver
+   * @param param0.upd
+   * @param param0.del
+   * @param param0.layer
    */
   private async makeWfsRequest(
     {ep, add, upd, del, layer}: WfsSyncParams,
@@ -264,6 +276,7 @@ export class HsLaymanService implements HsSaverService {
       const httpOptions: any = {
         headers,
         responseType: 'text',
+        withCredentials: true,
       };
       const body = featureNode.outerHTML
         .replace(/<geometry>/gm, '<wkb_geometry>')
@@ -286,10 +299,11 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
+   * @param ep
    * @param layer
    * @param endpoint Endpoint description
    * @param layerName Escaped name of layer
-   * @returns Promise with WFS xml (GML3.1) response
+   * @return Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    * Retrieve layers features from server
    */
@@ -320,7 +334,7 @@ export class HsLaymanService implements HsSaverService {
         version 2.0.0. Currently only 3.1.1 is possible */
       const response: string = await this.http
         .get(
-          tweakGeoserverUrl(descr.wfs.url) +
+          descr.wfs.url +
             '?' +
             this.HsUtilsService.paramsToURL({
               service: 'wfs',
@@ -330,7 +344,7 @@ export class HsLaymanService implements HsSaverService {
               r: Math.random(),
               srsName: this.HsMapService.getCurrentProj().getCode(),
             }),
-          {responseType: 'text'}
+          {responseType: 'text', withCredentials: true}
         )
         .toPromise();
       return response;
@@ -343,7 +357,7 @@ export class HsLaymanService implements HsSaverService {
    * Try getting layer description from layman.
    * @param endpoint Endpoint description
    * @param layerName Layer name
-   * @returns Promise which returns layers
+   * @return Promise which returns layers
    * description containig name, file, wms, wfs urls etc.
    */
   async describeLayer(
@@ -356,7 +370,10 @@ export class HsLaymanService implements HsSaverService {
         .get(
           `${endpoint.url}/rest/${
             endpoint.user
-          }/layers/${layerName}?${Math.random()}`
+          }/layers/${layerName}?${Math.random()}`,
+          {
+            withCredentials: true,
+          }
         )
         .toPromise();
       if (response?.code == 15) {
@@ -380,7 +397,9 @@ export class HsLaymanService implements HsSaverService {
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
         this.http
-          .delete(`${ds.url}/rest/${ds.user}/layers/${getLayerName(layer)}`)
+          .delete(`${ds.url}/rest/${ds.user}/layers/${getLayerName(layer)}`, {
+            withCredentials: true,
+          })
           .toPromise()
           .catch((error) => {
             this.HsToastService.createToastPopupMessage(
