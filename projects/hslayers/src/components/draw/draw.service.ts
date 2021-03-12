@@ -116,7 +116,6 @@ export class HsDrawService {
         features: this.selectedFeatures,
       });
       map.addInteraction(this.modify);
-      this.fillDrawableLayers();
     });
 
     this.selectedFeatures.on('add', (e) => {
