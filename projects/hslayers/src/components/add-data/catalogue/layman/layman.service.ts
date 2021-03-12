@@ -105,7 +105,7 @@ export class HsLaymanBrowserService {
     dataset.loading = false;
     dataset.layers = [];
     dataset.datasourcePaging.loaded = true;
-    if (data.data === null) {
+    if (!data.data) {
       dataset.datasourcePaging.matched = 0;
     } else {
       dataset.datasourcePaging.matched = data.length;
