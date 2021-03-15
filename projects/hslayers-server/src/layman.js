@@ -88,6 +88,7 @@ app.use(`/rest`,
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
     selfHandleResponse: true,
+    secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
       authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
@@ -101,6 +102,7 @@ app.use(`/geoserver`,
     target: process.env.LAYMAN_BASEURL,
     changeOrigin: true,
     selfHandleResponse: true,
+    secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
       authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
