@@ -22,7 +22,6 @@ import {HsToastService} from '../../layout/toast/toast.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
 import {setDefinition} from '../../../common/layer-extensions';
-import {tweakGeoserverUrl} from '../../save-map/layman-utils';
 @Injectable({
   providedIn: 'root',
 })
@@ -102,7 +101,7 @@ export class HsCompositionsLayerParserService {
     const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    const url = tweakGeoserverUrl(decodeURIComponent(lyr_def.url));
+    const url = decodeURIComponent(lyr_def.url);
     const source = new source_class({
       url: url,
       attributions: lyr_def.attribution
