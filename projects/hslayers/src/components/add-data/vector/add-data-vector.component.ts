@@ -62,6 +62,7 @@ export class HsAddDataVectorComponent {
    * Handler for adding nonwms service, file in template.
    *
    * @function add
+   * @return layer
    */
   async add() {
     const layer = await this.HsAddDataVectorService.addVectorLayer(
@@ -79,11 +80,9 @@ export class HsAddDataVectorComponent {
       this.addUnder
     );
     this.HsAddDataVectorService.fitExtent(layer);
-
     this.awaitLayerSync(layer).then(() => {
       layer.getSource().dispatchEvent('addfeature');
     });
-
     this.hsLayoutService.setMainPanel('layermanager');
     this.setToDefault();
     this.showDetails = false;

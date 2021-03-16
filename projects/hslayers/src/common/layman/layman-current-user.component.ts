@@ -33,8 +33,11 @@ export class HsLaymanCurrentUserComponent {
   }
 
   sameDomain() {
-    let endpointUrl = new URL(this.endpoint.url);
-    return (location.protocol == endpointUrl.protocol && location.host == endpointUrl.host);
+    const endpointUrl = new URL(this.endpoint.url);
+    return (
+      location.protocol == endpointUrl.protocol &&
+      location.host == endpointUrl.host
+    );
   }
 
   authUrl() {

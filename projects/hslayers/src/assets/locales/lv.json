@@ -63,7 +63,7 @@
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
       "uploadVectorFiles": "Augšuplādēt vektordatu failus",
-      "chooseFiles": "Choose files..."
+      "chooseFiles": "Izvēlieties failus..."
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
@@ -189,7 +189,7 @@
     "contactInformation": "Kontaktinformācija",
     "warning": "Brīdinājums",
     "noDataReceived": "Dati nav saņemti!",
-    "or": "or"
+    "or": "vai"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

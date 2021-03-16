@@ -254,6 +254,7 @@ export class HsLaymanService implements HsSaverService {
    * @param param0.upd
    * @param param0.del
    * @param param0.layer
+   * @return
    */
   private async makeWfsRequest(
     {ep, add, upd, del, layer}: WfsSyncParams,

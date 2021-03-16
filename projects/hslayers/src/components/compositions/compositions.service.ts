@@ -187,8 +187,7 @@ export class HsCompositionsService {
           url = this.getRecordLink(record);
           break;
         case 'layman':
-          url =
-            record.url + '/file';
+          url = record.url + '/file';
           break;
         default:
           this.$log.warn(

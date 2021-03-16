@@ -72,7 +72,7 @@ export class HsWmsGetCapabilitiesService {
    * @param [options]
    * @param [options.castOwsCapabilitiesReceived=true] - Whether or not to cast
    *   next value of owsCapabilitiesReceived subject
-   * @returns Promise object - Response to GetCapabalities request
+   * @return Promise object - Response to GetCapabalities request
    */
   async requestGetCapabilities(
     service_url: string,

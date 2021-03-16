@@ -229,7 +229,7 @@ export class HsAddDataUrlWmsService {
    * @param {string} url Url for which to remove port but only when proxified
    * with port in proxy path.
    * @private
-   * @returns {string} Url without proxy services port added to it.
+   * @return {string} Url without proxy services port added to it.
    */
   removePortIfProxified(url: string): string {
     if (this.hsConfig.proxyPrefix === undefined) {
@@ -268,7 +268,7 @@ export class HsAddDataUrlWmsService {
 
   /**
    * @param service
-   * @returns {Array}
+   * @return {Array}
    */
   getSublayerNames(service): any[] {
     if (service.Layer) {
@@ -371,7 +371,7 @@ export class HsAddDataUrlWmsService {
 
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {
-      let legend = layer.Style[0].LegendURL[0].OnlineResource;
+      const legend = layer.Style[0].LegendURL[0].OnlineResource;
       legends.push(legend);
     }
 

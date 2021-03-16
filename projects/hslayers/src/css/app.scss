@@ -167,10 +167,14 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	}
 
 	//**DROPZONE **//
+	.dropzone-container{
+		flex-direction: row;
+	}
+
 	.dropzone {
 		text-align: center;
 		min-height: 80px;
-		border: dashed 2px $primary;
+		border: dashed 3px $primary;
 		border-radius: 5px;
 		color: #495057 !important;
 	}
@@ -1258,6 +1262,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 			max-width: 90vw;
 			font-size: larger;	
 		}
+
+		.dropzone-container{
+			flex-direction: column;
+		}
 	}
 
 	ul[dnd-list],
@@ -1510,6 +1518,28 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	.ol-control button {
 		background-color: var(--map-controls-bg);
 		font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+	}
+
+	.inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.inputfile + label {
+		font-size: 1.25em;
+		font-weight: 700;
+		color: white;
+		background-color: var(--primary);
+		display: inline-block;
+		cursor: pointer;
+	}
+	
+	.inputfile + label:hover {
+		background-color: var(--secondary);
 	}
 
 }

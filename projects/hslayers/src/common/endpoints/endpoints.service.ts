@@ -62,6 +62,7 @@ export class HsCommonEndpointsService {
 
   /**
    * @param ds
+   * @return paging number
    */
   getItemsPerPageConfig(ds) {
     return ds.paging !== undefined && ds.paging.itemsPerPage !== undefined

@@ -36,11 +36,10 @@ export class HsCompositionsLayerParserService {
   ) {}
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createWMTSLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Tile layer
+   * @return {object} Ol Tile layer
    * @description Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
    */
   createWMTSLayer(lyr_def): any {
@@ -87,11 +86,10 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createWmsLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
+   * @return {object} Ol Image or Tile layer
    * @description Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
    */
   createWmsLayer(lyr_def) {
@@ -145,11 +143,10 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createArcGISLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
+   * @return {object} Ol Image or Tile layer
    * @description Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
    */
   createArcGISLayer(lyr_def) {
@@ -203,11 +200,10 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createXYZLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
+   * @return {object} Ol Image or Tile layer
    * @description Parse definition object to create XYZ Ol.layer
    */
   createXYZLayer(lyr_def) {
@@ -256,11 +252,10 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createStaticImageLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {object} Ol Image or Tile layer
+   * @return {object} Ol Image or Tile layer
    * @description Parse definition object to create ImageStatic Ol.layer
    */
   createStaticImageLayer(lyr_def) {
@@ -308,7 +303,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createSparqlLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -351,11 +345,10 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
    * @name hs.compositions.config_parsers.service#createVectorLayer
    * @public
    * @param {object} lyr_def Layer definition object
-   * @returns {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
+   * @return {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
   createVectorLayer(lyr_def) {

@@ -63,7 +63,7 @@ export class HsSaveMapService {
    * @param {object} compoData - Composition general metadata
    * @param {object} userData - Metadata about user
    * @param {object} statusData - Metadata about permissions
-   * @returns {object} JSON object with all required map composition metadata
+   * @return {object} JSON object with all required map composition metadata
    */
   map2json(map, compoData, userData, statusData) {
     const groups: any = {};
@@ -146,7 +146,7 @@ export class HsSaveMapService {
    * @memberof HsSaveMapService
    * @function getCurrentBaseLayer
    * @param {Map} map Selected map object
-   * @returns {object} Returns object with current current selected base layers title as attribute
+   * @return {object} Returns object with current current selected base layers title as attribute
    */
   getCurrentBaseLayer(map: Map) {
     let current_base_layer = null;
@@ -173,7 +173,7 @@ export class HsSaveMapService {
    * @function layer2json
    * @param {Array} layers All map layers
    * @param {Array} tickedLayers List of layers and if they have been ticked
-   * @returns {Array} JSON object representing the layers
+   * @return {Array} JSON object representing the layers
    */
   layers2json(layers, tickedLayers?) {
     const json = [];
@@ -209,7 +209,7 @@ export class HsSaveMapService {
    * @function layer2string
    * @param {object} layer Layer to be converted
    * @param {boolean} pretty Whether to use pretty notation
-   * @returns {string} Text in JSON notation representing the layer
+   * @return {string} Text in JSON notation representing the layer
    */
   layer2string(layer, pretty) {
     const json = this.layer2json(layer);
@@ -222,7 +222,7 @@ export class HsSaveMapService {
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
    * @param s - Style to convert
-   * @returns {object} Converted JSON object for style
+   * @return {object} Converted JSON object for style
    */
   serializeStyle(s: Style) {
     const o: any = {};
@@ -302,10 +302,9 @@ export class HsSaveMapService {
    * The layer index is not covered, as we assume
    * that it is corresponding to the layers order.
    *
-   * @memberof HsSaveMapService
    * @function layer2json
    * @param {object} layer Map layer that should be converted
-   * @returns {object} JSON object representing the layer
+   * @return {object} JSON object representing the layer
    */
   layer2json(layer: Layer): any {
     const json: any = {
@@ -457,10 +456,9 @@ export class HsSaveMapService {
   /**
    * Convert feature array to GeoJSON string
    *
-   * @memberof HsSaveMapService
    * @function serializeFeatures
    * @param {Array} features Array of features
-   * @returns {string} GeoJSON string
+   * @return {string} GeoJSON string
    */
   serializeFeatures(features) {
     const f = new GeoJSON();

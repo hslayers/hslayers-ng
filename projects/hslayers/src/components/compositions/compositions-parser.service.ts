@@ -1,23 +1,26 @@
 import * as xml2Json from 'xml-js';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+import {transform, transformExtent} from 'ol/proj';
+
+import {DuplicateHandling, HsMapService} from '../map/map.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import {
   getFromComposition,
   getTitle,
   setMetadata,
 } from '../../common/layer-extensions';
-import {transform, transformExtent} from 'ol/proj';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -67,7 +70,7 @@ export class HsCompositionsParserService {
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param {Function} callback Optional function which should be called when composition is successfully loaded
    * @param {Function} pre_parse Optional function for pre-parsing loaded data about composition to accepted format
-   * @returns {Promise}
+   * @return {Promise}
    * @description Load selected composition from server, parse it and add layers to map.
    * Optionally (based on app config) may open layer manager panel
    */
@@ -80,10 +83,10 @@ export class HsCompositionsParserService {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    let options = {};
+    const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
-      options['responseType'] = 'text' ;
+      options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
       this.HsCommonEndpointsService?.endpoints.filter(
@@ -289,7 +292,7 @@ export class HsCompositionsParserService {
    * @name HsCompositionsParserService#loadInfo
    * @public
    * @param {string} url Url to composition info
-   * @returns {object} Object containing composition info
+   * @return {object} Object containing composition info
    * @description Send Ajax request to selected server to gain information about composition
    */
   async loadInfo(url: string): Promise<any> {
@@ -392,7 +395,7 @@ export class HsCompositionsParserService {
    * @name HsCompositionsParserService#jsonToLayers
    * @public
    * @param {object} j Composition object with Layers
-   * @returns {Array} Array of created layers
+   * @return {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
   jsonToLayers(j) {
@@ -415,7 +418,7 @@ export class HsCompositionsParserService {
    * @name HsCompositionsParserService#jsonToLayer
    * @public
    * @param {object} lyr_def Layer to be created (encapsulated in layer definition object)
-   * @returns {Function} Parser function to create layer (using config_parsers service)
+   * @return {Function} Parser function to create layer (using config_parsers service)
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
   jsonToLayer(lyr_def) {
