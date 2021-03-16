@@ -110,8 +110,8 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
 
   /**
    * @function getPreviousRecords
-   * @param endpoint Selected datasource
-   * Loads previous records of datasets from selected datasource (based on number of results per page and current start)
+   * @param {HsEndpoint} endpoint Selected datasource
+   * @description Loads previous records of datasets from selected datasource (based on number of results per page and current start)
    */
   getPreviousRecords(): void {
     this.HsAddDataCatalogueService.getPreviousRecords();
@@ -119,8 +119,8 @@ export class HsAddDataCatalogueComponent implements OnDestroy {
 
   /**
    * @function getNextRecords
-   * @param endpoint Selected datasource
-   * Loads next records of datasets from selected datasource (based on number of results per page and current start)
+   * @param {HsEndpoint} endpoint Selected datasource
+   * @description Loads next records of datasets from selected datasource (based on number of results per page and current start)
    */
   getNextRecords(): void {
     this.HsAddDataCatalogueService.getNextRecords();
