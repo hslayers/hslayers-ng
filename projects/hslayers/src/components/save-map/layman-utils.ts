@@ -8,7 +8,7 @@ import {getName, getTitle} from '../../common/layer-extensions';
  * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
  * @function getLaymanFriendlyLayerName
  * @param {string} title Title to get Layman-friendly name for
- * @returns {string} New layer name
+ * @return {string} New layer name
  */
 export function getLaymanFriendlyLayerName(title: string): string {
   //TODO: Unidecode on server side or just drop the unsupported letters.
@@ -24,7 +24,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
 /**
  * Get layman friendly name of layer based primary on name
  * and secondary on title attributes.
- *
+ * @return
  * @param layer Layr to get the name for
  */
 export function getLayerName(layer: Layer): string {

@@ -282,7 +282,6 @@ export class HsSaveMapService {
    * The layer index is not covered, as we assume
    * that it is corresponding to the layers order.
    *
-   * @memberof HsSaveMapService
    * @function layer2json
    * @param {object} layer Map layer that should be converted
    * @return {object} JSON object representing the layer
@@ -437,8 +436,14 @@ export class HsSaveMapService {
   /**
    * Convert feature array to GeoJSON string
    *
+<<<<<<< HEAD
    * @param features - Array of features
    * @returns GeoJSON
+=======
+   * @function serializeFeatures
+   * @param {Array} features Array of features
+   * @return {string} GeoJSON string
+>>>>>>> 584703d5b... Ported server-layman-rebase
    */
   getFeaturesJson(features: Feature[]): any {
     const f = new GeoJSON();

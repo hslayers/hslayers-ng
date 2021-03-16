@@ -477,6 +477,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		.dropzone-container{
 			flex-direction: column;
 		}
+
+		.dropzone-container{
+			flex-direction: column;
+		}
 	}
 
 	ul[dnd-list],

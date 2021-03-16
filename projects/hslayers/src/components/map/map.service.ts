@@ -71,7 +71,6 @@ export class HsMapService {
   timer = null;
   puremap: any;
   /**
-   * @ngdoc property
    * @name HsMapService#duration
    * @public
    * @type {number} 400
@@ -89,7 +88,6 @@ export class HsMapService {
     },
   });
   /**
-   * @ngdoc property
    * @name HsMapService#controls
    * @public
    * @type {object}
@@ -99,7 +97,6 @@ export class HsMapService {
   controls = this.defaultDesktopControls;
   mapElement: any;
   /**
-   * @ngdoc property
    * @name HsMapService#interactions
    * @public
    * @type {object}

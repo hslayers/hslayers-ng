@@ -19,7 +19,7 @@ export class HsUtilsService {
    * @public
    * @param {string} url Url to proxify
    * @param {boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.
-   * @returns {string} Encoded Url with path to hsproxy.cgi script
+   * @return {string} Encoded Url with path to hsproxy.cgi script
    * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
    */
   proxify(url: string, toEncoding?: boolean): string {
@@ -70,7 +70,7 @@ export class HsUtilsService {
    * @name HsUtilsService#shortUrl
    * @public
    * @param {string} url Url to shorten
-   * @returns {string} Shortened url
+   * @return {string} Shortened url
    * @description Promise which shortens url by using some url shortener.
    * By default tinyurl is used, but user provided function in config.shortenUrl can be used. Example: function(url) {
             return new Promise(function(resolve, reject){
@@ -114,7 +114,7 @@ export class HsUtilsService {
    * @ngdoc method
    * @name HsUtilsService#getPortFromUrl
    * @param {string} url Url for which to determine port number
-   * @returns {string} Port number
+   * @return {string} Port number
    */
   getPortFromUrl(url: string): string {
     if (this.runningInBrowser()) {
@@ -140,7 +140,7 @@ export class HsUtilsService {
    * Parse parameters and their values from URL string
    * @public
    * @param str - URL to parse parameters from
-   * @returns Object with parsed parameters as properties
+   * @return Object with parsed parameters as properties
    */
   getParamsFromUrl(str: string): any {
     if (typeof str !== 'string') {
@@ -184,7 +184,7 @@ export class HsUtilsService {
    * @name HsUtilsService#paramsToUrl
    * @public
    * @param {object} array Parameter object with parameter key-value pairs
-   * @returns {string} Joined encoded Url query string
+   * @return {string} Joined encoded Url query string
    * @description Create encoded Url string from object with parameters
    */
   paramsToURL(array: any): string {
@@ -219,7 +219,7 @@ export class HsUtilsService {
    * @name HsUtilsService#paramsToUrlWoEncode
    * @public
    * @param {object} array Parameter object with parameter key-value pairs
-   * @returns {string} Joined Url query string
+   * @return {string} Joined Url query string
    * @description Create Url string from object with parameters without encoding
    */
   paramsToURLWoEncode(array): string {
@@ -242,7 +242,7 @@ export class HsUtilsService {
    * @param {boolean} immediate If `immediate` is passed, trigger the
    * function on the leading edge, instead of the trailing.
    * @param {object} context Context element which stores the timeout handle
-   * @returns {Function} Returns function which is debounced
+   * @return {Function} Returns function which is debounced
    * @description Returns a function, that, as long as it continues to be
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
@@ -271,7 +271,7 @@ export class HsUtilsService {
    * @ngdoc method
    * @name HsUtilsService#generateUuid
    * @public
-   * @returns {string} Random uuid
+   * @return {string} Random uuid
    * @description Generate randomized uuid
    */
   generateUuid(): string {
@@ -289,7 +289,7 @@ export class HsUtilsService {
    * @param {number} numOfSteps Maximum value which is the last color in rainbow
    * @param {number} step Current value to get color for
    * @param {number} opacity Opacity from 0 to 1
-   * @returns {string} CSS color
+   * @return {string} CSS color
    * @description Generates css color string (rgba(0, 0, 0, 1)) from given range and value for which to have color
    */
   rainbow(numOfSteps: number, step: number, opacity: string): string {
@@ -334,7 +334,7 @@ export class HsUtilsService {
    * @description Creates a deep copy of the input object
    * @param {object} from object to deep copy
    * @param {object?} to optional target for copy
-   * @returns {object} a deep copy of input object
+   * @return {object} a deep copy of input object
    * @memberof HsUtilsService
    */
   structuredClone(from, to?) {
@@ -368,7 +368,7 @@ export class HsUtilsService {
    * Check if object is a function
    *
    * @param {object} functionToCheck
-   * @returns {boolean}
+   * @return {boolean}
    */
   isFunction(functionToCheck: any): boolean {
     return (
@@ -381,8 +381,7 @@ export class HsUtilsService {
    * Check if object is plain object (not function, not array, not class)
    *
    * @param {object} objectToCheck
-   * @returns {boolean}
-   * @memberof HsUtilsService
+   * @return {boolean}
    */
   isPOJO(objectToCheck: any): boolean {
     return (
@@ -395,7 +394,7 @@ export class HsUtilsService {
    *
    * @param {object} obj
    * @param {*} type
-   * @returns {boolean}
+   * @return {boolean}
    */
   instOf(obj: any, type: any): boolean {
     return this._instanceOf(obj, type);
@@ -451,7 +450,7 @@ export class HsUtilsService {
    * @param {string} property Property of objects which must be unique in the new array.
    * Use dot symbol (".") to denote a property chain in nested object.
    * Function will return an empty array if it won't find the property in the object.
-   * @returns {Array<object>} Array without duplicate objects
+   * @return {Array<object>} Array without duplicate objects
    */
   removeDuplicates(dirtyArray: any, property: string): any {
     const propertyChain = property.split('.');
@@ -500,7 +499,7 @@ export class HsUtilsService {
    * @param {string} target target tring
    * @param {string} search String to look for
    * @param {string} replacement Replacement value
-   * @returns {string} Returns modified string
+   * @return {string} Returns modified string
    * @description Replaces input string text with replacement text
    */
   replaceAll(target: string, search: string, replacement: string): string {
@@ -520,7 +519,7 @@ export class HsUtilsService {
    * @name capitalizeFirstLetter
    * @public
    * @param {string} target Target string
-   * @returns {string} Returns modified string
+   * @return {string} Returns modified string
    * @description Replaces first string letter to UpperCase
    */
   capitalizeFirstLetter(target: string): string {

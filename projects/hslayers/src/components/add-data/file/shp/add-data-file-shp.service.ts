@@ -18,7 +18,7 @@ export class HsAddDataFileShpService {
    * @param {string} abstract Abstract of new layer
    * @param {string} srs EPSG code of selected projection (eg. "EPSG:4326")
    * @param {Array} sld Array of sld files
-   * @returns {Promise}
+   * @return {Promise}
    */
   add(
     endpoint: HsEndpoint,

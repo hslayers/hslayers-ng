@@ -80,6 +80,7 @@ export class HsAddDataVectorComponent {
    * Handler for adding nonwms service, file in template.
    *
    * @function add
+   * @return layer
    */
   async add() {
     const layer = await this.HsAddDataVectorService.addVectorLayer(
