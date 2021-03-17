@@ -21,7 +21,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^9.1.13",
+    "@angular/common": "^11.2.5",
     "@angular/compiler": "^9.1.13",
     "@angular/core": "^9.1.13",
     "@angular/forms": "^9.1.13",
