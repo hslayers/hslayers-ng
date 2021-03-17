@@ -294,6 +294,15 @@
             "tsConfig": "projects/hslayers/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/hslayers/src/**/*.ts",
+              "projects/hslayers/src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -356,6 +365,7 @@
   },
   "defaultProject": "hslayers-app",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
