@@ -17,6 +17,7 @@ const sessionUtil = require('./oauth2/session');
 const app = express();
 
 var whitelist = JSON.parse(process.env.CORS_WHITELIST);
+const successRedirectUrl = process.env.SUCCESS_REDIRECT_URL || '';
 var corsOptions = {
   credentials: true,
   origin: whitelist
@@ -132,7 +133,20 @@ app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error'
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
     authnUtil.checkTokenExpiration(req, strategy.name);
     //res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
-    res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>`);
+    res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
+    <script>
+    function inIframe () {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+    if(!inIframe ()){
+      if('${successRedirectUrl}' != '') window.location.replace("${successRedirectUrl}");
+    }
+    </script>
+    `);
   }
   else
     res.send("<a href='/login'>Login</a>");
