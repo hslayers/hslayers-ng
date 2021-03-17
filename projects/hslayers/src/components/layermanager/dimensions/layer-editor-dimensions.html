@@ -12,7 +12,7 @@
             <label>{{'COMMON.date' | translate}}</label>
         </div>
         <div class="input-group flex-fill" *ngIf="dimension.type == 'datetime' || dimension.type == 'date'">
-            <input type="text" style="width: 7em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>
+            <input type="text" style="width: 6.1em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker" [(ngModel)]="dimension.modelValue" (dateSelect)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}"/>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="icon-calendarthree"></i></button>
             </div>
