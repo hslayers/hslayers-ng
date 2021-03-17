@@ -175,6 +175,7 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
+    console.log(lyr)
     return {
       type: lyr.type,
       link: lyr.wms.url,

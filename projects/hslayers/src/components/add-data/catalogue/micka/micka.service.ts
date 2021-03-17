@@ -114,15 +114,16 @@ export class HsMickaBrowserService {
         ? query.textFilter
         : query.title;
     const sql = [
+      // 'validservice>0',
       text != '' ? `${textField} like '*${text}*'` : '',
       bbox,
       //param2Query('type'),
       this.param2Query('ServiceType', query),
-      this.param2Query('topicCategory', query),
-      this.param2Query('Subject', query),
-      this.param2Query('Denominator', query),
-      this.param2Query('OrganisationName', query),
-      this.param2Query('keywords', query),
+      // this.param2Query('topicCategory', query),
+      // this.param2Query('Subject', query),
+      // this.param2Query('Denominator', query),
+      // this.param2Query('OrganisationName', query),
+      // this.param2Query('keywords', query),
     ]
       .filter((n) => {
         return n != '';
@@ -142,6 +143,7 @@ export class HsMickaBrowserService {
             : 'date',
         limit: dataset.datasourcePaging.limit,
         start: dataset.datasourcePaging.start,
+        validservice: '>0',
       });
     return this.hsUtilsService.proxify(url);
   }
@@ -152,7 +154,7 @@ export class HsMickaBrowserService {
    * @param {Object} data HTTP response containing all the layers
    * @description Callback for catalogue http query
    */
-  private datasetsReceived(data): void {
+  private datasetsReceived(data): boolean {
     if (!data.dataset || !data.extentFeatureCreated) {
       return;
     }
@@ -162,10 +164,11 @@ export class HsMickaBrowserService {
     dataset.datasourcePaging.loaded = true;
     if (data.records.length == 0) {
       dataset.datasourcePaging.matched = 0;
+      return false;
     } else {
       dataset.datasourcePaging.matched = data.matched;
-
       dataset.datasourcePaging.next = data.next;
+
       for (const lyr of data.records) {
         dataset.layers.push(lyr);
         if (data.extentFeatureCreated) {
@@ -173,6 +176,7 @@ export class HsMickaBrowserService {
           data.extentFeatureCreated(extentFeature);
         }
       }
+      return true;
     }
   }
 
@@ -181,19 +185,31 @@ export class HsMickaBrowserService {
    * @function param2Query
    * @param {string} which Parameter name to parse
    * @param {object} query
-   * @returns {string}
+   * @return {string}
    * @description Parse query parameter into encoded key value pair.
    */
   private param2Query(which: string, query): string {
+    const dataset =
+      'type=dataset OR type=nonGeographicDataset OR type=series OR type=tile';
     if (query[which] !== undefined) {
       if (which == 'type' && query[which] == 'data') {
         //Special case for type 'data' because it can contain many things
-        return "(type='dataset' OR type='nonGeographicDataset' OR type='series' OR type='tile')";
+        return `(${dataset})`;
       }
       return query[which] != '' ? which + "='" + query[which] + "'" : '';
     } else {
       if (which == 'ServiceType') {
-        return '(ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS)';
+        const service =
+          'ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS';
+        switch (query.type) {
+          case 'service':
+            return `(${service})`;
+          case 'dataset':
+            return `(${dataset})`;
+          case 'all':
+          default:
+            return `(${service} OR ${dataset})`;
+        }
       } else {
         return '';
       }
@@ -204,7 +220,7 @@ export class HsMickaBrowserService {
    * @private
    * @function addExtentFeature
    * @param {Object} record Record of one dataset from Get Records response
-   * @returns {Feature | undefined}
+   * @return {Feature | undefined}
    * @description Create extent features for displaying extent of loaded dataset records in map
    */
   private addExtentFeature(record): Feature | undefined {
@@ -271,14 +287,24 @@ export class HsMickaBrowserService {
 
   /**
    * @function getLayerLink
+   * @param type
    * @param {object} layer Micka layer for which to get metadata
-   * @returns {string} Url of service or resource
+   * @param {string} type Optional service type specification
+   * @return {string} Url of service or resource
    * @description Get first link from records links array or link
    * property of record in older Micka versions
    * in a common format for use in add-layers component
    */
-  getLayerLink(layer): string {
+  getLayerLink(layer, type?: string): string {
     if (layer.links?.length > 0) {
+      if (type) {
+        layer.links = layer.links.filter(
+          (link) =>
+            link.url.toLowerCase().includes(type) ||
+            (!Array.isArray(link) && link.includes(type))
+        );
+      }
+
       if (layer.links[0].url !== undefined) {
         return layer.links[0].url;
       } else {
@@ -295,7 +321,7 @@ export class HsMickaBrowserService {
    * @function describeWhatToAdd
    * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
    * @param {object} layer Micka layer for which to get metadata
-   * @returns {Promise} promise which describes layer
+   * @return {Promise} promise which describes layer
    * in a common format for use in add-layers component
    * @description Gets layer metadata and returns promise which describes layer
    * in a common format for use in add-layers component
@@ -311,11 +337,7 @@ export class HsMickaBrowserService {
       return false;
     }
     if (type == 'service') {
-      if (
-        layer.serviceType == 'WMS' ||
-        layer.serviceType == 'OGC:WMS' ||
-        layer.serviceType == 'view'
-      ) {
+      if (['WMS', 'OGC:WMS', 'view'].includes(layer.serviceType)) {
         whatToAdd.type = 'WMS';
         whatToAdd.link = layerLink;
       } else if (layerLink.toLowerCase().includes('sparql')) {
@@ -324,11 +346,7 @@ export class HsMickaBrowserService {
           link: layerLink,
           projection: 'EPSG:4326',
         };
-      } else if (
-        layer.serviceType == 'WFS' ||
-        layer.serviceType == 'OGC:WFS' ||
-        layer.serviceType == 'download'
-      ) {
+      } else if (['WFS', 'OGC:WFS', 'download'].includes(layer.serviceType)) {
         whatToAdd.type = 'WFS';
         whatToAdd.link = layerLink;
         whatToAdd.dsType = ds.type;
@@ -347,16 +365,50 @@ export class HsMickaBrowserService {
         return false;
       }
     } else if (type == 'dataset') {
-      if (['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase())) {
-        whatToAdd = {
-          type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
-          link: layerLink,
-          projection: 'EPSG:4326',
-          extractStyles: layer.formats[0].toLowerCase() == 'kml',
-        };
+      if (layer.links) {
+        //Filter invalid links
+        //TODO: possible kml, geojson, shp
+        layer.links = layer.links.filter((link) =>
+          ['wms', 'wfs'].some((type) =>
+            link.protocol?.toLowerCase().includes(type)
+          )
+        );
+        //Check WMS endpoints
+        if (
+          layer.links.some((link) =>
+            link.protocol?.toLowerCase().includes('wms')
+          )
+        ) {
+          whatToAdd = {
+            type: 'WMS',
+          };
+        }
+        //Check WFS endpoints
+        if (
+          layer.links.some((link) =>
+            link.protocol?.toLowerCase().includes('wfs')
+          )
+        ) {
+          whatToAdd.type = whatToAdd.type == 'WMS' ? ['WMS', 'WFS'] : 'WFS';
+        }
+        //Parse links
+        whatToAdd.link = Array.isArray(whatToAdd.type)
+          ? layer.links.map((link) => link.url)
+          : this.getLayerLink(layer, 'wfs');
       } else {
         return false;
       }
+
+      // else if (
+      //   ['kml', 'geojson', 'json'].includes(layer.formats[0].toLowerCase())
+      // ) {
+      //   whatToAdd = {
+      //     type: layer.formats[0].toUpperCase() == 'KML' ? 'kml' : 'geojson',
+      //     link: layerLink,
+      //     projection: 'EPSG:4326',
+      //     extractStyles: layer.formats[0].toLowerCase() == 'kml',
+      //   };
+      // }
     } else {
       alert(`Datasource type "${type}" not supported.`);
       return false;

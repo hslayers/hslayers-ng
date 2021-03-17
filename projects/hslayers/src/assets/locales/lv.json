@@ -8,14 +8,20 @@
         "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām."
       },
       "filterType": "Meklēt pēc",
-      "filterTypes": {
-        "Abstract": "Apraksta",
-        "AnyText": "Visa",
-        "Title": "Nosaukuma"
+      "searchFilterTypes": {
+        "Abstract": "Abstract",
+        "AnyText": "All",
+        "Title": "Title"
+      },
+      "queryDataTypes": {
+        "all": "Vše",
+        "service": "Služby",
+        "dataset": "Datasety"
       },
       "loading": "Notiek ielāde",
       "searchType": "Filtra tips",
-      "selectFilterType": "Nomainīt filtra tipu"
+      "selectFilterType": "Nomainīt filtra tipu",
+      "resourceType": "Resource type"
     },
     "file": "Fails",
     "URL": {

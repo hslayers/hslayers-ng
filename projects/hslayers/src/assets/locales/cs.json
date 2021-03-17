@@ -8,14 +8,20 @@
         "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
       },
       "filterType": "Typ vyhledávání",
-      "filterTypes": {
+      "searchFilterTypes": {
         "Abstract": "Abstrakt",
         "AnyText": "Vše",
         "Title": "Titulek"
       },
+      "queryDataTypes": {
+        "all": "Vše",
+        "service": "Služby",
+        "dataset": "Datasety"
+      },
       "loading": "Načítání dat",
       "searchType": "Typ vyhledávání",
-      "selectFilterType": "Změnit nastavení vyhledávání"
+      "selectFilterType": "Změnit nastavení vyhledávání",
+      "resourceType": "Typ zdroje"
     },
     "file": "Soubor",
     "URL": {
