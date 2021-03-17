@@ -114,7 +114,7 @@ export class HsMickaBrowserService {
         ? query.textFilter
         : query.title;
     const sql = [
-      // 'validservice>0',
+      'validservice>0',
       text != '' ? `${textField} like '*${text}*'` : '',
       bbox,
       //param2Query('type'),
