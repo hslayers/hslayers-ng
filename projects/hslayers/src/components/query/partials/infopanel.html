@@ -1,6 +1,10 @@
 <hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translate"></hs-panel-header>
 <div class="card hs-main-panel" *ngIf="HsQueryBaseService.data.coordinates === undefined || HsQueryBaseService.data.coordinates.length == 0">
-    <div class="card-body m-2">{{'QUERY.infoPanel.clickOnMap' | translate}}</div>
+    <div class="d-flex flex-column align-items-center p-4">
+        <i class="icon-cursor bg-primary p-3 text-white rounded " style="font-size: x-large; color:hsl(208, 100%, 97%)"></i>
+        <p class="h4">No features selected</p>
+        <p class="small">{{'QUERY.infoPanel.clickOnMap' | translate}}</p>
+    </div>
 </div>
 <hs-query-default-info-panel-body></hs-query-default-info-panel-body>
 <hs-custom-info-panel-body></hs-custom-info-panel-body>
