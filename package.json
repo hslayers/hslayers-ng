@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^9.1.13",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
     "@ngx-translate/core": "^12.1.2",
-    "@ngx-translate/http-loader": "^5.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@types/cesium": "^1.67.12",
     "bootstrap": "^4.6.0",
     "cesium": "^1.79.1",
