@@ -19,7 +19,6 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 
 
 .hsl{
-	color: var(--text-color);
 
 	@import "~bootstrap/scss/functions";
 	@import "~bootstrap/scss/_mixins";
@@ -60,6 +59,7 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	@import "~bootstrap/scss/popover";
 	@import "~bootstrap/scss/_utilities";
 
+	color: var(--text-color);
 
 	/*Overwrite cascading of style from liferay */
 	.navbar-expand .nav-item{

@@ -7,6 +7,7 @@ export interface HsAddDataLayerDescriptor {
   title?: string;
   trida?;
   type: string;
+  links?;
   wms?: {
     url;
   };

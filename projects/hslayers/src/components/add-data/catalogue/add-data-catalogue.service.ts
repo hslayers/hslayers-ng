@@ -66,7 +66,7 @@ export class HsAddDataCatalogueService {
     this.data.query = {
       textFilter: '',
       title: '',
-      type: 'service',
+      type: 'all',
       Subject: '',
     };
 
@@ -152,6 +152,7 @@ export class HsAddDataCatalogueService {
   }
 
   /**
+   * @param suspendLimitCalculation
    * @function queryCatalogs
    * @description Queries all configured catalogs for datasources (layers)
    */
@@ -333,7 +334,7 @@ export class HsAddDataCatalogueService {
    * @function layerDownload
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * @returns {string} Download url of layer if possible
+   * @return {string} Download url of layer if possible
    * @description Test if layer of selected record is downloadable (KML and JSON files, with direct url) and gives Url.
    */
   layerDownload(ds: HsEndpoint, layer): string {
@@ -352,7 +353,7 @@ export class HsAddDataCatalogueService {
    * @function layerRDF
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
-   * @returns {string} URL to record file
+   * @return {string} URL to record file
    * @description Get URL for RDF-DCAT record of selected layer
    */
   layerRDF(ds: HsEndpoint, layer): string {
@@ -364,7 +365,7 @@ export class HsAddDataCatalogueService {
    * @param {HsEndpoint} ds Datasource of selected layer
    * @param {object} layer Metadata record of selected layer
    * @param {string} type Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
-   * @returns {any[] | any} Type or array of types in which this layer can be added to map
+   * @return {Array<any> | any} Type or array of types in which this layer can be added to map
    * @description Add selected layer to map (into layer manager) if possible
    */
   async addLayerToMap(
@@ -373,6 +374,7 @@ export class HsAddDataCatalogueService {
     type?: string
   ): Promise<string[] | string | void> {
     let whatToAdd: WhatToAddDescriptor;
+
     if (ds.type == 'micka') {
       whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
     } else if (ds.type == 'layman') {
@@ -383,6 +385,7 @@ export class HsAddDataCatalogueService {
     } else {
       whatToAdd = {type: 'none'};
     }
+
     if (!whatToAdd) {
       return;
     }
@@ -392,18 +395,27 @@ export class HsAddDataCatalogueService {
     if (Array.isArray(whatToAdd.type)) {
       return whatToAdd.type;
     }
+
     if (whatToAdd.type == 'WMS') {
+      whatToAdd.link = Array.isArray(whatToAdd.link)
+        ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
+        : whatToAdd.link;
       this.datasetSelect('url');
       setTimeout(() => {
         this.hsEventBusService.owsFilling.next({
           type: whatToAdd.type.toLowerCase(),
           uri: decodeURIComponent(whatToAdd.link),
-          layer: undefined,
+          layer: ds.type == 'layman' ? layer.name : undefined,
         });
       });
     } else if (whatToAdd.type == 'WFS') {
       this.datasetSelect('url');
       if (ds.type == 'micka') {
+        whatToAdd.link = Array.isArray(whatToAdd.link)
+          ? whatToAdd.link.filter((link) =>
+              link.toLowerCase().includes('wfs')
+            )[0]
+          : whatToAdd.link;
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
             type: whatToAdd.type.toLowerCase(),

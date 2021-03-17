@@ -30,6 +30,7 @@ export class HsAddDataCatalogueComponent {
   loaderImage;
   filterTypeMenu;
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
+  dataTypes = ['all', 'service', 'dataset'];
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -63,15 +64,20 @@ export class HsAddDataCatalogueComponent {
     this.queryCatalogs();
   }
 
-  queryByFilter() {
+  queryByFilter(): void {
     this.HsAddDataCatalogueService.reloadData();
   }
 
-  selectType(type) {
+  selectType(type: string): void {
     this.data.textField = type;
     if (this.data.query.textFilter.length > 0) {
       this.queryByFilter();
     }
+    this.filterTypeMenu = !this.filterTypeMenu;
+  }
+  selectDataType(type: string): void {
+    this.data.query.type = type;
+    this.queryByFilter();
     this.filterTypeMenu = !this.filterTypeMenu;
   }
 

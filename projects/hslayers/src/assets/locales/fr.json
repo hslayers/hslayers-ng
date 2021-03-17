@@ -140,5 +140,10 @@
     "Vector": {
       "chooseFiles": "Choose files..."
     }
+  },
+  "ADDDATA": {
+    "CATALOGUE": {
+      "resourceType": "Resource type"
+    }
   }
 }

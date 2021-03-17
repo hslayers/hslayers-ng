@@ -8,14 +8,20 @@
         "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features."
       },
       "filterType": "Search within",
-      "filterTypes": {
+      "searchFilterTypes": {
         "Abstract": "Abstract",
         "AnyText": "All",
         "Title": "Title"
       },
+      "queryDataTypes": {
+        "all": "All",
+        "service": "Services",
+        "dataset": "Datasets"
+      },
       "loading": "Loading data",
       "searchType": "Search filter type",
-      "selectFilterType": "Change search filter type"
+      "selectFilterType": "Change search filter type",
+      "resourceType": "Resource type"
     },
     "file": "File",
     "URL": {
