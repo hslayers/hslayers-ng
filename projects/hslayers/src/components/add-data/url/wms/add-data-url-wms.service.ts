@@ -261,7 +261,6 @@ export class HsAddDataUrlWmsService {
     }
 
     if (this.data.base) {
-      console.log(this.data.services);
       this.addLayer(
         {
           Name: this.createBasemapName(this.data.services),
