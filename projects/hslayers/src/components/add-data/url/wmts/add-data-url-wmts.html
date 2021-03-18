@@ -14,9 +14,26 @@
                 <input class="d-none" type="checkbox" [(ngModel)]="layer.checked" (change)="changed()" [attr.id]="'wmtslayer-'+index" name="wmtslayer-{{index}}"/> 
                 <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'wmtslayer-'+index" 
                 [ngClass]="{'hs-checkmark': layer.checked,'hs-uncheckmark':!layer.checked}"><span class="ml-2" style="max-width: 90%;">{{layer.Title}}</span></label>
+
+                <div *ngIf="layer.checked" class="d-flex flex-row justify-content-end align-items-baseline">
+                    {{'ADDDATA.CATALOGUE.addAs' | translate}}
+                    <div class="btn-group ml-2">
+                        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                            (click)="layer.base = true"
+                            [ngClass]="{'active':layer.base}">
+                            {{'COMPOSITONKEYWORDS.Basemap' | translate}}
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                            (click)="layer.base = false"
+                            [ngClass]="{'active': !layer.base}">
+                            {{'COMMON.layer' | translate}}
+                        </button>
+                    </div>
+                </div>
             </li>
         </ul>
-        <li class="list-group-item hs-ows-layerlistheading clearfix">
+        <li class="list-group-item hs-ows-layerlistheading clearfix" style="position: sticky;
+        bottom: 0; background: var(--panel-wrapper-bg-color)">
             <div class="d-flex justify-content-center">
                 <div class="d-flex justify-content-between w-100" *ngIf="!HsAddDataUrlWmtsService.layersLoading">
                     <button class="btn btn-primary" (click)="selectAllLayers(HsAddDataUrlWmtsService.services)" >{{'ADDDATA.URL.selectAll' | translate}}</button>
