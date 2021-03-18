@@ -61,7 +61,7 @@
     "@angular/compiler-cli": "~9.1.13",
     "@angularclass/hmr": "^3.0.0",
     "@compodoc/compodoc": "^1.1.11",
-    "@types/jasmine": "~3.6.6",
+    "@types/jasmine": "~3.6.7",
     "@types/jasminewd2": "~2.0.3",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.17.0",
