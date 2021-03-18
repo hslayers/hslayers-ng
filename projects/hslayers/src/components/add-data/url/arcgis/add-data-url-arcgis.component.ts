@@ -5,6 +5,8 @@ import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
+import {HsUtilsService} from '../../../utils/utils.service';
+
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -25,7 +27,8 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public HsAddDataUrlService: HsAddDataUrlService,
+    public HsUtilsService: HsUtilsService
   ) {
     this.data = HsAddDataArcGisService.data;
 
@@ -57,6 +60,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
       this.HsAddDataArcGisService.url
     );
     this.HsAddDataArcGisService.data.getMapUrl = this.HsAddDataArcGisService.url;
+    this.HsAddDataArcGisService.loadingFeatures = true;
     this.HsAddDataArcGisService.showDetails = true;
   };
 

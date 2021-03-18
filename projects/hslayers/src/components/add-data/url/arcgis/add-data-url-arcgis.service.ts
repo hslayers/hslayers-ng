@@ -21,6 +21,7 @@ export class HsAddDataArcGisService {
   url: string;
   showDetails: boolean;
   layerToSelect: string;
+  loadingFeatures = false;
 
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
@@ -71,6 +72,7 @@ export class HsAddDataArcGisService {
   throwParsingError(e) {
     this.url = null;
     this.showDetails = false;
+    this.loadingFeatures = false;
     this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
@@ -107,6 +109,7 @@ export class HsAddDataArcGisService {
         'geoJSON',
         'JSON',
       ]);
+      this.loadingFeatures = false;
     } catch (e) {
       throw new Error(e);
     }
@@ -122,17 +125,52 @@ export class HsAddDataArcGisService {
 
   /**
    * @function addLayers
+   * @param checkedOnly
    * @description Seconds step in adding layers to the map, with resampling or without. Lops through the list of layers and calls addLayer.
-   * @param {boolean} checked - Add all available layersor ony checked ones. Checked=false=all
+   * @param {boolean} checked Add all available layersor ony checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): void {
     if (this.data.services === undefined) {
       return;
     }
-    for (const layer of this.data.services) {
-      this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+
+    if (this.data.base) {
+      this.addLayer(
+        {},
+        this.data.title.replace(/\//g, '&#47;'),
+        this.hsUtilsService.undefineEmptyString(this.data.path),
+        this.data.image_format,
+        this.data.query_format,
+        this.data.tile_size,
+        this.data.srs,
+        null
+      );
+    } else {
+      for (const layer of this.data.services) {
+        this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+      }
     }
     this.hsLayoutService.setMainPanel('layermanager');
+  }
+
+  /**
+   * @function createBasemapName
+   * Constructs body of LAYER parameter for getMap request
+   * @param layer Optional. layer objec recieved from capabilities. If no layer is provided
+   * merge all checked layer ids into one string
+   * @returns {string} 
+   */
+  createBasemapName(layer?): string {
+    if (!layer) {
+      const names = [];
+
+      for (const layer of this.data.services.filter((layer) => layer.checked)) {
+        names.push(layer.id);
+      }
+      return `show:${names.join(',')}`;
+    } else {
+      return `show:${layer.id}`;
+    }
   }
 
   private addLayersRecursively(layer, {checkedOnly = true}) {
@@ -202,6 +240,7 @@ export class HsAddDataArcGisService {
    * @description Add selected layer to map
    * @param {object} layer capabilities layer object
    * @param {string} layerName layer name in the map
+   * @param layerTitle
    * @param {string} path Path name
    * @param {string} imageFormat Format in which to serve image. Usually: image/png
    * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
@@ -211,7 +250,7 @@ export class HsAddDataArcGisService {
    */
   addLayer(
     layer,
-    layerName: string,
+    layerTitle: string,
     path: string,
     imageFormat: string,
     queryFormat: string,
@@ -250,7 +289,9 @@ export class HsAddDataArcGisService {
       //projection: me.data.crs || me.data.srs,
       params: Object.assign(
         {
-          LAYERS: `show:${layer.id}`,
+          LAYERS: this.data.base
+            ? this.createBasemapName()
+            : this.createBasemapName(layer),
           INFO_FORMAT: layer.queryable ? queryFormat : undefined,
           FORMAT: imageFormat,
         },
@@ -260,11 +301,12 @@ export class HsAddDataArcGisService {
       dimensions: dimensions,
     });
     const new_layer = new layer_class({
-      title: layerName,
+      title: layerTitle,
       source,
       removable: true,
       path,
       maxResolution: layer.minScale > 0 ? layer.minScale : undefined,
+      base: this.data.base,
     });
     //OlMap.proxifyLayerLoader(new_layer, me.data.useTiles);
     this.hsMapService.map.addLayer(new_layer);
