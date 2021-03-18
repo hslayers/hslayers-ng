@@ -70,9 +70,18 @@
         </div>
 
         <div class="form-group">
-            <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox"
+            <div class="capabilities_input d-flex flex-column">
+                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
                     [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
+                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
+                    [(ngModel)]="data.base" name="base" />{{'ADDLAYERS.Basemap' | translate}}</label>
+
+                <div [hidden]="!data.base" class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
+                    </div>
+                    <input  class="form-control" name="baseTitle" [(ngModel)]="data.title" />
+                </div>
             </div>
         </div>
 
@@ -87,23 +96,31 @@
                 <th>{{'COMMON.abstract' | translate}}</th>
             </thead>
             <tbody *ngFor="let service of data.services">
-                <tr>
-                    <td><input type="checkbox" [(ngModel)]="service.checked" name="service" (change)="searchForChecked(service)"/></td>
+                <tr class="text-center align-middle">
+                    <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}"><input
+                            type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
+                            (change)="searchForChecked(service)" /></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
                     <td>{{service.Abstract}}</td>
                 </tr>
-                <tr *ngIf="service.Style?.length > 0">
+                <tr *ngIf="service.Style?.length > 1 && service.checked">
                     <td colspan="4">
-                        <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                        <select class="form-control" [(ngModel)]="service.styleSelected" [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let style of service.Style">{{style.Name}}</option>
-                        </select>
+                        <div class="d-flex align-items-baseline px-2 w-100">
+                            <div class="d-flex align-items-baseline" style="flex-grow: 1;" >
+                                <label class="control-label">{{'COMMON.style' | translate}}:</label>
+                                <select class="form-control form-control-sm" [(ngModel)]="service.styleSelected"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let style of service.Style">{{style.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr [hidden]="!hasNestedLayers(service)">
                     <td colspan="4" style="padding-left: 1em">
-                        <hs-nested-layers-table [layers]="service.Layer" (layerChecked)="searchForChecked($event)"></hs-nested-layers-table> 
+                        <hs-nested-layers-table [layers]="service.Layer" (layerChecked)="searchForChecked($event)">
+                        </hs-nested-layers-table>
                     </td>
                 </tr>
             </tbody>

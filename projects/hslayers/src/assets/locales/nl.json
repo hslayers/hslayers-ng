@@ -139,7 +139,8 @@
   "ADDLAYERS": {
     "Vector": {
       "chooseFiles": "Choose files..."
-    }
+    },
+    "Basemap": "Add as basemap"
   },
   "ADDDATA": {
     "CATALOGUE": {

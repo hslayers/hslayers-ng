@@ -84,7 +84,8 @@
     },
     "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
     "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
-    "serviceTypeNotMatching": "URL service type does't not match selected category"
+    "serviceTypeNotMatching": "URL service type does't not match selected category",
+    "Basemap": "Add as basemap"
   },
   "COMMON": {
     "abstract": "Apraksts",
