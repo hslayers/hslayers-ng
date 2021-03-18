@@ -40,10 +40,12 @@
         </p>
 
         <div class="form-group">
-            <div class="capabilities_input">
-                <label class="capabilities_label control-label"> <input type="checkbox" name="useTiles" [(ngModel)]="data.useTiles" />
+            <div class="capabilities_input d-flex flex-column">
+                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-1 checkbox-lg" name="useTiles" [(ngModel)]="data.useTiles" />
                     {{'ADDLAYERS.useTiles' | translate}}
                 </label>
+                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
+                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
             </div>
         </div>
 
@@ -69,19 +71,27 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="capabilities_input d-flex flex-column">
-                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
-                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
-                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
-                    [(ngModel)]="data.base" name="base" />{{'ADDLAYERS.Basemap' | translate}}</label>
-
-                <div [hidden]="!data.base" class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
-                    </div>
-                    <input  class="form-control" name="baseTitle" [(ngModel)]="data.title" />
+        <div class="d-flex flex-column my-3">
+            <div  class="d-flex flex-row justify-content-start align-items-baseline mb-1">
+                {{'ADDDATA.CATALOGUE.addAs' | translate}}
+                <div class="btn-group ml-2">
+                    <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                        (click)="data.base = true"
+                        [ngClass]="{'active':data.base}">
+                        {{'COMPOSITONKEYWORDS.Basemap' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                        (click)="data.base = false"
+                        [ngClass]="{'active': !data.base}">
+                        {{'COMMON.layer' | translate}}
+                    </button>
                 </div>
+            </div>
+            <div [hidden]="!data.base" class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
+                </div>
+                <input  class="form-control" name="baseTitle" [(ngModel)]="data.title" />
             </div>
         </div>
 
