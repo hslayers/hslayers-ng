@@ -229,7 +229,7 @@ export class HsAddDataUrlWmsService {
    * @param {string} url Url for which to remove port but only when proxified
    * with port in proxy path.
    * @private
-   * @returns {string} Url without proxy services port added to it.
+   * @return {string} Url without proxy services port added to it.
    */
   removePortIfProxified(url: string): string {
     if (this.hsConfig.proxyPrefix === undefined) {
@@ -259,16 +259,41 @@ export class HsAddDataUrlWmsService {
     if (this.data.services === undefined) {
       return;
     }
-    for (const layer of this.data.services) {
-      this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+
+    if (this.data.base) {
+      console.log(this.data.services);
+      this.addLayer(
+        {
+          Name: this.createBasemapName(this.data.services),
+        },
+        this.data.title.replace(/\//g, '&#47;'),
+        this.hsUtilsService.undefineEmptyString(this.data.path),
+        this.data.image_format,
+        this.data.query_format,
+        this.data.tile_size,
+        this.data.srs,
+        null
+      );
+    } else {
+      for (const layer of this.data.services) {
+        this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
+      }
+      this.zoomToLayers();
     }
     this.hsLayoutService.setMainPanel('layermanager');
-    this.zoomToLayers();
+  }
+
+  createBasemapName(services): string {
+    const names = [];
+    for (const layer of services.filter((layer) => layer.checked)) {
+      names.push(layer.Name);
+    }
+    return names.join(',');
   }
 
   /**
    * @param service
-   * @returns {Array}
+   * @return {Array}
    */
   getSublayerNames(service): any[] {
     if (service.Layer) {
@@ -371,7 +396,7 @@ export class HsAddDataUrlWmsService {
 
     const legends = [];
     if (layer.Style && layer.Style[0].LegendURL) {
-      let legend = layer.Style[0].LegendURL[0].OnlineResource;
+      const legend = layer.Style[0].LegendURL[0].OnlineResource;
       legends.push(legend);
     }
 
@@ -414,6 +439,7 @@ export class HsAddDataUrlWmsService {
       dimensions: dimensions,
       legends: legends,
       subLayers: subLayers,
+      base: this.data.base,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
     this.HsAddDataService.addLayer(new_layer, this.data.addUnder);

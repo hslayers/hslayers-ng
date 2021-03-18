@@ -6,12 +6,17 @@
             <td style="width: 40%;">{{sub_layer.Title}}</td>
             <td>{{sub_layer.Abstract}}</td>
         </tr>
-        <tr *ngIf="!!sub_layer.Style && sub_layer.Style.length > 1">
+        <tr *ngIf="sub_layer.Style?.length > 1 && sub_layer.checked">
             <td colspan="4">
-                <label class="control-label">{{'COMMON.style' | translate}}:</label>
-                <select class="form-control" [(ngModel)]="sub_layer.styleSelected" [ngModelOptions]="{standalone: true}">
-                    <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
-                </select>
+                <div class="d-flex align-items-baseline px-2 w-100">
+                    <div class="d-flex align-items-baseline" style="flex-grow: 1;">
+                        <label class="control-label">{{'COMMON.style' | translate}}:</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="sub_layer.styleSelected"
+                            [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
+                        </select>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr *ngIf="!!sub_layer.Dimension">

@@ -84,7 +84,8 @@
     },
     "errorWhileRequestingLayers": "Chyba při žádání vrstev ze serveru",
     "capabilitiesParsingProblem": "Problém při načítání informací o službě",
-    "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií"
+    "serviceTypeNotMatching": "Typ služby URL se neshoduje s vybranou kategorií",
+    "Basemap": "Přidat jako podkladovú vrstvu"
   },
   "COMMON": {
     "abstract": "Abstrakt",

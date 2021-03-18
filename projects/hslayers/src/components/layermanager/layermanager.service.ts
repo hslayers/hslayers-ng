@@ -231,6 +231,9 @@ export class HsLayerManagerService {
       }
     } else {
       layerDescriptor.active = layer.getVisible();
+      if (layerDescriptor.active){
+        this.changeBaseLayerVisibility(true, layerDescriptor);
+      }
       (layerDescriptor.thumbnail = this.getImage(layer)),
         this.data.baselayers.push(layerDescriptor);
     }
