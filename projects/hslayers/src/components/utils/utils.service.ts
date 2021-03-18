@@ -139,7 +139,7 @@ export class HsUtilsService {
   /**
    * Parse parameters and their values from URL string
    * @public
-   * @param str - URL to parse parameters from
+   * @param str URL to parse parameters from
    * @return Object with parsed parameters as properties
    */
   getParamsFromUrl(str: string): any {
@@ -513,7 +513,7 @@ export class HsUtilsService {
     }
   }
   /**
-
+   
    * @param target
    * @ngdoc method
    * @name capitalizeFirstLetter
