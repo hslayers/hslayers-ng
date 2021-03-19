@@ -95,7 +95,7 @@ export class HsLayoutComponent implements AfterViewInit {
     //Minimal value expected for clientHeight of hsapp element at the initiation in case of WINDOWED mode
     //In comparison with clientHeight used to distinguish between full and windowed mode.
     const minHeight =
-      window.devicePixelRatio <= 1 ? 300 : 250 * window.devicePixelRatio;
+      window.devicePixelRatio <= 1 ? 350 : 300 * window.devicePixelRatio;
     //In case the app height is not set on hslayers element in this moment height is determined by
     //the main panel height which vary from 0 if no mainpanel is set to 90 or even 208 in some cases .
     //Value of 300 or less /would mean that height is not set we need do something

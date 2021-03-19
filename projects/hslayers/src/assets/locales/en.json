@@ -18,6 +18,11 @@
         "service": "Services",
         "dataset": "Datasets"
       },
+      "sortbyTypes": {
+        "date": "Date",
+        "title": "Title",
+        "bbox": "Extent"
+      },
       "loading": "Loading data",
       "searchType": "Search filter type",
       "selectFilterType": "Change search filter type",

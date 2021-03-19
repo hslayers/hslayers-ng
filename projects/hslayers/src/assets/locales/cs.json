@@ -18,6 +18,11 @@
         "service": "Služby",
         "dataset": "Datasety"
       },
+      "sortbyTypes": {
+        "date": "Datum",
+        "title": "Titulek",
+        "bbox": "BBOX"
+      },
       "loading": "Načítání dat",
       "searchType": "Typ vyhledávání",
       "selectFilterType": "Změnit nastavení vyhledávání",

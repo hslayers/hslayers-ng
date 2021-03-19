@@ -68,6 +68,7 @@ export class HsAddDataCatalogueService {
       title: '',
       type: 'all',
       Subject: '',
+      sortby: 'date',
     };
 
     this.data.textField = 'AnyText';

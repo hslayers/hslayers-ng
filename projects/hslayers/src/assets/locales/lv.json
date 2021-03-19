@@ -18,6 +18,11 @@
         "service": "Služby",
         "dataset": "Datasety"
       },
+      "sortbyTypes": {
+        "date": "Date",
+        "title": "Title",
+        "bbox": "Extent"
+      },
       "loading": "Notiek ielāde",
       "searchType": "Filtra tips",
       "selectFilterType": "Nomainīt filtra tipu",

@@ -31,6 +31,7 @@ export class HsAddDataCatalogueComponent {
   filterTypeMenu;
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   dataTypes = ['all', 'service', 'dataset'];
+  sortbyTypes = ['date', 'title', 'bbox']
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
