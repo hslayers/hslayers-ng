@@ -830,6 +830,11 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-weight: 1000;
 		font-size: small;
 	}
+	.exclusive .hs-checkmark::before,
+	.exclusive .hs-uncheckmark::before{
+		border-radius: 50%;
+	}
+	
 	.hs-uncheckmark::before {
 		background-color: hsl(0, 0%, 100%);
 		box-shadow: inset 0 0 0 0.2em $primary;

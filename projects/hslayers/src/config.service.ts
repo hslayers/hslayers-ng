@@ -120,6 +120,12 @@ export class HsConfig {
    */
   configChanges?: Subject<HsConfig> = new Subject();
   timeDisplayFormat?: string;
+
+  /**
+   *  Determines behavior of exclusive layers (layer.exclusive = true) visibility
+   *  If set to true, only layers with same path are affected by exclusivity
+   */
+  pathExclusivity?: boolean = false;
   constructor() {}
 
   update?(newConfig: HsConfig): void {

@@ -12,10 +12,10 @@ import {HsUtilsService} from '../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {
   getDimension,
+  getExclusive,
   getHsLaymanSynchronizing,
   getPath,
 } from '../../common/layer-extensions';
-
 @Component({
   selector: 'hs-layermanager-layer-list',
   templateUrl: './partials/layerlist.html',
@@ -32,6 +32,7 @@ export class HsLayerListComponent implements OnInit {
    */
   filtered_layers: Array<any> = [];
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
+  getExclusive = getExclusive;
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,
@@ -51,7 +52,7 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Test if selected layer is loaded in map
-   * @param layer - Selected layer
+   * @param layer Selected layer
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
@@ -72,8 +73,8 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Test if selected layer is valid (true for invalid)
-   * @param layer - Selected layer
-   * @returns
+   * @param layer Selected layer
+   * @return
    */
   layerValid(layer) {
     return this.HsLayerUtilsService.layerInvalid(layer);
@@ -81,7 +82,7 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Controls state of layer's sublayers checkboxes with layer visibility changes
-   * @param layer - Selected layer
+   * @param layer Selected layer
    */
   toggleSublayersVisibility(layer: HsLayerDescriptor): void {
     if (!layer.visible) {
@@ -146,7 +147,7 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Test if layer is queryable (WMS layer with Info format)
-   * @param layer_container - Selected layer - wrapped in layer object
+   * @param layer_container Selected layer - wrapped in layer object
    */
   isLayerQueryable(layer_container): boolean {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);

@@ -164,8 +164,8 @@ export class HsLayerManagerService {
   /**
    * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
-   * @param e - Event object emited by OL add layer event
-   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
+   * @param e Event object emited by OL add layer event
+   * @param suspendEvents If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
    */
   layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
     const layer = e.element;
@@ -231,7 +231,7 @@ export class HsLayerManagerService {
       }
     } else {
       layerDescriptor.active = layer.getVisible();
-      if (layerDescriptor.active){
+      if (layerDescriptor.active) {
         this.changeBaseLayerVisibility(true, layerDescriptor);
       }
       (layerDescriptor.thumbnail = this.getImage(layer)),
@@ -250,7 +250,7 @@ export class HsLayerManagerService {
 
   /**
    * Function for adding baselayer thumbnail visible in basemap gallery.
-   * @param layer - Base layer added to map
+   * @param layer Base layer added to map
    */
   getImage(layer: Layer): string {
     const thumbnail = getThumbnail(layer);
@@ -336,8 +336,8 @@ export class HsLayerManagerService {
   /**
    * Get layer container object for OL layer
    * @private
-   * @param layer - to get layer title
-   * @returns Layer container which is used in layer-list directive
+   * @param layer to get layer title
+   * @return Layer container which is used in layer-list directive
    */
   getLayerDescriptorForOlLayer(layer: Layer) {
     const tmp = this.data.layers.filter((l) => l.layer == layer);
@@ -350,7 +350,7 @@ export class HsLayerManagerService {
   /**
    * Place layer into layer manager folder structure based on path property hsl-path of layer
    * @private
-   * @param lyr - Layer to add into folder structure
+   * @param lyr Layer to add into folder structure
    */
   populateFolders(lyr: Layer): void {
     if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
@@ -401,7 +401,7 @@ export class HsLayerManagerService {
   /**
    * Remove layer from layer folder structure a clean empty folder
    * @private
-   * @param lyr - Layer to remove from layer folder
+   * @param lyr Layer to remove from layer folder
    */
   cleanFolders(lyr: Layer): void {
     if (getShowInLayerManager(lyr) == false) {
@@ -453,7 +453,7 @@ export class HsLayerManagerService {
    * Callback function for removing layer. Clean layers variables
    * (PRIVATE)
    * @private
-   * @param e - Events emitted by ol.Collection instances are instances of this type.
+   * @param e Events emitted by ol.Collection instances are instances of this type.
    */
   layerRemoved(e: CollectionEvent): void {
     this.cleanFolders(e.element);
@@ -502,19 +502,24 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
-   * @param visibility - Visibility layer should have
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
+   * @param visibility Visibility layer should have
+   * @param layer Selected layer - wrapped layer object (layer.layer expected)
    */
   changeLayerVisibility(visibility: boolean, layer: Layer): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
-    //Set the other layers in the same folder invisible
+    //Set the other exclusive layers invisible - all or the ones with same path based on config
     if (visibility && getExclusive(layer.layer) == true) {
+      console.log('exclusive')
       for (const other_layer of this.data.layers) {
+        const pathExclusivity = this.HsConfig.pathExclusivity
+          ? getPath(other_layer.layer) == getPath(layer.layer)
+          : true;
         if (
-          getPath(other_layer.layer) == getPath(layer.layer) &&
-          other_layer != layer
+          getExclusive(other_layer.layer) == true &&
+          other_layer != layer &&
+          pathExclusivity
         ) {
           other_layer.layer.setVisible(false);
           other_layer.visible = false;
@@ -525,8 +530,8 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
+   * @param $event Info about the event change visibility event, used if visibility of only one layer is changed
+   * @param layer Selected layer - wrapped layer object (layer.layer expected)
    */
   changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
@@ -592,8 +597,8 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
+   * @param $event Info about the event change visibility event, used if visibility of only one layer is changed
+   * @param layer Selected layer - wrapped layer object (layer.layer expected)
    */
   changeTerrainLayerVisibility($event, layer): void {
     for (let i = 0; i < this.data.terrainlayers.length; i++) {
@@ -636,7 +641,7 @@ export class HsLayerManagerService {
 
   /**
    * Show all layers of particular layer group (when groups are defined)
-   * @param theme - Group layer to activate
+   * @param theme Group layer to activate
    */
   activateTheme(theme: Group): void {
     let switchOn = true;
@@ -660,7 +665,7 @@ export class HsLayerManagerService {
 
   /**
    * Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
-   * @param layer - Layer which is being added
+   * @param layer Layer which is being added
    */
   loadingEvents(layer: Layer): void {
     const source = layer.getSource();
@@ -737,7 +742,7 @@ export class HsLayerManagerService {
 
   /**
    * Test if layer (WMS) resolution is within map resolution interval
-   * @param lyr - Selected layer
+   * @param lyr Selected layer
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
     let cur_res;
@@ -759,8 +764,8 @@ export class HsLayerManagerService {
 
   /**
    * Toggles Additional information panel for current layer.
-   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
-   * @param toToggle - Part of layer editor to be toggled
+   * @param layer Selected layer (HsLayerManagerService.currentLayer)
+   * @param toToggle Part of layer editor to be toggled
    * @param control - Part of layer editor to be controlled for state.
    * Determines whether only toggled part or whole layereditor would be closed
    */
@@ -788,7 +793,7 @@ export class HsLayerManagerService {
 
   /**
    * Opens detailed panel for manipulating selected layer and viewing metadata
-   * @param layer - Selected layer to edit or view - Wrapped layer object
+   * @param layer Selected layer to edit or view - Wrapped layer object
    */
   toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
     if (this.currentLayer == layer) {
@@ -828,7 +833,7 @@ export class HsLayerManagerService {
 
   /**
    * Makes layer grayscale
-   * @param layer - Selected layer (currentLayer)
+   * @param layer Selected layer (currentLayer)
    */
   setGreyscale(layer: Layer): void {
     const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
