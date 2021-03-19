@@ -7,7 +7,7 @@
 
     <div *ngIf="HsAddDataUrlWmtsService.showDetails && !HsAddDataUrlWmtsService.layersLoading" class="card">
         <ul class="list-group">
-            <li class="list-group-item hs-ows-layerlistheading clearfix">
+            <li class="list-group-item hs-ows-layerlistheading clearfix" style="background: var(--white);">
                 <div>{{HsAddDataUrlWmtsService.title}}</div>
             </li>
             <li *ngFor="let layer of HsAddDataUrlWmtsService.services; let index = index" class="list-group-item clearfix" >

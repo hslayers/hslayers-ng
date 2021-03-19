@@ -3,60 +3,78 @@
         <div class="input-group w-50">
             <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translate" name="search"
                 [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
-            <div class="input-group-append position-relative" [title]="'COMPOSITIONS.filterByMap' | translate">
-                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" type="button"
-                    (click)="filterTypeMenu = !filterTypeMenu">
+            <div class="input-group-append">
+                <button class="btn input-group-text text-secondary hs-light-background border-left-0"
+                    (click)="queryByFilter()">
+                    <i class="icon-search icon-primary"></i>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': filterTypeMenu}">
-                    <div class="d-flex flex-row">
-                        <div>
-                            <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.filterType' | translate}}</h6>
-                            <div class="dropdown-menu-item m-2" *ngFor="let type of textFieldTypes; let index = index"
-                                [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                                <input class="d-none" type="checkbox" [(ngModel)]="data.textField"
-                                    (change)="selectType(type)" [attr.id]="'textfield-'+index"
-                                    name="textfield-{{index}}" />
-                                <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
-                                    [attr.for]="'textfield-'+index"
-                                    [ngClass]="{'hs-checkmark': data.textField == type,'hs-uncheckmark':data.textField != type}"><span
-                                        class="ml-2"
-                                        style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
-                                        type)}}</span></label>
-                            </div>
-                        </div>
-                        <div>
-                            <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.resourceType' | translate}}</h6>
-                            <div class="dropdown-menu-item m-2" *ngFor="let type of dataTypes; let index = index"
-                                [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                                <input class="d-none" type="checkbox" [(ngModel)]="data.query.type"
-                                    (change)="selectDataType(type)" [attr.id]="'type-'+index" name="type-{{index}}" />
-                                <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
-                                    [attr.for]="'type-'+index"
-                                    [ngClass]="{'hs-checkmark': data.query.type == type,'hs-uncheckmark':data.query.type != type}"><span
-                                        class="ml-2"
-                                        style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
-                                        type)}}</span></label>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
-
-        <!-- <button class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1">
-            Login to catalogue</button> -->
         <hs-layman-current-user [endpoint]="HsLaymanService.getLaymanEndpoint()"></hs-layman-current-user>
     </div>
-    <div class="d-flex ml-4">
-        <div class="input-group-text border-0 pl-0">
-            <input type="checkbox" [(ngModel)]="data.filterByExtent" (ngModelChange)="queryByFilter()"
-                name="filterByExtent">
-            <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
+    <div class="d-flex ml-4 mr-3 justify-content-between py-1 ">
+        <div class="d-flex">
+            <div class="input-group-text border-0 pl-0">
+                <input type="checkbox" [(ngModel)]="data.filterByExtent" (ngModelChange)="queryByFilter()"
+                    name="filterByExtent">
+                <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
+            </div>
+            <div class="input-group-text border-0" [hidden]="!HsLaymanService.getLaymanEndpoint()">
+                <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
+                <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
+            </div>
         </div>
-        <div class="input-group-text border-0" [hidden]="!HsLaymanService.getLaymanEndpoint()">
-            <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
-            <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
+        <div class="position-relative">
+            <button class="btn btn-light hs-white-background dropdown-toggle hs-custom-toggle" data-toggle="dropdown"
+                type="button" (click)="filterTypeMenu = !filterTypeMenu"> More
+            </button>
+            <div class="dropdown-menu dropdown-menu-right px-3" [ngClass]="{'show': filterTypeMenu}">
+                <div class="d-flex flex-row">
+                    <div>
+                        <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.filterType' | translate}}</h6>
+                        <div class="dropdown-menu-item m-2" *ngFor="let type of textFieldTypes; let index = index"
+                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
+                            <input class="d-none" type="checkbox" [(ngModel)]="data.textField"
+                                (change)="selectType(type)" [attr.id]="'textfield-'+index" name="textfield-{{index}}" />
+                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
+                                [attr.for]="'textfield-'+index"
+                                [ngClass]="{'hs-checkmark': data.textField == type,'hs-uncheckmark':data.textField != type}"><span
+                                    class="ml-2"
+                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
+                                    type)}}</span></label>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.resourceType' | translate}}</h6>
+                        <div class="dropdown-menu-item m-2" *ngFor="let type of dataTypes; let index = index"
+                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
+                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.type"
+                                (change)="selectDataType(type)" [attr.id]="'type-'+index" name="type-{{index}}" />
+                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
+                                [attr.for]="'type-'+index"
+                                [ngClass]="{'hs-checkmark': data.query.type == type,'hs-uncheckmark':data.query.type != type}"><span
+                                    class="ml-2"
+                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
+                                    type)}}</span></label>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="dropdown-header">{{'COMMON.sortBy' | translate}}</h6>
+                        <div class="dropdown-menu-item m-2" *ngFor="let type of sortbyTypes; let index = index"
+                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
+                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.sortby"
+                                (change)="selectDataType(type)" [attr.id]="'type-'+index" name="type-{{index}}" />
+                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
+                                [attr.for]="'type-'+index"
+                                [ngClass]="{'hs-checkmark': data.query.sortby == type,'hs-uncheckmark':data.query.sortby != type}"><span
+                                    class="ml-2"
+                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
+                                    type)}}</span></label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
     <div class="tab-content">
