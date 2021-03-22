@@ -110,7 +110,7 @@
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate }}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1" *ngFor="let value of data.folders.sub_folders" [hidden]="physicalLayerListEnabled">
-                <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
+                <li class="list-group-item hs-lm-layerlist-header list-group-item-primary" *ngIf="data.folders.sub_folders.length > 1"
                     (click)="value.visible = !value.visible">
                     <span>{{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER', value.name)}}&nbsp;</span>
                     <span class="glyphicon"
@@ -128,18 +128,6 @@
             <ul class="list-group hs-lm-layerlist mb-1" [hidden]="!physicalLayerListEnabled">
                 <li>
                     <hs-layermanager-physical-layer-list></hs-layermanager-physical-layer-list>
-                </li>
-            </ul>
-            <ul class="list-group hs-lm-layerlist" [hidden]="physicalLayerListEnabled">
-                <li [hidden]="!(data.folders.sub_folders.length > 0 && data.folders.layers.length != 0)"
-                    class="list-group-item list-group-item-primary hs-lm-layerlist-header"
-                    (click)="layerlistVisible = !layerlistVisible">
-                    <span class="align-middle">{{ 'LAYERMANAGER.other' | translate }}&nbsp;</span>
-                    <span class="glyphicon"
-                        [ngClass]="layerlistVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
-                </li>
-                <li [hidden]="!layerlistVisible">
-                    <hs-layermanager-layer-list [folder]="data.folders"></hs-layermanager-layer-list>
                 </li>
             </ul>
             <!--
