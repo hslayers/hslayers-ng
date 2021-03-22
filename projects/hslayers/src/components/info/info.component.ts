@@ -29,8 +29,9 @@ export class HsInfoComponent implements OnDestroy {
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
   ) {
-    this.subscriptions.push(
-      this.HsEventBusService.compositionLoading.subscribe((data) => {
+    this.HsEventBusService.compositionLoading
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
         if (data.error === undefined) {
           if (data.data !== undefined) {
             /**
@@ -57,10 +58,11 @@ export class HsInfoComponent implements OnDestroy {
           //Composition image (should be glyphicon?)
           this.info_image = 'icon-map';
         }
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.compositionLoads.subscribe((data) => {
+      });
+
+    this.HsEventBusService.compositionLoads
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
           const temp_title = this.composition_title;
@@ -77,18 +79,20 @@ export class HsInfoComponent implements OnDestroy {
          * Status of composition edit (true for edited composition)
          */
         this.composition_edited = false;
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.layerLoadings.subscribe((layer) => {
+      });
+
+    this.HsEventBusService.layerLoadings
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layer) => {
         if (!(getTitle(layer) in this.layer_loading)) {
           this.layer_loading.push(getTitle(layer));
         }
         this.composition_loaded = false;
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.layerLoads.subscribe((layer) => {
+      });
+
+    this.HsEventBusService.layerLoads
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layer) => {
         for (let i = 0; i < this.layer_loading.length; i++) {
           if (this.layer_loading[i] == getTitle(layer)) {
             this.layer_loading.splice(i, 1);
@@ -100,42 +104,43 @@ export class HsInfoComponent implements OnDestroy {
             this.composition_loaded = true;
           }
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.compositionDeletes.subscribe((composition) => {
+    this.HsEventBusService.compositionDeletes
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((composition) => {
         if (composition.id == this.composition_id) {
           delete this.composition_title;
           delete this.composition_abstract;
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.mapResets.subscribe(() => {
+    this.HsEventBusService.mapResets
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         delete this.composition_title;
         delete this.composition_abstract;
         this.layer_loading.length = 0;
         this.composition_loaded = true;
         this.composition_edited = false;
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.compositionEdits.subscribe(() => {
+      });
+
+    this.HsEventBusService.compositionEdits
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.composition_edited = true;
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   trackByFn(index: number): number {
     return index; // or item.id
   }
   /**
-   * @returns Returns true if composition title available
+   * @return Returns true if composition title available
    * Test if composition is loaded, to change info template.
    */
   compositionLoaded(): boolean {

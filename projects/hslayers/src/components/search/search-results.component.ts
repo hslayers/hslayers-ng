@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
@@ -17,24 +18,26 @@ export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
   data: any = {};
   fcode_zoom_map: any;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsSearchService: HsSearchService
   ) {
-    this.subscriptions.push(
-      this.HsEventBusService.searchResultsReceived.subscribe((_) => {
+    this.HsEventBusService.searchResultsReceived
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((_) => {
         this.searchResultsReceived();
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.clearSearchResults.subscribe((_) => {
+      });
+
+    this.HsEventBusService.clearSearchResults
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((_) => {
         this.clear();
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
   /**
    * Handler for receiving results of search request, sends results to correct parser

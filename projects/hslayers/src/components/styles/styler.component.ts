@@ -2,7 +2,8 @@ import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -60,7 +61,7 @@ export class HsStylerComponent implements OnDestroy {
   level: 'feature' | 'cluster' | 'layer' = 'layer';
   isClustered: boolean;
   hasFeatures: boolean;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsStylerService: HsStylerService,
     public HsLayoutService: HsLayoutService,
@@ -72,16 +73,18 @@ export class HsStylerComponent implements OnDestroy {
     public HsStylerColorService: HsStylerColorService,
     public HsSaveMapService: HsSaveMapService
   ) {
-    this.subscriptions.push(
-      this.HsEventBusService.layerSelectedFromUrl.subscribe((layerFound) => {
+    this.HsEventBusService.layerSelectedFromUrl
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layerFound) => {
         if (layerFound !== null) {
           this.HsStylerService.layer = layerFound;
           this.resolveLayerStyle();
         }
-      })
-    );
-    this.subscriptions.push(
-      this.HsEventBusService.mainPanelChanges.subscribe((e) => {
+      });
+
+    this.HsEventBusService.mainPanelChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((e) => {
         if (e == 'styler') {
           if (!this.icons) {
             const assetsPath = this.HsUtilsService.getAssetsPath();
@@ -141,11 +144,11 @@ export class HsStylerComponent implements OnDestroy {
             this.resolveLayerStyle();
           }
         }
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
   resolveLayerStyle(): void {
     this.isClustered = this.HsLayerUtilsService.isLayerClustered(

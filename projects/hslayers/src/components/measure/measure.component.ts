@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -14,7 +15,7 @@ import {HsUtilsService} from '../utils/utils.service';
 export class HsMeasureComponent implements OnDestroy {
   type: string;
   data;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
@@ -34,27 +35,28 @@ export class HsMeasureComponent implements OnDestroy {
         }
       });
     }
-    this.subscriptions.push(
-      this.HsEventBusService.measurementStarts.subscribe(() => {
+
+    this.HsEventBusService.measurementStarts
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.HsLayoutService.panelEnabled('toolbar', false);
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.measurementEnds.subscribe(() => {
+    this.HsEventBusService.measurementEnds
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.HsLayoutService.panelEnabled('toolbar', true);
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.mainPanelChanges.subscribe(() => {
+    this.HsEventBusService.mainPanelChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         if (HsLayoutService.mainpanel == 'measure') {
           this.HsMeasureService.activateMeasuring(this.type);
         } else {
           this.HsMeasureService.deactivateMeasuring();
         }
-      })
-    );
+      });
 
     //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
     if (this.HsLayoutService.mainpanel == 'measure') {
@@ -64,7 +66,8 @@ export class HsMeasureComponent implements OnDestroy {
     //$scope.$emit('scope_loaded', 'Measure');
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   changeMeasureParams(): void {

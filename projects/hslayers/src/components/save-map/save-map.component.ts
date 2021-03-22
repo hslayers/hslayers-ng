@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -17,7 +18,7 @@ export class HsSaveMapComponent implements OnDestroy {
   endpoint = null;
   isAuthorized = false;
   advancedForm: boolean;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     //Used in template
     public HsConfig: HsConfig,
@@ -31,8 +32,10 @@ export class HsSaveMapComponent implements OnDestroy {
       HsConfig.advancedForm == undefined || HsConfig.advancedForm
         ? true
         : false;
-    this.subscriptions.push(
-      this.HsSaveMapManagerService.panelOpened.subscribe((composition) => {
+
+    this.HsSaveMapManagerService.panelOpened
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
           const found = this.HsCommonEndpointsService.endpoints.filter(
@@ -42,11 +45,11 @@ export class HsSaveMapComponent implements OnDestroy {
             this.HsSaveMapManagerService.selectEndpoint(found[0]);
           }
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsCommonEndpointsService.endpointsFilled.subscribe((value) => {
+    this.HsCommonEndpointsService.endpointsFilled
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((value) => {
         if (value.length > 0 && !this.endpoint) {
           const laymans = value.filter((ep) => ep.type == 'layman');
           if (laymans.length > 0) {
@@ -58,28 +61,28 @@ export class HsSaveMapComponent implements OnDestroy {
             this.HsCommonLaymanService.detectAuthChange(this.endpoint);
           }
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsSaveMapManagerService.endpointSelected.subscribe((endpoint) => {
+    this.HsSaveMapManagerService.endpointSelected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((endpoint) => {
         if (endpoint) {
           this.endpoint = endpoint;
           if (endpoint.getCurrentUserIfNeeded) {
             endpoint.getCurrentUserIfNeeded(endpoint);
           }
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+    this.HsCommonLaymanService.authChange
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((endpoint: any) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {
   HsCoreService,
@@ -19,7 +20,7 @@ import {HsCesiumService} from './hscesium.service';
 })
 export class HslayersCesiumComponent implements AfterViewInit, OnDestroy {
   visible = true;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsCesiumService: HsCesiumService,
     public HsPermalinkUrlService: HsShareUrlService,
@@ -30,7 +31,8 @@ export class HslayersCesiumComponent implements AfterViewInit, OnDestroy {
     public HsLayoutService: HsLayoutService //Used in template
   ) {}
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngAfterViewInit(): void {
@@ -55,17 +57,16 @@ export class HslayersCesiumComponent implements AfterViewInit, OnDestroy {
       click: () => this.toggleCesiumMap(),
     });
 
-    this.subscriptions.push(
-      this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
+    this.HsEventBusService.layermanagerDimensionChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) =>
         this.HsCesiumService.dimensionChanged(data.layer, data.dimension)
-      )
-    );
+      );
 
-    this.subscriptions.push(
-      this.HsEventBusService.sizeChanges.subscribe((size) =>
-        this.HsCesiumService.resize(size)
-      )
-    );
+    this.HsEventBusService.sizeChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((size) => this.HsCesiumService.resize(size));
+
     this.HsCesiumService.resize();
   }
 

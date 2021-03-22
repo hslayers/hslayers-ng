@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {Layer} from 'ol/layer';
 
@@ -90,7 +91,7 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
   getActive = getActive;
   getTitle = getTitle;
   getThumbnail = getThumbnail;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
@@ -109,28 +110,27 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
 
-    this.subscriptions.push(
-      this.HsEventBusService.layerRemovals.subscribe(
-        (layer: HsLayerDescriptor) => {
-          if (
-            this.HsLayerManagerService?.currentLayer?.layer == layer &&
-            this.HsUtilsService.runningInBrowser()
-          ) {
-            const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-              '.hs-layerpanel'
-            );
-            const layerNode = document.getElementsByClassName(
-              'hs-lm-mapcontentlist'
-            )[0];
-            this.HsUtilsService.insertAfter(layerPanel, layerNode);
-            this.HsLayerManagerService.currentLayer = null;
-          }
+    this.HsEventBusService.layerRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layer: HsLayerDescriptor) => {
+        if (
+          this.HsLayerManagerService?.currentLayer?.layer == layer &&
+          this.HsUtilsService.runningInBrowser()
+        ) {
+          const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
+            '.hs-layerpanel'
+          );
+          const layerNode = document.getElementsByClassName(
+            'hs-lm-mapcontentlist'
+          )[0];
+          this.HsUtilsService.insertAfter(layerPanel, layerNode);
+          this.HsLayerManagerService.currentLayer = null;
         }
-      )
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.compositionLoads.subscribe((data) => {
+    this.HsEventBusService.compositionLoads
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
             this.HsLayerManagerService.composition_id = data.data.id;
@@ -140,19 +140,19 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
             this.HsLayerManagerService.composition_id = null;
           }
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.compositionDeletes.subscribe((composition) => {
+    this.HsEventBusService.compositionDeletes
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((composition) => {
         if (composition.id == this.HsLayerManagerService.composition_id) {
           this.HsLayerManagerService.composition_id = null;
         }
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit(): void {
@@ -265,10 +265,10 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
   init(m): void {
     this.map = this.HsMapService.map;
     this.HsLayerSynchronizerService.init(this.map);
-    this.subscriptions.push(
-      this.HsEventBusService.mapResets.subscribe(() => {
+    this.HsEventBusService.mapResets
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.HsLayerManagerService.composition_id = null;
-      })
-    );
+      });
   }
 }

@@ -1,12 +1,14 @@
 import {Component, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsUtilsService} from './../utils/utils.service';
+
 @Component({
   selector: 'hs-save-map-advanced-form',
   templateUrl: './partials/form.html',
@@ -18,7 +20,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
   endpoint: any;
   overwrite = false;
   downloadableData: string;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsSaveMapManagerService: HsSaveMapManagerService,
     public HsEventBusService: HsEventBusService,
@@ -26,33 +28,34 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService //Used in template
   ) {
-    this.subscriptions.push(
-      this.HsEventBusService.mapResets.subscribe(() => {
+    this.HsEventBusService.mapResets
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.step = 'context';
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsEventBusService.mainPanelChanges.subscribe((which: string) => {
+    this.HsEventBusService.mainPanelChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((which: string) => {
         if (which == 'saveMap') {
           this.step = 'context';
         }
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
+    this.HsSaveMapManagerService.saveMapResulted
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((statusData) => {
         if (statusData.status || statusData == 'rename') {
           this.step = 'context';
         }
         if (statusData.overWriteNeeded) {
           this.overwrite = true;
         }
-      })
-    );
+      });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   saveCompoJson(): void {

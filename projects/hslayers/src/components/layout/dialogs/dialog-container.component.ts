@@ -6,7 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
@@ -21,29 +22,27 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
-  subscriptions: Subscription[] = [];
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {}
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.HsDialogContainerService.dialogObserver.subscribe(
-        (item: HsDialogItem) => {
-          this.loadDialog(item);
-        }
-      )
-    );
-    this.subscriptions.push(
-      this.HsDialogContainerService.dialogDestroyObserver.subscribe(
-        (item: HsDialogComponent) => {
-          this.destroyDialog(item);
-        }
-      )
-    );
+    this.HsDialogContainerService.dialogObserver
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((item: HsDialogItem) => {
+        this.loadDialog(item);
+      });
+
+    this.HsDialogContainerService.dialogDestroyObserver
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((item: HsDialogComponent) => {
+        this.destroyDialog(item);
+      });
   }
 
   destroyDialog(dialog: HsDialogComponent): void {
