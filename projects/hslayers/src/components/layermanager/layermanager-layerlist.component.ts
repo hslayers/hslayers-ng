@@ -121,7 +121,6 @@ export class HsLayerListComponent implements OnInit {
    */
   private filterLayers(): Array<any> {
     const tmp = [];
-
     for (const layer of this.HsLayerManagerService.data.layers) {
       if (
         getPath(layer.layer) == this.folder.hsl_path ||

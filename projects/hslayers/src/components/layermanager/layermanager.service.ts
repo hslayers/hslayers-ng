@@ -44,6 +44,7 @@ import {
   getThumbnail,
   setActive,
   setDeclutter,
+  setPath,
 } from '../../common/layer-extensions';
 
 @Injectable({
@@ -241,6 +242,8 @@ export class HsLayerManagerService {
     if (layer.getVisible() && getBase(layer)) {
       this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     }
+
+    this.sortFoldersByZ();
     if (!suspendEvents) {
       this.HsEventBusService.layerAdditions.next(layerDescriptor);
       this.HsEventBusService.layerManagerUpdates.next(layer);
@@ -353,49 +356,59 @@ export class HsLayerManagerService {
    * @param lyr Layer to add into folder structure
    */
   populateFolders(lyr: Layer): void {
-    if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
-      const path = getPath(lyr) || '';
-      const parts = path.split('/');
-      let curfolder = this.data.folders;
-      for (let i = 0; i < parts.length; i++) {
-        let found = null;
-        for (const folder of curfolder.sub_folders) {
-          if (folder.name == parts[i]) {
-            found = folder;
-          }
-        }
-        if (found === null) {
-          //TODO: Need to describe how hsl_path works here
-          const new_folder = {
-            sub_folders: [],
-            indent: i,
-            layers: [],
-            name: parts[i],
-            hsl_path:
-              curfolder.hsl_path +
-              (curfolder.hsl_path != '' ? '/' : '') +
-              parts[i],
-            coded_path:
-              curfolder.coded_path + curfolder.sub_folders.length + '-',
-            visible: true,
-          };
-          curfolder.sub_folders.push(new_folder);
-          curfolder = new_folder;
-        } else {
-          curfolder = found;
-        }
-      }
-      lyr.coded_path = curfolder.coded_path;
-      curfolder.layers.push(lyr);
-      if (this.data.folders.layers.indexOf(lyr) > -1) {
-        this.data.folders.layers.splice(
-          this.data.folders.layers.indexOf(lyr),
-          1
+    let path = getPath(lyr);
+    if (!path) {
+      /*Check whether 'other' folder exists.
+        Can not just add getTranslationIgnoreNonExisting string in case no path exists
+        because on init the translation is ignored.
+      */
+      if (this.data.folders.sub_folders?.filter((f) => f.name == 'other')[0]) {
+        path = 'other';
+      } else {
+        path = this.HsLanguageService.getTranslationIgnoreNonExisting(
+          'LAYERMANAGER',
+          'other'
         );
       }
-    } else {
-      this.data.folders.layers.push(lyr);
+      setPath(lyr, path);
     }
+    const parts = path.split('/');
+    let curfolder = this.data.folders;
+    const zIndex = lyr.getZIndex();
+    for (let i = 0; i < parts.length; i++) {
+      let found = null;
+      for (const folder of curfolder.sub_folders) {
+        if (folder.name == parts[i]) {
+          found = folder;
+        }
+      }
+      if (found === null) {
+        //TODO: Need to describe how hsl_path works here
+        const new_folder = {
+          sub_folders: [],
+          indent: i,
+          layers: [],
+          name: parts[i],
+          hsl_path:
+            curfolder.hsl_path +
+            (curfolder.hsl_path != '' ? '/' : '') +
+            parts[i],
+          coded_path: curfolder.coded_path + curfolder.sub_folders.length + '-',
+          visible: true,
+          zIndex: zIndex,
+        };
+        curfolder.sub_folders.push(new_folder);
+        curfolder = new_folder;
+      } else {
+        curfolder = found;
+      }
+    }
+    curfolder.zIndex = curfolder.zIndex < zIndex ? zIndex : curfolder.zIndex;
+    lyr.coded_path = curfolder.coded_path;
+    curfolder.layers.push(lyr);
+    // if (this.data.folders.layers.indexOf(lyr) > -1) {
+    //   this.data.folders.layers.splice(this.data.folders.layers.indexOf(lyr), 1);
+    // }
   }
 
   /**
@@ -511,7 +524,6 @@ export class HsLayerManagerService {
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
     //Set the other exclusive layers invisible - all or the ones with same path based on config
     if (visibility && getExclusive(layer.layer) == true) {
-      console.log('exclusive')
       for (const other_layer of this.data.layers) {
         const pathExclusivity = this.HsConfig.pathExclusivity
           ? getPath(other_layer.layer) == getPath(layer.layer)
@@ -851,6 +863,14 @@ export class HsLayerManagerService {
     }, 100);
   }
 
+  sortFoldersByZ() {
+    this.data.folders.sub_folders.sort(
+      (a, b) =>
+        (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
+        (this.HsConfig.reverseLayerList ? -1 : 1)
+    );
+  }
+
   /**
    * Initialization of needed controllers, run when map object is available
    * (PRIVATE)
@@ -867,6 +887,8 @@ export class HsLayerManagerService {
         true
       );
     });
+    this.sortFoldersByZ();
+    this.sortLayersByZ(this.data.layers)
     this.HsEventBusService.layerManagerUpdates.next();
     this.toggleEditLayerByUrlParam();
     this.boxLayersInit();
@@ -884,7 +906,7 @@ export class HsLayerManagerService {
       );
 
     this.map.getLayers().on('add', (e) => {
-      this.applyZIndex(e.element);
+      this.applyZIndex(e.element, true);
       if (getShowInLayerManager(e.element) == false) {
         return;
       }
@@ -925,13 +947,54 @@ export class HsLayerManagerService {
     }
   }
 
-  applyZIndex(layer): void {
-    if (layer.getZIndex() == undefined) {
-      layer.setZIndex(this.zIndexValue++);
-    } else if (layer.getZIndex() > this.zIndexValue) {
-      this.zIndexValue = layer.getZIndex() + 1;
+  /**
+   * Sets zIndex of layer being added.
+   * @param layer layer being added
+   */
+  private setPathMaxZIndex(layer: Layer): void {
+    //Sets zIndex to be highest in according path
+    let path = getPath(layer);
+    //If not set itll be assigned inside populateFolders function as 'other'
+    path = path ? path : 'other';
+
+    const pathLayers = this.data.layers.filter(
+      (layer) => getPath(layer.layer) == path
+    );
+
+    if (pathLayers.length > 0) {
+      //Get max avaialble index value
+      const maxPathZIndex = Math.max(
+        ...pathLayers.map((lyr) => lyr.layer.getZIndex() || 0)
+      );
+
+      layer.setZIndex(maxPathZIndex + 1);
+      //Increase zIndex of the layer that are supposed to be rendered above inserted
+      for (const lyr of this.data.layers.filter(
+        (lyr) => lyr.layer.getZIndex() >= layer.getZIndex()
+      )) {
+        lyr.layer.setZIndex(lyr.layer.getZIndex() + 1);
+      }
     }
   }
+
+  /**
+   * Sets zIndex of layer being added.
+   * @param layer layer being added
+   * @param asCallback Whether the function is called directly or as a callback of add layer event.
+   * No need to run each layer through setPathMaxZIndex on init
+   */
+  applyZIndex(layer: Layer, asCallback?: boolean): void {
+    if (asCallback && getShowInLayerManager(layer) !== false) {
+      this.setPathMaxZIndex(layer);
+    }
+
+    if (layer.getZIndex() == undefined) {
+      layer.setZIndex(this.zIndexValue++);
+    } else {
+      this.zIndexValue++;
+    }
+  }
+
   expandLayer(layer: Layer): void {
     if (layer.expanded == undefined) {
       layer.expanded = true;
