@@ -9,24 +9,24 @@
       },
       "filterType": "Meklēt pēc",
       "searchFilterTypes": {
-        "Abstract": "Abstract",
-        "AnyText": "All",
-        "Title": "Title"
+        "Abstract": "Apraksta",
+        "AnyText": "Jebkāds teksts",
+        "Title": "Nosaukuma"
       },
       "queryDataTypes": {
-        "all": "Vše",
-        "service": "Služby",
-        "dataset": "Datasety"
+        "all": "Visi",
+        "service": "Serviss",
+        "dataset": "Datukopa"
       },
       "sortbyTypes": {
-        "date": "Date",
-        "title": "Title",
-        "bbox": "Extent"
+        "date": "Datums",
+        "title": "Nosaukums",
+        "bbox": "Mērogojums"
       },
       "loading": "Notiek ielāde",
       "searchType": "Filtra tips",
       "selectFilterType": "Nomainīt filtra tipu",
-      "resourceType": "Resource type"
+      "resourceType": "Resursu tips"
     },
     "file": "Fails",
     "URL": {
@@ -74,7 +74,7 @@
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
       "uploadVectorFiles": "Augšuplādēt vektordatu failus",
-      "chooseFiles": "Choose files..."
+      "chooseFiles": "Izvēlieties failus..."
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
@@ -89,8 +89,8 @@
     },
     "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
     "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
-    "serviceTypeNotMatching": "URL service type does't not match selected category",
-    "Basemap": "Add as basemap"
+    "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
+    "Basemap": "Pievienot kā pamatslāni"
   },
   "COMMON": {
     "abstract": "Apraksts",
