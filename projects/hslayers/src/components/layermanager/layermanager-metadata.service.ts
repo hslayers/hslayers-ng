@@ -45,12 +45,13 @@ export class HsLayerManagerMetadataService {
    * It is used as reference for sublayer structure, metadata
    * @param layerName
    * @param currentLayer
+   * @return Wms layer definition
    */
   identifyLayerObject(layerName: string, currentLayer: WmsLayer): WmsLayer {
     // FIXME: Temporary bypass for layer names like 'UTM:evi'
-    if (layerName.includes(':')) {
+    /*if (layerName.includes(':')) { //This is wrong because then we are not able to find layer by name
       layerName = layerName.slice(layerName.indexOf(':'));
-    }
+    }*/
     // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementationally simpler
     if (layerName == currentLayer.Name) {
       return currentLayer;

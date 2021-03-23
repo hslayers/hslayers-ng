@@ -22,3 +22,4 @@ stats.json
 .lingua
 bundle
 *.d.ts
+projects/hslayers-server/src/data/hslayers-server.db

@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center">
     <div class="mr-auto p-2">
-        <strong><a href="#" data-toggle="tooltip" [title]="layer.description || ''"
+        <strong><a data-toggle="tooltip" [title]="layer.description || ''"
                 (click)="showMetadata(layer.endpoint, layer)">{{layer.title || layer.description}}</a></strong>
     </div>
     <div class="p-0" [hidden]='HsAddDataCatalogueService.layerDownload(layer.endpoint,layer) == "#"'>

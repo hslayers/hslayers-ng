@@ -104,7 +104,7 @@
                 *ngIf="HsAddDataCatalogueService.matchedLayers != 0 && !HsAddDataCatalogueService.layersLoading">
                 <ul class="pagination d-flex justify-content-center">
                     <li class="page-item" [ngClass]="{'disabled': HsAddDataCatalogueService.listStart == 0 }">
-                        <a href="#" class="page-link" (click)="getPreviousRecords()"><span
+                        <a class="page-link" (click)="getPreviousRecords()"><span
                                 aria-hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item"
@@ -122,7 +122,7 @@
                             {{HsAddDataCatalogueService.matchedLayers}}</span>
                     </li>
                     <li class="page-item" [ngClass]="{'disabled': !nextPageAvailable() }">
-                        <a href="#" class="page-link" (click)="getNextRecords()"><span
+                        <a class="page-link" (click)="getNextRecords()"><span
                                 aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>
