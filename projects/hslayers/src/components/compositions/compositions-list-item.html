@@ -2,22 +2,21 @@
 <div class="mt-2" [ngClass]="{'d-none': HsCompositionsService.commonId(composition) != selectedCompId}">
     <hr class="hs-dotted-line">
     <div class="btn-group btn-block" role="group">
-        <a class="btn btn-sm" href="#"
+        <a class="btn btn-sm"
             (click)="$event.stopPropagation();openComposition(composition)">
             <i class="icon-map icon-primary"></i><span class="ml-1">{{'COMMON.open' |
                 translate}}</span>
         </a>
-        <a class="btn btn-sm" href="#"
+        <a class="btn btn-sm"
             (click)="$event.stopPropagation();detailComposition(composition)">
             <i class="icon-info-sign icon-primary"></i><span class="ml-1">{{'COMMON.metadata' |
                 translate}}</span>
         </a>
-        <a class="btn btn-sm" (click)="$event.stopPropagation();shareComposition(composition)"
-            href="#">
+        <a class="btn btn-sm" (click)="$event.stopPropagation();shareComposition(composition)">
             <i class="icon-share-alt icon-primary"></i><span class="ml-1">{{'COMMON.share' |
                 translate}}</span>
         </a>
-        <a class="btn btn-sm" href="#" [hidden]="!composition.editable"
+        <a class="btn btn-sm" [hidden]="!composition.editable"
             (click)="$event.stopPropagation();confirmDelete(composition)">
             <i class="icon-trash icon-primary"></i><span class="ml-1">{{'COMMON.delete' |
                 translate}}</span>

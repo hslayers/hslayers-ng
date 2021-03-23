@@ -49,21 +49,20 @@ export class HsSaveMapService {
     public HsLogService: HsLogService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
-    if (hsConfig.saveMapStateOnReload === undefined) {
-      hsConfig.saveMapStateOnReload = true;
-    }
-    if (hsConfig.saveMapStateOnReload) {
-      window.addEventListener('beforeunload', (e) => this.save2storage(e));
-    }
+    window.addEventListener('beforeunload', (e) => {
+      if (hsConfig.saveMapStateOnReload) {
+        this.save2storage(e);
+      }
+    });
   }
 
   /**
    * Create Json object which stores information about composition, user, map state and map layers (including layer data)
-   * @param {Ol.map} map - Selected map object
-   * @param {object} compoData - Composition general metadata
-   * @param {object} userData - Metadata about user
-   * @param {object} statusData - Metadata about permissions
-   * @returns {object} JSON object with all required map composition metadata
+   * @param {Ol.map} map Selected map object
+   * @param {object} compoData Composition general metadata
+   * @param {object} userData Metadata about user
+   * @param {object} statusData Metadata about permissions
+   * @return {object} JSON object with all required map composition metadata
    */
   map2json(map, compoData, userData, statusData) {
     const groups: any = {};

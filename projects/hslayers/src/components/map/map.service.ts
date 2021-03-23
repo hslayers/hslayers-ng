@@ -779,12 +779,10 @@ export class HsMapService {
         }
       });
       src.setTileLoadFunction((tile, src) => {
-        if (
-          src.startsWith(
-            this.HsConfig.datasources?.filter((ep) => ep.type == 'layman')[0]
-              .url
-          )
-        ) {
+        const laymanEp = this.HsConfig.datasources?.find(
+          (ep) => ep.type == 'layman'
+        );
+        if (laymanEp && src.startsWith(laymanEp.url)) {
           this.laymanWmsLoadingFunction(tile, src);
         } else {
           tile.getImage().src = src;
@@ -799,11 +797,10 @@ export class HsMapService {
     if (src.indexOf(this.HsConfig.proxyPrefix) == 0) {
       image.getImage().src = src;
     } else {
-      if (
-        src.startsWith(
-          this.HsConfig.datasources?.filter((ep) => ep.type == 'layman')[0].url
-        )
-      ) {
+      const laymanEp = this.HsConfig.datasources?.find(
+        (ep) => ep.type == 'layman'
+      );
+      if (laymanEp && src.startsWith(laymanEp.url)) {
         this.laymanWmsLoadingFunction(image, src);
       } else {
         image.getImage().src = this.HsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
