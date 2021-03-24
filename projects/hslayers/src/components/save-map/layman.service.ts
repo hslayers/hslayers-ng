@@ -96,9 +96,7 @@ export class HsLaymanService implements HsSaverService {
       try {
         const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
           `${endpoint.url}/rest/${endpoint.user}/maps${
-            saveAsNew
-              ? `?${Math.random()}`
-              : '/' + getLaymanFriendlyLayerName(compoData.title)
+            saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
           }`,
           formdata,
           options

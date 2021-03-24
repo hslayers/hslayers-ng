@@ -27,5 +27,6 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
    */
   delete(composition) {
     this.HsCompositionsService.deleteComposition(composition);
+    this.close();
   }
 }

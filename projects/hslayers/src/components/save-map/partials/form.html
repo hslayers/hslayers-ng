@@ -195,11 +195,11 @@
     </div>
 </div>
 <div class="modal-footer w-100">
-    <button type="button" class="btn btn-block btn-primary" id="stc-save"
+    <!-- <button type="button" class="btn btn-block btn-primary" id="stc-save"
         [hidden]="!(step == 'end' && isAllowed() && overwrite)"
-        (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button>
+        (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button> -->
     <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())"
-        (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.saveAs' | translate}}</button>
+        (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
     <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"
         (click)="next()">{{'COMMON.next' | translate}}</button>
     <a class="btn btn-block btn-secondary" [href]="'data:'+downloadableData" id="stc-download"

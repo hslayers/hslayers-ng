@@ -18,6 +18,11 @@
                     [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'not-saved')">
                     {{'SAVECOMPOSITION.dialogResult.requestWasProcessed' | translate}}</div>
                 <div class="alert alert-danger"
+                [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'exists')">
+                Map already exists
+
+                </div>
+                <div class="alert alert-danger"
                     [hidden]="!(!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'error')">
                     {{'SAVECOMPOSITION.dialogResult.serverDidNotRespond' | translate}}</div>
                 <div class="alert alert-danger"
@@ -30,8 +35,12 @@
                     </dl>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="close()"
+            <div class="modal-footer" [ngClass]="{'justify-content-between' : HsSaveMapManagerService.statusData.resultCode == 'exists' }">
+                <div *ngIf="!HsSaveMapManagerService.statusData.status && HsSaveMapManagerService.statusData.resultCode == 'exists'">
+                    <button type="button" class="btn btn-primary" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button>
+                    <button type="button" class="btn btn-primary ml-2" (click)="changeName()">{{'SAVECOMPOSITION.form.changeName' | translate}}</button>
+                </div>
+                    <button type="button" class="btn btn-primary" (click)="close()"
                     data-dismiss="modal">{{'COMMON.close' | translate}}</button>
             </div>
         </div>

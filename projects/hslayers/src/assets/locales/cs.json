@@ -566,7 +566,7 @@
       "country": "Země",
       "email": "E-mail",
       "organization": "Organizace",
-      "overwrite": "přepsat",
+      "overwrite": "Přepsat",
       "person": "Osoba",
       "phone": "Telefon",
       "position": "Pozice",
@@ -575,7 +575,8 @@
       "state": "Stát",
       "toggleAll": "Přepnout vše",
       "userCurrentMapExtent": "Použít aktuální rozsah mapy",
-      "write": "Zápis"
+      "write": "Zápis",
+      "changeName": "Změnit jméno"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte klíčová slova",

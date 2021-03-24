@@ -18,4 +18,14 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   close(): void {
     this.HsDialogContainerService.destroy(this);
   }
+
+  initiateSave(newSave: boolean): void {
+    this.HsSaveMapManagerService.initiateSave(newSave);
+    this.close();
+  }
+
+  changeName(){
+    this.HsSaveMapManagerService.saveMapResulted.next('rename');
+    this.close();
+  }
 }
