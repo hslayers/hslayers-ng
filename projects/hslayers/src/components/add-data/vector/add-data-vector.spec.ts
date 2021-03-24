@@ -10,6 +10,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HsAddDataVectorComponent} from './add-data-vector.component';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -31,9 +32,15 @@ class HsConfigMock {
   constructor() {}
 }
 
+class HsCommonLaymanServiceMock {
+  constructor() {}
+  authChange: Subject<any> = new Subject();
+}
+
 class CommonEndpointsServiceMock {
   constructor() {}
   endpointsFilled: Subject<any> = new Subject();
+  endpoints = [];
 }
 
 let mockedMapService;
@@ -75,6 +82,10 @@ describe('add-layers-vector', () => {
               ///
             },
           },
+        },
+        {
+          provide: HsCommonLaymanService,
+          useValue: new HsCommonLaymanServiceMock(),
         },
         {provide: HsLayerUtilsService, useValue: new emptyMock()},
         {
