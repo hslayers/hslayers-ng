@@ -31,7 +31,8 @@
     "file": "File",
     "URL": {
       "selectAll": "Select All Layers"
-    }
+    },
+    "saveToDatabase": "Save to database"
   },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",

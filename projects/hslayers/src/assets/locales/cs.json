@@ -31,7 +31,8 @@
     "file": "Soubor",
     "URL": {
       "selectAll": "Označit všechny vrstvy"
-    }
+    },
+    "saveToDatabase": "Uložit do databáze"
   },
   "ADDLAYERS": {
     "addSelected": "Přidat označené vrstvy do mapy",

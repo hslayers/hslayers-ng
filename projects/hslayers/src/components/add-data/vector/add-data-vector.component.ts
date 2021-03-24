@@ -4,6 +4,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -11,6 +12,7 @@ import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
+
 @Component({
   selector: 'hs-add-data-url-vector',
   templateUrl: './add-data-vector.directive.html',
@@ -34,7 +36,10 @@ export class HsAddDataVectorComponent {
   errorOccured = false;
   addUnder: BaseLayer = null;
   showDetails = false;
-
+  saveToLayman: boolean;
+  isAuthorized = false;
+  // Not possible to save KML to layman yet
+  saveAvailable: boolean;
   constructor(
     public HsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
@@ -43,8 +48,21 @@ export class HsAddDataVectorComponent {
     public HsAddDataService: HsAddDataService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
-    public HsCommonEndpointsService: HsCommonEndpointsService
-  ) {}
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsCommonLaymanService: HsCommonLaymanService
+  ) {
+    const layman = this.HsCommonEndpointsService.endpoints.filter(
+      (ep) => ep.type == 'layman'
+    )[0];
+    if (layman) {
+      this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+        this.isAuthorized =
+          endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      });
+      this.isAuthorized =
+        layman.user !== 'anonymous' && layman.user !== 'browser';
+    }
+  }
 
   connect = async (): Promise<void> => {
     this.hsHistoryListService.addSourceHistory('vector', this.url);
@@ -80,9 +98,11 @@ export class HsAddDataVectorComponent {
     );
     this.HsAddDataVectorService.fitExtent(layer);
 
-    this.awaitLayerSync(layer).then(() => {
-      layer.getSource().dispatchEvent('addfeature');
-    });
+    if (this.saveToLayman) {
+      this.awaitLayerSync(layer).then(() => {
+        layer.getSource().dispatchEvent('addfeature');
+      });
+    }
 
     this.hsLayoutService.setMainPanel('layermanager');
     this.setToDefault();
@@ -110,13 +130,6 @@ export class HsAddDataVectorComponent {
           ? (this.base64url = uploadedData.url)
           : ((this.url = ''), (this.base64url = ''));
 
-        //add layman endpoint url as url to allow sync
-        if (this.url == '') {
-          this.url = this.HsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type == 'layman'
-          )[0].url;
-        }
-
         uploadedData.name !== undefined
           ? (this.name = uploadedData.name)
           : (this.name = '');
@@ -142,9 +155,21 @@ export class HsAddDataVectorComponent {
         }
         if (uploadedData.type !== undefined) {
           this.type = uploadedData.type;
-          this.isKml();
         } else {
           this.type = '';
+        }
+        if (this.isKml()) {
+          this.saveToLayman = false;
+          this.saveAvailable = false;
+        } else {
+          this.saveAvailable = true;
+          this.saveToLayman = this.isAuthorized;
+        }
+        //add layman endpoint url as url to allow sync
+        if (this.url == '' && this.saveToLayman) {
+          this.url = this.HsCommonEndpointsService.endpoints.filter(
+            (ep) => ep.type == 'layman'
+          )[0].url;
         }
         this.showDetails = true;
       } else {
