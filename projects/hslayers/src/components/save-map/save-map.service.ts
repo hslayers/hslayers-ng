@@ -130,22 +130,17 @@ export class HsSaveMapService {
     //json.sphericalMercator = map.sphericalMercator;
 
     // Layers properties
-    let layers = map.getLayers().getArray();
-    layers = layers.filter(
-      (l) => getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
-    );
-    json.layers = this.layers2json(layers, compoData.layers);
+    json.layers = this.layers2json(compoData.layers, true);
     json.current_base_layer = this.getCurrentBaseLayer(map);
     return json;
   }
-
   /**
    * Returns object about current selected base layer
    *
    * @memberof HsSaveMapService
    * @function getCurrentBaseLayer
    * @param {Map} map Selected map object
-   * @returns {object} Returns object with current current selected base layers title as attribute
+   * @return {object} Returns object with current current selected base layers title as attribute
    */
   getCurrentBaseLayer(map: Map) {
     let current_base_layer = null;
@@ -172,30 +167,26 @@ export class HsSaveMapService {
    * @function layer2json
    * @param {Array} layers All map layers
    * @param {Array} tickedLayers List of layers and if they have been ticked
-   * @returns {Array} JSON object representing the layers
+   * @return {Array} JSON object representing the layers
    */
-  layers2json(layers, tickedLayers?) {
+  layers2json(layers, onlyTicked?: boolean) {
     const json = [];
-    layers.forEach((lyr) => {
-      if (tickedLayers) {
-        //From form
-        for (const list_item of tickedLayers) {
-          if (list_item.layer == lyr && list_item.checked) {
-            const l = this.layer2json(lyr);
-            if (l) {
-              json.push(l);
-            }
-          }
-        }
-      } else {
+    layers.forEach(layer => {
+      if (onlyTicked  && layer.checked) {
         //From unloading
-        const l = this.layer2json(lyr);
+        const l = this.layer2json(layer.layer);
+        if (l) {
+          json.push(l);
+        }
+      }
+      else {
+        //From unloading
+        const l = this.layer2json(layer);
         if (l) {
           json.push(l);
         }
       }
     });
-
     return json;
   }
 
@@ -208,7 +199,7 @@ export class HsSaveMapService {
    * @function layer2string
    * @param {object} layer Layer to be converted
    * @param {boolean} pretty Whether to use pretty notation
-   * @returns {string} Text in JSON notation representing the layer
+   * @return {string} Text in JSON notation representing the layer
    */
   layer2string(layer, pretty) {
     const json = this.layer2json(layer);
@@ -220,8 +211,8 @@ export class HsSaveMapService {
    * Convert layer style object into JSON object, partial function of layer2style
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
-   * @param s - Style to convert
-   * @returns {object} Converted JSON object for style
+   * @param s Style to convert
+   * @return {object} Converted JSON object for style
    */
   serializeStyle(s: Style) {
     const o: any = {};
@@ -304,7 +295,7 @@ export class HsSaveMapService {
    * @memberof HsSaveMapService
    * @function layer2json
    * @param {object} layer Map layer that should be converted
-   * @returns {object} JSON object representing the layer
+   * @return {object} JSON object representing the layer
    */
   layer2json(layer: Layer): any {
     const json: any = {
@@ -459,7 +450,7 @@ export class HsSaveMapService {
    * @memberof HsSaveMapService
    * @function serializeFeatures
    * @param {Array} features Array of features
-   * @returns {string} GeoJSON string
+   * @return {string} GeoJSON string
    */
   serializeFeatures(features) {
     const f = new GeoJSON();

@@ -11,6 +11,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
+import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {Injectable} from '@angular/core';
 import {
   getFromComposition,
@@ -56,7 +57,8 @@ export class HsCompositionsParserService {
     public $log: HsLogService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
-    public HsCommonEndpointsService: HsCommonEndpointsService
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsLayerManagerService: HsLayerManagerService
   ) {}
 
   /**
@@ -228,6 +230,7 @@ export class HsCompositionsParserService {
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
     });
+    this.HsLayerManagerService.updateLayerListPositions();
 
     if (obj.current_base_layer) {
       this.HsMapService.map.getLayers().forEach((lyr) => {
