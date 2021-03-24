@@ -575,7 +575,8 @@
       "state": "State",
       "toggleAll": "Toggle all",
       "userCurrentMapExtent": "Use current map extent",
-      "write": "Write"
+      "write": "Write",
+      "changeName": "Change name"
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",

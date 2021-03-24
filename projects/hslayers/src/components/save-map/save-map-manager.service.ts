@@ -207,9 +207,8 @@ export class HsSaveMapManagerService {
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
           //this.statusData.success = this.status;
-          resolve({
-            status,
-          });
+          response.status = status;
+          resolve(response);
         })
         .catch((e) => {
           //e contains the json responses data object from api
@@ -363,7 +362,7 @@ export class HsSaveMapManagerService {
    *
    * @function getCurrentExtent
    * @memberof HsSaveMapManagerService
-   * @returns {Array} Extent coordinates
+   * @return {Array} Extent coordinates
    */
   getCurrentExtent() {
     const b = this.HsMapService.map
@@ -417,11 +416,16 @@ export class HsSaveMapManagerService {
   processSaveCallback(response) {
     this.statusData.status = response.status;
     if (!response.status) {
-      this.statusData.resultCode = response.error ? 'error' : 'not-saved';
-      if (response.error?.code == 24) {
-        this.statusData.overwriteNeeded = true;
+      if (response.code == 24) {
+        this.statusData.overWriteNeeded = true;
+        this.compoData.name = response.detail.mapname;
+        this.statusData.resultCode = 'exists';
+      } else if (response.code == 32) {
+        this.statusData.resultCode = 'not-saved';
+      } else {
+        this.statusData.resultCode = 'error';
       }
-      this.statusData.error = response.error;
+      this.statusData.error = response;
     } else {
       this.HsLayoutService.setMainPanel('layermanager', true);
     }

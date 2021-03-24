@@ -45,7 +45,7 @@ export class HsSaveMapAdvancedFormComponent {
     });
 
     this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
-      if (statusData.status) {
+      if (statusData.status ||statusData == 'rename') {
         this.step = 'context';
       }
       if (statusData.overWriteNeeded) {
