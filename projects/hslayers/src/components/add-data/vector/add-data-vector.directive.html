@@ -40,6 +40,21 @@
                 name="abstract" [(ngModel)]="abstract">
             </textarea>
         </div>
+        <div  class="d-flex flex-row justify-content-start align-items-baseline mb-1" *ngIf="isAuthorized && saveAvailable">
+            {{'ADDDATA.saveToDatabase' | translate}}
+            <div class="btn-group ml-2">
+                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                    (click)="saveToLayman = true"
+                    [ngClass]="{'active':saveToLayman}">
+                    {{'COMMON.yes' | translate}}
+                </button>
+                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
+                    (click)="saveToLayman = false"
+                    [ngClass]="{'active': !saveToLayman}">
+                    {{'COMMON.no' | translate}}
+                </button>
+            </div>
+        </div>
 
         <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
             (click)="advancedPanelVisible = !advancedPanelVisible">

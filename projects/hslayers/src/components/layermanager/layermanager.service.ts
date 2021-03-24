@@ -952,7 +952,6 @@ export class HsLayerManagerService {
    * @param layer layer being added
    */
   private setPathMaxZIndex(layer: Layer): void {
-    //Sets zIndex to be highest in according path
     let path = getPath(layer);
     //If not set itll be assigned inside populateFolders function as 'other'
     path = path ? path : 'other';
