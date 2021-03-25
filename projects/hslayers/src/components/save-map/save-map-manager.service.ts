@@ -170,6 +170,7 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
+      this.compoData.layers.filter((l) => l.checked).map((l) => l.layer);
       const compositionJson = this.generateCompositionJson();
       let saver: HsSaverService = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {

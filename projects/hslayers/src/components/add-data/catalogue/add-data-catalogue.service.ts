@@ -66,7 +66,7 @@ export class HsAddDataCatalogueService {
     this.data.query = {
       textFilter: '',
       title: '',
-      type: 'all',
+      type: 'service',
       Subject: '',
       sortby: 'date',
     };
