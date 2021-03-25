@@ -130,7 +130,7 @@ export class HsSaveMapService {
     //json.sphericalMercator = map.sphericalMercator;
 
     // Layers properties
-    json.layers = this.layers2json(compoData.layers, true);
+    json.layers = this.layers2json(compoData.layers);
     json.current_base_layer = this.getCurrentBaseLayer(map);
     return json;
   }
@@ -166,25 +166,14 @@ export class HsSaveMapService {
    * @memberof HsSaveMapService
    * @function layer2json
    * @param {Array} layers All map layers
-   * @param {Array} tickedLayers List of layers and if they have been ticked
    * @return {Array} JSON object representing the layers
    */
-  layers2json(layers, onlyTicked?: boolean) {
+  layers2json(layers) {
     const json = [];
-    layers.forEach(layer => {
-      if (onlyTicked  && layer.checked) {
-        //From unloading
-        const l = this.layer2json(layer.layer);
-        if (l) {
-          json.push(l);
-        }
-      }
-      else {
-        //From unloading
-        const l = this.layer2json(layer);
-        if (l) {
-          json.push(l);
-        }
+    layers.forEach((layer) => {
+      const l = this.layer2json(layer);
+      if (l) {
+        json.push(l);
       }
     });
     return json;

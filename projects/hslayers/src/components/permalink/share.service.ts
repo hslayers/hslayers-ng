@@ -12,6 +12,8 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {getShowInLayerManager} from '../../common/layer-extensions';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -54,13 +56,23 @@ export class HsShareService {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.HsShareUrlService.statusSaving = true;
         const status_url = this.HsStatusManagerService.endpointUrl();
+        const layers = this.HsMapService.map
+          .getLayers()
+          .getArray()
+          .filter(
+            (l) =>
+              getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
+          )
+          .sort((a, b) => {
+            return a.getZIndex() - b.getZIndex();
+          });
         try {
           await this.HttpClient.post(
             status_url,
             JSON.stringify({
               data: this.HsSaveMapService.map2json(
                 this.HsMapService.map,
-                {},
+                {layers: layers},
                 {},
                 {}
               ),
@@ -150,7 +162,7 @@ export class HsShareService {
    * @function getEmbedCode
    * @public
    * @description Get correct Embed code with correct share link type
-   * @returns {string} embeddable iframe html code
+   * @return {string} embeddable iframe html code
    */
   getEmbedCode(): string {
     this.data.embedCode =
@@ -164,7 +176,7 @@ export class HsShareService {
    * @memberof permalink.shareService
    * @function getShareUrl
    * @public
-   * @returns {string} Share URL
+   * @return {string} Share URL
    * @description Get share Url based on app choice
    */
   getShareUrl(): string {
@@ -181,7 +193,7 @@ export class HsShareService {
    * @memberof permalink.shareService
    * @function getShareUrlEncoded
    * @public
-   * @returns {string} Encoded share URL
+   * @return {string} Encoded share URL
    * @description Get encoded share Url based on app choice
    */
   getShareUrlEncoded(): string {
