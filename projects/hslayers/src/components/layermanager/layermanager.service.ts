@@ -888,7 +888,7 @@ export class HsLayerManagerService {
       );
     });
     this.sortFoldersByZ();
-    this.sortLayersByZ(this.data.layers)
+    this.sortLayersByZ(this.data.layers);
     this.HsEventBusService.layerManagerUpdates.next();
     this.toggleEditLayerByUrlParam();
     this.boxLayersInit();
@@ -948,17 +948,22 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Sets zIndex of layer being added.
+   * Sets zIndex of layer being added to be the highest among layers in same path
    * @param layer layer being added
    */
   private setPathMaxZIndex(layer: Layer): void {
-    let path = getPath(layer);
-    //If not set itll be assigned inside populateFolders function as 'other'
-    path = path ? path : 'other';
+    let pathLayers;
+    if (getBase(layer)) {
+      pathLayers = this.data.baselayers;
+    } else {
+      let path = getPath(layer);
+      //If not set itll be assigned inside populateFolders function as 'other'
+      path = path ? path : 'other';
 
-    const pathLayers = this.data.layers.filter(
-      (layer) => getPath(layer.layer) == path
-    );
+      pathLayers = this.data.layers.filter(
+        (layer) => getPath(layer.layer) == path
+      );
+    }
 
     if (pathLayers.length > 0) {
       //Get max avaialble index value
