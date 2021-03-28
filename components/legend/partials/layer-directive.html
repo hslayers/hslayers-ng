@@ -5,7 +5,7 @@
         <img *ngFor="let sublayer of layer.subLayerLegends" [src]="sublayer" onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }">
     </div>
    <div *ngIf="layer.type == 'vector'">
-        <p *ngFor="let category of layer.lyr.getSource().legend_categories"><span style="background-color: {{category.color}};">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
+        <p *ngFor="let category of layer.lyr.getSource().legend_categories"><span [ngStyle]="{'background-color': category.color}">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
         </p>
     </div>
    <hs-legend-layer-static *ngIf="layer.type == 'static'" [layer]="layer"></hs-legend-layer-static>
