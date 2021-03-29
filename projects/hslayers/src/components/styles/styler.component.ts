@@ -141,8 +141,8 @@ export class HsStylerComponent implements OnDestroy {
                 this.HsUtilsService.resolveEsModule(icon)
               )
             );
-            this.resolveLayerStyle();
           }
+          this.resolveLayerStyle();
         }
       });
   }
