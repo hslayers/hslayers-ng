@@ -41,7 +41,7 @@ export class HsAddDataUrlWmsService {
     public hsConfig: HsConfig,
     public HsAddDataService: HsAddDataService,
     public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public HsAddDataUrlService: HsAddDataUrlService,
   ) {
     this.url = '';
     this.data = {

@@ -217,6 +217,7 @@ export class HsDrawService {
       this
     );
   }
+
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
