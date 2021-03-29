@@ -1,5 +1,5 @@
 import VectorLayer from 'ol/layer/Vector';
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HsLegendService} from './legend.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -7,8 +7,8 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-legend-layer-directive',
   templateUrl: './partials/layer-directive.html',
 })
-export class HsLegendLayerComponent {
-  @Input('layer') layer: any;
+export class HsLegendLayerComponent implements OnInit {
+  @Input() layer: any;
   styles = [];
   geometryTypes = [];
 
