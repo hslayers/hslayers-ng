@@ -466,7 +466,7 @@ export class HsSaveMapService {
      *
      */
     function rendered() {
-      const canvas = this.HsMapService.getCanvas();
+      const canvas = this.HsMapService.getCanvases()[0];
       const canvas2 = document.createElement('canvas');
       const width = 256,
         height = 256;
