@@ -186,7 +186,6 @@ export class HsDrawService {
         format: layman ? 'hs.format.WFS' : null,
         url: layman ? layman.url + '/wfs' : null,
       },
-      zIndex: Infinity,
     });
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
@@ -218,7 +217,6 @@ export class HsDrawService {
         removable: true,
         editable: true,
         path: this.HsConfig.defaultDrawLayerPath || 'User generated',
-        zIndex: Infinity,
       });
       this.tmpDrawLayer = true;
       this.selectedLayer = drawLayer;
