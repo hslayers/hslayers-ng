@@ -744,8 +744,8 @@ export class HsMapService {
     return lyr.getVisible();
   }
 
-  getCanvas() {
-    return this.mapElement.querySelector('canvas');
+  getCanvases() {
+    return this.mapElement.querySelectorAll('.ol-layer canvas');
   }
 
   /**

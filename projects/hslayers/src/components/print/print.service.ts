@@ -15,8 +15,18 @@ export class HsPrintService {
    * @description Basic print implementation
    */
   print(title: string): void {
-    const canvas = this.HsMapService.getCanvas();
-    const img = canvas.toDataURL('image/png');
+    const canvases = this.HsMapService.getCanvases();
+    const composition = document.createElement('canvas');
+    composition.width = canvases[0].clientWidth;
+    composition.height = canvases[0].clientHeight;
+
+    canvases.forEach((canvas) => {
+      if (canvas.clientWidth > 0 && canvas.clientHeight > 0) {
+        composition.getContext('2d').drawImage(canvas, 0, 0);
+      }
+    });
+
+    const img = composition.toDataURL('image/png');
     const win = window.open();
     const html = `<html><head></head><body><h2>${title}</h2><br><img src='${img}'/></body></html>`;
     win.document.write(html);
