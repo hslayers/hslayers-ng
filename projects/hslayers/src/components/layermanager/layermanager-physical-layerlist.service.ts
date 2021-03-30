@@ -41,9 +41,9 @@ export class HsLayermanagerPhysicalListService {
    * Sets reference for layer hovered over
    */
   onDragOver(e): void {
-    if (e.toElement) {
+    if (e.target) {
       this.insertBefore = this.layersCopy.filter(
-        (l) => l.layer.ol_uid == e.toElement.id
+        (l) => l.layer.ol_uid == e.target.id
       );
     }
   }
@@ -54,7 +54,6 @@ export class HsLayermanagerPhysicalListService {
     if (this.insertBefore?.length > 0){
       this.moveTo(this.dragging, this.insertBefore.map((l) => l.layer)[0]);
     }
-    console.log(e)
   }
 
   /**
