@@ -29,7 +29,4 @@ export class HsMapServiceMock {
   getMapExtent() {
     return [0, 0, 100, 100];
   }
-  getNextZIndex(): number {
-    return Math.max(...[1, 2, 3, 4, 5]) + 1;
-  }
 }

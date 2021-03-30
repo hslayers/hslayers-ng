@@ -5,7 +5,7 @@
         class="btn btn-primary btn-block w-75 m-auto">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
             [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
 
-    <div [hidden]="!HsAddDataArcGisService.showDetails || HsAddDataArcGisService.loadingInfo">
+    <div [hidden]="!hsAddDataArcGisService.showDetails || hsAddDataArcGisService.loadingInfo">
         <!-- <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">

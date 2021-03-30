@@ -529,12 +529,6 @@ export class HsMapService {
     return this.map.getLayers().getArray();
   }
 
-  getNextZIndex(): number {
-    return (
-      Math.max(...this.getLayersArray().map((lyr) => lyr.getZIndex() || 0)) + 1
-    );
-  }
-
   /**
    * @param lyr {Layer} Layer which to proxify if needed
    * @description Proxify layer based on its source object type and if its tiled or not.
