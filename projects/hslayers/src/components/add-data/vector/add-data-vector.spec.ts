@@ -13,6 +13,7 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsConfig} from '../../../config.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayerUtilsServiceMock} from '../../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsMapService} from '../../map/map.service';
 import {HsMapServiceMock} from '../../map/map.service.mock';
@@ -87,7 +88,7 @@ describe('add-layers-vector', () => {
           provide: HsCommonLaymanService,
           useValue: new HsCommonLaymanServiceMock(),
         },
-        {provide: HsLayerUtilsService, useValue: new emptyMock()},
+        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),

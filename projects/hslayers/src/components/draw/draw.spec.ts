@@ -48,6 +48,7 @@ describe('HsDraw', () => {
   const mockLayerUtilsService = jasmine.createSpyObj('HsLayerUtilsService', [
     'isLayerDrawable',
     'isLayerClustered',
+    'isLayerWMTS',
   ]);
   const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
     'activateQueries',

@@ -19,6 +19,7 @@ import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
 import {HsConfig} from '../../config.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayerUtilsServiceMock} from '../utils/layer-utils.service.mock';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
@@ -90,7 +91,7 @@ describe('compositions', () => {
             contentWrapper: document.createElement('div'),
           },
         },
-        {provide: HsLayerUtilsService, useValue: new emptyMock()},
+        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
         HsStylerService,
         HsCompositionsLayerParserService,
         {

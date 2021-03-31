@@ -189,6 +189,9 @@ export class HsLayerManagerMetadataService {
       this.fillMetadataUrlsIfNotExist(olLayer, caps);
     } else {
       layerObj = this.identifyLayerObject(layerName, layerCaps);
+      if (layerObj == undefined) {
+        return;
+      }
       if (
         layerObj.Dimension?.name === 'time' ||
         layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
