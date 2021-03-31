@@ -11,6 +11,7 @@ import {Layer} from 'ol/layer';
 })
 export class HsLegendComponent {
   layerDescriptors = [];
+  titleSearch = '';
 
   constructor(
     public HsLegendService: HsLegendService,
@@ -52,6 +53,11 @@ export class HsLegendComponent {
   filterDescriptors(): any[] {
     return this.layerDescriptors;
   }
+
+  legendFilter = (item): boolean => {
+    const r = new RegExp(this.titleSearch, 'i');
+    return r.test(item.title);
+  };
 
   /**
    * Check if there is any visible layer
