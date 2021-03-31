@@ -57,6 +57,7 @@ export class HsAddDataWfsComponent implements OnDestroy {
     );
     this.HsAddDataWfsService.services = [];
     this.HsAddDataWfsService.showDetails = true;
+    this.HsAddDataWfsService.loadingInfo = true;
   };
 
   /**

@@ -50,7 +50,7 @@ export class HsAddDataWmtsComponent implements OnDestroy {
     this.hasChecked = false;
     this.HsAddDataUrlWmtsService.layerToSelect = layerToSelect;
 
-    this.HsAddDataUrlWmtsService.layersLoading = true;
+    this.HsAddDataUrlWmtsService.loadingInfo = true;
     this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
       this.HsAddDataUrlWmtsService.url
     );

@@ -60,7 +60,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
       this.HsAddDataArcGisService.url
     );
     this.HsAddDataArcGisService.data.getMapUrl = this.HsAddDataArcGisService.url;
-    this.HsAddDataArcGisService.loadingFeatures = true;
+    this.HsAddDataArcGisService.loadingInfo = true;
     this.HsAddDataArcGisService.showDetails = true;
   };
 

@@ -1,11 +1,11 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="Arcgis" [(url)]="HsAddDataArcGisService.url" [(connect)]="connect"></hs-add-data-common-url>
 
-    <button *ngIf="HsAddDataArcGisService.loadingFeatures"
+    <button *ngIf="HsAddDataArcGisService.loadingInfo"
         class="btn btn-primary btn-block w-75 m-auto">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
             [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
 
-    <div [hidden]="!HsAddDataArcGisService.showDetails || HsAddDataArcGisService.loadingFeatures">
+    <div [hidden]="!HsAddDataArcGisService.showDetails || HsAddDataArcGisService.loadingInfo">
         <!-- <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">

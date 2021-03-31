@@ -21,7 +21,7 @@ export class HsAddDataArcGisService {
   url: string;
   showDetails: boolean;
   layerToSelect: string;
-  loadingFeatures = false;
+  loadingInfo = false;
 
   constructor(
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
@@ -72,7 +72,7 @@ export class HsAddDataArcGisService {
   throwParsingError(e) {
     this.url = null;
     this.showDetails = false;
-    this.loadingFeatures = false;
+    this.loadingInfo = false;
     this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
@@ -109,7 +109,7 @@ export class HsAddDataArcGisService {
         'geoJSON',
         'JSON',
       ]);
-      this.loadingFeatures = false;
+      this.loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }
