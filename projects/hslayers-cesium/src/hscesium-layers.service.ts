@@ -497,9 +497,7 @@ export class HsCesiumLayersService {
   }
 
   private getProxyFromConfig(): string {
-    return this.HsConfig.proxyPrefix
-      ? this.HsConfig.proxyPrefix
-      : '/cgi-bin/hsproxy.cgi?url=';
+    return this.HsConfig.proxyPrefix ? this.HsConfig.proxyPrefix : '/proxy/';
   }
 
   private getProjectionFromParams(params: any): string {

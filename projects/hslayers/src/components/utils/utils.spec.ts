@@ -127,7 +127,7 @@ describe('HsUtilsService', () => {
       'data:application/octet-stream;base64,PGttbD4KICA8RG9jdW1lbnQ+CiAgICA8bmFtZT5T';
     let url = hsUtilsService.proxify(urlWMS, true);
     expect(url).toEqual(
-      '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=http%3A%2F%2Fgisserver.domain.com%2Frequest%3DGetFeatureInfo'
+      '/proxy/http://gisserver.domain.com/request=GetFeatureInfo'
     );
     hsConfig.proxyPrefix = 'http://localhost:8085/';
     url = hsUtilsService.proxify(simpleUrl, false);
