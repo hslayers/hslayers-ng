@@ -4,7 +4,7 @@ import {HsCommonLaymanService} from './layman.service';
 import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {Input} from '@angular/core';
-import {Subscription} from 'rxjs/internal/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'hs-layman-login',
