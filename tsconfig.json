@@ -19,6 +19,7 @@
     ],
     "paths": {
       "@angular/*": [ "node_modules/@angular/*" ],
+      "rxjs/*": [ "node_modules/rxjs/*" ],
       "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
       "hslayers-cesium": ["projects/hslayers-cesium/src/public-api.ts"]
     }
