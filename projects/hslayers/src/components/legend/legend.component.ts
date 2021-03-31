@@ -11,7 +11,9 @@ import {Layer} from 'ol/layer';
 })
 export class HsLegendComponent {
   layerDescriptors = [];
-
+  data = {
+    query: '',
+  };
   constructor(
     public HsLegendService: HsLegendService,
     public HsMapService: HsMapService,
@@ -50,14 +52,16 @@ export class HsLegendComponent {
   }
 
   filterDescriptors(): any[] {
-    return this.layerDescriptors;
+    return this.layerDescriptors.filter((layer) =>
+      layer.title.includes(this.data.query)
+    );
   }
 
   /**
    * Check if there is any visible layer
    *
    * @memberof hs.legend.controller
-   * @returns {boolean} Returns true if no layers with legend exist
+   * @return {boolean} Returns true if no layers with legend exist
    * @function noLayerExists
    */
   noLayerExists(): boolean {
@@ -147,7 +151,7 @@ export class HsLegendComponent {
   /**
    * Finds layer descriptor for openlayers layer
    *
-   * @returns {object} Object describing the legend
+   * @return {object} Object describing the legend
    * @param {ol/layer} layer OpenLayers layer
    */
   findLayerDescriptor(layer): HsLegendDescriptor {

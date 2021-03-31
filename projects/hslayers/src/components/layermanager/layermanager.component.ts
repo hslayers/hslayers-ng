@@ -158,6 +158,10 @@ export class HsLayerManagerComponent implements OnInit {
     return this.HsLayerManagerService.changeLayerVisibility(toWhat, layer);
   }
 
+  updateLayermanager(){
+    this.HsEventBusService.layerManagerUpdates.next();
+  }
+
   isLayerType(layer: Layer, type: string): boolean {
     switch (type) {
       case 'wms':

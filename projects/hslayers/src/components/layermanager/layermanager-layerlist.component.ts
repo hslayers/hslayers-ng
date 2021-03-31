@@ -1,3 +1,4 @@
+import {CallbackFilterPipe} from '../../common/widgets/callback.pipe';
 import {Component, Input, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -9,6 +10,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+
 import {Layer} from 'ol/layer';
 import {
   getDimension,
@@ -42,12 +44,17 @@ export class HsLayerListComponent implements OnInit {
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public HsLayoutService: HsLayoutService,
     public HsEventBusService: HsEventBusService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
+    public CallbackFilterPipe: CallbackFilterPipe
   ) {
     this.HsEventBusService.layerManagerUpdates.subscribe(() => {
       this.HsLayerManagerService.updateLayerListPositions();
       this.updateLayers();
     });
+  }
+
+  filterByTitle = (layer) => {
+    return layer.title.includes(this.HsLayerManagerService.data.query);
   }
 
   /**
