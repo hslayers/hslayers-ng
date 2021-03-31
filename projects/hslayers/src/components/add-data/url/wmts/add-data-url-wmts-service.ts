@@ -18,7 +18,7 @@ import {addAnchors} from '../../../../common/attribution-utils';
 export class HsAddDataUrlWmtsService {
   getDimensionValues;
   data;
-  layersLoading = false;
+  loadingInfo = false;
   showDetails = false;
   url: any;
 
@@ -75,7 +75,7 @@ export class HsAddDataUrlWmtsService {
   throwParsingError(e: any): void {
     this.url = null;
     this.showDetails = false;
-    this.layersLoading = false;
+    this.loadingInfo = false;
     this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
   /**
@@ -103,7 +103,7 @@ export class HsAddDataUrlWmtsService {
       );
       //TODO Layer to select
 
-      this.layersLoading = false;
+      this.loadingInfo = false;
       return this.title;
     } catch (e) {
       throw new Error(e);

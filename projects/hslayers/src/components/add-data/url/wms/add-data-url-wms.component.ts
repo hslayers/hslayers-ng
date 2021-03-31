@@ -8,6 +8,7 @@ import {HsHistoryListService} from '../../../../common/history-list/history-list
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {HsUtilsService} from '../../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-data-url-wms',
@@ -32,7 +33,8 @@ export class HsAddDataWmsComponent implements OnDestroy {
     public hsLog: HsLogService,
     public HsDialogContainerService: HsDialogContainerService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsUtilsService: HsUtilsService
   ) {
     this.data = this.HsAddDataUrlWmsService.data;
     //FIXME: is it even fired?
@@ -80,6 +82,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
       this.hsWmsGetCapabilitiesService.requestGetCapabilities(
         this.HsAddDataUrlWmsService.url
       );
+      this.HsAddDataUrlWmsService.loadingInfo = true;
     } catch (e) {
       this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
     }

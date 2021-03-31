@@ -29,6 +29,7 @@ export class HsAddDataUrlWmsService {
   data;
   getWmsCapabilitiesError: Subject<any> = new Subject();
   showDetails: boolean;
+  loadingInfo = false;
   layerToSelect: string;
   url: any;
   constructor(
@@ -65,6 +66,7 @@ export class HsAddDataUrlWmsService {
         if (type === 'WMS') {
           if (error) {
             this.throwParsingError(response.message);
+            return
           }
           try {
             await this.capabilitiesReceived(response, this.layerToSelect);
@@ -90,6 +92,7 @@ export class HsAddDataUrlWmsService {
   throwParsingError(e): void {
     this.url = null;
     this.showDetails = false;
+    this.loadingInfo = false;
     this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
@@ -193,6 +196,7 @@ export class HsAddDataUrlWmsService {
       ]);
       //FIXME: $rootScope.$broadcast('wmsCapsParsed');
       this.showDetails = true;
+      this.loadingInfo = false;
     } catch (e) {
       throw new Error(e);
     }

@@ -23,6 +23,7 @@ export class HsAddDataWfsService {
   version: any;
   output_format: any;
   loadingFeatures: boolean;
+  loadingInfo = false;
   title: any;
   layers: any;
   output_formats: any;
@@ -102,6 +103,7 @@ export class HsAddDataWfsService {
   throwParsingError(e) {
     this.url = null;
     this.showDetails = false;
+    this.loadingInfo = false;
     this.HsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
@@ -250,6 +252,7 @@ export class HsAddDataWfsService {
           throw new Error(e);
         }
       });
+      this.loadingInfo = false;
       return this.bbox;
     } catch (e) {
       throw new Error(e);
