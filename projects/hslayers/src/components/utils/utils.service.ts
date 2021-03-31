@@ -48,7 +48,7 @@ export class HsUtilsService {
         this.HsConfig.useProxy === undefined ||
         this.HsConfig.useProxy === true
       ) {
-        outUrl = this.HsConfig.proxyPrefix || '/cgi-bin/hsproxy.cgi?';
+        outUrl = this.HsConfig.proxyPrefix || '/proxy/';
         if (outUrl.indexOf('hsproxy.cgi') > -1) {
           if (
             toEncoding &&
