@@ -1,10 +1,11 @@
 import Map from 'ol/Map';
 import {Component} from '@angular/core';
+import {Layer} from 'ol/layer';
+
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
-import {Layer} from 'ol/layer';
 @Component({
   selector: 'hs-legend',
   templateUrl: './partials/legend.html',
@@ -19,7 +20,6 @@ export class HsLegendComponent {
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
     this.HsMapService.loaded().then((map) => this.init(map));
-    //this.$emit('scope_loaded', 'Legend');
   }
 
   /**
@@ -34,6 +34,7 @@ export class HsLegendComponent {
     const descriptor = this.HsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
+      this.refreshList();
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
       layer.on('change:legends', (e) => {
         const oldDescriptor = this.findLayerDescriptor(e.target);
@@ -55,6 +56,7 @@ export class HsLegendComponent {
   }
 
   legendFilter = (item): boolean => {
+    console.log(this.titleSearch);
     const r = new RegExp(this.titleSearch, 'i');
     return r.test(item.title);
   };
@@ -170,5 +172,9 @@ export class HsLegendComponent {
     if (found.length > 0) {
       return found[0];
     }
+  }
+
+  refreshList(): void {
+    this.layerDescriptors = Array.from(this.layerDescriptors);
   }
 }
