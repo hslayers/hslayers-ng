@@ -7,7 +7,9 @@ npm install hslayers-ng-app
 Create empty html page and include `<hslayers-app></hslayers-app>` Where you want the map to appear.
 
 Include hslayers styles in page `<head>`:
-`<link rel="stylesheet" href="node_modules/hslayers-ng-app/styles.css">`
+```
+<link rel="stylesheet" href="node_modules/hslayers-ng-app/styles.css">
+```
 
 Include hslayers-app bundle scripts after `<hslayers-app>`:
 ```
