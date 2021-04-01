@@ -24,7 +24,17 @@
             "tsConfig": "projects/hslayers-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" }
+              { "glob": "**/*", "input": "projects/hslayers/src/assets", "output": "./assets" },
+              {
+                "glob": "README.md",
+                "input": "projects/hslayers-app/",
+                "output": "/"
+              },
+              {
+                "glob": "package.json",
+                "input": "projects/hslayers-app/",
+                "output": "/"
+              }
             ],
             "styles": [
               "node_modules/ol/ol.css"
@@ -56,8 +66,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
