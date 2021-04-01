@@ -2,6 +2,7 @@ import * as merge from 'deepmerge';
 import cs from '../../assets/locales/cs.json';
 import en from '../../assets/locales/en.json';
 import lv from '../../assets/locales/lv.json';
+import sk from '../../assets/locales/sk.json';
 import {HsAddDataModule} from '../add-data/add-data.module';
 import {HsCommonEndpointsModule} from '../../common/endpoints/endpoints.module';
 import {HsCompositionsModule} from '../compositions/compositions.module';
@@ -63,6 +64,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
               break;
             case 'cs':
               resolve(cs);
+              break;
+            case 'sk':
+              resolve(sk);
               break;
           }
         })
