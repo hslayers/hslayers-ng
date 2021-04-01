@@ -19,6 +19,7 @@ import {HsLegendLayerVectorComponent} from './legend-layer-vector.component';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 
@@ -37,7 +38,11 @@ describe('HsLegendComponent', () => {
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule, TranslateModule.forRoot()],
+      imports: [
+        HsPanelHelpersModule,
+        HsUiExtensionsModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,

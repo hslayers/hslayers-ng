@@ -24,6 +24,7 @@ import {HsLegendService} from './legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {getCluster, setCluster} from '../../common/layer-extensions';
@@ -44,7 +45,11 @@ describe('HsLegendLayerComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HsPanelHelpersModule, TranslateModule.forRoot()],
+      imports: [
+        HsPanelHelpersModule,
+        HsUiExtensionsModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,
