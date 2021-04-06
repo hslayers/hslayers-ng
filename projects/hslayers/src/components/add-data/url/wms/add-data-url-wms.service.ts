@@ -283,6 +283,7 @@ export class HsAddDataUrlWmsService {
       }
       this.zoomToLayers();
     }
+    this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
   }
 
