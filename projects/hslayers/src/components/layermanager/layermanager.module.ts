@@ -1,6 +1,9 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
+
 import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabilities.module';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
@@ -23,8 +26,7 @@ import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerlist.service';
 import {HsLegendModule} from '../legend/legend.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateModule} from '@ngx-translate/core';
+import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -47,6 +49,7 @@ import {TranslateModule} from '@ngx-translate/core';
     HsGetCapabilitiesModule,
     HsPanelHelpersModule,
     HsLegendModule,
+    HsUiExtensionsModule,
     NgbModule,
   ],
   exports: [

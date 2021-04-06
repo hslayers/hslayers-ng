@@ -115,6 +115,11 @@ export class HsLayerListComponent implements OnInit {
     this.filtered_layers = this.filterLayers();
   }
 
+  layerFilter = (item): boolean => {
+    const r = new RegExp(this.HsLayerManagerService.data.filter, 'i');
+    return r.test(item.title);
+  };
+
   /**
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
    * @private
