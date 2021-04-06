@@ -62,6 +62,7 @@ export class HsLayerManagerService {
     baselayersVisible: boolean;
     baselayer?: string;
     box_layers?: any[];
+    filter: string;
   } = {
     /**
      * @ngdoc property
@@ -117,6 +118,7 @@ export class HsLayerManagerService {
      * @description Store if baselayers are visible (more precisely one of baselayers)
      */
     baselayersVisible: true,
+    filter: '',
   };
 
   //Property for pointer to main map object

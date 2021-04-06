@@ -31,7 +31,6 @@ export class HsLayerManagerComponent implements OnInit {
   map: any;
   shiftDown = false;
   data: any;
-  query: any = {title: undefined};
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
@@ -179,6 +178,10 @@ export class HsLayerManagerComponent implements OnInit {
 
   activateTheme(e) {
     return this.HsLayerManagerService.activateTheme(e);
+  }
+
+  filterLayerTitles(): void {
+    this.HsEventBusService.layerManagerUpdates.next();
   }
 
   /**
