@@ -413,7 +413,7 @@
     },
     "dimensions": "Dimenze",
     "editorButtons": "Editační tlačítka",
-    "enablePhysicalLayerList": "Povolit/zakázat fyzický seznam vrstev",
+    "enablePhysicalLayerList": "Vypnout/Zapnout fyzický seznam vrstev",
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
