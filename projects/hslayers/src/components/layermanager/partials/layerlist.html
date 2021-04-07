@@ -18,7 +18,7 @@
                     {{HsLayerUtilsService.translateTitle(layer.title)}}
                 </div>
                 <div class="p-0 mr-1 ml-1 info_btn" *ngIf="layer.layer.hasSublayers"
-                    style="font-size:x-small; flex-grow: 20;"
+                    style="font-size: x-small; flex-grow: 20;"
                     (click)="HsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="mr-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer.layer)"></span>
                     <span class="mr-1"

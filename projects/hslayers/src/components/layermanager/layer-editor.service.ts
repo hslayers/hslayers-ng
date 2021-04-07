@@ -5,7 +5,6 @@ import {WMSCapabilities} from 'ol/format';
 import {get as getProj, transform, transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -57,14 +56,12 @@ export class HsLayerEditorService {
   }
 
   /**
-   * @function zoomToLayer
-   * @memberOf HsLayerEditorService
-   * @param {Layer} layer Openlayers layer to zoom to
-   * @description Zoom to selected layer (layer extent). Get extent
+   * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabalities request (for WMS layer)
+   * @param layer - Openlayers layer to zoom to
    */
-  async zoomToLayer(layer: Layer) {
+  async zoomToLayer(layer: Layer): Promise<boolean> {
     let extent = null;
     if (layer.getExtent()) {
       extent = layer.getExtent();
@@ -117,13 +114,11 @@ export class HsLayerEditorService {
   }
 
   /**
-   * @function cluster
-   * @memberOf HsLayerEditorService
-   * @description Set cluster for layer
-   * @param {Layer} layer Layer
-   * @param {boolean} newValue To cluster or not to cluster
-   * @param {number} distance Distance in pixels
-   * @returns {boolean} Current cluster state
+   * Set cluster for layer
+   * @param layer - Layer
+   * @param newValue - To cluster or not to cluster
+   * @param distance - Distance in pixels
+   * @returns Current cluster state
    */
   cluster(
     layer: Layer,
@@ -143,12 +138,10 @@ export class HsLayerEditorService {
   }
 
   /**
-   * @function declutter
-   * @memberOf HsLayerEditorService
-   * @description Set declutter for layer
-   * @param {Layer} layer Layer
-   * @param {boolean} newValue To clutter or not to clutter
-   * @returns {boolean} Current clutter state
+   * Set declutter for layer
+   * @param layer - Layer
+   * @param newValue - To clutter or not to clutter
+   * @returns Current clutter state
    */
   declutter(layer: Layer, newValue: boolean): boolean | undefined {
     if (layer == undefined) {
@@ -165,8 +158,8 @@ export class HsLayerEditorService {
 
   /**
    * @typedef {Array<number>} Extent
-   * @param {Extent} extent Extent in EPSG:4326
-   * @param {Layer} layer
+   * @param {Extent} extent - Extent in EPSG:4326
+   * @param layer
    */
   fitIfExtentSet(extent: number[], layer: Layer): void {
     if (extent !== null) {

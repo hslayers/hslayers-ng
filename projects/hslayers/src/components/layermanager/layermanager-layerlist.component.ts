@@ -26,11 +26,11 @@ export class HsLayerListComponent implements OnInit {
    * List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
    * @public
    */
-  layer_titles: Array<any> = [];
+  layer_titles: Array<string> = [];
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
-  filtered_layers: Array<any> = [];
+  filtered_layers: Array<HsLayerDescriptor> = [];
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   getExclusive = getExclusive;
   constructor(
@@ -52,7 +52,7 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Test if selected layer is loaded in map
-   * @param layer Selected layer
+   * @param layer - Selected layer
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
@@ -72,17 +72,17 @@ export class HsLayerListComponent implements OnInit {
   }
 
   /**
-   * Test if selected layer is valid (true for invalid)
-   * @param layer Selected layer
-   * @return
+   * Test if selected layer is valid
+   * @param layer - Selected layer
+   * @returns true for invalid layer
    */
-  layerValid(layer) {
+  layerValid(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerInvalid(layer);
   }
 
   /**
    * Controls state of layer's sublayers checkboxes with layer visibility changes
-   * @param layer Selected layer
+   * @param layer - Selected layer
    */
   toggleSublayersVisibility(layer: HsLayerDescriptor): void {
     if (!layer.visible) {
@@ -124,7 +124,7 @@ export class HsLayerListComponent implements OnInit {
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
    * @private
    */
-  private filterLayers(): Array<any> {
+  private filterLayers(): Array<HsLayerDescriptor> {
     const tmp = [];
     for (const layer of this.HsLayerManagerService.data.layers) {
       if (
@@ -151,9 +151,9 @@ export class HsLayerListComponent implements OnInit {
 
   /**
    * Test if layer is queryable (WMS layer with Info format)
-   * @param layer_container Selected layer - wrapped in layer object
+   * @param layer_container - Selected layer - wrapped in layer object
    */
-  isLayerQueryable(layer_container): boolean {
+  isLayerQueryable(layer_container: HsLayerDescriptor): boolean {
     return this.HsLayerUtilsService.isLayerQueryable(layer_container.layer);
   }
 

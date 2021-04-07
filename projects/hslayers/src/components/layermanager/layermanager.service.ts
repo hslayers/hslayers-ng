@@ -35,7 +35,6 @@ import {
   getBase,
   getCluster,
   getDeclutter,
-  getDimensions,
   getExclusive,
   getLegends,
   getPath,
@@ -66,17 +65,14 @@ export class HsLayerManagerService {
     filter: string;
   } = {
     /**
-     * @ngdoc property
-     * @name HsLayermanagerService.data#folders
+     * Folders object for structure of layers. Each level contain 5 properties:
+     * hsl_path \{String\}: Worded path to folder position in folders hiearchy.
+     * coded_path \{String\}: Path encoded in numbers
+     * layers \{Array\}: List of layers for current folder
+     * sub_folders \{Array\}: List of subfolders for current folder
+     * indent \{Number\}: Hiearchy level for current folder
+     * name \{String\}: Optional - only from indent 1, base folder is not named
      * @public
-     * @type {object}
-     * @description Folders object for structure of layers. Each level contain 5 properties:
-     * hsl_path {String}: Worded path to folder position in folders hiearchy.
-     * coded_path {String}: Path encoded in numbers
-     * layers {Array}: List of layers for current folder
-     * sub_folders {Array}: List of subfolders for current folder
-     * indent {Number}: Hiearchy level for current folder
-     * name {String}: Optional - only from indent 1, base folder is not named
      */
     folders: {
       //TODO: need to describe how hsl_path works here
@@ -88,41 +84,31 @@ export class HsLayerManagerService {
     },
 
     /**
-     * @ngdoc property
-     * @name HsLayermanagerService.data#layers
+     * List of all layers (baselayers are excluded) loaded in LayerManager.
      * @public
-     * @type {Array}
-     * @description List of all layers (baselayers are excluded) loaded in layer manager.
      */
     layers: [],
     /**
-     * @ngdoc property
-     * @name HsLayermanagerService.data#baselayers
+     * List of all baselayers loaded in layer manager.
      * @public
-     * @type {Array}
-     * @description List of all baselayers loaded in layer manager.
      */
     baselayers: [],
     /**
-     * @ngdoc property
-     * @name HsLayermanagerService.data#terrainlayers
+     * List of all cesium terrain layers loaded in layer manager.
      * @public
-     * @type {Array}
-     * @description List of all cesium terrain layers loaded in layer manager.
      */
     terrainlayers: [],
     /**
-     * @ngdoc property
-     * @name HsLayermanagerService.data#baselayersVisible
+     * Store if baselayers are visible (more precisely one of baselayers)
      * @public
-     * @type {boolean}
-     * @description Store if baselayers are visible (more precisely one of baselayers)
      */
     baselayersVisible: true,
     filter: '',
   };
 
-  //Property for pointer to main map object
+  /**
+   * Property for pointer to main map object
+   */
   map: any;
   timer: any;
   currentLayer: HsLayerDescriptor;
@@ -171,8 +157,8 @@ export class HsLayerManagerService {
   /**
    * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
-   * @param e Event object emited by OL add layer event
-   * @param suspendEvents If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
+   * @param e - Event object emited by OL add layer event
+   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
    */
   layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
     const layer = e.element;
@@ -259,7 +245,7 @@ export class HsLayerManagerService {
 
   /**
    * Function for adding baselayer thumbnail visible in basemap gallery.
-   * @param layer Base layer added to map
+   * @param layer - Base layer added to map
    */
   getImage(layer: Layer): string {
     const thumbnail = getThumbnail(layer);
@@ -350,10 +336,10 @@ export class HsLayerManagerService {
   /**
    * Get layer container object for OL layer
    * @private
-   * @param layer to get layer title
-   * @return Layer container which is used in layer-list directive
+   * @param layer - to get layer title
+   * @returns Layer container which is used in layer-list directive
    */
-  getLayerDescriptorForOlLayer(layer: Layer) {
+  getLayerDescriptorForOlLayer(layer: Layer): HsLayerDescriptor {
     const tmp = this.data.layers.filter((l) => l.layer == layer);
     if (tmp.length > 0) {
       return tmp[0];
@@ -364,12 +350,12 @@ export class HsLayerManagerService {
   /**
    * Place layer into layer manager folder structure based on path property hsl-path of layer
    * @private
-   * @param lyr Layer to add into folder structure
+   * @param lyr - Layer to add into folder structure
    */
   populateFolders(lyr: Layer): void {
     let path = getPath(lyr);
     if (!path) {
-      /*Check whether 'other' folder exists.
+      /* Check whether 'other' folder exists.
         Can not just add getTranslationIgnoreNonExisting string in case no path exists
         because on init the translation is ignored.
       */
@@ -425,7 +411,7 @@ export class HsLayerManagerService {
   /**
    * Remove layer from layer folder structure a clean empty folder
    * @private
-   * @param lyr Layer to remove from layer folder
+   * @param lyr - Layer to remove from layer folder
    */
   cleanFolders(lyr: Layer): void {
     if (getShowInLayerManager(lyr) == false) {
@@ -442,7 +428,6 @@ export class HsLayerManagerService {
           }
         }
       }
-
       curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
       for (let i = parts.length; i > 0; i--) {
         if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
@@ -477,7 +462,7 @@ export class HsLayerManagerService {
    * Callback function for removing layer. Clean layers variables
    * (PRIVATE)
    * @private
-   * @param e Events emitted by ol.Collection instances are instances of this type.
+   * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
   layerRemoved(e: CollectionEvent): void {
     this.cleanFolders(e.element);
@@ -526,8 +511,8 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned unvisible
-   * @param visibility Visibility layer should have
-   * @param layer Selected layer - wrapped layer object (layer.layer expected)
+   * @param visibility - Visibility layer should have
+   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
   changeLayerVisibility(visibility: boolean, layer: Layer): void {
     layer.layer.setVisible(visibility);
@@ -553,8 +538,8 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer Selected layer - wrapped layer object (layer.layer expected)
+   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
+   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
   changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
@@ -620,8 +605,8 @@ export class HsLayerManagerService {
 
   /**
    * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer Selected layer - wrapped layer object (layer.layer expected)
+   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
+   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
   changeTerrainLayerVisibility($event, layer): void {
     for (let i = 0; i < this.data.terrainlayers.length; i++) {
@@ -664,7 +649,7 @@ export class HsLayerManagerService {
 
   /**
    * Show all layers of particular layer group (when groups are defined)
-   * @param theme Group layer to activate
+   * @param theme - Group layer to activate
    */
   activateTheme(theme: Group): void {
     let switchOn = true;
@@ -688,7 +673,7 @@ export class HsLayerManagerService {
 
   /**
    * Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
-   * @param layer Layer which is being added
+   * @param layer - Layer which is being added
    */
   loadingEvents(layer: Layer): void {
     const source = layer.getSource();
@@ -755,6 +740,9 @@ export class HsLayerManagerService {
     }
   }
 
+  /**
+   * Checks if given layer is a WMS layer
+   */
   isWms(layer: Layer): boolean {
     return (
       this.HsUtilsService.instOf(layer.getSource(), TileWMS) ||
@@ -765,7 +753,7 @@ export class HsLayerManagerService {
 
   /**
    * Test if layer (WMS) resolution is within map resolution interval
-   * @param lyr Selected layer
+   * @param lyr - Selected layer
    */
   isLayerInResolutionInterval(lyr: Layer): boolean {
     let cur_res;
@@ -787,8 +775,8 @@ export class HsLayerManagerService {
 
   /**
    * Toggles Additional information panel for current layer.
-   * @param layer Selected layer (HsLayerManagerService.currentLayer)
-   * @param toToggle Part of layer editor to be toggled
+   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
+   * @param toToggle - Part of layer editor to be toggled
    * @param control - Part of layer editor to be controlled for state.
    * Determines whether only toggled part or whole layereditor would be closed
    */
@@ -816,7 +804,7 @@ export class HsLayerManagerService {
 
   /**
    * Opens detailed panel for manipulating selected layer and viewing metadata
-   * @param layer Selected layer to edit or view - Wrapped layer object
+   * @param layer - Selected layer to edit or view - Wrapped layer object
    */
   toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
     if (this.currentLayer == layer) {
@@ -856,7 +844,7 @@ export class HsLayerManagerService {
 
   /**
    * Makes layer grayscale
-   * @param layer Selected layer (currentLayer)
+   * @param layer - Selected layer (currentLayer)
    */
   setGreyscale(layer: Layer): void {
     const layerContainer = this.HsLayoutService.contentWrapper.querySelector(
@@ -874,7 +862,7 @@ export class HsLayerManagerService {
     }, 100);
   }
 
-  sortFoldersByZ() {
+  sortFoldersByZ(): void {
     this.data.folders.sub_folders.sort(
       (a, b) =>
         (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
@@ -960,7 +948,7 @@ export class HsLayerManagerService {
 
   /**
    * Sets zIndex of layer being added to be the highest among layers in same path
-   * @param layer layer being added
+   * @param layer - layer being added
    */
   private setPathMaxZIndex(layer: Layer): void {
     let pathLayers;
@@ -994,8 +982,8 @@ export class HsLayerManagerService {
 
   /**
    * Sets zIndex of layer being added.
-   * @param layer layer being added
-   * @param asCallback Whether the function is called directly or as a callback of add layer event.
+   * @param layer - layer being added
+   * @param asCallback - Whether the function is called directly or as a callback of add layer event.
    * No need to run each layer through setPathMaxZIndex on init
    */
   applyZIndex(layer: Layer, asCallback?: boolean): void {
