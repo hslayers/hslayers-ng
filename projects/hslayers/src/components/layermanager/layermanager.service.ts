@@ -11,6 +11,7 @@ import {ImageWMS, TileArcGISRest, TileWMS} from 'ol/source';
 import {Injectable} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
+import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
 import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -57,7 +58,7 @@ export class HsLayerManagerService {
   data: {
     folders: any;
     layers: HsLayerDescriptor[];
-    baselayers: any[];
+    baselayers: HsBaseLayerDescriptor[];
     terrainlayers: any[];
     baselayersVisible: boolean;
     baselayer?: string;
@@ -162,6 +163,9 @@ export class HsLayerManagerService {
         }
       }
     );
+    this.HsEventBusService.layerManagerUpdates.subscribe((val) => {
+      this.refreshLists();
+    });
   }
 
   /**
@@ -237,8 +241,8 @@ export class HsLayerManagerService {
       if (layerDescriptor.active) {
         this.changeBaseLayerVisibility(true, layerDescriptor);
       }
-      (layerDescriptor.thumbnail = this.getImage(layer)),
-        this.data.baselayers.push(layerDescriptor);
+      layerDescriptor.thumbnail = this.getImage(layer);
+      this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
     }
 
     if (layer.getVisible() && getBase(layer)) {
@@ -321,6 +325,11 @@ export class HsLayerManagerService {
       const tmp = (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
       return tmp;
     });
+  }
+
+  refreshLists(): void {
+    this.data.baselayers = Array.from(this.data.baselayers);
+    this.data.terrainlayers = Array.from(this.data.terrainlayers);
   }
 
   /**
