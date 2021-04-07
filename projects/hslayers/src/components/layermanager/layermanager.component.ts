@@ -180,6 +180,11 @@ export class HsLayerManagerComponent implements OnInit {
     return this.HsLayerManagerService.activateTheme(e);
   }
 
+  baselayerFilter = (item): boolean => {
+    const r = new RegExp(this.HsLayerManagerService.data.filter, 'i');
+    return r.test(item.title);
+  };
+
   filterLayerTitles(): void {
     this.HsEventBusService.layerManagerUpdates.next();
   }
