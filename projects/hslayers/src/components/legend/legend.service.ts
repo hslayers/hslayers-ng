@@ -33,11 +33,8 @@ export class HsLegendService {
 
   /**
    * Test if layer is visible and has supported type (conditions for displaying legend)
-   *
-   * @memberof HsLegendService
-   * @function isLegendable
-   * @param {object} layer Layer to test
-   * @returns {boolean} Return if legend might exist for layer and layer is visible
+   * @param layer - Layer to test
+   * @returns Return if legend might exist for layer and layer is visible
    */
   legendValid(layer: HsLegendDescriptor): boolean {
     if (layer === undefined || layer.type == undefined) {
@@ -54,13 +51,10 @@ export class HsLegendService {
 
   /**
    * Get vector layer feature geometries
-   *
-   * @memberof HsLegendService
-   * @function getVectorFeatureGeometry
-   * @param {Layer} currentLayer Layer of interest
-   * @returns {Array<string>} Array of simplified lowercase names of geometry types encountered in layer
+   * @param currentLayer - Layer of interest
+   * @returns Array of simplified lowercase names of geometry types encountered in layer
    */
-  getVectorFeatureGeometry(currentLayer: Layer): string[] {
+  getVectorFeatureGeometry(currentLayer: Layer): Array<string> {
     if (currentLayer === undefined) {
       return;
     }
@@ -111,11 +105,8 @@ export class HsLegendService {
 
   /**
    * Get vector layer styles for first 100 features
-   *
-   * @memberof HsLegendService
-   * @function getStyleVectorLayer
-   * @param {Layer} currentLayer Layer of interest
-   * @returns {Array} Array of serialized unique style descriptions encountered when looping through first 100 features
+   * @param currentLayer - Layer of interest
+   * @returns Array of serialized unique style descriptions encountered when looping through first 100 features
    */
   getStyleVectorLayer(currentLayer: VectorLayer): Array<any> {
     if (currentLayer === undefined) {
@@ -171,11 +162,8 @@ export class HsLegendService {
 
   /**
    * Serialize styles
-   *
-   * @memberof HsLegendService
-   * @function serializeStyle
-   * @param {Style} style Openlayers style
-   * @returns {object} Simplified description of style used by template to draw legend
+   * @param style - Openlayers style
+   * @returns Simplified description of style used by template to draw legend
    */
   serializeStyle(style: Style) {
     const styleToSerialize = style[0] ? style[0] : style;
@@ -188,13 +176,10 @@ export class HsLegendService {
 
   /**
    * Create object of parameters used for creation of svg content for legend using retreived styles
-   *
-   * @memberof HsLegendService
-   * @function setUpLegendStyle
-   * @param {Fill} fill Fill description
-   * @param {Stroke} stroke Stroke description
-   * @param {ImageStyle} image Image description
-   * @returns {object} Simplified description of style used by template to draw legend
+   * @param fill - Fill description
+   * @param stroke - Stroke description
+   * @param image - Image description
+   * @returns Simplified description of style used by template to draw legend
    */
   setUpLegendStyle(fill: Fill, stroke: Stroke, image: any) {
     const row: any = {};
@@ -278,13 +263,10 @@ export class HsLegendService {
 
   /**
    * Generate url for GetLegendGraphic request of WMS service for selected layer
-   *
-   * @memberof HsLegendService
-   * @function getLegendUrl
-   * @param {Source} source Source of wms layer
-   * @param {string} layer_name Name of layer for which legend is requested
-   * @param {Layer} layer Layer to get legend for
-   * @returns {string} Url of the legend graphics
+   * @param source - Source of wms layer
+   * @param layer_name - Name of layer for which legend is requested
+   * @param layer - Layer to get legend for
+   * @returns Url of the legend graphics
    */
   getLegendUrl(source: Source, layer_name: string, layer: Layer): string {
     let source_url = '';
@@ -327,11 +309,9 @@ export class HsLegendService {
 
   /**
    * (PRIVATE) Generate url for GetLegendGraphic request of WMS service for selected layer
-   *
-   * @memberof HsLegendService
-   * @function getLegendUrl
-   * @returns {object} Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
-   * @param {Layer} layer Openlayers layer
+   * @param layer - Openlayers layer
+   * @returns Description of layer to be used for creating the legend. It contains type of layer, sublayer legends, title, visibility etc.
+   * @private
    */
   getLayerLegendDescriptor(layer: Layer): HsLegendDescriptor | undefined {
     if (getBase(layer)) {

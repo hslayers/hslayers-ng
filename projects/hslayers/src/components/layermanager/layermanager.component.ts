@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../layout/dialogs/dialog-item';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -190,19 +189,15 @@ export class HsLayerManagerComponent implements OnInit {
   }
 
   /**
-   * @function removeLayer
-   * @memberOf hs.layermanager.controller
-   * @description Removes layer from map object
-   * @param {Layer} layer Layer to remove
+   * Removes layer from map object
+   * @param layer - Layer to remove
    */
   removeLayer(layer: Layer): void {
     this.map.removeLayer(layer);
   }
 
   /**
-   * @function removeAllLayers
-   * @memberOf hs.layermanager.controller
-   * @description Removes all layers which don't have 'removable' attribute
+   * Removes all layers which don't have 'removable' attribute
    * set to false if user confirms the removal. Might reload composition again.
    */
   removeAllLayers(): void {
@@ -214,7 +209,7 @@ export class HsLayerManagerComponent implements OnInit {
 
   /**
    * Determines if layer has copyright information avaliable *
-   * @param layer Selected layer (HsLayerManagerService.currentLayer)
+   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.HsLayerManagerService.currentLayer) {
@@ -234,21 +229,16 @@ export class HsLayerManagerComponent implements OnInit {
   }
 
   /**
-   * @function isLayerInResolutionInterval
-   * @param layer
-   * @memberOf hs.layermanager.controller
-   * @param {Layer} lyr Selected layer
-   * @description Test if layer (WMS) resolution is within map resolution interval
+   * Test if layer (WMS) resolution is within map resolution interval
+   * @param layer - Selected layer
    */
   isLayerInResolutionInterval(layer: Layer): boolean {
     return this.HsLayerManagerService.isLayerInResolutionInterval(layer);
   }
 
   /**
-   * @function layerLoaded
-   * @memberOf hs.layermanager.controller
-   * @param {Layer} layer Selected layer
-   * @description Test if selected layer is loaded in map
+   * Test if selected layer is loaded in map
+   * @param layer - Selected layer
    */
   layerLoaded(layer: Layer): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);

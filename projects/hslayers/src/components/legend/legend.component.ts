@@ -1,6 +1,7 @@
 import Map from 'ol/Map';
 import {Component} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
@@ -25,12 +26,9 @@ export class HsLegendComponent {
   /**
    * Add selected layer to the list of layers in legend (with event listener
    * to display/hide legend item when layer visibility change)
-   *
-   * @memberof hs.legend.controller
-   * @function addLayerToLegends
-   * @param {object} layer Layer to add legend for
+   * @param layer - Layer to add legend for
    */
-  addLayerToLegends(layer): void {
+  addLayerToLegends(layer: Layer): void {
     const descriptor = this.HsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       this.layerDescriptors.push(descriptor);
@@ -46,7 +44,7 @@ export class HsLegendComponent {
     }
   }
 
-  rebuildLegends() {
+  rebuildLegends(): void {
     this.layerDescriptors = [];
     this.buildLegendsForLayers(this.HsMapService.map);
   }
@@ -56,17 +54,13 @@ export class HsLegendComponent {
   }
 
   legendFilter = (item): boolean => {
-    console.log(this.titleSearch);
     const r = new RegExp(this.titleSearch, 'i');
     return r.test(item.title);
   };
 
   /**
    * Check if there is any visible layer
-   *
-   * @memberof hs.legend.controller
-   * @returns {boolean} Returns true if no layers with legend exist
-   * @function noLayerExists
+   * @returns Returns true if no layers with legend exist
    */
   noLayerExists(): boolean {
     const visibleLayers = this.layerDescriptors.filter(
@@ -77,10 +71,7 @@ export class HsLegendComponent {
 
   /**
    * Remove selected layer from legend items
-   *
-   * @memberof hs.legend.controller
-   * @function removeLayerFromLegends
-   * @param {Layer} layer Layer to remove from legend
+   * @param layer - Layer to remove from legend
    */
   removeLayerFromLegends(layer: Layer): void {
     for (let i = 0; i < this.layerDescriptors.length; i++) {
@@ -112,17 +103,15 @@ export class HsLegendComponent {
 
   /**
    * (PRIVATE) Callback function for adding layer to map, add layers legend
-   *
-   * @memberof hs.legend.controller
-   * @function layerAdded
-   * @param {object} e Event object, should have element property
+   * @param e - Event object, should have element property
+   * @private
    */
   layerAdded(e): void {
     this.addLayerToLegends(e.element);
   }
 
   /**
-   * @param e event description
+   * @param e - event description
    */
   layerVisibilityChanged(e): void {
     const descriptor = this.findLayerDescriptor(e.target);
@@ -132,7 +121,7 @@ export class HsLegendComponent {
   }
 
   /**
-   * @param e event description
+   * @param e - event description
    */
   layerSourcePropChanged(e): void {
     const descriptor = this.findLayerDescriptorBySource(e.target);
@@ -154,18 +143,17 @@ export class HsLegendComponent {
 
   /**
    * Finds layer descriptor for openlayers layer
-   *
-   * @returns {object} Object describing the legend
-   * @param {ol/layer} layer OpenLayers layer
+   * @param layer - OpenLayers layer
+   * @returns Object describing the legend
    */
-  findLayerDescriptor(layer): HsLegendDescriptor {
+  findLayerDescriptor(layer: Layer): HsLegendDescriptor {
     return this.layerDescriptors.find((ld) => ld.lyr == layer);
   }
 
   /**
    * @param source
    */
-  findLayerDescriptorBySource(source) {
+  findLayerDescriptorBySource(source: Source) {
     const found = this.layerDescriptors.filter(
       (ld) => ld.lyr.getSource() == source
     );
