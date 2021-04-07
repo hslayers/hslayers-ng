@@ -225,6 +225,7 @@ export class HsAddDataUrlWmtsService {
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
       this.HsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
+      layer.base = false;
     } catch (e) {
       throw new Error(e);
     }

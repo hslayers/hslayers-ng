@@ -53,6 +53,7 @@ export class HsLanguageService {
       'fr': 'Français',
       'lv': 'Latviski',
       'nl': 'Nederlands',
+      'sk': 'Slovensky',
     };
     const langs = [{key: 'en', name: 'English'}];
     for (const lang of this.TranslateService.getLangs()) {

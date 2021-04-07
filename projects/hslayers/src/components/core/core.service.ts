@@ -44,7 +44,7 @@ export class HsCoreService {
       this.HsLayoutService.sidebarExpanded = true;
     }
 
-    this.translate.addLangs(['en', 'cs', 'lv']);
+    this.translate.addLangs(['en', 'cs', 'lv', 'sk']);
     this.translate.setDefaultLang('en');
     if (this.HsConfig.language) {
       this.translate.use(this.HsConfig.language);

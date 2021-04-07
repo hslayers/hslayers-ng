@@ -150,6 +150,7 @@ export class HsAddDataArcGisService {
         this.addLayersRecursively(layer, {checkedOnly: checkedOnly});
       }
     }
+    this.data.base = false;
     this.hsLayoutService.setMainPanel('layermanager');
   }
 

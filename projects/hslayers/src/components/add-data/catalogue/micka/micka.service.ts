@@ -200,7 +200,7 @@ export class HsMickaBrowserService {
     } else {
       if (which == 'ServiceType') {
         const service =
-          'ServiceType=view OR ServiceType=download OR ServiceType=WMS OR ServiceType=WFS';
+          'type=service';
         switch (query.type) {
           case 'service':
             return `(${service})`;

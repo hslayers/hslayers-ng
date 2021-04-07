@@ -1,0 +1,654 @@
+{
+  "ADDDATA": {
+    "catalogue": "Dátový katalóg",
+    "CATALOGUE": {
+      "addAs": "Pridať ako",
+      "DESC": {
+        "WFS": "Web Feature Service - sťahovacia: slúži na prácu s geografickými dátami vo vektorovej reprezentácií. Je výkonostne naročnejšia, predovšetkým pri rozsiahlejšich vrstvách, umožňuje však editáciu, či zobrazenie individuálnych informacií ku každému prvku zvlášť.",
+        "WMS": "Web Map Service - prehliadacia: dáta nahráva v podobe rastru. Prenášané dáta sú obvykle menie čo má za následok rychlejšie načítanie, no na druhú stranu neumožňuje ich editáciu."
+      },
+      "filterType": "Typ vyhľadávania",
+      "searchFilterTypes": {
+        "Abstract": "Abstrakt",
+        "AnyText": "Všetko",
+        "Title": "Titulok"
+      },
+      "queryDataTypes": {
+        "all": "Všetko",
+        "service": "Služby",
+        "dataset": "Datasety"
+      },
+      "sortbyTypes": {
+        "date": "Dátum",
+        "title": "Titulok",
+        "bbox": "BBOX"
+      },
+      "loading": "Načítanie dát",
+      "searchType": "Typ vyhľadávania",
+      "selectFilterType": "Zmeniť nastavenie vyhľadávania",
+      "resourceType": "Typ zdroja"
+    },
+    "file": "Súbor",
+    "URL": {
+      "selectAll": "Označiť všetky vrstvy"
+    },
+    "saveToDatabase": "Uložit do databázy"
+  },
+  "ADDLAYERS": {
+    "addSelected": "Pridať označené vrstvy do mapy",
+    "chooseFormat": "Vyberte formát",
+    "chooseType": "Vyberte typ",
+    "considerUsingTiles": "Zvážte použitie dlaždíc. Niektoré servery majú obmedzenú maximálnu veľkosť obrazu.",
+    "couldNotUploadSelectedFile": "Pri načítaní súboru došlo k chybe!",
+    "externalDataSource": "Zdroj externých dát (URL)",
+    "featureCount": "Počet prvkov",
+    "folderName": "Názov zložky",
+    "imageFormat": "Formát obrazu",
+    "loadingFeaturePleaseWait": "Načítanie prvkov, prosím, čekajte",
+    "mapAndLayerProjection": "Mapové zobrazenie mapy a vrstvy si nezodpovedajú! Bude požité prevzorkovanie. To môže viesť k neočakávaným výsledkom.",
+    "mapProjectionAndLayerProjection": "Mapové zobrazenie mapy a vrstvy si nezodpovedajú. Pridať vrstvu do mapy a použít prevzorkovací program na strane servera?",
+    "none": "Žiadnu (hore)",
+    "queryFormat": "Formát dotazu",
+    "registerMetadata": "Registrovať metadáta",
+    "resampleLayer": "Prevzorkovať vrstvu",
+    "selectAllLayers": "Vybrať všetky vrstvy",
+    "SHP": {
+      "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
+      "SLDStyleFile": "Súbor se styly SLD"
+    },
+    "someErrorHappened": "Nastala nešpecifikovaná chyba alebo je chybný vstup",
+    "srs": "SRS",
+    "thereWasErrorWhile": "Nastala chyba pri syntaktickej analýze odpovede Capabilities z danej URL",
+    "thisIsRequired": "Toto je vyžadované!",
+    "tileSize": "Veľkosť dlaždice",
+    "TYPES": {
+      "ArcGIS": "ArcGIS Map Server",
+      "shapeFile": "Shapefile",
+      "vectorFile": "vektorový súbor (GeoJSON, KML)",
+      "WFS": "Web Feature Service (WFS)",
+      "WMS": "Web Map Service (WMS)"
+    },
+    "under": "Pridať pod vrstvu",
+    "useProxy": "Použíť proxy",
+    "useTiles": "Použíť dlaždice",
+    "Vector": {
+      "dragAndDropFiles": "Pretiahnite súbory",
+      "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS v skecií \"POKROČILÉ MOŽNOSTI\"",
+      "uploadVectorFiles": "Nahrajte vektorové súbory",
+      "chooseFiles": "Vyberte súbory..."
+    },
+    "VECTOR": {
+      "extractStyles": "Extrahovať štýly"
+    },
+    "WFS": {
+      "addToMap": "Pridať do mapy",
+      "loadingToManyAtOnce": "prvkov. Načítanie příliš veľkého množstva prvkov naraz (pri oddialení) môže ovplyvniť výkon aplikácie",
+      "selectedLayerContains": "Vybraná vrstva obsahuje"
+    },
+    "WMTS": {
+      "tileMatrix": "Matica dlaždíc"
+    },
+    "errorWhileRequestingLayers": "Chyba pri žiadaní vrstiev zo servera",
+    "capabilitiesParsingProblem": "Problém pri načítaní informácii o službě",
+    "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
+    "Basemap": "Pridať ako podkladovú vrstvu"
+  },
+  "COMMON": {
+    "abstract": "Abstrakt",
+    "add": "Pridať",
+    "addAs": "Pridať ako",
+    "advancedOptions": "Pokročilé možnosti",
+    "all": "Všetko",
+    "application": "Aplikácia",
+    "area": "Plocha",
+    "attribute": "Atribút",
+    "attributes": "Atribúty",
+    "boundingBox": "Rozsah v mape",
+    "cancel": "Zrušiť",
+    "category": "Kategórie",
+    "circle": "Kruh",
+    "clear": "Vyčistiť",
+    "close": "Zavrieť",
+    "closeDialog": "Zavrieť okno",
+    "color": "Farba",
+    "confirm": "Potvrdiť",
+    "confirmDelete": "Potvrďte vymazanie",
+    "connect": "Pripojiť",
+    "continue": "Pokračovať",
+    "data": "Dáta",
+    "dataset": "Dátová sada",
+    "date": "Dátum",
+    "delete": "Vymazať",
+    "description": "Popis",
+    "distance": "Vzdialenosť",
+    "download": "Na stiahnutie",
+    "drawNewFeatures": "Nakresliť nové prvky",
+    "east": "Východný",
+    "extent": "Rozsah",
+    "fill": "Výplň",
+    "fillInDescriptive": "Vyplňte stručný popis mapy",
+    "fillInName": "Vyplňte názov",
+    "filter": "Filter:",
+    "folder": "Zložka",
+    "from": "Od",
+    "fullText": "Fulltext",
+    "hide": "Skryť",
+    "icon": "Ikona",
+    "ignoreAndContinue": "Ignorovať a pokračovať",
+    "info": "Dalšie informácie",
+    "keywords": "Kľúčové slová",
+    "layer": "Vrstva",
+    "layers": "Vrstvy",
+    "legend": "Legenda",
+    "less": "Menej",
+    "line": "Línie",
+    "lineColor": "Farba línie",
+    "lineWidth": "Šířka línie",
+    "loading": "Načítanie",
+    "Login": "Prihlásiť sa",
+    "Logout": "Odhlásiť",
+    "menu": "Menu",
+    "metadata": "Metadáta",
+    "more": "Viac",
+    "name": "Názov",
+    "new": "Nový",
+    "newDrawingLayer": "Nová vrstva na kreslenie",
+    "next": "Ďalšie",
+    "no": "Nie",
+    "north": "Severný",
+    "ok": "Ok",
+    "open": "Otvoriť",
+    "orderBy": "Zoradiť podľa",
+    "photo": "Foto",
+    "point": "Bod",
+    "polygon": "Polygón",
+    "print": "Tlač",
+    "projection": "Zobrazenie",
+    "radius": "Polomer",
+    "reload": "Znovu načítať",
+    "removeLayer": "Odstrániť vrstvu",
+    "renameLayer": "Premenovať vrstvu",
+    "reset": "Resetovať",
+    "results": "Výsledky",
+    "rotation": "Rotácia",
+    "save": "Uložiť",
+    "saveAs": "Uložiť ako..",
+    "saveTo": "Uložiť do",
+    "scale": "Mierka",
+    "search": "Hľadať:",
+    "service": "Služba",
+    "settings": "Nastavenie",
+    "share": "Zdieľať",
+    "showMore": "Zobraziť viac",
+    "Sort": "Zoradiť",
+    "sortBy": "Radiť podľa",
+    "south": "Južný",
+    "stop": "Koniec",
+    "stroke": "Obrys",
+    "strokeWidth": "Šířka obrysu",
+    "style": "Style",
+    "theme": "Téma",
+    "thumbnail": "Miniatúra",
+    "title": "Titulok",
+    "to": "do",
+    "type": "Typ",
+    "until": "Až do",
+    "url": "URL",
+    "value": "Hodnota",
+    "west": "Západný",
+    "width": "Šírka",
+    "yes": "Áno",
+    "zoomTo": "zväčšiť na",
+    "contactInformation": "Kontaktné informácie",
+    "warning": "Varovanie",
+    "noDataReceived": "Neboli prijaté židane dáta!",
+    "or": "alebo"
+  },
+  "COMPOSITIONS": {
+    "addByAddress": "Pridať kompozíciu z adresy",
+    "Address": "Adresa",
+    "clearFilters": "Vyčistiť filtre",
+    "dialogDelete": {
+      "doYouWantToDeleteMap": "Chcete zmazať túto mapu?"
+    },
+    "dialogInfo": {
+      "details": "detaily",
+      "metadata": {
+        "comparison_url": "Porovnávacia URL",
+        "csw_url": "CSW URL",
+        "identifier": "Identifikátor",
+        "record_url": "Zaznamenajte URL"
+      },
+      "metadataAboutMetadata": "Metadáta o metadátach"
+    },
+    "dialogoverwriteConfirm": {
+      "mergeCompositions": "Spojiť kompozície",
+      "overwriteExistingMap": "Prepísať existujúcu mapu?",
+      "saveChangesFirst": "Najskôr uložiť zmeny",
+      "thereAreCurrentlyUnsavedChanges": "V mapovom okne sú neuložené zmeny.",
+      "whatDoYouWant": "Čo chcete vykonať pred otvorením vybranej mapovej kompozície?",
+      "youAreOpeningMap": "Otvárate mapu."
+    },
+    "dialogShare": {
+      "shareMap": "Zdieľať mapu"
+    },
+    "dialogWarning": {
+      "outOfBounds": "Rozsah kompozície je mimo rozsah systému EPSG:4326",
+      "toContinue": "Na základe danej veľkosti mapy nebude mapa zobrazovať geometriu alebo rozsah danej kompozície"
+    },
+    "filterByMap": "Filtrovať na rozsah okna",
+    "import": "Importovať kompozíciu zo súboru v tomto zariadení",
+    "inspireTheme": "Téma INSPIRE",
+    "loginToCatalogue": "Prihlásiť do katalógu",
+    "onlyMine": "Len moje vlastné",
+    "selectKeywords": "Vybrať kľúčové slová",
+    "selectThemes": "Vybrať témy",
+    "compostionsNameAttributeIsNotDefined": "Atribút názov kompozície nie je definovaný!",
+    "endpointUrlIsNotDefined": "Nie je definovaná URL adresa servera!",
+    "endpointUserIsNotDefined": "Nie je definovaný užívateľ katalógu",
+    "errorWhileLoadingCompositionMetadata": "Chyba pri načítaní metadát kompozície",
+    "errorWhileRequestingCompositions": "Chyba pri žiadosti o kompozíciu",
+    "errorWhileSharingOnSocialNetwork": "Chyba pri zdeiľaní kompozície na sociálnu sieť",
+    "metadataNotAvailable": "Metadáta nie sú dostupné!",
+    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!"
+  },
+  "COMPOSITONINSPIRETHEMES": {
+    "Addresses": "Adresy",
+    "Administrative units": "Územne správne jednotky",
+    "Agricultural and aquaculture facilities": "Poľnohospodárske a vodohospodárske zariadenia",
+    "Area management/restriction/regulation zones and reporting units": "Správne oblasti/chránené pásma/regulované územia a jednotky podávajúce hlásenia",
+    "Atmospheric conditions": "Stav ovzdušia",
+    "Atmospheric Conditions and meteorological geographical features": "Stav ovzdušia a zemepisné meteorologické prvky",
+    "Bio-geographical regions": "Bioregiony",
+    "Buildings": "Budovy",
+    "Cadastral parcels": "Parcely",
+    "Coordinate reference systems": "Súradnicové referenčné systémy",
+    "Elevation": "Nadmorská výška",
+    "Energy resources": "Energetické zdroje",
+    "Environmental monitoring facilities": "Zariadenia pre sledovanie životného prostredia",
+    "Geographical grid systems": "Zemepisné sústavy súradnicových sietí",
+    "Geographical names": "Zemepisné mená",
+    "Geology": "Geológia",
+    "Habitants and biotopes": "Stanovištia a biotopy",
+    "Human health and safety": "Ľudské zdravie bezpečnosť",
+    "Hydrography": "Hydrografia",
+    "Land cover": "Krajinný pokryv",
+    "Land use": "Využitie územia",
+    "Meteorological geographical features": "Zemepisné meteorologické prvky",
+    "Mineral resources": "Nerastné suroviny",
+    "Natural risk zones": "Oblasti ohrozené prírodnými rizikami",
+    "None": "Žiadne",
+    "Oceanographic geographical features": "Zemepisné oceánografické prvky",
+    "Orthoimagery": "Ortofotosnímky",
+    "Population distribution - demography": "Rozloženie obyvateľstva – demografia",
+    "Production and industrial facilities": "Výrobné a priemyselné zariadenia",
+    "Protected sites": "Chránené územia",
+    "Sea regions": "Morské oblasti",
+    "Soil": "Pôda",
+    "Species distribution": "Rozloženie druhov",
+    "Statistical units": "Štatistické jednotky",
+    "Transport networks": "Dopravné siete",
+    "Utility and governmental services": "Verejné služby a služby verejnej správy"
+  },
+  "COMPOSITONKEYWORDS": {
+    "Basemap": "Podkladová mapa",
+    "Borders": "Hranice",
+    "Cadastre": "Kataster",
+    "Complex information": "Komplexné informácie",
+    "Culture": "Kultúra",
+    "Demographics": "Demografia",
+    "Economics": "Hospodárstvo",
+    "Environment": "Životné prostredie",
+    "Hazards": "Riziká",
+    "Infrastructure": "Infraštruktúra",
+    "Land use": "Využitie územia",
+    "Physical geography": "Fyzická geografia",
+    "Planning": "Plánovanie",
+    "Real estate": "Nehnuteľnosti",
+    "Socio political conditions": "Socio-politické podmienky",
+    "Transport": "Doprava",
+    "Water": "Voda"
+  },
+  "COMPOSITONSORTVALUES": {
+    "Bbox": "Rozsah mapy",
+    "Date": "Dátum",
+    "None": "Žiadny",
+    "Title": "Názov"
+  },
+  "COMPOSITONTYPES": {
+    "Application": "Aplikácia",
+    "Datasource": "Zdroj dát",
+    "Feature catalogue": "Katalóg prvkov",
+    "None": "Žiadny",
+    "Service": "Služba"
+  },
+  "DATASOURCE_SELECTOR": {
+    "addToMapAs": "Pridať do mapy ako",
+    "advancedMicka": {
+      "applicationType": "Application type",
+      "dateStamp": "Date stamp",
+      "extendedSearchParameters": "Rozšířené vyhledávání",
+      "extentSimilarity": "Extent similarity",
+      "featureCatalogue": "Katalog prvků",
+      "organizationName": "název organizace",
+      "serviceType": "Typ služby",
+      "topicCategory": "Topic category"
+    },
+    "datasourceListItem": {
+      "abortAdd": "Zrušiť pridanie",
+      "addToMap": "Pridať do mapy",
+      "whatDoesItMean": "Čo to znamená?"
+    },
+    "externalData": "Externé dáta",
+    "layerRDF": "RDF vrstva",
+    "metadataFor": "Metadáta o",
+    "noResults": "Žiadne výsledky",
+    "suggestions": "Návrhy"
+  },
+  "DRAW": {
+    "activateDrawing": "Aktivujte kreslenie výberom typu prvku",
+    "activeLayers": "Aktívne vrstvy",
+    "definedStyle": "Definovaný štýl",
+    "disableDrawing": "Vypnúť kreslenie",
+    "drawInfo": "Pri kreslení mnohoúhelníku ale línie môžete podržať klávesu SHIFT pre krslenie rukou; Posledný bod môžete vymazať klávesou Backspace",
+    "drawingTo": "Kreslím do:",
+    "drawLayer": "Kresliaca vrstva",
+    "drawLayerMetadata": {
+      "defaultAttributes": "Východzie atribúty",
+      "defaultValue": "Východzia hodnota",
+      "layerTitle": "Názov vrstvy",
+      "layerWillBeAdded": "*Vrstva bude pridaná do mapy a je možné ju ďalej spravovať v paneli \"Správca vrstiev\"",
+      "loadServerLayers": "Načítať vrstvu zo servera",
+      "nameOfFolder": "Názov zložky v hierarchii správcu vrstiev"
+    },
+    "drawToolbar": {
+      "addDrawLayer": "Pridať vrstvu na kreslenie",
+      "finishFeature": "Ukončiť prvok",
+      "removeLastPoint": "Odobrať posledný bod",
+      "selectType": "Zvoľte typ"
+    },
+    "fillOpacity": "Vyplňte nepriehľadnosť:",
+    "individualStyle": "Individuálny štýl pre prvok",
+    "newGPS": "Nové GPS",
+    "notAuthorized": "Neautorizovaný uživateľ, zmeny nebudú uložené",
+    "reallyDeleteThisLayer": "Naozaj odstrániť vybranú vrstvu?",
+    "deleteNote": "*Vrstva bude kompletne vymazaná. V prípade, že ju chcete vymazať len z aktuálnej kompozíce (nie aj z databázy) môžete tak urobiť v panele 'Správca vrstiev'",
+    "saveDrawingToLayer": "Uložiť do vrstvy",
+    "Select layer": "Vybrať vrstvu",
+    "serverLayers": "Serverové vrstvy",
+    "unsavedDrawing": "Neuložená kresba"
+  },
+  "FEATURE_TABLE": {
+    "delete": "vymazať",
+    "showFeatureStats": "Otvoriť",
+    "sortFeaturesByValue": "Zobrazte štatistiky prvku",
+    "zoom to": "priblížiť na"
+  },
+  "GEOLOCATION": {
+    "altitude": "Nadmorská výška",
+    "follow": "Sledovať",
+    "locateMe": "Nájdi ma",
+    "precision": "Presnosť",
+    "speed": "Rýchlosť"
+  },
+  "HISTORY": {
+    "toggleDropdown": "Rozbaľovacia ponuka"
+  },
+  "INFOCOMPONENT": {
+    "newMap": "Nová mapa",
+    "unsavedMap": "Neuložená mapa",
+    "viewComposeAndAnalyse": "Prehliadať, kombinovať a analyzovať priestorové dáta",
+    "youHaveUnsavedChanges": "Máte neuložené zmeny!"
+  },
+
+  "LAYERMANAGER": {
+    "baselayers": "Podkladové vrstvy",
+    "baseMapGallery": {
+      "grayscale": "Šedotón",
+      "noBaseMap": "Bez podkladov"
+    },
+    "dialogRemoveAll": {
+      "dialogMessage": "Naozaj chcete odstrániť všetky vami pridané vrstvy?",
+      "reloadComposition": "Obnoviť kompozíciu",
+      "removeAllAdded": "Odstrániť všetky pridané vrstvy"
+    },
+    "dimensions": "Dimenzie", 
+    "editorButtons": "Editačné tlačidlá", 
+    "enablePhysicalLayerList": "Povoliť/zakázať fyzický zoznam vrstiev",
+    "layerEditor": {
+      "cluster": "Zhlukovať",
+      "copyright": "Autorské práva",
+      "declutter": "Precediť",
+      "metadataOfLayer": "Metadáta vrstvy v ",
+      "metadataOfService": "Metadáta služby",
+      "opacity": "Priehľadnosť",
+      "styleLayer": "Štýlovať vrstvu",
+      "zoomToLayer": "Priblížiť na vrstvu"
+    },
+    "layerList": {
+      "layerIsQueryable": "Táto vrstva je dotazovateľná",
+      "layerNotAvailable": "Táto vrstva nie je k dispozícii",
+      "moveLayerDown": "Presunúť vrstvy nižšie",
+      "moveLayerUp": "Posunúť vrstvy vyššie",
+      "noAvailableInScale": "Táto vrstva nie je v tejto mierke k dispozícii",
+      "sendingToLayman": "Odosielam na Layman"
+    },
+    "layermanagerMd": {
+      "aboutLayer": "O vrstve",
+      "changeLayerOpacity": "Zmeniť priehľadnosť vrstvy",
+      "changeLineWidht": "Zmeniť šírku línie", 
+      "filterFeatures": "Filtrovať prvky",
+      "imageLayer": "Vrstva obrazu",
+      "innerRadius": "Vnútorný polomer",
+      "layerName": "Názov vrstvy",
+      "layerOpacity": "Priehľadnosť vrstvy",
+      "layerOptions": "Možnosti vrstvy",
+      "layerStyle": "Štýl vrstvy",
+      "layerVisibility": "Viditeľnosť vrstvy",
+      "lineFeatures": "Líniové prvky",
+      "moveLayerDown": "Posunúť vrstvu dole",
+      "moveLayerDownward": "Presunutie vrstvy dole, shift-klik dole",
+      "moveLayerUp": "Posunúť vrstvu hore",
+      "moveLayerUpward": "Presunutie vrstvy hore, shift-klik na začiatok",
+      "outerRadius": "Vonkajší polomer",
+      "pointFeatures": "Bodové prvky",
+      "polygonFeatures": "Polygónové prvky",
+      "sidesNumber": "Číslo strán",
+      "star": "Hviezda"
+    },
+    "mapContent": "Mapový obsah",
+    "other": "Iný",
+    "removeAllLayers": "Odstrániť všetky vrstvy",
+    "resetMap": "Obnoviť mapu",
+    "terrains": "Terény",
+    "User generated": "Užívateľské",
+    "time": {
+      "syncTimes": "Synchronizovať časy",
+      "outOfRange": "Vybraný čas je mimo rozsah",
+      "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev"
+    }
+  },
+  "LEGEND": {
+    "noLegendExists": "Žiadna vrstva s legendou neexistuje!"
+  },
+  "MAP": {
+    "zoomKeyModifier": "Stlačte {{platformModifierKey}} + použite koliesko myši pre priblíženie mapy.",
+    "zoomToInitialWindow": "Priblížiť na úvodný pohľad"
+  },
+  "MEASURE": {
+    "measureMd": {
+      "deleteAllMeasurements": "Odstrániť všetky merania",
+      "measureType": "Typ merania",
+      "saveMeasurementToLayer": "Uložte meranie do vrstvy"
+    },
+    "multipleShapes": "Viac tvarov"
+  },
+  "PANEL_HEADER": {
+    "ADDLAYERS": "Pridať externé dáta",
+    "APPLICATIONSETTINGS": "Nastavenia aplikácie",
+    "COMPOSITIONS": "Kompozície",
+    "DATASOURCE_SELECTOR": "Dátové zdroje",
+    "DRAW": "Kresliť",
+    "FEATURE_TABLE": "Tabuľka prvkov",
+    "FILTERFEATURES": "Filtrovať prvky",
+    "INFO": "Info",
+    "LANGUAGE": "Zmeniť jazyk",
+    "LEGEND": "Legenda",
+    "LM": "Správca vrstiev",
+    "MAPCOMPOSITIONS": "Mapové kompozície",
+    "MEASURE": "Meranie",
+    "PERMALINK": "Zdieľať mapu",
+    "PRINT": "Tlač",
+    "ROUTING": "Smerovanie",
+    "SAVECOMPOSITION": "Uložiť aktuálnu mapu",
+    "SEARCH": "Hľadanie",
+    "SENSORS": "Senzory",
+    "TRIP_PLANNER": "Plánovač tras"
+  },
+  "PERMALINK": {
+    "directiveMd": {
+      "copyToClipboard": "Skopírovať do schránky"
+    },
+    "embed": "vloženie",
+    "embedCode": "Vložiť kód",
+    "linkFor": "Odkaz pre",
+    "newShare": "Nové zdieľanie",
+    "permalink": "Trvalý odkaz",
+    "pureMap": "Iba mapa",
+    "shareOnSocialNetwork": "Zdieľajte na sociálnej sieti",
+    "sharePureMap": "Zdieľať iba mapu",
+    "sharesMapWith": "*Zdieľať mapu so (všetkými) funkciami portálu",
+    "sharesOnlyMap": "*Zdieľať mapu iba ako obrázok",
+    "socialShare": "zdieľanie"
+  },
+  "QUERY": {
+    "confirmClear": "Potvrďte vymazanie",
+    "confirmDelete": "Potvrďte zmazanie",
+    "coordinates": "Súradnice",
+    "feature": {
+      "attributeName": "Názov atribútu",
+      "attributeValue": "Hodnota atribútu"
+    },
+    "featureInfo": "Informácie o funkcii",
+    "featurePopup": {
+      "clearLayer": "Vyčistiť vrstvu",
+      "closePopup": "Zavrieť vyskakovacie okno",
+      "removeClusterPart": "Odstrániť časť zhluku",
+      "removeFeature": "Odobrať prvok"
+    },
+    "infoPanel": {
+      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu"
+    },
+    "reallyDelete": "Naozaj zmazať tento prvok?",
+    "reallyDeleteAllFeaturesFrom": "Naozaj odstrániť všetky prvky z vrstvy {0}?",
+    "untitledFeature": "Prvok bez názvu"
+  },
+  "SAVECOMPOSITION": {
+    "dialogResult": {
+      "compositionFailedToSave": "Uloženie kompozície sa nepodarilo",
+      "compositionSavedSuccessfully": "Kompozícia bola úspešne uložená",
+      "requestWasProcessed": "Žiadosť bola spracovaná, ale mapa nebola uložená kvôli chýbajúcej autorizácii",
+      "savingCompositionStatus": "Ukladanie kompozície",
+      "serverDidNotRespond": "Server nereagoval alebo došlo k inej chybe"
+    },
+    "dialogSave": {
+      "areYouAttempting": "Pokúšate sa uložiť zmeny mapy do",
+      "noSaveAs": "Nie, uložiť ako",
+      "saveComposition": "Uložiť kompozíciu",
+      "selectNewNameForMap": "Vyberte nový názov pre mapu",
+      "useDifferentName": "K uloženiu mapy použije iný názov",
+      "wantToOverwrite": "Naozaj chcete prepísať?",
+      "yesSave": "Áno, uložte",
+      "youDoNotHave": "K tomu nemáte dostatočné práva. Možno skončila relácia?"
+    },
+    "form": {
+      "address": "Adresa",
+      "city": "Mesto",
+      "country": "Krajina",
+      "email": "E-mail",
+      "organization": "Organizácia",
+      "overwrite": "Prepísať",
+      "person": "Osoba",
+      "phone": "Telefón",
+      "position": "Pozícia",
+      "postalCode": "Poštovné smerovacie číslo",
+      "read": "Čítať",
+      "state": "Štát",
+      "toggleAll": "Prepnúť všetko",
+      "userCurrentMapExtent": "Použiť aktuálny rozsah mapy",
+      "write": "Zápis",
+      "changeName": "Zmeniť meno"
+    },
+    "panelMd": {
+      "fillKeywords": "Vyplňte kľúčove slová",
+      "makePublic": "Zverejniť",
+      "saveMap": "Uložiť mapu",
+      "showThumbnail": "Zobraziť miniatúru",
+      "thumbnailSwitch": "Prepnúť náhľad",
+      "useMapExtent": "Použije rozsah mapy",
+      "youAreNotAuthorized": "Nemáte oprávnenie k uloženiu kompozícii. Prihláste sa alebo sa obráťte na administrátora pre vaše prihlasovacie údaje."
+    },
+    "private": "Súkromné",
+    "public": "Verejné",
+    "readAccessRights": "Právo čítať",
+    "syncErrorDialog": {
+      "errorWhenSyncing": "Chyba pri synchronizácii"
+    },
+    "writeAccessRights": "Právo zápisu",
+    "removeLayerError": "Vrstva '{{layer}}' nebola odstránená z databáze. {{error}}"
+  },
+  "SENSORS": {
+    "1D": "1D",
+    "1H": "1H",
+    "1M": "1M",
+    "1W": "1W",
+    "6M": "6M",
+    "at": "v",
+    "avg": "Priem.",
+    "max": "Max",
+    "measure": "Meranie",
+    "min": "Min",
+    "oneHour": "1 hodina",
+    "phenomena": "Javy",
+    "sensors": "Senzory",
+    "sensorUnit": "Senzorová jednotka"
+  },
+  "SIDEBAR": {
+    "descriptions": {
+      "ADDLAYERS": "Vybrať dáta alebo služby pre vašu mapovou kompozíciu",
+      "APPLICATIONSETTINGS": "Zadať užívateľské nastavenia aplikácie",
+      "DRAW": "Nakresliť nové prvky",
+      "FEATURE_TABLE": "Zobraziť prvky vrstvy v tabuľke",
+      "FILTERFEATURES": "Crossfilter",
+      "INFO": "Zobraziť informácie o výsledku mapového dotazu",
+      "LANGUAGE": "Zmeniť jazyk",
+      "LEGEND": "Zobraziť legendu",
+      "LM": "Spravovať a štýlovať vaše vrstvy",
+      "MAPCOMPOSITIONS": "Zoznam dostupných mapových kompozícii",
+      "MEASURE": "Merať vzdialenosť nebo plochu na mape",
+      "PERMALINK": "Zdieľať mapu",
+      "PRINT": "Tlačiť mapy",
+      "SAVECOMPOSITION": "Uložiť obsah mapy do kompozície",
+      "SEARCH": "Vyhľadať miesto",
+      "TRIP_PLANNER": "Vytvoriť novú trasu výletu"
+    },
+    "additionalPanels": "Ďalšie panely"
+  },
+  "STYLER": {
+    "features": "Prvky",
+    "layer": "Vrstva",
+    "level": "Úroveň",
+    "selection": "Výber"
+  },
+  "TOOLBAR": {
+    "measureLinesAndPolygon": "Merať línie a polygóny"
+  },
+  "TRIP_PLANNER": {
+    "clearWaypoints": "Vyčistiť body trasy",
+    "removeWaypoint": "Odobrať bod trasy",
+    "totalDistance": "Celková vzdialenosť",
+    "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
+    "waypoints": "Body trasy"
+  }
+}
+
