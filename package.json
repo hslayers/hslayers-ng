@@ -38,7 +38,6 @@
     "cesium": "^1.80.0",
     "deepmerge": "^4.2.2",
     "moment": "^2.29.1",
-    "moment-interval": "^0.2.1",
     "ngx-cookie-service": "^10.0.0",
     "ol": "^6.5.0",
     "ol-popup": "^4.0.0",
