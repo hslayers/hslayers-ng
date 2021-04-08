@@ -1,5 +1,4 @@
 import moment from 'moment';
-import momentinterval from 'moment-interval';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 
@@ -21,35 +20,71 @@ export class HsDimensionService {
     private hsMapService: HsMapService
   ) {}
 
-  prepareTimeSteps(step_string) {
+  prepareTimeSteps(step_string): string[] {
     const step_array = step_string.split(',');
     const steps = [];
     for (let i = 0; i < step_array.length; i++) {
       if (step_array[i].indexOf('/') == -1) {
         steps.push(new Date(step_array[i]).toISOString());
-        //console.log(new Date(step_array[i]).toISOString());
       } else {
-        //"2016-03-16T12:00:00.000Z/2016-07-16T12:00:00.000Z/P30DT12H"
         const interval_def = step_array[i].split('/');
-        let step;
-        if (interval_def.length == 3) {
-          step = momentinterval.interval(interval_def[2]);
-        } else {
-          step = momentinterval.interval('P1D');
-        }
-        const interval = momentinterval.interval(
-          interval_def[0] + '/' + interval_def[1]
-        );
-        while (interval.start() < interval.end()) {
-          //console.log(interval.start().toDate().toISOString());
-          steps.push(interval.start().toDate().toISOString());
-          interval.start(
-            momentinterval.utc(interval.start().toDate()).add(step.period())
-          );
+        const step =
+          interval_def.length == 3
+            ? this.duration(interval_def[2])
+            : this.duration('P1D');
+        let iterator = new Date(interval_def[0]);
+        const end = new Date(interval_def[1]);
+        while (iterator <= end) {
+          steps.push(iterator.toISOString());
+          iterator = this.addStep(iterator, step);
         }
       }
     }
     return steps;
+  }
+
+  private addStep(
+    iterator: Date,
+    step: {
+      weeks: number;
+      years: number;
+      months: number;
+      days: number;
+      hours: number;
+      minutes: number;
+      seconds: number;
+      milliseconds: number;
+    }
+  ) {
+    iterator.setUTCFullYear(iterator.getUTCFullYear() + step.years);
+    iterator.setUTCMonth(iterator.getUTCMonth() + step.months);
+    iterator.setUTCDate(iterator.getUTCDate() + step.days);
+    iterator.setUTCHours(iterator.getUTCHours() + step.hours);
+    iterator.setUTCMinutes(iterator.getUTCMinutes() + step.minutes);
+    iterator.setUTCSeconds(iterator.getUTCSeconds() + step.seconds);
+    iterator.setUTCMilliseconds(
+      iterator.getUTCMilliseconds() + step.milliseconds
+    );
+    return iterator;
+  }
+
+  duration(text: string) {
+    //Idea taken from https://github.com/luisfarzati/moment-interval/blob/master/src/moment-interval.js duration function
+    const iso8601 = /^P(?:(\d+(?:[\.,]\d{0,3})?W)|(\d+(?:[\.,]\d{0,3})?Y)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?D)?(?:T(\d+(?:[\.,]\d{0,3})?H)?(\d+(?:[\.,]\d{0,3})?M)?(\d+(?:[\.,]\d{0,3})?S)?)?)$/;
+    const matches = text.match(iso8601);
+    if (matches === null) {
+      throw '"' + text + '" is an invalid ISO 8601 duration';
+    }
+    return {
+      weeks: parseFloat(matches[1]) || 0,
+      years: parseFloat(matches[2]) || 0,
+      months: parseFloat(matches[3]) || 0,
+      days: parseFloat(matches[4]) || 0,
+      hours: parseFloat(matches[5]) || 0,
+      minutes: parseFloat(matches[6]) || 0,
+      seconds: parseFloat(matches[7]) || 0,
+      milliseconds: parseFloat(matches[8]) || 0,
+    };
   }
 
   getDimensionValues(dimension) {
@@ -95,7 +130,7 @@ export class HsDimensionService {
    * A recursive function with goes through layers
    * children and sets the possible dimension values used in dropdown.
    *
-   * @param layer - Layer to fill the dimension values
+   * @param layer Layer to fill the dimension values
    */
   fillDimensionValues(layer): void {
     for (const sublayer of layer.Layer) {
@@ -144,7 +179,8 @@ export class HsDimensionService {
 
   /**
    * Test if layer has dimensions
-   * @returns true if layer has any dimensions
+   * @param layer
+   * @return true if layer has any dimensions
    */
   isLayerWithDimensions(layer): boolean {
     if (layer === undefined) {
