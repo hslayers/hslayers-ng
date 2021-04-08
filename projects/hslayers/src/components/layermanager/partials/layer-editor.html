@@ -131,6 +131,8 @@
                     class="icon-brush"></i></button>
             <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
                 [title]="'COMMON.renameLayer' | translate"><i class="icon-textfield"></i></button>
+            <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip" *ngIf="isLayerVectorLayer(currentLayer.layer)"
+            [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate"><i class="icon-save-floppy"></i></button>
             <button class="btn btn-danger" (click)="removeLayer()" *ngIf="isLayerRemovable()" data-toggle="tooltip"
                 [title]="'COMMON.removeLayer' | translate"><i class="icon-trash"></i></button>
         </div>

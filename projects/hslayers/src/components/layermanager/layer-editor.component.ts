@@ -1,6 +1,9 @@
 import {Component, Input} from '@angular/core';
+import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from './../language/language.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
@@ -46,8 +49,33 @@ export class HsLayerEditorComponent {
     public HsLayerEditorService: HsLayerEditorService,
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
-    public HsLayerManagerMetadataService: HsLayerManagerMetadataService // Used in template
+    public HsLayerManagerMetadataService: HsLayerManagerMetadataService, // Used in template
+    public HsDialogContainerService: HsDialogContainerService,
+    public HsLanguageService: HsLanguageService
   ) {}
+
+  /**
+   * @function createSaveDialog
+   * @memberOf HsLayerEditorComponent
+   * @description Confirm saving a vector layer content as a geoJSON
+   * @return {Promise}
+   */
+  async createSaveDialog(): Promise<void> {
+    const dialog = this.HsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message:
+          this.HsLanguageService.getTranslation(
+            'LAYERMANAGER.layerEditor.savegeojson'
+          ) + '?',
+        title: this.HsLanguageService.getTranslation('COMMON.confirm'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      return this.HsLayerManagerService.saveGeoJson();
+    }
+  }
 
   layerIsWmsT(): boolean {
     return this.HsLayerManagerWmstService.layerIsWmsT(this.currentLayer);
@@ -59,7 +87,7 @@ export class HsLayerEditorComponent {
    * @description Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabalities request (for WMS layer)
-   * @returns {Promise}
+   * @return {Promise}
    */
   zoomToLayer(): Promise<any> {
     return this.HsLayerEditorService.zoomToLayer(this.olLayer());
@@ -108,7 +136,7 @@ export class HsLayerEditorComponent {
    * @memberOf HsLayerEditorComponent
    * @param {boolean} newValue To declutter or not to declutter
    * @description Set decluttering of features
-   * @returns {boolean} Current declutter state
+   * @return {boolean} Current declutter state
    */
   set declutter(newValue: boolean) {
     this.HsLayerEditorService.declutter(this.olLayer(), newValue);
@@ -123,7 +151,7 @@ export class HsLayerEditorComponent {
    * @memberOf HsLayerEditorComponent
    * @description Set cluster for layer
    * @param {boolean} newValue To cluster or not to cluster
-   * @returns {boolean} Current cluster state
+   * @return {boolean} Current cluster state
    */
   set cluster(newValue: boolean) {
     if (!this.currentLayer) {
@@ -359,8 +387,8 @@ export class HsLayerEditorComponent {
 
   /**
    * Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
-   * @param newTitle - New title to set
-   * @returns Title
+   * @param newTitle New title to set
+   * @return Title
    */
   set title(newTitle: string) {
     const newLayerTitle = newTitle.trim();

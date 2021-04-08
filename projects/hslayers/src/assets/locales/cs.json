@@ -422,7 +422,8 @@
       "metadataOfService": "Metadata služby",
       "opacity": "Průhlednost",
       "styleLayer": "Stylovat vrstvu",
-      "zoomToLayer": "Přiblížit na vrstvu"
+      "zoomToLayer": "Přiblížit na vrstvu",
+      "savegeojson": "Stáhnout obsah vrstvy jako geoJSON"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
