@@ -422,7 +422,8 @@
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",
       "styleLayer": "Style layer",
-      "zoomToLayer": "Zoom to layer"
+      "zoomToLayer": "Zoom to layer",
+      "savegeojson": "Download layer content as geoJSON"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",

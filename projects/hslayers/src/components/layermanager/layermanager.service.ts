@@ -1,5 +1,6 @@
 import {CollectionEvent} from 'ol/Collection';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {GeoJSON} from 'ol/format';
 import {
   Group,
   Image as ImageLayer,
@@ -42,6 +43,7 @@ import {
   getRemovable,
   getShowInLayerManager,
   getThumbnail,
+  getTitle,
   setActive,
   setDeclutter,
   setPath,
@@ -1042,5 +1044,32 @@ export class HsLayerManagerService {
 
   expandInfo(layer: HsLayerDescriptor, value): void {
     layer.expandInfo = value;
+  }
+
+  /*
+    Generates downloadable geoJSON for vector layer.
+    Features are also transformed into the EPSG:4326 projection
+  */
+  saveGeoJson(): void {
+    const geojsonParser = new GeoJSON();
+    const geojson = geojsonParser.writeFeatures(
+      this.currentLayer.layer.getSource().getFeatures(),
+      {
+        dataProjection: 'EPSG:4326',
+        featureProjection: this.HsMapService.getCurrentProj(),
+      }
+    );
+    const file = new Blob([geojson], {type: 'application/json'});
+
+    const a = document.createElement('a'),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = getTitle(this.currentLayer.layer).replace(/\s/g, '');
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 }

@@ -421,7 +421,8 @@
       "metadataOfService": "Servisa metadati",
       "opacity": "Necaurredzamība",
       "styleLayer": "Stilizēt slāni",
-      "zoomToLayer": "Tuvināt līdz slānim"
+      "zoomToLayer": "Tuvināt līdz slānim",
+      "savegeojson": "Lejupielādējiet slāņa saturu kā geoJSON"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",

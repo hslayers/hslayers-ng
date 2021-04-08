@@ -400,7 +400,6 @@
     "viewComposeAndAnalyse": "Prehliadať, kombinovať a analyzovať priestorové dáta",
     "youHaveUnsavedChanges": "Máte neuložené zmeny!"
   },
-
   "LAYERMANAGER": {
     "baselayers": "Podkladové vrstvy",
     "baseMapGallery": {
@@ -412,8 +411,8 @@
       "reloadComposition": "Obnoviť kompozíciu",
       "removeAllAdded": "Odstrániť všetky pridané vrstvy"
     },
-    "dimensions": "Dimenzie", 
-    "editorButtons": "Editačné tlačidlá", 
+    "dimensions": "Dimenzie",
+    "editorButtons": "Editačné tlačidlá",
     "enablePhysicalLayerList": "Povoliť/zakázať fyzický zoznam vrstiev",
     "layerEditor": {
       "cluster": "Zhlukovať",
@@ -423,7 +422,8 @@
       "metadataOfService": "Metadáta služby",
       "opacity": "Priehľadnosť",
       "styleLayer": "Štýlovať vrstvu",
-      "zoomToLayer": "Priblížiť na vrstvu"
+      "zoomToLayer": "Priblížiť na vrstvu",
+      "savegeojson": "Stiahnuť obsah vrstvy ako geoJSON"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
@@ -436,7 +436,7 @@
     "layermanagerMd": {
       "aboutLayer": "O vrstve",
       "changeLayerOpacity": "Zmeniť priehľadnosť vrstvy",
-      "changeLineWidht": "Zmeniť šírku línie", 
+      "changeLineWidht": "Zmeniť šírku línie",
       "filterFeatures": "Filtrovať prvky",
       "imageLayer": "Vrstva obrazu",
       "innerRadius": "Vnútorný polomer",
@@ -651,4 +651,3 @@
     "waypoints": "Body trasy"
   }
 }
-
