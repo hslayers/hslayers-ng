@@ -130,7 +130,7 @@ export class HsDimensionService {
    * A recursive function with goes through layers
    * children and sets the possible dimension values used in dropdown.
    *
-   * @param layer Layer to fill the dimension values
+   * @param layer - Layer to fill the dimension values
    */
   fillDimensionValues(layer): void {
     for (const sublayer of layer.Layer) {
@@ -179,8 +179,8 @@ export class HsDimensionService {
 
   /**
    * Test if layer has dimensions
-   * @param layer
-   * @return true if layer has any dimensions
+   * @param layer -
+   * @returns true if layer has any dimensions
    */
   isLayerWithDimensions(layer): boolean {
     if (layer === undefined) {
