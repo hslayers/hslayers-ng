@@ -63,7 +63,7 @@
     "@angular/compiler-cli": "~9.1.13",
     "@angularclass/hmr": "^3.0.0",
     "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.0.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "~3.6.9",
     "@types/jasminewd2": "~2.0.3",
