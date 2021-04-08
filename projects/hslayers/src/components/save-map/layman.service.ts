@@ -390,12 +390,14 @@ export class HsLaymanService implements HsSaverService {
    * Removes selected layer from layman.
    * @param layer
    */
-  removeLayer(layer: Layer) {
+  removeLayer(layer: Layer | string) {
     (this.HsCommonEndpointsService.endpoints || [])
       .filter((ds) => ds.type == 'layman')
       .forEach((ds) => {
+        const layerName =
+          typeof layer == 'string' ? layer : getLayerName(layer);
         this.http
-          .delete(`${ds.url}/rest/${ds.user}/layers/${getLayerName(layer)}`, {
+          .delete(`${ds.url}/rest/${ds.user}/layers/${layerName}`, {
             withCredentials: true,
           })
           .toPromise()

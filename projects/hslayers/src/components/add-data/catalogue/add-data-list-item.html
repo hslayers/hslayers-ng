@@ -11,6 +11,12 @@
         <a class="btn btn-sm btn-secondary" [href]='HsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
             data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
     </div> -->
+    <div class="pr-1" *ngIf="!selectTypeToAddLayerVisible && layer.endpoint.type == 'layman'">
+        <button type="button" class="btn btn-sm btn-danger" (click)="removeLayer(layer)" data-toggle="tooltip"
+            [title]="'COMMON.removeLayer' | translate">
+            <i class="icon-trash"></i>
+        </button>
+    </div>
     <div class="p-0" [hidden]="!selectTypeToAddLayerVisible">
         <span class="btn btn-sm" disabled="true" aria-disabled="true" [ngClass]="{'text-light' : layer.highlighted }">{{ 'ADDDATA.CATALOGUE.addAs' |
             translate}}&nbsp;</span>
