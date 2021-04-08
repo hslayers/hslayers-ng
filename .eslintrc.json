@@ -49,6 +49,12 @@
         "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
         "valid-jsdoc": "off",
         "tsdoc/syntax": "warn"
+      },
+      "settings": {
+        "jsdoc":{
+          "tagNamePreference":{"returns":"returns"},
+          "require-returns-type": "off"
+        }
       }
     },
     {
