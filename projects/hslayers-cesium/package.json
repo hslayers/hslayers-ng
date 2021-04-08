@@ -20,8 +20,8 @@
   },
   "devDependencies": {
     "ol": "^6.5.0",
-    "cesium": "^1.79.1",
-    "hslayers-ng": "^3.0.1-rc.0"
+    "cesium": "^1.80.0",
+    "hslayers-ng": "^3.0.0"
   },
   "dependencies": {
     "tslib": "^1.10.0"
