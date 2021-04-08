@@ -313,6 +313,12 @@ export class HsLayerManagerService {
     });
   }
 
+  /**
+   * Executed when a content of data.baselayers or data.terrainlayers changes.
+   * Angular does not detect changes inside arrays unless triggered from the view.
+   * But it does detect changes of class properties.
+   * Hence the whole array is copied so an "immutable" change happens and Angular detects that.
+   */
   refreshLists(): void {
     this.data.baselayers = Array.from(this.data.baselayers);
     this.data.terrainlayers = Array.from(this.data.terrainlayers);
