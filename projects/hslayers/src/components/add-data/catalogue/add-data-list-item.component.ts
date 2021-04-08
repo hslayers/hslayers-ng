@@ -6,10 +6,12 @@ import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 import {HsAddDataMetadataDialogComponent} from './add-data-catalogue-metadata-dialog.component';
 import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
 import {HsConfig} from '../../../config.service';
+import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
+import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 
 @Component({
@@ -27,7 +29,6 @@ export class HsAddDataListItemComponent {
   selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes;
-
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsAddDataMetadataService,
@@ -35,7 +36,8 @@ export class HsAddDataListItemComponent {
     public hsDialogContainerService: HsDialogContainerService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLogService: HsLogService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    public HsLaymanService: HsLaymanService
   ) {}
 
   /**
@@ -83,8 +85,10 @@ export class HsAddDataListItemComponent {
 
   /**
    * @description For a stringified type of service, it returns its description
+   * @param module
+   * @param text
    * @param type One of 'WMS', 'WFS'
-   * @returns A brief description of a given type with its main advantage and disadvantage notes
+   * @return A brief description of a given type with its main advantage and disadvantage notes
    */
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
@@ -117,5 +121,33 @@ export class HsAddDataListItemComponent {
       selectedLayer: this.selected_layer,
       selectedDS: this.selected_ds,
     });
+  }
+
+  /**
+   * @function showMetadata
+   * @param {HsEndpoint} endpoint Datasource of selected layer
+   * @param {object} layer Metadata record of selected layer
+   * @description Removes selected drawing layer from both Layermanager and Layman
+   */
+  async removeLayer(layer: HsAddDataLayerDescriptor): Promise<void> {
+    const dialog = this.hsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.HsLanguageService.getTranslation(
+          'DRAW.reallyDeleteThisLayer'
+        ),
+        note: this.HsLanguageService.getTranslation('DRAW.deleteNote'),
+        title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
+      }
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      this.HsLaymanService.removeLayer(layer.name);
+      this.HsAddDataCatalogueService.catalogEntries = this.HsAddDataCatalogueService.catalogEntries.filter(
+        (item) => {
+          return item.id != layer.id;
+        }
+      );
+    }
   }
 }
