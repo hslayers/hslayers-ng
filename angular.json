@@ -59,10 +59,6 @@
                 {
                   "replace": "node_modules/moment/locale/",
                   "with": "projects/hslayers-app/src/locale/"
-                },
-                {
-                  "replace": "node_modules/moment-interval/node_modules/moment/lang/",
-                  "with": "projects/hslayers-app/src/locale/"
                 }
               ],
               "optimization": true,
@@ -192,10 +188,6 @@
                 },
                 {
                   "replace": "node_modules/moment/locale/",
-                  "with": "projects/hslayers-cesium-app/src/locale/"
-                },
-                {
-                  "replace": "node_modules/moment-interval/node_modules/moment/lang/",
                   "with": "projects/hslayers-cesium-app/src/locale/"
                 }
               ],
