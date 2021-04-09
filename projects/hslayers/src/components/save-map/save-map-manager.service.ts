@@ -170,7 +170,11 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
-      this.compoData.layers.filter((l) => l.checked).map((l) => l.layer);
+      if (saveAsNew) {
+        this.compoData.layers = this.compoData.layers
+          .filter((l) => l.checked)
+          .map((l) => l.layer);
+      }
       const compositionJson = this.generateCompositionJson();
       let saver: HsSaverService = this.HsStatusManagerService;
       if (endpoint.type == 'layman') {
@@ -222,10 +226,25 @@ export class HsSaveMapManagerService {
     });
   }
 
-  generateCompositionJson() {
+  /**
+   * @param download Used when generating json for download 
+   * @returns composition JSON
+   */
+  generateCompositionJson(download?): any {
+    /*TODO: REFACTOR
+      Workaround for composition JSON generated for download. 
+      Should be handled differently and generated only once. Task for upcoming component rework
+    */
+    const compoData: any = {...this.compoData};
+    if (download) {
+      compoData.layers = compoData.layers
+        .filter((l) => l.checked)
+        .map((l) => l.layer);
+    }
+
     return this.HsSaveMapService.map2json(
       this.HsMapService.map,
-      this.compoData,
+      compoData,
       this.userData,
       this.statusData
     );
@@ -363,7 +382,7 @@ export class HsSaveMapManagerService {
    *
    * @function getCurrentExtent
    * @memberof HsSaveMapManagerService
-   * @return {Array} Extent coordinates
+   * @returns {Array} Extent coordinates
    */
   getCurrentExtent() {
     const b = this.HsMapService.map

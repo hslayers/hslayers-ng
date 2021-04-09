@@ -45,13 +45,30 @@ export class HsSaveMapAdvancedFormComponent {
     });
 
     this.HsSaveMapManagerService.saveMapResulted.subscribe((statusData) => {
-      if (statusData.status ||statusData == 'rename') {
+      if (statusData.status || statusData == 'rename') {
         this.step = 'context';
       }
       if (statusData.overWriteNeeded) {
         this.overwrite = true;
       }
     });
+  }
+
+  saveCompoJson(): void {
+    const compositionJSON = this.HsSaveMapManagerService.generateCompositionJson(
+      true
+    );
+    const file = new Blob([JSON.stringify(compositionJSON)], {
+      type: 'application/json',
+    });
+
+    const a = <HTMLAnchorElement>document.getElementById('stc-download'),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = 'composition';
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 
   selectDeselectAllLayers() {
@@ -73,11 +90,6 @@ export class HsSaveMapAdvancedFormComponent {
       this.step = this.steps[ixCurrent + 1];
     } else {
       this.step = 'end';
-      this.downloadableData =
-        'text/json;charset=utf-8,' +
-        encodeURIComponent(
-          JSON.stringify(this.HsSaveMapManagerService.generateCompositionJson())
-        );
     }
   }
 
