@@ -202,6 +202,6 @@
         (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
     <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"
         (click)="next()">{{'COMMON.next' | translate}}</button>
-    <a class="btn btn-block btn-secondary" [href]="'data:'+downloadableData" id="stc-download"
-        [hidden]="!(step == 'end')" download="context.hsl">{{'COMMON.download' | translate}}</a>
+    <a class="btn btn-block btn-secondary" (click)="saveCompoJson()" id="stc-download"
+        [hidden]="!(step == 'end')">{{'COMMON.download' | translate}}</a>
 </div>
