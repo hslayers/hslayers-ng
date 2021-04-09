@@ -45,9 +45,13 @@ export class HsCompositionsService {
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsEventBusService: HsEventBusService
   ) {
-    setTimeout(() => {
-      this.tryParseCompositionFromCookie();
-    }, 500);
+    if (HsConfig.saveMapStateOnReload) {
+      //Load composition data from cookies only if it is anticipated
+      setTimeout(() => {
+        this.tryParseCompositionFromCookie();
+      }, 500);
+    }
+
     this.tryParseCompositionFromUrlParam();
     if (HsPermalinkUrlService.getParamValue('permalink')) {
       this.parsePermalinkLayers();
