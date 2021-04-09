@@ -134,10 +134,11 @@ export class HsLayoutService {
     be set after this service constructor is executed */
     setTimeout((_) => {
       this.parseConfig();
-    });
+    }, 0);
   }
 
   parseConfig() {
+    this.panel_enabled = {};
     for (const key of Object.keys(this.panelsEnabledDefaults)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }
@@ -239,8 +240,8 @@ export class HsLayoutService {
    * When panel is disabled it means that it's not displayed in sidebar (it can be opened programmaticaly) but its functionality is running.
    * Use with status parameter as setter.
    * @public
-   * @param which - Selected panel (panel name)
-   * @param status - Visibility status of panel to set
+   * @param which Selected panel (panel name)
+   * @param status Visibility status of panel to set
    * @returns Panel enabled/disabled status for getter function
    */
   panelEnabled(which: string, status?: boolean): boolean {
@@ -257,7 +258,7 @@ export class HsLayoutService {
 
   /**
    * Wrapper for accesing HsConfig.componentsEnabled settings.
-   * @param which - Name of the GUI component to check
+   * @param which Name of the GUI component to check
    * @returns true if set to true (default), false otherwise
    */
   componentEnabled(which: string): boolean {
@@ -272,8 +273,8 @@ export class HsLayoutService {
    * Sets new main panel (Panel displayed in expanded sidebar).
    * Change GUI and queryable status of map (when queryable and with hs.query component in app, map does info query on map click).
    * @public
-   * @param which - New panel to activate (panel name)
-   * @param by_gui - Whether function call came as result of GUI action
+   * @param which New panel to activate (panel name)
+   * @param by_gui Whether function call came as result of GUI action
    */
   setMainPanel(which: string, by_gui?: boolean): void {
     if (!this.panelEnabled(which)) {
@@ -299,7 +300,7 @@ export class HsLayoutService {
   /**
    * Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
    * @public
-   * @param which - New panel to be default (specify panel name)
+   * @param which New panel to be default (specify panel name)
    */
   setDefaultPanel(which: string): void {
     this.defaultPanel = which;
