@@ -140,6 +140,9 @@ export class HsQueryBaseService {
     if (e.dragging || e.originalEvent?.target?.tagName != 'CANVAS') {
       return;
     }
+    if (!this.queryActive) {
+      return;
+    }
     const map = e.map;
     const tmpFeatures = this.getFeaturesUnderMouse(map, e.pixel);
     if (
