@@ -422,7 +422,7 @@
       "opacity": "Necaurredzamība",
       "styleLayer": "Stilizēt slāni",
       "zoomToLayer": "Tuvināt līdz slānim",
-      "savegeojson": "Lejupielādējiet slāņa saturu kā geoJSON"
+      "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",

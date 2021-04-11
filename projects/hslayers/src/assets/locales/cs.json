@@ -423,7 +423,7 @@
       "opacity": "Průhlednost",
       "styleLayer": "Stylovat vrstvu",
       "zoomToLayer": "Přiblížit na vrstvu",
-      "savegeojson": "Stáhnout obsah vrstvy jako geoJSON"
+      "savegeojson": "Stáhnout obsah vrstvy jako GeoJSON"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",

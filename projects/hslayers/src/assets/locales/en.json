@@ -423,7 +423,7 @@
       "opacity": "Opacity",
       "styleLayer": "Style layer",
       "zoomToLayer": "Zoom to layer",
-      "savegeojson": "Download layer content as geoJSON"
+      "savegeojson": "Download layer content as GeoJSON"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
