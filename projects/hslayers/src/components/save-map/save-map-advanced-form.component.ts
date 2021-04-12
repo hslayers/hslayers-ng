@@ -41,7 +41,18 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
           this.step = 'context';
         }
       });
-
+    this.HsSaveMapManagerService.endpointSelected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((endpoint) => {
+        this.endpoint = endpoint;
+        switch (endpoint?.type) {
+          case 'layman':
+            this.steps = ['context', 'author'];
+            break;
+          default:
+            this.steps = ['context', 'access', 'author'];
+        }
+      });
     this.HsSaveMapManagerService.saveMapResulted
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((statusData) => {
