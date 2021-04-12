@@ -90,7 +90,7 @@ export class HsLayoutService {
     composition_browser: true,
     toolbar: true,
     mobile_settings: false,
-    draw: false,
+    draw: true,
     layermanager: true,
     print: true,
     saveMap: true,
