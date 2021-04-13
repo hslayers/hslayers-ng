@@ -308,7 +308,7 @@ export class HsLayoutService {
 
   panelSpaceWidth() {
     const panelWidths = {
-      default: 400,
+      default: 425,
       ows: 700,
       composition_browser: 500,
       addData: 700,
