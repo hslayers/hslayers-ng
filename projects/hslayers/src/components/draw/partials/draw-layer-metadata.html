@@ -89,7 +89,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="((data.isAuthorized || data.laymanEndpoint == undefined) && type == 'draw') || data.tmpDrawLayer"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="((data.isAuthorized || data.laymanEndpoint == undefined) && (type == 'draw' || !type)) || data.tmpDrawLayer"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>

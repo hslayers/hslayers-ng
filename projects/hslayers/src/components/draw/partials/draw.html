@@ -84,12 +84,43 @@
         </button>
     </div>
     <div [hidden]="HsDrawService.type == null " class="pt-2">
-        <div class="form-check" style="font-size: smaller">
-            <input class="d-none" type="checkbox" id="individualStyle" [(ngModel)]="useIndividualStyle" [ngModelOptions]="{standalone: true}"/>
-            <label for="individualStyle"
-                [ngClass]="{'hs-checkmark':useIndividualStyle,'hs-uncheckmark':!useIndividualStyle}">{{'DRAW.individualStyle' | translate}}</label>
+        <div style="font-size: smaller">
+            <div class="pb-2">
+                <div class="form-check">
+                    <input class="d-none" type="checkbox" id="hs-draw-snap" [(ngModel)]="HsDrawService.snapActive"
+                        (change)="HsDrawService.toggleSnapping()" />
+                    <label for="hs-draw-snap"
+                        [ngClass]="{'hs-checkmark':HsDrawService.snapActive,'hs-uncheckmark':!HsDrawService.snapActive}">{{'DRAW.allowSnapping'
+                        | translate}}</label>
+                </div>
+                <div *ngIf="HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1"
+                    class="d-flex align-items-center card flex-row justify-content-around mx-3">
+                    <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.snapTo' | translate}}</p>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            (click)="snapLayersExpanded = !snapLayersExpanded; HsDrawService.fillDrawableLayers() "
+                            [attr.aria-expanded]="snapLayersExpanded" style=" font-size: small;">
+                            {{HsDrawService.snapLayerString()}}
+                        </button>
+                        <div class="dropdown-menu" [ngClass]="{'show': snapLayersExpanded}">
+                            <div class="d-flex align-items-center w-100 flex-column">
+                                <a class="dropdown-item" *ngFor="let layer of HsDrawService.drawableLayers"
+                                    (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer))}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-check">
+                <input class="d-none" type="checkbox" id="individualStyle" [(ngModel)]="useIndividualStyle"
+                    [ngModelOptions]="{standalone: true}" />
+                <label for="individualStyle"
+                    [ngClass]="{'hs-checkmark':useIndividualStyle,'hs-uncheckmark':!useIndividualStyle}">{{'DRAW.individualStyle'
+                    | translate}}</label>
+            </div>
         </div>
-        <div class="card" [hidden]="!useIndividualStyle">
+        <div class="card mx-3" [hidden]="!useIndividualStyle">
             <div class="card-header h5 p-1 pl-4">
                 <span>{{'DRAW.definedStyle' | translate}}</span>
                 <div class="hs-styler-selected-color-box" [ngStyle]="drawStyle()">

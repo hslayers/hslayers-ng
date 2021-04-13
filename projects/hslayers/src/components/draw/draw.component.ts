@@ -15,6 +15,7 @@ export class HsDrawComponent {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   layersExpanded: boolean;
+  snapLayersExpanded: boolean;
   drawToolbarExpanded: any;
   useIndividualStyle = true;
   opacity = 0.2;
@@ -47,6 +48,11 @@ export class HsDrawComponent {
   selectLayer(layer): void {
     this.HsDrawService.selectLayer(layer);
     this.layersExpanded = false;
+  }
+
+  changeSnapSource(layer): void {
+    this.HsDrawService.changeSnapSource(layer);
+    this.snapLayersExpanded = false;
   }
 
   updateStyle(): void {

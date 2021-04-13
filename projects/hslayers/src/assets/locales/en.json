@@ -376,7 +376,9 @@
     "saveDrawingToLayer": "Save drawing to layer",
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "allowSnapping": "Allow snapping",
+    "snapTo": "Snap to features of layer:"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
