@@ -378,7 +378,7 @@
     "serverLayers": "Server layers",
     "unsavedDrawing": "Unsaved drawing",
     "allowSnapping": "Allow snapping",
-    "snapTo": "Snap to features of layer:"
+    "snapTo": "Snap to features of layer"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
