@@ -51,12 +51,12 @@ export class HsDrawService {
   drawableLaymanLayers: Array<any> = [];
   hasSomeDrawables: boolean;
   draw: Draw;
-  modify: any;
+  modify: Modify;
 
   //Snap interaction
   snap: Snap;
   snapActive = false;
-  snapSource: any;
+  snapSource: VectorSource;
   snapLayer: Layer;
 
   /**
@@ -66,7 +66,7 @@ export class HsDrawService {
   type: string; //string of type GeometryType
   selectedLayer: Layer;
   tmpDrawLayer: any;
-  source: any;
+  source: VectorSource;
   drawActive = false;
   selectedFeatures: any = new Collection();
   onSelected: any;
