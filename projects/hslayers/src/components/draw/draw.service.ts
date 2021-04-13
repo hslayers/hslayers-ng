@@ -3,7 +3,7 @@ import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Draw, Modify} from 'ol/interaction';
+import {Draw, Modify, Snap} from 'ol/interaction';
 import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -52,6 +52,13 @@ export class HsDrawService {
   hasSomeDrawables: boolean;
   draw: Draw;
   modify: any;
+
+  //Snap interaction
+  snap: Snap;
+  snapActive = false;
+  snapSource: any;
+  snapLayer: Layer;
+
   /**
    * @type {GeometryType}
    * @memberof HsDrawService
@@ -146,6 +153,10 @@ export class HsDrawService {
     });
   }
 
+  /**
+   * selectedLayerString
+   * @returns Possibly translated name of layer selected for drawing
+   */
   selectedLayerString(): string {
     if (this.selectedLayer) {
       const title = getTitle(this.selectedLayer);
@@ -155,6 +166,19 @@ export class HsDrawService {
             getName(this.selectedLayer);
     } else {
       return this.HsLanguageService.getTranslation('DRAW.Select layer');
+    }
+  }
+  /**
+   * snapLayerString
+   * @returns Possibly translated name of layer selected for snapping
+   */
+  snapLayerString(): string {
+    if (this.snapLayer) {
+      const title = getTitle(this.snapLayer);
+      return (
+        this.HsLayerUtilsService.translateTitle(title) ||
+        getName(this.snapLayer)
+      );
     }
   }
 
@@ -363,11 +387,15 @@ export class HsDrawService {
       source: this.source,
     });
     if (this.draw) {
+      //Reactivate drawing with updated source
       this.activateDrawing({
         changeStyle: () => this.useCurrentStyle(),
         drawState: true,
         onDrawEnd: (e) => this.onDrawEnd(e),
       });
+      //Set snapLayer and snap interaction source
+      this.snapLayer = this.selectedLayer;
+      this.toggleSnapping(this.source);
     }
   }
 
@@ -612,6 +640,50 @@ export class HsDrawService {
         },
         this
       );
+
+      //Add snap interaction -  must be added after the Modify and Draw interactions
+      const snapSourceToBeUsed = this.snapSource
+        ? this.snapSource
+        : this.source;
+      this.toggleSnapping(snapSourceToBeUsed);
     });
+  }
+
+  /**
+   * Handle snap interaction changes
+   * Remove snap interaction if it already exists, recreate it if source is provided.
+   */
+  toggleSnapping(source?: VectorSource): void {
+    this.HsMapService.loaded().then((map) => {
+      this.snapSource = source ? source : this.snapSource;
+      if (this.snapActive && this.snapSource) {
+        if (this.snap) {
+          map.removeInteraction(this.snap);
+        }
+        this.snap = new Snap({
+          source: this.snapSource,
+        });
+        map.addInteraction(this.snap);
+      } else {
+        if (this.snap) {
+          map.removeInteraction(this.snap);
+          // this.snapLayer = null;
+        }
+      }
+    });
+  }
+  /**
+   * Changes layer source of snap interaction
+   */
+  changeSnapSource(layer: Layer): void {
+    const isLayerClustered = this.HsLayerUtilsService.isLayerClustered(layer);
+    let snapSourceToBeUsed;
+    if (isLayerClustered) {
+      snapSourceToBeUsed = layer.getSource().getSource();
+    } else {
+      snapSourceToBeUsed = layer.getSource();
+    }
+    this.snapLayer = layer;
+    this.toggleSnapping(snapSourceToBeUsed);
   }
 }

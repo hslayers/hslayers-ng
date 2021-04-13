@@ -376,7 +376,9 @@
     "saveDrawingToLayer": "Uložit do vrstvy",
     "Select layer": "Vybrat vrstvu",
     "serverLayers": "Servrové vrstvy",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "snapTo": "Přichytávat na vrstvu:",
+    "allowSnapping": "Povolit přichytávání"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
