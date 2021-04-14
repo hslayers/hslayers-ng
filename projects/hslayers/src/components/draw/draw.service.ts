@@ -459,6 +459,7 @@ export class HsDrawService {
       this.type = null;
       this.deactivateDrawing();
       this.selectedLayer = null;
+      this.snapSource = null;
     } else if (drawables.length > 0) {
       if (
         !drawables.some(
