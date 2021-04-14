@@ -238,9 +238,9 @@ export class HsLayerManagerService {
       this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
     }
 
-    if (layer.getVisible() && getBase(layer)) {
-      this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
-    }
+    // if (layer.getVisible() && getBase(layer)) {
+    //   this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
+    // }
 
     this.sortFoldersByZ();
     if (!suspendEvents) {
@@ -557,7 +557,10 @@ export class HsLayerManagerService {
   changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
       if (this.data.baselayersVisible == true) {
-        if ($event && this.data.baselayer != layer.title) {
+        //*NOTE Currently breaking base layer visibility when loading from composition with custom base layer to
+        //other compositions without any base layer
+        if ($event) {
+          //&& this.data.baselayer != layer.title
           for (const baseLayer of this.data.baselayers) {
             if (baseLayer.layer) {
               baseLayer.layer.setVisible(false);
@@ -573,7 +576,7 @@ export class HsLayerManagerService {
               baseLayer.layer.setVisible(true);
               baseLayer.visible = true;
               baseLayer.active = true;
-              this.data.baselayer = layer.title;
+              //this.data.baselayer = layer.title;
               break;
             }
           }
@@ -594,7 +597,7 @@ export class HsLayerManagerService {
             } else {
               baseLayer.layer.setVisible(true);
               baseLayer.visible = true;
-              this.data.baselayer = layer.title;
+              //this.data.baselayer = layer.title;
             }
           }
         } else {
