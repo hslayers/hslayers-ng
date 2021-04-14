@@ -374,14 +374,10 @@ export class HsDrawService {
     if (this.selectedLayer.getSource === undefined) {
       return;
     }
-    const isLayerClustered = this.HsLayerUtilsService.isLayerClustered(
-      this.selectedLayer
-    );
-    if (isLayerClustered) {
-      this.source = this.selectedLayer.getSource().getSource();
-    } else {
-      this.source = this.selectedLayer.getSource();
-    }
+    this.source = this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)
+      ? this.selectedLayer.getSource().getSource()
+      : this.selectedLayer.getSource();
+
     this.drawingLayerChanges.next({
       layer: this.selectedLayer,
       source: this.source,
@@ -656,19 +652,15 @@ export class HsDrawService {
   toggleSnapping(source?: VectorSource): void {
     this.HsMapService.loaded().then((map) => {
       this.snapSource = source ? source : this.snapSource;
+      if (this.snap) {
+        map.removeInteraction(this.snap);
+        // this.snapLayer = null;
+      }
       if (this.snapActive && this.snapSource) {
-        if (this.snap) {
-          map.removeInteraction(this.snap);
-        }
         this.snap = new Snap({
           source: this.snapSource,
         });
         map.addInteraction(this.snap);
-      } else {
-        if (this.snap) {
-          map.removeInteraction(this.snap);
-          // this.snapLayer = null;
-        }
       }
     });
   }
@@ -676,13 +668,10 @@ export class HsDrawService {
    * Changes layer source of snap interaction
    */
   changeSnapSource(layer: Layer): void {
-    const isLayerClustered = this.HsLayerUtilsService.isLayerClustered(layer);
-    let snapSourceToBeUsed;
-    if (isLayerClustered) {
-      snapSourceToBeUsed = layer.getSource().getSource();
-    } else {
-      snapSourceToBeUsed = layer.getSource();
-    }
+    //isLayerClustered
+    const snapSourceToBeUsed = this.HsLayerUtilsService.isLayerClustered(layer)
+      ? layer.getSource().getSource()
+      : layer.getSource();
     this.snapLayer = layer;
     this.toggleSnapping(snapSourceToBeUsed);
   }
