@@ -256,8 +256,13 @@ export class HsSidebarService {
       }, 550);
     });
 
-    this.HsEventBusService.layoutResizes.subscribe(() => {
+    this.HsEventBusService.layoutLoads.subscribe(() => {
       this.setButtonVisibility();
+
+      //After initial run update sidebar with each layoutResizes event
+      this.HsEventBusService.layoutResizes.subscribe(() => {
+        this.setButtonVisibility();
+      });
     });
   }
 

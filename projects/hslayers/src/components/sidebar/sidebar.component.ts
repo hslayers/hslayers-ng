@@ -34,8 +34,6 @@ export class HsSidebarComponent implements OnInit {
       this.HsSidebarService.setPanelState(this.HsSidebarService.buttons);
     });
     this.HsSidebarService.sidebarLoad.next();
-
-    this.HsSidebarService.setButtonVisibility();
   }
 
   /**
