@@ -162,4 +162,9 @@ export class HsCompositionsComponent {
     this.clearFilters();
     this.loadFilteredCompositions();
   }
+
+  sortByValueChanged(sortBy: any): void {
+    this.HsCompositionsCatalogueService.data.sortBy = sortBy;
+    this.loadFilteredCompositions();
+  }
 }

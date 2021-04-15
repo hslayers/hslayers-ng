@@ -39,7 +39,7 @@ export class HsCompositionsCatalogueService {
   data: any = {
     query: {editable: false, title: ''},
     keywords: KEYWORDS,
-    sortBy: SORTBYVALUES[0].name,
+    sortBy: SORTBYVALUES[0],
     type: TYPES[0].name,
     themes: INSPIRETHEMES,
   };
@@ -146,6 +146,7 @@ export class HsCompositionsCatalogueService {
   /**
    * Load list of compositions for all endpoints
    * @param createRequestLimits If true, create request limits for endpoints
+   * @param suspendLimitCalculation
    */
   loadCompositions(suspendLimitCalculation?: boolean): void {
     if (this.loadCompositionsQuery) {
@@ -205,7 +206,7 @@ export class HsCompositionsCatalogueService {
   loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
     return this.HsCompositionsService.loadCompositions(ep, {
       query: this.data.query,
-      sortBy: this.data.sortBy,
+      sortBy: this.data.sortBy.value,
       filterExtent: this.filterByExtent,
       keywords: this.data.keywords,
       themes: this.data.themes,
@@ -286,6 +287,7 @@ export class HsCompositionsCatalogueService {
   /**
    * @param responseArray Array of compositions data
    *  Filters compositions from responseArray with the same id in already loaded compostionEntries array
+   * @param endpoint
    */
   filterDuplicates(endpoint: HsEndpoint): void {
     if (!this.arrayContainsData(endpoint.compositions)) {
@@ -319,7 +321,7 @@ export class HsCompositionsCatalogueService {
     this.filteredEndpoints.forEach((ep) => (ep.compositions = []));
   }
   /**
-
+   
    * Evaluates if array is defined and contains any data
    * @param arr
    */
@@ -394,9 +396,8 @@ export class HsCompositionsCatalogueService {
   clearFilters(): void {
     this.filtersActive = false;
     this.data.query.title = '';
-    this.data.sortBy = SORTBYVALUES[0].name;
+    this.data.sortBy = SORTBYVALUES[0];
     this.data.type = TYPES[0].name;
-    this.data.theme = INSPIRETHEMES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
     this.data.themes.forEach((th) => (th.selected = false));
     this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
