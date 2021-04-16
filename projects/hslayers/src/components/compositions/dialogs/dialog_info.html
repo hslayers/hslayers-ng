@@ -30,7 +30,7 @@
                     <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate}}</b></div>
                     <div class="col-md-9"><img src="{{data.info.thumbnail}}"></div>
                 </div>
-                <div class="row" *ngIf="data.info.url">
+                <div class="row" *ngIf="data.info.url && data.info">
                     <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>
                     <div class="col-md-9">{{data.info.url}}</div>
                 </div>
@@ -49,22 +49,22 @@
                                 <div class="col-md-9">{{layer.title}}</div>
                             </div>
                             <div class="row" *ngIf="!first">
-                                <div class="col-md-offset-3 col-md-9">{{layer.title}}</div>
+                                <div class="offset-md-3 col-md-9">{{layer.title}}</div>
                             </div>
                     </div>
                 <br>
                 </div>
-                <div *ngIf="data.info.metadata">
+                <!-- <div *ngIf="data.info.metadata">
                     <div class="row">
                          <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translate}}</b></div>
                     </div>
                      <div *ngFor="let metadata of data.info.metadata | keyvalue">
                          <div class="row" *ngIf="metadata.value">
                             <div class="col-md-3"><b>{{HsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
-                            <div class="col-md-9">{{metadata.value}}</div>
+                            <div class="col-md-9" style="overflow-wrap: break-word">{{metadata.value}}</div>
                          </div>
                      </div>
-                </div>
+                </div> -->
                 <div class="row" *ngIf="data.info.contactAddress || data.info.contactPersonPrimary">
                     <div class="col"><b>{{'COMMON.contactInformation' | translate}}</b></div>
                 </div>
@@ -86,6 +86,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a  target="_blank" [href]="data.info.metadata.record_url" class="btn btn-primary" (click)="close()">See full metadata record <i class="icon icon-opennewwindow" ></i></a>
                 <button type="button" class="btn btn-secondary" (click)="close()"
                     data-dismiss="modal">{{'COMMON.close' | translate}}</button>
             </div>

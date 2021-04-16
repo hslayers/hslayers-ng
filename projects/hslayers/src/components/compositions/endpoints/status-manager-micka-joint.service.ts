@@ -93,6 +93,11 @@ export class HsCompositionsStatusManagerMickaJointService {
       info = await this.HsCompositionsParserService.loadInfo(url);
       //TODO: find out if this is even available
       // info.thumbnail = this.HsUtilsService.proxify(composition.thumbnail);
+      info.metadata = {
+        record_url:
+          composition.endpoint.url.replace('csw', 'record/basic/') +
+          composition.id,
+      };
       return info;
     } catch (e) {
       this.HsToastService.createToastPopupMessage(
