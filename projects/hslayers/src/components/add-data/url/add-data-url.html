@@ -1,9 +1,14 @@
 <div class="d-flex justify-content-center flex-column align-items-center m-3">
-    <div class="btn-group w-75 mt-3 row">
-        <button *ngFor="let type of types" [ngClass]="{'active': type.id == typeSelected }" style="width: 33% !important;"
-            (click)="selectType(type.id)" class="btn btn-light btn-outline-secondary btn-sm rounded-0 mt-1 col-6 col-sm-4">
-            {{type.text}}</button>
+    <div class="container ">
+        <div class="row justify-content-center">
+            <button *ngFor="let type of types" [ngClass]="{'active': type.id == typeSelected }"
+                (click)="selectType(type.id)" style="margin: 3px;"
+                class="btn btn-light btn-outline-secondary rounded btn-sm mt-1 col-sm-3">
+                {{type.text}}
+            </button>
+        </div>
     </div>
+
     <div class="w-100 pt-3">
         <hs-add-data-url-arcgis *ngIf="typeSelected == 'arcgis'"></hs-add-data-url-arcgis>
         <hs-add-data-url-wfs *ngIf="typeSelected == 'wfs'"></hs-add-data-url-wfs>
