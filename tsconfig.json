@@ -21,6 +21,7 @@
       "@angular/*": [ "node_modules/@angular/*" ],
       "rxjs/*": [ "node_modules/rxjs/*" ],
       "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
+      "ol/*": ["node_modules/ol/*"],
       "hslayers-cesium": ["projects/hslayers-cesium/src/public-api.ts"]
     }
   },
