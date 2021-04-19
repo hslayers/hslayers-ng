@@ -1,8 +1,10 @@
 import BaseLayer from 'ol/layer/Base';
 import View from 'ol/View';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Themes} from './components/layout/themes/theme';
 
+@Injectable()
 export class HsConfig {
   cesiumTime?: any;
   componentsEnabled?: any = {
