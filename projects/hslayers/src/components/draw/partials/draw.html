@@ -25,24 +25,23 @@
 
             <div class="flex-row w-100 m-auto justify-content-center align-items-center" style="display: flex;">
                 <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.drawingTo' | translate}}</p>
-                <div class="dropdown">
-                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle" data-toggle="dropdown"
+                <div class="dropdown" style="max-width: 50%;">
+                    <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100" data-toggle="dropdown"
                         aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsDrawService.fillDrawableLayers() "
                         [attr.aria-expanded]="layersExpanded"
                         [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,
                         'dropdown-toggle' : HsDrawService.hasSomeDrawables }" [disabled]="!HsDrawService.hasSomeDrawables">
-                        {{HsDrawService.selectedLayerString()}}
+                        <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
                     </button>
-                    <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
+                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': layersExpanded}" style=" transform: translateX(25%); width: 15em;">
                         <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' | translate}}</label>
-                            <a class="dropdown-item"  *ngFor="let layer of HsDrawService.drawableLayers"
+                            <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLayers" data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer))}}"
                                 (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer))}}</a>
                         </div>
-                        <div class="d-flex align-items-center w-100 flex-column"
-                            *ngIf="HsDrawService.drawableLaymanLayers.length > 0">
+                        <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLaymanLayers.length > 0">
                             <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
-                            <a class="dropdown-item"  *ngFor="let layer of HsDrawService.drawableLaymanLayers"
+                            <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLaymanLayers" data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
                                 (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(layer.title)}}</a>
                         </div>
                     </div>
@@ -96,16 +95,16 @@
                 <div *ngIf="HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1"
                     class="d-flex align-items-center card flex-row justify-content-around mx-3">
                     <p class="m-0 p-0" style="color: var(--primary);">{{'DRAW.snapTo' | translate}}:</p>
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle"
+                    <div class="dropdown w-50 d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button dropdown-toggle d-flex align-items-center mw-100"
                             data-toggle="dropdown" aria-haspopup="true"
                             (click)="snapLayersExpanded = !snapLayersExpanded; HsDrawService.fillDrawableLayers() "
                             [attr.aria-expanded]="snapLayersExpanded" style=" font-size: small;">
-                            {{HsDrawService.snapLayerString()}}
+                            <div class="mw-100 text-truncate">{{HsDrawService.snapLayerString()}}</div>
                         </button>
-                        <div class="dropdown-menu" [ngClass]="{'show': snapLayersExpanded}">
+                        <div class="dropdown-menu  dropdown-menu-right" [ngClass]="{'show': snapLayersExpanded}" style="max-width: 150%;">
                             <div class="d-flex align-items-center w-100 flex-column">
-                                <a class="dropdown-item" *ngFor="let layer of HsDrawService.drawableLayers"
+                                <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLayers" data-toggle="tooltip" title="{{HsLayerUtilsService.translateTitle(getTitle(layer))}}"
                                     (click)="changeSnapSource(layer)">{{HsLayerUtilsService.translateTitle(getTitle(layer))}}</a>
                             </div>
                         </div>
