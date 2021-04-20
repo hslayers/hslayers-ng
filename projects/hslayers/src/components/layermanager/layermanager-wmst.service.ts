@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
@@ -110,39 +109,39 @@ export class HsLayerManagerWmstService {
    * @returns True for WMS layer with time support
    */
   layerIsWmsT(layer: HsLayerDescriptor | Layer): boolean {
-    if (layer?.layer) {
-      // case of HsLayerDescriptor, Layer would have 'sublayers' property instead
-      layer = layer.layer;
-    }
-    if (!layer) {
+    const olLayer: Layer = layer?.layer ? layer.layer : layer;
+    if (!olLayer) {
       return false;
+    }
+    if (layer.time) {
+      return true;
     }
     /*
      * 'dimensions_time' is deprecated
      * backwards compatibility with HSL < 3.0
      */
     if (
-      layer.get('dimensions_time') &&
-      Array.isArray(layer.get('dimensions_time').timeInterval)
+      olLayer.get('dimensions_time') &&
+      Array.isArray(olLayer.get('dimensions_time').timeInterval)
     ) {
       this.hsLog.warn(
         '"dimensions_time" is deprecated, use "dimensions" param with "time" object instead'
       );
-      const currentDimensions = getDimensions(layer);
+      const currentDimensions = getDimensions(olLayer);
       const newTimeDimension = {
         label: 'time',
-        default: layer.get('dimensions_time').value,
+        default: olLayer.get('dimensions_time').value,
       };
       if (!currentDimensions) {
-        setDimensions(layer, {'time': newTimeDimension});
+        setDimensions(olLayer, {'time': newTimeDimension});
       } else {
         setDimensions(
-          layer,
+          olLayer,
           Object.assign(currentDimensions, {'time': newTimeDimension})
         );
       }
     }
-    if (getDimensions(layer)?.time) {
+    if (getDimensions(olLayer)?.time) {
       return true;
     }
     return false;
@@ -246,12 +245,14 @@ export class HsLayerManagerWmstService {
       return;
     }
     const dimensions = getDimensions(currentLayer.layer);
-    const dimensionDesc = new HsDimensionDescriptor(
-      'time',
-      dimensions['time'] || dimensions['TIME']
-    );
-    dimensionDesc.modelValue = newTime;
-    this.hsDimensionService.dimensionChanged(dimensionDesc);
+    if (dimensions) {
+      const dimensionDesc = new HsDimensionDescriptor(
+        'time',
+        dimensions['time'] || dimensions['TIME']
+      );
+      dimensionDesc.modelValue = newTime;
+      this.hsDimensionService.dimensionChanged(dimensionDesc);
+    }
     this.HsEventBusService.layerTimeChanges.next({
       layer: currentLayer,
       time: newTime,
