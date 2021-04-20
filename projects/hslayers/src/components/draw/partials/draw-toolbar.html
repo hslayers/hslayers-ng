@@ -10,7 +10,7 @@
             (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers() "
             [attr.aria-expanded]="layersExpanded" style="max-width: 125px; overflow: hidden; font-size: smaller; z-index: 2;"
             [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
-            <div>{{HsDrawService.selectedLayerString()}}</div>
+            <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
         </button>
         <div class="dropdown-menu" [ngClass]="{'show': layersExpanded}">
             <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.drawableLayers.length > 0">
