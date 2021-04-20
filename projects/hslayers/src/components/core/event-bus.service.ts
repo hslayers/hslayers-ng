@@ -1,10 +1,10 @@
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
-
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
 import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
+import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -44,7 +44,10 @@ export class HsEventBusService {
    * Fires when time is initially set up in HsLayerDescriptor
    * Used to set up time correctly in layermanager-time-editor
    */
-  layerTimeChanges: Subject<any> = new Subject();
+  layerTimeChanges: Subject<{
+    layer: HsLayerDescriptor;
+    time: string;
+  }> = new Subject();
   /**
    * Fires when user enables layer time synchronization in the UI
    * Used to synchronize time in PARAMS across WM(T)S-t layers

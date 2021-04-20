@@ -34,15 +34,9 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
     public hsLayoutService: HsLayoutService,
     private hsConfig: HsConfig
   ) {
-    this.hsEventBusService.layerTimeChanges.subscribe(({layer, _}) => {
+    this.hsEventBusService.layerTimeChanges.subscribe(({layer, time}) => {
       if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
-        this.availableTimes = layer.time.timePoints;
-        this.setDateTimeFormatting();
-        this.setCurrentTimeIfAvailable(this.layer.time.default);
-        if (!this.currentTimeDefined()) {
-          this.currentTime = this.availableTimes[0];
-          this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
-        }
+        this.fillAvailableTimes(layer);
       }
     });
     this.hsEventBusService.layerTimeSynchronizations.subscribe(
@@ -59,9 +53,26 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
     );
   }
 
+  /**
+   * This gets called from subscriber and also OnInit because
+   * subscriber could have been set up after the event was broadcasted
+   */
+  private fillAvailableTimes(layer: HsLayerDescriptor) {
+    this.availableTimes = layer.time.timePoints;
+    this.setDateTimeFormatting();
+    this.setCurrentTimeIfAvailable(this.layer.time.default);
+    if (!this.currentTimeDefined()) {
+      this.currentTime = this.availableTimes[0];
+      this.currentTimeIdx = this.availableTimes.indexOf(this.currentTime);
+    }
+  }
+
   ngOnInit(): void {
     this.selectVisible = false;
     this.timesInSync = false;
+    if (this.layer.time) {
+      this.fillAvailableTimes(this.layer);
+    }
   }
 
   currentTimeDefined(): boolean {
