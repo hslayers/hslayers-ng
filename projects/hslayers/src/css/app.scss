@@ -1553,6 +1553,4 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 	input[type="checkbox"].checkbox-lg {
 		transform: scale(1.3);
 	}
-
-	hs-add-data-gap-container > * + * { margin-left: 8rem;}
 }

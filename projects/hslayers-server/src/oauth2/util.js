@@ -57,7 +57,8 @@ exports.handleProxyRes = (proxyRes, req, res) => {
   });
   proxyRes.on('end', function () {
     if (this.headers["content-type"] == "text/xml" || this.headers["content-type"] == "application/json") {
-      let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/'), "g");
+      let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/') + '(?!/.*/record/basic)', "g");
+      console.log(repl);
       let replWith = process.env.OAUTH2_CALLBACK_URL.replace("/callback", "").trimEnd('/');
       body = Buffer.concat(body).toString().replace(repl, replWith);
       res.end(body);
