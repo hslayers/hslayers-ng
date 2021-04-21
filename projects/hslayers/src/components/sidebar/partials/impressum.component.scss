@@ -1,0 +1,15 @@
+.hs-impressum .hs-logo {
+    max-width: 100%;
+    padding-left: 5em;
+    padding-right: 5em;
+}
+
+.hs-impressum .hs-logo img {
+    width: 100%;
+}
+.hs-panelspace:not(.labels) .hs-impressum {
+    display: none;
+}
+.hs-content-wrapper:not(.hs-open) .hs-impressum {
+    display: none;
+}
