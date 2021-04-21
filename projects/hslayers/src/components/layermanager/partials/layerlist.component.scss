@@ -1,0 +1,26 @@
+i.hs-lm-warning-scale {
+    color: #f0ad4e;
+    padding: 0.0625em 0.3125em;
+    top: 0.125em;
+    cursor: default;
+}
+
+i.hs-lm-warning-error {
+    position: static;
+    cursor: default;
+}
+
+i.hs-lm-queryable {
+    cursor: default;
+    color: #337ab7;
+    padding: 0.0625em 0.3125em;
+    border-radius: 3px;
+    line-height: 1.5;
+    font-size: 12px;
+    top: 2px;
+}
+
+.exclusive .hs-checkmark::before,
+.exclusive .hs-uncheckmark::before{
+    border-radius: 50%;
+}

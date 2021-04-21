@@ -12,7 +12,7 @@
             <br>
             <div class="form-group">
                 <label for="permalink-link" class="control-label">{{'PERMALINK.permalink' | translate}}</label><br />
-                <a [href]="HsShareService.data.permalinkUrl" target="_blank"
+                <a [href]="HsShareService.data.permalinkUrl" target="_blank"  style="overflow-x: hidden;"
                     id="permalink-link">{{HsShareService.data.permalinkUrl}}</a>
                 <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translate}}</sub></p>
             </div>
