@@ -112,10 +112,6 @@ app.use(`/geoserver`,
   }),
 );
 
-app.use(`/micka`, createProxyMiddleware({
-  target: process.env.LAYMAN_BASEURL, changeOrigin: true,
-}))
-
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
     authnUtil.checkTokenExpiration(req, strategy.name);
