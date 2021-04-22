@@ -345,6 +345,7 @@ export class HsDrawService {
     ) {
       setTimeout(() => {
         this.HsLayoutService.setMainPanel('info');
+        this.HsQueryBaseService.clearData('features');
         this.HsQueryVectorService.selector.getFeatures().push(e.feature);
         this.HsQueryVectorService.createFeatureAttributeList();
       });
