@@ -267,8 +267,18 @@ export class HsMapService {
   }
 
   setDefaultView = function (e) {
-    this.map.getView().setCenter(this.HsConfig.default_view.getCenter());
-    this.map.getView().setZoom(this.HsConfig.default_view.getZoom());
+    this.map
+      .getView()
+      .setCenter(
+        this.HsConfig.composition_view?.getCenter() ||
+          this.HsConfig.default_view.getCenter()
+      );
+    this.map
+      .getView()
+      .setZoom(
+        this.HsConfig.composition_view?.getZoom() ||
+          this.HsConfig.default_view.getZoom()
+      );
   };
   /**
    * @param e

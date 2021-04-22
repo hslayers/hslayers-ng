@@ -53,6 +53,7 @@ export class HsConfig {
   defaultDrawLayerPath?: string;
   default_layers?: Array<BaseLayer>;
   default_view?: View;
+  composition_view?: View;
   panelsEnabled?: {
     legend?: boolean;
     measure?: boolean;
