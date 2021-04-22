@@ -2,6 +2,7 @@ import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
+import {GeoJSON} from 'ol/format';
 import {
   ImageArcGISRest,
   ImageStatic,
@@ -418,6 +419,9 @@ export class HsCompositionsLayerParserService {
         layer = this.createSparqlLayer(lyr_def);
         break;
       default:
+        const features = lyr_def.features
+          ? new GeoJSON().readFeatures(lyr_def.features)
+          : undefined;
         layer = this.HsAddDataVectorService.createVectorLayer(
           '',
           undefined,
@@ -431,7 +435,7 @@ export class HsCompositionsLayerParserService {
             path: lyr_def.path,
             fromComposition: lyr_def.fromComposition,
             style: lyr_def.style,
-            features: lyr_def.features,
+            features,
           }
         );
     }

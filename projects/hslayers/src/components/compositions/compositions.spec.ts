@@ -177,10 +177,16 @@ describe('compositions', () => {
 
   it('should load composition from json', function () {
     loadComposition(component);
-    expect(mockedMapService.map.getLayers().getLength()).toBe(4);
+    expect(mockedMapService.map.getLayers().getLength()).toBe(6);
     expect(getTitle(mockedMapService.map.getLayers().item(0))).toBe(
       'Measurement sketches'
     );
+    expect(
+      mockedMapService.map.getLayers().item(3).getSource().getFeatures().length
+    ).toBe(1);
+    expect(
+      mockedMapService.map.getLayers().item(4).getSource().getFeatures().length
+    ).toBe(1);
   });
 
   it('if should parse composition layer style', function () {

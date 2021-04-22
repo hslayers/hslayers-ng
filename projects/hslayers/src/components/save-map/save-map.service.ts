@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Circle, Icon, Style} from 'ol/style';
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {
   ImageArcGISRest,
@@ -418,7 +419,7 @@ export class HsSaveMapService {
         delete json.features;
       } else {
         try {
-          json.features = this.serializeFeatures(src.getFeatures());
+          json.features = this.getFeaturesJson(src.getFeatures());
         } catch (ex) {
           //Do nothing
         }
@@ -436,19 +437,15 @@ export class HsSaveMapService {
   /**
    * Convert feature array to GeoJSON string
    *
-   * @memberof HsSaveMapService
-   * @function serializeFeatures
-   * @param {Array} features Array of features
-   * @return {string} GeoJSON string
+   * @param features - Array of features
+   * @returns GeoJSON
    */
-  serializeFeatures(features) {
+  getFeaturesJson(features: Feature[]): any {
     const f = new GeoJSON();
-    return f.writeFeatures(features, {
+    const featureProjection = this.HsMapService.getCurrentProj().getCode();
+    return f.writeFeatureObject(features, {
       dataProjection: 'EPSG:4326',
-      featureProjection: this.HsMapService.map
-        .getView()
-        .getProjection()
-        .getCode(),
+      featureProjection,
     });
   }
 
