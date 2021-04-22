@@ -50,31 +50,29 @@ function rainbow(numOfSteps: number, step: number, opacity) {
 
 /**
  * @param feature_object
- * @param options
+ * @param optionsCategoryField
  * @param feature
  * @param category_map
  * @param category_id
  */
 function registerCategoryForStatistics(
   feature_object,
-  options,
+  optionsCategoryField,
   feature,
   category_map,
   category_id
 ) {
-  if (feature_object[options.category_field]) {
+  if (feature_object[optionsCategoryField]) {
     if (
-      typeof category_map[feature_object[options.category_field]] ===
-      'undefined'
+      typeof category_map[feature_object[optionsCategoryField]] === 'undefined'
     ) {
-      category_map[feature_object[options.category_field]] = {
+      category_map[feature_object[optionsCategoryField]] = {
         id: category_id,
-        name: feature_object[options.category_field],
+        name: feature_object[optionsCategoryField],
       };
       category_id++;
     }
-    feature.category_id =
-      category_map[feature_object[options.category_field]].id;
+    feature.category_id = category_map[feature_object[optionsCategoryField]].id;
   }
 }
 
@@ -89,10 +87,11 @@ function registerCategoryForStatistics(
 function loadFeatures(
   objects,
   src,
-  options,
+  optionsCategoryField,
   occupied_xy,
   category_map,
-  category_id
+  category_id,
+  proj
 ) {
   const features = [];
   const format = new WKT();
@@ -118,7 +117,7 @@ function loadFeatures(
         const feature = new Feature(objects[key]);
         registerCategoryForStatistics(
           objects[key],
-          options,
+          optionsCategoryField,
           feature,
           category_map,
           category_id
@@ -132,7 +131,7 @@ function loadFeatures(
         objects[key]['http://www.opengis.net/ont/geosparql#asWKT'].toUpperCase()
       );
       objects[key].geometry = g_feature.getGeometry();
-      objects[key].geometry.transform('EPSG:4326', options.projection);
+      objects[key].geometry.transform('EPSG:4326', proj);
       delete objects[key]['http://www.opengis.net/ont/geosparql#asWKT'];
       const coord = objects[key].geometry.getCoordinates();
 
@@ -142,7 +141,7 @@ function loadFeatures(
       const feature = new Feature(objects[key]);
       registerCategoryForStatistics(
         objects[key],
-        options,
+        optionsCategoryField,
         feature,
         category_map,
         category_id
@@ -169,36 +168,46 @@ function loadFeatures(
 }
 
 /**
- * @param options
+ * @param extend_with_attribs
  * @param objects
  */
-function extendAttributes(options, objects) {
-  if (typeof options.extend_with_attribs != 'undefined') {
-    for (const attr_i in options.extend_with_attribs) {
+function extendAttributes(extend_with_attribs, objects) {
+  if (typeof extend_with_attribs != 'undefined') {
+    for (const attr_i in extend_with_attribs) {
       for (const i in objects) {
-        if (
-          typeof objects[i][options.extend_with_attribs[attr_i]] == 'undefined'
-        ) {
-          objects[i][options.extend_with_attribs[attr_i]] = '';
+        if (typeof objects[i][extend_with_attribs[attr_i]] == 'undefined') {
+          objects[i][extend_with_attribs[attr_i]] = '';
         }
       }
     }
   }
 }
 
-type SparqlOptions = {
-  clear_on_move?: boolean;
-  hsproxy?: boolean;
-  geom_attribute?: string;
-  url: string;
-  updates_url?: string;
+export type SparqlOptions = {
   category?: string;
-  strategy?;
+  category_field?;
+  clear_on_move?: boolean;
+  endpointUrl?: string;
+  endpointOptions?;
+  extend_with_attribs?;
+  geom_attribute?: string;
+  hsproxy?: boolean;
+  optimizeForVirtuoso?: boolean;
   projection;
+  query?: string;
+  strategy?;
+  /**
+   * @deprecated
+   * Kept only for basic backwards compatibility. You should split your 'url' param into
+   * 'endpointUrl','query' and possibly 'endpointOptions', if needed.
+   * TODO: remove in 5.0
+   */
+  url?: string;
+  updates_url?: string;
 };
 
 /**
- * Provides a source of features from SPAQRL endpoint
+ * Provides a source of features from SPARQL endpoint
  */
 export class SparqlJson extends Vector {
   category_map = {};
@@ -208,30 +217,37 @@ export class SparqlJson extends Vector {
   loadTotal: number;
   occupied_xy = {};
   /**
-   * @param options - Only 'url' and 'projection' are mandatory
+   * Only 'projection' and either 'url' or 'endpointUrl' + 'query' are mandatory
    */
-  constructor(options: SparqlOptions) {
+  constructor({
+    category,
+    category_field,
+    clear_on_move,
+    endpointUrl,
+    endpointOptions,
+    extend_with_attribs,
+    geom_attribute,
+    hsproxy = false,
+    optimizeForVirtuoso = false,
+    projection,
+    query,
+    strategy,
+    url,
+    updates_url,
+  }: SparqlOptions) {
     super({
       format: new GeoJSON(),
       loader: async function (extent, resolution, projection) {
         this.set('loaded', false);
-        if (
-          typeof options.clear_on_move !== 'undefined' &&
-          options.clear_on_move
-        ) {
-          this.clear();
-        }
-        if (typeof options.hsproxy === 'undefined') {
-          options.hsproxy = false;
-        }
-        if (typeof options.geom_attribute === 'undefined') {
-          options.geom_attribute =
-            'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
-        }
-        if (options.url == '') {
+        if (!url && !endpointUrl) {
           return;
         }
-        let p = options.url;
+        if (typeof clear_on_move !== 'undefined' && clear_on_move) {
+          this.clear();
+        }
+        if (typeof geom_attribute === 'undefined') {
+          geom_attribute = 'bif:st_point(xsd:decimal(?lon), xsd:decimal(?lat))';
+        }
         let first_pair = [extent[0], extent[1]];
         let second_pair = [extent[2], extent[3]];
         first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
@@ -259,11 +275,11 @@ export class SparqlJson extends Vector {
             ' ' +
             extent[1] +
             '))"^^geo:wktLiteral, ' +
-            options.geom_attribute +
+            geom_attribute +
             ')).'
         );
-        const tmp = p.split('&query=');
-        p =
+        const tmp = url.split('&query=');
+        url =
           tmp[0] +
           '&query=' +
           encodeURIComponent(
@@ -271,18 +287,18 @@ export class SparqlJson extends Vector {
               'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
           ) +
           tmp[1];
-        p = p.replace(/<extent>/g, s_extent);
-        if (options.hsproxy) {
-          p =
+        url = url.replace(/<extent>/g, s_extent);
+        if (hsproxy) {
+          url =
             '/cgi-bin/hsproxy.cgi?toEncoding=utf-8&url=' +
-            encodeURIComponent(p);
+            encodeURIComponent(url);
         }
         if (console && typeof this.get('geoname') !== 'undefined') {
           console.log('Get ', this.get('geoname'));
         }
         this.loadCounter += 1;
         this.loadTotal += 1;
-        const response = await fetch(p, {
+        const response = await fetch(url, {
           method: 'GET',
         });
         const data = await response.json();
@@ -294,8 +310,8 @@ export class SparqlJson extends Vector {
           );
         }*/
         this.loadCounter -= 1;
-        if (options.updates_url) {
-          let updates_query = options.updates_url;
+        if (updates_url) {
+          let updates_query = updates_url;
           const tmp = updates_query.split('&query=');
           updates_query =
             tmp[0] +
@@ -348,13 +364,12 @@ export class SparqlJson extends Vector {
             }
             objects[item.o.value][attribute_name] = item.value.value;
           }
-          if (typeof options.category != 'undefined') {
+          if (typeof category != 'undefined') {
             for (const i in objects) {
-              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-                options.category;
+              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = category;
             }
           }
-          extendAttributes(options, objects);
+          extendAttributes(extend_with_attribs, objects);
           if (console) {
             console.log('Add features', objects);
           }
@@ -362,10 +377,11 @@ export class SparqlJson extends Vector {
             loadFeatures(
               objects,
               this,
-              options,
+              category_field,
               this.occupied_xy,
               this.category_map,
-              this.category_id
+              this.category_id,
+              projection
             )
           );
           this.loadCounter -= 1;
@@ -384,21 +400,21 @@ export class SparqlJson extends Vector {
             }
             objects[b.o.value][b.p.value] = b.s.value;
           }
-          if (typeof options.category !== 'undefined') {
+          if (typeof category !== 'undefined') {
             for (const i in objects) {
-              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] =
-                options.category;
+              objects[i]['http://www.sdi4apps.eu/poi/#mainCategory'] = category;
             }
           }
-          extendAttributes(options, objects);
+          extendAttributes(extend_with_attribs, objects);
           this.addFeatures(
             loadFeatures(
               objects,
               this,
-              options,
+              category_field,
               this.occupied_xy,
               this.category_map,
-              this.category_id
+              this.category_id,
+              projection
             )
           );
           this.styleAble = true;
@@ -412,7 +428,7 @@ export class SparqlJson extends Vector {
         }
       },
       strategy:
-        options.strategy ||
+        strategy ??
         function (extent, resolution) {
           const tmp = [extent[0], extent[1], extent[2], extent[3]];
           if (extent[2] - extent[0] > 65735) {
@@ -423,7 +439,7 @@ export class SparqlJson extends Vector {
           }
           return [tmp];
         },
-      projection: options.projection,
+      projection: projection,
     });
     this.loadCounter = 0;
     this.loadTotal = 0;
