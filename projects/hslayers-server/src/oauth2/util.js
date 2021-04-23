@@ -58,9 +58,17 @@ exports.handleProxyRes = (proxyRes, req, res) => {
   proxyRes.on('end', function () {
     if (this.headers["content-type"] == "text/xml" || this.headers["content-type"] == "application/json") {
       let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/') + '(?!/.*/record/basic)', "g");
-      console.log(repl);
       let replWith = process.env.OAUTH2_CALLBACK_URL.replace("/callback", "").trimEnd('/');
       body = Buffer.concat(body).toString().replace(repl, replWith);
+
+      /* 
+        /rest/layers
+        X-Total-Count header includes total number of layers available from the request
+      */
+      if(this.headers['x-total-count']){
+        res.setHeader('x-total-count', this.headers['x-total-count']);
+        res.setHeader('Access-Control-Expose-Headers', 'x-total-count');
+      }
       res.end(body);
     }
     else {

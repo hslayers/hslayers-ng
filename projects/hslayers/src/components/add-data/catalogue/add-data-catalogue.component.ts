@@ -13,6 +13,7 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
+import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
@@ -31,7 +32,7 @@ export class HsAddDataCatalogueComponent {
   filterTypeMenu;
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   dataTypes = ['all', 'service', 'dataset'];
-  sortbyTypes = ['date', 'title', 'bbox']
+  sortbyTypes = ['date', 'title', 'bbox'];
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -42,7 +43,8 @@ export class HsAddDataCatalogueComponent {
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
-    public HsLaymanService: HsLaymanService //Used in template
+    public HsLaymanService: HsLaymanService, //Used in template
+    public hsToastService: HsToastService
   ) {
     this.data = HsAddDataCatalogueService.data;
     this.advancedSearch = false;
@@ -61,8 +63,11 @@ export class HsAddDataCatalogueComponent {
   }
 
   extentFilterChanged(): void {
-    this.data.filterByExtent = !this.data.filterByExtent;
-    this.queryCatalogs();
+    //Sort by title if not filtering by extent
+    if (!this.data.filterByExtent && this.data.query.sortby == 'bbox') {
+      this.data.query.sortby = 'title';
+    }
+    this.queryByFilter();
   }
 
   queryByFilter(): void {
@@ -76,8 +81,20 @@ export class HsAddDataCatalogueComponent {
     }
     this.filterTypeMenu = !this.filterTypeMenu;
   }
-  selectDataType(type: string): void {
-    this.data.query.type = type;
+
+  selectQueryType(type: string, query: string): void {
+    if (type == 'bbox' && !this.data.filterByExtent) {
+      this.hsToastService.createToastPopupMessage(
+        this.HsLanguageService.getTranslation(
+          'ADDLAYERS.wrongCombinationOfParams'
+        ),
+        this.HsLanguageService.getTranslation('ADDLAYERS.bboxFilterMissing'),
+        true
+      );
+      this.data.query[query] = 'title';
+    } else {
+      this.data.query[query] = type;
+    }
     this.queryByFilter();
     this.filterTypeMenu = !this.filterTypeMenu;
   }

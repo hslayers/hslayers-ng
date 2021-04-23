@@ -225,13 +225,6 @@ export class HsAddDataCatalogueService {
             // this.catalogEntries.push(layer);
           });
 
-          if (endpoint.type == 'layman') {
-            endpoint.layers = endpoint.layers.slice(
-              endpoint.datasourcePaging.start,
-              endpoint.datasourcePaging.start + endpoint.datasourcePaging.limit
-            );
-          }
-
           if (this.catalogEntries.length > 0) {
             this.filterDuplicates(endpoint);
           } else {
@@ -321,10 +314,7 @@ export class HsAddDataCatalogueService {
         );
         return query;
       case 'layman':
-        query = this.hsLaymanBrowserService.queryCatalog(
-          catalog,
-          this.data.query.textFilter
-        );
+        query = this.hsLaymanBrowserService.queryCatalog(catalog, this.data);
         return query;
       default:
         break;
