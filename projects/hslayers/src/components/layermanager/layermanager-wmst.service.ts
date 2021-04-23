@@ -109,7 +109,7 @@ export class HsLayerManagerWmstService {
    * @returns True for WMS layer with time support
    */
   layerIsWmsT(layer: HsLayerDescriptor | Layer): boolean {
-    const olLayer: Layer = layer?.layer ? layer.layer : layer;
+    const olLayer: Layer = layer.layer ?? layer;
     if (!olLayer) {
       return false;
     }
