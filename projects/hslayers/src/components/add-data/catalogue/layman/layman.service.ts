@@ -7,12 +7,15 @@ import {
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
+import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
+
+import {transform, transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
@@ -23,7 +26,8 @@ export class HsLaymanBrowserService {
     private log: HsLogService,
     public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService,
+    public hsMapService: HsMapService
   ) {}
 
   /**
@@ -32,22 +36,47 @@ export class HsLaymanBrowserService {
    * extent feature is created. Has one parameter: feature
    * @description Loads datasets metadata from Layman
    */
-  queryCatalog(endpoint: HsEndpoint, textFilter?: string): Observable<any> {
+  queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
-    let url = `${endpoint.url}/rest/${endpoint.user}/layers`;
+    const url = `${endpoint.url}/rest/${endpoint.user}/layers`;
     endpoint.datasourcePaging.loaded = false;
+
+    let query, bbox, sortBy;
+
+    if (data) {
+      query = data.query;
+      sortBy = query.sortby == 'date' ? 'last_change' : query.sortby;
+
+      const b = transformExtent(
+        this.hsMapService.map
+          .getView()
+          .calculateExtent(this.hsMapService.map.getSize()),
+        this.hsMapService.map.getView().getProjection(),
+        'EPSG:3857'
+      );
+      bbox = data.filterByExtent ? b.join(',') : '';
+    }
 
     endpoint.httpCall = this.http
       .get(url, {
+        observe: 'response',
         withCredentials: true,
         responseType: 'json',
+        params: {
+          'limit': `${endpoint.datasourcePaging.limit}`,
+          'offset': `${endpoint.datasourcePaging.start}`,
+          'full_text_filter': `${query?.textFilter}`,
+          'order_by': `${sortBy}`,
+          'bbox_filter': `${bbox}`,
+        },
       })
       .pipe(
         timeout(5000),
         map((x: any) => {
-          x.dataset = endpoint;
-          this.datasetsReceived(x, textFilter);
-          return x;
+          x.body.dataset = endpoint;
+          x.body.matched = x.headers.get('x-total-count');
+          this.datasetsReceived(x.body);
+          return x.body;
         }),
         catchError((e) => {
           if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
@@ -89,7 +118,7 @@ export class HsLaymanBrowserService {
    * @param {object} data HTTP response containing all the layers
    * @description (PRIVATE) Callback for catalogue http query
    */
-  private datasetsReceived(data, textFilter?: string): void {
+  private datasetsReceived(data): void {
     if (!data.dataset) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('COMMON.warning'),
@@ -108,7 +137,7 @@ export class HsLaymanBrowserService {
     if (!data.length) {
       dataset.datasourcePaging.matched = 0;
     } else {
-      dataset.datasourcePaging.matched = data.length;
+      dataset.datasourcePaging.matched = parseInt(data.matched);
       dataset.layers = data.map((layer) => {
         return {
           title: layer.title,
@@ -117,12 +146,6 @@ export class HsLaymanBrowserService {
           id: layer.uuid,
         };
       });
-      if (textFilter) {
-        dataset.layers = dataset.layers.filter((layer) => {
-          return layer.title.includes(textFilter);
-        });
-        dataset.datasourcePaging.matched = dataset.layers.length;
-      }
     }
   }
 
@@ -138,14 +161,14 @@ export class HsLaymanBrowserService {
     dataset: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<HsAddDataLayerDescriptor> {
-    let url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
+    const url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
     try {
       return await this.http
         .get(url, {
           //timeout: dataset.canceler.promise,
           //dataset,
           responseType: 'json',
-          withCredentials: true
+          withCredentials: true,
         })
         .toPromise()
         .then((data: any) => {
@@ -175,7 +198,7 @@ export class HsLaymanBrowserService {
     layer: HsAddDataLayerDescriptor
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
-    console.log(lyr)
+    console.log(lyr);
     return {
       type: lyr.type,
       link: lyr.wms.url,

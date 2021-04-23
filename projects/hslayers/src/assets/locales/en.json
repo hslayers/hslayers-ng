@@ -91,7 +91,9 @@
     "errorWhileRequestingLayers": "Error while requesting layers",
     "capabilitiesParsingProblem": "Capabilities parsing problem",
     "serviceTypeNotMatching": "URL service type does not match selected category",
-    "Basemap": "Add as basemap"
+    "Basemap": "Add as basemap",
+    "wrongCombinationOfParams": "Wrong combination of parameters",
+    "bboxFilterMissing": "Results can not be sorted by BBOX similarity when map extent filter is not activated"
   },
   "COMMON": {
     "abstract": "Abstract",
