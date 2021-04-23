@@ -163,12 +163,10 @@ export class HsMapService {
 
     this.defaultDesktopControls.removeAt(1);
     this.defaultDesktopControls.push(new ScaleLine());
-    if (HsConfig.componentsEnabled?.defaultViewButton) {
-      //make sure translations are loaded
-      setTimeout(() => {
-        this.createDefaultViewButton();
-      }, 500);
-    }
+    setTimeout(() => {
+    //make sure translations are loaded
+      if (this.HsConfig.componentsEnabled?.defaultViewButton) this.createDefaultViewButton();
+    }, 500);
   }
   /**
    * Returns the associated layer for feature.
@@ -877,7 +875,7 @@ export class HsMapService {
     }
   }
   removeAllControls() {
-    this.map.getControls().forEach((control) => {
+    [...this.map.getControls().getArray()].forEach((control) => {
       this.map.removeControl(control);
     });
     this.HsConfig.componentsEnabled.mapControls = false;
