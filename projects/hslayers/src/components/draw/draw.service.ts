@@ -343,13 +343,13 @@ export class HsDrawService {
       this.HsLayoutService.mainpanel != 'draw' &&
       this.HsConfig.openQueryPanelOnDrawEnd
     ) {
-      setTimeout(() => {
-        this.HsLayoutService.setMainPanel('info');
-        this.HsQueryBaseService.clearData('features');
-        this.HsQueryVectorService.selector.getFeatures().push(e.feature);
-        this.HsQueryVectorService.createFeatureAttributeList();
-      });
+      this.HsLayoutService.setMainPanel('info');
     }
+    setTimeout(() => {
+      this.HsQueryBaseService.clearData('features');
+      this.HsQueryVectorService.selector.getFeatures().push(e.feature);
+      this.HsQueryVectorService.createFeatureAttributeList();
+    });
   }
 
   /**
