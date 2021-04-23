@@ -15,7 +15,7 @@
     <div class="d-flex ml-4 mr-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0 pl-0">
-                <input type="checkbox" [(ngModel)]="data.filterByExtent" (ngModelChange)="queryByFilter()"
+                <input type="checkbox" [(ngModel)]="data.filterByExtent"  (change)="extentFilterChanged()"
                     name="filterByExtent">
                 <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
@@ -48,28 +48,24 @@
                         <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.resourceType' | translate}}</h6>
                         <div class="dropdown-menu-item m-2" *ngFor="let type of dataTypes; let index = index"
                             [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.type"
-                                (change)="selectDataType(type)" [attr.id]="'type-'+index" name="type-{{index}}" />
-                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
-                                [attr.for]="'type-'+index"
+                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.type" (change)="selectQueryType(type, 'type')"
+                                [attr.id]="'type-'+index" name="type-{{index}}" />
+                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'type-'+index"
                                 [ngClass]="{'hs-checkmark': data.query.type == type,'hs-uncheckmark':data.query.type != type}"><span
-                                    class="ml-2"
-                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
+                                    class="ml-2" style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
                                     type)}}</span></label>
-                        </div>
+                            </div>
                     </div>
                     <div>
                         <h6 class="dropdown-header">{{'COMMON.sortBy' | translate}}</h6>
-                        <div class="dropdown-menu-item m-2" *ngFor="let type of sortbyTypes; let index = index"
+                        <div class="dropdown-menu-item m-2" *ngFor="let sortType of sortbyTypes; let index = index"
                             [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.sortby"
-                                (change)="selectDataType(type)" [attr.id]="'type-'+index" name="type-{{index}}" />
-                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
-                                [attr.for]="'type-'+index"
-                                [ngClass]="{'hs-checkmark': data.query.sortby == type,'hs-uncheckmark':data.query.sortby != type}"><span
-                                    class="ml-2"
-                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
-                                    type)}}</span></label>
+                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.sortby" (change)="selectQueryType(sortType, 'sortby')"
+                                [attr.id]="'sortType-'+index" name="sortType-{{index}}" />
+                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'sortType-'+index"
+                                [ngClass]="{'hs-checkmark': data.query.sortby == sortType,'hs-uncheckmark':data.query.sortby != sortType}"><span
+                                    class="ml-2" style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
+                                    sortType)}}</span></label>
                         </div>
                     </div>
                 </div>
