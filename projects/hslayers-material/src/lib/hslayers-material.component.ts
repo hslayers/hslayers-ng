@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 // import { HsConfig } from 'hslayers-ng/config.service';
-import { HsConfig } from 'hslayers-ng';
+import {HsConfig} from 'hslayers-ng';
 
 @Component({
   selector: 'hslayers-material',
@@ -10,17 +10,17 @@ import { HsConfig } from 'hslayers-ng';
       style="height: 100%; max-height: 100vh; position: relative; width: 100%; display: block"
       class="hs-mat-layout"
       layout="column"
-      ></hs-mat-layout>
+    ></hs-mat-layout>
   `,
-  styles: [
-  ]
+  styles: [],
 })
 export class HslayersMaterialComponent implements OnInit {
   @Input() config: HsConfig;
-  constructor(public HsConfig: HsConfig) { }
+  constructor(public HsConfig: HsConfig) {}
 
   ngOnInit(): void {
-    if (this.config) this.HsConfig.update(this.config);
+    if (this.config) {
+      this.HsConfig.update(this.config);
+    }
   }
-
 }

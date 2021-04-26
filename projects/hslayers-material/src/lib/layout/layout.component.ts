@@ -4,16 +4,16 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 
-import { HsConfig } from 'hslayers-ng';
-import { HsEventBusService } from '../../../../hslayers/src/components/core/event-bus.service';
-import { HsLayoutService } from '../../../../hslayers/src/components/layout/layout.service';
+import {HsConfig} from 'hslayers-ng';
+import {HsEventBusService} from '../../../../hslayers/src/components/core/event-bus.service';
+import {HsLayoutService} from '../../../../hslayers/src/components/layout/layout.service';
+import {HsMapHostDirective} from './map-host.directive';
+import {HsThemeService} from '../../../../hslayers/src/components/layout/themes/theme.service';
+import {HsUtilsService} from '../../../../hslayers/src/components/utils/utils.service';
 // import { HsMapHostDirective } from '../../../../hslayers/src/components/layout/map-host.directive';
-import { HsMapHostDirective } from './map-host.directive';
-import { HsThemeService } from '../../../../hslayers/src/components/layout/themes/theme.service';
-import { HsUtilsService } from '../../../../hslayers/src/components/utils/utils.service';
 
 @Component({
   selector: 'hs-mat-layout',
@@ -44,8 +44,7 @@ export class HsMatLayoutComponent implements AfterViewInit {
     public HsEventBusService: HsEventBusService,
     // public HsThemeService: HsThemeService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    // private HsUtilsService: HsUtilsService
+    private cdr: ChangeDetectorRef // private HsUtilsService: HsUtilsService
   ) {
     this.HsLayoutService.layoutElement = elementRef.nativeElement;
   }
