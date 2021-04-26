@@ -31,6 +31,10 @@ share.get('/', context => {
         getThumbnail(context.query.id, context);
         break;
 
+      case 'list': // only for backward compatilibity, should not be used anymore
+        formatResponseJson({ "success": true, "results": [], "error": "no data" }, context, 200);
+        break;
+
       default:
         formatResponseJson({ success: false, error: "Request not specified" }, context, 400);
         break;
