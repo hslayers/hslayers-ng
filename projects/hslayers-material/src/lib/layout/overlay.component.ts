@@ -1,8 +1,8 @@
 import * as olExtent from 'ol/extent';
-import Attribution from 'ol/control/Attribution';
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HsAttributionDialogComponent} from './attribution-dialog.component';
 import {HsConfig, HsLayerManagerService, HsMapService} from 'hslayers-ng';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Vector as VectorLayer} from 'ol/layer';
 
 @Component({
@@ -23,7 +23,7 @@ export class HsMatOverlayComponent implements OnInit {
   }
 
   openAttributionDialog(event): void {
-    const dialogRef = this.dialog.open(AttributionDialog, {
+    this.dialog.open(HsAttributionDialogComponent, {
       data: this.HsMapService.map
         ?.getLayers()
         .getArray()
@@ -85,20 +85,4 @@ export class HsMatOverlayComponent implements OnInit {
       duration: 300,
     });
   }
-}
-
-@Component({
-  selector: 'hs-mat-attributions',
-  template: `
-    <h1 mat-dialog-title>Attributions</h1>
-    <div mat-dialog-content class="mat-typography">
-      <ul>
-        <li *ngFor="let item of data" [innerHTML]="item"></li>
-      </ul>
-    </div>
-  `,
-  styleUrls: ['attribution-dialog.scss'],
-})
-export class AttributionDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string[]) {}
 }
