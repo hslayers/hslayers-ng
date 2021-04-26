@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
-import { HslayersMaterialComponent } from './hslayers-material.component';
+import {HslayersMaterialComponent} from './hslayers-material.component';
 
 describe('HslayersMaterialComponent', () => {
   let component: HslayersMaterialComponent;
@@ -8,9 +8,8 @@ describe('HslayersMaterialComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HslayersMaterialComponent ]
-    })
-    .compileComponents();
+      declarations: [HslayersMaterialComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

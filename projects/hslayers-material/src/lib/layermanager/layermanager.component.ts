@@ -1,20 +1,11 @@
-import {
-  Component,
-  Injectable,
-  OnInit,
-} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {Component, Injectable} from '@angular/core';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {SelectionModel} from '@angular/cdk/collections';
 
-import { SelectionModel } from '@angular/cdk/collections';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { BehaviorSubject } from 'rxjs';
-
-import {
-  HsEventBusService,
-  HsLayerManagerService,
-} from 'hslayers-ng';
-
-import { HsLayerDescriptor } from '../../../../hslayers/src/components/layermanager/layer-descriptor.interface';
+import {HsEventBusService, HsLayerManagerService} from 'hslayers-ng';
+import {HsLayerDescriptor} from '../../../../hslayers/src/components/layermanager/layer-descriptor.interface';
 
 class HsLayerNode {
   name: string;
@@ -33,11 +24,13 @@ class HsLayerFlatNode {
 export class HsLayerDatabase {
   dataChange = new BehaviorSubject<HsLayerNode[]>([]);
 
-  get data(): HsLayerNode[] { return this.dataChange.value; }
+  get data(): HsLayerNode[] {
+    return this.dataChange.value;
+  }
 
   constructor(
     public HsEventBusService: HsEventBusService,
-    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayerManagerService: HsLayerManagerService
   ) {
     const data = this.buildLayerTree(this.HsLayerManagerService.data);
     this.dataChange.next(data);
@@ -53,7 +46,7 @@ export class HsLayerDatabase {
       name: layer.title,
       layer,
       // layer: layer,
-    }
+    };
   }
 
   folderToNode(folder: any): HsLayerNode {
@@ -61,34 +54,34 @@ export class HsLayerDatabase {
       name: folder.name,
       children: [
         ...folder.sub_folders?.map(this.folderToNode),
-        ...folder.layers?.map(this.layerToNode)
-      ]
-    }
+        ...folder.layers?.map(this.layerToNode),
+      ],
+    };
   }
 
   buildLayerTree(data): HsLayerNode[] {
     return [
       {
-        name: "Baselayers",
+        name: 'Baselayers',
         children: data.baselayers?.map(this.layerToNode),
       },
       {
-        name: "Terrain layers",
+        name: 'Terrain layers',
         children: data.terrainlayers?.map(this.layerToNode),
       },
       {
-        name: "Box layers",
+        name: 'Box layers',
         children: data.box_layers?.map(this.layerToNode),
       },
       {
-        name: "Map content",
+        name: 'Map content',
         children: [
           ...data.layers?.map(this.layerToNode),
           ...data.folders?.sub_folders?.map(this.folderToNode),
           ...data.folders?.layers?.map(this.layerToNode),
-        ]
+        ],
       },
-    ]
+    ];
   }
 }
 
@@ -110,41 +103,46 @@ export class HsMatLayerManagerComponent {
 
   constructor(
     private _database: HsLayerDatabase,
-    public HsLayerManagerService: HsLayerManagerService,
+    public HsLayerManagerService: HsLayerManagerService
   ) {
     this.treeFlattener = new MatTreeFlattener(
-      this.transformer, 
-      this.getLevel, 
-      this.isExpandable, 
+      this.transformer,
+      this.getLevel,
+      this.isExpandable,
       this.getChildren
     );
-    this.treeControl = new FlatTreeControl<HsLayerFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.treeControl = new FlatTreeControl<HsLayerFlatNode>(
+      this.getLevel,
+      this.isExpandable
+    );
+    this.dataSource = new MatTreeFlatDataSource(
+      this.treeControl,
+      this.treeFlattener
+    );
 
-    _database.dataChange.subscribe(data => {
+    _database.dataChange.subscribe((data) => {
       this.dataSource.data = data;
       this.checklistSelection.select(
-        ...this.treeFlattener.flattenNodes(this.dataSource.data)
-          .filter(node => node.layer?.visible)
+        ...this.treeFlattener
+          .flattenNodes(this.dataSource.data)
+          .filter((node) => node.layer?.visible)
       );
     });
 
-    this.checklistSelection.changed.subscribe(changes => {
+    this.checklistSelection.changed.subscribe((changes) => {
       changes.added
-        .filter(node => node.layer)
-        .filter(node => !node.layer.visible)
-        .forEach(node => this.HsLayerManagerService.changeLayerVisibility(
-          true,
-          node.layer
-        ));
+        .filter((node) => node.layer)
+        .filter((node) => !node.layer.visible)
+        .forEach((node) =>
+          this.HsLayerManagerService.changeLayerVisibility(true, node.layer)
+        );
 
       changes.removed
-        .filter(node => node.layer)
-        .filter(node => node.layer.visible)
-        .forEach(node => this.HsLayerManagerService.changeLayerVisibility(
-          false,
-          node.layer
-        ));
+        .filter((node) => node.layer)
+        .filter((node) => node.layer.visible)
+        .forEach((node) =>
+          this.HsLayerManagerService.changeLayerVisibility(false, node.layer)
+        );
     });
 
     // this.dataSource.data = _database.data;
@@ -167,7 +165,8 @@ export class HsMatLayerManagerComponent {
   transformer = (node: HsLayerNode, level: number) => {
     const existingNode = this.nestedNodeMap.get(node);
     // TODO: Might need a different identifier other than the node `name`
-    const flatNode = existingNode && existingNode.name === node.name
+    const flatNode =
+      existingNode && existingNode.name === node.name
         ? existingNode
         : new HsLayerFlatNode();
     flatNode.name = node.name;
@@ -177,21 +176,25 @@ export class HsMatLayerManagerComponent {
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
-  }
+  };
 
   /** Whether all the descendants of the node are selected. */
   descendantsAllSelected(node: HsLayerFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-    const descAllSelected = descendants.length > 0 && descendants.every(child => {
-      return this.checklistSelection.isSelected(child);
-    });
+    const descAllSelected =
+      descendants.length > 0 &&
+      descendants.every((child) => {
+        return this.checklistSelection.isSelected(child);
+      });
     return descAllSelected;
   }
 
   /** Whether part of the descendants are selected */
   descendantsPartiallySelected(node: HsLayerFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-    const result = descendants.some(child => this.checklistSelection.isSelected(child));
+    const result = descendants.some((child) =>
+      this.checklistSelection.isSelected(child)
+    );
     return result && !this.descendantsAllSelected(node);
   }
 
@@ -204,7 +207,7 @@ export class HsMatLayerManagerComponent {
       : this.checklistSelection.deselect(...descendants);
 
     // Force update for the parent
-    descendants.forEach(child => this.checklistSelection.isSelected(child));
+    descendants.forEach((child) => this.checklistSelection.isSelected(child));
     this.checkAllParentsSelection(node);
   }
 
@@ -227,9 +230,11 @@ export class HsMatLayerManagerComponent {
   checkRootNodeSelection(node: HsLayerFlatNode): void {
     const nodeSelected = this.checklistSelection.isSelected(node);
     const descendants = this.treeControl.getDescendants(node);
-    const descAllSelected = descendants.length > 0 && descendants.every(child => {
-      return this.checklistSelection.isSelected(child);
-    });
+    const descAllSelected =
+      descendants.length > 0 &&
+      descendants.every((child) => {
+        return this.checklistSelection.isSelected(child);
+      });
     if (nodeSelected && !descAllSelected) {
       this.checklistSelection.deselect(node);
     } else if (!nodeSelected && descAllSelected) {
