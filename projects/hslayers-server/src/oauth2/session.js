@@ -7,8 +7,7 @@ exports.createExpressSession = () => {
   const SQLiteStore = connectSQLite3(session);
   const session_store = new SQLiteStore({
     table: 'sessions',
-    db: process.env.DB_PATH,
-    //dir: './data'
+    db: process.env.DB_PATH
   });
 
   const sessionConfig = {
