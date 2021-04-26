@@ -20,7 +20,7 @@
     "rxjs": "^6.0.0",
     "vega": "^5.0.0",
     "vega-embed": "^6.0.0",
-    "vega-lite": "^4.0.0"
+    "vega-lite": "^5.0.0"
   },
   "devDependencies": {
     "ol": "^6.5.0",
@@ -35,7 +35,7 @@
     "rxjs": "^6.6.6",
     "vega": "^5.19.1",
     "vega-embed": "^6.15.2",
-    "vega-lite": "^5.0.0"
+    "vega-lite": "^5.1.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
