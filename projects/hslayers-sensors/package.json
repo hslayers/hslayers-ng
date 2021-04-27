@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "ol": "^6.5.0",
-    "hslayers-ng": "^3.1.0",
+    "hslayers-ng": "file:../../dist/hslayers",
     "@angular/common": "^10.2.5",
     "@angular/core": "^10.2.5",
     "@angular/forms": "^10.2.5",
