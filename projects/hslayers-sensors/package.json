@@ -24,17 +24,17 @@
   },
   "devDependencies": {
     "ol": "^6.5.0",
-    "hslayers-ng": "^3.0.1-rc.0",
+    "hslayers-ng": "^3.1.0",
     "@angular/common": "^10.2.5",
     "@angular/core": "^10.2.5",
     "@angular/forms": "^10.2.5",
     "@angular/localize": "^10.2.5",
-    "@ngx-translate/core": "^12.1.2",
-    "moment": "^2.24.0",
+    "@ngx-translate/core": "^13.0.0",
+    "moment": "^2.29.1",
     "@ng-bootstrap/ng-bootstrap": "^8.0.4",
-    "rxjs": "^6.6.6",
-    "vega": "^5.19.1",
-    "vega-embed": "^6.15.2",
+    "rxjs": "^6.6.7",
+    "vega": "^5.20.2",
+    "vega-embed": "^6.17.0",
     "vega-lite": "^5.1.0"
   },
   "dependencies": {
