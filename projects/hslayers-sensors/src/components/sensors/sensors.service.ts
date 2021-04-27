@@ -3,12 +3,12 @@ import moment from 'moment';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {
   HsConfig,
+  HsLanguageService,
+  HsSidebarService,
   getFeatureName,
   getUnitId,
   setFeatureName,
   setUnitId,
-  HsSidebarService,
-  HsLanguageService,
 } from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
 import {HsEventBusService} from 'hslayers-ng';
@@ -20,18 +20,10 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {SensLogEndpoint} from './senslog-endpoint';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 import {getWidth} from 'ol/extent';
-
-export type SensLogEndpoint = {
-  url: string;
-  user_id: number;
-  group: string;
-  user: string;
-  liteApiPath?: string;
-  mapLogApiPath?: string;
-};
 
 @Injectable({
   providedIn: 'root',
