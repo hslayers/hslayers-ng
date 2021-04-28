@@ -22,6 +22,7 @@ import {
   getTitle,
 } from '../../common/layer-extensions';
 import {isEmpty} from 'ol/extent';
+import { HsLayerDescriptor } from '../layermanager/layer-descriptor.interface';
 
 @Injectable()
 export class HsLayerUtilsService {
@@ -296,24 +297,20 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerLoaded
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True loaded / False not (fully) loaded
-   * @description Test if layers source is loaded
+   * Test if layers source is loaded
+   * @param layer - Selected layer descriptor
+   * @returns True loaded / False not (fully) loaded
    */
-  layerLoaded(layer: Layer): boolean {
-    return layer.getSource().loaded;
+  layerLoaded(layer: HsLayerDescriptor): boolean {
+    return layer.loadProgress?.loaded;
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerInvalid
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True invalid, false valid source
-   * @description Test if layers source is validly loaded (!true for invalid)
+   * Test if layers source is validly loaded (!true for invalid)
+   * @param layer - Selected layer descriptor
+   * @returns True invalid, false valid source
    */
-  layerInvalid(layer: Layer): boolean {
-    return layer.getSource().error;
+  layerInvalid(layer: HsLayerDescriptor): boolean {
+    return layer.loadProgress?.error;
   }
 }

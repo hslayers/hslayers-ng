@@ -143,7 +143,7 @@ describe('HsLayerUtilsService', () => {
     isVectorLayer = hsLayerUtils.isLayerVectorLayer(imageWMSLayer);
     expect(isVectorLayer).toBe(false);
   });
-  it('trry to get layer single tile url or multiple tile url', () => {
+  it('try to get layer single tile url or multiple tile url', () => {
     let layerUrl = hsLayerUtils.getURL(tileWMTSLayer);
     expect(layerUrl).toEqual(
       'https://openlayers.org/en/latest/examples/wmts.html'
@@ -205,15 +205,5 @@ describe('HsLayerUtilsService', () => {
     setTitle(vectorLayer, 'vectorLayer');
     const layerTitle = hsLayerUtils.translateTitle(getTitle(vectorLayer));
     expect(layerTitle).toEqual('vectorLayer');
-  });
-  it('check if layer is loaded', () => {
-    vectorLayer.getSource().loaded = true;
-    const islayerLoaded = hsLayerUtils.layerLoaded(vectorLayer);
-    expect(islayerLoaded).toBe(true);
-  });
-  it('check if layer is invalid', () => {
-    vectorLayer.getSource().error = true;
-    const islayerInvalid = hsLayerUtils.layerInvalid(vectorLayer);
-    expect(islayerInvalid).toBe(true);
   });
 });

@@ -54,7 +54,7 @@ export class HsLayerListComponent implements OnInit {
    * Test if selected layer is loaded in map
    * @param layer - Selected layer
    */
-  layerLoaded(layer: Layer): boolean {
+  layerLoaded(layer: HsLayerDescriptor): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 
@@ -76,7 +76,7 @@ export class HsLayerListComponent implements OnInit {
    * @param layer - Selected layer
    * @returns true for invalid layer
    */
-  layerValid(layer: Layer): boolean {
+  layerValid(layer: HsLayerDescriptor): boolean {
     return this.HsLayerUtilsService.layerInvalid(layer);
   }
 

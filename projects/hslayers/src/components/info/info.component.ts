@@ -95,7 +95,7 @@ export class HsInfoComponent {
        */
       this.composition_edited = false;
     });
-    this.HsEventBusService.layerLoadings.subscribe((layer) => {
+    this.HsEventBusService.layerLoadings.subscribe(({layer, progress}) => {
       if (!(getTitle(layer) in this.layer_loading)) {
         this.layer_loading.push(getTitle(layer));
       }
