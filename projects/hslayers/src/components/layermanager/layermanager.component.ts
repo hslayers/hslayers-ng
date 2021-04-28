@@ -240,7 +240,7 @@ export class HsLayerManagerComponent implements OnInit {
    * Test if selected layer is loaded in map
    * @param layer - Selected layer
    */
-  layerLoaded(layer: Layer): boolean {
+  layerLoaded(layer: HsLayerDescriptor): boolean {
     return this.HsLayerUtilsService.layerLoaded(layer);
   }
 

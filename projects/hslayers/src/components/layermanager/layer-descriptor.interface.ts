@@ -5,7 +5,18 @@ export type HsLayerTimeDescriptor = {
   timePoints: Array<string>;
 };
 
+export type HsLayerLoadProgress = {
+  loadCounter: number;
+  loadTotal: number;
+  loadError: number;
+  percents: number;
+  loaded: boolean;
+  error?: boolean;
+  timer?: any;
+};
+
 export interface HsLayerDescriptor {
+  loadProgress?: HsLayerLoadProgress;
   layer: Layer;
   abstract?: string;
   legends?: string | string[];

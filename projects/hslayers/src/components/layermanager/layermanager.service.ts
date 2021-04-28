@@ -9,7 +9,7 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {ImageWMS, TileArcGISRest, TileWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
@@ -17,7 +17,10 @@ import {HsConfig} from '../../config.service';
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {
+  HsLayerDescriptor,
+  HsLayerLoadProgress,
+} from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -118,6 +121,7 @@ export class HsLayerManagerService {
   menuExpanded = false;
   currentResolution: number;
   zIndexValue = 0;
+  lastProgressUpdate: number;
   constructor(
     public HsConfig: HsConfig,
     public HsDrawService: HsDrawService,
@@ -135,7 +139,8 @@ export class HsLayerManagerService {
     private HsShareUrlService: HsShareUrlService,
     public HsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
-    private hsLayerEditorService: HsLayerEditorService
+    private hsLayerEditorService: HsLayerEditorService,
+    private zone: NgZone
   ) {
     this.HsMapService.loaded().then(() => this.init());
     this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
@@ -171,7 +176,6 @@ export class HsLayerManagerService {
     ) {
       return;
     }
-    this.loadingEvents(layer);
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
@@ -205,6 +209,7 @@ export class HsLayerManagerService {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
     };
+    this.loadingEvents(layerDescriptor);
     layerDescriptor.trackBy = layer.ol_uid + ' ' + layerDescriptor.position;
 
     layer.on('propertychange', (event) => {
@@ -683,67 +688,98 @@ export class HsLayerManagerService {
    * Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
    * @param layer - Layer which is being added
    */
-  loadingEvents(layer: Layer): void {
-    const source = layer.getSource();
-    source.loadCounter = 0;
-    source.loadTotal = 0;
-    source.loadError = 0;
-    source.loaded = true;
-    if (this.HsUtilsService.instOf(layer, VectorLayer)) {
-      layer.getSource().on('propertychange', (event) => {
+  loadingEvents(layer: HsLayerDescriptor): void {
+    const olLayer = layer.layer;
+    const source = olLayer.getSource();
+    const loadProgress = {
+      loadCounter: 0,
+      loadTotal: 0,
+      loadError: 0,
+      loaded: true,
+      error: undefined,
+      percents: 0,
+    };
+    layer.loadProgress = loadProgress;
+    if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
+      source.on('propertychange', (event) => {
         if (event.key == 'loaded') {
           if (event.oldValue == false) {
-            this.HsEventBusService.layerLoads.next(layer);
+            this.HsEventBusService.layerLoads.next(olLayer);
           } else {
-            this.HsEventBusService.layerLoadings.next(layer);
+            this.HsEventBusService.layerLoadings.next(olLayer);
           }
         }
       });
-    } else if (this.HsUtilsService.instOf(layer, ImageLayer)) {
+    } else if (this.HsUtilsService.instOf(olLayer, ImageLayer)) {
       source.on('imageloadstart', (event) => {
-        source.loaded = false;
-        source.loadCounter += 1;
-        this.HsEventBusService.layerLoadings.next(layer);
+        loadProgress.loadTotal += 1;
+        this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('imageloadend', (event) => {
-        source.loaded = true;
-        source.loadCounter -= 1;
-        this.HsEventBusService.layerLoads.next(layer);
+        this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('imageloaderror', (event) => {
-        source.loaded = true;
-        source.error = true;
-        this.HsEventBusService.layerLoads.next(layer);
+        loadProgress.loaded = true;
+        loadProgress.error = true;
+        this.HsEventBusService.layerLoads.next(olLayer);
       });
-    } else if (this.HsUtilsService.instOf(layer, Tile)) {
+    } else if (this.HsUtilsService.instOf(olLayer, Tile)) {
       source.on('tileloadstart', (event) => {
-        source.loadCounter += 1;
-        source.loadTotal += 1;
-        if (source.loaded == true) {
-          source.loaded = false;
-          source.set('loaded', false);
-          this.HsEventBusService.layerLoadings.next(layer);
-        }
+        loadProgress.loadTotal += 1;
+        this.changeLoadCounter(olLayer, loadProgress, 1);
       });
       source.on('tileloadend', (event) => {
-        source.loadCounter -= 1;
-        if (source.loadCounter == 0) {
-          source.loaded = true;
-          source.set('loaded', true);
-          this.HsEventBusService.layerLoads.next(layer);
-        }
+        this.changeLoadCounter(olLayer, loadProgress, -1);
       });
       source.on('tileloaderror', (event) => {
-        source.loadCounter -= 1;
-        source.loadError += 1;
-        if (source.loadError == source.loadTotal) {
-          source.error = true;
+        this.changeLoadCounter(olLayer, loadProgress, -1);
+        loadProgress.loadError += 1;
+        if (loadProgress.loadError == loadProgress.loadTotal) {
+          loadProgress.error = true;
         }
-        if (source.loadCounter == 0) {
-          source.loaded = true;
-          source.set('loaded', true);
-          this.HsEventBusService.layerLoads.next(layer);
+      });
+    }
+  }
+
+  private changeLoadCounter(
+    layer: Layer,
+    progress: HsLayerLoadProgress,
+    change: number
+  ): void {
+    progress.loadCounter += change;
+    //No more tiles to load?
+    if (progress.loadCounter == 0) {
+      progress.loaded = true;
+      this.HsEventBusService.layerLoads.next(layer);
+      // If in 2 seconds no new tiles are starting to to load
+      // we can assume that layer has finished loading
+      if (progress.timer) {
+        clearTimeout(progress.timer);
+      }
+      progress.timer = setTimeout(() => {
+        if (progress.loadCounter == 0) {
+          this.zone.run(() => {
+            progress.loadTotal = 0;
+            progress.percents = 100;
+          });
         }
+      }, 2000);
+    }
+    progress.loaded = !(progress.loadTotal > 0 && progress.loaded);
+
+    let percents = 100.0;
+    if (progress.loadTotal > 0) {
+      percents = Math.round(
+        ((progress.loadTotal - progress.loadCounter) / progress.loadTotal) * 100
+      );
+    }
+    progress.percents = percents;
+    this.HsEventBusService.layerLoadings.next({layer, progress});
+    //Throttle updating UI a bit for many layers * many tiles
+    const delta = new Date().getTime() - this.lastProgressUpdate;
+    if (percents == 100 || delta > 1000) {
+      this.zone.run(() => {
+        this.lastProgressUpdate = new Date().getTime();
       });
     }
   }

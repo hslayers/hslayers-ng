@@ -4,7 +4,10 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
 
 import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
-import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {
+  HsLayerDescriptor,
+  HsLayerLoadProgress,
+} from '../layermanager/layer-descriptor.interface';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -39,7 +42,10 @@ export class HsEventBusService {
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
-  layerLoadings: Subject<any> = new Subject();
+  layerLoadings: Subject<{
+    layer: Layer;
+    progress: HsLayerLoadProgress;
+  }> = new Subject();
   /**
    * Fires when time is initially set up in HsLayerDescriptor
    * Used to set up time correctly in layermanager-time-editor
