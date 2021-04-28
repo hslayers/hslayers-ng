@@ -7,12 +7,14 @@ import {
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
+import {transformExtent} from 'ol/proj';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,22 +22,68 @@ export class HsCompositionsLaymanService {
   data: any = {};
   constructor(
     private $http: HttpClient,
-    public HsUtilsService: HsUtilsService,
-    public HsCompositionsParserService: HsCompositionsParserService,
-    public HsEventBusService: HsEventBusService,
-    public HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    public hsUtilsService: HsUtilsService,
+    public hsCompositionsParserService: HsCompositionsParserService,
+    public hsEventBusService: HsEventBusService,
+    public hsToastService: HsToastService,
+    public hsLanguageService: HsLanguageService,
+    public hsMapService: HsMapService
   ) {}
 
   loadList(endpoint: HsEndpoint, params): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
+
+    const query = params.query.title ? params.query.title : '';
+    const sortBy =
+      params.sortBy == 'date'
+        ? 'last_change'
+        : params.sortBy !== undefined && params.sortBy != 'None'
+        ? params.sortBy
+        : 'last_change';
+
+    const b = transformExtent(
+      this.hsMapService.map
+        .getView()
+        .calculateExtent(this.hsMapService.map.getSize()),
+      this.hsMapService.map.getView().getProjection(),
+      'EPSG:3857'
+    );
+    const bbox = params.filterByExtent ? b.join(',') : '';
+
     endpoint.listLoading = this.$http
-      .get(`${endpoint.url}/rest/${endpoint.user}/maps`, { withCredentials: true })
+      .get(`${endpoint.url}/rest/${endpoint.user}/maps`, {
+        observe: 'response',
+        withCredentials: true,
+        params: {
+          'limit': `${endpoint.compositionsPaging.limit}`,
+          'offset': `${endpoint.compositionsPaging.start}`,
+          'full_text_filter': `${query}`,
+          'order_by': `${sortBy}`,
+          'bbox_filter': `${bbox}`,
+        },
+      })
       .pipe(
         timeout(5000),
         map((response: any) => {
-          this.compositionsReceived(endpoint, params, response);
+          if (Array.isArray(response.body)) {
+            this.compositionsReceived(endpoint, response);
+          } else {
+            this.hsToastService.createToastPopupMessage(
+              this.hsLanguageService.getTranslation(
+                'COMPOSITIONS.errorWhileRequestingCompositions'
+              ),
+              endpoint.title +
+                ': ' +
+                this.hsLanguageService.getTranslationIgnoreNonExisting(
+                  'ERRORMESSAGES',
+                  response.body.message
+                    ? response.body.message + '. ' + response.body.detail
+                    : 'Unknow error'
+                ),
+              true
+            );
+          }
         }),
         catchError((e) => {
           if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
@@ -50,13 +98,13 @@ export class HsCompositionsLaymanService {
               break;
             case EndpointErrorHandling.toast:
             default:
-              this.HsToastService.createToastPopupMessage(
-                this.HsLanguageService.getTranslation(
+              this.hsToastService.createToastPopupMessage(
+                this.hsLanguageService.getTranslation(
                   'COMPOSITIONS.errorWhileRequestingCompositions'
                 ),
                 endpoint.title +
                   ': ' +
-                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
                     {url: endpoint.url}
@@ -70,14 +118,18 @@ export class HsCompositionsLaymanService {
       );
     return endpoint.listLoading;
   }
-  compositionsReceived(endpoint: HsEndpoint, params, response): void {
-    if (!response && response.length == 0) {
+  compositionsReceived(endpoint: HsEndpoint, response): void {
+    if (!response.body && response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
       return;
     }
     endpoint.compositionsPaging.loaded = true;
-    response = response.map((record) => {
+    endpoint.compositionsPaging.matched = response.headers.get('x-total-count')
+      ? parseInt(response.headers.get('x-total-count'))
+      : 0;
+
+    endpoint.compositions = response.body.map((record) => {
       return {
         name: record.name,
         title: record.title,
@@ -88,14 +140,6 @@ export class HsCompositionsLaymanService {
         id: record.uuid,
       };
     });
-    if (params.query.title !== '' && params.query.title !== undefined) {
-      endpoint.compositions = response.filter((comp) =>
-        comp.title.includes(params.query.title)
-      );
-    } else {
-      endpoint.compositions = response;
-    }
-    endpoint.compositionsPaging.matched = endpoint.compositions.length;
 
     for (const record of endpoint.compositions) {
       record.editable = true;
@@ -104,9 +148,9 @@ export class HsCompositionsLaymanService {
     }
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
-    let url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+    const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
     await this.$http.delete(url).toPromise();
-    this.HsEventBusService.compositionDeletes.next(composition);
+    this.hsEventBusService.compositionDeletes.next(composition);
   }
 
   async getInfo(composition: any): Promise<any> {
@@ -133,7 +177,7 @@ export class HsCompositionsLaymanService {
       return;
     }
     const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
-    const info = await this.HsCompositionsParserService.loadInfo(url);
+    const info = await this.hsCompositionsParserService.loadInfo(url);
     if (
       info.thumbnail.status !== undefined &&
       info.thumbnail.status == 'NOT_AVAILABLE'
@@ -150,9 +194,9 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.matched = 0;
   }
   displayWarningToast(endpoint: HsEndpoint, message: string): void {
-    this.HsToastService.createToastPopupMessage(
-      this.HsLanguageService.getTranslation('COMMON.warning'),
-      endpoint.title + ': ' + this.HsLanguageService.getTranslation(message),
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation('COMMON.warning'),
+      endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
       true,
       'bg-warning text-light'
     );

@@ -1,3 +1,7 @@
+import {Injectable, NgZone} from '@angular/core';
+
+import {Observable, forkJoin} from 'rxjs';
+
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
@@ -15,8 +19,6 @@ import {
   SORTBYVALUES,
   TYPES,
 } from './compositions-option-values';
-import {Injectable, NgZone} from '@angular/core';
-import {Observable, forkJoin} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -59,48 +61,47 @@ export class HsCompositionsCatalogueService {
   compositionsLoading: boolean;
   loadCompositionsQuery: any;
   filteredEndpoints: HsEndpoint[];
-  filtersActive = false;
   extentChangeSuppressed = false;
   constructor(
-    public HsMapService: HsMapService,
-    public HsCompositionsService: HsCompositionsService,
-    public HsLayoutService: HsLayoutService,
-    public HsCommonEndpointsService: HsCommonEndpointsService,
-    public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLaymanService: HsLaymanService,
-    public HsCommonLaymanService: HsCommonLaymanService,
-    private zone: NgZone
+    public hsMapService: HsMapService,
+    public hsCompositionsService: HsCompositionsService,
+    public hsLayoutService: HsLayoutService,
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsUtilsService: HsUtilsService,
+    public hsEventBusService: HsEventBusService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLaymanService: HsLaymanService,
+    public hsCommonLaymanService: HsCommonLaymanService,
+    private _zone: NgZone
   ) {
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions();
-    this.HsCommonEndpointsService.endpointsFilled.subscribe(
+    this.hsCommonEndpointsService.endpointsFilled.subscribe(
       () =>
         (this.filteredEndpoints = this.getFilteredEndpointsForCompositions())
     );
-    HsEventBusService.mainPanelChanges.subscribe(() => {
+    hsEventBusService.mainPanelChanges.subscribe(() => {
       if (
-        this.HsLayoutService.mainpanel === 'composition_browser' ||
-        this.HsLayoutService.mainpanel === 'composition'
+        this.hsLayoutService.mainpanel === 'composition_browser' ||
+        this.hsLayoutService.mainpanel === 'composition'
       ) {
         this.loadFilteredCompositions();
         this.extentChangeSuppressed = true;
       }
     });
     const extentChangeDebouncer = {};
-    this.HsEventBusService.mapExtentChanges.subscribe(
-      HsUtilsService.debounce(
+    this.hsEventBusService.mapExtentChanges.subscribe(
+      hsUtilsService.debounce(
         () => {
           if (
-            (this.HsLayoutService.mainpanel != 'composition_browser' &&
-              this.HsLayoutService.mainpanel != 'composition') ||
+            (this.hsLayoutService.mainpanel != 'composition_browser' &&
+              this.hsLayoutService.mainpanel != 'composition') ||
             this.extentChangeSuppressed
           ) {
             this.extentChangeSuppressed = false;
             return;
           }
           if (this.filterByExtent) {
-            this.zone.run(() => {
+            this._zone.run(() => {
               this.loadFilteredCompositions();
             });
           }
@@ -111,21 +112,21 @@ export class HsCompositionsCatalogueService {
       )
     );
 
-    this.HsEventBusService.compositionDeletes.subscribe((composition) => {
+    this.hsEventBusService.compositionDeletes.subscribe((composition) => {
       //TODO: rewrite
-      const deleteDialog = this.HsLayoutService.contentWrapper.querySelector(
+      const deleteDialog = this.hsLayoutService.contentWrapper.querySelector(
         '.hs-composition-delete-dialog'
       );
       if (deleteDialog) {
         deleteDialog.parentNode.remove(deleteDialog);
       }
-      this.zone.run(() => {
+      this._zone.run(() => {
         this.loadFilteredCompositions();
       });
     });
 
-    this.HsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
-      this.HsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
+    this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((error) => {
+      this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
         info: {
           title: 'Composition not found',
           abstract: error.message,
@@ -133,10 +134,10 @@ export class HsCompositionsCatalogueService {
       });
     });
 
-    this.HsCommonLaymanService.authChange.subscribe(() => {
+    this.hsCommonLaymanService.authChange.subscribe(() => {
       if (
-        this.HsLayoutService.mainpanel != 'composition_browser' &&
-        this.HsLayoutService.mainpanel != 'composition'
+        this.hsLayoutService.mainpanel != 'composition_browser' &&
+        this.hsLayoutService.mainpanel != 'composition'
       ) {
         return;
       }
@@ -155,7 +156,7 @@ export class HsCompositionsCatalogueService {
     }
     this.clearLoadedData();
     this.compositionsLoading = true;
-    this.HsMapService.loaded().then(() => {
+    this.hsMapService.loaded().then(() => {
       const observables = [];
       for (const endpoint of this.filteredEndpoints) {
         observables.push(this.loadCompositionFromEndpoint(endpoint));
@@ -204,10 +205,10 @@ export class HsCompositionsCatalogueService {
    * @param ep
    */
   loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
-    return this.HsCompositionsService.loadCompositions(ep, {
+    return this.hsCompositionsService.loadCompositions(ep, {
       query: this.data.query,
       sortBy: this.data.sortBy.value,
-      filterExtent: this.filterByExtent,
+      filterByExtent: this.filterByExtent,
       keywords: this.data.keywords,
       themes: this.data.themes,
       type: this.data.type,
@@ -220,10 +221,9 @@ export class HsCompositionsCatalogueService {
    */
   loadFilteredCompositions(): void {
     this.clearListCounters();
-    this.checkForActiveFilters();
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep: HsEndpoint) => {
-        if (this.filtersActive && !this.filterByOnlyMine) {
+        if (!this.filterByOnlyMine) {
           return ep.type != 'layman';
         } else if (this.filterByOnlyMine) {
           return !this.filterByOnlyMine || ep.type == 'layman';
@@ -235,44 +235,10 @@ export class HsCompositionsCatalogueService {
     this.loadCompositions();
   }
   /**
-   * Check if any Micka filters are enabled before loading compositions
-   */
-  checkForActiveFilters(): void {
-    let filtersFound = false;
-    for (const key in this.data) {
-      switch (key) {
-        case 'type':
-          if (this.data.type !== 'None') {
-            filtersFound = true;
-          }
-          break;
-        case 'query':
-          if (this.data.query.title != '') {
-            this.data.query.title = this.data.query.title.trim();
-          }
-          break;
-        case 'themes':
-        case 'keywords':
-          if (this.data[key].filter((kw) => kw.selected == true).length != 0) {
-            filtersFound = true;
-          }
-          break;
-        default:
-      }
-    }
-    this.filtersActive = filtersFound;
-  }
-  /**
    * Creates list of compositions from all endpoints currently available
    */
   createCompositionList(): void {
     for (const endpoint of this.filteredEndpoints) {
-      if (endpoint.type == 'layman') {
-        endpoint.compositions = endpoint.compositions.slice(
-          endpoint.compositionsPaging.start,
-          endpoint.compositionsPaging.start + endpoint.compositionsPaging.limit
-        );
-      }
       this.arrayContainsData(this.compositionEntries)
         ? this.filterDuplicates(endpoint)
         : (this.compositionEntries = this.compositionEntries.concat(
@@ -297,10 +263,8 @@ export class HsCompositionsCatalogueService {
       (data) =>
         this.compositionEntries.filter((u) => u.id == data.id).length == 0
     );
-    if (endpoint.type != 'layman') {
-      this.matchedCompositions -=
-        endpoint.compositions.length - filteredCompositions.length;
-    }
+    this.matchedCompositions -=
+      endpoint.compositions.length - filteredCompositions.length;
     this.compositionEntries = this.compositionEntries.concat(
       filteredCompositions
     );
@@ -311,7 +275,7 @@ export class HsCompositionsCatalogueService {
   clearListCounters(): void {
     this.listStart = 0;
     this.listNext = this.recordsPerPage;
-    this.HsCompositionsService.resetCompositionCounter();
+    this.hsCompositionsService.resetCompositionCounter();
   }
   /**
    * Clears all data saved regarding loaded compositions
@@ -386,7 +350,7 @@ export class HsCompositionsCatalogueService {
    * Filters statusmanager endpoint out from rest of the endpoints
    */
   getFilteredEndpointsForCompositions(): HsEndpoint[] {
-    return this.HsCommonEndpointsService.endpoints.filter(
+    return this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type != 'statusmanager'
     );
   }
@@ -394,13 +358,12 @@ export class HsCompositionsCatalogueService {
    * Clears all filters set for compostion list filtering
    */
   clearFilters(): void {
-    this.filtersActive = false;
     this.data.query.title = '';
     this.data.sortBy = SORTBYVALUES[0];
     this.data.type = TYPES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
     this.data.themes.forEach((th) => (th.selected = false));
-    this.filteredEndpoints.push(this.HsLaymanService.getLaymanEndpoint());
+    this.filteredEndpoints.push(this.hsLaymanService.getLaymanEndpoint());
     this.loadFilteredCompositions();
   }
 }
