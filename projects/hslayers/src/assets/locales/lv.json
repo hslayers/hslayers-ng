@@ -31,7 +31,8 @@
     "file": "Fails",
     "URL": {
       "selectAll": "Izvēlēties visus slāņus"
-    }
+    },
+    "saveToDatabase": "Saglabāt datubāzē"
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
@@ -90,7 +91,9 @@
     "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
     "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
-    "Basemap": "Pievienot kā pamatslāni"
+    "Basemap": "Pievienot kā pamatslāni",
+    "bboxFilterMissing": "Rezultātus nevar sakārtot pēc BBOX īpašības, ja kartes apjoma filters nav aktivizēts",
+    "wrongCombinationOfParams": "Nepareiza parametru kombinācija"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -375,7 +378,9 @@
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "snapTo": "Pieķerties slāņa grafiskajam objektam",
+    "allowSnapping": "Atļaut pieķeršanos"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -575,7 +580,8 @@
       "state": "Novads",
       "toggleAll": "Pārslēgt visu",
       "userCurrentMapExtent": "Izmantot pašreizējo kartes apmēru",
-      "write": "Rakstīt"
+      "write": "Rakstīt",
+      "changeName": "Mainīt nosaukumu"
     },
     "panelMd": {
       "fillKeywords": "Ievadiet atslēgvārdus",

@@ -34,7 +34,7 @@ export class HsCompositionsMickaService {
       endpoint.serviceName !== undefined
         ? 'serviceName=&' + endpoint.serviceName
         : '';
-    bbox = params.filterExtent
+    bbox = params.filterByExtent
       ? encodeURIComponent(" and BBOX='" + bbox.join(bboxDelimiter) + "'")
       : '';
     const textFilter =
@@ -192,9 +192,6 @@ export class HsCompositionsMickaService {
     }
     if (params.type == undefined || params.type === 'None') {
       params.type = 'application';
-    }
-    if (params.theme == undefined || params.theme === 'None') {
-      params.theme = '';
     }
     if (params.start == undefined) {
       params.start = endpoint.compositionsPaging.start;
