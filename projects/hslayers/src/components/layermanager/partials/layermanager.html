@@ -65,6 +65,7 @@
                             data-placement="auto"></span>
                     </div>
                 </div>
+                <ngb-progressbar type="secondary" *ngIf="layer.loadProgress?.loadTotal > 0" [value]="layer.loadProgress.percents" height="2px"></ngb-progressbar>
             </li>
         </ul>
 
