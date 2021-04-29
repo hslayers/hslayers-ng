@@ -1,0 +1,89 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@angular-builders/custom-webpack"
+    versions:
+    - ">= 11.a, < 12"
+  - dependency-name: "@angular/cli"
+    versions:
+    - ">= 11.a, < 12"
+  - dependency-name: eslint-config-openlayers
+    versions:
+    - ">= 15.a, < 16"
+  - dependency-name: "@angular-eslint/eslint-plugin"
+    versions:
+    - 4.0.0
+    - 4.1.0
+  - dependency-name: eslint-plugin-tsdoc
+    versions:
+    - 0.2.12
+  - dependency-name: "@angular-devkit/build-angular"
+    versions:
+    - 0.1102.10
+    - 0.1102.4
+  - dependency-name: "@ng-bootstrap/ng-bootstrap"
+    versions:
+    - 9.1.0
+  - dependency-name: ssri
+    versions:
+    - 6.0.2
+  - dependency-name: eslint
+    versions:
+    - 7.24.0
+  - dependency-name: "@types/jasmine"
+    versions:
+    - 3.6.7
+    - 3.6.8
+    - 3.6.9
+  - dependency-name: karma
+    versions:
+    - 6.2.0
+    - 6.3.0
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - 4.19.0
+  - dependency-name: jasmine-core
+    versions:
+    - 3.7.0
+  - dependency-name: vega-embed
+    versions:
+    - 6.16.0
+  - dependency-name: "@ngx-translate/http-loader"
+    versions:
+    - 6.0.0
+  - dependency-name: "@angular/forms"
+    versions:
+    - 11.2.5
+  - dependency-name: "@angular/common"
+    versions:
+    - 11.2.5
+  - dependency-name: typescript
+    versions:
+    - 4.2.3
+  - dependency-name: "@angular-eslint/eslint-plugin-template"
+    versions:
+    - 2.0.0
+    - 2.0.1
+  - dependency-name: "@angular/core"
+    versions:
+    - 11.2.5
+  - dependency-name: tslib
+    versions:
+    - 2.1.0
+  - dependency-name: "@angular-builders/custom-webpack"
+    versions:
+    - 10.0.1
+  - dependency-name: cesium
+    versions:
+    - 1.79.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.25
+    - 14.14.27
