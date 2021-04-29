@@ -35,5 +35,6 @@ import {TranslateModule} from '@ngx-translate/core';
     HsSensorsUnitListItemComponent,
   ],
   providers: [HsSensorsService, HsSensorsUnitDialogService],
+  entryComponents: [HsSensorsComponent, HsSensorsUnitDialogComponent],
 })
 export class HsSensorsModule {}
