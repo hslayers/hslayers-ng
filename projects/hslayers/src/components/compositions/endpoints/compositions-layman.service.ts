@@ -38,7 +38,7 @@ export class HsCompositionsLaymanService {
     const sortBy =
       params.sortBy == 'date'
         ? 'last_change'
-        : params.sortBy !== undefined && params.sortBy != 'None'
+        : params.sortBy !== undefined && params.sortBy != 'None' //Set by date by default, was requested long time ago
         ? params.sortBy
         : 'last_change';
 
@@ -69,6 +69,7 @@ export class HsCompositionsLaymanService {
           if (Array.isArray(response.body)) {
             this.compositionsReceived(endpoint, response);
           } else {
+            //If response is object, it is an error response
             this.hsToastService.createToastPopupMessage(
               this.hsLanguageService.getTranslation(
                 'COMPOSITIONS.errorWhileRequestingCompositions'
@@ -119,13 +120,13 @@ export class HsCompositionsLaymanService {
     return endpoint.listLoading;
   }
   compositionsReceived(endpoint: HsEndpoint, response): void {
-    if (!response.body && response.body.length == 0) {
+    if (response.body.length == 0) {
       endpoint.compositionsPaging.matched = 0;
       this.displayWarningToast(endpoint, 'COMMON.noDataReceived');
       return;
     }
     endpoint.compositionsPaging.loaded = true;
-    endpoint.compositionsPaging.matched = response.headers.get('x-total-count')
+    endpoint.compositionsPaging.matched = response.headers.get('x-total-count') // in case response is an error, x-total-count will return null, it must be checked
       ? parseInt(response.headers.get('x-total-count'))
       : 0;
 

@@ -223,9 +223,7 @@ export class HsCompositionsCatalogueService {
     this.clearListCounters();
     this.filteredEndpoints = this.getFilteredEndpointsForCompositions().filter(
       (ep: HsEndpoint) => {
-        if (!this.filterByOnlyMine) {
-          return ep.type != 'layman';
-        } else if (this.filterByOnlyMine) {
+        if (this.filterByOnlyMine) {
           return !this.filterByOnlyMine || ep.type == 'layman';
         } else {
           return true;
