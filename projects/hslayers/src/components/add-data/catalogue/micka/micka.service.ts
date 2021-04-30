@@ -109,6 +109,12 @@ export class HsMickaBrowserService {
       'EPSG:4326'
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
+    const sortBy =
+      query.sortby !== undefined && query.sortby != ''
+        ? query.sortby == 'date'
+          ? 'date:D'
+          : query.sortby
+        : 'date:D';
     const text =
       query.textFilter !== undefined && query.textFilter.length > 0
         ? query.textFilter
@@ -137,10 +143,7 @@ export class HsMickaBrowserService {
         format: 'application/json',
         language: dataset.language,
         query: sql,
-        sortby:
-          query.sortby !== undefined && query.sortby != ''
-            ? query.sortby
-            : 'date',
+        sortby: sortBy,
         limit: dataset.datasourcePaging.limit,
         start: dataset.datasourcePaging.start,
         validservice: '>0',
@@ -199,8 +202,7 @@ export class HsMickaBrowserService {
       return query[which] != '' ? which + "='" + query[which] + "'" : '';
     } else {
       if (which == 'ServiceType') {
-        const service =
-          'type=service';
+        const service = 'type=service';
         switch (query.type) {
           case 'service':
             return `(${service})`;

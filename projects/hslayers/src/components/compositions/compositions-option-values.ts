@@ -201,7 +201,7 @@ export const INSPIRETHEMES: any[] = [
 export const SORTBYVALUES: any[] = [
   {name: 'None', value: 'None'},
   {name: 'Title', value: 'title'},
-  {name: 'Date', value: 'date'},
+  {name: 'Date', value: 'date:D'},
   {name: 'Bbox', value: 'bbox'},
 ];
 export const TYPES: any[] = [
