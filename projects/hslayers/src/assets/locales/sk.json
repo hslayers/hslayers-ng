@@ -91,9 +91,7 @@
     "errorWhileRequestingLayers": "Chyba pri žiadaní vrstiev zo servera",
     "capabilitiesParsingProblem": "Problém pri načítaní informácii o službě",
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
-    "Basemap": "Pridať ako podkladovú vrstvu",
-    "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
-    "bboxFilterMissing": "Radenie výsledkov podľa BBOX-u nie je bez 'filtrácie na rozsah okna' možné"
+    "Basemap": "Pridať ako podkladovú vrstvu"
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -204,7 +202,9 @@
     "contactInformation": "Kontaktné informácie",
     "warning": "Varovanie",
     "noDataReceived": "Neboli prijaté židane dáta!",
-    "or": "alebo"
+    "or": "alebo",
+    "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
+    "bboxFilterMissing": "Radenie výsledkov podľa BBOX-u nie je bez 'filtrácie na rozsah okna' možné"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

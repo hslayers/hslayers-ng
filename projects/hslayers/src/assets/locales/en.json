@@ -91,9 +91,7 @@
     "errorWhileRequestingLayers": "Error while requesting layers",
     "capabilitiesParsingProblem": "Capabilities parsing problem",
     "serviceTypeNotMatching": "URL service type does not match selected category",
-    "Basemap": "Add as basemap",
-    "wrongCombinationOfParams": "Wrong combination of parameters",
-    "bboxFilterMissing": "Results can not be sorted by BBOX similarity when map extent filter is not activated"
+    "Basemap": "Add as basemap"
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -204,7 +202,12 @@
     "contactInformation": "Contact Information",
     "noDataReceived": "No data received!",
     "warning": "Warning",
-    "or": "or"
+    "or": "or",
+    "wrongCombinationOfParams": "Wrong combination of parameters",
+    "Please enable Filter by map extent checkbox to by able to sort data by Bounding box": "Please enable Filter by map extent checkbox to by able to sort data by Bounding box",
+    "unknownError": "Unknown error. Please try again.",
+    "bboxFilterMissing": "Results can not be sorted by BBOX similarity when map extent filter is not activated",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Unsuccessful OAuth2 authentication. Access token is not valid"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
