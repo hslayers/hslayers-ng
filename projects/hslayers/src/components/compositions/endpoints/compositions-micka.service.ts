@@ -188,7 +188,7 @@ export class HsCompositionsMickaService {
   }
   checkForParams(endpoint: HsEndpoint, params: any): any {
     if (params.sortBy == undefined || params.sortBy === 'None') {
-      params.sortBy = 'date';
+      params.sortBy = 'date:D';
     }
     if (params.type == undefined || params.type === 'None') {
       params.type = 'application';
