@@ -36,7 +36,7 @@ export class HsCompositionsLaymanService {
 
     const query = params.query.title ? params.query.title : '';
     const sortBy =
-      params.sortBy == 'date'
+      params.sortBy == 'date:D'
         ? 'last_change'
         : params.sortBy !== undefined && params.sortBy != 'None' //Set by date by default, was requested long time ago
         ? params.sortBy
