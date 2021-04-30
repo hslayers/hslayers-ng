@@ -69,21 +69,7 @@ export class HsCompositionsLaymanService {
           if (Array.isArray(response.body)) {
             this.compositionsReceived(endpoint, response);
           } else {
-            //If response is object, it is an error response
-            this.hsToastService.createToastPopupMessage(
-              this.hsLanguageService.getTranslation(
-                'COMPOSITIONS.errorWhileRequestingCompositions'
-              ),
-              endpoint.title +
-                ': ' +
-                this.hsLanguageService.getTranslationIgnoreNonExisting(
-                  'ERRORMESSAGES',
-                  response.body.message
-                    ? response.body.message + '. ' + response.body.detail
-                    : 'Unknow error'
-                ),
-              true
-            );
+            this.displayLaymanError(endpoint.title, response.body);
           }
         }),
         catchError((e) => {
@@ -153,7 +139,37 @@ export class HsCompositionsLaymanService {
     await this.$http.delete(url).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
-
+  displayLaymanError(endpointTitle: string, responseBody: any): void {
+    let simplifiedResponse = '';
+    if (responseBody.code === undefined) {
+      simplifiedResponse = 'COMMON.unknownError';
+    }
+    switch (responseBody.code) {
+      case 48:
+        simplifiedResponse =
+          'Please enable Filter by map extent checkbox to by able to sort data by Bounding box';
+        break;
+      case 32:
+        simplifiedResponse =
+          'Unsuccessful OAuth2 authentication. Access token is not valid';
+        break;
+      default:
+        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
+    }
+    //If response is object, it is an error response
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(
+        'COMPOSITIONS.errorWhileRequestingCompositions'
+      ),
+      endpointTitle +
+        ': ' +
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          simplifiedResponse
+        ),
+      true
+    );
+  }
   async getInfo(composition: any): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {

@@ -86,9 +86,9 @@ export class HsAddDataCatalogueComponent {
     if (type == 'bbox' && !this.data.filterByExtent) {
       this.hsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
-          'ADDLAYERS.wrongCombinationOfParams'
+          'COMMON.wrongCombinationOfParams'
         ),
-        this.HsLanguageService.getTranslation('ADDLAYERS.bboxFilterMissing'),
+        this.HsLanguageService.getTranslation('COMMON.bboxFilterMissing'),
         true
       );
       this.data.query[query] = 'title';

@@ -91,9 +91,7 @@
     "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
     "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
     "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
-    "Basemap": "Pievienot kā pamatslāni",
-    "bboxFilterMissing": "Rezultātus nevar sakārtot pēc BBOX īpašības, ja kartes apjoma filters nav aktivizēts",
-    "wrongCombinationOfParams": "Nepareiza parametru kombinācija"
+    "Basemap": "Pievienot kā pamatslāni"
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -204,7 +202,12 @@
     "contactInformation": "Kontaktinformācija",
     "warning": "Brīdinājums",
     "noDataReceived": "Dati nav saņemti!",
-    "or": "or"
+    "or": "or",
+    "Please enable Filter by map extent checkbox to by able to sort data by Bounding box": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc ierobežojošā lodziņa (Bounding box)",
+    "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
+    "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
+    "bboxFilterMissing": "Rezultātus nevar kārtot pēc BBOX līdzības, ja nav aktivizēts kartes mēroga filtrs",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neveiksmīga OAuth2 autentifikācija. Piekļuves talons nav derīgs"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
