@@ -146,8 +146,7 @@ export class HsCompositionsLaymanService {
     }
     switch (responseBody.code) {
       case 48:
-        simplifiedResponse =
-          'Please enable Filter by map extent checkbox to by able to sort data by Bounding box';
+        simplifiedResponse = 'mapExtentFilterMissing';
         break;
       case 32:
         simplifiedResponse =

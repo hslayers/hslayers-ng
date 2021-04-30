@@ -73,9 +73,16 @@ export class HsLaymanBrowserService {
       .pipe(
         timeout(5000),
         map((x: any) => {
-          x.body.dataset = endpoint;
-          x.body.matched = x.headers.get('x-total-count');
-          this.datasetsReceived(x.body);
+          if (Array.isArray(x.body)) {
+            x.body.dataset = endpoint;
+            x.body.matched = x.headers.get('x-total-count')
+              ? x.headers.get('x-total-count')
+              : 0;
+            this.datasetsReceived(x.body);
+          } else {
+            this.displayLaymanError(endpoint.title, x.body);
+          }
+
           return x.body;
         }),
         catchError((e) => {
@@ -110,6 +117,37 @@ export class HsLaymanBrowserService {
         })
       );
     return endpoint.httpCall;
+  }
+
+  displayLaymanError(endpointTitle: string, responseBody: any): void {
+    let simplifiedResponse = '';
+    if (responseBody.code === undefined) {
+      simplifiedResponse = 'COMMON.unknownError';
+    }
+    switch (responseBody.code) {
+      case 48:
+        simplifiedResponse = 'mapExtentFilterMissing';
+        break;
+      case 32:
+        simplifiedResponse =
+          'Unsuccessful OAuth2 authentication. Access token is not valid';
+        break;
+      default:
+        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
+    }
+    //If response is object, it is an error response
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(
+        'ADDLAYERS.errorWhileRequestingLayers'
+      ),
+      endpointTitle +
+        ': ' +
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'COMMON',
+          simplifiedResponse
+        ),
+      true
+    );
   }
 
   /**

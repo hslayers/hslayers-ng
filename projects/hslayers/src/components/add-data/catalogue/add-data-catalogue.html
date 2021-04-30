@@ -15,7 +15,7 @@
     <div class="d-flex ml-4 mr-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0 pl-0">
-                <input type="checkbox" [(ngModel)]="data.filterByExtent"  (change)="extentFilterChanged()"
+                <input type="checkbox" [(ngModel)]="data.filterByExtent"  (change)="queryByFilter()"
                     name="filterByExtent">
                 <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
@@ -26,8 +26,9 @@
         </div>
         <div class="position-relative">
             <button class="btn btn-light hs-white-background dropdown-toggle hs-custom-toggle" data-toggle="dropdown"
-                type="button" (click)="filterTypeMenu = !filterTypeMenu"> More
-            </button>
+                type="button" (click)="openOptionsMenu()"> {{translateString('COMMON',
+                optionsButtonLabel)}}
+            </button>   
             <div class="dropdown-menu dropdown-menu-right px-3" [ngClass]="{'show': filterTypeMenu}">
                 <div class="d-flex flex-row">
                     <div>

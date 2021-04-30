@@ -204,9 +204,9 @@
     "noDataReceived": "Nebyla přijata žádná data!",
     "or": "anebo",
     "wrongCombinationOfParams": "Neplatná kombinace parametru",
-    "bboxFilterMissing": "Řadení výsledku podle podobnosti BBOX-u není bez 'filtrace na rozsha okna' možné",
-    "Please enable Filter by map extent checkbox to by able to sort data by Bounding box": "Řazení výsledku dle rozsahu dat je možné jenom po aktivaci 'filtrace na rozsha okna'. Aktivujte jej prosím.",
-    "unknownError": "Neznáma chyba. Zkuste to znova, prosím."
+    "mapExtentFilterMissing": "Řazení výsledku dle rozsahu dat je možné jenom po aktivaci 'filtrace na rozsah okna'. Aktivujte jej prosím.",
+    "unknownError": "Neznáma chyba. Zkuste to znova, prosím.",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neuspešná autentizace. Neplatný přístupový token"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

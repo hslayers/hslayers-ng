@@ -13,7 +13,6 @@ import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
-import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
@@ -33,6 +32,7 @@ export class HsAddDataCatalogueComponent {
   textFieldTypes = ['AnyText', 'Abstract', 'Title'];
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
+  optionsButtonLabel = 'more';
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -43,8 +43,7 @@ export class HsAddDataCatalogueComponent {
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
-    public HsLaymanService: HsLaymanService, //Used in template
-    public hsToastService: HsToastService
+    public HsLaymanService: HsLaymanService //Used in template
   ) {
     this.data = HsAddDataCatalogueService.data;
     this.advancedSearch = false;
@@ -62,12 +61,13 @@ export class HsAddDataCatalogueComponent {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  extentFilterChanged(): void {
-    //Sort by title if not filtering by extent
-    if (!this.data.filterByExtent && this.data.query.sortby == 'bbox') {
-      this.data.query.sortby = 'title';
+  openOptionsMenu(): void {
+    this.filterTypeMenu = !this.filterTypeMenu;
+    if (this.filterTypeMenu) {
+      this.optionsButtonLabel = 'less';
+    } else {
+      this.optionsButtonLabel = 'more';
     }
-    this.queryByFilter();
   }
 
   queryByFilter(): void {
@@ -83,18 +83,7 @@ export class HsAddDataCatalogueComponent {
   }
 
   selectQueryType(type: string, query: string): void {
-    if (type == 'bbox' && !this.data.filterByExtent) {
-      this.hsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
-          'COMMON.wrongCombinationOfParams'
-        ),
-        this.HsLanguageService.getTranslation('COMMON.bboxFilterMissing'),
-        true
-      );
-      this.data.query[query] = 'title';
-    } else {
-      this.data.query[query] = type;
-    }
+    this.data.query[query] = type;
     this.queryByFilter();
     this.filterTypeMenu = !this.filterTypeMenu;
   }
