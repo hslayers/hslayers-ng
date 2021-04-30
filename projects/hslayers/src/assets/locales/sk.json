@@ -204,7 +204,9 @@
     "noDataReceived": "Neboli prijaté židane dáta!",
     "or": "alebo",
     "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
-    "bboxFilterMissing": "Radenie výsledkov podľa BBOX-u nie je bez 'filtrácie na rozsah okna' možné"
+    "bboxFilterMissing": "Radenie výsledkov podľa BBOX-u nie je bez 'filtrácie na rozsah okna' možné",
+    "unknownError": "Neznáma chyba. Skúste to znova, prosím.",
+    "Please enable Filter by map extent checkbox to by able to sort data by Bounding box": "Radenie výsledkov podľa rozsahu dát (BBOX) je možné jedine po aktivácií 'filtrácie na rozsha okna'. Aktivujte ho prosím."
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -653,5 +655,14 @@
     "totalDistance": "Celková vzdialenosť",
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
     "waypoints": "Body trasy"
+  },
+  "ERRORMESSAGES": {
+    "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
+    "400": "Chybná odpoveď pre {{url}}: 400 Nesprávna požiadavka",
+    "403": "Chybná odpoveď pre {{url}}: 403 Odmietnuté",
+    "404": "Chybná odpoveď pre {{url}}: 404 Nenájdené",
+    "502": "Chybná odpoveď pre {{url}}: 502 Nesprávna brána",
+    "Timeout has occurred": "Chybná odpoveď pre {{url}}: Čas vypršal",
+    "Invalid Params": "Pred zdieľaním mapy sa uistite, či sú všetky vyžadovené polia správne vyplnené!"
   }
 }
