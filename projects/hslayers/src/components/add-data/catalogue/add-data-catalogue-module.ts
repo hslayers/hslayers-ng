@@ -13,10 +13,11 @@ import {TranslateModule} from '@ngx-translate/core';
 
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataCatalogueService} from './add-data-catalogue.service';
+import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsMickaBrowserService} from './micka/micka.service';
-import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -31,6 +32,7 @@ import {HsAddDataMetadataService} from './add-data-catalogue-metadata.service';
     TranslateModule,
     HsUiExtensionsModule,
     HsLaymanModule,
+    NgbModule,
   ],
   exports: [
     HsAddDataCatalogueComponent,

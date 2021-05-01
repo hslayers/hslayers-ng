@@ -24,53 +24,79 @@
                 <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
             </div>
         </div>
-        <div class="position-relative">
-            <button class="btn btn-light hs-white-background dropdown-toggle hs-custom-toggle" data-toggle="dropdown"
-                type="button" (click)="openOptionsMenu()"> {{translateString('COMMON',
-                optionsButtonLabel)}}
-            </button>   
-            <div class="dropdown-menu dropdown-menu-right px-3" [ngClass]="{'show': filterTypeMenu}">
-                <div class="d-flex flex-row">
-                    <div>
-                        <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.filterType' | translate}}</h6>
-                        <div class="dropdown-menu-item m-2" *ngFor="let type of textFieldTypes; let index = index"
-                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                            <input class="d-none" type="checkbox" [(ngModel)]="data.textField"
-                                (change)="selectType(type)" [attr.id]="'textfield-'+index" name="textfield-{{index}}" />
-                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center"
-                                [attr.for]="'textfield-'+index"
-                                [ngClass]="{'hs-checkmark': data.textField == type,'hs-uncheckmark':data.textField != type}"><span
-                                    class="ml-2"
-                                    style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
-                                    type)}}</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <h6 class="dropdown-header">{{'ADDDATA.CATALOGUE.resourceType' | translate}}</h6>
-                        <div class="dropdown-menu-item m-2" *ngFor="let type of dataTypes; let index = index"
-                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.type" (change)="selectQueryType(type, 'type')"
-                                [attr.id]="'type-'+index" name="type-{{index}}" />
-                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'type-'+index"
-                                [ngClass]="{'hs-checkmark': data.query.type == type,'hs-uncheckmark':data.query.type != type}"><span
-                                    class="ml-2" style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
-                                    type)}}</span></label>
-                            </div>
-                    </div>
-                    <div>
-                        <h6 class="dropdown-header">{{'COMMON.sortBy' | translate}}</h6>
-                        <div class="dropdown-menu-item m-2" *ngFor="let sortType of sortbyTypes; let index = index"
-                            [title]="'ADDDATA.CATALOGUE.selectFilterType' | translate">
-                            <input class="d-none" type="checkbox" [(ngModel)]="data.query.sortby" (change)="selectQueryType(sortType, 'sortby')"
-                                [attr.id]="'sortType-'+index" name="sortType-{{index}}" />
-                            <label class="form-check-label m-0 pl-4 mw-100 d-flex align-items-center" [attr.for]="'sortType-'+index"
-                                [ngClass]="{'hs-checkmark': data.query.sortby == sortType,'hs-uncheckmark':data.query.sortby != sortType}"><span
-                                    class="ml-2" style="max-width: 90%;">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
-                                    sortType)}}</span></label>
-                        </div>
-                    </div>
-                </div>
-
+        
+        <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
+            <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
+                ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button>
+            <div ngbDropdownMenu class="dropdown-menu-right p-2 m-1"
+                style="min-width: 23rem; max-width: 23rem;  overflow: visible" aria-labelledby="filtersDropdown">
+                <table class="p-1 pl-3" style="border-collapse:separate; border-spacing:0.5rem 0.5rem;">
+                    <tbody>
+                        <tr>
+                            <td class="tdbreak">
+                                {{'ADDDATA.CATALOGUE.filterType' | translate}}
+                            </td>
+                            <td ngbDropdown display="dynamic" placement="bottom-right" #searchTypeDropdown="ngbDropdown">
+                                <button type="button" ngbDropdownToggle
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
+                                    {{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
+                                    data.textField)}}
+                                </button>
+                                <ul ngbDropdownMenu aria-labelledby="searchType" class="pl-2"
+                                    style="overflow-y: auto; max-height: 10rem; min-width:10rem">
+                                    <li *ngFor="let searchType of textFieldTypes; let index = index">
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="searchType-index"
+                                                [checked]="(index === 0)"
+                                                (change)="selectType(searchType);searchTypeDropdown.close()">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
+                                                searchType)}}</label>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdbreak">
+                                {{'ADDDATA.CATALOGUE.resourceType' | translate}}
+                            </td>
+                            <td ngbDropdown display="dynamic" placement="bottom-right" #resourceType="ngbDropdown">
+                                <button type="button" ngbDropdownToggle
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
+                                    {{translateString('ADDDATA.CATALOGUE.queryDataTypes',
+                                    data.query.type)}}
+                                </button>
+                                <ul ngbDropdownMenu aria-labelledby="type" class="pl-2"
+                                    style="overflow-y: auto; max-height: 10rem; min-width:10rem">
+                                    <li *ngFor="let type of dataTypes; let index = index">
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="type-index"
+                                                [checked]="(index === 1)"
+                                                (change)="selectQueryType(type, 'type');resourceType.close()">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
+                                            type)}}</label>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdbreak">
+                                {{'COMMON.sortBy' | translate}}
+                            </td>
+                            <td ngbDropdown display="dynamic" placement="bottom-right" #sortByDrop="ngbDropdown">
+                                <button type="button" ngbDropdownToggle
+                                    class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
+                                    style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
+                                    {{translateString('ADDDATA.CATALOGUE.sortbyTypes',  data.query.sortby)}}
+                                </button>
+                                <ul ngbDropdownMenu aria-labelledby="sortBy" class="pl-2" style="overflow-y: auto; max-height: 10rem; min-width:10rem">
+                                    <li *ngFor="let sortType of sortbyTypes, let index = index;">
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="sort-index" [checked]="(index === 0)"
+                                                (change)="selectQueryType(sortType, 'sortby');sortByDrop.close()">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
+                                            sortType)}}</label>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
