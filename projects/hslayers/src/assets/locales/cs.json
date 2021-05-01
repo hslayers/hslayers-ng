@@ -203,10 +203,10 @@
     "warning": "Varování",
     "noDataReceived": "Nebyla přijata žádná data!",
     "or": "anebo",
-    "wrongCombinationOfParams": "Neplatná kombinace parametru",
-    "mapExtentFilterMissing": "Řazení výsledku dle rozsahu dat je možné jenom po aktivaci 'filtrace na rozsah okna'. Aktivujte jej prosím.",
-    "unknownError": "Neznáma chyba. Zkuste to znova, prosím.",
-    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neuspešná autentizace. Neplatný přístupový token"
+    "wrongCombinationOfParams": "Neplatná kombinace parametrů",
+    "mapExtentFilterMissing": "Řazení výsledků dle rozsahu dat je možné jen po aktivaci 'filtrace na rozsah okna'. Aktivujte ji prosím.",
+    "unknownError": "Neznámá chyba. Zkuste to znovu, prosím.",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neúspěšná autentizace OAuth2. Neplatný přístupový token"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -657,12 +657,12 @@
     "waypoints": "Body trasy"
   },
   "ERRORMESSAGES": {
-    "0": "Chybná odpověď pro {{url}}: 0 Neznáma chyba",
-    "400": "Chybná odpověď pro {{url}}: 400 Nesprávny požadavek",
+    "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
+    "400": "Chybná odpověď pro {{url}}: 400 Špatný požadavek",
     "403": "Chybná odpověď pro {{url}}: 403 Odmítnuto",
     "404": "Chybná odpověď pro {{url}}: 404 Nenalezeno",
-    "502": "Chybná odpověď pro {{url}}: 502 Nesprávna brána",
+    "502": "Chybná odpověď pro {{url}}: 502 Špatná brána",
     "Timeout has occurred": "Chybná odpověď pro {{url}}: Čas vypršel",
-    "Invalid Params": "Před sdílením mapy se ujistete zdali jsou všechna vyžadována pole správne vyplnená!"
+    "Invalid Params": "Před sdílením mapy se ujistěte zda jsou všechna vyžadovaná pole správně vyplněná!"
   }
 }
