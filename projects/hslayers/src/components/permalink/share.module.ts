@@ -15,7 +15,7 @@ import {HsShareComponent} from './share.component';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
 import {TranslateModule} from '@ngx-translate/core';
-import {WINDOW_PROVIDERS} from '../utils/window';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   declarations: [HsShareComponent],
@@ -26,7 +26,6 @@ import {WINDOW_PROVIDERS} from '../utils/window';
     HsShareUrlService,
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {provide: APP_BASE_HREF, useValue: '/'},
-    WINDOW_PROVIDERS,
   ],
   entryComponents: [HsShareComponent],
 })

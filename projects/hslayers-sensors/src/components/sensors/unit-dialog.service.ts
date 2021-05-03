@@ -7,7 +7,7 @@ import {HsLogService} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
-import {SensLogEndpoint} from './sensors.service';
+import { SensLogEndpoint } from "./senslog-endpoint";
 import {default as vegaEmbed} from 'vega-embed';
 
 type Aggregate = {
