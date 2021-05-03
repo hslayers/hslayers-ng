@@ -14,7 +14,7 @@
     "better-sqlite3": "^7.1.2",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
-    "cors-anywhere": "^0.4.3",
+    "cors-anywhere": "^0.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
