@@ -8,6 +8,10 @@ const port = process.env.PROXY_PORT || 8085;
 
 const cors_proxy = require('cors-anywhere').createServer({
   originWhitelist: [], // Allow all origins
+  httpProxyOptions: {
+    // Disable X-Forwarded-* headers since some map servers use it to generate URLs in capabilities
+    xfwd: false,
+  }
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
