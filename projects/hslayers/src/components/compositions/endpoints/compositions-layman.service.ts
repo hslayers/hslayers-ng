@@ -124,7 +124,7 @@ export class HsCompositionsLaymanService {
         editable: true,
         url: `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`,
         endpoint: endpoint,
-        id: record.uuid,
+        id: `m-${record.uuid}`, //m-* to match mickas id structure.
       };
     });
 

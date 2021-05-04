@@ -55,7 +55,12 @@ export class HsCommonEndpointsService {
         };
         return tmp;
       }),
-    ];
+    ]
+      /**
+       * Sort endpoints in order to give layman's
+       * layers priority in duplicate filtering.
+       */
+      .sort((a, b) => a.type.localeCompare(b.type));
 
     this.endpointsFilled.next(this.endpoints);
   }
