@@ -12,13 +12,6 @@ import {HsUtilsService} from '../utils/utils.service';
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.html',
-  styles: [
-    `
-      .activeComposition {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
-    `,
-  ],
 })
 export class HsCompositionsComponent {
   keywordsVisible = false;

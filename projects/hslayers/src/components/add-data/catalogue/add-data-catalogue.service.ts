@@ -37,6 +37,7 @@ type WhatToAddDescriptor = {
 export class HsAddDataCatalogueService {
   data: any = {};
   selectedEndpoint: HsEndpoint;
+  selectedLayer: HsAddDataLayerDescriptor;
   catalogEntries = [];
   layersLoading: boolean;
   itemsPerPage = 20;
@@ -134,6 +135,7 @@ export class HsAddDataCatalogueService {
   resetList(): void {
     this.listStart = 0;
     this.listNext = this.itemsPerPage;
+    this.selectedLayer = <HsAddDataLayerDescriptor>{};
     this.endpointsWithDatasources.forEach((ep: HsEndpoint) => {
       ep.datasourcePaging.start = 0;
       ep.datasourcePaging.next = ep.datasourcePaging.limit;

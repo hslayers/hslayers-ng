@@ -679,6 +679,10 @@ $mobile-layout-breakpoint: $mobile-layout-breakpoint-value +'px' !default; //thi
 		font-size: 1em;
 	}
 	/////////////////////
+
+	.hs-endpoint-item-active {
+		background-color: hsla(0, 0%, 0%, 0.2);
+	}
 	
 	@import "../components/layout/partials/layout.component.scss";
 	@import "../components//layermanager/partials/layermanager.component.scss";
