@@ -51,6 +51,7 @@ export class HsQueryFeaturePopupComponent implements OnDestroy {
     );
   }
   ngOnDestroy(): void {
+    this.HsMapService.map.removeOverlay(this.HsQueryBaseService.hoverPopup);
     this.olMapLoadsSubscription.unsubscribe();
   }
 
