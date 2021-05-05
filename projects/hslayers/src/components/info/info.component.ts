@@ -39,20 +39,8 @@ export class HsInfoComponent implements OnDestroy {
       .subscribe((data) => {
         if (data.error === undefined) {
           if (data.data !== undefined) {
-            /**
-             * @type {string} null
-             * Abstract of current composition (filled when first composition is loaded)
-             */
             this.composition_abstract = data.data.abstract;
-            /**
-             * @type {string} null
-             * Title of current composition (filled when first composition is loaded)
-             */
             this.composition_title = data.data.title;
-            /**
-             * @type {number} null
-             * Id of current composition (filled when first composition is loaded)
-             */
             this.composition_id = data.data.id;
           } else {
             this.composition_abstract = data.abstract;
@@ -136,6 +124,7 @@ export class HsInfoComponent implements OnDestroy {
         this.composition_edited = true;
       });
   }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -145,7 +134,7 @@ export class HsInfoComponent implements OnDestroy {
     return index; // or item.id
   }
   /**
-   * @return Returns true if composition title available
+   * @returns Returns true if composition title available
    * Test if composition is loaded, to change info template.
    */
   compositionLoaded(): boolean {
