@@ -16,6 +16,7 @@ export default function (
   HsQueryVectorService
 ) {
   'ngInject';
+  var miniSearch;
   const me = {
     applyFilters: function (layer) {
       if (!layer) {
@@ -147,25 +148,9 @@ export default function (
             break;
           case 'fulltext':
             const target = document.getElementById('fulltextInput');
-            const miniSearch = new MiniSearch({
-              fields: filter.valueFields,
-              idField: filter.idField,
-              searchOptions: {
-                fuzzy: term => term.length > 2 ? 0.2 : null,
-                combineWith: 'AND',
-                prefix: true
-              },
-              tokenize: (string) => string.split(/[\s<,&;]+/),
-            });
             let resultIds = null;
             if (target !== null) {
               if (target.value !== null && target.value !== '') {
-                const features = layer.layer
-                  .getSource()
-                  .getFeatures()
-                  .map(f => f.getProperties());
-
-                miniSearch.addAll(features);
 
                 const results = miniSearch.search(target.value);
 
@@ -216,6 +201,25 @@ export default function (
       if ('hsFilters' in layer) {
         for (const i in layer.hsFilters) {
           const filter = layer.hsFilters[i];
+
+          if (filter.type.type == 'fulltext'){
+            miniSearch = new MiniSearch({
+              fields: filter.valueFields,
+              idField: filter.idField,
+              searchOptions: {
+                fuzzy: term => term.length > 2 ? 0.2 : null,
+                combineWith: 'AND',
+                prefix: true
+              },
+              tokenize: (string) => string.split(/[\s<,&;.]+/),
+            });
+            const features = layer.layer
+              .getSource()
+              .getFeatures()
+              .map(f => f.getProperties());
+
+            miniSearch.addAll(features);
+          };
 
           if (filter.gatherValues) {
             switch (filter.type.type) {
