@@ -23,7 +23,7 @@ export class HsLaymanCurrentUserComponent {
     public HsDialogContainerService: HsDialogContainerService
   ) {}
 
-  isAuthorized() {
+  isGuest() {
     return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
   }
 
