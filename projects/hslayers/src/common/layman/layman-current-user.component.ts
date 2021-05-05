@@ -37,13 +37,6 @@ export class HsLaymanCurrentUserComponent {
     return (location.protocol == endpointUrl.protocol && location.host == endpointUrl.host);
   }
 
-  loginButtonUrl() {
-    if (this.sameDomain())
-      return window.location.href + '#';
-    else
-      this.authUrl();
-  }
-
   authUrl() {
     return this.endpoint.url + '/login';
   }
