@@ -1,4 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
@@ -25,6 +29,7 @@ export class HsInfoComponent implements OnDestroy {
   composition_id: number;
   info_image: string;
   composition_edited: boolean;
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
