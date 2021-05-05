@@ -83,9 +83,9 @@ export class HsInfoComponent implements OnDestroy {
 
     this.HsEventBusService.layerLoadings
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer) => {
-        if (!(getTitle(layer) in this.layer_loading)) {
-          this.layer_loading.push(getTitle(layer));
+      .subscribe((l) => {
+        if (!(getTitle(l.layer) in this.layer_loading)) {
+          this.layer_loading.push(getTitle(l.layer));
         }
         this.composition_loaded = false;
       });
