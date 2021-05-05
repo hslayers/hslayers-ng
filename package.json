@@ -6,6 +6,7 @@
     "start": "ng serve",
     "prebuild": "node projects/hslayers/prebuild.js",
     "build": "ng build hslayers --prod",
+    "build-app": "ng build hslayers-app --prod",
     "build-sensors": "ng build hslayers-sensors --prod",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
     "build-watch": "ng build hslayers --watch",
