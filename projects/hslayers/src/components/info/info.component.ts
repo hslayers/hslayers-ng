@@ -1,16 +1,9 @@
 import {Component} from '@angular/core';
-
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
-
 /**
- * @memberof hs.info
- * @ngdoc component
- * @name HsInfoComponent
+ * HsInfoComponent
  */
 @Component({
   selector: 'hs-info',
@@ -22,7 +15,7 @@ export class HsInfoComponent {
    * @name hs.info#composition_loaded
    * @public
    * @type {boolean} true
-   * @description Store if composition is loaded
+   * Store if composition is loaded
    */
   composition_loaded = true;
   /**
@@ -38,7 +31,6 @@ export class HsInfoComponent {
   composition_id: number;
   info_image: string;
   composition_edited: boolean;
-  private ngUnsubscribe = new Subject();
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
@@ -46,29 +38,8 @@ export class HsInfoComponent {
     this.HsEventBusService.compositionLoading.subscribe((data) => {
       if (data.error === undefined) {
         if (data.data !== undefined) {
-          /**
-           * @ngdoc property
-           * @name hs.info#composition_abstract
-           * @public
-           * @type {string} null
-           * @description Abstract of current composition (filled when first composition is loaded)
-           */
           this.composition_abstract = data.data.abstract;
-          /**
-           * @ngdoc property
-           * @name hs.info#composition_title
-           * @public
-           * @type {string} null
-           * @description Title of current composition (filled when first composition is loaded)
-           */
           this.composition_title = data.data.title;
-          /**
-           * @ngdoc property
-           * @name hs.info#composition_id
-           * @public
-           * @type {number} null
-           * @description Id of current composition (filled when first composition is loaded)
-           */
           this.composition_id = data.data.id;
         } else {
           this.composition_abstract = data.abstract;
@@ -80,6 +51,7 @@ export class HsInfoComponent {
         this.info_image = 'icon-map';
       }
     });
+
     this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error !== undefined) {
         const temp_abstract = this.composition_abstract;
@@ -92,23 +64,16 @@ export class HsInfoComponent {
         this.info_image = 'icon-map';
       }
       this.composition_loaded = true;
-      /**
-       * @ngdoc property
-       * @name hs.info#composition_edited
-       * @public
-       * @type {boolean} null
-       * @description Status of composition edit (true for edited composition)
-       */
       this.composition_edited = false;
     });
-    this.HsEventBusService.layerLoadings
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((l) => {
-        if (!(getTitle(l.layer) in this.layer_loading)) {
-          this.layer_loading.push(getTitle(l.layer));
-        }
-        this.composition_loaded = false;
-      });
+
+    this.HsEventBusService.layerLoadings.subscribe(({layer, progress}) => {
+      if (!(getTitle(layer) in this.layer_loading)) {
+        this.layer_loading.push(getTitle(layer));
+      }
+      this.composition_loaded = false;
+    });
+
     this.HsEventBusService.layerLoads.subscribe((layer) => {
       for (let i = 0; i < this.layer_loading.length; i++) {
         if (this.layer_loading[i] == getTitle(layer)) {
@@ -137,10 +102,12 @@ export class HsInfoComponent {
       this.composition_loaded = true;
       this.composition_edited = false;
     });
+
     this.HsEventBusService.compositionEdits.subscribe(() => {
       this.composition_edited = true;
     });
   }
+
   trackByFn(index: number): number {
     return index; // or item.id
   }
