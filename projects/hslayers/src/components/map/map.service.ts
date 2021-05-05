@@ -320,9 +320,11 @@ export class HsMapService {
     }
 
     if (this.HsConfig.mapInteractionsEnabled != false) {
-      Object.values(this.interactions).forEach((value) => {
+      for (const value of Object.values(this.interactions).filter(
+        (value) => !this.map.getInteractions().getArray().includes(value)
+      )) {
         this.map.addInteraction(value);
-      });
+      }
     }
 
     //this.map.addControl(new ol.control.ZoomSlider());
