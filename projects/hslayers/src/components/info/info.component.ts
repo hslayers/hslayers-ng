@@ -1,7 +1,12 @@
 import {Component} from '@angular/core';
+
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+
 import {HsEventBusService} from './../core/event-bus.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
+
 /**
  * @memberof hs.info
  * @ngdoc component
@@ -33,6 +38,7 @@ export class HsInfoComponent {
   composition_id: number;
   info_image: string;
   composition_edited: boolean;
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService
@@ -95,12 +101,14 @@ export class HsInfoComponent {
        */
       this.composition_edited = false;
     });
-    this.HsEventBusService.layerLoadings.subscribe(({layer, progress}) => {
-      if (!(getTitle(layer) in this.layer_loading)) {
-        this.layer_loading.push(getTitle(layer));
-      }
-      this.composition_loaded = false;
-    });
+    this.HsEventBusService.layerLoadings
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((l) => {
+        if (!(getTitle(l.layer) in this.layer_loading)) {
+          this.layer_loading.push(getTitle(l.layer));
+        }
+        this.composition_loaded = false;
+      });
     this.HsEventBusService.layerLoads.subscribe((layer) => {
       for (let i = 0; i < this.layer_loading.length; i++) {
         if (this.layer_loading[i] == getTitle(layer)) {

@@ -706,7 +706,10 @@ export class HsLayerManagerService {
           if (event.oldValue == false) {
             this.HsEventBusService.layerLoads.next(olLayer);
           } else {
-            this.HsEventBusService.layerLoadings.next(olLayer);
+            this.HsEventBusService.layerLoadings.next({
+              layer: olLayer,
+              progress: loadProgress,
+            });
           }
         }
       });
