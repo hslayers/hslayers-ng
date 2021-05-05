@@ -7,6 +7,7 @@ import {HsCoreService} from '../../core/core.service';
 
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataCatalogueService} from './add-data-catalogue.service';
+import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -55,6 +56,13 @@ export class HsAddDataCatalogueComponent {
     });
     this.loaderImage =
       this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
+  }
+
+  layerSelected(layer: HsAddDataLayerDescriptor): void {
+    this.HsAddDataCatalogueService.selectedLayer =
+      this.HsAddDataCatalogueService.selectedLayer == layer
+        ? <HsAddDataLayerDescriptor>{}
+        : layer;
   }
 
   translateString(module: string, text: string): string {

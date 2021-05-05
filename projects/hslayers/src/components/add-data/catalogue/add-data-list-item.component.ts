@@ -13,6 +13,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
+import {HsUtilsService} from '../../utils/utils.service';
 
 @Component({
   selector: 'hs-add-data-list-item',
@@ -29,6 +30,7 @@ export class HsAddDataListItemComponent {
   selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
   whatToAddTypes;
+  loadingInfo = false;
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsAddDataMetadataService,
@@ -37,7 +39,8 @@ export class HsAddDataListItemComponent {
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLogService: HsLogService,
     public HsLanguageService: HsLanguageService,
-    public HsLaymanService: HsLaymanService
+    public HsLaymanService: HsLaymanService,
+    public HsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -50,11 +53,13 @@ export class HsAddDataListItemComponent {
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
+    this.loadingInfo = true;
     const availableTypes = await this.HsAddDataCatalogueService.addLayerToMap(
       ds,
       layer,
       this.selectedType
     );
+    this.loadingInfo = false;
     if (Array.isArray(availableTypes)) {
       this.whatToAddTypes = availableTypes;
       this.selectTypeToAddLayerVisible = true;

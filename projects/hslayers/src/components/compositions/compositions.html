@@ -170,7 +170,7 @@
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li *ngFor="let composition of HsCompositionsCatalogueService.compositionEntries"
                         class="list-group-item hs-comp-item" style="cursor: pointer;"
-                        [ngClass]="{'activeComposition' : composition.highlighted}"
+                        [ngClass]="{'hs-endpoint-item-active' : composition.highlighted}"
                         (mouseover)="highlightComposition(composition, true)"
                         (mouseleave)="highlightComposition(composition, false)"
                         (click)="compositionClicked(composition)" data-container="body" data-placement="bottom"
