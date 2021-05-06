@@ -23,7 +23,7 @@ export class HsLaymanCurrentUserComponent {
     public HsDialogContainerService: HsDialogContainerService
   ) {}
 
-  isAuthorized() {
+  isGuest() {
     return this.endpoint.user == 'anonymous' || this.endpoint.user == 'browser';
   }
 
@@ -35,13 +35,6 @@ export class HsLaymanCurrentUserComponent {
   sameDomain() {
     let endpointUrl = new URL(this.endpoint.url);
     return (location.protocol == endpointUrl.protocol && location.host == endpointUrl.host);
-  }
-
-  loginButtonUrl() {
-    if (this.sameDomain())
-      return window.location.href + '#';
-    else
-      this.authUrl();
   }
 
   authUrl() {
