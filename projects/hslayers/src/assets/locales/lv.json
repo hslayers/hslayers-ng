@@ -10,7 +10,7 @@
       "filterType": "Meklēt pēc",
       "searchFilterTypes": {
         "Abstract": "Apraksta",
-        "AnyText": "Jebkāds teksts",
+        "AnyText": "Visa teksta",
         "Title": "Nosaukuma"
       },
       "queryDataTypes": {
@@ -19,9 +19,9 @@
         "dataset": "Datukopa"
       },
       "sortbyTypes": {
-        "date": "Datums",
-        "title": "Nosaukums",
-        "bbox": "Mērogojums"
+        "date": "Datuma",
+        "title": "Nosaukuma",
+        "bbox": "Mērogojuma"
       },
       "loading": "Notiek ielāde",
       "searchType": "Filtra tips",
@@ -203,7 +203,7 @@
     "warning": "Brīdinājums",
     "noDataReceived": "Dati nav saņemti!",
     "or": "or",
-    "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc ierobežojošā lodziņa (Bounding box)",
+    "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
     "bboxFilterMissing": "Rezultātus nevar kārtot pēc BBOX līdzības, ja nav aktivizēts kartes mēroga filtrs",
@@ -282,7 +282,7 @@
     "Meteorological geographical features": "Meteoroloģiskās, ģeogrāfiskās pazīmes",
     "Mineral resources": "Minerālie resursi",
     "Natural risk zones": "Dabas riska zonas",
-    "None": "Nav",
+    "None": "Neviens",
     "Oceanographic geographical features": "Okeanogrāfiskās, ģeogrāfiskās iezīmes",
     "Orthoimagery": "Ortofotogrāfija",
     "Population distribution - demography": "Iedzīvotāju sadalījums - demogrāfija",
@@ -315,16 +315,16 @@
     "Water": "Ūdens"
   },
   "COMPOSITONSORTVALUES": {
-    "Bbox": "Ierobežojošais lodziņš",
-    "Date": "Datums",
-    "None": "Nav",
-    "Title": "Nosaukums"
+    "Bbox": "Mērogojuma",
+    "Date": "Datuma",
+    "None": "Neviena",
+    "Title": "Nosaukuma"
   },
   "COMPOSITONTYPES": {
     "Application": "Lietotne",
-    "Datasource": "Dati",
+    "Datasource": "Datu avots",
     "Feature catalogue": "Funkciju katalogs",
-    "None": "Nav",
+    "None": "Neviens",
     "Service": "Serviss"
   },
   "DATASOURCE_SELECTOR": {
