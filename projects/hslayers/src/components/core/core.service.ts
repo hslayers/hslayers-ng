@@ -43,8 +43,10 @@ export class HsCoreService {
     } else {
       this.HsLayoutService.sidebarExpanded = true;
     }
-
-    this.translate.addLangs(['en', 'cs', 'lv', 'sk']);
+    const languages = this.HsConfig.enabledLanguages
+      ? this.HsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
+      : ['cs', 'lv'];
+    this.translate.addLangs(languages);
     this.translate.setDefaultLang('en');
     if (this.HsConfig.language) {
       this.translate.use(this.HsConfig.language);
@@ -99,7 +101,8 @@ export class HsCoreService {
         function () {
           this.updateVH();
           this.updateMapSize();
-          this.HsEventBusService.layoutResizes.next();        },
+          this.HsEventBusService.layoutResizes.next();
+        },
         300,
         false,
         this
