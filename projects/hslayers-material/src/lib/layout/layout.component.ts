@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng';
-import {HsEventBusService} from '../../../../hslayers/src/components/core/event-bus.service';
-import {HsLayoutService} from '../../../../hslayers/src/components/layout/layout.service';
+import {HsEventBusService} from 'hslayers-ng';
+import {HsLayoutService} from 'hslayers-ng';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsThemeService} from '../../../../hslayers/src/components/layout/themes/theme.service';
-import {HsUtilsService} from '../../../../hslayers/src/components/utils/utils.service';
-// import { HsMapHostDirective } from '../../../../hslayers/src/components/layout/map-host.directive';
+import {HsThemeService} from 'hslayers-ng';
+import {HsUtilsService} from 'hslayers-ng';
+// import { HsMapHostDirective } from 'hslayers-ng';
 
 @Component({
   selector: 'hs-mat-layout',

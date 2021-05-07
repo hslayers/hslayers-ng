@@ -5,7 +5,7 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
 
 import {HsEventBusService, HsLayerManagerService} from 'hslayers-ng';
-import {HsLayerDescriptor} from '../../../../hslayers/src/components/layermanager/layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng';
 
 class HsLayerNode {
   name: string;
