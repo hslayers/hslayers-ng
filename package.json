@@ -90,7 +90,7 @@
     "puppeteer": "^9.1.1",
     "ts-node": "~9.1.1",
     "typescript": "~4.0.7",
-    "webpack": "^4.44.1"
+    "webpack": "^4.46.0"
   },
   "config": {
     "commitizen": {
