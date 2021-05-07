@@ -23,6 +23,8 @@
       "ol/*": ["node_modules/ol/*"],
       "hslayers-ng": ["dist/hslayers"],
       "hslayers-ng/*": ["dist/hslayers/*"],
+      "hslayers-material": ["dist/hslayers-material"],
+      "hslayers-material/*": ["dist/hslayers-material/*"],
     }
   },
   "angularCompilerOptions": {
