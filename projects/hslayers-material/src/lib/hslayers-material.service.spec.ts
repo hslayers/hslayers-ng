@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { HslayersMaterialService } from './hslayers-material.service';
+import {HslayersMaterialService} from './hslayers-material.service';
 
 describe('HslayersMaterialService', () => {
   let service: HslayersMaterialService;

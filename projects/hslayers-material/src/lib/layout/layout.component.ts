@@ -7,13 +7,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
-import {HsConfig} from 'hslayers-ng';
-import {HsEventBusService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
+import {HsConfig, HsEventBusService, HsLayoutService} from 'hslayers-ng';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsThemeService} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
-// import { HsMapHostDirective } from 'hslayers-ng';
 
 @Component({
   selector: 'hs-mat-layout',
