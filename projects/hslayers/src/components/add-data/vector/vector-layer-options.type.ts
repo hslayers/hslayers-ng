@@ -8,4 +8,5 @@ export type HsVectorLayerOptions = {
   style?: any;
   extractStyles?: boolean;
   features?: Feature[];
+  workspace?: string;
 };

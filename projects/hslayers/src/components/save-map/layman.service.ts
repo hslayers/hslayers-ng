@@ -21,6 +21,7 @@ import {
 import {
   getLaymanLayerDescriptor,
   getTitle,
+  getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
@@ -95,7 +96,7 @@ export class HsLaymanService implements HsSaverService {
       };
       try {
         const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
-          `${endpoint.url}/rest/${endpoint.user}/maps${
+          `${endpoint.url}/rest/workspaces/${endpoint.user}/maps${
             saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
           }`,
           formdata,
@@ -148,7 +149,11 @@ export class HsLaymanService implements HsSaverService {
       let layerDesc2 = layerDesc;
       try {
         if (layerDesc2 == undefined) {
-          layerDesc2 = await this.describeLayer(endpoint, description.name);
+          layerDesc2 = await this.describeLayer(
+            endpoint,
+            description.name,
+            getWorkspace(description)
+          );
         }
       } catch (ex) {
         this.HsLogService.log(`Creating layer ${description.name}`);
@@ -156,7 +161,7 @@ export class HsLaymanService implements HsSaverService {
       const response: any = await this.http[
         layerDesc2?.name ? 'patch' : 'post'
       ](
-        `${endpoint.url}/rest/${endpoint.user}/layers${
+        `${endpoint.url}/rest/workspaces/${description.workspace}/layers${
           layerDesc2?.name ? '/' + description.name : ''
         }?${Math.random()}`,
         formdata,
@@ -194,6 +199,7 @@ export class HsLaymanService implements HsSaverService {
       crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
         ? this.crs
         : 'EPSG:3857',
+      workspace: getWorkspace(layer),
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);
@@ -221,7 +227,7 @@ export class HsLaymanService implements HsSaverService {
       const name = getLayerName(layer);
       try {
         if (!desc) {
-          desc = await this.describeLayer(endpoint, name);
+          desc = await this.describeLayer(endpoint, name, getWorkspace(layer));
           this.cacheLaymanDescriptor(layer, desc, endpoint);
         }
         if (desc.name == undefined) {
@@ -313,7 +319,11 @@ export class HsLaymanService implements HsSaverService {
     let descr: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
-      descr = await this.describeLayer(endpoint, layerName);
+      descr = await this.describeLayer(
+        endpoint,
+        layerName,
+        getWorkspace(layer)
+      );
       if (
         descr === null || //In case of response?.code == 15
         (descr.wfs.status == descr.wms.status && wfsNotAvailable(descr))
@@ -338,7 +348,7 @@ export class HsLaymanService implements HsSaverService {
               service: 'wfs',
               version: '1.1.0',
               request: 'GetFeature',
-              typeNames: `${endpoint.user}:${descr.name}`,
+              typeNames: `${getWorkspace(layer)}:${descr.name}`,
               r: Math.random(),
               srsName: this.HsMapService.getCurrentProj().getCode(),
             }),
@@ -360,15 +370,16 @@ export class HsLaymanService implements HsSaverService {
    */
   async describeLayer(
     endpoint: HsEndpoint,
-    layerName: string
+    layerName: string,
+    workspace: string
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
       const response: any = await this.http
         .get(
-          `${endpoint.url}/rest/${
-            endpoint.user
-          }/layers/${layerName}?${Math.random()}`,
+          `${
+            endpoint.url
+          }/rest/workspaces/${workspace}/layers/${layerName}?${Math.random()}`,
           {
             withCredentials: true,
           }
@@ -397,7 +408,7 @@ export class HsLaymanService implements HsSaverService {
         const layerName =
           typeof layer == 'string' ? layer : getLayerName(layer);
         this.http
-          .delete(`${ds.url}/rest/${ds.user}/layers/${layerName}`, {
+          .delete(`${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`, {
             withCredentials: true,
           })
           .toPromise()

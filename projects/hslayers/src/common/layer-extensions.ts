@@ -43,6 +43,7 @@ const THUMBNAIL = 'thumbnail';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
+const WORKSPACE = 'workspace';
 
 export type Attribution = {
   onlineResource?: string;
@@ -535,6 +536,15 @@ export function setVirtualAttributes(
 export function getVirtualAttributes(layer: Layer): any {
   return layer.get(VIRTUAL_ATTRIBUTES);
 }
+
+export function getWorkspace(layer: Layer): string {
+  return layer.get(WORKSPACE);
+}
+
+export function setWorkspace(layer: Layer, workspace: string): void {
+  layer.set(WORKSPACE, workspace);
+}
+
 export const HsLayerExt = {
   setTitle,
   getTitle,

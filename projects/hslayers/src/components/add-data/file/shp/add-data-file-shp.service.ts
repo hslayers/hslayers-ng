@@ -51,7 +51,9 @@ export class HsAddDataFileShpService {
       formdata.append('crs', srs);
       this.httpClient
         .post(
-          `${endpoint.url}/rest/${endpoint.user}/layers?${Math.random()}`,
+          `${endpoint.url}/rest/workspaces/${
+            endpoint.user
+          }/layers?${Math.random()}`,
           formdata,
           {withCredentials: true}
         )

@@ -91,7 +91,8 @@ export class HsAddDataFileShpComponent implements OnInit {
     try {
       const descriptor = await this.hsLaymanService.describeLayer(
         endpoint,
-        layerName
+        layerName,
+        endpoint.user
       );
       if (['STARTED', 'PENDING', 'SUCCESS'].includes(descriptor.wms.status)) {
         return new Promise((resolve) => {

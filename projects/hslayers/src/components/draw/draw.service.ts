@@ -210,6 +210,7 @@ export class HsDrawService {
         format: layman ? 'hs.format.WFS' : null,
         url: layman ? layman.url + '/wfs' : null,
       },
+      workspace: this.HsLaymanService.getLaymanEndpoint().user,
     });
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
@@ -270,7 +271,7 @@ export class HsDrawService {
         layer.title,
         undefined,
         'EPSG:4326',
-        undefined
+        {workspace: layer.workspace}
       );
       lyr = this.HsMapService.findLayerByTitle(layer.title);
     }
@@ -481,7 +482,9 @@ export class HsDrawService {
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {
-            return !this.HsMapService.findLayerByTitle(layer.title);
+            return (
+              !this.HsMapService.findLayerByTitle(layer.title) && layer.editable
+            );
           }
         );
       }
@@ -511,7 +514,7 @@ export class HsDrawService {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
-      if (getDefinition(this.selectedLayer)?.format == 'hs.format.WFS') {
+      if (getDefinition(this.selectedLayer)?.url) {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {

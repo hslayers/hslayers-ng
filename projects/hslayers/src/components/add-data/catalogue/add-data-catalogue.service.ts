@@ -29,6 +29,8 @@ type WhatToAddDescriptor = {
   abstract?: string;
   projection?;
   extractStyles?;
+  editable?: boolean;
+  workspace?: string;
 };
 
 @Injectable({
@@ -417,16 +419,31 @@ export class HsAddDataCatalogueService {
           });
         });
       } else {
-        const layer = await this.HsAddDataVectorService.addVectorLayer(
-          'wfs',
-          whatToAdd.link,
-          whatToAdd.name,
-          whatToAdd.title,
-          whatToAdd.abstract,
-          whatToAdd.projection,
-          {extractStyles: whatToAdd.extractStyles}
-        );
-        this.HsAddDataVectorService.fitExtent(layer);
+        //Layman layers of logged user/ with write access
+        if (whatToAdd.editable) {
+          const layer = await this.HsAddDataVectorService.addVectorLayer(
+            'wfs',
+            whatToAdd.link,
+            whatToAdd.name,
+            whatToAdd.title,
+            whatToAdd.abstract,
+            whatToAdd.projection,
+            {
+              extractStyles: whatToAdd.extractStyles,
+              workspace: whatToAdd.workspace,
+            }
+          );
+          this.HsAddDataVectorService.fitExtent(layer);
+        } else {
+          //Layaman layers without write access
+          setTimeout(() => {
+            this.hsEventBusService.owsFilling.next({
+              type: 'wfs',
+              uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+              layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+            });
+          });
+        }
         this.hsLayoutService.setMainPanel('layermanager');
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {

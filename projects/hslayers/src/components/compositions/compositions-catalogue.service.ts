@@ -214,6 +214,7 @@ export class HsCompositionsCatalogueService {
       type: this.data.type,
       start: ep.compositionsPaging.start,
       limit: ep.compositionsPaging.limit,
+      filterByOnlyMine: this.filterByOnlyMine,
     });
   }
   /**

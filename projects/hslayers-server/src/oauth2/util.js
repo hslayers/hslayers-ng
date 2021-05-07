@@ -62,7 +62,7 @@ exports.handleProxyRes = (proxyRes, req, res) => {
       body = Buffer.concat(body).toString().replace(repl, replWith);
 
       /* 
-        /rest/layers
+        /rest/layers || rest/workspaces/layers
         X-Total-Count header includes total number of layers available from the request
       */
       if(this.headers['x-total-count']){

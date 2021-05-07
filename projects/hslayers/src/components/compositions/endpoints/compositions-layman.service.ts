@@ -51,8 +51,13 @@ export class HsCompositionsLaymanService {
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
 
+    const withPermisionOrMine = params.filterByOnlyMine
+      ? `workspaces/${endpoint.user}/`
+      : '';
+    const url = `${endpoint.url}/rest/${withPermisionOrMine}maps`;
+
     endpoint.listLoading = this.$http
-      .get(`${endpoint.url}/rest/${endpoint.user}/maps`, {
+      .get(url, {
         observe: 'response',
         withCredentials: true,
         params: {
@@ -121,21 +126,18 @@ export class HsCompositionsLaymanService {
         name: record.name,
         title: record.title,
         access_rights: record.access_rights,
-        editable: true,
-        url: `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`,
+        editable: record.access_rights.write.some((user) => {
+          return [endpoint.user, 'EVERYONE'].includes(user);
+        }),
+        url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
         endpoint: endpoint,
+        workspace: record.workspace,
         id: `m-${record.uuid}`, //m-* to match mickas id structure.
       };
     });
-
-    for (const record of endpoint.compositions) {
-      record.editable = true;
-      record.url = `${endpoint.url}/rest/${endpoint.user}/maps/${record.name}`;
-      record.endpoint = endpoint;
-    }
   }
   async delete(endpoint: HsEndpoint, composition): Promise<void> {
-    const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+    const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await this.$http.delete(url).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
@@ -192,7 +194,7 @@ export class HsCompositionsLaymanService {
       );
       return;
     }
-    const url = `${endpoint.url}/rest/${endpoint.user}/maps/${composition.name}`;
+    const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     const info = await this.hsCompositionsParserService.loadInfo(url);
     if (
       info.thumbnail.status !== undefined &&

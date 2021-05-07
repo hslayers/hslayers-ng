@@ -31,7 +31,7 @@
                 <i class="icon-info-sign icon-primary"></i><span class="ml-1">{{'COMMON.metadata' |
                     translate}}</span>
             </a>
-            <a class="btn btn-sm" *ngIf="layer.endpoint.type == 'layman'"
+            <a class="btn btn-sm" *ngIf="layer.editable"
                 (click)="$event.stopPropagation();removeLayer(layer)">
                 <i class="icon-trash text-danger"></i><span class="ml-1">{{'COMMON.removeLayer' | translate}}</span>
             </a>
