@@ -13,4 +13,6 @@ export interface HsAddDataLayerDescriptor {
   };
   endpoint?;
   id?;
+  workspace?: string;
+  editable?: boolean;
 }

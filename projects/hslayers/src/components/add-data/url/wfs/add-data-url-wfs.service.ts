@@ -77,7 +77,8 @@ export class HsAddDataWfsService {
                 //TODO: If Layman allows layers with different casing,
                 // then remove the case lowering
                 if (
-                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase()
+                  layer.Title.toLowerCase() === this.layerToAdd.toLowerCase() ||
+                  layer.Name.toLowerCase() === this.layerToAdd.toLowerCase()
                 ) {
                   layer.checked = true;
                 }
@@ -432,6 +433,13 @@ export class HsAddDataWfsService {
         bbox.UpperCorner.split(' ')[0],
         bbox.UpperCorner.split(' ')[1],
       ];
+    }
+    if (!this.mapProjection) {
+      this.mapProjection = this.HsMapService.map
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
     }
     const extent = transformExtent(bbox, 'EPSG:4326', this.mapProjection);
     if (extent) {

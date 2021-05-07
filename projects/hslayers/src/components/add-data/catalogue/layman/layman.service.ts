@@ -38,10 +38,13 @@ export class HsLaymanBrowserService {
    */
   queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
-    const url = `${endpoint.url}/rest/${endpoint.user}/layers`;
+    const withPermisionOrMine = data?.onlyMine
+      ? `workspaces/${endpoint.user}/`
+      : '';
+    const url = `${endpoint.url}/rest/${withPermisionOrMine}layers`;
     endpoint.datasourcePaging.loaded = false;
 
-    let query, bbox, sortBy;
+    let query, bbox, sortBy, params;
 
     if (data) {
       query = data.query;
@@ -55,6 +58,18 @@ export class HsLaymanBrowserService {
         'EPSG:3857'
       );
       bbox = data.filterByExtent ? b.join(',') : '';
+
+      params = {
+        'limit': `${endpoint.datasourcePaging.limit}`,
+        'offset': `${endpoint.datasourcePaging.start}`,
+        'full_text_filter': `${query?.textFilter}`,
+        'order_by': `${sortBy ?? 'last_change'}`,
+      };
+      //Use bbox_filter only if its defined to prevent
+      //Wrong parameter value error
+      if (bbox) {
+        params['bbox_filter'] = bbox;
+      }
     }
 
     endpoint.httpCall = this.http
@@ -62,13 +77,7 @@ export class HsLaymanBrowserService {
         observe: 'response',
         withCredentials: true,
         responseType: 'json',
-        params: {
-          'limit': `${endpoint.datasourcePaging.limit}`,
-          'offset': `${endpoint.datasourcePaging.start}`,
-          'full_text_filter': `${query?.textFilter}`,
-          'order_by': `${sortBy}`,
-          'bbox_filter': `${bbox}`,
-        },
+        params: params,
       })
       .pipe(
         timeout(5000),
@@ -182,6 +191,10 @@ export class HsLaymanBrowserService {
           type: ['WMS', 'WFS'],
           name: layer.name,
           id: layer.uuid,
+          workspace: layer.workspace,
+          editable: layer.access_rights.write.some((user) => {
+            return [dataset.user, 'EVERYONE'].includes(user);
+          }),
         };
       });
     }
@@ -196,15 +209,15 @@ export class HsLaymanBrowserService {
    * just name and uuid
    */
   async fillLayerMetadata(
-    dataset: HsEndpoint,
+    endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor
   ): Promise<HsAddDataLayerDescriptor> {
-    const url = `${dataset.url}/rest/${dataset.user}/layers/${layer.name}`;
+    const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
       return await this.http
         .get(url, {
-          //timeout: dataset.canceler.promise,
-          //dataset,
+          //timeout: endpoint.canceler.promise,
+          //endpoint,
           responseType: 'json',
           withCredentials: true,
         })
@@ -213,7 +226,7 @@ export class HsLaymanBrowserService {
           delete data.type;
           layer = {...layer, ...data};
           if (layer.thumbnail) {
-            layer.thumbnail = dataset.url + layer.thumbnail.url;
+            layer.thumbnail = endpoint.url + layer.thumbnail.url;
           }
           return layer;
         });
@@ -244,6 +257,8 @@ export class HsLaymanBrowserService {
       name: lyr.name,
       title: lyr.title,
       dsType: ds.type,
+      editable: lyr.editable,
+      workspace: lyr.workspace,
     };
   }
 }
