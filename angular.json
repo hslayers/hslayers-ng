@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist/hslayers-app",
             "index": "projects/hslayers-app/src/index.html",
@@ -39,7 +39,10 @@
             "styles": [
               "node_modules/ol/ol.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "projects/hslayers-app/custom-webpack.config.js"
+            }
           },
           "configurations": {
             "hmr": {
@@ -62,7 +65,7 @@
                 }
               ],
               "optimization": true,
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
