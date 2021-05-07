@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-// import { HsConfig } from 'hslayers-ng/config.service';
+
 import {HsConfig} from 'hslayers-ng';
 
 @Component({

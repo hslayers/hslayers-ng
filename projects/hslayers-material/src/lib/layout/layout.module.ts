@@ -5,9 +5,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 
 import {HsAttributionDialogComponent} from './attribution-dialog.component';
-import {HsLayoutService} from 'hslayers-ng';
+import {HsLayoutService, HsMapModule} from 'hslayers-ng';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsMapModule} from 'hslayers-ng';
 import {HsMatLayerManagerModule} from '../layermanager/layermanager.module';
 import {HsMatLayoutComponent} from './layout.component';
 import {HsMatOverlayComponent} from './overlay.component';

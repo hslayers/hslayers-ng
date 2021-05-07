@@ -1,19 +1,13 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HslayersMaterialModule } from 'hslayers-material';
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
+import {HslayersMaterialModule} from 'hslayers-material';
+import {NgModule} from '@angular/core';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HslayersMaterialModule
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, HslayersMaterialModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

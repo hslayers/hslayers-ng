@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import * as proj from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -22,21 +22,17 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 
-import {
-  SparqlJson,
-  HsLayoutService,
-  HsConfig,
-} from 'hslayers-ng';
+import {HsConfig, HsLayoutService, SparqlJson} from 'hslayers-ng';
 
 @Component({
   selector: 'hslayers-material-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  styleUrls: ['./app.component.sass'],
 })
 export class AppComponent implements OnInit {
   constructor(
     public HsConfig: HsConfig,
-    public HsLayoutService: HsLayoutService,
+    public HsLayoutService: HsLayoutService
   ) {
     const w: any = window;
     w.ol = {

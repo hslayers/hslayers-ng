@@ -4,8 +4,11 @@ import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
 
-import {HsEventBusService, HsLayerManagerService} from 'hslayers-ng';
-import {HsLayerDescriptor} from 'hslayers-ng';
+import {
+  HsEventBusService,
+  HsLayerDescriptor,
+  HsLayerManagerService,
+} from 'hslayers-ng';
 
 class HsLayerNode {
   name: string;
