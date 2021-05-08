@@ -1,3 +1,4 @@
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {HsConfig} from './config.service';
 
@@ -16,6 +17,7 @@ describe('HslayersComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [HslayersComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
       }).compileComponents();
     })

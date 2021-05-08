@@ -105,7 +105,7 @@ describe('HsDraw', () => {
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsDrawComponent);
-    service = TestBed.get(HsDrawService);
+    service = TestBed.inject(HsDrawService);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
