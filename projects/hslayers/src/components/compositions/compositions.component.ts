@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
@@ -13,7 +16,7 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-compositions',
   templateUrl: './compositions.html',
 })
-export class HsCompositionsComponent {
+export class HsCompositionsComponent implements OnDestroy {
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -22,6 +25,7 @@ export class HsCompositionsComponent {
   optionsMenuOpen = false;
   selectedCompId: any;
   loadFilteredCompositions: any;
+  notSavedCompositionLoadingSubscription: Subscription;
   constructor(
     public HsCompositionsService: HsCompositionsService,
     public HsCompositionsParserService: HsCompositionsParserService,
@@ -36,10 +40,15 @@ export class HsCompositionsComponent {
     this.loadFilteredCompositions = () =>
       HsCompositionsCatalogueService.loadFilteredCompositions();
 
-    this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
-      this.HsCompositionsService.compositionToLoad = {url, title: ''};
-      this.loadUnsavedDialogBootstrap(url, '');
-    });
+    this.notSavedCompositionLoadingSubscription = this.HsCompositionsService.notSavedCompositionLoading.subscribe(
+      (url) => {
+        this.HsCompositionsService.compositionToLoad = {url, title: ''};
+        this.loadUnsavedDialogBootstrap(url, '');
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.notSavedCompositionLoadingSubscription.unsubscribe();
   }
   resultsVisible(): boolean {
     if (

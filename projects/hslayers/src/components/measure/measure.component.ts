@@ -1,4 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
@@ -8,10 +12,10 @@ import {HsUtilsService} from '../utils/utils.service';
   selector: 'hs-measure',
   templateUrl: './partials/measure.html',
 })
-export class HsMeasureComponent {
+export class HsMeasureComponent implements OnDestroy {
   type: string;
   data;
-
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
@@ -31,21 +35,27 @@ export class HsMeasureComponent {
         }
       });
     }
-    this.HsEventBusService.measurementStarts.subscribe(() => {
-      this.HsLayoutService.panelEnabled('toolbar', false);
-    });
+    this.HsEventBusService.measurementStarts
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.HsLayoutService.panelEnabled('toolbar', false);
+      });
 
-    this.HsEventBusService.measurementEnds.subscribe(() => {
-      this.HsLayoutService.panelEnabled('toolbar', true);
-    });
+    this.HsEventBusService.measurementEnds
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.HsLayoutService.panelEnabled('toolbar', true);
+      });
 
-    this.HsEventBusService.mainPanelChanges.subscribe(() => {
-      if (HsLayoutService.mainpanel == 'measure') {
-        this.HsMeasureService.activateMeasuring(this.type);
-      } else {
-        this.HsMeasureService.deactivateMeasuring();
-      }
-    });
+    this.HsEventBusService.mainPanelChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        if (HsLayoutService.mainpanel == 'measure') {
+          this.HsMeasureService.activateMeasuring(this.type);
+        } else {
+          this.HsMeasureService.deactivateMeasuring();
+        }
+      });
 
     //Temporary fix when measure panel is loaded as deafult (e.g. reloading page with parameters in link)
     if (this.HsLayoutService.mainpanel == 'measure') {
@@ -53,6 +63,10 @@ export class HsMeasureComponent {
     }
 
     //$scope.$emit('scope_loaded', 'Measure');
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   changeMeasureParams(): void {
@@ -63,10 +77,7 @@ export class HsMeasureComponent {
   }
 
   /**
-   * @memberof hs.measure.controller
-   * @function clearAll
-   * @public
-   * @description Reset sketch and all measurements to start new drawing
+   * Reset sketch and all measurements to start new drawing
    */
   clearAll(): void {
     this.HsMeasureService.clearMeasurement();
