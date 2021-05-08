@@ -436,14 +436,8 @@ export class HsSaveMapService {
   /**
    * Convert feature array to GeoJSON string
    *
-<<<<<<< HEAD
    * @param features - Array of features
    * @returns GeoJSON
-=======
-   * @function serializeFeatures
-   * @param {Array} features Array of features
-   * @return {string} GeoJSON string
->>>>>>> 584703d5b... Ported server-layman-rebase
    */
   getFeaturesJson(features: Feature[]): any {
     const f = new GeoJSON();

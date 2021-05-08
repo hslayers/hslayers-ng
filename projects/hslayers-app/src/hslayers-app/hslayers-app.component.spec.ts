@@ -1,16 +1,18 @@
 import {HsConfig} from '../../../hslayers/src/config.service';
 import {HslayersAppComponent} from './hslayers-app.component';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import {TestBed, waitForAsync} from '@angular/core/testing';
 class HsConfigMock {
   constructor() {}
 }
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [HslayersAppComponent],
-      providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [HslayersAppComponent],
+        providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
+      }).compileComponents();
+    })
+  );
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(HslayersAppComponent);
@@ -29,7 +31,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'hslayers-workspace app is running!'
+      'hslayers-workspace'
     );
   });
 });
