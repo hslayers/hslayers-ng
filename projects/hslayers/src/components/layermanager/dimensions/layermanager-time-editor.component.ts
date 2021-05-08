@@ -1,4 +1,8 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
@@ -9,7 +13,7 @@ import {HsLayoutService} from '../../layout/layout.service';
   selector: 'hs-layermanager-time-editor',
   templateUrl: 'layermanager-time-editor.component.html',
 })
-export class HsLayerManagerTimeEditorComponent implements OnInit {
+export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   @Input() layer: HsLayerDescriptor;
   /**
    * ISO format time
@@ -27,20 +31,24 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
    */
   timeDisplayLocale = 'en-US';
   timesInSync: boolean;
-
+  private ngUnsubscribe = new Subject();
   constructor(
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService,
     public hsLayoutService: HsLayoutService,
     private hsConfig: HsConfig
   ) {
-    this.hsEventBusService.layerTimeChanges.subscribe(({layer, time}) => {
-      if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
-        this.fillAvailableTimes(layer);
-      }
-    });
-    this.hsEventBusService.layerTimeSynchronizations.subscribe(
-      ({sync, time}) => {
+    this.hsEventBusService.layerTimeChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({layer, time}) => {
+        if (this.availableTimes === undefined && this.layer.uid === layer.uid) {
+          this.fillAvailableTimes(layer);
+        }
+      });
+
+    this.hsEventBusService.layerTimeSynchronizations
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(({sync, time}) => {
         this.timesInSync = sync;
         if (sync) {
           this.hideTimeSelect();
@@ -49,8 +57,11 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
             this.setLayerTime();
           }
         }
-      }
-    );
+      });
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
