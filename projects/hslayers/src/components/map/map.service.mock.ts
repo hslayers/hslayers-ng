@@ -22,7 +22,7 @@ export class HsMapServiceMock {
     this.map.addLayer(layer);
   }
 
-  getCurrentProj(){
+  getCurrentProj() {
     return this.map.getView().getProjection();
   }
 

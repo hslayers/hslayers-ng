@@ -23,14 +23,14 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   hasChecked: boolean;
 
   constructor(
-    public HsAddDataArcGisService: HsAddDataArcGisService,
+    public hsAddDataArcGisService: HsAddDataArcGisService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
-    public HsAddDataUrlService: HsAddDataUrlService,
-    public HsUtilsService: HsUtilsService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsUtilsService: HsUtilsService
   ) {
-    this.data = HsAddDataArcGisService.data;
+    this.data = hsAddDataArcGisService.data;
 
     this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
       ({type, uri, layer}) => {
@@ -43,8 +43,8 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     //TODO: this.sourceHistory = this.HsAddDataArcGisService.sourceHistory;
   }
 
-  hasNestedLayers = this.HsAddDataArcGisService.hasNestedLayers;
-  getDimensionValues = this.HsAddDataArcGisService.getDimensionValues;
+  hasNestedLayers = this.hsAddDataArcGisService.hasNestedLayers;
+  getDimensionValues = this.hsAddDataArcGisService.getDimensionValues;
 
   ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
@@ -54,18 +54,18 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     this.hasChecked = false;
     this.hsHistoryListService.addSourceHistory(
       'Arcgis',
-      this.HsAddDataArcGisService.url
+      this.hsAddDataArcGisService.url
     );
     this.hsArcgisGetCapabilitiesService.requestGetCapabilities(
-      this.HsAddDataArcGisService.url
+      this.hsAddDataArcGisService.url
     );
-    this.HsAddDataArcGisService.data.getMapUrl = this.HsAddDataArcGisService.url;
-    this.HsAddDataArcGisService.loadingInfo = true;
-    this.HsAddDataArcGisService.showDetails = true;
+    this.hsAddDataArcGisService.data.getMapUrl = this.hsAddDataArcGisService.url;
+    this.hsAddDataArcGisService.loadingInfo = true;
+    this.hsAddDataArcGisService.showDetails = true;
   };
 
   /**
-   * @function selectAllLayers
+   * @param layers
    * @description Select all layers from service.
    */
   selectAllLayers(layers: any[]): void {
@@ -78,15 +78,15 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   }
 
   addLayers(checked: boolean): void {
-    this.HsAddDataArcGisService.addLayers(checked);
+    this.hsAddDataArcGisService.addLayers(checked);
   }
 
   srsChanged(): void {
-    this.HsAddDataArcGisService.srsChanged();
+    this.hsAddDataArcGisService.srsChanged();
   }
 
   changed(): void {
-    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
       this.data.services
     );
   }
@@ -99,7 +99,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer: string): void {
-    this.HsAddDataArcGisService.url = url;
+    this.hsAddDataArcGisService.url = url;
     this.connect(layer);
   }
 }

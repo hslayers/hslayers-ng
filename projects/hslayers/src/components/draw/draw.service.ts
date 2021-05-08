@@ -219,6 +219,7 @@ export class HsDrawService {
       this
     );
   }
+
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
@@ -258,7 +259,6 @@ export class HsDrawService {
   /**
    * @param layer
    * @function selectLayer
-   * @memberOf HsDrawService
    * @description Handles drawing layer selection/change by activating drawing for selected layer.
    * In case of layman layer not yet existing in app it pulls the layer first.
    */
@@ -293,7 +293,6 @@ export class HsDrawService {
   /**
    * @param layer
    * @function addDrawLayer
-   * @memberOf HsDrawService
    * @description Add draw layer to the map and repopulate list of drawables.
    */
   addDrawLayer(layer: Layer): void {
@@ -319,7 +318,7 @@ export class HsDrawService {
    *
    * @private
    * @function useCurrentStyle
-   * @memberof HsDrawService
+   * @return style
    */
   useCurrentStyle() {
     if (!this.currentStyle) {
@@ -346,12 +345,13 @@ export class HsDrawService {
       this.HsLayoutService.mainpanel != 'draw' &&
       this.HsConfig.openQueryPanelOnDrawEnd
     ) {
-      setTimeout(() => {
-        this.HsLayoutService.setMainPanel('info');
-        this.HsQueryVectorService.selector.getFeatures().push(e.feature);
-        this.HsQueryVectorService.createFeatureAttributeList();
-      });
+      this.HsLayoutService.setMainPanel('info');
     }
+    setTimeout(() => {
+      this.HsQueryBaseService.clearData('features');
+      this.HsQueryVectorService.selector.getFeatures().push(e.feature);
+      this.HsQueryVectorService.createFeatureAttributeList();
+    });
   }
 
   /**
@@ -369,7 +369,6 @@ export class HsDrawService {
   }
   /**
    * @function changeDrawSource
-   * @memberOf HsDrawService
    * @description Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
   changeDrawSource(): void {
@@ -399,8 +398,7 @@ export class HsDrawService {
 
   /**
    * @function deactivateDrawing
-   * @memberof HsDrawService
-   * @returns {Promise}
+   * @return {Promise}
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
    */
   deactivateDrawing(): Promise<undefined> {
@@ -447,7 +445,6 @@ export class HsDrawService {
 
   /**
    * @function fillDrawableLayers
-   * @memberOf HsDrawService
    * @description Repopulates drawable layers. In case layman connection exists it also creates
    * a list of avaliable server possiblities.
    */
@@ -500,7 +497,6 @@ export class HsDrawService {
   }
   /**
    * @function removeLayer
-   * @memberOf HsDrawController
    * @description Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(): Promise<void> {
@@ -545,10 +541,10 @@ export class HsDrawService {
   }
   /**
    * @function rightClickCondition
-   * @memberOf HsDrawService
    * @description Determines whether rightclick should finish the drawing or not
    * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
    * @param vertexCount Number of vertexes the sketch has
+   * @return return boolean value if right mouse button was clicked
    */
   rightClickCondition(typeNum: number, vertexCount: number): boolean {
     const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;

@@ -202,7 +202,7 @@
     "contactInformation": "Kontaktinformācija",
     "warning": "Brīdinājums",
     "noDataReceived": "Dati nav saņemti!",
-    "or": "or",
+    "or": "vai",
     "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",

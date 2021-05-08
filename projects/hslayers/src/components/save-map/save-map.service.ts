@@ -282,7 +282,6 @@ export class HsSaveMapService {
    * The layer index is not covered, as we assume
    * that it is corresponding to the layers order.
    *
-   * @memberof HsSaveMapService
    * @function layer2json
    * @param {object} layer Map layer that should be converted
    * @return {object} JSON object representing the layer
