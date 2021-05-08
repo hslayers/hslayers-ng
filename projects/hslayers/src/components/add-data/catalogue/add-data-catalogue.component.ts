@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
 
@@ -13,7 +16,6 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {HsLogService} from '../../../common/log/log.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
@@ -22,7 +24,7 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-add-data-catalogue',
   templateUrl: './add-data-catalogue.html',
 })
-export class HsAddDataCatalogueComponent {
+export class HsAddDataCatalogueComponent implements OnDestroy {
   typeSelected: string;
   types: any[];
   data: any;
@@ -34,6 +36,7 @@ export class HsAddDataCatalogueComponent {
   dataTypes = ['all', 'service', 'dataset'];
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
+  owsConnectingSubscription: Subscription;
   constructor(
     public HsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
@@ -49,13 +52,18 @@ export class HsAddDataCatalogueComponent {
     this.data = HsAddDataCatalogueService.data;
     this.advancedSearch = false;
     this.queryCatalogs = () => HsAddDataCatalogueService.queryCatalogs();
-    this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
-      if (type == 'wms') {
-        this.data.wms_connecting = true;
+    this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
+      ({type, uri, layer}) => {
+        if (type == 'wms') {
+          this.data.wms_connecting = true;
+        }
       }
-    });
+    );
     this.loaderImage =
       this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
+  }
+  ngOnDestroy(): void {
+    this.owsConnectingSubscription.unsubscribe();
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
