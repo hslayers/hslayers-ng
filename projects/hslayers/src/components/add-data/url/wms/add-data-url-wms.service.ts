@@ -66,7 +66,7 @@ export class HsAddDataUrlWmsService {
         if (type === 'WMS') {
           if (error) {
             this.throwParsingError(response.message);
-            return
+            return;
           }
           try {
             await this.capabilitiesReceived(response, this.layerToSelect);

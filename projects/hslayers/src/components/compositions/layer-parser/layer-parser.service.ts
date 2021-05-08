@@ -37,7 +37,7 @@ export class HsCompositionsLayerParserService {
   ) {}
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createWMTSLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -88,7 +88,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createWmsLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -146,7 +146,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createArcGISLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -204,7 +204,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createXYZLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -257,7 +257,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createStaticImageLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -309,7 +309,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createSparqlLayer
    * @public
    * @param {object} lyr_def Layer definition object
@@ -352,7 +352,7 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * @ngdoc method
+
    * @name hs.compositions.config_parsers.service#createVectorLayer
    * @public
    * @param {object} lyr_def Layer definition object

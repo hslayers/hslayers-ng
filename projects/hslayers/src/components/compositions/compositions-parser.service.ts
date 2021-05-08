@@ -1,24 +1,28 @@
 import * as xml2Json from 'xml-js';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+import {transform, transformExtent} from 'ol/proj';
+
+import {DuplicateHandling, HsMapService} from '../map/map.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
-import {Injectable} from '@angular/core';
+
 import {
   getFromComposition,
   getTitle,
   setMetadata,
 } from '../../common/layer-extensions';
-import {transform, transformExtent} from 'ol/proj';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -82,10 +86,10 @@ export class HsCompositionsParserService {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    let options = {};
+    const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
-      options['responseType'] = 'text' ;
+      options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
       this.HsCommonEndpointsService?.endpoints.filter(

@@ -71,7 +71,6 @@ export class HsMapService {
   timer = null;
   puremap: any;
   /**
-   * @ngdoc property
    * @name HsMapService#duration
    * @public
    * @type {number} 400
@@ -89,7 +88,6 @@ export class HsMapService {
     },
   });
   /**
-   * @ngdoc property
    * @name HsMapService#controls
    * @public
    * @type {object}
@@ -99,7 +97,6 @@ export class HsMapService {
   controls = this.defaultDesktopControls;
   mapElement: any;
   /**
-   * @ngdoc property
    * @name HsMapService#interactions
    * @public
    * @type {object}
@@ -268,8 +265,10 @@ export class HsMapService {
   }
 
   setDefaultView = function (e) {
-    this.map.getView().setCenter(this.HsConfig.default_view.getCenter());
-    this.map.getView().setZoom(this.HsConfig.default_view.getZoom());
+    const center = this.HsConfig.default_view.getCenter();
+    this.map.getView().setCenter(center);
+    const zoom = this.HsConfig.default_view.getZoom();
+    this.map.getView().setZoom(zoom);
   };
   /**
    * @param e
