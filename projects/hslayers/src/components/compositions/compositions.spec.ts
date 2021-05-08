@@ -14,6 +14,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
+import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
@@ -25,6 +26,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -38,6 +40,12 @@ import {getTitle} from '../../common/layer-extensions';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
+}
+class HsCompositionsMickaServiceMock {
+  constructor() {}
+  loadList() {
+    return;
+  }
 }
 
 class emptyMock {
@@ -76,15 +84,19 @@ describe('compositions', () => {
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
+        HsCompositionsMickaServiceMock,
+        HsCompositionsMapService,
         {
-          HsSaveMapService,
-          useValue: {
-            internalLayers: [],
-          },
+          provide: HsSaveMapService,
+          useValue: HsSaveMapServiceMock,
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
+        {
+          provide: HsCompositionsMickaService,
+          useValue: new HsCompositionsMickaServiceMock(),
+        },
         {
           provide: HsLayoutService,
           useValue: {
@@ -121,9 +133,11 @@ describe('compositions', () => {
         },
       ],
     });
-    const hsCompositionsMickaService = TestBed.get(HsCompositionsMickaService);
+    const hsCompositionsMickaService = TestBed.inject(
+      HsCompositionsMickaServiceMock
+    );
     //Mock server response
-    hsCompositionsMickaService.getCompositions = () => {
+    hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
         resolve(compositionsJson);
       });
