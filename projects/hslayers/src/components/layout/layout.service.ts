@@ -90,7 +90,7 @@ export class HsLayoutService {
     composition_browser: true,
     toolbar: true,
     mobile_settings: false,
-    draw: false,
+    draw: true,
     layermanager: true,
     print: true,
     saveMap: true,
@@ -134,10 +134,11 @@ export class HsLayoutService {
     be set after this service constructor is executed */
     setTimeout((_) => {
       this.parseConfig();
-    });
+    }, 0);
   }
 
   parseConfig() {
+    this.panel_enabled = {};
     for (const key of Object.keys(this.panelsEnabledDefaults)) {
       this.panelEnabled(key, this.getPanelEnableState(key));
     }

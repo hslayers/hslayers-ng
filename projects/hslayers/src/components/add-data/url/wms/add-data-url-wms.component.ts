@@ -7,8 +7,8 @@ import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 
 @Component({
   selector: 'hs-add-data-url-wms',
@@ -63,7 +63,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
     this.HsAddDataUrlWmsService.showDetails = false;
   }
 
-  searchForChecked(service) {
+  searchForChecked(service): void {
     this.checkedLayers[service.Name] = service.checked;
     this.hasChecked = Object.values(this.checkedLayers).some(
       (value) => value === true

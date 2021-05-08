@@ -69,8 +69,19 @@ export const compositionJson = {
       'opacity': 1,
       'title': 'Json features',
       'className': 'Vector',
-      'features':
-        {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[25.486272576058198,57.21506027419332]},"properties":null}]},
+      'features': {
+        'type': 'FeatureCollection',
+        'features': [
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [25.486272576058198, 57.21506027419332],
+            },
+            'properties': null,
+          },
+        ],
+      },
       'maxResolution': null,
       'minResolution': 0,
       'projection': 'epsg:4326',
@@ -84,7 +95,7 @@ export const compositionJson = {
       'maxResolution': null,
       'minResolution': 0,
       'projection': 'epsg:4326',
-    }
+    },
   ],
   'current_base_layer': {'title': 'Open street map'},
 };

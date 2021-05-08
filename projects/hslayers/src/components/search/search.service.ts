@@ -101,7 +101,9 @@ export class HsSearchService {
         (data) => {
           this.searchResultsReceived(data, providerId);
         },
-        () => {}
+        () => {
+          //
+        }
       );
     }
   }
