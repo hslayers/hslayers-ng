@@ -411,7 +411,7 @@ export class HsDrawService {
           map.removeInteraction(this.draw);
           this.draw = null;
         }
-        resolve();
+        resolve(null);
       });
     });
   }
