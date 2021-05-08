@@ -382,7 +382,6 @@ export class HsUtilsService {
    *
    * @param {object} objectToCheck
    * @returns {boolean}
-   * @memberof HsUtilsService
    */
   isPOJO(objectToCheck: any): boolean {
     return (

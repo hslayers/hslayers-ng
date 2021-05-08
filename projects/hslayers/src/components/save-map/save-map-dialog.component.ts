@@ -3,7 +3,7 @@ import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 @Component({
-  selector: 'hs.save-map-dialog-save',
+  selector: 'hs-save-map-dialog-save',
   templateUrl: './partials/dialog_save.html',
 })
 export class HsSaveMapDialogComponent implements HsDialogComponent {
