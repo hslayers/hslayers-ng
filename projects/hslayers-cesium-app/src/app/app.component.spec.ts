@@ -1,16 +1,18 @@
 import {AppComponent} from './app.component';
 import {HsConfig} from 'hslayers-ng';
-import {TestBed, async} from '@angular/core/testing';
+import {TestBed, waitForAsync} from '@angular/core/testing';
 class HsConfigMock {
   constructor() {}
 }
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AppComponent],
+        providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
+      }).compileComponents();
+    })
+  );
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
