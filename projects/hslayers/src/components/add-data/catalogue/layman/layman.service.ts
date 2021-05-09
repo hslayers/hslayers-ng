@@ -39,7 +39,9 @@ export class HsLaymanBrowserService {
   queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     const withPermisionOrMine = data?.onlyMine
-      ? `workspaces/${endpoint.user}/`
+      ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
+        ? `workspaces/${endpoint.user}/`
+        : ''
       : '';
     const url = `${endpoint.url}/rest/${withPermisionOrMine}layers`;
     endpoint.datasourcePaging.loaded = false;

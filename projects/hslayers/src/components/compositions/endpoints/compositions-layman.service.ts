@@ -52,7 +52,9 @@ export class HsCompositionsLaymanService {
     const bbox = params.filterByExtent ? b.join(',') : '';
 
     const withPermisionOrMine = params.filterByOnlyMine
-      ? `workspaces/${endpoint.user}/`
+      ? endpoint.user !== 'anonymous' && endpoint.user !== 'browser'
+        ? `workspaces/${endpoint.user}/`
+        : ''
       : '';
     const url = `${endpoint.url}/rest/${withPermisionOrMine}maps`;
 
