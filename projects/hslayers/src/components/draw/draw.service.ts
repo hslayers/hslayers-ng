@@ -515,7 +515,10 @@ export class HsDrawService {
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
       const definition = getDefinition(this.selectedLayer);
-      if (definition?.format.toLowerCase().includes('wfs') && definition?.url) {
+      if (
+        definition?.format?.toLowerCase().includes('wfs') &&
+        definition?.url
+      ) {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {
