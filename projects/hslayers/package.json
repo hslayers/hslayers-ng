@@ -15,6 +15,7 @@
     "@ngx-translate/http-loader": "^5.0.0",
     "bootstrap": "^4.0.0",
     "deepmerge": "^4.0.0",
+    "dayjs": "^1.0.0",
     "ngx-cookie-service": "^10.0.0",
     "ol": "^6.0.0",
     "ol-popup": "^4.0.0",

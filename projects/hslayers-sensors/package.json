@@ -14,6 +14,7 @@
     "@ngx-translate/core": "^12.0.0",
     "@ngx-translate/http-loader": "^5.0.0",
     "bootstrap": "^4.0.0",
+    "dayjs": "^1.0.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.6.0",
     "rxjs": "^6.0.0",
@@ -30,13 +31,13 @@
     "@angular/localize": "^10.2.5",
     "@ngx-translate/core": "^13.0.0",
     "@ng-bootstrap/ng-bootstrap": "^8.0.4",
+    "dayjs": "^1.10.4",
     "rxjs": "^6.6.7",
     "vega": "^5.20.2",
     "vega-embed": "^6.17.0",
     "vega-lite": "^5.1.0"
   },
   "dependencies": {
-    "tslib": "^2.0.0",
-    "dayjs": "^1.10.4"
+    "tslib": "^2.0.0"
   }
 }
