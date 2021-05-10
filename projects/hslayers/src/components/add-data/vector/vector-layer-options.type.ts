@@ -1,4 +1,5 @@
 import Feature from 'ol/Feature';
+import {accessRightsInterface} from '../common/access-rights.interface';
 
 export type HsVectorLayerOptions = {
   opacity?: number;
@@ -9,4 +10,5 @@ export type HsVectorLayerOptions = {
   extractStyles?: boolean;
   features?: Feature[];
   workspace?: string;
+  access_rights?: accessRightsInterface;
 };

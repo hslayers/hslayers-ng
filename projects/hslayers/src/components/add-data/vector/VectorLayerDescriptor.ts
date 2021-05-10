@@ -1,5 +1,6 @@
 import VectorSource from 'ol/source/Vector';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
+import {accessRightsInterface} from '../common/access-rights.interface';
 
 export class VectorLayerDescriptor {
   mapProjection;
@@ -16,6 +17,7 @@ export class VectorLayerDescriptor {
     path: string;
     visible: boolean;
     workspace: string;
+    access_rights: accessRightsInterface;
   };
 
   constructor(
@@ -47,6 +49,7 @@ export class VectorLayerDescriptor {
       path: options.path,
       visible: options.visible,
       workspace: options.workspace,
+      access_rights: options.access_rights,
     };
 
     switch (type ? type.toLowerCase() : '') {

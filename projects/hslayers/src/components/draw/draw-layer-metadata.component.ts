@@ -2,11 +2,13 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {HsDialogComponent} from '../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
 import {HsMapService} from '../map/map.service';
+import {accessRightsInterface} from '../add-data/common/access-rights.interface';
 import {
   getEditor,
   getHsLaymanSynchronizing,
   getPath,
   getTitle,
+  setAccessRights,
   setEditor,
   setName,
   setPath,
@@ -30,6 +32,10 @@ export class HsDrawLayerMetadataDialogComponent
   folderVisible = false;
   type: string;
   endpoint: any;
+  access_rights: accessRightsInterface = {
+    'write': 'EVERYONE',
+    'read': 'EVERYONE',
+  };
 
   constructor(
     public HsMapService: HsMapService,
@@ -75,6 +81,7 @@ export class HsDrawLayerMetadataDialogComponent
       f.setProperties(dic);
     });
 
+    setAccessRights(this.layer, this.access_rights);
     this.data.changeDrawSource();
 
     this.data.addDrawLayer(this.layer);

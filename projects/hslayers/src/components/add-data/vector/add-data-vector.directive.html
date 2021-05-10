@@ -55,6 +55,40 @@
                 </button>
             </div>
         </div>
+        <div class="form-group d-flex justify-content-between" *ngIf="saveToLayman">
+            <label class="pt-2" style="margin-bottom: 0;">
+                {{'SAVECOMPOSITION.readAccessRights' | translate}}
+            </label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                    (click)="access_rights.read = 'EVERYONE'"
+                    [ngClass]="{'active':access_rights.read == 'EVERYONE'}">
+                    {{'SAVECOMPOSITION.public' | translate}}
+                </button>
+                <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                    (click)="access_rights.read = 'private'"
+                    [ngClass]="{'active':access_rights.read == 'private'}">
+                    {{'SAVECOMPOSITION.private' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-between" *ngIf="saveToLayman">
+            <label class="pt-2" style="margin-bottom: 0;">
+                {{'SAVECOMPOSITION.writeAccessRights' | translate}}
+            </label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                    (click)="access_rights.write = 'EVERYONE'"
+                    [ngClass]="{'active':access_rights.write == 'EVERYONE'}">
+                    {{'SAVECOMPOSITION.public' | translate}}
+                </button>
+                <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                    (click)="access_rights.write = 'private'"
+                    [ngClass]="{'active':access_rights.write == 'private'}">
+                    {{'SAVECOMPOSITION.private' | translate}}
+                </button>
+            </div>
+        </div>
 
         <button type="button" class="btn btn-block btn-outline-secondary dropdown-toggle dropdown-toggle-split"
             (click)="advancedPanelVisible = !advancedPanelVisible">

@@ -1,7 +1,9 @@
 import Feature from 'ol/Feature';
 import {Group, Layer} from 'ol/layer';
-import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
 import {Style} from 'ol/style';
+
+import {HsLaymanLayerDescriptor} from '../components/save-map/layman-layer-descriptor.interface';
+import {accessRightsInterface} from '../components/add-data/common/access-rights.interface';
 
 const TITLE = 'title';
 const NAME = 'name';
@@ -44,6 +46,7 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
+const ACCESS_RIGHTS = 'access_rights';
 
 export type Attribution = {
   onlineResource?: string;
@@ -78,6 +81,15 @@ export type popUpAttribute = {
 export type popUp = {
   attributes?: Array<popUpAttribute | string>;
 };
+
+export function getAccessRights(layer: Layer): accessRightsInterface {
+  return layer.get(ACCESS_RIGHTS);
+}
+
+export function setAccessRights(layer: Layer, access_rights:accessRightsInterface ){
+  layer.set(ACCESS_RIGHTS, access_rights);
+}
+
 export function setTitle(layer: Layer, title: string): void {
   layer.set(TITLE, title);
 }
@@ -546,6 +558,8 @@ export function setWorkspace(layer: Layer, workspace: string): void {
 }
 
 export const HsLayerExt = {
+  getAccessRights,
+  setAccessRights,
   setTitle,
   getTitle,
   setName,
@@ -622,4 +636,6 @@ export const HsLayerExt = {
   getThumbnail,
   setVirtualAttributes,
   getVirtualAttributes,
+  setWorkspace,
+  getWorkspace,
 };
