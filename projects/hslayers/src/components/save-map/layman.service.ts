@@ -214,7 +214,7 @@ export class HsLaymanService implements HsSaverService {
   async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
-    Should not cache anonymous layers, because layer can be authorized any moment */
+    Should not cache anonymous layers, because layer can be authorized anytime */
     const endpoint = {...ep};
     try {
       let desc = getLaymanLayerDescriptor(layer);
@@ -308,7 +308,7 @@ export class HsLaymanService implements HsSaverService {
   async makeGetLayerRequest(ep: HsEndpoint, layer: Layer): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
-    Should not cache anonymous layers, because layer can be authorized any moment */
+    Should not cache anonymous layers, because layer can be authorized anytime */
     const endpoint = {...ep};
     let descr: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);

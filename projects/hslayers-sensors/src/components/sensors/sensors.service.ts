@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import VectorLayer from 'ol/layer/Vector';
-import moment from 'moment';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {
   HsConfig,
@@ -281,7 +281,7 @@ export class HsSensorsService {
         response.forEach((sv) => {
           sensorValues[sv.sensorId] = {
             value: sv.observedValue,
-            timestamp: moment(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
+            timestamp: dayjs(sv.timeStamp).format('DD.MM.YYYY HH:mm'),
           };
         });
         this.units.forEach((unit: HsSensorUnit) => {

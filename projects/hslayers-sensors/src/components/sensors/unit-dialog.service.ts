@@ -1,5 +1,5 @@
 /* eslint-disable angular/definedundefined */
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {ElementRef, Injectable} from '@angular/core';
 import {HsLanguageService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
@@ -7,7 +7,7 @@ import {HsLogService} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsUtilsService} from 'hslayers-ng';
 import {HttpClient} from '@angular/common/http';
-import { SensLogEndpoint } from "./senslog-endpoint";
+import {SensLogEndpoint} from "./senslog-endpoint";
 import {default as vegaEmbed} from 'vega-embed';
 
 type Aggregate = {
@@ -69,15 +69,15 @@ export class HsSensorsUnitDialogService {
 
   getTimeForInterval(interval): {from_time; to_time} {
     const tmp = {
-      from_time: moment().subtract(interval.amount, interval.unit),
-      to_time: moment(),
+      from_time: dayjs().subtract(interval.amount, interval.unit),
+      to_time: dayjs(),
     };
-    this.convertPartToMoment('from', interval, tmp);
-    this.convertPartToMoment('to', interval, tmp);
+    this.convertPartToDayjs('from', interval, tmp);
+    this.convertPartToDayjs('to', interval, tmp);
     return tmp;
   }
 
-  private convertPartToMoment(
+  private convertPartToDayjs(
     part: string,
     interval: any,
     result: {
@@ -85,16 +85,16 @@ export class HsSensorsUnitDialogService {
       to_time;
     }
   ) {
-    const momentTime = moment(interval[part + 'Time']);
+    const dayjsTime = dayjs(interval[part + 'Time']);
     if (interval[part + 'Time'] != undefined) {
       if (
         interval[part + 'Time'].year &&
         interval[part + 'Time'].month &&
         interval[part + 'Time'].day
       ) {
-        result[part + '_time'] = momentTime.subtract(1, 'month');
+        result[part + '_time'] = dayjsTime.subtract(1, 'month');
       } else {
-        result[part + '_time'] = momentTime;
+        result[part + '_time'] = dayjsTime;
       }
     }
   }
@@ -169,7 +169,7 @@ export class HsSensorsUnitDialogService {
           val.sensors
             .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
             .map((s) => {
-              const time = moment(val.time_stamp);
+              const time = dayjs(val.time_stamp);
               s.sensor_name = this.translate(
                 this.sensorById[s.sensor_id].sensor_name,
                 'SENSORNAMES'

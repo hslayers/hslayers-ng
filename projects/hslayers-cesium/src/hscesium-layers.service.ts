@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
@@ -15,7 +16,6 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
 import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
-import moment from 'moment';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
@@ -565,8 +565,8 @@ export class HsCesiumLayersService {
   }
 
   changeLayerParam(layer: ImageryLayer, parameter, new_value): void {
-    new_value = moment(new_value).isValid()
-      ? moment(new_value).toISOString()
+    new_value = dayjs(new_value).isValid()
+      ? dayjs(new_value).toISOString()
       : new_value;
     const prmCache = this.findParamCache(layer);
     prmCache.parameters[parameter] = new_value;

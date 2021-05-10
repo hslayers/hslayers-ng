@@ -62,10 +62,6 @@
                 {
                   "replace": "projects/hslayers-app/src/environments/environment.ts",
                   "with": "projects/hslayers-app/src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "node_modules/moment/locale/",
-                  "with": "projects/hslayers-app/src/locale/"
                 }
               ],
               "optimization": true,
@@ -212,10 +208,6 @@
                 {
                   "replace": "projects/hslayers-cesium-app/src/environments/environment.ts",
                   "with": "projects/hslayers-cesium-app/src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "node_modules/moment/locale/",
-                  "with": "projects/hslayers-cesium-app/src/locale/"
                 }
               ],
               "optimization": true,

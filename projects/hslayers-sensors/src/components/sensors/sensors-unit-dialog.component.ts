@@ -57,12 +57,10 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
    */
   timeButtonClicked(interval): void {
     this.HsSensorsUnitDialogService.currentInterval = interval;
-    const momentInterval = this.HsSensorsUnitDialogService.getTimeForInterval(
-      interval
-    );
+    const fromTo = this.HsSensorsUnitDialogService.getTimeForInterval(interval);
     Object.assign(this.customInterval, {
-      fromTime: momentInterval.from_time.toDate(),
-      toTime: momentInterval.to_time.toDate(),
+      fromTime: fromTo.from_time.toDate(),
+      toTime: fromTo.to_time.toDate(),
     });
     this.HsSensorsUnitDialogService.getObservationHistory(
       this.HsSensorsUnitDialogService.unit,

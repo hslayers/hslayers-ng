@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {ImageWMS, TileWMS, XYZ} from 'ol/source';
 import {Injectable} from '@angular/core';
 
@@ -89,11 +88,7 @@ export class HsDimensionService {
 
   getDimensionValues(dimension) {
     try {
-      if (moment(dimension.default).isValid()) {
-        return this.prepareTimeSteps(dimension.values);
-      } else {
-        return dimension.values.split(',');
-      }
+      return this.prepareTimeSteps(dimension.values);
     } catch (ex) {
       this.$log.error(ex);
     }

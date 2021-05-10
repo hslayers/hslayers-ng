@@ -1,7 +1,8 @@
+import dayjs from 'dayjs';
+import * as utc from 'dayjs/plugin/utc';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import knockout from 'cesium/Source/ThirdParty/knockout';
-import moment from 'moment';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsEventBusService, getTitle} from 'hslayers-ng';
 import {Injectable} from '@angular/core';
@@ -91,9 +92,10 @@ export class HsCesiumTimeService {
       const prmCache = this.HsCesiumLayersService.findParamCache(layer);
       if (prmCache) {
         const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
+        dayjs.extend(utc);
         tmp.push({
           name: getTitle(this.HsCesiumLayersService.findOlLayer(layer)),
-          time: moment.utc(t).format('DD-MM-YYYY HH:mm'),
+          time: dayjs.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }
     }

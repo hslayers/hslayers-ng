@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 export class HsDimensionDescriptor {
   public type: string;
   public value: any;
@@ -57,9 +57,9 @@ export class HsDimensionDescriptor {
       this.originalDimension.value = this.modelValue;
     }
     if (['datetime', 'date'].includes(this.type) && this.format) {
-      this.originalDimension.value = moment(
-        this.originalDimension.value
-      ).format(this.format);
+      this.originalDimension.value = dayjs(this.originalDimension.value).format(
+        this.format
+      );
     }
     this.value = this.originalDimension.value;
   }
