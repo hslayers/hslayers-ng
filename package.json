@@ -45,7 +45,7 @@
     "ol-popup": "^4.0.0",
     "proj4": "^2.7.2",
     "rxjs": "^6.6.7",
-    "share-api-polyfill": "^1.0.20",
+    "share-api-polyfill": "^1.0.21",
     "tslib": "^2.0.0",
     "vega": "5.20.2",
     "vega-embed": "6.17.0",
