@@ -514,7 +514,8 @@ export class HsDrawService {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsMapService.map.removeLayer(this.selectedLayer);
-      if (getDefinition(this.selectedLayer)?.url) {
+      const definition = getDefinition(this.selectedLayer);
+      if (definition?.format.toLowerCase().includes('wfs') && definition?.url) {
         this.HsLaymanService.removeLayer(this.selectedLayer);
       }
       if (getTitle(this.selectedLayer) == TMP_LAYER_TITLE) {
