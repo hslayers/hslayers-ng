@@ -435,7 +435,7 @@ export class HsAddDataCatalogueService {
           );
           this.HsAddDataVectorService.fitExtent(layer);
         } else {
-          //Layaman layers without write access
+          //Layman layers without write access
           setTimeout(() => {
             this.hsEventBusService.owsFilling.next({
               type: 'wfs',
