@@ -11,6 +11,7 @@ import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
+import {accessRightsInterface} from '../common/access-rights.interface';
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 
 @Component({
@@ -40,6 +41,10 @@ export class HsAddDataVectorComponent {
   isAuthorized = false;
   // Not possible to save KML to layman yet
   saveAvailable: boolean;
+  access_rights: accessRightsInterface = {
+    'write': 'EVERYONE',
+    'read': 'EVERYONE',
+  };
   constructor(
     public HsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
@@ -93,6 +98,7 @@ export class HsAddDataVectorComponent {
         extractStyles: this.extract_styles,
         features: this.features,
         path: this.hsUtilsService.undefineEmptyString(this.folder_name),
+        access_rights: this.access_rights,
       },
       this.addUnder
     );

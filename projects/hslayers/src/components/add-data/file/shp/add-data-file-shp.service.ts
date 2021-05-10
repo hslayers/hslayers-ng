@@ -27,7 +27,8 @@ export class HsAddDataFileShpService {
     title: string,
     abstract: string,
     srs: string,
-    sld: FileDescriptor
+    sld: FileDescriptor,
+    access_rights: any
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const formdata = new FormData();
@@ -49,6 +50,8 @@ export class HsAddDataFileShpService {
       formdata.append('title', title);
       formdata.append('abstract', abstract);
       formdata.append('crs', srs);
+      formdata.append('write', access_rights.write);
+      formdata.append('read', access_rights.read);
       this.httpClient
         .post(
           `${endpoint.url}/rest/workspaces/${

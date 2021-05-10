@@ -8,6 +8,7 @@ import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
+import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLaymanLayerDescriptor} from '../../../save-map/layman-layer-descriptor.interface';
@@ -15,6 +16,7 @@ import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {accessRightsInterface} from '../../common/access-rights.interface';
 
 @Component({
   selector: 'hs-add-data-file-shp',
@@ -39,6 +41,11 @@ export class HsAddDataFileShpComponent implements OnInit {
   dropzoneActive = false;
   errorOccured = false;
   showDetails = false;
+  isAuthorized: boolean;
+  access_rights: accessRightsInterface = {
+    'write': 'EVERYONE',
+    'read': 'EVERYONE',
+  };
 
   constructor(
     public HsAddDataFileShpService: HsAddDataFileShpService,
@@ -49,8 +56,21 @@ export class HsAddDataFileShpComponent implements OnInit {
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService,
     public HsAddDataService: HsAddDataService,
-    public hsEventBusService: HsEventBusService
-  ) {}
+    public hsEventBusService: HsEventBusService,
+    public HsCommonLaymanService: HsCommonLaymanService
+  ) {
+    const layman = this.hsCommonEndpointsService.endpoints.filter(
+      (ep) => ep.type == 'layman'
+    )[0];
+    if (layman) {
+      this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+        this.isAuthorized =
+          endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      });
+      this.isAuthorized =
+        layman.user !== 'anonymous' && layman.user !== 'browser';
+    }
+  }
 
   ngOnInit(): void {
     this.pickEndpoint();
@@ -126,7 +146,8 @@ export class HsAddDataFileShpComponent implements OnInit {
       this.title,
       this.abstract,
       this.srs,
-      this.sld
+      this.sld,
+      this.access_rights
     )
       .then((data) => {
         this.name = data[0].name; //Name translated to Layman-safe name

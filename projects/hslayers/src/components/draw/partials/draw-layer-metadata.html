@@ -40,6 +40,40 @@
                                 name="title" />
                         </div>
                     </div>
+                    <div class="form-group d-flex justify-content-between" *ngIf="data.isAuthorized">
+                        <label class="pt-2" style="margin-bottom: 0;">
+                            {{'SAVECOMPOSITION.readAccessRights' | translate}}
+                        </label>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                                (click)="access_rights.read = 'EVERYONE'"
+                                [ngClass]="{'active':access_rights.read == 'EVERYONE'}">
+                                {{'SAVECOMPOSITION.public' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                                (click)="access_rights.read = 'private'"
+                                [ngClass]="{'active':access_rights.read == 'private'}">
+                                {{'SAVECOMPOSITION.private' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-between"  *ngIf="data.isAuthorized">
+                        <label class="pt-2" style="margin-bottom: 0;">
+                            {{'SAVECOMPOSITION.writeAccessRights' | translate}}
+                        </label>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                                (click)="access_rights.write = 'EVERYONE'"
+                                [ngClass]="{'active':access_rights.write == 'EVERYONE'}">
+                                {{'SAVECOMPOSITION.public' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
+                                (click)="access_rights.write = 'private'"
+                                [ngClass]="{'active':access_rights.write == 'private'}">
+                                {{'SAVECOMPOSITION.private' | translate}}
+                            </button>
+                        </div>
+                    </div>
                     <div class="flex-row w-75 align-items-center" style="display: flex;">
                         <a class="p-1 mb-1"
                             (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' | translate}}</a>

@@ -14,17 +14,18 @@ import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 import {
-  getLayerName,
-  getLaymanFriendlyLayerName,
-  wfsNotAvailable,
-} from './layman-utils';
-import {
+  getAccessRights,
   getLaymanLayerDescriptor,
   getTitle,
   getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from '../../common/layer-extensions';
+import {
+  getLayerName,
+  getLaymanFriendlyLayerName,
+  wfsNotAvailable,
+} from './layman-utils';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -113,7 +114,7 @@ export class HsLaymanService implements HsSaverService {
    * Send layer definition and features to Layman
    * @param endpoint Endpoint description
    * @param geojson Geojson object with features to send to server
-   * @param description Object containing {name, title, crs} of
+   * @param description Object containing {name, title, crs, workspace, acces_rights} of
    * layer to retrieve
    * @param layerDesc Previously fetched layer descriptor
    * @return Promise result of POST/PATCH
@@ -138,6 +139,9 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('name', description.name);
     formdata.append('title', description.title);
     formdata.append('crs', description.crs);
+    formdata.append('write', description.acces_rights.write ?? 'EVERYONE');
+    formdata.append('read', description.acces_rights.read ?? 'EVERYONE');
+
     const headers = new HttpHeaders();
     headers.append('Content-Type', null);
     headers.append('Accept', 'application/json');
@@ -200,6 +204,7 @@ export class HsLaymanService implements HsSaverService {
         ? this.crs
         : 'EPSG:3857',
       workspace: getWorkspace(layer),
+      acces_rights: getAccessRights(layer),
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);
