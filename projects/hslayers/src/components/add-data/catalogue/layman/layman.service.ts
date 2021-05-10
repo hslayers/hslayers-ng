@@ -79,7 +79,7 @@ export class HsLaymanBrowserService {
         observe: 'response',
         withCredentials: true,
         responseType: 'json',
-        params: params,
+        params,
       })
       .pipe(
         timeout(5000),
