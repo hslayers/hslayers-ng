@@ -148,11 +148,10 @@ export class HsAddDataListItemComponent {
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
       this.HsLaymanService.removeLayer(layer.name);
-      this.HsAddDataCatalogueService.catalogEntries = this.HsAddDataCatalogueService.catalogEntries.filter(
-        (item) => {
+      this.HsAddDataCatalogueService.catalogEntries =
+        this.HsAddDataCatalogueService.catalogEntries.filter((item) => {
           return item.id != layer.id;
-        }
-      );
+        });
     }
   }
 }

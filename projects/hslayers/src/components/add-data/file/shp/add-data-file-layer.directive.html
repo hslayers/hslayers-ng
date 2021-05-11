@@ -23,7 +23,7 @@
             </div>
             <p class="px-5">{{'COMMON.or' | translate}}</p>
             <label class="dropzone-label">
-                <input name="file" type="file" class="inputfile" (change)="read($event)" id="shpdbfshx" multiple>
+                <input name="file" type="file"  accept=".shp, .shx, .dbf, .sbn" class="inputfile" (change)="read($event)" id="shpdbfshx" multiple>
                 <label for="shpdbfshx" class="p-2 rounded"> <i class="icon-uploadalt pr-2"></i>{{'ADDLAYERS.Vector.chooseFiles' | translate}}</label>
             </label> 
 
