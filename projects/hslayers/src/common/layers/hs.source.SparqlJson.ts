@@ -187,13 +187,30 @@ export type SparqlOptions = {
   category?: string;
   category_field?;
   clear_on_move?: boolean;
+  /**
+   * URL of the SPARQL endpoint
+   * @example https://www.foodie-cloud.org/sparql
+   */
   endpointUrl?: string;
+  /**
+   * Additional parametres which shall be sent to the SPARQL endpoint along with the query.
+   */
   endpointOptions?;
   extend_with_attribs?;
   geom_attribute?: string;
   hsproxy?: boolean;
+  /**
+   * When set to true, the query will use Virtuoso's optimised "bif" functions instead of standardised GeoSPARQL functions.
+   */
   optimizeForVirtuoso?: boolean;
-  projection;
+  /**
+   * EPSG code of projection
+   */
+  projection: string;
+  /**
+   * Actual SPARQL query.
+   * Must contain magical keyword {@code <extent>} somewhere in the WHERE clause, which will be automagically replaced by a current extent filter.
+   */
   query?: string;
   strategy?;
   /**
@@ -242,6 +259,17 @@ export class SparqlJson extends Vector {
         if (!url && !endpointUrl) {
           return;
         }
+        if (endpointUrl && query) {
+          const queryParts = query.split('<extent>');
+          url =
+            endpointUrl +
+            '?query=' +
+            encodeURIComponent(queryParts[0]) +
+            '<extent>' +
+            encodeURIComponent(queryParts[1]) +
+            '&format=application%2Fsparql-results%2Bjson';
+          console.log(url);
+        }
         if (typeof clear_on_move !== 'undefined' && clear_on_move) {
           this.clear();
         }
@@ -253,35 +281,20 @@ export class SparqlJson extends Vector {
         first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
         second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
         extent = [...first_pair, ...second_pair];
+        const geof = optimizeForVirtuoso
+          ? 'bif:st_may_intersect'
+          : 'geof:sfIntersects';
+        /* Do NOT break lines in the POLYGON() section! */
         const s_extent = encodeURIComponent(
-          'FILTER(geof:sfIntersects("POLYGON((' +
-            extent[0] +
-            ' ' +
-            extent[1] +
-            ', ' +
-            extent[0] +
-            ' ' +
-            extent[3] +
-            ', ' +
-            extent[2] +
-            ' ' +
-            extent[3] +
-            ', ' +
-            extent[2] +
-            ' ' +
-            extent[1] +
-            ', ' +
-            extent[0] +
-            ' ' +
-            extent[1] +
-            '))"^^geo:wktLiteral, ' +
-            geom_attribute +
-            ')).'
+          `FILTER(${geof}(
+            "POLYGON((${extent[0]} ${extent[1]}, ${extent[0]} ${extent[3]}, ${extent[2]} ${extent[3]}, ${extent[2]} ${extent[1]}, ${extent[0]} ${extent[1]}))"^^geo:wktLiteral,
+          ${geom_attribute}
+          )).`
         );
-        const tmp = url.split('&query=');
+        const tmp = url.split('query=');
         url =
           tmp[0] +
-          '&query=' +
+          'query=' +
           encodeURIComponent(
             'PREFIX geo: <http://www.opengis.net/ont/geosparql#>\n' +
               'PREFIX geof: <http://www.opengis.net/def/function/geosparql/>\n'
@@ -298,6 +311,7 @@ export class SparqlJson extends Vector {
         }
         this.loadCounter += 1;
         this.loadTotal += 1;
+        console.log(url);
         const response = await fetch(url, {
           method: 'GET',
         });
