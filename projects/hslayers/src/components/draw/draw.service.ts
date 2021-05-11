@@ -223,6 +223,8 @@ export class HsDrawService {
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
+      this.snapActive = false;
+      this.toggleSnapping();
       this.deactivateDrawing();
       const tmpLayer =
         this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;
@@ -493,7 +495,6 @@ export class HsDrawService {
     }
     this.hasSomeDrawables =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
-
   }
   /**
    * @function removeLayer
