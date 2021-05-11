@@ -211,7 +211,7 @@ export class HsDrawService {
         format: layman ? 'hs.format.WFS' : null,
         url: layman ? layman.url + '/wfs' : null,
       },
-      workspace: this.HsLaymanService.getLaymanEndpoint().user,
+      workspace: this.HsLaymanService.getLaymanEndpoint()?.user,
     });
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
