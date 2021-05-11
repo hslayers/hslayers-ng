@@ -256,87 +256,63 @@ export class HsLayerManagerMetadataService {
     }
     //WMS
     if (this.HsLayerUtilsService.isLayerWMS(layer)) {
-      const capabilities = this.HsWmsGetCapabilitiesService.requestGetCapabilities(
-        url,
-        {castOwsCapabilitiesReceived: false}
-      )
-        .then((capabilities_xml) => {
-          const parser = new WMSCapabilities();
-          const caps: WMSGetCapabilitiesResponse = parser.read(
-            capabilities_xml
-          );
-          const src = layer.getSource();
-          const params = src.getParams();
-          const layerNameInParams: string = params.LAYERS;
-
-          this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
-          if (getSubLayers(layer)) {
-            params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
-            src.updateParams(params);
-          }
-
-          this.fillMetadataUrlsIfNotExist(layer, caps);
-          //Identify max resolution of layer. If layer has sublayers the heighest value is selected
-          setTimeout(() => {
-            if (getMaxResolutionDenominator(layer)) {
-              layer.set(
-                'maxResolution',
-                this.roundToHundreds(getMaxResolutionDenominator(layer))
-              );
+      const capabilities =
+        this.HsWmsGetCapabilitiesService.requestGetCapabilities(url, {
+          castOwsCapabilitiesReceived: false,
+        })
+          .then((capabilities_xml) => {
+            if (!capabilities_xml) {
               return;
             }
-            const maxScale = this.searchForScaleDenominator(
-              layer.getProperties()
-            );
-            if (maxScale) {
-              layer.set('maxResolution', this.roundToHundreds(maxScale));
+            const parser = new WMSCapabilities();
+            const caps: WMSGetCapabilitiesResponse =
+              parser.read(capabilities_xml);
+            const src = layer.getSource();
+            const params = src.getParams();
+            const layerNameInParams: string = params.LAYERS;
+
+            this.parseLayerInfo(layerDescriptor, layerNameInParams, caps);
+            if (getSubLayers(layer)) {
+              params.LAYERS = params.LAYERS.concat(',', getSubLayers(layer));
+              src.updateParams(params);
             }
+
+            this.fillMetadataUrlsIfNotExist(layer, caps);
+            //Identify max resolution of layer. If layer has sublayers the heighest value is selected
+            setTimeout(() => {
+              if (getMaxResolutionDenominator(layer)) {
+                layer.set(
+                  'maxResolution',
+                  this.roundToHundreds(getMaxResolutionDenominator(layer))
+                );
+                return;
+              }
+              const maxScale = this.searchForScaleDenominator(
+                layer.getProperties()
+              );
+              if (maxScale) {
+                layer.set('maxResolution', this.roundToHundreds(maxScale));
+              }
+            });
+            return true;
+          })
+          .catch((e) => {
+            this.hsLog.warn('GetCapabilities call invalid', e);
+            throw e;
           });
-          return true;
-        })
-        .catch((e) => {
-          this.hsLog.warn('GetCapabilities call invalid', e);
-          throw e;
-        });
       return capabilities;
     }
     //WMTS
     else if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
-      const capabilities = this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
-        url
-      )
-        .then((capabilities_xml) => {
-          const parser = new WMTSCapabilities();
-          const caps = parser.read(capabilities_xml);
-          layer.setProperties(caps);
-          if (!getAttribution(layer)?.locked) {
-            setAttribution(layer, {
-              onlineResource: caps.ServiceProvider.ProviderSite,
-            });
-          }
-          return true;
-        })
-        .catch((error) => {
-          return error;
-        });
-      return capabilities;
-    }
-    //WFS and vector
-    else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
-      if (url) {
-        const capabilities = this.HsWfsGetCapabilitiesService.requestGetCapabilities(
-          url
-        )
+      const capabilities =
+        this.HsWmtsGetCapabilitiesService.requestGetCapabilities(url)
           .then((capabilities_xml) => {
-            const parser = new DOMParser();
-            const caps = parser.parseFromString(
-              capabilities_xml.data,
-              'application/xml'
-            );
-            const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
+            const parser = new WMTSCapabilities();
+            const caps = parser.read(capabilities_xml);
+            layer.setProperties(caps);
             if (!getAttribution(layer)?.locked) {
               setAttribution(layer, {
-                onlineResource: el[0].getAttribute('xlink:href'),
+                onlineResource: caps.ServiceProvider.ProviderSite,
               });
             }
             return true;
@@ -344,6 +320,30 @@ export class HsLayerManagerMetadataService {
           .catch((error) => {
             return error;
           });
+      return capabilities;
+    }
+    //WFS and vector
+    else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
+      if (url) {
+        const capabilities =
+          this.HsWfsGetCapabilitiesService.requestGetCapabilities(url)
+            .then((capabilities_xml) => {
+              const parser = new DOMParser();
+              const caps = parser.parseFromString(
+                capabilities_xml.data,
+                'application/xml'
+              );
+              const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
+              if (!getAttribution(layer)?.locked) {
+                setAttribution(layer, {
+                  onlineResource: el[0].getAttribute('xlink:href'),
+                });
+              }
+              return true;
+            })
+            .catch((error) => {
+              return error;
+            });
         return capabilities;
       }
     }
