@@ -20,7 +20,21 @@
             </div>
             <div class="d-flex align-items-center w-100 flex-column"
                 *ngIf="HsDrawService.drawableLaymanLayers.length > 0">
-                <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
+                <div class=" bg-primary w-100 text-light m-0 p-1">
+                    <div class="d-flex justify-content-between">
+                        {{'DRAW.serverLayers' | translate}}
+                        <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
+                            <i class="icon-settingsthree-gears"></i>
+                        </span>
+                    </div>
+                    <div class="p-0 input-group-text border-0 justify-content-center bg-white" *ngIf="onlyMineFilterVisible">
+                        <label class="m-0">
+                            <input type="checkbox" name="onlyMine" [(ngModel)]="HsDrawService.onlyMine"
+                                (ngModelChange)="HsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                            {{'COMPOSITIONS.onlyMine' | translate}}
+                        </label>
+                    </div>
+                </div>
                 <a class="dropdown-item"  *ngFor="let layer of HsDrawService.drawableLaymanLayers"
                     (click)="selectLayer(layer)">{{HsLayerUtilsService.translateTitle(layer.title)}}</a>
             </div>

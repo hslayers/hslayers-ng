@@ -21,6 +21,7 @@ export class HsDrawComponent {
   opacity = 0.2;
   linewidth = 1;
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
+  onlyMineFilterVisible = false;
   getTitle = getTitle;
 
   constructor(

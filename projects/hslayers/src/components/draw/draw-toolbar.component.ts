@@ -13,6 +13,7 @@ export class HsDrawToolbarComponent {
   drawToolbarExpanded = false;
   layersExpanded: boolean;
   drawTypeExpanded = false;
+  onlyMineFilterVisible = false;
   getTitle = getTitle;
 
   constructor(

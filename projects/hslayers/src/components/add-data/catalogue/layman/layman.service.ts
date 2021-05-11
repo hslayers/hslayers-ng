@@ -62,9 +62,10 @@ export class HsLaymanBrowserService {
       bbox = data.filterByExtent ? b.join(',') : '';
 
       params = {
-        'limit': `${endpoint.datasourcePaging.limit}`,
+        //Draw layer limit independent on datasourcePaging
+        'limit': `${data.limit ?? endpoint.datasourcePaging.limit}`, 
         'offset': `${endpoint.datasourcePaging.start}`,
-        'full_text_filter': `${query?.textFilter}`,
+        'full_text_filter': `${query?.textFilter ?? ''}`,
         'order_by': `${sortBy ?? 'last_change'}`,
       };
       //Use bbox_filter only if its defined to prevent
