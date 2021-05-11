@@ -106,7 +106,22 @@
                 </form>
                 <form *ngIf="type == 'layman'">
                     <div class="d-flex align-items-center w-100 flex-column">
-                        <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.serverLayers' | translate}}</label>
+                        <div class=" bg-primary w-100 text-light m-0 p-1">
+                            <div class="d-flex justify-content-between m-1">
+                                {{'DRAW.serverLayers' | translate}}
+                                <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
+                                    <i class="icon-settingsthree-gears"></i>
+                                </span>
+                            </div>
+                        
+                            <div class="input-group-text border-0 justify-content-center bg-white" *ngIf="onlyMineFilterVisible">
+                                <label class="m-0">
+                                    <input type="checkbox" name="onlyMine" [(ngModel)]="data.onlyMine"
+                                        (ngModelChange)="data.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                                    {{'COMPOSITIONS.onlyMine' | translate}}
+                                </label>
+                            </div>
+                        </div>
                         <ul class="list-group w-100">
                             <li *ngFor="let layer of data.drawableLaymanLayers" class="clearfix"
                                 [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">

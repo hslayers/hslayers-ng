@@ -36,6 +36,7 @@ export class HsDrawLayerMetadataDialogComponent
     'write': 'EVERYONE',
     'read': 'EVERYONE',
   };
+  onlyMineFilterVisible = false;
 
   constructor(
     public HsMapService: HsMapService,

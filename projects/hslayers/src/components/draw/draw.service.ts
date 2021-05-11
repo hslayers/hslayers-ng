@@ -99,6 +99,7 @@ export class HsDrawService {
   laymanEndpoint: any;
   previouslySelected: any;
   isAuthorized: boolean;
+  onlyMine = true;
 
   constructor(
     public HsMapService: HsMapService,
@@ -451,7 +452,7 @@ export class HsDrawService {
    * a list of avaliable server possiblities.
    */
 
-  fillDrawableLayers(): void {
+  async fillDrawableLayers(): Promise<void> {
     const drawables = this.HsMapService.map
       .getLayers()
       .getArray()
@@ -478,7 +479,11 @@ export class HsDrawService {
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
-      this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint).toPromise();
+      await this.HsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
+        onlyMine: this.onlyMine,
+        limit: '',
+        query: {},
+      }).toPromise();
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {
@@ -491,6 +496,7 @@ export class HsDrawService {
     }
     this.hasSomeDrawables =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
+
   }
   /**
    * @function removeLayer
