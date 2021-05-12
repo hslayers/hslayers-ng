@@ -26,7 +26,6 @@ import {HsLayerManagerService} from 'hslayers-ng';
 import {HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
 import {HsUtilsService} from 'hslayers-ng';
-import Color from 'cesium/Source/Core/Color';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -61,231 +60,247 @@ export class HsCesiumService {
    * @description Initializes Cesium map
    */
   init() {
-    Ion.defaultAccessToken =
-      this.HsConfig.cesiumAccessToken ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-    (<any>window).CESIUM_BASE_URL = this.HsConfig.cesiumBase;
-    let terrain_provider =
-      this.HsConfig.terrain_provider ||
-      createWorldTerrain(this.HsConfig.createWorldTerrainOptions);
-    if (this.HsConfig.newTerrainProviderOptions) {
-      terrain_provider = new CesiumTerrainProvider(
-        this.HsConfig.newTerrainProviderOptions
-      );
-    }
-
-    const defaultViewport = this.HsCesiumCameraService.getDefaultViewport();
-    Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
-    Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
-
-    //TODO: research if this must be used or ignored
-    const bing = new BingMapsImageryProvider({
-      url: '//dev.virtualearth.net',
-      key: this.BING_KEY,
-      mapStyle: BingMapsStyle.AERIAL,
-    });
-
-    const viewer = new Viewer(
-      this.HsLayoutService.contentWrapper.querySelector('.hs-cesium-container'),
-      {
-        timeline: this.HsConfig.cesiumTimeline
-          ? this.HsConfig.cesiumTimeline
-          : false,
-        animation: this.HsConfig.cesiumAnimation
-          ? this.HsConfig.cesiumAnimation
-          : false,
-        creditContainer: this.HsConfig.creditContainer
-          ? this.HsConfig.creditContainer
-          : undefined,
-        infoBox: this.HsConfig.cesiumInfoBox
-          ? this.HsConfig.cesiumInfoBox
-          : true,
-        terrainProvider: terrain_provider,
-        imageryProvider: this.HsConfig.imageryProvider,
-        terrainExaggeration: this.HsConfig.terrainExaggeration || 1.0,
-        // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
-        skyBox: new SkyBox({
-          sources: {
-            positiveX: loadSkyBoxSide('tycho2t3_80_px.jpg'),
-            negativeX: loadSkyBoxSide('tycho2t3_80_mx.jpg'),
-            positiveY: loadSkyBoxSide('tycho2t3_80_py.jpg'),
-            negativeY: loadSkyBoxSide('tycho2t3_80_my.jpg'),
-            positiveZ: loadSkyBoxSide('tycho2t3_80_pz.jpg'),
-            negativeZ: loadSkyBoxSide('tycho2t3_80_mz.jpg'),
-          },
-        }),
-        // Show Columbus View map with Web Mercator projection
-        sceneMode: SceneMode.SCENE3D,
-        mapProjection: new WebMercatorProjection(),
-        shadows: this.getShadowMode(),
-        scene3DOnly: true,
-        sceneModePicker: false,
+    try {
+      Ion.defaultAccessToken =
+        this.HsConfig.cesiumAccessToken ||
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
+      if (!this.HsConfig.cesiumBase) {
+        console.error(
+          'Please set HsConfig.cesiumBase to the directory where cesium assets will be copied to'
+        );
       }
-    );
-
-    /**
-     * @param file
-     */
-    function loadSkyBoxSide(file) {
-      return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
-    }
-
-    viewer.scene.debugShowFramesPerSecond = this.HsConfig
-      .cesiumdDebugShowFramesPerSecond
-      ? this.HsConfig.cesiumdDebugShowFramesPerSecond
-      : false;
-    viewer.scene.globe.enableLighting = this.getShadowMode();
-    viewer.scene.globe.shadows = this.getShadowMode();
-    viewer.terrainProvider = terrain_provider;
-
-    if (this.HsConfig.cesiumTime) {
-      viewer.clockViewModel.currentTime = this.HsConfig.cesiumTime;
-    }
-
-    this.viewer = viewer;
-    this.HsCesiumCameraService.init(this.viewer);
-    this.HsCesiumLayersService.init(this.viewer);
-    this.HsCesiumTimeService.init(this.viewer);
-
-    window.addEventListener('blur', () => {
-      if (this.viewer.isDestroyed()) {
-        return;
+      (<any>window).CESIUM_BASE_URL = this.HsConfig.cesiumBase;
+      let terrain_provider =
+        this.HsConfig.terrain_provider ||
+        createWorldTerrain(this.HsConfig.createWorldTerrainOptions);
+      if (this.HsConfig.newTerrainProviderOptions) {
+        terrain_provider = new CesiumTerrainProvider(
+          this.HsConfig.newTerrainProviderOptions
+        );
       }
-      this.viewer.targetFrameRate = 5;
-    });
 
-    window.addEventListener('focus', () => {
-      if (this.viewer.isDestroyed()) {
-        return;
-      }
-      this.viewer.targetFrameRate = 30;
-    });
+      const defaultViewport = this.HsCesiumCameraService.getDefaultViewport();
+      Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
+      Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
 
-    this.viewer.camera.moveEnd.addEventListener((e) => {
-      if (!this.HsMapService.visible) {
-        const center = this.HsCesiumCameraService.getCameraCenterInLngLat();
-        if (center === null) {
-          return;
-        } //Not looking on the map but in the sky
-        const viewport = this.HsCesiumCameraService.getViewportPolygon();
-        this.HsEventBusService.mapCenterSynchronizations.next({
-          center,
-          viewport,
-        });
-      }
-    });
-
-    this.HsLayermanagerService.data.terrainlayers = [];
-    if (this.HsConfig.terrain_providers) {
-      for (const provider of this.HsConfig.terrain_providers) {
-        provider.type = 'terrain';
-        this.HsLayermanagerService.data.terrainlayers.push(provider);
-      }
-    }
-
-    this.HsEventBusService.mapExtentChanges.subscribe((data) => {
-      const view = this.HsMapService.map.getView();
-      if (this.HsMapService.visible) {
-        this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
-      }
-    });
-
-    this.HsEventBusService.zoomTo.subscribe((data) => {
-      this.viewer.camera.setView({
-        destination: Cartesian3.fromDegrees(
-          data.coordinate[0],
-          data.coordinate[1],
-          15000.0
-        ),
+      //TODO: research if this must be used or ignored
+      const bing = new BingMapsImageryProvider({
+        url: '//dev.virtualearth.net',
+        key: this.BING_KEY,
+        mapStyle: BingMapsStyle.AERIAL,
       });
-    });
 
-    const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
-    handler.setInputAction((movement) => {
-      const pickRay = this.viewer.camera.getPickRay(movement.position);
-      const pickedObject = this.viewer.scene.pick(movement.position);
-      const featuresPromise = this.viewer.imageryLayers.pickImageryLayerFeatures(
-        pickRay,
-        this.viewer.scene
-      );
-      if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
-        pickedObject.id.onclick(pickedObject.id);
-        return;
-      }
-      if (!defined(featuresPromise)) {
-        if (console) {
-          console.log('No features picked.');
+      const viewer = new Viewer(
+        this.HsLayoutService.contentWrapper.querySelector(
+          '.hs-cesium-container'
+        ),
+        {
+          timeline: this.HsConfig.cesiumTimeline
+            ? this.HsConfig.cesiumTimeline
+            : false,
+          animation: this.HsConfig.cesiumAnimation
+            ? this.HsConfig.cesiumAnimation
+            : false,
+          creditContainer: this.HsConfig.creditContainer
+            ? this.HsConfig.creditContainer
+            : undefined,
+          infoBox: this.HsConfig.cesiumInfoBox
+            ? this.HsConfig.cesiumInfoBox
+            : true,
+          terrainProvider: terrain_provider,
+          imageryProvider: this.HsConfig.imageryProvider,
+          terrainExaggeration: this.HsConfig.terrainExaggeration || 1.0,
+          // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
+          skyBox: new SkyBox({
+            sources: {
+              positiveX: loadSkyBoxSide('tycho2t3_80_px.jpg'),
+              negativeX: loadSkyBoxSide('tycho2t3_80_mx.jpg'),
+              positiveY: loadSkyBoxSide('tycho2t3_80_py.jpg'),
+              negativeY: loadSkyBoxSide('tycho2t3_80_my.jpg'),
+              positiveZ: loadSkyBoxSide('tycho2t3_80_pz.jpg'),
+              negativeZ: loadSkyBoxSide('tycho2t3_80_mz.jpg'),
+            },
+          }),
+          // Show Columbus View map with Web Mercator projection
+          sceneMode: SceneMode.SCENE3D,
+          mapProjection: new WebMercatorProjection(),
+          shadows: this.getShadowMode(),
+          scene3DOnly: true,
+          sceneModePicker: false,
         }
-      } else {
-        when(featuresPromise, (features) => {
-          let s = '';
-          if (features.length > 0) {
-            for (let i = 0; i < features.length; i++) {
-              s = s + features[i].data + '\n';
+      );
+
+      /**
+       * @param file
+       */
+      function loadSkyBoxSide(file) {
+        return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
+      }
+
+      viewer.scene.debugShowFramesPerSecond = this.HsConfig
+        .cesiumdDebugShowFramesPerSecond
+        ? this.HsConfig.cesiumdDebugShowFramesPerSecond
+        : false;
+      viewer.scene.globe.enableLighting = this.getShadowMode();
+      viewer.scene.globe.shadows = this.getShadowMode();
+      viewer.terrainProvider = terrain_provider;
+
+      if (this.HsConfig.cesiumTime) {
+        viewer.clockViewModel.currentTime = this.HsConfig.cesiumTime;
+      }
+
+      this.viewer = viewer;
+      this.HsCesiumCameraService.init(this.viewer);
+      this.HsCesiumLayersService.init(this.viewer);
+      this.HsCesiumTimeService.init(this.viewer);
+
+      window.addEventListener('blur', () => {
+        if (this.viewer.isDestroyed()) {
+          return;
+        }
+        this.viewer.targetFrameRate = 5;
+      });
+
+      window.addEventListener('focus', () => {
+        if (this.viewer.isDestroyed()) {
+          return;
+        }
+        this.viewer.targetFrameRate = 30;
+      });
+
+      this.viewer.camera.moveEnd.addEventListener((e) => {
+        if (!this.HsMapService.visible) {
+          const center = this.HsCesiumCameraService.getCameraCenterInLngLat();
+          if (center === null) {
+            return;
+          } //Not looking on the map but in the sky
+          const viewport = this.HsCesiumCameraService.getViewportPolygon();
+          this.HsEventBusService.mapCenterSynchronizations.next({
+            center,
+            viewport,
+          });
+        }
+      });
+
+      this.HsLayermanagerService.data.terrainlayers = [];
+      if (this.HsConfig.terrain_providers) {
+        for (const provider of this.HsConfig.terrain_providers) {
+          provider.type = 'terrain';
+          this.HsLayermanagerService.data.terrainlayers.push(provider);
+        }
+      }
+
+      this.HsEventBusService.mapExtentChanges.subscribe((data) => {
+        const view = this.HsMapService.map.getView();
+        if (this.HsMapService.visible) {
+          this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
+        }
+      });
+
+      this.HsEventBusService.zoomTo.subscribe((data) => {
+        this.viewer.camera.setView({
+          destination: Cartesian3.fromDegrees(
+            data.coordinate[0],
+            data.coordinate[1],
+            15000.0
+          ),
+        });
+      });
+
+      const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
+      handler.setInputAction((movement) => {
+        const pickRay = this.viewer.camera.getPickRay(movement.position);
+        const pickedObject = this.viewer.scene.pick(movement.position);
+        const featuresPromise =
+          this.viewer.imageryLayers.pickImageryLayerFeatures(
+            pickRay,
+            this.viewer.scene
+          );
+        if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
+          pickedObject.id.onclick(pickedObject.id);
+          return;
+        }
+        if (!defined(featuresPromise)) {
+          if (console) {
+            console.log('No features picked.');
+          }
+        } else {
+          when(featuresPromise, (features) => {
+            let s = '';
+            if (features.length > 0) {
+              for (let i = 0; i < features.length; i++) {
+                s = s + features[i].data + '\n';
+              }
+            }
+            const iframe: any =
+              this.HsLayoutService.layoutElement.querySelector(
+                '.cesium-infoBox-iframe'
+              );
+            if (iframe) {
+              // eslint-disable-next-line angular/timeout-service
+              setTimeout(() => {
+                const innerDoc = iframe.contentDocument
+                  ? iframe.contentDocument
+                  : iframe.contentWindow.document;
+                innerDoc.querySelector(
+                  '.cesium-infoBox-description'
+                ).innerHTML = s.replace(/\n/gm, '<br/>');
+                iframe.style.height = 200 + 'px';
+              }, 1000);
+            }
+          });
+        }
+      }, ScreenSpaceEventType.LEFT_DOWN);
+
+      handler.setInputAction((movement) => {
+        const pickedObject = this.viewer.scene.pick(movement.position);
+        if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
+          pickedObject.id.onmouseup(pickedObject.id);
+          return;
+        }
+      }, ScreenSpaceEventType.LEFT_UP);
+
+      /**
+       * @param movement
+       */
+      function rightClickLeftDoubleClick(movement) {
+        const pickRay = this.viewer.camera.getPickRay(movement.position);
+        const pickedObject = this.viewer.scene.pick(movement.position);
+
+        if (this.viewer.scene.pickPositionSupported) {
+          if (this.viewer.scene.mode === SceneMode.SCENE3D) {
+            const cartesian = this.viewer.scene.pickPosition(movement.position);
+            if (defined(cartesian)) {
+              const cartographic = Cartographic.fromCartesian(cartesian);
+              const longitudeString = Math.toDegrees(cartographic.longitude);
+              const latitudeString = Math.toDegrees(cartographic.latitude);
+              //TODO rewrite to subject
+              this.cesiumPositionClicked.next([
+                longitudeString,
+                latitudeString,
+              ]);
             }
           }
-          const iframe: any = this.HsLayoutService.layoutElement.querySelector(
-            '.cesium-infoBox-iframe'
-          );
-          if (iframe) {
-            // eslint-disable-next-line angular/timeout-service
-            setTimeout(() => {
-              const innerDoc = iframe.contentDocument
-                ? iframe.contentDocument
-                : iframe.contentWindow.document;
-              innerDoc.querySelector(
-                '.cesium-infoBox-description'
-              ).innerHTML = s.replace(/\n/gm, '<br/>');
-              iframe.style.height = 200 + 'px';
-            }, 1000);
-          }
-        });
-      }
-    }, ScreenSpaceEventType.LEFT_DOWN);
-
-    handler.setInputAction((movement) => {
-      const pickedObject = this.viewer.scene.pick(movement.position);
-      if (pickedObject && pickedObject.id && pickedObject.id.onmouseup) {
-        pickedObject.id.onmouseup(pickedObject.id);
-        return;
-      }
-    }, ScreenSpaceEventType.LEFT_UP);
-
-    /**
-     * @param movement
-     */
-    function rightClickLeftDoubleClick(movement) {
-      const pickRay = this.viewer.camera.getPickRay(movement.position);
-      const pickedObject = this.viewer.scene.pick(movement.position);
-
-      if (this.viewer.scene.pickPositionSupported) {
-        if (this.viewer.scene.mode === SceneMode.SCENE3D) {
-          const cartesian = this.viewer.scene.pickPosition(movement.position);
-          if (defined(cartesian)) {
-            const cartographic = Cartographic.fromCartesian(cartesian);
-            const longitudeString = Math.toDegrees(cartographic.longitude);
-            const latitudeString = Math.toDegrees(cartographic.latitude);
-            //TODO rewrite to subject
-            this.cesiumPositionClicked.next([longitudeString, latitudeString]);
-          }
+        }
+        if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
+          pickedObject.id.onRightClick(pickedObject.id);
+          return;
         }
       }
-      if (pickedObject && pickedObject.id && pickedObject.id.onclick) {
-        pickedObject.id.onRightClick(pickedObject.id);
-        return;
-      }
+
+      handler.setInputAction(
+        rightClickLeftDoubleClick,
+        ScreenSpaceEventType.RIGHT_DOWN
+      );
+      handler.setInputAction(
+        rightClickLeftDoubleClick,
+        ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+      );
+
+      this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
+    } catch (ex) {
+      console.error(ex);
     }
-
-    handler.setInputAction(
-      rightClickLeftDoubleClick,
-      ScreenSpaceEventType.RIGHT_DOWN
-    );
-    handler.setInputAction(
-      rightClickLeftDoubleClick,
-      ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-    );
-
-    this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
   }
 
   private getShadowMode(): any {
