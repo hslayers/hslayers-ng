@@ -1,11 +1,23 @@
+@import '~@angular/material/theming';
+
+hslayers-material {
+  height: 100%;
+  display: block;
+}
+
 .hsl {
     .d-flex {
         display: flex;
     }
 
-    .hs-map-space{
+    .hs-map-space {
 	flex: 1 1 auto;
 	position: relative;
+    }
+
+    .hs-panelspace {
+	z-index: 1;
+	@include mat-elevation(2);
     }
 
     .hs-flex-fill {
