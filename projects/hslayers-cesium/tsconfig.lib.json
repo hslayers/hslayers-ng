@@ -13,11 +13,7 @@
     "lib": [
       "dom",
       "es2018"
-    ],
-    "paths": {
-      "@angular/*": [ "node_modules/@angular/*" ],
-      "hslayers-ng": ["dist/hslayers/hslayers-ng"],
-    }
+    ]
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
