@@ -153,7 +153,14 @@ export class HsDrawService {
         endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     });
   }
-
+  /**
+   * initial function if the draw panel is loaded as first panel
+   */
+  init(): void {
+    this.HsMapService.loaded().then((_) => {
+      this.fillDrawableLayers();
+    });
+  }
   /**
    * selectedLayerString
    * @returns Possibly translated name of layer selected for drawing
@@ -223,8 +230,6 @@ export class HsDrawService {
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
-      this.snapActive = false;
-      this.toggleSnapping();
       this.deactivateDrawing();
       const tmpLayer =
         this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE) || null;

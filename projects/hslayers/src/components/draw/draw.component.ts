@@ -29,7 +29,9 @@ export class HsDrawComponent {
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsQueryBaseService: HsQueryBaseService
-  ) {}
+  ) {
+    this.HsDrawService.init();
+  }
 
   activateDrawing(withStyle?): void {
     this.HsDrawService.activateDrawing({
