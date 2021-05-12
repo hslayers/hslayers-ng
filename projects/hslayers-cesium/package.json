@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium",
-  "version": "0.0.1",
+  "version": "4.0.0-rc.1",
   "scripts": {},
   "peerDependencies": {
     "@types/cesium": "^1.67.12",
