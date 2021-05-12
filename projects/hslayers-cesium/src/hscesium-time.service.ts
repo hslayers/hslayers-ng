@@ -1,11 +1,11 @@
-import dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
 import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
+import dayjs from 'dayjs';
 import knockout from 'cesium/Source/ThirdParty/knockout';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsEventBusService, getTitle} from 'hslayers-ng';
 import {Injectable} from '@angular/core';
+import {default as utc} from 'dayjs/plugin/utc';
 
 @Injectable({
   providedIn: 'root',
