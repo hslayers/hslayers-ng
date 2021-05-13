@@ -206,7 +206,6 @@
     "wrongCombinationOfParams": "Wrong combination of parameters",
     "mapExtentFilterMissing": "Please enable Filter by map extent checkbox to be able to sort data by Bounding box",
     "unknownError": "Unknown error. Please try again.",
-    "bboxFilterMissing": "Results can not be sorted by BBOX similarity when map extent filter is not activated",
     "Unsuccessful OAuth2 authentication. Access token is not valid": "Unsuccessful OAuth2 authentication. Access token is not valid"
   },
   "COMPOSITIONS": {
