@@ -84,7 +84,7 @@ share.listen(process.env.SHARING_PORT || 8086, () => console.log(`HSLayers map s
  * @param {any} context HTTP context of the request
  */
 function getCompositionRecord(id, context) {
-  queryCollection(id, function (result) {
+  queryCollection(id, context, function (result) {
     formatResponseJson(result, context);
   });
 }
