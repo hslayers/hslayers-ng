@@ -655,6 +655,7 @@
     "removeWaypoint": "Remove waypoint",
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
+    "serviceDown": "Navigation service seems to be down. We are sorry!",
     "waypoints": "Waypoints"
   },
   "ERRORMESSAGES": {

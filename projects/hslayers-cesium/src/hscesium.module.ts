@@ -23,6 +23,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HsCesiumLayersService,
     HsCesiumTimeService,
   ],
-  entryComponents: [],
+  entryComponents: [HslayersCesiumComponent],
 })
 export class HsCesiumModule {}

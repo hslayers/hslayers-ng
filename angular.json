@@ -396,14 +396,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/hslayers-material/tsconfig.lib.json",
-              "projects/hslayers-material/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/hslayers-material/**/*.ts",
+              "projects/hslayers-material/**/*.html"
             ]
           }
         }
@@ -435,7 +432,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/hslayers-material-app/src/styles.sass"
+              "projects/hslayers-material-app/src/styles.scss"
             ],
             "scripts": []
           },
@@ -500,21 +497,17 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/hslayers-material-app/src/styles.sass"
+              "projects/hslayers-material-app/src/styles.scss"
             ],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/hslayers-material-app/tsconfig.app.json",
-              "projects/hslayers-material-app/tsconfig.spec.json",
-              "projects/hslayers-material-app/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/hslayers-material-app/**/*.ts",
+              "projects/hslayers-material-app/**/*.html"
             ]
           }
         },

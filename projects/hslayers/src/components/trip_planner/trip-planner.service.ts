@@ -2,17 +2,21 @@ import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Modify} from 'ol/interaction';
 import {Point} from 'ol/geom';
+import {catchError, timeout} from 'rxjs/operators';
+import {of} from 'rxjs';
 import {transform} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';
 
@@ -99,7 +103,9 @@ export class HsTripPlannerService {
     public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
     public HsShareUrlService: HsShareUrlService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    private HsToastService: HsToastService,
+    public HsLanguageService: HsLanguageService
   ) {
     if (this.HsShareUrlService.getParamValue('trip') !== null) {
       this.trip = this.HsShareUrlService.getParamValue('trip');
@@ -384,7 +390,26 @@ export class HsTripPlannerService {
             '&format=geojson'
         );
         this.$http
-          .get(url, {params: {cache: 'false', i: i.toString()}})
+          .get(url, {
+            params: {cache: 'false', i: i.toString()},
+          })
+          .pipe(
+            timeout(10000),
+            catchError((e) => {
+              this.HsToastService.createToastPopupMessage(
+                this.HsLanguageService.getTranslation(
+                  'TRIP_PLANNER.serviceDown'
+                ),
+                this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  'ERRORMESSAGES',
+                  e.message,
+                  {url: url}
+                ),
+                true
+              );
+              return of(null);
+            })
+          )
           .subscribe((response: any) => {
             const wpt = this.waypoints[i + 1];
             const wpf = this.waypoints[i];
