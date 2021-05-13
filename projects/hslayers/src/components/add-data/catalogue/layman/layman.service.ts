@@ -89,7 +89,7 @@ export class HsLaymanBrowserService {
             x.body.dataset = endpoint;
             x.body.matched = x.headers.get('x-total-count')
               ? x.headers.get('x-total-count')
-              : 0;
+              : x.body.length;
             this.datasetsReceived(x.body);
           } else {
             this.displayLaymanError(endpoint.title, x.body);
