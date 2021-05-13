@@ -204,7 +204,6 @@
     "noDataReceived": "Neboli prijaté židane dáta!",
     "or": "alebo",
     "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
-    "bboxFilterMissing": "Radenie výsledkov podľa BBOX-u nie je bez 'filtrácie na rozsah okna' možné",
     "unknownError": "Neznáma chyba. Skúste to znova, prosím.",
     "mapExtentFilterMissing": "Radenie výsledkov podľa rozsahu dát (BBOX) je možné jedine po aktivácií 'filtrácie na rozsah okna'. Aktivujte ho prosím.",
     "Unsuccessful OAuth2 authentication. Access token is not valid": "Neuspešná autentizace. Neplatný prístupový token"
