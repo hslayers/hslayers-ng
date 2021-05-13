@@ -654,7 +654,8 @@
     "removeWaypoint": "Odebrat bod trasy",
     "totalDistance": "Celková vzdálenost",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
-    "waypoints": "Body trasy"
+    "waypoints": "Body trasy",
+    "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
