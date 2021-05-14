@@ -49,14 +49,6 @@
             }
           },
           "configurations": {
-            "hmr": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/hslayers-app/src/environments/environment.ts",
-                  "with": "projects/hslayers-app/src/environments/environment.hmr.ts"
-                }
-              ]
-            },
             "production": {
               "fileReplacements": [
                 {
@@ -92,10 +84,6 @@
             "browserTarget": "hslayers-app:build"
           },
           "configurations": {
-            "hmr": {
-              "hmr": true,
-              "browserTarget": "hslayers-app:build:hmr"
-            },
             "production": {
               "browserTarget": "hslayers-app:build:production"
             }
@@ -195,14 +183,6 @@
             }
           },
           "configurations": {
-            "hmr": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/hslayers-cesium-app/src/environments/environment.ts",
-                  "with": "projects/hslayers-cesium-app/src/environments/environment.hmr.ts"
-                }
-              ]
-            },
             "production": {
               "fileReplacements": [
                 {
@@ -212,17 +192,17 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -239,10 +219,6 @@
             "browserTarget": "hslayers-cesium-app:build"
           },
           "configurations": {
-            "hmr": {
-              "hmr": true,
-              "browserTarget": "hslayers-cesium-app:build:hmr"
-            },
             "production": {
               "browserTarget": "hslayers-cesium-app:build:production"
             }
