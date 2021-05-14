@@ -1,24 +1,119 @@
-# Hslayers
+# Hslayers-cesium
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
+This library contains components to to run Hslayers-NG ui interface with Cesium 3D as the map renderer instead of OpenLayers.
+See [example](https://github.com/hslayers/examples/tree/master/cesium)
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name --project hslayers` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project hslayers`.
-> Note: Don't forget to add `--project hslayers` or else it will be added to the default project in your `angular.json` file. 
+```
+npm i cesium @types/cesium hslayers-cesium
+```
 
-## Build
+## Usage
 
-Run `ng build hslayers` to build the project. The build artifacts will be stored in the `dist/` directory.
+Import HsCesiumModule and add it to your AppModules imports:
 
-## Publishing
+```
+import {HsCesiumModule} from 'hslayers-cesium';
 
-After building your library with `ng build hslayers`, go to the dist folder `cd dist/hslayers` and run `npm publish`.
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, HslayersModule, HsCesiumModule],
 
-## Running unit tests
+```
 
-Run `ng test hslayers` to execute the unit tests via [Karma](https://karma-runner.github.io).
+In your component attach the HslayersCesiumComponent to HSlayers-NG:
 
-## Further help
+```
+ constructor(
+    public HsConfig: HsConfig,
+    private HsLayoutService: HsLayoutService,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {
+    ...  
+ngOnInit(): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      HslayersCesiumComponent
+    );
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    this.HsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
+      if (mapSpace) {
+        mapSpace.createComponent(componentFactory);
+      }
+    });
+  }
+```
+
+Set path to cesium assets in HsConfig service:
+
+```
+    this.HsConfig.update({
+      cesiumBase: 'assets/cesium/',
+```
+
+In your angular.json file copy cesium assets to the previously mentioned directory (See [example](https://github.com/hslayers/examples/blob/master/angular.json)):
+
+```
+ "assets": [
+              {
+                "glob": "**/*",
+                "input": "./node_modules/hslayers-ng/src/assets",
+                "output": "./assets/hslayers-ng/"
+              },    
+              {
+                "glob": "**/*",
+                "input": "./node_modules/cesium/Source/Assets",
+                "output": "./assets/cesium/Assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/cesium/Source/Widgets",
+                "output": "./assets/cesium/Widgets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/cesium/Source/Workers",
+                "output": "./assets/cesium/Workers"
+              }
+            ],
+            "styles": [
+              "node_modules/ol/ol.css",
+              "node_modules/cesium/Build/Cesium/Widgets/widgets.css"
+            ],
+```
+
+Use custom-webpack builder which is needed for Cesium
+
+In angular.json
+
+```
+  "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "custom-webpack.config.js"
+            }
+        ...
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",    
+```
+
+
+custom-webpack.config.js contents:
+
+```
+module.exports = {
+  node: {
+    // Resolve node module use of fs
+    fs: 'empty',
+    Buffer: false,
+    http: 'empty',
+    https: 'empty',
+    zlib: 'empty',
+  },
+  module: {
+    unknownContextCritical: false,
+  },
+};
+```
