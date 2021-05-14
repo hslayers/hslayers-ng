@@ -173,6 +173,11 @@
                 "output": "./assets/cesium/Workers"
               },
               {
+                "glob": "README.md",
+                "input": "projects/hslayers-cesium-app/",
+                "output": "/"
+              },
+              {
                 "glob": "package.json",
                 "input": "projects/hslayers-cesium-app/",
                 "output": "/"
