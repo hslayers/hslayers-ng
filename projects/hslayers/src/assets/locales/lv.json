@@ -206,6 +206,7 @@
     "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
+    "bboxFilterMissing": "Rezultātus nevar kārtot pēc BBOX līdzības, ja nav aktivizēts kartes mēroga filtrs",
     "Unsuccessful OAuth2 authentication. Access token is not valid": "Neveiksmīga OAuth2 autentifikācija. Piekļuves talons nav derīgs"
   },
   "COMPOSITIONS": {
