@@ -181,6 +181,11 @@ export class HsQueryWmsService {
         }
       }
     }
+    if (infoFormat.includes('json')) {
+      const resJSON = JSON.parse(response);
+      this.HsQueryBaseService.setData(resJSON.features, 'customFeatures');
+      console.log('jsonquery')
+    }
     this.infoCounter--;
     if (this.infoCounter === 0) {
       this.queriesCollected(coordinate);
@@ -342,7 +347,8 @@ export class HsQueryWmsService {
         if (
           source.getParams().INFO_FORMAT.includes('xml') ||
           source.getParams().INFO_FORMAT.includes('html') ||
-          source.getParams().INFO_FORMAT.includes('gml')
+          source.getParams().INFO_FORMAT.includes('gml') ||
+          source.getParams().INFO_FORMAT.includes('json')
         ) {
           this.infoCounter++;
           this.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
