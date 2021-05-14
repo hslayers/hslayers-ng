@@ -121,7 +121,7 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.loaded = true;
     endpoint.compositionsPaging.matched = response.headers.get('x-total-count') // in case response is an error, x-total-count will return null, it must be checked
       ? parseInt(response.headers.get('x-total-count'))
-      : 0;
+      : response.body.length;
 
     endpoint.compositions = response.body.map((record) => {
       return {
