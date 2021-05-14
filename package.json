@@ -20,6 +20,7 @@
     "doc-cesium": "cd ./projects/hslayers-cesium && npx compodoc -c .compodocrc.json -t",
     "doc-sensors": "cd ./projects/hslayers-sensors && npx compodoc -c .compodocrc.json -t",
     "doc": "npm run doc-hs && npm run doc-cesium && npm run doc-sensors && node scripts/gen-doc.js",
+    "generate-changelog": "standard-changelog",
     "commit-log": "git log --pretty=format:\"+ %as %s (%H)\" c738091dd004550a4e2fb0e188d0baaf488a1020..aaad3ddad24cac4879b56a217b2e46f42391b4cd > changelog.md",
     "commit": "git-cz"
   },
