@@ -171,6 +171,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/cesium/Source/Workers",
                 "output": "./assets/cesium/Workers"
+              },
+              {
+                "glob": "package.json",
+                "input": "projects/hslayers-cesium-app/",
+                "output": "/"
               }
             ],
             "styles": [
