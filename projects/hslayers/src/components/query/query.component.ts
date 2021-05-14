@@ -74,14 +74,16 @@ export class HsQueryComponent implements OnDestroy {
         this.HsQueryBaseService.getFeatureInfoCollected
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((coordinate) => {
-            const invisiblePopup: any = this.HsQueryBaseService.getInvisiblePopup();
+            const invisiblePopup: any =
+              this.HsQueryBaseService.getInvisiblePopup();
             const bodyElementsFound = this.checkForBodyElements(
               invisiblePopup.contentDocument.body.children
             );
             if (bodyElementsFound) {
               //TODO: dont count style, title, meta towards length
               if (this.HsQueryBaseService.popupClassname.length > 0) {
-                this.popup.getElement().className = this.HsQueryBaseService.popupClassname;
+                this.popup.getElement().className =
+                  this.HsQueryBaseService.popupClassname;
               } else {
                 this.popup.getElement().className = 'ol-popup';
               }
@@ -114,12 +116,16 @@ export class HsQueryComponent implements OnDestroy {
     this.ngUnsubscribe.complete();
   }
   checkForBodyElements(docChildren: any): boolean {
-    return Array.from(docChildren).some(
-      (ch: any) =>
+    return Array.from(docChildren).some((ch: any) => {
+      if (ch.tagName == 'TITLE' && ch.title == '') {
+        return false;
+      }
+      return (
         ch.tagName != 'SERVICEEXCEPTIONREPORT' &&
         ch.tagName != 'META' &&
         ch.tagName != 'STYLE'
-    );
+      );
+    });
   }
   showQueryDialog(ev) {
     //TODO Rewrite this to new material design
