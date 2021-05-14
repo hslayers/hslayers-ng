@@ -1,4 +1,4 @@
-# [4.0.0](https://github.com/hslayers/hslayers-ng/compare/3.1.0...4.0.0) (2021-05-14)
+## [4.0.1](https://github.com/hslayers/hslayers-ng/compare/3.1.0...4.0.1) (2021-05-14)
 
 
 ### Bug Fixes
