@@ -655,7 +655,7 @@
     "totalDistance": "Kopējais attālums",
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypoints": "Pieturas punkti",
-    "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Sorry for the inconvenience!"
+    "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Atvainojamies par sagādātajām neērtībām!"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
