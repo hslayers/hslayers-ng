@@ -1,3 +1,95 @@
+# [4.0.0](https://github.com/hslayers/hslayers-ng/compare/3.1.0...4.0.0) (2021-05-14)
+
+
+### Bug Fixes
+
+* Add data from file advanced options not showing ([32767da](https://github.com/hslayers/hslayers-ng/commit/32767da421ce8d7c698453b85f8f640cf5427ac5))
+* Add HslayersCesiumComponent to entryComponents ([4085a2a](https://github.com/hslayers/hslayers-ng/commit/4085a2a5d412e2f2e7d37f0b2dd313de35c96b27))
+* Added translations for navigations service down ([bab6365](https://github.com/hslayers/hslayers-ng/commit/bab63653bad68a8c456202d260b7e4aef79b92dc))
+* Change time dimension config logic ([cbbf141](https://github.com/hslayers/hslayers-ng/commit/cbbf141aabde4492a7e46d56aa0de267c172e2a7))
+* Check for the hslayers-server.db directory existence ([bd4c117](https://github.com/hslayers/hslayers-ng/commit/bd4c11792e98bb4be52c8faa4493217d08ecc074))
+* Check for the hslayers-server.db directory existence ([e21cfa5](https://github.com/hslayers/hslayers-ng/commit/e21cfa531e0e9c6f35f51d94893e3ce513f90cd5))
+* Check if layer is wfs before trying remove on layman ([bf34b79](https://github.com/hslayers/hslayers-ng/commit/bf34b7905cbfeaac2ecccc91768769ec15ddb15d))
+* Close toast messages ([467ce92](https://github.com/hslayers/hslayers-ng/commit/467ce923e0c3569dae6f6c378313f8fd3a22adc8))
+* Disable X-Forwarded-* headers for WMS not to rewrite domains in capabilities ([a154129](https://github.com/hslayers/hslayers-ng/commit/a1541294b25e3333a3fe02eb1da6111d64034bff))
+* Don't fail adding new draw layer if no layman endpoint def found ([49909e0](https://github.com/hslayers/hslayers-ng/commit/49909e0c042bdfb6ae28090334235909c1187e29))
+* Dont proxy LAYMAN_BASEURL/micka paths ([11d0937](https://github.com/hslayers/hslayers-ng/commit/11d0937b32b80b66ca92838f142610e6d4b1afae))
+* Encode features as Json object instead of string ([315e56a](https://github.com/hslayers/hslayers-ng/commit/315e56abaf61e6bbc1b3ebb0e1d9b853402368d0)), closes [#1398](https://github.com/hslayers/hslayers-ng/issues/1398)
+* Fix layman composition sortBy param check ([53d54a5](https://github.com/hslayers/hslayers-ng/commit/53d54a59ae6efea7497ab7b95e3bab5f5a5dbd54))
+* Graceful handling of routing service failure ([adee953](https://github.com/hslayers/hslayers-ng/commit/adee953855d1b7f2a7dc29dc2c3b11a67b780902))
+* Interactions added twice with ngRouter ([35dbb6b](https://github.com/hslayers/hslayers-ng/commit/35dbb6bce657c01a5dd0ceab5e3ead4ae60e81fb))
+* Make all advanced filter section dropdowns in one style ([e7129fe](https://github.com/hslayers/hslayers-ng/commit/e7129fea3ecc712772a880827e54999e86801b95))
+* Make sure sidebar state is set after layout is loaded ([74e957e](https://github.com/hslayers/hslayers-ng/commit/74e957eebf16df84d14195d5f0d856617f86ee56))
+* Missing http context attribute in server share component ([428954f](https://github.com/hslayers/hslayers-ng/commit/428954f5ae558040fb413684253b0bc2577b7337))
+* Remove disfunctional WINDOW_PROVIDERS ([6d47735](https://github.com/hslayers/hslayers-ng/commit/6d47735d1141a0d0db52c8de066433f8a9c5b45f))
+* Remove OSM layer from cesium app, since its hidden anyway ([d1cbc0c](https://github.com/hslayers/hslayers-ng/commit/d1cbc0c85ad55888c46c17caba531386d3d8e19b))
+* Select all wms layers not enabling 'Add to map' button ([1a1e527](https://github.com/hslayers/hslayers-ng/commit/1a1e5276bab8de7fef99f7efe7f896371d1d8481))
+* Set always correct url to the Layman login button ([#1791](https://github.com/hslayers/hslayers-ng/issues/1791)) ([1e7fb45](https://github.com/hslayers/hslayers-ng/commit/1e7fb4521a3ae0546a2e69e7cb4bbccaf7bb7ece))
+* Set matched results to length of array when x-total-count header missing ([9de696c](https://github.com/hslayers/hslayers-ng/commit/9de696cf389863ce8b8a20502d48ed01455d4030))
+* show layman compositions with micka together ([e5edcf9](https://github.com/hslayers/hslayers-ng/commit/e5edcf94044e9788cd2303df2415636bdb445cd0))
+* Single version of OL for hslayers and hsl-app ([79effc1](https://github.com/hslayers/hslayers-ng/commit/79effc1b0c4c75c8154f69d5b27622c30962d794))
+* Sort compositions and layers by date starting with the newest ([08791d0](https://github.com/hslayers/hslayers-ng/commit/08791d099e77a27278464ab160858f9709da5370))
+* Substitute moment with dayjs ([273108e](https://github.com/hslayers/hslayers-ng/commit/273108e0ab9d6cd28b546a29afa0ec148f1b76bc)), closes [#1805](https://github.com/hslayers/hslayers-ng/issues/1805)
+* Update czech translation ([cbfcd2f](https://github.com/hslayers/hslayers-ng/commit/cbfcd2f0b26afad4e7154b4165caa80cc342ef0f))
+* Vendor chunk without sourcemap for hslayers-ng-app ([835c188](https://github.com/hslayers/hslayers-ng/commit/835c1882a1a4a1e077a7eb4b228178871850d6b0))
+* Wrong structure of layerLoading subscriber ([04ec26e](https://github.com/hslayers/hslayers-ng/commit/04ec26ed6f3b89b86618f4babc6ab84ba68f475c))
+
+
+### Build System
+
+* Upgrade to Angular 10 ([cd43bd6](https://github.com/hslayers/hslayers-ng/commit/cd43bd6f06f7a72c6fef71b3225766f4070a56a3)), closes [#1752](https://github.com/hslayers/hslayers-ng/issues/1752)
+
+
+### chore
+
+* Upgrade ngBootstrap to from 6 to 8.0.4 ([8c90202](https://github.com/hslayers/hslayers-ng/commit/8c90202e14c55b5a35634cd972dbe0ee094a2a35)), closes [#1752](https://github.com/hslayers/hslayers-ng/issues/1752)
+
+
+### Code Refactoring
+
+* Don't use layers source to store loading progress, but descriptor instead ([c035bf9](https://github.com/hslayers/hslayers-ng/commit/c035bf9c870cee304edcaa605686f8ceda794a6d)), closes [#453](https://github.com/hslayers/hslayers-ng/issues/453)
+
+
+### Features
+
+* Add loading progressbar for base layers ([7db6274](https://github.com/hslayers/hslayers-ng/commit/7db627460b74e2a476de5437f65e6b6e76a24565))
+* Add missing cz and sk translations ([78fb9cd](https://github.com/hslayers/hslayers-ng/commit/78fb9cd9384a0041d1b391ea5ee3e176be1e9ba9))
+* Add possibility to filter layman drawable layers ([816f8d1](https://github.com/hslayers/hslayers-ng/commit/816f8d11fe7efcc04c2732dce3a695c249a9264d))
+* Add redirect button pointing to Micka for compositions ([bad97df](https://github.com/hslayers/hslayers-ng/commit/bad97dfcb7aaf1a53e66681c0f3afcfbf18c0ef5))
+* Allow permissions setting in Add data (layers from file) and new draw layers ([00ce36e](https://github.com/hslayers/hslayers-ng/commit/00ce36ee8ef6c142d9128e6c9f210247c07a5797)), closes [#1801](https://github.com/hslayers/hslayers-ng/issues/1801)
+* Init hs.source.SPOI handy sub-class ([263b450](https://github.com/hslayers/hslayers-ng/commit/263b450ee98baafdf24c48d99fd9478e1ae9e472))
+* Pre-fill hs.source.SPOI query ([78a6670](https://github.com/hslayers/hslayers-ng/commit/78a6670b79963d2b6d0d9de310f5b2bdb74d26ad)), closes [#1648](https://github.com/hslayers/hslayers-ng/issues/1648)
+
+
+### Reverts
+
+* Revert "build: Add webpack to dependencies of monorepo" ([0251595](https://github.com/hslayers/hslayers-ng/commit/0251595612bfd0d41fbcc525229f34aea4708d45))
+* Add sensors entryComponets back ([2dbd518](https://github.com/hslayers/hslayers-ng/commit/2dbd518a727874606676623de5c84506e9f769be))
+
+
+### BREAKING CHANGES
+
+* Vendor chunk needs to be included in the <script> tags (order doesn't matter)
+* Applications which rely on checking layers source 'error' and 'loaded' attributes
+would break. We don't expect anyone to do it though, since those attributes were used internaly in
+Hslayers. Also HsEventBusService.layerLoadings subject emits different parameter structure:
+```
+{layer:
+Layer, progress: {
+  loadCounter: number;
+  loadTotal: number;
+  loadError: number;
+  percents: number;
+  loaded: boolean;
+  error?: boolean;
+  timer?: any;
+}}
+```
+* peerDependency ng-bootstrap is upgraded from 6.0 to 8.0
+* See angular upgrade guide: https://update.angular.io/?l=2&v=9.1-10.2
+
+
+
 # [3.1.0](https://github.com/hslayers/hslayers-ng/compare/3.0.0...3.1.0) (2021-04-14)
 
 
