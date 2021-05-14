@@ -1,7 +1,7 @@
-import * as xml2Json from 'xml-js';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import * as xml2Json from 'xml-js';
 import {transform, transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -430,36 +430,30 @@ export class HsCompositionsParserService {
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
       case 'WMS':
-        resultLayer = this.HsCompositionsLayerParserService.createWmsLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createWmsLayer(lyr_def);
         break;
       case 'HSLayers.Layer.WMTS':
-        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         break;
       case 'ArcGISRest':
-        resultLayer = this.HsCompositionsLayerParserService.createArcGISLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
         break;
       case 'XYZ':
-        resultLayer = this.HsCompositionsLayerParserService.createXYZLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createXYZLayer(lyr_def);
         break;
       case 'StaticImage':
-        resultLayer = this.HsCompositionsLayerParserService.createStaticImageLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createStaticImageLayer(lyr_def);
         break;
       case 'OpenLayers.Layer.Vector':
       case 'Vector':
       case 'hs.format.LaymanWfs':
-        resultLayer = this.HsCompositionsLayerParserService.createVectorLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(

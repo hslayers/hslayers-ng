@@ -2,14 +2,11 @@ import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-
-import {getTitle, setHsOriginalStyle} from '../../common/layer-extensions';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
@@ -18,6 +15,7 @@ import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getTitle, setHsOriginalStyle} from '../../common/layer-extensions';
 
 type StyleJson = {
   fill?: any;

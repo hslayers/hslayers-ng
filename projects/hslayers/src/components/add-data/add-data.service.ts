@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {Subject} from 'rxjs';
-
 import BaseLayer from 'ol/layer/Base';
+import {Subject} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';

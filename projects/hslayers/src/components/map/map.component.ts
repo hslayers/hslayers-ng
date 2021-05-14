@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 
 import {Subscription} from 'rxjs';
-
 import {transform} from 'ol/proj';
 
 import {HsConfig} from '../../config.service';

@@ -12,6 +12,7 @@ import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSaveMapManagerService} from '../save-map/save-map-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
+
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.html',

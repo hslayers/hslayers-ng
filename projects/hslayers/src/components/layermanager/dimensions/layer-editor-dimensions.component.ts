@@ -1,8 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
 
-import {Subscription} from 'rxjs';
-
 import {Layer} from 'ol/layer';
+import {Subscription} from 'rxjs';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
 import {HsDimensionDescriptor} from './dimension.class';
@@ -29,13 +28,14 @@ export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
     public hsLayerEditorService: HsLayerEditorService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService
   ) {
-    this.layerDimensionDefinitionChangeSubscription = this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
-      ({layer}) => {
-        if (layer == this.layer) {
-          this.ngOnChanges();
+    this.layerDimensionDefinitionChangeSubscription =
+      this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
+        ({layer}) => {
+          if (layer == this.layer) {
+            this.ngOnChanges();
+          }
         }
-      }
-    );
+      );
   }
   ngOnDestroy(): void {
     this.layerDimensionDefinitionChangeSubscription.unsubscribe();

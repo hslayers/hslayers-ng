@@ -3,7 +3,6 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import Popup from 'ol-popup';
-
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
