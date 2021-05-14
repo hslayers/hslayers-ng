@@ -654,7 +654,8 @@
     "removeWaypoint": "Dzēst pieturu",
     "totalDistance": "Kopējais attālums",
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
-    "waypoints": "Pieturas punkti"
+    "waypoints": "Pieturas punkti",
+    "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Sorry for the inconvenience!"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
