@@ -193,7 +193,7 @@ export class HsLaymanService implements HsSaverService {
     const f = new GeoJSON();
     const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
 
-    if (((ep?.version?.split('.').join() as unknown) as number) < 171) {
+    if ((ep?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     setHsLaymanSynchronizing(layer, true);
@@ -434,5 +434,10 @@ export class HsLaymanService implements HsSaverService {
     return this.HsCommonEndpointsService.endpoints.find(
       (e) => e.type == 'layman'
     );
+  }
+
+  isLaymanGuest(): boolean {
+    const endpoint = this.getLaymanEndpoint();
+    return endpoint.user == 'anonymous' || endpoint.user == 'browser';
   }
 }

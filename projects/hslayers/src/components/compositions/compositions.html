@@ -48,7 +48,7 @@
                             (change)='loadFilteredCompositions()' name="hsCompositionsCatalogueService.filterByExtent">
                         <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
                     </div>
-                    <div class="input-group-text border-0" [hidden]="!hsLaymanService.getLaymanEndpoint()">
+                    <div class="input-group-text border-0" *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                         <input type="checkbox" [(ngModel)]="hsCompositionsCatalogueService.filterByOnlyMine"
                             (change)='loadFilteredCompositions()'
                             name="hsCompositionsCatalogueService.filterByOnlyMine">

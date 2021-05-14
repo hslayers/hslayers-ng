@@ -19,7 +19,7 @@
                     name="filterByExtent">
                 <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
-            <div class="input-group-text border-0" [hidden]="!hsLaymanService.getLaymanEndpoint()">
+            <div class="input-group-text border-0" *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
                 <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
             </div>
