@@ -11,9 +11,13 @@ Include hslayers-ng styles in page `<head>`:
 <link rel="stylesheet" href="node_modules/hslayers-ng-app/styles.css">
 ```
 
-Include hslayers-ng-app bundle scripts after `<hslayers-app>`:
+Include hslayers-ng-app bundle scripts:
 ```
-<script src="node_modules/hslayers-ng-app/runtime.js" defer></script><script src="node_modules/hslayers-ng-app/polyfills-es5.js" nomodule defer></script><script src="node_modules/hslayers-ng-app/polyfills.js" defer></script><script src="node_modules/hslayers-ng-app/main.js" defer></script>
+<script src="node_modules/hslayers-ng-app/runtime.js"></script>
+<script src="node_modules/hslayers-ng-app/polyfills-es5.js"></script>
+<script src="node_modules/hslayers-ng-app/polyfills.js"></script>
+<script src="node_modules/hslayers-ng-app/vendor.js"></script><!-- Must be included since 4.x -->
+<script src="node_modules/hslayers-ng-app/main.js"></script>
 ```
 
 ## Configuration
