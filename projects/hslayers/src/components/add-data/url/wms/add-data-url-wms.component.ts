@@ -96,6 +96,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
   selectAllLayers(layers: any[]): void {
     for (const layer of layers) {
       layer.checked = !layer.checked;
+      this.searchForChecked(layer);
       if (layer.Layer) {
         this.selectAllLayers(layer.Layer);
       }
