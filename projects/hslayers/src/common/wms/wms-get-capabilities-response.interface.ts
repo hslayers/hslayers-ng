@@ -160,8 +160,12 @@ export interface WMSGetCapabilitiesResponse {
       Format: FormatType | FormatType[];
     };
     [_ExtendedCapabilities: string]: unknown;
-    Layer?: WmsLayer;
+    Layer?: WmsLayer; // | WmsLayer[]; ?
   };
+  /**
+   * capitalized version invalid by definition, but probably used in some services
+   */
+  Version: string;
   version: string;
   updateSequence?: string;
 }

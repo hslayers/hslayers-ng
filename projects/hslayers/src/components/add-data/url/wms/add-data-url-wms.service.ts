@@ -1,12 +1,12 @@
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import BaseLayer from 'ol/layer/Base';
 import {Attribution} from 'ol/control';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
-
-import {Subject} from 'rxjs';
 
 //FIX ME
 //refactor
@@ -19,6 +19,10 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {
+  WMSGetCapabilitiesResponse,
+  WmsLayer,
+} from '../../../../common/wms/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferedFormat} from '../../../../common/format-utils';
@@ -122,7 +126,7 @@ export class HsAddDataUrlWmsService {
   async capabilitiesReceived(response, layerToSelect: string): Promise<void> {
     try {
       const parser = new WMSCapabilities();
-      const caps = parser.read(response);
+      const caps: WMSGetCapabilitiesResponse = parser.read(response);
       this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
@@ -202,17 +206,20 @@ export class HsAddDataUrlWmsService {
     }
   }
 
-  filterCapabilitiesLayers(layers) {
-    let tmp = [];
+  //TODO: what is the reason to do such things?
+  filterCapabilitiesLayers(layers: WmsLayer | Array<WmsLayer>): Array<any> {
     if (Array.isArray(layers)) {
-      tmp = layers;
-    } else if (typeof layers == 'object') {
-      if (layers.Layer) {
+      return layers;
+    }
+    let tmp = [];
+    if (typeof layers == 'object') {
+      if (layers.Layer && Array.isArray(layers.Layer)) {
         const layersWithNameParam = layers.Layer.filter((layer) => layer.Name);
         if (layersWithNameParam.length > 0) {
-          tmp = layersWithNameParam;
-        } else {
-          for (const layer of layers.Layer) {
+          return layersWithNameParam;
+        }
+        for (const layer of layers.Layer) {
+          if (Array.isArray(layer?.Layer)) {
             tmp.push(...layer.Layer.filter((layer) => layer.Name));
           }
         }
@@ -224,16 +231,16 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @description Removes extra port which is added to the getMap request when
+   * Removes extra port which is added to the getMap request when
    * GetCapabilities is queried through proxy. <GetMap><DCPType><HTTP><Get>
-   * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/>
+   * \<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/\>
    * then becomes <GetMap><DCPType><HTTP><Get>
-   * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz:8085/cgi-bin/mapserv?map=/home/maps"/>
+   * \<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz:8085/cgi-bin/mapserv?map=/home/maps"/\>
    * which is wrong.
-   * @param {string} url Url for which to remove port but only when proxified
+   * @param url - URL for which to remove port but only when proxified
    * with port in proxy path.
    * @private
-   * @return {string} Url without proxy services port added to it.
+   * @returns URL without proxy services port added to it.
    */
   removePortIfProxified(url: string): string {
     if (this.hsConfig.proxyPrefix === undefined) {
@@ -249,15 +256,15 @@ export class HsAddDataUrlWmsService {
   }
 
   srsChanged(): void {
-    this.data.resample_warning = !this.hsWmsGetCapabilitiesService.currentProjectionSupported(
-      [this.data.srs]
-    );
+    this.data.resample_warning =
+      !this.hsWmsGetCapabilitiesService.currentProjectionSupported([
+        this.data.srs,
+      ]);
   }
 
   /**
-   * @function addLayers
-   * @description Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
-   * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
+   * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
+   * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): void {
     if (this.data.services === undefined) {
@@ -297,29 +304,28 @@ export class HsAddDataUrlWmsService {
 
   /**
    * @param service
-   * @return {Array}
+   * @returns {Array}
    */
   getSublayerNames(service): any[] {
-    if (service.Layer) {
-      return service.Layer.map((l) => {
-        const tmp: any = {};
-        if (l.Name) {
-          tmp.name = l.Name;
-        }
-        if (l.Title) {
-          tmp.title = l.Title;
-        }
-        if (l.Layer) {
-          tmp.children = this.getSublayerNames(l);
-        }
-        return tmp;
-      });
-    } else {
+    if (!service.Layer) {
       return [];
     }
+    return service.Layer.map((l) => {
+      const tmp: any = {};
+      if (l.Name) {
+        tmp.name = l.Name;
+      }
+      if (l.Title) {
+        tmp.title = l.Title;
+      }
+      if (l.Layer) {
+        tmp.children = this.getSublayerNames(l);
+      }
+      return tmp;
+    });
   }
 
-  hasNestedLayers(layer): boolean {
+  hasNestedLayers(layer: WmsLayer): boolean {
     if (layer === undefined) {
       return false;
     }
@@ -327,16 +333,15 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @function addLayer
-   * @param {object} layer capabilities layer object
-   * @param {string} layerName layer name in the map
-   * @param {string} path Path name
-   * @param {string} imageFormat Format in which to serve image. Usually: image/png
-   * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
+   * Add selected layer to map
+   * @param layer - capabilities layer object
+   * @param layerName - layer name in the map
+   * @param path - Path (folder) name
+   * @param imageFormat - Format in which to serve image. Usually: image/png
+   * @param queryFormat - See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
    * @param {import('ol/Size')} tileSize Tile size in pixels
    * @param {import('ol/proj/Projection')} crs of the layer
-   * @param {Array} subLayers Static sub-layers of the layer
-   * @description Add selected layer to map
+   * @param subLayers - Static sub-layers of the layer
    */
   addLayer(
     layer,
@@ -417,9 +422,8 @@ export class HsAddDataUrlWmsService {
       ),
       crossOrigin: 'anonymous',
     });
-    const metadata = this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(
-      layer
-    );
+    const metadata =
+      this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
     const new_layer = new layer_class({
       title: layerName,
       name: layerName,
@@ -461,13 +465,12 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @description Add service and its layers to project
-   * @function addService
-   * @param {string} url Service url
-   * @param addUnder {BaseLayer} OL layer before which to add new layer
-   * @param path {string} Folder name with path to group layers
-   * @param {Group} group Group layer to which add layer to
-   * @param {string} layerName Name of layer to add. If not specified then all layers are added
+   * Add service and its layers to project
+   * @param url - Service URL
+   * @param addUnder - OL layer before which to add new layer
+   * @param path - Folder name with path to group layers
+   * @param group - Group layer to which add layer to
+   * @param layerName - Name of layer to add. If not specified then all layers are added
    */
   addService(
     url: string,
