@@ -1,8 +1,8 @@
-import {Inject, Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Location, PlatformLocation} from '@angular/common';
-import {Subject} from 'rxjs';
 
 import {Map} from 'ol';
+import {Subject} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';

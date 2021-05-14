@@ -1,12 +1,11 @@
-import BaseLayer from 'ol/layer/Base';
 import {Component, OnInit} from '@angular/core';
+
+import BaseLayer from 'ol/layer/Base';
 
 import {FileDescriptor} from './file-descriptor.type';
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
-
-import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
-
 import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataUrlWmsService} from '../../url/wms/add-data-url-wms.service';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';

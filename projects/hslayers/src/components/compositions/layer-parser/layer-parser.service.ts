@@ -1,4 +1,5 @@
-import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
+import {Injectable} from '@angular/core';
+
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Attribution} from 'ol/control';
@@ -13,8 +14,7 @@ import {
 } from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
-import {Injectable} from '@angular/core';
-
+import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';

@@ -2,18 +2,15 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsConfig} from '../../../config.service';
-import {HsLanguageService} from '../../language/language.service';
-
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCoreService} from '../../core/core.service';
-
 import {HsAddDataCatalogueMapService} from './add-data-catalogue-map.service';
 import {HsAddDataCatalogueService} from './add-data-catalogue.service';
 import {HsAddDataLayerDescriptor} from './add-data-layer-descriptor.interface';
-
+import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
+import {HsConfig} from '../../../config.service';
+import {HsCoreService} from '../../core/core.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../../core/event-bus.service';
+import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsUtilsService} from '../../utils/utils.service';

@@ -23,11 +23,10 @@ export class HsLaymanLoginComponent
     public HsDialogContainerService: HsDialogContainerService,
     private sanitizer: DomSanitizer
   ) {
-    this.authChangeSubscription = this.HsCommonLaymanService.authChange.subscribe(
-      (endpoint) => {
+    this.authChangeSubscription =
+      this.HsCommonLaymanService.authChange.subscribe((endpoint) => {
         this.close();
-      }
-    );
+      });
   }
   ngOnDestroy(): void {
     this.authChangeSubscription.unsubscribe();

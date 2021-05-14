@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
+import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-
-import {Layer} from 'ol/layer';
 
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
@@ -117,9 +116,8 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()
         ) {
-          const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-            '.hs-layerpanel'
-          );
+          const layerPanel =
+            this.HsLayoutService.contentWrapper.querySelector('.hs-layerpanel');
           const layerNode = document.getElementsByClassName(
             'hs-lm-mapcontentlist'
           )[0];
