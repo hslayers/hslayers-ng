@@ -23,28 +23,28 @@ export class HsCompositionsComponent {
   selectedCompId: any;
   loadFilteredCompositions: any;
   constructor(
-    public HsCompositionsService: HsCompositionsService,
-    public HsCompositionsParserService: HsCompositionsParserService,
-    public HsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService,
-    public HsCompositionsMapService: HsCompositionsMapService,
-    public HsSaveMapManagerService: HsSaveMapManagerService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    public HsLaymanService: HsLaymanService
+    public hsCompositionsService: HsCompositionsService,
+    public hsCompositionsParserService: HsCompositionsParserService,
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService,
+    public hsCompositionsMapService: HsCompositionsMapService,
+    public hsSaveMapManagerService: HsSaveMapManagerService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
+    public hsLaymanService: HsLaymanService
   ) {
     this.loadFilteredCompositions = () =>
-      HsCompositionsCatalogueService.loadFilteredCompositions();
+      hsCompositionsCatalogueService.loadFilteredCompositions();
 
-    this.HsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
-      this.HsCompositionsService.compositionToLoad = {url, title: ''};
+    this.hsCompositionsService.notSavedCompositionLoading.subscribe((url) => {
+      this.hsCompositionsService.compositionToLoad = {url, title: ''};
       this.loadUnsavedDialogBootstrap(url, '');
     });
   }
   resultsVisible(): boolean {
     if (
-      this.HsCompositionsCatalogueService.listNext &&
-      this.HsCompositionsCatalogueService.matchedCompositions
+      this.hsCompositionsCatalogueService.listNext &&
+      this.hsCompositionsCatalogueService.matchedCompositions
     ) {
       return true;
     } else {
@@ -52,20 +52,20 @@ export class HsCompositionsComponent {
     }
   }
   nextPageAvailable(): boolean {
-    return this.HsCompositionsCatalogueService.nextPageAvailable();
+    return this.hsCompositionsCatalogueService.nextPageAvailable();
   }
   /**
    * Load previous list of compositions to display on pager
    */
   getPreviousCompositions(): void {
-    this.HsCompositionsCatalogueService.getPreviousCompositions();
+    this.hsCompositionsCatalogueService.getPreviousCompositions();
   }
 
   /**
    * Load next list of compositions to display on pager
    */
   getNextCompositions(): void {
-    this.HsCompositionsCatalogueService.getNextCompositions();
+    this.hsCompositionsCatalogueService.getNextCompositions();
   }
 
   /**
@@ -75,7 +75,7 @@ export class HsCompositionsComponent {
    */
   highlightComposition(composition, state: boolean): void {
     composition.highlighted = state;
-    this.HsCompositionsMapService.highlightComposition(composition, state);
+    this.hsCompositionsMapService.highlightComposition(composition, state);
   }
 
   /**
@@ -85,10 +85,10 @@ export class HsCompositionsComponent {
    */
 
   addCompositionUrl(url): void {
-    if (this.HsCompositionsParserService.composition_edited == true) {
-      this.HsCompositionsService.notSavedCompositionLoading.next(url);
+    if (this.hsCompositionsParserService.composition_edited == true) {
+      this.hsCompositionsService.notSavedCompositionLoading.next(url);
     } else {
-      this.HsCompositionsService.loadComposition(url, true).then((_) => {
+      this.hsCompositionsService.loadComposition(url, true).then((_) => {
         this.addCompositionUrlVisible = false;
       });
     }
@@ -102,7 +102,7 @@ export class HsCompositionsComponent {
       const reader = new FileReader();
       reader.onload = (theFile) => {
         const json = JSON.parse(<string>reader.result);
-        this.HsCompositionsParserService.loadCompositionObject(json, true);
+        this.hsCompositionsParserService.loadCompositionObject(json, true);
       };
       reader.readAsText(f);
     }
@@ -112,13 +112,14 @@ export class HsCompositionsComponent {
    * @param title
    */
   loadUnsavedDialogBootstrap(url, title): void {
-    this.HsDialogContainerService.create(
+    this.hsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,
       {
         composition_name_to_be_loaded: title,
       }
     );
   }
+
   openOptionsMenu(): void {
     this.optionsMenuOpen = !this.optionsMenuOpen;
     if (this.optionsMenuOpen) {
@@ -134,19 +135,19 @@ export class HsCompositionsComponent {
     this.themesVisible = false;
     this.keywordsVisible = false;
     this.selectedCompId = '';
-    this.HsCompositionsCatalogueService.clearFilters();
+    this.hsCompositionsCatalogueService.clearFilters();
   }
   changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
   openSaveMapPanel(): void {
-    this.HsLayoutService.setMainPanel('saveMap');
+    this.hsLayoutService.setMainPanel('saveMap');
   }
   compositionClicked(composition): void {
     if (
-      this.selectedCompId != this.HsCompositionsService.commonId(composition)
+      this.selectedCompId != this.hsCompositionsService.commonId(composition)
     ) {
-      this.selectedCompId = this.HsCompositionsService.commonId(composition);
+      this.selectedCompId = this.hsCompositionsService.commonId(composition);
     } else {
       this.selectedCompId = '';
     }
@@ -157,7 +158,7 @@ export class HsCompositionsComponent {
   }
 
   sortByValueChanged(sortBy: any): void {
-    this.HsCompositionsCatalogueService.data.sortBy = sortBy;
+    this.hsCompositionsCatalogueService.data.sortBy = sortBy;
     this.loadFilteredCompositions();
   }
 }
