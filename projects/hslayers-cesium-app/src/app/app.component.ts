@@ -59,6 +59,10 @@ export class AppComponent {
     if (w.hslayersNgConfig) {
       Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
     }
+    if (!this.HsConfig.cesiumBase) {
+      this.HsConfig.cesiumBase =
+        'node_modules/hslayers-cesium-app/assets/cesium/';
+    }
   }
   title = 'hslayers-workspace';
 
