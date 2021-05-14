@@ -35,40 +35,39 @@ export class HsAddDataCatalogueComponent {
   sortbyTypes = ['date', 'title', 'bbox'];
   optionsButtonLabel = 'more';
   constructor(
-    public HsLanguageService: HsLanguageService,
+    public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService, //Used in template
     public hsConfig: HsConfig, //Used in template
     public hsCore: HsCoreService, //Used in template
-    public HsAddDataCatalogueService: HsAddDataCatalogueService,
-    public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //Used in template
+    public hsAddDataCatalogueService: HsAddDataCatalogueService,
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //Used in template
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService,
-    public HsLaymanService: HsLaymanService //Used in template
+    public hsUtilsService: HsUtilsService,
+    public hsLaymanService: HsLaymanService //Used in template
   ) {
-    this.data = HsAddDataCatalogueService.data;
+    this.data = hsAddDataCatalogueService.data;
     this.advancedSearch = false;
-    this.queryCatalogs = () => HsAddDataCatalogueService.queryCatalogs();
+    this.queryCatalogs = () => hsAddDataCatalogueService.queryCatalogs();
     this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
       if (type == 'wms') {
         this.data.wms_connecting = true;
       }
     });
     this.loaderImage =
-      this.HsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
+      this.hsUtilsService.getAssetsPath() + 'img/ajax-loader.gif';
   }
 
   layerSelected(layer: HsAddDataLayerDescriptor): void {
-    this.HsAddDataCatalogueService.selectedLayer =
-      this.HsAddDataCatalogueService.selectedLayer == layer
+    this.hsAddDataCatalogueService.selectedLayer =
+      this.hsAddDataCatalogueService.selectedLayer == layer
         ? <HsAddDataLayerDescriptor>{}
         : layer;
   }
 
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
-
   openOptionsMenu(): void {
     this.filterTypeMenu = !this.filterTypeMenu;
     if (this.filterTypeMenu) {
@@ -79,7 +78,7 @@ export class HsAddDataCatalogueComponent {
   }
 
   queryByFilter(): void {
-    this.HsAddDataCatalogueService.reloadData();
+    this.hsAddDataCatalogueService.reloadData();
   }
 
   selectType(type: string): void {
@@ -98,7 +97,7 @@ export class HsAddDataCatalogueComponent {
 
   highlightLayer(layer, state: boolean): void {
     layer.highlighted = state;
-    this.HsAddDataCatalogueMapService.highlightLayer(layer, state);
+    this.hsAddDataCatalogueMapService.highlightLayer(layer, state);
   }
 
   /**
@@ -107,7 +106,7 @@ export class HsAddDataCatalogueComponent {
    * @description Loads previous records of datasets from selected datasource (based on number of results per page and current start)
    */
   getPreviousRecords(): void {
-    this.HsAddDataCatalogueService.getPreviousRecords();
+    this.hsAddDataCatalogueService.getPreviousRecords();
   }
 
   /**
@@ -116,27 +115,27 @@ export class HsAddDataCatalogueComponent {
    * @description Loads next records of datasets from selected datasource (based on number of results per page and current start)
    */
   getNextRecords(): void {
-    this.HsAddDataCatalogueService.getNextRecords();
+    this.hsAddDataCatalogueService.getNextRecords();
   }
 
   resultsVisible(): boolean {
-    return this.HsAddDataCatalogueService.listNext &&
-      this.HsAddDataCatalogueService.matchedLayers
+    return this.hsAddDataCatalogueService.listNext &&
+      this.hsAddDataCatalogueService.matchedLayers
       ? true
       : false;
   }
 
   nextPageAvailable(): boolean {
     return (
-      this.HsAddDataCatalogueService.matchedLayers >
-      this.HsAddDataCatalogueService.listNext
+      this.hsAddDataCatalogueService.matchedLayers >
+      this.hsAddDataCatalogueService.listNext
     );
   }
 
   datasetSelect(id_selected: string, endpoint?: HsEndpoint): void {
-    this.HsAddDataCatalogueService.datasetSelect(id_selected);
+    this.hsAddDataCatalogueService.datasetSelect(id_selected);
     if (endpoint) {
-      this.HsAddDataCatalogueService.selectedEndpoint = endpoint;
+      this.hsAddDataCatalogueService.selectedEndpoint = endpoint;
     }
   }
 }
