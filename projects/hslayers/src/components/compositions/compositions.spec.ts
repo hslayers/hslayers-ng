@@ -169,7 +169,7 @@ describe('compositions', () => {
    * @param component
    */
   function loadComposition(component) {
-    component.HsCompositionsParserService.loadCompositionObject(
+    component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
       true
     );
