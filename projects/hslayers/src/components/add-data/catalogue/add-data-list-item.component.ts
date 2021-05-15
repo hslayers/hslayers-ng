@@ -24,7 +24,6 @@ export class HsAddDataListItemComponent {
 
   explanationsVisible: boolean;
   metadata;
-  metadataModalVisible: boolean;
   selected_ds;
   selected_layer;
   selectedType: string; //do not rename to 'type', would clash in the template
@@ -67,7 +66,6 @@ export class HsAddDataListItemComponent {
       this.selectTypeToAddLayerVisible = false;
       this.selectedType = null;
     }
-    this.metadataModalVisible = false;
     this.explanationsVisible = false;
   }
 
