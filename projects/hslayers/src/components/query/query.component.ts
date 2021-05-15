@@ -126,6 +126,13 @@ export class HsQueryComponent implements OnDestroy {
       );
     });
   }
+  noFeatureSelected(): boolean {
+    return (
+      this.HsQueryBaseService.data.features.length == 0 &&
+      (this.HsQueryBaseService.data.coordinates === undefined ||
+        this.HsQueryBaseService.data.coordinates.length == 0)
+    );
+  }
   showQueryDialog(ev) {
     //TODO Rewrite this to new material design
     /* this.$mdDialog
