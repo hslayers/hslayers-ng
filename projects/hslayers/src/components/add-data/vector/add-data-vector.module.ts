@@ -6,11 +6,18 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsAddDataCommonModule} from '../common/add-data-common.module';
 import {HsAddDataVectorComponent} from './add-data-vector.component';
 import {HsAddDataVectorService} from './add-data-vector.service';
+import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsVectorUrlParserService} from './add-data-vector-url-parser.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, FormsModule, TranslateModule, HsAddDataCommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    HsAddDataCommonModule,
+    HsLaymanModule,
+  ],
   exports: [HsAddDataVectorComponent],
   declarations: [HsAddDataVectorComponent],
   providers: [HsAddDataVectorService, HsVectorUrlParserService],
