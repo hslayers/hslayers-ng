@@ -42,8 +42,8 @@ export class HsAddDataFileShpComponent implements OnInit {
   showDetails = false;
   isAuthorized: boolean;
   access_rights: accessRightsInterface = {
-    'write': 'EVERYONE',
-    'read': 'EVERYONE',
+    'access_rights.write': 'EVERYONE',
+    'access_rights.read': 'EVERYONE',
   };
 
   constructor(
@@ -225,5 +225,15 @@ export class HsAddDataFileShpComponent implements OnInit {
     }
     console.log(this.files);
     console.log(this.sld);
+  }
+
+  accessRightChanged(type: string, value: string) {
+    this.access_rights[type] = value;
+    if (
+      this.access_rights['access_rights.read'] == 'private' &&
+      this.access_rights['access_rights.write'] != 'private'
+    ) {
+      this.access_rights['access_rights.write'] = 'private';
+    }
   }
 }
