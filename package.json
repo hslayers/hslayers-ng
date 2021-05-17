@@ -44,7 +44,7 @@
     "cesium": "^1.80.0",
     "dayjs": "^1.10.4",
     "deepmerge": "^4.2.2",
-    "ngx-cookie-service": "^11.0.0",
+    "ngx-cookie-service": "^11.0.2",
     "ol": "^6.5.0",
     "ol-popup": "^4.0.0",
     "proj4": "^2.7.2",
