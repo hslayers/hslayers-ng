@@ -226,14 +226,4 @@ export class HsAddDataFileShpComponent implements OnInit {
     console.log(this.files);
     console.log(this.sld);
   }
-
-  accessRightChanged(type: string, value: string) {
-    this.access_rights[type] = value;
-    if (
-      this.access_rights['access_rights.read'] == 'private' &&
-      this.access_rights['access_rights.write'] != 'private'
-    ) {
-      this.access_rights['access_rights.write'] = 'private';
-    }
-  }
 }

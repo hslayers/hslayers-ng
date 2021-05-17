@@ -25,41 +25,7 @@
                 <input type="text" class="form-control" name="hs-save-map-keywords"
                     [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
-            <div class="form-group d-flex justify-content-between">
-                <label class="pt-2" style="margin-bottom: 0;">
-                    {{'SAVECOMPOSITION.readAccessRights' | translate}}
-                </label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="accessRightChanged('read','EVERYONE')"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'EVERYONE'}">
-                        {{'SAVECOMPOSITION.public' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                    (click)="accessRightChanged('read','private')"
-                    [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'private'}">
-                        {{'SAVECOMPOSITION.private' | translate}}
-                    </button>
-                </div>
-            </div>
-            <div class="form-group d-flex justify-content-between">
-                <label class="pt-2" style="margin-bottom: 0;">
-                    {{'SAVECOMPOSITION.writeAccessRights' | translate}}
-                </label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        [disabled]="HsSaveMapManagerService.compoData.read == 'private'"
-                        (click)="accessRightChanged('write','EVERYONE')"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'EVERYONE'}">
-                        {{'SAVECOMPOSITION.public' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="accessRightChanged('write','private')"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'private'}">
-                        {{'SAVECOMPOSITION.private' | translate}}
-                    </button>
-                </div>
-            </div>
+            <hs-layman-access-rights [(access_rights)]="HsSaveMapManagerService.compoData.access_rights"></hs-layman-access-rights>
             <div class="form-group">
                 <label for="stc-extent1" class="form-group">{{'COMMON.extent' | translate}}</label>
                 <div class="form-row stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">

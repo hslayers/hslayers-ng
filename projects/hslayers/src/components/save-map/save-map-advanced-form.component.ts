@@ -70,16 +70,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  accessRightChanged(type: string, value: string) {
-    this.HsSaveMapManagerService.compoData[type] = value;
-    if (
-      this.HsSaveMapManagerService.compoData.read == 'private' &&
-      this.HsSaveMapManagerService.compoData.write != 'private'
-    ) {
-      this.HsSaveMapManagerService.compoData.write = 'private';
-    }
-  }
-
   saveCompoJson(): void {
     const compositionJSON = this.HsSaveMapManagerService.generateCompositionJson(
       true

@@ -66,14 +66,16 @@ export class HsLaymanService implements HsSaverService {
    * @return {Promise<any>} Promise result of POST
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
+    
     const write =
-      compoData.write == 'EVERYONE' ? compoData.write : endpoint.user;
-    let read;
-    if (write == 'EVERYONE') {
-      read = write;
-    } else {
-      read = compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
-    }
+    compoData.access_rights['access_rights.write'] == 'private'
+        ? endpoint.user
+        : compoData.access_rights['access_rights.write'];
+    const read =
+    compoData.access_rights['access_rights.read'] == 'private'
+        ? endpoint.user
+        : compoData.access_rights['access_rights.read'];
+
     return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
