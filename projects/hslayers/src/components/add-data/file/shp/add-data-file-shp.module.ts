@@ -6,6 +6,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {HsAddDataCommonModule} from '../../common/add-data-common.module';
 import {HsAddDataFileShpComponent} from './add-data-file-shp.component';
 import {HsAddDataFileShpService} from './add-data-file-shp.service';
+import {HsLaymanModule} from '../../../../common/layman/layman.module';
 import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.mod
     TranslateModule,
     HsUiExtensionsModule,
     HsAddDataCommonModule,
+    HsLaymanModule,
   ],
   exports: [HsAddDataFileShpComponent],
   declarations: [HsAddDataFileShpComponent],
