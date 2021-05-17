@@ -59,16 +59,6 @@ export class HsDrawLayerMetadataDialogComponent
     setTitle(this.layer, this.title);
   }
 
-  accessRightChanged(type: string, value: string) {
-    this.access_rights[type] = value;
-    if (
-      this.access_rights['access_rights.read'] == 'private' &&
-      this.access_rights['access_rights.write'] != 'private'
-    ) {
-      this.access_rights['access_rights.write'] = 'private';
-    }
-  }
-
   confirm(): void {
     const dic = {};
 
