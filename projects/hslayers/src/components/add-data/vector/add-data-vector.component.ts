@@ -42,8 +42,8 @@ export class HsAddDataVectorComponent {
   // Not possible to save KML to layman yet
   saveAvailable: boolean;
   access_rights: accessRightsInterface = {
-    'write': 'EVERYONE',
-    'read': 'EVERYONE',
+    'access_rights.write': 'EVERYONE',
+    'access_rights.read': 'EVERYONE',
   };
   constructor(
     public HsAddDataVectorService: HsAddDataVectorService,
@@ -81,6 +81,17 @@ export class HsAddDataVectorComponent {
       return false;
     }
   }
+
+  accessRightChanged(type: string, value: string) {
+    this.access_rights[type] = value;
+    if (
+      this.access_rights['access_rights.read'] == 'private' &&
+      this.access_rights['access_rights.write'] != 'private'
+    ) {
+      this.access_rights['access_rights.write'] = 'private';
+    }
+  }
+
   /**
    * Handler for adding nonwms service, file in template.
    *
@@ -99,6 +110,9 @@ export class HsAddDataVectorComponent {
         features: this.features,
         path: this.hsUtilsService.undefineEmptyString(this.folder_name),
         access_rights: this.access_rights,
+        workspace: this.HsCommonEndpointsService.endpoints.filter(
+          (ep) => ep.type == 'layman'
+        )[0]?.user,
       },
       this.addUnder
     );

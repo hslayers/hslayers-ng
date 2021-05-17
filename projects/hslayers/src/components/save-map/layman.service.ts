@@ -114,7 +114,7 @@ export class HsLaymanService implements HsSaverService {
    * Send layer definition and features to Layman
    * @param endpoint Endpoint description
    * @param geojson Geojson object with features to send to server
-   * @param description Object containing {name, title, crs, workspace, acces_rights} of
+   * @param description Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
    * @param layerDesc Previously fetched layer descriptor
    * @return Promise result of POST/PATCH
@@ -139,8 +139,18 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('name', description.name);
     formdata.append('title', description.title);
     formdata.append('crs', description.crs);
-    formdata.append('write', description.acces_rights.write ?? 'EVERYONE');
-    formdata.append('read', description.acces_rights.read ?? 'EVERYONE');
+
+    const write =
+      description.access_rights['access_rights.write'] == 'private'
+        ? endpoint.user
+        : description.access_rights['access_rights.write'] ?? 'EVERYONE';
+    const read =
+      description.access_rights['access_rights.read'] == 'private'
+        ? endpoint.user
+        : description.access_rights['access_rights.read'] ?? 'EVERYONE';
+
+    formdata.append('access_rights.write', write);
+    formdata.append('access_rights.read', read);
 
     const headers = new HttpHeaders();
     headers.append('Content-Type', null);
@@ -204,7 +214,7 @@ export class HsLaymanService implements HsSaverService {
         ? this.crs
         : 'EPSG:3857',
       workspace: getWorkspace(layer),
-      acces_rights: getAccessRights(layer),
+      access_rights: getAccessRights(layer),
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);

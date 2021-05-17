@@ -33,8 +33,8 @@ export class HsDrawLayerMetadataDialogComponent
   type: string;
   endpoint: any;
   access_rights: accessRightsInterface = {
-    'write': 'EVERYONE',
-    'read': 'EVERYONE',
+    'access_rights.write': 'EVERYONE',
+    'access_rights.read': 'EVERYONE',
   };
   onlyMineFilterVisible = false;
 
@@ -57,6 +57,16 @@ export class HsDrawLayerMetadataDialogComponent
 
   titleChanged(): void {
     setTitle(this.layer, this.title);
+  }
+
+  accessRightChanged(type: string, value: string) {
+    this.access_rights[type] = value;
+    if (
+      this.access_rights['access_rights.read'] == 'private' &&
+      this.access_rights['access_rights.write'] != 'private'
+    ) {
+      this.access_rights['access_rights.write'] = 'private';
+    }
   }
 
   confirm(): void {

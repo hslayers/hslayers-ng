@@ -31,13 +31,13 @@
                 </label>
                 <div class="btn-group">
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.read = 'EVERYONE'"
+                        (click)="accessRightChanged('read','EVERYONE')"
                         [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'EVERYONE'}">
                         {{'SAVECOMPOSITION.public' | translate}}
                     </button>
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.read = 'private'"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'private'}">
+                    (click)="accessRightChanged('read','private')"
+                    [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'private'}">
                         {{'SAVECOMPOSITION.private' | translate}}
                     </button>
                 </div>
@@ -48,12 +48,13 @@
                 </label>
                 <div class="btn-group">
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.write = 'EVERYONE'"
+                        [disabled]="HsSaveMapManagerService.compoData.read == 'private'"
+                        (click)="accessRightChanged('write','EVERYONE')"
                         [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'EVERYONE'}">
                         {{'SAVECOMPOSITION.public' | translate}}
                     </button>
                     <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.write = 'private'"
+                        (click)="accessRightChanged('write','private')"
                         [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'private'}">
                         {{'SAVECOMPOSITION.private' | translate}}
                     </button>
