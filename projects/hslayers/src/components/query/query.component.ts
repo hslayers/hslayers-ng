@@ -75,6 +75,9 @@ export class HsQueryComponent implements OnDestroy {
           .subscribe((coordinate) => {
             const invisiblePopup: any =
               this.HsQueryBaseService.getInvisiblePopup();
+            if (!invisiblePopup) {
+              return;
+            }
             const bodyElementsFound = this.checkForBodyElements(
               invisiblePopup.contentDocument.body.children
             );
