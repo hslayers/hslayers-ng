@@ -311,7 +311,7 @@ export class HsLayoutService {
     const panelWidths = {
       default: 425,
       ows: 700,
-      composition_browser: 500,
+      composition_browser: 550,
       addData: 700,
     };
     const layoutWidth = this.layoutElement.clientWidth;

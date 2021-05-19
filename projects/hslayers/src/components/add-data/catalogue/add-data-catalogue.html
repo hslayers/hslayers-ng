@@ -15,16 +15,17 @@
     <div class="d-flex ml-4 mr-3 justify-content-between py-1 ">
         <div class="d-flex">
             <div class="input-group-text border-0 pl-0">
-                <input type="checkbox" [(ngModel)]="data.filterByExtent"  (change)="queryByFilter()"
+                <input type="checkbox" [(ngModel)]="data.filterByExtent" (change)="queryByFilter()"
                     name="filterByExtent">
                 <span class="ml-1">{{'COMPOSITIONS.filterByMap' | translate}}</span>
             </div>
-            <div class="input-group-text border-0" *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
+            <div class="input-group-text border-0"
+                *ngIf="hsLaymanService.getLaymanEndpoint() && !hsLaymanService.isLaymanGuest()">
                 <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()" name="onlyMine">
                 <span class="ml-1">{{'COMPOSITIONS.onlyMine' | translate}}</span>
             </div>
         </div>
-        
+
         <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block">
             <button class="btn btn-light hs-white-background hs-custom-toggle" (click)="openOptionsMenu()"
                 ngbDropdownToggle>{{translateString('COMMON',optionsButtonLabel)}}</button>
@@ -36,7 +37,8 @@
                             <td class="tdbreak">
                                 {{'ADDDATA.CATALOGUE.filterType' | translate}}
                             </td>
-                            <td ngbDropdown display="dynamic" placement="bottom-right" #searchTypeDropdown="ngbDropdown">
+                            <td ngbDropdown display="dynamic" placement="bottom-right"
+                                #searchTypeDropdown="ngbDropdown">
                                 <button type="button" ngbDropdownToggle
                                     class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
@@ -46,10 +48,10 @@
                                 <ul ngbDropdownMenu aria-labelledby="searchType" class="pl-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let searchType of textFieldTypes; let index = index">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="searchType-index"
-                                                [checked]="(index === 0)"
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                                name="searchType-index" [checked]="(index === 0)"
                                                 (change)="selectType(searchType);searchTypeDropdown.close()">{{translateString('ADDDATA.CATALOGUE.searchFilterTypes',
-                                                searchType)}}</label>
+                                            searchType)}}</label>
                                     </li>
                                 </ul>
                             </td>
@@ -68,8 +70,8 @@
                                 <ul ngbDropdownMenu aria-labelledby="type" class="pl-2"
                                     style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let type of dataTypes; let index = index">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="type-index"
-                                                [checked]="(index === 1)"
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                                name="type-index" [checked]="(index === 1)"
                                                 (change)="selectQueryType(type, 'type');resourceType.close()">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
                                             type)}}</label>
                                     </li>
@@ -84,11 +86,13 @@
                                 <button type="button" ngbDropdownToggle
                                     class="btn btn-light btn-sm hs-custom-toggle hs-background-alfa p-2 pl-1 border-0"
                                     style="text-align:start; min-width: 11rem; max-width: 11rem; border-radius: 0px; justify-content: space-between; display:flex; align-items: center;">
-                                    {{translateString('ADDDATA.CATALOGUE.sortbyTypes',  data.query.sortby)}}
+                                    {{translateString('ADDDATA.CATALOGUE.sortbyTypes', data.query.sortby)}}
                                 </button>
-                                <ul ngbDropdownMenu aria-labelledby="sortBy" class="pl-2" style="overflow-y: auto; max-height: 10rem; min-width:10rem">
+                                <ul ngbDropdownMenu aria-labelledby="sortBy" class="pl-2"
+                                    style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                     <li *ngFor="let sortType of sortbyTypes, let index = index;">
-                                        <label style="cursor: pointer;"><input class="mr-2" type="radio" name="sort-index" [checked]="(index === 0)"
+                                        <label style="cursor: pointer;"><input class="mr-2" type="radio"
+                                                name="sort-index" [checked]="(index === 0)"
                                                 (change)="selectQueryType(sortType, 'sortby');sortByDrop.close()">{{translateString('ADDDATA.CATALOGUE.sortbyTypes',
                                             sortType)}}</label>
                                     </li>
@@ -101,7 +105,7 @@
         </div>
     </div>
     <div class="tab-content">
-        <div class="card">
+        <div class="card d-flex" style="font-size: 1rem !important;">
             <div class="card-body">
                 <!-- <div *ngIf="endpoint.type == 'micka'">
                         <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
@@ -116,8 +120,7 @@
                         {{'DATASOURCE_SELECTOR.noResults' | translate}}</li>
                     <li [hidden]="hsAddDataCatalogueService.layersLoading" style="cursor: pointer;"
                         *ngFor='let layer of hsAddDataCatalogueService.catalogEntries' class="clearfix list-group-item"
-                        [ngClass]="{'hs-endpoint-item-active': layer.highlighted}"
-                        (click)="layerSelected(layer)"
+                        [ngClass]="{'hs-endpoint-item-active': layer.highlighted}" (click)="layerSelected(layer)"
                         (mouseover)="highlightLayer(layer, true)" (mouseleave)="highlightLayer(layer, false)">
                         <hs-add-data-list-item [layer]="layer"></hs-add-data-list-item>
                     </li>
@@ -128,8 +131,7 @@
                 *ngIf="hsAddDataCatalogueService.matchedLayers != 0 && !hsAddDataCatalogueService.layersLoading">
                 <ul class="pagination d-flex justify-content-center">
                     <li class="page-item" [ngClass]="{'disabled': hsAddDataCatalogueService.listStart == 0 }">
-                        <a class="page-link" (click)="getPreviousRecords()"><span
-                                aria-hidden="true">&laquo;</span></a>
+                        <a class="page-link" (click)="getPreviousRecords()"><span aria-hidden="true">&laquo;</span></a>
                     </li>
                     <li class="page-item"
                         *ngIf="resultsVisible() && hsAddDataCatalogueService.listNext != hsAddDataCatalogueService.matchedLayers">
@@ -146,8 +148,7 @@
                             {{hsAddDataCatalogueService.matchedLayers}}</span>
                     </li>
                     <li class="page-item" [ngClass]="{'disabled': !nextPageAvailable() }">
-                        <a class="page-link" (click)="getNextRecords()"><span
-                                aria-hidden="true">&raquo;</span></a>
+                        <a class="page-link" (click)="getNextRecords()"><span aria-hidden="true">&raquo;</span></a>
                     </li>
                 </ul>
             </div>
