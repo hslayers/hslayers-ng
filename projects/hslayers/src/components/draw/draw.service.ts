@@ -133,12 +133,19 @@ export class HsDrawService {
       this.modify.setActive(true);
     });
 
+    this.selectedFeatures.on('remove', (e) => {
+      if (this.selectedFeatures.length == 0) {
+        this.modify.setActive(false);
+      }
+    });
+
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       this.selectedFeatures.push(event.feature);
     });
 
-    this.HsEventBusService.vectorQueryFeatureDeselection.subscribe((event) => {
-      this.selectedFeatures.remove(event.feature);
+    this.HsEventBusService.vectorQueryFeatureDeselection.subscribe(
+      ({feature, selector}) => {
+        this.selectedFeatures.remove(feature);
     });
 
     this.HsEventBusService.mainPanelChanges.subscribe((event) => {

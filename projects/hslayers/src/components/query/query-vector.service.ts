@@ -82,7 +82,10 @@ export class HsQueryVectorService {
     });
 
     this.selector.getFeatures().on('remove', (e) => {
-      this.HsEventBusService.vectorQueryFeatureDeselection.next(e.element);
+      this.HsEventBusService.vectorQueryFeatureDeselection.next({
+        feature: e.element,
+        selector: this.selector,
+      });
     });
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
@@ -227,6 +230,7 @@ export class HsQueryVectorService {
     if (this.HsUtilsService.instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
+    this.selector.getFeatures().remove(feature);
     this.featureRemovals.next(feature);
   }
 
