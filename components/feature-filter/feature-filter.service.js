@@ -185,7 +185,12 @@ export default function (
 
         source.forEachFeature((feature) => {
           if (!displayFeature(feature)) {
-            feature.setStyle(new Style({}));
+            if (layer.hiddenStyle){
+              feature.setStyle(layer.hiddenStyle);
+            }
+            else{
+              feature.setStyle(new Style({}));
+            }
           }
         });
       }
