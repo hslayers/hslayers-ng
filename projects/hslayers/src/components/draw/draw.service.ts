@@ -159,6 +159,12 @@ export class HsDrawService {
       this.isAuthorized =
         endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
     });
+
+    this.HsEventBusService.LayerManagerLayerVisibilityChanges.subscribe((event) => {
+      if (this.draw && event.layer.ol_uid == this.selectedLayer.ol_uid){
+        this.setType(this.type);
+      }
+    })
   }
   /**
    * initial function if the draw panel is loaded as first panel
