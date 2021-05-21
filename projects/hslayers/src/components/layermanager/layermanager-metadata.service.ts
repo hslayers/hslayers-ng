@@ -7,6 +7,7 @@ import {
   MetadataUrl,
   getAttribution,
   getCachedCapabilities,
+  getLegends,
   getMaxResolutionDenominator,
   getMetadata,
   getSubLayers,
@@ -211,7 +212,8 @@ export class HsLayerManagerMetadataService {
       setCacheCapabilities(olLayer, layerObj);
     }
     this.parseAttribution(olLayer, getCachedCapabilities(olLayer));
-    if (legends.length > 0) {
+    const existingLegends = getLegends(olLayer);
+    if (legends.length > 0 && existingLegends == undefined) {
       setLegends(olLayer, legends);
     }
   }
