@@ -398,18 +398,9 @@ export class HsAddDataUrlWmsService {
       }
     }
 
-    const legends = [];
-    if (layer.Style && layer.Style[0].LegendURL) {
-      const legend = layer.Style[0].LegendURL[0].OnlineResource;
-      legends.push(legend);
-    }
-
+    let legends = undefined;
     let styles = undefined;
-    if (layer.styleSelected) {
-      styles = layer.styleSelected;
-    } else {
-      styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : '';
-    }
+    ({styles, legends} = this.getLayerStyles(layer));
     const source = new source_class({
       url: this.data.getMapUrl,
       attributions,
@@ -447,6 +438,26 @@ export class HsAddDataUrlWmsService {
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
     this.HsAddDataService.addLayer(new_layer, this.data.addUnder);
+  }
+
+  private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
+    const legends = [];
+    let styles = undefined;
+    if (layer.styleSelected) {
+      styles = layer.styleSelected.Name;
+      if (layer.styleSelected.LegendURL?.length > 0) {
+        legends.push(layer.styleSelected.LegendURL[0].OnlineResource);
+      }
+    } else if (layer.Style && layer.Style.length > 0) {
+      const firstStyle = layer.Style[0];
+      styles = firstStyle.Name;
+      if (firstStyle.LegendURL) {
+        legends.push(firstStyle.LegendURL[0].OnlineResource);
+      }
+    } else {
+      styles = '';
+    }
+    return {styles, legends};
   }
 
   /**
