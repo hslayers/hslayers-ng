@@ -125,7 +125,7 @@
                                 <label class="control-label">{{'COMMON.style' | translate}}:</label>
                                 <select class="form-control form-control-sm" [(ngModel)]="service.styleSelected"
                                     [ngModelOptions]="{standalone: true}">
-                                    <option *ngFor="let style of service.Style">{{style.Name}}</option>
+                                    <option *ngFor="let style of service.Style" [ngValue]="style">{{style.Name}}</option>
                                 </select>
                             </div>
                         </div>
