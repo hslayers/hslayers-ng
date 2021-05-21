@@ -528,7 +528,7 @@ export class HsLayerManagerService {
    * @param visibility - Visibility layer should have
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeLayerVisibility(visibility: boolean, layer: Layer): void {
+  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
@@ -547,6 +547,9 @@ export class HsLayerManagerService {
           other_layer.visible = false;
         }
       }
+    }
+    if(!visibility && this.HsUtilsService.instOf(layer.layer, VectorLayer)){
+      this.HsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
     }
   }
 
