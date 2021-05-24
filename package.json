@@ -77,7 +77,7 @@
     "@typescript-eslint/parser": "4.24.0",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.6.0",
+    "eslint": "^7.27.0",
     "eslint-config-openlayers": "14.0.0",
     "eslint-plugin-import": "2.23.2",
     "eslint-plugin-jsdoc": "34.8.2",
