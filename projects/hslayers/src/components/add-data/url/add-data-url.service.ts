@@ -41,10 +41,11 @@ export class HsAddDataUrlService {
    * @param services Layer group of a service to select a layer from
    * @param layerToSelect Layer to be selected (checked = true)
    * @param selector Layer selector. Differs in between different services
+   * TODO: refactor: needs to be recursive (WMS can have more then 2 sub-layers)
    */
   selectLayerByName(
     layerToSelect: string,
-    services: any,
+    services: any[],
     selector: 'Title' | 'Name'
   ): void {
     if (!layerToSelect) {
