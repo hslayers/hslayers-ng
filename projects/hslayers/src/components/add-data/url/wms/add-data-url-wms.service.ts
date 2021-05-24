@@ -170,10 +170,13 @@ export class HsAddDataUrlWmsService {
 
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
-      this.data.extent =
-        this.data.services[0].EX_GeographicBoundingBox ||
-        this.data.services[0].BoundingBox;
-
+      if (layerToSelect) {
+        const serviceLayer = this.data.services.filter(
+          (el) => el.Name == layerToSelect
+        )[0];
+        this.data.extent =
+          serviceLayer.EX_GeographicBoundingBox ?? serviceLayer.BoundingBox;
+      }
       this.HsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
