@@ -218,7 +218,7 @@ export class HsAddDataUrlWmsService {
     if (!Array.isArray(serviceLayers)) {
       return this.getLayerBBox(serviceLayers);
     }
-    const r = serviceLayers
+    return serviceLayers
       .map((lyr) => this.getLayerBBox(lyr))
       .reduce((acc, curr) => {
         //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
@@ -241,8 +241,6 @@ export class HsAddDataUrlWmsService {
         }
         return acc;
       });
-    console.log(r);
-    return r;
   }
 
   getLayerBBox(serviceLayer: any): any {
