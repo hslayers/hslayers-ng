@@ -117,9 +117,11 @@ export class HsAddDataUrlWmsService {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
-      doc.querySelectorAll('Capability>Layer>CRS').forEach((srs) => {
+      doc.querySelectorAll('Capability>Layer CRS').forEach((srs) => {
         this.data.srss.push(srs.innerHTML);
       });
+      //filter out duplicate records
+      this.data.srss = [...new Set(this.data.srss)];
     }
   }
 
