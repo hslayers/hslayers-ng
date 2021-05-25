@@ -22,7 +22,6 @@ import {
   HsLayerLoadProgress,
 } from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
@@ -128,7 +127,6 @@ export class HsLayerManagerService {
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
     public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    public HsLayerEditorStylesService: HsLayerEditorStylesService,
     public HsLayerManagerMetadata: HsLayerManagerMetadataService,
     public HsLayermanagerWmstService: HsLayerManagerWmstService,
     public HsLayerSelectorService: HsLayerSelectorService,
@@ -1076,9 +1074,6 @@ export class HsLayerManagerService {
   expandSettings(layer: Layer, value): void {
     if (layer.opacity == undefined) {
       layer.opacity = layer.layer.getOpacity();
-    }
-    if (layer.style == undefined && layer.layer.getSource().styleAble) {
-      this.HsLayerEditorStylesService.getLayerStyle(layer);
     }
     layer.expandSettings = value;
   }
