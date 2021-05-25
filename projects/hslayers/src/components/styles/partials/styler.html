@@ -1,6 +1,6 @@
 <div class="card hs-main-panel">
     <div class="card-header"><span class="panel-title">
-            {{'LAYERMANAGER.layerEditor.styleLayer'   | translate}} {{layerTitle}}
+            {{'LAYERMANAGER.layerEditor.styleLayer'   | translate}} {{HsStylerService.layerTitle}}
         </span>
         <button type="button" class="close" (click)="layermanager()">
             <span aria-hidden="true">×</span>
@@ -8,131 +8,6 @@
         </button>
     </div>
     <div class="card-body">
-        <div class="btn-group btn-group-toggle m-1">
-            <label class="btn btn-outline-dark disabled">
-            {{'STYLER.level' | translate}}:
-            </label>
-            <label class="btn btn-secondary" [ngClass]="{'active': level == 'layer'}" for="hs-styler-layer">
-              {{'STYLER.layer' | translate}}
-              <input type="radio" name="level" id="hs-styler-layer" value="layer" [(ngModel)]="level">
-            </label>
-            <label class="btn btn-secondary" *ngIf="hasFeatures" [ngClass]="{'active': level == 'feature'}"  for="hs-styler-features">
-              {{'STYLER.features' | translate}}
-              <input type="radio" name="level" id="hs-styler-features" value="feature" [(ngModel)]="level">
-            </label>
-            <label class="btn btn-secondary" *ngIf="isClustered" [ngClass]="{'active': level == 'cluster'}"  for="hs-styler-cluster">
-                Cluster
-                <input type="radio" name="level" id="hs-styler-cluster" value="cluster" [(ngModel)]="level">
-              </label>
-           <!--
-<label class="btn btn-secondary" [ngClass]="{'active': level == 'selection'}"  for="hs-styler-selection">
-                {{'STYLER.selection' | translate}}
-                <input type="radio" name="level" id="hs-styler-selection" value="selection" [(ngModel)]="level">
-            </label>
-           --> 
-        </div>
-        <form class="form-inline">
-            <div class="card panel-info">
-                <div class="card-header">
-                    <h3 class="panel-title">{{'COMMON.fill' | translate}}</h3>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="hs-styler-fillcolor" class="control-label">{{'COMMON.color' | translate}}</label>
-                        <div class="hs-styler-selected-color-box" [ngStyle]="fillcolor"></div>
-                        <hs-styler-color-component (click)="debounceSave()" [(color)]="fillcolor"></hs-styler-color-component>
-                    </div>
-                </div>
-            </div>
 
-            <div class="card panel-info">
-                <div class="card-header">
-                    <h3 class="panel-title">{{'COMMON.line' | translate}}</h3>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="hs-styler-linecolor" class="control-label">{{'COMMON.lineColor' | translate}}</label>
-                        <div class="hs-styler-selected-color-box" [ngStyle]="linecolor"></div>
-                        <hs-styler-color-component (click)="debounceSave()" [(color)]="linecolor"></hs-styler-color-component>
-                    </div>
-
-                    <div class="d-flex flex-row" *ngIf="level != 'cluster'">
-                        <div class="flex-grow-1 p-1">
-                            {{'COMMON.lineWidth' | translate}}
-                        </div>
-                        <div class="p-1">
-                            <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;"
-                            [(ngModel)]="linewidth" (ngModelChange)='debounceSave()' [ngModelOptions]="{standalone: true}" />
-                        </div>
-                        <div class="p-1">
-                            <div style="width: 2em">{{linewidth}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card panel-info">
-                <div class="card-header">
-                    <h3 class="panel-title">{{'COMMON.point' | translate}}</h3>
-                </div>
-                <div class="card-body">
-
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-secondary" *ngFor="let m of imagetypes" (click)='setImageType(m.name)' [hidden]="level == 'cluster'">
-                            <input type="radio" class="form-control" [value]="m.name" 
-                                name="imagetype" [attr.checked]="m.name == imagetype ? '' : null" />{{m.hrname}}
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="hs-styler-iconfillcolor" class="control-label">{{'COMMON.color' | translate}}</label>
-                        <div class="hs-styler-selected-color-box" [ngStyle]="iconfillcolor"></div>
-                        <hs-styler-color-component  (click)="colorIcon(); debounceSave()" [(color)]="iconfillcolor"></hs-styler-color-component>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="hs-styler-linecolor" class="control-label">{{'COMMON.lineColor' | translate}}</label>
-                        <div class="hs-styler-selected-color-box" [ngStyle]="iconlinecolor"></div>
-                        <hs-styler-color-component (click)="colorIcon(); debounceSave()" [(color)]="iconlinecolor"></hs-styler-color-component>
-                    </div>
-
-                    <div class="d-flex flex-row" *ngIf="imagetype == 'circle' && level != 'cluster'">
-                        <div class="flex-grow-1 p-1">
-                            {{'COMMON.radius' | translate}}
-                        </div>
-                        <div class="p-1">
-                            <input type="range" step="0.5" min="0" max="40" class="form-control" style="height: 21px;"
-                            [(ngModel)]="radius" (ngModelChange)='debounceSave()' [ngModelOptions]="{standalone: true}" />
-                        </div>
-                        <div class="p-1">
-                            <div style="width: 2em">{{radius}}</div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-row">
-                        <div class="flex-grow-1 p-1">
-                            {{'COMMON.lineWidth' | translate}}
-                        </div>
-                        <div class="p-1">
-                            <input type="range" step="0.5" min="0" max="10" class="form-control" style="height: 21px;"
-                            [(ngModel)]="iconlinewidth" (ngModelChange)='colorIcon(); debounceSave()' [ngModelOptions]="{standalone: true}"/>
-                        </div>
-                        <div class="p-1">
-                            <div style="width: 2em">{{iconlinewidth}}</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group" [hidden]="imagetype !='icon' || level == 'cluster'">
-                        <label for="hs-styler-icon" class="control-label">{{'COMMON.icon' | translate}}</label>
-                        <div class="hs-styler-selected-icon-box" [innerHtml]="iconimage"></div>
-                        <div>
-                            <div *ngFor="let icon of icons" class="hs-styler-iconbox" (click)="iconSelected(icon)">
-                                <img [src]='icon'/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
