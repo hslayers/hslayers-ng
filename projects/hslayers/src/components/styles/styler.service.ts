@@ -1,16 +1,29 @@
-import Feature from 'ol/Feature';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+
+import BaseLayer from 'ol/layer/Base';
+import Feature from 'ol/Feature';
+import OpenLayersParser from 'geostyler-openlayers-parser';
+import SLDParser from 'geostyler-sld-parser';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
+import {Style as GeoStylerStyle} from 'geostyler-style';
 import {createDefaultStyle} from 'ol/style/Style';
 
+import {HsEventBusService} from '../core/event-bus.service';
+import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getFeatures, getHighlighted} from '../../common/feature-extensions';
-import {getHsOriginalStyle} from '../../common/layer-extensions';
+import {
+  getHsOriginalStyle,
+  getSld,
+  getTitle,
+} from '../../common/layer-extensions';
+import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
   providedIn: 'root',
@@ -66,11 +79,28 @@ export class HsStylerService {
       color: '#3399CC',
     }),
   });
+  layerTitle: string;
+  styleObject: GeoStylerStyle;
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
     public HsUtilsService: HsUtilsService,
-    public sanitizer: DomSanitizer
-  ) {}
+    private HsEventBusService: HsEventBusService,
+    public sanitizer: DomSanitizer,
+    private HsMapService: HsMapService
+  ) {
+    this.HsMapService.loaded().then(() => this.init());
+  }
+
+  async init() {
+    for (const layer of this.HsMapService.getLayersArray()) {
+      this.initLayerStyle(layer);
+    }
+    this.HsEventBusService.layerAdditions.subscribe(
+      (layerDescriptor: HsLayerDescriptor) => {
+        this.initLayerStyle(layerDescriptor.layer);
+      }
+    );
+  }
 
   pin_white_blue_highlight = (feature: Feature, resolution): Array<Style> => {
     return [
@@ -238,13 +268,84 @@ export class HsStylerService {
   }
 
   /**
-   * @param j Style definition object
-   * @returns {ol.style.Style} Valid Ol style object
-   * @description Parse style definition object to create valid Style
+   * Parse style from 'sld' attribute defined in SLD format and convert to OL
+   * style which is set on the layer. Also do the opposite if no SLD is defined,
+   * because SLD is used in the styler panel.
+   *
+   * @param layer - OL layer to fill the missing style info
    */
-  parseStyle(sld: string) {
-    
+  async initLayerStyle(layer: BaseLayer): Promise<void> {
+    if (!this.isVectorLayer(layer)) {
+      return;
+    }
+    const sld = getSld(layer);
+    let style = layer.getStyle();
+    if (sld && (!style || style == createDefaultStyle)) {
+      style = await this.parseStyle(sld);
+      if (style) {
+        layer.setStyle(style);
+      }
+    } else if (style && !sld) {
+      //TODO
+    }
   }
+
+  /**
+   * Parse style encoded as custom JSON or SLD and return OL style object.
+   * This function is used to support backwards compatibility with custom format.
+   * @param style
+   * @returns OL style object
+   */
+  async parseStyle(style: any): Promise<Style> {
+    if (typeof style == 'string') {
+      return await this.sldToOlStyle(style);
+    } else if (typeof style == 'object') {
+      //Backwards compatibility with style encoded in custom JSON object
+      return parseStyle(style);
+    }
+  }
+
+  /**
+   * Prepare current layers style for editing by converting
+   * SLD attribute string to JSON and reading layers title
+   *
+   * @param layer - OL layer
+   */
+  async fill(layer: BaseLayer): Promise<void> {
+    try {
+      this.layerTitle = getTitle(layer);
+      const sld = getSld(layer);
+      this.styleObject = await this.sldToJson(sld);
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  /**
+   * Convert SLD to OL style object
+   */
+  async sldToOlStyle(sld: string): Promise<Style> {
+    try {
+      const sldObject = await this.sldToJson(sld);
+      const olConverter = new OpenLayersParser();
+      const style = await olConverter.writeStyle(sldObject);
+      return style;
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  /**
+   * Convert SLD text to JSON which is easier to edit in Angular.
+   * @param sld
+   * @returns
+   */
+  private async sldToJson(sld: string): Promise<GeoStylerStyle> {
+    const parser = new SLDParser();
+    const sldObject = await parser.readStyle(sld);
+    return sldObject;
+  }
+
   encodeTob64(str: string): string {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
@@ -252,6 +353,7 @@ export class HsStylerService {
       })
     );
   }
+
   decodeToUnicode(str: string): string {
     return decodeURIComponent(
       Array.prototype.map

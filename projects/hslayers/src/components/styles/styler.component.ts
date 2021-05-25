@@ -7,7 +7,6 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {HsStylerColorService} from './styler-color.service';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 
@@ -27,7 +26,6 @@ export class HsStylerComponent implements OnDestroy {
     public sanitizer: DomSanitizer,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsUtilsService: HsUtilsService,
-    public HsStylerColorService: HsStylerColorService,
     public HsSaveMapService: HsSaveMapService
   ) {
     this.HsEventBusService.layerSelectedFromUrl
@@ -41,7 +39,7 @@ export class HsStylerComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((e) => {
         if (e == 'styler') {
-          this.resolveLayerStyle();
+          this.HsStylerService.fill(this.HsStylerService.layer);
         }
       });
   }
