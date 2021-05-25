@@ -170,12 +170,14 @@ export class HsAddDataUrlWmsService {
 
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
+      //TODO: shalln't we move this logic after the layer is added to map?
       if (layerToSelect) {
         const serviceLayer = this.data.services.filter(
           (el) => el.Name == layerToSelect
         )[0];
-        this.data.extent =
-          serviceLayer.EX_GeographicBoundingBox ?? serviceLayer.BoundingBox;
+        this.data.extent = this.getLayerBBox(serviceLayer);
+      } else {
+        this.data.extent = this.calcAllLayersExtent(this.data.services);
       }
       this.HsAddDataUrlService.selectLayerByName(
         layerToSelect,
@@ -207,6 +209,44 @@ export class HsAddDataUrlWmsService {
     } catch (e) {
       throw new Error(e);
     }
+  }
+
+  /**
+   * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
+   */
+  calcAllLayersExtent(serviceLayers: any): any {
+    if (!Array.isArray(serviceLayers)) {
+      return this.getLayerBBox(serviceLayers);
+    }
+    const r = serviceLayers
+      .map((lyr) => this.getLayerBBox(lyr))
+      .reduce((acc, curr) => {
+        //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
+        const [west, south, east, north] = curr;
+        //minimum easting
+        if (-180 <= west < acc[0]) {
+          acc[0] = west;
+        }
+        //minimum northing
+        if (-90 <= south < acc[1]) {
+          acc[1] = south;
+        }
+        //maximum easting
+        if (180 >= east > acc[2]) {
+          acc[2] = east;
+        }
+        //maximum northing
+        if (90 >= north > acc[3]) {
+          acc[3] = north;
+        }
+        return acc;
+      });
+    console.log(r);
+    return r;
+  }
+
+  getLayerBBox(serviceLayer: any): any {
+    return serviceLayer.EX_GeographicBoundingBox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
   }
 
   //TODO: what is the reason to do such things?
