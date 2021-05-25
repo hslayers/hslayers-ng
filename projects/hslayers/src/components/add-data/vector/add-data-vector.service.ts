@@ -235,10 +235,10 @@ export class HsAddDataVectorService {
   }
   async readUploadedFile(file: any): Promise<any> {
     let uploadedData: any = {};
-    if (file.name.endsWith('kml')) {
+    if (file.name.toLowerCase().endsWith('kml')) {
       uploadedData = await this.createVectorObjectFromXml(file, 'kml');
       return uploadedData;
-    } else if (file.name.endsWith('gpx')) {
+    } else if (file.name.toLowerCase().endsWith('gpx')) {
       uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
       return uploadedData;
     } else {
