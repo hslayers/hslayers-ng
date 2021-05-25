@@ -43,6 +43,7 @@ const QUERY_CAPABILITIES = 'queryCapabilities';
 const QUERY_FILTER = 'queryFilter';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
+const HS_SLD = 'sld';
 const THUMBNAIL = 'thumbnail';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
@@ -335,6 +336,10 @@ export function setHsOriginalStyle(layer: Layer, hsOriginalStyle: Style): void {
 
 export function getHsOriginalStyle(layer: Layer): Style {
   return layer.get(HS_ORIGINAL_STYLE);
+}
+
+export function getSld(layer: Layer): string {
+  return layer.get(HS_SLD);
 }
 
 export function setHsLaymanSynchronizing(
