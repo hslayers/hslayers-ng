@@ -87,7 +87,7 @@ describe('compositions', () => {
         HsCompositionsMapService,
         {
           provide: HsSaveMapService,
-          useValue: HsSaveMapServiceMock,
+          useValue: new HsSaveMapServiceMock(),
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
