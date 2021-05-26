@@ -1,5 +1,4 @@
 /* eslint-disable prefer-arrow-callback */
-'use strict';
 import {BehaviorSubject} from 'rxjs';
 import {
   BrowserDynamicTestingModule,
