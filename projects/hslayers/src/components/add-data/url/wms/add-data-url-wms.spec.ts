@@ -104,38 +104,19 @@ describe('add-data-url', () => {
     expect(component).toBeTruthy();
   });
 
-
-  it('should parse capabilities 1', function (done) {
-    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[0]).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
-        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
-        done();
-      })
-      .catch(e => {
-        done.fail(e);
+  serviceEndpoints.wms.forEach((url,index)=>{
+    (function (url, index) {
+      it(`should parse capabilities ${index}`, function (done) {
+        hsWmsGetCapabilitiesService.requestGetCapabilities(url).then((capabilities) => {
+          component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
+            expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
+            done();
+          })
+          .catch(e => {
+            done.fail(e);
+          });
+        });
       });
-    });
-  });
-  it('should parse capabilities 2', function (done) {
-    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[1]).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
-        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
-        done();
-      })
-      .catch(e => {
-        done.fail(e);
-      });
-    });
-  });
-  it('should parse capabilities 3', function (done) {
-    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[2]).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
-        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
-        done();
-      })
-      .catch(e => {
-        done.fail(e);
-      });
-    });
-  });
+    })(url,index);
+  })
 });
