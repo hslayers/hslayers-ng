@@ -699,7 +699,8 @@
     "andFilter": "AND",
     "orFilter": "OR",
     "notFilter": "NOT",
-    "comparisonFilter": "COMPARE"
+    "comparisonFilter": "COMPARE",
+    "name": "Name"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
