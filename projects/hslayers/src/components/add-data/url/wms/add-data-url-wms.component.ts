@@ -25,7 +25,7 @@ export class HsAddDataWmsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
   checkedLayers = {};
   hasChecked = false;
-
+  selectAll = true;
   constructor(
     public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
@@ -94,15 +94,19 @@ export class HsAddDataWmsComponent implements OnDestroy {
    * @param layers
    */
   selectAllLayers(layers: any[]): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       this.searchForChecked(layer);
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
   }
-
   addLayers(checked: boolean): void {
     this.HsAddDataUrlWmsService.addLayers(checked);
   }
