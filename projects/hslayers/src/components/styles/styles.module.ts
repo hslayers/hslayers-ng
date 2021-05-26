@@ -12,6 +12,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsColorPickerComponent} from './symbolizers/color-picker.component';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
+import {HsFilterComponent} from './filter.component';
+import {HsFiltersComponent} from './filters.component';
+import {HsFiltersService} from './filters.service';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -34,6 +37,8 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsTextSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
+    HsFiltersComponent,
+    HsFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -53,8 +58,10 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsTextSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
+    HsFiltersComponent,
+    HsFilterComponent,
   ],
-  providers: [HsStylerService],
+  providers: [HsStylerService, HsFiltersService],
   entryComponents: [
     HsStylerComponent,
     HsRuleComponent,
@@ -65,6 +72,8 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsTextSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
+    HsFiltersComponent,
+    HsFilterComponent,
   ],
 })
 export class HsStylerModule {}

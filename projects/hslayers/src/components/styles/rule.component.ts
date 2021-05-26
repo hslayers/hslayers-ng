@@ -9,6 +9,8 @@ export class HsRuleComponent {
   @Input() rule;
   @Output() changes = new EventEmitter<void>();
 
+  filtersVisible = false;
+
   addSymbolizer(kind: SymbolizerKind): void {
     const symbolizer = {kind};
     if (kind == 'Text') {
