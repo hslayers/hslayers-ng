@@ -84,10 +84,12 @@ export class HsLayerSynchronizerService {
     const definition = getDefinition(layer);
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      definition?.format?.toLowerCase().includes('wfs')
+      //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
+      new RegExp('^(?=.*wfs)(?:(?!external).)*$','i').test(definition?.format?.toLowerCase())
     );
   }
 
+  
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initialy also get features from server

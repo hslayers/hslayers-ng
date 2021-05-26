@@ -22,18 +22,23 @@ import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {setDefinition} from '../../../common/layer-extensions';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsCompositionsLayerParserService {
+  currentUser;
+
   constructor(
     public HsMapService: HsMapService,
     public HsAddDataVectorService: HsAddDataVectorService,
     public HsStylerService: HsStylerService,
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsLanguageService: HsLanguageService,
-    public HsToastService: HsToastService
+    public HsToastService: HsToastService,
+    public HsEventBusService: HsEventBusService
   ) {}
 
   /**
@@ -372,6 +377,8 @@ export class HsCompositionsLayerParserService {
       fromComposition: true,
       path: lyr_def.path,
       visible: lyr_def.visibility,
+      // Extract workspace name for partial backwards compatibility
+      workspace: lyr_def.workspace || lyr_def.protocol.url.split('geoserver/')[1].replace('_wms/ows','')
     };
     let extractStyles = true;
     if (lyr_def.style) {
@@ -408,6 +415,7 @@ export class HsCompositionsLayerParserService {
         layer = this.HsAddDataVectorService.createVectorLayer(
           'wfs',
           lyr_def.protocol.url,
+          //lyr_def.protocol.LAYERS
           lyr_def.name || title,
           title,
           lyr_def.abstract,
@@ -415,6 +423,15 @@ export class HsCompositionsLayerParserService {
           options
         );
         break;
+      case 'hs.format.externalWFS':
+          // setTimeout(() => {
+          //   this.HsEventBusService.owsFilling.next({
+          //     type: 'wfs',
+          //     uri: lyr_def.protocol.url,
+          //     layer: lyr_def.name,
+          //   });
+          // });
+          break;
       case 'hs.format.Sparql':
         layer = this.createSparqlLayer(lyr_def);
         break;

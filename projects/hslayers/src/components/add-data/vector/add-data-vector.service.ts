@@ -92,7 +92,7 @@ export class HsAddDataVectorService {
         if (url !== undefined) {
           setDefinition(lyr, {
             format: 'hs.format.WFS',
-            url: url.replace('ows', 'wfs'),
+            url: url,
           });
         } else {
           setDefinition(lyr, {

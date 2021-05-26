@@ -423,7 +423,7 @@ export class HsAddDataCatalogueService {
         if (whatToAdd.editable) {
           const layer = await this.hsAddDataVectorService.addVectorLayer(
             'wfs',
-            whatToAdd.link,
+            whatToAdd.link.replace('_wms/ows', '/wfs'),
             whatToAdd.name,
             whatToAdd.title,
             whatToAdd.abstract,
