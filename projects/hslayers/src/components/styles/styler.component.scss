@@ -1,0 +1,13 @@
+/************/
+/** STYLER **/
+/************/
+ngb-accordion > .card > {
+    .collapse > .card-body {
+        min-height: 14em;
+        padding: 0.3em;
+    }
+
+    .card-header {
+        padding: 0.1em;
+    }
+}

@@ -1,0 +1,91 @@
+<form class="form">
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.symbol' | translate}}:</div>
+    <div class="p-1 w-75">
+      <select
+        class="form-control"
+        [(ngModel)]="symbolizer.wellKnownName"
+        (change)="emitChange()"
+        [ngModelOptions]="{standalone: true}"
+      >
+        <option *ngFor="let wellKnownName of wellKnownNames">
+          {{wellKnownName}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <hs-symbolizer-color-picker
+    [symbolizer]="symbolizer"
+    attribute="color"
+    (changes)="emitChange()"
+    label="{{'STYLER.fillColor' | translate}}"
+  ></hs-symbolizer-color-picker>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="fillOpacity"
+    (changes)="emitChange()"
+    step="0.05"
+    min="0"
+    max="1"
+    label="{{'STYLER.fillOpacity' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="opacity"
+    (changes)="emitChange()"
+    step="0.05"
+    min="0"
+    max="1"
+    label="{{'STYLER.opacity' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="radius"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="100"
+    label="{{'STYLER.radius' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-color-picker
+    [symbolizer]="symbolizer"
+    attribute="strokeColor"
+    (changes)="emitChange()"
+    label="{{'STYLER.strokeColor' | translate}}"
+  ></hs-symbolizer-color-picker>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="strokeOpacity"
+    (changes)="emitChange()"
+    step="0.05"
+    min="0"
+    max="1"
+    label="{{'STYLER.strokeOpacity' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="strokeWidth"
+    (changes)="emitChange()"
+    step="0.1"
+    min="0"
+    max="20"
+    label="{{'STYLER.strokeWidth' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="rotate"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="360"
+    label="{{'STYLER.rotation' | translate}}"
+  ></hs-symbolizer-slider>
+</form>

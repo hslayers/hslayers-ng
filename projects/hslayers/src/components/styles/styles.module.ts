@@ -4,26 +4,67 @@ import {
   NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import {FormsModule} from '@angular/forms';
+import {ColorSketchModule} from 'ngx-color/sketch';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {HsColorPickerComponent} from './symbolizers/color-picker.component';
+import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
+import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer.component';
+import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component';
+import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsRuleComponent} from './rule.component';
+import {HsSliderComponent} from './symbolizers/slider.component';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
+import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  declarations: [HsStylerComponent],
+  declarations: [
+    HsStylerComponent,
+    HsRuleComponent,
+    HsSymbolizerComponent,
+    HsFillSymbolizerComponent,
+    HsMarkSymbolizerComponent,
+    HsIconSymbolizerComponent,
+    HsTextSymbolizerComponent,
+    HsColorPickerComponent,
+    HsSliderComponent,
+  ],
   imports: [
     CommonModule,
+    ColorSketchModule,
     HsPanelHelpersModule,
     FormsModule,
     NgbModule,
     TranslateModule,
   ],
-  exports: [HsStylerComponent],
+  exports: [
+    HsStylerComponent,
+    HsRuleComponent,
+    HsSymbolizerComponent,
+    HsFillSymbolizerComponent,
+    HsMarkSymbolizerComponent,
+    HsIconSymbolizerComponent,
+    HsTextSymbolizerComponent,
+    HsColorPickerComponent,
+    HsSliderComponent,
+  ],
   providers: [HsStylerService],
-  entryComponents: [HsStylerComponent],
+  entryComponents: [
+    HsStylerComponent,
+    HsRuleComponent,
+    HsSymbolizerComponent,
+    HsFillSymbolizerComponent,
+    HsMarkSymbolizerComponent,
+    HsIconSymbolizerComponent,
+    HsTextSymbolizerComponent,
+    HsColorPickerComponent,
+    HsSliderComponent,
+  ],
 })
 export class HsStylerModule {}
