@@ -694,7 +694,12 @@
     "fontWeight": "Font weight",
     "fontStyle": "Font style",
     "transform": "Transform",
-    "rules": "Rules"
+    "rules": "Rules",
+    "filtersAndScales": "Filters & scales",
+    "andFilter": "AND",
+    "orFilter": "OR",
+    "notFilter": "NOT",
+    "comparisonFilter": "COMPARE"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

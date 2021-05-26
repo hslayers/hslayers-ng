@@ -1,5 +1,22 @@
 <div>
   <div class="d-flex flex-row justify-content-end">
+    <div class="p-1 flex-grow-1">
+      {{'STYLER.filtersAndScales' | translate}}:
+    </div>
+    <div class="p-1">
+      <button
+        class="btn btn-outline-primary btn-sm"
+        (click)="filtersVisible = !filtersVisible"
+      >
+        <span class="icon-filter"></span>
+      </button>
+      <button class="btn btn-outline-primary btn-sm">
+        <span class="icon-design"></span>
+      </button>
+    </div>
+  </div>
+  <hs-filters (changes)="emitChange()" *ngIf="filtersVisible" [rule]="rule"></hs-filters>
+  <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translate}}:</div>
     <div class="p-1">
       <div ngbDropdown class="d-inline-block">

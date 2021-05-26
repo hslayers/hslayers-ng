@@ -25,6 +25,7 @@ export class HslayersAppComponent {
       features[i] = new Feature({
         geometry: new Point(coordinates),
         name: 'test',
+        population: Math.random() * 5000000,
       });
     }
     Object.assign(this.HsConfig, {
