@@ -18,7 +18,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   sourceHistory;
   layerToSelect: any;
   error: any;
-
+  selectAll = true;
   owsConnectingSubscription: Subscription;
   hasChecked: boolean;
 
@@ -69,12 +69,19 @@ export class HsAddDataArcGisComponent implements OnDestroy {
    * @description Select all layers from service.
    */
   selectAllLayers(layers: any[]): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
+    this.changed();
   }
 
   addLayers(checked: boolean): void {

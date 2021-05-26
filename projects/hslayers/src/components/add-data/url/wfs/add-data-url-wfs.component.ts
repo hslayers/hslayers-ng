@@ -13,7 +13,7 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabiliti
 })
 export class HsAddDataWfsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
-
+  selectAll = true;
   addAll: boolean;
   hasChecked: boolean;
   loadingFeatures: boolean;
@@ -76,15 +76,20 @@ export class HsAddDataWfsComponent implements OnDestroy {
    * @param layers
    */
   selectAllLayers(layers): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
     this.changed();
   }
-
   /**
    * @function addLayers
    * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
