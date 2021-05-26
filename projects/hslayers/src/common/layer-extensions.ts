@@ -342,6 +342,10 @@ export function getSld(layer: Layer): string {
   return layer.get(HS_SLD);
 }
 
+export function setSld(layer: Layer, sld: string): void {
+  layer.set(HS_SLD, sld);
+}
+
 export function setHsLaymanSynchronizing(
   layer: Layer,
   hsLaymanSynchronizing: boolean

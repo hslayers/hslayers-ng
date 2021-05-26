@@ -1,0 +1,77 @@
+<form class="form">
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.source' | translate}}:</div>
+    <div class="p-1 w-75">
+      <input
+        class="form-control"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.image"
+        (change)="emitChange()"
+      />
+    </div>
+  </div>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.anchor' | translate}}:</div>
+    <div class="p-1 w-75">
+      <select
+        class="form-control"
+        [(ngModel)]="symbolizer.anchor"
+        (change)="emitChange()"
+        [ngModelOptions]="{standalone: true}"
+      >
+        <option *ngFor="let anchor of anchors">
+          {{anchor}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.opacity' | translate}}:</div>
+    <div class="p-1 w-75">
+      <input
+        class="form-control"
+        type="range"
+        step="0.05"
+        min="0"
+        max="1"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.opacity"
+        (change)="emitChange()"
+      />
+    </div>
+  </div>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.size' | translate}}:</div>
+    <div class="p-1 w-75">
+      <input
+        class="form-control"
+        type="range"
+        step="0.2"
+        min="0.1"
+        max="10"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.size"
+        (change)="emitChange()"
+      />
+    </div>
+  </div>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.rotation' | translate}}:</div>
+    <div class="p-1 w-75">
+      <input
+        class="form-control"
+        type="range"
+        step="1"
+        min="0"
+        max="360"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.rotate"
+        (change)="emitChange()"
+      />
+    </div>
+  </div>
+</form>

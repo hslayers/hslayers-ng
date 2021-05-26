@@ -12,7 +12,7 @@ import {HsUtilsService} from '../utils/utils.service';
 
 @Component({
   selector: 'hs-styles',
-  templateUrl: './partials/styler.html',
+  templateUrl: './styler.html',
 })
 export class HsStylerComponent implements OnDestroy {
   layerTitle: string;

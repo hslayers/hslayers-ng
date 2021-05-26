@@ -1,0 +1,29 @@
+<div>
+  <div class="d-flex flex-row justify-content-end">
+    <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translate}}:</div>
+    <div class="p-1">
+      <div ngbDropdown class="d-inline-block">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          id="dropdownAddSymbolizer"
+          ngbDropdownToggle
+        >
+          <span class="icon-plus"></span>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownAddSymbolizer">
+          <button ngbDropdownItem (click)="addSymbolizer('Mark')">Mark</button>
+          <button ngbDropdownItem (click)="addSymbolizer('Icon')">Icon</button>
+          <button ngbDropdownItem (click)="addSymbolizer('Text')">Text</button>
+          <button ngbDropdownItem (click)="addSymbolizer('Line')">Line</button>
+          <button ngbDropdownItem (click)="addSymbolizer('Fill')">Fill</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hs-symbolizer
+    *ngFor="let symbolizer of rule.symbolizers"
+    [symbolizer]="symbolizer"
+    (changes)="emitChange()"
+    (remove)="removeSymbolizer(symbolizer)"
+  ></hs-symbolizer>
+</div>

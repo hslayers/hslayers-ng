@@ -22,6 +22,7 @@ import {
   getHsOriginalStyle,
   getSld,
   getTitle,
+  setSld,
 } from '../../common/layer-extensions';
 import {parseStyle} from './backwards-compatibility';
 
@@ -81,6 +82,8 @@ export class HsStylerService {
   });
   layerTitle: string;
   styleObject: GeoStylerStyle;
+  parser = new SLDParser();
+
   constructor(
     public HsQueryVectorService: HsQueryVectorService,
     public HsUtilsService: HsUtilsService,
@@ -313,9 +316,16 @@ export class HsStylerService {
    */
   async fill(layer: BaseLayer): Promise<void> {
     try {
+      if (!layer) {
+        return;
+      }
       this.layerTitle = getTitle(layer);
       const sld = getSld(layer);
-      this.styleObject = await this.sldToJson(sld);
+      if (sld != undefined) {
+        this.styleObject = await this.sldToJson(sld);
+      } else {
+        this.styleObject = {name: 'untitled style', rules: []};
+      }
     } catch (ex) {
       console.error(ex);
     }
@@ -327,12 +337,18 @@ export class HsStylerService {
   async sldToOlStyle(sld: string): Promise<Style> {
     try {
       const sldObject = await this.sldToJson(sld);
-      const olConverter = new OpenLayersParser();
-      const style = await olConverter.writeStyle(sldObject);
-      return style;
+      return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
       console.error(ex);
     }
+  }
+
+  public async geoStylerStyleToOlStyle(
+    sldObject: GeoStylerStyle
+  ): Promise<Style> {
+    const olConverter = new OpenLayersParser();
+    const style = await olConverter.writeStyle(sldObject);
+    return style;
   }
 
   /**
@@ -341,9 +357,21 @@ export class HsStylerService {
    * @returns
    */
   private async sldToJson(sld: string): Promise<GeoStylerStyle> {
-    const parser = new SLDParser();
-    const sldObject = await parser.readStyle(sld);
+    const sldObject = await this.parser.readStyle(sld);
     return sldObject;
+  }
+
+  private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
+    const sld = await this.parser.writeStyle(styleObject);
+    return sld;
+  }
+
+  addRule(kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale'): void {
+    switch (kind) {
+      case 'Simple':
+      default:
+        this.styleObject.rules.push({name: 'Untitled rule', symbolizers: []});
+    }
   }
 
   encodeTob64(str: string): string {
@@ -362,6 +390,17 @@ export class HsStylerService {
         })
         .join('')
     );
+  }
+
+  async save(): Promise<void> {
+    try {
+      const style = await this.geoStylerStyleToOlStyle(this.styleObject);
+      this.layer.setStyle(style);
+      const sld = await this.jsonToSld(this.styleObject);
+      setSld(this.layer, sld);
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 
   /**

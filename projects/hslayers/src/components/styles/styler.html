@@ -1,0 +1,52 @@
+<div class="card hs-main-panel">
+  <div class="card-header">
+    <span class="panel-title">
+      {{'LAYERMANAGER.layerEditor.styleLayer' | translate}}
+      {{HsStylerService.layerTitle}}
+    </span>
+    <button type="button" class="close" (click)="layermanager()">
+      <span aria-hidden="true">×</span>
+      <span class="sr-only">{{'COMMON.close' | translate}}</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <input
+      class="form-control"
+      *ngIf="HsStylerService.styleObject"
+      type="text"
+      placeholder="Style name"
+      [(ngModel)]="HsStylerService.styleObject.name"
+    />
+    <div class="d-flex flex-row justify-content-end">
+      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translate}}:</div>
+      <div class="p-1">
+        <div ngbDropdown class="d-inline-block">
+          <button
+            class="btn btn-outline-primary btn-sm"
+            id="dropdownAddRule"
+            ngbDropdownToggle
+          >
+            <span class="icon-plus"></span>
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
+            <button ngbDropdownItem (click)="HsStylerService.addRule('Simple')">Simple rule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ngb-accordion
+      #acc="ngbAccordion"
+      activeIds="ngb-panel-0"
+      *ngIf="HsStylerService.styleObject"
+    >
+      <ngb-panel *ngFor="let rule of HsStylerService.styleObject.rules">
+        <ng-template ngbPanelTitle>
+          <span>{{rule.name || 'untitled rule'}}</span>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <hs-rule [rule]="rule" (changes)="HsStylerService.save()"></hs-rule>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+</div>

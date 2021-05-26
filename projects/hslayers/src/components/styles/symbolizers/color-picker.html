@@ -1,0 +1,23 @@
+<div>
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{label}}</div>
+    <div class="p-1 w-75">
+      <input
+        class="form-control"
+        (click)="pickerVisible = !pickerVisible"
+        [ngStyle]="{'background-color': symbolizer[attribute]}"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer[attribute]"
+      />
+    </div>
+  </div>
+  <color-sketch
+    [color]="symbolizer[attribute]"
+    *ngIf="pickerVisible && symbolizer[attribute] != undefined"
+    (onChangeComplete)="onPick($event)"
+  ></color-sketch>
+  <color-sketch
+    *ngIf="pickerVisible && symbolizer[attribute] == undefined"
+    (onChangeComplete)="onPick($event)"
+  ></color-sketch>
+</div>
