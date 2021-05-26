@@ -390,7 +390,8 @@ export class HsAddDataWfsService {
     if (!this.addAll || layer.checked) {
       this.addLayer(
         layer,
-        layer.Title.replace(/\//g, '&#47;'),
+        layer.Name,
+        // layer.Title.replace(/\//g, '&#47;'),
         this.hsUtilsService.undefineEmptyString(this.folderName),
         this.srs
       );
@@ -420,11 +421,14 @@ export class HsAddDataWfsService {
     };
 
     const new_layer = new VectorLayer({
-      title: layerName,
+      name: layerName,
+      title: layer.Title.replace(/\//g, '&#47;'),
       source: this.createWfsSource(options),
       path: folder,
       renderOrder: null,
       removable: true,
+      //Used to determine whether its URL WFS service when saving to compositions
+      url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
     });
     this.hsMapService.map.addLayer(new_layer);
     this.hsLayoutService.setMainPanel('layermanager');

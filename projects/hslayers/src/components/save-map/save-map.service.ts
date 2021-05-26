@@ -33,6 +33,7 @@ import {
   getShowInLayerManager,
   getSubLayers,
   getTitle,
+  getWorkspace
 } from '../../common/layer-extensions';
 
 const LCLSTORAGE_EXPIRE = 5000;
@@ -309,7 +310,7 @@ export class HsSaveMapService {
     // options
     json.visibility = layer.getVisible();
     json.opacity = layer.getOpacity();
-    json.base = getBase(layer);
+    json.base = getBase(layer) ?? false;
     json.title = getTitle(layer);
     if (getTitle(layer) == undefined) {
       this.HsLogService.warn('Layer title undefined', layer);
@@ -415,13 +416,18 @@ export class HsSaveMapService {
           url: encodeURIComponent(definition.url),
           format: definition.format,
         };
+        json.workspace = getWorkspace(layer);
         delete json.features;
       } else {
-        try {
-          json.features = this.getFeaturesJson(src.getFeatures());
-        } catch (ex) {
-          //Do nothing
-        }
+        json.protocol = {
+          url: layer.get('url'),
+          format: 'hs.format.externalWFS',
+        };
+        // try {
+        //   json.features = this.getFeaturesJson(src.getFeatures());
+        // } catch (ex) {
+        //   //Do nothing
+        // }
       }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();

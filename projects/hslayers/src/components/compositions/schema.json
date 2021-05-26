@@ -314,6 +314,7 @@
                   "ol.format.KML",
                   "ol.format.GeoJSON",
                   "hs.format.WFS",
+                  "hs.format.externalWFS",
                   "hs.format.Sparql"
                 ],
                 "title": "Layer procol format"
