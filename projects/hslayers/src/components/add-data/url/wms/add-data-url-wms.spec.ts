@@ -12,6 +12,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
+import {HsMapService} from '../../../map/map.service';
 import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
@@ -20,6 +21,7 @@ import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
 
 class EmptyMock {
   constructor() {}
@@ -30,6 +32,7 @@ let hsWmsGetCapabilitiesService;
 describe('add-data-url', () => {
   let component: HsAddDataWmsComponent;
   let fixture: ComponentFixture<HsAddDataWmsComponent>;
+  let originalTimeout: number;
 
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -40,6 +43,10 @@ describe('add-data-url', () => {
   });
 
   beforeEach(() => {
+    //It is possible to change timeout interval for async tests (using 'done' argument)
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -60,12 +67,14 @@ describe('add-data-url', () => {
         },
         {
           provide: HsUtilsService,
-          useValue: HsUtilsServiceMock
+          useValue: new HsUtilsServiceMock()
         },
         {
           provide: HsCommonEndpointsService,
           useValue: EmptyMock
-        }
+        },
+        {provide: HsMapService, useValue: new HsMapServiceMock()},
+
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(
@@ -74,7 +83,8 @@ describe('add-data-url', () => {
     httpClient = TestBed.inject(HttpClient)
     //Mock server response
     hsWmsGetCapabilitiesService.requestGetCapabilities = async(url) => {
-      return httpClient.get(url, {
+      let serviceURUL = url.includes('?') ? url.substring(0, url.indexOf('?')) : url;
+      return httpClient.get(serviceURUL + '?service=WMS&request=getCapabilities', {
         responseType: 'text',
       }).toPromise();
     };
@@ -94,27 +104,38 @@ describe('add-data-url', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should parse capabilities 1', function () {
-    const url = '../../../../../test/data/capabilities-wms/ca.nfis.org.xml';
-    hsWmsGetCapabilitiesService.requestGetCapabilities(url).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '')
-    });
-    expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
-  });
 
-  it('should parse capabilities 2', function () {
-    const url = '../../../../../test/data/capabilities-wms/data.geus.dk.xml';
-    hsWmsGetCapabilitiesService.requestGetCapabilities(url).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '')
+  it('should parse capabilities 1', function (done) {
+    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[0]).then((capabilities) => {
+      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
+        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
+        done();
+      })
+      .catch(e => {
+        done.fail(e);
+      });
     });
-    expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
   });
-
-  it('should parse capabilities 3', function () {
-    const url = '../../../../../test/data/capabilities-wms/geoportal.cuzk.cz.xml';
-    hsWmsGetCapabilitiesService.requestGetCapabilities(url).then((capabilities) => {
-      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '')
+  it('should parse capabilities 2', function (done) {
+    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[1]).then((capabilities) => {
+      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
+        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
+        done();
+      })
+      .catch(e => {
+        done.fail(e);
+      });
     });
-    expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
+  });
+  it('should parse capabilities 3', function (done) {
+    hsWmsGetCapabilitiesService.requestGetCapabilities(serviceEndpoints.wms[2]).then((capabilities) => {
+      component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
+        expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
+        done();
+      })
+      .catch(e => {
+        done.fail(e);
+      });
+    });
   });
 });
