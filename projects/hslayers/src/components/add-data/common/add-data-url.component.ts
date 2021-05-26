@@ -21,7 +21,7 @@ export class HsAddDataUrlComponent {
   }
 
   change(): void {
-    this.urlChange.emit(this.url);
+    this.urlChange.emit(this.url.trim());
   }
 
   historySelected(url): void {
