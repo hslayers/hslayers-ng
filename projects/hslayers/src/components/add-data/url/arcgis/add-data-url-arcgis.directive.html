@@ -2,7 +2,7 @@
     <hs-add-data-common-url type="Arcgis" [(url)]="hsAddDataArcGisService.url" [(connect)]="connect">
     </hs-add-data-common-url>
 
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center btn-group w-75 m-auto">
         <button [hidden]="!hsAddDataArcGisService.loadingInfo"
             class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
                 [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
