@@ -202,8 +202,20 @@ export class HsLaymanService implements HsSaverService {
     }
     const layerName = getLayerName(layer);
     let layerTitle = getTitle(layer);
+
     const f = new GeoJSON();
-    const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+    const crsSupported = ['EPSG:4326', 'EPSG:3857'].includes(this.crs);
+    let geojson;
+    if (!crsSupported) {
+      geojson = f.writeFeaturesObject(layer.getSource().getFeatures().map(f => {
+        const f2 = f.clone();
+        f2.getGeometry().transform(this.crs, 'EPSG:3857');
+        return f2;
+      }));
+    }
+    else {
+      geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+    }
 
     if ((ep?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
@@ -212,7 +224,7 @@ export class HsLaymanService implements HsSaverService {
     await this.makeUpsertLayerRequest(ep, geojson, {
       title: layerTitle,
       name: layerName,
-      crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
+      crs: crsSupported
         ? this.crs
         : 'EPSG:3857',
       workspace: getWorkspace(layer),
