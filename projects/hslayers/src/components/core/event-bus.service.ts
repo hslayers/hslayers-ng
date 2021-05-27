@@ -162,5 +162,9 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<VectorLayer> = new BehaviorSubject(
     null
   );
+  /**
+   * Cancels any external url data request from datasources panel
+   */
+  cancelUrlRequest: Subject<void> = new Subject<void>();
   constructor() {}
 }

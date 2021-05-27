@@ -1,10 +1,14 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wfs" [(url)]="HsAddDataWfsService.url" [(connect)]="connect"></hs-add-data-common-url>
 
-    <button [hidden]="!HsAddDataWfsService.loadingInfo"
-    class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
-        class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
-
+        <div class="row d-flex justify-content-center">
+            <button [hidden]="!HsAddDataWfsService.loadingInfo"
+                class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
+                    [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
+            <button [hidden]="!HsAddDataWfsService.loadingInfo" class="btn btn-secondary"
+                (click)="HsEventBusService.cancelUrlRequest.next()">&#10006;
+            </button>
+        </div>
     <div *ngIf="HsAddDataWfsService.showDetails && !HsAddDataWfsService.loadingInfo" class="card">
 
         <!-- FIXME: unused --><div class="card-title text-center font-weight-bold">{{title}}</div>

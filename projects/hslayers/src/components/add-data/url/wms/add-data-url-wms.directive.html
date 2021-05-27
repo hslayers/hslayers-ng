@@ -1,10 +1,14 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-data-common-url type="wms" [(url)]="HsAddDataUrlWmsService.url" [(connect)]="connect"></hs-add-data-common-url>
-
-    <button [hidden]="!HsAddDataUrlWmsService.loadingInfo"
-    class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
-        class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
-
+    <hs-add-data-common-url type="wms" [(url)]="HsAddDataUrlWmsService.url" [(connect)]="connect">
+    </hs-add-data-common-url>
+    <div class="row d-flex justify-content-center">
+        <button [hidden]="!HsAddDataUrlWmsService.loadingInfo"
+            class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
+                [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
+        <button [hidden]="!HsAddDataUrlWmsService.loadingInfo" class="btn btn-secondary"
+            (click)="hsEventBusService.cancelUrlRequest.next()">&#10006;
+        </button>
+    </div>
     <div *ngIf="HsAddDataUrlWmsService.showDetails && !HsAddDataUrlWmsService.loadingInfo">
         <div class="form-group">
             <div class="input-group">
@@ -45,11 +49,13 @@
 
         <div class="form-group">
             <div class="capabilities_input d-flex flex-column">
-                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-1 checkbox-lg" name="useTiles" [(ngModel)]="data.useTiles" />
+                <label class="capabilities_label control-label"> <input type="checkbox" class="mr-1 checkbox-lg"
+                        name="useTiles" [(ngModel)]="data.useTiles" />
                     {{'ADDLAYERS.useTiles' | translate}}
                 </label>
                 <label class="capabilities_label control-label"> <input type="checkbox" class="mr-2 checkbox-lg"
-                    [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' | translate}}</label>
+                        [(ngModel)]="data.registerMetadata" name="registerMetadata" />{{'ADDLAYERS.registerMetadata' |
+                    translate}}</label>
             </div>
         </div>
 
@@ -76,17 +82,15 @@
         </div>
 
         <div class="d-flex flex-column my-3">
-            <div  class="d-flex flex-row justify-content-start align-items-baseline mb-1">
+            <div class="d-flex flex-row justify-content-start align-items-baseline mb-1">
                 {{'ADDDATA.CATALOGUE.addAs' | translate}}
                 <div class="btn-group ml-2">
-                    <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                        (click)="data.base = true"
+                    <button type="button" class="btn btn-sm btn-light  btn-outline-secondary" (click)="data.base = true"
                         [ngClass]="{'active':data.base}">
                         {{'COMPOSITONKEYWORDS.Basemap' | translate}}
                     </button>
                     <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                        (click)="data.base = false"
-                        [ngClass]="{'active': !data.base}">
+                        (click)="data.base = false" [ngClass]="{'active': !data.base}">
                         {{'COMMON.layer' | translate}}
                     </button>
                 </div>
@@ -95,11 +99,11 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text control-label">{{'COMMON.title' | translate}}</span>
                 </div>
-                <input  class="form-control" name="baseTitle" [(ngModel)]="data.title" />
+                <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
             </div>
         </div>
 
-        <hs-add-layers-target-position [(addUnder)]="data.addUnder" ></hs-add-layers-target-position>
+        <hs-add-layers-target-position [(addUnder)]="data.addUnder"></hs-add-layers-target-position>
 
         <hr />
         <table class="table table-sm table-striped table-bordered">
@@ -111,8 +115,9 @@
             </thead>
             <tbody *ngFor="let service of data.services">
                 <tr class="text-center align-middle">
-                    <td [attr.rowspan]="service.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !hasNestedLayers(service)}"><input
-                            type="checkbox" class="checkbox-lg" [(ngModel)]="service.checked" name="service"
+                    <td [attr.rowspan]="service.Style?.length ? 3 : 2"
+                        [ngClass]="{'align-middle': !hasNestedLayers(service)}"><input type="checkbox"
+                            class="checkbox-lg" [(ngModel)]="service.checked" name="service"
                             (change)="searchForChecked(service)" /></td>
                     <td>{{service.Name}}</td>
                     <td>{{service.Title}}</td>
@@ -121,11 +126,12 @@
                 <tr *ngIf="service.Style?.length > 1 && service.checked">
                     <td colspan="4">
                         <div class="d-flex align-items-baseline px-2 w-100">
-                            <div class="d-flex align-items-baseline" style="flex-grow: 1;" >
+                            <div class="d-flex align-items-baseline" style="flex-grow: 1;">
                                 <label class="control-label">{{'COMMON.style' | translate}}:</label>
                                 <select class="form-control form-control-sm" [(ngModel)]="service.styleSelected"
                                     [ngModelOptions]="{standalone: true}">
-                                    <option *ngFor="let style of service.Style" [ngValue]="style">{{style.Name}}</option>
+                                    <option *ngFor="let style of service.Style" [ngValue]="style">{{style.Name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -143,8 +149,10 @@
 
         <div class="w-100 d-flex justify-content-between pb-2" style="position: sticky;
         bottom: 0; background: var(--panel-wrapper-bg-color)">
-            <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' | translate}}</button>
-            <button class="btn btn-primary" [disabled]="!hasChecked" [title]="'ADDLAYERS.addSelected' | translate" (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
+            <button class="btn btn-primary" (click)="selectAllLayers(data.services)">{{'ADDLAYERS.selectAllLayers' |
+                translate}}</button>
+            <button class="btn btn-primary" [disabled]="!hasChecked" [title]="'ADDLAYERS.addSelected' | translate"
+                (click)="addLayers(true)">{{'ADDLAYERS.WFS.addToMap' | translate}}</button>
         </div>
     </div>
 </form>

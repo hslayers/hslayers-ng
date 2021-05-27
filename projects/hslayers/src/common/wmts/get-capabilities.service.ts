@@ -1,9 +1,11 @@
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
-import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
@@ -94,7 +96,9 @@ export class HsWmtsGetCapabilitiesService {
       url = this.HsUtilsService.proxify(url);
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
-      }).toPromise();
+      })
+        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .toPromise();
 
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'WMTS',
@@ -156,14 +160,13 @@ export class HsWmtsGetCapabilitiesService {
             }),
           ];
         }
-        const metadata = this.HsWmsGetCapabilitiesService.getMetadataObjectWithUrls(
-          layer
-        );
+        const metadata =
+          this.HsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           source: new WMTS({
-            url:
-              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+            url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
+              .OnlineResource,
             attributions: attributions,
             styles:
               layer.Style && layer.Style.length > 0

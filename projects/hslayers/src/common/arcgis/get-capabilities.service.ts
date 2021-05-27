@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
@@ -81,7 +82,9 @@ export class HsArcgisGetCapabilitiesService {
     try {
       const r = await this.HttpClient.get(url, {
         responseType: 'json',
-      }).toPromise();
+      })
+        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .toPromise();
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'ArcGIS',
         response: r,
@@ -145,8 +148,8 @@ export class HsArcgisGetCapabilitiesService {
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           source: new TileWMS({
-            url:
-              caps.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+            url: caps.Capability.Request.GetMap.DCPType[0].HTTP.Get
+              .OnlineResource,
             attributions: attributions,
             styles:
               layer.Style && layer.Style.length > 0
