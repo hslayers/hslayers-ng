@@ -1,7 +1,7 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wms" [(url)]="hsAddDataUrlWmsService.url" [(connect)]="connect">
     </hs-add-data-common-url>
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center btn-group w-75 m-auto">
         <button [hidden]="!hsAddDataUrlWmsService.loadingInfo"
             class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
                 [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
