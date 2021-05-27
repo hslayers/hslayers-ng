@@ -2,26 +2,26 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {TranslateModule} from '@ngx-translate/core';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
 
+import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
+import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
+import {HsAddDataWmsComponent} from './add-data-url-wms.component';
 import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../../../config.service';
+import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
 import {HsMapService} from '../../../map/map.service';
 import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
-import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
-import {HsAddDataWmsComponent} from './add-data-url-wms.component';
-import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
-import {HsGetCapabilitiesModule} from '../../../../common/get-capabilities/get-capabilities.module';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
-import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
 
 class EmptyMock {
   constructor() {}
@@ -45,8 +45,8 @@ describe('add-data-url', () => {
   beforeEach(() => {
     //It is possible to change timeout interval for async tests (using 'done' argument)
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-    
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
+
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -63,30 +63,31 @@ describe('add-data-url', () => {
         HsAddDataUrlWmsService,
         {
           provide: HsConfig,
-          useValue: EmptyMock
+          useValue: EmptyMock,
         },
         {
           provide: HsUtilsService,
-          useValue: new HsUtilsServiceMock()
+          useValue: new HsUtilsServiceMock(),
         },
         {
           provide: HsCommonEndpointsService,
-          useValue: EmptyMock
+          useValue: EmptyMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-
       ],
     });
-    hsWmsGetCapabilitiesService = TestBed.inject(
-      HsWmsGetCapabilitiesService
-    );
-    httpClient = TestBed.inject(HttpClient)
+    hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);
+    httpClient = TestBed.inject(HttpClient);
     //Mock server response
-    hsWmsGetCapabilitiesService.requestGetCapabilities = async(url) => {
-      let serviceURUL = url.includes('?') ? url.substring(0, url.indexOf('?')) : url;
-      return httpClient.get(serviceURUL + '?service=WMS&request=getCapabilities', {
-        responseType: 'text',
-      }).toPromise();
+    hsWmsGetCapabilitiesService.requestGetCapabilities = async (url) => {
+      const serviceURUL = url.includes('?')
+        ? url.substring(0, url.indexOf('?'))
+        : url;
+      return httpClient
+        .get(serviceURUL + '?service=WMS&request=getCapabilities', {
+          responseType: 'text',
+        })
+        .toPromise();
     };
   });
 
@@ -104,19 +105,27 @@ describe('add-data-url', () => {
     expect(component).toBeTruthy();
   });
 
-  serviceEndpoints.wms.forEach((url,index)=>{
+  serviceEndpoints.wms.forEach((url, index) => {
     (function (url, index) {
-      it(`should parse capabilities ${index}`, function (done) {
-        hsWmsGetCapabilitiesService.requestGetCapabilities(url).then((capabilities) => {
-          component.HsAddDataUrlWmsService.capabilitiesReceived(capabilities, '').then(()=>{
-            expect(component.HsAddDataUrlWmsService.data.srss).toBeDefined();
-            done();
-          })
-          .catch(e => {
-            done.fail(e);
+      it(`should parse capabilities ${index}`, (done) => {
+        hsWmsGetCapabilitiesService
+          .requestGetCapabilities(url)
+          .then((capabilities) => {
+            component.HsAddDataUrlWmsService.capabilitiesReceived(
+              capabilities,
+              ''
+            )
+              .then(() => {
+                expect(
+                  component.HsAddDataUrlWmsService.data.srss
+                ).toBeDefined();
+                done();
+              })
+              .catch((e) => {
+                done.fail(e);
+              });
           });
-        });
       });
-    })(url,index);
-  })
+    })(url, index);
+  });
 });
