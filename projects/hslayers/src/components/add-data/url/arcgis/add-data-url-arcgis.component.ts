@@ -32,13 +32,12 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   ) {
     this.data = hsAddDataArcGisService.data;
 
-    this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
-      ({type, uri, layer}) => {
+    this.owsConnectingSubscription =
+      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type === 'arcgis') {
           this.setUrlAndConnect(uri, layer);
         }
-      }
-    );
+      });
 
     //TODO: this.sourceHistory = this.HsAddDataArcGisService.sourceHistory;
   }
@@ -59,7 +58,8 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     this.hsArcgisGetCapabilitiesService.requestGetCapabilities(
       this.hsAddDataArcGisService.url
     );
-    this.hsAddDataArcGisService.data.getMapUrl = this.hsAddDataArcGisService.url;
+    this.hsAddDataArcGisService.data.getMapUrl =
+      this.hsAddDataArcGisService.url;
     this.hsAddDataArcGisService.loadingInfo = true;
     this.hsAddDataArcGisService.showDetails = true;
   };
