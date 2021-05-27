@@ -39,10 +39,17 @@ export class HsAddDataArcGisService {
       registerMetadata: true,
       tileSize: 512,
     };
+    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+      this.loadingInfo = false;
+      this.showDetails = false;
+    });
 
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'ArcGIS') {
+          if (!response && !error) {
+            return;
+          }
           if (error) {
             this.throwParsingError(response.message);
             return;
@@ -117,9 +124,10 @@ export class HsAddDataArcGisService {
 
   srsChanged(): void {
     setTimeout(() => {
-      this.data.resample_warning = !this.hsArcgisGetCapabilitiesService.currentProjectionSupported(
-        [this.data.srs]
-      );
+      this.data.resample_warning =
+        !this.hsArcgisGetCapabilitiesService.currentProjectionSupported([
+          this.data.srs,
+        ]);
     }, 0);
   }
 
@@ -159,7 +167,7 @@ export class HsAddDataArcGisService {
    * Constructs body of LAYER parameter for getMap request
    * @param layer Optional. layer objec recieved from capabilities. If no layer is provided
    * merge all checked layer ids into one string
-   * @returns {string} 
+   * @returns {string}
    */
   createBasemapName(layer?): string {
     if (!layer) {
@@ -323,9 +331,8 @@ export class HsAddDataArcGisService {
     this.hsArcgisGetCapabilitiesService
       .requestGetCapabilities(url)
       .then((resp) => {
-        const ol_layers = this.hsArcgisGetCapabilitiesService.service2layers(
-          resp
-        );
+        const ol_layers =
+          this.hsArcgisGetCapabilitiesService.service2layers(resp);
         ol_layers.forEach((layer) => {
           if (group !== undefined) {
             group.addLayer(layer);

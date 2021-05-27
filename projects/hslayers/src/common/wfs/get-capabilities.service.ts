@@ -1,9 +1,11 @@
-import {HsEventBusService} from '../../components/core/event-bus.service';
-import {HsMapService} from '../../components/map/map.service';
-import {HsUtilsService} from '../../components/utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import {takeUntil} from 'rxjs/operators';
+
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
 @Injectable({providedIn: 'root'})
 export class HsWfsGetCapabilitiesService {
   service_url: any;
@@ -88,7 +90,9 @@ export class HsWfsGetCapabilitiesService {
     try {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
-      }).toPromise();
+      })
+        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .toPromise();
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'WFS',
         response: r,

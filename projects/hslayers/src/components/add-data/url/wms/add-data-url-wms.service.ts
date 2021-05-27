@@ -64,10 +64,17 @@ export class HsAddDataUrlWmsService {
         .getCode()
         .toUpperCase();
     });
+    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+      this.loadingInfo = false;
+      this.showDetails = false;
+    });
 
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'WMS') {
+          if (!response && !error) {
+            return;
+          }
           if (error) {
             this.throwParsingError(response.message);
             return;

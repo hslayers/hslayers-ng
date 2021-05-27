@@ -62,9 +62,15 @@ export class HsAddDataWfsService {
         .getCode()
         .toUpperCase();
     });
-
+    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+      this.loadingInfo = false;
+      this.showDetails = false;
+    });
     this.HsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
+        if (!response && !error) {
+          return;
+        }
         if (type === 'WFS') {
           if (error) {
             this.throwParsingError(response.message);

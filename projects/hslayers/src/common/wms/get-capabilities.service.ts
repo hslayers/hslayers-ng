@@ -1,9 +1,11 @@
-import {Attribution} from 'ol/control';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import {Attribution} from 'ol/control';
 import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
+import {takeUntil} from 'rxjs/operators';
 
 import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
@@ -108,7 +110,9 @@ export class HsWmsGetCapabilitiesService {
             (ep) => ep.type == 'layman'
           )[0]?.url
         ),
-      }).toPromise();
+      })
+        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .toPromise();
       if (castOwsCapabilitiesReceived) {
         this.HsEventBusService.owsCapabilitiesReceived.next({
           type: 'WMS',

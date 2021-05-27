@@ -1,10 +1,14 @@
 <form class="form-horizontal" name="frmConnect" role="form">
     <hs-add-data-common-url type="wmts" [(url)]="HsAddDataUrlWmtsService.url" [(connect)]="connect"></hs-add-data-common-url>
 
-    <button [hidden]="!HsAddDataUrlWmtsService.loadingInfo"
-    class="btn m-auto btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img
-        class="ml-2" [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
-
+    <div class="row d-flex justify-content-center">
+        <button [hidden]="!HsAddDataUrlWmtsService.loadingInfo"
+            class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
+                [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
+        <button [hidden]="!HsAddDataUrlWmtsService.loadingInfo" class="btn btn-secondary"
+            (click)="HsEventBusService.cancelUrlRequest.next()">&#10006;
+        </button>
+    </div>
     <div *ngIf="HsAddDataUrlWmtsService.showDetails && !HsAddDataUrlWmtsService.loadingInfo" class="card">
         <ul class="list-group">
             <li class="list-group-item hs-ows-layerlistheading clearfix" style="background: var(--white);">
