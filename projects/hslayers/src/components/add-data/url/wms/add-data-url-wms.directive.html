@@ -1,15 +1,15 @@
 <form class="form-horizontal" name="frmConnect" role="form">
-    <hs-add-data-common-url type="wms" [(url)]="HsAddDataUrlWmsService.url" [(connect)]="connect">
+    <hs-add-data-common-url type="wms" [(url)]="hsAddDataUrlWmsService.url" [(connect)]="connect">
     </hs-add-data-common-url>
     <div class="row d-flex justify-content-center">
-        <button [hidden]="!HsAddDataUrlWmsService.loadingInfo"
+        <button [hidden]="!hsAddDataUrlWmsService.loadingInfo"
             class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
-                [src]="HsUtilsService.getAjaxLoaderIcon()" /></button>
-        <button [hidden]="!HsAddDataUrlWmsService.loadingInfo" class="btn btn-secondary"
+                [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
+        <button [hidden]="!hsAddDataUrlWmsService.loadingInfo" class="btn btn-secondary"
             (click)="hsEventBusService.cancelUrlRequest.next()">&#10006;
         </button>
     </div>
-    <div *ngIf="HsAddDataUrlWmsService.showDetails && !HsAddDataUrlWmsService.loadingInfo">
+    <div *ngIf="hsAddDataUrlWmsService.showDetails && !hsAddDataUrlWmsService.loadingInfo">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">

@@ -22,24 +22,23 @@ export class HsAddDataWmtsComponent implements OnDestroy {
   hasChecked: boolean;
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    public HsEventBusService: HsEventBusService,
-    public HsLogService: HsLogService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService,
-    public HsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
+    public hsEventBusService: HsEventBusService,
+    public hsLogService: HsLogService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLanguageService: HsLanguageService,
+    public hsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
-    this.owsConnectingSubscription = this.HsEventBusService.owsConnecting.subscribe(
-      ({type, uri, layer}) => {
+    this.owsConnectingSubscription =
+      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wmts') {
           this.setUrlAndConnect(uri, layer);
         }
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {
@@ -48,13 +47,13 @@ export class HsAddDataWmtsComponent implements OnDestroy {
 
   connect = (layerToSelect: string): void => {
     this.hasChecked = false;
-    this.HsAddDataUrlWmtsService.layerToSelect = layerToSelect;
+    this.hsAddDataUrlWmtsService.layerToSelect = layerToSelect;
 
-    this.HsAddDataUrlWmtsService.loadingInfo = true;
-    this.HsWmtsGetCapabilitiesService.requestGetCapabilities(
-      this.HsAddDataUrlWmtsService.url
+    this.hsAddDataUrlWmtsService.loadingInfo = true;
+    this.hsWmtsGetCapabilitiesService.requestGetCapabilities(
+      this.hsAddDataUrlWmtsService.url
     );
-    this.HsAddDataUrlWmtsService.showDetails = true;
+    this.hsAddDataUrlWmtsService.showDetails = true;
   };
 
   selectAllLayers(layers: any[]): void {
@@ -68,18 +67,18 @@ export class HsAddDataWmtsComponent implements OnDestroy {
   }
 
   changed(): void {
-    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
-      this.HsAddDataUrlWmtsService.services
+    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
+      this.hsAddDataUrlWmtsService.services
     );
   }
 
   setUrlAndConnect(url: string, layer?: string): void {
-    this.HsAddDataUrlWmtsService.url = url;
+    this.hsAddDataUrlWmtsService.url = url;
     this.connect(layer);
   }
 
   addLayers(checkedOnly: boolean): void {
-    this.HsAddDataUrlWmtsService.addLayers(checkedOnly);
+    this.hsAddDataUrlWmtsService.addLayers(checkedOnly);
     //FIXME: to implement
     // this.zoomToLayers();
   }
