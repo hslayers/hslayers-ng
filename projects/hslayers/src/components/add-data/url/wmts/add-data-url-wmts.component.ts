@@ -1,5 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataUrlWmtsService} from './add-data-url-wmts-service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
@@ -30,7 +31,8 @@ export class HsAddDataWmtsComponent implements OnDestroy {
     public hsDialogContainerService: HsDialogContainerService,
     public hsLanguageService: HsLanguageService,
     public hsAddDataUrlWmtsService: HsAddDataUrlWmtsService,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataService: HsAddDataService
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =

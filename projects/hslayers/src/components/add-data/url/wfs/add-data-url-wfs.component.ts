@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -24,7 +25,8 @@ export class HsAddDataWfsComponent implements OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     public hsUtilsService: HsUtilsService, //used in template,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataService: HsAddDataService
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
     this.owsConnectingSubscription =
