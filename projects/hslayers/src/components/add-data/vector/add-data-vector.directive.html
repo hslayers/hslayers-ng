@@ -1,8 +1,8 @@
 <form class="form-horizontal" role="form">
-    <hs-add-data-common-url *ngIf="HsAddDataService.typeSelected == 'url'" type="vector" [(url)]="url"
+    <hs-add-data-common-url *ngIf="hsAddDataService.typeSelected == 'url'" type="vector" [(url)]="url"
         [(connect)]="connect"></hs-add-data-common-url>
 
-    <div class="form-group m-3" *ngIf="HsAddDataService.typeSelected == 'file'">
+    <div class="form-group m-3" *ngIf="hsAddDataService.typeSelected == 'file'">
         <div class="d-flex justify-content-center align-items-center w-100 dropzone-container">
             <!-- <label class="capabilities_label control-label">{{'ADDLAYERS.Vector.uploadVectorFiles' | translate}}</label> -->
             <div class="dropzone p-4" fileDrop (filesDropped)="handleFileUpload($event)"

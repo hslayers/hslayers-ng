@@ -9,11 +9,11 @@ import {Injectable} from '@angular/core';
 })
 export class HsVectorUrlParserService {
   constructor(
-    public HsMapService: HsMapService,
-    public HsShareUrlService: HsShareUrlService,
-    public HsAddDataVectorService: HsAddDataVectorService
+    public hsMapService: HsMapService,
+    public hsShareUrlService: HsShareUrlService,
+    public hsAddDataVectorService: HsAddDataVectorService
   ) {
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       this.checkUrlParamsAndAdd();
     });
   }

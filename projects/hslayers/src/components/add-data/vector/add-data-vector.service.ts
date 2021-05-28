@@ -45,10 +45,10 @@ export class HsAddDataVectorService {
     });
   };
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsStylerService: HsStylerService,
-    private HsAddDataService: HsAddDataService
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsStylerService: HsStylerService,
+    private hsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -99,8 +99,8 @@ export class HsAddDataVectorService {
             format: 'hs.format.WFS',
           });
         }
-        if (this.HsMapService.map) {
-          this.HsAddDataService.addLayer(lyr, addUnder);
+        if (this.hsMapService.map) {
+          this.hsAddDataService.addLayer(lyr, addUnder);
         }
         resolve(lyr);
       } catch (ex) {
@@ -135,16 +135,16 @@ export class HsAddDataVectorService {
       type.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
-      url = this.HsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url);
     }
 
-    if (this.HsUtilsService.undefineEmptyString(type) === undefined) {
+    if (this.hsUtilsService.undefineEmptyString(type) === undefined) {
       type = this.tryGuessTypeFromUrl(url);
     }
 
     let mapProjection;
-    if (this.HsMapService.map) {
-      mapProjection = this.HsMapService.map.getView().getProjection().getCode();
+    if (this.hsMapService.map) {
+      mapProjection = this.hsMapService.map.getView().getProjection().getCode();
     }
 
     const descriptor = new VectorLayerDescriptor(
@@ -168,7 +168,7 @@ export class HsAddDataVectorService {
     const src = new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
     if (descriptor.layerParams.style) {
-      descriptor.layerParams.style = this.HsStylerService.parseStyle(
+      descriptor.layerParams.style = this.hsStylerService.parseStyle(
         descriptor.layerParams.style
       );
     }
@@ -208,11 +208,11 @@ export class HsAddDataVectorService {
       !isNaN(extent[1]) &&
       !isNaN(extent[2]) &&
       !isNaN(extent[3]) &&
-      this.HsMapService.map
+      this.hsMapService.map
     ) {
-      this.HsMapService.map
+      this.hsMapService.map
         .getView()
-        .fit(extent, this.HsMapService.map.getSize());
+        .fit(extent, this.hsMapService.map.getSize());
       src.un('change', this.changeListener);
     }
   }
@@ -276,7 +276,7 @@ export class HsAddDataVectorService {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
     const projection = format.readProjection(json);
-    const mapProjection = this.HsMapService.map.getView().getProjection();
+    const mapProjection = this.hsMapService.map.getView().getProjection();
     if (projection != mapProjection) {
       features.forEach((f) =>
         //TODO: Make it parallel using workers or some library

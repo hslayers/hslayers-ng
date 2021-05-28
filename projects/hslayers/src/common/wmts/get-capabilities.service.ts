@@ -18,12 +18,12 @@ import {getPreferedFormat} from '../format-utils';
 export class HsWmtsGetCapabilitiesService {
   service_url: any;
   constructor(
-    private HttpClient: HttpClient,
-    public HsEventBusService: HsEventBusService,
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsAddDataService: HsAddDataService
+    private httpClient: HttpClient,
+    public hsEventBusService: HsEventBusService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -77,7 +77,7 @@ export class HsWmtsGetCapabilitiesService {
    */
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = this.HsUtilsService.getParamsFromUrl(service_url);
+    const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request == undefined && params.REQUEST == undefined) {
       params.request = 'GetCapabilities';
@@ -95,20 +95,21 @@ export class HsWmtsGetCapabilitiesService {
     let url = [path, this.params2String(params)].join('?');
 
     try {
-      url = this.HsUtilsService.proxify(url);
-      const r = await this.HttpClient.get(url, {
-        responseType: 'text',
-      })
-        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
+      url = this.hsUtilsService.proxify(url);
+      const r = await this.httpClient
+        .get(url, {
+          responseType: 'text',
+        })
+        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
 
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'WMTS',
         response: r,
       });
       return r;
     } catch (error) {
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'WMTS',
         response: error,
         error: true,
@@ -163,7 +164,7 @@ export class HsWmtsGetCapabilitiesService {
           ];
         }
         const metadata =
-          this.HsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
+          this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
         const new_layer = new Tile({
           title: layer.Title.replace(/\//g, '&#47;'),
           source: new WMTS({
@@ -202,7 +203,7 @@ export class HsWmtsGetCapabilitiesService {
     let found = false;
     for (const val of srss) {
       if (
-        this.HsMapService.map
+        this.hsMapService.map
           .getView()
           .getProjection()
           .getCode()

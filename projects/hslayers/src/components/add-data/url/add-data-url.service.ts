@@ -15,21 +15,21 @@ export class HsAddDataUrlService {
 
   constructor(
     public hsLog: HsLogService,
-    public HsLanguageService: HsLanguageService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLayoutService: HsLayoutService
+    public hsLanguageService: HsLanguageService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLayoutService: HsLayoutService
   ) {
     this.addDataCapsParsingError.subscribe((e) => {
       this.hsLog.warn(e);
 
       let error = e.toString();
       if (error.includes('property')) {
-        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+        error = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS',
           'serviceTypeNotMatching'
         );
       }
-      this.HsDialogContainerService.create(
+      this.hsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,
         error
       );
@@ -92,7 +92,7 @@ export class HsAddDataUrlService {
   scrollToLayer(name: string): void {
     setTimeout(() => {
       const id = `#hs-add-layer-${name}`;
-      const el = this.HsLayoutService.contentWrapper.querySelector(id);
+      const el = this.hsLayoutService.contentWrapper.querySelector(id);
       if (el) {
         el.scrollIntoView();
       }

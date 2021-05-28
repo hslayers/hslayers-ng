@@ -14,7 +14,7 @@ export class HsAddDataFileComponent {
 
   constructor(
     public hsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
