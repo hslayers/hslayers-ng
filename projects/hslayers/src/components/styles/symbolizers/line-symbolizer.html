@@ -113,4 +113,57 @@
     max="20"
     label="{{'STYLER.spacing' | translate}}"
   ></hs-symbolizer-slider>
+
+
+  <div class="d-flex flex-row justify-content-end">
+    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translate}}:</div>
+    <div class="p-1">
+      <div ngbDropdown class="d-inline-block" placement="top-right">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          id="dropdownAddFillSymbolizer"
+          ngbDropdownToggle
+        >
+          <span class="icon-plus"></span>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
+          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">Mark</button>
+          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">Icon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hs-symbolizer
+  *ngIf="symbolizer.graphicFill != undefined"
+  [symbolizer]="symbolizer.graphicFill"
+  (changes)="emitChange()"
+  (remove)="symbolizer.graphicFill = undefined"
+></hs-symbolizer>
+
+<div class="d-flex flex-row justify-content-end">
+  <div class="p-1 flex-grow-1">{{'STYLER.graphicStroke' | translate}}:</div>
+  <div class="p-1">
+    <div ngbDropdown class="d-inline-block" placement="top-right">
+      <button
+        class="btn btn-outline-primary btn-sm"
+        id="dropdownAddStrokeSymbolizer"
+        ngbDropdownToggle
+      >
+        <span class="icon-plus"></span>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
+        <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">Mark</button>
+        <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">Icon</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hs-symbolizer
+*ngIf="symbolizer.graphicStroke != undefined"
+[symbolizer]="symbolizer.graphicStroke"
+(changes)="emitChange()"
+(remove)="symbolizer.graphicStroke = undefined"
+></hs-symbolizer>
 </form>

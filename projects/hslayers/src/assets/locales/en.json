@@ -711,7 +711,9 @@
     "perpendicularOffset": "Perpendicular offset",
     "miterLimit": "Miter limit",
     "join": "Join",
-    "fillOpacity": "Fill opacity"
+    "fillOpacity": "Fill opacity",
+    "graphicFill": "Graphic fill",
+    "graphicStroke": "Graphic stroke"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

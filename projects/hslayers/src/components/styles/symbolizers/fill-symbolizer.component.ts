@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {FillSymbolizer} from 'geostyler-style';
+import {FillSymbolizer, SymbolizerKind} from 'geostyler-style';
 
 @Component({
   selector: 'hs-fill-symbolizer',
@@ -10,7 +10,11 @@ export class HsFillSymbolizerComponent {
   @Input() symbolizer: FillSymbolizer;
   @Output() changes = new EventEmitter<void>();
 
-  emitChange() {
+  emitChange(): void {
     this.changes.emit();
+  }
+
+  addSymbolizer(attribute: string, kind: SymbolizerKind): void {
+    this.symbolizer[attribute] = {kind};
   }
 }
