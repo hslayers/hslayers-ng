@@ -11,6 +11,7 @@
     "build-cesium-app": "ng build hslayers-cesium-app --prod",
     "build-sensors": "ng build hslayers-sensors --prod",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
+    "start-test-app": "ng serve test-app",
     "build-watch": "ng build hslayers --watch",
     "release": "dotenv -- release-it",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
