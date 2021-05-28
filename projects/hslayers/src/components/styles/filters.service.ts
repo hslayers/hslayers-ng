@@ -35,6 +35,6 @@ export class HsFiltersService {
   }
 
   isLogOp(filters: any[]): boolean {
-    return filters.length > 0 && ['&&', '||'].includes(filters[0]);
+    return filters?.length > 0 && ['&&', '||'].includes(filters[0]);
   }
 }

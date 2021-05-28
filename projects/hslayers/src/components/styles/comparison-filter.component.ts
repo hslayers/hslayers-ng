@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+
 import {HsFiltersService} from './filters.service';
 
 @Component({
-  selector: 'hs-filter',
-  templateUrl: './filter.html',
+  selector: 'hs-comparison-filter',
+  templateUrl: './comparison-filter.html',
 })
-export class HsFilterComponent {
-  @Input() filter: any[];
-  @Input() parent: any[];
+export class HsComparisonFilterComponent {
+  @Input() filter;
+  @Input() parent;
   @Output() changes = new EventEmitter<void>();
 
   constructor(public HsFiltersService: HsFiltersService) {}

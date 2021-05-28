@@ -23,8 +23,8 @@ export class HsFiltersComponent {
     this.changes.emit();
   }
 
-  remove(filter: Array<any>): void {
-    this.rule.filter.splice(this.rule.filter.indexOf(filter), 1);
+  remove(): void {
+    this.rule.filter.length = 0;
     this.changes.emit();
   }
 }

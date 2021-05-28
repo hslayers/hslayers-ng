@@ -10,7 +10,9 @@ import {TranslateModule} from '@ngx-translate/core';
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {HsAddFilterButtonComponent} from './add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker.component';
+import {HsComparisonFilterComponent} from './comparison-filter.component';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
 import {HsFilterComponent} from './filter.component';
 import {HsFiltersComponent} from './filters.component';
@@ -41,6 +43,8 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsSliderComponent,
     HsFiltersComponent,
     HsFilterComponent,
+    HsComparisonFilterComponent,
+    HsAddFilterButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +67,8 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsSliderComponent,
     HsFiltersComponent,
     HsFilterComponent,
+    HsComparisonFilterComponent,
+    HsAddFilterButtonComponent,
   ],
   providers: [HsStylerService, HsFiltersService],
   entryComponents: [
@@ -78,6 +84,8 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsSliderComponent,
     HsFiltersComponent,
     HsFilterComponent,
+    HsComparisonFilterComponent,
+    HsAddFilterButtonComponent,
   ],
 })
 export class HsStylerModule {}
