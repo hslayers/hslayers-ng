@@ -14,6 +14,7 @@ import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -88,6 +89,7 @@ export class HsStylerService {
     public HsQueryVectorService: HsQueryVectorService,
     public HsUtilsService: HsUtilsService,
     private HsEventBusService: HsEventBusService,
+    private HsLogService: HsLogService,
     public sanitizer: DomSanitizer,
     private HsMapService: HsMapService
   ) {
@@ -314,11 +316,12 @@ export class HsStylerService {
    *
    * @param layer - OL layer
    */
-  async fill(layer: BaseLayer): Promise<void> {
+  async fill(layer: VectorLayer): Promise<void> {
     try {
       if (!layer) {
         return;
       }
+      this.layer = layer;
       this.layerTitle = getTitle(layer);
       const sld = getSld(layer);
       if (sld != undefined) {
@@ -327,7 +330,7 @@ export class HsStylerService {
         this.styleObject = {name: 'untitled style', rules: []};
       }
     } catch (ex) {
-      console.error(ex);
+      this.HsLogService.error(ex.message);
     }
   }
 
@@ -339,7 +342,7 @@ export class HsStylerService {
       const sldObject = await this.sldToJson(sld);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
-      console.error(ex);
+      this.HsLogService.error(ex);
     }
   }
 
@@ -399,7 +402,7 @@ export class HsStylerService {
       const sld = await this.jsonToSld(this.styleObject);
       setSld(this.layer, sld);
     } catch (ex) {
-      console.error(ex);
+      this.HsLogService.error(ex);
     }
   }
 
