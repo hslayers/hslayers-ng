@@ -10,6 +10,7 @@ export class HsRuleComponent {
   @Output() changes = new EventEmitter<void>();
 
   filtersVisible = false;
+  scalesVisible = false;
 
   addSymbolizer(kind: SymbolizerKind): void {
     const symbolizer = {kind, color: '#000'};

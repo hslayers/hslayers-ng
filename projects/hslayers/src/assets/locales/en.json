@@ -713,7 +713,15 @@
     "join": "Join",
     "fillOpacity": "Fill opacity",
     "graphicFill": "Graphic fill",
-    "graphicStroke": "Graphic stroke"
+    "graphicStroke": "Graphic stroke",
+    "minScale": "Min. scale",
+    "maxScale": "Max. scale",
+    "addFilter": "Add filter",
+    "addSymbolizer": "Add symbolizer",
+    "addRule": "Add rule",
+    "toggleFilters": "Toggle filters",
+    "toggleScaleDenominators": "Toggle scale denominators",
+    "removeFilter": "Remove filter"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

@@ -12,7 +12,11 @@
       <hs-add-filter-button
         (clicks)="add($event.kind, true)"
       ></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" (click)="remove()">
+      <button
+        class="btn btn-outline-danger btn-sm m-1"
+        [title]="'STYLER.removeFilter'"
+        (click)="remove()"
+      >
         <span class="icon-trash"></span>
       </button>
     </div>
