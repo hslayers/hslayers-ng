@@ -254,7 +254,8 @@
     "errorWhileRequestingCompositions": "Chyba při žádosti o kompozice",
     "errorWhileSharingOnSocialNetwork": "Chyba při sdílení kompozice na sociální síť",
     "metadataNotAvailable": "Metadata nejsou dostupná!",
-    "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!"
+    "sharingUrlIsNotAvailable": "Adresa URL pro sdílení není dostupná!",
+    "notAllowedToEditLayer": "Tuto kompozici nemáte oprávnění editovat"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
@@ -341,7 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Zrušit přidání",
       "addToMap": "Přidat do mapy",
-      "whatDoesItMean": "Co to znamená?"
+      "whatDoesItMean": "Co to znamená?",
+      "notAllowedToEditLayer": "Tuto datovou sadu nemáte oprávnění editovat"
     },
     "externalData": "Externí data",
     "layerRDF": "RDF vrstva",

@@ -254,7 +254,8 @@
     "errorWhileRequestingCompositions": "Chyba pri žiadosti o kompozíciu",
     "errorWhileSharingOnSocialNetwork": "Chyba pri zdeiľaní kompozície na sociálnu sieť",
     "metadataNotAvailable": "Metadáta nie sú dostupné!",
-    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!"
+    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
+    "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto kompozíciu"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
@@ -341,7 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Zrušiť pridanie",
       "addToMap": "Pridať do mapy",
-      "whatDoesItMean": "Čo to znamená?"
+      "whatDoesItMean": "Čo to znamená?",
+      "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto dátovú sadu"
     },
     "externalData": "Externé dáta",
     "layerRDF": "RDF vrstva",

@@ -254,7 +254,8 @@
     "endpointUrlIsNotDefined": "Endpoint url is not defined!",
     "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network",
     "metadataNotAvailable": "Metadata are not available!",
-    "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata"
+    "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata",
+    "notAllowedToEditLayer": "You are not allowed to edit this composition"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
@@ -341,7 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Abort add",
       "addToMap": "Add to map",
-      "whatDoesItMean": "What does it mean?"
+      "whatDoesItMean": "What does it mean?",
+      "notAllowedToEditLayer": "You are not allowed to edit this layer"
     },
     "externalData": "External data",
     "layerRDF": "Layer RDF",
