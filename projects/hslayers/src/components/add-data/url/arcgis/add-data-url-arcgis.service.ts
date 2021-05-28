@@ -5,6 +5,7 @@ import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
+import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
@@ -30,7 +31,8 @@ export class HsAddDataArcGisService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public HsAddDataUrlService: HsAddDataUrlService,
+    public HsAddDataService: HsAddDataService
   ) {
     this.data = {
       useResampling: false,
@@ -39,7 +41,7 @@ export class HsAddDataArcGisService {
       registerMetadata: true,
       tileSize: 512,
     };
-    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });

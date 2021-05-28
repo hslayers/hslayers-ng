@@ -7,6 +7,7 @@ import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {get, transformExtent} from 'ol/proj';
 
+import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from '../../../../config.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -46,7 +47,8 @@ export class HsAddDataWfsService {
     public HsMapService: HsMapService,
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public HsAddDataUrlService: HsAddDataUrlService,
+    public HsAddDataService: HsAddDataService
   ) {
     this.definedProjections = [
       'EPSG:3857',
@@ -62,7 +64,7 @@ export class HsAddDataWfsService {
         .getCode()
         .toUpperCase();
     });
-    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });

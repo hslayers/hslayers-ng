@@ -7,6 +7,7 @@ import {Layer, Tile} from 'ol/layer';
 import {WMTS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -21,7 +22,8 @@ export class HsWmtsGetCapabilitiesService {
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService
+    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public HsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -97,7 +99,7 @@ export class HsWmtsGetCapabilitiesService {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
       })
-        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
         .toPromise();
 
       this.HsEventBusService.owsCapabilitiesReceived.next({
