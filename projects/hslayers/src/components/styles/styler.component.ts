@@ -3,6 +3,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
+import VectorLayer from 'ol/layer/Vector';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -30,7 +32,7 @@ export class HsStylerComponent implements OnDestroy {
   ) {
     this.HsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((layer) => {
+      .subscribe((layer: VectorLayer) => {
         if (layer !== null) {
           this.HsStylerService.fill(layer);
         }

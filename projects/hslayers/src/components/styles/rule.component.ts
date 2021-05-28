@@ -12,9 +12,9 @@ export class HsRuleComponent {
   filtersVisible = false;
 
   addSymbolizer(kind: SymbolizerKind): void {
-    const symbolizer = {kind};
+    const symbolizer = {kind, color: '#000'};
     if (kind == 'Text') {
-      Object.assign(symbolizer, {color: '#000', size: 12, offset: [0, 0]});
+      Object.assign(symbolizer, {size: 12, offset: [0, 0]});
     }
     this.rule.symbolizers.push(symbolizer);
   }

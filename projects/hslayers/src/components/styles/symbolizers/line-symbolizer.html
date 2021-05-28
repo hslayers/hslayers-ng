@@ -1,0 +1,116 @@
+<form class="form">
+  <hs-symbolizer-color-picker
+    [symbolizer]="symbolizer"
+    attribute="color"
+    (changes)="emitChange()"
+    label="{{'STYLER.color' | translate}}"
+  ></hs-symbolizer-color-picker>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="opacity"
+    (changes)="emitChange()"
+    step="0.05"
+    min="0"
+    max="1"
+    label="{{'STYLER.opacity' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="width"
+    (changes)="emitChange()"
+    step="0.1"
+    min="0"
+    max="20"
+    label="{{'STYLER.width' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="blur"
+    (changes)="emitChange()"
+    step="0.1"
+    min="0"
+    max="20"
+    label="{{'STYLER.blur' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.cap' | translate}}:</div>
+    <div class="p-1 w-75">
+      <select
+        class="form-control"
+        [(ngModel)]="symbolizer.cap"
+        (change)="emitChange()"
+        [ngModelOptions]="{standalone: true}"
+      >
+        <option *ngFor="let cap of caps">{{cap}}</option>
+      </select>
+    </div>
+  </div>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="gapWidth"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="10"
+    label="{{'STYLER.gapWidth' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <div class="d-flex flex-row">
+    <div class="p-1 w-25">{{'STYLER.join' | translate}}:</div>
+    <div class="p-1 w-75">
+      <select
+        class="form-control"
+        [(ngModel)]="symbolizer.join"
+        (change)="emitChange()"
+        [ngModelOptions]="{standalone: true}"
+      >
+        <option *ngFor="let join of joins">{{join}}</option>
+      </select>
+    </div>
+  </div>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="miterLimit"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="90"
+    label="{{'STYLER.miterLimit' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="perpendicularOffset"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="20"
+    label="{{'STYLER.perpendicularOffset' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="roundLimit"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="90"
+    label="{{'STYLER.roundLimit' | translate}}"
+  ></hs-symbolizer-slider>
+
+  <hs-symbolizer-slider
+    [symbolizer]="symbolizer"
+    attribute="spacing"
+    (changes)="emitChange()"
+    step="1"
+    min="0"
+    max="20"
+    label="{{'STYLER.spacing' | translate}}"
+  ></hs-symbolizer-slider>
+</form>

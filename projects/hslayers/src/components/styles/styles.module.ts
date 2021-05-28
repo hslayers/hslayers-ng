@@ -16,6 +16,7 @@ import {HsFilterComponent} from './filter.component';
 import {HsFiltersComponent} from './filters.component';
 import {HsFiltersService} from './filters.service';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer.component';
+import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRuleComponent} from './rule.component';
@@ -35,6 +36,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsMarkSymbolizerComponent,
     HsIconSymbolizerComponent,
     HsTextSymbolizerComponent,
+    HsLineSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
     HsFiltersComponent,
@@ -56,6 +58,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsMarkSymbolizerComponent,
     HsIconSymbolizerComponent,
     HsTextSymbolizerComponent,
+    HsLineSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
     HsFiltersComponent,
@@ -70,6 +73,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsMarkSymbolizerComponent,
     HsIconSymbolizerComponent,
     HsTextSymbolizerComponent,
+    HsLineSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
     HsFiltersComponent,

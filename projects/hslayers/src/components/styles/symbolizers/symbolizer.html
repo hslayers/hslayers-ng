@@ -8,6 +8,9 @@
         <span *ngIf="symbolizer.kind == 'Fill'"
           >{{'STYLER.fillSymbolizer' | translate}}</span
         >
+        <span *ngIf="symbolizer.kind == 'Line'"
+          >{{'STYLER.lineSymbolizer' | translate}}</span
+        >
         <span *ngIf="symbolizer.kind == 'Icon'"
           >{{'STYLER.iconSymbolizer' | translate}}</span
         >
@@ -33,6 +36,11 @@
       (changes)="emitChange()"
       *ngIf="symbolizer.kind == 'Fill'"
     ></hs-fill-symbolizer>
+    <hs-line-symbolizer
+      [symbolizer]="symbolizer"
+      (changes)="emitChange()"
+      *ngIf="symbolizer.kind == 'Line'"
+    ></hs-line-symbolizer>
     <hs-mark-symbolizer
       [symbolizer]="symbolizer"
       (changes)="emitChange()"
