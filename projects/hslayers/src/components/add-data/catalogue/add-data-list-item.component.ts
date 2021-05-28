@@ -133,6 +133,7 @@ export class HsAddDataListItemComponent {
    * @description Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(layer: HsAddDataLayerDescriptor): Promise<void> {
+    if(!layer.editable) return
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
