@@ -24,7 +24,7 @@ export class HsFiltersComponent {
   }
 
   remove(): void {
-    this.rule.filter.length = 0;
+    delete this.rule.filter;
     this.changes.emit();
   }
 }

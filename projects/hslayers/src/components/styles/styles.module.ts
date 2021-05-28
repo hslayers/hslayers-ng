@@ -10,13 +10,13 @@ import {TranslateModule} from '@ngx-translate/core';
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddFilterButtonComponent} from './add-filter-button.component';
+import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker.component';
-import {HsComparisonFilterComponent} from './comparison-filter.component';
+import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer.component';
-import {HsFilterComponent} from './filter.component';
-import {HsFiltersComponent} from './filters.component';
-import {HsFiltersService} from './filters.service';
+import {HsFilterComponent} from './filters/filter.component';
+import {HsFiltersComponent} from './filters/filters.component';
+import {HsFiltersService} from './filters/filters.service';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component';
