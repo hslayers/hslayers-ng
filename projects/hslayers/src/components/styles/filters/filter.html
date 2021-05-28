@@ -5,7 +5,11 @@
       <hs-add-filter-button
         (clicks)="HsFiltersService.add($event.kind, true, filter)"
       ></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" (click)="remove()">
+      <button
+        class="btn btn-outline-danger btn-sm m-1"
+        [title]="'STYLER.removeFilter' | translate"
+        (click)="remove()"
+      >
         <span class="icon-trash"></span>
       </button>
     </div>

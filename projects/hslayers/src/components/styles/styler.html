@@ -23,13 +23,16 @@
         <div ngbDropdown class="d-inline-block">
           <button
             class="btn btn-outline-primary btn-sm"
+            [title]="'STYLER.addRule' | translate"
             id="dropdownAddRule"
             ngbDropdownToggle
           >
             <span class="icon-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
-            <button ngbDropdownItem (click)="HsStylerService.addRule('Simple')">Simple rule</button>
+            <button ngbDropdownItem (click)="HsStylerService.addRule('Simple')">
+              Simple rule
+            </button>
           </div>
         </div>
       </div>
