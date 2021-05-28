@@ -3,7 +3,7 @@
         <a data-toggle="tooltip" [title]="layer.description || ''">{{layer.title || layer.description}}</a>
     </div>
     <div class="d-flex flex-column w-100 justify-content-around mt-2"
-        *ngIf="HsAddDataCatalogueService.selectedLayer?.id == layer.id">
+        *ngIf="hsAddDataCatalogueService.selectedLayer?.id == layer.id">
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
             <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
@@ -17,7 +17,7 @@
             <a class="btn btn-sm" [hidden]="selectTypeToAddLayerVisible"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
-                <img [hidden]="!loadingInfo" [src]="HsUtilsService.getAjaxLoaderIcon()" />
+                <img [hidden]="!loadingInfo" [src]="hsUtilsService.getAjaxLoaderIcon()" />
                 <span class="ml-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
                     translate}}</span>
             </a>
@@ -40,12 +40,12 @@
         </div>
     </div>
     <div class="d-none">
-        <div class="p-0" [hidden]='HsAddDataCatalogueService.layerDownload(layer.endpoint,layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='HsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
+        <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) == "#"'>
+            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)'
                 data-toggle="tooltip" [title]="'COMMON.download' | translate"><i class="icon-download"></i></a>
         </div>
-        <!-- <div class="p-0" [hidden]='layer.endpoint.type != "micka" || HsAddDataCatalogueService.layerRDF(layer.endpoint, layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='HsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
+        <!-- <div class="p-0" [hidden]='layer.endpoint.type != "micka" || hsAddDataCatalogueService.layerRDF(layer.endpoint, layer) == "#"'>
+            <a class="btn btn-sm btn-secondary" [href]='hsAddDataCatalogueService.layerRDF(layer.endpoint, layer)'
                 data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
         </div> -->
     </div>

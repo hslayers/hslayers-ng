@@ -16,12 +16,12 @@ import {getPreferedFormat} from '../format-utils';
 @Injectable({providedIn: 'root'})
 export class HsArcgisGetCapabilitiesService {
   constructor(
-    private HttpClient: HttpClient,
-    public HsEventBusService: HsEventBusService,
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsLogService: HsLogService,
-    public HsAddDataService: HsAddDataService
+    private httpClient: HttpClient,
+    public hsEventBusService: HsEventBusService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsLogService: HsLogService,
+    public hsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -75,25 +75,26 @@ export class HsArcgisGetCapabilitiesService {
    */
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = this.HsUtilsService.getParamsFromUrl(service_url);
+    const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     params.f = 'json';
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.HsUtilsService.proxify(url);
+    url = this.hsUtilsService.proxify(url);
     try {
-      const r = await this.HttpClient.get(url, {
-        responseType: 'json',
-      })
-        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
+      const r = await this.httpClient
+        .get(url, {
+          responseType: 'json',
+        })
+        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
         .toPromise();
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'ArcGIS',
         response: r,
       });
       return r;
     } catch (e) {
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'ArcGIS',
         response: e,
         error: true,
@@ -131,9 +132,9 @@ export class HsArcgisGetCapabilitiesService {
 
     const tmp = [];
     for (const subservice of service) {
-      this.HsLogService.log('Load service', subservice);
+      this.hsLogService.log('Load service', subservice);
       for (const layer of subservice.Layer) {
-        this.HsLogService.log('Load service', this);
+        this.hsLogService.log('Load service', this);
         let attributions = [];
         if (layer.Attribution) {
           attributions = [
@@ -168,7 +169,7 @@ export class HsArcgisGetCapabilitiesService {
           useInterimTilesOnError: false,
           extent: layer.BoundingBox,
         });
-        this.HsMapService.proxifyLayerLoader(new_layer, true);
+        this.hsMapService.proxifyLayerLoader(new_layer, true);
         tmp.push(new_layer);
       }
     }
@@ -185,7 +186,7 @@ export class HsArcgisGetCapabilitiesService {
     let found = false;
     for (const val of srss) {
       if (
-        this.HsMapService.map
+        this.hsMapService.map
           .getView()
           .getProjection()
           .getCode()

@@ -52,19 +52,19 @@ export class HsAddDataCatalogueService {
 
   constructor(
     public hsConfig: HsConfig,
-    public HsAddDataVectorService: HsAddDataVectorService,
+    public hsAddDataVectorService: HsAddDataVectorService,
     public hsEventBusService: HsEventBusService,
     public hsMickaBrowserService: HsMickaBrowserService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLayoutService: HsLayoutService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService,
-    public HsMapService: HsMapService,
-    public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
-    public HsAddDataService: HsAddDataService,
+    public hsMapService: HsMapService,
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
+    public hsAddDataService: HsAddDataService,
     public endpointsWithDatasourcesPipe: EndpointsWithDatasourcesPipe,
     private zone: NgZone,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
     this.data.query = {
       textFilter: '',
@@ -121,13 +121,13 @@ export class HsAddDataCatalogueService {
       this.calcExtentLayerVisibility();
     });
 
-    this.HsCommonLaymanService.authChange.subscribe(() => {
+    this.hsCommonLaymanService.authChange.subscribe(() => {
       if (this.panelVisible()) {
         this.reloadData();
       }
     });
 
-    this.HsAddDataService.datasetSelected.subscribe(({type}) => {
+    this.hsAddDataService.datasetSelected.subscribe(({type}) => {
       if (type == 'catalogue' && this.panelVisible()) {
         this.reloadData();
       }
@@ -169,9 +169,9 @@ export class HsAddDataCatalogueService {
       }
       this.clearLoadedData();
 
-      this.HsMapService.loaded().then(() => {
+      this.hsMapService.loaded().then(() => {
         this.layersLoading = true;
-        this.HsAddDataCatalogueMapService.clearExtentLayer();
+        this.hsAddDataCatalogueMapService.clearExtentLayer();
         const observables = [];
 
         //TODO Mark non functional endpoint
@@ -305,7 +305,7 @@ export class HsAddDataCatalogueService {
    * Use all query params (search text, bbox, params.., sorting, start)
    */
   queryCatalog(catalog: HsEndpoint) {
-    this.HsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
+    this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
     let query;
     switch (catalog.type) {
       case 'micka':
@@ -313,7 +313,7 @@ export class HsAddDataCatalogueService {
           catalog,
           this.data,
           (feature: Feature) =>
-            this.HsAddDataCatalogueMapService.addExtentFeature(feature),
+            this.hsAddDataCatalogueMapService.addExtentFeature(feature),
           this.data.textField
         );
         return query;
@@ -421,7 +421,7 @@ export class HsAddDataCatalogueService {
       } else {
         //Layman layers of logged user/ with write access
         if (whatToAdd.editable) {
-          const layer = await this.HsAddDataVectorService.addVectorLayer(
+          const layer = await this.hsAddDataVectorService.addVectorLayer(
             'wfs',
             whatToAdd.link,
             whatToAdd.name,
@@ -433,7 +433,7 @@ export class HsAddDataCatalogueService {
               workspace: whatToAdd.workspace,
             }
           );
-          this.HsAddDataVectorService.fitExtent(layer);
+          this.hsAddDataVectorService.fitExtent(layer);
         } else {
           //Layman layers without write access
           setTimeout(() => {
@@ -447,7 +447,7 @@ export class HsAddDataCatalogueService {
         this.hsLayoutService.setMainPanel('layermanager');
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
-      const layer = await this.HsAddDataVectorService.addVectorLayer(
+      const layer = await this.hsAddDataVectorService.addVectorLayer(
         whatToAdd.type.toLowerCase(),
         whatToAdd.link,
         whatToAdd.name,
@@ -456,7 +456,7 @@ export class HsAddDataCatalogueService {
         whatToAdd.projection,
         {extractStyles: whatToAdd.extractStyles}
       );
-      this.HsAddDataVectorService.fitExtent(layer);
+      this.hsAddDataVectorService.fitExtent(layer);
     } else {
       this.hsLayoutService.setMainPanel('layermanager');
     }
@@ -466,7 +466,7 @@ export class HsAddDataCatalogueService {
   datasetSelect(id_selected: string): void {
     this.data.wms_connecting = false;
     this.data.id_selected = id_selected;
-    this.HsAddDataService.selectType(id_selected);
+    this.hsAddDataService.selectType(id_selected);
     this.calcExtentLayerVisibility();
   }
 
@@ -498,8 +498,8 @@ export class HsAddDataCatalogueService {
   }
 
   calcExtentLayerVisibility(): void {
-    this.HsAddDataCatalogueMapService.extentLayer.setVisible(
-      this.panelVisible() && this.HsAddDataService.typeSelected == 'catalogue'
+    this.hsAddDataCatalogueMapService.extentLayer.setVisible(
+      this.panelVisible() && this.hsAddDataService.typeSelected == 'catalogue'
     );
   }
 }

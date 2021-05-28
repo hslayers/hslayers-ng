@@ -33,22 +33,22 @@ export class HsAddDataUrlWmtsService {
   layerToSelect: any;
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    public hsMapService: HsMapService,
+    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsDimensionService: HsDimensionService,
-    public HsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService,
-    public HsConfig: HsConfig,
-    public HsAddDataService: HsAddDataService,
-    public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsLayoutService: HsLayoutService,
+    public hsUtilsService: HsUtilsService,
+    public hsConfig: HsConfig,
+    public hsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
-    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });
 
-    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'WMTS') {
           if (!response && !error) {
@@ -84,7 +84,7 @@ export class HsAddDataUrlWmtsService {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
   /**
    * Parse information recieved in WMTS getCapabilities respond
@@ -104,7 +104,7 @@ export class HsAddDataUrlWmtsService {
       this.version = caps.Version || caps.version;
       this.services = caps.Contents.Layer;
 
-      this.HsAddDataUrlService.selectLayerByName(
+      this.hsAddDataUrlService.selectLayerByName(
         this.layerToSelect,
         this.services,
         'Title'
@@ -134,7 +134,7 @@ export class HsAddDataUrlWmtsService {
     for (const layer of this.services) {
       this.addLayersRecursively(layer);
     }
-    this.HsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layermanager');
     //FIX ME: to implement
     // this.zoomToLayers();
   }
@@ -168,7 +168,7 @@ export class HsAddDataUrlWmtsService {
     if (prefered.length != 0) {
       const preferCurrent = prefered.find((set) =>
         set.TileMatrixSet.includes(
-          this.HsMapService.map.getView().getProjection().getCode()
+          this.hsMapService.map.getView().getProjection().getCode()
         )
       );
       return preferCurrent
@@ -232,7 +232,7 @@ export class HsAddDataUrlWmtsService {
       const wmtsSource = new WMTS(options);
       // set the data source for raster and vector tile layers
       wmts.setSource(wmtsSource);
-      this.HsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
+      this.hsMapService.addLayer(wmts, DuplicateHandling.RemoveOriginal);
       layer.base = false;
     } catch (e) {
       throw new Error(e);

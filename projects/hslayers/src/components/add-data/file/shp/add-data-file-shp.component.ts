@@ -47,22 +47,22 @@ export class HsAddDataFileShpComponent implements OnInit {
   };
 
   constructor(
-    public HsAddDataFileShpService: HsAddDataFileShpService,
+    public hsAddDataFileShpService: HsAddDataFileShpService,
     public hsLayoutService: HsLayoutService,
     public hsLaymanService: HsLaymanService,
     public hsLog: HsLogService,
-    public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
+    public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsUtilsService: HsUtilsService,
-    public HsAddDataService: HsAddDataService,
+    public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
     const layman = this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type == 'layman'
     )[0];
     if (layman) {
-      this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+      this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
       });
@@ -138,23 +138,24 @@ export class HsAddDataFileShpComponent implements OnInit {
     if (!this.endpoint) {
       this.pickEndpoint();
     }
-    this.HsAddDataFileShpService.add(
-      this.endpoint,
-      this.files,
-      this.name,
-      this.title,
-      this.abstract,
-      this.srs,
-      this.sld,
-      this.access_rights
-    )
+    this.hsAddDataFileShpService
+      .add(
+        this.endpoint,
+        this.files,
+        this.name,
+        this.title,
+        this.abstract,
+        this.srs,
+        this.sld,
+        this.access_rights
+      )
       .then((data) => {
         this.name = data[0].name; //Name translated to Layman-safe name
         return this.describeNewLayer(this.endpoint, this.name);
       })
       .then((descriptor) => {
         this.resultCode = 'success';
-        this.HsAddDataService.selectType('url');
+        this.hsAddDataService.selectType('url');
         setTimeout(() => {
           this.hsEventBusService.owsFilling.next({
             type: 'wms',

@@ -11,7 +11,7 @@ export class HsGetCapabilitiesErrorComponent implements HsDialogComponent {
 
   capabilitiesErrorModalVisible;
 
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
+  constructor(public hsDialogContainerService: HsDialogContainerService) {}
   viewRef: ViewRef;
 
   ngOnInit(): void {
@@ -19,6 +19,6 @@ export class HsGetCapabilitiesErrorComponent implements HsDialogComponent {
   }
 
   close() {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

@@ -43,9 +43,9 @@ export class HsAddDataUrlWmsService {
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
-    public HsAddDataService: HsAddDataService,
-    public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
     this.url = '';
     this.data = {
@@ -57,19 +57,19 @@ export class HsAddDataUrlWmsService {
       addUnder: null,
     };
 
-    this.HsEventBusService.olMapLoads.subscribe(() => {
+    this.hsEventBusService.olMapLoads.subscribe(() => {
       this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
     });
-    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });
 
-    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'WMS') {
           if (!response && !error) {
@@ -104,7 +104,7 @@ export class HsAddDataUrlWmsService {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   /**
@@ -188,7 +188,7 @@ export class HsAddDataUrlWmsService {
       } else {
         this.data.extent = this.calcAllLayersExtent(this.data.services);
       }
-      this.HsAddDataUrlService.selectLayerByName(
+      this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
         'Name'
@@ -491,7 +491,7 @@ export class HsAddDataUrlWmsService {
       base: this.data.base,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.HsAddDataService.addLayer(new_layer, this.data.addUnder);
+    this.hsAddDataService.addLayer(new_layer, this.data.addUnder);
   }
 
   private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
@@ -548,7 +548,7 @@ export class HsAddDataUrlWmsService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.HsAddDataService.addLayer(layer, addUnder);
+            this.hsAddDataService.addLayer(layer, addUnder);
           }
         });
       });

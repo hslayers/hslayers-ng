@@ -30,9 +30,9 @@ export class HsAddDataArcGisService {
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService,
-    public HsAddDataService: HsAddDataService
+    public hsEventBusService: HsEventBusService,
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataService: HsAddDataService
   ) {
     this.data = {
       useResampling: false,
@@ -41,12 +41,12 @@ export class HsAddDataArcGisService {
       registerMetadata: true,
       tileSize: 512,
     };
-    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });
 
-    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'ArcGIS') {
           if (!response && !error) {
@@ -82,7 +82,7 @@ export class HsAddDataArcGisService {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   capabilitiesReceived(response, layerToSelect: string): void {
@@ -103,7 +103,7 @@ export class HsAddDataArcGisService {
       this.data.srss = [caps.spatialReference.wkid];
       this.data.services = caps.layers;
 
-      this.HsAddDataUrlService.selectLayerByName(
+      this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
         'Name'

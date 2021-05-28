@@ -13,7 +13,8 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
   templateUrl: './add-data-catalogue-metadata-dialog.html',
 })
 export class HsAddDataMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data;
 
   selectedLayer;
@@ -23,8 +24,8 @@ export class HsAddDataMetadataDialogComponent
 
   constructor(
     public hsConfig: HsConfig, // used in template
-    public HsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
-    public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
+    public hsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
     public hsDialogContainerService: HsDialogContainerService
   ) {}
 
@@ -47,7 +48,7 @@ export class HsAddDataMetadataDialogComponent
     layer: HsAddDataLayerDescriptor,
     type: string
   ): void {
-    this.HsAddDataCatalogueService.addLayerToMap(ds, layer, type);
+    this.hsAddDataCatalogueService.addLayerToMap(ds, layer, type);
     this.close();
   }
 
