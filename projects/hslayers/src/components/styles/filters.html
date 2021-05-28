@@ -1,91 +1,35 @@
 <div>
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1">
-      <div ngbDropdown class="d-inline-block">
-        <button
-          class="btn btn-outline-primary btn-sm"
-          id="dropdownAddFilter"
-          ngbDropdownToggle
-        >
-          <span class="icon-plus"></span>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownAddFilter">
-          <button ngbDropdownItem (click)="add('AND', false)">
-            {{'STYLER.andFilter' | translate}}
-          </button>
-          <button ngbDropdownItem (click)="add('OR', false)">
-            {{'STYLER.orFilter' | translate}}
-          </button>
-          <button ngbDropdownItem (click)="add('NOT', false)">
-            {{'STYLER.notFilter' | translate}}
-          </button>
-          <button ngbDropdownItem (click)="add('COMPARE', false)">
-            {{'STYLER.comparisonFilter' | translate}}
-          </button>
-        </div>
+    <hs-add-filter-button
+      (clicks)="add($event.kind, false)"
+    ></hs-add-filter-button>
+  </div>
+  <div *ngIf="HsFiltersService.isLogOp(rule.filter)" class="card">
+    <div class="d-flex flex-row card-header p-0">
+      <div class="p-2">
+        {{HsFiltersService.humanReadableLogOp(rule.filter[0])}}
       </div>
+      <hs-add-filter-button
+        (clicks)="add($event.kind, true)"
+      ></hs-add-filter-button>
+      <button class="btn btn-outline-danger btn-sm m-1" (click)="remove()">
+        <span class="icon-trash"></span>
+      </button>
+    </div>
+    <div
+      class="d-flex flex-row"
+      *ngFor="let item of rule.filter; let i = index"
+    >
+      <hs-filter
+        (changes)="emitChange()"
+        *ngIf="i>0"
+        [filter]="item"
+        [parent]="rule.filter"
+      ></hs-filter>
     </div>
   </div>
-    <div *ngIf="rule.filter && HsFiltersService.isLogOp(rule.filter)" class="card">
-      <div class="d-flex flex-row card-header">
-        <div class="p-2">
-          {{HsFiltersService.humanReadableLogOp(rule.filter[0])}}
-        </div>
-        <div class="p-1">
-          <div ngbDropdown class="d-inline-block">
-            <button
-              class="btn btn-outline-primary btn-sm"
-              id="dropdownAddFilter"
-              ngbDropdownToggle
-            >
-              <span class="icon-plus"></span>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownAddFilter">
-              <button ngbDropdownItem (click)="add('AND', true)">
-                {{'STYLER.andFilter' | translate}}
-              </button>
-              <button ngbDropdownItem (click)="add('OR', true)">
-                {{'STYLER.orFilter' | translate}}
-              </button>
-              <button ngbDropdownItem (click)="add('NOT', true)">
-                {{'STYLER.notFilter' | translate}}
-              </button>
-              <button ngbDropdownItem (click)="add('COMPARE', true)">
-                {{'STYLER.comparisonFilter' | translate}}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="d-flex flex-row" *ngFor="let item of rule.filter; let i = index">
-        <hs-filter (changes)="emitChange()" *ngIf="i>0" [filter]="item"></hs-filter>
-      </div>
-    </div>
-    <div  class="d-flex flex-row" *ngIf="rule.filter && !(HsFiltersService.isLogOp(rule.filter))">
-      <div>
-        <input
-          class="form-control"
-          [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="rule.filter[1]"
-          (change)="emitChange()"
-        />
-      </div>
-      <div>
-        <input
-          class="form-control"
-          [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="rule.filter[0]"
-          (change)="emitChange()"
-        />
-      </div>
-      <div>
-        <input
-          class="form-control"
-          [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="rule.filter[2]"
-          (change)="emitChange()"
-        />
-      </div>
-    </div>
- 
+  <hs-comparison-filter
+    *ngIf="rule.filter?.length > 0 && !(HsFiltersService.isLogOp(rule.filter))"
+    [filter]="rule.filter"
+  ></hs-comparison-filter>
 </div>
