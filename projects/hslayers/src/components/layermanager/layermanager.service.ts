@@ -337,7 +337,7 @@ export class HsLayerManagerService {
    * @private
    * @param title
    */
-  getLayerByTitle(title: string): Layer | undefined {
+  getLayerByTitle(title: string): HsLayerDescriptor | undefined {
     let tmp;
     for (const layer of this.data.layers) {
       if (layer.title == title) {
