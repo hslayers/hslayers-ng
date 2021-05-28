@@ -7,7 +7,7 @@
             class="btn btn-primary btn-block w-75">{{'ADDDATA.CATALOGUE.loading' | translate}}<img class="ml-2"
                 [src]="hsUtilsService.getAjaxLoaderIcon()" /></button>
         <button [hidden]="!hsAddDataArcGisService.loadingInfo" class="btn btn-secondary"
-            (click)="hsEventBusService.cancelUrlRequest.next()">&#10006;
+            (click)="hsAddDataService.cancelUrlRequest.next()">&#10006;
         </button>
     </div>
 

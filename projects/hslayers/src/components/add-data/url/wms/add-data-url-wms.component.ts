@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -34,7 +35,8 @@ export class HsAddDataWmsComponent implements OnDestroy {
     public hsDialogContainerService: HsDialogContainerService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsLanguageService: HsLanguageService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public hsAddDataService: HsAddDataService
   ) {
     this.data = this.hsAddDataUrlWmsService.data;
     //FIXME: is it even fired?

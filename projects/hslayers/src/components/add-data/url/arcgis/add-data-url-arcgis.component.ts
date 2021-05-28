@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -28,7 +29,8 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
+    public hsAddDataService: HsAddDataService
   ) {
     this.data = hsAddDataArcGisService.data;
 
