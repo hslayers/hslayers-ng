@@ -31,9 +31,11 @@
                 <i class="icon-info-sign icon-primary"></i><span class="ml-1">{{'COMMON.metadata' |
                     translate}}</span>
             </a>
-            <a class="btn btn-sm" *ngIf="layer.editable"
-                (click)="$event.stopPropagation();removeLayer(layer)">
-                <i class="icon-trash text-danger"></i><span class="ml-1">{{'COMMON.removeLayer' | translate}}</span>
+            <a class="btn btn-sm" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip" data-placement="bottom"
+                [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translate">
+                <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
+                    [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ml-1"
+                    *ngIf="layer.editable">{{'COMMON.removeLayer' | translate}}</span>
             </a>
         </div>
     </div>
