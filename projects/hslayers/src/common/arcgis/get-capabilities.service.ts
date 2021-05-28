@@ -5,6 +5,7 @@ import {Layer, Tile} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsLogService} from '../log/log.service';
 import {HsMapService} from '../../components/map/map.service';
@@ -19,7 +20,8 @@ export class HsArcgisGetCapabilitiesService {
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsLogService: HsLogService
+    public HsLogService: HsLogService,
+    public HsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -83,7 +85,7 @@ export class HsArcgisGetCapabilitiesService {
       const r = await this.HttpClient.get(url, {
         responseType: 'json',
       })
-        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
         .toPromise();
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'ArcGIS',

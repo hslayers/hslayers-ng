@@ -43,7 +43,7 @@ export class HsAddDataUrlWmtsService {
     public HsEventBusService: HsEventBusService,
     public HsAddDataUrlService: HsAddDataUrlService
   ) {
-    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });

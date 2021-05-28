@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {takeUntil} from 'rxjs/operators';
 
+import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -13,7 +14,8 @@ export class HsWfsGetCapabilitiesService {
     private HttpClient: HttpClient,
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -91,7 +93,7 @@ export class HsWfsGetCapabilitiesService {
       const r = await this.HttpClient.get(url, {
         responseType: 'text',
       })
-        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
         .toPromise();
       this.HsEventBusService.owsCapabilitiesReceived.next({
         type: 'WFS',

@@ -64,7 +64,7 @@ export class HsAddDataUrlWmsService {
         .getCode()
         .toUpperCase();
     });
-    this.HsEventBusService.cancelUrlRequest.subscribe(() => {
+    this.HsAddDataService.cancelUrlRequest.subscribe(() => {
       this.loadingInfo = false;
       this.showDetails = false;
     });

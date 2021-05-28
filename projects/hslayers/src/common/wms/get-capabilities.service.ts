@@ -7,6 +7,7 @@ import {TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {takeUntil} from 'rxjs/operators';
 
+import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
@@ -21,7 +22,8 @@ export class HsWmsGetCapabilitiesService {
     public HsEventBusService: HsEventBusService,
     public HsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsCommonEndpointsService: HsCommonEndpointsService
+    public HsCommonEndpointsService: HsCommonEndpointsService,
+    public HsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -111,7 +113,7 @@ export class HsWmsGetCapabilitiesService {
           )[0]?.url
         ),
       })
-        .pipe(takeUntil(this.HsEventBusService.cancelUrlRequest))
+        .pipe(takeUntil(this.HsAddDataService.cancelUrlRequest))
         .toPromise();
       if (castOwsCapabilitiesReceived) {
         this.HsEventBusService.owsCapabilitiesReceived.next({

@@ -16,7 +16,10 @@ export class HsAddDataService {
   //Holds reference to data.url.component type selected
   urlType: string;
   datasetSelected: Subject<{type: any}> = new Subject();
-
+  /**
+   * Cancels any external url data request from datasources panel
+   */
+  cancelUrlRequest: Subject<void> = new Subject<void>();
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
