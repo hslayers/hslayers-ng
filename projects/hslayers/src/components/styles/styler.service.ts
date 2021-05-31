@@ -10,6 +10,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {Style as GeoStylerStyle} from 'geostyler-style';
+import {StyleFunction} from 'ol/style';
 import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsEventBusService} from '../core/event-bus.service';
@@ -369,12 +370,38 @@ export class HsStylerService {
     return sld;
   }
 
-  addRule(kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale'): void {
+  addRule(
+    kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster'
+  ): void {
     switch (kind) {
+      case 'Cluster':
+        this.styleObject.rules.push({
+          name: 'Untitled rule',
+          filter: [
+            '&&',
+            ['!=', 'features', 'undefined'],
+            ['!=', 'features', '[object Object]'],
+          ],
+          symbolizers: [
+            {kind: 'Mark', color: '#000', wellKnownName: 'circle'},
+            {
+              kind: 'Text',
+              label: '{{features}}',
+              haloColor: '#fff',
+              color: '#000',
+              offset: [0, -10],
+            },
+          ],
+        });
+        break;
       case 'Simple':
       default:
-        this.styleObject.rules.push({name: 'Untitled rule', symbolizers: []});
+        this.styleObject.rules.push({
+          name: 'Untitled rule',
+          symbolizers: [],
+        });
     }
+    this.save();
   }
 
   encodeTob64(str: string): string {
@@ -397,13 +424,45 @@ export class HsStylerService {
 
   async save(): Promise<void> {
     try {
-      const style = await this.geoStylerStyleToOlStyle(this.styleObject);
+      let style = await this.geoStylerStyleToOlStyle(this.styleObject);
+      if (this.layer.getSource().getSource) {
+        style = this.wrapStyleForClusters(style);
+      }
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
       setSld(this.layer, sld);
     } catch (ex) {
       this.HsLogService.error(ex);
     }
+  }
+
+  /**
+   * HACK is needed to style cluster layers. It wraps existing OL style function
+   * in a function which searches for for Text styles and in them for serialized
+   * feature arrays and instead sets the length of this array as the label.
+   * If the geostyler text symbolizer had {{features}} as the text label template
+   * (which returns the "features" attribute of the parent/cluster feature) and returned
+   * '[object Object], [object Object]' the result would become "2".
+   * See https://github.com/geostyler/geostyler-openlayers-parser/issues/227
+   * @param style
+   * @returns
+   */
+  wrapStyleForClusters(style: StyleFunction): StyleFunction {
+    return (feature, resolution) => {
+      const tmp: Style[] = style(feature, resolution);
+      for (const evaluatedStyle of tmp) {
+        if (
+          evaluatedStyle.getText &&
+          evaluatedStyle.getText()?.getText()?.includes('[object Object]')
+        ) {
+          const featureListSerialized = evaluatedStyle.getText().getText();
+          evaluatedStyle
+            .getText()
+            .setText(featureListSerialized.split(',').length.toString());
+        }
+      }
+      return tmp;
+    };
   }
 
   /**
