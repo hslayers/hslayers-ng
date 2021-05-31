@@ -723,7 +723,8 @@
     "toggleScaleDenominators": "Toggle scale denominators",
     "removeFilter": "Remove filter",
     "simpleRule": "Simple rule",
-    "clusterRule": "Rule for clusters"
+    "clusterRule": "Rule for clusters",
+    "removeRule": "Remove rule"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

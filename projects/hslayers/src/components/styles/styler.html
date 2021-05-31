@@ -47,7 +47,15 @@
     >
       <ngb-panel *ngFor="let rule of HsStylerService.styleObject.rules">
         <ng-template ngbPanelTitle>
-          <span>{{rule.name || 'untitled rule'}}</span>
+          <span style="display: inline-block;text-align: left; width: 18.2em">{{rule.name || 'untitled rule'}}</span>
+          <button
+          class="btn btn-danger btn-sm"
+          (click)="HsStylerService.removeRule(rule)"
+          data-toggle="tooltip"
+          [title]="'STYLER.removeRule' | translate"
+        >
+          <i class="icon-trash"></i>
+        </button>
         </ng-template>
         <ng-template ngbPanelContent>
           <hs-rule [rule]="rule" (changes)="HsStylerService.save()"></hs-rule>

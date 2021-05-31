@@ -9,7 +9,7 @@ import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {Style as GeoStylerStyle} from 'geostyler-style';
+import {Rule, Style as GeoStylerStyle} from 'geostyler-style';
 import {StyleFunction} from 'ol/style';
 import {createDefaultStyle} from 'ol/style/Style';
 
@@ -404,6 +404,11 @@ export class HsStylerService {
     this.save();
   }
 
+  removeRule(rule: Rule): void {
+    this.styleObject.rules.splice(this.styleObject.rules.indexOf(rule), 1);
+    this.save();
+  }
+
   encodeTob64(str: string): string {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
@@ -425,6 +430,10 @@ export class HsStylerService {
   async save(): Promise<void> {
     try {
       let style = await this.geoStylerStyleToOlStyle(this.styleObject);
+      if(this.styleObject.rules.length == 0){
+        this.HsLogService.error('Missing style rules for layer', this.layer);
+        style = createDefaultStyle;
+      }
       if (this.layer.getSource().getSource) {
         style = this.wrapStyleForClusters(style);
       }
