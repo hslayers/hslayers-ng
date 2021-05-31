@@ -34,6 +34,7 @@
   </div>
   <hs-comparison-filter
     *ngIf="rule.filter?.length > 0 && !(HsFiltersService.isLogOp(rule.filter))"
+    (changes)="emitChange()"
     [filter]="rule.filter"
   ></hs-comparison-filter>
 </div>
