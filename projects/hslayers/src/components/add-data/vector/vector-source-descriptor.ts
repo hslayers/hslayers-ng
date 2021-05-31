@@ -3,7 +3,6 @@ import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import VectorSource from 'ol/source/Vector';
 import {GPX, GeoJSON, KML} from 'ol/format';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {VectorSourceFromFeatures} from './VectorSourceFromFeatures';
 import {VectorSourceFromUrl} from './VectorSourceFromUrl';
 export class VectorSourceDescriptor {
   mapProjection;
@@ -23,7 +22,6 @@ export class VectorSourceDescriptor {
   };
   sourceClass:
     | typeof VectorSourceFromUrl
-    | typeof VectorSourceFromFeatures
     | typeof SparqlJson
     | typeof VectorSource;
 
@@ -75,7 +73,7 @@ export class VectorSourceDescriptor {
         this.sourceClass = VectorSource;
         break;
       default:
-        this.sourceClass = VectorSourceFromFeatures;
+        this.sourceClass = VectorSource;
         const format = new GeoJSON();
         let features = options.features || [];
         if (typeof features === 'string') {
