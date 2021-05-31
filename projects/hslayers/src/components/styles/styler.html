@@ -31,7 +31,10 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
             <button ngbDropdownItem (click)="HsStylerService.addRule('Simple')">
-              Simple rule
+              {{'STYLER.simpleRule' | translate}}
+            </button>
+            <button ngbDropdownItem (click)="HsStylerService.addRule('Cluster')">
+              {{'STYLER.clusterRule' | translate}}
             </button>
           </div>
         </div>

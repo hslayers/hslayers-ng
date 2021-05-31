@@ -721,7 +721,9 @@
     "addRule": "Add rule",
     "toggleFilters": "Toggle filters",
     "toggleScaleDenominators": "Toggle scale denominators",
-    "removeFilter": "Remove filter"
+    "removeFilter": "Remove filter",
+    "simpleRule": "Simple rule",
+    "clusterRule": "Rule for clusters"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
