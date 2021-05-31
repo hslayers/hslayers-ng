@@ -20,6 +20,7 @@
   <hs-comparison-filter
     *ngIf="filter.length > 1 && !(HsFiltersService.isLogOp(filter))"
     [filter]="filter"
+    (changes)="emitChange()"
     [parent]="parent"
   ></hs-comparison-filter>
 </div>
