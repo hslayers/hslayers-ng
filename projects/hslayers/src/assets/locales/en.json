@@ -724,7 +724,10 @@
     "removeFilter": "Remove filter",
     "simpleRule": "Simple rule",
     "clusterRule": "Rule for clusters",
-    "removeRule": "Remove rule"
+    "removeRule": "Remove rule",
+    "selectIcon": "Select icon",
+    "anchorY": "Anchor Y",
+    "anchorX": "Anchor X"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
