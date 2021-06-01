@@ -153,6 +153,11 @@
                 "output": "./assets"
               },
               {
+                "glob": "**/*",
+                "input": "projects/test-app/src/assets",
+                "output": "./assets"
+              },
+              {
                 "glob": "README.md",
                 "input": "projects/test-app/",
                 "output": "/"
