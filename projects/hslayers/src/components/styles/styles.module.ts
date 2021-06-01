@@ -23,6 +23,7 @@ import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer.component
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRuleComponent} from './rule.component';
 import {HsScaleDenominatorComponent} from './filters/scale-denominator.component';
+import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog.component';
 import {HsSliderComponent} from './symbolizers/slider.component';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
@@ -47,6 +48,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
+    HsSelectIconDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -72,6 +74,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
+    HsSelectIconDialogComponent,
   ],
   providers: [HsStylerService, HsFiltersService],
   entryComponents: [
@@ -90,6 +93,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
+    HsSelectIconDialogComponent,
   ],
 })
 export class HsStylerModule {}

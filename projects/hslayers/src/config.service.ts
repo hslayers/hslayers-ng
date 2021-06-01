@@ -4,6 +4,11 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Themes} from './components/layout/themes/theme';
 
+export type SymbolizerIcon = {
+  name: string;
+  url: string;
+};
+
 @Injectable()
 export class HsConfig {
   cesiumTime?: any;
@@ -106,6 +111,7 @@ export class HsConfig {
   panelWidths?: any;
   sidebarToggleable?: any;
   sizeMode?: string;
+  symbolizerIcons: SymbolizerIcon[];
   openQueryPanelOnDrawEnd?: boolean;
   assetsPath?: string;
   reverseLayerList?: boolean;

@@ -27,6 +27,7 @@ import {
   setSld,
 } from '../../common/layer-extensions';
 import {parseStyle} from './backwards-compatibility';
+import { isFunction } from 'vega';
 
 @Injectable({
   providedIn: 'root',
@@ -430,11 +431,14 @@ export class HsStylerService {
   async save(): Promise<void> {
     try {
       let style = await this.geoStylerStyleToOlStyle(this.styleObject);
-      if(this.styleObject.rules.length == 0){
+      if (this.styleObject.rules.length == 0) {
         this.HsLogService.error('Missing style rules for layer', this.layer);
         style = createDefaultStyle;
       }
-      if (this.layer.getSource().getSource) {
+      /* style is a function when text symbolizer is used. We need some hacking 
+      for cluster layer in that case to have the correct number of features in 
+      cluster display over the label */
+      if (this.layer.getSource().getSource && isFunction(style)) {
         style = this.wrapStyleForClusters(style);
       }
       this.layer.setStyle(style);

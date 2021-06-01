@@ -17,6 +17,9 @@ export class HsRuleComponent {
     if (kind == 'Text') {
       Object.assign(symbolizer, {size: 12, offset: [0, 0]});
     }
+    if (kind == 'Icon') {
+      Object.assign(symbolizer, {offset: [0.5, 0.5]});
+    }
     this.rule.symbolizers.push(symbolizer);
   }
 
