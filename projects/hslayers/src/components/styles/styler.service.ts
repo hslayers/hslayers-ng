@@ -288,7 +288,7 @@ export class HsStylerService {
     const sld = getSld(layer);
     let style = layer.getStyle();
     if (sld && (!style || style == createDefaultStyle)) {
-      style = await this.parseStyle(sld);
+      style = (await this.parseStyle(sld)).style;
       if (style) {
         layer.setStyle(style);
       }
@@ -303,12 +303,12 @@ export class HsStylerService {
    * @param style
    * @returns OL style object
    */
-  async parseStyle(style: any): Promise<Style> {
+  async parseStyle(style: any): Promise<{sld?: string; style: Style}> {
     if (typeof style == 'string') {
-      return await this.sldToOlStyle(style);
+      return {sld: style, style: await this.sldToOlStyle(style)};
     } else if (typeof style == 'object') {
       //Backwards compatibility with style encoded in custom JSON object
-      return parseStyle(style);
+      return {style: parseStyle(style)};
     }
   }
 
