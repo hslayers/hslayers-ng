@@ -111,7 +111,7 @@ export class HsConfig {
   panelWidths?: any;
   sidebarToggleable?: any;
   sizeMode?: string;
-  symbolizerIcons: SymbolizerIcon[];
+  symbolizerIcons?: SymbolizerIcon[];
   openQueryPanelOnDrawEnd?: boolean;
   assetsPath?: string;
   reverseLayerList?: boolean;
@@ -135,7 +135,14 @@ export class HsConfig {
    *  If set to true, only layers with same path are affected by exclusivity
    */
   pathExclusivity?: boolean = false;
-  constructor() {}
+  constructor() {
+    this.symbolizerIcons = [
+      {name: 'favourite', url: '/assets/img/icons/favourite28.svg'},
+      {name: 'gps', url: '/assets/img/icons/gps43.svg'},
+      {name: 'information', url: '/assets/img/icons/information78.svg'},
+      {name: 'wifi', url: '/assets/img/icons/wifi8.svg'},
+    ];
+  }
 
   update?(newConfig: HsConfig): void {
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
