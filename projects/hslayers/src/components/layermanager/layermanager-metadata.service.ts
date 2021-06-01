@@ -353,8 +353,18 @@ export class HsLayerManagerMetadataService {
 
   private fillMetadataUrlsIfNotExist(layer: any, caps: any) {
     if (getMetadata(layer) == undefined) {
+      const capabilitiesURL =
+        caps.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get
+          .OnlineResource;
+      const serviceMetadataURL = capabilitiesURL.includes(
+        caps.Service.OnlineResource
+      )
+        ? capabilitiesURL.includes('getCapabilities')
+          ? capabilitiesURL
+          : `${capabilitiesURL}service=WMS&request=getCapabilities`
+        : caps.Service.OnlineResource;
       setMetadata(layer, {
-        urls: [{onlineResource: caps.Service.OnlineResource}],
+        urls: [{onlineResource: serviceMetadataURL}],
       });
     }
   }
