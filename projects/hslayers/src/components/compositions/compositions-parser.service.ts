@@ -431,7 +431,7 @@ export class HsCompositionsParserService {
    * @returns {Function} Parser function to create layer (using config_parsers service)
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
-  jsonToLayer(lyr_def) {
+  async jsonToLayer(lyr_def): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
@@ -462,7 +462,7 @@ export class HsCompositionsParserService {
           this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
           resultLayer =
-            this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+            await this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
         }
         break;
       default:

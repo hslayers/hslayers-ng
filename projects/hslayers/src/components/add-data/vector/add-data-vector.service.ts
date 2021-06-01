@@ -74,9 +74,9 @@ export class HsAddDataVectorService {
     options: HsVectorLayerOptions,
     addUnder?: BaseLayer
   ): Promise<VectorLayer> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        const lyr = this.createVectorLayer(
+        const lyr = await this.createVectorLayer(
           type,
           url,
           name,
@@ -121,7 +121,7 @@ export class HsAddDataVectorService {
    * @param {HsVectorLayerOptions} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  createVectorLayer(
+  async createVectorLayer(
     type: string,
     url: string,
     name: string,
@@ -129,7 +129,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {}
-  ): VectorLayer {
+  ): Promise<VectorLayer> {
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&
@@ -170,7 +170,7 @@ export class HsAddDataVectorService {
     if (descriptor.layerParams.style) {
       Object.assign(
         descriptor.layerParams,
-        this.HsStylerService.parseStyle(descriptor.layerParams.style)
+        await this.hsStylerService.parseStyle(descriptor.layerParams.style)
       );
     }
     const lyr = new VectorLayer(descriptor.layerParams);

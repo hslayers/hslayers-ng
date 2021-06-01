@@ -337,7 +337,7 @@ export class HsCompositionsLayerParserService {
    * @param {object} lyr_def Layer definition object
    * @description  Parse definition object to create Sparql layer
    */
-  createSparqlLayer(lyr_def) {
+  async createSparqlLayer(lyr_def): Promise<VectorLayer> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
     definition.url = url;
@@ -345,7 +345,7 @@ export class HsCompositionsLayerParserService {
 
     let style = null;
     if (lyr_def.style) {
-      style = this.HsStylerService.parseStyle(lyr_def.style);
+      style = (await this.HsStylerService.parseStyle(lyr_def.style)).style;
     }
 
     const src = new SparqlJson({
@@ -364,6 +364,7 @@ export class HsCompositionsLayerParserService {
       title: lyr_def.title,
     });
     lyr.setVisible(lyr_def.visibility);
+    return lyr;
   }
 
   getLegends(lyr_def): string[] {
@@ -381,7 +382,7 @@ export class HsCompositionsLayerParserService {
    * @returns {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
    * @description Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
    */
-  createVectorLayer(lyr_def) {
+  async createVectorLayer(lyr_def): Promise<VectorLayer> {
     let format = '';
     if (lyr_def.protocol) {
       format = lyr_def.protocol.format;
@@ -401,14 +402,17 @@ export class HsCompositionsLayerParserService {
     };
     let extractStyles = true;
     if (lyr_def.style) {
-      options.style = this.HsStylerService.parseStyle(lyr_def.style);
+      Object.assign(
+        options,
+        await this.HsStylerService.parseStyle(lyr_def.style)
+      );
       extractStyles = false;
     }
     const title = lyr_def.title || 'Layer';
     let layer;
     switch (format) {
       case 'ol.format.KML':
-        layer = this.HsAddDataVectorService.createVectorLayer(
+        layer = await this.HsAddDataVectorService.createVectorLayer(
           'kml',
           lyr_def.protocol.url,
           lyr_def.name || title,
@@ -419,7 +423,7 @@ export class HsCompositionsLayerParserService {
         );
         break;
       case 'ol.format.GeoJSON':
-        layer = this.HsAddDataVectorService.createVectorLayer(
+        layer = await this.HsAddDataVectorService.createVectorLayer(
           'geojson',
           lyr_def.protocol.url,
           lyr_def.name || title,
@@ -431,7 +435,7 @@ export class HsCompositionsLayerParserService {
         break;
       case 'hs.format.WFS':
       case 'WFS':
-        layer = this.HsAddDataVectorService.createVectorLayer(
+        layer = await this.HsAddDataVectorService.createVectorLayer(
           'wfs',
           lyr_def.protocol.url,
           //lyr_def.protocol.LAYERS
@@ -443,13 +447,13 @@ export class HsCompositionsLayerParserService {
         );
         break;
       case 'hs.format.Sparql':
-        layer = this.createSparqlLayer(lyr_def);
+        layer = await this.createSparqlLayer(lyr_def);
         break;
       default:
         const features = lyr_def.features
           ? new GeoJSON().readFeatures(lyr_def.features)
           : undefined;
-        layer = this.HsAddDataVectorService.createVectorLayer(
+        layer = await this.HsAddDataVectorService.createVectorLayer(
           '',
           undefined,
           lyr_def.name || title,
