@@ -1,5 +1,5 @@
 <div>
-    <legend-vector-layer-directive *ngIf="layer.type == 'vector'" [layer-style]="styles" [geometry-type]="geometryTypes">
+    <legend-vector-layer-directive *ngIf="layer.type == 'vector' && layer.autoLegend" [layer-style]="styles" [geometry-type]="geometryTypes">
     </legend-vector-layer-directive>
     <div *ngIf="layer.type == 'wms'">
         <img *ngFor="let sublayer of layer.subLayerLegends" [src]="sublayer" onerror=" this.parentNode.removeChild(this); " onload="if(this.height<6) { this.parentNode.removeChild(this); }">
