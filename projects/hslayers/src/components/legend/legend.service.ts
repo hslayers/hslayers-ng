@@ -342,7 +342,7 @@ export class HsLegendService {
         getShowInLayerManager(layer) == true)
     ) {
       return {
-        autoLegend: true,
+        autoLegend: layer.get('autoLegend') ?? true,
         title: getTitle(layer),
         lyr: layer,
         type: 'vector',
