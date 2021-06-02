@@ -354,6 +354,7 @@ export class HsLegendService {
         layer.get('show_in_manager') == true)
     ) {
       return {
+        autoLegend: layer.get('autoLegend') ?? true,
         title: layer.get('title'),
         lyr: layer,
         type: 'vector',
