@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Collection from 'ol/Collection';
@@ -392,22 +392,13 @@ export class HsTripPlannerService {
         const url = this.HsUtilsService.proxify(
           'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
         );
-        const httpOptions = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-          }),
-        };
         this.$http
-          .post(
-            url,
-            {
-              'coordinates': [
-                [wpf.lon, wpf.lat],
-                [wpt.lon, wpt.lat],
-              ],
-            },
-            httpOptions
-          )
+          .post(url, {
+            'coordinates': [
+              [wpf.lon, wpf.lat],
+              [wpt.lon, wpt.lat],
+            ],
+          })
           .pipe(
             timeout(10000),
             catchError((e) => {
