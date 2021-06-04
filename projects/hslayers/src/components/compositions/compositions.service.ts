@@ -72,10 +72,11 @@ export class HsCompositionsService {
     });
 
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      const record = this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
-        e.feature,
-        e.selector
-      );
+      const record =
+        this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
+          e.feature,
+          e.selector
+        );
       if (record) {
         this.loadComposition(this.getRecordLink(record));
       }
@@ -201,6 +202,9 @@ export class HsCompositionsService {
           return;
       }
       if (url) {
+        //Provide save-map comoData workspace property and distinguish between editable and noneditable compositions
+        this.HsCompositionsParserService.current_composition_workspace =
+          record.editable ? record.workspace : null;
         if (this.HsCompositionsParserService.composition_edited == true) {
           this.notSavedCompositionLoading.next(url);
           reject();

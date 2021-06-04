@@ -85,7 +85,7 @@ export class HsLaymanService implements HsSaverService {
         }),
         'blob.json'
       );
-      formdata.append('name', compoData.title);
+      formdata.append('name', compoData.name);
       formdata.append('title', compoData.title);
       formdata.append('abstract', compoData.abstract);
       const headers = new HttpHeaders();
@@ -93,13 +93,20 @@ export class HsLaymanService implements HsSaverService {
       headers.append('Accept', 'application/json');
       formdata.append('access_rights.read', read);
       formdata.append('access_rights.write', write);
+
+      const workspace = compoData.workspace
+        ? saveAsNew
+          ? endpoint.user
+          : compoData.workspace
+        : endpoint.user;
+
       const options = {
         headers: headers,
         withCredentials: true,
       };
       try {
         const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
-          `${endpoint.url}/rest/workspaces/${endpoint.user}/maps${
+          `${endpoint.url}/rest/workspaces/${workspace}/maps${
             saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
           }`,
           formdata,

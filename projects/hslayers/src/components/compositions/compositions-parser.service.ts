@@ -49,6 +49,7 @@ export class HsCompositionsParserService {
    */
   current_composition_title = '';
   current_composition_url: string;
+  current_composition_workspace: string;
   current_composition: any;
   constructor(
     public HsMapService: HsMapService,
@@ -111,6 +112,7 @@ export class HsCompositionsParserService {
       if (this.HsUtilsService.isFunction(pre_parse)) {
         response = pre_parse(response);
       }
+      response.workspace = this.current_composition_workspace;
       /*
       Response might contain {data:{abstract:...}} or {abstract:}
       directly. If there is data object,

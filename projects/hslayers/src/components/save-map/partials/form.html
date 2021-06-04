@@ -13,6 +13,11 @@
                 <input type="text" class="form-control" name="hs-save-map-title"
                     [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
             </label>
+            <label class="form-group">
+                {{'COMMON.name' | translate}} *
+                <input type="text" class="form-control" name="hs-save-map-name"
+                    [(ngModel)]="HsSaveMapManagerService.compoData.name" (change)="titleChanged()">
+            </label>
 
             <label class="form-group">
                 {{'COMMON.abstract' | translate}}
@@ -162,9 +167,19 @@
     </div>
 </div>
 <div class="modal-footer w-100">
-    <!-- <button type="button" class="btn btn-block btn-primary" id="stc-save"
-        [hidden]="!(step == 'end' && isAllowed() && overwrite)"
-        (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button> -->
+    <div
+        [hidden]="!(step == 'end' 
+        && HsSaveMapManagerService.currentUser != HsSaveMapManagerService.compoData.workspace 
+        && HsSaveMapManagerService.compoData.workspace)">
+        <div class="alert alert-info text-gray" >
+            {{'SAVECOMPOSITION.saveOrOverwrite' | translate}}
+        </div>
+        <button type="button" class="btn btn-block btn-primary" id="stc-save"
+            (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' |
+            translate}}</button>
+        <p style="text-align: center;" class="m-1">{{'COMMON.or' | translate}}</p>
+    </div>
+
     <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())"
         (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
     <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"
