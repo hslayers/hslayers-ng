@@ -1,12 +1,13 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
 import Collection from 'ol/Collection';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import {Draw, Modify} from 'ol/interaction';
 import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
 import {GeoJSON} from 'ol/format';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Modify} from 'ol/interaction';
 import {Point} from 'ol/geom';
 import {catchError, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -87,6 +88,7 @@ export class HsTripPlannerService {
 
   waypointSource = new VectorSource();
   waypointLayer = new VectorLayer({
+    title: 'Waypoints',
     source: this.waypointSource,
     style: this.waypointRouteStyle,
   });
@@ -113,6 +115,15 @@ export class HsTripPlannerService {
       this.HsShareUrlService.push('trip', this.trip);
     }
     this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
+      //Don't add waypoints when drawing and measuring
+      if (
+        this.HsMapService.map
+          .getInteractions()
+          .getArray()
+          .find((i) => i.getActive() && this.HsUtilsService.instOf(i, Draw))
+      ) {
+        return;
+      }
       this.addWaypoint({
         x: coordinates.mapProjCoordinate[0],
         y: coordinates.mapProjCoordinate[1],
