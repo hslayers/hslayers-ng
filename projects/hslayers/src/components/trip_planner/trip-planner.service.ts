@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import Collection from 'ol/Collection';
@@ -390,20 +390,24 @@ export class HsTripPlannerService {
       if (wpf.routes.from === null) {
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
-          'http://www.yournavigation.org/api/1.0/gosmore.php?flat=' +
-            wpf.lat +
-            '&flon=' +
-            wpf.lon +
-            '&tlat=' +
-            wpt.lat +
-            '&tlon=' +
-            wpt.lon +
-            '&format=geojson'
+          'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
         );
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          }),
+        };
         this.$http
-          .get(url, {
-            params: {cache: 'false', i: i.toString()},
-          })
+          .post(
+            url,
+            {
+              'coordinates': [
+                [wpf.lon, wpf.lat],
+                [wpt.lon, wpt.lat],
+              ],
+            },
+            httpOptions
+          )
           .pipe(
             timeout(10000),
             catchError((e) => {
@@ -422,24 +426,17 @@ export class HsTripPlannerService {
             })
           )
           .subscribe((response: any) => {
+            if (!response) {
+              return;
+            }
             const wpt = this.waypoints[i + 1];
             const wpf = this.waypoints[i];
             wpt.loading = false;
             const format = new GeoJSON();
-            const features = format.readFeatures(
-              {
-                'type': 'Feature',
-                'geometry': response,
-                'properties': response.properties,
-              },
-              {
-                dataProjection: response.crs.name,
-                featureProjection: this.HsMapService.map
-                  .getView()
-                  .getProjection()
-                  .getCode(),
-              }
-            );
+            const features = format.readFeatures(response);
+            features[0]
+              .getGeometry()
+              .transform('EPSG:4326', this.HsMapService.getCurrentProj());
             wpf.routes.from = features[0];
             wpt.routes.to = features[0];
             if (this.routeAdded !== undefined) {
@@ -462,11 +459,11 @@ export class HsTripPlannerService {
     which = which !== undefined ? which : 'from';
     if (wp.routes[which]) {
       const route = wp.routes[which];
-      const distance = route?.get('distance');
+      const distance = route?.get('summary').distance / 1000.0;
       if (distance == undefined) {
         return '';
       } else {
-        return parseFloat(distance).toFixed(2) + 'km';
+        return distance.toFixed(2) + 'km';
       }
     }
   }

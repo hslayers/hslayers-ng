@@ -65,7 +65,7 @@ export class HsTripPlannerComponent implements OnInit {
     let tmp = 0;
     this.HsTripPlannerService.waypoints.forEach((wp: Waypoint) => {
       if (wp.routes.from) {
-        tmp += parseFloat(wp.routes.from.get('distance'));
+        tmp += wp.routes.from.get('summary').distance / 1000.0;
       }
     });
     return tmp.toFixed(2) + 'km';
