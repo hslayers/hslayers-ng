@@ -609,6 +609,7 @@
     "public": "Veřejné",
     "readAccessRights": "Právo čtení",
     "removeLayerError": "Vrstva '{{layer}}' nebyla odstraněna z databáze. {{error}}",
+    "saveOrOverwrite": "Tato kompozice byla vytvořená jiným uživatelem",
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba při synchronizaci"
     },

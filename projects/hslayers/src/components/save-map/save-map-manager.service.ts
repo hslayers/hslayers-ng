@@ -12,8 +12,8 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsStatusManagerService} from './status-manager.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 import {accessRightsInterface} from '../add-data/common/access-rights.interface';
+import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +28,7 @@ export class HsSaveMapManagerService {
   };
   compoData: any = {
     title: '',
+    name: '',
     abstract: '',
     keywords: [],
     layers: [],
@@ -39,7 +40,7 @@ export class HsSaveMapManagerService {
     access_rights: <accessRightsInterface>{
       'access_rights.write': 'EVERYONE',
       'access_rights.read': 'EVERYONE',
-    }
+    },
   };
   userData: any = {
     email: '',
@@ -56,6 +57,8 @@ export class HsSaveMapManagerService {
   endpointSelected: BehaviorSubject<any> = new BehaviorSubject(null);
   preSaveCheckCompleted: Subject<{endpoint}> = new Subject();
   changeTitle: boolean;
+  currentUser: boolean;
+  
   constructor(
     public HsMapService: HsMapService,
     public HsSaveMapService: HsSaveMapService,
@@ -69,19 +72,15 @@ export class HsSaveMapManagerService {
   ) {
     HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
-        if (data.data) {
-          this.compoData.id = data.id;
-          this.compoData.abstract = data.data.abstract;
-          this.compoData.title = data.data.title;
-          this.compoData.keywords = data.data.keywords;
-          this.compoData.currentComposition = data.data;
-        } else {
-          this.compoData.id = data.id;
-          this.compoData.abstract = data.abstract;
-          this.compoData.title = data.title;
-          this.compoData.keywords = data.keywords;
-          this.compoData.currentComposition = data;
-        }
+        const responseData = data.data ?? data;
+
+        this.compoData.id = responseData.id;
+        this.compoData.abstract = responseData.abstract;
+        this.compoData.title = responseData.title;
+        this.compoData.name = responseData.name;
+        this.compoData.keywords = responseData.keywords;
+        this.compoData.currentComposition = responseData;
+        this.compoData.workspace = responseData.workspace;
 
         this.compoData.currentCompositionTitle = this.compoData.title;
       }
@@ -131,15 +130,15 @@ export class HsSaveMapManagerService {
   }
 
   //TODO: Add interface to describe Endpoint instead of any
-  selectEndpoint(endpoint: any) {
+  selectEndpoint(endpoint: any): void {
     this.endpointSelected.next(endpoint);
   }
 
-  setCurrentBoundingBox() {
+  setCurrentBoundingBox(): void {
     this.compoData.bbox = this.getCurrentExtent();
   }
 
-  async confirmSave() {
+  async confirmSave(): Promise<void> {
     try {
       const response: any = await this.http
         .post(this.HsStatusManagerService.endpointUrl(), {
@@ -173,7 +172,8 @@ export class HsSaveMapManagerService {
 
   save(saveAsNew, endpoint) {
     return new Promise((resolve, reject) => {
-      if (saveAsNew) {
+      // Check whether layers were already formated 
+      if (this.compoData.layers[0].layer) {
         this.compoData.layers = this.compoData.layers
           .filter((l) => l.checked)
           .map((l) => l.layer);
@@ -230,7 +230,7 @@ export class HsSaveMapManagerService {
   }
 
   /**
-   * @param download Used when generating json for download 
+   * @param download Used when generating json for download
    * @returns composition JSON
    */
   generateCompositionJson(download?): any {
@@ -419,6 +419,7 @@ export class HsSaveMapManagerService {
     this.compoData.id = '';
     this.compoData.abstract = '';
     this.compoData.title = '';
+    this.compoData.name = '';
     this.compoData.currentCompositionTitle = '';
     this.compoData.keywords = '';
     this.compoData.currentComposition = '';

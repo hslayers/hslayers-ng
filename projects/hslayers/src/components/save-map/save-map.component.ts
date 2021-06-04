@@ -77,6 +77,7 @@ export class HsSaveMapComponent implements OnDestroy {
       .subscribe((endpoint: any) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+        this.HsSaveMapManagerService.currentUser = endpoint.user;
       });
   }
   ngOnDestroy(): void {

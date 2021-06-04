@@ -609,6 +609,7 @@
     "public": "Public",
     "readAccessRights": "Read access rights",
     "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}",
+    "saveOrOverwrite": "This compositon was created by another user",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },
