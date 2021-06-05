@@ -31,6 +31,7 @@ import {
   getName,
   getPath,
   getShowInLayerManager,
+  getSld,
   getSubLayers,
   getTitle,
   getWorkspace,
@@ -436,7 +437,9 @@ export class HsSaveMapService {
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
       json.projection = 'epsg:4326';
-      if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
+      if (getSld(layer) != undefined) {
+        json.style = getSld(layer);
+      } else if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
         json.style = this.serializeStyle(layer.getStyle());
       }
     }

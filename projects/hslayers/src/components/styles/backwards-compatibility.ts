@@ -1,9 +1,12 @@
+import BaseLayer from 'ol/layer/Base';
 import Feature from 'ol/Feature';
+import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+
 import {getHsOriginalStyle} from '../../common/layer-extensions';
 
-export function parseStyle(j) {
+export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
   const style_json: any = {};
   if (j.fill) {
     style_json.fill = new Fill({
@@ -54,7 +57,8 @@ export function parseStyle(j) {
       style_json.image = new Icon(icon_json);
     }
   }
-  return new Style(style_json);
+  const sld = await convertHsStyleToSld(j);
+  return {style: new Style(style_json), sld};
 }
 
 /**
@@ -88,4 +92,130 @@ export function getLayerStyleObject(
       }
     }
   }
+}
+
+/**
+ * We get serialized layer definition including style definition in custom JSON format.
+ * This we need to convert to SLD xml text
+ * @param json - Serialized layer which we get from hslayers-ng
+ * @param layer - Vector layer to get title from
+ */
+async function convertHsStyleToSld(json: any): Promise<string> {
+  const symbolizers = [];
+  if (json.image?.type == 'circle') {
+    symbolizers.push(createCircleSymbol(json));
+  }
+  if (json.image?.type == 'icon') {
+    symbolizers.push(createIconSymbol(json));
+  }
+  if (json.fill) {
+    symbolizers.push(createPolygonSymbol(json));
+  } else if (json.stroke) {
+    symbolizers.push(createLineSymbol(json));
+  }
+  if (symbolizers.length > 0) {
+    const name = '';
+    const sldModel = {
+      name,
+      rules: [{name, symbolizers}],
+    };
+    const parser = new SLDParser();
+    return await parser.writeStyle(sldModel);
+  }
+}
+
+/**
+ * Create polygon symbolizer configuration from which the
+ * geostyler-sld-parser library will generate SLD xml
+ * @param json
+ * @returns
+ */
+function createPolygonSymbol(json: any): {
+  kind: string;
+  color: string;
+  outlineColor?: string;
+  outlineWidth?: number;
+} {
+  const tmp = {
+    kind: 'Fill',
+    color: json.fill.color,
+  };
+  if (json.stroke) {
+    Object.assign(tmp, {
+      outlineColor: json.stroke.color,
+      outlineWidth: json.stroke.width,
+    });
+  }
+  return tmp;
+}
+
+/**
+ * Create line symbolizer configuration from which the
+ * geostyler-sld-parser library will generate SLD xml
+ * @param json
+ * @returns
+ */
+function createLineSymbol(json: any): {
+  kind: string;
+  color: string;
+  width?: number;
+} {
+  const tmp = {
+    kind: 'Line',
+    color: json.stroke.color,
+    width: json.stroke.width,
+  };
+  return tmp;
+}
+
+/**
+ * Create circle symbolizer configuration from which the
+ * geostyler-sld-parser library will generate SLD xml
+ * @param json
+ * @returns
+ */
+function createCircleSymbol(json: any): {
+  kind: string;
+  wellKnownName: string;
+  color: string;
+  strokeColor?: string;
+  strokeWidth?: number;
+  radius: number;
+} {
+  const tmp: any = {
+    kind: 'Mark',
+    wellKnownName: 'circle',
+    color: json.image.fill.color || json.fill,
+
+    radius: json.image.radius,
+  };
+  if (json.image.stroke) {
+    tmp.strokeColor = json.image.stroke.color;
+  } else {
+    tmp.strokeColor = json.stroke.color;
+  }
+  if (json.stroke) {
+    tmp.strokeWidth = json.stroke.width;
+  }
+  return tmp;
+}
+
+/**
+ * Create icon symbolizer configuration from which the
+ * geostyler-sld-parser library will generate SLD xml.
+ * It must include embedded base64 encoded svg image
+ * @param json
+ * @returns
+ */
+function createIconSymbol(json: any): {kind: string; image: string} {
+  return {
+    kind: 'Icon',
+    image:
+      json.image.src.replace('data:image/svg+xml;base64,', 'base64:') +
+      `?fill=${encodeURIComponent(
+        json.fill
+      )}&fill-opacity=1&outline=${encodeURIComponent(
+        json.stroke.color
+      )}&outline-opacity=1&outline-width=${json.stroke.width}`,
+  };
 }
