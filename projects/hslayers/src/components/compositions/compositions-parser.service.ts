@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
+import BaseLayer from 'ol/layer/Base';
 import {transform, transformExtent} from 'ol/proj';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
@@ -105,7 +106,13 @@ export class HsCompositionsParserService {
     this.loaded(data, pre_parse, url, overwrite, callback);
   }
 
-  loaded(response, pre_parse, url, overwrite: boolean, callback): void {
+  async loaded(
+    response,
+    pre_parse,
+    url,
+    overwrite: boolean,
+    callback
+  ): Promise<void> {
     this.HsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
       this.composition_loaded = url;
@@ -119,7 +126,7 @@ export class HsCompositionsParserService {
       that means composition is enclosed in
       container which itself might contain title or extent
       properties */
-      this.loadCompositionObject(
+      await this.loadCompositionObject(
         response.data || response,
         overwrite,
         response.title,
@@ -206,12 +213,12 @@ export class HsCompositionsParserService {
       response.includes('LayerList') /*.wmc micka*/
     );
   }
-  loadCompositionObject(
+  async loadCompositionObject(
     obj,
     overwrite: boolean,
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
-  ): void {
+  ): Promise<void> {
     if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers();
     }
@@ -231,7 +238,8 @@ export class HsCompositionsParserService {
           .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
       }
     }
-    const layers = this.jsonToLayers(obj);
+
+    const layers = await this.jsonToLayers(obj);
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
     });
@@ -403,13 +411,13 @@ export class HsCompositionsParserService {
    * @returns {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
-  jsonToLayers(j) {
+  async jsonToLayers(j): Promise<BaseLayer[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
     }
     for (const lyr_def of j.layers) {
-      const layer = this.jsonToLayer(lyr_def);
+      const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
         if (lyr_def.protocol.format != 'hs.format.externalWFS'){
           this.$log.warn(
