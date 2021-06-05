@@ -237,7 +237,7 @@ export class HsCompositionsService {
         data.data.layers = response.data;
       }
       this.HsCompositionsParserService.removeCompositionLayers();
-      const layers = this.HsCompositionsParserService.jsonToLayers(data);
+      const layers = await this.HsCompositionsParserService.jsonToLayers(data);
       for (let i = 0; i < layers.length; i++) {
         this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
@@ -264,7 +264,9 @@ export class HsCompositionsService {
       if (parsed.expires && parsed.expires < new Date().getTime()) {
         return;
       }
-      const layers = this.HsCompositionsParserService.jsonToLayers(parsed);
+      const layers = await this.HsCompositionsParserService.jsonToLayers(
+        parsed
+      );
       for (let i = 0; i < layers.length; i++) {
         this.HsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }

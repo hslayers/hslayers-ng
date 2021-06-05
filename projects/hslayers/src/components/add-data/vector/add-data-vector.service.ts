@@ -1,6 +1,8 @@
-import '../../styles/styles.module';
 import BaseLayer from 'ol/layer/Base';
 import {GeoJSON} from 'ol/format';
+import {Vector as VectorSource} from 'ol/source';
+
+import '../../styles/styles.module';
 import {HsAddDataService} from '../add-data.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -165,7 +167,10 @@ export class HsAddDataVectorService {
       mapProjection
     );
 
-    const src = new sourceDescriptor.sourceClass(sourceDescriptor);
+    const src =
+      sourceDescriptor.sourceClass == VectorSource
+        ? new sourceDescriptor.sourceClass(sourceDescriptor.sourceParams)
+        : new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
     if (descriptor.layerParams.style) {
       Object.assign(

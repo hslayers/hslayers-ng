@@ -19,7 +19,11 @@ export class HsMapServiceMock {
   }
 
   addLayer(layer): Layer {
-    this.map.addLayer(layer);
+    try {
+      this.map.addLayer(layer);
+    } catch (ex) {
+      //
+    }
   }
 
   getCurrentProj() {
@@ -28,5 +32,9 @@ export class HsMapServiceMock {
 
   getMapExtent() {
     return [0, 0, 100, 100];
+  }
+
+  getLayersArray() {
+    return [];
   }
 }

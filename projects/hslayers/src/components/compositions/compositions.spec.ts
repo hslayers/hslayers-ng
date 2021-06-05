@@ -119,7 +119,14 @@ describe('compositions', () => {
           useValue: new HsAddDataVectorService(
             mockedMapService,
             mockedUtilsService,
-            new HsStylerService(null, mockedUtilsService, null),
+            new HsStylerService(
+              null,
+              mockedUtilsService,
+              null,
+              null,
+              null,
+              mockedMapService
+            ),
             null
           ),
         },
@@ -181,29 +188,29 @@ describe('compositions', () => {
    * @param scope
    * @param component
    */
-  function loadComposition(component) {
-    component.hsCompositionsParserService.loadCompositionObject(
+  async function loadComposition(component) {
+    await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
       true
     );
   }
 
-  it('should load composition from json', function () {
-    loadComposition(component);
-    expect(mockedMapService.map.getLayers().getLength()).toBe(6);
-    expect(getTitle(mockedMapService.map.getLayers().item(0))).toBe(
+  it('should load composition from json', async function () {
+    await loadComposition(component);
+    expect(mockedMapService.map.getLayers().getLength()).toBe(8);
+    expect(getTitle(mockedMapService.map.getLayers().item(2))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.map.getLayers().item(3).getSource().getFeatures().length
+      mockedMapService.map.getLayers().item(5).getSource().getFeatures().length
     ).toBe(1);
     expect(
-      mockedMapService.map.getLayers().item(4).getSource().getFeatures().length
+      mockedMapService.map.getLayers().item(6).getSource().getFeatures().length
     ).toBe(1);
   });
 
-  it('if should parse composition layer style', function () {
-    loadComposition(component);
-    expect(mockedMapService.map.getLayers().item(0).getStyle()).toBeDefined();
+  it('if should parse composition layer style', async function () {
+    await loadComposition(component);
+    expect(mockedMapService.map.getLayers().item(2).getStyle()).toBeDefined();
   });
 });

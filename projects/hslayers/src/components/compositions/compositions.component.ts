@@ -108,9 +108,12 @@ export class HsCompositionsComponent implements OnDestroy {
         continue;
       }
       const reader = new FileReader();
-      reader.onload = (theFile) => {
+      reader.onload = async (theFile) => {
         const json = JSON.parse(<string>reader.result);
-        this.hsCompositionsParserService.loadCompositionObject(json, true);
+        await this.hsCompositionsParserService.loadCompositionObject(
+          json,
+          true
+        );
       };
       reader.readAsText(f);
     }
