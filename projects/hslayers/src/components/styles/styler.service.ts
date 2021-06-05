@@ -27,7 +27,6 @@ import {
   setSld,
 } from '../../common/layer-extensions';
 import {parseStyle} from './backwards-compatibility';
-import { isFunction } from 'vega';
 
 @Injectable({
   providedIn: 'root',
@@ -308,7 +307,7 @@ export class HsStylerService {
       return {sld: style, style: await this.sldToOlStyle(style)};
     } else if (typeof style == 'object') {
       //Backwards compatibility with style encoded in custom JSON object
-      return {style: parseStyle(style)};
+      return parseStyle(style);
     }
   }
 
@@ -438,12 +437,16 @@ export class HsStylerService {
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
-      if (this.layer.getSource().getSource && isFunction(style)) {
+      if (
+        this.layer.getSource().getSource &&
+        this.HsUtilsService.isFunction(style)
+      ) {
         style = this.wrapStyleForClusters(style);
       }
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
       setSld(this.layer, sld);
+      this.newLayerStyleSet.next(this.layer);
     } catch (ex) {
       this.HsLogService.error(ex);
     }
