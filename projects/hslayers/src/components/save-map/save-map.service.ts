@@ -33,7 +33,7 @@ import {
   getShowInLayerManager,
   getSubLayers,
   getTitle,
-  getWorkspace
+  getWorkspace,
 } from '../../common/layer-extensions';
 
 const LCLSTORAGE_EXPIRE = 5000;
@@ -419,15 +419,19 @@ export class HsSaveMapService {
         json.workspace = getWorkspace(layer);
         delete json.features;
       } else {
-        json.protocol = {
-          url: layer.get('url'),
-          format: 'hs.format.externalWFS',
-        };
-        // try {
-        //   json.features = this.getFeaturesJson(src.getFeatures());
-        // } catch (ex) {
-        //   //Do nothing
-        // }
+        if (layer.get('url')) {
+          json.protocol = {
+            url: layer.get('url'),
+            format: 'hs.format.externalWFS',
+          };
+        } else {
+          //DRAWING LAYERS WHEN NO LAYMAN ENDPOINT
+          try {
+            json.features = this.getFeaturesJson(src.getFeatures());
+          } catch (ex) {
+            //Do nothing
+          }
+        }
       }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
