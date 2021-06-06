@@ -231,7 +231,28 @@ export class HsCompositionsParserService {
           .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
       }
     }
-
+    if (obj.abstract == 'casova') {
+      obj.layers.push({
+        className: 'OpenLayers.Layer.Vector',
+        dimensions: {},
+        legends: [''],
+        maxResolution: null,
+        metadata: {},
+        minResolution: 0,
+        name: 'krovak1',
+        opacity: 1,
+        protocol: {
+          // FORMAT: "image/png",
+          // INFO_FORMAT: "application/vnd.ogc.gml",
+          // VERSION: "1.3.0",
+          format: 'hs.format.externalWFS',
+          url: 'http://localhost:8087/geoserver/jan_vrobel/wfs',
+        },
+        ratio: 1.5,
+        title: 'krovak1',
+        visibility: true,
+      });
+    }
     const layers = this.jsonToLayers(obj);
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
@@ -412,7 +433,12 @@ export class HsCompositionsParserService {
     for (const lyr_def of j.layers) {
       const layer = this.jsonToLayer(lyr_def);
       if (layer == undefined) {
-        this.$log.warn('Was not able to parse layer from composition', lyr_def);
+        if (lyr_def.protocol.format != 'hs.format.externalWFS'){
+          this.$log.warn(
+            'Was not able to parse layer from composition',
+            lyr_def
+          );
+        }
       } else {
         layers.push(layer);
       }
@@ -454,8 +480,12 @@ export class HsCompositionsParserService {
       case 'OpenLayers.Layer.Vector':
       case 'Vector':
       case 'hs.format.LaymanWfs':
-        resultLayer =
-          this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+        if (lyr_def.protocol.format == 'hs.format.externalWFS') {
+          this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
+        } else {
+          resultLayer =
+            this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+        }
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(

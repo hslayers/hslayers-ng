@@ -16,13 +16,15 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
 import SparqlJson from '../../../common/layers/hs.source.SparqlJson';
 import {HsAddDataVectorService} from '../../add-data/vector/add-data-vector.service';
+import {HsAddDataWfsService} from '../../add-data/url/wfs/add-data-url-wfs.service';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
+import {HsWfsGetCapabilitiesService} from '../../../common/wfs/get-capabilities.service';
 import {HsWmtsGetCapabilitiesService} from '../../../common/wmts/get-capabilities.service';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {setDefinition} from '../../../common/layer-extensions';
 
 @Injectable({
@@ -38,8 +40,23 @@ export class HsCompositionsLayerParserService {
     public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public HsLanguageService: HsLanguageService,
     public HsToastService: HsToastService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
+    public HsAddDataWfsService: HsAddDataWfsService,
+    public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService
   ) {}
+
+  /**
+   * @name hs.compositions.config_parsers.service#createWFSLayer
+   * @public
+   * @param {object} lyr_def Layer definition object
+   * @description Initiate creation of WFS layer thorugh HsAddDataWfsService
+   */
+  createWFSLayer(lyr_def): void {
+    this.HsAddDataWfsService.layerToAdd = lyr_def.name;
+    this.hsWfsGetCapabilitiesService.requestGetCapabilities(
+      lyr_def.protocol.url
+    );
+  }
 
   /**
 
@@ -378,7 +395,9 @@ export class HsCompositionsLayerParserService {
       path: lyr_def.path,
       visible: lyr_def.visibility,
       // Extract workspace name for partial backwards compatibility
-      workspace: lyr_def.workspace || lyr_def.protocol.url.split('geoserver/')[1].replace('_wms/ows','')
+      workspace:
+        lyr_def.workspace ||
+        lyr_def.protocol?.url.split('geoserver/')[1].replace('_wms/ows', ''),
     };
     let extractStyles = true;
     if (lyr_def.style) {
@@ -423,15 +442,6 @@ export class HsCompositionsLayerParserService {
           options
         );
         break;
-      case 'hs.format.externalWFS':
-          // setTimeout(() => {
-          //   this.HsEventBusService.owsFilling.next({
-          //     type: 'wfs',
-          //     uri: lyr_def.protocol.url,
-          //     layer: lyr_def.name,
-          //   });
-          // });
-          break;
       case 'hs.format.Sparql':
         layer = this.createSparqlLayer(lyr_def);
         break;
