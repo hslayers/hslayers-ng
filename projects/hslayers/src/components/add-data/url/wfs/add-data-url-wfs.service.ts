@@ -254,13 +254,15 @@ export class HsAddDataWfsService {
         return this.srss[0];
       })();
 
-      setTimeout(() => {
-        try {
-          this.parseFeatureCount();
-        } catch (e) {
-          throw new Error(e);
-        }
-      });
+      if (!this.layerToAdd){
+        setTimeout(() => {
+          try {
+            this.parseFeatureCount();
+          } catch (e) {
+            throw new Error(e);
+          }
+        });
+      }
       this.loadingInfo = false;
       return this.bbox;
     } catch (e) {
