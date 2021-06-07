@@ -1,23 +1,20 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {LineSymbolizer, SymbolizerKind} from 'geostyler-style';
+
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-line-symbolizer',
   templateUrl: './line-symbolizer.html',
 })
-export class HsLineSymbolizerComponent {
+export class HsLineSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: LineSymbolizer;
-  @Output() changes = new EventEmitter<void>();
 
   caps = ['butt', 'round', 'square'];
   joins = ['bevel', 'round', 'miter'];
 
   addSymbolizer(attribute: string, kind: SymbolizerKind): void {
     this.symbolizer[attribute] = {kind};
-  }
-
-  emitChange(): void {
-    this.changes.emit();
   }
 }

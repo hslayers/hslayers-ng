@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {MarkSymbolizer} from 'geostyler-style';
+
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-mark-symbolizer',
   templateUrl: './mark-symbolizer.html',
 })
-export class HsMarkSymbolizerComponent {
+export class HsMarkSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: MarkSymbolizer;
-  @Output() changes = new EventEmitter<void>();
 
   wellKnownNames = [
     'circle',
@@ -29,8 +30,4 @@ export class HsMarkSymbolizerComponent {
   ];
   fillColorPickerVisible = false;
   strokeColorPickerVisible = false;
-
-  emitChange() {
-    this.changes.emit();
-  }
 }
