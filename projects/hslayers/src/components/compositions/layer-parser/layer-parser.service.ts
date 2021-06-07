@@ -394,10 +394,10 @@ export class HsCompositionsLayerParserService {
       fromComposition: true,
       path: lyr_def.path,
       visible: lyr_def.visibility,
-      // Extract workspace name for partial backwards compatibility
+      // Extract workspace name for partial backwards compatibility. 
       workspace:
         lyr_def.workspace ||
-        lyr_def.protocol?.url.split('geoserver/')[1].replace('_wms/ows', ''),
+        lyr_def.protocol?.url.split('geoserver/')[1].split('/')[0],
     };
     let extractStyles = true;
     if (lyr_def.style) {
