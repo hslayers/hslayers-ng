@@ -1,23 +1,22 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
+
 import {HsFiltersService} from './filters.service';
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-filter',
   templateUrl: './filter.html',
 })
-export class HsFilterComponent {
+export class HsFilterComponent extends HsStylerPartBaseComponent {
   @Input() filter: any[];
   @Input() parent: any[];
-  @Output() changes = new EventEmitter<void>();
 
-  constructor(public HsFiltersService: HsFiltersService) {}
-
-  emitChange(): void {
-    this.changes.emit();
+  constructor(public HsFiltersService: HsFiltersService) {
+    super();
   }
 
   remove(): void {
     this.parent.splice(this.parent.indexOf(this.filter), 1);
-    this.changes.emit();
+    this.emitChange();
   }
 }

@@ -1,13 +1,14 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {Symbolizer, SymbolizerKind} from 'geostyler-style';
+
+import {HsStylerPartBaseComponent} from './style-part-base.component';
 @Component({
   selector: 'hs-rule',
   templateUrl: './rule.html',
 })
-export class HsRuleComponent {
+export class HsRuleComponent extends HsStylerPartBaseComponent {
   @Input() rule;
-  @Output() changes = new EventEmitter<void>();
 
   filtersVisible = false;
   scalesVisible = false;
@@ -23,12 +24,8 @@ export class HsRuleComponent {
     this.rule.symbolizers.push(symbolizer);
   }
 
-  emitChange(): void {
-    this.changes.emit();
-  }
-
   removeSymbolizer(symbolizer: Symbolizer): void {
     this.rule.symbolizers.splice(this.rule.symbolizers.indexOf(symbolizer), 1);
-    this.changes.emit();
+    this.emitChange();
   }
 }

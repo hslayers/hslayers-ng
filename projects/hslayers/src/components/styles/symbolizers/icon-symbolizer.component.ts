@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsSelectIconDialogComponent} from './select-icon-dialog.component';
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
 import {IconSymbolizer} from 'geostyler-style';
 import {SymbolizerIcon} from '../../../config.service';
 
@@ -9,13 +10,14 @@ import {SymbolizerIcon} from '../../../config.service';
   selector: 'hs-icon-symbolizer',
   templateUrl: './icon-symbolizer.html',
 })
-export class HsIconSymbolizerComponent {
+export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: IconSymbolizer;
-  @Output() changes = new EventEmitter<void>();
 
   selectedIcon?: SymbolizerIcon;
 
-  constructor(private hsDialogContainerService: HsDialogContainerService) {}
+  constructor(private hsDialogContainerService: HsDialogContainerService) {
+    super();
+  }
 
   anchors = [
     'center',
@@ -28,9 +30,6 @@ export class HsIconSymbolizerComponent {
     'bottom-left',
     'bottom-right',
   ];
-  emitChange() {
-    this.changes.emit();
-  }
 
   showIconSelector(): void {
     this.hsDialogContainerService.create(HsSelectIconDialogComponent, this);

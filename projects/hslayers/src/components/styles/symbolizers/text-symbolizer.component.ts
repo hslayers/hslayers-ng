@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {TextSymbolizer} from 'geostyler-style';
+
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({
   selector: 'hs-text-symbolizer',
   templateUrl: './text-symbolizer.html',
 })
-export class HsTextSymbolizerComponent {
+export class HsTextSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: TextSymbolizer;
-  @Output() changes = new EventEmitter<void>();
 
   anchors = [
     'center',
@@ -36,8 +37,4 @@ export class HsTextSymbolizerComponent {
   transforms = ['none', 'uppercase', 'lowercase'];
   justifications = ['left', 'center', 'right'];
   fontWeights = ['normal', 'bold'];
-
-  emitChange(): void {
-    this.changes.emit();
-  }
 }
