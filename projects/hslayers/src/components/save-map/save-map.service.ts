@@ -425,7 +425,6 @@ export class HsSaveMapService {
             format: 'hs.format.externalWFS',
           };
         } else {
-          //DRAWING LAYERS WHEN NO LAYMAN ENDPOINT
           try {
             json.features = this.getFeaturesJson(src.getFeatures());
           } catch (ex) {
