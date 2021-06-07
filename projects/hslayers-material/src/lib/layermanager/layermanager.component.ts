@@ -5,9 +5,21 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {SelectionModel} from '@angular/cdk/collections';
 
 import {
+  HsConfig,
+  HsCoreService,
+  HsDialogContainerService,
   HsEventBusService,
+  HsLanguageService,
   HsLayerDescriptor,
   HsLayerManagerService,
+  HsLayoutService,
+  HsMapService,
+  HsUtilsService,
+  HsLayerEditorSublayerService,
+  HsLayerManagerComponent,
+  HsLayerManagerWmstService,
+  HsLayerSynchronizerService,
+  HsLayerUtilsService
 } from 'hslayers-ng';
 
 class HsLayerNode {
@@ -93,7 +105,7 @@ export class HsLayerDatabase {
   templateUrl: './layermanager.html',
   providers: [HsLayerDatabase],
 })
-export class HsMatLayerManagerComponent {
+export class HsMatLayerManagerComponent extends HsLayerManagerComponent {
   flatNodeMap = new Map<HsLayerFlatNode, HsLayerNode>();
   nestedNodeMap = new Map<HsLayerNode, HsLayerFlatNode>();
   selectedParent: HsLayerFlatNode | null = null;
@@ -106,8 +118,35 @@ export class HsMatLayerManagerComponent {
 
   constructor(
     private _database: HsLayerDatabase,
-    public HsLayerManagerService: HsLayerManagerService
+    public HsLayerManagerService: HsLayerManagerService,
+    HsCore: HsCoreService,
+    HsUtilsService: HsUtilsService,
+    HsLayerUtilsService: HsLayerUtilsService,
+    HsMapService: HsMapService,
+    HsLayermanagerWmstService: HsLayerManagerWmstService,
+    HsLayoutService: HsLayoutService,
+    HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    HsLayerSynchronizerService: HsLayerSynchronizerService,
+    HsEventBusService: HsEventBusService,
+    HsDialogContainerService: HsDialogContainerService,
+    HsLanguageService: HsLanguageService,
+    HsConfig: HsConfig
   ) {
+    super(
+      HsCore,
+      HsUtilsService,
+      HsLayerUtilsService,
+      HsMapService,
+      HsLayerManagerService,
+      HsLayermanagerWmstService,
+      HsLayoutService,
+      HsLayerEditorSublayerService,
+      HsLayerSynchronizerService,
+      HsEventBusService,
+      HsDialogContainerService,
+      HsLanguageService,
+      HsConfig
+    );
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
