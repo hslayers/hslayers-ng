@@ -231,28 +231,6 @@ export class HsCompositionsParserService {
           .fit(this.transformExtent(extent), this.HsMapService.map.getSize());
       }
     }
-    if (obj.abstract == 'casova') {
-      obj.layers.push({
-        className: 'OpenLayers.Layer.Vector',
-        dimensions: {},
-        legends: [''],
-        maxResolution: null,
-        metadata: {},
-        minResolution: 0,
-        name: 'krovak1',
-        opacity: 1,
-        protocol: {
-          // FORMAT: "image/png",
-          // INFO_FORMAT: "application/vnd.ogc.gml",
-          // VERSION: "1.3.0",
-          format: 'hs.format.externalWFS',
-          url: 'http://localhost:8087/geoserver/jan_vrobel/wfs',
-        },
-        ratio: 1.5,
-        title: 'krovak1',
-        visibility: true,
-      });
-    }
     const layers = this.jsonToLayers(obj);
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
@@ -480,7 +458,7 @@ export class HsCompositionsParserService {
       case 'OpenLayers.Layer.Vector':
       case 'Vector':
       case 'hs.format.LaymanWfs':
-        if (lyr_def.protocol.format == 'hs.format.externalWFS') {
+        if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
           this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
           resultLayer =
