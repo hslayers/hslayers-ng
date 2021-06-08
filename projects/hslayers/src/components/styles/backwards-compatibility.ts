@@ -4,8 +4,6 @@ import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
 
-import {getHsOriginalStyle} from '../../common/layer-extensions';
-
 export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
   const style_json: any = {};
   if (j.fill) {
