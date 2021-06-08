@@ -330,14 +330,6 @@ export function getFeatureInfoTarget(layer: Layer): string {
   return layer.get(GET_FEATURE_INFO_TARGET);
 }
 
-export function setHsOriginalStyle(layer: Layer, hsOriginalStyle: Style): void {
-  layer.set(HS_ORIGINAL_STYLE, hsOriginalStyle);
-}
-
-export function getHsOriginalStyle(layer: Layer): Style {
-  return layer.get(HS_ORIGINAL_STYLE);
-}
-
 export function getSld(layer: Layer): string {
   return layer.get(HS_SLD);
 }
@@ -628,8 +620,6 @@ export const HsLayerExt = {
   getFromComposition,
   setFeatureInfoTarget,
   getFeatureInfoTarget,
-  setHsOriginalStyle,
-  getHsOriginalStyle,
   setHsLaymanSynchronizing,
   getHsLaymanSynchronizing,
   setInfoFormat,

@@ -20,12 +20,7 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getFeatures, getHighlighted} from '../../common/feature-extensions';
-import {
-  getHsOriginalStyle,
-  getSld,
-  getTitle,
-  setSld,
-} from '../../common/layer-extensions';
+import {getSld, getTitle, setSld} from '../../common/layer-extensions';
 import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
@@ -178,11 +173,7 @@ export class HsStylerService {
       ? getFeatures(feature)[0].getStyle()
       : feature.getStyle();
 
-    const originalStyle = featureStyle
-      ? featureStyle
-      : getHsOriginalStyle(layer)
-      ? getHsOriginalStyle(layer)
-      : createDefaultStyle;
+    const originalStyle = featureStyle ? featureStyle : createDefaultStyle;
 
     let appliedStyle = this.applyStyleIfNeeded(
       originalStyle,

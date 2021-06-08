@@ -7,12 +7,7 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {
-  getCluster,
-  getDeclutter,
-  getHsOriginalStyle,
-  setHsOriginalStyle,
-} from '../../common/layer-extensions';
+import {getCluster, getDeclutter} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
