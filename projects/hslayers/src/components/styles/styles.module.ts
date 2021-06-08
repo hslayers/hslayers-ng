@@ -26,6 +26,7 @@ import {HsScaleDenominatorComponent} from './filters/scale-denominator.component
 import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog.component';
 import {HsSliderComponent} from './symbolizers/slider.component';
 import {HsStylerComponent} from './styler.component';
+import {HsStylerPartBaseComponent} from './style-part-base.component';
 import {HsStylerService} from './styler.service';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component';
@@ -49,6 +50,7 @@ import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer.component
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
+    HsStylerPartBaseComponent,
   ],
   imports: [
     CommonModule,
