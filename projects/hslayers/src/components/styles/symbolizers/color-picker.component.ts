@@ -15,7 +15,7 @@ export class HsColorPickerComponent extends HsStylerPartBaseComponent {
   pickerVisible = false;
 
   onPick($event: ColorEvent) {
-    this.symbolizer[this.attribute] = $event.color.hex;
+    this.symbolizer[this.attribute] = `rgba(${$event.color.rgb.r}, ${$event.color.rgb.g}, ${$event.color.rgb.b}, ${$event.color.rgb.a})`;
     this.emitChange();
   }
 }
