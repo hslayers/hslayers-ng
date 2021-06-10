@@ -657,7 +657,8 @@
     "totalDistance": "Celková vzdálenost",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypoints": "Body trasy",
-    "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!"
+    "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!",
+    "missingAuth": "Přístup k navigační službě nepovolen"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",
