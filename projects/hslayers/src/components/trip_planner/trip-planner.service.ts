@@ -402,10 +402,16 @@ export class HsTripPlannerService {
           .pipe(
             timeout(10000),
             catchError((e) => {
+              let title = this.HsLanguageService.getTranslation(
+                'TRIP_PLANNER.serviceDown'
+              );
+              if (e.status == 404) {
+                title = this.HsLanguageService.getTranslation(
+                  'TRIP_PLANNER.missingAuth'
+                );
+              }
               this.HsToastService.createToastPopupMessage(
-                this.HsLanguageService.getTranslation(
-                  'TRIP_PLANNER.serviceDown'
-                ),
+                title,
                 this.HsLanguageService.getTranslationIgnoreNonExisting(
                   'ERRORMESSAGES',
                   e.message,
