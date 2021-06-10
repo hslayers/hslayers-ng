@@ -120,11 +120,7 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(
-    layer: Layer,
-    newValue: boolean,
-    distance: number
-  ): boolean | undefined {
+  cluster(layer: Layer, newValue: boolean, distance: number): boolean {
     if (layer == undefined) {
       return;
     }

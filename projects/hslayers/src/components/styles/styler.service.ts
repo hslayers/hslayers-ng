@@ -9,7 +9,7 @@ import SLDParser from 'geostyler-sld-parser';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Circle, Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {Rule, Style as GeoStylerStyle} from 'geostyler-style';
+import {Filter, Style as GeoStylerStyle, Rule} from 'geostyler-style';
 import {StyleFunction} from 'ol/style';
 import {createDefaultStyle} from 'ol/style/Style';
 
@@ -19,8 +19,13 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getFeatures, getHighlighted} from '../../common/feature-extensions';
-import {getSld, getTitle, setSld} from '../../common/layer-extensions';
+import {
+  getCluster,
+  getSld,
+  getTitle,
+  setSld,
+} from '../../common/layer-extensions';
+import {getHighlighted} from '../../common/feature-extensions';
 import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
@@ -144,123 +149,41 @@ export class HsStylerService {
     return src;
   }
   /**
-   * @description Style clustered layer features using cluster style or induvidual feature style.
-   * @param {VectorLayer} layer Any vector layer
+   * Style clustered layer features using cluster style or individual feature style.
+   * @param layer - Any vector layer
    */
-  styleClusteredLayer(layer: VectorLayer): void {
-    const styleCache = {};
-    layer.setStyle((feature: Feature, resolution: number) => {
-      const size = getFeatures(feature)?.length || 0;
-      if (size > 1) {
-        return this.makeClusterMarker(styleCache, size);
-      } else {
-        return this.makeSingleFeatureClusterMarker(feature, resolution, layer);
+  async styleClusteredLayer(layer: VectorLayer): Promise<void> {
+    await this.fill(layer);
+    //Check if layer already has SLD style for clusters
+    if (
+      !this.styleObject.rules.find((r) => {
+        try {
+          /* 
+          For clusters SLD styles created by Hslayers have 'AND' rule where the 
+          first condition checks if 'features' attribute of a feature is set. 
+          See addRule function 
+          */
+          return r.filter[1][1] == 'features';
+        } catch (ex) {
+          return false;
+        }
+      })
+    ) {
+      // Remember to clone singleFeatureFilter on usage so the filters
+      // don't share the same reference
+      const singleFeatureFilter: string | Filter = [
+        '||',
+        ['==', 'features', 'undefined'],
+        ['==', 'features', '[object Object]'],
+      ];
+      for (const rule of this.styleObject.rules) {
+        // Set filter so the original style is applied to features which are not clusters
+        rule.filter =
+          rule.filter?.length > 0
+            ? ['&&', [...singleFeatureFilter], rule.filter]
+            : [...singleFeatureFilter];
       }
-    });
-  }
-  /**
-   * @description Create marker for single feature.
-   * @param {VectorLayer} layer Any vector layer
-   * @param {number} resolution Displayed feature resolution
-   * @param {Feature} feature Any vector layer feature
-   */
-  private makeSingleFeatureClusterMarker(
-    feature: Feature,
-    resolution: number,
-    layer: VectorLayer
-  ) {
-    const featureStyle = getFeatures(feature)
-      ? getFeatures(feature)[0].getStyle()
-      : feature.getStyle();
-
-    const originalStyle = featureStyle ? featureStyle : createDefaultStyle;
-
-    let appliedStyle = this.applyStyleIfNeeded(
-      originalStyle,
-      feature,
-      resolution
-    );
-    if (this.isSelectedFeature(feature)) {
-      if (Array.isArray(appliedStyle)) {
-        appliedStyle = appliedStyle[0];
-      }
-      appliedStyle = appliedStyle.clone();
-      appliedStyle.setFill(
-        new Fill({
-          color: [255, 255, 255, 0.5],
-        })
-      );
-      appliedStyle.setStroke(
-        new Stroke({
-          color: [0, 153, 255, 1],
-          width: 3,
-        })
-      );
-    }
-    return this.useStyleOnFirstFeature(appliedStyle, feature);
-  }
-
-  private isSelectedFeature(feature: Feature): boolean {
-    if (getFeatures(feature)) {
-      return this.isSelectedFeature(getFeatures(feature)[0]);
-    }
-    return (
-      this.HsQueryVectorService.selector
-        .getFeatures()
-        .getArray()
-        .indexOf(feature) > -1
-    );
-  }
-
-  private makeClusterMarker(styleCache: any, size: any) {
-    let textStyle = styleCache[size];
-    if (!textStyle) {
-      textStyle = new Style({
-        image: new Circle({
-          radius: 10,
-          stroke: this.clusterStyle.getStroke(),
-          fill: this.clusterStyle.getFill(),
-        }),
-        text: new Text({
-          text: size.toString(),
-          fill: new Fill({
-            color: '#000',
-          }),
-        }),
-      });
-      styleCache[size] = textStyle;
-    }
-    return textStyle;
-  }
-
-  private applyStyleIfNeeded(
-    style: any,
-    feature: Feature,
-    resolution: number
-  ): any {
-    if (typeof style == 'function') {
-      return style(feature, resolution);
-    } else {
-      return style;
-    }
-  }
-
-  private useStyleOnFirstFeature(
-    style: any,
-    clusteredContainerFeature: Feature
-  ): Style | Style[] {
-    const originalFeature = getFeatures(clusteredContainerFeature) || [
-      clusteredContainerFeature,
-    ];
-    let newStyle;
-    if (style.length) {
-      newStyle = style[0].clone();
-      newStyle.setGeometry(originalFeature[0].getGeometry());
-      return [newStyle];
-    } else {
-      newStyle = style.clone();
-      newStyle.setGeometry(originalFeature[0].getGeometry());
-      return newStyle;
+      await this.addRule('Cluster');
     }
   }
 
@@ -281,6 +204,9 @@ export class HsStylerService {
       style = (await this.parseStyle(sld)).style;
       if (style) {
         layer.setStyle(style);
+      }
+      if (getCluster(layer)) {
+        await this.styleClusteredLayer(layer);
       }
     } else if (style && !sld) {
       //TODO
@@ -361,13 +287,13 @@ export class HsStylerService {
     return sld;
   }
 
-  addRule(
+  async addRule(
     kind: 'Simple' | 'ByScale' | 'ByFilter' | 'ByFilterAndScale' | 'Cluster'
-  ): void {
+  ): Promise<void> {
     switch (kind) {
       case 'Cluster':
         this.styleObject.rules.push({
-          name: 'Untitled rule',
+          name: 'Cluster rule',
           filter: [
             '&&',
             ['!=', 'features', 'undefined'],
@@ -392,7 +318,7 @@ export class HsStylerService {
           symbolizers: [],
         });
     }
-    this.save();
+    await this.save();
   }
 
   removeRule(rule: Rule): void {
@@ -470,15 +396,5 @@ export class HsStylerService {
       }
       return tmp;
     };
-  }
-
-  /**
-   * Force repainting of clusters by reapplying cluster style which
-   * was created in cluster method
-   *
-   * @param layer - Vector layer
-   */
-  repaintCluster(layer: VectorLayer): void {
-    layer.setStyle(layer.getStyle());
   }
 }
