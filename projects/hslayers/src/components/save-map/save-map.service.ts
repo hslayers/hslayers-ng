@@ -34,6 +34,7 @@ import {
   getSubLayers,
   getTitle,
   getWorkspace,
+  getWfsUrl
 } from '../../common/layer-extensions';
 
 const LCLSTORAGE_EXPIRE = 5000;
@@ -419,9 +420,9 @@ export class HsSaveMapService {
         json.workspace = getWorkspace(layer);
         delete json.features;
       } else {
-        if (layer.get('url')) {
+        if (getWfsUrl(layer)) {
           json.protocol = {
-            url: layer.get('url'),
+            url: getWfsUrl(layer),
             format: 'hs.format.externalWFS',
           };
         } else {

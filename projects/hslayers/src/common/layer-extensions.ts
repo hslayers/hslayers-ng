@@ -48,6 +48,8 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
+const ACCESS_RIGHTS = 'access_rights';
+const WFS_URL = 'wfsUrl';
 
 export type Attribution = {
   onlineResource?: string;
@@ -569,6 +571,14 @@ export function setWorkspace(layer: Layer, workspace: string): void {
   layer.set(WORKSPACE, workspace);
 }
 
+export function getWfsUrl(layer: Layer): string {
+  return layer.get(WFS_URL);
+}
+
+export function setWfsUrl(layer: Layer, url: string): void {
+  layer.set(WFS_URL, url);
+}
+
 export const HsLayerExt = {
   getAccessRights,
   setAccessRights,
@@ -650,4 +660,6 @@ export const HsLayerExt = {
   getVirtualAttributes,
   setWorkspace,
   getWorkspace,
+  getWfsUrl,
+  setWfsUrl,
 };

@@ -430,7 +430,7 @@ export class HsAddDataWfsService {
       renderOrder: null,
       removable: true,
       //Used to determine whether its URL WFS service when saving to compositions
-      url: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+      wfsUrl: this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
     });
     this.hsMapService.map.addLayer(new_layer);
     this.hsLayoutService.setMainPanel('layermanager');
