@@ -657,6 +657,7 @@
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
     "serviceDown": "Navigation service seems to be down. We are sorry!",
+    "missingAuth": "Routing service not authorized",
     "waypoints": "Waypoints"
   },
   "ERRORMESSAGES": {
