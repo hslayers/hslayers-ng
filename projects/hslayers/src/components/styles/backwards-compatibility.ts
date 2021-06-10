@@ -60,39 +60,6 @@ export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
 }
 
 /**
- * @description Gets layers style object for any vector layer.
- * @param isClustered
- * @param {VectorLayer} layer Any vector layer
- * @returns {any} Returns layer style object
- */
-export function getLayerStyleObject(
-  layer: VectorLayer,
-  isClustered?: boolean
-): any {
-  if (!layer) {
-    return;
-  }
-  if (this.isVectorLayer(layer)) {
-    let style: any;
-    if (
-      (isClustered !== undefined && isClustered) ||
-      layer.getSource()?.getSource
-    ) {
-      style = getHsOriginalStyle(layer);
-    } else {
-      style = layer.getStyle();
-    }
-    if (style !== undefined) {
-      if (typeof style == 'function') {
-        return style(new Feature())[0];
-      } else {
-        return style;
-      }
-    }
-  }
-}
-
-/**
  * We get serialized layer definition including style definition in custom JSON format.
  * This we need to convert to SLD xml text
  * @param json - Serialized layer which we get from hslayers-ng

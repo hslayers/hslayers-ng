@@ -90,7 +90,7 @@ export class HslayersAppComponent {
         new VectorLayer({
           title: 'Bookmarks',
           synchronize: false,
-          cluster: true,
+          cluster: false,
           inlineLegend: true,
           popUp: {
             attributes: ['name'],

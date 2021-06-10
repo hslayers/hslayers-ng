@@ -163,9 +163,9 @@ export class HsLayerManagerService {
    * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
    * @param e - Event object emited by OL add layer event
-   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
+   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
    */
-  layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
+  async layerAdded(e: CollectionEvent, suspendEvents?: boolean): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
@@ -186,7 +186,7 @@ export class HsLayerManagerService {
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)
     ) {
-      this.HsLayerEditorVectorLayerService.cluster(
+      await this.HsLayerEditorVectorLayerService.cluster(
         true,
         layer,
         this.HsConfig.clusteringDistance || 40
