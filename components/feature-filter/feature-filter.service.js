@@ -196,8 +196,8 @@ export default function (
       }
 
       layer.filteredFeatures = filteredFeatures;
-      layer.unfilteredFeatures = source.getFeatures().filter(function(feature){
-        return filteredFeatures.indexOf(feature)==-1;
+      layer.filteredOutFeatures = source.getFeatures().filter(function(feature){
+        return filteredFeatures.indexOf(feature) == -1;
       });
 
       if (!$rootScope.$$phase) {
