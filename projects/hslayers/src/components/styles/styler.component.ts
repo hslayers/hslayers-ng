@@ -18,8 +18,6 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent implements OnDestroy {
   layerTitle: string;
-  level: 'cluster' | 'layer' = 'layer';
-  isClustered: boolean;
   private ngUnsubscribe = new Subject();
   constructor(
     public HsStylerService: HsStylerService,
