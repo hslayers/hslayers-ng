@@ -33,8 +33,7 @@ import {parseStyle} from './backwards-compatibility';
 })
 export class HsStylerService {
   layer: VectorLayer = null;
-  newLayerStyleSet: Subject<VectorLayer> = new Subject();
-  newFeatureStyleSet: Subject<VectorLayer> = new Subject();
+  onSet: Subject<VectorLayer> = new Subject();
   measure_style = new Style({
     fill: new Fill({
       color: 'rgba(255, 255, 255, 1)',
@@ -363,7 +362,7 @@ export class HsStylerService {
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
       setSld(this.layer, sld);
-      this.newLayerStyleSet.next(this.layer);
+      this.onSet.next(this.layer);
     } catch (ex) {
       this.HsLogService.error(ex);
     }
