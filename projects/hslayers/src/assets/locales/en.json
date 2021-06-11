@@ -8,38 +8,41 @@
         "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlaying layer features."
       },
       "filterType": "Search within",
+      "loading": "Loading data",
+      "queryDataTypes": {
+        "all": "All",
+        "dataset": "Datasets",
+        "service": "Services"
+      },
+      "resourceType": "Resource type",
       "searchFilterTypes": {
         "Abstract": "Abstract",
         "AnyText": "All",
         "Title": "Title"
       },
-      "queryDataTypes": {
-        "all": "All",
-        "service": "Services",
-        "dataset": "Datasets"
-      },
-      "sortbyTypes": {
-        "date": "Date",
-        "title": "Title",
-        "bbox": "Extent"
-      },
-      "loading": "Loading data",
       "searchType": "Search filter type",
       "selectFilterType": "Change search filter type",
-      "resourceType": "Resource type"
+      "sortbyTypes": {
+        "bbox": "Extent",
+        "date": "Date",
+        "title": "Title"
+      }
     },
     "file": "File",
+    "saveToDatabase": "Save to database",
     "URL": {
       "selectAll": "Select all Layers"
-    },
-    "saveToDatabase": "Save to database"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",
+    "Basemap": "Add as basemap",
+    "capabilitiesParsingProblem": "Capabilities parsing problem",
     "chooseFormat": "Choose format",
     "chooseType": "Choose type",
     "considerUsingTiles": "Consider using tiles. Some servers has restricted max size of picture.",
     "couldNotUploadSelectedFile": "There was a problem uploading the selected file!",
+    "errorWhileRequestingLayers": "Error while requesting layers",
     "externalDataSource": "External data source (URL)",
     "featureCount": "Feature count",
     "folderName": "Folder name",
@@ -52,6 +55,7 @@
     "registerMetadata": "Register metadata",
     "resampleLayer": "Resample layer",
     "selectAllLayers": "Select All layers",
+    "serviceTypeNotMatching": "URL service type does not match selected category",
     "SHP": {
       "shapeFile": "Shape file (shp+dbf+shx)",
       "SLDStyleFile": "SLD style file"
@@ -72,10 +76,10 @@
     "useProxy": "Use proxy",
     "useTiles": "Use tiles",
     "Vector": {
+      "chooseFiles": "Choose files...",
       "dragAndDropFiles": "Drag and drop files",
       "note": "*Note: if you link a file with coordinates other than World Geodetic System (lon/lat), please set the SRS in the \"ADVANCED OPTIONS\"",
-      "uploadVectorFiles": "Upload vector files",
-      "chooseFiles": "Choose files..."
+      "uploadVectorFiles": "Upload vector files"
     },
     "VECTOR": {
       "extractStyles": "Extract styles"
@@ -87,11 +91,7 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    },
-    "errorWhileRequestingLayers": "Error while requesting layers",
-    "capabilitiesParsingProblem": "Capabilities parsing problem",
-    "serviceTypeNotMatching": "URL service type does not match selected category",
-    "Basemap": "Add as basemap"
+    }
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -114,6 +114,7 @@
     "confirm": "Confirm",
     "confirmDelete": "Confirm delete",
     "connect": "Connect",
+    "contactInformation": "Contact Information",
     "continue": "continue",
     "data": "Data",
     "dataset": "Dataset",
@@ -147,6 +148,7 @@
     "loading": "Loading",
     "Login": "Log in",
     "Logout": "Log out",
+    "mapExtentFilterMissing": "Please enable Filter by map extent checkbox to be able to sort data by Bounding box",
     "menu": "Menu",
     "metadata": "Metadata",
     "more": "More",
@@ -155,9 +157,11 @@
     "newDrawingLayer": "New drawing layer",
     "next": "Next",
     "no": "No",
+    "noDataReceived": "No data received!",
     "north": "North",
     "ok": "Ok",
     "open": "Open",
+    "or": "or",
     "orderBy": "Order by",
     "photo": "Photo",
     "point": "Point",
@@ -192,26 +196,23 @@
     "title": "Title",
     "to": "to",
     "type": "Type",
+    "unknownError": "Unknown error. Please try again.",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Unsuccessful OAuth2 authentication. Access token is not valid",
     "until": "Until",
     "url": "URL",
     "value": "Value",
+    "warning": "Warning",
     "west": "West",
     "width": "Width",
-    "yes": "Yes",
-    "zoomTo": "zoom to",
-    "contactInformation": "Contact Information",
-    "noDataReceived": "No data received!",
-    "warning": "Warning",
-    "or": "or",
     "wrongCombinationOfParams": "Wrong combination of parameters",
-    "mapExtentFilterMissing": "Please enable Filter by map extent checkbox to be able to sort data by Bounding box",
-    "unknownError": "Unknown error. Please try again.",
-    "Unsuccessful OAuth2 authentication. Access token is not valid": "Unsuccessful OAuth2 authentication. Access token is not valid"
+    "yes": "Yes",
+    "zoomTo": "zoom to"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
     "Address": "Address",
     "clearFilters": "Clear all filters",
+    "compostionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },
@@ -240,22 +241,21 @@
       "outOfBounds": "Compostion extent is out of EPSG:4326 boundaries.",
       "toContinue": "Map will not fit the given composition geometry or extent based on the given map size and borders."
     },
+    "endpointUrlIsNotDefined": "Endpoint url is not defined!",
+    "endpointUserIsNotDefined": "Endpoint user is not defined!",
+    "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata",
+    "errorWhileRequestingCompositions": "Error while requesting compositions",
+    "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network",
     "filterByMap": "Filter by map extent",
     "import": "Import composition from a file on device",
     "inspireTheme": "INSPIRE theme",
     "loginToCatalogue": "Login to catalogue",
+    "metadataNotAvailable": "Metadata are not available!",
+    "notAllowedToEditLayer": "You are not allowed to edit this composition",
     "onlyMine": "Only mine",
     "selectKeywords": "Select keywords",
     "selectThemes": "Select themes",
-    "sharingUrlIsNotAvailable": "Sharing URL is not available!",
-    "errorWhileRequestingCompositions": "Error while requesting compositions",
-    "compostionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
-    "endpointUserIsNotDefined": "Endpoint user is not defined!",
-    "endpointUrlIsNotDefined": "Endpoint url is not defined!",
-    "errorWhileSharingOnSocialNetwork": "Error while sharing composition on social network",
-    "metadataNotAvailable": "Metadata are not available!",
-    "errorWhileLoadingCompositionMetadata": "Error while loading composition metadata",
-    "notAllowedToEditLayer": "You are not allowed to edit this composition"
+    "sharingUrlIsNotAvailable": "Sharing URL is not available!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Addresses",
@@ -342,8 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Abort add",
       "addToMap": "Add to map",
-      "whatDoesItMean": "What does it mean?",
-      "notAllowedToEditLayer": "You are not allowed to edit this layer"
+      "notAllowedToEditLayer": "You are not allowed to edit this layer",
+      "whatDoesItMean": "What does it mean?"
     },
     "externalData": "External data",
     "layerRDF": "Layer RDF",
@@ -354,7 +354,9 @@
   "DRAW": {
     "activateDrawing": "Activate drawing by choosing a feature type",
     "activeLayers": "Active layers",
+    "allowSnapping": "Allow snapping",
     "definedStyle": "Defined style",
+    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "disableDrawing": "Disable drawing",
     "drawInfo": "While drawing polygon or line you can hold SHIFT to free-hand draw; You can delete last point with Backspace key",
     "drawingTo": "Drawing to:",
@@ -378,13 +380,20 @@
     "newGPS": "New GPS",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
-    "deleteNote": "*Layer will be deleted completely. In case you want to delete layer from the current compositon only (preserving it in database) do so in 'Layermanager' panel.",
     "saveDrawingToLayer": "Save drawing to layer",
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
-    "unsavedDrawing": "Unsaved drawing",
-    "allowSnapping": "Allow snapping",
-    "snapTo": "Snap to features of layer"
+    "snapTo": "Snap to features of layer",
+    "unsavedDrawing": "Unsaved drawing"
+  },
+  "ERRORMESSAGES": {
+    "0": "Http failure response for {{url}}: 0 Unknown Error",
+    "400": "Http failure response for {{url}}: 400 Bad Request",
+    "403": "Http failure response for {{url}}: 403 Forbidden",
+    "404": "Http failure response for {{url}}: 404 Not Found",
+    "502": "Http failure response for {{url}}: 502 Bad Gateway",
+    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!",
+    "Timeout has occurred": "Http failure response for {{url}}: Timeout Out"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -429,9 +438,9 @@
       "metadataOfLayer": "Metadata of layer in",
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",
+      "savegeojson": "Download layer content as GeoJSON",
       "styleLayer": "Style layer",
-      "zoomToLayer": "Zoom to layer",
-      "savegeojson": "Download layer content as GeoJSON"
+      "zoomToLayer": "Zoom to layer"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
@@ -469,12 +478,12 @@
     "removeAllLayers": "Remove all layers",
     "resetMap": "Reset map",
     "terrains": "Terrains",
-    "User generated": "User generated",
     "time": {
-      "syncTimes": "Synchronize times",
       "outOfRange": "Selected time is out of range",
+      "syncTimes": "Synchronize times",
       "syncTimesTooltip": "Synchronize time for all layers"
-    }
+    },
+    "User generated": "User generated"
   },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
@@ -571,6 +580,7 @@
     },
     "form": {
       "address": "Address",
+      "changeName": "Change name",
       "city": "City",
       "country": "Country",
       "email": "Email",
@@ -584,8 +594,7 @@
       "state": "State",
       "toggleAll": "Toggle all",
       "userCurrentMapExtent": "Use current map extent",
-      "write": "Write",
-      "changeName": "Change name"
+      "write": "Write"
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",
@@ -599,11 +608,11 @@
     "private": "Private",
     "public": "Public",
     "readAccessRights": "Read access rights",
+    "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },
-    "writeAccessRights": "Write access rights",
-    "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}"
+    "writeAccessRights": "Write access rights"
   },
   "SENSORS": {
     "1D": "1D",
@@ -622,6 +631,7 @@
     "sensorUnit": "Sensor unit"
   },
   "SIDEBAR": {
+    "additionalPanels": "Additional panels",
     "descriptions": {
       "ADDLAYERS": "Select data or services for your map composition",
       "APPLICATIONSETTINGS": "Specify application user settings",
@@ -639,8 +649,7 @@
       "SAVECOMPOSITION": "Save content of map to composition",
       "SEARCH": "Search for location",
       "TRIP_PLANNER": "Create new trip routes"
-    },
-    "additionalPanels": "Additional panels"
+    }
   },
   "STYLER": {
     "features": "Features",
@@ -653,20 +662,11 @@
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Clear waypoints",
+    "missingAuth": "Routing service not authorized",
     "removeWaypoint": "Remove waypoint",
+    "serviceDown": "Navigation service seems to be down. We are sorry!",
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
-    "serviceDown": "Navigation service seems to be down. We are sorry!",
-    "missingAuth": "Routing service not authorized",
     "waypoints": "Waypoints"
-  },
-  "ERRORMESSAGES": {
-    "0": "Http failure response for {{url}}: 0 Unknown Error",
-    "400": "Http failure response for {{url}}: 400 Bad Request",
-    "403": "Http failure response for {{url}}: 403 Forbidden",
-    "404": "Http failure response for {{url}}: 404 Not Found",
-    "502": "Http failure response for {{url}}: 502 Bad Gateway",
-    "Timeout has occurred": "Http failure response for {{url}}: Timeout Out",
-    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!"
   }
 }

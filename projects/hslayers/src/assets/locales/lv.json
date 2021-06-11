@@ -8,38 +8,41 @@
         "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām."
       },
       "filterType": "Meklēt pēc",
+      "loading": "Notiek ielāde",
+      "queryDataTypes": {
+        "all": "Visi",
+        "dataset": "Datukopa",
+        "service": "Serviss"
+      },
+      "resourceType": "Resursu tips",
       "searchFilterTypes": {
         "Abstract": "Apraksta",
         "AnyText": "Visa teksta",
         "Title": "Nosaukuma"
       },
-      "queryDataTypes": {
-        "all": "Visi",
-        "service": "Serviss",
-        "dataset": "Datukopa"
-      },
-      "sortbyTypes": {
-        "date": "Datuma",
-        "title": "Nosaukuma",
-        "bbox": "Mērogojuma"
-      },
-      "loading": "Notiek ielāde",
       "searchType": "Filtra tips",
       "selectFilterType": "Nomainīt filtra tipu",
-      "resourceType": "Resursu tips"
+      "sortbyTypes": {
+        "bbox": "Mērogojuma",
+        "date": "Datuma",
+        "title": "Nosaukuma"
+      }
     },
     "file": "Fails",
+    "saveToDatabase": "Saglabāt datubāzē",
     "URL": {
       "selectAll": "Izvēlēties visus slāņus"
-    },
-    "saveToDatabase": "Saglabāt datubāzē"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Pievienot izvēlētos slāņus kartei",
+    "Basemap": "Pievienot kā pamatslāni",
+    "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
     "chooseFormat": "Izvēlieties formātu",
     "chooseType": "Izvēlieties tipu",
     "considerUsingTiles": "Apsveriet \"flīžu\" izmantošanu. Dažos serveros ir ierobežots maksimālais attēla lielums.",
     "couldNotUploadSelectedFile": "Radās problēma mēģinot ielādēt Jūsu izvēlēto failu!",
+    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",
     "folderName": "Mapes nosaukums",
@@ -52,6 +55,7 @@
     "registerMetadata": "Reģistrēt metadatus",
     "resampleLayer": "Atkārtojiet slāņa atlasi",
     "selectAllLayers": "Atlasīt visus slāņus",
+    "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
     "SHP": {
       "shapeFile": "Ģeometrijas datne (shp+dbf+shx)",
       "SLDStyleFile": "SLD stila datne"
@@ -72,10 +76,10 @@
     "useProxy": "Izmantojiet starpniekserveri",
     "useTiles": "Izmantojiet \"flīzes\"",
     "Vector": {
+      "chooseFiles": "Izvēlieties failus...",
       "dragAndDropFiles": "Velciet un nometiet failus",
       "note": "*Piezīme: ja pievienojat failu ar koordinātām, kas nav Pasaules ģeodēziskā sistēma (ģeo.garums / ģeo.platums), lūdzu, iestatiet to (SRS) sadaļā \"Papildu iespējas\"",
-      "uploadVectorFiles": "Augšuplādēt vektordatu failus",
-      "chooseFiles": "Izvēlieties failus..."
+      "uploadVectorFiles": "Augšuplādēt vektordatu failus"
     },
     "VECTOR": {
       "extractStyles": "Izvilkt stilus"
@@ -87,11 +91,7 @@
     },
     "WMTS": {
       "tileMatrix": "\"Flīžu\" matrica"
-    },
-    "errorWhileRequestingLayers": "Radusies kļūda pieprasot slāņus",
-    "capabilitiesParsingProblem": "WMS Capabilities parsēšanas problēma",
-    "serviceTypeNotMatching": "URL servisa tips neatbilsts izvēlētajaai kategorijai",
-    "Basemap": "Pievienot kā pamatslāni"
+    }
   },
   "COMMON": {
     "abstract": "Apraksts",
@@ -114,6 +114,7 @@
     "confirm": "Apstiprināt",
     "confirmDelete": "Aptipriniet dzēšanu",
     "connect": "Izveidot savienojumu",
+    "contactInformation": "Kontaktinformācija",
     "continue": "turpināt",
     "data": "Dati",
     "dataset": "Datu kopa",
@@ -147,6 +148,7 @@
     "loading": "Notiek ielāde",
     "Login": "Autorizēties",
     "Logout": "Atteikties",
+    "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "menu": "Izvēlne",
     "metadata": "Metadati",
     "more": "Vairāk",
@@ -155,9 +157,11 @@
     "newDrawingLayer": "Jauns zīmēšanas slānis",
     "next": "Nākamais",
     "no": "No",
+    "noDataReceived": "Dati nav saņemti!",
     "north": "Ziemeļi",
     "ok": "Labi",
     "open": "Atvērt",
+    "or": "vai",
     "orderBy": "Kārtot pēc",
     "photo": "Bilde",
     "point": "Punkts",
@@ -192,26 +196,23 @@
     "title": "Virsraksts",
     "to": "līdz",
     "type": "Tips",
+    "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neveiksmīga OAuth2 autentifikācija. Piekļuves talons nav derīgs",
     "until": "Līdz",
     "url": "URL",
     "value": "Vērtība",
+    "warning": "Brīdinājums",
     "west": "Rietumi",
     "width": "Platums",
-    "yes": "Jā",
-    "zoomTo": "pietuvināt",
-    "contactInformation": "Kontaktinformācija",
-    "warning": "Brīdinājums",
-    "noDataReceived": "Dati nav saņemti!",
-    "or": "vai",
-    "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "wrongCombinationOfParams": "Nepareiza parametru kombinācija",
-    "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
-    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neveiksmīga OAuth2 autentifikācija. Piekļuves talons nav derīgs"
+    "yes": "Jā",
+    "zoomTo": "pietuvināt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
     "Address": "Adrese",
     "clearFilters": "Notīrīt filtrus",
+    "compostionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
     },
@@ -240,21 +241,21 @@
       "outOfBounds": "Kompozīcijas apjoms ir ārpus EPSG:4326 robežām.",
       "toContinue": "Norādītā kompozīcijas ģeometrija vai tās apjoms var netikt iekļauts dotajā kartē un tās robežās."
     },
+    "endpointUrlIsNotDefined": "Saites galapunkts nav definēts!",
+    "endpointUserIsNotDefined": "Galapunkta lietotājs nav definēts!",
+    "errorWhileLoadingCompositionMetadata": "Radusies kļūda ielādējot kompozīcijas metadatus",
+    "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas",
+    "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos",
     "filterByMap": "Filtrēt pēc kartes",
     "import": "Importēt kompozīciju no faila vai ierīces",
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
+    "metadataNotAvailable": "Metadati nav pieejami!",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
     "selectThemes": "Izvēlēties tēmas",
     "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
-    "compostionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
-    "endpointUrlIsNotDefined": "Saites galapunkts nav definēts!",
-    "endpointUserIsNotDefined": "Galapunkta lietotājs nav definēts!",
-    "errorWhileRequestingCompositions": "Radusies kļūda pieprasot kompozīcijas",
-    "errorWhileSharingOnSocialNetwork": "Radusies kļūda koplietojot kompozīciju sociālajos tīklos",
-    "metadataNotAvailable": "Metadati nav pieejami!",
-    "errorWhileLoadingCompositionMetadata": "Radusies kļūda ielādējot kompozīcijas metadatus"
+    "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -341,7 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Atcelt pievienošanu",
       "addToMap": "Pievienot kartei",
-      "whatDoesItMean": "Ko tas nozīmē?"
+      "whatDoesItMean": "Ko tas nozīmē?",
+      "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni"
     },
     "externalData": "Ārējie resursi",
     "layerRDF": "Slāņa RDF",
@@ -352,7 +354,9 @@
   "DRAW": {
     "activateDrawing": "Aktivizējiet zīmēšanu, izvēloties objekta tipu",
     "activeLayers": "Aktīvie slāņi",
+    "allowSnapping": "Atļaut pieķeršanos",
     "definedStyle": "Definētais stils",
+    "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
     "disableDrawing": "Atspējot zīmēšanu",
     "drawInfo": "Zīmējot daudzstūri vai līniju, Jūs varat turēt taustiņu SHIFT, lai zīmētu brīvroku režīmā; Pēdējo punktu var izdzēst ar Backspace taustiņu",
     "drawingTo": "Zīmējums uz:",
@@ -376,13 +380,20 @@
     "newGPS": "Jauns GPS",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
-    "deleteNote": "*Slānis tiks neatgriezeniski izdzēsts. Gadījuma, ja vēlaties izdzēst slāni tikai no pašreizējās kompozīcijas (saglabājot to datubāzē), dariet to 'Slāņu pārvaldība' panelī.",
     "saveDrawingToLayer": "Saglabāt zīmēšanas slāni",
     "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
-    "allowSnapping": "Atļaut pieķeršanos"
+    "unsavedDrawing": "Nesaglabāts zīmējums"
+  },
+  "ERRORMESSAGES": {
+    "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
+    "400": "Http pieprasījuma kļūda uz {{url}}: 400 Neizdevies pieprasījums",
+    "403": "Http pieprasījuma kļūda uz {{url}}: 403 Aizliegta darbība",
+    "404": "Http pieprasījuma kļūda uz {{url}}: 404 Serveris nevarēja atrast pieprasītos datus",
+    "502": "Http pieprasījuma kļūda uz {{url}}: 502 Nederīga vārteja",
+    "Invalid Params": "Lūdzu, pārbaudiet, vai ir aizpildīti visi nepieciešamie teksta lauki pirms kartes koplietošanas!",
+    "Timeout has occurred": "Http pieprasījuma kļūda uz {{url}}: Iestājās pieprasījuma noilgums"
   },
   "FEATURE_TABLE": {
     "delete": "dzēst",
@@ -427,9 +438,9 @@
       "metadataOfLayer": "Slāņa metadati iekš",
       "metadataOfService": "Servisa metadati",
       "opacity": "Necaurredzamība",
+      "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON",
       "styleLayer": "Stilizēt slāni",
-      "zoomToLayer": "Tuvināt līdz slānim",
-      "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON"
+      "zoomToLayer": "Tuvināt līdz slānim"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
@@ -467,12 +478,12 @@
     "removeAllLayers": "Noņemt visus slāņus",
     "resetMap": "Atiestatīt karti",
     "terrains": "Reljefi",
-    "User generated": "Lietotāja ģenerēti",
     "time": {
       "outOfRange": "Atlasītais laiks ir ārpus diapazona",
       "syncTimes": "Sinhronizēt laikus",
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
-    }
+    },
+    "User generated": "Lietotāja ģenerēti"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -569,6 +580,7 @@
     },
     "form": {
       "address": "Adrese",
+      "changeName": "Mainīt nosaukumu",
       "city": "Pilsēta",
       "country": "Valsts",
       "email": "E-pasts",
@@ -582,8 +594,7 @@
       "state": "Novads",
       "toggleAll": "Pārslēgt visu",
       "userCurrentMapExtent": "Izmantot pašreizējo kartes apmēru",
-      "write": "Rakstīt",
-      "changeName": "Mainīt nosaukumu"
+      "write": "Rakstīt"
     },
     "panelMd": {
       "fillKeywords": "Ievadiet atslēgvārdus",
@@ -597,11 +608,11 @@
     "private": "Privāts",
     "public": "Publisks",
     "readAccessRights": "Lasīšanas piekļuves tiesības",
+    "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}",
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
-    "writeAccessRights": "Rakstīšanas piekļuves tiesības",
-    "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}"
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
   },
   "SENSORS": {
     "1D": "1d",
@@ -620,6 +631,7 @@
     "sensorUnit": "Sensoru vienība"
   },
   "SIDEBAR": {
+    "additionalPanels": "Papildu paneļi",
     "descriptions": {
       "ADDLAYERS": "Atlasīt kartes sastāva datus vai pakalpojumus",
       "APPLICATIONSETTINGS": "Norādīt lietojumprogrammas lietotāja iestatījumus",
@@ -637,8 +649,7 @@
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
       "SEARCH": "Meklēt atrašanās vietu",
       "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus"
-    },
-    "additionalPanels": "Papildu paneļi"
+    }
   },
   "STYLER": {
     "features": "Objekti",
@@ -652,18 +663,10 @@
   "TRIP_PLANNER": {
     "clearWaypoints": "Dzēst pieturas",
     "removeWaypoint": "Dzēst pieturu",
+    "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Atvainojamies par sagādātajām neērtībām!",
     "totalDistance": "Kopējais attālums",
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypoints": "Pieturas punkti",
-    "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Atvainojamies par sagādātajām neērtībām!"
-  },
-  "ERRORMESSAGES": {
-    "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
-    "400": "Http pieprasījuma kļūda uz {{url}}: 400 Neizdevies pieprasījums",
-    "403": "Http pieprasījuma kļūda uz {{url}}: 403 Aizliegta darbība",
-    "404": "Http pieprasījuma kļūda uz {{url}}: 404 Serveris nevarēja atrast pieprasītos datus",
-    "502": "Http pieprasījuma kļūda uz {{url}}: 502 Nederīga vārteja",
-    "Timeout has occurred": "Http pieprasījuma kļūda uz {{url}}: Iestājās pieprasījuma noilgums",
-    "Invalid Params": "Lūdzu, pārbaudiet, vai ir aizpildīti visi nepieciešamie teksta lauki pirms kartes koplietošanas!"
+    "missingAuth": "Maršrutēšanas pakalpojums nav atļauts"
   }
 }
