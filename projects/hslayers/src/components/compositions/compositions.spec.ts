@@ -36,6 +36,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
+import { HsEventBusServiceMock } from '../core/event-bus.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
@@ -68,6 +69,7 @@ describe('compositions', () => {
   beforeEach(() => {
     mockedMapService = new HsMapServiceMock();
     const mockedUtilsService: any = new HsUtilsServiceMock();
+    const mockedEventBusService: any = new HsEventBusServiceMock();
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -122,7 +124,7 @@ describe('compositions', () => {
             new HsStylerService(
               null,
               mockedUtilsService,
-              null,
+              mockedEventBusService,
               null,
               null,
               mockedMapService
