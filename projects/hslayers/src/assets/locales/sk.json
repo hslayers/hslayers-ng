@@ -8,38 +8,41 @@
         "WMS": "Web Map Service - prehliadacia: dáta nahráva v podobe rastru. Prenášané dáta sú obvykle menie čo má za následok rychlejšie načítanie, no na druhú stranu neumožňuje ich editáciu."
       },
       "filterType": "Typ vyhľadávania",
+      "loading": "Načítanie dát",
+      "queryDataTypes": {
+        "all": "Všetko",
+        "dataset": "Datasety",
+        "service": "Služby"
+      },
+      "resourceType": "Typ zdroja",
       "searchFilterTypes": {
         "Abstract": "Abstrakt",
         "AnyText": "Všetko",
         "Title": "Titulok"
       },
-      "queryDataTypes": {
-        "all": "Všetko",
-        "service": "Služby",
-        "dataset": "Datasety"
-      },
-      "sortbyTypes": {
-        "date": "Dátum",
-        "title": "Titulok",
-        "bbox": "BBOX"
-      },
-      "loading": "Načítanie dát",
       "searchType": "Typ vyhľadávania",
       "selectFilterType": "Zmeniť nastavenie vyhľadávania",
-      "resourceType": "Typ zdroja"
+      "sortbyTypes": {
+        "bbox": "BBOX",
+        "date": "Dátum",
+        "title": "Titulok"
+      }
     },
     "file": "Súbor",
+    "saveToDatabase": "Uložit do databázy",
     "URL": {
       "selectAll": "Označiť všetky vrstvy"
-    },
-    "saveToDatabase": "Uložit do databázy"
+    }
   },
   "ADDLAYERS": {
     "addSelected": "Pridať označené vrstvy do mapy",
+    "Basemap": "Pridať ako podkladovú vrstvu",
+    "capabilitiesParsingProblem": "Problém pri načítaní informácii o službě",
     "chooseFormat": "Vyberte formát",
     "chooseType": "Vyberte typ",
     "considerUsingTiles": "Zvážte použitie dlaždíc. Niektoré servery majú obmedzenú maximálnu veľkosť obrazu.",
     "couldNotUploadSelectedFile": "Pri načítaní súboru došlo k chybe!",
+    "errorWhileRequestingLayers": "Chyba pri žiadaní vrstiev zo servera",
     "externalDataSource": "Zdroj externých dát (URL)",
     "featureCount": "Počet prvkov",
     "folderName": "Názov zložky",
@@ -52,6 +55,7 @@
     "registerMetadata": "Registrovať metadáta",
     "resampleLayer": "Prevzorkovať vrstvu",
     "selectAllLayers": "Vybrať všetky vrstvy",
+    "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
     "SHP": {
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor se styly SLD"
@@ -72,10 +76,10 @@
     "useProxy": "Použíť proxy",
     "useTiles": "Použíť dlaždice",
     "Vector": {
+      "chooseFiles": "Vyberte súbory...",
       "dragAndDropFiles": "Pretiahnite súbory",
       "note": "*Poznámka: Ak pripojíte súbor so súradnicami v inom systéme než WGS84 (dĺžka/šírka) nastavte prosím SRS v skecií \"POKROČILÉ MOŽNOSTI\"",
-      "uploadVectorFiles": "Nahrajte vektorové súbory",
-      "chooseFiles": "Vyberte súbory..."
+      "uploadVectorFiles": "Nahrajte vektorové súbory"
     },
     "VECTOR": {
       "extractStyles": "Extrahovať štýly"
@@ -87,11 +91,7 @@
     },
     "WMTS": {
       "tileMatrix": "Matica dlaždíc"
-    },
-    "errorWhileRequestingLayers": "Chyba pri žiadaní vrstiev zo servera",
-    "capabilitiesParsingProblem": "Problém pri načítaní informácii o službě",
-    "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
-    "Basemap": "Pridať ako podkladovú vrstvu"
+    }
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -114,6 +114,7 @@
     "confirm": "Potvrdiť",
     "confirmDelete": "Potvrďte vymazanie",
     "connect": "Pripojiť",
+    "contactInformation": "Kontaktné informácie",
     "continue": "Pokračovať",
     "data": "Dáta",
     "dataset": "Dátová sada",
@@ -147,6 +148,7 @@
     "loading": "Načítanie",
     "Login": "Prihlásiť sa",
     "Logout": "Odhlásiť",
+    "mapExtentFilterMissing": "Radenie výsledkov podľa rozsahu dát (BBOX) je možné jedine po aktivácií 'filtrácie na rozsah okna'. Aktivujte ho prosím.",
     "menu": "Menu",
     "metadata": "Metadáta",
     "more": "Viac",
@@ -155,9 +157,11 @@
     "newDrawingLayer": "Nová vrstva na kreslenie",
     "next": "Ďalšie",
     "no": "Nie",
+    "noDataReceived": "Neboli prijaté židane dáta!",
     "north": "Severný",
     "ok": "Ok",
     "open": "Otvoriť",
+    "or": "alebo",
     "orderBy": "Zoradiť podľa",
     "photo": "Foto",
     "point": "Bod",
@@ -192,26 +196,23 @@
     "title": "Titulok",
     "to": "do",
     "type": "Typ",
+    "unknownError": "Neznáma chyba. Skúste to znova, prosím.",
+    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neuspešná autentizace. Neplatný prístupový token",
     "until": "Až do",
     "url": "URL",
     "value": "Hodnota",
+    "warning": "Varovanie",
     "west": "Západný",
     "width": "Šírka",
-    "yes": "Áno",
-    "zoomTo": "zväčšiť na",
-    "contactInformation": "Kontaktné informácie",
-    "warning": "Varovanie",
-    "noDataReceived": "Neboli prijaté židane dáta!",
-    "or": "alebo",
     "wrongCombinationOfParams": "Neplatná kombinácia parametrov",
-    "unknownError": "Neznáma chyba. Skúste to znova, prosím.",
-    "mapExtentFilterMissing": "Radenie výsledkov podľa rozsahu dát (BBOX) je možné jedine po aktivácií 'filtrácie na rozsah okna'. Aktivujte ho prosím.",
-    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neuspešná autentizace. Neplatný prístupový token"
+    "yes": "Áno",
+    "zoomTo": "zväčšiť na"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
     "Address": "Adresa",
     "clearFilters": "Vyčistiť filtre",
+    "compostionsNameAttributeIsNotDefined": "Atribút názov kompozície nie je definovaný!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Chcete zmazať túto mapu?"
     },
@@ -240,22 +241,21 @@
       "outOfBounds": "Rozsah kompozície je mimo rozsah systému EPSG:4326",
       "toContinue": "Na základe danej veľkosti mapy nebude mapa zobrazovať geometriu alebo rozsah danej kompozície"
     },
-    "filterByMap": "Filtrovať na rozsah okna",
-    "import": "Importovať kompozíciu zo súboru v tomto zariadení",
-    "inspireTheme": "Téma INSPIRE",
-    "loginToCatalogue": "Prihlásiť do katalógu",
-    "onlyMine": "Len moje vlastné",
-    "selectKeywords": "Vybrať kľúčové slová",
-    "selectThemes": "Vybrať témy",
-    "compostionsNameAttributeIsNotDefined": "Atribút názov kompozície nie je definovaný!",
     "endpointUrlIsNotDefined": "Nie je definovaná URL adresa servera!",
     "endpointUserIsNotDefined": "Nie je definovaný užívateľ katalógu",
     "errorWhileLoadingCompositionMetadata": "Chyba pri načítaní metadát kompozície",
     "errorWhileRequestingCompositions": "Chyba pri žiadosti o kompozíciu",
     "errorWhileSharingOnSocialNetwork": "Chyba pri zdeiľaní kompozície na sociálnu sieť",
+    "filterByMap": "Filtrovať na rozsah okna",
+    "import": "Importovať kompozíciu zo súboru v tomto zariadení",
+    "inspireTheme": "Téma INSPIRE",
+    "loginToCatalogue": "Prihlásiť do katalógu",
     "metadataNotAvailable": "Metadáta nie sú dostupné!",
-    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!",
-    "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto kompozíciu"
+    "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto kompozíciu",
+    "onlyMine": "Len moje vlastné",
+    "selectKeywords": "Vybrať kľúčové slová",
+    "selectThemes": "Vybrať témy",
+    "sharingUrlIsNotAvailable": "Adresa URL pre zdieľanie nie je dostupná!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adresy",
@@ -342,8 +342,8 @@
     "datasourceListItem": {
       "abortAdd": "Zrušiť pridanie",
       "addToMap": "Pridať do mapy",
-      "whatDoesItMean": "Čo to znamená?",
-      "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto dátovú sadu"
+      "notAllowedToEditLayer": "Nemáte oprávnenie editovať túto dátovú sadu",
+      "whatDoesItMean": "Čo to znamená?"
     },
     "externalData": "Externé dáta",
     "layerRDF": "RDF vrstva",
@@ -354,7 +354,9 @@
   "DRAW": {
     "activateDrawing": "Aktivujte kreslenie výberom typu prvku",
     "activeLayers": "Aktívne vrstvy",
+    "allowSnapping": "Povoliť prichytávanie",
     "definedStyle": "Definovaný štýl",
+    "deleteNote": "*Vrstva bude kompletne vymazaná. V prípade, že ju chcete vymazať len z aktuálnej kompozíce (nie aj z databázy) môžete tak urobiť v panele 'Správca vrstiev'",
     "disableDrawing": "Vypnúť kreslenie",
     "drawInfo": "Pri kreslení mnohoúhelníku ale línie môžete podržať klávesu SHIFT pre krslenie rukou; Posledný bod môžete vymazať klávesou Backspace",
     "drawingTo": "Kreslím do:",
@@ -378,13 +380,20 @@
     "newGPS": "Nové GPS",
     "notAuthorized": "Neautorizovaný uživateľ, zmeny nebudú uložené",
     "reallyDeleteThisLayer": "Naozaj odstrániť vybranú vrstvu?",
-    "deleteNote": "*Vrstva bude kompletne vymazaná. V prípade, že ju chcete vymazať len z aktuálnej kompozíce (nie aj z databázy) môžete tak urobiť v panele 'Správca vrstiev'",
     "saveDrawingToLayer": "Uložiť do vrstvy",
     "Select layer": "Vybrať vrstvu",
     "serverLayers": "Serverové vrstvy",
-    "unsavedDrawing": "Neuložená kresba",
     "snapTo": "Prichytávať na vrstvu",
-    "allowSnapping": "Povoliť prichytávanie"
+    "unsavedDrawing": "Neuložená kresba"
+  },
+  "ERRORMESSAGES": {
+    "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
+    "400": "Chybná odpoveď pre {{url}}: 400 Nesprávna požiadavka",
+    "403": "Chybná odpoveď pre {{url}}: 403 Odmietnuté",
+    "404": "Chybná odpoveď pre {{url}}: 404 Nenájdené",
+    "502": "Chybná odpoveď pre {{url}}: 502 Nesprávna brána",
+    "Invalid Params": "Pred zdieľaním mapy sa uistite, či sú všetky vyžadovené polia správne vyplnené!",
+    "Timeout has occurred": "Chybná odpoveď pre {{url}}: Čas vypršal"
   },
   "FEATURE_TABLE": {
     "delete": "vymazať",
@@ -429,9 +438,9 @@
       "metadataOfLayer": "Metadáta vrstvy v ",
       "metadataOfService": "Metadáta služby",
       "opacity": "Priehľadnosť",
+      "savegeojson": "Stiahnuť obsah vrstvy ako GeoJSON",
       "styleLayer": "Štýlovať vrstvu",
-      "zoomToLayer": "Priblížiť na vrstvu",
-      "savegeojson": "Stiahnuť obsah vrstvy ako GeoJSON"
+      "zoomToLayer": "Priblížiť na vrstvu"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
@@ -469,12 +478,12 @@
     "removeAllLayers": "Odstrániť všetky vrstvy",
     "resetMap": "Obnoviť mapu",
     "terrains": "Terény",
-    "User generated": "Užívateľské",
     "time": {
-      "syncTimes": "Synchronizovať časy",
       "outOfRange": "Vybraný čas je mimo rozsah",
+      "syncTimes": "Synchronizovať časy",
       "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev"
-    }
+    },
+    "User generated": "Užívateľské"
   },
   "LEGEND": {
     "noLegendExists": "Žiadna vrstva s legendou neexistuje!"
@@ -571,6 +580,7 @@
     },
     "form": {
       "address": "Adresa",
+      "changeName": "Zmeniť meno",
       "city": "Mesto",
       "country": "Krajina",
       "email": "E-mail",
@@ -584,8 +594,7 @@
       "state": "Štát",
       "toggleAll": "Prepnúť všetko",
       "userCurrentMapExtent": "Použiť aktuálny rozsah mapy",
-      "write": "Zápis",
-      "changeName": "Zmeniť meno"
+      "write": "Zápis"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte kľúčove slová",
@@ -599,11 +608,11 @@
     "private": "Súkromné",
     "public": "Verejné",
     "readAccessRights": "Právo čítať",
+    "removeLayerError": "Vrstva '{{layer}}' nebola odstránená z databáze. {{error}}",
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba pri synchronizácii"
     },
-    "writeAccessRights": "Právo zápisu",
-    "removeLayerError": "Vrstva '{{layer}}' nebola odstránená z databáze. {{error}}"
+    "writeAccessRights": "Právo zápisu"
   },
   "SENSORS": {
     "1D": "1D",
@@ -622,6 +631,7 @@
     "sensorUnit": "Senzorová jednotka"
   },
   "SIDEBAR": {
+    "additionalPanels": "Ďalšie panely",
     "descriptions": {
       "ADDLAYERS": "Vybrať dáta alebo služby pre vašu mapovou kompozíciu",
       "APPLICATIONSETTINGS": "Zadať užívateľské nastavenia aplikácie",
@@ -639,8 +649,7 @@
       "SAVECOMPOSITION": "Uložiť obsah mapy do kompozície",
       "SEARCH": "Vyhľadať miesto",
       "TRIP_PLANNER": "Vytvoriť novú trasu výletu"
-    },
-    "additionalPanels": "Ďalšie panely"
+    }
   },
   "STYLER": {
     "features": "Prvky",
@@ -654,18 +663,9 @@
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistiť body trasy",
     "removeWaypoint": "Odobrať bod trasy",
+    "serviceDown": "Zdá sa, že navigačná služba nefunguje. Je nám to ľúto!",
     "totalDistance": "Celková vzdialenosť",
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
-    "waypoints": "Body trasy",
-    "serviceDown": "Zdá sa, že navigačná služba nefunguje. Je nám to ľúto!"
-  },
-  "ERRORMESSAGES": {
-    "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
-    "400": "Chybná odpoveď pre {{url}}: 400 Nesprávna požiadavka",
-    "403": "Chybná odpoveď pre {{url}}: 403 Odmietnuté",
-    "404": "Chybná odpoveď pre {{url}}: 404 Nenájdené",
-    "502": "Chybná odpoveď pre {{url}}: 502 Nesprávna brána",
-    "Timeout has occurred": "Chybná odpoveď pre {{url}}: Čas vypršal",
-    "Invalid Params": "Pred zdieľaním mapy sa uistite, či sú všetky vyžadovené polia správne vyplnené!"
+    "waypoints": "Body trasy"
   }
 }

@@ -1,4 +1,15 @@
 {
+  "ADDDATA": {
+    "CATALOGUE": {
+      "resourceType": "Resource type"
+    }
+  },
+  "ADDLAYERS": {
+    "Basemap": "Add as basemap",
+    "Vector": {
+      "chooseFiles": "Choose files..."
+    }
+  },
   "COMMON": {
     "abstract": "Résumé",
     "advancedOptions": "Options avancées",
@@ -21,6 +32,7 @@
     "newDrawingLayer": "Nouveau calque de dessin",
     "no": "Non",
     "ok": "D'accord",
+    "or": "or",
     "point": "Point",
     "polygon": "Polygone",
     "radius": "Rayon",
@@ -34,8 +46,7 @@
     "strokeWidth": "Largeur du trait",
     "title": "Titre",
     "to": "à",
-    "width": "Largeur",
-    "or": "or"
+    "width": "Largeur"
   },
   "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
@@ -126,25 +137,14 @@
     "LEGEND": "Légendes",
     "LM": "Gestionnaire des calques"
   },
+  "SIDEBAR": {
+    "additionalPanels": "Panneaux supplémentaires"
+  },
   "TRIP_PLANNER": {
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypoints": "Waypoints"
-  },
-  "SIDEBAR": {
-    "additionalPanels": "Panneaux supplémentaires"
-  },
-  "ADDLAYERS": {
-    "Vector": {
-      "chooseFiles": "Choose files..."
-    },
-    "Basemap": "Add as basemap"
-  },
-  "ADDDATA": {
-    "CATALOGUE": {
-      "resourceType": "Resource type"
-    }
   }
 }
