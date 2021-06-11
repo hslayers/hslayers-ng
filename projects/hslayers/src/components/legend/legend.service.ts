@@ -10,6 +10,7 @@ import {HsLayerSelectorService} from '../layermanager/layer-selector.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsUtilsService} from '../utils/utils.service';
 import {
+  getAutoLegend,
   getBase,
   getEnableProxy,
   getLegends,
@@ -75,9 +76,11 @@ export class HsLegendService {
     return tmp;
   }
 
-  findFeatureGeomTypes(
-    features: Array<Feature>
-  ): {line: boolean; polygon: boolean; point: boolean} {
+  findFeatureGeomTypes(features: Array<Feature>): {
+    line: boolean;
+    polygon: boolean;
+    point: boolean;
+  } {
     const found = {
       line: false,
       point: false,
@@ -342,7 +345,7 @@ export class HsLegendService {
         getShowInLayerManager(layer) == true)
     ) {
       return {
-        autoLegend: layer.get('autoLegend') ?? true,
+        autoLegend: getAutoLegend(layer) ?? true,
         title: getTitle(layer),
         lyr: layer,
         type: 'vector',
