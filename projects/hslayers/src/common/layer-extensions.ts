@@ -8,8 +8,10 @@ import {accessRightsInterface} from '../components/add-data/common/access-rights
 const TITLE = 'title';
 const NAME = 'name';
 const ABSTRACT = 'abstract';
+const ACCESS_RIGHTS = 'access_rights';
 const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
+const AUTO_LEGEND = 'autoLegend';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const CLUSTER = 'cluster';
@@ -46,7 +48,6 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
-const ACCESS_RIGHTS = 'access_rights';
 
 export type Attribution = {
   onlineResource?: string;
@@ -86,7 +87,10 @@ export function getAccessRights(layer: Layer): accessRightsInterface {
   return layer.get(ACCESS_RIGHTS);
 }
 
-export function setAccessRights(layer: Layer, access_rights:accessRightsInterface ){
+export function setAccessRights(
+  layer: Layer,
+  access_rights: accessRightsInterface
+): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }
 
@@ -128,6 +132,14 @@ export function setAttribution(layer: Layer, attribution: Attribution): void {
 
 export function getAttribution(layer: Layer): Attribution {
   return layer.get(ATTRIBUTION);
+}
+
+export function setAutoLegend(layer: Layer): void {
+  layer.set(AUTO_LEGEND);
+}
+
+export function getAutoLegend(layer: Layer): boolean {
+  return layer.get(AUTO_LEGEND);
 }
 
 export function getCachedCapabilities(layer: Layer): any {
