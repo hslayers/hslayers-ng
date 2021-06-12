@@ -48,7 +48,6 @@ const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
-const ACCESS_RIGHTS = 'access_rights';
 const WFS_URL = 'wfsUrl';
 
 export type Attribution = {
