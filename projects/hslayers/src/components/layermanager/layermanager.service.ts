@@ -758,7 +758,6 @@ export class HsLayerManagerService {
     //No more tiles to load?
     if (progress.loadCounter == 0) {
       progress.loaded = true;
-      this.HsEventBusService.layerLoads.next(layer);
       // If in 2 seconds no new tiles are starting to to load
       // we can assume that layer has finished loading
       if (progress.timer) {
@@ -768,6 +767,7 @@ export class HsLayerManagerService {
         if (progress.loadCounter == 0) {
           this.zone.run(() => {
             progress.loadTotal = 0;
+            this.HsEventBusService.layerLoads.next(layer);
             progress.percents = 100;
           });
         }
