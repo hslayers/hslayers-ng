@@ -73,10 +73,10 @@ export class HsInfoComponent implements OnDestroy {
     this.HsEventBusService.layerLoadings
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(({layer, progress}) => {
-        if (!(getTitle(layer) in this.layer_loading)) {
+        if (!this.layer_loading.includes(getTitle(layer))) {
           this.layer_loading.push(getTitle(layer));
+          this.composition_loaded = false;
         }
-        this.composition_loaded = false;
       });
 
     this.HsEventBusService.layerLoads
@@ -88,10 +88,8 @@ export class HsInfoComponent implements OnDestroy {
           }
         }
 
-        if (this.layer_loading.length == 0) {
-          if (!this.composition_loaded) {
-            this.composition_loaded = true;
-          }
+        if (this.layer_loading.length == 0 && !this.composition_loaded) {
+          this.composition_loaded = true;
         }
       });
 
