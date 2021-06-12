@@ -515,6 +515,13 @@
                 }
               }
             ]
+          },
+          "workspace":{
+            "$id": "#/properties/layers/items/properties/workspace",
+            "type": "string",
+            "title": "Workspace name",
+            "description": "Layman workspace name",
+            "examples": ["workspacename"]
           }
         }
       }
