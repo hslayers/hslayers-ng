@@ -1,9 +1,11 @@
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import {Component} from '@angular/core';
-import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
+
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Point from 'ol/geom/Point';
 import {OSM, Vector as VectorSource} from 'ol/source';
 import {Tile} from 'ol/layer';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from '../../../hslayers/src/config.service';
 
@@ -28,6 +30,76 @@ export class HslayersAppComponent {
         population: Math.round(Math.random() * 5000000),
       });
     }
+    const geojsonObject = {
+      'type': 'FeatureCollection',
+      'crs': {
+        'type': 'name',
+        'properties': {
+          'name': 'EPSG:3857',
+        },
+      },
+      'features': [
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [
+              [
+                [-5e6, 6e6],
+                [-5e6, 8e6],
+                [-3e6, 8e6],
+                [-3e6, 6e6],
+                [-5e6, 6e6],
+              ],
+            ],
+          },
+        },
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [
+              [
+                [-2e6, 6e6],
+                [-2e6, 8e6],
+                [0, 8e6],
+                [0, 6e6],
+                [-2e6, 6e6],
+              ],
+            ],
+          },
+        },
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [
+              [
+                [1e6, 6e6],
+                [1e6, 8e6],
+                [3e6, 8e6],
+                [3e6, 6e6],
+                [1e6, 6e6],
+              ],
+            ],
+          },
+        },
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [
+              [
+                [-2e6, -1e6],
+                [-1e6, 1e6],
+                [0, -1e6],
+                [-2e6, -1e6],
+              ],
+            ],
+          },
+        },
+      ],
+    };
     Object.assign(this.HsConfig, {
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
@@ -88,7 +160,7 @@ export class HslayersAppComponent {
           removable: false,
         }),
         new VectorLayer({
-          title: 'Bookmarks',
+          title: 'Points',
           synchronize: false,
           cluster: false,
           inlineLegend: true,
@@ -138,6 +210,50 @@ export class HslayersAppComponent {
           `,
           path: 'User generated',
           source: new VectorSource({features}),
+        }),
+        new VectorLayer({
+          title: 'Polygons',
+          synchronize: false,
+          cluster: false,
+          inlineLegend: true,
+          popUp: {
+            attributes: ['name'],
+          },
+          editor: {
+            editable: true,
+            defaultAttributes: {
+              name: 'New polygon',
+              description: 'none',
+            },
+          },
+          sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
+          <StyledLayerDescriptor version="1.0.0" 
+              xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+              xmlns="http://www.opengis.net/sld" 
+              xmlns:ogc="http://www.opengis.net/ogc" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <NamedLayer>
+              <Name>Simple point with stroke</Name>
+              <UserStyle>
+                <Title>GeoServer SLD Cook Book: Simple point with stroke</Title>
+                <FeatureTypeStyle>
+                  <Rule>
+                  <PolygonSymbolizer>
+                  <Fill>
+                    <CssParameter name="fill">#000080</CssParameter>
+                  </Fill>
+                </PolygonSymbolizer>
+                  </Rule>
+                </FeatureTypeStyle>
+              </UserStyle>
+            </NamedLayer>
+          </StyledLayerDescriptor>
+          `,
+          path: 'User generated',
+          source: new VectorSource({
+            features: new GeoJSON().readFeatures(geojsonObject),
+          }),
         }),
       ],
     });
