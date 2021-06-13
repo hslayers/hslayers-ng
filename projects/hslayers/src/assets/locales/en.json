@@ -729,7 +729,8 @@
     "anchorY": "Anchor Y",
     "anchorX": "Anchor X",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
-    "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD"
+    "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
+    "dashPattern": "Dash pattern"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

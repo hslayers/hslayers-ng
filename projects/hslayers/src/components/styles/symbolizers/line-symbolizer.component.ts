@@ -17,4 +17,18 @@ export class HsLineSymbolizerComponent extends HsStylerPartBaseComponent {
   addSymbolizer(attribute: string, kind: SymbolizerKind): void {
     this.symbolizer[attribute] = {kind};
   }
+
+  addDashItem(): void {
+    if (!this.symbolizer.dasharray) {
+      this.symbolizer.dasharray = [1];
+    } else {
+      this.symbolizer.dasharray.push(1);
+    }
+  }
+
+  removeDashItem(): void {
+    if (this.symbolizer.dasharray.length > 0) {
+      this.symbolizer.dasharray.length--;
+    }
+  }
 }

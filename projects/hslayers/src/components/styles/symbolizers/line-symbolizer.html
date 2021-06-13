@@ -27,6 +27,27 @@
     label="{{'STYLER.width' | translate}}"
   ></hs-symbolizer-slider>
 
+  <div class="d-flex flex-row flex-wrap">
+    <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translate}}:</div>
+    <input
+      class="form-control"
+      style="width: 4em"
+      *ngFor="let dash of symbolizer.dasharray; let i = index"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="symbolizer.dasharray[i]"
+      (change)="emitChange()"
+    />
+    <div class="btn-group" role="group" aria-label="{{'STYLER.dashPattern' | translate}}">
+      <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
+        <span class="icon-plus"></span>
+      </button>
+      <button class="btn btn-outline-danger btn-sm" (click)="removeDashItem()">
+        <span class="icon-minus"></span>
+      </button>
+    </div>
+   
+  </div>
+
   <hs-symbolizer-slider
     [symbolizer]="symbolizer"
     attribute="blur"
@@ -39,7 +60,7 @@
   ></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.cap' | translate}}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.cap' | translate}}:</div>
     <div class="p-1 w-75">
       <select
         class="form-control"
@@ -60,10 +81,11 @@
     min="0"
     max="10"
     label="{{'STYLER.gapWidth' | translate}}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.join' | translate}}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.join' | translate}}:</div>
     <div class="p-1 w-75">
       <select
         class="form-control"
@@ -84,6 +106,7 @@
     min="0"
     max="90"
     label="{{'STYLER.miterLimit' | translate}}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
@@ -119,10 +142,16 @@
     warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
-
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1 flex-grow-1 mt-2">{{'STYLER.graphicFill' | translate}}:</div>
-    <span class="badge badge-warning mt-2" style="height: 2em; width:2em" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
+    <div class="p-1 flex-grow-1 mt-2">
+      {{'STYLER.graphicFill' | translate}}:
+    </div>
+    <span
+      class="badge badge-warning mt-2"
+      style="height: 2em; width: 2em"
+      title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
+      >!</span
+    >
     <div class="p-1">
       <div ngbDropdown class="d-inline-block" placement="top-right">
         <button
@@ -133,44 +162,71 @@
           <span class="icon-plus"></span>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">Mark</button>
-          <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">Icon</button>
+          <button
+            ngbDropdownItem
+            (click)="addSymbolizer('graphicFill', 'Mark')"
+          >
+            Mark
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="addSymbolizer('graphicFill', 'Icon')"
+          >
+            Icon
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <hs-symbolizer
-  *ngIf="symbolizer.graphicFill != undefined"
-  [symbolizer]="symbolizer.graphicFill"
-  (changes)="emitChange()"
-  (remove)="symbolizer.graphicFill = undefined"
-></hs-symbolizer>
+    *ngIf="symbolizer.graphicFill != undefined"
+    [symbolizer]="symbolizer.graphicFill"
+    (changes)="emitChange()"
+    (remove)="symbolizer.graphicFill = undefined"
+  ></hs-symbolizer>
 
-<div class="d-flex flex-row justify-content-end">
-  <div class="p-1 flex-grow-1 mt-2">{{'STYLER.graphicStroke' | translate}}:</div>
-  <span class="badge badge-warning mt-2" style="height: 2em; width:2em" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
-  <div class="p-1">
-    <div ngbDropdown class="d-inline-block" placement="top-right">
-      <button
-        class="btn btn-outline-primary btn-sm"
-        id="dropdownAddStrokeSymbolizer"
-        ngbDropdownToggle
-      >
-        <span class="icon-plus"></span>
-      </button>
-      <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
-        <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">Mark</button>
-        <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">Icon</button>
+  <div class="d-flex flex-row justify-content-end">
+    <div class="p-1 flex-grow-1 mt-2">
+      {{'STYLER.graphicStroke' | translate}}:
+    </div>
+    <span
+      class="badge badge-warning mt-2"
+      style="height: 2em; width: 2em"
+      title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
+      >!</span
+    >
+    <div class="p-1">
+      <div ngbDropdown class="d-inline-block" placement="top-right">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          id="dropdownAddStrokeSymbolizer"
+          ngbDropdownToggle
+        >
+          <span class="icon-plus"></span>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
+          <button
+            ngbDropdownItem
+            (click)="addSymbolizer('graphicStroke', 'Mark')"
+          >
+            Mark
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="addSymbolizer('graphicStroke', 'Icon')"
+          >
+            Icon
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<hs-symbolizer
-*ngIf="symbolizer.graphicStroke != undefined"
-[symbolizer]="symbolizer.graphicStroke"
-(changes)="emitChange()"
-(remove)="symbolizer.graphicStroke = undefined"
-></hs-symbolizer>
+  <hs-symbolizer
+    *ngIf="symbolizer.graphicStroke != undefined"
+    [symbolizer]="symbolizer.graphicStroke"
+    (changes)="emitChange()"
+    (remove)="symbolizer.graphicStroke = undefined"
+  ></hs-symbolizer>
 </form>
