@@ -727,7 +727,9 @@
     "removeRule": "Remove rule",
     "selectIcon": "Select icon",
     "anchorY": "Anchor Y",
-    "anchorX": "Anchor X"
+    "anchorX": "Anchor X",
+    "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
+    "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
