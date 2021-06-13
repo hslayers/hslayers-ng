@@ -14,6 +14,7 @@
     min="0"
     max="1"
     label="{{'STYLER.opacity' | translate}}"
+    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
@@ -34,6 +35,7 @@
     min="0"
     max="20"
     label="{{'STYLER.blur' | translate}}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
@@ -92,6 +94,7 @@
     min="0"
     max="20"
     label="{{'STYLER.perpendicularOffset' | translate}}"
+    warning="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
@@ -102,6 +105,7 @@
     min="0"
     max="90"
     label="{{'STYLER.roundLimit' | translate}}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
   <hs-symbolizer-slider
@@ -112,11 +116,13 @@
     min="0"
     max="20"
     label="{{'STYLER.spacing' | translate}}"
+    warning="{{'STYLER.warningAttribNotStoredNotVisualized' | translate}}"
   ></hs-symbolizer-slider>
 
 
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translate}}:</div>
+    <div class="p-1 flex-grow-1 mt-2">{{'STYLER.graphicFill' | translate}}:</div>
+    <span class="badge badge-warning mt-2" style="height: 2em; width:2em" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
     <div class="p-1">
       <div ngbDropdown class="d-inline-block" placement="top-right">
         <button
@@ -142,7 +148,8 @@
 ></hs-symbolizer>
 
 <div class="d-flex flex-row justify-content-end">
-  <div class="p-1 flex-grow-1">{{'STYLER.graphicStroke' | translate}}:</div>
+  <div class="p-1 flex-grow-1 mt-2">{{'STYLER.graphicStroke' | translate}}:</div>
+  <span class="badge badge-warning mt-2" style="height: 2em; width:2em" title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}">!</span>
   <div class="p-1">
     <div ngbDropdown class="d-inline-block" placement="top-right">
       <button
