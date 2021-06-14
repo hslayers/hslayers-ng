@@ -15,11 +15,13 @@ import {transform} from 'ol/proj';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from './../map/map.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from './../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';
+import {getTitle} from '../../common/layer-extensions';
 
 export type Waypoint = {
   name: string;
@@ -51,6 +53,16 @@ export class HsTripPlannerService {
   modify = new Modify({
     features: this.movable_features,
   });
+  waypointSource: VectorSource;
+  waypointLayer: VectorLayer;
+  routeSource: VectorSource;
+  routeLayer: VectorLayer;
+  timer: any;
+  vectorLayers: {layer: VectorLayer; title: string}[];
+  selectedLayerWrapper: {
+    route?: {layer: VectorLayer; title: string};
+    waypoints?: {layer: VectorLayer; title: string};
+  } = {};
 
   waypointRouteStyle = (feature, resolution) => {
     return [
@@ -79,26 +91,12 @@ export class HsTripPlannerService {
             color: '#fff',
             width: 3,
           }),
-          offsetY: -10,
+          offsetY: -40,
           text: this.getTextOnFeature(feature),
         }),
       }),
     ];
   };
-
-  waypointSource = new VectorSource();
-  waypointLayer = new VectorLayer({
-    title: 'Waypoints',
-    source: this.waypointSource,
-    style: this.waypointRouteStyle,
-  });
-  routeSource = new VectorSource();
-  routeLayer = new VectorLayer({
-    title: 'Travel route',
-    source: this.routeSource,
-    style: this.waypointRouteStyle,
-  });
-  timer: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -107,14 +105,24 @@ export class HsTripPlannerService {
     public HsShareUrlService: HsShareUrlService,
     public HsEventBusService: HsEventBusService,
     private HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService
+    public HsLanguageService: HsLanguageService,
+    private HsLayerUtilsService: HsLayerUtilsService
   ) {
     if (this.HsShareUrlService.getParamValue('trip') !== null) {
       this.trip = this.HsShareUrlService.getParamValue('trip');
       this.loadWaypoints(this.trip);
       this.HsShareUrlService.push('trip', this.trip);
     }
+    this.HsMapService.loaded().then((map) => {
+      map.addInteraction(this.modify);
+    });
     this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
+      if (!this.waypointLayer) {
+        this.createWaypointLayer();
+      }
+      if (!this.routeLayer) {
+        this.createRouteLayer();
+      }
       //Don't add waypoints when drawing and measuring
       if (
         this.HsMapService.map
@@ -131,6 +139,79 @@ export class HsTripPlannerService {
         lat: coordinates.epsg4326Coordinate[1],
       });
     });
+  }
+
+  async fillVectorLayers(): Promise<void> {
+    this.HsMapService.loaded().then((map) => {
+      this.vectorLayers = [
+        {
+          layer: null,
+          title: 'newLayer',
+        },
+        ...this.HsMapService.getLayersArray()
+          .filter((layer) => this.HsLayerUtilsService.isLayerDrawable(layer))
+          .map((layer) => {
+            return {layer, title: getTitle(layer)};
+          }),
+      ];
+      this.fillDefaultLayerWrapper('route');
+      this.fillDefaultLayerWrapper('waypoints');
+    });
+  }
+
+  private fillDefaultLayerWrapper(usage: 'route' | 'waypoints') {
+    if (this.selectedLayerWrapper[usage]) {
+      this.selectedLayerWrapper[usage] = this.vectorLayers.find(
+        (w) => w.layer == this.selectedLayerWrapper[usage].layer
+      );
+    } else {
+      this.selectedLayerWrapper[usage] = this.vectorLayers[0];
+    }
+  }
+
+  createWaypointLayer(): void {
+    this.waypointSource = new VectorSource();
+    this.waypointLayer = new VectorLayer({
+      title: this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints'),
+      source: this.waypointSource,
+      style: this.waypointRouteStyle,
+    });
+    this.HsMapService.map.addLayer(this.waypointLayer);
+  }
+
+  createRouteLayer(): void {
+    this.routeSource = new VectorSource();
+    this.routeLayer = new VectorLayer({
+      title: this.HsLanguageService.getTranslation('TRIP_PLANNER.travelRoute'),
+      source: this.routeSource,
+      style: this.waypointRouteStyle,
+    });
+    this.HsMapService.map.addLayer(this.routeLayer);
+  }
+
+  /**
+   * Select layer for storing route or waypoint features
+   * @param layer - Wrapper object which contains OL layer and its title
+   * @param usage - route or waypoints
+   */
+  selectLayer(
+    layer: {layer: VectorLayer; title: string},
+    usage: 'route' | 'waypoints'
+  ): void {
+    if (usage == 'route') {
+      this.routeLayer = layer.layer;
+      if (this.routeLayer) {
+        this.routeSource = this.routeLayer.getSource();
+      }
+      this.selectedLayerWrapper.route = layer;
+    }
+    if (usage == 'waypoints') {
+      this.waypointLayer = layer.layer;
+      if (this.waypointLayer) {
+        this.waypointSource = this.waypointLayer.getSource();
+      }
+      this.selectedLayerWrapper.waypoints = layer;
+    }
   }
 
   getTextOnFeature(feature: Feature): string {

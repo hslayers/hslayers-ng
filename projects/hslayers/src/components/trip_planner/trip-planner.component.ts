@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import {Component, OnInit} from '@angular/core';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
+import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
@@ -15,7 +16,7 @@ import {setHighlighted} from '../../common/feature-extensions';
  */
 @Component({
   selector: 'hs-trip-planner',
-  templateUrl: './partials/trip_planner.html',
+  templateUrl: './trip_planner.html',
 })
 export class HsTripPlannerComponent implements OnInit {
   loaderImage: string;
@@ -27,7 +28,8 @@ export class HsTripPlannerComponent implements OnInit {
     public HsTripPlannerService: HsTripPlannerService,
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
+    public HsLayerUtilsService: HsLayerUtilsService
   ) {}
   ngOnInit(): void {
     if (this.HsConfig.default_layers === undefined) {
@@ -35,11 +37,7 @@ export class HsTripPlannerComponent implements OnInit {
     } else {
       this.HsConfig.default_layers.push(this.HsTripPlannerService.routeLayer);
     }
-    this.HsMapService.loaded().then((map) => {
-      map.addLayer(this.HsTripPlannerService.routeLayer);
-      map.addLayer(this.HsTripPlannerService.waypointLayer);
-      map.addInteraction(this.HsTripPlannerService.modify);
-    });
+    this.HsTripPlannerService.fillVectorLayers();
   }
 
   /**
