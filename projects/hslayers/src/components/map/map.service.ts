@@ -631,9 +631,11 @@ export class HsMapService {
     }
 
     if (this.HsConfig.default_layers) {
-      this.HsConfig.default_layers.forEach((lyr) => {
-        this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
-      });
+      this.HsConfig.default_layers
+        .filter((lyr) => lyr)
+        .forEach((lyr) => {
+          this.addLayer(lyr, DuplicateHandling.IgnoreNew, visibilityOverrides);
+        });
     }
   }
 
