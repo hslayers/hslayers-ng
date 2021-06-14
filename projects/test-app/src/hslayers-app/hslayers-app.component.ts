@@ -101,6 +101,9 @@ export class HslayersAppComponent {
       ],
     };
     Object.assign(this.HsConfig, {
+      panelsEnabled: {
+        tripPlanner: true,
+      },
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},
