@@ -17,8 +17,6 @@ export type PhysicalListItem = {
 })
 export class HsLayermanagerPhysicalListService {
   layersCopy: PhysicalListItem[];
-  dragging: PhysicalListItem;
-  insertBefore: BaseLayer;
   constructor(
     public HsEventBusService: HsEventBusService,
     public HsLayerManagerService: HsLayerManagerService,
@@ -34,25 +32,6 @@ export class HsLayermanagerPhysicalListService {
     return this.HsMapService.getLayersArray().filter(
       (layer) => getBase(layer) != true
     );
-  }
-
-  /**
-   * Sets reference for layer hovered over
-   */
-  onDragOver(e): void {
-    if (e.target) {
-      this.insertBefore = this.layersCopy.filter(
-        (l) => l.layer.ol_uid == e.target.id
-      );
-    }
-  }
-  /**
-   * Reorders layers by placing layer being dragged before hovered one
-   */
-  onDragEnd(e): void {
-    if (this.insertBefore?.length > 0) {
-      this.moveTo(this.dragging, this.insertBefore.map((l) => l.layer)[0]);
-    }
   }
 
   /**
