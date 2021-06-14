@@ -1,3 +1,4 @@
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
@@ -11,13 +12,7 @@ import {HsLayermanagerPhysicalListService} from './layermanager-physical-layerli
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
   templateUrl: './partials/physical-layerlist.html',
-  styles: [
-    `
-      .activeLayer {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
-    `,
-  ],
+  styleUrls: ['./partials/physical-layerlist.component.scss'],
 })
 export class HsLayerPhysicalListComponent implements OnDestroy {
   layerManagerUpdatesSubscription: Subscription;
@@ -29,21 +24,37 @@ export class HsLayerPhysicalListComponent implements OnDestroy {
     public HsConfig: HsConfig
   ) {
     this.HsLayermanagerPhysicalListService.fillLayers();
-    this.layerManagerUpdatesSubscription = this.HsEventBusService.layerManagerUpdates.subscribe(
-      (layer: any) => {
+    this.layerManagerUpdatesSubscription =
+      this.HsEventBusService.layerManagerUpdates.subscribe((layer: any) => {
         this.HsLayermanagerPhysicalListService.fillLayers();
         if (layer !== undefined) {
-          const layerFound = this.HsLayermanagerPhysicalListService.layersCopy.find(
-            (wrapper) => wrapper.layer == layer || wrapper.layer == layer.layer
-          );
+          const layerFound =
+            this.HsLayermanagerPhysicalListService.layersCopy.find(
+              (wrapper) =>
+                wrapper.layer == layer || wrapper.layer == layer.layer
+            );
           if (layerFound !== undefined) {
             layerFound.active = true;
           }
         }
-      }
-    );
+      });
   }
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();
+  }
+  drop(event: CdkDragDrop<any[]>): void {
+    const draggedLayer = event.container.data[event.previousIndex];
+    const replacedLayer = event.container.data[event.currentIndex];
+
+    moveItemInArray(
+      this.HsLayermanagerPhysicalListService.layersCopy,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    this.HsLayermanagerPhysicalListService.moveTo(
+      draggedLayer,
+      replacedLayer.layer
+    );
   }
 }

@@ -1,5 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
@@ -51,6 +52,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLegendModule,
     HsUiExtensionsModule,
     NgbModule,
+    DragDropModule,
   ],
   exports: [
     HsLayerManagerComponent,
