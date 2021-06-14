@@ -1,0 +1,44 @@
+<div
+  class="flex-row w-100 m-auto justify-content-center align-items-center"
+  style="display: flex"
+>
+  <p class="m-0 p-0 flex-fill" style="color: var(--primary)">{{label}}:</p>
+  <div class="dropdown" style="max-width: 50%">
+    <button
+      type="button"
+      class="
+        btn btn-sm
+        rounded-0
+        hs-toolbar-button
+        dropdown-toggle
+        d-flex
+        align-items-center
+        mw-100
+      "
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
+      [attr.aria-expanded]="layersExpanded"
+    >
+      <div class="text-truncate" *ngIf="selectedwrapper != undefined">
+        {{HsLayerUtilsService.translateTitle(selectedwrapper.title)}}
+      </div>
+    </button>
+    <div
+      class="dropdown-menu dropdown-menu-right"
+      [ngClass]="{'show': layersExpanded}"
+      style="transform: translateX(25%); width: 15em"
+    >
+      <div class="d-flex align-items-center w-100 flex-column">
+        <a
+          class="dropdown-item text-truncate"
+          *ngFor="let layer of HsTripPlannerService.vectorLayers"
+          data-toggle="tooltip"
+          title="{{HsLayerUtilsService.translateTitle(layer.title)}}"
+          (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false"
+          >{{HsLayerUtilsService.translateTitle(layer.title)}}</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

@@ -485,6 +485,9 @@
     },
     "User generated": "User generated"
   },
+  "LAYERS": {
+    "newLayer": "New layer"
+  },
   "LEGEND": {
     "noLegendExists": "No layer with legend exists!"
   },
@@ -668,6 +671,9 @@
     "serviceDown": "Navigation service seems to be down. We are sorry!",
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
-    "waypoints": "Waypoints"
+    "waypoints": "Waypoints",
+    "routerLayer": "Route layer",
+    "waypointLayer": "Waypoint layer",
+    "travelRoute": "Travel route"
   }
 }
