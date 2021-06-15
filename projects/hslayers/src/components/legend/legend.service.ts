@@ -1,3 +1,4 @@
+import CircleStyle from 'ol/style/Circle';
 import Feature from 'ol/Feature';
 import StyleFunction from 'ol/style/Style';
 import {Circle, Fill, Icon, Image as ImageStyle, Stroke, Style} from 'ol/style';
@@ -141,7 +142,9 @@ export class HsLegendService {
     const filtered = styleArray.filter(
       (style) => style.getText == undefined || !style.getText()
     );
-    let serializedStyles = filtered.map((style) => this.serializeStyle(style));
+    let serializedStyles = filtered
+      .map((style) => this.serializeStyle(style))
+      .filter((style) => style); //We don't want undefined values here, it breaks removeDuplicates
     serializedStyles = this.HsUtilsService.removeDuplicates(
       serializedStyles,
       'hashcode'
@@ -170,6 +173,9 @@ export class HsLegendService {
    */
   serializeStyle(style: Style) {
     const styleToSerialize = style[0] ? style[0] : style;
+    if (styleToSerialize.getImage == undefined) {
+      return;
+    }
     const image = styleToSerialize.getImage();
     const stroke = styleToSerialize.getStroke();
     const fill = styleToSerialize.getFill();
@@ -192,35 +198,30 @@ export class HsLegendService {
         type: 'icon',
         src: this.sanitizer.bypassSecurityTrustResourceUrl(image.getSrc()),
       };
-    } else if (image && this.HsUtilsService.instOf(image, Circle)) {
-      if (image.getStroke() && image.getFill()) {
-        row.customCircle = {
-          type: 'circle',
-          cx: '17.5px',
-          cy: '17.5px',
-          r: '15px',
-          fill: image.getFill().getColor(),
-          stroke: image.getStroke().getColor(),
-          strokeWidth: image.getStroke().getWidth(),
-        };
-      } else if (image.getStroke()) {
-        row.customCircle = {
-          type: 'circle',
-          cx: '17.5px',
-          cy: '17.5px',
-          r: '15px',
-          fill: 'blue',
-          stroke: image.getStroke().getColor(),
-          strokeWidth: image.getStroke().getWidth(),
-        };
-      }
-    } else {
-      row.defaultCircle = {
-        fill: 'blue',
+    } else if (
+      image &&
+      (this.HsUtilsService.instOf(image, Circle) ||
+        this.HsUtilsService.instOf(image, CircleStyle))
+    ) {
+      row.customCircle = {
+        fill: 'white',
+        type: 'circle',
         cx: '17.5px',
         cy: '17.5px',
         r: '15px',
       };
+      if (image.getStroke()) {
+        Object.assign(row.customCircle, {
+          fill: image.getFill().getColor(),
+          stroke: image.getStroke().getColor(),
+          strokeWidth: image.getStroke().getWidth(),
+        });
+      }
+      if (image.getFill()) {
+        Object.assign(row.customCircle, {
+          fill: image.getFill().getColor(),
+        });
+      }
     }
     if (!stroke && !fill) {
       row.defaultLine = {type: 'line', stroke: 'blue', strokeWidth: '1'};
