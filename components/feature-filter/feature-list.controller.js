@@ -195,7 +195,7 @@ export default function (
     const currentView = HsMapService.map.getView();
     const currentZoom = currentView.getZoom();
     const maxZoom = currentView.getMaxZoom();
-    const zoomStep = 2; // might make this app configurable
+    const zoomStep = HsConfig.selectionZoomStep || 2;
     const zoomAvailable = maxZoom - currentZoom;
     const newZoom =
       currentZoom +
