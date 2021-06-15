@@ -184,6 +184,14 @@ export class HsStylerService {
       }
       await this.addRule('Cluster');
     }
+    let style = layer.getStyle();
+    if (
+      this.layer.getSource().getSource &&
+      this.HsUtilsService.isFunction(style)
+    ) {
+      style = this.wrapStyleForClusters(style);
+      layer.setStyle(style);
+    }
   }
 
   /**
@@ -388,9 +396,8 @@ export class HsStylerService {
           evaluatedStyle.getText()?.getText()?.includes('[object Object]')
         ) {
           const featureListSerialized = evaluatedStyle.getText().getText();
-          evaluatedStyle
-            .getText()
-            .setText(featureListSerialized.split(',').length.toString());
+          const fCount = featureListSerialized.split(',').length.toString();
+          evaluatedStyle.getText().setText(fCount);
         }
       }
       return tmp;
