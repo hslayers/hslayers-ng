@@ -1,8 +1,13 @@
-import BaseLayer from 'ol/layer/Base';
-import Feature from 'ol/Feature';
 import SLDParser from 'geostyler-sld-parser';
-import VectorLayer from 'ol/layer/Vector';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
+import {
+  FillSymbolizer,
+  IconSymbolizer,
+  LineSymbolizer,
+  MarkSymbolizer,
+  Symbolizer,
+  SymbolizerKind,
+} from 'geostyler-style';
 
 export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
   const style_json: any = {};
@@ -66,7 +71,7 @@ export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
  * @param layer - Vector layer to get title from
  */
 async function convertHsStyleToSld(json: any): Promise<string> {
-  const symbolizers = [];
+  const symbolizers: Symbolizer[] = [];
   if (json.image?.type == 'circle') {
     symbolizers.push(createCircleSymbol(json));
   }
@@ -95,13 +100,8 @@ async function convertHsStyleToSld(json: any): Promise<string> {
  * @param json
  * @returns
  */
-function createPolygonSymbol(json: any): {
-  kind: string;
-  color: string;
-  outlineColor?: string;
-  outlineWidth?: number;
-} {
-  const tmp = {
+function createPolygonSymbol(json: any): FillSymbolizer {
+  const tmp: FillSymbolizer = {
     kind: 'Fill',
     color: json.fill.color,
   };
@@ -120,12 +120,8 @@ function createPolygonSymbol(json: any): {
  * @param json
  * @returns
  */
-function createLineSymbol(json: any): {
-  kind: string;
-  color: string;
-  width?: number;
-} {
-  const tmp = {
+function createLineSymbol(json: any): LineSymbolizer {
+  const tmp: LineSymbolizer = {
     kind: 'Line',
     color: json.stroke.color,
     width: json.stroke.width,
@@ -139,15 +135,8 @@ function createLineSymbol(json: any): {
  * @param json
  * @returns
  */
-function createCircleSymbol(json: any): {
-  kind: string;
-  wellKnownName: string;
-  color: string;
-  strokeColor?: string;
-  strokeWidth?: number;
-  radius: number;
-} {
-  const tmp: any = {
+function createCircleSymbol(json: any): MarkSymbolizer {
+  const tmp: MarkSymbolizer = {
     kind: 'Mark',
     wellKnownName: 'circle',
     color: json.image.fill.color || json.fill,
@@ -172,9 +161,10 @@ function createCircleSymbol(json: any): {
  * @param json
  * @returns
  */
-function createIconSymbol(json: any): {kind: string; image: string} {
+function createIconSymbol(json: any): IconSymbolizer {
   return {
     kind: 'Icon',
+    offset: [0, 0],
     image:
       json.image.src.replace('data:image/svg+xml;base64,', 'base64:') +
       `?fill=${encodeURIComponent(

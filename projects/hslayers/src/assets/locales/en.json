@@ -392,8 +392,8 @@
     "403": "Http failure response for {{url}}: 403 Forbidden",
     "404": "Http failure response for {{url}}: 404 Not Found",
     "502": "Http failure response for {{url}}: 502 Bad Gateway",
-    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!",
-    "Timeout has occurred": "Http failure response for {{url}}: Timeout Out"
+    "Timeout has occurred": "Http failure response for {{url}}: Timeout Out",
+    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!"
   },
   "FEATURE_TABLE": {
     "delete": "delete",
@@ -726,8 +726,8 @@
     "clusterRule": "Rule for clusters",
     "removeRule": "Remove rule",
     "selectIcon": "Select icon",
-    "anchorY": "Anchor Y",
-    "anchorX": "Anchor X",
+    "anchorY": "Offset Y",
+    "anchorX": "Offset X",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
     "dashPattern": "Dash pattern"
@@ -746,14 +746,5 @@
     "routerLayer": "Route layer",
     "waypointLayer": "Waypoint layer",
     "travelRoute": "Travel route"
-  },
-  "ERRORMESSAGES": {
-    "0": "Http failure response for {{url}}: 0 Unknown Error",
-    "400": "Http failure response for {{url}}: 400 Bad Request",
-    "403": "Http failure response for {{url}}: 403 Forbidden",
-    "404": "Http failure response for {{url}}: 404 Not Found",
-    "502": "Http failure response for {{url}}: 502 Bad Gateway",
-    "Timeout has occurred": "Http failure response for {{url}}: Timeout Out",
-    "Invalid Params": "Please check if all the required text fields are filled in before sharing the map!"
   }
 }
