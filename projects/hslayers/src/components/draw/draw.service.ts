@@ -2,7 +2,6 @@ import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify, Snap} from 'ol/interaction';
 import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -72,25 +71,42 @@ export class HsDrawService {
   onSelected: any;
   currentStyle: any;
   highlightDrawButton = false; // Toggles toolbar button 'Draw' class
-  defaultStyle: Style = new Style({
-    stroke: new Stroke({
-      color: 'rgba(0, 153, 255, 1)',
-      width: 1.25,
-    }),
-    fill: new Fill({
-      color: 'rgba(255,255,255,0.4)',
-    }),
-    image: new Circle({
-      radius: 5,
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.4)',
-      }),
-      stroke: new Stroke({
-        color: 'rgba(0, 153, 255, 1)',
-        width: 1.25,
-      }),
-    }),
-  });
+  defaultStyle: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+      <Name/>
+      <UserStyle>
+        <Name/>
+        <Title/>
+        <FeatureTypeStyle>
+          <Rule>
+            <Name/>
+            <PointSymbolizer>
+              <Graphic>
+                <Mark>
+                  <WellKnownName>circle</WellKnownName>
+                  <Fill>
+                    <CssParameter name="fill">rgba(255, 255, 255, 0.41)</CssParameter>
+                  </Fill>
+                  <Stroke>
+                    <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                    <CssParameter name="stroke-width">1.25</CssParameter>
+                  </Stroke>
+                </Mark>
+                <Size>10</Size>
+              </Graphic>
+            </PointSymbolizer>
+            <PolygonSymbolizer>
+              <Stroke>
+                <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                <CssParameter name="stroke-width">1.25</CssParameter>
+              </Stroke>
+            </PolygonSymbolizer>
+          </Rule>
+        </FeatureTypeStyle>
+      </UserStyle>
+    </NamedLayer>
+  </StyledLayerDescriptor>`;
   onDeselected: any;
   public drawingLayerChanges: Subject<{
     layer: BaseLayer;
@@ -227,7 +243,7 @@ export class HsDrawService {
       showInLayerManager: true,
       visible: true,
       removable: true,
-      style: this.defaultStyle,
+      sld: this.defaultStyle,
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated', //TODO: Translate this
       definition: {
@@ -336,20 +352,6 @@ export class HsDrawService {
     }
   }
 
-  /**
-   * (PRIVATE) Helper function which returns currently selected style.
-   *
-   * @private
-   * @function useCurrentStyle
-   * @return style
-   */
-  useCurrentStyle() {
-    if (!this.currentStyle) {
-      this.currentStyle = this.defaultStyle;
-    }
-    return this.currentStyle;
-  }
-
   onDrawEnd(e): void {
     if (!getEditor(this.selectedLayer)) {
       return;
@@ -409,7 +411,6 @@ export class HsDrawService {
     if (this.draw) {
       //Reactivate drawing with updated source
       this.activateDrawing({
-        changeStyle: () => this.useCurrentStyle(),
         drawState: true,
         onDrawEnd: (e) => this.onDrawEnd(e),
       });
@@ -601,7 +602,6 @@ export class HsDrawService {
     onDrawEnd = (e) => this.onDrawEnd(e),
     onSelected,
     onDeselected,
-    changeStyle,
     drawState = true,
   }: activateParams): void {
     this.onDeselected = onDeselected;
@@ -611,7 +611,6 @@ export class HsDrawService {
       this.draw = new Draw({
         source: this.source,
         type: /** @type {GeometryType} */ this.type,
-        style: changeStyle ? changeStyle() : undefined,
         condition: (e) => {
           if (e.originalEvent.buttons === 1) {
             //left click
@@ -655,9 +654,6 @@ export class HsDrawService {
         (e) => {
           if (this.type == 'Circle') {
             e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
-          }
-          if (changeStyle) {
-            e.feature.setStyle(changeStyle());
           }
           if (onDrawEnd) {
             onDrawEnd(e);
