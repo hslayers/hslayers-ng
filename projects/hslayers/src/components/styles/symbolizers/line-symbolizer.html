@@ -30,8 +30,8 @@
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translate}}:</div>
     <input
-      class="form-control"
-      style="width: 4em"
+      class="form-control mr-1 form-control-sm"
+      style="width: 3em"
       *ngFor="let dash of symbolizer.dasharray; let i = index"
       [ngModelOptions]="{standalone: true}"
       [(ngModel)]="symbolizer.dasharray[i]"
@@ -63,7 +63,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.cap' | translate}}:</div>
     <div class="p-1 w-75">
       <select
-        class="form-control"
+        class="form-control form-control-sm"
         [(ngModel)]="symbolizer.cap"
         (change)="emitChange()"
         [ngModelOptions]="{standalone: true}"
@@ -88,7 +88,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.join' | translate}}:</div>
     <div class="p-1 w-75">
       <select
-        class="form-control"
+        class="form-control form-control-sm"
         [(ngModel)]="symbolizer.join"
         (change)="emitChange()"
         [ngModelOptions]="{standalone: true}"
@@ -148,7 +148,6 @@
     </div>
     <span
       class="badge badge-warning mt-2"
-      style="height: 2em; width: 2em"
       title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
       >!</span
     >
@@ -192,7 +191,6 @@
     </div>
     <span
       class="badge badge-warning mt-2"
-      style="height: 2em; width: 2em"
       title="{{'STYLER.warningAttribStoredNotVisualized' | translate}}"
       >!</span
     >
