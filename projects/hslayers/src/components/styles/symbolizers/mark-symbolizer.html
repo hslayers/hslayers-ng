@@ -3,7 +3,7 @@
     <div class="p-1 w-25">{{'STYLER.symbol' | translate}}:</div>
     <div class="p-1 w-75">
       <select
-        class="form-control"
+        class="form-control form-control-sm"
         [(ngModel)]="symbolizer.wellKnownName"
         (change)="emitChange()"
         [ngModelOptions]="{standalone: true}"
