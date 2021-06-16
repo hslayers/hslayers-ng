@@ -376,7 +376,6 @@
       "selectType": "Select type"
     },
     "fillOpacity": "Fill opacity:",
-    "individualStyle": "Individual style for feature",
     "newGPS": "New GPS",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
