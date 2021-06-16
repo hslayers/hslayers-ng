@@ -37,7 +37,6 @@ import {
   getActive,
   getBase,
   getCluster,
-  getDeclutter,
   getExclusive,
   getLegends,
   getPath,
@@ -47,7 +46,6 @@ import {
   getThumbnail,
   getTitle,
   setActive,
-  setDeclutter,
   setPath,
 } from '../../common/layer-extensions';
 
@@ -175,13 +173,6 @@ export class HsLayerManagerService {
       return;
     }
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
-    if (
-      this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      getCluster(layer) &&
-      getDeclutter(layer)
-    ) {
-      setDeclutter(layer, false);
-    }
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)

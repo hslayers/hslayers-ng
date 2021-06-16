@@ -16,7 +16,6 @@ const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const CLUSTER = 'cluster';
 const CUSTOM_INFO_TEMPLATE = 'customInfoTemplate';
-const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
@@ -177,14 +176,6 @@ export function setCustomInfoTemplate(
 
 export function getCustomInfoTemplate(layer: Layer): string {
   return layer.get(CUSTOM_INFO_TEMPLATE);
-}
-
-export function setDeclutter(layer: Layer, declutterActive: boolean): void {
-  layer.set(DECLUTTER, declutterActive);
-}
-
-export function getDeclutter(layer: Layer): boolean {
-  return layer.get(DECLUTTER);
 }
 
 export function setDefinition(layer: Layer, definition: Definition): void {
@@ -600,8 +591,6 @@ export const HsLayerExt = {
   getCluster,
   setCustomInfoTemplate,
   getCustomInfoTemplate,
-  setDeclutter,
-  getDeclutter,
   setDefinition,
   getDefinition,
   setDimensions,
