@@ -70,7 +70,6 @@
       "removeLastPoint": "Verwijder het laatste punt"
     },
     "fillOpacity": "Vul de dekking:",
-    "individualStyle": "Individuele stijl voor entiteit",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",

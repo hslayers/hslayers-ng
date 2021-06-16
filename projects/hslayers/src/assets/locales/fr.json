@@ -70,7 +70,6 @@
       "removeLastPoint": "Supprimer le dernier point"
     },
     "fillOpacity": "Remplir l'opacité:",
-    "individualStyle": "Style individuel pour entité",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",
