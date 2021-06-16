@@ -18,6 +18,7 @@ import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
   getCluster,
@@ -91,7 +92,8 @@ export class HsStylerService {
     private HsEventBusService: HsEventBusService,
     private HsLogService: HsLogService,
     public sanitizer: DomSanitizer,
-    private HsMapService: HsMapService
+    private HsMapService: HsMapService,
+    private HsSaveMapService: HsSaveMapService
   ) {
     this.HsMapService.loaded().then(() => this.init());
   }
@@ -215,8 +217,12 @@ export class HsStylerService {
       if (getCluster(layer)) {
         await this.styleClusteredLayer(layer);
       }
-    } else if (style && !sld) {
-      //TODO
+    } else if (style && !sld && !this.HsUtilsService.isFunction(style)) {
+      const customJson = this.HsSaveMapService.serializeStyle(style);
+      const sld = (await this.parseStyle(customJson)).sld;
+      if (sld) {
+        setSld(layer, sld);
+      }
     }
   }
 
@@ -307,13 +313,20 @@ export class HsStylerService {
             ['!=', 'features', '[object Object]'],
           ],
           symbolizers: [
-            {kind: 'Mark', color: '#000', wellKnownName: 'circle'},
+            {
+              kind: 'Mark',
+              color: 'rgba(255, 255, 255, 0.41)',
+              strokeColor: 'rgba(0, 153, 255, 1)',
+              strokeWidth: 2,
+              wellKnownName: 'circle',
+              radius: 10,
+            },
             {
               kind: 'Text',
               label: '{{features}}',
               haloColor: '#fff',
               color: '#000',
-              offset: [0, -10],
+              offset: [0, 0],
             },
           ],
         });
