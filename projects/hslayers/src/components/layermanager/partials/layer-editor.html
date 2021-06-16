@@ -48,17 +48,12 @@
                         1:{{maxResolution}}</span>
                 </div>
                 <div class="d-flex flex-row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125)">
-                    <!-- Declutter checkbox  -->
-                    <div [hidden]="cluster" *ngIf="isVectorLayer()" class="form-check flex-fill">
-                        <input name="layer-declutter" class="form-check-input" type="checkbox" [(ngModel)]="declutter">
-                        <label class="form-check-label">{{'LAYERMANAGER.layerEditor.declutter' | translate}}</label>
-                    </div>
                     <!-- Cluster features checkbox  -->
-                    <div *ngIf="isVectorLayer()" [hidden]="declutter" class="form-check flex-fill ">
+                    <div *ngIf="isVectorLayer()" class="form-check flex-fill ">
                         <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster">
                         <label class="form-check-label">{{'LAYERMANAGER.layerEditor.cluster' | translate}}</label>
                     </div>
-                    <div class="form-group flex-fill" [hidden]="declutter" *ngIf="cluster">
+                    <div class="form-group flex-fill" *ngIf="cluster">
                         <label>{{'COMMON.distance' | translate}}</label>
                         <input name="layer-cluster-distance" type="range" min="0" max="100" step="1"
                             [(ngModel)]="distance.value" (change)="changeDistance()" class="form-control"

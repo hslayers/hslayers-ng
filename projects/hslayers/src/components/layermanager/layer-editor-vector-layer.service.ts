@@ -7,7 +7,6 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {getCluster, getDeclutter} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -21,43 +20,6 @@ export class HsLayerEditorVectorLayerService {
   ) {}
 
   /**
-   * @function Declutter
-   * @memberOf HsLayerEditorService
-   * @description Set declutter of features;
-   * @param {boolean} newValue
-   * @param {Layer} layer
-   */
-  declutter(newValue: boolean, layer: Layer): void {
-    const index = this.HsMapService.map.getLayers().getArray().indexOf(layer);
-    if (newValue == true && !getCluster(layer)) {
-      this.HsMapService.map.removeLayer(layer);
-      this.HsMapService.map
-        .getLayers()
-        .insertAt(index, this.cloneVectorLayer(layer, newValue));
-    } else {
-      this.HsMapService.map.removeLayer(layer);
-      this.HsMapService.map
-        .getLayers()
-        .insertAt(index, this.cloneVectorLayer(layer, false));
-    }
-  }
-
-  cloneVectorLayer(layer: Layer, declutter: boolean): VectorLayer {
-    const options = {};
-    layer.getKeys().forEach((k) => (options[k] = layer.get(k)));
-    Object.assign(options, {
-      declutter,
-      source: layer.getSource(),
-      style: layer.getStyleFunction() || layer.getStyle(),
-      maxResolution: layer.getMaxResolution(),
-      minResolution: layer.getMinResolution(),
-      visible: layer.getVisible(),
-      opacity: layer.getOpacity(),
-    });
-    return new VectorLayer(options);
-  }
-
-  /**
    * Convert layer to clustered state where it's source gets nested in another
    * VectorSource and first level sources features contain 'features' attribute
    * with the original features in it as an array
@@ -69,7 +31,7 @@ export class HsLayerEditorVectorLayerService {
     layer: Layer,
     distance: number
   ): Promise<void> {
-    if (newValue == true && !getDeclutter(layer)) {
+    if (newValue == true) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         await this.HsStylerService.styleClusteredLayer(layer);

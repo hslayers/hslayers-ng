@@ -434,7 +434,6 @@
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Copyright",
-      "declutter": "Declutter",
       "metadataOfLayer": "Metadata of layer in",
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",

@@ -132,21 +132,6 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function Declutter
-   * @memberOf HsLayerEditorComponent
-   * @param {boolean} newValue To declutter or not to declutter
-   * @description Set decluttering of features
-   * @return {boolean} Current declutter state
-   */
-  set declutter(newValue: boolean) {
-    this.HsLayerEditorService.declutter(this.olLayer(), newValue);
-  }
-
-  get declutter(): boolean {
-    return this.HsLayerEditorService.declutter(this.olLayer(), undefined);
-  }
-
-  /**
    * @function cluster
    * @memberOf HsLayerEditorComponent
    * @description Set cluster for layer
