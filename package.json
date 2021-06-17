@@ -95,7 +95,7 @@
     "protractor": "~7.0.0",
     "puppeteer": "^10.0.0",
     "ts-node": "~10.0.0",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.6"
   },
   "config": {
     "commitizen": {
