@@ -127,7 +127,8 @@ describe('compositions', () => {
               mockedEventBusService,
               null,
               null,
-              mockedMapService
+              mockedMapService,
+              null
             ),
             null
           ),
