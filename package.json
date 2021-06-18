@@ -7,6 +7,8 @@
     "prebuild": "node projects/hslayers/prebuild.js",
     "build": "ng build hslayers --prod",
     "build-app": "ng build hslayers-app --prod",
+    "build-cesium": "ng build hslayers-cesium --prod",
+    "build-cesium-app": "ng build hslayers-cesium-app --prod",
     "build-sensors": "ng build hslayers-sensors --prod",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
     "build-watch": "ng build hslayers --watch",
