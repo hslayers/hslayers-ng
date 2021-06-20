@@ -152,6 +152,7 @@ export default function (
       selectedStyle: layer.get('selectedStyle'),
       highlightedStyle: layer.get('highlightedStyle'),
       hiddenStyle: layer.get('hiddenStyle'),
+      filteredStyle: layer.get('filteredStyle'),
       uid: HsUtilsService.generateUuid(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');

@@ -182,22 +182,25 @@ export default function (
         }
 
         filteredFeatures = filteredFeatures.filter(displayFeature);
-
-        source.forEachFeature((feature) => {
-          if (!displayFeature(feature)) {
-            if (layer.hiddenStyle){
-              feature.setStyle(layer.hiddenStyle);
-            }
-            else{
-              feature.setStyle(new Style({}));
-            }
-          }
-        });
       }
 
       layer.filteredFeatures = filteredFeatures;
       layer.filteredOutFeatures = source.getFeatures().filter(function(feature){
         return filteredFeatures.indexOf(feature) == -1;
+      });
+
+      source.forEachFeature((feature) => {
+        if (filteredFeatures.indexOf(feature) == -1) {
+          if (layer.hiddenStyle){
+            feature.setStyle(layer.hiddenStyle);
+          }
+          else{
+            feature.setStyle(new Style({}));
+          }
+        }
+        else if (layer.filteredStyle && layer.filteredOutFeatures.length > 0) {
+            feature.setStyle(layer.filteredStyle);
+        }
       });
 
       if (!$rootScope.$$phase) {
