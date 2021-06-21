@@ -13,14 +13,13 @@ export class HsUtilsService {
     private LogService: HsLogService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
+
   /**
-   * @ngdoc method
-   * @name HsUtilsService#proxify
+   * Add path to proxy cgi script (hsproxy.cgi) into URL and encode rest of URL if valid HTTP URL is send and proxy use is allowed.
    * @public
-   * @param {string} url Url to proxify
-   * @param {boolean} toEncoding Optional parameter if UTF-8 encoding shouldn´t be used for non-image Urls.
-   * @returns {string} Encoded Url with path to hsproxy.cgi script
-   * @description Add path to proxy cgi script (hsproxy.cgi) into Url and encode rest of Url if valid http Url is send and proxy use is allowed.
+   * @param url - URL to proxify
+   * @param toEncoding - Optional parameter if UTF-8 encoding shouldn´t be used for non-image URLs.
+   * @returns Encoded Url with path to hsproxy.cgi script
    */
   proxify(url: string, toEncoding?: boolean): string {
     const laymanEp = this.HsConfig.datasources?.find(
@@ -66,12 +65,10 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#shortUrl
    * @public
-   * @param {string} url Url to shorten
-   * @returns {string} Shortened url
-   * @description Promise which shortens url by using some url shortener.
+   * @param url - URL to shorten
+   * @returns Shortened URL
+   * Promise which shortens URL by using some URL shortener.
    * By default tinyurl is used, but user provided function in config.shortenUrl can be used. Example: function(url) {
             return new Promise(function(resolve, reject){
                 $http.get("http://tinyurl.com/api-create.php?url=" + url, {
@@ -111,10 +108,8 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#getPortFromUrl
-   * @param {string} url Url for which to determine port number
-   * @returns {string} Port number
+   * @param url - URL for which to determine port number
+   * @returns Port number
    */
   getPortFromUrl(url: string): string {
     if (this.runningInBrowser()) {
@@ -180,12 +175,10 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#paramsToUrl
+   * Create encoded Url string from object with parameters
    * @public
-   * @param {object} array Parameter object with parameter key-value pairs
-   * @returns {string} Joined encoded Url query string
-   * @description Create encoded Url string from object with parameters
+   * @param {object} array - Parameter object with parameter key-value pairs
+   * @returns Joined encoded URL query string
    */
   paramsToURL(array: any): string {
     const pairs = [];
@@ -200,12 +193,10 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#insertAfter
+   * Insert every element in the set of matched elements after the target.
    * @public
-   * @param {element} newNode Element to insert
-   * @param {element} referenceNode Element after which to insert
-   * @description Insert every element in the set of matched elements after the target.
+   * @param {element} newNode - Element to insert
+   * @param {element} referenceNode - Element after which to insert
    */
   insertAfter(newNode, referenceNode): void {
     if (newNode.length !== undefined && newNode.length > 0) {
@@ -215,12 +206,10 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#paramsToUrlWoEncode
+   * Create URL string from object with parameters without encoding
    * @public
-   * @param {object} array Parameter object with parameter key-value pairs
-   * @returns {string} Joined Url query string
-   * @description Create Url string from object with parameters without encoding
+   * @param {object} array - Parameter object with parameter key-value pairs
+   * @returns Joined URL query string
    */
   paramsToURLWoEncode(array): string {
     const pairs = [];
@@ -233,19 +222,17 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#debounce
-   * @public
-   * @param {Function} func Function to execute with throttling
-   * @param {number} wait  The function will be called after it stops
-   * being called for N milliseconds.
-   * @param {boolean} immediate If `immediate` is passed, trigger the
-   * function on the leading edge, instead of the trailing.
-   * @param {object} context Context element which stores the timeout handle
-   * @returns {Function} Returns function which is debounced
-   * @description Returns a function, that, as long as it continues to be
+   * Returns a function, that, as long as it continues to be
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
+   * @public
+   * @param {Function} func - Function to execute with throttling
+   * @param wait - The function will be called after it stops
+   * being called for N milliseconds.
+   * @param immediate - If `immediate` is passed, trigger the
+   * function on the leading edge, instead of the trailing.
+   * @param {object} context - Context element which stores the timeout handle
+   * @returns {Function} Returns function which is debounced
    */
   debounce(func, wait: number, immediate: boolean, context) {
     if (context === undefined) {
@@ -268,11 +255,9 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#generateUuid
+   * Generate randomized UUID
    * @public
-   * @returns {string} Random uuid
-   * @description Generate randomized uuid
+   * @returns Random uuid
    */
   generateUuid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -283,16 +268,14 @@ export class HsUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsUtilsService#rainbow
+   * Generates CSS color string (rgba(0, 0, 0, 1)) from given range and value for which to have color
    * @public
-   * @param {number} numOfSteps Maximum value which is the last color in rainbow
-   * @param {number} step Current value to get color for
-   * @param {number} opacity Opacity from 0 to 1
-   * @returns {string} CSS color
-   * @description Generates css color string (rgba(0, 0, 0, 1)) from given range and value for which to have color
+   * @param numOfSteps - Maximum value which is the last color in rainbow
+   * @param step - Current value to get color for
+   * @param opacity - Opacity from 0 to 1
+   * @returns CSS color
    */
-  rainbow(numOfSteps: number, step: number, opacity: string): string {
+  rainbow(numOfSteps: number, step: number, opacity: number | string): string {
     // based on http://stackoverflow.com/a/7419630
     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distiguishable vibrant markers in Google Maps and other apps.
     // Adam Cole, 2011-Sept-14
@@ -331,11 +314,10 @@ export class HsUtilsService {
   }
 
   /**
-   * @description Creates a deep copy of the input object
+   * Creates a deep copy of the input object
    * @param {object} from object to deep copy
    * @param {object?} to optional target for copy
-   * @returns {object} a deep copy of input object
-   * @memberof HsUtilsService
+   * @returns a deep copy of input object
    */
   structuredClone(from, to?) {
     if (from === null || typeof from !== 'object') {
@@ -366,9 +348,8 @@ export class HsUtilsService {
 
   /**
    * Check if object is a function
-   *
-   * @param {object} functionToCheck
-   * @returns {boolean}
+   * @param functionToCheck
+   * @returns true when input is a function, false otherwise
    */
   isFunction(functionToCheck: any): boolean {
     return (
@@ -379,9 +360,8 @@ export class HsUtilsService {
 
   /**
    * Check if object is plain object (not function, not array, not class)
-   *
-   * @param {object} objectToCheck
-   * @returns {boolean}
+   * @param objectToCheck
+   * @returns true when input is plain old JavaScript object, false otherwise
    */
   isPOJO(objectToCheck: any): boolean {
     return (
@@ -391,16 +371,15 @@ export class HsUtilsService {
 
   /**
    * Check if object is an instance of a class
-   *
    * @param {object} obj
    * @param {*} type
-   * @returns {boolean}
+   * @returns true when obj is an instance of type, false otherwise
    */
   instOf(obj: any, type: any): boolean {
     return this._instanceOf(obj, type);
   }
 
-  _instanceOf(obj: any, klass: any): boolean {
+  private _instanceOf(obj: any, klass: any): boolean {
     if (this.isFunction(klass)) {
       return obj instanceof klass;
     }
@@ -413,41 +392,11 @@ export class HsUtilsService {
     }
     return false;
   }
-  //Not being user anywere and probably wont be needed at all
-  // injectService(name: string): any {
-  //   return new Promise((resolve, reject) => {
-  //     try {
-  //       const tmp = this.$injector.get(name);
-  //       resolve(tmp);
-  //     } catch (ex) {
-  //       let tries = 0;
-  //       const clear = setInterval(() => {
-  //         try {
-  //           tries++;
-  //           const tmp = this.$injector.get(name);
-  //           clearInterval(clear);
-  //           resolve(tmp);
-  //         } catch (ex2) {
-  //           if (tries > 10) {
-  //             this.LogService.log(
-  //               'Failed to get service in HsUtilsService.injectService',
-  //               name,
-  //               ex2
-  //             );
-  //             clearInterval(clear);
-  //             reject(ex);
-  //           }
-  //         }
-  //       }, 500);
-  //     }
-  //   });
-  // }
 
   /**
    * Remove duplicate items from an array
-   *
    * @param {Array<object>} dirtyArray Array with possible duplicate objects
-   * @param {string} property Property of objects which must be unique in the new array.
+   * @param property - Property of objects which must be unique in the new array.
    * Use dot symbol (".") to denote a property chain in nested object.
    * Function will return an empty array if it won't find the property in the object.
    * @returns {Array<object>} Array without duplicate objects
@@ -480,6 +429,7 @@ export class HsUtilsService {
       return flatArray.indexOf(propertyValue) === position;
     });
   }
+
   hashCode(s: string): number {
     let hash = 0;
     if (s.length == 0) {
@@ -492,19 +442,19 @@ export class HsUtilsService {
     }
     return hash;
   }
+
   /**
-   * @ngdoc method
-   * @name replaceAll
+   * Replaces input string text with replacement text
    * @public
-   * @param {string} target target tring
-   * @param {string} search String to look for
-   * @param {string} replacement Replacement value
-   * @returns {string} Returns modified string
-   * @description Replaces input string text with replacement text
+   * @param target - Target string
+   * @param search - String to look for
+   * @param replacement - Replacement value
+   * @returns Returns modified string
    */
   replaceAll(target: string, search: string, replacement: string): string {
     return target.replace(new RegExp(search, 'g'), replacement);
   }
+
   resolveEsModule(module) {
     if (module.default) {
       return module.default;
@@ -512,15 +462,12 @@ export class HsUtilsService {
       return module;
     }
   }
-  /**
 
-   * @param target
-   * @ngdoc method
-   * @name capitalizeFirstLetter
+  /**
+   * Replaces first string letter to UpperCase
    * @public
-   * @param {string} target Target string
-   * @returns {string} Returns modified string
-   * @description Replaces first string letter to UpperCase
+   * @param target - Target string
+   * @returns modified string
    */
   capitalizeFirstLetter(target: string): string {
     return target.charAt(0).toUpperCase() + target.slice(1);
