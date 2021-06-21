@@ -158,7 +158,13 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
+   * Function for adding layer added to map into layer manager structure.
+   * In service automatically used after layer is added to map.
+   * Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added.
+   * Loading events and legends URLs are created for each layer.
+   * Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager).
+   * Position is calculated for each layer and for time layers time properties are created.
+   * Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
    * @param e - Event object emited by OL add layer event
    * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
@@ -197,6 +203,8 @@ export class HsLayerManagerService {
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
+      type: this.getLayerSourceType(layer),
+      source: this.getLayerSourceUrl(layer),
     };
     this.loadingEvents(layerDescriptor);
     layerDescriptor.trackBy = layer.ol_uid + ' ' + layerDescriptor.position;
@@ -238,6 +246,51 @@ export class HsLayerManagerService {
       this.HsEventBusService.layerManagerUpdates.next(layer);
       this.HsEventBusService.compositionEdits.next();
     }
+  }
+
+  /**
+   * Triage of layer source type and format.
+   * Only the commonly used values are listed here, it shall be probably extended in the future.
+   * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
+   */
+  getLayerSourceType(layer: Layer): string {
+    if (this.HsLayerUtilsService.isLayerKMLSource(layer)) {
+      return `vector (KML)`;
+    }
+    if (this.HsLayerUtilsService.isLayerGeoJSONSource(layer)) {
+      return `vector (GeoJSON)`;
+    }
+    if (this.HsLayerUtilsService.isLayerTopoJSONSource(layer)) {
+      return `vector (TopoJSON)`;
+    }
+    if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
+      return 'vector';
+    }
+    if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
+      return 'WMTS';
+    }
+    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      return 'WMS';
+    }
+    if (this.HsLayerUtilsService.isLayerXYZ(layer)) {
+      return 'XYZ';
+    }
+    this.HsLog.error(
+      `Cannot decide a type of source of layer ${getTitle(layer)}`
+    );
+    return 'unknown type';
+  }
+
+  /**
+   * Gets the URL provided in the layers's source, if it is not a data blob or undefined
+   * @returns URL provided in the layers's source or 'memory'
+   */
+  getLayerSourceUrl(layer: Layer): string {
+    const url = this.HsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
+    if (!url || url.startsWith('data:')) {
+      return 'memory';
+    }
+    return url;
   }
 
   /**
@@ -537,7 +590,7 @@ export class HsLayerManagerService {
         }
       }
     }
-    if(!visibility && this.HsUtilsService.instOf(layer.layer, VectorLayer)){
+    if (!visibility && this.HsUtilsService.instOf(layer.layer, VectorLayer)) {
       this.HsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
     }
   }
@@ -874,9 +927,8 @@ export class HsLayerManagerService {
       layer.layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
-    const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-layerpanel'
-    );
+    const layerPanel =
+      this.HsLayoutService.contentWrapper.querySelector('.hs-layerpanel');
     if (this.HsUtilsService.runningInBrowser()) {
       const layerNode = document.getElementById(layer.idString());
       if (layerNode) {

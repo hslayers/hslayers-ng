@@ -435,11 +435,17 @@
     "layerEditor": {
       "cluster": "Shlukovat",
       "copyright": "Autorská práva",
+      "layerFrom": "vrstva z",
+      "memory": "mezipaměti",
       "metadataOfLayer": "Metadata vrstvy v ",
       "metadataOfService": "Metadata služby",
       "opacity": "Průhlednost",
       "savegeojson": "Stáhnout obsah vrstvy jako GeoJSON",
       "styleLayer": "Stylovat vrstvu",
+      "vector": "vektorová",
+      "vector (GeoJSON)": "vektorová (GeoJSON)",
+      "vector (KML)": "vektorová (KML)",
+      "vector (TopoJSON)": "vektorová (TopoJSON)",
       "zoomToLayer": "Přiblížit na vrstvu"
     },
     "layerList": {

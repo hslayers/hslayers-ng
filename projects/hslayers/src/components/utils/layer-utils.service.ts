@@ -4,9 +4,9 @@ import {
   TileWMS,
   Vector as VectorSource,
   WMTS,
+  XYZ,
 } from 'ol/source';
-import {HsLanguageService} from '../language/language.service';
-import {HsUtilsService} from './utils.service';
+import {GeoJSON, KML, TopoJSON} from 'ol/format';
 import {
   Image as ImageLayer,
   Layer,
@@ -14,6 +14,11 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
+import {isEmpty} from 'ol/extent';
+
+import {HsLanguageService} from '../language/language.service';
+import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsUtilsService} from './utils.service';
 import {
   getCluster,
   getEditor,
@@ -21,8 +26,6 @@ import {
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
-import {isEmpty} from 'ol/extent';
-import { HsLayerDescriptor } from '../layermanager/layer-descriptor.interface';
 
 @Injectable()
 export class HsLayerUtilsService {
@@ -145,6 +148,17 @@ export class HsLayerUtilsService {
     }
     return false;
   }
+
+  isLayerXYZ(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, Tile) &&
+      this.HsUtilsService.instOf(layer.getSource(), XYZ)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   // todo
   getURL(layer: Layer): string {
     let url;
@@ -172,6 +186,54 @@ export class HsLayerUtilsService {
       this.HsUtilsService.instOf(layer, VectorLayer) &&
       (this.HsUtilsService.instOf(layer.getSource(), Cluster) ||
         this.HsUtilsService.instOf(layer.getSource(), VectorSource))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a GeoJSON source
+   * @param layer - an OL vector layer
+   * @returns true only if the GeoJSON format is explicitly specified in the source. False otherwise.
+   */
+  isLayerGeoJSONSource(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), GeoJSON)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a TopoJSON source
+   * @param layer - an OL vector layer
+   * @returns true only if the TopoJSON format is explicitly specified in the source. False otherwise.
+   */
+  isLayerTopoJSONSource(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), TopoJSON)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a KML source
+   * @param layer - an OL vector layer
+   * @returns true only if the KML format is explicitly specified in the source. False otherwise.
+   */
+  isLayerKMLSource(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
+      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), KML)
     ) {
       return true;
     }
