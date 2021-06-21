@@ -189,18 +189,15 @@ export default function (
         return filteredFeatures.indexOf(feature) == -1;
       });
 
-      source.forEachFeature((feature) => {
-        if (filteredFeatures.indexOf(feature) == -1) {
-          if (layer.hiddenStyle){
-            feature.setStyle(layer.hiddenStyle);
-          }
-          else{
-            feature.setStyle(new Style({}));
-          }
-        }
-        else if (layer.filteredStyle && layer.filteredOutFeatures.length > 0) {
-            feature.setStyle(layer.filteredStyle);
-        }
+      if (layer.filteredOutFeatures.length > 0) {
+        layer.filteredFeatures.forEach(feature => {
+          if (layer.matchedStyle) feature.setStyle(layer.matchedStyle);
+        });
+      }
+
+      layer.filteredOutFeatures.forEach(feature => {
+        if (layer.filteredOutStyle) feature.setStyle(layer.filteredOutStyle);
+        else feature.setStyle(new Style({}));
       });
 
       if (!$rootScope.$$phase) {
