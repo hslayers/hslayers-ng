@@ -55,10 +55,8 @@ export class HsLayerEditorComponent {
   ) {}
 
   /**
-   * @function createSaveDialog
-   * @memberOf HsLayerEditorComponent
-   * @description Confirm saving a vector layer content as a geoJSON
-   * @return {Promise}
+   * Confirm saving a vector layer content as a geoJSON
+   * @returns an empty promise
    */
   async createSaveDialog(): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
@@ -82,21 +80,17 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function zoomToLayer
-   * @memberOf HsLayerEditorComponent
-   * @description Zoom to selected layer (layer extent). Get extent
+   * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
    * BoundingBox property of GetCapabalities request (for WMS layer)
-   * @return {Promise}
+   * @returns a promise
    */
   zoomToLayer(): Promise<any> {
     return this.HsLayerEditorService.zoomToLayer(this.olLayer());
   }
 
   /**
-   * @function styleLayer
-   * @memberOf HsLayerEditorComponent
-   * @description Display styler panel for selected layer, so user can change its style
+   * Display styler panel for selected layer, so user can change its style
    */
   styleLayer(): void {
     const layer = this.olLayer();
@@ -105,19 +99,15 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function isLayerVectorLayer
-   * @memberOf HsLayerEditorComponent
-   * @param {Layer} layer Selected layer
-   * @description Test if layer is WMS layer
+   * Test if layer is WMS layer
+   * @param layer - Selected layer
    */
   isLayerVectorLayer(layer: Layer): boolean {
     return this.HsLayerUtilsService.isLayerVectorLayer(layer);
   }
 
   /**
-   * @function isVectorLayer
-   * @memberOf HsLayerEditorComponent
-   * @description Test if layer is WMS layer
+   * Test if layer is WMS layer
    */
   isVectorLayer(): boolean | undefined {
     if (!this.currentLayer) {
@@ -132,11 +122,8 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function cluster
-   * @memberOf HsLayerEditorComponent
-   * @description Set cluster for layer
-   * @param {boolean} newValue To cluster or not to cluster
-   * @return {boolean} Current cluster state
+   * Set cluster for layer
+   * @param newValue - To cluster or not to cluster
    */
   set cluster(newValue: boolean) {
     if (!this.currentLayer) {
@@ -149,6 +136,9 @@ export class HsLayerEditorComponent {
     );
   }
 
+  /**
+   * @returns Current cluster state
+   */
   get cluster(): boolean | undefined {
     if (!this.currentLayer) {
       return;
@@ -161,9 +151,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function changeDistance
-   * @memberOf HsLayerEditorComponent
-   * @description Set distance between cluster features;
+   * Set distance between cluster features;
    */
   changeDistance(): void {
     if (!this.currentLayer) {
@@ -177,44 +165,14 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function toggleLayerRename
-   * @memberOf HsLayerEditorComponent
-   * @description Toogle layer rename control on panel (through layer rename variable)
+   * Toogle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename(): void {
     this.layer_renamer_visible = !this.layer_renamer_visible;
   }
 
-  showRemoveLayerDiag(e, layer): void {
-    try {
-      //TODO:
-      console.error('not implemented');
-
-      /* const $mdDialog = $injector.get('$mdDialog');
-
-      const confirm = $mdDialog
-        .confirm()
-        .title('Remove layer ' + layer.title)
-        .textContent('Are you sure about layer removal?')
-        .ariaLabel('Confirm layer removal')
-        .targetEvent(e)
-        .ok('Remove')
-        .cancel('Cancel')
-        .hasBackdrop(false);
-
-      $mdDialog.show(confirm).then(
-        () => {
-          this.removeLayer();
-        },
-        () => { }
-      ); */
-    } catch (ex) {}
-  }
-
   /**
-   * @function opacity
-   * @memberOf HsLayerEditorComponent
-   * @description Set selected layers opacity and emits "compositionchanged"
+   * Set selected layer's opacity and emits "compositionchanged"
    * @param newValue
    */
   set opacity(newValue) {
@@ -230,9 +188,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function layerIsZoomable
-   * @memberOf HsLayerEditorComponent
-   * @description Determines if selected layer has BoundingBox defined as
+   * Determines if selected layer has BoundingBox defined as
    * its metadata or is a Vector layer. Used for setting visibility
    * of 'Zoom to ' button
    */
@@ -241,9 +197,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function layerIsStyleable
-   * @memberOf HsLayerEditorComponent
-   * @description Determines if selected layer is a Vector layer and
+   * Determines if selected layer is a Vector layer and
    * styleable. Used for allowing styling
    */
   layerIsStyleable(): boolean {
@@ -251,8 +205,8 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Determines if layer has copyright information avaliable *
-   * @param layer Selected layer (HsLayerManagerService.currentLayer)
+   * Determines if layer has copyright information available
+   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.currentLayer) {
@@ -263,9 +217,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function minResolution
-   * @memberOf HsLayerEditorComponent
-   * @description Set min resolution for selected layer
+   * Set min resolution for selected layer
    * @param newValue
    */
   set minResolution(newValue) {
@@ -285,9 +237,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function maxResolution
-   * @memberOf HsLayerEditorComponent
-   * @description Set max resolution for selected layer
+   * Set max resolution for selected layer
    * @param newValue
    */
   set maxResolution(newValue) {
@@ -307,9 +257,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function isLayerRemovable
-   * @memberOf HsLayerEditorComponent
-   * @description Check if layer can be removed based on 'removable'
+   * Check if layer can be removed based on 'removable'
    * layer attribute
    */
   isLayerRemovable(): boolean {
@@ -330,9 +278,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * @function isScaleVisible
-   * @memberOf HsLayerEditorComponent
-   * @description Test if selected layer has min and max relolution set
+   * Test if selected layer has min and max relolution set
    */
   isScaleVisible(): boolean {
     const layer = this.olLayer();
@@ -372,8 +318,7 @@ export class HsLayerEditorComponent {
 
   /**
    * Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
-   * @param newTitle New title to set
-   * @return Title
+   * @param newTitle - New title to set
    */
   set title(newTitle: string) {
     const newLayerTitle = newTitle.trim();
