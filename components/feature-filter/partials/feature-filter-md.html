@@ -1,4 +1,4 @@
-<div class="md-chips" ng-if="LayMan.currentLayer.hsFilters" style="display: flex;">
+<div class="md-chips" ng-if="LayMan.currentLayer.hsFilters" style="display: flex; flex-wrap: wrap; justify-content: flex-end;">
 	<div ng-repeat="filter in LayMan.currentLayer.hsFilters" ng-switch="filter.type.type">
 		<md-chip ng-switch-when="compare" ng-click="filter.selected = !filter.selected; applyFilters()" ng-class="{active: filter.selected}">
 			<md-checkbox ng-checked="filter.selected"
