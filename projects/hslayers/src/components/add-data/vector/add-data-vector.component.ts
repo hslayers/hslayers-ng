@@ -103,6 +103,8 @@ export class HsAddDataVectorComponent {
         workspace: this.hsCommonEndpointsService.endpoints.filter(
           (ep) => ep.type == 'layman'
         )[0]?.user,
+        queryCapabilities:
+          this.url && !['geojson', 'kml'].some((ext) => this.url.endsWith(ext)),
       },
       this.addUnder
     );
@@ -211,6 +213,8 @@ export class HsAddDataVectorComponent {
     this.featureCount = 0;
     this.type = '';
     this.showDetails = false;
-    this.vectorFileInput.nativeElement.value = '';
+    if (this.vectorFileInput) {
+      this.vectorFileInput.nativeElement.value = '';
+    }
   }
 }

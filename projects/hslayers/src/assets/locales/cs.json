@@ -31,7 +31,9 @@
     "file": "Soubor",
     "saveToDatabase": "Uložit do databáze",
     "URL": {
-      "selectAll": "Označit všechny vrstvy"
+      "selectAll": "Označit všechny vrstvy",
+      "submitLayerTitle": "Zadejte titulek vrstvy",
+      "submitLayerName": "Zadejte název vrsty"
     }
   },
   "ADDLAYERS": {
