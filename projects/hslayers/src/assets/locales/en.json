@@ -31,7 +31,9 @@
     "file": "File",
     "saveToDatabase": "Save to database",
     "URL": {
-      "selectAll": "Select all Layers"
+      "selectAll": "Select all Layers",
+      "submitLayerTitle": "Submit layer title",
+      "submitLayerName": "Submit layer name"
     }
   },
   "ADDLAYERS": {
