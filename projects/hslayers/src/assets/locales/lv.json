@@ -31,7 +31,9 @@
     "file": "Fails",
     "saveToDatabase": "Saglabāt datubāzē",
     "URL": {
-      "selectAll": "Izvēlēties visus slāņus"
+      "selectAll": "Izvēlēties visus slāņus",
+      "submitLayerName": "Ievadiet slāņa nosaukumu",
+      "submitLayerTitle": "Ievadiet slāņa nosaukumu"
     }
   },
   "ADDLAYERS": {
@@ -610,7 +612,8 @@
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
-    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības",
+    "saveOrOverwrite": "Šo kompozīciju izveidoja cits lietotājs"
   },
   "SENSORS": {
     "1D": "1d",
@@ -653,7 +656,78 @@
     "features": "Objekti",
     "layer": "Slānis",
     "level": "Līmenis",
-    "selection": "Izv. objekts"
+    "selection": "Izv. objekts",
+    "addFilter": "Pievienot filtru",
+    "addRule": "Pievienot noteikumu",
+    "addSymbolizer": "Pievienot simbolizētāju",
+    "anchor": "Enkurot",
+    "anchorX": "X nobīde",
+    "anchorY": "Y nobīde",
+    "andFilter": "AND",
+    "blur": "Aizpludināt",
+    "clusterRule": "Noteikums kopām",
+    "color": "Krāsa",
+    "comparisonFilter": "SALĪDZINĀT",
+    "dashPattern": "Domuzīmes paterns",
+    "fillColor": "Aizpildīt krāsu",
+    "fillOpacity": "Aizpildīt necaurredzamību",
+    "fillSymbolizer": "Aizpildīt simbolētāju",
+    "filtersAndScales": "Filtri un mērogi",
+    "font": "Fonts",
+    "fontStyle": "Fonta stils",
+    "fontWeight": "Fonta izcēlums",
+    "gapWidth": "Atstarpes platums",
+    "graphicFill": "Grafiskais aizpildījums",
+    "graphicStroke": "Grafiskā līnija",
+    "haloColor": "Oreola krāsa",
+    "haloWidth": "Oreola platums",
+    "iconSymbolizer": "Ikonu simbolētājs",
+    "join": "Pievienot",
+    "justify": "Slīpraksts",
+    "kind": "Veids",
+    "lineSymbolizer": "Līniju simbolizētājs",
+    "markSymbolizer": "Atzīmju simbolizētājs",
+    "maxScale": "Maks. mērogs",
+    "minScale": "Min. mērogs",
+    "miterLimit": "Dekoru limits",
+    "name": "Nosaukums",
+    "notFilter": "NOT",
+    "offsetX": "X nobīde",
+    "offsetY": "Y nobīde",
+    "opacity": "Necaurredzamība",
+    "orFilter": "OR",
+    "outlineColor": "Kontūras krāsa",
+    "outlineOpacity": "Kontūras necaurredzamība",
+    "outlineWidth": "Kontūras platums",
+    "perpendicularOffset": "Perpendikulāra nobīde",
+    "radius": "Radiuss",
+    "removeFilter": "Noņemt filtru",
+    "removeRule": "Noņemt noteikumu",
+    "removeSymbolizer": "Noņemt simbolētāju",
+    "rotation": "Rotācija",
+    "roundLimit": "Apļa robežas",
+    "rules": "Noteikumi",
+    "selectIcon": "Izvēlēties ikonu",
+    "simpleRule": "Vienkāršs noteikums",
+    "size": "Izmērs",
+    "source": "URL",
+    "spacing": "Atstarpe",
+    "strokeColor": "Līnijas krāsa",
+    "strokeOpacity": "Līnijas necaurredzamība",
+    "strokeWidth": "Līnijas platums",
+    "symbol": "Simbols",
+    "symbolizers": "Simbolētājs",
+    "template": "Veidne",
+    "textColor": "Teksta krāsa",
+    "textSize": "Teksta izmērs",
+    "textSymbolizer": "Teksta simbolētājs",
+    "toggleFilters": "Pārslēgt filtrus",
+    "toggleScaleDenominators": "Pārslēgt mēroga saucējus",
+    "transform": "Transformēt",
+    "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
+    "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
+    "width": "Platums",
+    "cap": "Limits"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
@@ -665,6 +739,12 @@
     "totalDistance": "Kopējais attālums",
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypoints": "Pieturas punkti",
-    "missingAuth": "Maršrutēšanas pakalpojums nav atļauts"
+    "missingAuth": "Maršrutēšanas pakalpojums nav atļauts",
+    "routerLayer": "Maršruta slānis",
+    "travelRoute": "Ceļojuma maršruts",
+    "waypointLayer": "Galapunktu slānis"
+  },
+  "LAYERS": {
+    "newLayer": "Jauns slānis"
   }
 }
