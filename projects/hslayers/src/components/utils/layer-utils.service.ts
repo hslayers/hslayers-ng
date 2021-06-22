@@ -35,13 +35,10 @@ export class HsLayerUtilsService {
   ) {}
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerIsZoomable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for layer with BoundingBox property, for
+   * Determines if layer has properties needed for 'Zoom to layer' function.
+   * @param layer - Selected layer
+   * @returns True for layer with BoundingBox property, for
    * WMS layer or for layer, which has source with extent
-   * @description Determines if layer have properties needed for Zoom
-   * to layer function.
    */
   layerIsZoomable(layer: Layer): boolean {
     if (typeof layer == 'undefined') {
@@ -64,12 +61,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerIsStyleable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for ol.layer.Vector
-   * @description Determines if layer is a Vector layer and therefore
-   * styleable
+   * Determines if layer is a Vector layer and therefore styleable
+   * @param layer - Selected layer
+   * @returns True for ol.layer.Vector
    */
   layerIsStyleable(layer: Layer): boolean {
     if (typeof layer == 'undefined') {
@@ -87,12 +81,10 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerQueryable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for ol.layer.Tile and ol.layer.Image with
+   * Test if layer is queryable (WMS layer with Info format)
+   * @param layer - Selected layer
+   * @returns True for ol.layer.Tile and ol.layer.Image with
    * INFO_FORMAT in params
-   * @description Test if layer is queryable (WMS layer with Info format)
    */
   isLayerQueryable(layer: Layer): boolean {
     if (
@@ -113,11 +105,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#getLayerTitle
-   * @param {Ol.layer} layer to get layer title
-   * @returns {string} Layer title or "Void"
-   * @description Get title of selected layer
+   * Get title of selected layer
+   * @param layer - to get layer title
+   * @returns Layer title or "Void"
    */
   getLayerTitle(layer: Layer): string {
     if (getTitle(layer) !== undefined && getTitle(layer) != '') {
@@ -147,8 +137,8 @@ export class HsLayerUtilsService {
     }
     return false;
   }
-  // todo
 
+  // todo
   isLayerWMTS(layer: Layer): boolean {
     if (
       this.HsUtilsService.instOf(layer, Tile) &&
@@ -187,11 +177,9 @@ export class HsLayerUtilsService {
     return url;
   }
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerVectorLayer
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for Vector layer
-   * @description Test if layer is Vector layer
+   * Test if layer is Vector layer
+   * @param layer - Selected layer
+   * @returns True for Vector layer
    */
   isLayerVectorLayer(layer: Layer): boolean {
     if (
@@ -253,12 +241,10 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerInManager
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if showInLayerManager attribute is set to true
-   * @description Test if layer is shown in layer switcher
+   * Test if layer is shown in layer switcher
    * (if not some internal hslayers layer like selected feature layer)
+   * @param layer - Layer to check
+   * @returns True if showInLayerManager attribute is set to true
    */
   isLayerInManager(layer: Layer): boolean {
     return (
@@ -268,23 +254,19 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#hasLayerTitle
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is has a title
-   * @description Test if layer is has a title
+   * Test if layer is has a title
+   * @param layer - Layer to check
+   * @returns True if layer is has a title
    */
   hasLayerTitle(layer: Layer): boolean {
     return getTitle(layer) !== undefined && getTitle(layer) !== '';
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerEditable
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer has attribute editor amd in it
-   * editable property is set to true or missing
-   * @description Test if layers features are editable
+   * Test if layers features are editable
+   * @param layer - Layer to check
+   * @returns True if layer has attribute 'editor' and in it
+   * 'editable' property is set to true or missing
    */
   isLayerEditable(layer: Layer): boolean {
     if (getEditor(layer) === undefined) {
@@ -301,8 +283,7 @@ export class HsLayerUtilsService {
    * Get user friendly name of layer based primary on title
    * and secondary on name attributes.
    * Is used in query service and hover popup.
-   *
-   * @param layer Layer to get the name for
+   * @param layer - Layer to get the name for
    */
   getLayerName(layer: Layer): string {
     if (
@@ -318,13 +299,11 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerDrawable
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is drawable vector layer
-   * @description Checks if layer has a VectorSource object, if layer is
+   * Checks if layer has a VectorSource object, if layer is
    * not internal for hslayers, if it has title and is shown in layer
    * switcher
+   * @param layer - Layer to check
+   * @returns True if layer is drawable vector layer
    */
   isLayerDrawable(layer: Layer): boolean {
     return (
@@ -337,11 +316,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerClustered
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is clustered, false otherwise
-   * @description Checks if layer's source has its own source
+   * Checks if layer's source has its own source
+   * @param layer - Layer to check
+   * @returns True if layer is clustered, false otherwise
    */
   isLayerClustered(layer: Layer): boolean {
     return this.isLayerVectorLayer(layer) &&
@@ -351,7 +328,7 @@ export class HsLayerUtilsService {
       : false;
   }
 
-  translateTitle(title) {
+  translateTitle(title: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(
       'LAYERS',
       title
