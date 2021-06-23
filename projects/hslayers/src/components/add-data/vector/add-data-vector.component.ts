@@ -104,7 +104,7 @@ export class HsAddDataVectorComponent {
           (ep) => ep.type == 'layman'
         )[0]?.user,
         queryCapabilities:
-          this.url && !['geojson', 'kml'].some((ext) => this.url.endsWith(ext)),
+          this.url && !['json', 'kml'].some((ext) => this.url.endsWith(ext)),
       },
       this.addUnder
     );
