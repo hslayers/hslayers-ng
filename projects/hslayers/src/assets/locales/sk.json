@@ -32,8 +32,8 @@
     "saveToDatabase": "Uložit do databázy",
     "URL": {
       "selectAll": "Označiť všetky vrstvy",
-      "submitLayerTitle": "Zadajte titulok vrstvy",
-      "submitLayerName": "Zadajte názov vrstvy"
+      "submitLayerName": "Zadajte názov vrstvy",
+      "submitLayerTitle": "Zadajte titulok vrstvy"
     }
   },
   "ADDLAYERS": {
@@ -435,6 +435,7 @@
     "layerEditor": {
       "cluster": "Zhlukovať",
       "copyright": "Autorské práva",
+      "layerFrom": "vrstva z",
       "metadataOfLayer": "Metadáta vrstvy v ",
       "metadataOfService": "Metadáta služby",
       "opacity": "Priehľadnosť",
@@ -484,6 +485,9 @@
       "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev"
     },
     "User generated": "Užívateľské"
+  },
+  "LAYERS": {
+    "newLayer": "Nová vrstva"
   },
   "LEGEND": {
     "noLegendExists": "Žiadna vrstva s legendou neexistuje!"
@@ -653,20 +657,95 @@
     }
   },
   "STYLER": {
+    "addFilter": "Pridať filter",
+    "addRule": "Pridať pravidlo",
+    "addSymbolizer": "Pridať symboliku",
+    "anchor": "Uchytenie",
+    "anchorX": "Odsadenie X",
+    "anchorY": "Odsadenie Y",
+    "andFilter": "A",
+    "blur": "Rozostrenie",
+    "cap": "Typ konca",
+    "clusterRule": "Pravidlo pre zhluky",
+    "color": "Farba",
+    "comparisonFilter": "POROVNAŤ",
+    "dashPattern": "Vzor prerušenia",
     "features": "Prvky",
+    "fillColor": "Farba výplne",
+    "fillOpacity": "Priehľadnosť výplne",
+    "fillSymbolizer": "Symbolika výplne",
+    "filtersAndScales": "Filtre a mierky",
+    "font": "Font",
+    "fontStyle": "Štýl fontu",
+    "fontWeight": "Hrúbka písma",
+    "gapWidth": "Šírka medzery",
+    "graphicFill": "Grafická výplň",
+    "graphicStroke": "Grafický obrys",
+    "haloColor": "Farba obalu",
+    "haloWidth": "Šírka obalu",
+    "iconSymbolizer": "Symbolika ikony",
+    "join": "Napojenie",
+    "justify": "Zarovnať",
+    "kind": "Typ",
     "layer": "Vrstva",
     "level": "Úroveň",
-    "selection": "Výber"
+    "lineSymbolizer": "Symbolika línie",
+    "markSymbolizer": "Symbolika značky",
+    "maxScale": "Max. mierka",
+    "minScale": "Min. mierka",
+    "miterLimit": "Limit pre ostré napojenie",
+    "name": "Meno",
+    "notFilter": "NIE",
+    "offsetX": "Odsadenie X",
+    "offsetY": "Odsadenie ",
+    "opacity": "Priehľadnosť",
+    "orFilter": "ALEBO",
+    "outlineColor": "Farba obrysu",
+    "outlineOpacity": "PriehĽadnosť obrysu",
+    "outlineWidth": "Šírka obrysu",
+    "perpendicularOffset": "Kolmý ofset",
+    "radius": "Polomer",
+    "removeFilter": "Vymazať filter",
+    "removeRule": "Vymazať pravidlo",
+    "removeSymbolizer": "Vymazať symboliku",
+    "rotation": "Otočenie",
+    "roundLimit": "Limit pre guľaté napojenie",
+    "rules": "Pravidlá",
+    "selectIcon": "Vybrete ikonu",
+    "selection": "Výber",
+    "simpleRule": "Jednoduché pravidlo",
+    "size": "Veľkosť",
+    "source": "URL",
+    "spacing": "Vzdialenosť",
+    "strokeColor": "Farba obrysu",
+    "strokeOpacity": "Priehľadnosť obrysu",
+    "strokeWidth": "Šírka obrysu",
+    "symbol": "Značka",
+    "symbolizers": "Symboliky",
+    "template": "Šablóna",
+    "textColor": "Farba textu",
+    "textSize": "Veľkosť textu",
+    "textSymbolizer": "Symbolika textu",
+    "toggleFilters": "Prepnúť filtre",
+    "toggleScaleDenominators": "Prepnúť rozsah mierky",
+    "transform": "Transformácia",
+    "warningAttribNotStoredNotVisualized": "Atribút momentálne nie je zorazený správne a nie je uložený v SLD",
+    "warningAttribStoredNotVisualized": "Atribút uložený v SLD, ale aktuálne nie je zobrazený správne",
+    "width": "Šírka"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistiť body trasy",
+    "missingAuth": "Prístup k navigačnej službe nepovolený",
     "removeWaypoint": "Odobrať bod trasy",
+    "routerLayer": "Vrstva s trasou",
     "serviceDown": "Zdá sa, že navigačná služba nefunguje. Je nám to ľúto!",
     "totalDistance": "Celková vzdialenosť",
+    "travelRoute": "Trasa výletu",
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
+    "waypointLayer": "Vrstva s bodmi trasy",
     "waypoints": "Body trasy"
   }
 }
