@@ -253,11 +253,11 @@
     "inspireTheme": "INSPIRE tēma",
     "loginToCatalogue": "Pieslēgties katalogam",
     "metadataNotAvailable": "Metadati nav pieejami!",
+    "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni",
     "onlyMine": "Tikai manas",
     "selectKeywords": "Izvēlēties atslēgvārdus",
     "selectThemes": "Izvēlēties tēmas",
-    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!",
-    "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni"
+    "sharingUrlIsNotAvailable": "Kopīgošanas saite nav pieejama!"
   },
   "COMPOSITONINSPIRETHEMES": {
     "Addresses": "Adreses",
@@ -344,8 +344,8 @@
     "datasourceListItem": {
       "abortAdd": "Atcelt pievienošanu",
       "addToMap": "Pievienot kartei",
-      "whatDoesItMean": "Ko tas nozīmē?",
-      "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni"
+      "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni",
+      "whatDoesItMean": "Ko tas nozīmē?"
     },
     "externalData": "Ārējie resursi",
     "layerRDF": "Slāņa RDF",
@@ -435,18 +435,18 @@
     "layerEditor": {
       "cluster": "Apvienot blakusesošos",
       "copyright": "Autortiesības",
+      "layerFrom": "slānis no",
+      "memory": "atmiņas",
       "metadataOfLayer": "Slāņa metadati iekš",
       "metadataOfService": "Servisa metadati",
       "opacity": "Necaurredzamība",
       "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON",
       "styleLayer": "Stilizēt slāni",
-      "zoomToLayer": "Tuvināt līdz slānim",
-      "layerFrom": "slānis no",
-      "memory": "atmiņas",
       "vector": "vektoru",
       "vector (GeoJSON)": "vektoru (GeoJSON)",
       "vector (KML)": "vektoru (KML)",
-      "vector (TopoJSON)": "vektoru (TopoJSON)"
+      "vector (TopoJSON)": "vektoru (TopoJSON)",
+      "zoomToLayer": "Tuvināt līdz slānim"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
@@ -490,6 +490,9 @@
       "syncTimesTooltip": "Sinhronizēt laiku visiem slāņiem"
     },
     "User generated": "Lietotāja ģenerēti"
+  },
+  "LAYERS": {
+    "newLayer": "Jauns slānis"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
@@ -615,11 +618,11 @@
     "public": "Publisks",
     "readAccessRights": "Lasīšanas piekļuves tiesības",
     "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}",
+    "saveOrOverwrite": "Šo kompozīciju izveidoja cits lietotājs",
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
-    "writeAccessRights": "Rakstīšanas piekļuves tiesības",
-    "saveOrOverwrite": "Šo kompozīciju izveidoja cits lietotājs"
+    "writeAccessRights": "Rakstīšanas piekļuves tiesības"
   },
   "SENSORS": {
     "1D": "1d",
@@ -659,10 +662,6 @@
     }
   },
   "STYLER": {
-    "features": "Objekti",
-    "layer": "Slānis",
-    "level": "Līmenis",
-    "selection": "Izv. objekts",
     "addFilter": "Pievienot filtru",
     "addRule": "Pievienot noteikumu",
     "addSymbolizer": "Pievienot simbolizētāju",
@@ -671,10 +670,12 @@
     "anchorY": "Y nobīde",
     "andFilter": "AND",
     "blur": "Aizpludināt",
+    "cap": "Limits",
     "clusterRule": "Noteikums kopām",
     "color": "Krāsa",
     "comparisonFilter": "SALĪDZINĀT",
     "dashPattern": "Domuzīmes paterns",
+    "features": "Objekti",
     "fillColor": "Aizpildīt krāsu",
     "fillOpacity": "Aizpildīt necaurredzamību",
     "fillSymbolizer": "Aizpildīt simbolētāju",
@@ -691,6 +692,8 @@
     "join": "Pievienot",
     "justify": "Slīpraksts",
     "kind": "Veids",
+    "layer": "Slānis",
+    "level": "Līmenis",
     "lineSymbolizer": "Līniju simbolizētājs",
     "markSymbolizer": "Atzīmju simbolizētājs",
     "maxScale": "Maks. mērogs",
@@ -714,6 +717,7 @@
     "roundLimit": "Apļa robežas",
     "rules": "Noteikumi",
     "selectIcon": "Izvēlēties ikonu",
+    "selection": "Izv. objekts",
     "simpleRule": "Vienkāršs noteikums",
     "size": "Izmērs",
     "source": "URL",
@@ -732,25 +736,21 @@
     "transform": "Transformēt",
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
-    "width": "Platums",
-    "cap": "Limits"
+    "width": "Platums"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Dzēst pieturas",
+    "missingAuth": "Maršrutēšanas pakalpojums nav atļauts",
     "removeWaypoint": "Dzēst pieturu",
+    "routerLayer": "Maršruta slānis",
     "serviceDown": "Šķiet, ka navigācijas pakalpojums nav pieejams. Atvainojamies par sagādātajām neērtībām!",
     "totalDistance": "Kopējais attālums",
-    "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
-    "waypoints": "Pieturas punkti",
-    "missingAuth": "Maršrutēšanas pakalpojums nav atļauts",
-    "routerLayer": "Maršruta slānis",
     "travelRoute": "Ceļojuma maršruts",
-    "waypointLayer": "Galapunktu slānis"
-  },
-  "LAYERS": {
-    "newLayer": "Jauns slānis"
+    "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
+    "waypointLayer": "Galapunktu slānis",
+    "waypoints": "Pieturas punkti"
   }
 }
