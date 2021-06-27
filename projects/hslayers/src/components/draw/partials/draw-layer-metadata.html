@@ -96,7 +96,7 @@
                                         title="{{layer.description}}">{{layer.title}}</a></b>
                                 <span class="float-right">
                                     <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
-                                        data-toggle="tooltip" title="'WFS.addToMap' | translate"><i
+                                        data-toggle="tooltip" [title]="'ADDLAYERS.WFS.addToMap' | translate"><i
                                             class="icon-plus"></i></button>
                                 </span>
                             </li>
