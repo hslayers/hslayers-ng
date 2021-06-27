@@ -34,6 +34,9 @@ export class HsHistoryListService {
   }
 
   addSourceHistory(forWhat: string, url: string): void {
+    if (url === null || url === undefined) {
+      return;
+    }
     if (this.items[forWhat]?.history === undefined) {
       this.items[forWhat] = {
         history: [],
