@@ -667,7 +667,7 @@
     "addRule": "Přidat pravidlo",
     "andFilter": "A",
     "addSymbolizer": "Přidat symboliku",
-    "clusterRule": "Pravidlo pro zhluky",
+    "clusterRule": "Pravidlo pro shluky",
     "color": "Barva",
     "comparisonFilter": "POROVNAT",
     "fillColor": "Barva výplně",
@@ -676,9 +676,9 @@
     "fontStyle": "Styl fontu",
     "fontWeight": "Tloušťka písma",
     "graphicFill": "Grafická výplň",
-    "haloColor": "Barva halo",
-    "haloWidth": "Šířka halo",
-    "join": "Připojit",
+    "haloColor": "Barva obalu",
+    "haloWidth": "Šířka obalu",
+    "join": "Napojení",
     "gapWidth": "Šířka mezery",
     "justify": "Zarovnat",
     "kind": "Typ",
@@ -705,7 +705,7 @@
     "selectIcon": "Vyberte ikonu",
     "strokeWidth": "Šířka obrysu",
     "symbolizers": "Symboliky",
-    "template": "Návrh",
+    "template": "Šablona",
     "textColor": "Barva textu",
     "textSize": "Velikost textu",
     "textSymbolizer": "Symbolika textu",
@@ -726,7 +726,14 @@
     "dashPattern": "Vzor přerušení",
     "anchorX": "Odsazení X",
     "anchorY": "Odsazení Y",
-    "filtersAndScales": "Filtry a měrítka"
+    "filtersAndScales": "Filtry a měřítka",
+    "strokeOpacity": "Průhlednost obrysu",
+    "toggleScaleDenominators": "Přepnout rozsah měřítka",
+    "symbol": "Značka",
+    "graphicStroke": "Grafický obrys",
+    "miterLimit": "Limit pro ostré napojení",
+    "roundLimit": "Limit pro kulaté napojení",
+    "perpendicularOffset": "Kolmý ofset"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
@@ -735,11 +742,13 @@
     "clearWaypoints": "Vyčistit body trasy",
     "missingAuth": "Přístup k navigační službě nepovolen",
     "removeWaypoint": "Odebrat bod trasy",
+    "routerLayer": "Vrstva s trasou",
     "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!",
     "totalDistance": "Celková vzdálenost",
+    "travelRoute": "Trasa výletu",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypoints": "Body trasy",
-    "waypointLayer": "Trasovací vrstva"
+    "waypointLayer": "Vrstva s body trasy"
   },
   "LAYERS": {
     "newLayer": "Nová vrstva"
