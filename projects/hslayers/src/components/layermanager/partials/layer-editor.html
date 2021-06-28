@@ -10,7 +10,9 @@
             <form>
                 <!-- Layer type info -->
                 <div class="form-group">
-                    <small class="text-secondary ">{{currentLayer.type}} {{'LAYERMANAGER.layerEditor.layerFrom' | translate}} {{currentLayer.source}}</small>
+                    <small class="text-secondary ">
+                        {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor', currentLayer.type)}} {{'LAYERMANAGER.layerEditor.layerFrom' | translate}} {{HsLanguageService.getTranslationIgnoreNonExisting('LAYERMANAGER.layerEditor', currentLayer.source)}}
+                    </small>
                 </div>
                 <!-- Metadata/Copyright -->
                 <div class="form-group" *ngIf="HsLayerManagerMetadataService.hasMetadata(currentLayer)">
