@@ -435,13 +435,18 @@
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Copyright",
+      "layerFrom": "layer from",
+      "memory": "memory",
       "metadataOfLayer": "Metadata of layer in",
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",
       "savegeojson": "Download layer content as GeoJSON",
       "styleLayer": "Style layer",
-      "zoomToLayer": "Zoom to layer",
-      "layerFrom": "layer from"
+      "vector": "vector",
+      "vector (GeoJSON)": "vector (GeoJSON)",
+      "vector (KML)": "vector (KML)",
+      "vector (TopoJSON)": "vector (TopoJSON)",
+      "zoomToLayer": "Zoom to layer"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
