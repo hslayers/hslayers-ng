@@ -441,7 +441,12 @@
       "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON",
       "styleLayer": "Stilizēt slāni",
       "zoomToLayer": "Tuvināt līdz slānim",
-      "layerFrom": "slānis no"
+      "layerFrom": "slānis no",
+      "memory": "atmiņas",
+      "vector": "vektoru",
+      "vector (GeoJSON)": "vektoru (GeoJSON)",
+      "vector (KML)": "vektoru (KML)",
+      "vector (TopoJSON)": "vektoru (TopoJSON)"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
