@@ -5,6 +5,7 @@ import {
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
 import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
@@ -23,6 +24,7 @@ export class HsCompositionsLaymanService {
   constructor(
     private $http: HttpClient,
     public hsUtilsService: HsUtilsService,
+    public hsCommonLaymanService: HsCommonLaymanService,
     public hsCompositionsParserService: HsCompositionsParserService,
     public hsEventBusService: HsEventBusService,
     public hsToastService: HsToastService,
@@ -76,7 +78,7 @@ export class HsCompositionsLaymanService {
           if (Array.isArray(response.body)) {
             this.compositionsReceived(endpoint, response);
           } else {
-            this.displayLaymanError(endpoint.title, response.body);
+            this.displayLaymanError(endpoint, response.body);
           }
         }),
         catchError((e) => {
@@ -143,7 +145,7 @@ export class HsCompositionsLaymanService {
     await this.$http.delete(url).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
-  displayLaymanError(endpointTitle: string, responseBody: any): void {
+  displayLaymanError(endpoint: HsEndpoint, responseBody: any): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {
       simplifiedResponse = 'COMMON.unknownError';
@@ -153,8 +155,8 @@ export class HsCompositionsLaymanService {
         simplifiedResponse = 'mapExtentFilterMissing';
         break;
       case 32:
-        simplifiedResponse =
-          'Unsuccessful OAuth2 authentication. Access token is not valid';
+        simplifiedResponse = 'Authentication failed. Login to the catalogue.';
+        this.hsCommonLaymanService.detectAuthChange(endpoint);
         break;
       default:
         simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
@@ -164,7 +166,7 @@ export class HsCompositionsLaymanService {
       this.hsLanguageService.getTranslation(
         'COMPOSITIONS.errorWhileRequestingCompositions'
       ),
-      endpointTitle +
+      endpoint.title +
         ': ' +
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
