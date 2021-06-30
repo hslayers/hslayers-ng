@@ -26,12 +26,22 @@ export class HsScaleDenominatorComponent
       this.scaleDenominator.max === null
     ) {
       delete this.rule.scaleDenominator;
+      super.emitChange();
       return;
     }
+
     if (this.rule.scaleDenominator == undefined) {
       this.rule.scaleDenominator = {};
     }
     Object.assign(this.rule.scaleDenominator, this.scaleDenominator);
+ 
+    //After assign to keep max inut empty -> prevent 'out of range' warning
+    if (
+      this.rule.scaleDenominator.max === null &&
+      this.rule.scaleDenominator.min !== null
+    ) {
+      this.rule.scaleDenominator.max = Infinity;
+    }
     super.emitChange();
   }
 }
