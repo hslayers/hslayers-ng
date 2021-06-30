@@ -5,7 +5,7 @@
       <input
         class="form-control form-control-sm"
         (click)="pickerVisible = !pickerVisible"
-        [ngStyle]="{'background-color': symbolizer[attribute]}"
+        [ngStyle]="colorPickerStyle()"
         [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer[attribute]"
       />
