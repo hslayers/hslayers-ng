@@ -199,7 +199,7 @@
     "to": "do",
     "type": "Typ",
     "unknownError": "Neznámá chyba. Zkuste to znovu, prosím.",
-    "Unsuccessful OAuth2 authentication. Access token is not valid": "Neúspěšná autentizace OAuth2. Neplatný přístupový token",
+    "Authentication failed. Login to the catalogue.": "Chyba ověření. Přihlaste se do katalogu.",
     "until": "Až do",
     "url": "URL",
     "value": "Hodnota",

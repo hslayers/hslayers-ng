@@ -6,7 +6,8 @@ const cors = require('cors');
 
 const passport = require('passport');
 const OAuth2 = require('passport-oauth2').Strategy;
-const refresh = require('passport-oauth2-refresh');
+const OAuth2Refresh = require('passport-oauth2-middleware').Strategy;
+//const refresh = require('passport-oauth2-refresh');
 const sqlite = require('better-sqlite3');
 const got = require('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -24,29 +25,42 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+
+var refreshStrategy = new OAuth2Refresh({
+  refreshWindow: 10, // Time in seconds to perform a token refresh before it expires
+  userProperty: 'ticket', // Active user property name to store OAuth tokens
+  authenticationURL: '/login', // URL to redirect unathorized users to
+  callbackParameter: 'callback' //URL query parameter name to pass a return URL
+});
+
+passport.use('main', refreshStrategy);  //Main authorization strategy that authenticates user and performs token refresh if needed
+
 var strategy = new OAuth2({
   authorizationURL: process.env.OAUTH2_AUTH_URL,
   tokenURL: process.env.OAUTH2_TOKEN_URL,
   clientID: process.env.OAUTH2_CLIENT_ID,
   clientSecret: process.env.OAUTH2_SECRET,
-  callbackURL: process.env.OAUTH2_CALLBACK_URL
+  callbackURL: process.env.OAUTH2_CALLBACK_URL,
+  passReqToCallback: false //Must be omitted or set to false in order to work with OAuth2RefreshTokenStrategy
 },
-  async function (accessToken, refreshToken, extraParams, profile, cb) {
-    profile = await authnUtil.ensureUsername(accessToken, profile);
+  refreshStrategy.getOAuth2StrategyCallback()
+//  async function (accessToken, refreshToken, extraParams, profile, cb) {
+//    profile = await authnUtil.ensureUsername(accessToken, profile);
 
-    profile.authn = {
-      accessToken: accessToken,
-      expires: Date.now() + extraParams.expires_in * 1000,
-      refreshToken: refreshToken,
-      iss: process.env.OAUTH2_AUTH_URL
-    };
+//    profile.authn = {
+//      accessToken: accessToken,
+//      expires: Date.now() + extraParams.expires_in * 1000,
+//      refreshToken: refreshToken,
+//      iss: process.env.OAUTH2_AUTH_URL
+//    };
 
-    return cb(null, profile);
-  }
+//    return cb(null, profile);
+//  }
 );
 
-passport.use(strategy);
-refresh.use(strategy);
+passport.use('oauth2', strategy);
+refreshStrategy.useOAuth2Strategy(strategy);
+//refresh.use(strategy);
 
 passport.serializeUser(function (user, cb) {
   cb(null, user);
@@ -91,8 +105,13 @@ app.use(`/rest`,
     selfHandleResponse: true,
     secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
-      authnUtil.checkTokenExpiration(req, strategy.name);
-      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+      try {
+        //authnUtil.checkTokenExpiration(req, strategy.name);
+        authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+      }
+      catch (error) {
+        res.send(error);
+      }
     },
     onProxyRes: authnUtil.handleProxyRes
   }),
@@ -105,7 +124,7 @@ app.use(`/geoserver`,
     selfHandleResponse: true,
     secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
-      authnUtil.checkTokenExpiration(req, strategy.name);
+      //authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
     },
     onProxyRes: authnUtil.handleProxyRes

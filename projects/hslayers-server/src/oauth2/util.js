@@ -44,7 +44,7 @@ exports.deleteUserSession = async (req) => {
 const getAuthenticationHeaders = (user) => {
   return {
     AuthorizationIssUrl: process.env.OAUTH2_AUTH_URL,
-    Authorization: `Bearer ${user.authn.accessToken}`,
+    Authorization: `Bearer ${user.ticket.access_token}`,
   }
 };
 
@@ -96,47 +96,49 @@ exports.allowOrigin = (proxyRes, req, res) => {
   }
 };
 
-exports.checkTokenExpiration = (req, strategyName) => {
-  if (req.session.passport && req.session.passport.user && req.session.passport.user.authn) {
-    let incomingTimestamp = req.incoming_timestamp;
-    let refreshBeforeTimeSpan = process.env.REFRESH_SESSION_BEFORE || 10000; // 10 seconds
+//exports.checkTokenExpiration = (req, strategyName) => {
+//  if (req.session.passport && req.session.passport.user && req.session.passport.user.authn) {
+//    let incomingTimestamp = req.incoming_timestamp;
+//    let refreshBeforeTimeSpan = process.env.REFRESH_SESSION_BEFORE || 10000; // 10 seconds
 
-    // session is about to expire in the given time span, refresh the token
-    if (incomingTimestamp - refreshBeforeTimeSpan > req.session.passport.user.authn.expires) {
-      refreshAuthentication(req, req.session.passport.user, strategyName);
-    }
-  }
-};
+//    // session is about to expire in the given time span, refresh the token
+//    if (incomingTimestamp - refreshBeforeTimeSpan > req.session.passport.user.authn.expires) {
+//      refreshAuthentication(req, req.session.passport.user, strategyName);
+//    }
+//  }
+//};
 
-const refreshAuthentication = (req, user, strategyName) => {
-  if (user.authn.refreshing) {
-    let i = 0;
-    const timer = setTimeout(() => {
-      user = req.session.passport && req.session.passport.user;
-      if (!user || !user.authn.refreshing || i > 100) {
-        clearTimeout(timer);
-      }
-    }, 100);
-    if (i > 100) {
-      throw Error('OAuth2 refresh timeout reached!');
-    }
-    return;
-  }
+//const refreshAuthentication = (req, user, strategyName) => {
+//  if (user.authn.refreshing) {
+//    let i = 0;
+//    const timer = setTimeout(() => {
+//      user = req.session.passport && req.session.passport.user;
+//      if (!user || !user.authn.refreshing || i > 100) {
+//        clearTimeout(timer);
+//      }
+//    }, 100);
+//    if (i > 100) {
+//      throw Error('OAuth2 refresh timeout reached!');
+//    }
+//    return;
+//  }
 
-  user.authn.refreshing = true;
+//  user.authn.refreshing = true;
 
-  refresh.requestNewAccessToken(strategyName, user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
-    if (err) {
-      console.error(err);
-      throw Error(err);
-    }
-    else {
-      req.session.passport.user.authn = {
-        accessToken: accessToken,
-        expires: Date.now() + extraParams.expires_in * 1000,
-        refreshToken: refreshToken,
-        iss: process.env.OAUTH2_AUTH_URL
-      };
-    }
-  });
-};
+//  refresh.requestNewAccessToken(strategyName, user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
+//    if (err) {
+//      console.error(err);
+//      req.session.passport.user.authenticated = false;
+//      req.session.passport.user.authn.error = err;
+//      //throw Error(err);
+//    }
+//    else {
+//      req.session.passport.user.authn = {
+//        accessToken: accessToken,
+//        expires: Date.now() + extraParams.expires_in * 1000,
+//        refreshToken: refreshToken,
+//        iss: process.env.OAUTH2_AUTH_URL
+//      };
+//    }
+//  });
+//};
