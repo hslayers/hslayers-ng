@@ -671,10 +671,10 @@
     "fontStyle": "Štýl fontu",
     "fontWeight": "Hrúbka písma",
     "graphicFill": "Grafická výplň",
-    "graphicStroke": "Grafické ohraničenie",
-    "haloColor": "Farba halo",
-    "haloWidth": "šírka halo",
-    "join": "Spojenie",
+    "graphicStroke": "Grafický obrys",
+    "haloColor": "Farba obalu",
+    "haloWidth": "Šírka obalu",
+    "join": "Napojenie",
     "gapWidth": "Šírka medzery",
     "justify": "Zarovnať",
     "kind": "Typ",
@@ -698,12 +698,12 @@
     "source": "URL",
     "strokeColor": "Farba obrysu",
     "strokeOpacity": "Priehľadnosť obrysu",
-    "symbol": "Šírka obrysu",
+    "symbol": "Značka",
     "notFilter": "NIE",
     "selectIcon": "Vybrete ikonu",
     "strokeWidth": "Šírka obrysu",
     "symbolizers": "Symboliky",
-    "template": "Návrh",
+    "template": "Šablóna",
     "textColor": "Farba textu",
     "textSize": "Veľkosť textu",
     "textSymbolizer": "Symbolika textu",
@@ -724,7 +724,12 @@
     "dashPattern": "Vzor prerušenia",
     "anchorX": "Odsadenie X",
     "anchorY": "Odsadenie Y",
-    "filtersAndScales": "Filtre a mierky"
+    "filtersAndScales": "Filtre a mierky",
+    "perpendicularOffset": "Kolmý ofset",
+    "miterLimit": "Limit pre ostré napojenie",
+    "roundLimit": "Limit pre guľaté napojenie",
+    "toggleScaleDenominators": "Prepnúť rozsah mierky"
+
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"
@@ -737,7 +742,9 @@
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
     "waypoints": "Body trasy",
     "missingAuth": "Prístup k navigačnej službe nepovolený",
-    "waypointLayer": "Trasovacia vrstva"
+    "waypointLayer": "Vrstva s bodmi trasy",
+    "travelRoute": "Trasa výletu",
+    "routerLayer": "Vrstva s trasou",
   },
   "LAYERS": {
     "newLayer": "Nová vrstva"
