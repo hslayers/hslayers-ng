@@ -7,6 +7,7 @@ import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.serv
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsHistoryListService} from '../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -54,7 +55,8 @@ export class HsAddDataVectorComponent {
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsCommonLaymanService: HsCommonLaymanService
+    public hsCommonLaymanService: HsCommonLaymanService,
+    public hsLaymanService: HsLaymanService
   ) {
     const layman = this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type == 'layman'
@@ -63,9 +65,14 @@ export class HsAddDataVectorComponent {
       this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+        if (this.isAuthorized) {
+          this.isSaveAvailable();
+        }
       });
       this.isAuthorized =
         layman.user !== 'anonymous' && layman.user !== 'browser';
+    } else {
+      this.saveAvailable = false;
     }
   }
 
@@ -73,6 +80,24 @@ export class HsAddDataVectorComponent {
     this.hsHistoryListService.addSourceHistory('vector', this.url);
     this.showDetails = true;
   };
+
+  isSaveAvailable(): void {
+    if (this.isKml()) {
+      this.saveToLayman = false;
+      this.saveAvailable = false;
+    } else {
+      this.saveAvailable = !!this.hsCommonEndpointsService.endpoints.filter(
+        (ep) => ep.type == 'layman'
+      )[0];
+      this.saveToLayman = this.isAuthorized;
+    }
+    //add layman endpoint url as url to allow sync
+    if (this.url == '' && this.saveToLayman) {
+      this.url = this.hsCommonEndpointsService.endpoints.filter(
+        (ep) => ep.type == 'layman'
+      )[0].url;
+    }
+  }
 
   isKml(): boolean {
     if (this.type == 'kml' || this.url?.endsWith('kml')) {
@@ -170,19 +195,7 @@ export class HsAddDataVectorComponent {
         } else {
           this.type = '';
         }
-        if (this.isKml()) {
-          this.saveToLayman = false;
-          this.saveAvailable = false;
-        } else {
-          this.saveAvailable = true;
-          this.saveToLayman = this.isAuthorized;
-        }
-        //add layman endpoint url as url to allow sync
-        if (this.url == '' && this.saveToLayman) {
-          this.url = this.hsCommonEndpointsService.endpoints.filter(
-            (ep) => ep.type == 'layman'
-          )[0].url;
-        }
+        this.isSaveAvailable();
         this.showDetails = true;
       } else {
         this.setToDefault();

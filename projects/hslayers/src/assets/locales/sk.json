@@ -29,12 +29,13 @@
       }
     },
     "file": "Súbor",
-    "saveToDatabase": "Uložit do databázy",
+    "saveToDatabase": "Uložit do katalógu",
     "URL": {
       "selectAll": "Označiť všetky vrstvy",
       "submitLayerTitle": "Zadajte titulok vrstvy",
       "submitLayerName": "Zadajte názov vrstvy"
-    }
+    },
+    "saveToLayman": "Ak chcete uložiť načítané dáta do katalógu, prihláste sa prosím"
   },
   "ADDLAYERS": {
     "addSelected": "Pridať označené vrstvy do mapy",
@@ -94,7 +95,7 @@
     "WMTS": {
       "tileMatrix": "Matica dlaždíc"
     },
-    "projectionNotSupported":"Neznáme alebo nepodporované mapové zobrazenie"
+    "projectionNotSupported": "Neznáme alebo nepodporované mapové zobrazenie"
   },
   "COMMON": {
     "abstract": "Abstrakt",

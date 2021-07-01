@@ -29,7 +29,7 @@
       }
     },
     "file": "Soubor",
-    "saveToDatabase": "Uložit do databáze",
+    "saveToDatabase": "Uložit do katalogu",
     "URL": {
       "selectAll": "Označit všechny vrstvy",
       "submitLayerTitle": "Zadejte titulek vrstvy",

@@ -29,12 +29,13 @@
       }
     },
     "file": "File",
-    "saveToDatabase": "Save to database",
+    "saveToDatabase": "Save to catalogue",
     "URL": {
       "selectAll": "Select all Layers",
       "submitLayerTitle": "Fill in layer title",
       "submitLayerName": "Fill in layer name"
-    }
+    },
+    "saveToLayman": "If you want to save loaded data to catalogue please log in"
   },
   "ADDLAYERS": {
     "addSelected": "Add selected layers to the map",
@@ -94,7 +95,7 @@
     "WMTS": {
       "tileMatrix": "Tile matrix"
     },
-    "projectionNotSupported":"Map projection missing or not supported"
+    "projectionNotSupported": "Map projection missing or not supported"
   },
   "COMMON": {
     "abstract": "Abstract",
