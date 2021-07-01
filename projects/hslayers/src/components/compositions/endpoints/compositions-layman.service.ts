@@ -78,7 +78,10 @@ export class HsCompositionsLaymanService {
           if (Array.isArray(response.body)) {
             this.compositionsReceived(endpoint, response);
           } else {
-            this.displayLaymanError(endpoint, response.body);
+            this.hsCommonLaymanService.displayLaymanError(
+              endpoint,
+              'COMPOSITIONS.errorWhileRequestingCompositions',
+              response.body);
           }
         }),
         catchError((e) => {
@@ -145,36 +148,7 @@ export class HsCompositionsLaymanService {
     await this.$http.delete(url).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
-  displayLaymanError(endpoint: HsEndpoint, responseBody: any): void {
-    let simplifiedResponse = '';
-    if (responseBody.code === undefined) {
-      simplifiedResponse = 'COMMON.unknownError';
-    }
-    switch (responseBody.code) {
-      case 48:
-        simplifiedResponse = 'mapExtentFilterMissing';
-        break;
-      case 32:
-        simplifiedResponse = 'Authentication failed. Login to the catalogue.';
-        this.hsCommonLaymanService.detectAuthChange(endpoint);
-        break;
-      default:
-        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
-    }
-    //If response is object, it is an error response
-    this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(
-        'COMPOSITIONS.errorWhileRequestingCompositions'
-      ),
-      endpoint.title +
-        ': ' +
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          simplifiedResponse
-        ),
-      true
-    );
-  }
+
   async getInfo(composition: any): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {

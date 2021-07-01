@@ -7,7 +7,6 @@ const cors = require('cors');
 const passport = require('passport');
 const OAuth2 = require('passport-oauth2').Strategy;
 const OAuth2Refresh = require('passport-oauth2-middleware').Strategy;
-//const refresh = require('passport-oauth2-refresh');
 const sqlite = require('better-sqlite3');
 const got = require('got');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -133,7 +132,7 @@ app.use(`/geoserver`,
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    authnUtil.checkTokenExpiration(req, strategy.name);
+    //authnUtil.checkTokenExpiration(req, strategy.name);
     res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
   }
   else
@@ -150,7 +149,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    authnUtil.checkTokenExpiration(req, strategy.name);
+    //authnUtil.checkTokenExpiration(req, strategy.name);
     //res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
     res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
     <script>

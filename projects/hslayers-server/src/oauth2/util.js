@@ -1,4 +1,3 @@
-const refresh = require('passport-oauth2-refresh');
 const got = require('got');
 require('dotenv').config();
 
@@ -56,23 +55,28 @@ exports.handleProxyRes = (proxyRes, req, res) => {
     body.push(chunk);
   });
   proxyRes.on('end', function () {
-    if (this.headers["content-type"] == "text/xml" || this.headers["content-type"] == "application/json") {
-      let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/') + '(?!/.*/record/basic)', "g");
-      let replWith = process.env.OAUTH2_CALLBACK_URL.replace("/callback", "").trimEnd('/');
-      body = Buffer.concat(body).toString().replace(repl, replWith);
+    try {
+      if (this.headers["content-type"] == "text/xml" || this.headers["content-type"] == "application/json") {
+        let repl = new RegExp(process.env.LAYMAN_BASEURL.trimEnd('/') + '(?!/.*/record/basic)', "g");
+        let replWith = process.env.OAUTH2_CALLBACK_URL.replace("/callback", "").trimEnd('/');
+        body = Buffer.concat(body).toString().replace(repl, replWith);
 
-      /* 
-        /rest/layers || rest/workspaces/layers
-        X-Total-Count header includes total number of layers available from the request
-      */
-      if(this.headers['x-total-count']){
-        res.setHeader('x-total-count', this.headers['x-total-count']);
-        res.setHeader('Access-Control-Expose-Headers', 'x-total-count');
+        /* 
+          /rest/layers || rest/workspaces/layers
+          X-Total-Count header includes total number of layers available from the request
+        */
+        if (this.headers['x-total-count']) {
+          res.setHeader('x-total-count', this.headers['x-total-count']);
+          res.setHeader('Access-Control-Expose-Headers', 'x-total-count');
+        }
+        res.end(body);
       }
-      res.end(body);
+      else {
+        res.end(Buffer.concat(body));
+      }
     }
-    else {
-      res.end(Buffer.concat(body));
+    catch (error) {
+      res.end(error);
     }
   });
 };
@@ -95,50 +99,3 @@ exports.allowOrigin = (proxyRes, req, res) => {
     proxyRes.headers['Access-Control-Allow-Origin'] = origin;
   }
 };
-
-//exports.checkTokenExpiration = (req, strategyName) => {
-//  if (req.session.passport && req.session.passport.user && req.session.passport.user.authn) {
-//    let incomingTimestamp = req.incoming_timestamp;
-//    let refreshBeforeTimeSpan = process.env.REFRESH_SESSION_BEFORE || 10000; // 10 seconds
-
-//    // session is about to expire in the given time span, refresh the token
-//    if (incomingTimestamp - refreshBeforeTimeSpan > req.session.passport.user.authn.expires) {
-//      refreshAuthentication(req, req.session.passport.user, strategyName);
-//    }
-//  }
-//};
-
-//const refreshAuthentication = (req, user, strategyName) => {
-//  if (user.authn.refreshing) {
-//    let i = 0;
-//    const timer = setTimeout(() => {
-//      user = req.session.passport && req.session.passport.user;
-//      if (!user || !user.authn.refreshing || i > 100) {
-//        clearTimeout(timer);
-//      }
-//    }, 100);
-//    if (i > 100) {
-//      throw Error('OAuth2 refresh timeout reached!');
-//    }
-//    return;
-//  }
-
-//  user.authn.refreshing = true;
-
-//  refresh.requestNewAccessToken(strategyName, user.authn.refreshToken, function (err, accessToken, refreshToken, extraParams) {
-//    if (err) {
-//      console.error(err);
-//      req.session.passport.user.authenticated = false;
-//      req.session.passport.user.authn.error = err;
-//      //throw Error(err);
-//    }
-//    else {
-//      req.session.passport.user.authn = {
-//        accessToken: accessToken,
-//        expires: Date.now() + extraParams.expires_in * 1000,
-//        refreshToken: refreshToken,
-//        iss: process.env.OAUTH2_AUTH_URL
-//      };
-//    }
-//  });
-//};
