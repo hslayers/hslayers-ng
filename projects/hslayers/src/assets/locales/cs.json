@@ -442,10 +442,10 @@
       "opacity": "Průhlednost",
       "savegeojson": "Stáhnout obsah vrstvy jako GeoJSON",
       "styleLayer": "Stylovat vrstvu",
-      "vector": "vektorová",
-      "vector (GeoJSON)": "vektorová (GeoJSON)",
-      "vector (KML)": "vektorová (KML)",
-      "vector (TopoJSON)": "vektorová (TopoJSON)",
+      "vector": "Vektorová",
+      "vector (GeoJSON)": "Vektorová (GeoJSON)",
+      "vector (KML)": "Vektorová (KML)",
+      "vector (TopoJSON)": "Vektorová (TopoJSON)",
       "zoomToLayer": "Přiblížit na vrstvu"
     },
     "layerList": {

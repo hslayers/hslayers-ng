@@ -442,10 +442,10 @@
       "opacity": "Necaurredzamība",
       "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON",
       "styleLayer": "Stilizēt slāni",
-      "vector": "vektoru",
-      "vector (GeoJSON)": "vektoru (GeoJSON)",
-      "vector (KML)": "vektoru (KML)",
-      "vector (TopoJSON)": "vektoru (TopoJSON)",
+      "vector": "Vektoru",
+      "vector (GeoJSON)": "Vektoru (GeoJSON)",
+      "vector (KML)": "Vektoru (KML)",
+      "vector (TopoJSON)": "Vektoru (TopoJSON)",
       "zoomToLayer": "Tuvināt līdz slānim"
     },
     "layerList": {
