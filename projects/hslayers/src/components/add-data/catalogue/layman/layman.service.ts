@@ -5,6 +5,7 @@ import {
   isErrorHandlerFunction,
 } from '../../../../common/endpoints/endpoint.interface';
 import {HsAddDataLayerDescriptor} from '../add-data-layer-descriptor.interface';
+import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
@@ -24,6 +25,7 @@ export class HsLaymanBrowserService {
   constructor(
     private http: HttpClient,
     private log: HsLogService,
+    public hsCommonLaymanService: HsCommonLaymanService,
     public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
@@ -92,7 +94,10 @@ export class HsLaymanBrowserService {
               : x.body.length;
             this.datasetsReceived(x.body);
           } else {
-            this.displayLaymanError(endpoint.title, x.body);
+            this.hsCommonLaymanService.displayLaymanError(
+              endpoint,
+              'ADDLAYERS.errorWhileRequestingLayers',
+              x.body);
           }
 
           return x.body;
