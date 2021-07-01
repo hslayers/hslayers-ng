@@ -199,7 +199,7 @@
     "to": "līdz",
     "type": "Tips",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
-    "Authentication failed. Login to the catalogue.": "Neveiksmīga OAuth2 autentifikācija. Piekļuves talons nav derīgs",
+    "Authentication failed. Login to the catalogue.": "Neveiksmīga autentifikācija. Pieslēdzieties katalogam.",
     "until": "Līdz",
     "url": "URL",
     "value": "Vērtība",
