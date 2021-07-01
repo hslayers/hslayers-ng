@@ -442,10 +442,10 @@
       "opacity": "Opacity",
       "savegeojson": "Download layer content as GeoJSON",
       "styleLayer": "Style layer",
-      "vector": "vector",
-      "vector (GeoJSON)": "vector (GeoJSON)",
-      "vector (KML)": "vector (KML)",
-      "vector (TopoJSON)": "vector (TopoJSON)",
+      "vector": "Vector",
+      "vector (GeoJSON)": "Vector (GeoJSON)",
+      "vector (KML)": "Vector (KML)",
+      "vector (TopoJSON)": "Vector (TopoJSON)",
       "zoomToLayer": "Zoom to layer"
     },
     "layerList": {
