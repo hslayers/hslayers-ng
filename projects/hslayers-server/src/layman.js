@@ -43,23 +43,10 @@ var strategy = new OAuth2({
   passReqToCallback: false //Must be omitted or set to false in order to work with OAuth2RefreshTokenStrategy
 },
   refreshStrategy.getOAuth2StrategyCallback()
-//  async function (accessToken, refreshToken, extraParams, profile, cb) {
-//    profile = await authnUtil.ensureUsername(accessToken, profile);
-
-//    profile.authn = {
-//      accessToken: accessToken,
-//      expires: Date.now() + extraParams.expires_in * 1000,
-//      refreshToken: refreshToken,
-//      iss: process.env.OAUTH2_AUTH_URL
-//    };
-
-//    return cb(null, profile);
-//  }
 );
 
 passport.use('oauth2', strategy);
 refreshStrategy.useOAuth2Strategy(strategy);
-//refresh.use(strategy);
 
 passport.serializeUser(function (user, cb) {
   cb(null, user);
@@ -105,7 +92,6 @@ app.use(`/rest`,
     secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
       try {
-        //authnUtil.checkTokenExpiration(req, strategy.name);
         authnUtil.addAuthenticationHeaders(proxyReq, req, res);
       }
       catch (error) {
@@ -123,7 +109,6 @@ app.use(`/geoserver`,
     selfHandleResponse: true,
     secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
     onProxyReq: (proxyReq, req, res) => {
-      //authnUtil.checkTokenExpiration(req, strategy.name);
       authnUtil.addAuthenticationHeaders(proxyReq, req, res);
     },
     onProxyRes: authnUtil.handleProxyRes
@@ -132,7 +117,6 @@ app.use(`/geoserver`,
 
 app.get('/', (req, res) => {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    //authnUtil.checkTokenExpiration(req, strategy.name);
     res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
   }
   else
@@ -149,8 +133,6 @@ app.get('/logout', (req, res) => {
 
 app.get('/callback', passport.authenticate('oauth2', { failureRedirect: '/error' }), function (req, res) {
   if (req.session.passport && req.session.passport.user && req.session.passport.user.authenticated) {
-    //authnUtil.checkTokenExpiration(req, strategy.name);
-    //res.send(req.session.passport.user.username); // TODO - close opener window/modal popup
     res.send(`Logged in as ${req.session.passport.user.username}. You can now close this window and return back to the map. <a href="javascript:window.close()">Close</a>
     <script>
     function inIframe () {
