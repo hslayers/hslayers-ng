@@ -137,7 +137,7 @@ export class HsAddDataVectorComponent {
       const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
         f
       );
-      if (uploadedData !== undefined) {
+      if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
           ? (this.base64url = uploadedData.url)
           : ((this.url = ''), (this.base64url = ''));
@@ -187,11 +187,12 @@ export class HsAddDataVectorComponent {
       } else {
         this.setToDefault();
 
+        const error = uploadedData.error ?? 'couldNotUploadSelectedFile';
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation('ADDLAYERS.someErrorHappened'),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
-            'couldNotUploadSelectedFile'
+            error
           ),
           true
         );

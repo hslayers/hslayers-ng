@@ -93,7 +93,8 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    }
+    },
+    "projectionNotSupported":"Map projection missing or not supported"
   },
   "COMMON": {
     "abstract": "Abstract",

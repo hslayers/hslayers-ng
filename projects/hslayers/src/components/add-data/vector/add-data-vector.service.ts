@@ -282,6 +282,10 @@ export class HsAddDataVectorService {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
     const projection = format.readProjection(json);
+    //include in list of supported
+    if (!projection){
+      return {error: 'projectionNotSupported'};
+    }
     const mapProjection = this.hsMapService.map.getView().getProjection();
     if (projection != mapProjection) {
       features.forEach((f) =>
