@@ -380,6 +380,9 @@ export class HsUtilsService {
   }
 
   private _instanceOf(obj: any, klass: any): boolean {
+    if (obj === undefined || obj === null) {
+      return false;
+    }
     if (this.isFunction(klass)) {
       return obj instanceof klass;
     }
