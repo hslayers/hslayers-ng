@@ -117,6 +117,24 @@ export class HsLayerUtilsService {
     }
   }
 
+  // todo
+  getURL(layer: Layer): string {
+    let url;
+    if (layer.getSource().getUrls) {
+      //Multi tile
+      url = layer.getSource().getUrls();
+      if (url) {
+        //in case WMTS source has not yet been set
+        url = url[0];
+      }
+    }
+    if (layer.getSource().getUrl) {
+      //Single tile
+      url = layer.getSource().getUrl();
+    }
+    return url;
+  }
+
   /**
    * Test if layer is WMS layer
    * @param layer - Selected layer
@@ -159,23 +177,13 @@ export class HsLayerUtilsService {
     return false;
   }
 
-  // todo
-  getURL(layer: Layer): string {
-    let url;
-    if (layer.getSource().getUrls) {
-      //Multi tile
-      url = layer.getSource().getUrls();
-      if (url) {
-        //in case WMTS source has yet not been set
-        url = url[0];
-      }
+  getLayerSourceFormat(layer: Layer): string {
+    if (!this.isLayerVectorLayer(layer)) {
+      return;
     }
-    if (layer.getSource().getUrl) {
-      //Single tile
-      url = layer.getSource().getUrl();
-    }
-    return url;
+    return layer.getSource()?.getFormat();
   }
+
   /**
    * Test if layer is Vector layer
    * @param layer - Selected layer
@@ -198,11 +206,7 @@ export class HsLayerUtilsService {
    * @returns true only if the GeoJSON format is explicitly specified in the source. False otherwise.
    */
   isLayerGeoJSONSource(layer: Layer): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), GeoJSON)
-    ) {
+    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
       return true;
     }
     return false;
@@ -215,9 +219,7 @@ export class HsLayerUtilsService {
    */
   isLayerTopoJSONSource(layer: Layer): boolean {
     if (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), TopoJSON)
+      this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), TopoJSON)
     ) {
       return true;
     }
@@ -230,11 +232,7 @@ export class HsLayerUtilsService {
    * @returns true only if the KML format is explicitly specified in the source. False otherwise.
    */
   isLayerKMLSource(layer: Layer): boolean {
-    if (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
-      this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      this.HsUtilsService.instOf(layer.getSource()?.getFormat(), KML)
-    ) {
+    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
       return true;
     }
     return false;
