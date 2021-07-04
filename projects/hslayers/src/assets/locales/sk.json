@@ -441,7 +441,12 @@
       "opacity": "Priehľadnosť",
       "savegeojson": "Stiahnuť obsah vrstvy ako GeoJSON",
       "styleLayer": "Štýlovať vrstvu",
-      "zoomToLayer": "Priblížiť na vrstvu"
+      "zoomToLayer": "Priblížiť na vrstvu",
+      "memory": "medzipamäť",
+      "vector": "Vektorová",
+      "vector (GeoJSON)": "Vektorová (GeoJSON)",
+      "vector (KML)": "Vektorová (KML)",
+      "vector (TopoJSON)": "Vektorová (TopoJSON)"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
