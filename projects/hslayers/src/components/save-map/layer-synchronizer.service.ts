@@ -101,7 +101,12 @@ export class HsLayerSynchronizerService {
     await this.pull(layer, layerSource);
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
-      this.sync([e.feature], [], [], layer);
+      this.sync(
+        Array.isArray(e.feature) ? e.feature : [e.feature],
+        [],
+        [],
+        layer
+      );
     });
     layerSource.on('removefeature', (e) => {
       this.sync([], [], [e.feature], layer);
