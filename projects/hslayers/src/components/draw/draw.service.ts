@@ -233,7 +233,10 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(): void {
-    this.previouslySelected = this.selectedLayer;
+    if (this.selectedLayer) {
+      this.previouslySelected = this.selectedLayer;
+    }
+
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
 
     const tmpLayer = this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE);
@@ -299,9 +302,13 @@ export class HsDrawService {
       this.addDrawLayer(drawLayer);
     }
     this.type = what;
-    this.source = this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)
-      ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
-      : this.selectedLayer.getSource();
+    if (this.selectedLayer) {
+      this.source = this.HsLayerUtilsService.isLayerClustered(
+        this.selectedLayer
+      )
+        ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
+        : this.selectedLayer.getSource();
+    }
     return true;
   }
 
