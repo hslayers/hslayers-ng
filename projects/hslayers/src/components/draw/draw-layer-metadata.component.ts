@@ -21,7 +21,8 @@ import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
   templateUrl: './partials/draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: any;
 
   newLayerPath: string;
@@ -37,6 +38,7 @@ export class HsDrawLayerMetadataDialogComponent
     'access_rights.read': 'EVERYONE',
   };
   onlyMineFilterVisible = false;
+  tmpFeatures: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -96,11 +98,20 @@ export class HsDrawLayerMetadataDialogComponent
 
     this.data.addDrawLayer(this.layer);
     this.data.fillDrawableLayers();
+    if (this.data.tmpDrawLayer) {
+      this.tmpFeatures = this.layer.getSource().getFeatures();
+      //Dispatch add feature event in order to trigger sync
+      this.awaitLayerSync(this.layer).then(() => {
+        const event =
+          this.layer.getSource().getFeatures().length >= this.tmpFeatures.length
+            ? //Existing layer
+              {type: 'addfeature', feature: this.tmpFeatures}
+            : //New layer
+              'addfeature';
+        this.layer.getSource().dispatchEvent(event);
+      });
+    }
     this.data.tmpDrawLayer = false;
-
-    this.awaitLayerSync(this.layer).then(() => {
-      this.layer.getSource().dispatchEvent('addfeature');
-    });
     this.HsDialogContainerService.destroy(this);
   }
 
