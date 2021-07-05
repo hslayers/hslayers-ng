@@ -1,4 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Subject} from 'rxjs';
@@ -31,7 +38,11 @@ import {
   selector: 'hs-layer-manager',
   templateUrl: './partials/layermanager.html',
 })
-export class HsLayerManagerComponent implements OnInit, OnDestroy {
+export class HsLayerManagerComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
+  @ViewChild('layerEditor', {static: false, read: ElementRef})
+  layerEditorRef: ElementRef;
   map: any;
   shiftDown = false;
   data: any;
@@ -116,12 +127,13 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()
         ) {
-          const layerPanel =
-            this.HsLayoutService.contentWrapper.querySelector('.hs-layerpanel');
           const layerNode = document.getElementsByClassName(
             'hs-lm-mapcontentlist'
           )[0];
-          this.HsUtilsService.insertAfter(layerPanel, layerNode);
+          this.HsUtilsService.insertAfter(
+            this.layerEditorRef.nativeElement,
+            layerNode
+          );
           this.HsLayerManagerService.currentLayer = null;
         }
       });
@@ -157,6 +169,10 @@ export class HsLayerManagerComponent implements OnInit, OnDestroy {
     this.layerlistVisible = true;
   }
 
+  ngAfterViewInit(): void {
+    this.HsLayerManagerService.layerEditorElement =
+      this.layerEditorRef.nativeElement;
+  }
   changeBaseLayerVisibility(e?, layer?: Layer) {
     return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }

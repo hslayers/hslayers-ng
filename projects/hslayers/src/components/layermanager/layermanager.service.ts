@@ -119,6 +119,7 @@ export class HsLayerManagerService {
   currentResolution: number;
   zIndexValue = 0;
   lastProgressUpdate: number;
+  layerEditorElement: any;
   constructor(
     public HsConfig: HsConfig,
     public HsDrawService: HsDrawService,
@@ -927,12 +928,10 @@ export class HsLayerManagerService {
       layer.layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
-    const layerPanel =
-      this.HsLayoutService.contentWrapper.querySelector('.hs-layerpanel');
     if (this.HsUtilsService.runningInBrowser()) {
       const layerNode = document.getElementById(layer.idString());
-      if (layerNode) {
-        this.HsUtilsService.insertAfter(layerPanel, layerNode);
+      if (layerNode && this.layerEditorElement) {
+        this.HsUtilsService.insertAfter(this.layerEditorElement, layerNode);
       }
     }
     return false;
