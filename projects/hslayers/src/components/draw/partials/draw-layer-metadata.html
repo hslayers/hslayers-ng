@@ -72,7 +72,7 @@
                     </div>
                 </form>
                 <form *ngIf="type == 'layman'">
-                    <div class="d-flex align-items-center w-100 flex-column">
+                    <div class="d-flex align-items-center w-100 flex-column" *ngIf="data.drawableLaymanLayers.length > 0">
                         <div class=" bg-primary w-100 text-light m-0 p-1">
                             <div class="d-flex justify-content-between m-1">
                                 {{'DRAW.serverLayers' | translate}}
@@ -105,7 +105,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="((data.isAuthorized || data.laymanEndpoint == undefined) && (type == 'draw' || !type)) || data.tmpDrawLayer"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="confirmVisible()"
                     (click)="confirm()">{{'COMMON.ok' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>

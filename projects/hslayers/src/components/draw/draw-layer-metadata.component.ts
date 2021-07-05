@@ -49,16 +49,25 @@ export class HsDrawLayerMetadataDialogComponent
     this.title = getTitle(this.layer);
     this.path = getPath(this.layer);
     this.endpoint = this.data.laymanEndpoint;
-
-    if (this.data.isAuthorized !== true) {
-      this.type = 'draw';
-    }
+    this.type = 'draw';
   }
 
   titleChanged(): void {
     setTitle(this.layer, this.title);
   }
-
+  confirmVisible(): boolean {
+    if (
+      ((this.data.isAuthorized || this.data.laymanEndpoint == undefined) &&
+        (this.type == 'draw' || !this.type)) ||
+      this.data.tmpDrawLayer
+    ) {
+      return true;
+    } else if (this.data.drawableLaymanLayers.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   confirm(): void {
     const dic = {};
 
