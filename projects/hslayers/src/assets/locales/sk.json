@@ -372,10 +372,11 @@
       "nameOfFolder": "Názov zložky v hierarchii správcu vrstiev"
     },
     "drawToolbar": {
-      "addDrawLayer": "Pridať vrstvu na kreslenie",
+      "addDrawLayer": "Pridať novú vrstvu na kreslenie",
       "finishFeature": "Ukončiť prvok",
       "removeLastPoint": "Odobrať posledný bod",
-      "selectType": "Zvoľte typ"
+      "selectType": "Zvoľte typ",
+      "addLayer": "Pridať vrstvu"
     },
     "fillOpacity": "Vyplňte nepriehľadnosť:",
     "newGPS": "Nové GPS",
