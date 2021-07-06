@@ -125,8 +125,6 @@ export class HsDrawLayerMetadataDialogComponent
 
   selectLayer(layer): void {
     this.data.selectLayer(layer);
-    setTimeout(() => {
-      this.HsDialogContainerService.destroy(this);
-    }, 500);
+    this.HsDialogContainerService.destroy(this);
   }
 }
