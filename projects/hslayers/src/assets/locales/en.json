@@ -372,10 +372,11 @@
       "nameOfFolder": "Name of folder in layer-manager hierararchy"
     },
     "drawToolbar": {
-      "addDrawLayer": "Add draw layer",
+      "addDrawLayer": "Add new draw layer",
       "finishFeature": "Finish feature",
       "removeLastPoint": "Remove last point",
-      "selectType": "Select type"
+      "selectType": "Select type",
+      "addLayer": "Add layer"
     },
     "fillOpacity": "Fill opacity:",
     "newGPS": "New GPS",

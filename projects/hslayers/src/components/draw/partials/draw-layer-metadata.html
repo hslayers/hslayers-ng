@@ -32,7 +32,7 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <form *ngIf="type == 'draw' || data.drawableLaymanLayers.length == 0 || data.tmpDrawLayer">
+                <form *ngIf="type == 'draw'">
                     <div class="form-group">
                         <label class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' | translate}}</label>
                         <div class="mb-3">
@@ -105,8 +105,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="confirmVisible()"
-                    (click)="confirm()">{{'COMMON.ok' | translate}}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="type == 'draw'"
+                    (click)="confirm()">{{'DRAW.drawToolbar.addLayer' | translate}}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                     (click)="cancel()">{{'COMMON.cancel' | translate}}</button>
             </div>
