@@ -47,6 +47,9 @@ export class HsLayerEditorVectorLayerService {
       distance,
       source: layer.getSource(),
       geometryFunction: function (feature) {
+        if (!feature) {
+          return null;
+        }
         switch (feature.getGeometry().getType()) {
           case 'Point':
             return feature.getGeometry();
