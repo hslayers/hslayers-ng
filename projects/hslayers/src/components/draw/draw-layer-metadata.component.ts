@@ -57,19 +57,7 @@ export class HsDrawLayerMetadataDialogComponent
   titleChanged(): void {
     setTitle(this.layer, this.title);
   }
-  confirmVisible(): boolean {
-    if (
-      ((this.data.isAuthorized || this.data.laymanEndpoint == undefined) &&
-        (this.type == 'draw' || !this.type)) ||
-      this.data.tmpDrawLayer
-    ) {
-      return true;
-    } else if (this.data.drawableLaymanLayers.length == 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+
   confirm(): void {
     const dic = {};
 
@@ -103,7 +91,7 @@ export class HsDrawLayerMetadataDialogComponent
       //Dispatch add feature event in order to trigger sync
       this.awaitLayerSync(this.layer).then(() => {
         const event =
-          this.layer.getSource().getFeatures().length >= this.tmpFeatures.length
+          this.layer.getSource().getFeatures().length > this.tmpFeatures.length
             ? //Existing layer
               {type: 'addfeature', feature: this.tmpFeatures}
             : //New layer
@@ -137,5 +125,8 @@ export class HsDrawLayerMetadataDialogComponent
 
   selectLayer(layer): void {
     this.data.selectLayer(layer);
+    setTimeout(() => {
+      this.HsDialogContainerService.destroy(this);
+    }, 500);
   }
 }
