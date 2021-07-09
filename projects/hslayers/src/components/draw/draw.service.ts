@@ -29,6 +29,7 @@ import {
   getEditor,
   getName,
   getTitle,
+  setWorkspace,
 } from '../../common/layer-extensions';
 
 type activateParams = {
@@ -185,6 +186,9 @@ export class HsDrawService {
       this.fillDrawableLayers();
       this.isAuthorized =
         endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      if (this.selectedLayer && this.tmpDrawLayer){
+        setWorkspace(this.selectedLayer, endpoint.user)
+      }
     });
 
     this.HsEventBusService.LayerManagerLayerVisibilityChanges.subscribe(
@@ -265,6 +269,7 @@ export class HsDrawService {
       },
       workspace: this.HsLaymanService.getLaymanEndpoint()?.user,
     });
+    this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
       HsDrawLayerMetadataDialogComponent,
