@@ -86,21 +86,22 @@ export class HsDrawLayerMetadataDialogComponent
 
     this.data.addDrawLayer(this.layer);
     this.data.fillDrawableLayers();
-    if (this.data.tmpDrawLayer) {
-      this.tmpFeatures = this.layer.getSource().getFeatures();
-      //Dispatch add feature event in order to trigger sync
-      this.awaitLayerSync(this.layer).then(() => {
-        const event =
-          this.layer.getSource().getFeatures().length > this.tmpFeatures.length
-            ? //Existing layer
-              {type: 'addfeature', feature: this.tmpFeatures}
-            : //New layer
-              'addfeature';
-        this.layer.getSource().dispatchEvent(event);
-      });
-    }
+    this.tmpFeatures = this.layer.getSource().getFeatures();
+    //Dispatch add feature event in order to trigger sync
+    this.awaitLayerSync(this.layer).then(() => {
+      const event = this.tmpFeatures ? this.getEventType() : 'addfeature';
+      this.layer.getSource().dispatchEvent(event);
+    });
     this.data.tmpDrawLayer = false;
     this.HsDialogContainerService.destroy(this);
+  }
+
+  getEventType() {
+    return this.layer.getSource().getFeatures().length > this.tmpFeatures.length
+      ? //Existing layer
+        {type: 'addfeature', feature: this.tmpFeatures}
+      : //New layer
+        'addfeature';
   }
 
   cancel(): void {
