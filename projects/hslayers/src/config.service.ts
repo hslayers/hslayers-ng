@@ -11,6 +11,12 @@ export type SymbolizerIcon = {
 
 @Injectable()
 export class HsConfig {
+  private defaultSymbolizerIcons? = [
+    {name: 'favourite', url: 'img/icons/favourite28.svg'},
+    {name: 'gps', url: 'img/icons/gps43.svg'},
+    {name: 'information', url: 'img/icons/information78.svg'},
+    {name: 'wifi', url: 'img/icons/wifi8.svg'},
+  ];
   cesiumTime?: any;
   componentsEnabled?: any = {
     guiOverlay: true,
@@ -136,19 +142,34 @@ export class HsConfig {
    */
   pathExclusivity?: boolean = false;
   constructor() {
-    this.symbolizerIcons = [
-      {name: 'favourite', url: '/assets/img/icons/favourite28.svg'},
-      {name: 'gps', url: '/assets/img/icons/gps43.svg'},
-      {name: 'information', url: '/assets/img/icons/information78.svg'},
-      {name: 'wifi', url: '/assets/img/icons/wifi8.svg'},
-    ];
+    this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
+      val.url = (this.assetsPath ?? '') + val.url;
+      return val;
+    });
   }
 
   update?(newConfig: HsConfig): void {
     Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
     delete newConfig.componentsEnabled;
+    this.symbolizerIcons = [
+      ...this.updateSymbolizers(newConfig),
+      ...(newConfig.symbolizerIcons ?? []),
+    ];
+    delete newConfig.symbolizerIcons;
     Object.assign(this, newConfig);
 
     this.configChanges.next(this);
+  }
+
+  /**
+   * This kind of duplicates getAssetsPath() in HsUtilsService, which can't be used here due to circular dependency
+   */
+  private updateSymbolizers?(config: HsConfig) {
+    let assetsPath = config.assetsPath ?? '';
+    assetsPath += assetsPath.endsWith('/') ? '' : '/';
+    return this.defaultSymbolizerIcons.map((val) => {
+      val.url = assetsPath + val.url;
+      return val;
+    });
   }
 }
