@@ -66,7 +66,16 @@ export class HslayersAppComponent {
     };
 
     if (w.hslayersNgConfig) {
-      Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
+      const updatedConfig = w.hslayersNgConfig(w.ol);
+      if (updatedConfig.assetsPath != undefined && updatedConfig.symbolizerIcons == undefined) {
+        updatedConfig.symbolizerIcons = [
+          {name: 'favourite', url: `${updatedConfig.assetsPath}/img/icons/favourite28.svg`},
+          {name: 'gps', url: `${updatedConfig.assetsPath}/img/icons/gps43.svg`},
+          {name: 'information', url: `${updatedConfig.assetsPath}/img/icons/information78.svg`},
+          {name: 'wifi', url: `${updatedConfig.assetsPath}/img/icons/wifi8.svg`},
+        ];
+      }
+      Object.assign(this.HsConfig, updatedConfig);
     }
   }
   title = 'hslayers-workspace';
