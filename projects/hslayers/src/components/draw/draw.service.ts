@@ -29,6 +29,7 @@ import {
   getEditor,
   getName,
   getTitle,
+  setDefinition,
   setWorkspace,
 } from '../../common/layer-extensions';
 
@@ -186,8 +187,16 @@ export class HsDrawService {
       this.fillDrawableLayers();
       this.isAuthorized =
         endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
-      if (this.selectedLayer && this.tmpDrawLayer){
-        setWorkspace(this.selectedLayer, endpoint.user)
+      //When metadata dialog window opened. Layer is being added
+      if (this.selectedLayer && this.tmpDrawLayer) {
+        setWorkspace(this.selectedLayer, endpoint.user);
+        const defition = {
+          format: this.isAuthorized ? 'hs.format.WFS' : null,
+          url: this.isAuthorized
+            ? this.HsLaymanService.getLaymanEndpoint().url + '/wfs'
+            : null,
+        };
+        setDefinition(this.selectedLayer, defition);
       }
     });
 
@@ -264,10 +273,10 @@ export class HsDrawService {
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated', //TODO: Translate this
       definition: {
-        format: layman ? 'hs.format.WFS' : null,
-        url: layman ? layman.url + '/wfs' : null,
+        format: this.isAuthorized ? 'hs.format.WFS' : null,
+        url: this.isAuthorized ? layman.url + '/wfs' : null,
       },
-      workspace: this.HsLaymanService.getLaymanEndpoint()?.user,
+      workspace: layman?.user,
     });
     this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
@@ -494,7 +503,6 @@ export class HsDrawService {
    * @description Repopulates drawable layers. In case layman connection exists it also creates
    * a list of avaliable server possiblities.
    */
-
   async fillDrawableLayers(): Promise<void> {
     const drawables = this.HsMapService.map
       .getLayers()
@@ -506,14 +514,7 @@ export class HsDrawService {
       this.selectedLayer = null;
       this.snapSource = null;
     } else if (drawables.length > 0) {
-      if (
-        !drawables.some(
-          (layer) =>
-            this.selectedLayer &&
-            getTitle(layer) == getTitle(this.selectedLayer)
-        ) ||
-        !this.selectedLayer
-      ) {
+      if (this.selectedLayerNotAvailable(drawables)) {
         this.selectedLayer = drawables[0];
         this.changeDrawSource();
       }
@@ -540,6 +541,20 @@ export class HsDrawService {
     this.hasSomeDrawables =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
   }
+
+  private selectedLayerNotAvailable(drawables) {
+    return (
+      //Dont want to change after authChange when layer is being added
+      (!this.tmpDrawLayer &&
+        !drawables.some(
+          (layer) =>
+            this.selectedLayer &&
+            getTitle(layer) == getTitle(this.selectedLayer)
+        )) ||
+      !this.selectedLayer
+    );
+  }
+
   /**
    * @function removeLayer
    * @description Removes selected drawing layer from both Layermanager and Layman
