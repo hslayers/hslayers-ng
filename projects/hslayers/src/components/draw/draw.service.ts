@@ -177,6 +177,10 @@ export class HsDrawService {
       }
     );
 
+    this.HsEventBusService.mapResets.subscribe(() => {
+      this.fillDrawableLayers();
+    });
+
     this.HsEventBusService.mainPanelChanges.subscribe((event) => {
       if (event === 'draw' && this.HsMapService.map) {
         this.fillDrawableLayers();
