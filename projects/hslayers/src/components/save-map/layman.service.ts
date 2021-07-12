@@ -266,8 +266,8 @@ export class HsLaymanService implements HsSaverService {
           desc = await this.describeLayer(endpoint, name, getWorkspace(layer));
           this.cacheLaymanDescriptor(layer, desc, endpoint);
         }
-        if (desc.name == undefined) {
-          throw `Layer or its name didn't exist`;
+        if (desc.name == undefined || desc.wfs.url == undefined) {
+          throw `Layer or its name/url didn't exist`;
         }
       } catch (ex) {
         this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
