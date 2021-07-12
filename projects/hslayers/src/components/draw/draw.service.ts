@@ -128,7 +128,7 @@ export class HsDrawService {
   previouslySelected: any;
   isAuthorized: boolean;
   onlyMine = true;
-
+  addedLayersRemoved = false;
   constructor(
     public HsMapService: HsMapService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -178,6 +178,7 @@ export class HsDrawService {
     );
 
     this.HsEventBusService.mapResets.subscribe(() => {
+      this.addedLayersRemoved = true;
       this.fillDrawableLayers();
     });
 
@@ -523,7 +524,7 @@ export class HsDrawService {
         this.changeDrawSource();
       }
     }
-
+    this.addedLayersRemoved = false;
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
@@ -547,16 +548,20 @@ export class HsDrawService {
   }
 
   private selectedLayerNotAvailable(drawables) {
-    return (
-      //Dont want to change after authChange when layer is being added
-      (!this.tmpDrawLayer &&
-        !drawables.some(
-          (layer) =>
-            this.selectedLayer &&
-            getTitle(layer) == getTitle(this.selectedLayer)
-        )) ||
-      !this.selectedLayer
-    );
+    if (this.addedLayersRemoved) {
+      return true;
+    } else {
+      return (
+        //Dont want to change after authChange when layer is being added
+        (!this.tmpDrawLayer &&
+          !drawables.some(
+            (layer) =>
+              this.selectedLayer &&
+              getTitle(layer) == getTitle(this.selectedLayer)
+          )) ||
+        !this.selectedLayer
+      );
+    }
   }
 
   /**
