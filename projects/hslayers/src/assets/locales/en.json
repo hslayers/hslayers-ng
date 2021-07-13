@@ -101,7 +101,8 @@
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
-    }
+    },
+    "unknownDimesion": "This layer defines some dimension, which cannot be currently parsed"
   },
   "COMMON": {
     "abstract": "Abstract",

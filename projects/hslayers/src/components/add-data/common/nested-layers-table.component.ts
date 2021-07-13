@@ -14,4 +14,8 @@ export class HsNestedLayersTableComponent {
   checked(layer): void {
     this.layerChecked.emit(layer);
   }
+
+  isArray(maybeArray: any): boolean {
+    return Array.isArray(maybeArray);
+  }
 }

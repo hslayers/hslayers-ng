@@ -27,14 +27,16 @@
             <td colspan="3">
                 <form class="form">
                     <div class="form-group" *ngFor="let dimension of sub_layer.Dimension">
-                        <label class="control-label">{{dimension.name}}:</label>
-                        <div>
-                            <select class="form-control" [(ngModel)]="dimension.value"
-                                [ngModelOptions]="{standalone: true}">
-                                <option [value]="dimension_value" *ngFor="let dimension_value of dimension.values">
-                                    {{dimension_value}}</option>
-                            </select>
-                        </div>
+                        <ng-container *ngIf="isArray(dimension.values); else unsupported_dim_format">
+                            <label class="control-label">{{dimension.name}}:</label>
+                            <div>
+                                <select class="form-control" [(ngModel)]="dimension.value" [ngModelOptions]="{standalone: true}">
+                                    <option [value]="dimension_value" *ngFor="let dimension_value of dimension.values">
+                                        {{dimension_value}}</option>
+                                </select>
+                            </div>
+                        </ng-container>
+                        <ng-template #unsupported_dim_format><span class="text-muted">{{'ADDLAYERS.unknownDimesion'| translate}}: {{dimension.name}}</span></ng-template>
                     </div>
                 </form>
             </td>
