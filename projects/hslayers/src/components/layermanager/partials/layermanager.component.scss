@@ -38,19 +38,6 @@ div.list-group-item.hs-lm-list {
 .hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
     color: $primary;
 }
-.hs-lm-list li .info_btn .icon-arrow-up {
-    color: rgba(0, 0, 0, 0.25);
-}
-.hs-lm-list li .info_btn .icon-arrow-down {
-    color: rgba(0, 0, 0, 0.25);
-}
-.hs-lm-list li .info_btn .icon-arrow-up:hover::before {
-    color: hsl(0, 0%, 0%);
-}
-.hs-lm-list li .info_btn .icon-arrow-down:hover::before {
-    color:hsl(0, 0%, 0%);
-}
-
 
 
 .hs-layermanager-card li.hs-lm-item,

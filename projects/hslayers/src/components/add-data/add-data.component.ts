@@ -16,13 +16,13 @@ export class HsAddDataComponent {
   type: string;
 
   constructor(
-    public HsAddDataService: HsAddDataService,
-    public HsLanguageService: HsLanguageService,
-    public HsShareUrlService: HsShareUrlService,
-    public HsLayoutService: HsLayoutService,
-    public HsEventBusService: HsEventBusService
+    public hsAddDataService: HsAddDataService,
+    public hsLanguageService: HsLanguageService,
+    public hsShareUrlService: HsShareUrlService,
+    public hsLayoutService: HsLayoutService,
+    public hsEventBusService: HsEventBusService
   ) {
-    this.HsAddDataService.typeSelected = 'catalogue';
+    this.hsAddDataService.typeSelected = 'catalogue';
 
     this.connectServiceFromUrlParam('wms');
     this.connectServiceFromUrlParam('wfs');
@@ -30,15 +30,15 @@ export class HsAddDataComponent {
   }
 
   datasetSelect(type: string): void {
-    this.HsAddDataService.selectType(type);
+    this.hsAddDataService.selectType(type);
   }
 
   connectServiceFromUrlParam(type: string): void {
-    const url = this.HsShareUrlService.getParamValue(`${type}_to_connect`);
+    const url = this.hsShareUrlService.getParamValue(`${type}_to_connect`);
     if (url) {
-      this.HsLayoutService.setMainPanel('data');
-      this.HsAddDataService.typeSelected = 'url';
-      this.HsAddDataService.urlType = type;
+      this.hsLayoutService.setMainPanel('data');
+      this.hsAddDataService.typeSelected = 'url';
+      this.hsAddDataService.urlType = type;
     }
   }
 }

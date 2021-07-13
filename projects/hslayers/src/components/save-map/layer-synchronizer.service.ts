@@ -84,10 +84,12 @@ export class HsLayerSynchronizerService {
     const definition = getDefinition(layer);
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      definition?.format?.toLowerCase().includes('wfs')
+      //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
+      new RegExp('^(?=.*wfs)(?:(?!external).)*$','i').test(definition?.format?.toLowerCase())
     );
   }
 
+  
   /**
    * Keep track of synchronized vector layers by listening to
    * VectorSources change events. Initialy also get features from server
@@ -99,7 +101,12 @@ export class HsLayerSynchronizerService {
     await this.pull(layer, layerSource);
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
-      this.sync([e.feature], [], [], layer);
+      this.sync(
+        Array.isArray(e.feature) ? e.feature : [e.feature],
+        [],
+        [],
+        layer
+      );
     });
     layerSource.on('removefeature', (e) => {
       this.sync([], [], [e.feature], layer);

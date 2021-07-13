@@ -18,6 +18,7 @@ export class VectorLayerDescriptor {
     visible: boolean;
     workspace: string;
     access_rights: accessRightsInterface;
+    queryCapabilities: boolean;
   };
 
   constructor(
@@ -50,6 +51,7 @@ export class VectorLayerDescriptor {
       visible: options.visible,
       workspace: options.workspace,
       access_rights: options.access_rights,
+      queryCapabilities: options.queryCapabilities,
     };
 
     switch (type ? type.toLowerCase() : '') {

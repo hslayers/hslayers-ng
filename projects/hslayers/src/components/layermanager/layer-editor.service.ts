@@ -17,10 +17,8 @@ import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.ser
 
 import {
   getCluster,
-  getDeclutter,
   getInlineLegend,
   setCluster,
-  setDeclutter,
 } from '../../common/layer-extensions';
 @Injectable({
   providedIn: 'root',
@@ -120,11 +118,7 @@ export class HsLayerEditorService {
    * @param distance - Distance in pixels
    * @returns Current cluster state
    */
-  cluster(
-    layer: Layer,
-    newValue: boolean,
-    distance: number
-  ): boolean | undefined {
+  cluster(layer: Layer, newValue: boolean, distance: number): boolean {
     if (layer == undefined) {
       return;
     }
@@ -134,25 +128,6 @@ export class HsLayerEditorService {
       this.HsEventBusService.compositionEdits.next();
     } else {
       return getCluster(layer);
-    }
-  }
-
-  /**
-   * Set declutter for layer
-   * @param layer - Layer
-   * @param newValue - To clutter or not to clutter
-   * @returns Current clutter state
-   */
-  declutter(layer: Layer, newValue: boolean): boolean | undefined {
-    if (layer == undefined) {
-      return;
-    }
-    if (newValue != undefined) {
-      setDeclutter(layer, newValue);
-      this.HsLayerEditorVectorLayerService.declutter(newValue, layer);
-      this.HsEventBusService.compositionEdits.next();
-    } else {
-      return getDeclutter(layer);
     }
   }
 

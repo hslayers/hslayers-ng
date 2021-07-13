@@ -11,6 +11,7 @@ exports.createExpressSession = () => {
   });
 
   const sessionConfig = {
+    name: "connect-hsl.sid",
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: parseInt(process.env.SESSION_MAX_AGE, 10) * 1000,

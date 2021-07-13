@@ -1,11 +1,9 @@
+import {Injectable} from '@angular/core';
+
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerManagerService} from './layermanager.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {getCachedCapabilities} from '../../common/layer-extensions';
-
-import {Layer} from 'ol/layer';
-
-import {Injectable} from '@angular/core';
 
 export type KeyBooleanDict = {
   [key: string]: boolean;

@@ -1,14 +1,15 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlWmsService} from './add-data-url-wms.service';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 import {HsUtilsService} from '../../../utils/utils.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
 
 @Component({
   selector: 'hs-add-data-url-wms',
@@ -25,30 +26,30 @@ export class HsAddDataWmsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
   checkedLayers = {};
   hasChecked = false;
-
+  selectAll = true;
   constructor(
-    public HsAddDataUrlWmsService: HsAddDataUrlWmsService,
+    public hsAddDataUrlWmsService: HsAddDataUrlWmsService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
     public hsLog: HsLogService,
-    public HsDialogContainerService: HsDialogContainerService,
+    public hsDialogContainerService: HsDialogContainerService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsLanguageService: HsLanguageService,
-    public HsUtilsService: HsUtilsService
+    public hsLanguageService: HsLanguageService,
+    public hsUtilsService: HsUtilsService,
+    public hsAddDataService: HsAddDataService
   ) {
-    this.data = this.HsAddDataUrlWmsService.data;
+    this.data = this.hsAddDataUrlWmsService.data;
     //FIXME: is it even fired?
 
-    this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
-      ({type, uri, layer}) => {
+    this.owsConnectingSubscription =
+      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wms') {
           this.setUrlAndConnect(uri, layer);
         }
-      }
-    );
+      });
 
-    this.getDimensionValues = HsAddDataUrlWmsService.getDimensionValues;
-    this.hasNestedLayers = HsAddDataUrlWmsService.hasNestedLayers;
+    this.getDimensionValues = hsAddDataUrlWmsService.getDimensionValues;
+    this.hasNestedLayers = hsAddDataUrlWmsService.hasNestedLayers;
   }
 
   ngOnDestroy(): void {
@@ -60,10 +61,10 @@ export class HsAddDataWmsComponent implements OnDestroy {
    */
   clear(): void {
     this.updateUrl('');
-    this.HsAddDataUrlWmsService.showDetails = false;
+    this.hsAddDataUrlWmsService.showDetails = false;
   }
 
-  searchForChecked(service) {
+  searchForChecked(service): void {
     this.checkedLayers[service.Name] = service.checked;
     this.hasChecked = Object.values(this.checkedLayers).some(
       (value) => value === true
@@ -76,15 +77,15 @@ export class HsAddDataWmsComponent implements OnDestroy {
       this.checkedLayers = {};
       this.hsHistoryListService.addSourceHistory(
         'wms',
-        this.HsAddDataUrlWmsService.url
+        this.hsAddDataUrlWmsService.url
       );
-      this.HsAddDataUrlWmsService.layerToSelect = layerToSelect;
+      this.hsAddDataUrlWmsService.layerToSelect = layerToSelect;
       this.hsWmsGetCapabilitiesService.requestGetCapabilities(
-        this.HsAddDataUrlWmsService.url
+        this.hsAddDataUrlWmsService.url
       );
-      this.HsAddDataUrlWmsService.loadingInfo = true;
+      this.hsAddDataUrlWmsService.loadingInfo = true;
     } catch (e) {
-      this.HsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
+      this.hsAddDataUrlWmsService.getWmsCapabilitiesError.next(e);
     }
   };
 
@@ -94,21 +95,25 @@ export class HsAddDataWmsComponent implements OnDestroy {
    * @param layers
    */
   selectAllLayers(layers: any[]): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       this.searchForChecked(layer);
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
   }
-
   addLayers(checked: boolean): void {
-    this.HsAddDataUrlWmsService.addLayers(checked);
+    this.hsAddDataUrlWmsService.addLayers(checked);
   }
 
   srsChanged(): void {
-    this.HsAddDataUrlWmsService.srsChanged();
+    this.hsAddDataUrlWmsService.srsChanged();
   }
 
   /**
@@ -128,6 +133,6 @@ export class HsAddDataWmsComponent implements OnDestroy {
    * @param {string} url URL to be set
    */
   private updateUrl(url: string): void {
-    this.HsAddDataUrlWmsService.url = url;
+    this.hsAddDataUrlWmsService.url = url;
   }
 }

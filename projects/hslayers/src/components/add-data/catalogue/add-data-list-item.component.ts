@@ -24,7 +24,6 @@ export class HsAddDataListItemComponent {
 
   explanationsVisible: boolean;
   metadata;
-  metadataModalVisible: boolean;
   selected_ds;
   selected_layer;
   selectedType: string; //do not rename to 'type', would clash in the template
@@ -34,13 +33,13 @@ export class HsAddDataListItemComponent {
   constructor(
     public hsConfig: HsConfig, //used in template
     public hsDatasourcesMetadataService: HsAddDataMetadataService,
-    public HsAddDataCatalogueService: HsAddDataCatalogueService,
+    public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLogService: HsLogService,
-    public HsLanguageService: HsLanguageService,
-    public HsLaymanService: HsLaymanService,
-    public HsUtilsService: HsUtilsService
+    public hsLanguageService: HsLanguageService,
+    public hsLaymanService: HsLaymanService,
+    public hsUtilsService: HsUtilsService
   ) {}
 
   /**
@@ -54,7 +53,7 @@ export class HsAddDataListItemComponent {
     layer: HsAddDataLayerDescriptor
   ): Promise<void> {
     this.loadingInfo = true;
-    const availableTypes = await this.HsAddDataCatalogueService.addLayerToMap(
+    const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
       ds,
       layer,
       this.selectedType
@@ -67,7 +66,6 @@ export class HsAddDataListItemComponent {
       this.selectTypeToAddLayerVisible = false;
       this.selectedType = null;
     }
-    this.metadataModalVisible = false;
     this.explanationsVisible = false;
   }
 
@@ -96,7 +94,7 @@ export class HsAddDataListItemComponent {
    * @return A brief description of a given type with its main advantage and disadvantage notes
    */
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   toggleExplanations(): void {
@@ -135,24 +133,26 @@ export class HsAddDataListItemComponent {
    * @description Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(layer: HsAddDataLayerDescriptor): Promise<void> {
+    if (!layer.editable) {
+      return;
+    }
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.HsLanguageService.getTranslation(
+        message: this.hsLanguageService.getTranslation(
           'DRAW.reallyDeleteThisLayer'
         ),
-        note: this.HsLanguageService.getTranslation('DRAW.deleteNote'),
-        title: this.HsLanguageService.getTranslation('COMMON.confirmDelete'),
+        note: this.hsLanguageService.getTranslation('DRAW.deleteNote'),
+        title: this.hsLanguageService.getTranslation('COMMON.confirmDelete'),
       }
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.HsLaymanService.removeLayer(layer.name);
-      this.HsAddDataCatalogueService.catalogEntries = this.HsAddDataCatalogueService.catalogEntries.filter(
-        (item) => {
+      this.hsLaymanService.removeLayer(layer.name);
+      this.hsAddDataCatalogueService.catalogEntries =
+        this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
           return item.id != layer.id;
-        }
-      );
+        });
     }
   }
 }

@@ -1,13 +1,20 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {HsEndpoint} from '../endpoints/endpoint.interface';
+import {HsToastService} from '../../components/layout/toast/toast.service';
+import {HsLanguageService} from '../../components/language/language.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCommonLaymanService {
   authChange = new Subject();
-  constructor(private $http: HttpClient) {}
+  constructor(
+    private $http: HttpClient,
+    public hsToastService: HsToastService,
+    public hsLanguageService: HsLanguageService
+  ) { }
 
   /**
    *  Monitor if authorization state has changed and
@@ -63,5 +70,34 @@ export class HsCommonLaymanService {
       endpoint.user = 'anonymous';
       this.authChange.next(endpoint);
     }
+  }
+
+  displayLaymanError(endpoint: HsEndpoint, errorMsg: string, responseBody: any): void {
+    let simplifiedResponse = '';
+    if (responseBody.code === undefined) {
+      simplifiedResponse = 'COMMON.unknownError';
+    }
+    switch (responseBody.code) {
+      case 48:
+        simplifiedResponse = 'mapExtentFilterMissing';
+        break;
+      case 32:
+        simplifiedResponse = 'Authentication failed. Login to the catalogue.';
+        this.detectAuthChange(endpoint);
+        break;
+      default:
+        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
+    }
+    //If response is object, it is an error response
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(errorMsg),
+      endpoint.title +
+      ': ' +
+      this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'COMMON',
+        simplifiedResponse
+      ),
+      true
+    );
   }
 }

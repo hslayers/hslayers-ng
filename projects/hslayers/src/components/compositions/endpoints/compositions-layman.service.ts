@@ -5,6 +5,7 @@ import {
   isErrorHandlerFunction,
 } from '../../../common/endpoints/endpoint.interface';
 import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
@@ -23,6 +24,7 @@ export class HsCompositionsLaymanService {
   constructor(
     private $http: HttpClient,
     public hsUtilsService: HsUtilsService,
+    public hsCommonLaymanService: HsCommonLaymanService,
     public hsCompositionsParserService: HsCompositionsParserService,
     public hsEventBusService: HsEventBusService,
     public hsToastService: HsToastService,
@@ -76,7 +78,10 @@ export class HsCompositionsLaymanService {
           if (Array.isArray(response.body)) {
             this.compositionsReceived(endpoint, response);
           } else {
-            this.displayLaymanError(endpoint.title, response.body);
+            this.hsCommonLaymanService.displayLaymanError(
+              endpoint,
+              'COMPOSITIONS.errorWhileRequestingCompositions',
+              response.body);
           }
         }),
         catchError((e) => {
@@ -121,7 +126,7 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.loaded = true;
     endpoint.compositionsPaging.matched = response.headers.get('x-total-count') // in case response is an error, x-total-count will return null, it must be checked
       ? parseInt(response.headers.get('x-total-count'))
-      : 0;
+      : response.body.length;
 
     endpoint.compositions = response.body.map((record) => {
       return {
@@ -143,36 +148,7 @@ export class HsCompositionsLaymanService {
     await this.$http.delete(url).toPromise();
     this.hsEventBusService.compositionDeletes.next(composition);
   }
-  displayLaymanError(endpointTitle: string, responseBody: any): void {
-    let simplifiedResponse = '';
-    if (responseBody.code === undefined) {
-      simplifiedResponse = 'COMMON.unknownError';
-    }
-    switch (responseBody.code) {
-      case 48:
-        simplifiedResponse = 'mapExtentFilterMissing';
-        break;
-      case 32:
-        simplifiedResponse =
-          'Unsuccessful OAuth2 authentication. Access token is not valid';
-        break;
-      default:
-        simplifiedResponse = responseBody.message + ' ' + responseBody.detail;
-    }
-    //If response is object, it is an error response
-    this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(
-        'COMPOSITIONS.errorWhileRequestingCompositions'
-      ),
-      endpointTitle +
-        ': ' +
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'COMMON',
-          simplifiedResponse
-        ),
-      true
-    );
-  }
+
   async getInfo(composition: any): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {

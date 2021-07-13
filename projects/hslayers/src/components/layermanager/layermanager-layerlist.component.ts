@@ -1,4 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+
+import {
+  getDimension,
+  getExclusive,
+  getHsLaymanSynchronizing,
+  getPath,
+} from '../../common/layer-extensions';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
@@ -9,18 +18,12 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
-import {
-  getDimension,
-  getExclusive,
-  getHsLaymanSynchronizing,
-  getPath,
-} from '../../common/layer-extensions';
+
 @Component({
   selector: 'hs-layermanager-layer-list',
   templateUrl: './partials/layerlist.html',
 })
-export class HsLayerListComponent implements OnInit {
+export class HsLayerListComponent implements OnInit, OnDestroy {
   @Input() folder: any;
   /**
    * List of layer titles for current folder structure level. List is always ordered in order which should be used in template.
@@ -33,6 +36,7 @@ export class HsLayerListComponent implements OnInit {
   filtered_layers: Array<HsLayerDescriptor> = [];
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   getExclusive = getExclusive;
+  layerManagerUpdatesSubscription: Subscription;
   constructor(
     public HsConfig: HsConfig,
     public HsLayerManagerService: HsLayerManagerService,
@@ -44,10 +48,15 @@ export class HsLayerListComponent implements OnInit {
     public HsEventBusService: HsEventBusService,
     public HsLayerUtilsService: HsLayerUtilsService
   ) {
-    this.HsEventBusService.layerManagerUpdates.subscribe(() => {
-      this.HsLayerManagerService.updateLayerListPositions();
-      this.updateLayers();
-    });
+    this.layerManagerUpdatesSubscription = this.HsEventBusService.layerManagerUpdates.subscribe(
+      () => {
+        this.HsLayerManagerService.updateLayerListPositions();
+        this.updateLayers();
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.layerManagerUpdatesSubscription.unsubscribe();
   }
 
   /**
@@ -123,6 +132,7 @@ export class HsLayerListComponent implements OnInit {
   /**
    * Filters layers, and returns only the ones belonging to folder hiearchy level of directive
    * @private
+   * @return {Array<HsLayerDescriptor>} Filtered HsLayerManagerService layers
    */
   private filterLayers(): Array<HsLayerDescriptor> {
     const tmp = [];

@@ -13,9 +13,10 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
   templateUrl: './add-data-catalogue-metadata-dialog.html',
 })
 export class HsAddDataMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data;
-  metadataModalVisible: boolean;
+
   selectedLayer;
   selectedLayerKeys;
   selectedDS;
@@ -23,13 +24,12 @@ export class HsAddDataMetadataDialogComponent
 
   constructor(
     public hsConfig: HsConfig, // used in template
-    public HsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
-    public HsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
+    public hsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
     public hsDialogContainerService: HsDialogContainerService
   ) {}
 
   ngOnInit(): void {
-    this.metadataModalVisible = true;
     this.selectedDS = this.data.selectedDS;
     this.selectedLayer = this.data.selectedLayer;
     this.selectedLayerKeys = Object.keys(this.selectedLayer);
@@ -48,12 +48,11 @@ export class HsAddDataMetadataDialogComponent
     layer: HsAddDataLayerDescriptor,
     type: string
   ): void {
-    this.HsAddDataCatalogueService.addLayerToMap(ds, layer, type);
+    this.hsAddDataCatalogueService.addLayerToMap(ds, layer, type);
     this.close();
   }
 
   close(): void {
-    this.metadataModalVisible = false;
     this.hsDialogContainerService.destroy(this);
   }
 }

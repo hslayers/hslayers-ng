@@ -50,11 +50,13 @@
                             <div class=" bg-primary w-100 text-light m-0 p-1">
                                 <div class="d-flex justify-content-between">
                                     {{'DRAW.serverLayers' | translate}}
-                                    <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
+                                    <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible"
+                                        style="cursor: pointer;">
                                         <i class="icon-settingsthree-gears"></i>
                                     </span>
                                 </div>
-                                <div class="p-0 input-group-text border-0 justify-content-center bg-white" *ngIf="onlyMineFilterVisible">
+                                <div class="p-0 input-group-text border-0 justify-content-center bg-white"
+                                    *ngIf="onlyMineFilterVisible">
                                     <label class="m-0">
                                         <input type="checkbox" name="onlyMine" [(ngModel)]="HsDrawService.onlyMine"
                                             (ngModelChange)="HsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
@@ -106,7 +108,7 @@
             <i class="icon-cursor"></i>
         </button>
     </div>
-    <div [hidden]="HsDrawService.type == null " class="pt-2">
+    <div class="pt-2">
         <div style="font-size: smaller">
             <div class="pb-2">
                 <div class="form-check">
@@ -139,34 +141,6 @@
                     </div>
                 </div>
             </div>
-            <div class="form-check">
-                <input class="d-none" type="checkbox" id="individualStyle" [(ngModel)]="useIndividualStyle"
-                    [ngModelOptions]="{standalone: true}" />
-                <label for="individualStyle"
-                    [ngClass]="{'hs-checkmark':useIndividualStyle,'hs-uncheckmark':!useIndividualStyle}">{{'DRAW.individualStyle'
-                    | translate}}</label>
-            </div>
-        </div>
-        <div class="card mx-3" [hidden]="!useIndividualStyle">
-            <div class="card-header h5 p-1 pl-4">
-                <span>{{'DRAW.definedStyle' | translate}}</span>
-                <div class="hs-styler-selected-color-box" [ngStyle]="drawStyle()">
-                </div>
-            </div>
-            <span>{{'COMMON.color' | translate}}</span>
-            <hs-styler-color-component class="m-auto" (click)="updateStyle()" [(color)]="fillcolor">
-            </hs-styler-color-component>
-            <div [hidden]="HsDrawService.type == 'LineString'">
-                <label>{{'DRAW.fillOpacity' | translate}} {{opacity}}</label>
-                <input type="range" step="0.01" min="0" max="1" class="form-control m-auto"
-                    style="width: 85%;height: 21px;" [(ngModel)]="opacity" (ngModelChange)="updateStyle()"
-                    name="opacity" ng-model-options="{ getterSetter: true }" />
-            </div>
-            <label>{{'COMMON.strokeWidth' | translate}} {{linewidth}}</label>
-
-            <input type="range" step="0.5" min="0" max="20" class="form-control m-auto" style="width: 85%;height: 21px;"
-                [(ngModel)]="linewidth" (ngModelChange)="updateStyle()" name="linewidth" />
-
         </div>
     </div>
     <div class="mh-75 pt-2">

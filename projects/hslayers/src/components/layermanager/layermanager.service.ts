@@ -22,7 +22,6 @@ import {
   HsLayerLoadProgress,
 } from './layer-descriptor.interface';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layermanager-metadata.service';
 import {HsLayerManagerWmstService} from './layermanager-wmst.service';
@@ -38,7 +37,6 @@ import {
   getActive,
   getBase,
   getCluster,
-  getDeclutter,
   getExclusive,
   getLegends,
   getPath,
@@ -48,7 +46,6 @@ import {
   getThumbnail,
   getTitle,
   setActive,
-  setDeclutter,
   setPath,
 } from '../../common/layer-extensions';
 
@@ -122,13 +119,13 @@ export class HsLayerManagerService {
   currentResolution: number;
   zIndexValue = 0;
   lastProgressUpdate: number;
+  layerEditorElement: any;
   constructor(
     public HsConfig: HsConfig,
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
     public HsLanguageService: HsLanguageService,
     public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    public HsLayerEditorStylesService: HsLayerEditorStylesService,
     public HsLayerManagerMetadata: HsLayerManagerMetadataService,
     public HsLayermanagerWmstService: HsLayerManagerWmstService,
     public HsLayerSelectorService: HsLayerSelectorService,
@@ -162,12 +159,18 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Function for adding layer added to map into layer manager structure. In service automatically used after layer is added to map. Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added. Loading events and legends URLs are created for each layer. Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager.) Position is calculated for each layer and for time layers time properties are created. Each layer is also inserted in correct layer list and inserted into folder structure.
+   * Function for adding layer added to map into layer manager structure.
+   * In service automatically used after layer is added to map.
+   * Layers which shouldn´t be in layer manager (showInLayerManager property) aren´t added.
+   * Loading events and legends URLs are created for each layer.
+   * Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager).
+   * Position is calculated for each layer and for time layers time properties are created.
+   * Each layer is also inserted in correct layer list and inserted into folder structure.
    * @private
    * @param e - Event object emited by OL add layer event
-   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emmited. Otherwise will.
+   * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted. Otherwise will.
    */
-  layerAdded(e: CollectionEvent, suspendEvents?: boolean): void {
+  async layerAdded(e: CollectionEvent, suspendEvents?: boolean): Promise<void> {
     const layer = e.element;
     this.checkLayerHealth(layer);
     if (
@@ -179,16 +182,9 @@ export class HsLayerManagerService {
     layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
     if (
       this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
-      getCluster(layer) &&
-      getDeclutter(layer)
-    ) {
-      setDeclutter(layer, false);
-    }
-    if (
-      this.HsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)
     ) {
-      this.HsLayerEditorVectorLayerService.cluster(
+      await this.HsLayerEditorVectorLayerService.cluster(
         true,
         layer,
         this.HsConfig.clusteringDistance || 40
@@ -208,6 +204,8 @@ export class HsLayerManagerService {
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
+      type: this.getLayerSourceType(layer),
+      source: this.getLayerSourceUrl(layer),
     };
     this.loadingEvents(layerDescriptor);
     layerDescriptor.trackBy = layer.ol_uid + ' ' + layerDescriptor.position;
@@ -237,10 +235,11 @@ export class HsLayerManagerService {
       layerDescriptor.thumbnail = this.getImage(layer);
       this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
     }
+    //*NOTE Commented out, because the  following references to this.data.baselayer are causing issues.
 
-    if (layer.getVisible() && getBase(layer)) {
-      this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
-    }
+    // if (layer.getVisible() && getBase(layer)) {
+    //   this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
+    // }
 
     this.sortFoldersByZ();
     if (!suspendEvents) {
@@ -248,6 +247,51 @@ export class HsLayerManagerService {
       this.HsEventBusService.layerManagerUpdates.next(layer);
       this.HsEventBusService.compositionEdits.next();
     }
+  }
+
+  /**
+   * Triage of layer source type and format.
+   * Only the commonly used values are listed here, it shall be probably extended in the future.
+   * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
+   */
+  getLayerSourceType(layer: Layer): string {
+    if (this.HsLayerUtilsService.isLayerKMLSource(layer)) {
+      return `vector (KML)`;
+    }
+    if (this.HsLayerUtilsService.isLayerGeoJSONSource(layer)) {
+      return `vector (GeoJSON)`;
+    }
+    if (this.HsLayerUtilsService.isLayerTopoJSONSource(layer)) {
+      return `vector (TopoJSON)`;
+    }
+    if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
+      return 'vector';
+    }
+    if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
+      return 'WMTS';
+    }
+    if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      return 'WMS';
+    }
+    if (this.HsLayerUtilsService.isLayerXYZ(layer)) {
+      return 'XYZ';
+    }
+    this.HsLog.error(
+      `Cannot decide a type of source of layer ${getTitle(layer)}`
+    );
+    return 'unknown type';
+  }
+
+  /**
+   * Gets the URL provided in the layers's source, if it is not a data blob or undefined
+   * @returns URL provided in the layers's source or 'memory'
+   */
+  getLayerSourceUrl(layer: Layer): string {
+    const url = this.HsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
+    if (!url || url.startsWith('data:')) {
+      return 'memory';
+    }
+    return url;
   }
 
   /**
@@ -336,7 +380,7 @@ export class HsLayerManagerService {
    * @private
    * @param title
    */
-  getLayerByTitle(title: string): Layer | undefined {
+  getLayerByTitle(title: string): HsLayerDescriptor | undefined {
     let tmp;
     for (const layer of this.data.layers) {
       if (layer.title == title) {
@@ -527,7 +571,7 @@ export class HsLayerManagerService {
    * @param visibility - Visibility layer should have
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeLayerVisibility(visibility: boolean, layer: Layer): void {
+  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor): void {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
@@ -547,6 +591,9 @@ export class HsLayerManagerService {
         }
       }
     }
+    if (!visibility && this.HsUtilsService.instOf(layer.layer, VectorLayer)) {
+      this.HsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
+    }
   }
 
   /**
@@ -557,7 +604,11 @@ export class HsLayerManagerService {
   changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
       if (this.data.baselayersVisible == true) {
-        if ($event && this.data.baselayer != layer.title) {
+        //*NOTE Currently breaking base layer visibility when loading from composition with custom base layer to
+        //other compositions without any base layer
+        //*TODO Rewrite this loop hell to more readable code
+        if ($event) {
+          //&& this.data.baselayer != layer.title
           for (const baseLayer of this.data.baselayers) {
             if (baseLayer.layer) {
               baseLayer.layer.setVisible(false);
@@ -573,7 +624,7 @@ export class HsLayerManagerService {
               baseLayer.layer.setVisible(true);
               baseLayer.visible = true;
               baseLayer.active = true;
-              this.data.baselayer = layer.title;
+              //this.data.baselayer = layer.title;
               break;
             }
           }
@@ -594,7 +645,7 @@ export class HsLayerManagerService {
             } else {
               baseLayer.layer.setVisible(true);
               baseLayer.visible = true;
-              this.data.baselayer = layer.title;
+              //this.data.baselayer = layer.title;
             }
           }
         } else {
@@ -657,6 +708,7 @@ export class HsLayerManagerService {
     while (to_be_removed.length > 0) {
       this.HsMapService.map.removeLayer(to_be_removed.shift());
     }
+    this.HsDrawService.addedLayersRemoved = true;
     this.HsDrawService.fillDrawableLayers();
   }
 
@@ -753,7 +805,6 @@ export class HsLayerManagerService {
     //No more tiles to load?
     if (progress.loadCounter == 0) {
       progress.loaded = true;
-      this.HsEventBusService.layerLoads.next(layer);
       // If in 2 seconds no new tiles are starting to to load
       // we can assume that layer has finished loading
       if (progress.timer) {
@@ -763,6 +814,7 @@ export class HsLayerManagerService {
         if (progress.loadCounter == 0) {
           this.zone.run(() => {
             progress.loadTotal = 0;
+            this.HsEventBusService.layerLoads.next(layer);
             progress.percents = 100;
           });
         }
@@ -877,13 +929,10 @@ export class HsLayerManagerService {
       layer.layer.withChildren = {};
     }
     this.HsLayerSelectorService.select(layer);
-    const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-layerpanel'
-    );
     if (this.HsUtilsService.runningInBrowser()) {
       const layerNode = document.getElementById(layer.idString());
-      if (layerNode) {
-        this.HsUtilsService.insertAfter(layerPanel, layerNode);
+      if (layerNode && this.layerEditorElement) {
+        this.HsUtilsService.insertAfter(this.layerEditorElement, layerNode);
       }
     }
     return false;
@@ -1068,9 +1117,6 @@ export class HsLayerManagerService {
   expandSettings(layer: Layer, value): void {
     if (layer.opacity == undefined) {
       layer.opacity = layer.layer.getOpacity();
-    }
-    if (layer.style == undefined && layer.layer.getSource().styleAble) {
-      this.HsLayerEditorStylesService.getLayerStyle(layer);
     }
     layer.expandSettings = value;
   }

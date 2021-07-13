@@ -1,4 +1,15 @@
 {
+  "ADDDATA": {
+    "CATALOGUE": {
+      "resourceType": "Resource type"
+    }
+  },
+  "ADDLAYERS": {
+    "Basemap": "Add as basemap",
+    "Vector": {
+      "chooseFiles": "Choose files..."
+    }
+  },
   "COMMON": {
     "abstract": "Samenvatting",
     "advancedOptions": "Geavanceerde opties",
@@ -21,6 +32,7 @@
     "newDrawingLayer": "Nieuwe tekenlaag",
     "no": "Nee",
     "ok": "Ok",
+    "or": "or",
     "point": "Punt",
     "polygon": "Veelhoek",
     "radius": "Straal",
@@ -34,8 +46,7 @@
     "strokeWidth": "lijnbreedte",
     "title": "Titel",
     "to": "tot",
-    "width": "Breedte",
-    "or": "or"
+    "width": "Breedte"
   },
   "COMPOSITONINSPIRETHEMES": {},
   "DRAW": {
@@ -59,7 +70,6 @@
       "removeLastPoint": "Verwijder het laatste punt"
     },
     "fillOpacity": "Vul de dekking:",
-    "individualStyle": "Individuele stijl voor entiteit",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "saveDrawingToLayer": "Save drawing to layer",
     "serverLayers": "Server layers",
@@ -81,7 +91,6 @@
     "layerEditor": {
       "cluster": "Cluster",
       "copyright": "Auteursrechten",
-      "declutter": "Declutter",
       "metadataOfLayer": "Metadata van laag in",
       "metadataOfService": "Metadata van service",
       "opacity": "Doorzichtigheid",
@@ -126,25 +135,14 @@
     "LEGEND": "Legenda",
     "LM": "Beheer lagen"
   },
+  "SIDEBAR": {
+    "additionalPanels": "Extra panelen"
+  },
   "TRIP_PLANNER": {
     "clearWaypoints": "Clear waypoints",
     "removeWaypoint": "Remove waypoint",
     "totalDistance": "Total distance",
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypoints": "Waypoints"
-  },
-  "SIDEBAR": {
-    "additionalPanels": "Extra panelen"
-  },
-  "ADDLAYERS": {
-    "Vector": {
-      "chooseFiles": "Choose files..."
-    },
-    "Basemap": "Add as basemap"
-  },
-  "ADDDATA": {
-    "CATALOGUE": {
-      "resourceType": "Resource type"
-    }
   }
 }

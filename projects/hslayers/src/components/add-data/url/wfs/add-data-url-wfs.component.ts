@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsAddDataWfsService} from './add-data-url-wfs.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -13,28 +14,28 @@ import {HsWfsGetCapabilitiesService} from '../../../../common/wfs/get-capabiliti
 })
 export class HsAddDataWfsComponent implements OnDestroy {
   owsConnectingSubscription: Subscription;
-
+  selectAll = true;
   addAll: boolean;
   hasChecked: boolean;
   loadingFeatures: boolean;
   title = ''; //FIXME: unused
 
   constructor(
-    public HsAddDataWfsService: HsAddDataWfsService,
-    public HsEventBusService: HsEventBusService,
-    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public HsUtilsService: HsUtilsService, //used in template,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataWfsService: HsAddDataWfsService,
+    public hsEventBusService: HsEventBusService,
+    public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
+    public hsUtilsService: HsUtilsService, //used in template,
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataService: HsAddDataService
   ) {
     //Merge subscriptions in order to easily unsubscribe on destroy
-    this.owsConnectingSubscription = this.HsEventBusService.owsConnecting.subscribe(
-      ({type, uri, layer}) => {
+    this.owsConnectingSubscription =
+      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type == 'wfs') {
-          this.HsAddDataWfsService.layerToAdd = layer;
+          this.hsAddDataWfsService.layerToAdd = layer;
           this.setUrlAndConnect(uri);
         }
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {
@@ -46,18 +47,18 @@ export class HsAddDataWfsComponent implements OnDestroy {
    * @description Clear Url and hide detailsWms
    */
   clear(): void {
-    this.HsAddDataWfsService.url = '';
-    this.HsAddDataWfsService.showDetails = false;
+    this.hsAddDataWfsService.url = '';
+    this.hsAddDataWfsService.showDetails = false;
   }
 
   connect = (): void => {
     this.hasChecked = false;
-    this.HsWfsGetCapabilitiesService.requestGetCapabilities(
-      this.HsAddDataWfsService.url
+    this.hsWfsGetCapabilitiesService.requestGetCapabilities(
+      this.hsAddDataWfsService.url
     );
-    this.HsAddDataWfsService.services = [];
-    this.HsAddDataWfsService.showDetails = true;
-    this.HsAddDataWfsService.loadingInfo = true;
+    this.hsAddDataWfsService.services = [];
+    this.hsAddDataWfsService.showDetails = true;
+    this.hsAddDataWfsService.loadingInfo = true;
   };
 
   /**
@@ -66,7 +67,7 @@ export class HsAddDataWfsComponent implements OnDestroy {
    * @param {string} url Url of requested service
    */
   setUrlAndConnect(url: string): void {
-    this.HsAddDataWfsService.url = url;
+    this.hsAddDataWfsService.url = url;
     this.connect();
   }
 
@@ -76,30 +77,35 @@ export class HsAddDataWfsComponent implements OnDestroy {
    * @param layers
    */
   selectAllLayers(layers): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
     this.changed();
   }
-
   /**
    * @function addLayers
    * @description First step in adding layers to the map. Lops through the list of layers and calls addLayer.
    * @param {boolean} checkedOnly Add all available layers or only checked ones. Checked=false=all
    */
   addLayers(checkedOnly: boolean): void {
-    this.HsAddDataWfsService.addAll = checkedOnly;
-    for (const layer of this.HsAddDataWfsService.services) {
-      this.HsAddDataWfsService.addLayersRecursively(layer);
+    this.hsAddDataWfsService.addAll = checkedOnly;
+    for (const layer of this.hsAddDataWfsService.services) {
+      this.hsAddDataWfsService.addLayersRecursively(layer);
     }
   }
 
   changed(): void {
-    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
-      this.HsAddDataWfsService.services
+    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
+      this.hsAddDataWfsService.services
     );
   }
 }

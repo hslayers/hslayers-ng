@@ -5,6 +5,7 @@ import {Group} from 'ol/layer';
 import {Tile} from 'ol/layer';
 import {TileArcGISRest} from 'ol/source';
 
+import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
@@ -29,8 +30,9 @@ export class HsAddDataArcGisService {
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsEventBusService: HsEventBusService,
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsAddDataService: HsAddDataService
   ) {
     this.data = {
       useResampling: false,
@@ -39,10 +41,17 @@ export class HsAddDataArcGisService {
       registerMetadata: true,
       tileSize: 512,
     };
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.loadingInfo = false;
+      this.showDetails = false;
+    });
 
-    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'ArcGIS') {
+          if (!response && !error) {
+            return;
+          }
           if (error) {
             this.throwParsingError(response.message);
             return;
@@ -73,7 +82,7 @@ export class HsAddDataArcGisService {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   capabilitiesReceived(response, layerToSelect: string): void {
@@ -94,7 +103,7 @@ export class HsAddDataArcGisService {
       this.data.srss = [caps.spatialReference.wkid];
       this.data.services = caps.layers;
 
-      this.HsAddDataUrlService.selectLayerByName(
+      this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
         'Name'
@@ -117,9 +126,10 @@ export class HsAddDataArcGisService {
 
   srsChanged(): void {
     setTimeout(() => {
-      this.data.resample_warning = !this.hsArcgisGetCapabilitiesService.currentProjectionSupported(
-        [this.data.srs]
-      );
+      this.data.resample_warning =
+        !this.hsArcgisGetCapabilitiesService.currentProjectionSupported([
+          this.data.srs,
+        ]);
     }, 0);
   }
 
@@ -159,7 +169,7 @@ export class HsAddDataArcGisService {
    * Constructs body of LAYER parameter for getMap request
    * @param layer Optional. layer objec recieved from capabilities. If no layer is provided
    * merge all checked layer ids into one string
-   * @returns {string} 
+   * @returns {string}
    */
   createBasemapName(layer?): string {
     if (!layer) {
@@ -323,9 +333,8 @@ export class HsAddDataArcGisService {
     this.hsArcgisGetCapabilitiesService
       .requestGetCapabilities(url)
       .then((resp) => {
-        const ol_layers = this.hsArcgisGetCapabilitiesService.service2layers(
-          resp
-        );
+        const ol_layers =
+          this.hsArcgisGetCapabilitiesService.service2layers(resp);
         ol_layers.forEach((layer) => {
           if (group !== undefined) {
             group.addLayer(layer);

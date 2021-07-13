@@ -7,12 +7,6 @@ import {HsConfig} from './../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsStylerService} from './../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {
-  getCluster,
-  getDeclutter,
-  getHsOriginalStyle,
-  setHsOriginalStyle,
-} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -26,69 +20,36 @@ export class HsLayerEditorVectorLayerService {
   ) {}
 
   /**
-   * @function Declutter
-   * @memberOf HsLayerEditorService
-   * @description Set declutter of features;
-   * @param {boolean} newValue
-   * @param {Layer} layer
+   * Convert layer to clustered state where it's source gets nested in another
+   * VectorSource and first level sources features contain 'features' attribute
+   * with the original features in it as an array
+   * @param newValue - Cluster or not to cluster
+   * @param distance - Minimum distance in pixels between clusters
    */
-  declutter(newValue: boolean, layer: Layer): void {
-    const index = this.HsMapService.map.getLayers().getArray().indexOf(layer);
-    if (newValue == true && !getCluster(layer)) {
-      this.HsMapService.map.removeLayer(layer);
-      this.HsMapService.map
-        .getLayers()
-        .insertAt(index, this.cloneVectorLayer(layer, newValue));
-    } else {
-      this.HsMapService.map.removeLayer(layer);
-      this.HsMapService.map
-        .getLayers()
-        .insertAt(index, this.cloneVectorLayer(layer, false));
-    }
-  }
-
-  cloneVectorLayer(layer: Layer, declutter: boolean): VectorLayer {
-    const options = {};
-    layer.getKeys().forEach((k) => (options[k] = layer.get(k)));
-    Object.assign(options, {
-      declutter,
-      source: layer.getSource(),
-      style: layer.getStyleFunction() || layer.getStyle(),
-      maxResolution: layer.getMaxResolution(),
-      minResolution: layer.getMinResolution(),
-      visible: layer.getVisible(),
-      opacity: layer.getOpacity(),
-    });
-    return new VectorLayer(options);
-  }
-
-  /**
-   * @function cluster
-   * @memberOf HsLayerEditorService
-   * @description Set cluster for layer;
-   * @param {boolean} newValue
-   * @param {Layer} layer
-   * @param {number} distance
-   */
-  cluster(newValue: boolean, layer: Layer, distance: number): void {
-    if (newValue == true && !getDeclutter(layer)) {
-      setHsOriginalStyle(layer, layer.getStyle());
+  async cluster(
+    newValue: boolean,
+    layer: Layer,
+    distance: number
+  ): Promise<void> {
+    if (newValue == true) {
       if (!this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
-        this.HsStylerService.styleClusteredLayer(layer);
+        await this.HsStylerService.styleClusteredLayer(layer);
         this.updateFeatureTableLayers(layer);
       }
-    } else {
-      layer.setStyle(getHsOriginalStyle(layer));
+    } else if (this.HsUtilsService.instOf(layer.getSource(), Cluster)) {
       layer.setSource(layer.getSource().getSource());
     }
   }
 
   createClusteredSource(layer: Layer, distance: number): Cluster {
     return new Cluster({
-      distance: distance,
+      distance,
       source: layer.getSource(),
       geometryFunction: function (feature) {
+        if (!feature) {
+          return null;
+        }
         switch (feature.getGeometry().getType()) {
           case 'Point':
             return feature.getGeometry();

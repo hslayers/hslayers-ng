@@ -66,14 +66,16 @@ export class HsLaymanService implements HsSaverService {
    * @return {Promise<any>} Promise result of POST
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
+    
     const write =
-      compoData.write == 'EVERYONE' ? compoData.write : endpoint.user;
-    let read;
-    if (write == 'EVERYONE') {
-      read = write;
-    } else {
-      read = compoData.read == 'EVERYONE' ? compoData.read : endpoint.user;
-    }
+    compoData.access_rights['access_rights.write'] == 'private'
+        ? endpoint.user
+        : compoData.access_rights['access_rights.write'];
+    const read =
+    compoData.access_rights['access_rights.read'] == 'private'
+        ? endpoint.user
+        : compoData.access_rights['access_rights.read'];
+
     return new Promise(async (resolve, reject) => {
       const formdata = new FormData();
       formdata.append(
@@ -83,7 +85,7 @@ export class HsLaymanService implements HsSaverService {
         }),
         'blob.json'
       );
-      formdata.append('name', compoData.title);
+      formdata.append('name', compoData.name);
       formdata.append('title', compoData.title);
       formdata.append('abstract', compoData.abstract);
       const headers = new HttpHeaders();
@@ -91,13 +93,20 @@ export class HsLaymanService implements HsSaverService {
       headers.append('Accept', 'application/json');
       formdata.append('access_rights.read', read);
       formdata.append('access_rights.write', write);
+
+      const workspace = compoData.workspace
+        ? saveAsNew
+          ? endpoint.user
+          : compoData.workspace
+        : endpoint.user;
+
       const options = {
         headers: headers,
         withCredentials: true,
       };
       try {
         const response: any = await this.http[saveAsNew ? 'post' : 'patch'](
-          `${endpoint.url}/rest/workspaces/${endpoint.user}/maps${
+          `${endpoint.url}/rest/workspaces/${workspace}/maps${
             saveAsNew ? `?${Math.random()}` : `/${compoData.name}`
           }`,
           formdata,
@@ -114,7 +123,7 @@ export class HsLaymanService implements HsSaverService {
    * Send layer definition and features to Layman
    * @param endpoint Endpoint description
    * @param geojson Geojson object with features to send to server
-   * @param description Object containing {name, title, crs, workspace, acces_rights} of
+   * @param description Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
    * @param layerDesc Previously fetched layer descriptor
    * @return Promise result of POST/PATCH
@@ -139,8 +148,18 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('name', description.name);
     formdata.append('title', description.title);
     formdata.append('crs', description.crs);
-    formdata.append('write', description.acces_rights.write ?? 'EVERYONE');
-    formdata.append('read', description.acces_rights.read ?? 'EVERYONE');
+
+    const write =
+      description.access_rights['access_rights.write'] == 'private'
+        ? endpoint.user
+        : description.access_rights['access_rights.write'] ?? 'EVERYONE';
+    const read =
+      description.access_rights['access_rights.read'] == 'private'
+        ? endpoint.user
+        : description.access_rights['access_rights.read'] ?? 'EVERYONE';
+
+    formdata.append('access_rights.write', write);
+    formdata.append('access_rights.read', read);
 
     const headers = new HttpHeaders();
     headers.append('Content-Type', null);
@@ -190,21 +209,33 @@ export class HsLaymanService implements HsSaverService {
     }
     const layerName = getLayerName(layer);
     let layerTitle = getTitle(layer);
-    const f = new GeoJSON();
-    const geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
 
-    if (((ep?.version?.split('.').join() as unknown) as number) < 171) {
+    const f = new GeoJSON();
+    const crsSupported = ['EPSG:4326', 'EPSG:3857'].includes(this.crs);
+    let geojson;
+    if (!crsSupported) {
+      geojson = f.writeFeaturesObject(layer.getSource().getFeatures().map(f => {
+        const f2 = f.clone();
+        f2.getGeometry().transform(this.crs, 'EPSG:3857');
+        return f2;
+      }));
+    }
+    else {
+      geojson = f.writeFeaturesObject(layer.getSource().getFeatures());
+    }
+
+    if ((ep?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     setHsLaymanSynchronizing(layer, true);
     await this.makeUpsertLayerRequest(ep, geojson, {
       title: layerTitle,
       name: layerName,
-      crs: ['EPSG:4326', 'EPSG:3857'].includes(this.crs)
+      crs: crsSupported
         ? this.crs
         : 'EPSG:3857',
       workspace: getWorkspace(layer),
-      acces_rights: getAccessRights(layer),
+      access_rights: getAccessRights(layer),
     });
     setTimeout(async () => {
       await this.makeGetLayerRequest(ep, layer);
@@ -235,8 +266,8 @@ export class HsLaymanService implements HsSaverService {
           desc = await this.describeLayer(endpoint, name, getWorkspace(layer));
           this.cacheLaymanDescriptor(layer, desc, endpoint);
         }
-        if (desc.name == undefined) {
-          throw `Layer or its name didn't exist`;
+        if (desc.name == undefined || desc.wfs.url == undefined) {
+          throw `Layer or its name/url didn't exist`;
         }
       } catch (ex) {
         this.HsLogService.warn(`Layer ${name} didn't exist. Creating..`);
@@ -434,5 +465,10 @@ export class HsLaymanService implements HsSaverService {
     return this.HsCommonEndpointsService.endpoints.find(
       (e) => e.type == 'layman'
     );
+  }
+
+  isLaymanGuest(): boolean {
+    const endpoint = this.getLaymanEndpoint();
+    return endpoint.user == 'anonymous' || endpoint.user == 'browser';
   }
 }

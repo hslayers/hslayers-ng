@@ -45,9 +45,13 @@ export class HsCompositionsService {
     public HsCompositionsMapService: HsCompositionsMapService,
     public HsEventBusService: HsEventBusService
   ) {
-    setTimeout(() => {
-      this.tryParseCompositionFromCookie();
-    }, 500);
+    if (HsConfig.saveMapStateOnReload) {
+      //Load composition data from cookies only if it is anticipated
+      setTimeout(() => {
+        this.tryParseCompositionFromCookie();
+      }, 500);
+    }
+
     this.tryParseCompositionFromUrlParam();
     if (HsPermalinkUrlService.getParamValue('permalink')) {
       this.parsePermalinkLayers();
@@ -68,10 +72,11 @@ export class HsCompositionsService {
     });
 
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      const record = this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
-        e.feature,
-        e.selector
-      );
+      const record =
+        this.HsCompositionsMapService.getFeatureRecordAndUnhighlight(
+          e.feature,
+          e.selector
+        );
       if (record) {
         this.loadComposition(this.getRecordLink(record));
       }
@@ -187,8 +192,7 @@ export class HsCompositionsService {
           url = this.getRecordLink(record);
           break;
         case 'layman':
-          url =
-            record.url + '/file';
+          url = record.url + '/file';
           break;
         default:
           this.$log.warn(
@@ -198,6 +202,9 @@ export class HsCompositionsService {
           return;
       }
       if (url) {
+        //Provide save-map comoData workspace property and distinguish between editable and noneditable compositions
+        this.HsCompositionsParserService.current_composition_workspace =
+          record.editable ? record.workspace : null;
         if (this.HsCompositionsParserService.composition_edited == true) {
           this.notSavedCompositionLoading.next(url);
           reject();
@@ -230,7 +237,7 @@ export class HsCompositionsService {
         data.data.layers = response.data;
       }
       this.HsCompositionsParserService.removeCompositionLayers();
-      const layers = this.HsCompositionsParserService.jsonToLayers(data);
+      const layers = await this.HsCompositionsParserService.jsonToLayers(data);
       for (let i = 0; i < layers.length; i++) {
         this.HsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
@@ -257,7 +264,9 @@ export class HsCompositionsService {
       if (parsed.expires && parsed.expires < new Date().getTime()) {
         return;
       }
-      const layers = this.HsCompositionsParserService.jsonToLayers(parsed);
+      const layers = await this.HsCompositionsParserService.jsonToLayers(
+        parsed
+      );
       for (let i = 0; i < layers.length; i++) {
         this.HsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }

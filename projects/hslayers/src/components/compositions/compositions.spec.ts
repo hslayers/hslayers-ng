@@ -1,5 +1,4 @@
 /* eslint-disable prefer-arrow-callback */
-'use strict';
 import {BehaviorSubject} from 'rxjs';
 import {
   BrowserDynamicTestingModule,
@@ -14,6 +13,7 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
+import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsStatusManagerService} from './endpoints/compositions-status-manager.service';
@@ -25,6 +25,7 @@ import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
 import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -35,9 +36,16 @@ import {TranslateModule} from '@ngx-translate/core';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
+import { HsEventBusServiceMock } from '../core/event-bus.service.mock';
 class HsConfigMock {
   reverseLayerList = true;
   constructor() {}
+}
+class HsCompositionsMickaServiceMock {
+  constructor() {}
+  loadList() {
+    return;
+  }
 }
 
 class emptyMock {
@@ -61,6 +69,7 @@ describe('compositions', () => {
   beforeEach(() => {
     mockedMapService = new HsMapServiceMock();
     const mockedUtilsService: any = new HsUtilsServiceMock();
+    const mockedEventBusService: any = new HsEventBusServiceMock();
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -76,15 +85,19 @@ describe('compositions', () => {
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
+        HsCompositionsMickaServiceMock,
+        HsCompositionsMapService,
         {
-          HsSaveMapService,
-          useValue: {
-            internalLayers: [],
-          },
+          provide: HsSaveMapService,
+          useValue: new HsSaveMapServiceMock(),
         },
         {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: new HsConfigMock()},
+        {
+          provide: HsCompositionsMickaService,
+          useValue: new HsCompositionsMickaServiceMock(),
+        },
         {
           provide: HsLayoutService,
           useValue: {
@@ -108,7 +121,15 @@ describe('compositions', () => {
           useValue: new HsAddDataVectorService(
             mockedMapService,
             mockedUtilsService,
-            new HsStylerService(null, mockedUtilsService, null),
+            new HsStylerService(
+              null,
+              mockedUtilsService,
+              mockedEventBusService,
+              null,
+              null,
+              mockedMapService,
+              null
+            ),
             null
           ),
         },
@@ -121,9 +142,11 @@ describe('compositions', () => {
         },
       ],
     });
-    const hsCompositionsMickaService = TestBed.get(HsCompositionsMickaService);
+    const hsCompositionsMickaService = TestBed.inject(
+      HsCompositionsMickaServiceMock
+    );
     //Mock server response
-    hsCompositionsMickaService.getCompositions = () => {
+    hsCompositionsMickaService.loadList = () => {
       return new Promise((resolve, reject) => {
         resolve(compositionsJson);
       });
@@ -168,29 +191,29 @@ describe('compositions', () => {
    * @param scope
    * @param component
    */
-  function loadComposition(component) {
-    component.HsCompositionsParserService.loadCompositionObject(
+  async function loadComposition(component) {
+    await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,
       true
     );
   }
 
-  it('should load composition from json', function () {
-    loadComposition(component);
-    expect(mockedMapService.map.getLayers().getLength()).toBe(6);
-    expect(getTitle(mockedMapService.map.getLayers().item(0))).toBe(
+  it('should load composition from json', async function () {
+    await loadComposition(component);
+    expect(mockedMapService.map.getLayers().getLength()).toBe(8);
+    expect(getTitle(mockedMapService.map.getLayers().item(2))).toBe(
       'Measurement sketches'
     );
     expect(
-      mockedMapService.map.getLayers().item(3).getSource().getFeatures().length
+      mockedMapService.map.getLayers().item(5).getSource().getFeatures().length
     ).toBe(1);
     expect(
-      mockedMapService.map.getLayers().item(4).getSource().getFeatures().length
+      mockedMapService.map.getLayers().item(6).getSource().getFeatures().length
     ).toBe(1);
   });
 
-  it('if should parse composition layer style', function () {
-    loadComposition(component);
-    expect(mockedMapService.map.getLayers().item(0).getStyle()).toBeDefined();
+  it('if should parse composition layer style', async function () {
+    await loadComposition(component);
+    expect(mockedMapService.map.getLayers().item(2).getStyle()).toBeDefined();
   });
 });

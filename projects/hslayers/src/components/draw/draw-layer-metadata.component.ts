@@ -21,7 +21,8 @@ import {getLaymanFriendlyLayerName} from '../save-map/layman-utils';
   templateUrl: './partials/draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: any;
 
   newLayerPath: string;
@@ -33,10 +34,11 @@ export class HsDrawLayerMetadataDialogComponent
   type: string;
   endpoint: any;
   access_rights: accessRightsInterface = {
-    'write': 'EVERYONE',
-    'read': 'EVERYONE',
+    'access_rights.write': 'EVERYONE',
+    'access_rights.read': 'EVERYONE',
   };
   onlyMineFilterVisible = false;
+  tmpFeatures: any;
 
   constructor(
     public HsMapService: HsMapService,
@@ -49,10 +51,7 @@ export class HsDrawLayerMetadataDialogComponent
     this.title = getTitle(this.layer);
     this.path = getPath(this.layer);
     this.endpoint = this.data.laymanEndpoint;
-
-    if (this.data.isAuthorized !== true) {
-      this.type = 'draw';
-    }
+    this.type = 'draw';
   }
 
   titleChanged(): void {
@@ -87,12 +86,22 @@ export class HsDrawLayerMetadataDialogComponent
 
     this.data.addDrawLayer(this.layer);
     this.data.fillDrawableLayers();
-    this.data.tmpDrawLayer = false;
-
+    this.tmpFeatures = this.layer.getSource().getFeatures();
+    //Dispatch add feature event in order to trigger sync
     this.awaitLayerSync(this.layer).then(() => {
-      this.layer.getSource().dispatchEvent('addfeature');
+      const event = this.tmpFeatures ? this.getEventType() : 'addfeature';
+      this.layer.getSource().dispatchEvent(event);
     });
+    this.data.tmpDrawLayer = false;
     this.HsDialogContainerService.destroy(this);
+  }
+
+  getEventType() {
+    return this.layer.getSource().getFeatures().length > this.tmpFeatures.length
+      ? //Existing layer
+        {type: 'addfeature', feature: this.tmpFeatures}
+      : //New layer
+        'addfeature';
   }
 
   cancel(): void {
@@ -117,5 +126,6 @@ export class HsDrawLayerMetadataDialogComponent
 
   selectLayer(layer): void {
     this.data.selectLayer(layer);
+    this.HsDialogContainerService.destroy(this);
   }
 }

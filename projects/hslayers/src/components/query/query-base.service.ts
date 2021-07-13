@@ -263,7 +263,7 @@ export class HsQueryBaseService {
       this.data[type].length = 0;
     } else {
       this.data.attributes.length = 0;
-      this.data.features = [];
+      this.data.features.length = 0;
       this.data.coordinates.length = 0;
       this.data.featureInfoHtmls = [];
       this.data.customFeatures = [];

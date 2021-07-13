@@ -8,13 +8,14 @@ import {accessRightsInterface} from '../components/add-data/common/access-rights
 const TITLE = 'title';
 const NAME = 'name';
 const ABSTRACT = 'abstract';
+const ACCESS_RIGHTS = 'access_rights';
 const ACTIVE = 'active';
 const ATTRIBUTION = 'attribution';
+const AUTO_LEGEND = 'autoLegend';
 const CAPABILITIES = 'capabilities';
 const BASE = 'base';
 const CLUSTER = 'cluster';
 const CUSTOM_INFO_TEMPLATE = 'customInfoTemplate';
-const DECLUTTER = 'declutter';
 const DEFINITION = 'definition';
 const DIMENSIONS = 'dimensions';
 const EDITOR = 'editor';
@@ -41,12 +42,13 @@ const QUERY_CAPABILITIES = 'queryCapabilities';
 const QUERY_FILTER = 'queryFilter';
 const REMOVABLE = 'removable';
 const SHOW_IN_LAYER_MANAGER = 'showInLayerManager';
+const HS_SLD = 'sld';
 const THUMBNAIL = 'thumbnail';
 const VIRTUAL_ATTRIBUTES = 'virtualAttributes';
 const LEGENDS = 'legends';
 const SUB_LAYERS = 'sublayers';
 const WORKSPACE = 'workspace';
-const ACCESS_RIGHTS = 'access_rights';
+const WFS_URL = 'wfsUrl';
 
 export type Attribution = {
   onlineResource?: string;
@@ -86,7 +88,10 @@ export function getAccessRights(layer: Layer): accessRightsInterface {
   return layer.get(ACCESS_RIGHTS);
 }
 
-export function setAccessRights(layer: Layer, access_rights:accessRightsInterface ){
+export function setAccessRights(
+  layer: Layer,
+  access_rights: accessRightsInterface
+): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }
 
@@ -130,6 +135,14 @@ export function getAttribution(layer: Layer): Attribution {
   return layer.get(ATTRIBUTION);
 }
 
+export function setAutoLegend(layer: Layer): void {
+  layer.set(AUTO_LEGEND);
+}
+
+export function getAutoLegend(layer: Layer): boolean {
+  return layer.get(AUTO_LEGEND);
+}
+
 export function getCachedCapabilities(layer: Layer): any {
   return layer.get(CAPABILITIES);
 }
@@ -163,14 +176,6 @@ export function setCustomInfoTemplate(
 
 export function getCustomInfoTemplate(layer: Layer): string {
   return layer.get(CUSTOM_INFO_TEMPLATE);
-}
-
-export function setDeclutter(layer: Layer, declutterActive: boolean): void {
-  layer.set(DECLUTTER, declutterActive);
-}
-
-export function getDeclutter(layer: Layer): boolean {
-  return layer.get(DECLUTTER);
 }
 
 export function setDefinition(layer: Layer, definition: Definition): void {
@@ -316,12 +321,12 @@ export function getFeatureInfoTarget(layer: Layer): string {
   return layer.get(GET_FEATURE_INFO_TARGET);
 }
 
-export function setHsOriginalStyle(layer: Layer, hsOriginalStyle: Style): void {
-  layer.set(HS_ORIGINAL_STYLE, hsOriginalStyle);
+export function getSld(layer: Layer): string {
+  return layer.get(HS_SLD);
 }
 
-export function getHsOriginalStyle(layer: Layer): Style {
-  return layer.get(HS_ORIGINAL_STYLE);
+export function setSld(layer: Layer, sld: string): void {
+  layer.set(HS_SLD, sld);
 }
 
 export function setHsLaymanSynchronizing(
@@ -557,6 +562,14 @@ export function setWorkspace(layer: Layer, workspace: string): void {
   layer.set(WORKSPACE, workspace);
 }
 
+export function getWfsUrl(layer: Layer): string {
+  return layer.get(WFS_URL);
+}
+
+export function setWfsUrl(layer: Layer, url: string): void {
+  layer.set(WFS_URL, url);
+}
+
 export const HsLayerExt = {
   getAccessRights,
   setAccessRights,
@@ -578,8 +591,6 @@ export const HsLayerExt = {
   getCluster,
   setCustomInfoTemplate,
   getCustomInfoTemplate,
-  setDeclutter,
-  getDeclutter,
   setDefinition,
   getDefinition,
   setDimensions,
@@ -598,8 +609,6 @@ export const HsLayerExt = {
   getFromComposition,
   setFeatureInfoTarget,
   getFeatureInfoTarget,
-  setHsOriginalStyle,
-  getHsOriginalStyle,
   setHsLaymanSynchronizing,
   getHsLaymanSynchronizing,
   setInfoFormat,
@@ -638,4 +647,6 @@ export const HsLayerExt = {
   getVirtualAttributes,
   setWorkspace,
   getWorkspace,
+  getWfsUrl,
+  setWfsUrl,
 };

@@ -13,6 +13,11 @@
                 <input type="text" class="form-control" name="hs-save-map-title"
                     [(ngModel)]="HsSaveMapManagerService.compoData.title" (change)="titleChanged()">
             </label>
+            <label class="form-group">
+                {{'COMMON.name' | translate}} *
+                <input type="text" class="form-control" name="hs-save-map-name"
+                    [(ngModel)]="HsSaveMapManagerService.compoData.name" (change)="titleChanged()">
+            </label>
 
             <label class="form-group">
                 {{'COMMON.abstract' | translate}}
@@ -25,40 +30,7 @@
                 <input type="text" class="form-control" name="hs-save-map-keywords"
                     [(ngModel)]="HsSaveMapManagerService.compoData.keywords">
             </label>
-            <div class="form-group d-flex justify-content-between">
-                <label class="pt-2" style="margin-bottom: 0;">
-                    {{'SAVECOMPOSITION.readAccessRights' | translate}}
-                </label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.read = 'EVERYONE'"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'EVERYONE'}">
-                        {{'SAVECOMPOSITION.public' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.read = 'private'"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.read == 'private'}">
-                        {{'SAVECOMPOSITION.private' | translate}}
-                    </button>
-                </div>
-            </div>
-            <div class="form-group d-flex justify-content-between">
-                <label class="pt-2" style="margin-bottom: 0;">
-                    {{'SAVECOMPOSITION.writeAccessRights' | translate}}
-                </label>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.write = 'EVERYONE'"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'EVERYONE'}">
-                        {{'SAVECOMPOSITION.public' | translate}}
-                    </button>
-                    <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                        (click)="HsSaveMapManagerService.compoData.write = 'private'"
-                        [ngClass]="{'active':HsSaveMapManagerService.compoData.write == 'private'}">
-                        {{'SAVECOMPOSITION.private' | translate}}
-                    </button>
-                </div>
-            </div>
+            <hs-layman-access-rights [(access_rights)]="HsSaveMapManagerService.compoData.access_rights"></hs-layman-access-rights>
             <div class="form-group">
                 <label for="stc-extent1" class="form-group">{{'COMMON.extent' | translate}}</label>
                 <div class="form-row stc-extent-row" *ngIf="HsSaveMapManagerService.compoData.bbox">
@@ -195,9 +167,19 @@
     </div>
 </div>
 <div class="modal-footer w-100">
-    <!-- <button type="button" class="btn btn-block btn-primary" id="stc-save"
-        [hidden]="!(step == 'end' && isAllowed() && overwrite)"
-        (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translate}}</button> -->
+    <div
+        [hidden]="!(step == 'end' 
+        && HsSaveMapManagerService.currentUser != HsSaveMapManagerService.compoData.workspace 
+        && HsSaveMapManagerService.compoData.workspace)">
+        <div class="alert alert-info text-gray" >
+            {{'SAVECOMPOSITION.saveOrOverwrite' | translate}}
+        </div>
+        <button type="button" class="btn btn-block btn-primary" id="stc-save"
+            (click)="HsSaveMapManagerService.initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' |
+            translate}}</button>
+        <p style="text-align: center;" class="m-1">{{'COMMON.or' | translate}}</p>
+    </div>
+
     <button type="button" class="btn btn-block btn-primary" id="stc-saveas" [hidden]="!(step == 'end' && isAllowed())"
         (click)="HsSaveMapManagerService.initiateSave(true)">{{'COMMON.save' | translate}}</button>
     <button type="button" class="btn btn-block btn-primary btn-block" id="stc-next" [hidden]="!(step != 'end')"

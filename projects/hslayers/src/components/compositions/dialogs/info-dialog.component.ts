@@ -12,10 +12,11 @@ export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   data: any;
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsService: HsCompositionsService,
+    public HsCompositionsService: HsCompositionsService
   ) {}
 
   close(): void {
+    console.log(this.data);
     this.HsDialogContainerService.destroy(this);
   }
 }

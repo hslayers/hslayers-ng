@@ -11,4 +11,5 @@ export type HsVectorLayerOptions = {
   features?: Feature[];
   workspace?: string;
   access_rights?: accessRightsInterface;
+  queryCapabilities?: boolean;
 };

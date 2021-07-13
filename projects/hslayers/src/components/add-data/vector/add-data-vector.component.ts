@@ -42,25 +42,25 @@ export class HsAddDataVectorComponent {
   // Not possible to save KML to layman yet
   saveAvailable: boolean;
   access_rights: accessRightsInterface = {
-    'write': 'EVERYONE',
-    'read': 'EVERYONE',
+    'access_rights.write': 'EVERYONE',
+    'access_rights.read': 'EVERYONE',
   };
   constructor(
-    public HsAddDataVectorService: HsAddDataVectorService,
+    public hsAddDataVectorService: HsAddDataVectorService,
     public hsHistoryListService: HsHistoryListService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public HsAddDataService: HsAddDataService,
+    public hsAddDataService: HsAddDataService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
-    public HsCommonEndpointsService: HsCommonEndpointsService,
-    public HsCommonLaymanService: HsCommonLaymanService
+    public hsCommonEndpointsService: HsCommonEndpointsService,
+    public hsCommonLaymanService: HsCommonLaymanService
   ) {
-    const layman = this.HsCommonEndpointsService.endpoints.filter(
+    const layman = this.hsCommonEndpointsService.endpoints.filter(
       (ep) => ep.type == 'layman'
     )[0];
     if (layman) {
-      this.HsCommonLaymanService.authChange.subscribe((endpoint: any) => {
+      this.hsCommonLaymanService.authChange.subscribe((endpoint: any) => {
         this.isAuthorized =
           endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
       });
@@ -81,13 +81,14 @@ export class HsAddDataVectorComponent {
       return false;
     }
   }
+
   /**
    * Handler for adding nonwms service, file in template.
    *
    * @function add
    */
   async add() {
-    const layer = await this.HsAddDataVectorService.addVectorLayer(
+    const layer = await this.hsAddDataVectorService.addVectorLayer(
       this.type,
       this.url || this.base64url,
       this.name,
@@ -99,10 +100,15 @@ export class HsAddDataVectorComponent {
         features: this.features,
         path: this.hsUtilsService.undefineEmptyString(this.folder_name),
         access_rights: this.access_rights,
+        workspace: this.hsCommonEndpointsService.endpoints.filter(
+          (ep) => ep.type == 'layman'
+        )[0]?.user,
+        queryCapabilities:
+          this.url && !['json', 'kml'].some((ext) => this.url.endsWith(ext)),
       },
       this.addUnder
     );
-    this.HsAddDataVectorService.fitExtent(layer);
+    this.hsAddDataVectorService.fitExtent(layer);
 
     if (this.saveToLayman) {
       this.awaitLayerSync(layer).then(() => {
@@ -128,7 +134,7 @@ export class HsAddDataVectorComponent {
   }
   handleFileUpload(fileList: FileList): any {
     Array.from(fileList).forEach(async (f) => {
-      const uploadedData = await this.HsAddDataVectorService.readUploadedFile(
+      const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
         f
       );
       if (uploadedData !== undefined) {
@@ -173,7 +179,7 @@ export class HsAddDataVectorComponent {
         }
         //add layman endpoint url as url to allow sync
         if (this.url == '' && this.saveToLayman) {
-          this.url = this.HsCommonEndpointsService.endpoints.filter(
+          this.url = this.hsCommonEndpointsService.endpoints.filter(
             (ep) => ep.type == 'layman'
           )[0].url;
         }
@@ -207,6 +213,8 @@ export class HsAddDataVectorComponent {
     this.featureCount = 0;
     this.type = '';
     this.showDetails = false;
-    this.vectorFileInput.nativeElement.value = '';
+    if (this.vectorFileInput) {
+      this.vectorFileInput.nativeElement.value = '';
+    }
   }
 }

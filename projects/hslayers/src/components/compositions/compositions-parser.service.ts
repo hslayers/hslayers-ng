@@ -1,24 +1,29 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
 import * as xml2Json from 'xml-js';
+import BaseLayer from 'ol/layer/Base';
+import {transform, transformExtent} from 'ol/proj';
+
+import {DuplicateHandling, HsMapService} from '../map/map.service';
+import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
-import {DuplicateHandling, HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
-import {Injectable} from '@angular/core';
+
 import {
   getFromComposition,
   getTitle,
   setMetadata,
 } from '../../common/layer-extensions';
-import {transform, transformExtent} from 'ol/proj';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -45,6 +50,7 @@ export class HsCompositionsParserService {
    */
   current_composition_title = '';
   current_composition_url: string;
+  current_composition_workspace: string;
   current_composition: any;
   constructor(
     public HsMapService: HsMapService,
@@ -82,10 +88,10 @@ export class HsCompositionsParserService {
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.HsUtilsService.proxify(url);
-    let options = {};
+    const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
-      options['responseType'] = 'text' ;
+      options['responseType'] = 'text';
     }
     options['withCredentials'] = url.includes(
       this.HsCommonEndpointsService?.endpoints.filter(
@@ -100,20 +106,27 @@ export class HsCompositionsParserService {
     this.loaded(data, pre_parse, url, overwrite, callback);
   }
 
-  loaded(response, pre_parse, url, overwrite: boolean, callback): void {
+  async loaded(
+    response,
+    pre_parse,
+    url,
+    overwrite: boolean,
+    callback
+  ): Promise<void> {
     this.HsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
       this.composition_loaded = url;
       if (this.HsUtilsService.isFunction(pre_parse)) {
         response = pre_parse(response);
       }
+      response.workspace = this.current_composition_workspace;
       /*
       Response might contain {data:{abstract:...}} or {abstract:}
       directly. If there is data object,
       that means composition is enclosed in
       container which itself might contain title or extent
       properties */
-      this.loadCompositionObject(
+      await this.loadCompositionObject(
         response.data || response,
         overwrite,
         response.title,
@@ -200,12 +213,12 @@ export class HsCompositionsParserService {
       response.includes('LayerList') /*.wmc micka*/
     );
   }
-  loadCompositionObject(
+  async loadCompositionObject(
     obj,
     overwrite: boolean,
     titleFromContainer?: boolean,
     extentFromContainer?: string | Array<number>
-  ): void {
+  ): Promise<void> {
     if (overwrite == undefined || overwrite == true) {
       this.removeCompositionLayers();
     }
@@ -226,7 +239,7 @@ export class HsCompositionsParserService {
       }
     }
 
-    const layers = this.jsonToLayers(obj);
+    const layers = await this.jsonToLayers(obj);
     layers.forEach((lyr) => {
       this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
     });
@@ -398,15 +411,20 @@ export class HsCompositionsParserService {
    * @returns {Array} Array of created layers
    * @description Parse composition object to extract individual layers and add them to map
    */
-  jsonToLayers(j) {
+  async jsonToLayers(j): Promise<BaseLayer[]> {
     const layers = [];
     if (j.data) {
       j = j.data;
     }
     for (const lyr_def of j.layers) {
-      const layer = this.jsonToLayer(lyr_def);
+      const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
-        this.$log.warn('Was not able to parse layer from composition', lyr_def);
+        if (lyr_def.protocol.format != 'hs.format.externalWFS'){
+          this.$log.warn(
+            'Was not able to parse layer from composition',
+            lyr_def
+          );
+        }
       } else {
         layers.push(layer);
       }
@@ -421,41 +439,39 @@ export class HsCompositionsParserService {
    * @returns {Function} Parser function to create layer (using config_parsers service)
    * @description Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    */
-  jsonToLayer(lyr_def) {
+  async jsonToLayer(lyr_def): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS':
       case 'WMS':
-        resultLayer = this.HsCompositionsLayerParserService.createWmsLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createWmsLayer(lyr_def);
         break;
       case 'HSLayers.Layer.WMTS':
-        resultLayer = this.HsCompositionsLayerParserService.createWMTSLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         break;
       case 'ArcGISRest':
-        resultLayer = this.HsCompositionsLayerParserService.createArcGISLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createArcGISLayer(lyr_def);
         break;
       case 'XYZ':
-        resultLayer = this.HsCompositionsLayerParserService.createXYZLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createXYZLayer(lyr_def);
         break;
       case 'StaticImage':
-        resultLayer = this.HsCompositionsLayerParserService.createStaticImageLayer(
-          lyr_def
-        );
+        resultLayer =
+          this.HsCompositionsLayerParserService.createStaticImageLayer(lyr_def);
         break;
       case 'OpenLayers.Layer.Vector':
       case 'Vector':
       case 'hs.format.LaymanWfs':
-        resultLayer = this.HsCompositionsLayerParserService.createVectorLayer(
-          lyr_def
-        );
+        if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
+          this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
+        } else {
+          resultLayer =
+            await this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+        }
         break;
       default:
         const existing = this.HsMapService.getLayersArray().find(

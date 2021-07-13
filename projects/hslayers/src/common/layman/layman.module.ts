@@ -1,15 +1,29 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
 import {HsCommonLaymanService} from './layman.service';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {TranslateModule} from '@ngx-translate/core';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsLaymanLoginComponent, HsLaymanCurrentUserComponent],
+  declarations: [
+    HsLaymanLoginComponent,
+    HsLaymanCurrentUserComponent,
+    HsCommonLaymanAccessRightsComponent,
+  ],
   imports: [CommonModule, TranslateModule],
-  exports: [HsLaymanLoginComponent, HsLaymanCurrentUserComponent],
+  exports: [
+    HsLaymanLoginComponent,
+    HsLaymanCurrentUserComponent,
+    HsCommonLaymanAccessRightsComponent,
+  ],
   providers: [HsCommonLaymanService],
-  entryComponents: [HsLaymanLoginComponent, HsLaymanCurrentUserComponent],
+  entryComponents: [
+    HsLaymanLoginComponent,
+    HsLaymanCurrentUserComponent,
+    HsCommonLaymanAccessRightsComponent,
+  ],
 })
 export class HsLaymanModule {}

@@ -4,9 +4,9 @@ import {
   TileWMS,
   Vector as VectorSource,
   WMTS,
+  XYZ,
 } from 'ol/source';
-import {HsLanguageService} from '../language/language.service';
-import {HsUtilsService} from './utils.service';
+import {GeoJSON, KML, TopoJSON} from 'ol/format';
 import {
   Image as ImageLayer,
   Layer,
@@ -14,6 +14,11 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Injectable} from '@angular/core';
+import {isEmpty} from 'ol/extent';
+
+import {HsLanguageService} from '../language/language.service';
+import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsUtilsService} from './utils.service';
 import {
   getCluster,
   getEditor,
@@ -21,8 +26,6 @@ import {
   getShowInLayerManager,
   getTitle,
 } from '../../common/layer-extensions';
-import {isEmpty} from 'ol/extent';
-import { HsLayerDescriptor } from '../layermanager/layer-descriptor.interface';
 
 @Injectable()
 export class HsLayerUtilsService {
@@ -32,13 +35,10 @@ export class HsLayerUtilsService {
   ) {}
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerIsZoomable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for layer with BoundingBox property, for
+   * Determines if layer has properties needed for 'Zoom to layer' function.
+   * @param layer - Selected layer
+   * @returns True for layer with BoundingBox property, for
    * WMS layer or for layer, which has source with extent
-   * @description Determines if layer have properties needed for Zoom
-   * to layer function.
    */
   layerIsZoomable(layer: Layer): boolean {
     if (typeof layer == 'undefined') {
@@ -61,12 +61,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#layerIsStyleable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for ol.layer.Vector
-   * @description Determines if layer is a Vector layer and therefore
-   * styleable
+   * Determines if layer is a Vector layer and therefore styleable
+   * @param layer - Selected layer
+   * @returns True for ol.layer.Vector
    */
   layerIsStyleable(layer: Layer): boolean {
     if (typeof layer == 'undefined') {
@@ -84,12 +81,10 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerQueryable
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for ol.layer.Tile and ol.layer.Image with
+   * Test if layer is queryable (WMS layer with Info format)
+   * @param layer - Selected layer
+   * @returns True for ol.layer.Tile and ol.layer.Image with
    * INFO_FORMAT in params
-   * @description Test if layer is queryable (WMS layer with Info format)
    */
   isLayerQueryable(layer: Layer): boolean {
     if (
@@ -110,11 +105,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#getLayerTitle
-   * @param {Ol.layer} layer to get layer title
-   * @returns {string} Layer title or "Void"
-   * @description Get title of selected layer
+   * Get title of selected layer
+   * @param layer - to get layer title
+   * @returns Layer title or "Void"
    */
   getLayerTitle(layer: Layer): string {
     if (getTitle(layer) !== undefined && getTitle(layer) != '') {
@@ -122,6 +115,24 @@ export class HsLayerUtilsService {
     } else {
       return 'Void';
     }
+  }
+
+  // todo
+  getURL(layer: Layer): string {
+    let url;
+    if (layer.getSource().getUrls) {
+      //Multi tile
+      url = layer.getSource().getUrls();
+      if (url) {
+        //in case WMTS source has not yet been set
+        url = url[0];
+      }
+    }
+    if (layer.getSource().getUrl) {
+      //Single tile
+      url = layer.getSource().getUrl();
+    }
+    return url;
   }
 
   /**
@@ -144,8 +155,8 @@ export class HsLayerUtilsService {
     }
     return false;
   }
-  // todo
 
+  // todo
   isLayerWMTS(layer: Layer): boolean {
     if (
       this.HsUtilsService.instOf(layer, Tile) &&
@@ -155,29 +166,28 @@ export class HsLayerUtilsService {
     }
     return false;
   }
-  // todo
-  getURL(layer: Layer): string {
-    let url;
-    if (layer.getSource().getUrls) {
-      //Multi tile
-      url = layer.getSource().getUrls();
-      if (url) {
-        //in case WMTS source has yet not been set
-        url = url[0];
-      }
+
+  isLayerXYZ(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, Tile) &&
+      this.HsUtilsService.instOf(layer.getSource(), XYZ)
+    ) {
+      return true;
     }
-    if (layer.getSource().getUrl) {
-      //Single tile
-      url = layer.getSource().getUrl();
-    }
-    return url;
+    return false;
   }
+
+  getLayerSourceFormat(layer: Layer): string {
+    if (!this.isLayerVectorLayer(layer)) {
+      return;
+    }
+    return layer.getSource()?.getFormat();
+  }
+
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerVectorLayer
-   * @param {Ol.layer} layer Selected layer
-   * @returns {boolean} True for Vector layer
-   * @description Test if layer is Vector layer
+   * Test if layer is Vector layer
+   * @param layer - Selected layer
+   * @returns True for Vector layer
    */
   isLayerVectorLayer(layer: Layer): boolean {
     if (
@@ -191,12 +201,48 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerInManager
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if showInLayerManager attribute is set to true
-   * @description Test if layer is shown in layer switcher
+   * Test if the features in the vector layer come from a GeoJSON source
+   * @param layer - an OL vector layer
+   * @returns true only if the GeoJSON format is explicitly specified in the source. False otherwise.
+   */
+  isLayerGeoJSONSource(layer: Layer): boolean {
+    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a TopoJSON source
+   * @param layer - an OL vector layer
+   * @returns true only if the TopoJSON format is explicitly specified in the source. False otherwise.
+   */
+  isLayerTopoJSONSource(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), TopoJSON)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if the features in the vector layer come from a KML source
+   * @param layer - an OL vector layer
+   * @returns true only if the KML format is explicitly specified in the source. False otherwise.
+   */
+  isLayerKMLSource(layer: Layer): boolean {
+    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Test if layer is shown in layer switcher
    * (if not some internal hslayers layer like selected feature layer)
+   * @param layer - Layer to check
+   * @returns True if showInLayerManager attribute is set to true
    */
   isLayerInManager(layer: Layer): boolean {
     return (
@@ -206,23 +252,19 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#hasLayerTitle
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is has a title
-   * @description Test if layer is has a title
+   * Test if layer is has a title
+   * @param layer - Layer to check
+   * @returns True if layer is has a title
    */
   hasLayerTitle(layer: Layer): boolean {
     return getTitle(layer) !== undefined && getTitle(layer) !== '';
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerEditable
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer has attribute editor amd in it
-   * editable property is set to true or missing
-   * @description Test if layers features are editable
+   * Test if layers features are editable
+   * @param layer - Layer to check
+   * @returns True if layer has attribute 'editor' and in it
+   * 'editable' property is set to true or missing
    */
   isLayerEditable(layer: Layer): boolean {
     if (getEditor(layer) === undefined) {
@@ -239,8 +281,7 @@ export class HsLayerUtilsService {
    * Get user friendly name of layer based primary on title
    * and secondary on name attributes.
    * Is used in query service and hover popup.
-   *
-   * @param layer Layer to get the name for
+   * @param layer - Layer to get the name for
    */
   getLayerName(layer: Layer): string {
     if (
@@ -256,13 +297,11 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerDrawable
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is drawable vector layer
-   * @description Checks if layer has a VectorSource object, if layer is
+   * Checks if layer has a VectorSource object, if layer is
    * not internal for hslayers, if it has title and is shown in layer
    * switcher
+   * @param layer - Layer to check
+   * @returns True if layer is drawable vector layer
    */
   isLayerDrawable(layer: Layer): boolean {
     return (
@@ -275,11 +314,9 @@ export class HsLayerUtilsService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsLayerUtilsService#isLayerClustered
-   * @param {Ol.layer} layer Layer to check
-   * @returns {boolean} True if layer is clustered, false otherwise
-   * @description Checks if layer's source has its own source
+   * Checks if layer's source has its own source
+   * @param layer - Layer to check
+   * @returns True if layer is clustered, false otherwise
    */
   isLayerClustered(layer: Layer): boolean {
     return this.isLayerVectorLayer(layer) &&
@@ -289,7 +326,7 @@ export class HsLayerUtilsService {
       : false;
   }
 
-  translateTitle(title) {
+  translateTitle(title: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(
       'LAYERS',
       title

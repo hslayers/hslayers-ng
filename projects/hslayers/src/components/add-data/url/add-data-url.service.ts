@@ -15,21 +15,21 @@ export class HsAddDataUrlService {
 
   constructor(
     public hsLog: HsLogService,
-    public HsLanguageService: HsLanguageService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsLayoutService: HsLayoutService
+    public hsLanguageService: HsLanguageService,
+    public hsDialogContainerService: HsDialogContainerService,
+    public hsLayoutService: HsLayoutService
   ) {
     this.addDataCapsParsingError.subscribe((e) => {
       this.hsLog.warn(e);
 
       let error = e.toString();
       if (error.includes('property')) {
-        error = this.HsLanguageService.getTranslationIgnoreNonExisting(
+        error = this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS',
           'serviceTypeNotMatching'
         );
       }
-      this.HsDialogContainerService.create(
+      this.hsDialogContainerService.create(
         HsGetCapabilitiesErrorComponent,
         error
       );
@@ -37,41 +37,62 @@ export class HsAddDataUrlService {
   }
 
   /**
-   * Selects a service layer to be added (WMS | ArcGIS Map Server)
-   * @param services Layer group of a service to select a layer from
-   * @param layerToSelect Layer to be selected (checked = true)
-   * @param selector Layer selector. Differs in between different services
+   * Selects a service layer to be added (WMS | WMTS | ArcGIS Map Server)
+   * @param services - Layer group of a service to select a layer from
+   * @param layerToSelect - Layer to be selected (checked = true)
+   * @param selector - Layer selector. Can be either 'Name' or 'Title'. Differs in between different services
    */
   selectLayerByName(
     layerToSelect: string,
-    services: any,
+    services,
     selector: 'Title' | 'Name'
   ): void {
     if (!layerToSelect) {
       return;
     }
-    for (const service of services) {
-      if (service.Layer) {
-        for (const layer of service.Layer) {
-          if (layer[selector] == layerToSelect) {
-            layer.checked = true;
-            this.scrollToLayer(layer[selector]);
-            return;
-          }
-        }
-      } else {
-        if (service[selector] == layerToSelect) {
-          service.checked = true;
-          this.scrollToLayer(service[selector]);
-        }
+    if (Array.isArray(services)) {
+      for (const serviceLayer of services) {
+        this.selectSubLayerByName(layerToSelect, serviceLayer, selector);
       }
+    } else {
+      this.selectSubLayerByName(layerToSelect, services, selector);
+    }
+  }
+
+  /**
+   * Helper function for selectLayerByName()
+   */
+  private selectSubLayerByName(
+    layerToSelect: string,
+    serviceLayer,
+    selector: 'Title' | 'Name'
+  ): void {
+    if (serviceLayer.Layer) {
+      this.selectLayerByName(layerToSelect, serviceLayer.Layer, selector);
+    } else {
+      this.setLayerCheckedTrue(layerToSelect, serviceLayer, selector);
+    }
+  }
+
+  /**
+   * Helper function for selectLayerByName()
+   * Does the actual selection (checked = true)
+   */
+  private setLayerCheckedTrue(
+    layerToSelect: string,
+    serviceLayer,
+    selector: 'Title' | 'Name'
+  ): void {
+    if (serviceLayer[selector] == layerToSelect) {
+      serviceLayer.checked = true;
+      this.scrollToLayer(serviceLayer[selector]);
     }
   }
 
   scrollToLayer(name: string): void {
     setTimeout(() => {
       const id = `#hs-add-layer-${name}`;
-      const el = this.HsLayoutService.contentWrapper.querySelector(id);
+      const el = this.hsLayoutService.contentWrapper.querySelector(id);
       if (el) {
         el.scrollIntoView();
       }

@@ -1,4 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from './../permalink/share-url.service';
@@ -11,19 +14,25 @@ import {HsShareUrlService} from './../permalink/share-url.service';
   selector: 'hs-search',
   templateUrl: './partials/search.html',
 })
-export class HsSearchComponent implements OnInit {
+export class HsSearchComponent implements OnInit, OnDestroy {
   replace = false;
   clearvisible = false;
   searchInputVisible: boolean;
   query = '';
+  searchResultsReceivedSubscription: Subscription;
   constructor(
     public HsSearchService: HsSearchService,
     public HsEventBusService: HsEventBusService,
     public HsShareUrlService: HsShareUrlService
   ) {
-    this.HsEventBusService.searchResultsReceived.subscribe(() => {
-      this.clearvisible = true;
-    });
+    this.searchResultsReceivedSubscription = this.HsEventBusService.searchResultsReceived.subscribe(
+      () => {
+        this.clearvisible = true;
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.searchResultsReceivedSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -37,9 +46,6 @@ export class HsSearchComponent implements OnInit {
   }
   /**
    * Handler of search input, request search service and display results div
-   *
-   * @memberof HsSearcComponent
-   * @function queryChanged
    */
   queryChanged(): void {
     this.HsSearchService.request(this.query);
@@ -59,11 +65,10 @@ export class HsSearchComponent implements OnInit {
   //     setHighlighted(result.feature, state);
   //   }
   // }
+
   /**
    * Remove previous search and search results
    *
-   * @memberof HsSearchComponent
-   * @function clear
    */
   clear(): void {
     this.query = '';

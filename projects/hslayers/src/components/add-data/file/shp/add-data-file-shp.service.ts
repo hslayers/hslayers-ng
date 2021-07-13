@@ -3,6 +3,7 @@ import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {accessRightsInterface} from '../../common/access-rights.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataFileShpService {
@@ -28,7 +29,7 @@ export class HsAddDataFileShpService {
     abstract: string,
     srs: string,
     sld: FileDescriptor,
-    access_rights: any
+    access_rights: accessRightsInterface
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       const formdata = new FormData();
@@ -50,8 +51,18 @@ export class HsAddDataFileShpService {
       formdata.append('title', title);
       formdata.append('abstract', abstract);
       formdata.append('crs', srs);
-      formdata.append('write', access_rights.write);
-      formdata.append('read', access_rights.read);
+
+      const write =
+        access_rights['access_rights.write'] == 'private'
+          ? endpoint.user
+          : access_rights['access_rights.write'];
+      const read =
+        access_rights['access_rights.read'] == 'private'
+          ? endpoint.user
+          : access_rights['access_rights.read'];
+
+      formdata.append('access_rights.write', write);
+      formdata.append('access_rights.read', read);
       this.httpClient
         .post(
           `${endpoint.url}/rest/workspaces/${

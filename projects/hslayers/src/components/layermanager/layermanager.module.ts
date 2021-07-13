@@ -1,5 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateModule} from '@ngx-translate/core';
@@ -8,7 +9,6 @@ import {HsGetCapabilitiesModule} from '../../common/get-capabilities/get-capabil
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorStylesService} from './layer-editor-styles.service';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor.sub-layer-checkboxes.component';
 import {HsLayerEditorSublayerService} from './layer-editor.sub-layer.service';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
@@ -51,6 +51,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLegendModule,
     HsUiExtensionsModule,
     NgbModule,
+    DragDropModule,
   ],
   exports: [
     HsLayerManagerComponent,
@@ -71,7 +72,6 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsLayerManagerMetadataService,
     HsLayerManagerService,
     HsLayerManagerWmstService,
-    HsLayerEditorStylesService,
     HsLayerSelectorService,
     HsLayermanagerPhysicalListService,
   ],

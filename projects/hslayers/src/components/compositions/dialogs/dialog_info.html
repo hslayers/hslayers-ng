@@ -26,9 +26,9 @@
                     </div>
                     <br>
                 </div>
-                <div class="row"  *ngIf="data.info.thumbnail">
+                <div class="row" *ngIf="data.info.thumbnail">
                     <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate}}</b></div>
-                    <div class="col-md-9"><img src="{{data.info.thumbnail}}"></div>
+                    <div class="col-md-9"><img src="{{data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail}}"></div>
                 </div>
                 <div class="row" *ngIf="data.info.url && data.info">
                     <div class="col-md-3"><b>{{'COMMON.url' | translate}}</b></div>

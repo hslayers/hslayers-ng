@@ -1,7 +1,10 @@
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
+
+import Feature from 'ol/Feature';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Map} from 'ol';
+import {Select} from 'ol/interaction';
 
 import {HsDimensionDescriptor} from '../layermanager/dimensions/dimension.class';
 import {
@@ -41,6 +44,7 @@ export class HsEventBusService {
   compositionEdits: Subject<any> = new Subject();
   layerAdditions: Subject<any> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
+  LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   layerLoads: Subject<any> = new Subject();
   layerLoadings: Subject<{
     layer: Layer;
@@ -69,8 +73,10 @@ export class HsEventBusService {
     layer: Layer;
     dimension: HsDimensionDescriptor;
   }> = new Subject();
-  vectorQueryFeatureSelection: Subject<any> = new Subject();
-  vectorQueryFeatureDeselection: Subject<any> = new Subject();
+  vectorQueryFeatureSelection: Subject<{feature: Feature; selector: Select}> =
+    new Subject();
+  vectorQueryFeatureDeselection: Subject<{feature: Feature; selector: Select}> =
+    new Subject();
   /**
    * Fires when current mainpanel change - toggle, change of opened panel.
    * replaces 'core.mainpanel_changed'

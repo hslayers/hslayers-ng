@@ -2,7 +2,6 @@ import BaseLayer from 'ol/layer/Base';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Draw, Modify, Snap} from 'ol/interaction';
 import {HsAddDataVectorService} from '../add-data/vector/add-data-vector.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -30,6 +29,8 @@ import {
   getEditor,
   getName,
   getTitle,
+  setDefinition,
+  setWorkspace,
 } from '../../common/layer-extensions';
 
 type activateParams = {
@@ -72,25 +73,52 @@ export class HsDrawService {
   onSelected: any;
   currentStyle: any;
   highlightDrawButton = false; // Toggles toolbar button 'Draw' class
-  defaultStyle: Style = new Style({
-    stroke: new Stroke({
-      color: 'rgba(0, 153, 255, 1)',
-      width: 1.25,
-    }),
-    fill: new Fill({
-      color: 'rgba(255,255,255,0.4)',
-    }),
-    image: new Circle({
-      radius: 5,
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.4)',
-      }),
-      stroke: new Stroke({
-        color: 'rgba(0, 153, 255, 1)',
-        width: 1.25,
-      }),
-    }),
-  });
+  defaultStyle = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+      <Name/>
+      <UserStyle>
+        <Name/>
+        <Title/>
+        <FeatureTypeStyle>
+          <Rule>
+            <Name/>
+            <PointSymbolizer>
+              <Graphic>
+                <Mark>
+                  <WellKnownName>circle</WellKnownName>
+                  <Fill>
+                    <CssParameter name="fill">rgba(255, 255, 255, 0.41)</CssParameter>
+                  </Fill>
+                  <Stroke>
+                    <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                    <CssParameter name="stroke-width">1.25</CssParameter>
+                  </Stroke>
+                </Mark>
+                <Size>10</Size>
+              </Graphic>
+            </PointSymbolizer>
+            <PolygonSymbolizer>
+              <Fill>
+                <CssParameter name="fill-opacity">0.45</CssParameter>
+              </Fill>
+              <Stroke>
+                <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                <CssParameter name="stroke-width">1.25</CssParameter>
+                <CssParameter name="stroke-opacity">0.3</CssParameter>
+              </Stroke>
+            </PolygonSymbolizer>
+            <LineSymbolizer>
+              <Stroke>
+                <CssParameter name="stroke">rgba(0, 153, 255, 1)</CssParameter>
+                <CssParameter name="stroke-width">1.25</CssParameter>
+              </Stroke>
+            </LineSymbolizer>
+          </Rule>
+        </FeatureTypeStyle>
+      </UserStyle>
+    </NamedLayer>
+  </StyledLayerDescriptor>`;
   onDeselected: any;
   public drawingLayerChanges: Subject<{
     layer: BaseLayer;
@@ -100,7 +128,7 @@ export class HsDrawService {
   previouslySelected: any;
   isAuthorized: boolean;
   onlyMine = true;
-
+  addedLayersRemoved = false;
   constructor(
     public HsMapService: HsMapService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -133,12 +161,25 @@ export class HsDrawService {
       this.modify.setActive(true);
     });
 
+    this.selectedFeatures.on('remove', (e) => {
+      if (this.selectedFeatures.length == 0) {
+        this.modify.setActive(false);
+      }
+    });
+
     this.HsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
       this.selectedFeatures.push(event.feature);
     });
 
-    this.HsEventBusService.vectorQueryFeatureDeselection.subscribe((event) => {
-      this.selectedFeatures.remove(event.feature);
+    this.HsEventBusService.vectorQueryFeatureDeselection.subscribe(
+      ({feature, selector}) => {
+        this.selectedFeatures.remove(feature);
+      }
+    );
+
+    this.HsEventBusService.mapResets.subscribe(() => {
+      this.addedLayersRemoved = true;
+      this.fillDrawableLayers();
     });
 
     this.HsEventBusService.mainPanelChanges.subscribe((event) => {
@@ -151,9 +192,35 @@ export class HsDrawService {
       this.fillDrawableLayers();
       this.isAuthorized =
         endpoint.user !== 'anonymous' && endpoint.user !== 'browser';
+      //When metadata dialog window opened. Layer is being added
+      if (this.selectedLayer && this.tmpDrawLayer) {
+        setWorkspace(this.selectedLayer, endpoint.user);
+        const defition = {
+          format: this.isAuthorized ? 'hs.format.WFS' : null,
+          url: this.isAuthorized
+            ? this.HsLaymanService.getLaymanEndpoint().url + '/wfs'
+            : null,
+        };
+        setDefinition(this.selectedLayer, defition);
+      }
+    });
+
+    this.HsEventBusService.LayerManagerLayerVisibilityChanges.subscribe(
+      (event) => {
+        if (this.draw && event.layer == this.selectedLayer) {
+          this.setType(this.type);
+        }
+      }
+    );
+  }
+  /**
+   * initial function if the draw panel is loaded as first panel
+   */
+  init(): void {
+    this.HsMapService.loaded().then((_) => {
+      this.fillDrawableLayers();
     });
   }
-
   /**
    * selectedLayerString
    * @returns Possibly translated name of layer selected for drawing
@@ -184,7 +251,10 @@ export class HsDrawService {
   }
 
   saveDrawingLayer(): void {
-    this.previouslySelected = this.selectedLayer;
+    if (this.selectedLayer) {
+      this.previouslySelected = this.selectedLayer;
+    }
+
     let tmpTitle = this.HsLanguageService.getTranslation('DRAW.drawLayer');
 
     const tmpLayer = this.HsMapService.findLayerByTitle(TMP_LAYER_TITLE);
@@ -204,21 +274,23 @@ export class HsDrawService {
       showInLayerManager: true,
       visible: true,
       removable: true,
-      style: this.defaultStyle,
+      sld: this.defaultStyle,
       editable: true,
       path: this.HsConfig.defaultDrawLayerPath || 'User generated', //TODO: Translate this
       definition: {
-        format: layman ? 'hs.format.WFS' : null,
-        url: layman ? layman.url + '/wfs' : null,
+        format: this.isAuthorized ? 'hs.format.WFS' : null,
+        url: this.isAuthorized ? layman.url + '/wfs' : null,
       },
-      workspace: this.HsLaymanService.getLaymanEndpoint()?.user,
+      workspace: layman?.user,
     });
+    this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
     this.HsDialogContainerService.create(
       HsDrawLayerMetadataDialogComponent,
       this
     );
   }
+
   setType(what): boolean {
     if (this.type == what) {
       this.type = null;
@@ -249,16 +321,19 @@ export class HsDrawService {
       this.addDrawLayer(drawLayer);
     }
     this.type = what;
-    this.source = this.HsLayerUtilsService.isLayerClustered(this.selectedLayer)
-      ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
-      : this.selectedLayer.getSource();
+    if (this.selectedLayer) {
+      this.source = this.HsLayerUtilsService.isLayerClustered(
+        this.selectedLayer
+      )
+        ? this.selectedLayer.getSource().getSource() //Is it clustered vector layer?
+        : this.selectedLayer.getSource();
+    }
     return true;
   }
 
   /**
    * @param layer
    * @function selectLayer
-   * @memberOf HsDrawService
    * @description Handles drawing layer selection/change by activating drawing for selected layer.
    * In case of layman layer not yet existing in app it pulls the layer first.
    */
@@ -293,7 +368,6 @@ export class HsDrawService {
   /**
    * @param layer
    * @function addDrawLayer
-   * @memberOf HsDrawService
    * @description Add draw layer to the map and repopulate list of drawables.
    */
   addDrawLayer(layer: Layer): void {
@@ -314,20 +388,6 @@ export class HsDrawService {
     }
   }
 
-  /**
-   * (PRIVATE) Helper function which returns currently selected style.
-   *
-   * @private
-   * @function useCurrentStyle
-   * @memberof HsDrawService
-   */
-  useCurrentStyle() {
-    if (!this.currentStyle) {
-      this.currentStyle = this.defaultStyle;
-    }
-    return this.currentStyle;
-  }
-
   onDrawEnd(e): void {
     if (!getEditor(this.selectedLayer)) {
       return;
@@ -346,12 +406,13 @@ export class HsDrawService {
       this.HsLayoutService.mainpanel != 'draw' &&
       this.HsConfig.openQueryPanelOnDrawEnd
     ) {
-      setTimeout(() => {
-        this.HsLayoutService.setMainPanel('info');
-        this.HsQueryVectorService.selector.getFeatures().push(e.feature);
-        this.HsQueryVectorService.createFeatureAttributeList();
-      });
+      this.HsLayoutService.setMainPanel('info');
     }
+    setTimeout(() => {
+      this.HsQueryBaseService.clearData('features');
+      this.HsQueryVectorService.selector.getFeatures().push(e.feature);
+      this.HsQueryVectorService.createFeatureAttributeList();
+    });
   }
 
   /**
@@ -369,7 +430,6 @@ export class HsDrawService {
   }
   /**
    * @function changeDrawSource
-   * @memberOf HsDrawService
    * @description Sets layer source where new drawing should be pushed to... after 'selectedLayer' change
    */
   changeDrawSource(): void {
@@ -387,7 +447,6 @@ export class HsDrawService {
     if (this.draw) {
       //Reactivate drawing with updated source
       this.activateDrawing({
-        changeStyle: () => this.useCurrentStyle(),
         drawState: true,
         onDrawEnd: (e) => this.onDrawEnd(e),
       });
@@ -399,8 +458,7 @@ export class HsDrawService {
 
   /**
    * @function deactivateDrawing
-   * @memberof HsDrawService
-   * @returns {Promise}
+   * @return {Promise}
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
    */
   deactivateDrawing(): Promise<undefined> {
@@ -411,7 +469,7 @@ export class HsDrawService {
           map.removeInteraction(this.draw);
           this.draw = null;
         }
-        resolve();
+        resolve(null);
       });
     });
   }
@@ -447,11 +505,9 @@ export class HsDrawService {
 
   /**
    * @function fillDrawableLayers
-   * @memberOf HsDrawService
    * @description Repopulates drawable layers. In case layman connection exists it also creates
    * a list of avaliable server possiblities.
    */
-
   async fillDrawableLayers(): Promise<void> {
     const drawables = this.HsMapService.map
       .getLayers()
@@ -463,19 +519,12 @@ export class HsDrawService {
       this.selectedLayer = null;
       this.snapSource = null;
     } else if (drawables.length > 0) {
-      if (
-        !drawables.some(
-          (layer) =>
-            this.selectedLayer &&
-            getTitle(layer) == getTitle(this.selectedLayer)
-        ) ||
-        !this.selectedLayer
-      ) {
+      if (this.selectedLayerNotAvailable(drawables)) {
         this.selectedLayer = drawables[0];
         this.changeDrawSource();
       }
     }
-
+    this.addedLayersRemoved = false;
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.HsLaymanService.getLaymanEndpoint();
     if (this.laymanEndpoint) {
@@ -496,11 +545,27 @@ export class HsDrawService {
     }
     this.hasSomeDrawables =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
-
   }
+
+  private selectedLayerNotAvailable(drawables) {
+    if (this.addedLayersRemoved) {
+      return true;
+    } else {
+      return (
+        //Dont want to change after authChange when layer is being added
+        (!this.tmpDrawLayer &&
+          !drawables.some(
+            (layer) =>
+              this.selectedLayer &&
+              getTitle(layer) == getTitle(this.selectedLayer)
+          )) ||
+        !this.selectedLayer
+      );
+    }
+  }
+
   /**
    * @function removeLayer
-   * @memberOf HsDrawController
    * @description Removes selected drawing layer from both Layermanager and Layman
    */
   async removeLayer(): Promise<void> {
@@ -545,10 +610,10 @@ export class HsDrawService {
   }
   /**
    * @function rightClickCondition
-   * @memberOf HsDrawService
    * @description Determines whether rightclick should finish the drawing or not
    * @param typeNum Number used in calculation of minimal number of vertexes. Depends on geom type (polygon/line)
    * @param vertexCount Number of vertexes the sketch has
+   * @return return boolean value if right mouse button was clicked
    */
   rightClickCondition(typeNum: number, vertexCount: number): boolean {
     const minPoints = this.HsConfig.preserveLastSketchPoint ? 1 : 0;
@@ -583,7 +648,6 @@ export class HsDrawService {
     onDrawEnd = (e) => this.onDrawEnd(e),
     onSelected,
     onDeselected,
-    changeStyle,
     drawState = true,
   }: activateParams): void {
     this.onDeselected = onDeselected;
@@ -593,7 +657,6 @@ export class HsDrawService {
       this.draw = new Draw({
         source: this.source,
         type: /** @type {GeometryType} */ this.type,
-        style: changeStyle ? changeStyle() : undefined,
         condition: (e) => {
           if (e.originalEvent.buttons === 1) {
             //left click
@@ -637,9 +700,6 @@ export class HsDrawService {
         (e) => {
           if (this.type == 'Circle') {
             e.feature.setGeometry(fromCircle(e.feature.getGeometry()));
-          }
-          if (changeStyle) {
-            e.feature.setStyle(changeStyle());
           }
           if (onDrawEnd) {
             onDrawEnd(e);

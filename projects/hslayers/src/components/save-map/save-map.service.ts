@@ -31,8 +31,11 @@ import {
   getName,
   getPath,
   getShowInLayerManager,
+  getSld,
   getSubLayers,
   getTitle,
+  getWorkspace,
+  getWfsUrl
 } from '../../common/layer-extensions';
 
 const LCLSTORAGE_EXPIRE = 5000;
@@ -282,7 +285,6 @@ export class HsSaveMapService {
    * The layer index is not covered, as we assume
    * that it is corresponding to the layers order.
    *
-   * @memberof HsSaveMapService
    * @function layer2json
    * @param {object} layer Map layer that should be converted
    * @return {object} JSON object representing the layer
@@ -310,7 +312,7 @@ export class HsSaveMapService {
     // options
     json.visibility = layer.getVisible();
     json.opacity = layer.getOpacity();
-    json.base = getBase(layer);
+    json.base = getBase(layer) ?? false;
     json.title = getTitle(layer);
     if (getTitle(layer) == undefined) {
       this.HsLogService.warn('Layer title undefined', layer);
@@ -416,18 +418,28 @@ export class HsSaveMapService {
           url: encodeURIComponent(definition.url),
           format: definition.format,
         };
+        json.workspace = getWorkspace(layer);
         delete json.features;
       } else {
-        try {
-          json.features = this.getFeaturesJson(src.getFeatures());
-        } catch (ex) {
-          //Do nothing
+        if (getWfsUrl(layer)) {
+          json.protocol = {
+            url: getWfsUrl(layer),
+            format: 'hs.format.externalWFS',
+          };
+        } else {
+          try {
+            json.features = this.getFeaturesJson(src.getFeatures());
+          } catch (ex) {
+            //Do nothing
+          }
         }
       }
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
       json.projection = 'epsg:4326';
-      if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
+      if (getSld(layer) != undefined) {
+        json.style = getSld(layer);
+      } else if (this.HsUtilsService.instOf(layer.getStyle(), Style)) {
         json.style = this.serializeStyle(layer.getStyle());
       }
     }

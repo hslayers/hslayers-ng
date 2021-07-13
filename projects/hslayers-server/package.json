@@ -23,7 +23,7 @@
     "got": "^11.8.1",
     "passport": "^0.4.1",
     "passport-oauth2": "^1.5.0",
-    "passport-oauth2-refresh": "^2.0.1",
+    "passport-oauth2-middleware": "^1.0.3",
     "pug": "^3.0.1"
   }
 }

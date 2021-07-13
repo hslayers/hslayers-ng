@@ -1,5 +1,8 @@
+import {Component, ElementRef, OnDestroy} from '@angular/core';
+
 import Overlay from 'ol/Overlay';
-import {Component, ElementRef} from '@angular/core';
+import {Subscription} from 'rxjs';
+
 import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -21,8 +24,9 @@ import {getPopUp, getTitle} from '../../common/layer-extensions';
   selector: 'hs-query-feature-popup',
   templateUrl: './partials/feature-popup.html',
 })
-export class HsQueryFeaturePopupComponent {
+export class HsQueryFeaturePopupComponent implements OnDestroy {
   getFeatures = getFeatures;
+  olMapLoadsSubscription: Subscription;
   constructor(
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
@@ -38,12 +42,18 @@ export class HsQueryFeaturePopupComponent {
       element: ElementRef.nativeElement,
     });
 
-    this.HsEventBusService.olMapLoads.subscribe((map) => {
-      map.addOverlay(this.HsQueryBaseService.hoverPopup);
-    });
+    this.olMapLoadsSubscription = this.HsEventBusService.olMapLoads.subscribe(
+      (map) => {
+        map.addOverlay(this.HsQueryBaseService.hoverPopup);
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.HsMapService.map.removeOverlay(this.HsQueryBaseService.hoverPopup);
+    this.olMapLoadsSubscription.unsubscribe();
   }
 
-  popupVisible() {
+  popupVisible(): any {
     const featuresWithPopup = this.HsQueryBaseService.featuresUnderMouse.filter(
       (f) => {
         const layer = this.HsMapService.getLayerForFeature(f);

@@ -33,6 +33,11 @@ export interface HsLayerDescriptor {
   expandFilter?: boolean;
   expandInfo?: boolean;
   idString?: any;
+  source?: string;
   time?: HsLayerTimeDescriptor;
+  /**
+   * OL source class of this layer, in case of 'vector' also with format (e.g. 'vector (KML)')
+   */
+  type?: string;
   grayscale?: boolean;
 }

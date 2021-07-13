@@ -1,17 +1,21 @@
-import {HsEventBusService} from '../../components/core/event-bus.service';
-import {HsMapService} from '../../components/map/map.service';
-import {HsUtilsService} from '../../components/utils/utils.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import {takeUntil} from 'rxjs/operators';
+
+import {HsAddDataService} from '../../components/add-data/add-data.service';
+import {HsEventBusService} from '../../components/core/event-bus.service';
+import {HsMapService} from '../../components/map/map.service';
+import {HsUtilsService} from '../../components/utils/utils.service';
 @Injectable({providedIn: 'root'})
 export class HsWfsGetCapabilitiesService {
   service_url: any;
   constructor(
-    private HttpClient: HttpClient,
-    public HsEventBusService: HsEventBusService,
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService
+    private httpClient: HttpClient,
+    public hsEventBusService: HsEventBusService,
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -66,7 +70,7 @@ export class HsWfsGetCapabilitiesService {
   async requestGetCapabilities(service_url: string): Promise<any> {
     service_url = service_url.replace(/&amp;/g, '&');
     this.service_url = service_url;
-    const params = this.HsUtilsService.getParamsFromUrl(service_url);
+    const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request == undefined && params.REQUEST == undefined) {
       params.request = 'GetCapabilities';
@@ -83,19 +87,22 @@ export class HsWfsGetCapabilitiesService {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.HsUtilsService.proxify(url);
+    url = this.hsUtilsService.proxify(url);
 
     try {
-      const r = await this.HttpClient.get(url, {
-        responseType: 'text',
-      }).toPromise();
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      const r = await this.httpClient
+        .get(url, {
+          responseType: 'text',
+        })
+        .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+        .toPromise();
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'WFS',
         response: r,
       });
       return r;
     } catch (e) {
-      this.HsEventBusService.owsCapabilitiesReceived.next({
+      this.hsEventBusService.owsCapabilitiesReceived.next({
         type: 'WFS',
         response: e,
         error: true,
@@ -117,7 +124,7 @@ export class HsWfsGetCapabilitiesService {
         val
           .toUpperCase()
           .indexOf(
-            this.HsMapService.map
+            this.hsMapService.map
               .getView()
               .getProjection()
               .getCode()

@@ -1,6 +1,8 @@
-import '../../styles/styles.module';
 import BaseLayer from 'ol/layer/Base';
 import {GeoJSON} from 'ol/format';
+import {Vector as VectorSource} from 'ol/source';
+
+import '../../styles/styles.module';
 import {HsAddDataService} from '../add-data.service';
 import {HsMapService} from '../../map/map.service';
 import {HsStylerService} from '../../styles/styler.service';
@@ -45,10 +47,10 @@ export class HsAddDataVectorService {
     });
   };
   constructor(
-    public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
-    public HsStylerService: HsStylerService,
-    private HsAddDataService: HsAddDataService
+    public hsMapService: HsMapService,
+    public hsUtilsService: HsUtilsService,
+    public hsStylerService: HsStylerService,
+    private hsAddDataService: HsAddDataService
   ) {}
 
   /**
@@ -74,9 +76,9 @@ export class HsAddDataVectorService {
     options: HsVectorLayerOptions,
     addUnder?: BaseLayer
   ): Promise<VectorLayer> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        const lyr = this.createVectorLayer(
+        const lyr = await this.createVectorLayer(
           type,
           url,
           name,
@@ -92,15 +94,15 @@ export class HsAddDataVectorService {
         if (url !== undefined) {
           setDefinition(lyr, {
             format: 'hs.format.WFS',
-            url: url.replace('ows', 'wfs'),
+            url: url,
           });
         } else {
           setDefinition(lyr, {
             format: 'hs.format.WFS',
           });
         }
-        if (this.HsMapService.map) {
-          this.HsAddDataService.addLayer(lyr, addUnder);
+        if (this.hsMapService.map) {
+          this.hsAddDataService.addLayer(lyr, addUnder);
         }
         resolve(lyr);
       } catch (ex) {
@@ -121,7 +123,7 @@ export class HsAddDataVectorService {
    * @param {HsVectorLayerOptions} options Other options
    * @returns {Promise} Return Promise which return OpenLayers vector layer
    */
-  createVectorLayer(
+  async createVectorLayer(
     type: string,
     url: string,
     name: string,
@@ -129,22 +131,22 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {}
-  ): VectorLayer {
+  ): Promise<VectorLayer> {
     if (
       type.toLowerCase() != 'sparql' &&
       type.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
-      url = this.HsUtilsService.proxify(url);
+      url = this.hsUtilsService.proxify(url);
     }
 
-    if (this.HsUtilsService.undefineEmptyString(type) === undefined) {
+    if (this.hsUtilsService.undefineEmptyString(type) === undefined) {
       type = this.tryGuessTypeFromUrl(url);
     }
 
     let mapProjection;
-    if (this.HsMapService.map) {
-      mapProjection = this.HsMapService.map.getView().getProjection().getCode();
+    if (this.hsMapService.map) {
+      mapProjection = this.hsMapService.map.getView().getProjection().getCode();
     }
 
     const descriptor = new VectorLayerDescriptor(
@@ -165,11 +167,15 @@ export class HsAddDataVectorService {
       mapProjection
     );
 
-    const src = new sourceDescriptor.sourceClass(sourceDescriptor);
+    const src =
+      sourceDescriptor.sourceClass == VectorSource
+        ? new sourceDescriptor.sourceClass(sourceDescriptor.sourceParams)
+        : new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
     if (descriptor.layerParams.style) {
-      descriptor.layerParams.style = this.HsStylerService.parseStyle(
-        descriptor.layerParams.style
+      Object.assign(
+        descriptor.layerParams,
+        await this.hsStylerService.parseStyle(descriptor.layerParams.style)
       );
     }
     const lyr = new VectorLayer(descriptor.layerParams);
@@ -208,11 +214,11 @@ export class HsAddDataVectorService {
       !isNaN(extent[1]) &&
       !isNaN(extent[2]) &&
       !isNaN(extent[3]) &&
-      this.HsMapService.map
+      this.hsMapService.map
     ) {
-      this.HsMapService.map
+      this.hsMapService.map
         .getView()
-        .fit(extent, this.HsMapService.map.getSize());
+        .fit(extent, this.hsMapService.map.getSize());
       src.un('change', this.changeListener);
     }
   }
@@ -235,10 +241,10 @@ export class HsAddDataVectorService {
   }
   async readUploadedFile(file: any): Promise<any> {
     let uploadedData: any = {};
-    if (file.name.endsWith('kml')) {
+    if (file.name.toLowerCase().endsWith('kml')) {
       uploadedData = await this.createVectorObjectFromXml(file, 'kml');
       return uploadedData;
-    } else if (file.name.endsWith('gpx')) {
+    } else if (file.name.toLowerCase().endsWith('gpx')) {
       uploadedData = await this.createVectorObjectFromXml(file, 'gpx');
       return uploadedData;
     } else {
@@ -276,7 +282,7 @@ export class HsAddDataVectorService {
     const format = new GeoJSON();
     const features = format.readFeatures(json);
     const projection = format.readProjection(json);
-    const mapProjection = this.HsMapService.map.getView().getProjection();
+    const mapProjection = this.hsMapService.map.getView().getProjection();
     if (projection != mapProjection) {
       features.forEach((f) =>
         //TODO: Make it parallel using workers or some library

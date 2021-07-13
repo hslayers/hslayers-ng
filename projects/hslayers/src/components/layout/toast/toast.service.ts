@@ -19,6 +19,9 @@ export class HsToastService {
    * Pushes new Toasts to array with content and options
    */
   show(textOrTpl: string | TemplateRef<any>, options: any = {}): void {
+    if (this.toasts.length >= 5) {
+      this.toasts = this.toasts.slice(-4);
+    }
     this.toasts.push({textOrTpl, ...options});
   }
   /**

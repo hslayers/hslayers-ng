@@ -52,7 +52,6 @@ hs-sidebar div.hs-sidebar-list a:not(.active){
 
 .hs-content-wrapper.hs-open .hs-sidebar-list {
     width: 100%;
-    height: 100%;
 }
 
 .hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
@@ -126,6 +125,7 @@ hs-mini-sidebar .hs-sidebar-item:not(.hs-panel-hidden){
 }
 
 hs-mini-sidebar .hs-sidebar-list {
+    height: auto;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;

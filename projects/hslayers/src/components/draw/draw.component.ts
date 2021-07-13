@@ -17,7 +17,6 @@ export class HsDrawComponent {
   layersExpanded: boolean;
   snapLayersExpanded: boolean;
   drawToolbarExpanded: any;
-  useIndividualStyle = true;
   opacity = 0.2;
   linewidth = 1;
   fillcolor: any = {'background-color': 'rgba(0, 153, 255, 1)'};
@@ -29,7 +28,9 @@ export class HsDrawComponent {
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public HsQueryBaseService: HsQueryBaseService
-  ) {}
+  ) {
+    this.HsDrawService.init();
+  }
 
   activateDrawing(withStyle?): void {
     this.HsDrawService.activateDrawing({
@@ -40,9 +41,7 @@ export class HsDrawComponent {
   setType(what): void {
     const type = this.HsDrawService.setType(what);
     if (type) {
-      this.activateDrawing(
-        this.HsLayoutService.panelVisible('draw') && this.useIndividualStyle
-      );
+      this.activateDrawing(this.HsLayoutService.panelVisible('draw'));
     }
   }
 

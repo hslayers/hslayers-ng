@@ -1,4 +1,4 @@
 export interface accessRightsInterface {
-  write: string;
-  read: string;
+  'access_rights.write': string;
+  'access_rights.read': string;
 }

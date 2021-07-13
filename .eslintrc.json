@@ -11,15 +11,21 @@
   },
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "extends": [
         "openlayers",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@angular-eslint/recommended"
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/recommended--extra"
       ],
-      "plugins": ["@typescript-eslint", "@angular-eslint", "eslint-plugin-tsdoc"],
-      
+      "plugins": [
+        "@typescript-eslint",
+        "@angular-eslint",
+        "eslint-plugin-tsdoc"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": 2018
@@ -27,11 +33,19 @@
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
-          { "type": "attribute", "prefix": "hs", "style": "camelCase" }
+          {
+            "type": "attribute",
+            "prefix": "hs",
+            "style": "camelCase"
+          }
         ],
         "@angular-eslint/component-selector": [
           "error",
-          { "type": "element", "prefix": "hs", "style": "kebab-case" }
+          {
+            "type": "element",
+            "prefix": "hs",
+            "style": "kebab-case"
+          }
         ],
         "brace-style": "warn",
         "no-console": "warn",
@@ -46,22 +60,37 @@
             "ts": "never"
           }
         ],
-        "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": [
+              "constructors"
+            ]
+          }
+        ],
         "valid-jsdoc": "off",
         "tsdoc/syntax": "warn"
       },
       "settings": {
-        "jsdoc":{
-          "tagNamePreference":{"returns":"returns"},
+        "jsdoc": {
+          "tagNamePreference": {
+            "returns": "returns"
+          },
           "require-returns-type": "off"
         }
       }
     },
     {
-      "files": ["*.html"],
+      "files": [
+        "*.html"
+      ],
       "parser": "@angular-eslint/template-parser",
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "plugins": ["@angular-eslint/template"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "plugins": [
+        "@angular-eslint/template"
+      ],
       "rules": {}
     },
     {
@@ -76,7 +105,10 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".ts"]
+        "extensions": [
+          ".js",
+          ".ts"
+        ]
       }
     }
   }

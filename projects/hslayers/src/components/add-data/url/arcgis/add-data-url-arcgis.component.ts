@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import {HsAddDataArcGisService} from './add-data-url-arcgis.service';
+import {HsAddDataService} from './../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
@@ -18,33 +19,33 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   sourceHistory;
   layerToSelect: any;
   error: any;
-
+  selectAll = true;
   owsConnectingSubscription: Subscription;
   hasChecked: boolean;
 
   constructor(
-    public HsAddDataArcGisService: HsAddDataArcGisService,
+    public hsAddDataArcGisService: HsAddDataArcGisService,
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsEventBusService: HsEventBusService,
     public hsHistoryListService: HsHistoryListService,
-    public HsAddDataUrlService: HsAddDataUrlService,
-    public HsUtilsService: HsUtilsService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsUtilsService: HsUtilsService,
+    public hsAddDataService: HsAddDataService
   ) {
-    this.data = HsAddDataArcGisService.data;
+    this.data = hsAddDataArcGisService.data;
 
-    this.owsConnectingSubscription = this.hsEventBusService.owsConnecting.subscribe(
-      ({type, uri, layer}) => {
+    this.owsConnectingSubscription =
+      this.hsEventBusService.owsConnecting.subscribe(({type, uri, layer}) => {
         if (type === 'arcgis') {
           this.setUrlAndConnect(uri, layer);
         }
-      }
-    );
+      });
 
     //TODO: this.sourceHistory = this.HsAddDataArcGisService.sourceHistory;
   }
 
-  hasNestedLayers = this.HsAddDataArcGisService.hasNestedLayers;
-  getDimensionValues = this.HsAddDataArcGisService.getDimensionValues;
+  hasNestedLayers = this.hsAddDataArcGisService.hasNestedLayers;
+  getDimensionValues = this.hsAddDataArcGisService.getDimensionValues;
 
   ngOnDestroy(): void {
     this.owsConnectingSubscription.unsubscribe();
@@ -54,39 +55,47 @@ export class HsAddDataArcGisComponent implements OnDestroy {
     this.hasChecked = false;
     this.hsHistoryListService.addSourceHistory(
       'Arcgis',
-      this.HsAddDataArcGisService.url
+      this.hsAddDataArcGisService.url
     );
     this.hsArcgisGetCapabilitiesService.requestGetCapabilities(
-      this.HsAddDataArcGisService.url
+      this.hsAddDataArcGisService.url
     );
-    this.HsAddDataArcGisService.data.getMapUrl = this.HsAddDataArcGisService.url;
-    this.HsAddDataArcGisService.loadingInfo = true;
-    this.HsAddDataArcGisService.showDetails = true;
+    this.hsAddDataArcGisService.data.getMapUrl =
+      this.hsAddDataArcGisService.url;
+    this.hsAddDataArcGisService.loadingInfo = true;
+    this.hsAddDataArcGisService.showDetails = true;
   };
 
   /**
-   * @function selectAllLayers
+   * @param layers
    * @description Select all layers from service.
    */
   selectAllLayers(layers: any[]): void {
+    this.selectAll = !this.selectAll;
+    this.checkAllLayers(layers);
+  }
+
+  checkAllLayers(layers: any[]): void {
     for (const layer of layers) {
-      layer.checked = !layer.checked;
+      layer.checked = false;
+      layer.checked = !this.selectAll;
       if (layer.Layer) {
-        this.selectAllLayers(layer.Layer);
+        this.checkAllLayers(layer.Layer);
       }
     }
+    this.changed();
   }
 
   addLayers(checked: boolean): void {
-    this.HsAddDataArcGisService.addLayers(checked);
+    this.hsAddDataArcGisService.addLayers(checked);
   }
 
   srsChanged(): void {
-    this.HsAddDataArcGisService.srsChanged();
+    this.hsAddDataArcGisService.srsChanged();
   }
 
   changed(): void {
-    this.hasChecked = this.HsAddDataUrlService.searchForChecked(
+    this.hasChecked = this.hsAddDataUrlService.searchForChecked(
       this.data.services
     );
   }
@@ -99,7 +108,7 @@ export class HsAddDataArcGisComponent implements OnDestroy {
    * getCapabilities arrives
    */
   setUrlAndConnect(url: string, layer: string): void {
-    this.HsAddDataArcGisService.url = url;
+    this.hsAddDataArcGisService.url = url;
     this.connect(layer);
   }
 }

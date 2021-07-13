@@ -1,4 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+
+import {Layer} from 'ol/layer';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from '../core/core.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -14,7 +26,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {Layer} from 'ol/layer';
+
 import {
   getActive,
   getAttribution,
@@ -26,7 +38,11 @@ import {
   selector: 'hs-layer-manager',
   templateUrl: './partials/layermanager.html',
 })
-export class HsLayerManagerComponent implements OnInit {
+export class HsLayerManagerComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
+  @ViewChild('layerEditor', {static: false, read: ElementRef})
+  layerEditorRef: ElementRef;
   map: any;
   shiftDown = false;
   data: any;
@@ -85,6 +101,7 @@ export class HsLayerManagerComponent implements OnInit {
   getActive = getActive;
   getTitle = getTitle;
   getThumbnail = getThumbnail;
+  private ngUnsubscribe = new Subject();
   constructor(
     public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
@@ -103,47 +120,59 @@ export class HsLayerManagerComponent implements OnInit {
     this.data = this.HsLayerManagerService.data;
     this.HsMapService.loaded().then((map) => this.init(map));
 
-    this.HsEventBusService.layerRemovals.subscribe(
-      (layer: HsLayerDescriptor) => {
+    this.HsEventBusService.layerRemovals
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((layer: HsLayerDescriptor) => {
         if (
           this.HsLayerManagerService?.currentLayer?.layer == layer &&
           this.HsUtilsService.runningInBrowser()
         ) {
-          const layerPanel = this.HsLayoutService.contentWrapper.querySelector(
-            '.hs-layerpanel'
-          );
           const layerNode = document.getElementsByClassName(
             'hs-lm-mapcontentlist'
           )[0];
-          this.HsUtilsService.insertAfter(layerPanel, layerNode);
+          this.HsUtilsService.insertAfter(
+            this.layerEditorRef.nativeElement,
+            layerNode
+          );
           this.HsLayerManagerService.currentLayer = null;
         }
-      }
-    );
+      });
 
-    this.HsEventBusService.compositionLoads.subscribe((data) => {
-      if (data.error == undefined) {
-        if (data.data != undefined && data.data.id != undefined) {
-          this.HsLayerManagerService.composition_id = data.data.id;
-        } else if (data.id != undefined) {
-          this.HsLayerManagerService.composition_id = data.id;
-        } else {
+    this.HsEventBusService.compositionLoads
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
+        if (data.error == undefined) {
+          if (data.data != undefined && data.data.id != undefined) {
+            this.HsLayerManagerService.composition_id = data.data.id;
+          } else if (data.id != undefined) {
+            this.HsLayerManagerService.composition_id = data.id;
+          } else {
+            this.HsLayerManagerService.composition_id = null;
+          }
+        }
+      });
+
+    this.HsEventBusService.compositionDeletes
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((composition) => {
+        if (composition.id == this.HsLayerManagerService.composition_id) {
           this.HsLayerManagerService.composition_id = null;
         }
-      }
-    });
-
-    this.HsEventBusService.compositionDeletes.subscribe((composition) => {
-      if (composition.id == this.HsLayerManagerService.composition_id) {
-        this.HsLayerManagerService.composition_id = null;
-      }
-    });
+      });
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   ngOnInit(): void {
     this.layerlistVisible = true;
   }
 
+  ngAfterViewInit(): void {
+    this.HsLayerManagerService.layerEditorElement =
+      this.layerEditorRef.nativeElement;
+  }
   changeBaseLayerVisibility(e?, layer?: Layer) {
     return this.HsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }
@@ -250,8 +279,10 @@ export class HsLayerManagerComponent implements OnInit {
   init(m): void {
     this.map = this.HsMapService.map;
     this.HsLayerSynchronizerService.init(this.map);
-    this.HsEventBusService.mapResets.subscribe(() => {
-      this.HsLayerManagerService.composition_id = null;
-    });
+    this.HsEventBusService.mapResets
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.HsLayerManagerService.composition_id = null;
+      });
   }
 }

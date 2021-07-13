@@ -1,4 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+
+import {Subscription} from 'rxjs';
+
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from '../../../config.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -10,17 +13,18 @@ import {HsShareUrlService} from '../../permalink/share-url.service';
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.html',
 })
-export class HsAddDataUrlComponent {
+export class HsAddDataUrlComponent implements OnDestroy {
   typeSelected: string;
   types: any[];
+  owsFillingSubscription: Subscription;
 
   constructor(
     public hsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService,
-    public HsEventBusService: HsEventBusService,
-    public HsShareUrlService: HsShareUrlService,
-    public HsAddDataService: HsAddDataService,
-    public HsLayoutService: HsLayoutService
+    public hsLanguageService: HsLanguageService,
+    public hsEventBusService: HsEventBusService,
+    public hsShareUrlService: HsShareUrlService,
+    public hsAddDataService: HsAddDataService,
+    public hsLayoutService: HsLayoutService
   ) {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes;
@@ -54,41 +58,46 @@ export class HsAddDataUrlComponent {
     }
     this.typeSelected = '';
 
-    this.HsEventBusService.owsFilling.subscribe(({type, uri, layer}) => {
-      this.typeSelected = type.toLowerCase();
-      this.HsEventBusService.owsConnecting.next({
-        type: type,
-        uri: uri,
-        layer: layer,
-      });
-    });
+    this.owsFillingSubscription = this.hsEventBusService.owsFilling.subscribe(
+      ({type, uri, layer}) => {
+        this.typeSelected = type.toLowerCase();
+        this.hsEventBusService.owsConnecting.next({
+          type: type,
+          uri: uri,
+          layer: layer,
+        });
+      }
+    );
 
-    if (this.HsAddDataService.urlType) {
-      this.selectType(this.HsAddDataService.urlType);
-      this.connectServiceFromUrlParam(this.HsAddDataService.urlType);
+    if (this.hsAddDataService.urlType) {
+      this.selectType(this.hsAddDataService.urlType);
+      this.connectServiceFromUrlParam(this.hsAddDataService.urlType);
     }
+  }
+  ngOnDestroy(): void {
+    this.owsFillingSubscription.unsubscribe();
   }
 
   selectType(type: string): void {
     this.typeSelected = type;
   }
 
-  connectServiceFromUrlParam(type) {
-    const layers = this.HsShareUrlService.getParamValue(`${type}_layers`);
-    const url = this.HsShareUrlService.getParamValue(`${type}_to_connect`);
+  connectServiceFromUrlParam(type): void {
+    const layers = this.hsShareUrlService.getParamValue(`${type}_layers`);
+    const url = this.hsShareUrlService.getParamValue(`${type}_to_connect`);
 
     // const serviceName = `hsAddLayersWmsService`;
     if (layers) {
       for (const layer of layers.split(';')) {
-        this.HsEventBusService.owsConnecting.next({
+        this.hsEventBusService.owsConnecting.next({
           type: type,
           uri: url,
           layer: layer,
         });
       }
     } else {
-      this.HsEventBusService.owsConnecting.next({type: type, uri: url});
-      this.HsLayoutService.setMainPanel('addData');
+      this.hsEventBusService.owsConnecting.next({type: type, uri: url});
+      this.hsLayoutService.setMainPanel('addData');
     }
   }
 }

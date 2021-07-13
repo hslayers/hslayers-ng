@@ -1,12 +1,12 @@
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+
 import BaseLayer from 'ol/layer/Base';
 import {Attribution} from 'ol/control';
 import {Group, Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
-import {Injectable} from '@angular/core';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
-
-import {Subject} from 'rxjs';
 
 //FIX ME
 //refactor
@@ -19,6 +19,10 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {
+  WMSGetCapabilitiesResponse,
+  WmsLayer,
+} from '../../../../common/wms/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferedFormat} from '../../../../common/format-utils';
@@ -39,9 +43,9 @@ export class HsAddDataUrlWmsService {
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
-    public HsAddDataService: HsAddDataService,
-    public HsEventBusService: HsEventBusService,
-    public HsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService,
+    public hsAddDataUrlService: HsAddDataUrlService
   ) {
     this.url = '';
     this.data = {
@@ -53,20 +57,27 @@ export class HsAddDataUrlWmsService {
       addUnder: null,
     };
 
-    this.HsEventBusService.olMapLoads.subscribe(() => {
+    this.hsEventBusService.olMapLoads.subscribe(() => {
       this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
         .getCode()
         .toUpperCase();
     });
+    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+      this.loadingInfo = false;
+      this.showDetails = false;
+    });
 
-    this.HsEventBusService.owsCapabilitiesReceived.subscribe(
+    this.hsEventBusService.owsCapabilitiesReceived.subscribe(
       async ({type, response, error}) => {
         if (type === 'WMS') {
+          if (!response && !error) {
+            return;
+          }
           if (error) {
             this.throwParsingError(response.message);
-            return
+            return;
           }
           try {
             await this.capabilitiesReceived(response, this.layerToSelect);
@@ -93,7 +104,7 @@ export class HsAddDataUrlWmsService {
     this.url = null;
     this.showDetails = false;
     this.loadingInfo = false;
-    this.HsAddDataUrlService.addDataCapsParsingError.next(e);
+    this.hsAddDataUrlService.addDataCapsParsingError.next(e);
   }
 
   /**
@@ -113,16 +124,18 @@ export class HsAddDataUrlWmsService {
       const oParser = new DOMParser();
       const oDOM = oParser.parseFromString(response, 'application/xml');
       const doc = oDOM.documentElement;
-      doc.querySelectorAll('Capability>Layer>CRS').forEach((srs) => {
+      doc.querySelectorAll('Capability>Layer CRS').forEach((srs) => {
         this.data.srss.push(srs.innerHTML);
       });
+      //filter out duplicate records
+      this.data.srss = [...new Set(this.data.srss)];
     }
   }
 
   async capabilitiesReceived(response, layerToSelect: string): Promise<void> {
     try {
       const parser = new WMSCapabilities();
-      const caps = parser.read(response);
+      const caps: WMSGetCapabilitiesResponse = parser.read(response);
       this.data.mapProjection = this.hsMapService.map
         .getView()
         .getProjection()
@@ -166,11 +179,16 @@ export class HsAddDataUrlWmsService {
 
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
-      this.data.extent =
-        this.data.services[0].EX_GeographicBoundingBox ||
-        this.data.services[0].BoundingBox;
-
-      this.HsAddDataUrlService.selectLayerByName(
+      //TODO: shalln't we move this logic after the layer is added to map?
+      if (layerToSelect) {
+        const serviceLayer = this.data.services.filter(
+          (el) => el.Name == layerToSelect
+        )[0];
+        this.data.extent = this.getLayerBBox(serviceLayer);
+      } else {
+        this.data.extent = this.calcAllLayersExtent(this.data.services);
+      }
+      this.hsAddDataUrlService.selectLayerByName(
         layerToSelect,
         this.data.services,
         'Name'
@@ -202,17 +220,56 @@ export class HsAddDataUrlWmsService {
     }
   }
 
-  filterCapabilitiesLayers(layers) {
-    let tmp = [];
+  /**
+   * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
+   */
+  calcAllLayersExtent(serviceLayers: any): any {
+    if (!Array.isArray(serviceLayers)) {
+      return this.getLayerBBox(serviceLayers);
+    }
+    return serviceLayers
+      .map((lyr) => this.getLayerBBox(lyr))
+      .reduce((acc, curr) => {
+        //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
+        const [west, south, east, north] = curr;
+        //minimum easting
+        if (-180 <= west < acc[0]) {
+          acc[0] = west;
+        }
+        //minimum northing
+        if (-90 <= south < acc[1]) {
+          acc[1] = south;
+        }
+        //maximum easting
+        if (180 >= east > acc[2]) {
+          acc[2] = east;
+        }
+        //maximum northing
+        if (90 >= north > acc[3]) {
+          acc[3] = north;
+        }
+        return acc;
+      });
+  }
+
+  getLayerBBox(serviceLayer: any): any {
+    return serviceLayer.EX_GeographicBoundingBox; // TODO: ?? serviceLayer.BoundingBox; (is more complex, contains SRS definition etc.)
+  }
+
+  //TODO: what is the reason to do such things?
+  filterCapabilitiesLayers(layers: WmsLayer | Array<WmsLayer>): Array<any> {
     if (Array.isArray(layers)) {
-      tmp = layers;
-    } else if (typeof layers == 'object') {
-      if (layers.Layer) {
+      return layers;
+    }
+    let tmp = [];
+    if (typeof layers == 'object') {
+      if (layers.Layer && Array.isArray(layers.Layer)) {
         const layersWithNameParam = layers.Layer.filter((layer) => layer.Name);
         if (layersWithNameParam.length > 0) {
-          tmp = layersWithNameParam;
-        } else {
-          for (const layer of layers.Layer) {
+          return layersWithNameParam;
+        }
+        for (const layer of layers.Layer) {
+          if (Array.isArray(layer?.Layer)) {
             tmp.push(...layer.Layer.filter((layer) => layer.Name));
           }
         }
@@ -224,16 +281,16 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @description Removes extra port which is added to the getMap request when
+   * Removes extra port which is added to the getMap request when
    * GetCapabilities is queried through proxy. <GetMap><DCPType><HTTP><Get>
-   * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/>
+   * \<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/maps"/\>
    * then becomes <GetMap><DCPType><HTTP><Get>
-   * <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz:8085/cgi-bin/mapserv?map=/home/maps"/>
+   * \<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gis.lesprojekt.cz:8085/cgi-bin/mapserv?map=/home/maps"/\>
    * which is wrong.
-   * @param {string} url Url for which to remove port but only when proxified
+   * @param url - URL for which to remove port but only when proxified
    * with port in proxy path.
    * @private
-   * @return {string} Url without proxy services port added to it.
+   * @returns URL without proxy services port added to it.
    */
   removePortIfProxified(url: string): string {
     if (this.hsConfig.proxyPrefix === undefined) {
@@ -249,15 +306,15 @@ export class HsAddDataUrlWmsService {
   }
 
   srsChanged(): void {
-    this.data.resample_warning = !this.hsWmsGetCapabilitiesService.currentProjectionSupported(
-      [this.data.srs]
-    );
+    this.data.resample_warning =
+      !this.hsWmsGetCapabilitiesService.currentProjectionSupported([
+        this.data.srs,
+      ]);
   }
 
   /**
-   * @function addLayers
-   * @description Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
-   * @param {boolean} checkedOnly Add all available layers or only checked ones. checkedOnly=false=all
+   * Second step in adding layers to the map, with resampling or without. Loops through the list of layers and calls addLayer.
+   * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    */
   addLayers(checkedOnly: boolean): void {
     if (this.data.services === undefined) {
@@ -297,29 +354,28 @@ export class HsAddDataUrlWmsService {
 
   /**
    * @param service
-   * @return {Array}
+   * @returns {Array}
    */
   getSublayerNames(service): any[] {
-    if (service.Layer) {
-      return service.Layer.map((l) => {
-        const tmp: any = {};
-        if (l.Name) {
-          tmp.name = l.Name;
-        }
-        if (l.Title) {
-          tmp.title = l.Title;
-        }
-        if (l.Layer) {
-          tmp.children = this.getSublayerNames(l);
-        }
-        return tmp;
-      });
-    } else {
+    if (!service.Layer) {
       return [];
     }
+    return service.Layer.map((l) => {
+      const tmp: any = {};
+      if (l.Name) {
+        tmp.name = l.Name;
+      }
+      if (l.Title) {
+        tmp.title = l.Title;
+      }
+      if (l.Layer) {
+        tmp.children = this.getSublayerNames(l);
+      }
+      return tmp;
+    });
   }
 
-  hasNestedLayers(layer): boolean {
+  hasNestedLayers(layer: WmsLayer): boolean {
     if (layer === undefined) {
       return false;
     }
@@ -327,16 +383,15 @@ export class HsAddDataUrlWmsService {
   }
 
   /**
-   * @function addLayer
-   * @param {object} layer capabilities layer object
-   * @param {string} layerName layer name in the map
-   * @param {string} path Path name
-   * @param {string} imageFormat Format in which to serve image. Usually: image/png
-   * @param {string} queryFormat See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
+   * Add selected layer to map
+   * @param layer - capabilities layer object
+   * @param layerName - layer name in the map
+   * @param path - Path (folder) name
+   * @param imageFormat - Format in which to serve image. Usually: image/png
+   * @param queryFormat - See info_format in https://docs.geoserver.org/stable/en/user/services/wms/reference.html
    * @param {import('ol/Size')} tileSize Tile size in pixels
    * @param {import('ol/proj/Projection')} crs of the layer
-   * @param {Array} subLayers Static sub-layers of the layer
-   * @description Add selected layer to map
+   * @param subLayers - Static sub-layers of the layer
    */
   addLayer(
     layer,
@@ -398,18 +453,9 @@ export class HsAddDataUrlWmsService {
       }
     }
 
-    const legends = [];
-    if (layer.Style && layer.Style[0].LegendURL) {
-      const legend = layer.Style[0].LegendURL[0].OnlineResource;
-      legends.push(legend);
-    }
-
+    let legends = undefined;
     let styles = undefined;
-    if (layer.styleSelected) {
-      styles = layer.styleSelected;
-    } else {
-      styles = layer.Style && layer.Style.length > 0 ? layer.Style[0].Name : '';
-    }
+    ({styles, legends} = this.getLayerStyles(layer));
     const source = new source_class({
       url: this.data.getMapUrl,
       attributions,
@@ -426,9 +472,8 @@ export class HsAddDataUrlWmsService {
       ),
       crossOrigin: 'anonymous',
     });
-    const metadata = this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(
-      layer
-    );
+    const metadata =
+      this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
     const new_layer = new layer_class({
       title: layerName,
       name: layerName,
@@ -446,17 +491,36 @@ export class HsAddDataUrlWmsService {
       base: this.data.base,
     });
     this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
-    this.HsAddDataService.addLayer(new_layer, this.data.addUnder);
+    this.hsAddDataService.addLayer(new_layer, this.data.addUnder);
+  }
+
+  private getLayerStyles(layer: any): {styles: string[]; legends: string[]} {
+    const legends = [];
+    let styles = undefined;
+    if (layer.styleSelected) {
+      styles = layer.styleSelected.Name;
+      if (layer.styleSelected.LegendURL?.length > 0) {
+        legends.push(layer.styleSelected.LegendURL[0].OnlineResource);
+      }
+    } else if (layer.Style && layer.Style.length > 0) {
+      const firstStyle = layer.Style[0];
+      styles = firstStyle.Name;
+      if (firstStyle.LegendURL) {
+        legends.push(firstStyle.LegendURL[0].OnlineResource);
+      }
+    } else {
+      styles = '';
+    }
+    return {styles, legends};
   }
 
   /**
-   * @description Add service and its layers to project
-   * @function addService
-   * @param {string} url Service url
-   * @param addUnder {BaseLayer} OL layer before which to add new layer
-   * @param path {string} Folder name with path to group layers
-   * @param {Group} group Group layer to which add layer to
-   * @param {string} layerName Name of layer to add. If not specified then all layers are added
+   * Add service and its layers to project
+   * @param url - Service URL
+   * @param addUnder - OL layer before which to add new layer
+   * @param path - Folder name with path to group layers
+   * @param group - Group layer to which add layer to
+   * @param layerName - Name of layer to add. If not specified then all layers are added
    */
   addService(
     url: string,
@@ -484,7 +548,7 @@ export class HsAddDataUrlWmsService {
           if (group !== undefined) {
             group.addLayer(layer);
           } else {
-            this.HsAddDataService.addLayer(layer, addUnder);
+            this.hsAddDataService.addLayer(layer, addUnder);
           }
         });
       });

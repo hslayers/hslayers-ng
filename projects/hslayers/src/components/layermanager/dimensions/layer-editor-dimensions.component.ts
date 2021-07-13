@@ -1,5 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy} from '@angular/core';
+
 import {Layer} from 'ol/layer';
+import {Subscription} from 'rxjs';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
 import {HsDimensionDescriptor} from './dimension.class';
@@ -14,10 +16,10 @@ import {HsUtilsService} from '../../utils/utils.service';
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.html',
 })
-export class HsLayerEditorDimensionsComponent {
+export class HsLayerEditorDimensionsComponent implements OnDestroy, OnChanges {
   @Input() layer: Layer;
   dimensions: Array<HsDimensionDescriptor> = [];
-
+  layerDimensionDefinitionChangeSubscription: Subscription;
   constructor(
     public hsDimensionService: HsDimensionService,
     public hsUtilsService: HsUtilsService,
@@ -26,13 +28,17 @@ export class HsLayerEditorDimensionsComponent {
     public hsLayerEditorService: HsLayerEditorService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService
   ) {
-    this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
-      ({layer}) => {
-        if (layer == this.layer) {
-          this.ngOnChanges();
+    this.layerDimensionDefinitionChangeSubscription =
+      this.hsLayerEditorService.layerDimensionDefinitionChange.subscribe(
+        ({layer}) => {
+          if (layer == this.layer) {
+            this.ngOnChanges();
+          }
         }
-      }
-    );
+      );
+  }
+  ngOnDestroy(): void {
+    this.layerDimensionDefinitionChangeSubscription.unsubscribe();
   }
 
   ngOnChanges(): void {

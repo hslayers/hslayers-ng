@@ -1,12 +1,12 @@
-import BaseLayer from 'ol/layer/Base';
-
 import {Injectable} from '@angular/core';
+
+import BaseLayer from 'ol/layer/Base';
 import {Subject} from 'rxjs';
-import {getBase} from '../../common/layer-extensions';
 
 import {HsConfig} from '../../config.service';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {getBase} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -16,14 +16,17 @@ export class HsAddDataService {
   //Holds reference to data.url.component type selected
   urlType: string;
   datasetSelected: Subject<{type: any}> = new Subject();
-
+  /**
+   * Cancels any external url data request from datasources panel
+   */
+  cancelUrlRequest: Subject<void> = new Subject<void>();
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public HsConfig: HsConfig
+    public hsConfig: HsConfig
   ) {}
 
-  addLayer(layer: BaseLayer, underLayer?: BaseLayer) {
+  addLayer(layer: BaseLayer, underLayer?: BaseLayer): void {
     if (underLayer) {
       const layers = this.hsMapService.getLayersArray();
       const underZ = underLayer.getZIndex();

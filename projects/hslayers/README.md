@@ -8,7 +8,7 @@ HSLayers-NG is a library which extends OpenLayers 6 functionality by providing a
 | 1                | 1.7                 | 4.5.3       |
 | 2                | 1.7 + 9.1.x (hybrid)| >=4.4       |
 | 3                | 9.x                 | 4.x         |
-| 4                | 10.x                | 4.x         |
+| 4                | 11.x                | 4.x         |
 
 ## Demo
 
@@ -29,7 +29,7 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies:
-`npm i bootstrap@^4.0.0 ol@^6.0.0 @angular/common@^10.0.0 @angular/core@^10.0.0 @angular/forms@^10.0.0 @ngx-translate/http-loader@^5.0.0 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^8.0.0 ol-popup@^4.0.0 proj4@^2.6.0 share-api-polyfill@^1.0.0 @angular/compiler@^10.0.0 @angular/platform-browser@^10.0.0 @angular/platform-browser-dynamic@^10.0.0 @angular/localize@^10.0.0 rxjs@^6.0.0 zone.js@^0.10.3 xml-js@^1.0.0 ngx-cookie-service^10.0.0`
+`npm i bootstrap@^4.0.0 ol@^6.0.0 @angular/common@^11.0.0 @angular/core@^11.0.0 @angular/forms@^11.0.0 @ngx-translate/http-loader@^5.0.0 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^9.0.0 ol-popup@^4.0.0 proj4@^2.6.0 share-api-polyfill@^1.0.0 @angular/compiler@^11.0.0 @angular/platform-browser@^11.0.0 @angular/platform-browser-dynamic@^11.0.0 @angular/localize@^11.0.0 rxjs@^6.0.0 zone.js@^0.11.3 xml-js@^1.0.0 ngx-cookie-service^11.0.0 geostyler-style@^4 geostyler-sld-parser@^2 geostyler-openlayers-parser@^2 ngx-color@^6`
 
 For using hslayers-ng prebuilt bundle including angular, bootstrap etc. dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 

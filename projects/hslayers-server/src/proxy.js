@@ -36,6 +36,10 @@ require('http')
             )}&username=${GEONAMES_APIKEY}`;
           }
         }
+        if (req.url.indexOf('api.openrouteservice.org') > -1) {
+          req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY
+        }
+        
         cors_proxy.emit('request', req, res);
       }
     } catch (ex) {
