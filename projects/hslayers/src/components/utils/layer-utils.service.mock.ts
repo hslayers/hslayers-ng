@@ -1,9 +1,19 @@
-import {Layer} from 'ol/layer';
+import {Cluster, Vector as VectorSource} from 'ol/source';
+import {HsUtilsServiceMock} from './utils.service.mock';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 export class HsLayerUtilsServiceMock {
   constructor() {}
 
+  HsUtilsService = new HsUtilsServiceMock();
   isLayerVectorLayer(layer: Layer): boolean {
+    if (
+      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      (this.HsUtilsService.instOf(layer.getSource(), Cluster) ||
+        this.HsUtilsService.instOf(layer.getSource(), VectorSource))
+    ) {
+      return true;
+    }
     return false;
   }
 
