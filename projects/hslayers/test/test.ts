@@ -2,14 +2,19 @@
 import '@angular/localize/init';
 import 'zone.js/dist/zone';
 import 'zone.js/dist/zone-testing';
-import { getTestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
+  platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {getTestBed} from '@angular/core/testing';
+import {patchConsoleToFailOnError} from '../src/testing-utils';
 
 declare const require: {
-  context(path: string, deep?: boolean, filter?: RegExp): {
+  context(
+    path: string,
+    deep?: boolean,
+    filter?: RegExp
+  ): {
     keys(): string[];
     <T>(id: string): T;
   };
@@ -20,6 +25,7 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+beforeEach(() => patchConsoleToFailOnError());
 // Then we find all the tests.
 const context = require.context('../src/', true, /\.spec\.ts$/);
 // And load the modules.
