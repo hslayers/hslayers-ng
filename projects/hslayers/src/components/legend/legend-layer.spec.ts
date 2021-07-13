@@ -4,6 +4,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
 import Feature from 'ol/Feature';
@@ -49,6 +50,7 @@ describe('HsLegendLayerComponent', () => {
         HsPanelHelpersModule,
         HsUiExtensionsModule,
         TranslateModule.forRoot(),
+        FormsModule,
       ],
       declarations: [
         HsLegendComponent,

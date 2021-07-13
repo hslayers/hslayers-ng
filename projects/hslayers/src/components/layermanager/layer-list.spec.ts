@@ -98,6 +98,11 @@ describe('layermanager-layer-list', () => {
             getLayerTitle: () => '',
             getURL: () => 'http://dummy-layer-url',
             isLayerWMS: () => true,
+            isLayerGeoJSONSource: () => false,
+            isLayerKMLSource: () => false,
+            isLayerTopoJSONSource: () => false,
+            isLayerWMTS: () => false,
+            isLayerXYZ: () => false,
           },
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
@@ -113,10 +118,6 @@ describe('layermanager-layer-list', () => {
       ],
     });
     //bed.compileComponents();
-  });
-
-  beforeEach(() => {
-    spyOn(window.console, 'error');
   });
 
   beforeEach(() => {
@@ -138,6 +139,5 @@ describe('layermanager-layer-list', () => {
       true
     );
     expect(component).toBeTruthy();
-    expect(window.console.error).not.toHaveBeenCalled();
   });
 });
