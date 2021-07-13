@@ -1,11 +1,11 @@
 import * as GeometryType from 'ol/geom/GeometryType';
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {Draw} from 'ol/interaction';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Injectable} from '@angular/core';
 import {LineString, Polygon} from 'ol/geom';
-import {Vector} from 'ol/source';
 import {getArea, getDistance} from 'ol/sphere';
 import {transform} from 'ol/proj';
 
@@ -42,7 +42,7 @@ export class HsMeasureService {
   lastMeasurementId: number;
   measureVector = new VectorLayer({
     title: 'Measurement sketches',
-    source: new Vector(),
+    source: new VectorSource(),
     style: new Style({
       fill: new Fill({
         color: 'rgba(255, 255, 255, 0.2)',
