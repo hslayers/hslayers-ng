@@ -236,7 +236,7 @@ export class HsCompositionsParserService {
     }
 
     const layers = await this.jsonToLayers(obj);
-    if (layers.length > 0) {
+    if (layers?.length > 0) {
       layers.forEach((lyr) => {
         this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
       });
