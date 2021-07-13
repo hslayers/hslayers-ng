@@ -236,10 +236,12 @@ export class HsCompositionsParserService {
     }
 
     const layers = await this.jsonToLayers(obj);
-    layers.forEach((lyr) => {
-      this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
-    });
-    this.HsLayerManagerService.updateLayerListPositions();
+    if (layers.length > 0) {
+      layers.forEach((lyr) => {
+        this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
+      });
+      this.HsLayerManagerService.updateLayerListPositions();
+    }
 
     if (obj.current_base_layer) {
       this.HsMapService.map.getLayers().forEach((lyr) => {
