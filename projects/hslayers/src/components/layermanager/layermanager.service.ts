@@ -278,7 +278,7 @@ export class HsLayerManagerService {
     if (this.HsLayerUtilsService.isLayerXYZ(layer)) {
       return 'XYZ';
     }
-    this.HsLog.error(
+    this.HsLog.warn(
       `Cannot decide a type of source of layer ${getTitle(layer)}`
     );
     return 'unknown type';
