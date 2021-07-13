@@ -92,10 +92,6 @@ describe('add-data-url', () => {
   });
 
   beforeEach(() => {
-    spyOn(window.console, 'error');
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(HsAddDataWmsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
