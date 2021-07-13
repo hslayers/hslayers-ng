@@ -98,10 +98,6 @@ describe('add-layers-vector', () => {
   });
 
   beforeEach(() => {
-    spyOn(window.console, 'error');
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(HsAddDataVectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

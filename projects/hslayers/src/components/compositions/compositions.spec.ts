@@ -157,10 +157,6 @@ describe('compositions', () => {
   });
 
   beforeEach(() => {
-    spyOn(window.console, 'error');
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(HsCompositionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -185,6 +181,7 @@ describe('compositions', () => {
     CompositionsCatalogueService.loadCompositions();
     //NOTE: have to make this check to work
     // expect(ds.compositions).toBeDefined();
+    expect(ds).toBeDefined();
   });
 
   /**
