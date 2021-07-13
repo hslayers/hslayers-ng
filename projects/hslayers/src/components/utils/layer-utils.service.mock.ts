@@ -12,7 +12,7 @@ export class HsLayerUtilsServiceMock {
   }
 
   getURL(layer: Layer): string {
-    return 'http://test.test';
+    return 'http://dummy-layer-url';
   }
 
   isLayerWMS(layer: Layer): boolean {
@@ -20,6 +20,22 @@ export class HsLayerUtilsServiceMock {
   }
 
   isLayerWMTS(layer: Layer): boolean {
+    return false;
+  }
+
+  isLayerGeoJSONSource(layer: Layer): boolean {
+    return false;
+  }
+
+  isLayerKMLSource(layer: Layer): boolean {
+    return false;
+  }
+
+  isLayerTopoJSONSource(layer: Layer): boolean {
+    return false;
+  }
+
+  isLayerXYZ(layer: Layer): boolean {
     return false;
   }
 }
