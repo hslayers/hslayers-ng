@@ -93,7 +93,8 @@
     },
     "WMTS": {
       "tileMatrix": "Matice dlaždic"
-    }
+    },
+    "unknownDimesion": "Tato vrstva definuje dimenzi, kterou momentálně nelze přečíst"
   },
   "COMMON": {
     "abstract": "Abstrakt",
