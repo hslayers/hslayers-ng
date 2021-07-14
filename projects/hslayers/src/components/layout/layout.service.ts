@@ -347,8 +347,13 @@ export class HsLayoutService {
     return tmp;
   }
 
-  sidebarVisible(state?) {
-    if (this.HsConfig.sidebarPosition == 'invisible') {
+  sidebarVisible(state?: boolean): boolean {
+    if (
+      this.HsConfig.sidebarPosition == 'invisible' ||
+      this.HsConfig.pureMap ||
+      this.HsConfig.componentsEnabled.guiOverlay === false ||
+      this.HsConfig.componentsEnabled.sidebar === false
+    ) {
       return false;
     }
     if (state != undefined) {
@@ -356,8 +361,9 @@ export class HsLayoutService {
     }
     if (this._sidebarVisible == undefined) {
       return true;
+    } else {
+      return this._sidebarVisible;
     }
-    return this._sidebarVisible;
   }
 
   sidebarBottom() {
