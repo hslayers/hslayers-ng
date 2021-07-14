@@ -66,7 +66,7 @@ export class HslayersAppComponent {
     };
 
     if (w.hslayersNgConfig) {
-      Object.assign(this.HsConfig, w.hslayersNgConfig(w.ol));
+      this.HsConfig.update(w.hslayersNgConfig(w.ol));
     }
   }
   title = 'hslayers-workspace';
