@@ -4,6 +4,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 import {TranslateModule} from '@ngx-translate/core';
@@ -42,6 +43,7 @@ describe('HsLegendComponent', () => {
         HsPanelHelpersModule,
         HsUiExtensionsModule,
         TranslateModule.forRoot(),
+        FormsModule,
       ],
       declarations: [
         HsLegendComponent,

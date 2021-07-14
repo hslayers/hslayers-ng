@@ -240,10 +240,12 @@ export class HsCompositionsParserService {
     }
 
     const layers = await this.jsonToLayers(obj);
-    layers.forEach((lyr) => {
-      this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
-    });
-    this.HsLayerManagerService.updateLayerListPositions();
+    if (layers.length > 0) {
+      layers.forEach((lyr) => {
+        this.HsMapService.addLayer(lyr, DuplicateHandling.RemoveOriginal);
+      });
+      this.HsLayerManagerService.updateLayerListPositions();
+    }
 
     if (obj.current_base_layer) {
       this.HsMapService.map.getLayers().forEach((lyr) => {
@@ -419,7 +421,7 @@ export class HsCompositionsParserService {
     for (const lyr_def of j.layers) {
       const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
-        if (lyr_def.protocol.format != 'hs.format.externalWFS'){
+        if (lyr_def.protocol.format != 'hs.format.externalWFS') {
           this.$log.warn(
             'Was not able to parse layer from composition',
             lyr_def
@@ -470,7 +472,9 @@ export class HsCompositionsParserService {
           this.HsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
           resultLayer =
-            await this.HsCompositionsLayerParserService.createVectorLayer(lyr_def);
+            await this.HsCompositionsLayerParserService.createVectorLayer(
+              lyr_def
+            );
         }
         break;
       default:
