@@ -164,7 +164,8 @@ export class HsConfig {
   /**
    * This kind of duplicates getAssetsPath() in HsUtilsService, which can't be used here due to circular dependency
    */
-  private updateSymbolizers?(config: HsConfig) {
+  updateSymbolizers?(config: HsConfig) {
+    /* Removing 'private' since it makes this method non-optional */
     let assetsPath = config.assetsPath ?? '';
     assetsPath += assetsPath.endsWith('/') ? '' : '/';
     return this.defaultSymbolizerIcons.map((val) => {
