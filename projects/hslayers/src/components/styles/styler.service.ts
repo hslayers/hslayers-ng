@@ -368,7 +368,7 @@ export class HsStylerService {
     try {
       let style = await this.geoStylerStyleToOlStyle(this.styleObject);
       if (this.styleObject.rules.length == 0) {
-        this.HsLogService.error('Missing style rules for layer', this.layer);
+        this.HsLogService.warn('Missing style rules for layer', this.layer);
         style = createDefaultStyle;
       }
       /* style is a function when text symbolizer is used. We need some hacking 
