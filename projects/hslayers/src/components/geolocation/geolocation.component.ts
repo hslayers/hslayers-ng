@@ -15,6 +15,9 @@ export class HsGeolocationComponent implements OnInit {
     this.collapsed = true;
   }
   geolocationVisible(): boolean {
-    return this.HsLayoutService.componentEnabled('geolocationButton');
+    return (
+      this.HsLayoutService.componentEnabled('geolocationButton') &&
+      this.HsLayoutService.componentEnabled('guiOverlay')
+    );
   }
 }

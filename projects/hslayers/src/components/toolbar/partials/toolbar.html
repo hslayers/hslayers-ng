@@ -1,4 +1,4 @@
-<div class="hs-toolbar">
+<div class="hs-toolbar" *ngIf="HsLayoutService.componentEnabled('guiOverlay')">
     <nav class="navbar navbar-expand p-0">
         <div class="navbar-nav">
             <div class="nav-item" *ngIf="HsLayoutService.componentEnabled('themeToggle')"> 
