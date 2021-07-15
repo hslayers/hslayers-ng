@@ -38,3 +38,11 @@ export function getLayerName(layer: Layer): string {
 export function wfsNotAvailable(descr: HsLaymanLayerDescriptor) {
   return descr.wfs.status == 'NOT_AVAILABLE';
 }
+
+export function wfsPendingOrStarting(descr: HsLaymanLayerDescriptor) {
+  return descr.wfs.status == 'PENDING' || descr.wfs.status == 'STARTED';
+}
+
+export function wfsFailed(descr: HsLaymanLayerDescriptor) {
+  return descr.wfs.status == 'FAILURE';
+}

@@ -25,7 +25,10 @@ import {
   getLayerName,
   getLaymanFriendlyLayerName,
   wfsNotAvailable,
+  wfsPendingOrStarting,
+  wfsFailed
 } from './layman-utils';
+import { Subject } from 'rxjs';
 
 export type WfsSyncParams = {
   /** Endpoint description */
@@ -45,6 +48,8 @@ export type WfsSyncParams = {
 })
 export class HsLaymanService implements HsSaverService {
   crs: string;
+  pendingLayers: Array<string> = [];
+  laymanLayerPending: Subject<any> = new Subject();
   constructor(
     public HsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -361,7 +366,7 @@ export class HsLaymanService implements HsSaverService {
         getWorkspace(layer)
       );
       if (
-        descr === null || //In case of response?.code == 15
+        descr === null || //In case of response?.code == 15 || 32
         (descr.wfs.status == descr.wms.status && wfsNotAvailable(descr))
       ) {
         return null;
@@ -421,15 +426,34 @@ export class HsLaymanService implements HsSaverService {
           }
         )
         .toPromise();
-      if (response?.code == 15) {
+      if (response?.code == 15 || response?.code == 15 || wfsFailed(response)) {
         return null;
       }
+      if (wfsPendingOrStarting(response)) {
+        if (!this.pendingLayers.includes(layerName)) {
+          this.pendingLayers.push(layerName);
+          this.laymanLayerPending.next(this.pendingLayers);
+        }
+        await new Promise((resolve) => setTimeout(resolve, 3500));
+        return this.describeLayer(endpoint, layerName, workspace);
+      }
       if (response.name) {
+        this.managePendingLayers(layerName);
         return response;
       }
     } catch (ex) {
+      this.managePendingLayers(layerName);
       this.HsLogService.error(ex);
       throw ex;
+    }
+  }
+
+  private managePendingLayers(layerName){
+    if (this.pendingLayers.includes(layerName)) {
+      this.pendingLayers = this.pendingLayers.filter(
+        (layer) => layer != layerName
+      );
+      this.laymanLayerPending.next(this.pendingLayers);
     }
   }
 
