@@ -55,9 +55,10 @@ describe('HsDraw', () => {
     'deactivateQueries',
     'data',
   ]);
-  const mockLaymanService = jasmine.createSpyObj('HsLaymanService', [
-    'getLaymanEndpoint',
-  ]);
+  const mockLaymanService = {
+    ...jasmine.createSpyObj('HsLaymanService', ['getLaymanEndpoint']),
+    laymanLayerPending: of([]),
+  };
   const mockLanguageService = jasmine.createSpyObj('HsLanguageService', [
     'getTranslation',
   ]);
