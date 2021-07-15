@@ -386,7 +386,9 @@
     "Select layer": "Vybrať vrstvu",
     "serverLayers": "Serverové vrstvy",
     "snapTo": "Prichytávať na vrstvu",
-    "unsavedDrawing": "Neuložená kresba"
+    "unsavedDrawing": "Neuložená kresba",
+    "loadingLayer": "Načítava sa vrstva",
+    "longerLoading": "Zdá sa, že načítanie trvá dlhšie ako zvyčajne. \nPočkaj chvíľu, prosím!"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",

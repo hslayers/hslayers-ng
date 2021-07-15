@@ -129,6 +129,10 @@ export class HsDrawService {
   isAuthorized: boolean;
   onlyMine = true;
   addedLayersRemoved = false;
+
+  //Layer being loaded from layman (endpoint url pending)
+  pendingLayers = [];
+
   constructor(
     public HsMapService: HsMapService,
     public HsLayerUtilsService: HsLayerUtilsService,
@@ -212,6 +216,10 @@ export class HsDrawService {
         }
       }
     );
+
+    this.HsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
+      this.pendingLayers = pendingLayers;
+    });
   }
   /**
    * initial function if the draw panel is loaded as first panel

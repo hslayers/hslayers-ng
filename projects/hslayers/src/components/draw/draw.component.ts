@@ -5,6 +5,7 @@ import {HsDrawService} from './draw.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsQueryBaseService} from '../query/query-base.service';
+import {HsUtilsService} from '../utils/utils.service';
 import {getTitle} from '../../common/layer-extensions';
 
 @Component({
@@ -27,7 +28,8 @@ export class HsDrawComponent {
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
     public HsLayerUtilsService: HsLayerUtilsService,
-    public HsQueryBaseService: HsQueryBaseService
+    public HsQueryBaseService: HsQueryBaseService,
+    public hsUtilsService: HsUtilsService
   ) {
     this.HsDrawService.init();
   }

@@ -386,7 +386,9 @@
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
     "snapTo": "Snap to features of layer",
-    "unsavedDrawing": "Unsaved drawing"
+    "unsavedDrawing": "Unsaved drawing",
+    "loadingLayer": "Loading layer ",
+    "longerLoading": "Seems like loading takes longer than usual. Wait a moment please!\n"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",
