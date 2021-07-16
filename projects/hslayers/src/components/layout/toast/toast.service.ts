@@ -1,5 +1,6 @@
-import {HsLanguageService} from '../../language/language.service';
 import {Injectable, TemplateRef} from '@angular/core';
+
+import {HsLanguageService} from '../../language/language.service';
 
 export type customToastOptions = {
   /**

@@ -1,6 +1,7 @@
-import Feature from 'ol/Feature';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import Feature from 'ol/Feature';
 import {Observable, Subscription, of} from 'rxjs';
 import {catchError, map, timeout} from 'rxjs/operators';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';

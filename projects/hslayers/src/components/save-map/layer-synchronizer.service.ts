@@ -1,6 +1,7 @@
+import {Injectable} from '@angular/core';
+
 import * as xml2Json from 'xml-js';
 import {Feature, Map} from 'ol';
-import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
@@ -83,7 +84,7 @@ export class HsLayerSynchronizerService {
     const definition = getDefinition(layer);
     return (
       this.HsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
+      //Test whether fromat cointains 'wfs' AND does not contian 'external'. Case insensitive
       new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
         definition?.format?.toLowerCase()
       )

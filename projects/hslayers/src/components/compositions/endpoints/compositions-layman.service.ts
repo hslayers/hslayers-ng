@@ -17,6 +17,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsMapService} from '../../map/map.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })

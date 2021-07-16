@@ -1,3 +1,10 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+import {Observable, of} from 'rxjs';
+import {catchError, map, timeout} from 'rxjs/operators';
+import {transform, transformExtent} from 'ol/proj';
+
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
@@ -11,12 +18,6 @@ import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsToastService} from '../../../layout/toast/toast.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError, map, timeout} from 'rxjs/operators';
-
-import {transform, transformExtent} from 'ol/proj';
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {

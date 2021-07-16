@@ -1,3 +1,8 @@
+import {Injectable} from '@angular/core';
+
+import {Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
@@ -11,9 +16,7 @@ import {HsCompositionsStatusManagerService} from './compositions-status-manager.
 import {HsLanguageService} from '../../language/language.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })

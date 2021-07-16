@@ -1,6 +1,7 @@
-import {GeoJSON, WFS} from 'ol/format';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+import {GeoJSON, WFS} from 'ol/format';
 import {Layer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
@@ -12,7 +13,6 @@ import {HsMapService} from '../map/map.service';
 import {HsSaverService} from './saver-service.interface';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
