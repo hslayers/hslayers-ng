@@ -189,9 +189,7 @@ export class HsCoreService {
   set puremapApp(value) {
     this._puremapApp = value;
     if (value) {
-      this.HsConfig.componentsEnabled.toolbar = false;
-      this.HsConfig.componentsEnabled.sidebar = false;
-      this.HsConfig.componentsEnabled.geolocationButton = false;
+      this.HsConfig.componentsEnabled.guiOverlay = false;
       this.HsMapService.removeAllInteractions();
       this.HsMapService.removeAllControls();
       this.HsLayoutService.sidebarVisible(false);
