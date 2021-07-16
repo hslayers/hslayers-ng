@@ -1,5 +1,6 @@
-import BaseLayer from 'ol/layer/Base';
 import {Component, ElementRef, ViewChild} from '@angular/core';
+
+import BaseLayer from 'ol/layer/Base';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from './add-data-vector.service';
@@ -10,7 +11,6 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-
 import {accessRightsInterface} from '../common/access-rights.interface';
 import {getHsLaymanSynchronizing} from '../../../common/layer-extensions';
 

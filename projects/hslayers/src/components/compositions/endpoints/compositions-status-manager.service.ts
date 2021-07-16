@@ -1,3 +1,9 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+import {catchError, map, timeout} from 'rxjs/operators';
+import {of} from 'rxjs';
+
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
@@ -9,10 +15,7 @@ import {HsLanguageService} from '../../language/language.service';
 import {HsStatusManagerService} from '../../save-map/status-manager.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsUtilsService} from '../../utils/utils.service';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {catchError, map, timeout} from 'rxjs/operators';
-import {of} from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })

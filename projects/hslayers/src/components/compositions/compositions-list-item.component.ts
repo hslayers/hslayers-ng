@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';

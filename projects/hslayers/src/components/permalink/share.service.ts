@@ -1,4 +1,8 @@
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+
 import 'share-api-polyfill';
+
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -10,8 +14,6 @@ import {HsShareUrlService} from './share-url.service';
 import {HsStatusManagerService} from '../save-map/status-manager.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {getShowInLayerManager} from '../../common/layer-extensions';
 
 @Injectable({
