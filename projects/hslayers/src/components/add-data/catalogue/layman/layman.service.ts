@@ -127,7 +127,7 @@ export class HsLaymanBrowserService {
                     e.status ? e.status.toString() : e.message,
                     {url: url}
                   ),
-                true
+                {disableLocalization: true}
               );
           }
           endpoint.datasourcePaging.loaded = true;
@@ -164,7 +164,7 @@ export class HsLaymanBrowserService {
           'COMMON',
           simplifiedResponse
         ),
-      true
+      {disableLocalization: true}
     );
   }
 
@@ -180,8 +180,7 @@ export class HsLaymanBrowserService {
         data.dataset.title +
           ': ' +
           this.hsLanguageService.getTranslation('COMMON.noDataReceived'),
-        true,
-        'bg-warning text-light'
+        {disableLocalization: true, toastStyleClasses: 'bg-warning text-light'}
       );
       return;
     }

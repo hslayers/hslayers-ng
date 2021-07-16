@@ -102,7 +102,7 @@ export class HsCommonLaymanService {
           'COMMON',
           simplifiedResponse
         ),
-      true
+      {disableLocalization: true}
     );
   }
 }

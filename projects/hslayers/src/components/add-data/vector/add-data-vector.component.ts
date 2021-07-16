@@ -191,7 +191,7 @@ export class HsAddDataVectorComponent {
             'ADDLAYERS',
             'couldNotUploadSelectedFile'
           ),
-          true
+          {disableLocalization: true}
         );
       }
     });
