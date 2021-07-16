@@ -160,7 +160,10 @@ export class HsMapService {
     this.defaultDesktopControls.push(new ScaleLine());
     setTimeout(() => {
       //make sure translations are loaded
-      if (this.HsConfig.componentsEnabled?.defaultViewButton) {
+      if (
+        this.HsConfig.componentsEnabled?.defaultViewButton &&
+        this.HsConfig.componentsEnabled?.guiOverlay != false
+      ) {
         this.createDefaultViewButton();
       }
     }, 500);
