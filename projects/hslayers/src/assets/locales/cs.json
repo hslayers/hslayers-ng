@@ -105,6 +105,7 @@
     "area": "Plocha",
     "attribute": "Atribut",
     "attributes": "Atributy",
+    "Authentication failed. Login to the catalogue.": "Chyba ověření. Přihlaste se do katalogu.",
     "boundingBox": "Rozsah v mapě",
     "cancel": "Zrušit",
     "category": "Kategorie",
@@ -199,7 +200,6 @@
     "to": "do",
     "type": "Typ",
     "unknownError": "Neznámá chyba. Zkuste to znovu, prosím.",
-    "Authentication failed. Login to the catalogue.": "Chyba ověření. Přihlaste se do katalogu.",
     "until": "Až do",
     "url": "URL",
     "value": "Hodnota",
@@ -373,12 +373,14 @@
     },
     "drawToolbar": {
       "addDrawLayer": "Přidat novou vrstvu pro kreslení",
+      "addLayer": "Přidat vrstvu",
       "finishFeature": "Ukončit prvek",
       "removeLastPoint": "Odebrat poslední bod",
-      "selectType": "Zvolte typ",
-      "addLayer": "Přidat vrstvu"
+      "selectType": "Zvolte typ"
     },
     "fillOpacity": "Vyplňte neprůhlednost:",
+    "loadingLayer": "Načítá se vrstva",
+    "longerLoading": "Zdá se, že načítání trvá déle než obvykle. \nPočkejte chvíli, prosím!",
     "newGPS": "Nové GPS",
     "notAuthorized": "Uživatel neautorizován, změny nebudou uloženy",
     "reallyDeleteThisLayer": "Opravdu odstranit vybranou vrstvu?",
@@ -386,9 +388,7 @@
     "Select layer": "Vybrat vrstvu",
     "serverLayers": "Servrové vrstvy",
     "snapTo": "Přichytávat na vrstvu",
-    "unsavedDrawing": "Neuložená kresba",
-    "loadingLayer": "Načítá se vrstva",
-    "longerLoading": "Zdá se, že načítání trvá déle než obvykle. \nPočkejte chvíli, prosím!"
+    "unsavedDrawing": "Neuložená kresba"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpověď pro {{url}}: 0 Neznámá chyba",

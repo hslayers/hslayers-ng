@@ -105,6 +105,7 @@
     "area": "Area",
     "attribute": "Attribute",
     "attributes": "Attributes",
+    "Authentication failed. Login to the catalogue.": "Authentication failed. Login to the catalogue.",
     "boundingBox": "Bounding box",
     "cancel": "Cancel",
     "category": "Category",
@@ -199,7 +200,6 @@
     "to": "to",
     "type": "Type",
     "unknownError": "Unknown error. Please try again.",
-    "Authentication failed. Login to the catalogue.": "Authentication failed. Login to the catalogue.",
     "until": "Until",
     "url": "URL",
     "value": "Value",
@@ -373,12 +373,14 @@
     },
     "drawToolbar": {
       "addDrawLayer": "Add new draw layer",
+      "addLayer": "Add layer",
       "finishFeature": "Finish feature",
       "removeLastPoint": "Remove last point",
-      "selectType": "Select type",
-      "addLayer": "Add layer"
+      "selectType": "Select type"
     },
     "fillOpacity": "Fill opacity:",
+    "loadingLayer": "Loading layer ",
+    "longerLoading": "Seems like loading takes longer than usual. Wait a moment please!\n",
     "newGPS": "New GPS",
     "notAuthorized": "User not authorized, drawings won´t be preserved",
     "reallyDeleteThisLayer": "Really delete this layer?",
@@ -386,9 +388,7 @@
     "Select layer": "Select layer",
     "serverLayers": "Server layers",
     "snapTo": "Snap to features of layer",
-    "unsavedDrawing": "Unsaved drawing",
-    "loadingLayer": "Loading layer ",
-    "longerLoading": "Seems like loading takes longer than usual. Wait a moment please!\n"
+    "unsavedDrawing": "Unsaved drawing"
   },
   "ERRORMESSAGES": {
     "0": "Http failure response for {{url}}: 0 Unknown Error",

@@ -105,6 +105,7 @@
     "area": "Platība",
     "attribute": "Atribūts",
     "attributes": "Atribūts",
+    "Authentication failed. Login to the catalogue.": "Neveiksmīga autentifikācija. Pieslēdzieties katalogam.",
     "boundingBox": "Robežu taisnstūris",
     "cancel": "Atcelt",
     "category": "Kategorija",
@@ -199,7 +200,6 @@
     "to": "līdz",
     "type": "Tips",
     "unknownError": "Nezināma kļūda. Lūdzu mēģiniet vēlreiz.",
-    "Authentication failed. Login to the catalogue.": "Neveiksmīga autentifikācija. Pieslēdzieties katalogam.",
     "until": "Līdz",
     "url": "URL",
     "value": "Vērtība",
@@ -373,12 +373,14 @@
     },
     "drawToolbar": {
       "addDrawLayer": "Pievienot jaunu slāni",
+      "addLayer": "Pievienot slāni",
       "finishFeature": "Pabeigt objektu",
       "removeLastPoint": "Noņemt pēdējo punktu",
-      "selectType": "Izvēlieties tipu",
-      "addLayer": "Pievienot slāni"
+      "selectType": "Izvēlieties tipu"
     },
     "fillOpacity": "Aizpildījuma necaurredzamība:",
+    "loadingLayer": "Notiek slāņa ielāde",
+    "longerLoading": "Izskatās, ka slāņa ielāde notiek ilgāk nekā ierasts. Lūdzu uzgaidiet!",
     "newGPS": "Jauns GPS",
     "notAuthorized": "Lietotājs nav autorizējies, pievienotie zīmējumi netiks saglabāti!",
     "reallyDeleteThisLayer": "Vai tiešām vēlaties izdzēst šo slāni?",
@@ -386,9 +388,7 @@
     "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
-    "unsavedDrawing": "Nesaglabāts zīmējums",
-    "loadingLayer": "Notiek slāņa ielāde",
-    "longerLoading": "Izskatās, ka slāņa ielāde notiek ilgāk nekā ierasts. Lūdzu uzgaidiet!"
+    "unsavedDrawing": "Nesaglabāts zīmējums"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
