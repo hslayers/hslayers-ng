@@ -105,6 +105,7 @@
     "area": "Plocha",
     "attribute": "Atribút",
     "attributes": "Atribúty",
+    "Authentication failed. Login to the catalogue.": "Neuspešné overenie. Prihláste sa do katalógu.",
     "boundingBox": "Rozsah v mape",
     "cancel": "Zrušiť",
     "category": "Kategórie",
@@ -199,7 +200,6 @@
     "to": "do",
     "type": "Typ",
     "unknownError": "Neznáma chyba. Skúste to znova, prosím.",
-    "Authentication failed. Login to the catalogue.": "Neuspešné overenie. Prihláste sa do katalógu.",
     "until": "Až do",
     "url": "URL",
     "value": "Hodnota",
@@ -373,12 +373,14 @@
     },
     "drawToolbar": {
       "addDrawLayer": "Pridať novú vrstvu na kreslenie",
+      "addLayer": "Pridať vrstvu",
       "finishFeature": "Ukončiť prvok",
       "removeLastPoint": "Odobrať posledný bod",
-      "selectType": "Zvoľte typ",
-      "addLayer": "Pridať vrstvu"
+      "selectType": "Zvoľte typ"
     },
     "fillOpacity": "Vyplňte nepriehľadnosť:",
+    "loadingLayer": "Načítava sa vrstva",
+    "longerLoading": "Zdá sa, že načítanie trvá dlhšie ako zvyčajne. \nPočkaj chvíľu, prosím!",
     "newGPS": "Nové GPS",
     "notAuthorized": "Neautorizovaný uživateľ, zmeny nebudú uložené",
     "reallyDeleteThisLayer": "Naozaj odstrániť vybranú vrstvu?",
@@ -386,9 +388,7 @@
     "Select layer": "Vybrať vrstvu",
     "serverLayers": "Serverové vrstvy",
     "snapTo": "Prichytávať na vrstvu",
-    "unsavedDrawing": "Neuložená kresba",
-    "loadingLayer": "Načítava sa vrstva",
-    "longerLoading": "Zdá sa, že načítanie trvá dlhšie ako zvyčajne. \nPočkaj chvíľu, prosím!"
+    "unsavedDrawing": "Neuložená kresba"
   },
   "ERRORMESSAGES": {
     "0": "Chybná odpoveď pre {{url}}: 0 Neznáma chyba",
@@ -439,17 +439,17 @@
       "cluster": "Zhlukovať",
       "copyright": "Autorské práva",
       "layerFrom": "vrstva z",
+      "memory": "medzipamäť",
       "metadataOfLayer": "Metadáta vrstvy v ",
       "metadataOfService": "Metadáta služby",
       "opacity": "Priehľadnosť",
       "savegeojson": "Stiahnuť obsah vrstvy ako GeoJSON",
       "styleLayer": "Štýlovať vrstvu",
-      "zoomToLayer": "Priblížiť na vrstvu",
-      "memory": "medzipamäť",
       "vector": "Vektorová",
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
-      "vector (TopoJSON)": "Vektorová (TopoJSON)"
+      "vector (TopoJSON)": "Vektorová (TopoJSON)",
+      "zoomToLayer": "Priblížiť na vrstvu"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
