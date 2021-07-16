@@ -375,7 +375,8 @@
       "addDrawLayer": "Pievienot jaunu slāni",
       "finishFeature": "Pabeigt objektu",
       "removeLastPoint": "Noņemt pēdējo punktu",
-      "selectType": "Izvēlieties tipu"
+      "selectType": "Izvēlieties tipu",
+      "addLayer": "Pievienot slāni"
     },
     "fillOpacity": "Aizpildījuma necaurredzamība:",
     "newGPS": "Jauns GPS",
@@ -385,7 +386,9 @@
     "Select layer": "Izvēlieties slāni",
     "serverLayers": "Servera slāņi",
     "snapTo": "Pieķerties slāņa grafiskajam objektam",
-    "unsavedDrawing": "Nesaglabāts zīmējums"
+    "unsavedDrawing": "Nesaglabāts zīmējums",
+    "loadingLayer": "Notiek slāņa ielāde",
+    "longerLoading": "Izskatās, ka slāņa ielāde notiek ilgāk nekā ierasts. Lūdzu uzgaidiet!"
   },
   "ERRORMESSAGES": {
     "0": "Http pieprasījuma kļūda uz {{url}}: 0 Nezināma kļūda",
