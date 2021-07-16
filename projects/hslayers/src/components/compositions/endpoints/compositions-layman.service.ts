@@ -110,7 +110,7 @@ export class HsCompositionsLaymanService {
                     e.status ? e.status.toString() : e.message,
                     {url: endpoint.url}
                   ),
-                true
+                {disableLocalization: true}
               );
               break;
           }
@@ -195,8 +195,7 @@ export class HsCompositionsLaymanService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation('COMMON.warning'),
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
-      true,
-      'bg-warning text-light'
+      {disableLocalization: true, toastStyleClasses: 'bg-warning text-light'}
     );
   }
 }

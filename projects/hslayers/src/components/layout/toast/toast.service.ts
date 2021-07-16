@@ -1,5 +1,22 @@
 import {HsLanguageService} from '../../language/language.service';
 import {Injectable, TemplateRef} from '@angular/core';
+
+export type customToastOptions = {
+  /**
+   * Disable text translation
+   */
+  disableLocalization?: boolean;
+  /**
+   * Toast message background and text style classes, for example - background: (bg-primary, bg-secondary, bg-success, bg-danger, bg-warning, bg-info, bg-light, bg-dark, bg-white)
+   * and text: (text-primary, text-secondary, text-success, text-danger, text-warning, text-info, text-light, text-dark, text-white, text-muted)
+   */
+  toastStyleClasses?: string;
+  /**
+   * Sets custom delay for the toast message
+   */
+  customDelay?: number;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,25 +45,25 @@ export class HsToastService {
    * Creates new toast message with custom text and custom styling
    * @param header Header text to display
    * @param text Toast body text to display
-   * @param disableLocalization Disable text translation
-   * @param toastStyleClasses Toast message background and text style classes, for example - background: (bg-primary, bg-secondary, bg-success, bg-danger, bg-warning, bg-info, bg-light, bg-dark, bg-white)
-   * and text: (text-primary, text-secondary, text-success, text-danger, text-warning, text-info, text-light, text-dark, text-white, text-muted)
+   * @param options Custom options for the toast message (disableLocalization: boolean, toastStyleClasses: string, customDelay: number)
    */
+
   createToastPopupMessage(
     header: string,
     text: string,
-    disableLocalization?: boolean,
-    toastStyleClasses?: string
+    options: customToastOptions = {}
   ): void {
     this.show(
-      disableLocalization ? text : this.HsLanguageService.getTranslation(text),
+      options.disableLocalization
+        ? text
+        : this.HsLanguageService.getTranslation(text),
       {
-        header: disableLocalization
+        header: options.disableLocalization
           ? header
           : this.HsLanguageService.getTranslation(header),
-        delay: 7000,
+        delay: options.customDelay || 7000,
         autohide: true,
-        classname: toastStyleClasses || `bg-danger text-light`,
+        classname: options.toastStyleClasses || `bg-danger text-light`,
       }
     );
   }
