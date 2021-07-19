@@ -36,7 +36,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsLayerManagerWmstService: HsLayerManagerWmstService,
     public hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig
+    public hsConfig: HsConfig
   ) {
     this.hsEventBusService.layerTimeChanges
       .pipe(takeUntil(this.ngUnsubscribe))

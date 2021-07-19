@@ -502,7 +502,8 @@
     "time": {
       "outOfRange": "Selected time is out of range",
       "syncTimes": "Synchronize times",
-      "syncTimesTooltip": "Synchronize time for all layers"
+      "syncTimesTooltip": "Synchronize time for all layers",
+      "outOfRangeDescription": "This layer can show different data based on a selected time. The time can get \"out of range\" when it is synchronized with another layer but this layer has no data for that point in time. Click to pick a valid date and time. You can also disable the layer time synchronization."
     },
     "User generated": "User generated"
   },
