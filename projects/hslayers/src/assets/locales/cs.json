@@ -499,7 +499,8 @@
     "time": {
       "outOfRange": "Vybraný čas je mimo meze",
       "syncTimes": "Synchronizovat časy",
-      "syncTimesTooltip": "Synchronizovat čas všech vrstev"
+      "syncTimesTooltip": "Synchronizovat čas všech vrstev",
+      "outOfRangeDescription": "Tato vrstva může zobrazovat různá data v závislosti na vybraném čase. Čas se může dostat \"mimo meze\" pokud je synchronizován s jinou vrstvou, ale tato vrstva nemá žádná data pro daný okamžik. Klikněte pro vybrání platného data a času. Také můžete vypnout synchronizaci času vrstev."
     },
     "User generated": "Uživatelský"
   },
