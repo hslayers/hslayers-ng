@@ -19,6 +19,7 @@ import {HsConfig} from '../../../../config.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
+import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
@@ -48,7 +49,8 @@ export class HsAddDataUrlWmsService {
     public hsConfig: HsConfig,
     public hsAddDataService: HsAddDataService,
     public hsEventBusService: HsEventBusService,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
+    public hsLog: HsLogService
   ) {
     this.url = '';
     this.data = {
@@ -144,8 +146,22 @@ export class HsAddDataUrlWmsService {
       doc.querySelectorAll('Capability>Layer CRS').forEach((srs) => {
         this.data.srss.push(srs.innerHTML);
       });
+      /**
+       * SRS is a malformed input and an error but let's be generous...
+       */
+      if (this.data.srss.length == 0) {
+        doc.querySelectorAll('Capability>Layer SRS').forEach((srs) => {
+          this.data.srss.push(srs.innerHTML);
+        });
+      }
       //filter out duplicate records
       this.data.srss = [...new Set(this.data.srss)];
+    }
+    if (this.data.srss.length == 0) {
+      this.data.srss = ['EPSG:4326'];
+      this.throwParsingError(
+        "No CRS found in the service's Capabilities. This is an error on the provider's site. Guessing WGS84 will be supported. This may or may not be correct."
+      );
     }
   }
 
@@ -172,7 +188,6 @@ export class HsAddDataUrlWmsService {
       if (this.data.srss.includes('CRS:84')) {
         this.data.srss.splice(this.data.srss.indexOf('CRS:84'), 1);
       }
-
       if (
         this.hsWmsGetCapabilitiesService.currentProjectionSupported(
           this.data.srss
@@ -193,7 +208,6 @@ export class HsAddDataUrlWmsService {
         this.data.srs = this.data.srss[0];
       }
       this.srsChanged();
-
       this.data.services = this.filterCapabilitiesLayers(caps.Capability.Layer);
 
       //Make sure every service has a title to be displayed in table
@@ -215,7 +229,11 @@ export class HsAddDataUrlWmsService {
       } else {
         this.data.extent = this.calcAllLayersExtent(this.data.services);
       }
-
+      this.hsAddDataUrlService.selectLayerByName(
+        layerToSelect,
+        this.data.services,
+        'Name'
+      );
       this.hsDimensionService.fillDimensionValues(caps.Capability.Layer);
 
       this.data.getMapUrl = this.removePortIfProxified(
