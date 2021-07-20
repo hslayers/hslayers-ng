@@ -41,8 +41,6 @@ export class HsSearchService {
   }
 
   /**
-   * @memberof HsSearchService
-   * @function request
    * @public
    * @param {string} query Place name or part of it
    * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
@@ -108,8 +106,6 @@ export class HsSearchService {
     }
   }
   /**
-   * @memberof HsSearchService
-   * @function searchResultsReceived
    * @public
    * @param {object} response Response object of Geolocation request
    * @param {string} providerName Name of request provider
@@ -136,8 +132,6 @@ export class HsSearchService {
     });
   }
   /**
-   * @memberof HsSearchService
-   * @function hideResultsLayer
    * @public
    * @description Remove results layer from map
    */
@@ -145,8 +139,6 @@ export class HsSearchService {
     this.HsMapService.map.removeLayer(this.searchResultsLayer);
   }
   /**
-   * @memberof HsSearchService
-   * @function showResultsLayer
    * @public
    * @description Send geolocation request to Geolocation server (based on app config), pass response to results function
    */
@@ -155,8 +147,6 @@ export class HsSearchService {
     this.HsMapService.map.addLayer(this.searchResultsLayer);
   }
   /**
-   * @memberof HsSearchService
-   * @function cleanResults
    * @public
    * @description Clean all search results from results variable and results layer
    */
@@ -173,8 +163,6 @@ export class HsSearchService {
     }
   }
   /**
-   * @memberof HsSearchService
-   * @function selectResult
    * @public
    * @param {object} result Entity of selected result
    * @param {number} zoomLevel Zoom level to zoom on
@@ -197,8 +185,6 @@ export class HsSearchService {
     });
   }
   /**
-   * @memberof HsSearchService
-   * @function getResultCoordinate
    * @public
    * @param {object} result Entity of selected result
    * @returns {object} Ol.coordinate of selected result
@@ -227,8 +213,6 @@ export class HsSearchService {
   }
 
   /**
-   * @memberof HsSearchService
-   * @function parseGeonamesResults
    * @private
    * @param {object} response Result of search request
    * @param {object} provider Which provider sent the search results
@@ -256,8 +240,6 @@ export class HsSearchService {
   }
 
   /**
-   * @memberof HsSearchService
-   * @function parseOpenApiResults
    * @private
    * @param {object} response Result of search request
    * @param {object} provider Which provider sent the search results

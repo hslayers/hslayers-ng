@@ -23,7 +23,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @ngdoc method
    * @public
    * @description Load new composition without saving old composition
    */
@@ -36,7 +35,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @ngdoc method
    * @public
    * @description Save currently loaded composition first
    */
@@ -46,7 +44,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @ngdoc method
    * @public
    * @description Load new composition (with service_parser Load function) and merge it with old composition
    */

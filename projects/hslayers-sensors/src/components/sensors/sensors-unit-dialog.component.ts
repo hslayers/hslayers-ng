@@ -1,4 +1,3 @@
-/* eslint-disable angular/definedundefined */
 import {Component, ElementRef, Inject, ViewRef} from '@angular/core';
 import {HsDialogComponent} from 'hslayers-ng';
 import {HsDialogContainerService} from 'hslayers-ng';
@@ -31,8 +30,6 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   }
 
   /**
-   * @memberof hs.sensors.unitDialog
-   * @function sensorClicked
    * @param {object} sensor Clicked sensor
    * @description Regenerate chart for sensor is clicked. If no
    * interval was clicked before use 1 day timeframe by default.
@@ -49,8 +46,6 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent {
   }
 
   /**
-   * @memberof hs.sensors.unitDialog
-   * @function timeButtonClicked
    * @param {object} interval Clicked interval button
    * @description Get data for different time interval and regenerate
    * chart

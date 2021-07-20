@@ -8,8 +8,6 @@ export class HsPrintService {
   constructor(public HsMapService: HsMapService) {}
 
   /**
-   * @memberof HsPrintService
-   * @function print
    * @public
    * @param {string} title Heading of printed page
    * @description Basic print implementation

@@ -20,7 +20,6 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   }
 
   /**
-   * @ngdoc method
    * @public
    * @param {object} composition Composition selected for deletion
    * @description Delete selected composition from project (including deletion from composition server, useful for user created compositions)

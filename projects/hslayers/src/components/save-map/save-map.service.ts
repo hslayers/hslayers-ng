@@ -34,8 +34,8 @@ import {
   getSld,
   getSubLayers,
   getTitle,
+  getWfsUrl,
   getWorkspace,
-  getWfsUrl
 } from '../../common/layer-extensions';
 
 const LCLSTORAGE_EXPIRE = 5000;
@@ -66,7 +66,7 @@ export class HsSaveMapService {
    * @param {object} compoData Composition general metadata
    * @param {object} userData Metadata about user
    * @param {object} statusData Metadata about permissions
-   * @return {object} JSON object with all required map composition metadata
+   * @returns {object} JSON object with all required map composition metadata
    */
   map2json(map, compoData, userData, statusData) {
     const groups: any = {};
@@ -140,11 +140,8 @@ export class HsSaveMapService {
   }
   /**
    * Returns object about current selected base layer
-   *
-   * @memberof HsSaveMapService
-   * @function getCurrentBaseLayer
    * @param {Map} map Selected map object
-   * @return {object} Returns object with current current selected base layers title as attribute
+   * @returns {object} Returns object with current current selected base layers title as attribute
    */
   getCurrentBaseLayer(map: Map) {
     let current_base_layer = null;
@@ -166,11 +163,8 @@ export class HsSaveMapService {
   /**
    * Converts map layers into a JSON object. If $scope is defined, stores only layers checked in form
    * Uses layer2json().
-   *
-   * @memberof HsSaveMapService
-   * @function layer2json
    * @param {Array} layers All map layers
-   * @return {Array} JSON object representing the layers
+   * @returns {Array} JSON object representing the layers
    */
   layers2json(layers) {
     const json = [];
@@ -188,11 +182,9 @@ export class HsSaveMapService {
    *
    * Syntactic sugar for layer2json() UNUSED?
    *
-   * @memberof HsSaveMapService
-   * @function layer2string
    * @param {object} layer Layer to be converted
    * @param {boolean} pretty Whether to use pretty notation
-   * @return {string} Text in JSON notation representing the layer
+   * @returns {string} Text in JSON notation representing the layer
    */
   layer2string(layer, pretty) {
     const json = this.layer2json(layer);
@@ -205,7 +197,7 @@ export class HsSaveMapService {
    * (saves Fill color, Stroke color/width, Image fill, stroke, radius, src and type)
    *
    * @param s Style to convert
-   * @return {object} Converted JSON object for style
+   * @returns {object} Converted JSON object for style
    */
   serializeStyle(s: Style) {
     const o: any = {};
@@ -285,9 +277,8 @@ export class HsSaveMapService {
    * The layer index is not covered, as we assume
    * that it is corresponding to the layers order.
    *
-   * @function layer2json
-   * @param {object} layer Map layer that should be converted
-   * @return {object} JSON object representing the layer
+   * @param layer - Map layer that should be converted
+   * @returns JSON object representing the layer
    */
   layer2json(layer: Layer): any {
     const json: any = {
@@ -463,9 +454,6 @@ export class HsSaveMapService {
 
   /**
    * Create thumbnail of map view and save it into selected element
-   *
-   * @memberof HsSaveMapService
-   * @function generateThumbnail
    * @param {$element} $element Selected element
    * @param {object} localThis Context to be passed to postcompose event handler
    * @param {boolean} newRender Force new render?

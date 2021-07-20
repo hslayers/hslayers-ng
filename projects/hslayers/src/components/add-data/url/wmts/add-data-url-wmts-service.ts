@@ -88,9 +88,6 @@ export class HsAddDataUrlWmtsService {
   }
   /**
    * Parse information received in WMTS getCapabilities respond
-   *
-   * @memberof hs.addLayersWMTS
-   * @function capabilitiesReceived
    * @param {object} response Url of requested service
    */
   capabilitiesReceived(response: string): Promise<any> {

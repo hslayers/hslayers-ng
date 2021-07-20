@@ -19,8 +19,6 @@ import {getShowInLayerManager} from '../../common/layer-extensions';
 })
 export class HsShareService {
   /**
-   * @memberof permalink.shareService
-   * @property data
    * @public
    * @description variables which describe sharable link: url, title, abstract etc.
    */
@@ -158,11 +156,9 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function getEmbedCode
    * @public
    * @description Get correct Embed code with correct share link type
-   * @return {string} embeddable iframe html code
+   * @returns {string} embeddable iframe html code
    */
   getEmbedCode(): string {
     this.data.embedCode =
@@ -173,10 +169,8 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function getShareUrl
    * @public
-   * @return {string} Share URL
+   * @returns {string} Share URL
    * @description Get share Url based on app choice
    */
   getShareUrl(): string {
@@ -190,10 +184,8 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function getShareUrlEncoded
    * @public
-   * @return {string} Encoded share URL
+   * @returns {string} Encoded share URL
    * @description Get encoded share Url based on app choice
    */
   getShareUrlEncoded(): string {
@@ -201,8 +193,6 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function invalidateShareUrl
    * @public
    * @description Make current share url invalid for social sharing
    */
@@ -211,8 +201,6 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function shareOnSocial
    * @public
    * @param {string} provider Social share provider (twitter/facebook)
    * @param {boolean} newShare If new share record on server should be created
@@ -285,8 +273,6 @@ export class HsShareService {
   }
 
   /**
-   * @memberof permalink.shareService
-   * @function generateThumbnail
    * @public
    * @param {object} $element DOM img element where to place the thumbnail
    * @param {boolean} newRender Force synchronous rendering again or use last canvas state
@@ -347,9 +333,8 @@ export class HsShareService {
     const targetCanvas = this.renderer.createElement('canvas');
     const width = 256,
       height = 256;
-    const firstCanvas = this.HsMapService.mapElement.querySelector(
-      '.ol-layer canvas'
-    );
+    const firstCanvas =
+      this.HsMapService.mapElement.querySelector('.ol-layer canvas');
     this.setCanvasSize(targetCanvas, width, height);
     this.setCanvasSize(collectorCanvas, firstCanvas.width, firstCanvas.height);
     const ctxCollector = collectorCanvas.getContext('2d');

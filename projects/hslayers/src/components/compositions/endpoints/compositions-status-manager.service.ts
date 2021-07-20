@@ -27,8 +27,6 @@ export class HsCompositionsStatusManagerService {
     public HsLanguageService: HsLanguageService
   ) {}
   /**
-   * @ngdoc method
-   * @name HsCompositionsService#loadList
    * @public
    * @description Load list of compositions according to current
    * filter values and pager position (filter, keywords, current

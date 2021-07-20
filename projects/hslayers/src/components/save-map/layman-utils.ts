@@ -3,12 +3,11 @@ import {Layer} from 'ol/layer';
 import {getName, getTitle} from '../../common/layer-extensions';
 
 /**
- * @description Get Layman friendly name for layer based on its title by
+ * Get Layman friendly name for layer based on its title by
  * replacing spaces with underscores, converting to lowercase, etc.
  * see https://github.com/jirik/layman/blob/c79edab5d9be51dee0e2bfc5b2f6a380d2657cbd/src/layman/util.py#L30
- * @function getLaymanFriendlyLayerName
- * @param {string} title Title to get Layman-friendly name for
- * @returns {string} New layer name
+ * @param title - Title to get Layman-friendly name for
+ * @returns New layer name
  */
 export function getLaymanFriendlyLayerName(title: string): string {
   //TODO: Unidecode on server side or just drop the unsupported letters.

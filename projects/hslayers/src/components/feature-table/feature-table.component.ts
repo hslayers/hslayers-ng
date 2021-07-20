@@ -3,11 +3,6 @@ import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
 import {HsMapService} from './../map/map.service';
 import {Layer} from 'ol/layer';
-/**
- * @memberof hs.featureTable
- * @ngdoc component
- * @name HsFeatureTableComponent
- */
 @Component({
   selector: 'hs-feature-table',
   templateUrl: './partials/feature-table.html',

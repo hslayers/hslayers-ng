@@ -36,8 +36,6 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
   }
 
   /**
-   * @function toggleSublayersVisibility
-   * @memberOf hs.layermanager.layer-editor.sub-layer-checkboes
    * @description Controls state of layer´s sublayers manipulated by input checkboxes
    * @param {object} sublayer Selected sublayer
    * @param {object} state New state of sublayer
@@ -49,15 +47,13 @@ export class HsLayerEditorSubLayerCheckboxesComponent {
         Object.assign(this.checkedSubLayers, {
           [children.Name]: state,
         });
-        this.HsLayerEditorSublayerService.checkedSubLayersTmp[
-          children.Name
-        ] = state;
+        this.HsLayerEditorSublayerService.checkedSubLayersTmp[children.Name] =
+          state;
       }
     }
     if (this.checkedSubLayers[sublayer.Name] != undefined) {
-      this.HsLayerEditorSublayerService.checkedSubLayersTmp[
-        sublayer.Name
-      ] = state;
+      this.HsLayerEditorSublayerService.checkedSubLayersTmp[sublayer.Name] =
+        state;
     } else {
       this.HsLayerEditorSublayerService.withChildrenTmp[sublayer.Name] = state;
     }

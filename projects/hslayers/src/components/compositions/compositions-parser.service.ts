@@ -29,21 +29,18 @@ import {
 })
 export class HsCompositionsParserService {
   /**
-   * @name HsCompositionsParserService#composition_loaded
    * @public
    * @type {string} null
    * @description Stores current composition URL if there is one or NULL
    */
   composition_loaded = null;
   /**
-   * @name HsCompositionsParserService#composition_edited
    * @public
    * @type {boolean} null
    * @description Stores whether current composition was edited (for composition changes, saving etc.)
    */
   composition_edited = false;
   /**
-   * @name HsCompositionsParserService#current_composition_title
    * @public
    * @type {string} ""
    * @description Stores title of current composition
@@ -68,7 +65,6 @@ export class HsCompositionsParserService {
   ) {}
 
   /**
-   * @name HsCompositionsParserService#load
    * @public
    * @param {string} url Url of selected composition
    * @param {boolean} overwrite Whether overwrite current composition in map -
@@ -285,7 +281,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @name HsCompositionsParserService#removeCompositionLayers
    * @public
    * @description Remove all layers gained from composition from map
    */
@@ -302,7 +297,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @name HsCompositionsParserService#loadInfo
    * @public
    * @param {string} url Url to composition info
    * @returns {object} Object containing composition info
@@ -405,7 +399,6 @@ export class HsCompositionsParserService {
     });
   }
   /**
-   * @name HsCompositionsParserService#jsonToLayers
    * @public
    * @param {object} j Composition object with Layers
    * @returns {Array} Array of created layers
@@ -433,7 +426,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @name HsCompositionsParserService#jsonToLayer
    * @public
    * @param {object} lyr_def Layer to be created (encapsulated in layer definition object)
    * @returns {Function} Parser function to create layer (using config_parsers service)

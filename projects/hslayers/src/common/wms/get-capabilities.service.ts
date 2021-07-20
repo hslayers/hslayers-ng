@@ -30,7 +30,7 @@ export class HsWmsGetCapabilitiesService {
    * Get WMS service location without parameters from url string
    *
    * @param str Url string to parse
-   * @return WMS service Url
+   * @returns WMS service Url
    */
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
@@ -45,7 +45,7 @@ export class HsWmsGetCapabilitiesService {
    * TODO: Probably the same as utils.paramsToURL
    *
    * @param obj Object with stored WMS service parameters
-   * @return Parameter string or empty string if no object given
+   * @returns Parameter string or empty string if no object given
    */
   params2String(obj): string {
     return obj
@@ -76,7 +76,7 @@ export class HsWmsGetCapabilitiesService {
    * @param [options]
    * @param [options.castOwsCapabilitiesReceived=true] - Whether or not to cast
    *   next value of owsCapabilitiesReceived subject
-   * @return Promise object - Response to GetCapabilities request
+   * @returns Promise object - Response to GetCapabilities request
    */
   async requestGetCapabilities(
     service_url: string,
@@ -138,7 +138,7 @@ export class HsWmsGetCapabilitiesService {
    *
    * @param capabilities_xml XML response of GetCapabilities of selected service
    * @param path
-   * @return List of layers from service
+   * @returns List of layers from service
    */
   service2layers(capabilities_xml, path: string): Layer[] {
     const parser = new WMSCapabilities();
@@ -233,7 +233,7 @@ export class HsWmsGetCapabilitiesService {
    * Test if current map projection is in supported projection list
    *
    * @param srss List of supported projections
-   * @return True if map projection is in list, otherwise false
+   * @returns True if map projection is in list, otherwise false
    */
   currentProjectionSupported(srss: string[]): boolean {
     let found = false;

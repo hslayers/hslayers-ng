@@ -25,9 +25,8 @@ export class HsCompositionsListItemComponent {
   ) {}
 
   /**
-   * @function openComposition
    * Load selected composition
-   * @param composition Selected composition
+   * @param composition - Selected composition
    */
   openComposition(composition): void {
     this.HsCompositionsService.loadCompositionParser(composition)

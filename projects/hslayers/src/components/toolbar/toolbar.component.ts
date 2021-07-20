@@ -42,7 +42,7 @@ export class HsToolbarComponent implements OnDestroy {
   /**
    * Change/read collapsed setting
    *
-   * @return Collapsed state
+   * @returns Collapsed state
    * @param is Value to set collapsed state to
    */
   isCollapsed(is: boolean): boolean {

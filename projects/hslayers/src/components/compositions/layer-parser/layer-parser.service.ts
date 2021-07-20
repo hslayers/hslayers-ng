@@ -46,7 +46,6 @@ export class HsCompositionsLayerParserService {
   ) {}
 
   /**
-   * @name hs.compositions.config_parsers.service#createWFSLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @description Initiate creation of WFS layer thorugh HsAddDataWfsService
@@ -59,8 +58,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createWMTSLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {object} Ol Tile layer
@@ -110,8 +107,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createWmsLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {object} Ol Image or Tile layer
@@ -168,8 +163,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createArcGISLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {object} Ol Image or Tile layer
@@ -226,8 +219,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createXYZLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {object} Ol Image or Tile layer
@@ -279,8 +270,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createStaticImageLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {object} Ol Image or Tile layer
@@ -331,8 +320,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createSparqlLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @description  Parse definition object to create Sparql layer
@@ -375,8 +362,6 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-
-   * @name hs.compositions.config_parsers.service#createVectorLayer
    * @public
    * @param {object} lyr_def Layer definition object
    * @returns {ol.layer.Vector|Function} Either valid vector layer or function for creation of other supported vector file types)
@@ -395,7 +380,7 @@ export class HsCompositionsLayerParserService {
       fromComposition: true,
       path: lyr_def.path,
       visible: lyr_def.visibility,
-      // Extract workspace name for partial backwards compatibility. 
+      // Extract workspace name for partial backwards compatibility.
       workspace:
         lyr_def.workspace ||
         lyr_def.protocol?.url.split('geoserver/')[1].split('/')[0],

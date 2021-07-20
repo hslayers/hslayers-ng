@@ -68,7 +68,7 @@ export class HsLaymanService implements HsSaverService {
    * @param compoData Additional fields for composition such
    * @param saveAsNew Save as new composition
    * as title, name
-   * @return {Promise<any>} Promise result of POST
+   * @returns {Promise<any>} Promise result of POST
    */
   save(compositionJson, endpoint, compoData, saveAsNew: boolean) {
     const write =
@@ -130,7 +130,7 @@ export class HsLaymanService implements HsSaverService {
    * @param description Object containing {name, title, crs, workspace, access_rights} of
    * layer to retrieve
    * @param layerDesc Previously fetched layer descriptor
-   * @return Promise result of POST/PATCH
+   * @returns Promise result of POST/PATCH
    */
   private async makeUpsertLayerRequest(
     endpoint,
@@ -257,7 +257,7 @@ export class HsLaymanService implements HsSaverService {
    * @param param0.upd
    * @param param0.del
    * @param param0.layer
-   * @return Promise result of POST
+   * @returns Promise result of POST
    */
   async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
@@ -349,7 +349,7 @@ export class HsLaymanService implements HsSaverService {
    * @param layer
    * @param endpoint Endpoint description
    * @param layerName Escaped name of layer
-   * @return Promise with WFS xml (GML3.1) response
+   * @returns Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    * Retrieve layers features from server
    */
@@ -407,7 +407,7 @@ export class HsLaymanService implements HsSaverService {
    * Try getting layer description from layman.
    * @param endpoint Endpoint description
    * @param layerName Layer name
-   * @return Promise which returns layers
+   * @returns Promise which returns layers
    * description containing name, file, wms, wfs urls etc.
    */
   async describeLayer(

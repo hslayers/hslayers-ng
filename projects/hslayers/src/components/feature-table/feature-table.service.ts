@@ -39,8 +39,6 @@ export class HsFeatureTableService {
   ) {}
   /**
    * @param layer Layer from HsConfig.layersInFeatureTable
-   * @ngdoc method
-   * @name HsFeatureTableService#addLayer
    * @description Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
    * @returns {any} Returns layer
    */
@@ -57,8 +55,6 @@ export class HsFeatureTableService {
   }
   /**
    * @param layer Layer from HsConfig.layersInFeatureTable
-   * @ngdoc method
-   * @name HsFeatureTableService#wrapLayer
    * @description Wrap layer object
    * @returns {any} Returns wrapped layer object
    */
@@ -71,8 +67,6 @@ export class HsFeatureTableService {
   }
   /**
    * @param layer Layer from HsConfig.layersInFeatureTable
-   * @ngdoc method
-   * @name HsFeatureTableService#getFeatureAttributes
    * @description Search all layers feature attributes and map them into new objects for html table
    */
   fillFeatureList(layer: Layer): void {
@@ -110,9 +104,8 @@ export class HsFeatureTableService {
   }
 
   describeFeature(feature: Feature): FeatureDescriptor {
-    const attribWrapper = this.HsQueryVectorService.getFeatureAttributes(
-      feature
-    ).pop();
+    const attribWrapper =
+      this.HsQueryVectorService.getFeatureAttributes(feature).pop();
     if (!attribWrapper) {
       return null;
     }
@@ -126,8 +119,6 @@ export class HsFeatureTableService {
 
   /**
    * @param attributes layers feature attributes
-   * @ngdoc method
-   * @name HsFeatureTableService#setFeatureName
    * @description Find feature name attribute and seperate it from other attributes for html table purposes
    * @returns {any} feature name
    */
@@ -146,8 +137,6 @@ export class HsFeatureTableService {
   }
   /**
    * @param attributes layers feature attributes
-   * @ngdoc method
-   * @name HsFeatureTableService#attributesWithoutFeatureName
    * @description Remove feature name attribute from feature attributes array
    * @returns {any} feature attributes
    */
@@ -156,8 +145,6 @@ export class HsFeatureTableService {
   }
   /**
    * @param valueName Requested value to sort the feature table list
-   * @ngdoc method
-   * @name HsFeatureTableService#sortFeaturesBy
    * @description Sort features by requested value
    */
   sortFeaturesBy(valueName): void {
@@ -174,8 +161,6 @@ export class HsFeatureTableService {
    * @param a First input feature
    * @param b second input feature
    * @param valueName Sorting value
-   * @ngdoc method
-   * @name HsFeatureTableService#sortFeatures
    * @description Sorting algorithm
    * @returns {number} Returns each features relative position in the table
    */
@@ -214,8 +199,6 @@ export class HsFeatureTableService {
   /**
    * @param attributes features attributes
    * @param valueName Sorting value
-   * @ngdoc method
-   * @name HsFeatureTableService#getValue
    * @description Get requested features attribute value, which will be used in the sorting algorithm
    * @returns {number | string} Returns attributes value
    */
@@ -232,10 +215,11 @@ export class HsFeatureTableService {
   }
 
   translate(text: string): string {
-    const translation: string = this.HsLanguageService.getTranslationIgnoreNonExisting(
-      'FEATURE_TABLE',
-      text
-    );
+    const translation: string =
+      this.HsLanguageService.getTranslationIgnoreNonExisting(
+        'FEATURE_TABLE',
+        text
+      );
     return translation;
   }
 }

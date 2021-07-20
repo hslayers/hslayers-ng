@@ -29,8 +29,6 @@ export class HsCesiumCameraService {
   /**
    * @param distance
    * @param latitude
-   * @ngdoc method
-   * @name HsCesiumService#calcResolutionForDistance
    * @private
    * @description Calculates the resolution for a given distance from the ground and latitude
    */
@@ -49,8 +47,6 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumService#getCameraCenterInLngLat
    * @private
    * @description Gets the position the camera is pointing to in lon/lat coordinates and resolution as the third array element
    */
@@ -77,9 +73,8 @@ export class HsCesiumCameraService {
         this.viewer.scene
       );
       if (positionCartesian3) {
-        const positionCartographic = Cartographic.fromCartesian(
-          positionCartesian3
-        );
+        const positionCartographic =
+          Cartographic.fromCartesian(positionCartesian3);
         const lngDeg = CesiumMath.toDegrees(positionCartographic.longitude);
         const latDeg = CesiumMath.toDegrees(positionCartographic.latitude);
         const position = [
@@ -99,8 +94,6 @@ export class HsCesiumCameraService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumService#getCameraCenterCartesian
    * @private
    * @description Gets the position the camera is pointing to in cartesian coordinates and resolution as the third array element
    */
@@ -324,8 +317,6 @@ export class HsCesiumCameraService {
   /**
    * @param resolution
    * @param latitude
-   * @ngdoc method
-   * @name HsCesiumService#calcDistanceForResolution
    * @private
    * @deprecated
    * @description Calculates the distance from the ground based on resolution and latitude
@@ -378,7 +369,6 @@ export class HsCesiumCameraService {
     });
     viewer.scene.morphComplete.addEventListener(() => {
       if (this.lastGoodCenter) {
-        // eslint-disable-next-line angular/timeout-service
         setTimeout(() => {
           viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(

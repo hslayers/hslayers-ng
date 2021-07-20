@@ -135,9 +135,8 @@ export class HsQueryVectorService {
       if (this.exportedFeatureHref) {
         URL.revokeObjectURL(this.exportedFeatureHref);
       }
-      this.exportedFeatureHref = this.DomSanitizer.bypassSecurityTrustResourceUrl(
-        url
-      );
+      this.exportedFeatureHref =
+        this.DomSanitizer.bypassSecurityTrustResourceUrl(url);
     } else {
       return;
     }
@@ -163,11 +162,7 @@ export class HsQueryVectorService {
   }
   /**
    * (PRIVATE) Adding a default stats to query based on feature geom type
-   *
-   * @function addDefaultAttributes
-   * @param f
-   * @memberOf HsQueryController
-   * @param feature Selected feature from map
+   * @param f Selected feature from map
    */
   addDefaultStats(f) {
     const geom = f.getGeometry();
@@ -236,9 +231,6 @@ export class HsQueryVectorService {
 
   /**
    * (PRIVATE) Handler for querying vector layers of map. Get information about selected feature.
-   *
-   * @function getFeatureAttributes
-   * @memberOf HsQueryController
    * @param feature Selected feature from map
    */
   getFeatureAttributes(feature) {
@@ -289,9 +281,8 @@ export class HsQueryVectorService {
         stats: this.addDefaultStats(feature),
         hstemplate,
         feature,
-        customInfoTemplate: this.DomSanitizer.bypassSecurityTrustHtml(
-          customInfoTemplate
-        ),
+        customInfoTemplate:
+          this.DomSanitizer.bypassSecurityTrustHtml(customInfoTemplate),
       };
       tmp.push(featureDescription);
     }

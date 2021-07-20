@@ -54,8 +54,6 @@ export class HsCesiumService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumService#init
    * @public
    * @description Initializes Cesium map
    */
@@ -237,7 +235,6 @@ export class HsCesiumService {
                 '.cesium-infoBox-iframe'
               );
             if (iframe) {
-              // eslint-disable-next-line angular/timeout-service
               setTimeout(() => {
                 const innerDoc = iframe.contentDocument
                   ? iframe.contentDocument

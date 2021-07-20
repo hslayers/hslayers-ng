@@ -101,7 +101,6 @@ export class HsAddDataArcGisComponent implements OnDestroy {
   }
 
   /**
-   * @function setUrlAndConnect
    * @description Connect to service of specified Url
    * @param {string} url Url of requested service
    * @param {string} layer Optional layer to select, when

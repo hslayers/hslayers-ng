@@ -33,10 +33,10 @@ export class HsLaymanBrowserService {
   ) {}
 
   /**
-   * @function queryCatalog
-   * @param {HsEndpoint} endpoint Configuration of selected datasource (from app config)
+   * Loads datasets metadata from Layman
+   * @param endpoint - Configuration of selected datasource (from app config)
    * extent feature is created. Has one parameter: feature
-   * @description Loads datasets metadata from Layman
+   * @param data
    */
   queryCatalog(endpoint: HsEndpoint, data?: any): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
@@ -169,10 +169,9 @@ export class HsLaymanBrowserService {
   }
 
   /**
+   * (PRIVATE) Callback for catalogue http query
    * @private
-   * @function datasetsReceived
-   * @param {object} data HTTP response containing all the layers
-   * @description (PRIVATE) Callback for catalogue http query
+   * @param data - HTTP response containing all the layers
    */
   private datasetsReceived(data): void {
     if (!data.dataset) {
@@ -210,12 +209,10 @@ export class HsLaymanBrowserService {
   }
 
   /**
-   * @function fillLayerMetadata
-   * @param {HsEndpoint} dataset Configuration of selected datasource (from app config)
-   * @param {object} layer Layman layer for which to get metadata
-   * @returns {Promise} Promise which is resolved when layer metadata is filled
-   * @description Fills metadata about layer, because layman layer list API provides
-   * just name and uuid
+   * Fills metadata about layer, because Layman layer list API provides just name and UUID
+   * @param dataset - Configuration of selected datasource (from app config)
+   * @param layer - Layman layer for which to get metadata
+   * @returns Promise which is resolved when layer metadata is filled
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
@@ -246,12 +243,10 @@ export class HsLaymanBrowserService {
   }
 
   /**
-   * @function describeWhatToAdd
-   * @param {HsEndpoint} ds Configuration of selected datasource (from app config)
-   * @param {object} layer Layman layer for which to get metadata
-   * @returns {Promise} Promise which describes layer
-   * in a common format for use in add-layers component
-   * @description Gets layer metadata and returns promise which describes layer
+   * Gets layer metadata and returns promise which describes layer
+   * @param ds - Configuration of selected datasource (from app config)
+   * @param layer - Layman layer for which to get metadata
+   * @returns Promise which describes layer in a common format for use in add-layers component
    */
   async describeWhatToAdd(
     ds: HsEndpoint,

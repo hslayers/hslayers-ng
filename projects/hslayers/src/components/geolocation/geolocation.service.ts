@@ -18,16 +18,12 @@ import {HsUtilsService} from './../utils/utils.service';
 })
 export class HsGeolocationService {
   /**
-   * @ngdoc property
-   * @name HsGeolocationService#localization
    * @public
    * @type {boolean} false
    * @description Represents geolocalization state (on/off)
    */
   localization = false;
   /**
-   * @ngdoc property
-   * @name HsGeolocationService#following
    * @public
    * @type {boolean} false
    * @description Represents geolocalization tracking option (on/off).
@@ -37,8 +33,6 @@ export class HsGeolocationService {
   gn = null;
   positionFeature: Feature;
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#stopCentering
    * @public
    * @description Turns off position centering while 'following'.
    */
@@ -91,8 +85,6 @@ export class HsGeolocationService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#stopTracking
    * @public
    * @description Reset all geolocalization parameters concerning position tracking
    */
@@ -111,8 +103,6 @@ export class HsGeolocationService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#stopTracking
    * @public
    * @description Toggles tracking/following
    * Takes care of the distinction between click and double-click on mobile
@@ -175,8 +165,6 @@ export class HsGeolocationService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#stopLocalization
    * @public
    * @description Reset all geolocalization parameters
    */
@@ -186,8 +174,6 @@ export class HsGeolocationService {
     this.stopTracking();
   }
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#startLocalization
    * @public
    * @description Display current position by querying geolocation, once
    */
@@ -210,8 +196,6 @@ export class HsGeolocationService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#isCentered
    * @public
    * @description Function which determines whether map is centered on current position or not
    */
@@ -222,8 +206,6 @@ export class HsGeolocationService {
     );
   }
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#setNewPosition
    * @public
    * @description Callback function handling geolocation change:position event
    */
@@ -238,8 +220,6 @@ export class HsGeolocationService {
     }
   }
   /**
-   * @ngdoc method
-   * @name HsGeolocationService#newRotation
    * @public
    * @description Callback function handling geolocation change:heading event
    * @param e
@@ -265,8 +245,6 @@ export class HsGeolocationService {
   }
   /**
    * @param map
-   * @ngdoc method
-   * @name HsGeolocationService#init
    * @public
    * @description Init function of service, establish instance of geolocation object and layer.
    * Sets rotate map control.

@@ -100,8 +100,7 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @function featureInfoError
-   * @description Error callback to decrease infoCounter
+   * Error callback to decrease infoCounter
    * @param exception
    * @param coordinate
    */
@@ -114,7 +113,6 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @function featureInfoReceived
    * @description Parse Information from GetFeatureInfo request. If result came in xml format, Infopanel data are updated. If response is in html, popup window is updated and shown.
    * @param {Object} response Response of GetFeatureInfoRequest
    * @param {string} infoFormat Format of GetFeatureInfoResponse
@@ -301,7 +299,6 @@ export class HsQueryWmsService {
   }
 
   /**
-   * @function queryWmsLayer
    * @description Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
    * @param {Ol.Layer} layer Layer to Query
    * @param {Ol.coordinate} coordinate

@@ -17,20 +17,12 @@ export class HsPrintComponent {
 
   /**
    * Set title of print
-   *
-   * @memberof hs.print.component
-   * @function setTitle
    * @param {string} title Title of printed page
    */
   setTitle(title: string): void {
     this.title = title;
   }
 
-  /**
-   *
-   * @memberof hs.print.component
-   * @function print
-   */
   print(): void {
     this.HsPrintService.print(this.title);
   }

@@ -62,8 +62,6 @@ export class HsDrawComponent {
   }
 
   /**
-   * @function changeStyle
-   * @memberof HsDrawComponent
    * @param {Event} e optional parameter passed when changeStyle is called
    * for 'ondrawend' event features
    * @description Dynamically create draw feature style according to parameters selected in

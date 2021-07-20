@@ -72,7 +72,6 @@ export class HsMapService {
   timer = null;
   puremap: any;
   /**
-   * @name HsMapService#duration
    * @public
    * @type {number} 400
    * @description Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
@@ -89,7 +88,6 @@ export class HsMapService {
     },
   });
   /**
-   * @name HsMapService#controls
    * @public
    * @type {object}
    * @description Set of default map controls used in HSLayers, may be loaded from config file
@@ -98,7 +96,6 @@ export class HsMapService {
   controls = this.defaultDesktopControls;
   mapElement: any;
   /**
-   * @name HsMapService#interactions
    * @public
    * @type {object}
    * @description Set of default map interactions used in HSLayers (
@@ -174,7 +171,7 @@ export class HsMapService {
    * feature when features are listed in info panel.
    *
    * @param feature
-   * @return {Vector} Layer.
+   * @returns {Vector} Layer.
    */
   getLayerForFeature(feature) {
     if (typeof feature.getId() == 'undefined') {
@@ -289,8 +286,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#init
    * @public
    * @description Initialization function for HSLayers map object. Initialize map with basic interaction, scale line and watcher for map view changes. When default controller is used, its called automaticaly, otherwise its must be called before other modules dependent on map object are loaded.
    */
@@ -432,11 +427,9 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#findLayerByTitle
    * @public
    * @param {string} title Title of the layer (from layer creation)
-   * @return {Ol.layer} Ol.layer object
+   * @returns {Ol.layer} Ol.layer object
    * @description Find layer object by title of layer
    */
   findLayerByTitle(title) {
@@ -453,7 +446,7 @@ export class HsMapService {
   /**
    * @param {ol/Layer} existingLayers Layer 1. Usually the one which is already added to map
    * @param {ol/Layer} newLayer Layer 2. Usually the one which will be added to map
-   * @return {boolean} True if layers are equal
+   * @returns {boolean} True if layers are equal
    */
   layersEqual(existingLayers, newLayer) {
     if (newLayer === 'undefined') {
@@ -498,11 +491,9 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#layerAlreadyExists
    * @description Checks if a layer with the same title already exists in the map
    * @param {ol/Layer} lyr A layer to check
-   * @return {boolean} True if layer is already present in the map, false otherwise
+   * @returns {boolean} True if layer is already present in the map, false otherwise
    */
   layerAlreadyExists(lyr) {
     const duplicateLayers = this.map
@@ -615,8 +606,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#repopulateLayers
    * @public
    * @param {Array} visibilityOverrides Override the visibility using an array layer titles, which
    * should be visible. Usefull when the layer visibility is stored in a URL parameter
@@ -697,8 +686,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#reset
    * @public
    * @description Reset map to state configured in app config (reload all layers and set default view)
    */
@@ -709,8 +696,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#resetView
    * @public
    * @description Reset map view to view configured in app config
    */
@@ -732,12 +717,10 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#layerTitleInArray
    * @public
    * @param {ol.Layer} lyr Layer for which to determine visibility
    * @param {Array} array Layer title to check in.
-   * @return {boolean} Detected visibility of layer
+   * @returns {boolean} Detected visibility of layer
    * @description Checks if layer title is present in an array of layer titles.
    * Used to set visibility by URL parameter which contains visible layer titles
    */
@@ -753,8 +736,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#proxifyLayerLoader
    * @public
    * @param {Ol.layer} lyr Layer to proxify
    * @param {boolean} tiled Info if layer is tiled
@@ -828,7 +809,6 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
    * @public
    * @param {number} x X coordinate of new center
    * @param {number} y Y coordinate of new center
@@ -859,11 +839,9 @@ export class HsMapService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsMapService#getMap
    * @public
    * @description Get ol.Map object from service
-   * @return {ol.Map} ol.Map
+   * @returns {ol.Map} ol.Map
    */
   getMap() {
     return this.map;

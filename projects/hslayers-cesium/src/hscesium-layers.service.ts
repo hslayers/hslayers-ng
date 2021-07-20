@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import BaseLayer from 'ol/layer/Base';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 import CesiumTerrainProvider from 'cesium/Source/Core/CesiumTerrainProvider';
@@ -16,6 +15,7 @@ import Viewer from 'cesium/Source/Widgets/Viewer/Viewer';
 import WebMapServiceImageryProvider from 'cesium/Source/Scene/WebMapServiceImageryProvider';
 import WebMercatorTilingScheme from 'cesium/Source/Core/WebMercatorTilingScheme';
 import createWorldTerrain from 'cesium/Source/Core/createWorldTerrain';
+import dayjs from 'dayjs';
 import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Group} from 'ol/layer';
@@ -167,8 +167,6 @@ export class HsCesiumLayersService {
   }
 
   /**
-   * @ngdoc method
-   * @name HsCesiumService#repopulateLayers
    * @public
    * @description Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
