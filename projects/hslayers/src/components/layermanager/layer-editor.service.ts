@@ -13,7 +13,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 
 import {
   getCluster,

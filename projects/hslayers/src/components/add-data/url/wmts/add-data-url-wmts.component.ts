@@ -9,7 +9,7 @@ import {HsLanguageService} from '../../../language/language.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmtsGetCapabilitiesService} from '../../../../common/wmts/get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../../../common/get-capabilities/wmts-get-capabilities.service';
 
 import {Subscription} from 'rxjs';
 

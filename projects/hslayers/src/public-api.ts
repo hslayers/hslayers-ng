@@ -51,4 +51,4 @@ export * from './common/layers/hs.source.SparqlJson';
 export * from './common/layers/hs.source.SPOI';
 export * from './common/log/log.module';
 export * from './common/log/log.service';
-export * from './common/wms/wms-get-capabilities-response.interface';
+export * from './common/get-capabilities/wms-get-capabilities-response.interface';

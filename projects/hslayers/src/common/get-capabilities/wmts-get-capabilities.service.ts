@@ -11,7 +11,7 @@ import {HsAddDataService} from '../../components/add-data/add-data.service';
 import {HsEventBusService} from '../../components/core/event-bus.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from './wms-get-capabilities.service';
 import {getPreferredFormat} from '../format-utils';
 
 @Injectable({providedIn: 'root'})

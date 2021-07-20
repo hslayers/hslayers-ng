@@ -21,7 +21,7 @@ import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 
 class EmptyMock {
   constructor() {}

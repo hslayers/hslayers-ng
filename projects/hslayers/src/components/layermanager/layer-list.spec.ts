@@ -23,9 +23,9 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {HsWfsGetCapabilitiesService} from '../../common/wfs/get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from '../../common/wms/get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../common/wmts/get-capabilities.service';
+import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
+import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {wmsGetCapabilitiesResponse} from '../../../test/data/wms-capabilities';
 
 class HsConfigMock {

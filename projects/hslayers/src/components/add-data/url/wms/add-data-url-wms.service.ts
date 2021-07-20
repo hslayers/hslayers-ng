@@ -18,11 +18,11 @@ import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/wms/get-capabilities.service';
+import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
 import {
   WMSGetCapabilitiesResponse,
   WmsLayer,
-} from '../../../../common/wms/wms-get-capabilities-response.interface';
+} from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getName, getTitle} from '../../../../common/layer-extensions';
 import {getPreferredFormat} from '../../../../common/format-utils';

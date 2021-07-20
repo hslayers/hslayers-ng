@@ -7,7 +7,7 @@ import {TileArcGISRest} from 'ol/source';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from '../../../../common/arcgis/get-capabilities.service';
+import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
 import {HsDimensionService} from '../../../../common/dimension.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
